@@ -215,6 +215,11 @@ namespace __tiff_controller__
 
 		static bool write( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression )
 		{
+			if( image.empty( ) )
+			{
+				return( false );
+			}
+
 			TIFF *tif;
 			size_type tiffW, tiffH;
 			size_type rowsPerStrip;

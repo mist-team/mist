@@ -7,8 +7,8 @@
 **          array1 : template class of one dimensionl array containing resolution.
 **          array2 : template class of two dimensionl array containing pixel resolution.
 **          array3 : template class of three dimensionl array containing voxel resolution.
-**          matrix : template class of matrix with its operation, and impremented using expression template teqnique.
-**          vector : template class of vector with its operation, and impremented using expression template teqnique.
+**          matrix : template class of matrix with its operations, and impremented using expression template technique.
+**          vector : template class of vector with its operations, and impremented using expression template technique.
 **
 **
 **         We developed these programs since 2003/09/05.
