@@ -313,26 +313,30 @@ namespace __non_rigid_registration_utility__
 	{
 		struct coefficient
 		{
-			double a;
-			double b;
-			double c;
-			double d;
+			double value[ 4 ];
+			double &operator []( size_t index ){ return( value[ index ] ); }
+			const double &operator []( size_t index ) const { return( value[ index ] ); }
+		};
+
+		struct coefficients
+		{
+			double value[ 16 ];
+			double &operator []( size_t index ){ return( value[ index ] ); }
+			const double &operator []( size_t index ) const { return( value[ index ] ); }
 		};
 
 		typedef size_t size_type;
 		typedef ptrdiff_t difference_type;
 		typedef mist::array< coefficient > coefficient_type;
 
-		coefficient_type coeff_x;
-		coefficient_type coeff_y;
 		coefficient_type coeff_z;
+		mist::array2< coefficients > coeff_xy;
 
 		template < class CONTROLMESHTYPE >
 		initialize( size_type width, size_type height, size_type depth, const CONTROLMESHTYPE &control_mesh )
 		{
-			coeff_x.resize( width );
-			coeff_y.resize( height );
 			coeff_z.resize( depth );
+			coeff_xy.resize( width, height );
 
 			double stepW = control_mesh.width( )  == 1 ? 1.0 : width / static_cast< double >( control_mesh.width( ) - 1 );
 			double stepH = control_mesh.height( ) == 1 ? 1.0 : height / static_cast< double >( control_mesh.height( ) - 1 );
@@ -346,23 +350,41 @@ namespace __non_rigid_registration_utility__
 				double w = z * _1_stepD;
 				w -= static_cast< difference_type >( w );
 
-				FFD( w, coeff_z[ z ].a, coeff_z[ z ].b, coeff_z[ z ].c, coeff_z[ z ].d );
+				FFD( w, coeff_z[ z ][ 0 ], coeff_z[ z ][ 1 ], coeff_z[ z ][ 2 ], coeff_z[ z ][ 3 ] );
 			}
 
-			for( size_type y = 0 ; y < coeff_y.size( ) ; y++ )
+			double coeff_x[ 4 ], coeff_y[ 4 ];
+			for( size_type y = 0 ; y < height ; y++ )
 			{
 				double v = y * _1_stepH;
 				v -= static_cast< difference_type >( v );
 
-				FFD( v, coeff_y[ y ].a, coeff_y[ y ].b, coeff_y[ y ].c, coeff_y[ y ].d );
-			}
+				FFD( v, coeff_y[ 0 ], coeff_y[ 1 ], coeff_y[ 2 ], coeff_y[ 3 ] );
 
-			for( size_type x = 0 ; x < coeff_x.size( ) ; x++ )
-			{
-				double u = x * _1_stepW;
-				u -= static_cast< difference_type >( u );
+				for( size_type x = 0 ; x < width ; x++ )
+				{
+					double u = x * _1_stepW;
+					u -= static_cast< difference_type >( u );
 
-				FFD( u, coeff_x[ x ].a, coeff_x[ x ].b, coeff_x[ x ].c, coeff_x[ x ].d );
+					FFD( u, coeff_x[ 0 ], coeff_x[ 1 ], coeff_x[ 2 ], coeff_x[ 3 ] );
+
+					coeff_xy( x, y )[  0 ] = coeff_x[ 0 ] * coeff_y[ 0 ];
+					coeff_xy( x, y )[  1 ] = coeff_x[ 1 ] * coeff_y[ 0 ];
+					coeff_xy( x, y )[  2 ] = coeff_x[ 2 ] * coeff_y[ 0 ];
+					coeff_xy( x, y )[  3 ] = coeff_x[ 3 ] * coeff_y[ 0 ];
+					coeff_xy( x, y )[  4 ] = coeff_x[ 0 ] * coeff_y[ 1 ];
+					coeff_xy( x, y )[  5 ] = coeff_x[ 1 ] * coeff_y[ 1 ];
+					coeff_xy( x, y )[  6 ] = coeff_x[ 2 ] * coeff_y[ 1 ];
+					coeff_xy( x, y )[  7 ] = coeff_x[ 3 ] * coeff_y[ 1 ];
+					coeff_xy( x, y )[  8 ] = coeff_x[ 0 ] * coeff_y[ 2 ];
+					coeff_xy( x, y )[  9 ] = coeff_x[ 1 ] * coeff_y[ 2 ];
+					coeff_xy( x, y )[ 10 ] = coeff_x[ 2 ] * coeff_y[ 2 ];
+					coeff_xy( x, y )[ 11 ] = coeff_x[ 3 ] * coeff_y[ 2 ];
+					coeff_xy( x, y )[ 12 ] = coeff_x[ 0 ] * coeff_y[ 3 ];
+					coeff_xy( x, y )[ 13 ] = coeff_x[ 1 ] * coeff_y[ 3 ];
+					coeff_xy( x, y )[ 14 ] = coeff_x[ 2 ] * coeff_y[ 3 ];
+					coeff_xy( x, y )[ 15 ] = coeff_x[ 3 ] * coeff_y[ 3 ];
+				}
 			}
 		}
 	};
@@ -388,7 +410,6 @@ namespace __non_rigid_registration_utility__
 		typedef typename target_image_type::difference_type difference_type;
 
 		difference_type i, j;
-		double sx[ 4 ], sy[ 4 ];
 		double stepW = control_mesh.width( ) == 1 ? 1.0 : target.width( ) / static_cast< double >( control_mesh.width( ) - 1 );
 		double stepH = control_mesh.height( ) == 1 ? 1.0 : target.height( ) / static_cast< double >( control_mesh.height( ) - 1 );
 		double _1_stepW = 1.0 / stepW;
@@ -396,7 +417,7 @@ namespace __non_rigid_registration_utility__
 		double _1_ax = 1.0 / source.reso1( );
 		double _1_ay = 1.0 / source.reso2( );
 
-		difference_type d0, d1, d2, d3;
+		difference_type d0, d1, d2, d3, dm;
 		{
 			difference_type cx = source.width( ) / 2;
 			difference_type cy = source.height( ) / 2;
@@ -405,6 +426,7 @@ namespace __non_rigid_registration_utility__
 			d1 = &source( cx    , cy + 1 ) - ppp;
 			d2 = &source( cx + 1, cy + 1 ) - ppp;
 			d3 = &source( cx + 1, cy     ) - ppp;
+			dm = &control_mesh( 0, 1, 0 ) - &control_mesh( 0, 0, 0 );
 		}
 
 		difference_type isx, isy, iex, iey;
@@ -432,40 +454,45 @@ namespace __non_rigid_registration_utility__
 			iey = iey < th ? iey : th - 1;
 		}
 
-		typedef ffd_coefficient::coefficient_type coefficient_type;
-		const coefficient_type &ffd_coeff_x = ffd_coeff.coeff_x;
-		const coefficient_type &ffd_coeff_y = ffd_coeff.coeff_y;
-
 
 		for( difference_type y = isy + thread_id ; y <= iey ; y += thread_num )
 		{
 			j = static_cast< difference_type >( y * _1_stepH ) - 1;
 
-			sy[ 0 ] = ffd_coeff_y[ y ].a;
-			sy[ 1 ] = ffd_coeff_y[ y ].b;
-			sy[ 2 ] = ffd_coeff_y[ y ].c;
-			sy[ 3 ] = ffd_coeff_y[ y ].d;
-
 			for( difference_type x = isx ; x <= iex ; x++ )
 			{
 				i = static_cast< difference_type >( x * _1_stepW ) - 1;
 
-				sx[ 0 ] = ffd_coeff_x[ x ].a;
-				sx[ 1 ] = ffd_coeff_x[ x ].b;
-				sx[ 2 ] = ffd_coeff_x[ x ].c;
-				sx[ 3 ] = ffd_coeff_x[ x ].d;
+				const ffd_coefficient::coefficients &coeff = ffd_coeff.coeff_xy( x, y );
 
 				double xx = 0.0, yy = 0.0;
-				for( difference_type m = 0 ; m <= 3 ; m++ )
-				{
-					typename control_mesh_type::const_pointer p = &control_mesh( i, j + m, 0 );
-					for( difference_type l = 0 ; l <= 3 ; l++ )
-					{
-						double val = sx[ l ] * sy[ m ];
-						xx += val * p[ l ].x;
-						yy += val * p[ l ].y;
-					}
-				}
+				typename control_mesh_type::const_pointer p = &control_mesh( i, j, 0 );
+
+				xx += coeff[  0 ] * p[ 0 ].x; yy += coeff[  0 ] * p[ 0 ].y;
+				xx += coeff[  1 ] * p[ 1 ].x; yy += coeff[  1 ] * p[ 1 ].y;
+				xx += coeff[  2 ] * p[ 2 ].x; yy += coeff[  2 ] * p[ 2 ].y;
+				xx += coeff[  3 ] * p[ 3 ].x; yy += coeff[  3 ] * p[ 3 ].y;
+
+				p += dm;
+
+				xx += coeff[  4 ] * p[ 0 ].x; yy += coeff[  4 ] * p[ 0 ].y;
+				xx += coeff[  5 ] * p[ 1 ].x; yy += coeff[  5 ] * p[ 1 ].y;
+				xx += coeff[  6 ] * p[ 2 ].x; yy += coeff[  6 ] * p[ 2 ].y;
+				xx += coeff[  7 ] * p[ 3 ].x; yy += coeff[  7 ] * p[ 3 ].y;
+
+				p += dm;
+
+				xx += coeff[  8 ] * p[ 0 ].x; yy += coeff[  8 ] * p[ 0 ].y;
+				xx += coeff[  9 ] * p[ 1 ].x; yy += coeff[  9 ] * p[ 1 ].y;
+				xx += coeff[ 10 ] * p[ 2 ].x; yy += coeff[ 10 ] * p[ 2 ].y;
+				xx += coeff[ 11 ] * p[ 3 ].x; yy += coeff[ 11 ] * p[ 3 ].y;
+
+				p += dm;
+
+				xx += coeff[ 12 ] * p[ 0 ].x; yy += coeff[ 12 ] * p[ 0 ].y;
+				xx += coeff[ 13 ] * p[ 1 ].x; yy += coeff[ 13 ] * p[ 1 ].y;
+				xx += coeff[ 14 ] * p[ 2 ].x; yy += coeff[ 14 ] * p[ 2 ].y;
+				xx += coeff[ 15 ] * p[ 3 ].x; yy += coeff[ 15 ] * p[ 3 ].y;
 
 				xx *= _1_ax;
 				yy *= _1_ay;
@@ -510,7 +537,7 @@ namespace __non_rigid_registration_utility__
 		typedef typename target_image_type::difference_type difference_type;
 
 		difference_type i, j, k;
-		double sx[ 4 ], sy[ 4 ], sz[ 4 ];
+		double sz[ 4 ];
 		double stepW = control_mesh.width( )  == 1 ? 1.0 : target.width( ) / static_cast< double >( control_mesh.width( ) - 1 );
 		double stepH = control_mesh.height( ) == 1 ? 1.0 : target.height( ) / static_cast< double >( control_mesh.height( ) - 1 );
 		double stepD = control_mesh.depth( )  == 1 ? 1.0 : target.depth( ) / static_cast< double >( control_mesh.depth( ) - 1 );
@@ -521,7 +548,7 @@ namespace __non_rigid_registration_utility__
 		double _1_ay = 1.0 / source.reso2( );
 		double _1_az = 1.0 / source.reso3( );
 
-		difference_type d0, d1, d2, d3, d4, d5, d6, d7;
+		difference_type d0, d1, d2, d3, d4, d5, d6, d7, dm;
 		{
 			difference_type cx = source.width( ) / 2;
 			difference_type cy = source.height( ) / 2;
@@ -535,6 +562,7 @@ namespace __non_rigid_registration_utility__
 			d5 = &source( cx    , cy + 1, cz + 1 ) - ppp;
 			d6 = &source( cx + 1, cy + 1, cz + 1 ) - ppp;
 			d7 = &source( cx + 1, cy    , cz + 1 ) - ppp;
+			dm = &control_mesh( 0, 1, 0 ) - &control_mesh( 0, 0, 0 );
 		}
 
 		difference_type isx, isy, isz, iex, iey, iez;
@@ -571,52 +599,57 @@ namespace __non_rigid_registration_utility__
 		}
 
 		typedef ffd_coefficient::coefficient_type coefficient_type;
-		const coefficient_type &ffd_coeff_x = ffd_coeff.coeff_x;
-		const coefficient_type &ffd_coeff_y = ffd_coeff.coeff_y;
 		const coefficient_type &ffd_coeff_z = ffd_coeff.coeff_z;
 
 		for( difference_type z = isz + thread_id ; z <= iez ; z += thread_num )
 		{
 			k = static_cast< difference_type >( z * _1_stepD ) - 1;
 
-			sz[ 0 ] = ffd_coeff_z[ z ].a;
-			sz[ 1 ] = ffd_coeff_z[ z ].b;
-			sz[ 2 ] = ffd_coeff_z[ z ].c;
-			sz[ 3 ] = ffd_coeff_z[ z ].d;
+			sz[ 0 ] = ffd_coeff_z[ z ][ 0 ];
+			sz[ 1 ] = ffd_coeff_z[ z ][ 1 ];
+			sz[ 2 ] = ffd_coeff_z[ z ][ 2 ];
+			sz[ 3 ] = ffd_coeff_z[ z ][ 3 ];
 
 			for( difference_type y = isy ; y <= iey ; y++ )
 			{
 				j = static_cast< difference_type >( y * _1_stepH ) - 1;
 
-				sy[ 0 ] = ffd_coeff_y[ y ].a;
-				sy[ 1 ] = ffd_coeff_y[ y ].b;
-				sy[ 2 ] = ffd_coeff_y[ y ].c;
-				sy[ 3 ] = ffd_coeff_y[ y ].d;
-
 				for( difference_type x = isx ; x <= iex ; x++ )
 				{
 					i = static_cast< difference_type >( x * _1_stepW ) - 1;
 
-					sx[ 0 ] = ffd_coeff_x[ x ].a;
-					sx[ 1 ] = ffd_coeff_x[ x ].b;
-					sx[ 2 ] = ffd_coeff_x[ x ].c;
-					sx[ 3 ] = ffd_coeff_x[ x ].d;
+					double xx = 0.0, yy = 0.0, zz = 0.0, val;
+					const ffd_coefficient::coefficients &coeff = ffd_coeff.coeff_xy( x, y );
 
-					double xx = 0.0, yy = 0.0, zz = 0.0;
 					for( difference_type n = 0 ; n <= 3 ; n++ )
 					{
-						for( difference_type m = 0 ; m <= 3 ; m++ )
-						{
-							typename control_mesh_type::const_pointer p = &control_mesh( i, j + m, k + n );
-							double vvv = sy[ m ] * sz[ n ];
-							for( difference_type l = 0 ; l <= 3 ; l++ )
-							{
-								double vv = sx[ l ] * vvv;
-								xx += vv * p[ l ].x;
-								yy += vv * p[ l ].y;
-								zz += vv * p[ l ].z;
-							}
-						}
+						typename control_mesh_type::const_pointer p = &control_mesh( i, j, k + n );
+
+						val = sz[ n ] * coeff[  0 ]; xx += val * p[ 0 ].x; yy += val * p[ 0 ].y; zz += val * p[ 0 ].z;
+						val = sz[ n ] * coeff[  1 ]; xx += val * p[ 1 ].x; yy += val * p[ 1 ].y; zz += val * p[ 1 ].z;
+						val = sz[ n ] * coeff[  2 ]; xx += val * p[ 2 ].x; yy += val * p[ 2 ].y; zz += val * p[ 2 ].z;
+						val = sz[ n ] * coeff[  3 ]; xx += val * p[ 3 ].x; yy += val * p[ 3 ].y; zz += val * p[ 3 ].z;
+
+						p += dm;
+
+						val = sz[ n ] * coeff[  4 ]; xx += val * p[ 0 ].x; yy += val * p[ 0 ].y; zz += val * p[ 0 ].z;
+						val = sz[ n ] * coeff[  5 ]; xx += val * p[ 1 ].x; yy += val * p[ 1 ].y; zz += val * p[ 1 ].z;
+						val = sz[ n ] * coeff[  6 ]; xx += val * p[ 2 ].x; yy += val * p[ 2 ].y; zz += val * p[ 2 ].z;
+						val = sz[ n ] * coeff[  7 ]; xx += val * p[ 3 ].x; yy += val * p[ 3 ].y; zz += val * p[ 3 ].z;
+
+						p += dm;
+
+						val = sz[ n ] * coeff[  8 ]; xx += val * p[ 0 ].x; yy += val * p[ 0 ].y; zz += val * p[ 0 ].z;
+						val = sz[ n ] * coeff[  9 ]; xx += val * p[ 1 ].x; yy += val * p[ 1 ].y; zz += val * p[ 1 ].z;
+						val = sz[ n ] * coeff[ 10 ]; xx += val * p[ 2 ].x; yy += val * p[ 2 ].y; zz += val * p[ 2 ].z;
+						val = sz[ n ] * coeff[ 11 ]; xx += val * p[ 3 ].x; yy += val * p[ 3 ].y; zz += val * p[ 3 ].z;
+
+						p += dm;
+
+						val = sz[ n ] * coeff[ 12 ]; xx += val * p[ 0 ].x; yy += val * p[ 0 ].y; zz += val * p[ 0 ].z;
+						val = sz[ n ] * coeff[ 13 ]; xx += val * p[ 1 ].x; yy += val * p[ 1 ].y; zz += val * p[ 1 ].z;
+						val = sz[ n ] * coeff[ 14 ]; xx += val * p[ 2 ].x; yy += val * p[ 2 ].y; zz += val * p[ 2 ].z;
+						val = sz[ n ] * coeff[ 15 ]; xx += val * p[ 3 ].x; yy += val * p[ 3 ].y; zz += val * p[ 3 ].z;
 					}
 
 					xx *= _1_ax;
@@ -1029,15 +1062,16 @@ namespace __non_rigid_registration_utility__
 			typedef __minimization_utility__::__no_copy_constructor_functor__< registration_functor< TARGETTYPE, SOURCETYPE, CONTROLMESH > > no_constructor_functor_type;
 
 			// ç≈è¨âªÇäJén
+			double search_length = 0.5;
 			matrix_type p( 3, 1 ), dirs = matrix_type::identity( 3, 3 ), bound( 3, 2 );
-			bound( 0, 0 ) = -( control_mesh( x - 1, y    , z     ) - control_mesh( x, y, z ) ).length( ) * 0.5;
-			bound( 0, 1 ) =  ( control_mesh( x + 1, y    , z     ) - control_mesh( x, y, z ) ).length( ) * 0.5;
-			bound( 1, 0 ) = -( control_mesh( x    , y - 1, z     ) - control_mesh( x, y, z ) ).length( ) * 0.5;
-			bound( 1, 1 ) =  ( control_mesh( x    , y + 1, z     ) - control_mesh( x, y, z ) ).length( ) * 0.5;
-			bound( 2, 0 ) = -( control_mesh( x    , y    , z - 1 ) - control_mesh( x, y, z ) ).length( ) * 0.5;
-			bound( 2, 1 ) =  ( control_mesh( x    , y    , z + 1 ) - control_mesh( x, y, z ) ).length( ) * 0.5;
+			bound( 0, 0 ) = -( control_mesh( x - 1, y    , z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
+			bound( 0, 1 ) =  ( control_mesh( x + 1, y    , z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
+			bound( 1, 0 ) = -( control_mesh( x    , y - 1, z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
+			bound( 1, 1 ) =  ( control_mesh( x    , y + 1, z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
+			bound( 2, 0 ) = -( control_mesh( x    , y    , z - 1 ) - control_mesh( x, y, z ) ).length( ) * search_length;
+			bound( 2, 1 ) =  ( control_mesh( x    , y    , z + 1 ) - control_mesh( x, y, z ) ).length( ) * search_length;
 
-			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 1.0 );
+			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 1.0, 1.0, 1 );
 
 			// åãâ ÇîΩâf
 			vector_type &v = control_mesh_tmp( x, y, z );
@@ -1181,18 +1215,18 @@ namespace non_rigid
 			typedef mist::vector3< size_type > control_point_index_type;
 			std::vector< control_point_index_type > control_point_list;
 
-			size_type X[] = { 0, 1, 0, 1, 0, 1, 0, 1 };
-			size_type Y[] = { 0, 0, 1, 1, 0, 0, 1, 1 };
-			size_type Z[] = { 0, 0, 0, 0, 1, 1, 1, 1 };
+			size_type X[] = { 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2 };
+			size_type Y[] = { 0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2 };
+			size_type Z[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
 
 			// 1äKÇÃíTçıÇ≈ÅCå›Ç¢Ç…âeãøÇµÇ†ÇÌÇ»Ç¢êßå‰ì_ÇÃÉäÉXÉgÇçÏê¨Ç∑ÇÈ
-			for( size_type s = 0 ; s < 8 ; s++ )
+			for( size_type s = 0 ; s < 27 ; s++ )
 			{
-				for( difference_type k = Z[ s ] ; k < d ; k += 2 )
+				for( difference_type k = Z[ s ] ; k < d ; k += 3 )
 				{
-					for( difference_type j = Y[ s ] ; j < h ; j += 2 )
+					for( difference_type j = Y[ s ] ; j < h ; j += 3 )
 					{
-						for( difference_type i = X[ s ] ; i < w ; i += 2 )
+						for( difference_type i = X[ s ] ; i < w ; i += 3 )
 						{
 							control_point_list.push_back( mist::vector3< size_type >( i, j, k ) );
 						}
