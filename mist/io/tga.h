@@ -373,9 +373,9 @@ namespace __tga_controller__
 						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
 						unsigned short &pix = reinterpret_cast< unsigned short * >( pixel + pixel_skip * i )[ 0 ];
 						unsigned short a = ( 1 << 15 ) & 0x8000;
-						unsigned short r = ( ( c.r / 8 ) << 10 ) & 0x7c00;
-						unsigned short g = ( ( c.g / 8 ) << 5 ) & 0x03e0;
-						unsigned short b = ( c.b / 8 ) & 0x001f;
+						unsigned short r = ( static_cast< unsigned char >( c.r / 8 ) << 10 ) & 0x7c00;
+						unsigned short g = (  static_cast< unsigned char >( c.g / 8 ) << 5 ) & 0x03e0;
+						unsigned short b =  static_cast< unsigned char >( c.b / 8 ) & 0x001f;
 						pix = a | r | g | b;
 					}
 					break;
