@@ -106,7 +106,7 @@ _MIST_BEGIN
 //! @addtogroup config_group MIST全般で利用される設定
 //!
 //! @code 次のヘッダを参照
-//! #include <mist/config.h>
+//! #include <mist/config/mist_conf.h>
 //! @endcode
 //!
 //! @{

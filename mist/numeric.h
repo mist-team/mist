@@ -2031,7 +2031,138 @@ namespace __svd__
 
 #endif
 
+
+
+	template < bool b >
+	struct __svd_only_s_vt__
+	{
+		// 実数バージョン
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &s, matrix< T, Allocator > &vt, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename matrix< T, Allocator >::size_type size_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
+			integer info = 0;
+
+			switch( style )
+			{
+			case matrix_style::ge:
+			default:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer ldu    = m;
+					typename matrix< T, Allocator >::value_type dmy;
+					integer ldvt   = n;
+					integer lwork  = -1;
+					char *jobu = "N";
+					char *jobvt = "A";
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						s.resize( m < n ? m : n, 1 );
+						vt.resize( ldvt, n );
+
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
+						matrix< T, Allocator > work( lwork, 1 );
+						__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( s[0] ), NULL, ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, info );
+					}
+				}
+				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
+			return( s );
+		}
+	};
+
+	template < >
+	struct __svd_only_s_vt__< true >
+	{
+		// 複素数バージョン
+		template < class T1, class T2, class Allocator1, class Allocator2 >
+		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename matrix< T1, Allocator1 >::size_type size_type;
+			typedef typename T1::value_type value_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
+			integer info = 0;
+
+			switch( style )
+			{
+			case matrix_style::ge:
+			default:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer ldu    = m;
+					integer size   = m < n ? m : n;
+					typename matrix< T1, Allocator1 >::value_type dmy;
+					integer ldvt   = n;
+					integer lwork  = -1;
+					char *jobu = "N";
+					char *jobvt = "A";
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
+					if( info == 0 )
+					{
+						u.resize( ldu, m );
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+						// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
+						s.resize( size, 1 );
+#else
+						matrix< value_type, typename Allocator1::template rebind< value_type >::other > ss( size, 1 );
+#endif
+						vt.resize( ldvt, n );
+						value_type *rwork = new value_type[ 5 * size ];
+
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
+						matrix< T1, Allocator1 > work( lwork, 1 );
+						__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( s[0] ), NULL, ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, info );
+
+						delete [] rwork;
+					}
+				}
+				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
+			return( s );
+		}
+	};
 }
+
 
 
 //! @addtogroup numeric_group 行列演算
@@ -2123,6 +2254,167 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 	return( multiply( a, b, c, a_is_transpose, b_is_transpose, 1, 0 ) );
 }
 
+
+#if _USE_EXPRESSION_TEMPLATE_ != 0
+
+/// @brief 行列×行列の演算を行う
+//! 
+//! \f[
+//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! \f]
+//! 
+//! @param[in]  a … 入力行列 \f${\bf A}\f$
+//! @param[in]  b … 入力行列 \f${\bf B}\f$
+//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
+//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする
+//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする
+//! @param[in]  alpha … 行列演算の和を計算するときの係数
+//! @param[in]  beta  … 行列演算の和を計算するときの係数
+//!
+//! @return \f$tr\left( {\bf A} \right)\f$
+//! 
+template < class Expression1, class Expression2, class T, class Allocator >
+inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_expression< Expression2 > &b, matrix< T, Allocator > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T, Allocator >::value_type alpha, typename matrix< T, Allocator >::value_type beta )
+{
+	typedef typename matrix_expression< Expression1 >::value_type value_type1;
+	typedef typename matrix_expression< Expression1 >::allocator_type allocator_type1;
+	typedef typename matrix_expression< Expression2 >::value_type value_type2;
+	typedef typename matrix_expression< Expression2 >::allocator_type allocator_type2;
+	typedef matrix< value_type1, allocator_type1 > matrix_type1;
+	typedef matrix< value_type2, allocator_type2 > matrix_type2;
+	return( multiply( matrix_type1( a ), matrix_type2( b ), c, a_is_transpose, b_is_transpose, alpha, beta ) );
+}
+
+/// @brief 行列×行列の演算を行う
+//! 
+//! \f[
+//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! \f]
+//! 
+//! @param[in]  a … 入力行列 \f${\bf A}\f$
+//! @param[in]  b … 入力行列 \f${\bf B}\f$
+//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
+//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする
+//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする
+//! @param[in]  alpha … 行列演算の和を計算するときの係数
+//! @param[in]  beta  … 行列演算の和を計算するときの係数
+//!
+//! @return \f$tr\left( {\bf A} \right)\f$
+//! 
+template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
+inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression< Expression > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T1, Allocator1 >::value_type alpha, typename matrix< T1, Allocator1 >::value_type beta )
+{
+	typedef typename matrix_expression< Expression >::value_type value_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
+	return( multiply( a, matrix_type( b ), c, a_is_transpose, b_is_transpose, alpha, beta ) );
+}
+
+/// @brief 行列×行列の演算を行う
+//! 
+//! \f[
+//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! \f]
+//! 
+//! @param[in]  a … 入力行列 \f${\bf A}\f$
+//! @param[in]  b … 入力行列 \f${\bf B}\f$
+//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
+//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする
+//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする
+//! @param[in]  alpha … 行列演算の和を計算するときの係数
+//! @param[in]  beta  … 行列演算の和を計算するときの係数
+//!
+//! @return \f$tr\left( {\bf A} \right)\f$
+//! 
+template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
+inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1, Allocator1 > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T1, Allocator1 >::value_type alpha, typename matrix< T1, Allocator1 >::value_type beta )
+{
+	typedef typename matrix_expression< Expression >::value_type value_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
+	return( multiply( matrix_type( a ), b, c, a_is_transpose, b_is_transpose, alpha, beta ) );
+}
+
+
+/// @brief 行列×行列の演算を行う
+//! 
+//! \f[
+//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! \f]
+//! 
+//! @param[in]  a … 入力行列 \f${\bf A}\f$
+//! @param[in]  b … 入力行列 \f${\bf B}\f$
+//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
+//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
+//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
+//! @param[in]  alpha … 行列演算の和を計算するときの係数
+//! @param[in]  beta  … 行列演算の和を計算するときの係数
+//!
+//! @return \f$tr\left( {\bf A} \right)\f$
+//! 
+template < class Expression1, class Expression2, class T, class Allocator >
+inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_expression< Expression2 > &b, matrix< T, Allocator > &c, bool a_is_transpose = false, bool b_is_transpose = false )
+{
+	typedef typename matrix_expression< Expression1 >::value_type value_type1;
+	typedef typename matrix_expression< Expression1 >::allocator_type allocator_type1;
+	typedef typename matrix_expression< Expression2 >::value_type value_type2;
+	typedef typename matrix_expression< Expression2 >::allocator_type allocator_type2;
+	typedef matrix< value_type1, allocator_type1 > matrix_type1;
+	typedef matrix< value_type2, allocator_type2 > matrix_type2;
+	return( multiply( matrix_type1( a ), matrix_type2( b ), c, a_is_transpose, b_is_transpose, 1, 0 ) );
+}
+
+/// @brief 行列×行列の演算を行う
+//! 
+//! \f[
+//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! \f]
+//! 
+//! @param[in]  a … 入力行列 \f${\bf A}\f$
+//! @param[in]  b … 入力行列 \f${\bf B}\f$
+//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
+//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
+//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
+//! @param[in]  alpha … 行列演算の和を計算するときの係数
+//! @param[in]  beta  … 行列演算の和を計算するときの係数
+//!
+//! @return \f$tr\left( {\bf A} \right)\f$
+//! 
+template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
+inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression< Expression > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose = false, bool b_is_transpose = false )
+{
+	typedef typename matrix_expression< Expression >::value_type value_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
+	return( multiply( a, matrix_type( b ), c, a_is_transpose, b_is_transpose, 1, 0 ) );
+}
+
+/// @brief 行列×行列の演算を行う
+//! 
+//! \f[
+//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! \f]
+//! 
+//! @param[in]  a … 入力行列 \f${\bf A}\f$
+//! @param[in]  b … 入力行列 \f${\bf B}\f$
+//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
+//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
+//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
+//! @param[in]  alpha … 行列演算の和を計算するときの係数
+//! @param[in]  beta  … 行列演算の和を計算するときの係数
+//!
+//! @return \f$tr\left( {\bf A} \right)\f$
+//! 
+template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
+inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1, Allocator1 > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose = false, bool b_is_transpose = false )
+{
+	typedef typename matrix_expression< Expression >::value_type value_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
+	return( multiply( matrix_type( a ), b, c, a_is_transpose, b_is_transpose, 1, 0 ) );
+}
+
+#endif
 
 
 /// @brief トレースの計算（対角成分の和）
@@ -2709,6 +3001,29 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 }
 
 
+/// @brief 行列の特異値分解を計算する
+//! 
+//! \f[ {\bf A} = {\bf U}{\bf \Sigma}{\bf V}^T \f]
+//! 
+//! \f$ {\bf \Sigma} \f$ の体格成分と \f$ {\bf V}^T \f$ のみを計算する
+//! 
+//! @note 対角行列の成分は，左上から値の大きい順に並ぶ
+//! 
+//! @param[in]  a     … 入力行列 \f$ {\bf A} \f$
+//! @param[out] s     … 対角行列 \f$ {\bf \Sigma} \f$ の体格成分のみのベクトル
+//! @param[out] vt    … 直行行列の転置 \f$ {\bf V}^T \f$
+//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
+//!
+//! @return 対角行列 \f$ {\bf \Sigma} \f$
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2 >
+const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
+{
+	matrix< T1, Allocator1 > a_( a );
+	return( __svd__::__svd_only_s_vt__< __numeric__::is_complex< T1 >::value >::svd( a_, s, vt, style ) );
+}
+
+
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
 /// @brief 関数・クラスの概要を書く
@@ -2738,6 +3053,36 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression );
 	return( __svd__::__svd__< __numeric__::is_complex< value_type >::value >::svd( a_, u, s, vt, style ) );
+}
+
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! \f[ {\bf A} = {\bf U}{\bf \Sigma}{\bf V}^T \f]
+//! 
+//! \f$ {\bf \Sigma} \f$ の体格成分と \f$ {\bf V}^T \f$ のみを計算する
+//! 
+//! @note 対角行列の成分は，左上から値の大きい順に並ぶ
+//! 
+//! @param[in]  expression … 複数の行列演算を表す式 \f$ {\bf A} \f$
+//! @param[out] s          … 対角行列 \f$ {\bf \Sigma} \f$ の体格成分のみのベクトル
+//! @param[out] vt         … 直行行列の転置 \f$ {\bf V}^T \f$
+//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
+//!
+//! @return 対角行列 \f$ {\bf \Sigma} \f$
+//! 
+template < class Expression >
+inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
+						svd( const matrix_expression< Expression > &expression,
+						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &s,
+						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &vt,
+						matrix_style::style style = matrix_style::ge )
+{
+	typedef typename matrix_expression< Expression >::value_type value_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
+	matrix_type a_( expression );
+	return( __svd__::__svd_only_s_vt__< __numeric__::is_complex< value_type >::value >::svd( a_, s, vt, style ) );
 }
 
 #endif
