@@ -14,6 +14,65 @@ _MIST_BEGIN
 namespace linear_filter
 {
 
+	template< class T >
+	struct type_limits_2 : public mist::type_limits < T >
+	{
+		static T cast( const double& arg )
+		{
+			if( arg > maximum( ) )
+			{
+				return( maximum( ) );
+			}
+			if( arg < minimum( ) )
+			{
+				return( minimum( ) );
+			}
+			if( arg >= 0 )
+			{
+				return( static_cast< T >( arg + 0.5 ) );
+			}
+			else
+			{
+				return( static_cast< T >( arg - 0.5 ) );
+			}
+		}
+	};
+
+	template < >
+	struct type_limits_2< float > : public mist::type_limits < float >
+	{
+		static float cast( const float& arg )
+		{
+			if( arg > maximum( ) )
+			{
+				return( maximum( ) );
+			}
+			if( arg < -maximum( ) )
+			{
+				return( -maximum( ) );
+			}
+			return( arg );
+		}
+	};
+
+	template< >
+	struct type_limits_2< double >
+	{
+		static double cast( const double& arg )
+		{
+			return( arg );
+		}
+	};
+
+	template< >
+	struct type_limits_2< long double >
+	{
+		static long double cast( const double& arg )
+		{
+			return( arg );
+		}
+	};
+
 	template < class T_in, class T_kernel >
 	double get_value( const mist::array1< T_in >& in, const mist::array1< T_kernel >& kernel, const int& i )
 	{
@@ -66,7 +125,7 @@ namespace linear_filter
 		int		i;
 		for( i = (kernel.size1( ) / 2) ; i < (in.size1() - kernel.size1( ) / 2) ; i++ )
 		{
-			 out( i ) = get_value( in, kernel, i );	
+			 out( i ) = type_limits_2< T_out >::cast( get_value( in, kernel, i ) );	
 		}
 	}
 
@@ -79,7 +138,7 @@ namespace linear_filter
 		{
 			for( i = (kernel.size1( ) / 2) ; i < (in.size1() - kernel.size1( ) / 2) ; i++ )
 			{
-				out( i, j ) = get_value( in, kernel, i, j );
+				out( i, j ) = type_limits_2< T_out >::cast( get_value( in, kernel, i, j ) );
 			}
 		}
 	}
@@ -95,7 +154,7 @@ namespace linear_filter
 			{
 				for( i = (kernel.size1( ) / 2) ; i < (in.size1() - kernel.size1( ) / 2) ; i++ )
 				{
-					out( i, j, k ) = get_value( in, kernel, i, j, k );
+					out( i, j, k ) = type_limits_2< T_out >::cast( get_value( in, kernel, i, j, k ) );
 				}
 			}
 		}
@@ -114,7 +173,7 @@ namespace linear_filter
 		out.resize( in.size1( ) );
 		for( i = 0 ; i < out.size1() ; i++ )
 		{
-			out( i ) /= norm;
+			out( i ) =  in( i ) / norm;
 		}
 	}
 
@@ -136,7 +195,7 @@ namespace linear_filter
 		{
 			for( j = 0 ; j < out.size2() ; j++ )
 			{
-				out( i, j ) /= norm;
+				out( i, j ) = in( i, j ) / norm;
 			}
 		}
 	}
@@ -164,7 +223,7 @@ namespace linear_filter
 			{
 				for( k = 0 ; k < out.size3() ; k++ )
 				{
-					out( i, j, k ) /= norm;
+					out( i, j, k ) = in( i, j, k ) / norm;
 				}
 			}
 		}
