@@ -9,6 +9,9 @@
 #include "config/mist_conf.h"
 #endif
 
+#ifndef __INCLUDE_MIST_COLOR_H__
+#include "config/color.h"
+#endif
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN
@@ -60,6 +63,60 @@ _DEFINE_TYPE_LIMITS( unsigned long,  true, false,         0, ULONG_MAX, 0 )
 _DEFINE_TYPE_LIMITS(       float,   false,  true,   FLT_MIN,   FLT_MAX, 0.0f )
 _DEFINE_TYPE_LIMITS(      double,   false,  true,   DBL_MIN,   DBL_MAX, 0 )
 _DEFINE_TYPE_LIMITS( long double,   false,  true,  LDBL_MIN,  LDBL_MAX, 0 )
+
+
+#if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
+
+	#define _DEFINE_COLOR_TYPE_LIMITS( type ) \
+	template < >\
+	struct type_limits< rgb< type > >\
+	{\
+		typedef rgb< type > value_type;\
+		typedef typename rgb< type >::value_type rgb_value_type;\
+		\
+		enum{ is_integer = type_limits< rgb_value_type >::is_integer };\
+		enum{ is_signed  = type_limits< rgb_value_type >::is_signed };\
+		\
+		static value_type minimum( ) { return( rgb< type >( type_limits< rgb_value_type >::minimum( ) ) ); }\
+		static value_type maximum( ) { return( rgb< type >( type_limits< rgb_value_type >::maximum( ) ) ); }\
+		static value_type zero( ) { return( rgb< type >( type_limits< rgb_value_type >::zero( ) ) ); }\
+	};\
+
+	// ŠeŒ^‚É‘Î‚·‚é“ÁŽê‰»
+	_DEFINE_COLOR_TYPE_LIMITS(unsigned char)
+	_DEFINE_COLOR_TYPE_LIMITS(unsigned short)
+	_DEFINE_COLOR_TYPE_LIMITS(unsigned int)
+	_DEFINE_COLOR_TYPE_LIMITS(unsigned long)
+	_DEFINE_COLOR_TYPE_LIMITS(signed char)
+	_DEFINE_COLOR_TYPE_LIMITS(signed short)
+	_DEFINE_COLOR_TYPE_LIMITS(signed int)
+	_DEFINE_COLOR_TYPE_LIMITS(signed long)
+	_DEFINE_COLOR_TYPE_LIMITS(bool)
+	_DEFINE_COLOR_TYPE_LIMITS(char)
+	_DEFINE_COLOR_TYPE_LIMITS(float)
+	_DEFINE_COLOR_TYPE_LIMITS(double)
+	_DEFINE_COLOR_TYPE_LIMITS(long double)
+
+	#undef _DEFINE_COLOR_TYPE_LIMITS
+
+#else
+
+	template < class T >
+	struct type_limits< rgb< T > >
+	{
+		typedef rgb< T > value_type;
+		typedef typename rgb< T >::value_type rgb_value_type;
+
+		enum{ is_integer = type_limits< rgb_value_type >::is_integer };
+		enum{ is_signed  = type_limits< rgb_value_type >::is_signed };
+
+		static value_type minimum( ) { return( rgb< T >( type_limits< rgb_value_type >::minimum( ) ) ); }
+		static value_type maximum( ) { return( rgb< T >( type_limits< rgb_value_type >::maximum( ) ) ); }
+		static value_type zero( ) { return( rgb< T >( type_limits< rgb_value_type >::zero( ) ) ); }
+	};
+
+#endif
+
 
 #undef _DEFINE_TYPE_LIMITS
 
