@@ -40,7 +40,7 @@ _MIST_BEGIN
 namespace __tga_controller__
 {
 	// 構造体内のアライメントを1バイトに設定し，パディングを禁止する
-#if defined( __MIST_MSVC__ )
+#if defined(__MIST_MSVC__) || defined(__INTEL_COMPILER)
 	#pragma pack( push, tga_align, 1 )
 #endif
 		struct _tga_header_
@@ -71,7 +71,7 @@ namespace __tga_controller__
 
 		} _MIST_PACKED;
 
-#if defined( __MIST_MSVC__ )
+#if defined(__MIST_MSVC__) || defined(__INTEL_COMPILER)
 	#pragma pack( pop, tga_align )
 #endif
 	// 構造体内のアライメントを1バイトに設定し，パディングを禁止する ～ ここまで ～

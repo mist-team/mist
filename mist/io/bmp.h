@@ -40,7 +40,7 @@ _MIST_BEGIN
 namespace __bmp_controller__
 {
 	// 構造体内のアライメントを1バイトに設定し，パディングを禁止する
-#if defined( __MIST_MSVC__ )
+#if defined(__MIST_MSVC__) || defined(__INTEL_COMPILER)
 	#pragma pack( push, bmp_align, 1 )
 #endif
 		struct _rgbquad_
@@ -85,7 +85,7 @@ namespace __bmp_controller__
 			unsigned int	bfOffBits;
 		} _MIST_PACKED;
 
-#if defined( __MIST_MSVC__ )
+#if defined(__MIST_MSVC__) || defined(__INTEL_COMPILER)
 	#pragma pack( pop, bmp_align )
 #endif
 	// 構造体内のアライメントを1バイトに設定し，パディングを禁止する ～ ここまで ～

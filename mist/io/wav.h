@@ -45,7 +45,7 @@ namespace __wav_controller__
 	};
 
 	// 構造体内のアライメントを1バイトに設定し，パッディングを禁止する
-#if defined( __MIST_MSVC__ )
+#if defined(__MIST_MSVC__) || defined(__INTEL_COMPILER)
 	#pragma pack( push, wav_align, 1 )
 #endif
 		struct _riffheader_
@@ -81,7 +81,7 @@ namespace __wav_controller__
 			unsigned  int	data_size;			// 本ヘッダの後のファイルサイズ
 		} _MIST_PACKED;
 
-#if defined( __MIST_MSVC__ )
+#if defined(__MIST_MSVC__) || defined(__INTEL_COMPILER)
 	#pragma pack( pop, wav_align )
 #endif
 	// 構造体内のアライメントを1バイトに設定し，パッディングを禁止する ～ ここまで ～

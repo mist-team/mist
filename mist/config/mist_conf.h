@@ -50,7 +50,7 @@ _MIST_BEGIN
 
 
 // 構造体のアライメントを合わせるためのマクロ
-#ifdef __MIST_MSVC__
+#if defined(__MIST_MSVC__) || defined(__INTEL_COMPILER)
 	#define _MIST_PACKED
 #else
 	#define _MIST_PACKED __attribute__( ( packed ) )
