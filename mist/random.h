@@ -79,7 +79,7 @@ namespace uniform
 		//! 
 		//! @param[in] seed … 乱数のseed(これを用いてジェネレータの状態を初期化する)
 		//! 
-		random( const unsigned long& seed ) :
+		random( const unsigned long seed ) :
 			number_n_( 624 ),
 			number_m_( 397 ),
 			matrix_a_( 0x9908b0dfUL ),
@@ -348,24 +348,36 @@ namespace gauss
 
 		/// @brief コンストラクタ
 		//! 
+		//! @param[in] mean … 正規乱数の平均
+		//! @param[in] standard_deviation … 正規乱数の標準偏差
+		//! 
+		random( const double mean, const double standard_deviation ) :
+			u_rand_( ),
+			mean_( mean ), 
+			standard_deviation_( standard_deviation )
+		{
+		}
+
+		/// @brief コンストラクタ
+		//! 
 		//! @param[in] seed … u_rand_のseed(これを用いてジェネレータの状態を初期化する)
 		//! @param[in] mean … 正規乱数の平均
 		//! @param[in] standard_deviation … 正規乱数の標準偏差
 		//! 
-		random( const unsigned long& seed, const double& mean = 0.0, const double& standard_deviation = 1.0 ) :
+		random( const unsigned long seed, const double mean = 0.0, const double standard_deviation = 1.0 ) :
 			u_rand_( seed ),
 			mean_( mean ), 
 			standard_deviation_( standard_deviation )
 		{
 		}
-		
+
 		/// @brief コンストラクタ
 		//! 
 		//! @param[in] seed_array … u_rand_のseed配列
 		//! @param[in] mean … 正規乱数の平均
 		//! @param[in] standard_deviation … 正規乱数の標準偏差
 		//! 
-		random( const array< unsigned long >& seed_array, const double& mean = 0.0, const double& standard_deviation = 1.0 ) :
+		random( const array< unsigned long >& seed_array, const double mean = 0.0, const double standard_deviation = 1.0 ) :
 			u_rand_( seed_array ),
 			mean_( mean ), 
 			standard_deviation_( standard_deviation )
