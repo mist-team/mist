@@ -221,7 +221,6 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
 class mist_iterator1 : public std::iterator< std::random_access_iterator_tag, T, Distance, Pointer, Reference >
 {
-// Distance, Pointer, Reference‚Í‚Ù‚Æ‚ñ‚Ç‚Ìê‡È—ª‰Â”\
 public:
 	typedef T value_type;
 	typedef Pointer pointer;

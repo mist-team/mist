@@ -355,6 +355,11 @@ public:
 	typedef typename Allocator::pointer pointer;
 	typedef typename Allocator::const_pointer const_pointer;
 
+	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
+	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
+	typedef mist_reverse_iterator1< T, ptrdiff_t, pointer, reference > reverse_iterator;
+	typedef mist_reverse_iterator1< T, ptrdiff_t, pointer, const_reference > const_reverse_iterator;
+
 private:
 	typedef array< T, Allocator > base;
 	double reso1_;
@@ -448,6 +453,11 @@ public:
 	typedef typename Allocator::difference_type difference_type;
 	typedef typename Allocator::pointer pointer;
 	typedef typename Allocator::const_pointer const_pointer;
+
+	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
+	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
+	typedef mist_reverse_iterator1< T, ptrdiff_t, pointer, reference > reverse_iterator;
+	typedef mist_reverse_iterator1< T, ptrdiff_t, pointer, const_reference > const_reverse_iterator;
 
 private:
 	typedef array1< T, Allocator > base;
