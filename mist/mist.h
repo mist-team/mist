@@ -13,10 +13,10 @@
 **
 **         We developed these programs since 2003/09/05.
 **
-**             $ LastChangedDate: 2003-09-05 22:47:20 +0900 (Fri, 05 Sep 2003) $.
-**             $ LastChangedRevision: 16 $.
-**             $ LastChangedBy: ddeguchi $.
-**             $ HeadURL: https://mist.suenaga.cse.nagoya-u.ac.jp/svn/mist/trunk/mist/mist.h $.
+**             $ LastChangedDate $
+**             $ LastChangedRevision $
+**             $ LastChangedBy $
+**             $ HeadURL $
 **
 ****************************************************************************************************************************/
 
