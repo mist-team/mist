@@ -10,6 +10,10 @@
 #include "config/mist_conf.h"
 #endif
 
+#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
+#include "config/type_trait.h"
+#endif
+
 #ifndef __INCLUDE_MIST_VECTOR__
 #include "vector.h"
 #endif
@@ -44,6 +48,9 @@ public:
 
 	/// @brief ww，xx，yy，zz の値を用いて初期化する
 	quaternion( const value_type &ww, const value_type &xx, const value_type &yy, const value_type &zz ) : w( ww ), x( xx ), y( yy ), z( zz ){ }
+
+	/// @brief ww，xx，yy，zz の値を用いて初期化する
+	explicit quaternion( const value_type &ww ) : w( ww ), x( 0 ), y( 0 ), z( 0 ){ }
 
 	/// @brief 他のクォータニオンオブジェクト（データ型が異なる）を用いて初期化する
 	template < class TT >
@@ -100,12 +107,13 @@ public:
 	//! 
 	//! @return 足し算結果
 	//! 
-	const quaternion &operator +=( const quaternion &q )
+	template< class TT >
+	const quaternion &operator +=( const quaternion< TT > &q )
 	{
-		w = w + q.w;
-		x = x + q.x;
-		y = y + q.y;
-		z = z + q.z;
+		w = static_cast< value_type >( w + q.w );
+		x = static_cast< value_type >( x + q.x );
+		y = static_cast< value_type >( y + q.y );
+		z = static_cast< value_type >( z + q.z );
 		return( *this );
 	}
 
@@ -119,9 +127,10 @@ public:
 	//! 
 	//! @return 足し算結果
 	//! 
-	const quaternion &operator +=( const value_type &a )
+	template < class TT >
+	const quaternion &operator +=( const TT &a )
 	{
-		w += a;
+		w = static_cast< value_type >( w + a );
 		return( *this );
 	}
 
@@ -135,12 +144,13 @@ public:
 	//! 
 	//! @return 引き算結果
 	//! 
-	const quaternion &operator -=( const quaternion &q )
+	template< class TT >
+	const quaternion &operator -=( const quaternion< TT > &q )
 	{
-		w = w - q.w;
-		x = x - q.x;
-		y = y - q.y;
-		z = z - q.z;
+		w = static_cast< value_type >( w - q.w );
+		x = static_cast< value_type >( x - q.x );
+		y = static_cast< value_type >( y - q.y );
+		z = static_cast< value_type >( z - q.z );
 		return( *this );
 	}
 
@@ -154,9 +164,10 @@ public:
 	//! 
 	//! @return 引き算結果
 	//! 
-	const quaternion &operator -=( const value_type &a )
+	template < class TT >
+	const quaternion &operator -=( const TT &a )
 	{
-		w -= a;
+		w = static_cast< value_type >( w - a );
 		return( *this );
 	}
 
@@ -176,12 +187,13 @@ public:
 	//! 
 	//! @return 掛け算結果
 	//! 
-	const quaternion &operator *=( const quaternion &q )
+	template < class TT >
+	const quaternion &operator *=( const quaternion< TT > &q )
 	{
-		value_type ww = w * q.w - x * q.x - y * q.y - z * q.z;
-		value_type xx = w * q.x + x * q.w + y * q.z - z * q.y;
-		value_type yy = w * q.y + y * q.w + z * q.x - x * q.z;
-		value_type zz = w * q.z + z * q.w + x * q.y - y * q.x;
+		value_type ww = static_cast< value_type >( w * q.w - x * q.x - y * q.y - z * q.z );
+		value_type xx = static_cast< value_type >( w * q.x + x * q.w + y * q.z - z * q.y );
+		value_type yy = static_cast< value_type >( w * q.y + y * q.w + z * q.x - x * q.z );
+		value_type zz = static_cast< value_type >( w * q.z + z * q.w + x * q.y - y * q.x );
 		w = ww;
 		x = xx;
 		y = yy;
@@ -199,12 +211,13 @@ public:
 	//! 
 	//! @return 掛け算結果
 	//! 
-	const quaternion &operator *=( const value_type &a )
+	template < class TT >
+	const quaternion &operator *=( const TT &a )
 	{
-		w *= a;
-		x *= a;
-		y *= a;
-		z *= a;
+		w = static_cast< value_type >( w * a );
+		x = static_cast< value_type >( x * a );
+		y = static_cast< value_type >( y * a );
+		z = static_cast< value_type >( z * a );
 		return( *this );
 	}
 
@@ -218,7 +231,8 @@ public:
 	//! 
 	//! @return 掛け算結果
 	//! 
-	const quaternion &operator /=( const quaternion &q )
+	template < class TT >
+	const quaternion &operator /=( const quaternion< TT > &q )
 	{
 		return( this->operator *=( q.inv( ) ) );
 	}
@@ -233,12 +247,13 @@ public:
 	//! 
 	//! @return 掛け算結果
 	//! 
-	const quaternion &operator /=( const value_type &a )
+	template < class TT >
+	const quaternion &operator /=( const TT &a )
 	{
-		w /= a;
-		x /= a;
-		y /= a;
-		z /= a;
+		w = static_cast< value_type >( w / a );
+		x = static_cast< value_type >( x / a );
+		y = static_cast< value_type >( y / a );
+		z = static_cast< value_type >( z / a );
 		return( *this );
 	}
 
@@ -382,33 +397,31 @@ public:	// その他の関数
 	}
 };
 
-/// @brief クォータニオンの足し算
-template < class T > inline const quaternion< T > operator +( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) += q2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, + )			///< @brief クォータニオンの和
+DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, + )			///< @brief クォータニオンと定数の和
+DEFINE_PROMOTE_BIND_OPERATOR3( quaternion, + )			///< @brief 定数とクォータニオンの和
 
-/// @brief クォータニオンの引き算
-template < class T > inline const quaternion< T > operator -( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) -= q2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, - )			///< @brief クォータニオンの差
+DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, - )			///< @brief クォータニオンと定数の差
+DEFINE_PROMOTE_BIND_OPERATOR4( quaternion, - )			///< @brief 定数とクォータニオンの差
 
-/// @brief クォータニオンの割り算
-template < class T > inline const quaternion< T > operator /( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) /= q2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, * )			///< @brief クォータニオンの積
+DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, * )			///< @brief クォータニオンと定数の積
+DEFINE_PROMOTE_BIND_OPERATOR3( quaternion, * )			///< @brief 定数とクォータニオンの積
 
-/// @brief クォータニオンの掛け算
-template < class T > inline const quaternion< T > operator *( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) *= q2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, / )			///< @brief クォータニオンの割り算
+DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, / )			///< @brief クォータニオンを定数で割る
+
+DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, == )		///< @brief 比較演算子 ==
+DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, != )		///< @brief 比較演算子 !=
+DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, <  )		///< @brief 比較演算子 <
+DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, <= )		///< @brief 比較演算子 <=
+DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, >  )		///< @brief 比較演算子 >
+DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, >= )		///< @brief 比較演算子 >=
 
 
-/// @brief クォータニオンと定数の掛け算
-template < class T > inline const quaternion< T > operator *( const quaternion< T > &q, const typename quaternion< T >::value_type &a ){ return( quaternion< T >( q ) *= a ); }
 
-/// @brief 定数とクォータニオンの掛け算
-template < class T > inline const quaternion< T > operator *( const typename quaternion< T >::value_type &a, const quaternion< T > &q ){ return( quaternion< T >( q ) *= a ); }
 
-/// @brief クォータニオンの割り算
-template < class T > inline const quaternion< T > operator /( const quaternion< T > &q, const typename quaternion< T >::value_type &a ){ return( quaternion< T >( q ) /= a ); }
-
-/// @brief クォータニオンの足し算
-template < class T > inline const quaternion< T > operator +( const quaternion< T > &q, const typename quaternion< T >::value_type &a ){ return( quaternion< T >( q ) += a ); }
-
-/// @brief クォータニオンの引き算
-template < class T > inline const quaternion< T > operator -( const quaternion< T > &q, const typename quaternion< T >::value_type &a ){ return( quaternion< T >( q ) -= a ); }
 
 
 /// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する

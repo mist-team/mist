@@ -155,22 +155,22 @@ PROMOTE_TRAIT( unsigned   int, unsigned  long, unsigned  long )
 PROMOTE_TRAIT( unsigned   int,   signed   int,   signed  long )
 PROMOTE_TRAIT( unsigned   int,   signed  long,   signed  long )
 PROMOTE_TRAIT( unsigned   int,           bool, unsigned   int )
-PROMOTE_TRAIT( unsigned   int,          float,          float )
+PROMOTE_TRAIT( unsigned   int,          float,         double )
 PROMOTE_TRAIT( unsigned   int,         double,         double )
 PROMOTE_TRAIT( unsigned   int,    long double,    long double )
 PROMOTE_TRAIT(   signed   int, unsigned  long,   signed  long )
 PROMOTE_TRAIT(   signed   int,   signed  long,   signed  long )
 PROMOTE_TRAIT(   signed   int,           bool,   signed   int )
-PROMOTE_TRAIT(   signed   int,          float,          float )
+PROMOTE_TRAIT(   signed   int,          float,         double )
 PROMOTE_TRAIT(   signed   int,         double,         double )
 PROMOTE_TRAIT(   signed   int,    long double,    long double )
 PROMOTE_TRAIT( unsigned  long,   signed  long,   signed  long )
 PROMOTE_TRAIT( unsigned  long,           bool, unsigned  long )
-PROMOTE_TRAIT( unsigned  long,          float,          float )
+PROMOTE_TRAIT( unsigned  long,          float,    long double )
 PROMOTE_TRAIT( unsigned  long,         double,         double )
 PROMOTE_TRAIT( unsigned  long,    long double,    long double )
 PROMOTE_TRAIT(   signed  long,           bool,   signed   int )
-PROMOTE_TRAIT(   signed  long,          float,          float )
+PROMOTE_TRAIT(   signed  long,          float,         double )
 PROMOTE_TRAIT(   signed  long,         double,         double )
 PROMOTE_TRAIT(   signed  long,    long double,    long double )
 PROMOTE_TRAIT(           bool,          float,          float )
@@ -181,6 +181,47 @@ PROMOTE_TRAIT(          float,    long double,    long double )
 PROMOTE_TRAIT(         double,    long double,    long double )
 
 #undef PROMOTE_TRAIT
+
+
+#define DEFINE_PROMOTE_CONDITION_OPERATOR( TYPE, OPERATOR )										\
+	template < class T1, class T2 >																\
+	inline bool operator OPERATOR( const TYPE< T1 > &t1, const TYPE< T2 > &t2 )					\
+	{																							\
+		return( TYPE< typename promote_trait< T1, T2 >::value_type >( t1 )						\
+					OPERATOR TYPE< typename promote_trait< T1, T2 >::value_type >( t2 ) );		\
+	}
+
+#define DEFINE_PROMOTE_BIND_OPERATOR1( TYPE, OPERATOR )											\
+	template < class T1, class T2 >																\
+	inline TYPE< typename promote_trait< T1, T2 >::value_type >									\
+				operator OPERATOR( const TYPE< T1 > &t1, const TYPE< T2 > &t2 )					\
+	{																							\
+		return( TYPE< typename promote_trait< T1, T2 >::value_type >( t1 ) OPERATOR ## = t2 );	\
+	}
+
+#define DEFINE_PROMOTE_BIND_OPERATOR2( TYPE, OPERATOR )											\
+	template < class T1, class T2 >																\
+	inline TYPE< typename promote_trait< T1, T2 >::value_type >									\
+				operator OPERATOR( const TYPE< T1 > &t1, const T2 &t2 )							\
+	{																							\
+		return( TYPE< typename promote_trait< T1, T2 >::value_type >( t1 ) OPERATOR ## = t2 );	\
+	}
+
+#define DEFINE_PROMOTE_BIND_OPERATOR3( TYPE, OPERATOR )											\
+	template < class T1, class T2 >																\
+	inline TYPE< typename promote_trait< T1, T2 >::value_type >									\
+				operator OPERATOR( const T1 &t1, const TYPE< T2 > &t2 )							\
+	{																							\
+		return( TYPE< typename promote_trait< T1, T2 >::value_type >( t2 ) OPERATOR ## = t1 );	\
+	}
+
+#define DEFINE_PROMOTE_BIND_OPERATOR4( TYPE, OPERATOR )											\
+	template < class T1, class T2 >																\
+	inline TYPE< typename promote_trait< T1, T2 >::value_type >									\
+				operator OPERATOR( const T1 &t1, const TYPE< T2 > &t2 )							\
+	{																							\
+		return( TYPE< typename promote_trait< T1, T2 >::value_type >( t1 ) OPERATOR ## = t2 );	\
+	}
 
 
 /// @brief データ型の確定を避けるために利用する

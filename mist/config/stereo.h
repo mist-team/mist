@@ -11,6 +11,10 @@
 #include "mist_conf.h"
 #endif
 
+#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
+#include "type_trait.h"
+#endif
+
 #include <iostream>
 
 // mist名前空間の始まり
@@ -53,10 +57,29 @@ public:
 	/// @brief 左 left，右 right を用いて初期化する
 	stereo( const value_type &left, const value_type &right ) : l( left ), r( right ){ }
 
+	/// @brief 異なる型のステレオ音声データを用いて初期化する
+	template < class TT >
+	stereo( const stereo< TT > &s ) : l( static_cast< value_type >( s.l ) ), r( static_cast< value_type >( s.r ) ){ }
+
+	/// @brief 他のステレオ音声データを用いて初期化する
+	stereo( const stereo< T > &s ) : l( s.l ), r( s.r ){ }
+
 
 
 	/// @brief 他の音声成分を代入する
-	const stereo &operator =( const stereo &s )
+	template < class TT >
+	const stereo &operator =( const stereo< TT > &s )
+	{
+		if( &s != this )
+		{
+			l = static_cast< value_type >( s.l );
+			r = static_cast< value_type >( s.r );
+		}
+		return( *this );
+	}
+
+	/// @brief 他の音声成分を代入する
+	const stereo &operator =( const stereo< T > &s )
 	{
 		if( &s != this )
 		{
@@ -77,16 +100,20 @@ public:
 
 
 	/// @brief 各音声成分の和
-	const stereo &operator +=( const stereo &s ){ l += s.l; r += s.r; return( *this ); }
+	template < class TT >
+	const stereo &operator +=( const stereo< TT > &s ){ l = static_cast< value_type >( l + s.l ); r = static_cast< value_type >( r + s.r ); return( *this ); }
 
 	/// @brief 各音声成分の差
-	const stereo &operator -=( const stereo &s ){ l -= s.l; r -= s.r; return( *this ); }
+	template < class TT >
+	const stereo &operator -=( const stereo< TT > &s ){ l = static_cast< value_type >( l - s.l ); r = static_cast< value_type >( r - s.r ); return( *this ); }
 
 	/// @brief 各音声成分の積
-	const stereo &operator *=( const stereo &s ){ l *= s.l; r *= s.r; return( *this ); }
+	template < class TT >
+	const stereo &operator *=( const stereo< TT > &s ){ l = static_cast< value_type >( l * s.l ); r = static_cast< value_type >( r * s.r ); return( *this ); }
 
 	/// @brief 各音声成分の割り算
-	const stereo &operator /=( const stereo &s ){ l /= s.l; r /= s.r; return( *this ); }
+	template < class TT >
+	const stereo &operator /=( const stereo< TT > &s ){ l = static_cast< value_type >( l / s.l ); r = static_cast< value_type >( r / s.r ); return( *this ); }
 
 	/// @brief 各音声成分の剰余
 	const stereo &operator %=( const stereo &s ){ l %= s.l; r %= s.r; return( *this ); }
@@ -103,16 +130,20 @@ public:
 
 
 	/// @brief 各音声成分に mono 値を足す
-	const stereo &operator +=( const value_type &mono ){ l += mono; r += mono; return( +this ); }
+	template < class TT >
+	const stereo &operator +=( const TT &mono ){ l = static_cast< value_type >( l + mono ); r = static_cast< value_type >( r + mono ); return( *this ); }
 
 	/// @brief 各音声成分から mono 値を引く
-	const stereo &operator -=( const value_type &mono ){ l -= mono; r -= mono; return( -this ); }
+	template < class TT >
+	const stereo &operator -=( const TT &mono ){ l = static_cast< value_type >( l - mono ); r = static_cast< value_type >( r - mono ); return( *this ); }
 
 	/// @brief 各音声成分に mono 値を掛ける
-	const stereo &operator *=( const value_type &mono ){ l *= mono; r *= mono; return( *this ); }
+	template < class TT >
+	const stereo &operator *=( const TT &mono ){ l = static_cast< value_type >( l * mono ); r = static_cast< value_type >( r * mono ); return( *this ); }
 
 	/// @brief 各音声成分を mono 値で割る
-	const stereo &operator /=( const value_type &mono ){ l /= mono; r /= mono; return( *this ); }
+	template < class TT >
+	const stereo &operator /=( const TT &mono ){ l = static_cast< value_type >( l / mono ); r = static_cast< value_type >( r / mono ); return( *this ); }
 
 
 	/// @brief 2つの音声成分が等しい（全要素が同じ値を持つ）かどうかを判定する
@@ -205,53 +236,37 @@ public:
 };
 
 
-/// @brief 音声成分の和
-template < class T > inline const stereo< T > operator +( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) += s2 ); }
 
-/// @brief 音声成分の差
-template < class T > inline const stereo< T > operator -( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) -= s2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, + )			///< @brief ステレオ音声データの和
+DEFINE_PROMOTE_BIND_OPERATOR2( stereo, + )			///< @brief ステレオ音声データと定数の和
+DEFINE_PROMOTE_BIND_OPERATOR3( stereo, + )			///< @brief 定数とステレオ音声データの和
 
-/// @brief 音声成分の積
-template < class T > inline const stereo< T > operator *( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) *= s2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, - )			///< @brief ステレオ音声データの差
+DEFINE_PROMOTE_BIND_OPERATOR2( stereo, - )			///< @brief ステレオ音声データと定数の差
+DEFINE_PROMOTE_BIND_OPERATOR4( stereo, - )			///< @brief 定数とステレオ音声データの差
 
-/// @brief 音声成分の割り算
-template < class T > inline const stereo< T > operator /( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) /= s2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, * )			///< @brief ステレオ音声データの積
+DEFINE_PROMOTE_BIND_OPERATOR2( stereo, * )			///< @brief ステレオ音声データと定数の積
+DEFINE_PROMOTE_BIND_OPERATOR3( stereo, * )			///< @brief 定数とステレオ音声データの積
 
-/// @brief 音声成分の剰余
-template < class T > inline const stereo< T > operator %( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) %= s2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, / )			///< @brief ステレオ音声データの割り算
+DEFINE_PROMOTE_BIND_OPERATOR2( stereo, / )			///< @brief ステレオ音声データを定数で割る
 
-/// @brief 音声成分の | 演算
-template < class T > inline const stereo< T > operator |( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) |= s2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, % )			///< @brief ステレオ音声データの剰余
 
-/// @brief 音声成分の & 演算
-template < class T > inline const stereo< T > operator &( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) &= s2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, | )			///< @brief ステレオ音声データの | 演算
 
-/// @brief 音声成分の ^ 演算
-template < class T > inline const stereo< T > operator ^( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) ^= s2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, & )			///< @brief ステレオ音声データの & 演算
 
-
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, ^ )			///< @brief ステレオ音声データの ^ 演算
 
 
-/// @brief 音声成分と定数の積
-template < class T > inline const stereo< T > operator *( const stereo< T > &s1, const typename stereo< T >::value_type &s2 ){ return( stereo< T >( s1 ) *= s2 ); }
-
-/// @brief 定数と音声成分の積
-template < class T > inline const stereo< T > operator *( const typename stereo< T >::value_type &s1, const stereo< T > &s2 ){ return( stereo< T >( s2 ) *= s1 ); }
-
-/// @brief 音声成分を定数で割る
-template < class T > inline const stereo< T > operator /( const stereo< T > &s1, const typename stereo< T >::value_type &s2 ){ return( stereo< T >( s1 ) /= s2 ); }
-
-/// @brief 音声成分と定数の和
-template < class T > inline const stereo< T > operator +( const stereo< T > &s1, const typename stereo< T >::value_type &s2 ){ return( stereo< T >( s1 ) += s2 ); }
-
-/// @brief 定数と音声成分の和
-template < class T > inline const stereo< T > operator +( const typename stereo< T >::value_type &s1, const stereo< T > &s2 ){ return( stereo< T >( s2 ) += s1 ); }
-
-/// @brief 音声成分と定数の差
-template < class T > inline const stereo< T > operator -( const stereo< T > &s1, const typename stereo< T >::value_type &s2 ){ return( stereo< T >( s1 ) -= s2 ); }
-
-/// @brief 定数と音声成分の差
-template < class T > inline const stereo< T > operator -( const typename stereo< T >::value_type &s1, const stereo< T > &s2 ){ return( stereo< T >( s2 ) -= s1 ); }
+DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, == )		///< @brief 比較演算子 ==
+DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, != )		///< @brief 比較演算子 !=
+DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, <  )		///< @brief 比較演算子 <
+DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, <= )		///< @brief 比較演算子 <=
+DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, >  )		///< @brief 比較演算子 >
+DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, >= )		///< @brief 比較演算子 >=
 
 
 

@@ -7,6 +7,7 @@ ALL = \
 	operators_test \
 	binary_test \
 	color_test \
+	quaternion_test \
 	iterator_test \
 	thread_test \
 	image_test \
@@ -53,6 +54,9 @@ binary_test : binary_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 color_test : color_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+quaternion_test : quaternion_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 iterator_test : iterator_test.o

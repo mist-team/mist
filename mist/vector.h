@@ -10,6 +10,10 @@
 #include "config/mist_conf.h"
 #endif
 
+#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
+#include "config/type_trait.h"
+#endif
+
 #include <cmath>
 
 // mist名前空間の始まり
@@ -86,47 +90,31 @@ public:
 
 
 	/// @brief ベクトル和
-	const vector3 &operator +=( const vector3 &v )
-	{
-		x = x + v.x;
-		y = y + v.y;
-		z = z + v.z;
-		return( *this );
-	}
-
+	template < class TT >
+	const vector3 &operator +=( const vector3< TT > &v ){ x = static_cast< value_type >( x + v.x ); y = static_cast< value_type >( y + v.y ); z = static_cast< value_type >( z + v.z ); return( *this ); }
 
 	/// @brief ベクトル差
-	const vector3 &operator -=( const vector3 &v )
+	template < class TT >
+	const vector3 &operator -=( const vector3< TT > &v ){ x = static_cast< value_type >( x - v.x ); y = static_cast< value_type >( y - v.y ); z = static_cast< value_type >( z - v.z ); return( *this ); }
+
+	/// @brief ベクトルの外積
+	template < class TT >
+	const vector3 &operator *=( const vector3< TT > &v )
 	{
-		x = x - v.x;
-		y = y - v.y;
-		z = z - v.z;
+		x = static_cast< value_type >( y * v.z - z * v.y );
+		y = static_cast< value_type >( z * v.x - x * v.z );
+		z = static_cast< value_type >( x * v.y - y * v.x );
 		return( *this );
 	}
-
 
 	/// @brief ベクトルの定数倍
-	const vector3 &operator *=( const value_type &a )
-	{
-		x *= a;
-		y *= a;
-		z *= a;
-		return( *this );
-	}
+	template < class TT >
+	const vector3 &operator *=( const TT &a ){ x = static_cast< value_type >( x * a ); y = static_cast< value_type >( y * a ); z = static_cast< value_type >( z * a ); return( *this ); }
 
 
 	/// @brief ベクトルを定数で割る
-	const vector3 &operator /=( const value_type &a )
-	{
-		x /= a;
-		y /= a;
-		z /= a;
-		return( *this );
-	}
-
-
-	/// @brief ベクトルの内積
-	value_type operator ^( const vector3 &v ) const { return( inner( v ) ); }
+	template < class TT >
+	const vector3 &operator /=( const TT &a ){ x = static_cast< value_type >( x / a ); y = static_cast< value_type >( y / a ); z = static_cast< value_type >( z / a ); return( *this ); }
 
 
 	/// @brief 2つのベクトルが等しい（全要素が同じ値を持つ）かどうかを判定する
@@ -217,7 +205,7 @@ public:
 	vector3 unit( ) const
 	{
 		value_type length_ = length( );
-		return vector3( x / length_, y / length_, z / length_ );
+		return( vector3( x / length_, y / length_, z / length_ ) );
 	}
 
 
@@ -229,7 +217,11 @@ public:
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
-	value_type inner( const vector3 &v ) const { return( x * v.x + y * v.y + z * v.z ); }
+	template < class TT >
+	typename promote_trait< T, TT >::value_type inner( const vector3< TT > &v ) const
+	{
+		return( static_cast< typename promote_trait< T, TT >::value_type >( x * v.x + y * v.y + z * v.z ) );
+	}
 
 
 	/// @brief ベクトルの外積を計算する
@@ -240,7 +232,11 @@ public:
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
-	vector3 outer( const vector3 &v ) const { return( vector3( y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x ) ); }
+	template < class TT >
+	vector3< typename promote_trait< value_type, TT >::value_type > outer( const vector3< TT > &v ) const
+	{
+		return( vector3< typename promote_trait< value_type, TT >::value_type >( y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x ) );
+	}
 
 
 	/// @brief ベクトルの大きさを計算する
@@ -249,7 +245,7 @@ public:
 	//! 	\left\|\mbox{\boldmath v}\right\| = \sqrt{v_x^2 + v_y^2 + v_z^2}
 	//! \f]
 	//! 
-	//! @return 戻り値の説明
+	//! @return ベクトルの大きさ
 	//! 
 	value_type length( ) const { return ( value_type( sqrt( (double)( x * x + y * y + z * z ) ) ) ); }
 
@@ -272,28 +268,25 @@ public:
 };
 
 
-
-/// @brief ベクトル同士の足し算
-template < class T > inline const vector3< T > operator +( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1 ) += v2 ); }
-
-/// @brief ベクトル同士の引き算
-template < class T > inline const vector3< T > operator -( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1 ) -= v2 ); }
-
-/// @brief ベクトル同士の外積
-template < class T > inline const vector3< T > operator *( const vector3< T > &v1, const vector3< T > &v2 ){ return( v1.outer( v2 ) ); }
-
-/// @brief ベクトル同士の内積
-template < class T > inline const typename vector3< T >::value_type operator ^( const vector3< T > &v1, const vector3< T > &v2 ){ return( v1.inner( v2 ) ); }
+/// @brief ベクトルの内積
+template < class T1, class T2 >
+typename promote_trait< T1, T2 >::value_type operator ^( const vector3< T1 > &v1, const vector3< T2 > &v2 )
+{
+	return( vector3< typename promote_trait< T1, T2 >::value_type >( v1 ).inner( v2 ) );
+}
 
 
-/// @brief ベクトルと定数の積
-template < class T > inline const vector3< T > operator *( const vector3< T > &v1, const typename vector3< T >::value_type &v2 ){ return( vector3< T >( v1 ) *= v2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( vector3, + )			///< @brief ベクトルの和
 
-/// @brief 定数とベクトルの積
-template < class T > inline const vector3< T > operator *( const typename vector3< T >::value_type &v1, const vector3< T > &v2 ){ return( vector3< T >( v2 ) *= v1 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( vector3, - )			///< @brief ベクトルの差
 
-/// @brief ベクトルとを定数で割る
-template < class T > inline const vector3< T > operator /( const vector3< T > &v1, const typename vector3< T >::value_type &v2 ){ return( vector3< T >( v1 ) /= v2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( vector3, * )			///< @brief ベクトルの外積
+DEFINE_PROMOTE_BIND_OPERATOR2( vector3, * )			///< @brief ベクトルと定数の積
+DEFINE_PROMOTE_BIND_OPERATOR3( vector3, * )			///< @brief 定数とベクトルの積
+
+DEFINE_PROMOTE_BIND_OPERATOR2( vector3, / )			///< @brief ベクトルを定数で割る
+
+
 
 
 /// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
@@ -382,43 +375,21 @@ public:
 
 
 	/// @brief ベクトル和
-	const vector2 &operator +=( const vector2 &v )
-	{
-		x = x + v.x;
-		y = y + v.y;
-		return( *this );
-	}
-
+	template < class TT >
+	const vector2 &operator +=( const vector2< TT > &v ){ x = static_cast< value_type >( x + v.x ); y = static_cast< value_type >( y + v.y ); return( *this ); }
 
 	/// @brief ベクトル差
-	const vector2 &operator -=( const vector2 &v )
-	{
-		x = x - v.x;
-		y = y - v.y;
-		return( *this );
-	}
-
+	template < class TT >
+	const vector2 &operator -=( const vector2< TT > &v ){ x = static_cast< value_type >( x - v.x ); y = static_cast< value_type >( y - v.y ); return( *this ); }
 
 	/// @brief ベクトルの定数倍
-	const vector2 &operator *=( const value_type &a )
-	{
-		x *= a;
-		y *= a;
-		return( *this );
-	}
+	template < class TT >
+	const vector2 &operator *=( const TT &a ){ x = static_cast< value_type >( x * a ); y = static_cast< value_type >( y * a ); return( *this ); }
 
 
 	/// @brief ベクトルを定数で割る
-	const vector2 &operator /=( const value_type &a )
-	{
-		x /= a;
-		y /= a;
-		return( *this );
-	}
-
-
-	/// @brief ベクトルの内積
-	value_type operator ^( const vector2 &v ) const { return( inner( v ) ); }
+	template < class TT >
+	const vector2 &operator /=( const TT &a ){ x = static_cast< value_type >( x / a ); y = static_cast< value_type >( y / a ); return( *this ); }
 
 
 	/// @brief 2つのベクトルが等しい（全要素が同じ値を持つ）かどうかを判定する
@@ -521,7 +492,8 @@ public:
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
-	value_type inner( const vector2 &v ) const { return( x * v.x + y * v.y ); }
+	template < class TT >
+	typename promote_trait< T, TT >::value_type inner( const vector2< TT > &v ) const { return( static_cast< typename promote_trait< T, TT >::value_type >( x * v.x + y * v.y ) ); }
 
 
 	/// @brief ベクトルの外積を計算する
@@ -532,7 +504,8 @@ public:
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
-	value_type outer( const vector2 &v ) const { return( x * v.y - y * v.x ); }
+	template < class TT >
+	typename promote_trait< T, TT >::value_type outer( const vector2< TT > &v ) const { return( static_cast< typename promote_trait< T, TT >::value_type >( x * v.y - y * v.x ) ); }
 
 
 	/// @brief ベクトルの大きさを計算する
@@ -541,7 +514,7 @@ public:
 	//! 	\left\|\mbox{\boldmath v}\right\| = \sqrt{v_x^2+v_y^2}
 	//! \f]
 	//! 
-	//! @return 戻り値の説明
+	//! @return ベクトルの大きさ
 	//! 
 	value_type length( ) const { return ( value_type( sqrt( (double)( x * x + y * y ) ) ) ); }
 
@@ -558,27 +531,29 @@ public:
 };
 
 
-/// @brief ベクトル同士の足し算
-template < class T > inline const vector2< T > operator +( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1 ) += v2 ); }
+/// @brief ベクトルの内積
+template < class T1, class T2 >
+typename promote_trait< T1, T2 >::value_type operator ^( const vector2< T1 > &v1, const vector2< T2 > &v2 )
+{
+	return( vector2< typename promote_trait< T1, T2 >::value_type >( v1 ).inner( v2 ) );
+}
 
-/// @brief ベクトル同士の引き算
-template < class T > inline const vector2< T > operator -( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1 ) -= v2 ); }
-
-/// @brief ベクトル同士の外積
-template < class T > inline const typename vector2< T >::value_type operator *( const vector2< T > &v1, const vector2< T > &v2 ){ return( v1.outer( v2 ) ); }
-
-/// @brief ベクトル同士の内積
-template < class T > inline const typename vector2< T >::value_type operator ^( const vector2< T > &v1, const vector2< T > &v2 ){ return( v1.inner( v2 ) ); }
+/// @brief ベクトルの外積
+template < class T1, class T2 >
+typename promote_trait< T1, T2 >::value_type operator *( const vector2< T1 > &v1, const vector2< T2 > &v2 )
+{
+	return( vector2< typename promote_trait< T1, T2 >::value_type >( v1 ).outer( v2 ) );
+}
 
 
-/// @brief ベクトルと定数の積
-template < class T > inline const vector2< T > operator *( const vector2< T > &v1, const typename vector2< T >::value_type &v2 ){ return( vector2< T >( v1 ) *= v2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( vector2, + )			///< @brief ベクトルの和
 
-/// @brief 定数とベクトルの積
-template < class T > inline const vector2< T > operator *( const typename vector2< T >::value_type &v1, const vector2< T > &v2 ){ return( vector2< T >( v2 ) *= v1 ); }
+DEFINE_PROMOTE_BIND_OPERATOR1( vector2, - )			///< @brief ベクトルの差
 
-/// @brief ベクトルとを定数で割る
-template < class T > inline const vector2< T > operator /( const vector2< T > &v1, const typename vector2< T >::value_type &v2 ){ return( vector2< T >( v1 ) /= v2 ); }
+DEFINE_PROMOTE_BIND_OPERATOR2( vector2, * )			///< @brief ベクトルと定数の積
+DEFINE_PROMOTE_BIND_OPERATOR3( vector2, * )			///< @brief 定数とベクトルの積
+
+DEFINE_PROMOTE_BIND_OPERATOR2( vector2, / )			///< @brief ベクトルを定数で割る
 
 
 /// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
@@ -596,8 +571,7 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 {
 	out << "( ";
 	out << v.x << ", ";
-	out << v.y << ", ";
-	out << v.z << " )";
+	out << v.y << " )";
 	return( out );
 }
 

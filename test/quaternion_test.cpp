@@ -1,12 +1,12 @@
-#include <mist/config/color.h>
+#include <mist/quaternion.h>
 #include <iostream>
 
 int main( int argc, char *argv[] )
 {
 	using namespace std;
 
-	mist::rgb< signed int > v1( 1, 2, 3 );
-	mist::rgb< float > v2( 1.5, 2.5, 4.5 );
+	mist::quaternion< signed int > v1( 1, 2, 3, 4 );
+	mist::quaternion< float > v2( 1.5, 2.5, 3.5, 4.5 );
 
 	cout << " ( A, B ) = ( " << v1 << ", " << v2 << " )" << endl;
 	cout << " 1. Operator A + B = \t"; cout << ( v1 + v2 ) << endl;
