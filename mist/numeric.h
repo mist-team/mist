@@ -1214,7 +1214,10 @@ namespace __inverse__
 
 						if( info == 0 )
 						{
-							work.resize( 2 * n, 1 );
+							if( lwork < n )
+							{
+								work.resize( n, 1 );
+							}
 							__clapack__::sytri( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), info );
 
 							// 結果が上三角のみにしか代入されていないため，下三角にもデータをコピーする
@@ -1314,7 +1317,10 @@ namespace __inverse__
 
 						if( info == 0 )
 						{
-							work.resize( 2 * n, 1 );
+							if( lwork < 2 * n )
+							{
+								work.resize( 2 * n, 1 );
+							}
 							__clapack__::sytri( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), info );
 
 							// 結果が上三角のみにしか代入されていないため，下三角にもデータをコピーする

@@ -5,6 +5,7 @@
 
 int main( )
 {
+	//typedef mist::matrix< double > matrix;
 	typedef mist::matrix< std::complex<float> > matrix;
 	//typedef mist::matrix< std::complex< double > > matrix;
 	matrix a( 3, 3 ), b( 3, 2 );
