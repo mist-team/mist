@@ -510,9 +510,6 @@ namespace __calvin__
 			for( i3 = thread_id ; i3 < _3 ; i3 += thread_num )
 			{
 				for( i2 = 0 ; i2 < _2 ; i2++ )
-				//for( i3 = 0 ; i3 < _3 ; i3++ )
-				//{
-				//	for( i2 = thread_id ; i2 < _2 ; i2 += thread_num )
 				{
 					difference_type l = 0;
 

@@ -79,6 +79,10 @@ private:
   static void cb_Expand(Fl_Menu_*, void*);
   inline void cb_Shrink_i(Fl_Menu_*, void*);
   static void cb_Shrink(Fl_Menu_*, void*);
+  inline void cb_Boundary_i(Fl_Menu_*, void*);
+  static void cb_Boundary(Fl_Menu_*, void*);
+  inline void cb_Boundary1_i(Fl_Menu_*, void*);
+  static void cb_Boundary1(Fl_Menu_*, void*);
 public:
   Fl_Progress *progress_bar;
   void show( );

@@ -117,8 +117,10 @@ public:
 	//! 
 	//! コンテナのサイズを num 個に変更する．
 	//! 元のコンテナサイズと異なる場合は，自動的にサイズを調整する．
-	//! 全ての要素の値はデフォルトコンストラクタで初期化される．
+	//! 要素数が変更された場合のみ全ての要素の値はデフォルトコンストラクタで初期化される．
 	//! また，組み込み型（int や double など）の場合は，全ての要素を0で初期化する．
+	//! 
+	//! @attention 必ず要素を初期化するためには，fill 関数を利用してください．
 	//! 
 	//! @param[in] num  … リサイズ後のコンテナ内の要素数
 	//! @param[in] dmy1 … ダミー変数（使用しない）
@@ -135,29 +137,6 @@ public:
 		else if( size_ > num )
 		{
 			data_ = allocator_.trim_objects( data_, size_, num );
-			size_ = num;
-		}
-	}
-
-
-	/// @brief コンテナ内の要素数を変更する
-	//! 
-	//! 要素数を num 個に変更し，全ての要素を値 val で初期化する．
-	//! 
-	//! @param[in] num … リサイズ後のコンテナ内の要素数
-	//! @param[in] val … リサイズ後に各要素を初期化する値
-	//! 
-	void resize( size_type num, const value_type &val )
-	{
-		if( size_ < num )
-		{
-			allocator_.deallocate_objects( data_, size_ );
-			size_ = num;
-			data_ = allocator_.allocate_objects( size_, val );
-		}
-		else if( size_ > num )
-		{
-			data_ = allocator_.trim_objects( data_, size_, num, val );
 			size_ = num;
 		}
 	}
@@ -799,7 +778,9 @@ protected:
 public:
 	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 要素数を num1 × num2 個に変更し，全ての要素をデフォルト値で初期化する．
+	//! 要素数を num1 × num2 個に変更し，要素数が変更された場合のみ全ての要素を値デフォルト値で初期化する．
+	//! 
+	//! @attention 必ず要素を初期化するためには，fill 関数を利用してください．
 	//! 
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
@@ -808,22 +789,6 @@ public:
 	void resize( size_type num1, size_type num2, size_type dmy1 = 0 )
 	{
 		base::resize( num1 * num2 );
-		size1_ = num1;
-		size2_ = num2;
-	}
-
-
-	/// @brief コンテナ内の要素数を変更する
-	//! 
-	//! 要素数を num1 × num2 個に変更し，全ての要素を値 val で初期化する．
-	//! 
-	//! @param[in] num1 … リサイズ後のX軸方向の要素数
-	//! @param[in] num2 … リサイズ後のY軸方向の要素数
-	//! @param[in] val  … リサイズ後に各要素を初期化する値
-	//! 
-	void resize( size_type num1, size_type num2, const value_type &val )
-	{
-		base::resize( num1 * num2, val );
 		size1_ = num1;
 		size2_ = num2;
 	}
@@ -1219,7 +1184,10 @@ protected:
 public:
 	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 要素数を num1 × num2 × num3 個に変更し，全ての要素をデフォルト値で初期化する．
+	//! 要素数を num1 × num2 × num3 個に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．
+	//! 
+	//! @attention 必ず要素を初期化するためには，fill 関数を利用してください．
+	//! 
 	//! 
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
@@ -1228,24 +1196,6 @@ public:
 	void resize( size_type num1, size_type num2, size_type num3 )
 	{
 		base::resize( num1 * num2, num3 );
-		size1_ = num1;
-		size2_ = num2;
-		size3_ = num3;
-	}
-
-
-	/// @brief コンテナ内の要素数を変更する
-	//! 
-	//! 要素数を num1 × num2 × num3 個に変更し，全ての要素を値 val で初期化する．
-	//! 
-	//! @param[in] num1 … リサイズ後のX軸方向の要素数
-	//! @param[in] num2 … リサイズ後のY軸方向の要素数
-	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
-	//! @param[in] val  … リサイズ後に各要素を初期化する値
-	//! 
-	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
-	{
-		base::resize( num1 * num2, num3, val );
 		size1_ = num1;
 		size2_ = num2;
 		size3_ = num3;
@@ -1757,7 +1707,10 @@ public:
 
 	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 要素数を num1 × num2 個に変更し，全ての要素をデフォルト値で初期化する．
+	//! 要素数を num1 × num2 個に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．
+	//! 
+	//! @attention 必ず要素を初期化するためには，fill 関数を利用してください．
+	//! 
 	//! 
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
@@ -1770,7 +1723,10 @@ public:
 
 	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 要素数を num1 × num2 × num3 個に変更し，全ての要素をデフォルト値で初期化する．
+	//! 要素数を num1 × num2 × num3 個に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．
+	//! 
+	//! @attention 必ず要素を初期化するためには，fill 関数を利用してください．
+	//! 
 	//! 
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
@@ -1781,47 +1737,6 @@ public:
 		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, num3 + margin3_ * 2 );
 	}
 
-
-	/// @brief コンテナ内の要素数を変更する
-	//! 
-	//! 要素数を num1 個に変更し，全ての要素を値 val で初期化する．
-	//! 
-	//! @param[in] num1 … リサイズ後の全要素数
-	//! @param[in] val  … リサイズ後に各要素を初期化する値
-	//! 
-	void resize( size_type num1, const value_type &val )
-	{
-		base::resize( num1 + margin1_ * 2, val );
-	}
-
-
-	/// @brief コンテナ内の要素数を変更する
-	//! 
-	//! 要素数を num1 × num2 個に変更し，全ての要素を値 val で初期化する．
-	//! 
-	//! @param[in] num1 … リサイズ後のX軸方向の要素数
-	//! @param[in] num2 … リサイズ後のY軸方向の要素数
-	//! @param[in] val  … リサイズ後に各要素を初期化する値
-	//! 
-	void resize( size_type num1, size_type num2, const value_type &val )
-	{
-		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, val );
-	}
-
-
-	/// @brief コンテナ内の要素数を変更する
-	//! 
-	//! 要素数を num1 × num2 × num3 個に変更し，全ての要素を値 val で初期化する．
-	//! 
-	//! @param[in] num1 … リサイズ後のX軸方向の要素数
-	//! @param[in] num2 … リサイズ後のY軸方向の要素数
-	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
-	//! @param[in] val  … リサイズ後に各要素を初期化する値
-	//! 
-	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
-	{
-		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, num3 + margin3_ * 2, val );
-	}
 
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
@@ -2467,7 +2382,10 @@ protected:
 public:
 	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素をデフォルト値で初期化する．
+	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．
+	//! 
+	//! @attention 必ず要素を初期化するためには，fill 関数を利用してください．
+	//! 
 	//! 
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! 
@@ -2480,7 +2398,10 @@ public:
 
 	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素をデフォルト値で初期化する．
+	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．
+	//! 
+	//! @attention 必ず要素を初期化するためには，fill 関数を利用してください．
+	//! 
 	//! 
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
@@ -2498,7 +2419,10 @@ public:
 
 	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素をデフォルト値で初期化する．
+	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，要素数が変更された場合のみ全ての要素をデフォルト値で初期化する．
+	//! 
+	//! @attention 必ず要素を初期化するためには，fill 関数を利用してください．
+	//! 
 	//! 
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
@@ -2515,62 +2439,6 @@ public:
 		s1 = s1 > s2 ? s1 : s2;
 		s1 = s1 > s3 ? s1 : s3;
 		base::resize( s1, s1, s1 );
-	}
-
-
-	/// @brief コンテナ内の要素数を変更する
-	//! 
-	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素を値 val で初期化する．
-	//! 
-	//! @param[in] num1 … リサイズ後のX軸方向の要素数
-	//! @param[in] val  … リサイズ後に各要素を初期化する値
-	//! 
-	void resize( size_type num1, const value_type &val )
-	{
-		size1_ = num1;
-		base::resize( floor_square( size1_ ), val );
-	}
-
-
-	/// @brief コンテナ内の要素数を変更する
-	//! 
-	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素を値 val で初期化する．
-	//! 
-	//! @param[in] num1 … リサイズ後のX軸方向の要素数
-	//! @param[in] num2 … リサイズ後のY軸方向の要素数
-	//! @param[in] val  … リサイズ後に各要素を初期化する値
-	//! 
-	void resize( size_type num1, size_type num2, const value_type &val )
-	{
-		size_type s1 = floor_square( num1 );
-		size_type s2 = floor_square( num2 );
-		size1_ = num1;
-		size2_ = num2;
-		s1 = s1 > s2 ? s1 : s2;
-		base::resize( s1, s1, val );
-	}
-
-
-	/// @brief コンテナ内の要素数を変更する
-	//! 
-	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素を値 val で初期化する．
-	//! 
-	//! @param[in] num1 … リサイズ後のX軸方向の要素数
-	//! @param[in] num2 … リサイズ後のY軸方向の要素数
-	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
-	//! @param[in] val  … リサイズ後に各要素を初期化する値
-	//! 
-	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
-	{
-		size_type s1 = floor_square( num1 );
-		size_type s2 = floor_square( num2 );
-		size_type s3 = floor_square( num3 );
-		size1_ = num1;
-		size2_ = num2;
-		size3_ = num3;
-		s1 = s1 > s2 ? s1 : s2;
-		s1 = s1 > s3 ? s1 : s3;
-		base::resize( s1, s1, s1, val );
 	}
 
 

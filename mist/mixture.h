@@ -8,12 +8,17 @@
 #ifndef __INCLUDE_MIXTURE__
 #define __INCLUDE_MIXTURE__
 
-#include <iostream>
+
+#ifndef __INCLUDE_MIST_H__
+#include "mist.h"
+#endif
+
+#ifndef __INCLUDE_MIST_VECTOR__
+#include "vector.h"
+#endif
+
 #include <cmath>
 #include <vector>
-
-#include "mist.h"
-#include "vector.h"
 
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è

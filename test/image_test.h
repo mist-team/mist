@@ -37,6 +37,9 @@ void thresholding_test( );
 void labeling4_test( );
 void labeling8_test( );
 
+void boundary4_test( );
+void boundary8_test( );
+
 void thinning_test( );
 
 void median_test( );

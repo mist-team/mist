@@ -243,6 +243,20 @@ void image_test_window::cb_Shrink(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Shrink_i(o,v);
 }
 
+inline void image_test_window::cb_Boundary_i(Fl_Menu_*, void*) {
+  boundary4_test( );
+}
+void image_test_window::cb_Boundary(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Boundary_i(o,v);
+}
+
+inline void image_test_window::cb_Boundary1_i(Fl_Menu_*, void*) {
+  boundary8_test( );
+}
+void image_test_window::cb_Boundary1(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Boundary1_i(o,v);
+}
+
 Fl_Menu_Item image_test_window::menu_[] = {
  {"&File", 0,  0, 0, 64, 0, 0, 14, 56},
  {"&Open", 0,  0, 0, 64, 0, 0, 14, 56},
@@ -286,6 +300,8 @@ Fl_Menu_Item image_test_window::menu_[] = {
  {"Interlace Odd", 0,  (Fl_Callback*)image_test_window::cb_Interlace1, 0, 0, 0, 0, 14, 56},
  {"Expand", 0,  (Fl_Callback*)image_test_window::cb_Expand, 0, 0, 0, 0, 14, 56},
  {"Shrink", 0,  (Fl_Callback*)image_test_window::cb_Shrink, 0, 0, 0, 0, 14, 56},
+ {"Boundary 4", 0,  (Fl_Callback*)image_test_window::cb_Boundary, 0, 0, 0, 0, 14, 56},
+ {"Boundary 8", 0,  (Fl_Callback*)image_test_window::cb_Boundary1, 0, 0, 0, 0, 14, 56},
  {0},
  {0}
 };

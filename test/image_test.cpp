@@ -1,6 +1,7 @@
 #include "image_test.h"
 #include "image_test_window.h"
 
+#include <mist/filter/labeling.h>
 
 image_draw_area *draw_area;
 
@@ -8,14 +9,8 @@ image_draw_area *draw_area;
 #include <mist/draw.h>
 #include <mist/io/image.h>
 
-//#define __INCLUDE_DICOM_TAG_ALL__	// 全てのDICOMタグをインポートする
-#define __SHOW_DICOM_TAG__			// コンソールにインクルードしたタグを表示する
-//#define __SHOW_DICOM_UNKNOWN_TAG__	// コンソールに認識出来なかったタグを表示する
-#include <mist/io/dicom.h>
-
 #include <mist/filter/distance.h>
 #include <mist/filter/figure_decomposition.h>
-#include <mist/filter/labeling.h>
 #include <mist/filter/thinning.h>
 #include <mist/filter/median.h>
 #include <mist/filter/morphology.h>
@@ -26,6 +21,11 @@ image_draw_area *draw_area;
 #include <mist/timer.h>
 
 #include <mist/converter.h>
+
+//#define __INCLUDE_DICOM_TAG_ALL__	// 全てのDICOMタグをインポートする
+#define __SHOW_DICOM_TAG__			// コンソールにインクルードしたタグを表示する
+//#define __SHOW_DICOM_UNKNOWN_TAG__	// コンソールに認識出来なかったタグを表示する
+#include <mist/io/dicom.h>
 
 
 #define USE_COLOR_IMAGE		1
@@ -270,6 +270,47 @@ void labeling8_test( )
 	}
 }
 
+void boundary4_test( )
+{
+	mist::array2< unsigned int > label;
+
+	mist::convert( image_object, label );
+
+	size_t label_num = mist::boundary4( label, 255 );
+
+	std::cout << "Label Num: " << label_num << std::endl;
+
+	if( label_num == 0 )
+	{
+		return;
+	}
+
+	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		image_object[ i ] = label[ i ];
+	}
+}
+
+void boundary8_test( )
+{
+	mist::array2< unsigned int > label;
+
+	mist::convert( image_object, label );
+
+	size_t label_num = mist::boundary8( label, 255 );
+
+	std::cout << "Label Num: " << label_num << std::endl;
+
+	if( label_num == 0 )
+	{
+		return;
+	}
+
+	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		image_object[ i ] = label[ i ];
+	}
+}
 
 void thinning_test( )
 {

@@ -21,7 +21,7 @@ class image_test_window {open
           class image_draw_area
         }
       }
-      Fl_Menu_Bar {} {open
+      Fl_Menu_Bar {} {open selected
         xywh {0 0 550 30} box FLAT_BOX
       } {
         submenu {} {
@@ -199,7 +199,7 @@ Fl::wait( 0 );}
             }
             menuitem {} {
               label {Reso down with mean}
-              callback {interpolate_test( 3, false );} selected
+              callback {interpolate_test( 3, false );}
               xywh {125 125 100 20}
             }
             menuitem {} {
@@ -232,6 +232,16 @@ Fl::wait( 0 );}
             label Shrink
             callback {shrink_test( );}
             xywh {70 70 100 20}
+          }
+          menuitem {} {
+            label {Boundary 4}
+            callback {boundary4_test( );}
+            xywh {40 40 100 20}
+          }
+          menuitem {} {
+            label {Boundary 8}
+            callback {boundary8_test( );}
+            xywh {50 50 100 20}
           }
         }
       }
