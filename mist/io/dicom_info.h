@@ -196,6 +196,13 @@ namespace dicom
 				sprintf( buff, "%d", byte_array< unsigned short >( data ).get_value( ) );
 				break;
 
+			case OB:
+			case OW:
+			case SQ:
+			case UN:
+				return( "..." );
+				break;
+
 			default:
 				return( std::string( reinterpret_cast< char * >( data ) ) );
 				break;
@@ -278,6 +285,12 @@ namespace dicom
 		{
 			create( nbytes );
 			memcpy( data, d, sizeof( unsigned char ) * num_bytes );
+		}
+
+		/// @brief DICOMタグ用に確保したデータをすべて開放する
+		~dicom_element( )
+		{
+			release( );
 		}
 	};
 
