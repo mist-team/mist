@@ -86,11 +86,25 @@ namespace pixel_data
 		static void glTexImage2D( const array2< rgb< T >, Allocator > &image )
 		{
 			::glTexImage2D(
-							GL_TEXTURE_2D, 0, 3,
+							GL_TEXTURE_2D, 0, GL_RGBA,
 							static_cast< GLsizei >( image.width( ) ),
 							static_cast< GLsizei >( image.height( ) ),
 							0,
 							GL_RGB,
+							gl_type_trait< T >::gl_type,
+							static_cast< const GLvoid* >( &( image[0] ) )
+						  );
+		}
+
+		template < class T, class Allocator >
+		static void glTexImage2D( const array2< rgba< T >, Allocator > &image )
+		{
+			::glTexImage2D(
+							GL_TEXTURE_2D, 0, GL_RGBA,
+							static_cast< GLsizei >( image.width( ) ),
+							static_cast< GLsizei >( image.height( ) ),
+							0,
+							GL_RGBA,
 							gl_type_trait< T >::gl_type,
 							static_cast< const GLvoid* >( &( image[0] ) )
 						  );
@@ -173,9 +187,6 @@ namespace pixel_data
 //! @param[in] zoom          … 拡大率（0より大きい値を指定．デフォルトは1.0）
 //! @param[in] xpos          … 画像をX軸方向にどれだけずらして描画するか（デフォルトは0）
 //! @param[in] ypos          … 画像をY軸方向にどれだけずらして描画するか（デフォルトは0）
-//! @param[in] back_r        … 塗りつぶす背景色の赤成分（デフォルトは0）
-//! @param[in] back_g        … 塗りつぶす背景色の緑成分（デフォルトは0）
-//! @param[in] back_b        … 塗りつぶす背景色の青成分（デフォルトは0）
 //! @param[in] interpolate   … 画素の間を補間し，スクリーン上で滑らかにする（デフォルトはtrue）
 //!
 //! @retval true  … 描画に成功
@@ -185,18 +196,11 @@ template< class T, class Allocator >
 bool draw_buffer( const array2< T, Allocator > &image,
 					typename array2< T, Allocator >::size_type image_width, typename array2< T, Allocator >::size_type image_height,
 					typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
-					double zoom = 1.0, double xpos = 0.0, double ypos = 0.0, double back_r = 0.0, double back_g = 0.0, double back_b = 0.0, bool interpolate = true )
+					double zoom = 1.0, double xpos = 0.0, double ypos = 0.0, bool interpolate = true )
 {
 	// 背景の初期化を行う
 	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef pixel_data::pixel< is_float< value_type >::value > pixel;
-	float r = pixel::get_value( back_r );
-	float g = pixel::get_value( back_g );
-	float b = pixel::get_value( back_b );
-
-	glClearColor( r, g, b, 1.0f );
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
 
 	if( image_width > image.width( ) || image_height > image.height( ) ) return( false );
 	if( image.width( ) != image.height( ) ) return( false );
@@ -219,14 +223,19 @@ bool draw_buffer( const array2< T, Allocator > &image,
 
 	GLboolean isLighting = glIsEnabled( GL_LIGHTING );
 	glDisable( GL_LIGHTING );
+	glEnable( GL_BLEND );
+
 	glViewport( 0, 0, static_cast< GLint >( window_width ), static_cast< GLint >( window_height ) );
+
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
 	glPixelStorei( GL_UNPACK_ROW_LENGTH, static_cast< GLint >( image.width( ) ) );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, interpolate_ );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, interpolate_ );
-	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL );
+//	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL );
+	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
 
 	pixel_data::glTexImage2D( image );
 
@@ -311,6 +320,7 @@ bool draw_buffer( const array2< T, Allocator > &image,
 //! @param[in] back_g        … 塗りつぶす背景色の緑成分（デフォルトは0）
 //! @param[in] back_b        … 塗りつぶす背景色の青成分（デフォルトは0）
 //! @param[in] interpolate   … 画素の間を補間し，スクリーン上で滑らかにする（デフォルトはtrue）
+//! @param[in] blend         … すでに描画されている物とブレンドするかどうか（デフォルトはfalse）
 //!
 //! @retval true  … 描画に成功
 //! @retval false … 不適切な入力画像の場合
@@ -329,22 +339,35 @@ bool draw_buffer( const array2< T, Allocator > &image,
 //!                   back_r,        // 塗りつぶす背景色の赤成分（デフォルトは0）
 //!                   back_g,        // 塗りつぶす背景色の緑成分（デフォルトは0）
 //!                   back_b,        // 塗りつぶす背景色の青成分（デフォルトは0）
-//!                   interpolate    // 画素の間を補間し，スクリーン上で滑らかにする（デフォルトはtrue）
+//!                   interpolate,   // 画素の間を補間し，スクリーン上で滑らかにする（デフォルトはtrue）
+//!                   blend          // すでに描画されている物とブレンドするかどうか（デフォルトはfalse）
 //!                 );
 //! @endcode
 //!
 template< class T, class Allocator >
 bool draw_image( const array2< T, Allocator > &image,
 					typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
-					double zoom = 1.0, double xpos = 0.0, double ypos = 0.0, double back_r = 0.0, double back_g = 0.0, double back_b = 0.0, bool interpolate = true )
+					double zoom = 1.0, double xpos = 0.0, double ypos = 0.0, double back_r = 0.0, double back_g = 0.0, double back_b = 0.0, bool interpolate = true, bool blend = false )
 {
 	typedef typename array2< T, Allocator >::size_type size_type;
+	typedef typename array2< T, Allocator >::value_type value_type;
+	typedef pixel_data::pixel< is_float< value_type >::value > pixel;
 	size_type size = image.width( ) > image.height( ) ? image.width( ) : image.height( ); 
 	size_type ttt = pixel_data::floor_square( size );
 
+	if( !blend )
+	{
+		float r = pixel::get_value( back_r );
+		float g = pixel::get_value( back_g );
+		float b = pixel::get_value( back_b );
+
+		glClearColor( r, g, b, 1.0f );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	}
+
 	if( ttt == image.width( ) && ttt == image.height( ) )
 	{
-		return( draw_buffer( image, ttt, ttt, window_width, window_height, zoom, xpos, ypos, back_r, back_g, back_b, interpolate ) );
+		return( draw_buffer( image, ttt, ttt, window_width, window_height, zoom, xpos, ypos, interpolate ) );
 	}
 	else
 	{
@@ -366,7 +389,7 @@ bool draw_image( const array2< T, Allocator > &image,
 			}
 		}
 		
-		return( draw_buffer( img, image.width( ), image.height( ), window_width, window_height, zoom, xpos, ypos, back_r, back_g, back_b, interpolate ) );
+		return( draw_buffer( img, image.width( ), image.height( ), window_width, window_height, zoom, xpos, ypos, interpolate ) );
 	}
 }
 

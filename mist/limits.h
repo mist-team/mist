@@ -137,6 +137,19 @@ _DEFINE_TYPE_LIMITS( long double,   false,  true,  LDBL_MIN,  LDBL_MAX, 0 )
 		static value_type maximum( ) { return( rgb< type >( type_limits< rgb_value_type >::maximum( ) ) ); }\
 		static value_type zero( ) { return( rgb< type >( type_limits< rgb_value_type >::zero( ) ) ); }\
 	};\
+	template < >\
+	struct type_limits< rgba< type > >\
+	{\
+		typedef rgba< type > value_type;\
+		typedef rgba< type >::value_type rgb_value_type;\
+		\
+		enum{ is_integer = type_limits< rgb_value_type >::is_integer };\
+		enum{ is_signed  = type_limits< rgb_value_type >::is_signed };\
+		\
+		static value_type minimum( ) { return( rgba< type >( type_limits< rgb_value_type >::minimum( ) ) ); }\
+		static value_type maximum( ) { return( rgba< type >( type_limits< rgb_value_type >::maximum( ) ) ); }\
+		static value_type zero( ) { return( rgba< type >( type_limits< rgb_value_type >::zero( ) ) ); }\
+	};\
 
 	// ŠeŒ^‚É‘Î‚·‚é“ÁŽê‰»
 	_DEFINE_COLOR_TYPE_LIMITS(unsigned char)
@@ -171,6 +184,20 @@ _DEFINE_TYPE_LIMITS( long double,   false,  true,  LDBL_MIN,  LDBL_MAX, 0 )
 		static value_type zero( ) { return( rgb< T >( type_limits< rgb_value_type >::zero( ) ) ); }
 	};
 
+	template < class T >
+	struct type_limits< rgba< T > >
+	{
+		typedef rgba< T > value_type;
+		typedef typename rgba< T >::value_type rgb_value_type;
+
+		enum{ is_integer = type_limits< rgb_value_type >::is_integer };
+		enum{ is_signed  = type_limits< rgb_value_type >::is_signed };
+
+		static value_type minimum( ) { return( rgba< T >( type_limits< rgb_value_type >::minimum( ) ) ); }
+		static value_type maximum( ) { return( rgba< T >( type_limits< rgb_value_type >::maximum( ) ) ); }
+		static value_type zero( ) { return( rgba< T >( type_limits< rgb_value_type >::zero( ) ) ); }
+	};
+
 #endif
 
 
@@ -202,6 +229,12 @@ namespace __limits_min_max__
 		static const rgb< T > limits( const rgb< T > &v, const rgb< T > &min, const rgb< T > &max )
 		{
 			return( rgb< T >( limits_min_max__( v.r, min.r, max.r ), limits_min_max__( v.g, min.g, max.g ), limits_min_max__( v.b, min.b, max.b ) ) );
+		}
+
+		template < class T >
+		static const rgba< T > limits( const rgba< T > &v, const rgba< T > &min, const rgba< T > &max )
+		{
+			return( rgba< T >( limits_min_max__( v.r, min.r, max.r ), limits_min_max__( v.g, min.g, max.g ), limits_min_max__( v.b, min.b, max.b ), limits_min_max__( v.a, min.a, max.a ) ) );
 		}
 	};
 }
@@ -247,6 +280,13 @@ namespace __limits_0_255__
 		{
 			typedef limits_0_255__< is_char< T >::value > limits_0_255_;
 			return( rgb< T >( limits_0_255_::limits( v.r ), limits_0_255_::limits( v.g ), limits_0_255_::limits( v.b ) ) );
+		}
+
+		template < class T >
+		static const rgba< T > limits( const rgba< T > &v )
+		{
+			typedef limits_0_255__< is_char< T >::value > limits_0_255_;
+			return( rgba< T >( limits_0_255_::limits( v.r ), limits_0_255_::limits( v.g ), limits_0_255_::limits( v.b ), limits_0_255_::limits( v.a ) ) );
 		}
 	};
 }

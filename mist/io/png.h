@@ -97,7 +97,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < (size_type )width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 4 + 0 ], png_buff[j][ i * 4 + 1 ], png_buff[j][ i * 4 + 2 ] );
+						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 4 + 0 ], png_buff[j][ i * 4 + 1 ], png_buff[j][ i * 4 + 2 ], png_buff[j][ i * 4 + 3 ] );
 					}
 				}
 				break;
@@ -107,7 +107,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < (size_type )width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 2 ], png_buff[j][ i * 2 ], png_buff[j][ i * 2 ] );
+						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 2 ], png_buff[j][ i * 2 ], png_buff[j][ i * 2 ], png_buff[j][ i * 2 + 1 ] );
 					}
 				}
 				break;
@@ -182,7 +182,9 @@ namespace __png_controller__
 			{
 				png_set_compression_level( png_ptr, compression_level );
 			}
-			png_set_IHDR( png_ptr, info_ptr, static_cast< png_uint_32 >( width ), static_cast< png_uint_32 >( height ), 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT );
+
+			int png_color_type = pixel_converter::color_num == 4 ? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_RGB;
+			png_set_IHDR( png_ptr, info_ptr, static_cast< png_uint_32 >( width ), static_cast< png_uint_32 >( height ), 8, png_color_type, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT );
 			png_set_gAMA( png_ptr, info_ptr, 1.0 );
 
 			{
@@ -216,15 +218,33 @@ namespace __png_controller__
 			png_buff = new png_byte*[height];
 
 			size_type i, j;
-			for( j = 0 ; j < height ; j++ )
+			if( pixel_converter::color_num == 4 )
 			{
-				png_buff[j] = new png_byte[width * 3];
-				for( i = 0 ; i < width ; i++ )
+				for( j = 0 ; j < height ; j++ )
 				{
-					color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
-					png_buff[j][ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
-					png_buff[j][ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
-					png_buff[j][ i * 3 + 2 ] = static_cast< unsigned char >( c.b );
+					png_buff[j] = new png_byte[width * 4];
+					for( i = 0 ; i < width ; i++ )
+					{
+						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
+						png_buff[j][ i * 4 + 0 ] = static_cast< unsigned char >( c.r );
+						png_buff[j][ i * 4 + 1 ] = static_cast< unsigned char >( c.g );
+						png_buff[j][ i * 4 + 2 ] = static_cast< unsigned char >( c.b );
+						png_buff[j][ i * 4 + 3 ] = static_cast< unsigned char >( c.a );
+					}
+				}
+			}
+			else
+			{
+				for( j = 0 ; j < height ; j++ )
+				{
+					png_buff[j] = new png_byte[width * 3];
+					for( i = 0 ; i < width ; i++ )
+					{
+						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
+						png_buff[j][ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
+						png_buff[j][ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
+						png_buff[j][ i * 3 + 2 ] = static_cast< unsigned char >( c.b );
+					}
 				}
 			}
 

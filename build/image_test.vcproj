@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltkd.lib fltkgld.lib wsock32.lib libjpeg.lib libtiff.lib libpng.lib libgif.lib zlib.lib"
+				AdditionalDependencies="fltkd.lib fltkgld.lib wsock32.lib libjpeg.lib libtiff.lib libpng.lib zlib.lib"
 				OutputFile="$(OutDir)/image_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -80,7 +80,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableEnhancedInstructionSet="0"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>
@@ -88,7 +88,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltk.lib fltkgl.lib wsock32.lib libjpeg.lib libtiff.lib libpng.lib libgif.lib zlib.lib"
+				AdditionalDependencies="fltk.lib fltkgl.lib wsock32.lib libjpeg.lib libtiff.lib libpng.lib zlib.lib"
 				OutputFile="$(OutDir)/image_test.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="FALSE"

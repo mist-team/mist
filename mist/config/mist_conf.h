@@ -396,6 +396,7 @@ struct __mist_console_callback__
 * @section element MISTで提供する基本データ型
 * - @ref mist::binary						"バイナリ画素"
 * - @ref mist::rgb							"カラー画素"
+* - @ref mist::rgba							"カラー画素（アルファ付き）"
 * - @ref mist::stereo						"ステレオ音声"
 * - @ref mist::quaternion					"クォータニオン（四元数）"
 * - @ref set_group							"集合"

@@ -227,11 +227,11 @@ namespace __tga_controller__
 						case 16:
 							{
 								unsigned short v = reinterpret_cast< unsigned short * >( color_map_data + index * 2 )[ 0 ];
-								//unsigned char a = ( v & 0x8000 ) >> 15;
+								unsigned char a = ( v & 0x8000 ) >> 15;
 								unsigned char r = ( ( v & 0x7c00 ) >> 10 ) * 8;
 								unsigned char g = ( ( v & 0x03e0 ) >> 5 ) * 8;
 								unsigned char b = ( v & 0x001f ) * 8;
-								image( i, j ) = pixel_converter::convert_to( r, g, b );
+								image( i, j ) = pixel_converter::convert_to( r, g, b, a * 255 );
 							}
 							break;
 
@@ -247,11 +247,11 @@ namespace __tga_controller__
 						case 32:
 							for( difference_type i = 0 ; i < width ; i++ )
 							{
-								//unsigned char a = color_map_data[ index * 4 + 3 ];
+								unsigned char a = color_map_data[ index * 4 + 3 ];
 								unsigned char r = color_map_data[ index * 4 + 2 ];
 								unsigned char g = color_map_data[ index * 4 + 1 ];
 								unsigned char b = color_map_data[ index * 4 + 0 ];
-								image( i, j ) = pixel_converter::convert_to( r, g, b );
+								image( i, j ) = pixel_converter::convert_to( r, g, b, a );
 							}
 							break;
 
@@ -273,11 +273,11 @@ namespace __tga_controller__
 						for( i = 0 ; i < width ; i++ )
 						{
 							unsigned short pix = reinterpret_cast< unsigned short * >( pixel + pixel_skip * i )[ 0 ];
-							//unsigned char a = ( pix & 0x8000 ) >> 15;
+							unsigned char a = ( pix & 0x8000 ) >> 15;
 							unsigned char r = ( ( pix & 0x7c00 ) >> 10 ) * 8;
 							unsigned char g = ( ( pix & 0x03e0 ) >> 5 ) * 8;
 							unsigned char b = ( pix & 0x001f ) * 8;
-							image( i, j ) = pixel_converter::convert_to( r, g, b );
+							image( i, j ) = pixel_converter::convert_to( r, g, b, a * 255 );
 						}
 						break;
 
@@ -293,7 +293,7 @@ namespace __tga_controller__
 						for( i = 0 ; i < width ; i++ )
 						{
 							unsigned char *pix = pixel + pixel_skip * i;
-							image( i, j ) = pixel_converter::convert_to( pix[ 2 ], pix[ 1 ], pix[ 0 ] );
+							image( i, j ) = pixel_converter::convert_to( pix[ 2 ], pix[ 1 ], pix[ 0 ], pix[ 3 ] );
 						}
 						break;
 
@@ -372,7 +372,7 @@ namespace __tga_controller__
 					{
 						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
 						unsigned short &pix = reinterpret_cast< unsigned short * >( pixel + pixel_skip * i )[ 0 ];
-						unsigned short a = ( 1 << 15 ) & 0x8000;
+						unsigned short a = ( ( c.a == 0 ? 0 : 1 ) << 15 ) & 0x8000;
 						unsigned short r = ( static_cast< unsigned char >( c.r / 8 ) << 10 ) & 0x7c00;
 						unsigned short g = (  static_cast< unsigned char >( c.g / 8 ) << 5 ) & 0x03e0;
 						unsigned short b =  static_cast< unsigned char >( c.b / 8 ) & 0x001f;
@@ -399,6 +399,7 @@ namespace __tga_controller__
 						pix[ 0 ] = static_cast< unsigned char >( c.b );
 						pix[ 1 ] = static_cast< unsigned char >( c.g );
 						pix[ 2 ] = static_cast< unsigned char >( c.r );
+						pix[ 3 ] = static_cast< unsigned char >( c.a );
 					}
 					break;
 
@@ -550,7 +551,7 @@ bool read_tga( array2< T, Allocator > &image, const std::string &filename )
 //! @retval false Åc âÊëúÇÃèëÇ´çûÇ›Ç…é∏îs
 //! 
 template < class T, class Allocator >
-bool write_tga( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type tga_bits = 24 )
+bool write_tga( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type tga_bits = 32 )
 {
 	return( __tga_controller__::tga_controller< T, Allocator >::write( image, filename, tga_bits, false ) );
 }

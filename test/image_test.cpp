@@ -31,10 +31,13 @@ image_draw_area *draw_area;
 #define USE_COLOR_IMAGE		1
 
 #if USE_COLOR_IMAGE == 1
-typedef mist::array2< mist::rgb< unsigned char > > image_type;
+typedef mist::rgba< unsigned char > color_type;
 #else
-typedef mist::array2< unsigned char > image_type;
+typedef unsigned char color_type;
 #endif
+
+typedef mist::array2< color_type > image_type;
+
 
 image_type image_object( 100, 100 );
 
@@ -418,25 +421,41 @@ void interpolate_test( int mode, bool reso_up )
 	image_type::size_type w = reso_up ? tmp.width( ) * 2 : tmp.width( ) / 2;
 	image_type::size_type h = reso_up ? tmp.height( ) * 2 : tmp.height( ) / 2;
 
+	mist::array2<unsigned char > hoge( 3, 3 );
+//	mist::array2< mist::rgb< unsigned char > > hoge( 3, 3 );
+	hoge( 0, 0 ) = 0; hoge( 1, 0 ) = 1; hoge( 2, 0 ) = 0;
+	hoge( 0, 1 ) = 1; hoge( 1, 1 ) = 1; hoge( 2, 1 ) = 1;
+	hoge( 0, 2 ) = 0; hoge( 1, 2 ) = 1; hoge( 2, 2 ) = 0;
+
+	mist::array2< double > hogehoge;
+//	mist::array2< mist::rgb< double > > hogehoge;
+
+
 	switch( mode )
 	{
 	case 0:
 		mist::nearest::interpolate( tmp, image_object, w, h, 1 );
+		mist::nearest::interpolate( hoge, hogehoge, 6, 6 );
 		break;
 
 	case 2:
 		mist::linear::interpolate( tmp, image_object, w, h );
+		mist::linear::interpolate( hoge, hogehoge, 6, 6 );
 		break;
 
 	case 3:
 		mist::mean::interpolate( tmp, image_object, w, h );
+		mist::mean::interpolate( hoge, hogehoge, 6, 6 );
 		break;
 
 	case 1:
 	default:
 		mist::cubic::interpolate( tmp, image_object, w, h );
+		mist::cubic::interpolate( hoge, hogehoge, 6, 6 );
 		break;
 	}
+
+	std::cout << hogehoge << std::endl << std::endl;
 }
 
 void interlace_test( bool is_odd_line )
