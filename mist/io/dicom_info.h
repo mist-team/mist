@@ -240,7 +240,7 @@ namespace dicom_controller
 
 	public:
 		dicom_info( compress_type c = RAW ) : compression_type( c ) { }
-		dicom_info( const dicom_info &info ) : compression_type( info.compress_type ) { }
+		dicom_info( const dicom_info &info ) : compression_type( info.compression_type ) { }
 
 		const dicom_info &operator =( const dicom_info &info )
 		{
@@ -260,7 +260,6 @@ namespace dicom_controller
 
 	compress_type get_compress_type( const std::string &uid )
 	{
-		compress_type compress_type = RAW;
 		static __dicom_compress_type__ compress_type_list[] = {
 			{ "1.2.840.10008.1.2.4.50", JPEG, }, // JPEG 基準（処理 1）：非可逆 JPEG 8 ビット画像圧縮用デフォルト転送構文
 			{ "1.2.840.10008.1.2.4.51", JPEG, }, // JPEG 拡張（処理 2 & 4）：非可逆 JPEG 12 ビット画像圧縮用デフォルト転送構文（処理4のみ）
