@@ -17,16 +17,20 @@ _MIST_BEGIN
 
 /// @brief MT(Mersenne Twister)法による乱数発生
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 長周期, 高次元均等分布を持つ擬似乱数を生成する．
+//! 周期が2^19937-1で、623次元超立方体の中に 均等に分布することが証明されている．
+//! 
+//! 開発者のページ：
+//! http://www.math.keio.ac.jp/~matumoto/mt.html
 //! 
 class random
 {
 
-	const double pai_timed_by_2_;		///< @brief 変数の説明を書く
+	const double pai_timed_by_2_;		///< @brief pai timed by two
 
 	// Period parameters
-	const unsigned long number_n_;		///< @brief 変数の説明を書く
-	const unsigned long number_m_;		///< @brief 変数の説明を書く
+	const unsigned long number_n_;		///< @brief number n
+	const unsigned long number_m_;		///< @brief number m
 	const unsigned long matrix_a_;		///< @brief constant vector a
 	const unsigned long upper_mask_;	///< @brief most significant w-r bits
 	const unsigned long lower_mask_;	///< @brief least significant r bits
@@ -35,14 +39,14 @@ class random
 	// static int mti_=number_n_+1; /* mti_==number_n_+1 means mt_[number_n_] is not initialized */
 	// array< unsigned long > mt_;
 
-	array< unsigned long > mt_;			///< @brief 変数の説明を書く
-	unsigned long mti_;					///< @brief 変数の説明を書く
+	array< unsigned long > mt_;			///< @brief seed array
+	unsigned long mti_;					///< @brief counter for seed array initialization
 
 
 public:
 	/// @brief コンストラクタ
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! デフォルトコンストラクタ
 	//! 
 	random( ) :
 		pai_timed_by_2_( 6.283185307179586 ),
@@ -59,11 +63,11 @@ public:
 
 	/// @brief コンストラクタ(seedで初期化)
 	//! 
-	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] seed … 引数の説明
 	//! 
-	random( const unsigned long seed ) :
+	//! @param[in] seed … 乱数のseed(これを用いてseed配列を作る)
+	//! 
+	random( const unsigned long& seed ) :
 		pai_timed_by_2_( 6.283185307179586 ),
 		number_n_( 624 ),
 		number_m_( 397 ),
@@ -77,13 +81,13 @@ public:
 	}
 
 
-	/// @brief コンストラクタ(init_keyで初期化)
+	/// @brief コンストラクタ(seed_arrayで初期化)
 	//! 
-	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] seed_array … 引数の説明
 	//! 
-	random( const array< unsigned long > seed_array ) :
+	//! @param[in] seed_array … 乱数のseed配列
+	//! 
+	random( const array< unsigned long >& seed_array ) :
 		pai_timed_by_2_( 6.283185307179586 ),
 		number_n_( 624 ),
 		number_m_( 397 ),
@@ -101,9 +105,9 @@ public:
 	//! 
 	//! initializes mt_[number_n_] with a seed
 	//! 
-	//! @param[in] seed … 引数の説明
+	//! @param[in] seed … 乱数のseed(これを用いてseed配列を作る)
 	//! 
-	void init( const unsigned long seed )
+	void init( const unsigned long& seed )
 	{
 		mt_[ 0 ] = seed & 0xffffffffUL;
 
@@ -120,15 +124,15 @@ public:
 	}
 
 	//
-	/// @brief init_keyで初期化
+	/// @brief seed_arrayで初期化
 	//! 
 	//! initialize by an array with array-length
-	//! init_key is the array for initializing keys
-	//! key_length is its length
+	//! seed_array is the array for initializing seeds
+	//! array_length is its length
 	//! 
-	//! @param[in] seed_array … 引数の説明
+	//! @param[in] seed_array … 乱数のseed配列
 	//! 
-	void init( const array< unsigned long > seed_array )
+	void init( const array< unsigned long >& seed_array )
 	{
 		unsigned long i, j, k;
 		init( 19650218UL );
@@ -175,7 +179,7 @@ public:
 	//! 
 	//! generates a random number on [0,0xffffffff]-interval
 	//! 
-	//! @return 戻り値の説明
+	//! @return 32bit符号無し整数乱数
 	//! 
 	const unsigned long int32( )
 	{
@@ -225,9 +229,9 @@ public:
 	//! 
 	//! generates a random number on [0,0x7fffffff]-interval
 	//! 
-	//! @return 戻り値の説明
+	//! @return 31bit符号無し整数乱数
 	//! 
-	const long int31( )
+	const unsigned long int31( )
 	{
 		return ( int32( ) >> 1 );
 	}
@@ -237,7 +241,7 @@ public:
 	//! 
 	//! generates a random number on [0,1]-real-interval
 	//! 
-	//! @return 戻り値の説明
+	//! @return [0,1]区間浮動小数点乱数
 	//! 
 	const double real1( )
 	{
@@ -250,7 +254,7 @@ public:
 	//! 
 	//! generates a random number on [0,1)-real-interval
 	//! 
-	//! @return 戻り値の説明
+	//! @return [0,1)区間浮動小数点乱数
 	//! 
 	const double real2( )
 	{
@@ -263,7 +267,7 @@ public:
 	//! 
 	//! generates a random number on (0,1)-real-interval
 	//! 
-	//! @return 戻り値の説明
+	//! @return (0,1)区間浮動小数点乱数
 	//! 
 	const double real3( )
 	{
@@ -276,7 +280,7 @@ public:
 	//! 
 	//! generates a random number on [0,1) with 53-bit resolution
 	//! 
-	//! @return 戻り値の説明
+	//! @return [0,1)区間浮動小数点乱数(53bit分解能)
 	//! 
 	const double res53( )
 	{
@@ -284,59 +288,6 @@ public:
 		const unsigned long b = int32( ) >> 6;
 
 		return ( ( a * 67108864.0 + b ) * ( 1.0 / 9007199254740992.0 ) );
-	}
-
-
-	/// @brief [min,max)区間浮動小数点乱数の発生
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] min … 引数の説明
-	//! @param[in] max … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
-	const double generate( const double min, const double max )
-	{
-		return ( min + (max - min) * real2());
-	}
-
-
-	/// @brief 正規乱数発生(Box-Muller法)
-	//! 
-	//! 2つの一様乱数から1つの正規乱数を生成
-	//! 
-	//! @param[in] av … 引数の説明
-	//! @param[in] st … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
-	const double gauss( const double av = 0.0 , const double st = 1.0 )
-	{
-		const double r1 = real2( );
-		const double r2 = real2( );
-
-		return ( st * sqrt( -2.0 * log( r1 ) ) * cos( pai_timed_by_2_ * r2 ) + av );
-	}
-
-
-	/// @brief 2つの一様乱数から2つの正規乱数を生成
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] av … 引数の説明
-	//! @param[in] st … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
-	const std::pair< double, double > gauss_pair( const double av = 0.0 , const double st = 1.0 )
-	{
-		const double r1 = real2( );
-		const double r2 = real2( );
-		const double z1 = st * sqrt( -2.0 * log( r1 ) ) * cos( pai_timed_by_2_ * r2 ) + av;
-		const double z2 = st * sqrt( -2.0 * log( r1 ) ) * sin( pai_timed_by_2_ * r2 ) + av;
-
-		return ( std::make_pair( z1, z2 ) );
 	}
 
 };
