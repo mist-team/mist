@@ -75,7 +75,7 @@ private:
 	_MIST_CONST( long, NMPA,	MAX_KETA );
 	_MIST_CONST( long, NMPA1,	NMPA + 1 );
 	_MIST_CONST( long, NMPA2,	NMPA1 * 2 );
-	_MIST_CONST( long, MMPA,	NMPA1 * __decimal_util__::log10< RADIX >::value / 4 );
+	_MIST_CONST( long, MMPA,	NMPA1 * RADIXBITS * 3 / 40 + 1 );
 
 protected:
 	bool				sign_;
@@ -350,11 +350,15 @@ public:
 		{
 			return( *this );
 		}
-		if( b.zero_ )
+		else if( b.zero_ )
 		{
 			// É[ÉçèúéZ
 			std::cerr << "zero_ division!!" << std::endl;
 			return( *this );
+		}
+		else if( acmp( *this, b ) == 0 )
+		{
+			return( operator =( decimal( sign_ == b.sign_ ? 1 : -1 ) ) );
 		}
 
 		decimal a = *this;
@@ -561,26 +565,12 @@ public:
 	}
 
 
-	bool operator ==( const decimal &a ) const { return( sign_ == a.sign_ && acmp( *this, a ) == 0 ); }
+	bool operator ==( const decimal &a ) const { return( cmp( *this, a ) == 0 ); }
 	bool operator !=( const decimal &a ) const { return( !( *this == a ) ); }
 	bool operator < ( const decimal &a ) const { return( !( *this >= a ) ); }
 	bool operator <=( const decimal &a ) const { return( a >= *this ); }
 	bool operator > ( const decimal &a ) const { return( a < *this ); }
-	bool operator >=( const decimal &a ) const
-	{
-		if( sign_ && !a.sign_ )
-		{
-			return( true );
-		}
-		else if( !sign_ && a.sign_ )
-		{
-			return( false );
-		}
-		else
-		{
-			return( acmp( *this, a ) >= 0 );
-		}
-	}
+	bool operator >=( const decimal &a ) const { return( cmp( *this, a ) >= 0 ); }
 
 	const ::std::string to_string( ) const
 	{
@@ -844,7 +834,56 @@ public:
 		return( true );
 	}
 
+	decimal sqrt( ) const
+	{
+		if( zero_ )
+		{
+			return decimal( );
+		}
+		else if( !sign_)
+		{
+			::std::cout << "Error : Illegal parameter!!" << ::std::endl;
+			return( *this );
+		}
+		decimal s( 1 );
+		decimal b = *this;
+		while( s < b )
+		{
+			s *= 2;
+			b /= 2;
+		}
+
+		do
+		{
+			b = s;
+			s = ( ( *this / s ) + s ) / 2;
+		} while( s < b );
+		return( b );
+	}
+
 protected:
+	static int cmp( const decimal &a, const decimal &b )
+	{
+		if( a.zero_ )
+		{
+			if( b.zero_ )
+			{
+				return( 0 );
+			}
+			return( b.sign_ ? -1 : 1 );
+		}
+		if( b.zero_ )
+		{
+			return( a.sign_ ? 1 : -1 );
+		}
+		if( a.sign_ == b.sign_ )
+		{
+			int mca = acmp( a, b );
+			return( a.sign_ ? mca : -mca );
+		}
+		return( a.sign_ ? 1 : -1 );
+	}
+
 	static int acmp( decimal a, decimal b )
 	{
 		if( a.zero_ )
@@ -1194,6 +1233,16 @@ inline std::ostream &operator <<( std::ostream &out, const decimal< MAX_KETA > &
 
 // mistñºëOãÛä‘ÇÃèIÇÌÇË
 _MIST_END
+
+namespace std
+{
+	template < unsigned int MAX_KETA >
+	inline mist::decimal< MAX_KETA > sqrt( const mist::decimal< MAX_KETA > &a )
+	{
+		return( a.sqrt( ) );
+	}
+}
+
 
 
 #endif // __INCLUDE_MIST_DECIMAL_H__

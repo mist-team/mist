@@ -5,7 +5,7 @@ int main( int argc, char *argv[] )
 {
 	using namespace std;
 
-	mist::decimal< 10 > v1( "1.1" ), v2( "1.1" );
+	mist::decimal< 100 > v1( "1.1" ), v2( "1.1" );
 //	mist::decimal< 20 > v1( 1.1 ), v2( 1.1 );
 
 
@@ -27,12 +27,14 @@ int main( int argc, char *argv[] )
 	//cout << "14. Operator A & B = \t"; cout << ( v1 & v2 ) << endl;
 	//cout << "15. Operator A ^ B = \t"; cout << ( v1 ^ v2 ) << endl;
 
-	//cout << "16. Operator A == B = \t"; cout << ( v1 == v2 ) << endl;
-	//cout << "17. Operator A != B = \t"; cout << ( v1 != v2 ) << endl;
-	//cout << "18. Operator A <  B = \t"; cout << ( v1 <  v2 ) << endl;
-	//cout << "19. Operator A <= B = \t"; cout << ( v1 <= v2 ) << endl;
-	//cout << "20. Operator A >  B = \t"; cout << ( v1 >  v2 ) << endl;
-	//cout << "21. Operator A >= B = \t"; cout << ( v1 >= v2 ) << endl;
+	cout << "16. Operator A == B = \t"; cout << ( v1 == v2 ) << endl;
+	cout << "17. Operator A != B = \t"; cout << ( v1 != v2 ) << endl;
+	cout << "18. Operator A <  B = \t"; cout << ( v1 <  v2 ) << endl;
+	cout << "19. Operator A <= B = \t"; cout << ( v1 <= v2 ) << endl;
+	cout << "20. Operator A >  B = \t"; cout << ( v1 >  v2 ) << endl;
+	cout << "21. Operator A >= B = \t"; cout << ( v1 >= v2 ) << endl;
+
+	cout << "22. Operator sqrt( A ) = \t"; cout << std::sqrt( v1 ) << endl;
 
 	//cout << "15. Size of bool = \t"; cout << sizeof( value< bool > ) << endl;
 	//cout << "16. Size of int  = \t"; cout << sizeof( value< int > ) << endl;
