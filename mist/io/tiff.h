@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include <tiff.h>
 #include <tiffio.h>
 
 
@@ -57,12 +58,6 @@ namespace __tiff_controller__
 		static bool read( array2< rgb< T >, Allocator > &image, const std::string &filename )
 		{
 			typedef typename array2< rgb< T >, Allocator >::size_type size_type;
-
-			const size_type MAXCOLORS = 1024;
-
-#ifndef PHOTOMETRIC_DEPTH
-			const size_type PHOTOMETRIC_DEPTH = 32768;
-#endif
 
 			int						cols, rows;
 			register TIFF			*tif;
