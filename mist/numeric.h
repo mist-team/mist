@@ -1806,6 +1806,82 @@ namespace __svd__
 
 			return( s );
 		}
+
+		// 実数バージョン
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &s, matrix< T, Allocator > &vt, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename matrix< T, Allocator >::size_type size_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
+			integer info = 0;
+
+			switch( style )
+			{
+			case matrix_style::ge:
+			default:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer ldu    = m;
+					integer size   = m < n ? m : n;
+					typename matrix< T, Allocator >::value_type dmy;
+					integer ldvt   = n;
+					integer lwork  = -1;
+					char *jobz = "O";
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::gesdd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
+					if( info == 0 )
+					{
+						integer *iwork = new integer[ 8 * size ];
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
+						matrix< T, Allocator > work( lwork, 1 );
+						s.resize( size, 1 );
+
+						if( m >= n )
+						{
+							vt.resize( ldvt, n );
+							__clapack__::gesdd( jobz, m, n, &( a[0] ), lda, &( s[0] ), NULL, ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, iwork, info );
+						}
+						else
+						{
+							vt.resize( ldu, m );
+							__clapack__::gesdd( jobz, m, n, &( a[0] ), lda, &( s[0] ), &( vt[0] ), ldu, NULL, ldvt, &( work[0] ), lwork, iwork, info );
+
+							vt.resize( ldvt, n );
+							vt.fill( );
+							for( integer r = 0 ; r < m ; r++ )
+							{
+								for( size_type c = 0 ; c < vt.cols( ) ; c++ )
+								{
+									vt( r, c ) = a( r, c );
+								}
+							}
+						}
+
+						delete [] iwork;
+					}
+				}
+				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
+			return( s );
+		}
 	};
 
 	template < >
@@ -1883,6 +1959,100 @@ namespace __svd__
 
 			return( s );
 		}
+
+
+		template < class T1, class T2, class Allocator1, class Allocator2 >
+		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename matrix< T1, Allocator1 >::size_type size_type;
+			typedef typename matrix< T1, Allocator1 >::value_type complex_type;
+			typedef typename T1::value_type value_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
+			integer info = 0;
+
+			switch( style )
+			{
+			case matrix_style::ge:
+			default:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer ldu    = m;
+					integer size   = m < n ? m : n;
+					typename matrix< T1, Allocator1 >::value_type dmy;
+					integer ldvt   = n;
+					integer lwork  = -1;
+					char *jobz = "O";
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::gesdd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, NULL, info );
+					if( info == 0 )
+					{
+						value_type *rwork = new value_type[ 5 * size * size + 5 * size ];
+						integer *iwork = new integer[ 8 * size ];
+
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+						// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
+						matrix< value_type > ss( size, 1 );
+#else
+						matrix< value_type, typename Allocator1::template rebind< value_type >::other > ss( size, 1 );
+#endif
+
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
+						matrix< T1, Allocator1 > work( lwork, 1 );
+						complex_type *dmy = NULL;
+
+						if( m >= n )
+						{
+							vt.resize( ldvt, n );
+							__clapack__::gesdd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), NULL, ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, iwork, info );
+						}
+						else
+						{
+							vt.resize( ldu, m );
+							__clapack__::gesdd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( vt[0] ), ldu, NULL, ldvt, &( work[0] ), lwork, rwork, iwork, info );
+
+							vt.resize( ldvt, n );
+							vt.fill( );
+							for( integer r = 0 ; r < m ; r++ )
+							{
+								for( size_type c = 0 ; c < vt.cols( ) ; c++ )
+								{
+									vt( r, c ) = a( r, c );
+								}
+							}
+						}
+
+						delete [] rwork;
+						delete [] iwork;
+
+						s.resize( size, 1 );
+						for( integer i = 0 ; i < size ; i++ )
+						{
+							s[ i ] = ss[ i ];
+						}
+					}
+				}
+				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
+			return( s );
+		}
 	};
 
 #else
@@ -1938,6 +2108,61 @@ namespace __svd__
 						{
 							s( i, i ) = ss[ i ];
 						}
+					}
+				}
+				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
+			return( s );
+		}
+
+
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &s, matrix< T, Allocator > &vt, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename matrix< T, Allocator >::size_type size_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
+			integer info = 0;
+
+			switch( style )
+			{
+			case matrix_style::ge:
+			default:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer ldu    = m;
+					typename matrix< T, Allocator >::value_type dmy;
+					integer ldvt   = n;
+					integer lwork  = -1;
+					char *jobu = "N";
+					char *jobvt = "A";
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						s.resize( m < n ? m : n, 1 );
+						vt.resize( ldvt, n );
+
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
+						matrix< T, Allocator > work( lwork, 1 );
+						__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( s[0] ), NULL, ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, info );
 					}
 				}
 				break;
@@ -2027,75 +2252,8 @@ namespace __svd__
 
 			return( s );
 		}
-	};
-
-#endif
 
 
-
-	template < bool b >
-	struct __svd_only_s_vt__
-	{
-		// 実数バージョン
-		template < class T, class Allocator >
-		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &s, matrix< T, Allocator > &vt, matrix_style::style style )
-		{
-			typedef __clapack__::integer integer;
-			typedef typename matrix< T, Allocator >::size_type size_type;
-
-			if( a.empty( ) )
-			{
-				// 行列のサイズが正しくないので例外をスローする
-				throw;
-			}
-
-			integer info = 0;
-
-			switch( style )
-			{
-			case matrix_style::ge:
-			default:
-				{
-					// LAPACK関数の引数
-					integer m      = static_cast< integer >( a.rows( ) );
-					integer n      = static_cast< integer >( a.cols( ) );
-					integer lda    = m;
-					integer ldu    = m;
-					typename matrix< T, Allocator >::value_type dmy;
-					integer ldvt   = n;
-					integer lwork  = -1;
-					char *jobu = "N";
-					char *jobvt = "A";
-
-					// まず最適な作業用配列のサイズを取得する
-					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, info );
-					if( info == 0 )
-					{
-						s.resize( m < n ? m : n, 1 );
-						vt.resize( ldvt, n );
-
-						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
-						matrix< T, Allocator > work( lwork, 1 );
-						__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( s[0] ), NULL, ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, info );
-					}
-				}
-				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
-			}
-
-			return( s );
-		}
-	};
-
-	template < >
-	struct __svd_only_s_vt__< true >
-	{
-		// 複素数バージョン
 		template < class T1, class T2, class Allocator1, class Allocator2 >
 		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style )
 		{
@@ -2160,6 +2318,8 @@ namespace __svd__
 			return( s );
 		}
 	};
+
+#endif
 }
 
 
@@ -3019,7 +3179,7 @@ template < class T1, class T2, class Allocator1, class Allocator2 >
 const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
 {
 	matrix< T1, Allocator1 > a_( a );
-	return( __svd__::__svd_only_s_vt__< __numeric__::is_complex< T1 >::value >::svd( a_, s, vt, style ) );
+	return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( a_, s, vt, style ) );
 }
 
 
@@ -3081,7 +3241,7 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
 	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression );
-	return( __svd__::__svd_only_s_vt__< __numeric__::is_complex< value_type >::value >::svd( a_, s, vt, style ) );
+	return( __svd__::__svd__< __numeric__::is_complex< value_type >::value >::svd( a_, s, vt, style ) );
 }
 
 #endif
