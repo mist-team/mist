@@ -45,6 +45,9 @@ public:
 	/// @brief ( xx, yy, zz ) のベクトルを作成する
 	vector3( const value_type &xx, const value_type &yy, const value_type &zz ) : x( xx ), y( yy ), z( zz ){ }
 
+	/// @brief ( vv, vv, vv ) のベクトルを作成する
+	explicit vector3( const value_type &vv ) : x( vv ), y( vv ), z( vv ){ }
+
 
 	/// @brief 他の3次元ベクトルで要素の型が異なるものから同じ要素を持つベクトルを作成する
 	//!
@@ -338,6 +341,9 @@ public:
 
 	/// @brief ( xx, yy ) のベクトルを作成する
 	vector2( const value_type &xx, const value_type &yy ) : x( xx ), y( yy ){ }
+
+	/// @brief ( vv, vv ) のベクトルを作成する
+	vector2( const value_type &vv, const value_type &vv ) : x( vv ), y( vv ){ }
 
 
 	/// @brief 他の2次元ベクトルで要素の型が異なるものから同じ要素を持つベクトルを作成する

@@ -1679,75 +1679,116 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 	typedef typename matrix< T, Allocator >::size_type size_type;
 	typedef typename matrix< T, Allocator >::value_type value_type;
 
-	if( a.empty( ) )
+	if( a.empty( ) || a.rows( ) != a.cols( ) )
 	{
 		return( value_type( ) );
 	}
 
-	matrix< __clapack__::integer, typename Allocator::template rebind< __clapack__::integer >::other > pivot;
-	matrix< T, Allocator > m = lu_factorization( a, pivot, style );
-
-	value_type v = m( 0, 0 );
-	size_type size = a.rows( ) < a.cols( ) ? a.rows( ) : a.cols( );
-	size_type count = 0, i;
-
-	// LU分解時に行の入れ替えが行われた回数を計算する
-	for( i = 0 ; i < pivot.size( ) ; ++i )
+	switch( e.rows( ) )
 	{
-		count += static_cast< size_type >( pivot[ i ] ) != i + 1 ? 1 : 0;
-	}
+	case 1:
+		return( a( 0, 0 ) );
+		break;
 
-	// 対角成分の積を計算する
-	for( i = 1 ; i < size ; ++i )
-	{
-		v *= m( i, i );
-	}
+	case 2:
+		return( a( 0, 0 ) * a( 1, 1 ) - a( 0, 1 ) * a( 1, 0 ) );
+		break;
 
-	return( v * ( count % 2 == 0 ? 1 : -1 ) );
+	case 3:
+		return( a( 0, 0 ) * a( 1, 1 ) * a( 2, 2 ) + a( 0, 1 ) * a( 1, 2 ) * a( 2, 0 ) + a( 0, 2 ) * a( 1, 0 ) * a( 2, 1 )
+				- a( 0, 2 ) * a( 1, 1 ) * a( 2, 0 ) + a( 0, 1 ) * a( 1, 0 ) * a( 2, 2 ) + a( 0, 0 ) * a( 1, 2 ) * a( 2, 1 ) );
+		break;
+
+	default:
+		{
+			matrix< __clapack__::integer, typename Allocator::template rebind< __clapack__::integer >::other > pivot;
+			matrix< T, Allocator > m = lu_factorization( a, pivot, style );
+
+			value_type v = m( 0, 0 );
+			size_type size = a.rows( ) < a.cols( ) ? a.rows( ) : a.cols( );
+			size_type count = 0, i;
+
+			// LU分解時に行の入れ替えが行われた回数を計算する
+			for( i = 0 ; i < pivot.size( ) ; ++i )
+			{
+				count += static_cast< size_type >( pivot[ i ] ) != i + 1 ? 1 : 0;
+			}
+
+			// 対角成分の積を計算する
+			for( i = 1 ; i < size ; ++i )
+			{
+				v *= m( i, i );
+			}
+
+			return( v * ( count % 2 == 0 ? 1 : -1 ) );
+		}
+		break;
+	}
 }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
 /// @brief 行列式の計算
 //! 
-//! @param[in] expression … 複数の行列演算を表す式
+//! @param[in] e     … 複数の行列演算を表す式
 //! @param[in] style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
 //! @return 戻り値の説明
 //! 
 template < class Expression >
-inline const typename matrix_expression< Expression >::value_type det( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
+inline const typename matrix_expression< Expression >::value_type det( const matrix_expression< Expression > &e, matrix_style::style style = matrix_style::ge )
 {
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::size_type size_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-
-	if( expression.rows( ) * expression.cols( ) == 0 )
+	if( e.rows( ) * e.cols( ) == 0 || e.rows( ) != e.cols( ) )
 	{
 		return( value_type( ) );
 	}
 
-	matrix< __clapack__::integer, typename allocator_type::template rebind< __clapack__::integer >::other > pivot;
-	matrix_type m = lu_factorization( expression, pivot, style );
-
-	value_type v = m( 0, 0 );
-	size_type size = m.rows( ) < m.cols( ) ? m.rows( ) : m.cols( );
-	size_type count = 0, i;
-
-	// LU分解時に行の入れ替えが行われた回数を計算する
-	for( i = 0 ; i < pivot.size( ) ; ++i )
+	const matrix_expression< Expression > 
+	switch( e.rows( ) )
 	{
-		count += static_cast< size_type >( pivot[ i ] ) != i + 1 ? 1 : 0;
-	}
+	case 1:
+		return( e( 0, 0 ) );
+		break;
 
-	// 対角成分の積を計算する
-	for( i = 1 ; i < size ; ++i )
-	{
-		v *= m( i, i );
-	}
+	case 2:
+		return( e( 0, 0 ) * e( 1, 1 ) - e( 0, 1 ) * e( 1, 0 ) );
+		break;
 
-	return( v * ( count % 2 == 0 ? 1 : -1 ) );
+	case 3:
+		return( e( 0, 0 ) * e( 1, 1 ) * e( 2, 2 ) + e( 0, 1 ) * e( 1, 2 ) * e( 2, 0 ) + e( 0, 2 ) * e( 1, 0 ) * e( 2, 1 )
+				- e( 0, 2 ) * e( 1, 1 ) * e( 2, 0 ) + e( 0, 1 ) * e( 1, 0 ) * e( 2, 2 ) + e( 0, 0 ) * e( 1, 2 ) * e( 2, 1 ) );
+		break;
+
+	default:
+		{
+			typedef typename matrix_expression< Expression >::value_type value_type;
+			typedef typename matrix_expression< Expression >::size_type size_type;
+			typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+			typedef matrix< value_type, allocator_type > matrix_type;
+
+			matrix< __clapack__::integer, typename allocator_type::template rebind< __clapack__::integer >::other > pivot;
+			matrix_type m = lu_factorization( e, pivot, style );
+
+			value_type v = m( 0, 0 );
+			size_type size = m.rows( ) < m.cols( ) ? m.rows( ) : m.cols( );
+			size_type count = 0, i;
+
+			// LU分解時に行の入れ替えが行われた回数を計算する
+			for( i = 0 ; i < pivot.size( ) ; ++i )
+			{
+				count += static_cast< size_type >( pivot[ i ] ) != i + 1 ? 1 : 0;
+			}
+
+			// 対角成分の積を計算する
+			for( i = 1 ; i < size ; ++i )
+			{
+				v *= m( i, i );
+			}
+
+			return( v * ( count % 2 == 0 ? 1 : -1 ) );
+		}
+		break;
+	}
 }
 
 #endif

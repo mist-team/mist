@@ -310,6 +310,24 @@ bool draw_buffer( const array2< T, Allocator > &image,
 //! @retval true  … 描画に成功
 //! @retval false … 不適切な入力画像の場合
 //! 
+//! @code 使用例
+//! #include <mist/draw.h>
+//! 
+//! mist::array2< mist::rgb< unsigned char > > image; ←画像読み込みルーチンなどで，画像を読み込んでおく．
+//! 
+//! mist::draw_image( image,         // 入力画像
+//!                   window_width,  // 出力するウィンドウの幅
+//!                   window_height, // 出力するウィンドウの高さ
+//!                   zoom,          // ズームの割合（デフォルトは1倍）
+//!                   xpos,          // 中心からX軸方向にずらす割合（デフォルトは0）
+//!                   ypos,          // 中心からY軸方向にずらす割合（デフォルトは0）
+//!                   back_r,        // 塗りつぶす背景色の赤成分（デフォルトは0）
+//!                   back_g,        // 塗りつぶす背景色の緑成分（デフォルトは0）
+//!                   back_b,        // 塗りつぶす背景色の青成分（デフォルトは0）
+//!                   interpolate    // 画素の間を補間し，スクリーン上で滑らかにする（デフォルトはtrue）
+//!                 );
+//! @endcode
+//!
 template< class T, class Allocator >
 bool draw_image( const array2< T, Allocator > &image,
 					typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
