@@ -53,11 +53,11 @@ namespace __nearest__
 			for( j = thread_idy ; j < oh ; j += thread_numy )
 			{
 				y = static_cast< size_type >( sy * j + 0.5 );
-				y = y < ih ? y : id;
+				y = y < ih ? y : ih;
 				for( i = thread_idx ; i < ow ; i += thread_numx )
 				{
 					x = static_cast< size_type >( sx * i + 0.5 );
-					x = x < iw ? x : id;
+					x = x < iw ? x : iw;
 					out( i, j, k ) = static_cast< out_value_type >( in( x, y, z ) );
 				}
 			}

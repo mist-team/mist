@@ -53,7 +53,7 @@ void test_matrix_multiply2( )
 	cout << ( - a + a.t( ) ).t( ) << endl << endl;
 }
 
-void test_matrix_operation( )
+void test_matrix_operation1( )
 {
 	using namespace std;
 
@@ -103,6 +103,52 @@ void test_matrix_operation( )
 }
 
 
+void test_matrix_operation2( )
+{
+	using namespace std;
+
+	cout << "A <- M x MT" << endl << endl;
+
+	mist::matrix< double > mat1( 1000000, 1 );
+	mist::matrix< double > mat2( 1000000, 1 );
+	mist::matrix< double > mat( 1000, 1000 );
+	mist::matrix< double > dmy;
+
+	mist::matrix< double >::size_type i, j, l, loop = 100;
+	{
+		mist::timer t;
+		for( l = 0 ; l < loop ; l++ )
+		{
+			for( i = 0 ; i < mat.cols( ) ; i++ )
+			{
+				const double &x = mat1[ i ];
+				for( j = 0 ; j < mat.rows( ) ; j++ )
+				{
+					mat( i, j ) = x * mat2[ j ];
+				}
+			}
+		}
+		cout << "< In the case of A <- M x MT operation 1 >" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
+	}
+
+	{
+		mist::timer t;
+		for( l = 0 ; l < loop ; l++ )
+		{
+			for( i = 0 ; i < mat.cols( ) ; i++ )
+			{
+				for( j = 0 ; j < mat.rows( ) ; j++ )
+				{
+					mat( i, j ) = mat1[ i ] * mat2[ j ];
+				}
+			}
+		}
+		cout << "< In the case of A <- M x MT operation 2 >" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
+	}
+}
+
 
 int main( )
 {
@@ -112,6 +158,7 @@ int main( )
 	cout << "1) Check the calculation time of matrix operation." << endl;
 	cout << "2) Check the calculation time of matrix multiply." << endl;
 	cout << "3) Check matrix multiply operation." << endl;
+	cout << "4) Check A <- M x MT operation." << endl;
 
 	int number = -1;
 
@@ -120,7 +167,7 @@ int main( )
 	switch( number )
 	{
 	case 1:
-		test_matrix_operation( );
+		test_matrix_operation1( );
 		break;
 
 	case 2:
@@ -129,6 +176,10 @@ int main( )
 
 	case 3:
 		test_matrix_multiply2( );
+		break;
+
+	case 4:
+		test_matrix_operation2( );
 		break;
 
 	default:
