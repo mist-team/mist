@@ -98,7 +98,7 @@ namespace discriminant_analysis
 	//!
 	//! ratio は 0 ～ 100％の範囲で指定する
 	//!
-	//! @param[in] in    … 引数の説明
+	//! @param[in] in … 引数の説明
 	//!
 	//! @return 戻り値の説明
 	//!

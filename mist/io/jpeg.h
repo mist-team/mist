@@ -185,6 +185,7 @@ namespace __jpeg_controller__
 //! 
 //! @param[out] image    … 引数の説明
 //! @param[in]  filename … 引数の説明
+//!
 //! @retval true  … 戻り値の説明
 //! @retval false … 戻り値の説明
 //! 
@@ -201,7 +202,8 @@ bool read_jpeg( array2< T, Allocator > &image, const std::string &filename )
 //! 
 //! @param[in] image    … 引数の説明
 //! @param[in] filename … 引数の説明
-//! @param[in] quality … 引数の説明
+//! @param[in] quality  … 引数の説明
+//!
 //! @retval true  … 戻り値の説明
 //! @retval false … 戻り値の説明
 //! 

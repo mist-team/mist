@@ -300,7 +300,8 @@ public:
 	//! コピー元とコピー先でデータ型（array< data > の data）が異なる場合の代入を行う．
 	//! 
 	//! @param[in] o  … コピー元のコンテナ
-	//! @return       … 自分自身
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class TT, class AAlocator >
 	const array& operator =( const array< TT, AAlocator >  &o )
@@ -1667,6 +1668,7 @@ public:
 //! 
 //! @param[in] in  … 引数の説明
 //! @param[in] out … 引数の説明
+//!
 //! @return        … 戻り値の説明
 //! 
 template < class Array >
@@ -1701,6 +1703,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	void resize( size_type num1 )
@@ -1715,6 +1718,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	void resize( size_type num1, size_type num2 )
@@ -1729,6 +1733,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	void resize( size_type num1, size_type num2, size_type num3 )
@@ -1743,6 +1748,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	void resize( size_type num1, const value_type &val )
@@ -1757,6 +1763,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	void resize( size_type num1, size_type num2, const value_type &val )
@@ -1771,6 +1778,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
@@ -1785,6 +1793,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	void swap( marray &a )
@@ -1811,6 +1820,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	void clear( )
@@ -1826,6 +1836,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	void fill_margin( const value_type &val = value_type( ) )
@@ -1904,6 +1915,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	size_type size1( ) const { return( base::size1( ) - 2 * margin1_ ); }
@@ -1920,6 +1932,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	size_type margin1( ) const { return( margin1_ ); }
@@ -1933,6 +1946,7 @@ private:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	template < class T, class Allocator >
@@ -1953,6 +1967,7 @@ private:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	template < class T, class Allocator >
@@ -1973,6 +1988,7 @@ private:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	template < class T, class Allocator >
@@ -1997,6 +2013,7 @@ private:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	template < class T, class Allocator >
@@ -2025,6 +2042,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	const marray& operator =( const marray &o )
@@ -2046,6 +2064,7 @@ public:
 	//! 
 	//! @param[in] in  … 引数の説明
 	//! @param[in] out … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	template < class T, class Allocator >
@@ -2272,13 +2291,40 @@ public:
 
 
 public:
-	// 構築
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! 
 	marray( ) : base( ), margin1_( 0 ), margin2_( 0 ), margin3_( 0 ) {}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! 
 	marray( size_type margin ) : base( ), margin1_( margin ), margin2_( 0 ), margin3_( 0 ) {}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! 
 	marray( const marray &o ) : base( o ), margin1_( o.margin1( ) ), margin2_( o.margin2( ) ), margin3_( o.margin3( ) ) {}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! 
 	template < class T, class Allocator >
 	marray( const array< T, Allocator > &o, size_type margin1, const value_type &val = value_type( 0 ) )
 		: base( o.size( ) + margin1 * 2 ), margin1_( margin1 ), margin2_( 0 ), margin3_( 0 )
@@ -2287,6 +2333,13 @@ public:
 		copy( o );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! 
 	template < class T, class Allocator >
 	marray( const array1< T, Allocator > &o, size_type margin1, const value_type &val = value_type( ) )
 		: base( o.size( ) + margin1 * 2, o.reso1( ) ), margin1_( margin1 ), margin2_( 0 ), margin3_( 0 )
@@ -2295,6 +2348,13 @@ public:
 		copy( o );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! 
 	template < class T, class Allocator >
 	marray( const array2< T, Allocator > &o, size_type margin1, size_type margin2, const value_type &val = value_type( ) )
 		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin2 * 2, o.reso1( ), o.reso2( ) ), margin1_( margin1 ), margin2_( margin2 ), margin3_( 0 )
@@ -2303,9 +2363,47 @@ public:
 		copy( o );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! 
 	template < class T, class Allocator >
 	marray( const array3< T, Allocator > &o, size_type margin1, size_type margin2, size_type margin3, const value_type &val = value_type( ) )
 		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin2 * 2, o.size3( ) + margin3 * 2, o.reso1( ), o.reso2( ), o.reso3( ) ), margin1_( margin1 ), margin2_( margin2 ), margin3_( margin3 )
+	{
+		fill_margin( val );
+		copy( o );
+	}
+
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! 
+	template < class T, class Allocator >
+	marray( const array2< T, Allocator > &o, size_type margin1, const value_type &val = value_type( ) )
+		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin1 * 2, o.reso1( ), o.reso2( ) ), margin1_( margin1 ), margin2_( margin1 ), margin3_( 0 )
+	{
+		fill_margin( val );
+		copy( o );
+	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! 
+	template < class T, class Allocator >
+	marray( const array3< T, Allocator > &o, size_type margin1, const value_type &val = value_type( ) )
+		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin1 * 2, o.size3( ) + margin1 * 2, o.reso1( ), o.reso2( ), o.reso3( ) ), margin1_( margin1 ), margin2_( margin1 ), margin3_( margin1 )
 	{
 		fill_margin( val );
 		copy( o );

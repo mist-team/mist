@@ -19,37 +19,30 @@ _MIST_BEGIN
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
-//! 
 class random
 {
 
-	const double pai_timed_by_2_;
+	const double pai_timed_by_2_;		///< @brief 変数の説明を書く
 
-	/* Period parameters */
-	const unsigned long number_n_;
-	const unsigned long number_m_;
-	const unsigned long matrix_a_;    /* constant vector a */
-	const unsigned long upper_mask_;  /* most significant w-r bits */
-	const unsigned long lower_mask_;  /* least significant r bits */
+	// Period parameters
+	const unsigned long number_n_;		///< @brief 変数の説明を書く
+	const unsigned long number_m_;		///< @brief 変数の説明を書く
+	const unsigned long matrix_a_;		///< @brief constant vector a
+	const unsigned long upper_mask_;	///< @brief most significant w-r bits
+	const unsigned long lower_mask_;	///< @brief least significant r bits
 
-	//static unsigned long mt_[number_n_]; /* the array for the state vector  */
-	//static int mti_=number_n_+1; /* mti_==number_n_+1 means mt_[number_n_] is not initialized */
-	//array< unsigned long > mt_;
-	array< unsigned long > mt_;
-	unsigned long mti_;
+	// static unsigned long mt_[number_n_]; /* the array for the state vector  */
+	// static int mti_=number_n_+1; /* mti_==number_n_+1 means mt_[number_n_] is not initialized */
+	// array< unsigned long > mt_;
+
+	array< unsigned long > mt_;			///< @brief 変数の説明を書く
+	unsigned long mti_;					///< @brief 変数の説明を書く
 
 
 public:
 	/// @brief コンストラクタ
 	//! 
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
 	//! 
 	random( ) :
 		pai_timed_by_2_( 6.283185307179586 ),
@@ -68,9 +61,7 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] seed … 引数の説明
 	//! 
 	random( const unsigned long seed ) :
 		pai_timed_by_2_( 6.283185307179586 ),
@@ -90,9 +81,7 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] seed_array … 引数の説明
 	//! 
 	random( const array< unsigned long > seed_array ) :
 		pai_timed_by_2_( 6.283185307179586 ),
@@ -112,9 +101,7 @@ public:
 	//! 
 	//! initializes mt_[number_n_] with a seed
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] seed … 引数の説明
 	//! 
 	void init( const unsigned long seed )
 	{
@@ -139,9 +126,7 @@ public:
 	//! init_key is the array for initializing keys
 	//! key_length is its length
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] seed_array … 引数の説明
 	//! 
 	void init( const array< unsigned long > seed_array )
 	{
@@ -190,9 +175,7 @@ public:
 	//! 
 	//! generates a random number on [0,0xffffffff]-interval
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	const unsigned long int32( )
 	{
@@ -242,9 +225,7 @@ public:
 	//! 
 	//! generates a random number on [0,0x7fffffff]-interval
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	const long int31( )
 	{
@@ -256,9 +237,7 @@ public:
 	//! 
 	//! generates a random number on [0,1]-real-interval
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	const double real1( )
 	{
@@ -271,9 +250,7 @@ public:
 	//! 
 	//! generates a random number on [0,1)-real-interval
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	const double real2( )
 	{
@@ -286,9 +263,7 @@ public:
 	//! 
 	//! generates a random number on (0,1)-real-interval
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	const double real3( )
 	{
@@ -301,9 +276,7 @@ public:
 	//! 
 	//! generates a random number on [0,1) with 53-bit resolution
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	const double res53( )
 	{
@@ -318,9 +291,10 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] min … 引数の説明
+	//! @param[in] max … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const double generate( const double min, const double max )
 	{
@@ -332,9 +306,10 @@ public:
 	//! 
 	//! 2つの一様乱数から1つの正規乱数を生成
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] av … 引数の説明
+	//! @param[in] st … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const double gauss( const double av = 0.0 , const double st = 1.0 )
 	{
@@ -349,9 +324,10 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] av … 引数の説明
+	//! @param[in] st … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const std::pair< double, double > gauss_pair( const double av = 0.0 , const double st = 1.0 )
 	{

@@ -24,29 +24,54 @@ _MIST_BEGIN
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 class vector3
 {
 public:
-	typedef T value_type;
-	typedef size_t size_type;
-	typedef ptrdiff_t difference_type;
+	typedef T value_type;					///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef size_t size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 public:
-	value_type x;
-	value_type y;
-	value_type z;
+	value_type x;		///< @brief 変数の説明を書く
+	value_type y;		///< @brief 変数の説明を書く
+	value_type z;		///< @brief 変数の説明を書く
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
 	vector3( ) : x( 0 ), y( 0 ), z( 0 ){ }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] xx … 引数の説明
+	//! @param[in] yy … 引数の説明
+	//! @param[in] zz … 引数の説明
+	//! 
 	vector3( const value_type &xx, const value_type &yy, const value_type &zz ) : x( xx ), y( yy ), z( zz ){ }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
 	template < class TT >
 	vector3( const vector3< TT > &v ) : x( static_cast< value_type >( v.x ) ), y( static_cast< value_type >( v.y ) ), z( static_cast< value_type >( v.z ) ){ }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
 	vector3( const vector3< T > &v ) : x( v.x ), y( v.y ), z( v.z ){ }
 
 
@@ -54,9 +79,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const vector3 &operator =( const vector3 &v )
 	{
@@ -74,9 +99,7 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	vector3 operator -( ) const { return ( vector3( -x, -y, -z ) ); }
 
@@ -85,9 +108,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const vector3 &operator +=( const vector3 &v )
 	{
@@ -102,9 +125,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const vector3 &operator -=( const vector3 &v )
 	{
@@ -119,9 +142,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] a … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const vector3 &operator *=( const value_type &a )
 	{
@@ -136,9 +159,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] a … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const vector3 &operator /=( const value_type &a )
 	{
@@ -153,9 +176,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	value_type operator ^( const vector3 &v ) const { return( inner( v ) ); }
 
@@ -164,15 +187,66 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
 	//! 
 	bool operator ==( const vector3 &v ) const { return( x == v.x && y == v.y && z == v.z ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
 	bool operator !=( const vector3 &v ) const { return( !( *this == v ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
 	bool operator < ( const vector3 &v ) const { return( !( *this >= v ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
 	bool operator <=( const vector3 &v ) const { return( v >= *this ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
 	bool operator > ( const vector3 &v ) const { return( v < *this ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
 	bool operator >=( const vector3 &v ) const { return( x >= v.x && y >= v.y && z >= v.z ); }
 
 
@@ -180,9 +254,7 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	vector3 unit( ) const
 	{
@@ -195,9 +267,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	value_type inner( const vector3 &v ) const { return( x * v.x + y * v.y + z * v.z ); }
 
@@ -206,9 +278,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	vector3 outer( const vector3 &v ) const { return( vector3( y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x ) ); }
 
@@ -217,9 +289,7 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	value_type length( ) const { return ( value_type( sqrt( (double)( x * x + y * y + z * z ) ) ) ); }
 
@@ -227,9 +297,10 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v     … 引数の説明
+	//! @param[in] theta … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	vector3 rotate( const vector3 &v, double theta ) const
 	{
@@ -248,18 +319,89 @@ public:
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T > inline const vector3< T > operator +( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1 ) += v2 ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector3< T > operator -( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1 ) -= v2 ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector3< T > operator /( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1 ) /= v2 ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector3< T > operator *( const vector3< T > &v1, const vector3< T > &v2 ){ return( v1.outer( v2 ) ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const typename vector3< T >::value_type operator ^( const vector3< T > &v1, const vector3< T > &v2 ){ return( v1.inner( v2 ) ); }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector3< T > operator *( const vector3< T > &v1, const typename vector3< T >::value_type &v2 ){ return( vector3< T >( v1 ) *= v2 ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector3< T > operator *( const typename vector3< T >::value_type &v1, const vector3< T > &v2 ){ return( vector3< T >( v2 ) *= v1 ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector3< T > operator /( const vector3< T > &v1, const typename vector3< T >::value_type &v2 ){ return( vector3< T >( v1 ) /= v2 ); }
 
 
@@ -267,9 +409,10 @@ template < class T > inline const vector3< T > operator /( const vector3< T > &v
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] out … 引数の説明
+//! @param[in]     v   … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const vector3< T > &v )
 {
@@ -286,28 +429,52 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 class vector2
 {
 public:
-	typedef T value_type;
-	typedef size_t size_type;
-	typedef ptrdiff_t difference_type;
+	typedef T value_type;					///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef size_t size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 public:
-	value_type x;
-	value_type y;
+	value_type x;		///< @brief 変数の説明を書く
+	value_type y;		///< @brief 変数の説明を書く
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
 	vector2( ) : x( 0 ), y( 0 ){ }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] xx … 引数の説明
+	//! @param[in] yy … 引数の説明
+	//! 
 	vector2( const value_type &xx, const value_type &yy ) : x( xx ), y( yy ){ }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
 	template < class TT >
 	vector2( const vector2< TT > &v ) : x( static_cast< value_type >( v.x ) ), y( static_cast< value_type >( v.y ) ){ }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
 	vector2( const vector2< T > &v ) : x( v.x ), y( v.y ){ }
 
 
@@ -315,9 +482,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const vector2 &operator =( const vector2 &v )
 	{
@@ -334,9 +501,7 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	vector2 operator -( ) const { return ( vector2( -x, -y ) ); }
 
@@ -345,9 +510,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const vector2 &operator +=( const vector2 &v )
 	{
@@ -361,9 +526,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const vector2 &operator -=( const vector2 &v )
 	{
@@ -377,9 +542,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] a … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const vector2 &operator *=( const value_type &a )
 	{
@@ -393,9 +558,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] a … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const vector2 &operator /=( const value_type &a )
 	{
@@ -409,9 +574,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	value_type operator ^( const vector2 &v ) const { return( inner( v ) ); }
 
@@ -420,15 +585,66 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
 	//! 
 	bool operator ==( const vector2 &v ) const { return( x == v.x && y == v.y ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
 	bool operator !=( const vector2 &v ) const { return( !( *this == v ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
 	bool operator < ( const vector2 &v ) const { return( !( *this >= v ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
 	bool operator <=( const vector2 &v ) const { return( v >= *this ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
 	bool operator > ( const vector2 &v ) const { return( v < *this ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
 	bool operator >=( const vector2 &v ) const { return( x >= v.x && y >= v.y ); }
 
 
@@ -436,9 +652,7 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	vector2 unit( ) const
 	{
@@ -451,9 +665,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	value_type inner( const vector2 &v ) const { return( x * v.x + y * v.y ); }
 
@@ -462,9 +676,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	value_type outer( const vector2 &v ) const { return( x * v.y - y * v.x ); }
 
@@ -473,9 +687,7 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	value_type length( ) const { return ( value_type( sqrt( (double)( x * x + y * y ) ) ) ); }
 
@@ -496,18 +708,89 @@ public:
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T > inline const vector2< T > operator +( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1 ) += v2 ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector2< T > operator -( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1 ) -= v2 ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector2< T > operator /( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1 ) /= v2 ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const typename vector2< T >::value_type operator *( const vector2< T > &v1, const vector2< T > &v2 ){ return( v1.outer( v2 ) ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const typename vector2< T >::value_type operator ^( const vector2< T > &v1, const vector2< T > &v2 ){ return( v1.inner( v2 ) ); }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector2< T > operator *( const vector2< T > &v1, const typename vector2< T >::value_type &v2 ){ return( vector2< T >( v1 ) *= v2 ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector2< T > operator *( const typename vector2< T >::value_type &v1, const vector2< T > &v2 ){ return( vector2< T >( v2 ) *= v1 ); }
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
 template < class T > inline const vector2< T > operator /( const vector2< T > &v1, const typename vector2< T >::value_type &v2 ){ return( vector2< T >( v1 ) /= v2 ); }
 
 
@@ -515,9 +798,10 @@ template < class T > inline const vector2< T > operator /( const vector2< T > &v
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] out … 引数の説明
+//! @param[in]     v   … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const vector2< T > &v )
 {
@@ -537,30 +821,29 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T         … 引数の説明
+//! @param Allocator … 引数の説明
 //! 
 template < class T, class Allocator = ::std::allocator< T > >
 class vector : public matrix< T, Allocator >
 {
 private:
-	typedef matrix< T, Allocator > base;
+	typedef matrix< T, Allocator > base;		///< @brief 基底クラスを現す行列クラス
 
 public:
-	typedef typename base::allocator_type allocator_type;
-	typedef typename base::reference reference;
-	typedef typename base::const_reference const_reference;
-	typedef typename base::value_type value_type;
-	typedef typename base::size_type size_type;
-	typedef typename base::difference_type difference_type;
-	typedef typename base::pointer pointer;
-	typedef typename base::const_pointer const_pointer;
+	typedef typename base::allocator_type allocator_type;		///< @brief MISTコンテナが利用するアロケータ型
+	typedef typename base::reference reference;					///< @brief MISTのコンテナ内に格納するデータ型の参照．mist::array< data > の場合，data & となる
+	typedef typename base::const_reference const_reference;		///< @brief MISTのコンテナ内に格納するデータ型の const 参照．mist::array< data > の場合，const data & となる
+	typedef typename base::value_type value_type;				///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef typename base::size_type size_type;					///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename base::difference_type difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename base::pointer pointer;						///< @brief MISTのコンテナ内に格納するデータ型のポインター型．mist::array< data > の場合，data * となる
+	typedef typename base::const_pointer const_pointer;			///< @brief MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array< data > の場合，const data * となる
 
-	typedef typename base::iterator iterator;
-	typedef typename base::const_iterator const_iterator;
-	typedef typename base::reverse_iterator reverse_iterator;
-	typedef typename base::const_reverse_iterator const_reverse_iterator;
+	typedef typename base::iterator iterator;								///< @brief MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ
+	typedef typename base::const_iterator const_iterator;					///< @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
+	typedef typename base::reverse_iterator reverse_iterator;				///< @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
+	typedef typename base::const_reverse_iterator const_reverse_iterator;	///< @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 
 
 	//template < class TT, class AAlocator >
@@ -582,9 +865,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v2 … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class TT, class AAlocator >
 	const vector& operator *=( const vector< TT, AAlocator > &v2 )
@@ -621,9 +904,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	value_type operator ^( const vector &v ) const { return( inner( v ) ); }
 
@@ -632,9 +915,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v2 … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	value_type inner( const vector &v2 ) const
 	{
@@ -663,9 +946,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	vector outer( const vector &v ) const
 	{
@@ -674,22 +957,84 @@ public:
 
 
 public:
-	// 構築
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
 	vector( ) : base( ) {}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] a … 引数の説明
+	//! 
 	explicit vector( const Allocator &a ) : base( a ) {}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] num … 引数の説明
+	//! 
 	vector( size_type num ) : base( num, 1 ) {}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] num … 引数の説明
+	//! @param[in] a   … 引数の説明
+	//! 
 	vector( size_type num, const Allocator &a ) : base( num, 1, a ) {}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] num … 引数の説明
+	//! @param[in] val … 引数の説明
+	//! 
 	vector( size_type num, const T &val ) : base( num, 1, val ) {}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] num … 引数の説明
+	//! @param[in] val … 引数の説明
+	//! @param[in] a   … 引数の説明
+	//! 
 	vector( size_type num, const T &val, const Allocator &a ) : base( num, 1, val, a ) {}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] o … 引数の説明
+	//! 
 	template < class TT, class AAlocator >
 	vector( const vector< TT, AAlocator > &o ) : base( o ){ }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] o … 引数の説明
+	//! 
 	vector( const vector< T, Allocator > &o ) : base( o ){ }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] expression … 引数の説明
+	//! 
 	template < class Expression >
 	vector( const matrix_expression< Expression > &expression ) : base( expression.size( ), 1 )
 	{
@@ -708,9 +1053,10 @@ public:
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] out … 引数の説明
+//! @param[in]     v   … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline ::std::ostream &operator <<( ::std::ostream &out, const vector< T, Allocator > &v )
@@ -733,9 +1079,10 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const vector< T, Alloca
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] v1 … 引数の説明
+//! @param[in] v2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline vector< T, Allocator > operator *( const vector< T, Allocator > &v1, const vector< T, Allocator > &v2 )

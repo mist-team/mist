@@ -29,7 +29,7 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	static value_type &get_instance( )
 	{

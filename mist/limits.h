@@ -69,7 +69,7 @@ struct type_limits
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	static value_type minimum( ) { return( 0 ); }
 
@@ -77,7 +77,7 @@ struct type_limits
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	static value_type maximum( ) { return( 1 ); }
 
@@ -85,7 +85,7 @@ struct type_limits
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	static value_type zero( ){ return( 0 ); }
 };
@@ -215,7 +215,8 @@ namespace __limits_0_255__
 //! 詳細な説明や関数の使用例を書く
 //! 
 //! @param[in] v … 引数の説明
-//! @return      … 戻り値の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T >
 inline const T limits_0_255( const T &v )

@@ -33,6 +33,7 @@ struct bspline_base
 	//! @param[in] knot … Bスプラインで利用するノットベクトル
 	//! @param[in] i    … Bスプラインの制御点番号
 	//! @param[in] t    … Bスプラインの区間位置
+	//! 
 	//! @return 指定されたノットベクトル，制御点番号，区間位置に基づく基底関数の値
 	//! 
 	static double Base( const std::vector< double > &knot, std::vector< double >::size_type i, double t )
@@ -65,6 +66,7 @@ struct bspline_base< 1 >
 	//! @param[in] knot … Bスプラインで利用するノットベクトル
 	//! @param[in] i    … Bスプラインの制御点番号
 	//! @param[in] t    … Bスプラインの区間位置
+	//! 
 	//! @return 指定されたノットベクトル，制御点番号，区間位置に基づく基底関数の値
 	//! 
 	static double Base( const std::vector< double > &knot, std::vector< double >::size_type i, double t )
@@ -77,6 +79,7 @@ struct bspline_base< 1 >
 /// @brief Bスプライン曲線を扱うためのクラス
 //!
 //! K次のBスプライン曲線を描画可能．可変個数の制御点に対応し，任意のノットベクトルに対応するBスプライン曲線を描画
+//! 
 //! @param T  … 各制御点・補間点を表すデータ構造を指定（double や vector3< double > など）
 //! @param K  … Bスプライン曲線の次数
 //!
@@ -167,6 +170,7 @@ public:
 	/// @brief 任意のノットベクトルを設定する
 	//!
 	//! @attention 次数 K で制御点数 N とした時に，ノットベクトルの数は N + K + 1 必要である
+	//! 
 	//! @param[in] kknot  … ノットベクトル
 	//!
 	void knot( const knot_list &kknot )
@@ -177,6 +181,7 @@ public:
 	/// @brief デフォルトのモードでノットベクトルを設定する
 	//!
 	//! 本クラス内で定義されている列挙型 BSplineMode のうちの一つを利用する
+	//! 
 	//! @param[in] mode  … 曲線のタイプ
 	//!
 	void knot( BSplineMode mode )
