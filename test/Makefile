@@ -5,6 +5,7 @@ ALL = \
 	array_test \
 	matrix_test \
 	matrix_util_test \
+	matrix_util_test2 \
 	limits_test \
 	operators_test \
 	binary_test \
@@ -32,7 +33,10 @@ matrix_test : matrix_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 matrix_util_test : matrix_util_test.o
-	$(CXX) $(CXXFLAGS) -o $@ $^ -llapack -lblas -lF77 -lI77 $(LIBS) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LAPACKLIBS) $(LIBS) $(LDLIBS)
+
+matrix_util_test2 : matrix_util_test2.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LAPACKLIBS) $(LIBS) $(LDLIBS)
 
 limits_test : limits_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)

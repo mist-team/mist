@@ -27,7 +27,7 @@ class random
 	//static int mti_=number_n_+1; /* mti_==number_n_+1 means mt_[number_n_] is not initialized */
 	//array< unsigned long > mt_;
 	array< unsigned long > mt_;
-	int mti_;
+	unsigned long mti_;
 
 
 public:
@@ -97,7 +97,7 @@ public:
 	/* key_length is its length */
 	void init( const array< unsigned long > seed_array )
 	{
-		int i, j, k;
+		unsigned long i, j, k;
 		init( 19650218UL );
 		i = 1;
 		j = 0;
@@ -147,7 +147,7 @@ public:
 
 		if( mti_ >= number_n_ ) /* generate number_n_ words at one time */
 		{
-			int kk;
+			unsigned long kk;
 
 			if( mti_ == number_n_ + 1 ) /* if init_genrand() has not been called, */
 			{
@@ -159,7 +159,7 @@ public:
 				mt_[ kk ] = mt_[ kk + number_m_ ] ^ ( y >> 1 ) ^ mag01[ y & 0x1UL ];
 			}
 
-			for( ; kk < number_n_ -1 ; kk++ )
+			for( ; kk < number_n_ - 1 ; kk++ )
 			{
 				y = ( mt_[ kk ] & upper_mask_ ) | ( mt_[ kk + 1 ] & lower_mask_ );
 				mt_[ kk ] = mt_[ kk + ( number_m_ - number_n_ ) ] ^ ( y >> 1 ) ^ mag01[ y & 0x1UL ];
