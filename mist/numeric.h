@@ -29,7 +29,7 @@ _MIST_BEGIN
 //! 
 struct matrix_style
 {
-	/// @enum 行列計算をする際の入力となる行列の形式
+	/// @brief 行列計算をする際の入力となる行列の形式
 	enum style
 	{
 		ge,		///< 一般 

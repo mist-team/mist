@@ -26,9 +26,7 @@ _MIST_BEGIN
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param SetType … 引数の説明
 //! 
 template< class SetType >
 class set_base : public SetType
@@ -62,9 +60,6 @@ public:
 	/// @brief 関数・クラスの概要を書く
 	//! 
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
 	//! 
 	set_base( ) : base( ){ }
 

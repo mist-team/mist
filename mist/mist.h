@@ -212,18 +212,18 @@ public:
 
 	size_type size( ) const { return( size_ ); }	///< @brief コンテナに格納されているデータ数を返す
 	size_type size1( ) const { return( size_ ); }	///< @brief X軸方向のコンテナに格納されているデータ数を返す
-	size_type size2( ) const { return( 1 ); }		//< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
-	size_type size3( ) const { return( 1 ); }		//< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type size2( ) const { return( 1 ); }		///< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type size3( ) const { return( 1 ); }		///< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
 	size_type width( ) const { return( size_ ); }	///< @brief X軸方向のコンテナに格納されているデータ数を返す
-	size_type height( ) const { return( 1 ); }		//< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
-	size_type depth( ) const { return( 1 ); }		//< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type height( ) const { return( 1 ); }		///< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type depth( ) const { return( 1 ); }		///< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
 
-	double reso1( double r1 ){ return( 1.0 ); }		//< @brief X軸方向の解像度を返す
-	double reso1( ) const { return( 1.0 ); }		//< @brief X軸方向の解像度を設定する
-	double reso2( double r2 ){ return( 1.0 ); }		//< @brief Y軸方向の解像度を返す
-	double reso2( ) const { return( 1.0 ); }		//< @brief Y軸方向の解像度を設定する
-	double reso3( double r3 ){ return( 1.0 ); }		//< @brief Z軸方向の解像度を返す
-	double reso3( ) const { return( 1.0 ); }		//< @brief Z軸方向の解像度を設定する）
+	double reso1( double r1 ){ return( 1.0 ); }		///< @brief X軸方向の解像度を返す
+	double reso1( ) const { return( 1.0 ); }		///< @brief X軸方向の解像度を設定する
+	double reso2( double r2 ){ return( 1.0 ); }		///< @brief Y軸方向の解像度を返す
+	double reso2( ) const { return( 1.0 ); }		///< @brief Y軸方向の解像度を設定する
+	double reso3( double r3 ){ return( 1.0 ); }		///< @brief Z軸方向の解像度を返す
+	double reso3( ) const { return( 1.0 ); }		///< @brief Z軸方向の解像度を設定する）
 
 
 	/// @brief コンテナ内の要素が占めるデータ量をバイト単位で返す
@@ -328,6 +328,7 @@ public:
 	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
 	//! @param[in] o  … コピー元のコンテナ
+	//! 
 	//! @return       … 自分自身
 	//! 
 	const array& operator =( const array  &o )
@@ -353,15 +354,21 @@ public:
 // コンテナ内の要素へのアクセス演算子
 protected:
 	/// @brief index で示される位置の要素のポインタを返す
+	//! 
 	//! @param[in] index  … コンテナ内の要素位置
+	//! 
 	//! @return           … 指定された要素を示すポインタ
+	//! 
 	pointer paccess( size_type index )
 	{
 		return( data_ + index );
 	}
 	/// @brief index で示される位置の要素の const ポインタを返す
+	//! 
 	//! @param[in] index  … コンテナ内の要素位置
+	//! 
 	//! @return           … 指定された要素を示す const ポインタ
+	//! 
 	const_pointer paccess( size_type index ) const
 	{
 		return( data_ + index );
@@ -375,6 +382,7 @@ public:
 	/// @param[in] index … コンテナ内の要素位置
 	/// @param[in] dmy1  … 使用しない
 	/// @param[in] dmy2  … 使用しない
+	//! 
 	/// @return          … 指定された要素を示す参照
 	//!
 	reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
@@ -391,6 +399,7 @@ public:
 	/// @param[in] index … コンテナ内の要素位置
 	/// @param[in] dmy1  … 使用しない
 	/// @param[in] dmy2  … 使用しない
+	//! 
 	/// @return          … 指定された要素を示す const 参照
 	//!
 	const_reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
@@ -407,6 +416,7 @@ public:
 	/// @param[in] index … コンテナ内の要素位置
 	/// @param[in] dmy1  … 使用しない
 	/// @param[in] dmy2  … 使用しない
+	//! 
 	/// @return          … 指定された要素を示す参照
 	//!
 	reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
@@ -423,6 +433,7 @@ public:
 	/// @param[in] index … コンテナ内の要素位置
 	/// @param[in] dmy1  … 使用しない
 	/// @param[in] dmy2  … 使用しない
+	//! 
 	/// @return          … 指定された要素を示す const 参照
 	//!
 	const_reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
@@ -437,8 +448,7 @@ public:
 	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された index が有効な範囲内にあるかをチェックする
 	//!
 	/// @param[in] index … コンテナ内の要素位置
-	/// @param[in] dmy1  … 使用しない
-	/// @param[in] dmy2  … 使用しない
+	//! 
 	/// @return          … 指定された要素を示す参照
 	//!
 	reference operator []( size_type index )
@@ -453,8 +463,7 @@ public:
 	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された index が有効な範囲内にあるかをチェックする
 	//!
 	/// @param[in] index … コンテナ内の要素位置
-	/// @param[in] dmy1  … 使用しない
-	/// @param[in] dmy2  … 使用しない
+	//! 
 	/// @return          … 指定された要素を示す const 参照
 	//!
 	const_reference operator []( size_type index ) const
@@ -467,6 +476,7 @@ public:
 	/// @brief ディフォルトコンストラクタ．要素数 0 のコンテナを作成する
 	array( ) : allocator_( ), size_( 0 ), data_( NULL ){}
 
+	/// @brief アロケータ a のコピーを利用する
 	explicit array( const Allocator &a ) : allocator_( a ), size_( 0 ), data_( NULL ){}
 
 
@@ -530,13 +540,12 @@ public:
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 要素数が可変の解像度付1次元配列
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 主に音声を扱うための基本クラス
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T         … MISTのコンテナ内に格納するデータ型
+//! @param Allocator … MISTコンテナが利用するアロケータ型．省略した場合は，STLのデフォルトアロケータを使用する
 //! 
 template < class T, class Allocator = std::allocator< T > >
 class array1 : public array< T, Allocator >
@@ -565,40 +574,13 @@ public:
 
 
 protected:
-	typedef array< T, Allocator > base;
-	double reso1_;
+	typedef array< T, Allocator > base;		///< @brief 基底クラスの別名
+	double reso1_;							///< @brief コンテナ内の要素の解像度（ミリや周波数など）
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	double reso1( double r1 ){ return( reso1_ = r1 ); }
-
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	double reso1( ) const { return( reso1_ ); }
-
-
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	void reso( double r1 ){ reso1_ = r1; }
+	double reso1( double r1 ){ return( reso1_ = r1 ); }		//< @brief X軸方向の解像度を r1 に設定し，設定後の値を返す
+	double reso1( ) const { return( reso1_ ); }				//< @brief X軸方向の解像度を返す
+	void reso( double r1 ){ reso1_ = r1; }					//< @brief X軸方向の解像度を r1 に設定し，設定後の値を返す
 
 
 /************************************************************************************************************
@@ -607,100 +589,64 @@ public:
 **
 ************************************************************************************************************/
 
-	/// @brief 順方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向の先頭を指すランダムアクセスイテレータを返す
+	//!
+	//! @code 順方向ランダムアクセスイテレータの使用例
+	//! std::cout << "順方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.x_begin( );
+	//! for( ; ite1 != a.x_end( ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	iterator x_begin( ){ return( base::begin( ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向の先頭を指すコンスト型のコンテナを操作するランダムアクセスイテレータを返す
 	const_iterator x_begin( ) const { return( base::begin( ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向の末尾を指すランダムアクセスイテレータを返す
 	iterator x_end( ){ return( base::end( ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向の末尾を指すコンスト型のコンテナを操作するランダムアクセスイテレータを返す
 	const_iterator x_end( ) const { return( base::end( ) ); }
 
 
 
-	/// @brief 逆方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向の末尾を指す逆方向ランダムアクセスイテレータを返す
+	//!
+	//! @code 逆方向ランダムアクセスイテレータの使用例
+	//! std::cout << "逆方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::reverse_iterator ite2 = a.x_rbegin( );
+	//! for( ; ite2 != a.x_rend( ) ; ite2++ )
+	//! {
+	//! 	std::cout << *ite2 << " ";
+	//! }
+	//! std::cout << std::endl;
+	//! @endcode
+	//!
 	reverse_iterator x_rbegin( ){ return( base::rbegin( ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向の末尾を指すコンスト型のコンテナを操作する逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator x_rbegin( ) const { return( base::rbegin( ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向の先頭を指す逆方向ランダムアクセスイテレータを返す
 	reverse_iterator x_rend( ){ return( base::rend( ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向の先頭を指すコンスト型のコンテナを操作する逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator x_rend( ) const { return( base::rend( )  ); }
 
 
 public: // 配列に対する算術演算
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] a  … 内容を入れ替える対象
 	//! 
 	void swap( array1 &a )
 	{
@@ -711,13 +657,15 @@ public: // 配列に対する算術演算
 	}
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なるコンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
+	//! コピー元とコピー先でデータ型（array< data > の data）が異なる場合の代入を行う．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元のコンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class TT, class AAlocator >
 	const array1& operator =( const array1< TT, AAlocator > &o )
@@ -729,13 +677,13 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なるコンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元のコンテナ
+	//! @return       … 自分自身
 	//! 
 	const array1& operator =( const array1 &o )
 	{
@@ -748,34 +696,55 @@ public:
 	}
 
 public:
-	// 構築
+	/// @brief ディフォルトコンストラクタ．要素数 0，解像度 1.0 のコンテナを作成する
 	array1( ) : base( ), reso1_( 1.0 ) {}
+
+	/// @brief アロケータ a のコピーを利用する
 	explicit array1( const Allocator &a ) : base( a ), reso1_( 1.0 ) {}
 
+	/// @brief 要素数 num 個のコンテナを作成し，デフォルト値で要素を初期化する
 	explicit array1( size_type num ) : base( num ), reso1_( 1.0 ) {}
+
+
+	/// @brief 要素数 num 個のコンテナを作成し，解像度を r1 に設定する
 	array1( size_type num, double r1 ) : base( num ), reso1_( r1 ) {}
+
+	/// @brief 要素数 num 個のコンテナを作成し，使用するアロケータを a に設定する
 	array1( size_type num, const Allocator &a ) : base( num, a ), reso1_( 1.0 ) {}
+
+	/// @brief 要素数 num 個のコンテナを作成し，解像度を r1，アロケータを a に設定する
 	array1( size_type num, double r1, const Allocator &a ) : base( num, a ), reso1_( r1 ) {}
 
+
+	/// @brief 要素数 num 個のコンテナを作成し，解像度を r1 に設定し，全要素を val で初期化する
 	array1( size_type num, double r1, const value_type &val ) : base( num, val ), reso1_( r1 ) {}
+
+	/// @brief 要素数 num 個のコンテナを作成し，解像度を r1 に設定し，全要素を val で初期化する
 	array1( size_type num, const value_type &val, const Allocator &a ) : base( num, val, a ), reso1_( 1.0 ) {}
+
+	/// @brief 要素数 num 個のコンテナを作成し，解像度を r1，アロケータを a  に設定し，全要素を val で初期化する
 	array1( size_type num, double r1, const value_type &val, const Allocator &a ) : base( num, val, a ), reso1_( r1 ) {}
 
+
+	/// @brief 他の array1 配列で要素の型が異なるものから同じ要素数の配列を作成する
+	//!
+	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
+	//!
 	template < class TT, class AAlocator >
 	explicit array1( const array1< TT, AAlocator > &o ) : base( o ), reso1_( o.reso1( ) ) {}
 
+	/// @brief 他の array1 配列で同じ要素型のものを用いて初期化する
 	array1( const array1< T, Allocator > &o ) : base( o ), reso1_( o.reso1_ ) {}
 };
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 要素数が可変の解像度付き2次元配列
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 2次元画像を扱うための基本クラス
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T         … MISTのコンテナ内に格納するデータ型
+//! @param Allocator … MISTコンテナが利用するアロケータ型．省略した場合は，STLのデフォルトアロケータを使用する
 //! 
 template < class T, class Allocator = std::allocator< T > >
 class array2 : public array1< T, Allocator >
@@ -804,19 +773,18 @@ public:
 
 
 protected:
-	typedef array1< T, Allocator > base;
-	size_type size1_;
-	size_type size2_;
-	double reso2_;
+	typedef array1< T, Allocator > base;	///< @brief 基底クラス
+	size_type size1_;						///< @brief X軸方向の要素数
+	size_type size2_;						///< @brief Y軸方向の要素数
+	double reso2_;							///< @brief X軸方向の解像度
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num1 × num2 個に変更し，全ての要素をデフォルト値で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
 	//! 
 	void resize( size_type num1, size_type num2 )
 	{
@@ -826,13 +794,13 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num1 × num2 個に変更し，全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
+	//! @param[in] val  … リサイズ後に各要素を初期化する値
 	//! 
 	void resize( size_type num1, size_type num2, const value_type &val )
 	{
@@ -842,13 +810,11 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] a  … 内容を入れ替える対象
 	//! 
 	void swap( array2 &a )
 	{
@@ -867,13 +833,9 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナの要素を空にする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! コンテナに格納されているデータを全て削除し，コンテナを空（要素数0）にする
 	//! 
 	void clear( )
 	{
@@ -882,40 +844,19 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	size_type size1( )  const { return( size1_ ); }
-	size_type size2( )  const { return( size2_ ); }
-	size_type width( )  const { return( size1_ ); }
-	size_type height( ) const { return( size2_ ); }
+	size_type size1( )  const { return( size1_ ); }			///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type size2( )  const { return( size2_ ); }			///< @brief Y軸方向のコンテナに格納されているデータ数を返す
+	size_type width( )  const { return( size1_ ); }			///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type height( ) const { return( size2_ ); }			///< @brief Y軸方向のコンテナに格納されているデータ数を返す
 
+	double reso2( double r2 ){ return( reso2_ = r2 ); }		///< @brief Y軸方向の解像度を r2 に設定し，設定後の値を返す
+	double reso2( ) const { return( reso2_ ); }				///< @brief Y軸方向の解像度を返す
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	double reso2( double r2 ){ return( reso2_ = r2 ); }
-	double reso2( ) const { return( reso2_ ); }
-
-
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	///< @brief X軸とY軸方向の解像度を1度に設定する
+	//!
+	//! @param[in] r1 … 新しいX軸方向の解像度
+	//! @param[in] r2 … 新しいY軸方向の解像度
+	//!
 	void reso( double r1, double r2 ){ base::reso1_ = r1; reso2_ = r2; }
 
 
@@ -926,49 +867,52 @@ public:
 **
 ************************************************************************************************************/
 
-	/// @brief 順方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向を固定した時の，Y軸方向の先頭を指すランダムアクセスイテレータを返す
+	//!
+	//! @code X軸方向を固定し，Y軸方向の先頭を指すランダムアクセスイテレータの使用例
+	//! std::cout << "順方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.x_begin( 1 );
+	//! for( ; ite1 != a.x_end( 1 ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	iterator x_begin( size_type i ){ return( iterator( paccess( i, 0 ), width( ) ) ); }
+
+	/// @brief X軸方向を固定した時の，Y軸方向の先頭を指すコンスト型のランダムアクセスイテレータを返す
 	const_iterator x_begin( size_type i ) const { return( const_iterator( paccess( i, 0 ), width( ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向を固定した時の，Y軸方向の末尾を指すランダムアクセスイテレータを返す
 	iterator x_end( size_type i ){ return( iterator( paccess( i, height( ) ), width( ) ) ); }
+
+	/// @brief X軸方向を固定した時の，Y軸方向の末尾を指すコンスト型のランダムアクセスイテレータを返す
 	const_iterator x_end( size_type i ) const { return( const_iterator( paccess( i, height( ) ), width( ) ) ); }
 
 
-	/// @brief 逆方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向を固定した時の，Y軸方向の末尾を指す逆方向ランダムアクセスイテレータを返す
+	//!
+	//! @code X軸方向を固定した時の，Y軸方向の逆方向ランダムアクセスイテレータの使用例
+	//! std::cout << "逆方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::reverse_iterator ite2 = a.x_rbegin( 2 );
+	//! for( ; ite2 != a.x_rend( 2 ) ; ite2++ )
+	//! {
+	//! 	std::cout << *ite2 << " ";
+	//! }
+	//! std::cout << std::endl;
+	//! @endcode
+	//!
 	reverse_iterator x_rbegin( size_type i ){ return( reverse_iterator( x_end( i ) ) ); }
+
+	/// @brief X軸方向を固定した時の，Y軸方向の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator x_rbegin( size_type i ) const { return( const_reverse_iterator( x_end( i ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+
+	/// @brief X軸方向を固定した時の，Y軸方向の末尾を指す逆方向ランダムアクセスイテレータを返す
 	reverse_iterator x_rend( size_type i ){ return( reverse_iterator( x_begin( i ) ) ); }
+
+	/// @brief X軸方向を固定した時の，Y軸方向の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator x_rend( size_type i ) const { return( const_reverse_iterator( x_begin( i ) ) ); }
 
 /************************************************************************************************************
@@ -977,60 +921,64 @@ public:
 **
 ************************************************************************************************************/
 
-	/// @brief 順方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Y軸方向を固定した時の，X軸方向の先頭を指すランダムアクセスイテレータを返す
+	//!
+	//! @code Y軸方向を固定した時の，X軸方向の先頭を指すランダムアクセスイテレータの使用例
+	//! std::cout << "順方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.y_begin( 1 );
+	//! for( ; ite1 != a.y_end( 1 ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	iterator y_begin( size_type j ){ return( iterator( paccess( 0, j ), 1 ) ); }
+
+	/// @brief Y軸方向を固定した時の，X軸方向の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_iterator y_begin( size_type j ) const { return( const_iterator( paccess( 0, j ), 1 ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Y軸方向を固定した時の，X軸方向の末尾を指すランダムアクセスイテレータを返す
 	iterator y_end( size_type j ){ return( iterator( paccess( width( ), j ), 1 ) ); }
+
+	/// @brief Y軸方向を固定した時の，X軸方向の末尾を指すコンスト型のランダムアクセスイテレータを返す
 	const_iterator y_end( size_type j ) const { return( const_iterator( paccess( width( ), j ), 1 ) ); }
 
 
-	/// @brief 逆方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Y軸方向を固定した時の，X軸方向の先頭を指す逆方向ランダムアクセスイテレータを返す
+	//!
+	//! @code Y軸方向を固定した時の，X軸方向の先頭を指す逆方向ランダムアクセスイテレータの使用例
+	//! std::cout << "逆方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.y_rbegin( 1 );
+	//! for( ; ite1 != a.y_rend( 1 ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	reverse_iterator y_rbegin( size_type j ){ return( reverse_iterator( y_end( j ) ) ); }
+
+	/// @brief Y軸方向を固定した時の，X軸方向の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator y_rbegin( size_type j ) const { return( const_reverse_iterator( y_end( j ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Y軸方向を固定した時の，X軸方向の末尾を指す逆方向ランダムアクセスイテレータを返す
 	reverse_iterator y_rend( size_type j ){ return( reverse_iterator( y_begin( j ) ) ); }
+
+	/// @brief Y軸方向を固定した時の，X軸方向の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator y_rend( size_type j ) const { return( const_reverse_iterator( y_begin( j ) ) ); }
 
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なるコンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
+	//! コピー元とコピー先でデータ型（array< data > の data）が異なる場合の代入を行う．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元のコンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class TT, class AAlocator >
 	const array2& operator =( const array2< TT, AAlocator > &o )
@@ -1044,13 +992,13 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なるコンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元のコンテナ
+	//! @return       … 自分自身
 	//! 
 	const array2& operator =( const array2 &o )
 	{
@@ -1066,24 +1014,41 @@ public:
 
 // 要素へのアクセス
 protected:
+	/// @brief index で示される位置の要素のポインタを返す
+	//! 
+	//! @param[in] i … コンテナ内のX軸方向の位置
+	//! @param[in] j … コンテナ内のY軸方向の位置
+	//! 
+	//! @return 指定された要素を示すポインタ
+	//! 
 	pointer paccess( size_type i, size_type j )
 	{
 		return( base::data_ + i + j * size1_ );
 	}
+
+	/// @brief index で示される位置の要素の const ポインタを返す
+	//! 
+	//! @param[in] i … コンテナ内のX軸方向の位置
+	//! @param[in] j … コンテナ内のY軸方向の位置
+	//! 
+	//! @return 指定された要素を示すポインタ
+	//! 
 	const_pointer paccess( size_type i, size_type j ) const
 	{
 		return( base::data_ + i + j * size1_ );
 	}
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j ) で示される位置の要素の参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j ) が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] i   … コンテナ内のX軸方向の位置
+	/// @param[in] j   … コンテナ内のY軸方向の位置
+	/// @param[in] dmy … 使用しない
+	//!
+	/// @return 指定された要素を示す参照
+	//!
 	reference at( size_type i, size_type j, size_type dmy = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
@@ -1091,14 +1056,16 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j ) で示される位置の要素の const 参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j ) が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] i   … コンテナ内のX軸方向の位置
+	/// @param[in] j   … コンテナ内のY軸方向の位置
+	/// @param[in] dmy … 使用しない
+	//!
+	/// @return 指定された要素を示す const 参照
+	//!
 	const_reference at( size_type i, size_type j, size_type dmy = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
@@ -1106,14 +1073,16 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j ) で示される位置の要素の参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j ) が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] i   … コンテナ内のX軸方向の位置
+	/// @param[in] j   … コンテナ内のY軸方向の位置
+	/// @param[in] dmy … 使用しない
+	//!
+	/// @return 指定された要素を示す参照
+	//!
 	reference operator ()( size_type i, size_type j, size_type dmy = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
@@ -1121,14 +1090,16 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j ) で示される位置の要素の const 参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j ) が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] i   … コンテナ内のX軸方向の位置
+	/// @param[in] j   … コンテナ内のY軸方向の位置
+	/// @param[in] dmy … 使用しない
+	//!
+	/// @return 指定された要素を示す const 参照
+	//!
 	const_reference operator ()( size_type i, size_type j, size_type dmy = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
@@ -1137,23 +1108,46 @@ public:
 
 
 public:
-	// 構築
+	/// @brief ディフォルトコンストラクタ．要素数 0，解像度 1.0 × 1.0 のコンテナを作成する
 	array2( ) : base( ), size1_( 0 ), size2_( 0 ), reso2_( 1.0 ) {}
+
+	/// @brief アロケータ a のコピーを利用する
 	explicit array2( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ), reso2_( 1.0 ) {}
 
+	/// @brief 要素数 num1 × num2 個のコンテナを作成し，デフォルト値で要素を初期化する
 	array2( size_type num1, size_type num2 ) : base( num1 * num2 ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
+
+	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定する
 	array2( size_type num1, size_type num2, double r1, double r2 ) : base( num1 * num2, r1 ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
+
+	/// @brief 要素数 num1 × num2 個のコンテナを作成し，使用するアロケータを a に設定する
 	array2( size_type num1, size_type num2, const Allocator &a ) : base( num1 * num2, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
+
+	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，使用するアロケータを a に設定する
 	array2( size_type num1, size_type num2, double r1, double r2, const Allocator &a ) : base( num1 * num2, r1, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
 
+
+	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を 1.0 × 1.0 に設定し，全要素を val で初期化する
 	array2( size_type num1, size_type num2, const value_type &val ) : base( num1 * num2, val ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
+
+	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，全要素を val で初期化する
 	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val ) : base( num1 * num2, r1, val ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
+
+	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，使用するアロケータを a に設定する
 	array2( size_type num1, size_type num2, const value_type &val, const Allocator &a ) : base( num1 * num2, val, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
+
+	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2，使用するアロケータを a に設定し，全要素を val で初期化する
 	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val, const Allocator &a ) : base( num1 * num2, r1, val, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
 
+
+	/// @brief 他の array2 配列で要素の型が異なるものから同じ要素数の配列を作成する
+	//!
+	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
+	//!
 	template < class TT, class AAlocator >
 	array2( const array2< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), reso2_( o.reso2( ) ) {}
 
+	/// @brief 他の array2 配列で同じ要素型のものを用いて初期化する
 	array2( const array2< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), reso2_( o.reso2_ ) {}
 };
 
@@ -1161,13 +1155,12 @@ public:
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 要素数が可変の解像度付き3次元配列
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 3次元画像を扱うための基本クラス
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T         … MISTのコンテナ内に格納するデータ型
+//! @param Allocator … MISTコンテナが利用するアロケータ型．省略した場合は，STLのデフォルトアロケータを使用する
 //! 
 template < class T, class Allocator = std::allocator< T > >
 class array3 : public array2< T, Allocator >
@@ -1196,20 +1189,20 @@ public:
 
 
 protected:
-	typedef array2< T, Allocator > base;
-	size_type size1_;
-	size_type size2_;
-	size_type size3_;
-	double reso3_;
+	typedef array2< T, Allocator > base;	///< @brief 基底クラス
+	size_type size1_;						///< @brief X軸方向の要素数
+	size_type size2_;						///< @brief Y軸方向の要素数
+	size_type size3_;						///< @brief Z軸方向の要素数
+	double reso3_;							///< @brief Z軸方向の解像度
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num1 × num2 × num3 個に変更し，全ての要素をデフォルト値で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
+	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
 	//! 
 	void resize( size_type num1, size_type num2, size_type num3 )
 	{
@@ -1220,13 +1213,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num1 × num2 × num3 個に変更し，全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
+	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
+	//! @param[in] val  … リサイズ後に各要素を初期化する値
 	//! 
 	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
 	{
@@ -1237,13 +1231,11 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] a  … 内容を入れ替える対象
 	//! 
 	void swap( array3 &a )
 	{
@@ -1265,13 +1257,9 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナの要素を空にする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! コンテナに格納されているデータを全て削除し，コンテナを空（要素数0）にする
 	//! 
 	void clear( )
 	{
@@ -1280,89 +1268,71 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	size_type size1( ) const { return( size1_ ); }
-	size_type size2( ) const { return( size2_ ); }
-	size_type size3( ) const { return( size3_ ); }
-	size_type width( ) const { return( size1_ ); }
-	size_type height( ) const { return( size2_ ); }
-	size_type depth( ) const { return( size3_ ); }
+	size_type size1( ) const { return( size1_ ); }			///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type size2( ) const { return( size2_ ); }			///< @brief Y軸方向のコンテナに格納されているデータ数を返す
+	size_type size3( ) const { return( size3_ ); }			///< @brief Z軸方向のコンテナに格納されているデータ数を返す
+	size_type width( ) const { return( size1_ ); }			///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type height( ) const { return( size2_ ); }			///< @brief Y軸方向のコンテナに格納されているデータ数を返す
+	size_type depth( ) const { return( size3_ ); }			///< @brief Z軸方向のコンテナに格納されているデータ数を返す
 
+	double reso3( double r3 ){ return( reso3_ = r3 ); }		///< @brief Z軸方向の解像度を r3 に設定し，設定後の値を返す
+	double reso3( ) const { return( reso3_ ); }				///< @brief Z軸方向の解像度を返す
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	double reso3( double r3 ){ return( reso3_ = r3 ); }
-	double reso3( ) const { return( reso3_ ); }
-
-
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	///< @brief X軸とY軸とZ軸方向の解像度を1度に設定する
+	//!
+	//! @param[in] r1 … 新しいX軸方向の解像度
+	//! @param[in] r2 … 新しいY軸方向の解像度
+	//! @param[in] r3 … 新しいY軸方向の解像度
+	//!
 	void reso( double r1, double r2, double r3 ){ base::reso1_ = r1; base::reso2_ = r2; reso3_ = r3; }
 
 
 
-	/// @brief 順方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの先頭を指すランダムアクセスイテレータを返す
+	//!
+	//! @code 順方向ランダムアクセスイテレータの使用例
+	//! std::cout << "順方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.begin( );
+	//! for( ; ite1 != a.end( ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	iterator begin( ){ return( iterator( paccess( 0, 0, 0 ), 0, base::size( ), 0 ) ); }
+
+	/// @brief コンテナの先頭を指すコンスト型のコンテナを操作するランダムアクセスイテレータを返す
 	const_iterator begin( ) const { return( const_iterator( paccess( 0, 0, 0 ), 0, base::size( ), 0 ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの末尾を指すランダムアクセスイテレータを返す
 	iterator end( ){ return( iterator( paccess( 0, 0, 0 ), base::size( ), base::size( ), 0 ) ); }
+
+	/// @brief コンテナの末尾を指すコンスト型のコンテナを操作するランダムアクセスイテレータを返す
 	const_iterator end( ) const { return( const_iterator( paccess( 0, 0, 0 ), base::size( ), base::size( ), 0 ) ); }
 
 
-	/// @brief 逆方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの末尾を指す逆方向ランダムアクセスイテレータを返す
+	//!
+	//! @code 逆方向ランダムアクセスイテレータの使用例
+	//! std::cout << "逆方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::reverse_iterator ite2 = a.rbegin( );
+	//! for( ; ite2 != a.rend( ) ; ite2++ )
+	//! {
+	//! 	std::cout << *ite2 << " ";
+	//! }
+	//! std::cout << std::endl;
+	//! @endcode
+	//!
 	reverse_iterator rbegin( ){ return( reverse_iterator( end( ) ) ); }
+
+	/// @brief コンテナの末尾を指すコンスト型のコンテナを操作する逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator rbegin( ) const { return( const_reverse_iterator( end( ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの先頭を指す逆方向ランダムアクセスイテレータを返す
 	reverse_iterator rend( ){ return( reverse_iterator( begin( ) ) ); }
+
+	/// @brief 使用しているアロケータが確保可能なメモリの最大値を返す
 	const_reverse_iterator rend( ) const { return( const_reverse_iterator( begin( ) ) ); }
 
 /************************************************************************************************************
@@ -1371,50 +1341,52 @@ public:
 **
 ************************************************************************************************************/
 
-	/// @brief 順方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向を固定した時の，YZ平面(Sagittal)の先頭を指すランダムアクセスイテレータを返す
+	//!
+	//! @code X軸方向を固定し，YZ平面(Sagittal)の先頭を指すランダムアクセスイテレータの使用例
+	//! std::cout << "順方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.x_begin( 1 );
+	//! for( ; ite1 != a.x_end( 1 ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	iterator x_begin( size_type i ){ return( iterator( paccess( i, 0, 0 ), 0, 1, width( ) ) ); }
+
+	/// @brief X軸方向を固定した時の，YZ平面(Sagittal)の先頭を指すコンスト型のランダムアクセスイテレータを返す
 	const_iterator x_begin( size_type i ) const { return( const_iterator( paccess( i, 0, 0 ), 0, 1, width( ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向を固定した時の，YZ平面(Sagittal)の末尾を指すランダムアクセスイテレータを返す
 	iterator x_end( size_type i ){ return( iterator( paccess( i, 0, 0 ), height( ) * depth( ), 1, width( ) ) ); }
+
+	/// @brief X軸方向を固定した時の，YZ平面(Sagittal)の末尾を指すコンスト型のランダムアクセスイテレータを返す
 	const_iterator x_end( size_type i ) const { return( const_iterator( paccess( i, 0, 0 ), height( ) * depth( ), 1, width( ) ) ); }
 
 
 
-	/// @brief 逆方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向を固定した時の，YZ平面(Sagittal)の末尾を指す逆方向ランダムアクセスイテレータを返す
+	//!
+	//! @code X軸方向を固定した時の，YZ平面(Sagittal)の逆方向ランダムアクセスイテレータの使用例
+	//! std::cout << "逆方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::reverse_iterator ite2 = a.x_rbegin( 2 );
+	//! for( ; ite2 != a.x_rend( 2 ) ; ite2++ )
+	//! {
+	//! 	std::cout << *ite2 << " ";
+	//! }
+	//! std::cout << std::endl;
+	//! @endcode
+	//!
 	reverse_iterator x_rbegin( size_type i ){ return( reverse_iterator( x_end( i ) ) ); }
+
+	/// @brief X軸方向を固定した時の，YZ平面(Sagittal)の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator x_rbegin( size_type i ) const { return( const_reverse_iterator( x_end( i ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief X軸方向を固定した時の，YZ平面(Sagittal)の末尾を指す逆方向ランダムアクセスイテレータを返す
 	reverse_iterator x_rend( size_type i ){ return( reverse_iterator( x_begin( i ) ) ); }
+
+	/// @brief X軸方向を固定した時の，YZ平面(Sagittal)の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator x_rend( size_type i ) const { return( const_reverse_iterator( x_begin( i ) ) ); }
 
 
@@ -1424,49 +1396,51 @@ public:
 **
 ************************************************************************************************************/
 
-	/// @brief 順方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Y軸方向を固定した時の，XZ平面(Coronal)の先頭を指すランダムアクセスイテレータを返す
+	//!
+	//! @code Y軸方向を固定した時の，XZ平面の先頭を指すランダムアクセスイテレータの使用例
+	//! std::cout << "順方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.y_begin( 1 );
+	//! for( ; ite1 != a.y_end( 1 ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	iterator y_begin( size_type j ){ return( iterator( paccess( 0, j, 0 ), 0, height( ), width( ) * height( ) ) ); }
+
+	/// @brief Y軸方向を固定した時の，XZ平面(Coronal)の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_iterator y_begin( size_type j ) const { return( const_iterator( paccess( 0, j, 0 ), 0, height( ), width( ) * height( ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Y軸方向を固定した時の，XZ平面(Coronal)の末尾を指すランダムアクセスイテレータを返す
 	iterator y_end( size_type j ){ return( iterator( paccess( 0, j, 0 ), width( ) * depth( ), height( ), width( ) * height( ) ) ); }
+
+	/// @brief Y軸方向を固定した時の，XZ平面(Coronal)の末尾を指すコンスト型のランダムアクセスイテレータを返す
 	const_iterator y_end( size_type j ) const { return( const_iterator( paccess( 0, j, 0 ), width( ) * depth( ), height( ), width( ) * height( ) ) ); }
 
 
-	/// @brief 逆方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Y軸方向を固定した時の，XZ平面(Coronal)の先頭を指す逆方向ランダムアクセスイテレータを返す
+	//!
+	//! @code Y軸方向を固定した時の，XZ平面(Coronal)の先頭を指す逆方向ランダムアクセスイテレータの使用例
+	//! std::cout << "逆方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.y_rbegin( 1 );
+	//! for( ; ite1 != a.y_rend( 1 ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	reverse_iterator y_rbegin( size_type j ){ return( reverse_iterator( y_end( j ) ) ); }
+
+	/// @brief Y軸方向を固定した時の，XZ平面(Coronal)の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator y_rbegin( size_type j ) const { return( const_reverse_iterator( y_end( j ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Y軸方向を固定した時の，XZ平面(Coronal)の末尾を指す逆方向ランダムアクセスイテレータを返す
 	reverse_iterator y_rend( size_type j ){ return( reverse_iterator( y_begin( j ) ) ); }
+
+	/// @brief Y軸方向を固定した時の，XZ平面(Coronal)の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator y_rend( size_type j ) const { return( const_reverse_iterator( y_begin( j ) ) ); }
 
 
@@ -1476,60 +1450,64 @@ public:
 **
 ************************************************************************************************************/
 
-	/// @brief 順方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Z軸方向を固定した時の，XY平面(Axial)の先頭を指すランダムアクセスイテレータを返す
+	//!
+	//! @code Z軸方向を固定した時の，XY平面の先頭を指すランダムアクセスイテレータの使用例
+	//! std::cout << "順方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.z_begin( 1 );
+	//! for( ; ite1 != a.z_end( 1 ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	iterator z_begin( size_type k ){ return( iterator( paccess( 0, 0, k ), 0, 1, 1 ) ); }
+
+	/// @brief Z軸方向を固定した時の，XY平面(Axial)の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_iterator z_begin( size_type k ) const { return( const_iterator( paccess( 0, 0, k ), 0, 1, 1 ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Z軸方向を固定した時の，XY平面(Axial)の末尾を指すランダムアクセスイテレータを返す
 	iterator z_end( size_type k ){ return( iterator( paccess( 0, 0, k ), width( ) * height( ), 1, 1 ) ); }
+
+	/// @brief Z軸方向を固定した時の，XY平面(Axial)の末尾を指すコンスト型のランダムアクセスイテレータを返す
 	const_iterator z_end( size_type k ) const { return( const_iterator( paccess( 0, 0, k ), width( ) * height( ), 1, 1 ) ); }
 
 
-	/// @brief 逆方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Z軸方向を固定した時の，XY平面(Axial)の先頭を指す逆方向ランダムアクセスイテレータを返す
+	//!
+	//! @code Z軸方向を固定した時の，XY平面(Axial)の先頭を指す逆方向ランダムアクセスイテレータの使用例
+	//! std::cout << "逆方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.z_rbegin( 1 );
+	//! for( ; ite1 != a.z_rend( 1 ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	reverse_iterator z_rbegin( size_type k ){ return( reverse_iterator( z_end( k ) ) ); }
+
+	/// @brief Z軸方向を固定した時の，XY平面(Axial)の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator z_rbegin( size_type k ) const { return( const_reverse_iterator( z_end( k )) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief Z軸方向を固定した時の，XY平面(Axial)の末尾を指す逆方向ランダムアクセスイテレータを返す
 	reverse_iterator z_rend( size_type k ){ return( reverse_iterator( z_begin( k ) ) ); }
+
+	/// @brief Z軸方向を固定した時の，XY平面(Axial)の末尾を指すコンスト型の逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator z_rend( size_type k ) const { return( const_reverse_iterator( z_begin( k ) ) ); }
 
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なるコンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
+	//! コピー元とコピー先でデータ型（array3< data > の data）が異なる場合の代入を行う．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元のコンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class TT, class AAlocator >
 	const array3& operator =( const array3< TT, AAlocator > &o )
@@ -1544,13 +1522,13 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なるコンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元のコンテナ
+	//! @return       … 自分自身
 	//! 
 	const array3& operator =( const array3 &o )
 	{
@@ -1568,24 +1546,43 @@ public:
 
 // 要素へのアクセス
 protected:
+	/// @brief index で示される位置の要素のポインタを返す
+	//! 
+	//! @param[in] i … コンテナ内のX軸方向の位置
+	//! @param[in] j … コンテナ内のY軸方向の位置
+	//! @param[in] k … コンテナ内のZ軸方向の位置
+	//! 
+	//! @return 指定された要素を示すポインタ
+	//! 
 	pointer paccess( size_type i, size_type j, size_type k )
 	{
 		return( base::data_ + i + ( j + k * size2_ ) * size1_ );
 	}
+
+	/// @brief index で示される位置の要素の const ポインタを返す
+	//! 
+	//! @param[in] i … コンテナ内のX軸方向の位置
+	//! @param[in] j … コンテナ内のY軸方向の位置
+	//! @param[in] k … コンテナ内のZ軸方向の位置
+	//! 
+	//! @return 指定された要素を示すポインタ
+	//! 
 	const_pointer paccess( size_type i, size_type j, size_type k ) const
 	{
 		return( base::data_ + i + ( j + k * size2_ ) * size1_ );
 	}
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j, k ) で示される位置の要素の参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j, k ) が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	//! @param[in] k … コンテナ内のZ軸方向の位置
+	//!
+	/// @return 指定された要素を示す参照
+	//!
 	reference at( size_type i, size_type j, size_type k )
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
@@ -1593,14 +1590,16 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j, k ) で示される位置の要素の const 参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j, k ) が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	//! @param[in] k … コンテナ内のZ軸方向の位置
+	//!
+	/// @return 指定された要素を示す const 参照
+	//!
 	const_reference at( size_type i, size_type j, size_type k ) const
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
@@ -1608,14 +1607,16 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j, k ) で示される位置の要素の参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j, k ) が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	//! @param[in] k … コンテナ内のZ軸方向の位置
+	//!
+	/// @return 指定された要素を示す参照
+	//!
 	reference operator ()( size_type i, size_type j, size_type k )
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
@@ -1623,14 +1624,16 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j, k ) で示される位置の要素の const 参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された ( i, j, k ) が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	//! @param[in] k … コンテナ内のZ軸方向の位置
+	//!
+	/// @return 指定された要素を示す const 参照
+	//!
 	const_reference operator ()( size_type i, size_type j, size_type k ) const
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
@@ -1639,37 +1642,57 @@ public:
 
 
 public:
-	// 構築
+	/// @brief ディフォルトコンストラクタ．要素数 0，解像度 1.0 × 1.0 × 1.0 のコンテナを作成する
 	array3( ) : base( ), size1_( 0 ), size2_( 0 ), size3_( 0 ), reso3_( 1.0 ) {}
+
+	/// @brief アロケータ a のコピーを利用する
 	explicit array3( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ), size3_( 0 ), reso3_( 1.0 ) {}
 
+	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，デフォルト値で要素を初期化する
 	array3( size_type num1, size_type num2, size_type num3 ) : base( num1 * num2, num3 ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
+
+	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定する
 	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3 ) : base( num1 * num2, num3, r1, r2 ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
+
+	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，使用するアロケータを a に設定する
 	array3( size_type num1, size_type num2, size_type num3, const Allocator &a ) : base( num1 * num2, num3, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
+
+	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定し，使用するアロケータを a に設定する
 	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const Allocator &a ) : base( num1 * num2, num3, r1, r2, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
 
+
+	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を 1.0 × 1.0 × 1.0 に設定し，全要素を val で初期化する
 	array3( size_type num1, size_type num2, size_type num3, const value_type &val ) : base( num1 * num2, num3, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
+
+	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定し，全要素を val で初期化する
 	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val ) : base( num1 * num2, num3, r1, r2, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
+
+	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定し，使用するアロケータを a に設定する
 	array3( size_type num1, size_type num2, size_type num3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
+
+	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3，使用するアロケータを a に設定し，全要素を val で初期化する
 	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, r1, r2, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
 
+
+	/// @brief 他の array3 配列で要素の型が異なるものから同じ要素数の配列を作成する
+	//!
+	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
+	//!
 	template < class TT, class AAlocator >
 	array3( const array3< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( o.size3( ) ), reso3_( o.reso3( ) ) {}
 
+	/// @brief 他の array3 配列で同じ要素型のものを用いて初期化する
 	array3( const array3< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), size3_( o.size3_ ), reso3_( o.reso3_ ) {}
 };
 
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 画像のふちにマージンを持った配列
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 1・2・3次元画像にマージンを持たせるための基本クラス
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//!
-//! @return        … 戻り値の説明
+//! @param Array … 1・2・3次元画像クラスを指定する
 //! 
 template < class Array >
 class marray : public Array
@@ -1691,20 +1714,17 @@ public:
 
 
 protected:
-	typedef Array base;
-	size_type margin1_;
-	size_type margin2_;
-	size_type margin3_;
+	typedef Array base;						///< @brief 基底クラス
+	size_type margin1_;						///< @brief X軸方向のマージン
+	size_type margin2_;						///< @brief Y軸方向のマージン
+	size_type margin3_;						///< @brief Z軸方向のマージン
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num1 個に変更し，全ての要素をデフォルト値で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後の全要素数
 	//! 
 	void resize( size_type num1 )
 	{
@@ -1712,14 +1732,12 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num1 × num2 個に変更し，全ての要素をデフォルト値で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
 	//! 
 	void resize( size_type num1, size_type num2 )
 	{
@@ -1727,14 +1745,13 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num1 × num2 × num3 個に変更し，全ての要素をデフォルト値で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
+	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
 	//! 
 	void resize( size_type num1, size_type num2, size_type num3 )
 	{
@@ -1742,14 +1759,12 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num1 個に変更し，全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後の全要素数
+	//! @param[in] val  … リサイズ後に各要素を初期化する値
 	//! 
 	void resize( size_type num1, const value_type &val )
 	{
@@ -1757,14 +1772,13 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num1 × num2 個に変更し，全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
+	//! @param[in] val  … リサイズ後に各要素を初期化する値
 	//! 
 	void resize( size_type num1, size_type num2, const value_type &val )
 	{
@@ -1772,14 +1786,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num1 × num2 × num3 個に変更し，全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
+	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
+	//! @param[in] val  … リサイズ後に各要素を初期化する値
 	//! 
 	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
 	{
@@ -1787,14 +1801,11 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @param[in] a  … 内容を入れ替える対象
 	//! 
 	void swap( marray &a )
 	{
@@ -1814,14 +1825,9 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナの要素を空にする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! コンテナに格納されているデータを全て削除し，コンテナを空（要素数0）にする
 	//! 
 	void clear( )
 	{
@@ -1830,14 +1836,11 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内のマージン部分のデータ要素を指定された値で初期化する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! マージン部分の要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @param[in] val … 要素を初期化する値
 	//! 
 	void fill_margin( const value_type &val = value_type( ) )
 	{
@@ -1909,45 +1912,25 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
-	//! 
-	size_type size1( ) const { return( base::size1( ) - 2 * margin1_ ); }
-	size_type size2( ) const { return( base::size2( ) - 2 * margin2_ ); }
-	size_type size3( ) const { return( base::size3( ) - 2 * margin3_ ); }
-	size_type width( ) const { return( size1( ) ); }
-	size_type height( ) const { return( size2( ) ); }
-	size_type depth( ) const { return( size3( ) ); }
+	size_type size1( ) const { return( base::size1( ) - 2 * margin1_ ); }	///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type size2( ) const { return( base::size2( ) - 2 * margin2_ ); }	///< @brief Y軸方向のコンテナに格納されているデータ数を返す
+	size_type size3( ) const { return( base::size3( ) - 2 * margin3_ ); }	///< @brief Z軸方向のコンテナに格納されているデータ数を返す
+	size_type width( ) const { return( size1( ) ); }						///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type height( ) const { return( size2( ) ); }						///< @brief Y軸方向のコンテナに格納されているデータ数を返す
+	size_type depth( ) const { return( size3( ) ); }						///< @brief Z軸方向のコンテナに格納されているデータ数を返す
 
-
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
-	//! 
-	size_type margin1( ) const { return( margin1_ ); }
-	size_type margin2( ) const { return( margin2_ ); }
-	size_type margin3( ) const { return( margin3_ ); }
+	size_type margin1( ) const { return( margin1_ ); }		///< @brief X軸方向のマージン幅を返す
+	size_type margin2( ) const { return( margin2_ ); }		///< @brief Y軸方向のマージン幅を返す
+	size_type margin3( ) const { return( margin3_ ); }		///< @brief Z軸方向のマージン幅を返す
 
 private:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief array コンテナからデータをコピーする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention マージン部分には変更は加えられない
+	//!
+	//! @param[in] o  … コピー元のコンテナ
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const marray& copy( const array< T, Allocator > &o )
@@ -1961,14 +1944,13 @@ private:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief array1 コンテナからデータをコピーする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention マージン部分には変更は加えられない
+	//!
+	//! @param[in] o  … コピー元のコンテナ
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const marray& copy( const array1< T, Allocator > &o )
@@ -1982,14 +1964,13 @@ private:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief array2 コンテナからデータをコピーする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention マージン部分には変更は加えられない
+	//!
+	//! @param[in] o  … コピー元のコンテナ
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const marray& copy( const array2< T, Allocator > &o )
@@ -2007,14 +1988,13 @@ private:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief array3 コンテナからデータをコピーする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention マージン部分には変更は加えられない
+	//!
+	//! @param[in] o  … コピー元のコンテナ
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
-	//! @return        … 戻り値の説明
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const marray& copy( const array3< T, Allocator > &o )
@@ -2036,14 +2016,14 @@ private:
 	}
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 同じ型の marray コンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
+	//! @param[in] o  … コピー元の marray コンテナ
 	//! 
-	//! @return        … 戻り値の説明
+	//! @return 自分自身
 	//! 
 	const marray& operator =( const marray &o )
 	{
@@ -2058,14 +2038,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なる array コンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
+	//! @param[in] o  … コピー元の array コンテナ
 	//! 
-	//! @return        … 戻り値の説明
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const marray& operator =( const array< T, Allocator > &o )
@@ -2075,13 +2055,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なる array1 コンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元の array1 コンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const marray& operator =( const array1< T, Allocator > &o )
@@ -2092,13 +2073,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なる array2 コンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元の array2 コンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const marray& operator =( const array2< T, Allocator > &o )
@@ -2110,13 +2092,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なる array3 コンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元の array3 コンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const marray& operator =( const array3< T, Allocator > &o )
@@ -2130,160 +2113,148 @@ public:
 
 // 要素へのアクセス
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief index で示される位置の要素の参照を返す
+	//!
+	/// @param[in] index … コンテナ内の要素位置
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	reference at( difference_type i )
+	/// @return 指定された要素を示す参照
+	//!
+	reference at( difference_type index )
 	{
-		return( base::at( i + margin1_ ) );
+		return( base::at( index + margin1_ ) );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j ) で示される位置の要素の参照を返す
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	//!
+	/// @return 指定された要素を示す参照
+	//!
 	reference at( difference_type i, difference_type j )
 	{
 		return( base::at( i + margin1_, j + margin2_ ) );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j, k ) で示される位置の要素の参照を返す
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	/// @param[in] k … コンテナ内のY軸方向の位置
+	//!
+	/// @return 指定された要素を示す参照
+	//!
 	reference at( difference_type i, difference_type j, difference_type k )
 	{
 		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief index で示される位置の要素の const 参照を返す
+	//!
+	/// @param[in] index … コンテナ内の要素位置
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	const_reference at( difference_type i ) const
+	/// @return 指定された要素を示す const 参照
+	//!
+	const_reference at( difference_type index ) const
 	{
-		return( base::at( i + margin1_ ) );
+		return( base::at( index + margin1_ ) );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j ) で示される位置の要素の const 参照を返す
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	//!
+	/// @return 指定された要素を示す const 参照
+	//!
 	const_reference at( difference_type i, difference_type j ) const
 	{
 		return( base::at( i + margin1_, j + margin2_ ) );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j, k ) で示される位置の要素の const 参照を返す
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	/// @param[in] k … コンテナ内のY軸方向の位置
+	//!
+	/// @return 指定された要素を示す const 参照
+	//!
 	const_reference at( difference_type i, difference_type j, difference_type k ) const
 	{
 		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief index で示される位置の要素の参照を返す
+	//!
+	/// @param[in] index … コンテナ内の要素位置
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	reference operator ()( difference_type i )
+	/// @return 指定された要素を示す参照
+	//!
+	reference operator ()( difference_type index )
 	{
-		return( base::at( i + margin1_ ) );
+		return( base::at( index + margin1_ ) );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j ) で示される位置の要素の参照を返す
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	//!
+	/// @return 指定された要素を示す参照
+	//!
 	reference operator ()( difference_type i, difference_type j )
 	{
 		return( base::at( i + margin1_, j + margin2_ ) );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j, k ) で示される位置の要素の参照を返す
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	/// @param[in] k … コンテナ内のY軸方向の位置
+	//!
+	/// @return 指定された要素を示す参照
+	//!
 	reference operator ()( difference_type i, difference_type j, difference_type k )
 	{
 		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief index で示される位置の要素の const 参照を返す
+	//!
+	/// @param[in] index … コンテナ内の要素位置
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	const_reference operator ()( difference_type i ) const
+	/// @return 指定された要素を示す const 参照
+	//!
+	const_reference operator ()( difference_type index ) const
 	{
-		return( base::at( i + margin1_ ) );
+		return( base::at( index + margin1_ ) );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j ) で示される位置の要素の const 参照を返す
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	//!
+	/// @return 指定された要素を示す const 参照
+	//!
 	const_reference operator ()( difference_type i, difference_type j ) const
 	{
 		return( base::at( i + margin1_, j + margin2_ ) );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief ( i, j, k ) で示される位置の要素の const 参照を返す
+	//!
+	/// @param[in] i … コンテナ内のX軸方向の位置
+	/// @param[in] j … コンテナ内のY軸方向の位置
+	/// @param[in] k … コンテナ内のY軸方向の位置
+	//!
+	/// @return 指定された要素を示す const 参照
+	//!
 	const_reference operator ()( difference_type i, difference_type j, difference_type k ) const
 	{
 		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
@@ -2291,40 +2262,17 @@ public:
 
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
+	/// @brief ディフォルトコンストラクタ．要素数 0，マージン 0 のコンテナを作成する
 	marray( ) : base( ), margin1_( 0 ), margin2_( 0 ), margin3_( 0 ) {}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
+	/// @brief マージン margin のコンテナを作成する
 	marray( size_type margin ) : base( ), margin1_( margin ), margin2_( 0 ), margin3_( 0 ) {}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
+	/// @brief コピーコンストラクタ
 	marray( const marray &o ) : base( o ), margin1_( o.margin1( ) ), margin2_( o.margin2( ) ), margin3_( o.margin3( ) ) {}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
+
+	/// @brief array 配列 o の配列の大きさと，X軸方向のマージン margin1 を用いて初期化し，全要素を val で初期化する
 	template < class T, class Allocator >
 	marray( const array< T, Allocator > &o, size_type margin1, const value_type &val = value_type( 0 ) )
 		: base( o.size( ) + margin1 * 2 ), margin1_( margin1 ), margin2_( 0 ), margin3_( 0 )
@@ -2333,13 +2281,8 @@ public:
 		copy( o );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
+
+	/// @brief array1 配列 o の配列の大きさと，X軸方向のマージン margin1 を用いて初期化し，全要素を val で初期化する
 	template < class T, class Allocator >
 	marray( const array1< T, Allocator > &o, size_type margin1, const value_type &val = value_type( ) )
 		: base( o.size( ) + margin1 * 2, o.reso1( ) ), margin1_( margin1 ), margin2_( 0 ), margin3_( 0 )
@@ -2348,13 +2291,8 @@ public:
 		copy( o );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
+
+	/// @brief array2 配列 o の配列の大きさと，X軸方向のマージン margin1，Y軸方向のマージン margin2 を用いて初期化し，全要素を val で初期化する
 	template < class T, class Allocator >
 	marray( const array2< T, Allocator > &o, size_type margin1, size_type margin2, const value_type &val = value_type( ) )
 		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin2 * 2, o.reso1( ), o.reso2( ) ), margin1_( margin1 ), margin2_( margin2 ), margin3_( 0 )
@@ -2363,12 +2301,8 @@ public:
 		copy( o );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
+
+	/// @brief array3 配列 o の配列の大きさと，X軸方向のマージン margin1，Y軸方向のマージン margin2，Z軸方向のマージン margin3 を用いて初期化し，全要素を val で初期化する
 	//! 
 	template < class T, class Allocator >
 	marray( const array3< T, Allocator > &o, size_type margin1, size_type margin2, size_type margin3, const value_type &val = value_type( ) )
@@ -2379,13 +2313,7 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
+	/// @brief array2 配列 o の配列の大きさと，X・Y軸方向のマージン margin1 を用いて初期化し，全要素を val で初期化する
 	template < class T, class Allocator >
 	marray( const array2< T, Allocator > &o, size_type margin1, const value_type &val = value_type( ) )
 		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin1 * 2, o.reso1( ), o.reso2( ) ), margin1_( margin1 ), margin2_( margin1 ), margin3_( 0 )
@@ -2394,13 +2322,7 @@ public:
 		copy( o );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! 
+	/// @brief array3 配列 o の配列の大きさと，X・Y・Z軸方向のマージン margin1 を用いて初期化し，全要素を val で初期化する
 	template < class T, class Allocator >
 	marray( const array3< T, Allocator > &o, size_type margin1, const value_type &val = value_type( ) )
 		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin1 * 2, o.size3( ) + margin1 * 2, o.reso1( ), o.reso2( ), o.reso3( ) ), margin1_( margin1 ), margin2_( margin1 ), margin3_( margin1 )
@@ -2416,11 +2338,9 @@ public:
 
 /// @brief １辺が2の指数乗のバッファを持った画像を作成する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 1・2・3次元画像の１辺が2の指数乗にするための基本クラス
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param Array … 1・2・3次元画像クラスを指定する
 //! 
 template < class Array >
 class buffered_array : public Array
@@ -2441,18 +2361,16 @@ public:
 	typedef typename Array::const_reverse_iterator const_reverse_iterator;	///< @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 
 protected:
-	typedef Array base;
-	size_type size1_;
-	size_type size2_;
-	size_type size3_;
+	typedef Array base;						///< @brief 基底クラス
+	size_type size1_;						///< @brief X軸方向の要素数
+	size_type size2_;						///< @brief Y軸方向の要素数
+	size_type size3_;						///< @brief Z軸方向の要素数
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 指定された数値以上の正整数で最も最小の2の指数乗を計算し，その指数部を返す
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 任意の非負の整数
+	//!
+	/// @return 入力された正整数を超える最も最小の2の指数乗の指数部
 	//! 
 	inline size_t floor_square_index( size_t v )
 	{
@@ -2473,13 +2391,11 @@ protected:
 		return( 0 );
 	}
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 指定された数値以上の正整数で最も最小の2の指数乗を計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 任意の非負の整数
+	//!
+	/// @return 入力された正整数を超える最も最小の2の指数乗を表す整数
 	//! 
 	inline size_t floor_square( size_t v )
 	{
@@ -2501,13 +2417,11 @@ protected:
 	}
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素をデフォルト値で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! 
 	void resize( size_type num1 )
 	{
@@ -2516,13 +2430,12 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素をデフォルト値で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
 	//! 
 	void resize( size_type num1, size_type num2 )
 	{
@@ -2535,13 +2448,13 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素をデフォルト値で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
+	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
 	//! 
 	void resize( size_type num1, size_type num2, size_type num3 )
 	{
@@ -2557,13 +2470,12 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] val  … リサイズ後に各要素を初期化する値
 	//! 
 	void resize( size_type num1, const value_type &val )
 	{
@@ -2572,13 +2484,13 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
+	//! @param[in] val  … リサイズ後に各要素を初期化する値
 	//! 
 	void resize( size_type num1, size_type num2, const value_type &val )
 	{
@@ -2591,13 +2503,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 各軸の要素数が指定された整数以上で最小の2の指数乗に変更し，全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num1 … リサイズ後のX軸方向の要素数
+	//! @param[in] num2 … リサイズ後のY軸方向の要素数
+	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
+	//! @param[in] val  … リサイズ後に各要素を初期化する値
 	//! 
 	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
 	{
@@ -2613,13 +2526,11 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] a  … 内容を入れ替える対象
 	//! 
 	void swap( buffered_array &a )
 	{
@@ -2639,13 +2550,9 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナの要素を空にする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! コンテナに格納されているデータを全て削除し，コンテナを空（要素数0）にする
 	//! 
 	void clear( )
 	{
@@ -2653,22 +2560,22 @@ public:
 		size1_ = size2_ = size3_ = 0;
 	}
 
-	size_type size1( ) const { return( size1_ > 0 ? size1_ : base::size1( ) ); }
-	size_type size2( ) const { return( size2_ > 0 ? size2_ : base::size2( ) ); }
-	size_type size3( ) const { return( size3_ > 0 ? size3_ : base::size3( ) ); }
-	size_type width( ) const { return( size1( ) ); }
-	size_type height( ) const { return( size2( ) ); }
-	size_type depth( ) const { return( size3( ) ); }
+	size_type size1( ) const { return( size1_ > 0 ? size1_ : base::size1( ) ); }	///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type size2( ) const { return( size2_ > 0 ? size2_ : base::size2( ) ); }	///< @brief Y軸方向のコンテナに格納されているデータ数を返す
+	size_type size3( ) const { return( size3_ > 0 ? size3_ : base::size3( ) ); }	///< @brief Z軸方向のコンテナに格納されているデータ数を返す
+	size_type width( ) const { return( size1( ) ); }								///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type height( ) const { return( size2( ) ); }								///< @brief Y軸方向のコンテナに格納されているデータ数を返す
+	size_type depth( ) const { return( size3( ) ); }								///< @brief Z軸方向のコンテナに格納されているデータ数を返す
 
 
 private:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief array コンテナからデータをコピーする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention 余分な画像部分には変更は加えられない
+	//!
+	//! @param[in] o  … コピー元のコンテナ
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const buffered_array& copy( const array< T, Allocator > &o )
@@ -2682,13 +2589,13 @@ private:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief array1 コンテナからデータをコピーする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention 余分な画像部分には変更は加えられない
+	//!
+	//! @param[in] o  … コピー元のコンテナ
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const buffered_array& copy( const array1< T, Allocator > &o )
@@ -2702,13 +2609,13 @@ private:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief array2 コンテナからデータをコピーする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention 余分な画像部分には変更は加えられない
+	//!
+	//! @param[in] o  … コピー元のコンテナ
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const buffered_array& copy( const array2< T, Allocator > &o )
@@ -2726,13 +2633,13 @@ private:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief array3 コンテナからデータをコピーする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention 余分な画像部分には変更は加えられない
+	//!
+	//! @param[in] o  … コピー元のコンテナ
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const buffered_array& copy( const array3< T, Allocator > &o )
@@ -2755,13 +2662,14 @@ private:
 
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 同じ型の buffered_array コンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元の buffered_array コンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	const buffered_array& operator =( const buffered_array &o )
 	{
@@ -2776,13 +2684,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なる array コンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元の array コンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const buffered_array& operator =( const array< T, Allocator > &o )
@@ -2792,13 +2701,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なる array1 コンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元の array1 コンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const buffered_array& operator =( const array1< T, Allocator > &o )
@@ -2809,13 +2719,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なる array2 コンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元の array2 コンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const buffered_array& operator =( const array2< T, Allocator > &o )
@@ -2827,13 +2738,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なる array3 コンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元の array3 コンテナ
+	//! 
+	//! @return 自分自身
 	//! 
 	template < class T, class Allocator >
 	const buffered_array& operator =( const array3< T, Allocator > &o )
@@ -2846,11 +2758,13 @@ public:
 	}
 
 public:
-	// 構築
+	/// @brief ディフォルトコンストラクタ．要素数 0 のコンテナを作成する
 	buffered_array( ) : base( ), size1_( 0 ), size2_( 0 ), size3_( 0 ) {}
 
+	/// @briefコピーコンストラクタ
 	buffered_array( const buffered_array &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( o.size3( ) ) {}
 
+	/// @brief array 配列 o を用いて初期化し，一辺の長さを2の指数乗にする
 	template < class T, class Allocator >
 	buffered_array( const array< T, Allocator > &o )
 		: base( floor_square( o.size( ) ) ), size1_( o.size( ) ), size2_( 0 ), size3_( 0 )
@@ -2858,6 +2772,7 @@ public:
 		copy( o );
 	}
 
+	/// @brief array1 配列 o を用いて初期化し，一辺の長さを2の指数乗にする
 	template < class T, class Allocator >
 	buffered_array( const array1< T, Allocator > &o )
 		: base( floor_square( o.size( ) ), o.reso1( ) ), size1_( o.size( ) ), size2_( 0 ), size3_( 0 )
@@ -2865,6 +2780,7 @@ public:
 		copy( o );
 	}
 
+	/// @brief array2 配列 o を用いて初期化し，一辺の長さを2の指数乗にする
 	template < class T, class Allocator >
 	buffered_array( const array2< T, Allocator > &o )
 		: base( floor_square( o.size1( ) ), floor_square( o.size2( ) ), o.reso1( ), o.reso2( ) ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( 0 )
@@ -2872,6 +2788,7 @@ public:
 		copy( o );
 	}
 
+	/// @brief array3 配列 o を用いて初期化し，一辺の長さを2の指数乗にする
 	template < class T, class Allocator >
 	buffered_array( const array3< T, Allocator > &o )
 		: base( floor_square( o.size1( ) ), floor_square( o.size2( ) ), floor_square( o.size3( ) ), o.reso1( ), o.reso2( ), o.reso3( ) ),
@@ -2882,13 +2799,16 @@ public:
 };
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     a   … array 配列
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! 1, 2, 3, 4
+//! @endcode
 //! 
 template < class T, class Allocator >
 inline std::ostream &operator <<( std::ostream &out, const array< T, Allocator > &a )
@@ -2905,13 +2825,16 @@ inline std::ostream &operator <<( std::ostream &out, const array< T, Allocator >
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     a   … array1 配列
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! 1, 2, 3, 4
+//! @endcode
 //! 
 template < class T, class Allocator >
 inline std::ostream &operator <<( std::ostream &out, const array1< T, Allocator > &a )
@@ -2928,13 +2851,18 @@ inline std::ostream &operator <<( std::ostream &out, const array1< T, Allocator 
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     a   … array2 配列
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! 1, 2, 3, 4
+//! 5, 6, 7, 8
+//! 9, 10, 11, 12
+//! @endcode
 //! 
 template < class T, class Allocator >
 inline std::ostream &operator <<( std::ostream &out, const array2< T, Allocator > &a )
@@ -2954,13 +2882,22 @@ inline std::ostream &operator <<( std::ostream &out, const array2< T, Allocator 
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     a   … array3 配列
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! 1, 2, 3, 4
+//! 5, 6, 7, 8
+//! 9, 10, 11, 12
+//! ----- separator -----
+//! 1, 2, 3, 4
+//! 5, 6, 7, 8
+//! 9, 10, 11, 12
+//! @endcode
 //! 
 template < class T, class Allocator >
 inline std::ostream &operator <<( std::ostream &out, const array3< T, Allocator > &a )

@@ -282,7 +282,7 @@ struct __mist_console_callback__
 * - @ref a									"ヒストグラム制御"
 * - @ref mist::random						"擬似乱数生成"
 * - @ref a									"グラフ描画(2次元)"
-* - @ref draw_group							"2次元画像描画"
+* - @ref image_draw_group					"2次元画像描画"
 *
 * @subsection image 主に画像に対して適用される処理
 *
@@ -294,7 +294,7 @@ struct __mist_console_callback__
 *   - @ref image_jpeg_group					"JPEGデータの読み込み・書き出し"
 *   - @ref image_png_group					"PNGデータの読み込み・書き出し"
 *   - @ref image_tiff_group					"TIFFデータの読み込み・書き出し"
-*   - @ref image_dicom_group				"DICOMデータの読み込み・書き出し"
+*   - @ref dicom_group						"DICOMデータの読み込み・書き出し"
 *
 * @subsubsection image-filter フィルタ系
 * - @ref linear_group						"線形フィルタ"

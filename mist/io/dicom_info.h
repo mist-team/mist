@@ -55,7 +55,7 @@ _MIST_BEGIN
 
 namespace dicom_controller
 {
-	/// @enum DICOMデータの圧縮タイプ
+	/// @brief DICOMデータの圧縮タイプ
 	enum compress_type
 	{
 		RAW,		///< @brief 無圧縮
@@ -133,8 +133,8 @@ namespace dicom_controller
 		//! 
 		//! 詳細な説明や関数の使用例を書く
 		//! 
-		//! @param[in] in  … 引数の説明
-		//! @param[in] out … 引数の説明
+		//! @param[in] p      … 引数の説明
+		//! @param[in] nbytes … 引数の説明
 		//! 
 		//! @return 戻り値の説明
 		//! 
@@ -157,11 +157,6 @@ namespace dicom_controller
 		/// @brief 関数・クラスの概要を書く
 		//! 
 		//! 詳細な説明や関数の使用例を書く
-		//! 
-		//! @param[in] in  … 引数の説明
-		//! @param[in] out … 引数の説明
-		//! 
-		//! @return 戻り値の説明
 		//! 
 		void release()
 		{
@@ -683,7 +678,7 @@ namespace dicom_controller
 	//! @param[in] element       … 引数の説明
 	//! @param[in] default_value … 引数の説明
 	//! 
-	//! @retturn 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	double find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, double default_value )
 	{
@@ -700,7 +695,7 @@ namespace dicom_controller
 	//! @param[in] element       … 引数の説明
 	//! @param[in] default_value … 引数の説明
 	//! 
-	//! @retturn 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	float find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, float default_value )
 	{
@@ -717,7 +712,7 @@ namespace dicom_controller
 	//! @param[in] element       … 引数の説明
 	//! @param[in] default_value … 引数の説明
 	//! 
-	//! @retturn 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	signed int find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, signed int default_value )
 	{
@@ -734,7 +729,7 @@ namespace dicom_controller
 	//! @param[in] element       … 引数の説明
 	//! @param[in] default_value … 引数の説明
 	//! 
-	//! @retturn 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	unsigned int find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, unsigned int default_value )
 	{
@@ -751,7 +746,7 @@ namespace dicom_controller
 	//! @param[in] element       … 引数の説明
 	//! @param[in] default_value … 引数の説明
 	//! 
-	//! @retturn 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	signed short find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, signed short default_value )
 	{
@@ -768,7 +763,7 @@ namespace dicom_controller
 	//! @param[in] element       … 引数の説明
 	//! @param[in] default_value … 引数の説明
 	//! 
-	//! @retturn 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	unsigned short find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, unsigned short default_value )
 	{
@@ -785,7 +780,7 @@ namespace dicom_controller
 	//! @param[in] element       … 引数の説明
 	//! @param[in] default_value … 引数の説明
 	//! 
-	//! @retturn 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	std::string find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, const std::string &default_value )
 	{
@@ -802,7 +797,7 @@ namespace dicom_controller
 	//! @param[in] element       … 引数の説明
 	//! @param[in] default_value … 引数の説明
 	//! 
-	//! @retturn 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	std::string find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, const char *default_value )
 	{
@@ -817,7 +812,7 @@ namespace dicom_controller
 	//! @param[in] dicom … 引数の説明
 	//! @param[in] info  … 引数の説明
 	//! 
-	//! @retturn 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	bool get_dicom_info( const dicom_tag_container &dicom, dicom_info &info )
 	{

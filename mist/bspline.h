@@ -124,7 +124,7 @@ private:
 	typedef std::vector< double > knot_list;
 
 public:
-	/// @enum ノットベクトルを手動で設定しない場合のデフォルトのモード
+	/// @brief ノットベクトルを手動で設定しない場合のデフォルトのモード
 	enum BSplineMode
 	{
 		ROUND,					///< @brief 閉曲線の設定

@@ -2,7 +2,7 @@
 //!
 //! @brief 各次元の画像に対応した，ラベリングアルゴリズム
 //! 
-//! @subject 参考文献
+//! @section 参考文献
 //! -# 米倉達広, 横井茂樹, 鳥脇純一郎, 福村晃夫, "三次元ディジタル空間における図形の連結性とオイラー数," 電子通信学会論文誌D, J65-D, No.1, pp.80-87, 1982
 //! -# 鳥脇純一郎, "3次元ディジタル画像処理," 昭晃堂, 2002
 //!
@@ -73,15 +73,15 @@ namespace __labeling_controller__
 		{
 			typedef typename Array::size_type size_type;
 
-			L[  0 ] =                        && k > 0 ? T[ static_cast< size_type >( in( i    , j    , k - 1 ) ) ] : 0;
-			L[  1 ] =              j     > 0 &&       ? T[ static_cast< size_type >( in( i    , j - 1, k     ) ) ] : 0;
-			L[  2 ] = i     > 0 &&                    ? T[ static_cast< size_type >( in( i - 1, j    , k     ) ) ] : 0;
+			L[  0 ] =                           k > 0 ? T[ static_cast< size_type >( in( i    , j    , k - 1 ) ) ] : 0;
+			L[  1 ] =              j     > 0          ? T[ static_cast< size_type >( in( i    , j - 1, k     ) ) ] : 0;
+			L[  2 ] = i     > 0                       ? T[ static_cast< size_type >( in( i - 1, j    , k     ) ) ] : 0;
 			L[  3 ] =              j     > 0 && k > 0 ? T[ static_cast< size_type >( in( i    , j - 1, k - 1 ) ) ] : 0;
 			L[  4 ] = i     > 0 &&              k > 0 ? T[ static_cast< size_type >( in( i - 1, j    , k - 1 ) ) ] : 0;
 			L[  5 ] = i + 1 > w &&              k > 0 ? T[ static_cast< size_type >( in( i + 1, j    , k - 1 ) ) ] : 0;
 			L[  6 ] =              j + 1 > h && k > 0 ? T[ static_cast< size_type >( in( i    , j + 1, k - 1 ) ) ] : 0;
-			L[  7 ] = i     > 0 && j     > 0 &&       ? T[ static_cast< size_type >( in( i - 1, j - 1, k     ) ) ] : 0;
-			L[  8 ] = i + 1 > w && j     > 0 &&       ? T[ static_cast< size_type >( in( i + 1, j - 1, k     ) ) ] : 0;
+			L[  7 ] = i     > 0 && j     > 0          ? T[ static_cast< size_type >( in( i - 1, j - 1, k     ) ) ] : 0;
+			L[  8 ] = i + 1 > w && j     > 0          ? T[ static_cast< size_type >( in( i + 1, j - 1, k     ) ) ] : 0;
 			L[  9 ] = i     > 0 && j     > 0 && k > 0 ? T[ static_cast< size_type >( in( i - 1, j - 1, k - 1 ) ) ] : 0;
 			L[ 10 ] = i + 1 > w && j     > 0 && k > 0 ? T[ static_cast< size_type >( in( i + 1, j - 1, k - 1 ) ) ] : 0;
 			L[ 11 ] = i     > 0 && j + 1 > h && k > 0 ? T[ static_cast< size_type >( in( i - 1, j + 1, k - 1 ) ) ] : 0;
@@ -101,15 +101,15 @@ namespace __labeling_controller__
 		{
 			typedef typename Array::size_type size_type;
 
-			L[  0 ] =                        && k > 0 ? T[ static_cast< size_type >( in( i    , j    , k - 1 ) ) ] : 0;
-			L[  1 ] =              j     > 0 &&       ? T[ static_cast< size_type >( in( i    , j - 1, k     ) ) ] : 0;
-			L[  2 ] = i     > 0 &&                    ? T[ static_cast< size_type >( in( i - 1, j    , k     ) ) ] : 0;
+			L[  0 ] =                           k > 0 ? T[ static_cast< size_type >( in( i    , j    , k - 1 ) ) ] : 0;
+			L[  1 ] =              j     > 0          ? T[ static_cast< size_type >( in( i    , j - 1, k     ) ) ] : 0;
+			L[  2 ] = i     > 0                       ? T[ static_cast< size_type >( in( i - 1, j    , k     ) ) ] : 0;
 			L[  3 ] =              j     > 0 && k > 0 ? T[ static_cast< size_type >( in( i    , j - 1, k - 1 ) ) ] : 0;
 			L[  4 ] = i     > 0 &&              k > 0 ? T[ static_cast< size_type >( in( i - 1, j    , k - 1 ) ) ] : 0;
 			L[  5 ] = i + 1 > w &&              k > 0 ? T[ static_cast< size_type >( in( i + 1, j    , k - 1 ) ) ] : 0;
 			L[  6 ] =              j + 1 > h && k > 0 ? T[ static_cast< size_type >( in( i    , j + 1, k - 1 ) ) ] : 0;
-			L[  7 ] = i     > 0 && j     > 0 &&       ? T[ static_cast< size_type >( in( i - 1, j - 1, k     ) ) ] : 0;
-			L[  8 ] = i + 1 > w && j     > 0 &&       ? T[ static_cast< size_type >( in( i + 1, j - 1, k     ) ) ] : 0;
+			L[  7 ] = i     > 0 && j     > 0          ? T[ static_cast< size_type >( in( i - 1, j - 1, k     ) ) ] : 0;
+			L[  8 ] = i + 1 > w && j     > 0          ? T[ static_cast< size_type >( in( i + 1, j - 1, k     ) ) ] : 0;
 		}
 	};
 
@@ -125,9 +125,9 @@ namespace __labeling_controller__
 		{
 			typedef typename Array::size_type size_type;
 
-			L[  0 ] =                        && k > 0 ? T[ static_cast< size_type >( in( i    , j    , k - 1 ) ) ] : 0;
-			L[  1 ] =              j     > 0 &&       ? T[ static_cast< size_type >( in( i    , j - 1, k     ) ) ] : 0;
-			L[  2 ] = i     > 0 &&                    ? T[ static_cast< size_type >( in( i - 1, j    , k     ) ) ] : 0;
+			L[  0 ] =                           k > 0 ? T[ static_cast< size_type >( in( i    , j    , k - 1 ) ) ] : 0;
+			L[  1 ] =              j     > 0          ? T[ static_cast< size_type >( in( i    , j - 1, k     ) ) ] : 0;
+			L[  2 ] = i     > 0                       ? T[ static_cast< size_type >( in( i - 1, j    , k     ) ) ] : 0;
 		}
 	};
 

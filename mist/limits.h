@@ -52,13 +52,13 @@ struct type_limits
 {
 	typedef T value_type;	///< @brief î•ñ‚ð’²‚×‚é‘ÎÛ‚Æ‚È‚éŒ^
 
-	/// @enum Žw’è‚³‚ê‚½Œ^‚ª®”‚©‚Ç‚¤‚©
+	/// @brief Žw’è‚³‚ê‚½Œ^‚ª®”‚©‚Ç‚¤‚©
 	enum
 	{
 		 is_integer = false		///< @brief ®”‚Ìê‡‚Í true ‚É‚È‚é
 	};
 
-	/// @enum Žw’è‚³‚ê‚½Œ^‚ª•„†•t‚©‚Ç‚¤‚©
+	/// @brief Žw’è‚³‚ê‚½Œ^‚ª•„†•t‚©‚Ç‚¤‚©
 	enum
 	{
 		is_signed  = false		///< @brief •„†•t‚Ìê‡‚Í true ‚É‚È‚é
