@@ -91,7 +91,7 @@ namespace volumerender
 	protected:
 		difference_type sindex_;
 		difference_type eindex_;
-		difference_type	zero_index_;
+		difference_type zero_index_;
 
 	public:
 		void append( const pixel_type &pixel, difference_type vs, difference_type ve, double as, double ae )
@@ -104,7 +104,7 @@ namespace volumerender
 			{
 				difference_type tmp = vs;
 				vs = ve;
-				ve = vs;
+				ve = tmp;
 			}
 			vs = vs < sindex_ ? sindex_: vs;
 			vs = vs > eindex_ ? eindex_: vs;
@@ -180,7 +180,7 @@ namespace volumerender
 
 		attribute_table( ) : sindex_( 0 ), eindex_( -1 ), zero_index_( NULL ){ }
 
-		attribute_table( difference_type si, difference_type ei ) : base( ei - si + 1 ), sindex_( si ), eindex_( ei ), zero_index_( NULL )
+		attribute_table( difference_type si, difference_type ei ) : base( ei - si + 1 ), sindex_( si ), eindex_( ei ), zero_index_( 0 )
 		{
 			zero_index_ = - si;
 		}
@@ -283,14 +283,14 @@ namespace value_interpolation
 		bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter< T1 > &p, const volumerender::attribute_table< T2 > &table,
 		typename Array1::size_type thread_id, typename Array1::size_type thread_num )
 	{
-		typedef volumerender::parameter< T1 >::vector_type vector_type;
-		typedef volumerender::attribute_table< T2 >::attribute_type attribute_type;
-		typedef volumerender::attribute_table< T2 >::pixel_type pixel_type;
-		typedef Array1::size_type size_type;
-		typedef Array1::difference_type difference_type;
-		typedef Array1::value_type value_type;
-		typedef Array1::const_pointer const_pointer;
-		typedef Array2::value_type out_value_type;
+		typedef typename volumerender::parameter< T1 >::vector_type vector_type;
+		typedef typename volumerender::attribute_table< T2 >::attribute_type attribute_type;
+		typedef typename volumerender::attribute_table< T2 >::pixel_type pixel_type;
+		typedef typename Array1::size_type size_type;
+		typedef typename Array1::difference_type difference_type;
+		typedef typename Array1::value_type value_type;
+		typedef typename Array1::const_pointer const_pointer;
+		typedef typename Array2::value_type out_value_type;
 
 		vector_type pos = p.pos;
 		vector_type dir = p.dir;
@@ -372,7 +372,6 @@ namespace value_interpolation
 
 				pixel_type add_intensity( 0 );
 				double add_opacity = 1;
-				double old_opacity = 0;
 
 				casting_start = pos;
 				casting_end = pos + ray * max_distance;
