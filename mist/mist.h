@@ -1013,54 +1013,54 @@ public:
 
 // 要素へのアクセス
 public:
-	reference at( size_type i )
+	reference at( difference_type i )
 	{
 		return( base::at( i + margin_ ) );
 	}
-	reference at( size_type i, size_type j )
+	reference at( difference_type i, difference_type j )
 	{
 		return( base::at( i + margin_, j + margin_ ) );
 	}
-	reference at( size_type i, size_type j, size_type k )
+	reference at( difference_type i, difference_type j, difference_type k )
 	{
 		return( base::at( i + margin_, j + margin_, k + margin_ ) );
 	}
 
-	const_reference at( size_type i ) const
+	const_reference at( difference_type i ) const
 	{
 		return( base::at( i + margin_ ) );
 	}
-	const_reference at( size_type i, size_type j ) const
+	const_reference at( difference_type i, difference_type j ) const
 	{
 		return( base::at( i + margin_, j + margin_ ) );
 	}
-	const_reference at( size_type i, size_type j, size_type k ) const
+	const_reference at( difference_type i, difference_type j, difference_type k ) const
 	{
 		return( base::at( i + margin_, j + margin_, k + margin_ ) );
 	}
 
-	reference operator ()( size_type i )
+	reference operator ()( difference_type i )
 	{
 		return( base::at( i + margin_ ) );
 	}
-	reference operator ()( size_type i, size_type j )
+	reference operator ()( difference_type i, difference_type j )
 	{
 		return( base::at( i + margin_, j + margin_ ) );
 	}
-	reference operator ()( size_type i, size_type j, size_type k )
+	reference operator ()( difference_type i, difference_type j, difference_type k )
 	{
 		return( base::at( i + margin_, j + margin_, k + margin_ ) );
 	}
 
-	const_reference operator ()( size_type i ) const
+	const_reference operator ()( difference_type i ) const
 	{
 		return( base::at( i + margin_ ) );
 	}
-	const_reference operator ()( size_type i, size_type j ) const
+	const_reference operator ()( difference_type i, difference_type j ) const
 	{
 		return( base::at( i + margin_, j + margin_ ) );
 	}
-	const_reference operator ()( size_type i, size_type j, size_type k ) const
+	const_reference operator ()( difference_type i, difference_type j, difference_type k ) const
 	{
 		return( base::at( i + margin_, j + margin_, k + margin_ ) );
 	}
