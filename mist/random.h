@@ -7,7 +7,6 @@
 
 #include "mist.h"
 #include <cmath>
-#include <utility>
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -15,19 +14,17 @@ _MIST_BEGIN
 
 
 
-/// @brief MT(Mersenne Twister)法による乱数発生
-//! 
-//! 長周期, 高次元均等分布を持つ擬似乱数を生成する．
-//! 周期が2^19937-1で、623次元超立方体の中に 均等に分布することが証明されている．
-//! 
-//! 開発者のページ：
-//! http://www.math.keio.ac.jp/~matumoto/mt.html
-//!
-
-
+/// @brief MT(Mersenne Twister)法による一様乱数
 namespace uniform
 {
-
+	/// @brief MT(Mersenne Twister)法による一様乱数発生
+	//! 
+	//! 長周期, 高次元均等分布を持つ擬似乱数を生成する．
+	//! 周期が2^19937-1で、623次元超立方体の中に 均等に分布することが証明されている．
+	//! 
+	//! 開発者のページ：
+	//! http://www.math.keio.ac.jp/~matumoto/mt.html
+	//!
 	class random
 	{
 
@@ -189,7 +186,7 @@ namespace uniform
 		const unsigned long int32( )
 		{
 			unsigned long y;
-			static unsigned long mag01[ 2 ] = {0x0UL, matrix_a_};
+			static unsigned long mag01[ 2 ] = { 0x0UL, matrix_a_ };
 			/* mag01[x] = x * matrix_a_  for x=0,1 */
 	
 			if( mti_ >= number_n_ ) /* generate number_n_ words at one time */
@@ -299,50 +296,51 @@ namespace uniform
 
 } // uniform
 
+
+/// @brief 正規乱数のジェネレータ
 namespace gauss
 {
 
+	/// @brief 正規乱数のジェネレータ
+	//! 
+	//! 平均値と標準偏差を指定し，正規乱数を発生させるクラス．
+	//! 
 	class random : protected uniform::random 
 	{
+		typedef uniform::random base;
 
-		double mean_;
-		double standard_deviation_;
+		double mean_;					///< @brief 生成する正規乱数の平均値
+		double standard_deviation_;		///< @brief 生成する正規乱数の標準偏差
 
 	public:
 
 		/// @brief コンストラクタ
-		//! 
-		//! 
 		//! 
 		//! @param[in] seed … 乱数のseed(これを用いてseed配列を作る)
 		//! @param[in] mean … 正規乱数の平均
 		//! @param[in] standard_deviation … 正規乱数の標準偏差
 		//! 
 		random( const unsigned long& seed = 0, const double& mean = 0.0, const double& standard_deviation = 1.0 ) :
+			base( seed ),
 			mean_( mean ), 
-			standard_deviation_( standard_deviation ),
-			random( seed )
+			standard_deviation_( standard_deviation )
 		{
 		}
 		
 		/// @brief コンストラクタ
-		//! 
-		//! 
 		//! 
 		//! @param[in] seed_array … 乱数のseed配列
 		//! @param[in] mean … 正規乱数の平均
 		//! @param[in] standard_deviation … 正規乱数の標準偏差
 		//! 
 		random( const array< unsigned long >& seed_array, const double& mean = 0.0, const double& standard_deviation = 1.0 ) :
+			base( seed_array ),
 			mean_( mean ), 
-			standard_deviation_( standard_deviation ),
-			random( seed_array )
+			standard_deviation_( standard_deviation )
 		{
 		}
 
 		/// @brief 正規乱数のパラメータ指定
-		//! 
-		//! 
 		//! 
 		//! @param[in] mean … 正規乱数の平均
 		//! @param[in] standard_deviation … 正規乱数の標準偏差
@@ -355,13 +353,11 @@ namespace gauss
 
 		/// @brief 指定された平均・標準偏差の正規乱数を生成
 		//! 
-		//!
-		//! 
 		//! @return 生成された正規乱数
 		//! 
 		const double generate( )
 		{
-			return( standard_deviation_ * sqrt( -2.0 * log( 1.0 - real2( ) ) ) * cos( pai_timed_by_2_ * ( 1.0 - real2( ) ) ) + mean_ );
+			return( standard_deviation_ * std::sqrt( -2.0 * std::log( 1.0 - real2( ) ) ) * std::cos( pai_timed_by_2_ * ( 1.0 - real2( ) ) ) + mean_ );
 		}
 
 	};

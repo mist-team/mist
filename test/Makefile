@@ -26,6 +26,7 @@ ALL = \
 	vector_test \
 	set_test \
 	crc_test \
+	random_test \
 	minimization_test \
 
 
@@ -101,6 +102,9 @@ set_test : set_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 crc_test : crc_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+random_test : random_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 minimization_test : minimization_test.o
