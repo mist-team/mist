@@ -12,9 +12,10 @@ void test_matrix_multiply1( )
 {
 	using namespace std;
 
-	mist::matrix< double > m( 1000, 1000 );
-	mist::matrix< double > n( 1000, 1000 );
-	mist::matrix< double > l( 1000, 1000 );
+	mist::matrix< double > m( 1000, 500 );
+	mist::matrix< double > n( 1000, 500 );
+	mist::matrix< double > l1( 1000, 1000 );
+	mist::matrix< double > l2( 1000, 1000 );
 
 	mist::matrix< double >::size_type r, c;
 
@@ -23,6 +24,13 @@ void test_matrix_multiply1( )
 		for( c = 0 ; c < m.cols( ) ; c++ )
 		{
 			m( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
+		}
+	}
+
+	for( r = 0 ; r < n.rows( ) ; r++ )
+	{
+		for( c = 0 ; c < n.cols( ) ; c++ )
+		{
 			n( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
 		}
 	}
@@ -31,15 +39,23 @@ void test_matrix_multiply1( )
 
 	{
 		mist::timer t;
-		l = m * n;
+		l1 = m * n.t( );
 		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
 
 	{
 		mist::timer t;
-		mist::multiply( m, n, l );
+		mist::multiply( m, n, l2, false, true );
 		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
+
+	double err = 0.0;
+	for( r = 0 ; r < l1.size( ) ; r++ )
+	{
+		err += std::abs( l1[ r ] - l2[ r ] );
+	}
+	std::cout << "Err: " << err << std::endl;
+
 }
 
 void test_matrix_multiply2( )

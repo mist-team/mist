@@ -2061,28 +2061,36 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 	typedef __clapack__::integer integer;
 	typedef typename matrix< T, Allocator >::value_type value_type;
 
-	if( a.cols( ) != b.rows( ) || a.empty( ) || b.empty( ) )
+	if( a.empty( ) || b.empty( ) )
 	{
 		// 行列のサイズが正しくないので例外をスローする
 		return( false );
 	}
 
-	c.resize( a.rows( ), b.cols( ) );
-
 	// LAPACK関数の引数
-	integer m     = static_cast< integer >( a.rows( ) );
-	integer n     = static_cast< integer >( b.cols( ) );
-	integer k     = static_cast< integer >( a.cols( ) );
+	integer m     = static_cast< integer >( a_is_transpose ? a.cols( ) : a.rows( ) );
+	integer n     = static_cast< integer >( b_is_transpose ? b.rows( ) : b.cols( ) );
+	integer k     = static_cast< integer >( a_is_transpose ? a.rows( ) : a.cols( ) );
+	integer k_    = static_cast< integer >( b_is_transpose ? b.cols( ) : b.rows( ) );
 	integer lda   = a_is_transpose ? k : m;
 	integer ldb   = b_is_transpose ? n : k;
 	integer ldc   = m;
 	char transa[ 2 ];
 	char transb[ 2 ];
 
+	if( k != k_ )
+	{
+		// 行列のサイズが正しくないので例外をスローする
+		return( false );
+	}
+
 	transa[ 0 ] = a_is_transpose ? 'T' : 'N';
 	transa[ 1 ] = '\0';
 	transb[ 0 ] = b_is_transpose ? 'T' : 'N';
 	transb[ 1 ] = '\0';
+
+	c.resize( m, n );
+	c.fill( );
 
 	// BLASルーチンでは，入力行列AとBの内容は変化しないが，
 	// インターフェースは const 就職を受けていないのでキャストを行う
