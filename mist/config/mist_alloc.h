@@ -7,8 +7,6 @@
 _MIST_BEGIN
 
 
-//#define MIST_ALLOCATE_TEST
-
 template < bool b >
 struct mist_memory_operator
 {
@@ -17,7 +15,7 @@ struct mist_memory_operator
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects1( Allocator &allocator, typename Allocator::size_type num )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
@@ -31,7 +29,7 @@ struct mist_memory_operator
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects2( Allocator &allocator, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
@@ -44,7 +42,7 @@ struct mist_memory_operator
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects3( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
@@ -57,7 +55,7 @@ struct mist_memory_operator
 	template < class Allocator >
 	static void deallocate_objects( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Deallocator" << ::std::endl;
 #endif
 		for( typename Allocator::size_type i = 0 ; i < num ; i++ ) allocator.destroy( &( ptr[i] ) );
@@ -69,7 +67,7 @@ struct mist_memory_operator
 	template < class Allocator >
 	static typename Allocator::pointer copy_objects1( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Copy Function" << ::std::endl;
 #endif
 		while( s != e )
@@ -86,7 +84,7 @@ struct mist_memory_operator
 	template < class Allocator >
 	static typename Allocator::pointer copy_objects2( Allocator &allocator, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Copy Function" << ::std::endl;
 #endif
 		for( typename Allocator::size_type i = 0 ; i < num ; i++ ) to[i] = ptr[i];
@@ -98,7 +96,7 @@ struct mist_memory_operator
 	template < class Allocator >
 	static void clean_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Clean Function" << ::std::endl;
 #endif
 		for( typename Allocator::size_type i = 0 ; i < num ; i++ ) ptr[i] = obj;
@@ -109,7 +107,7 @@ struct mist_memory_operator
 	template < class Allocator >
 	static void clean_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Clean Function" << ::std::endl;
 #endif
 		typename Allocator::value_type obj;
@@ -128,7 +126,7 @@ struct mist_memory_operator< true >
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects1( Allocator &allocator, typename Allocator::size_type num )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Memset Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
@@ -141,7 +139,7 @@ struct mist_memory_operator< true >
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects2( Allocator &allocator, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Specialized Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
@@ -154,7 +152,7 @@ struct mist_memory_operator< true >
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects3( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Memcpy Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
@@ -167,7 +165,7 @@ struct mist_memory_operator< true >
 	template < class Allocator >
 	static void deallocate_objects( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Specialized Deallocator" << ::std::endl;
 #endif
 		allocator.deallocate( ptr, num );
@@ -178,7 +176,7 @@ struct mist_memory_operator< true >
 	template < class Allocator >
 	static typename Allocator::pointer copy_objects1( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Memcpy Copy Function" << ::std::endl;
 #endif
 		memcpy( x, s, ( e - s ) * sizeof( typename Allocator::value_type ) );
@@ -190,7 +188,7 @@ struct mist_memory_operator< true >
 	template < class Allocator >
 	static typename Allocator::pointer copy_objects2( Allocator &allocator, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Memcpy Copy Function" << ::std::endl;
 #endif
 		memcpy( to, ptr, num * sizeof( typename Allocator::value_type ) );
@@ -202,7 +200,7 @@ struct mist_memory_operator< true >
 	template < class Allocator >
 	static void clean_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Memcpy Clean Function" << ::std::endl;
 #endif
 		memset( ptr, obj, num * sizeof( typename Allocator::value_type ) );
@@ -213,7 +211,7 @@ struct mist_memory_operator< true >
 	template < class Allocator >
 	static void clean_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
-#ifdef MIST_ALLOCATE_TEST
+#if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Memcpy Clean Function" << ::std::endl;
 #endif
 		memset( ptr, 0, num * sizeof( typename Allocator::value_type ) );

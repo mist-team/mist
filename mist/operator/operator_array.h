@@ -1,14 +1,12 @@
 #ifndef __INCLUDE_MIST_OPERATOR_ARRAY__
 #define __INCLUDE_MIST_OPERATOR_ARRAY__
 
-//#define _CHECK_ARRAY_OPERATION_
-
 
 template < class T, class Allocator >
 inline const array< T, Allocator >& operator +=( array< T, Allocator > &a1, const array< T, Allocator >  &a2 )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
-#ifdef _CHECK_ARRAY_OPERATION_
+#if _CHECK_ARRAY_OPERATION_ != 0
 	if( a1.size( ) != a2.size( ) )
 	{
 		// ë´ÇµéZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -24,7 +22,7 @@ template < class T, class Allocator >
 inline const array< T, Allocator >& operator -=( array< T, Allocator > &a1, const array< T, Allocator >  &a2 )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
-#ifdef _CHECK_ARRAY_OPERATION_
+#if _CHECK_ARRAY_OPERATION_ != 0
 	if( a1.size( ) != a2.size( ) )
 	{
 		// à¯Ç´éZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -40,7 +38,7 @@ template < class T, class Allocator >
 inline const array< T, Allocator >& operator *=( array< T, Allocator > &a1, const array< T, Allocator >  &a2 )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
-#ifdef _CHECK_ARRAY_OPERATION_
+#if _CHECK_ARRAY_OPERATION_ != 0
 	if( a1.size( ) != a2.size( ) )
 	{
 		// ä|ÇØéZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -56,7 +54,7 @@ template < class T, class Allocator >
 inline const array< T, Allocator >& operator /=( array< T, Allocator > &a1, const array< T, Allocator >  &a2 )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
-#ifdef _CHECK_ARRAY_OPERATION_
+#if _CHECK_ARRAY_OPERATION_ != 0
 	if( a1.size( ) != a2.size( ) )
 	{
 		// äÑÇËéZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -69,7 +67,7 @@ inline const array< T, Allocator >& operator /=( array< T, Allocator > &a1, cons
 }
 
 template < class T, class Allocator >
-inline const array< T, Allocator >& operator +=( array< T, Allocator > &a1, typename type_trait< T >::type val )
+inline const array< T, Allocator >& operator +=( array< T, Allocator > &a1, typename array< T, Allocator >::value_type val )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
 	for( size_type i = 0 ; i < a1.size( ) ; i++ ) a1[i] += val;
@@ -77,7 +75,7 @@ inline const array< T, Allocator >& operator +=( array< T, Allocator > &a1, type
 }
 
 template < class T, class Allocator >
-inline const array< T, Allocator >& operator -=( array< T, Allocator > &a1, typename type_trait< T >::type val )
+inline const array< T, Allocator >& operator -=( array< T, Allocator > &a1, typename array< T, Allocator >::value_type val )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
 	for( size_type i = 0 ; i < a1.size( ) ; i++ ) a1[i] -= val;
@@ -85,7 +83,7 @@ inline const array< T, Allocator >& operator -=( array< T, Allocator > &a1, type
 }
 
 template < class T, class Allocator >
-inline const array< T, Allocator >& operator *=( array< T, Allocator > &a1, typename type_trait< T >::type val )
+inline const array< T, Allocator >& operator *=( array< T, Allocator > &a1, typename array< T, Allocator >::value_type val )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
 	for( size_type i = 0 ; i < a1.size( ) ; i++ ) a1[i] *= val;
@@ -93,10 +91,10 @@ inline const array< T, Allocator >& operator *=( array< T, Allocator > &a1, type
 }
 
 template < class T, class Allocator >
-inline const array< T, Allocator >& operator /=( array< T, Allocator > &a1, typename type_trait< T >::type val )
+inline const array< T, Allocator >& operator /=( array< T, Allocator > &a1, typename array< T, Allocator >::value_type val )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
-#ifdef _CHECK_ARRAY_OPERATION_
+#if _CHECK_ARRAY_OPERATION_ != 0
 	if( val == 0 )
 	{
 		// É[ÉçèúéZî≠ê∂

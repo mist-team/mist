@@ -126,9 +126,6 @@
 				RelativePath="..\mist\matrix.h">
 			</File>
 			<File
-				RelativePath="..\mist\matrix_et.h">
-			</File>
-			<File
 				RelativePath="..\mist\mist.h">
 			</File>
 			<File
@@ -148,9 +145,6 @@
 			</File>
 			<File
 				RelativePath="..\mist\operator\operator_array3.h">
-			</File>
-			<File
-				RelativePath="..\mist\operator\operator_matrix.h">
 			</File>
 		</Filter>
 		<Filter

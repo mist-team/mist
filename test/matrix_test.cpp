@@ -1,8 +1,7 @@
 #include <iostream>
 
 #include <mist/mist.h>
-//#include <mist/matrix.h>
-#include <mist/matrix_et.h>
+#include <mist/matrix.h>
 
 #ifndef WIN32
 #include <ctime>
@@ -165,6 +164,7 @@ int main( )
 	cout << "< In the case of Expression Template >" << endl;
 	mat = ( mat1 + 2 ).t( );
 	cout << mat << endl << endl << endl;
+
 
 	return( 0 );
 }
