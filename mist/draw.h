@@ -95,6 +95,44 @@ namespace pixel_data
 	{
 		__glTexImage2D__< is_color< T >::value >::glTexImage2D( image );
 	}
+
+	inline size_t floor_square_index( size_t v )
+	{
+		if( v == 0 )
+		{
+			return( 0 );
+		}
+
+		for( size_t i = 1, _2 = 2 ; i < 1000000000 ; i++ )
+		{
+			if( v <= _2 )
+			{
+				return( i );
+			}
+			_2 *= 2;
+		}
+
+		return( 0 );
+	}
+
+	inline size_t floor_square( size_t v )
+	{
+		if( v == 0 )
+		{
+			return( 0 );
+		}
+
+		for( size_t i = 1, _2 = 2 ; i < 1000000000 ; i++ )
+		{
+			if( v <= _2 )
+			{
+				return( _2 );
+			}
+			_2 *= 2;
+		}
+
+		return( 0 );
+	}
 }
 
 template< class T, class Allocator >
@@ -126,7 +164,7 @@ bool draw_buffer( const array2< T, Allocator > &image,
 	if( image.empty( ) ) return( false );
 
 	double ttt = static_cast< double >( image.width( ) );
-	float interpolate_ = static_cast< float >( interpolate ? GL_LINEAR: GL_NEAREST );
+	int interpolate_ = interpolate ? GL_LINEAR: GL_NEAREST;
 
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
@@ -138,10 +176,10 @@ bool draw_buffer( const array2< T, Allocator > &image,
 	glViewport(0, 0, static_cast< GLint >( window_width ), static_cast< GLint >( window_height ) );
 
 	glPixelStorei( GL_UNPACK_ROW_LENGTH, static_cast< GLint >( image.width( ) ) );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, interpolate_ );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, interpolate_ );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, interpolate_ );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, interpolate_ );
 	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL );
 
 	pixel_data::glTexImage2D( image );
@@ -192,14 +230,14 @@ bool draw_buffer( const array2< T, Allocator > &image,
 	}
 
 	glBegin( GL_QUADS );
-		glTexCoord2f( static_cast< float >( t0[0] ), static_cast< float >( t0[1] ) );
-		glVertex2f  ( static_cast< float >( v0[0] ), static_cast< float >( v0[1] ) );
-		glTexCoord2f( static_cast< float >( t1[0] ), static_cast< float >( t1[1] ) );
-		glVertex2f  ( static_cast< float >( v1[0] ), static_cast< float >( v1[1] ) );
-		glTexCoord2f( static_cast< float >( t2[0] ), static_cast< float >( t2[1] ) );
-		glVertex2f  ( static_cast< float >( v2[0] ), static_cast< float >( v2[1] ) );
-		glTexCoord2f( static_cast< float >( t3[0] ), static_cast< float >( t3[1] ) );
-		glVertex2f  ( static_cast< float >( v3[0] ), static_cast< float >( v3[1] ) );
+		glTexCoord2d( t0[0], t0[1] );
+		glVertex2d  ( v0[0], v0[1] );
+		glTexCoord2d( t1[0], t1[1] );
+		glVertex2d  ( v1[0], v1[1] );
+		glTexCoord2d( t2[0], t2[1] );
+		glVertex2d  ( v2[0], v2[1] );
+		glTexCoord2d( t3[0], t3[1] );
+		glVertex2d  ( v3[0], v3[1] );
 	glEnd( );
 
 	glDisable( GL_TEXTURE_2D );
@@ -217,7 +255,7 @@ bool draw_image( const array2< T, Allocator > &image,
 {
 	typedef typename array2< T, Allocator >::size_type size_type;
 	size_type size = image.width( ) > image.height( ) ? image.width( ) : image.height( ); 
-	size_type ttt = static_cast< size_type >( pow( 2.0, ceil( log10( (double)size ) / log10( 2.0 ) ) ) );
+	size_type ttt = pixel_data::floor_square( size );
 
 	if( ttt == image.width( ) && ttt == image.height( ) )
 	{

@@ -100,7 +100,13 @@ namespace __linear__
 									typename array< T, Allocator >::size_type k2,
 									double x, double y, double z )
 		{
-			return( in[ i1 ] * ( 1.0 - x ) + in[ i2 ] * x );
+			typedef typename array< T, Allocator >::value_type color;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			double pix = in[ i1 ] * ( 1.0 - x ) + in[ i2 ] * x;
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 
 		template < class T, class Allocator >
@@ -113,7 +119,13 @@ namespace __linear__
 									typename array2< T, Allocator >::size_type k2,
 									double x, double y, double z )
 		{
-			return( ( in( i1, j1 ) * ( 1.0 - x ) + in( i2, j1 ) * x ) * ( 1.0 - y ) + ( in( i1, j2 ) * ( 1.0 - x ) + in( i2, j2 ) * x ) * y );
+			typedef typename array2< T, Allocator >::value_type color;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			double pix = ( in( i1, j1 ) * ( 1.0 - x ) + in( i2, j1 ) * x ) * ( 1.0 - y ) + ( in( i1, j2 ) * ( 1.0 - x ) + in( i2, j2 ) * x ) * y;
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 
 		template < class T, class Allocator >
@@ -126,8 +138,14 @@ namespace __linear__
 									typename array3< T, Allocator >::size_type k2,
 									double x, double y, double z )
 		{
-			return( ( ( in( i1, j1, k1 ) * ( 1.0 - x ) + in( i2, j1, k1 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k1 ) * ( 1.0 - x ) + in( i2, j2, k1 ) * x ) * y ) * ( 1.0 - z )
-								+ ( ( in( i1, j1, k2 ) * ( 1.0 - x ) + in( i2, j1, k2 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ) * ( 1.0 - x ) + in( i2, j2, k2 ) * x ) * y ) * z );
+			typedef typename array3< T, Allocator >::value_type color;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			double pix = ( ( in( i1, j1, k1 ) * ( 1.0 - x ) + in( i2, j1, k1 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k1 ) * ( 1.0 - x ) + in( i2, j2, k1 ) * x ) * y ) * ( 1.0 - z )
+								+ ( ( in( i1, j1, k2 ) * ( 1.0 - x ) + in( i2, j1, k2 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ) * ( 1.0 - x ) + in( i2, j2, k2 ) * x ) * y ) * z;
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 	};
 
@@ -146,6 +164,8 @@ namespace __linear__
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double r = in[ i1 ].r * ( 1.0 - x ) + in[ i2 ].r * x;
 			double g = in[ i1 ].g * ( 1.0 - x ) + in[ i2 ].g * x;
 			double b = in[ i1 ].b * ( 1.0 - x ) + in[ i2 ].b * x;
@@ -164,9 +184,17 @@ namespace __linear__
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double r = ( in( i1, j1 ).r * ( 1.0 - x ) + in( i2, j1 ).r * x ) * ( 1.0 - y ) + ( in( i1, j2 ).r * ( 1.0 - x ) + in( i2, j2 ).r * x ) * y;
 			double g = ( in( i1, j1 ).g * ( 1.0 - x ) + in( i2, j1 ).g * x ) * ( 1.0 - y ) + ( in( i1, j2 ).g * ( 1.0 - x ) + in( i2, j2 ).g * x ) * y;
 			double b = ( in( i1, j1 ).b * ( 1.0 - x ) + in( i2, j1 ).b * x ) * ( 1.0 - y ) + ( in( i1, j2 ).b * ( 1.0 - x ) + in( i2, j2 ).b * x ) * y;
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
 			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
 		}
 
@@ -182,12 +210,20 @@ namespace __linear__
 		{
 			typedef typename array3< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double r = ( ( in( i1, j1, k1 ).r * ( 1.0 - x ) + in( i2, j1, k1 ).r * x ) * ( 1.0 - y ) + ( in( i1, j2, k1 ).r * ( 1.0 - x ) + in( i2, j2, k1 ).r * x ) * y ) * ( 1.0 - z )
 								+ ( ( in( i1, j1, k2 ).r * ( 1.0 - x ) + in( i2, j1, k2 ).r * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ).r * ( 1.0 - x ) + in( i2, j2, k2 ).r * x ) * y ) * z;
 			double g = ( ( in( i1, j1, k1 ).g * ( 1.0 - x ) + in( i2, j1, k1 ).g * x ) * ( 1.0 - y ) + ( in( i1, j2, k1 ).g * ( 1.0 - x ) + in( i2, j2, k1 ).g * x ) * y ) * ( 1.0 - z )
 								+ ( ( in( i1, j1, k2 ).g * ( 1.0 - x ) + in( i2, j1, k2 ).g * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ).g * ( 1.0 - x ) + in( i2, j2, k2 ).g * x ) * y ) * z;
 			double b = ( ( in( i1, j1, k1 ).b * ( 1.0 - x ) + in( i2, j1, k1 ).b * x ) * ( 1.0 - y ) + ( in( i1, j2, k1 ).b * ( 1.0 - x ) + in( i2, j2, k1 ).b * x ) * y ) * ( 1.0 - z )
 								+ ( ( in( i1, j1, k2 ).b * ( 1.0 - x ) + in( i2, j1, k2 ).b * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ).b * ( 1.0 - x ) + in( i2, j2, k2 ).b * x ) * y ) * z;
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
 			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
 		}
 	};
@@ -272,11 +308,17 @@ namespace __cubic__
 								typename array< T, Allocator >::size_type k[4],
 								double x, double y, double z )
 		{
+			typedef typename array< T, Allocator >::value_type color;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
 			double u1 = sinc( x );
 			double u2 = sinc( 1 - x );
 			double u3 = sinc( 2 - x );
-			return( in[ i[ 0 ] ] * u0 + in[ i[ 1 ] ] * u1 + in[ i[ 2 ] ] * u2 + in[ i[ 3 ] ] * u3 );
+			double pix = in[ i[ 0 ] ] * u0 + in[ i[ 1 ] ] * u1 + in[ i[ 2 ] ] * u2 + in[ i[ 3 ] ] * u3;
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 
 		template < class T, class Allocator >
@@ -286,6 +328,9 @@ namespace __cubic__
 								typename array2< T, Allocator >::size_type k[4],
 								double x, double y, double z )
 		{
+			typedef typename array2< T, Allocator >::value_type color;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
 			double u1 = sinc( x );
 			double u2 = sinc( 1 - x );
@@ -294,10 +339,13 @@ namespace __cubic__
 			double v1 = sinc( y );
 			double v2 = sinc( 1 - y );
 			double v3 = sinc( 2 - y );
-			return( ( in( i[ 0 ], j[ 0 ] ) * u0 + in( i[ 1 ], j[ 0 ] ) * u1 + in( i[ 2 ], j[ 0 ] ) * u2 + in( i[ 3 ], j[ 0 ] ) * u3 ) * v0
-				+ ( in( i[ 0 ], j[ 1 ] ) * u0 + in( i[ 1 ], j[ 1 ] ) * u1 + in( i[ 2 ], j[ 1 ] ) * u2 + in( i[ 3 ], j[ 1 ] ) * u3 ) * v1
-				+ ( in( i[ 0 ], j[ 2 ] ) * u0 + in( i[ 1 ], j[ 2 ] ) * u1 + in( i[ 2 ], j[ 2 ] ) * u2 + in( i[ 3 ], j[ 2 ] ) * u3 ) * v2
-				+ ( in( i[ 0 ], j[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ] ) * u3 ) * v3 );
+			double pix = ( in( i[ 0 ], j[ 0 ] ) * u0 + in( i[ 1 ], j[ 0 ] ) * u1 + in( i[ 2 ], j[ 0 ] ) * u2 + in( i[ 3 ], j[ 0 ] ) * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ] ) * u0 + in( i[ 1 ], j[ 1 ] ) * u1 + in( i[ 2 ], j[ 1 ] ) * u2 + in( i[ 3 ], j[ 1 ] ) * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ] ) * u0 + in( i[ 1 ], j[ 2 ] ) * u1 + in( i[ 2 ], j[ 2 ] ) * u2 + in( i[ 3 ], j[ 2 ] ) * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ] ) * u3 ) * v3;
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 
 		template < class T, class Allocator >
@@ -307,6 +355,9 @@ namespace __cubic__
 								typename array3< T, Allocator >::size_type k[4],
 								double x, double y, double z )
 		{
+			typedef typename array3< T, Allocator >::value_type color;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
 			double u1 = sinc( x );
 			double u2 = sinc( 1 - x );
@@ -335,7 +386,10 @@ namespace __cubic__
 						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ) * u3 ) * v1
 						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ) * u3 ) * v2
 						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ) * u3 ) * v3 );
-			return( p0 * w0 + p1 * w1 + p2 * w2 + p3 * w3 );
+			double pix = p0 * w0 + p1 * w1 + p2 * w2 + p3 * w3;
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 	};
 
@@ -351,6 +405,8 @@ namespace __cubic__
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
 			double u1 = sinc( x );
 			double u2 = sinc( 1 - x );
@@ -358,6 +414,12 @@ namespace __cubic__
 			double r = in[ i[ 0 ] ].r * u0 + in[ i[ 1 ] ].r * u1 + in[ i[ 2 ] ].r * u2 + in[ i[ 3 ] ].r * u3;
 			double g = in[ i[ 0 ] ].g * u0 + in[ i[ 1 ] ].g * u1 + in[ i[ 2 ] ].g * u2 + in[ i[ 3 ] ].g * u3;
 			double b = in[ i[ 0 ] ].b * u0 + in[ i[ 1 ] ].b * u1 + in[ i[ 2 ] ].b * u2 + in[ i[ 3 ] ].b * u3;
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
 			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
 		}
 
@@ -370,6 +432,8 @@ namespace __cubic__
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
 			double u1 = sinc( x );
 			double u2 = sinc( 1 - x );
@@ -390,6 +454,12 @@ namespace __cubic__
 						+ ( in( i[ 0 ], j[ 1 ] ).b * u0 + in( i[ 1 ], j[ 1 ] ).b * u1 + in( i[ 2 ], j[ 1 ] ).b * u2 + in( i[ 3 ], j[ 1 ] ).b * u3 ) * v1
 						+ ( in( i[ 0 ], j[ 2 ] ).b * u0 + in( i[ 1 ], j[ 2 ] ).b * u1 + in( i[ 2 ], j[ 2 ] ).b * u2 + in( i[ 3 ], j[ 2 ] ).b * u3 ) * v2
 						+ ( in( i[ 0 ], j[ 3 ] ).b * u0 + in( i[ 1 ], j[ 3 ] ).b * u1 + in( i[ 2 ], j[ 3 ] ).b * u2 + in( i[ 3 ], j[ 3 ] ).b * u3 ) * v3;
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
 			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
 		}
 
@@ -402,6 +472,8 @@ namespace __cubic__
 		{
 			typedef typename array3< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
 			double u1 = sinc( x );
 			double u2 = sinc( 1 - x );
@@ -462,9 +534,16 @@ namespace __cubic__
 						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ).b * u3 ) * v1
 						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ).b * u3 ) * v2
 						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ).b * u3 ) * v3 );
-			return( color(  static_cast< value_type >( r0 * w0 + r1 * w1 + r2 * w2 + r3 * w3 ),
-							static_cast< value_type >( g0 * w0 + g1 * w1 + g2 * w2 + g3 * w3 ),
-							static_cast< value_type >( b0 * w0 + b1 * w1 + b2 * w2 + b3 * w3 ) ) );
+			double r = r0 * w0 + r1 * w1 + r2 * w2 + r3 * w3;
+			double g = g0 * w0 + g1 * w1 + g2 * w2 + g3 * w3;
+			double b = b0 * w0 + b1 * w1 + b2 * w2 + b3 * w3;
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
 		}
 	};
 
