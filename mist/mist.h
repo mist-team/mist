@@ -40,7 +40,7 @@ _MIST_BEGIN
 
 
 // １次元配列
-template < class T, class Allocator = ::std::allocator< T > >
+template < class T, class Allocator = std::allocator< T > >
 class array
 {
 public:
@@ -79,7 +79,7 @@ public:
 		}
 	}
 
-	void resize( size_type num, const T &val )
+	void resize( size_type num, const value_type &val )
 	{
 		if( size_ < num )
 		{
@@ -100,7 +100,7 @@ public:
 		size_ = a.size_;
 		a.size_ = _dmy_size;
 
-		T *dmy_data_ = data_;
+		value_type *dmy_data_ = data_;
 		data_ = a.data_;
 		a.data_ = dmy_data_;
 	}
@@ -117,7 +117,7 @@ public:
 		allocator_.clean_objects( data_, size_ );
 	}
 
-	void clean( const T &val )
+	void clean( const value_type &val )
 	{
 		allocator_.clean_objects( data_, size_, val );
 	}
@@ -128,7 +128,7 @@ public:
 	size_type size1( ) const { return( size_ ); }
 	size_type width( ) const { return( size_ ); }
 
-	size_type byte( ) const { return( size_ * sizeof( T ) ); }
+	size_type byte( ) const { return( size_ * sizeof( value_type ) ); }
 
 	iterator begin( ){ return( &( data_[0] ) ); }
 	const_iterator begin( ) const { return( &( data_[0] ) ); }
@@ -143,25 +143,25 @@ public:
 private: // サポートしないＳＴＬの関数（実装・使用しちゃだめ）
 	iterator erase( iterator i );
 	iterator erase( iterator s, iterator e );
-	iterator insert( iterator i, const T &val );
-	void insert( iterator i, size_type num, const T &val );
+	iterator insert( iterator i, const value_type &val );
+	void insert( iterator i, size_type num, const value_type &val );
 
 public:
 	template < class TT, class AAlocator >
 	const array& operator =( const array< TT, AAlocator >  &o )
 	{
-		if( size( ) > o.size( ) )
+		if( size_ > o.size( ) )
 		{
 			data_ = allocator_.trim_objects( data_, size_, o.size( ) );
 			size_ = o.size( );
 		}
-		else if( size( ) < o.size( ) )
+		else if( size_ < o.size( ) )
 		{
 			allocator_.deallocate_objects( data_, size_ );
 			size_ = o.size( );
 			data_ = allocator_.allocate_objects( size_ );
 		}
-		for( size_type i = 0 ; i < size_ ; i++ ) data_[i] = static_cast< T >( o[i] );
+		for( size_type i = 0 ; i < size_ ; i++ ) data_[i] = static_cast< value_type >( o[i] );
 
 		return( *this );
 	}
@@ -169,12 +169,12 @@ public:
 	{
 		if( this == &o ) return( *this );
 
-		if( size( ) > o.size_ )
+		if( size_ > o.size_ )
 		{
 			data_ = allocator_.trim_objects( data_, size_, o.size_ );
 			size_ = o.size_;
 		}
-		else if( size( ) < o.size_ )
+		else if( size_ < o.size_ )
 		{
 			allocator_.deallocate_objects( data_, size_ );
 			size_ = o.size_;
@@ -186,12 +186,12 @@ public:
 	}
 
 public: // 要素へのアクセス
-	T &at( size_type index )
+	value_type &at( size_type index )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( index < 0 || index >= size_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << index << " )" << std::endl;
 			return( dmy );
 		}
@@ -199,12 +199,12 @@ public: // 要素へのアクセス
 		return( data_[index] );
 	}
 
-	const T &at( size_type index ) const
+	const value_type &at( size_type index ) const
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( index < 0 || index >= size_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << index << " )" << std::endl;
 			return( dmy );
 		}
@@ -212,12 +212,12 @@ public: // 要素へのアクセス
 		return( data_[index] );
 	}
 
-	T &operator ()( size_type index )
+	value_type &operator ()( size_type index )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( index < 0 || index >= size_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << index << " )" << std::endl;
 			return( dmy );
 		}
@@ -225,12 +225,12 @@ public: // 要素へのアクセス
 		return( data_[index] );
 	}
 
-	const T &operator ()( size_type index ) const
+	const value_type &operator ()( size_type index ) const
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( index < 0 || index >= size_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << index << " )" << std::endl;
 			return( dmy );
 		}
@@ -238,12 +238,12 @@ public: // 要素へのアクセス
 		return( data_[index] );
 	}
 
-	T &operator []( size_type index )
+	value_type &operator []( size_type index )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( index < 0 || index >= size_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << index << " )" << std::endl;
 			return( dmy );
 		}
@@ -251,12 +251,12 @@ public: // 要素へのアクセス
 		return( data_[index] );
 	}
 
-	const T &operator []( size_type index ) const
+	const value_type &operator []( size_type index ) const
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( index < 0 || index >= size_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << index << " )" << std::endl;
 			return( dmy );
 		}
@@ -278,11 +278,11 @@ public:
 		data_ = allocator_.allocate_objects( size_ );
 	}
 
-	array( size_type num, const T &val ) : allocator_( ), size_( num ), data_( NULL )
+	array( size_type num, const value_type &val ) : allocator_( ), size_( num ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_, val );
 	}
-	array( size_type num, const T &val, const Allocator &a ) : allocator_( a ), size_( num ), data_( NULL )
+	array( size_type num, const value_type &val, const Allocator &a ) : allocator_( a ), size_( num ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_, val );
 	}
@@ -297,10 +297,10 @@ public:
 	}
 
 	template < class TT, class AAlocator >
-	explicit array( const array< TT, AAlocator > &o ) : allocator_( ), size_( o.size( ) ), data_( NULL )
+	array( const array< TT, AAlocator > &o ) : allocator_( ), size_( o.size( ) ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_ );
-		for( size_type i = 0 ; i < size_ ; i++ ) data_[i] = static_cast< T >( o[i] );
+		for( size_type i = 0 ; i < size_ ; i++ ) data_[i] = static_cast< value_type >( o[i] );
 	}
 
 	array( const array< T, Allocator > &o ) : allocator_( o.allocator_ ), size_( o.size_ ), data_( NULL )
@@ -317,8 +317,9 @@ public:
 };
 
 
+
 // １次元配列
-template < class T, class Allocator = ::std::allocator< T > >
+template < class T, class Allocator = std::allocator< T > >
 class array1 : public array< T, Allocator >
 {
 public:
@@ -378,10 +379,10 @@ public:
 	array1( size_type num, const Allocator &a ) : base( num, a ), reso1_( 1.0 ) {}
 	array1( size_type num, double r1, const Allocator &a ) : base( num, a ), reso1_( r1 ) {}
 
-	array1( size_type num, const T &val ) : base( num, val ), reso1_( 1.0 ) {}
-	array1( size_type num, double r1, const T &val ) : base( num, val ), reso1_( r1 ) {}
-	array1( size_type num, const T &val, const Allocator &a ) : base( num, val, a ), reso1_( 1.0 ) {}
-	array1( size_type num, double r1, const T &val, const Allocator &a ) : base( num, val, a ), reso1_( r1 ) {}
+	array1( size_type num, const value_type &val ) : base( num, val ), reso1_( 1.0 ) {}
+	array1( size_type num, double r1, const value_type &val ) : base( num, val ), reso1_( r1 ) {}
+	array1( size_type num, const value_type &val, const Allocator &a ) : base( num, val, a ), reso1_( 1.0 ) {}
+	array1( size_type num, double r1, const value_type &val, const Allocator &a ) : base( num, val, a ), reso1_( r1 ) {}
 
 	template < class TT, class AAlocator >
 	explicit array1( const array1< TT, AAlocator > &o ) : base( o ), reso1_( o.reso1( ) ) {}
@@ -391,7 +392,7 @@ public:
 
 
 // ２次元配列
-template < class T, class Allocator = ::std::allocator< T > >
+template < class T, class Allocator = std::allocator< T > >
 class array2 : public array1< T, Allocator >
 {
 public:
@@ -418,7 +419,7 @@ public:
 		size2_ = num2;
 	}
 
-	void resize( size_type num1, size_type num2, const T &val )
+	void resize( size_type num1, size_type num2, const value_type &val )
 	{
 		base::resize( num1 * num2, val );
 		size1_ = num1;
@@ -483,12 +484,12 @@ public:
 	}
 
 public: // 要素へのアクセス
-	T &at( size_type i, size_type j )
+	value_type &at( size_type i, size_type j )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
 			return( dmy );
 		}
@@ -496,12 +497,12 @@ public: // 要素へのアクセス
 		return( data_[ i + j * size1_ ] );
 	}
 
-	const T &at( size_type index, size_type j ) const
+	const value_type &at( size_type index, size_type j ) const
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
 			return( dmy );
 		}
@@ -509,12 +510,12 @@ public: // 要素へのアクセス
 		return( data_[ i + j * size1_ ] );
 	}
 
-	T &operator ()( size_type i, size_type j )
+	value_type &operator ()( size_type i, size_type j )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
 			return( dmy );
 		}
@@ -522,12 +523,12 @@ public: // 要素へのアクセス
 		return( data_[ i + j * size1_ ] );
 	}
 
-	const T &operator ()( size_type i, size_type j ) const
+	const value_type &operator ()( size_type i, size_type j ) const
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
 			return( dmy );
 		}
@@ -546,13 +547,13 @@ public:
 	array2( size_type num1, size_type num2, const Allocator &a ) : base( num1 * num2, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
 	array2( size_type num1, size_type num2, double r1, double r2, const Allocator &a ) : base( num1 * num2, r1, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
 
-	array2( size_type num1, size_type num2, const T &val ) : base( num1 * num2, val ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
-	array2( size_type num1, size_type num2, double r1, double r2, const T &val ) : base( num1 * num2, r1, val ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
-	array2( size_type num1, size_type num2, const T &val, const Allocator &a ) : base( num1 * num2, val, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
-	array2( size_type num1, size_type num2, double r1, double r2, const T &val, const Allocator &a ) : base( num1 * num2, r1, val, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
+	array2( size_type num1, size_type num2, const value_type &val ) : base( num1 * num2, val ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
+	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val ) : base( num1 * num2, r1, val ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
+	array2( size_type num1, size_type num2, const value_type &val, const Allocator &a ) : base( num1 * num2, val, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
+	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val, const Allocator &a ) : base( num1 * num2, r1, val, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
 
 	template < class TT, class AAlocator >
-	explicit array2( const array2< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), reso2_( o.reso2( ) ) {}
+	array2( const array2< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), reso2_( o.reso2( ) ) {}
 
 	array2( const array2< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), reso2_( o.reso2_ ) {}
 };
@@ -561,7 +562,7 @@ public:
 
 
 // ３次元配列
-template < class T, class Allocator = ::std::allocator< T > >
+template < class T, class Allocator = std::allocator< T > >
 class array3 : public array2< T, Allocator >
 {
 public:
@@ -590,7 +591,7 @@ public:
 		size3_ = num3;
 	}
 
-	void resize( size_type num1, size_type num2, size_type num3, const T &val )
+	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
 	{
 		base::resize( num1 * num2, num3, val );
 		size1_ = num1;
@@ -666,12 +667,12 @@ public:
 	}
 
 public: // 要素へのアクセス
-	T &at( size_type i, size_type j, size_type k )
+	value_type &at( size_type i, size_type j, size_type k )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
 			return( dmy );
 		}
@@ -679,12 +680,12 @@ public: // 要素へのアクセス
 		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
-	const T &at( size_type index, size_type j, size_type k ) const
+	const value_type &at( size_type index, size_type j, size_type k ) const
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
 			return( dmy );
 		}
@@ -692,12 +693,12 @@ public: // 要素へのアクセス
 		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
-	T &operator ()( size_type i, size_type j, size_type k )
+	value_type &operator ()( size_type i, size_type j, size_type k )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
 			return( dmy );
 		}
@@ -705,12 +706,12 @@ public: // 要素へのアクセス
 		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
-	const T &operator ()( size_type i, size_type j, size_type k ) const
+	const value_type &operator ()( size_type i, size_type j, size_type k ) const
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
 		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
 		{
-			static T dmy;
+			static value_type dmy;
 			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
 			return( dmy );
 		}
@@ -729,20 +730,20 @@ public:
 	array3( size_type num1, size_type num2, size_type num3, const Allocator &a ) : base( num1 * num2, num3, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
 	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const Allocator &a ) : base( num1 * num2, num3, r1, r2, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
 
-	array3( size_type num1, size_type num2, size_type num3, const T &val ) : base( num1 * num2, num3, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const T &val ) : base( num1 * num2, num3, r1, r2, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
-	array3( size_type num1, size_type num2, size_type num3, const T &val, const Allocator &a ) : base( num1 * num2, num3, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const T &val, const Allocator &a ) : base( num1 * num2, num3, r1, r2, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
+	array3( size_type num1, size_type num2, size_type num3, const value_type &val ) : base( num1 * num2, num3, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val ) : base( num1 * num2, num3, r1, r2, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
+	array3( size_type num1, size_type num2, size_type num3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, r1, r2, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
 
 	template < class TT, class AAlocator >
-	explicit array3( const array3< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( o.size3( ) ), reso3_( o.reso3( ) ) {}
+	array3( const array3< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( o.size3( ) ), reso3_( o.reso3( ) ) {}
 
 	array3( const array3< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), size3_( o.size3_ ), reso3_( o.reso3_ ) {}
 };
 
 
 template < class T, class Allocator >
-inline ::std::ostream &operator <<( ::std::ostream &out, const array< T, Allocator > &a )
+inline std::ostream &operator <<( std::ostream &out, const array< T, Allocator > &a )
 {
 	typename array< T, Allocator >::size_type i;
 	for( i = 0 ; i < a.size( ) ; i++ )
@@ -750,13 +751,13 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const array< T, Allocat
 		out << a[i];
 		if( i != a.size1( ) - 1 ) out << ", ";
 	}
-	out << ::std::endl;
+	out << std::endl;
 
 	return( out );
 }
 
 template < class T, class Allocator >
-inline ::std::ostream &operator <<( ::std::ostream &out, const array1< T, Allocator > &a )
+inline std::ostream &operator <<( std::ostream &out, const array1< T, Allocator > &a )
 {
 	typename array1< T, Allocator >::size_type i;
 	for( i = 0 ; i < a.size( ) ; i++ )
@@ -764,14 +765,14 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const array1< T, Alloca
 		out << a[i];
 		if( i != a.size1( ) - 1 ) out << ", ";
 	}
-	out << ::std::endl;
+	out << std::endl;
 
 	return( out );
 }
 
 
 template < class T, class Allocator >
-inline ::std::ostream &operator <<( ::std::ostream &out, const array2< T, Allocator > &a )
+inline std::ostream &operator <<( std::ostream &out, const array2< T, Allocator > &a )
 {
 	typename array2< T, Allocator >::size_type i, j;
 	for( j = 0 ; j < a.size2( ) ; j++ )
@@ -781,7 +782,7 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const array2< T, Alloca
 			out << a( i, j );
 			if( i != a.size1( ) - 1 ) out << ", ";
 		}
-		out << ::std::endl;
+		out << std::endl;
 	}
 
 	return( out );

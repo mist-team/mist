@@ -669,13 +669,13 @@ public:
 	matrix( size_type rnum, size_type cnum, const T &val, const Allocator &a ) : base( rnum * cnum, val, a ), size1_( rnum ), size2_( cnum ) {}
 
 	template < class TT, class AAlocator >
-	explicit matrix( const matrix< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ){ }
+	matrix( const matrix< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ){ }
 
 	matrix( const matrix< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ){ }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 	template < class Derive >
-	explicit matrix( const matrix_expression< T, Allocator, Derive > &expression ) : base( expression.rows( ) * expression.cols( ) ), size1_( expression.rows( ) ), size2_( expression.cols( ) )
+	matrix( const matrix_expression< T, Allocator, Derive > &expression ) : base( expression.rows( ) * expression.cols( ) ), size1_( expression.rows( ) ), size2_( expression.cols( ) )
 	{
 		matrix &m = *this;
 		for( size_type r = 0 ; r < m.rows( ) ; r++ )
