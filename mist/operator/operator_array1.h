@@ -344,7 +344,7 @@ inline array1< T, Allocator > operator -( const array1< T, Allocator > &a, typen
 template < class T, class Allocator >
 inline array1< T, Allocator > operator -( typename array1< T, Allocator >::value_type val, const array1< T, Allocator > &a )
 {
-	return( array1< T, Allocator >( a ) -= val );
+	return( array2< T, Allocator >( a.size( ), val ) -= a );
 }
 
 

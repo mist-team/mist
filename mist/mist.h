@@ -2930,11 +2930,24 @@ inline std::ostream &operator <<( std::ostream &out, const array3< T, Allocator 
 
 
 
-// 画像間演算
-//#include "operator/operator_array.h"
-//#include "operator/operator_array1.h"
-//#include "operator/operator_array2.h"
-//#include "operator/operator_array3.h"
+// 各コンテナに対する画像間演算
+
+#if defined(_ARRAY_BIND_OPERATION_SUPPORT_) && _ARRAY_BIND_OPERATION_SUPPORT_ != 0
+#include "operator/operator_array.h"
+#endif
+
+#if defined(_ARRAY1_BIND_OPERATION_SUPPORT_) && _ARRAY1_BIND_OPERATION_SUPPORT_ != 0
+#include "operator/operator_array1.h"
+#endif
+
+#if defined(_ARRAY2_BIND_OPERATION_SUPPORT_) && _ARRAY2_BIND_OPERATION_SUPPORT_ != 0
+#include "operator/operator_array2.h"
+#endif
+
+#if defined(_ARRAY3_BIND_OPERATION_SUPPORT_) && _ARRAY3_BIND_OPERATION_SUPPORT_ != 0
+#include "operator/operator_array3.h"
+#endif
+
 
 // mist名前空間の終わり
 _MIST_END

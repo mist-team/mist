@@ -90,6 +90,12 @@ _MIST_BEGIN
 #endif
 
 
+#define _ARRAY_BIND_OPERATION_SUPPORT_		0	///< MISTの array  コンテナ同士の四則演算を有効にするかどうか
+#define _ARRAY1_BIND_OPERATION_SUPPORT_		0	///< MISTの array1 コンテナ同士の四則演算を有効にするかどうか
+#define _ARRAY2_BIND_OPERATION_SUPPORT_		0	///< MISTの array2 コンテナ同士の四則演算を有効にするかどうか
+#define _ARRAY3_BIND_OPERATION_SUPPORT_		0	///< MISTの array3 コンテナ同士の四則演算を有効にするかどうか
+
+
 #define _MIST_THREAD_SUPPORT_				1	///< MISTの各アルゴリズムでのスレッドサポートをするかどうか．サポートする場合は，LINUX系の場合は pthread ライブラリが必要
 
 #define _MIST_VECTOR_SUPPORT_				0	///< MISTのVECTORを有効にする．MATRIXとの掛け算等もサポートする．STLのvectorとクラス名がかぶるため，名前空間を正しくインポートする必要がある．
