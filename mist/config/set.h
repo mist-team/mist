@@ -65,26 +65,81 @@ public:
 
 	const set &operator -=( const set &s )
 	{
-		size_type num = base::size( ) < s.size( ) ? base::size( ) : s.size( );
-		key_type *keys = new key_type[ num + 1 ];
-		set &a = *this;
-		key_type *ep = std::set_intersection( a.begin( ), a.end( ), s.begin( ), s.end( ), keys );
-		set c( keys, ep );
-		ep = std::set_difference( a.begin( ), a.end( ), c.begin( ), c.end( ), keys );
-		a = set( keys, ep );
-		delete [] keys;
+		if( &s == this )
+		{
+			base::clear( );
+		}
+		else
+		{
+			set a = *this;
+			const_iterator site1 = a.begin( );
+			const_iterator eite1 = a.end( );
+			const_iterator site2 = s.begin( );
+			const_iterator eite2 = s.end( );
+
+			// 自分自身の内容を空っぽにする
+			base::clear( );
+
+			key_compare compare;
+			while( site1 != eite1 && site1 != eite1 )
+			{
+				if( compare( *site1, *site2 ) )
+				{
+					base::insert( *site1 );
+					++site1;
+				}
+				else if( compare( *site2, *site1 ) )
+				{
+					++site2;
+				}
+				else
+				{
+					++site1;
+					++site2;
+				}
+			}
+
+			if( site1 != eite1 )
+			{
+				base::insert( site1, eite1 );
+			}
+		}
 		return( *this );
 	}
 	const set &operator -=( const key_type &s ){ base::erase( s ); return( *this ); }
 
 	const set &operator *=( const set &s )
 	{
-		size_type num = base::size( ) < s.size( ) ? base::size( ) : s.size( );
-		key_type *keys = new key_type[ num + 1 ];
-		set &a = *this;
-		key_type *ep = std::set_intersection( a.begin( ), a.end( ), s.begin( ), s.end( ), keys );
-		a = set( keys, ep );
-		delete [] keys;
+		if( &s != this )
+		{
+			set a = *this;
+			const_iterator site1 = a.begin( );
+			const_iterator eite1 = a.end( );
+			const_iterator site2 = s.begin( );
+			const_iterator eite2 = s.end( );
+
+			// 自分自身の内容を空っぽにする
+			base::clear( );
+
+			key_compare compare;
+			while( site1 != eite1 && site2 != eite2 )
+			{
+				if( compare( *site1, *site2 ) )
+				{
+					++site1;
+				}
+				else if ( compare( *site2, *site1 ) )
+				{
+					++site2;
+				}
+				else
+				{
+					base::insert( *site1 );
+					++site1;
+					++site2;
+				}
+			}
+		}
 		return( *this );
 	}
 
@@ -95,11 +150,12 @@ public:
 			return( false );
 		}
 
+		key_compare compare;
 		const_iterator ite1 = base::begin( );
 		const_iterator ite2 = s.begin( );
 		for( ; ite1 != base::end( ) ; ++ite1, ++ite2 )
 		{
-			if( key_compare( )( *ite1, *ite2 ) || key_compare( )( *ite2, *ite1 ) )
+			if( compare( *ite1, *ite2 ) || compare( *ite2, *ite1 ) )
 			{
 				return( false );
 			}

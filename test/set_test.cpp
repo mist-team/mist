@@ -6,16 +6,16 @@ int main( int argc, char *argv[] )
 	using namespace std;
 
 	mist::set< int > s1, s2;
-	mist::set< int >::size_type i;
+	int i;
 
 	for( i = 0 ; i < 10 ; i++ )
 	{
-		s1.insert( static_cast< int >( i ) );
+		s1.insert( i );
 	}
 
-	for( i = 5 ; i < 10 ; i++ )
+	for( i = 5 ; i < 15 ; i++ )
 	{
-		s2.insert( static_cast< int >( i ) );
+		s2.insert( i );
 	}
 
 
