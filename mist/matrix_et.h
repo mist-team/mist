@@ -570,6 +570,19 @@ inline matrix_add_const< matrix< T, A >, typename matrix< T, A >::value_type > o
 	return( matrix_add_const< matrix< T, A >, value_type >( rhs, lhs ) );
 }
 
+template< class Left, class Derive >
+inline matrix_add_const< matrix_expression< Left, Derive >, typename matrix_expression< Left, Derive >::value_type > operator +( const matrix_expression< Left, Derive > &lhs, const typename matrix_expression< Left, Derive >::value_type &rhs )
+{
+	typedef typename matrix_expression< Left, Derive >::value_type value_type;
+	return( matrix_add_const< matrix_expression< Left, Derive >, value_type >( lhs, rhs ) );
+}
+
+template< class Right, class Derive >
+inline matrix_add_const< matrix_expression< Right, Derive >, typename matrix_expression< Right, Derive >::value_type > operator +( const typename matrix_expression< Right, Derive >::value_type &rhs, const matrix_expression< Right, Derive > &lhs )
+{
+	typedef typename matrix_expression< Right, Derive >::value_type value_type;
+	return( matrix_add_const< matrix_expression< Right, Derive >, value_type >( rhs, lhs ) );
+}
 
 
 // à¯Ç´éZ
@@ -611,6 +624,19 @@ inline matrix_sub_const2< matrix< T, A >, typename matrix< T, A >::value_type > 
 	return( matrix_sub_const2< matrix< T, A >, value_type >( rhs, lhs ) );
 }
 
+template< class Left, class Derive >
+inline matrix_sub_const1< matrix_expression< Left, Derive >, typename matrix_expression< Left, Derive >::value_type > operator -( const matrix_expression< Left, Derive > &lhs, const typename matrix_expression< Left, Derive >::value_type &rhs )
+{
+	typedef typename matrix_expression< Left, Derive >::value_type value_type;
+	return( matrix_sub_const1< matrix_expression< Left, Derive >, value_type >( lhs, rhs ) );
+}
+
+template< class Right, class Derive >
+inline matrix_sub_const2< matrix_expression< Right, Derive >, typename matrix_expression< Right, Derive >::value_type > operator -( const typename matrix_expression< Right, Derive >::value_type &rhs, const matrix_expression< Right, Derive > &lhs )
+{
+	typedef typename matrix_expression< Right, Derive >::value_type value_type;
+	return( matrix_sub_const2< matrix_expression< Right, Derive >, value_type >( rhs, lhs ) );
+}
 
 // ä|ÇØéZ
 template< class T, class A >
@@ -651,6 +677,19 @@ inline matrix_mul_const< matrix< T, A >, typename matrix< T, A >::value_type > o
 	return( matrix_mul_const< matrix< T, A >, value_type >( rhs, lhs ) );
 }
 
+template< class Left, class Derive >
+inline matrix_mul_const< matrix_expression< Left, Derive >, typename matrix_expression< Left, Derive >::value_type > operator *( const matrix_expression< Left, Derive > &lhs, const typename matrix_expression< Left, Derive >::value_type &rhs )
+{
+	typedef typename matrix_expression< Left, Derive >::value_type value_type;
+	return( matrix_mul_const< matrix_expression< Left, Derive >, value_type >( lhs, rhs ) );
+}
+
+template< class Right, class Derive >
+inline matrix_mul_const< matrix_expression< Right, Derive >, typename matrix_expression< Right, Derive >::value_type > operator *( const typename matrix_expression< Right, Derive >::value_type &rhs, const matrix_expression< Right, Derive > &lhs )
+{
+	typedef typename matrix_expression< Right, Derive >::value_type value_type;
+	return( matrix_mul_const< matrix_expression< Right, Derive >, value_type >( rhs, lhs ) );
+}
 
 // äÑÇËéZ
 template< class T, class A >
@@ -659,6 +698,14 @@ inline matrix_div_const< matrix< T, A >, typename matrix< T, A >::value_type > o
 	typedef typename matrix< T, A >::value_type value_type;
 	return( matrix_div_const< matrix< T, A >, value_type >( lhs, rhs ) );
 }
+
+template< class Left, class Derive >
+inline matrix_div_const< matrix_expression< Left, Derive >, typename matrix_expression< Left, Derive >::value_type > operator /( const matrix_expression< Left, Derive > &lhs, const typename matrix_expression< Left, Derive >::value_type &rhs )
+{
+	typedef typename matrix_expression< Left, Derive >::value_type value_type;
+	return( matrix_div_const< matrix_expression< Left, Derive >, value_type >( lhs, rhs ) );
+}
+
 
 
 // mistñºëOãÛä‘ÇÃèIÇÌÇË
