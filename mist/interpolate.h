@@ -87,45 +87,110 @@ namespace __nearest__
 // ç≈ãﬂñTå^ï‚ä‘
 namespace __linear__
 {
-	template < class T, class Allocator >
-	inline double linear( const array< T, Allocator > &in,
-							typename array< T, Allocator >::size_type i1,
-							typename array< T, Allocator >::size_type i2,
-							typename array< T, Allocator >::size_type j1,
-							typename array< T, Allocator >::size_type j2,
-							typename array< T, Allocator >::size_type k1,
-							typename array< T, Allocator >::size_type k2,
-							double x, double y, double z )
+	template < bool b >
+	struct _linear_
 	{
-		return( in[ i1 ] * ( 1.0 - x ) + in[ i2 ] * x );
-	}
+		template < class T, class Allocator >
+		static double linear( const array< T, Allocator > &in,
+									typename array< T, Allocator >::size_type i1,
+									typename array< T, Allocator >::size_type i2,
+									typename array< T, Allocator >::size_type j1,
+									typename array< T, Allocator >::size_type j2,
+									typename array< T, Allocator >::size_type k1,
+									typename array< T, Allocator >::size_type k2,
+									double x, double y, double z )
+		{
+			return( in[ i1 ] * ( 1.0 - x ) + in[ i2 ] * x );
+		}
 
-	template < class T, class Allocator >
-	inline double linear( const array2< T, Allocator > &in,
-							typename array2< T, Allocator >::size_type i1,
-							typename array2< T, Allocator >::size_type i2,
-							typename array2< T, Allocator >::size_type j1,
-							typename array2< T, Allocator >::size_type j2,
-							typename array2< T, Allocator >::size_type k1,
-							typename array2< T, Allocator >::size_type k2,
-							double x, double y, double z )
-	{
-		return( ( in( i1, j1 ) * ( 1.0 - x ) + in( i2, j1 ) * x ) * ( 1.0 - y ) + ( in( i1, j2 ) * ( 1.0 - x ) + in( i2, j2 ) * x ) * y );
-	}
+		template < class T, class Allocator >
+		static double linear( const array2< T, Allocator > &in,
+									typename array2< T, Allocator >::size_type i1,
+									typename array2< T, Allocator >::size_type i2,
+									typename array2< T, Allocator >::size_type j1,
+									typename array2< T, Allocator >::size_type j2,
+									typename array2< T, Allocator >::size_type k1,
+									typename array2< T, Allocator >::size_type k2,
+									double x, double y, double z )
+		{
+			return( ( in( i1, j1 ) * ( 1.0 - x ) + in( i2, j1 ) * x ) * ( 1.0 - y ) + ( in( i1, j2 ) * ( 1.0 - x ) + in( i2, j2 ) * x ) * y );
+		}
 
-	template < class T, class Allocator >
-	inline double linear( const array3< T, Allocator > &in,
-							typename array3< T, Allocator >::size_type i1,
-							typename array3< T, Allocator >::size_type i2,
-							typename array3< T, Allocator >::size_type j1,
-							typename array3< T, Allocator >::size_type j2,
-							typename array3< T, Allocator >::size_type k1,
-							typename array3< T, Allocator >::size_type k2,
-							double x, double y, double z )
+		template < class T, class Allocator >
+		static double linear( const array3< T, Allocator > &in,
+									typename array3< T, Allocator >::size_type i1,
+									typename array3< T, Allocator >::size_type i2,
+									typename array3< T, Allocator >::size_type j1,
+									typename array3< T, Allocator >::size_type j2,
+									typename array3< T, Allocator >::size_type k1,
+									typename array3< T, Allocator >::size_type k2,
+									double x, double y, double z )
+		{
+			return( ( ( in( i1, j1, k1 ) * ( 1.0 - x ) + in( i2, j1, k1 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k1 ) * ( 1.0 - x ) + in( i2, j2, k1 ) * x ) * y ) * ( 1.0 - z )
+								+ ( ( in( i1, j1, k2 ) * ( 1.0 - x ) + in( i2, j1, k2 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ) * ( 1.0 - x ) + in( i2, j2, k2 ) * x ) * y ) * z );
+		}
+	};
+
+	template < >
+	struct _linear_< true >
 	{
-		return( ( ( in( i1, j1, k1 ) * ( 1.0 - x ) + in( i2, j1, k1 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k1 ) * ( 1.0 - x ) + in( i2, j2, k1 ) * x ) * y ) * ( 1.0 - z )
-							+ ( ( in( i1, j1, k2 ) * ( 1.0 - x ) + in( i2, j1, k2 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ) * ( 1.0 - x ) + in( i2, j2, k2 ) * x ) * y ) * z );
-	}
+		template < class T, class Allocator >
+		static typename array< T, Allocator >::value_type linear( const array< T, Allocator > &in,
+																	typename array< T, Allocator >::size_type i1,
+																	typename array< T, Allocator >::size_type i2,
+																	typename array< T, Allocator >::size_type j1,
+																	typename array< T, Allocator >::size_type j2,
+																	typename array< T, Allocator >::size_type k1,
+																	typename array< T, Allocator >::size_type k2,
+																	double x, double y, double z )
+		{
+			typedef typename array< T, Allocator >::value_type color;
+			typedef typename color::value_type value_type;
+			double r = in[ i1 ].r * ( 1.0 - x ) + in[ i2 ].r * x;
+			double g = in[ i1 ].g * ( 1.0 - x ) + in[ i2 ].g * x;
+			double b = in[ i1 ].b * ( 1.0 - x ) + in[ i2 ].b * x;
+			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
+		}
+
+		template < class T, class Allocator >
+		static typename array2< T, Allocator >::value_type linear( const array2< T, Allocator > &in,
+																	typename array2< T, Allocator >::size_type i1,
+																	typename array2< T, Allocator >::size_type i2,
+																	typename array2< T, Allocator >::size_type j1,
+																	typename array2< T, Allocator >::size_type j2,
+																	typename array2< T, Allocator >::size_type k1,
+																	typename array2< T, Allocator >::size_type k2,
+																	double x, double y, double z )
+		{
+			typedef typename array2< T, Allocator >::value_type color;
+			typedef typename color::value_type value_type;
+			double r = ( in( i1, j1 ).r * ( 1.0 - x ) + in( i2, j1 ).r * x ) * ( 1.0 - y ) + ( in( i1, j2 ).r * ( 1.0 - x ) + in( i2, j2 ).r * x ) * y;
+			double g = ( in( i1, j1 ).g * ( 1.0 - x ) + in( i2, j1 ).g * x ) * ( 1.0 - y ) + ( in( i1, j2 ).g * ( 1.0 - x ) + in( i2, j2 ).g * x ) * y;
+			double b = ( in( i1, j1 ).b * ( 1.0 - x ) + in( i2, j1 ).b * x ) * ( 1.0 - y ) + ( in( i1, j2 ).b * ( 1.0 - x ) + in( i2, j2 ).b * x ) * y;
+			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
+		}
+
+		template < class T, class Allocator >
+		static typename array3< T, Allocator >::value_type linear( const array3< T, Allocator > &in,
+																	typename array3< T, Allocator >::size_type i1,
+																	typename array3< T, Allocator >::size_type i2,
+																	typename array3< T, Allocator >::size_type j1,
+																	typename array3< T, Allocator >::size_type j2,
+																	typename array3< T, Allocator >::size_type k1,
+																	typename array3< T, Allocator >::size_type k2,
+																	double x, double y, double z )
+		{
+			typedef typename array3< T, Allocator >::value_type color;
+			typedef typename color::value_type value_type;
+			double r = ( ( in( i1, j1, k1 ).r * ( 1.0 - x ) + in( i2, j1, k1 ).r * x ) * ( 1.0 - y ) + ( in( i1, j2, k1 ).r * ( 1.0 - x ) + in( i2, j2, k1 ).r * x ) * y ) * ( 1.0 - z )
+								+ ( ( in( i1, j1, k2 ).r * ( 1.0 - x ) + in( i2, j1, k2 ).r * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ).r * ( 1.0 - x ) + in( i2, j2, k2 ).r * x ) * y ) * z;
+			double g = ( ( in( i1, j1, k1 ).g * ( 1.0 - x ) + in( i2, j1, k1 ).g * x ) * ( 1.0 - y ) + ( in( i1, j2, k1 ).g * ( 1.0 - x ) + in( i2, j2, k1 ).g * x ) * y ) * ( 1.0 - z )
+								+ ( ( in( i1, j1, k2 ).g * ( 1.0 - x ) + in( i2, j1, k2 ).g * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ).g * ( 1.0 - x ) + in( i2, j2, k2 ).g * x ) * y ) * z;
+			double b = ( ( in( i1, j1, k1 ).b * ( 1.0 - x ) + in( i2, j1, k1 ).b * x ) * ( 1.0 - y ) + ( in( i1, j2, k1 ).b * ( 1.0 - x ) + in( i2, j2, k1 ).b * x ) * y ) * ( 1.0 - z )
+								+ ( ( in( i1, j1, k2 ).b * ( 1.0 - x ) + in( i2, j1, k2 ).b * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ).b * ( 1.0 - x ) + in( i2, j2, k2 ).b * x ) * y ) * z;
+			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
+		}
+	};
 
 	template < class Array1, class Array2 >
 	void interpolate( const Array1 &in, Array2 &out,
@@ -168,7 +233,7 @@ namespace __linear__
 					i1 = static_cast< size_type >( x );
 					x -= i1;
 					i2 = i1 < iw - 1 ? i1 + 1 : i1;
-					out( i, j, k ) = static_cast< out_value_type >( linear( in, i1, i2, j1, j2, k1, k2, x, y, z ) );
+					out( i, j, k ) = static_cast< out_value_type >( _linear_< is_color< value_type >::value >::linear( in, i1, i2, j1, j2, k1, k2, x, y, z ) );
 				}
 			}
 		}
@@ -185,11 +250,11 @@ namespace __cubic__
 		double ret = 0.0;
 		t = fabs( t );
 
-		if( t >= 0.0 && t < 1.0 )
+		if( t < 1.0 )
 		{
 			ret = 1.0 + ( -2.0 + t ) * t * t;
 		}
-		else if( t >= 1.0 && t < 2.0 )
+		else if( t < 2.0 )
 		{
 			ret = 4.0 + ( -8.0 + ( 5.0 - t ) * t ) * t;
 		}
@@ -197,78 +262,211 @@ namespace __cubic__
 		return ( ret );
 	}
 
-	template < class T, class Allocator >
-	inline double cubic( const array< T, Allocator > &in,
-							typename array< T, Allocator >::size_type i[4],
-							typename array< T, Allocator >::size_type j[4],
-							typename array< T, Allocator >::size_type k[4],
-							double x, double y, double z )
+	template < bool b >
+	struct _cubic_
 	{
-		double u0 = sinc( 1 + x );
-		double u1 = sinc( x );
-		double u2 = sinc( 1 - x );
-		double u3 = sinc( 2 - x );
-		return( in[ i[ 0 ] ] * u0 + in[ i[ 1 ] ] * u1 + in[ i[ 2 ] ] * u2 + in[ i[ 3 ] ] * u3 );
-	}
+		template < class T, class Allocator >
+		static double cubic( const array< T, Allocator > &in,
+								typename array< T, Allocator >::size_type i[4],
+								typename array< T, Allocator >::size_type j[4],
+								typename array< T, Allocator >::size_type k[4],
+								double x, double y, double z )
+		{
+			double u0 = sinc( 1 + x );
+			double u1 = sinc( x );
+			double u2 = sinc( 1 - x );
+			double u3 = sinc( 2 - x );
+			return( in[ i[ 0 ] ] * u0 + in[ i[ 1 ] ] * u1 + in[ i[ 2 ] ] * u2 + in[ i[ 3 ] ] * u3 );
+		}
 
-	template < class T, class Allocator >
-	inline double cubic( const array2< T, Allocator > &in,
-							typename array2< T, Allocator >::size_type i[4],
-							typename array2< T, Allocator >::size_type j[4],
-							typename array2< T, Allocator >::size_type k[4],
-							double x, double y, double z )
-	{
-		double u0 = sinc( 1 + x );
-		double u1 = sinc( x );
-		double u2 = sinc( 1 - x );
-		double u3 = sinc( 2 - x );
-		double v0 = sinc( 1 + y );
-		double v1 = sinc( y );
-		double v2 = sinc( 1 - y );
-		double v3 = sinc( 2 - y );
-		return( ( in( i[ 0 ], j[ 0 ] ) * u0 + in( i[ 1 ], j[ 0 ] ) * u1 + in( i[ 2 ], j[ 0 ] ) * u2 + in( i[ 3 ], j[ 0 ] ) * u3 ) * v0
-					+ ( in( i[ 0 ], j[ 1 ] ) * u0 + in( i[ 1 ], j[ 1 ] ) * u1 + in( i[ 2 ], j[ 1 ] ) * u2 + in( i[ 3 ], j[ 1 ] ) * u3 ) * v1
-					+ ( in( i[ 0 ], j[ 2 ] ) * u0 + in( i[ 1 ], j[ 2 ] ) * u1 + in( i[ 2 ], j[ 2 ] ) * u2 + in( i[ 3 ], j[ 2 ] ) * u3 ) * v2
-					+ ( in( i[ 0 ], j[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ] ) * u3 ) * v3 );
-	}
+		template < class T, class Allocator >
+		static double cubic( const array2< T, Allocator > &in,
+								typename array2< T, Allocator >::size_type i[4],
+								typename array2< T, Allocator >::size_type j[4],
+								typename array2< T, Allocator >::size_type k[4],
+								double x, double y, double z )
+		{
+			double u0 = sinc( 1 + x );
+			double u1 = sinc( x );
+			double u2 = sinc( 1 - x );
+			double u3 = sinc( 2 - x );
+			double v0 = sinc( 1 + y );
+			double v1 = sinc( y );
+			double v2 = sinc( 1 - y );
+			double v3 = sinc( 2 - y );
+			return( ( in( i[ 0 ], j[ 0 ] ) * u0 + in( i[ 1 ], j[ 0 ] ) * u1 + in( i[ 2 ], j[ 0 ] ) * u2 + in( i[ 3 ], j[ 0 ] ) * u3 ) * v0
+				+ ( in( i[ 0 ], j[ 1 ] ) * u0 + in( i[ 1 ], j[ 1 ] ) * u1 + in( i[ 2 ], j[ 1 ] ) * u2 + in( i[ 3 ], j[ 1 ] ) * u3 ) * v1
+				+ ( in( i[ 0 ], j[ 2 ] ) * u0 + in( i[ 1 ], j[ 2 ] ) * u1 + in( i[ 2 ], j[ 2 ] ) * u2 + in( i[ 3 ], j[ 2 ] ) * u3 ) * v2
+				+ ( in( i[ 0 ], j[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ] ) * u3 ) * v3 );
+		}
 
-	template < class T, class Allocator >
-	inline double cubic( const array3< T, Allocator > &in,
-							typename array3< T, Allocator >::size_type i[4],
-							typename array3< T, Allocator >::size_type j[4],
-							typename array3< T, Allocator >::size_type k[4],
-							double x, double y, double z )
+		template < class T, class Allocator >
+		static double cubic( const array3< T, Allocator > &in,
+								typename array3< T, Allocator >::size_type i[4],
+								typename array3< T, Allocator >::size_type j[4],
+								typename array3< T, Allocator >::size_type k[4],
+								double x, double y, double z )
+		{
+			double u0 = sinc( 1 + x );
+			double u1 = sinc( x );
+			double u2 = sinc( 1 - x );
+			double u3 = sinc( 2 - x );
+			double v0 = sinc( 1 + y );
+			double v1 = sinc( y );
+			double v2 = sinc( 1 - y );
+			double v3 = sinc( 2 - y );
+			double w0 = sinc( 1 + z );
+			double w1 = sinc( z );
+			double w2 = sinc( 1 - z );
+			double w3 = sinc( 2 - z );
+			double p0 = ( ( in( i[ 0 ], j[ 0 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 0 ] ) * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 0 ] ) * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 0 ] ) * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 0 ] ) * u3 ) * v3 );
+			double p1 = ( ( in( i[ 0 ], j[ 0 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 1 ] ) * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 1 ] ) * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 1 ] ) * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 1 ] ) * u3 ) * v3 );
+			double p2 = ( ( in( i[ 0 ], j[ 0 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 2 ] ) * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 2 ] ) * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 2 ] ) * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 2 ] ) * u3 ) * v3 );
+			double p3 = ( ( in( i[ 0 ], j[ 0 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 3 ] ) * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ) * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ) * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ) * u3 ) * v3 );
+			return( p0 * w0 + p1 * w1 + p2 * w2 + p3 * w3 );
+		}
+	};
+
+	template < >
+	struct _cubic_< true >
 	{
-		double u0 = sinc( 1 + x );
-		double u1 = sinc( x );
-		double u2 = sinc( 1 - x );
-		double u3 = sinc( 2 - x );
-		double v0 = sinc( 1 + y );
-		double v1 = sinc( y );
-		double v2 = sinc( 1 - y );
-		double v3 = sinc( 2 - y );
-		double w0 = sinc( 1 + z );
-		double w1 = sinc( z );
-		double w2 = sinc( 1 - z );
-		double w3 = sinc( 2 - z );
-		double p0 = ( ( in( i[ 0 ], j[ 0 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 0 ] ) * u3 ) * v0
-					+ ( in( i[ 0 ], j[ 1 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 0 ] ) * u3 ) * v1
-					+ ( in( i[ 0 ], j[ 2 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 0 ] ) * u3 ) * v2
-					+ ( in( i[ 0 ], j[ 3 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 0 ] ) * u3 ) * v3 );
-		double p1 = ( ( in( i[ 0 ], j[ 0 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 1 ] ) * u3 ) * v0
-					+ ( in( i[ 0 ], j[ 1 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 1 ] ) * u3 ) * v1
-					+ ( in( i[ 0 ], j[ 2 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 1 ] ) * u3 ) * v2
-					+ ( in( i[ 0 ], j[ 3 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 1 ] ) * u3 ) * v3 );
-		double p2 = ( ( in( i[ 0 ], j[ 0 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 2 ] ) * u3 ) * v0
-					+ ( in( i[ 0 ], j[ 1 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 2 ] ) * u3 ) * v1
-					+ ( in( i[ 0 ], j[ 2 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 2 ] ) * u3 ) * v2
-					+ ( in( i[ 0 ], j[ 3 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 2 ] ) * u3 ) * v3 );
-		double p3 = ( ( in( i[ 0 ], j[ 0 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 3 ] ) * u3 ) * v0
-					+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ) * u3 ) * v1
-					+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ) * u3 ) * v2
-					+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ) * u3 ) * v3 );
-		return( p0 * w0 + p1 * w1 + p2 * w2 + p3 * w3 );
-	}
+		template < class T, class Allocator >
+		static typename array< T, Allocator >::value_type cubic( const array< T, Allocator > &in,
+																	typename array< T, Allocator >::size_type i[4],
+																	typename array< T, Allocator >::size_type j[4],
+																	typename array< T, Allocator >::size_type k[4],
+																	double x, double y, double z )
+		{
+			typedef typename array< T, Allocator >::value_type color;
+			typedef typename color::value_type value_type;
+			double u0 = sinc( 1 + x );
+			double u1 = sinc( x );
+			double u2 = sinc( 1 - x );
+			double u3 = sinc( 2 - x );
+			double r = in[ i[ 0 ] ].r * u0 + in[ i[ 1 ] ].r * u1 + in[ i[ 2 ] ].r * u2 + in[ i[ 3 ] ].r * u3;
+			double g = in[ i[ 0 ] ].g * u0 + in[ i[ 1 ] ].g * u1 + in[ i[ 2 ] ].g * u2 + in[ i[ 3 ] ].g * u3;
+			double b = in[ i[ 0 ] ].b * u0 + in[ i[ 1 ] ].b * u1 + in[ i[ 2 ] ].b * u2 + in[ i[ 3 ] ].b * u3;
+			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
+		}
+
+		template < class T, class Allocator >
+		static typename array2< T, Allocator >::value_type cubic( const array2< T, Allocator > &in,
+																	typename array2< T, Allocator >::size_type i[4],
+																	typename array2< T, Allocator >::size_type j[4],
+																	typename array2< T, Allocator >::size_type k[4],
+																	double x, double y, double z )
+		{
+			typedef typename array2< T, Allocator >::value_type color;
+			typedef typename color::value_type value_type;
+			double u0 = sinc( 1 + x );
+			double u1 = sinc( x );
+			double u2 = sinc( 1 - x );
+			double u3 = sinc( 2 - x );
+			double v0 = sinc( 1 + y );
+			double v1 = sinc( y );
+			double v2 = sinc( 1 - y );
+			double v3 = sinc( 2 - y );
+			double r  =   ( in( i[ 0 ], j[ 0 ] ).r * u0 + in( i[ 1 ], j[ 0 ] ).r * u1 + in( i[ 2 ], j[ 0 ] ).r * u2 + in( i[ 3 ], j[ 0 ] ).r * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ] ).r * u0 + in( i[ 1 ], j[ 1 ] ).r * u1 + in( i[ 2 ], j[ 1 ] ).r * u2 + in( i[ 3 ], j[ 1 ] ).r * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ] ).r * u0 + in( i[ 1 ], j[ 2 ] ).r * u1 + in( i[ 2 ], j[ 2 ] ).r * u2 + in( i[ 3 ], j[ 2 ] ).r * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ] ).r * u0 + in( i[ 1 ], j[ 3 ] ).r * u1 + in( i[ 2 ], j[ 3 ] ).r * u2 + in( i[ 3 ], j[ 3 ] ).r * u3 ) * v3;
+			double g  =   ( in( i[ 0 ], j[ 0 ] ).g * u0 + in( i[ 1 ], j[ 0 ] ).g * u1 + in( i[ 2 ], j[ 0 ] ).g * u2 + in( i[ 3 ], j[ 0 ] ).g * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ] ).g * u0 + in( i[ 1 ], j[ 1 ] ).g * u1 + in( i[ 2 ], j[ 1 ] ).g * u2 + in( i[ 3 ], j[ 1 ] ).g * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ] ).g * u0 + in( i[ 1 ], j[ 2 ] ).g * u1 + in( i[ 2 ], j[ 2 ] ).g * u2 + in( i[ 3 ], j[ 2 ] ).g * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ] ).g * u0 + in( i[ 1 ], j[ 3 ] ).g * u1 + in( i[ 2 ], j[ 3 ] ).g * u2 + in( i[ 3 ], j[ 3 ] ).g * u3 ) * v3;
+			double b  =   ( in( i[ 0 ], j[ 0 ] ).b * u0 + in( i[ 1 ], j[ 0 ] ).b * u1 + in( i[ 2 ], j[ 0 ] ).b * u2 + in( i[ 3 ], j[ 0 ] ).b * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ] ).b * u0 + in( i[ 1 ], j[ 1 ] ).b * u1 + in( i[ 2 ], j[ 1 ] ).b * u2 + in( i[ 3 ], j[ 1 ] ).b * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ] ).b * u0 + in( i[ 1 ], j[ 2 ] ).b * u1 + in( i[ 2 ], j[ 2 ] ).b * u2 + in( i[ 3 ], j[ 2 ] ).b * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ] ).b * u0 + in( i[ 1 ], j[ 3 ] ).b * u1 + in( i[ 2 ], j[ 3 ] ).b * u2 + in( i[ 3 ], j[ 3 ] ).b * u3 ) * v3;
+			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
+		}
+
+		template < class T, class Allocator >
+		static typename array3< T, Allocator >::value_type cubic( const array3< T, Allocator > &in,
+																	typename array3< T, Allocator >::size_type i[4],
+																	typename array3< T, Allocator >::size_type j[4],
+																	typename array3< T, Allocator >::size_type k[4],
+																	double x, double y, double z )
+		{
+			typedef typename array3< T, Allocator >::value_type color;
+			typedef typename color::value_type value_type;
+			double u0 = sinc( 1 + x );
+			double u1 = sinc( x );
+			double u2 = sinc( 1 - x );
+			double u3 = sinc( 2 - x );
+			double v0 = sinc( 1 + y );
+			double v1 = sinc( y );
+			double v2 = sinc( 1 - y );
+			double v3 = sinc( 2 - y );
+			double w0 = sinc( 1 + z );
+			double w1 = sinc( z );
+			double w2 = sinc( 1 - z );
+			double w3 = sinc( 2 - z );
+			double r0 = ( ( in( i[ 0 ], j[ 0 ], k[ 0 ] ).r * u0 + in( i[ 1 ], j[ 0 ], k[ 0 ] ).r * u1 + in( i[ 2 ], j[ 0 ], k[ 0 ] ).r * u2 + in( i[ 3 ], j[ 0 ], k[ 0 ] ).r * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 0 ] ).r * u0 + in( i[ 1 ], j[ 1 ], k[ 0 ] ).r * u1 + in( i[ 2 ], j[ 1 ], k[ 0 ] ).r * u2 + in( i[ 3 ], j[ 1 ], k[ 0 ] ).r * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 0 ] ).r * u0 + in( i[ 1 ], j[ 2 ], k[ 0 ] ).r * u1 + in( i[ 2 ], j[ 2 ], k[ 0 ] ).r * u2 + in( i[ 3 ], j[ 2 ], k[ 0 ] ).r * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 0 ] ).r * u0 + in( i[ 1 ], j[ 3 ], k[ 0 ] ).r * u1 + in( i[ 2 ], j[ 3 ], k[ 0 ] ).r * u2 + in( i[ 3 ], j[ 3 ], k[ 0 ] ).r * u3 ) * v3 );
+			double r1 = ( ( in( i[ 0 ], j[ 0 ], k[ 1 ] ).r * u0 + in( i[ 1 ], j[ 0 ], k[ 1 ] ).r * u1 + in( i[ 2 ], j[ 0 ], k[ 1 ] ).r * u2 + in( i[ 3 ], j[ 0 ], k[ 1 ] ).r * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 1 ] ).r * u0 + in( i[ 1 ], j[ 1 ], k[ 1 ] ).r * u1 + in( i[ 2 ], j[ 1 ], k[ 1 ] ).r * u2 + in( i[ 3 ], j[ 1 ], k[ 1 ] ).r * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 1 ] ).r * u0 + in( i[ 1 ], j[ 2 ], k[ 1 ] ).r * u1 + in( i[ 2 ], j[ 2 ], k[ 1 ] ).r * u2 + in( i[ 3 ], j[ 2 ], k[ 1 ] ).r * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 1 ] ).r * u0 + in( i[ 1 ], j[ 3 ], k[ 1 ] ).r * u1 + in( i[ 2 ], j[ 3 ], k[ 1 ] ).r * u2 + in( i[ 3 ], j[ 3 ], k[ 1 ] ).r * u3 ) * v3 );
+			double r2 = ( ( in( i[ 0 ], j[ 0 ], k[ 2 ] ).r * u0 + in( i[ 1 ], j[ 0 ], k[ 2 ] ).r * u1 + in( i[ 2 ], j[ 0 ], k[ 2 ] ).r * u2 + in( i[ 3 ], j[ 0 ], k[ 2 ] ).r * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 2 ] ).r * u0 + in( i[ 1 ], j[ 1 ], k[ 2 ] ).r * u1 + in( i[ 2 ], j[ 1 ], k[ 2 ] ).r * u2 + in( i[ 3 ], j[ 1 ], k[ 2 ] ).r * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 2 ] ).r * u0 + in( i[ 1 ], j[ 2 ], k[ 2 ] ).r * u1 + in( i[ 2 ], j[ 2 ], k[ 2 ] ).r * u2 + in( i[ 3 ], j[ 2 ], k[ 2 ] ).r * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 2 ] ).r * u0 + in( i[ 1 ], j[ 3 ], k[ 2 ] ).r * u1 + in( i[ 2 ], j[ 3 ], k[ 2 ] ).r * u2 + in( i[ 3 ], j[ 3 ], k[ 2 ] ).r * u3 ) * v3 );
+			double r3 = ( ( in( i[ 0 ], j[ 0 ], k[ 3 ] ).r * u0 + in( i[ 1 ], j[ 0 ], k[ 3 ] ).r * u1 + in( i[ 2 ], j[ 0 ], k[ 3 ] ).r * u2 + in( i[ 3 ], j[ 0 ], k[ 3 ] ).r * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ).r * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ).r * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ).r * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ).r * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ).r * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ).r * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ).r * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ).r * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ).r * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ).r * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ).r * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ).r * u3 ) * v3 );
+			double g0 = ( ( in( i[ 0 ], j[ 0 ], k[ 0 ] ).g * u0 + in( i[ 1 ], j[ 0 ], k[ 0 ] ).g * u1 + in( i[ 2 ], j[ 0 ], k[ 0 ] ).g * u2 + in( i[ 3 ], j[ 0 ], k[ 0 ] ).g * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 0 ] ).g * u0 + in( i[ 1 ], j[ 1 ], k[ 0 ] ).g * u1 + in( i[ 2 ], j[ 1 ], k[ 0 ] ).g * u2 + in( i[ 3 ], j[ 1 ], k[ 0 ] ).g * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 0 ] ).g * u0 + in( i[ 1 ], j[ 2 ], k[ 0 ] ).g * u1 + in( i[ 2 ], j[ 2 ], k[ 0 ] ).g * u2 + in( i[ 3 ], j[ 2 ], k[ 0 ] ).g * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 0 ] ).g * u0 + in( i[ 1 ], j[ 3 ], k[ 0 ] ).g * u1 + in( i[ 2 ], j[ 3 ], k[ 0 ] ).g * u2 + in( i[ 3 ], j[ 3 ], k[ 0 ] ).g * u3 ) * v3 );
+			double g1 = ( ( in( i[ 0 ], j[ 0 ], k[ 1 ] ).g * u0 + in( i[ 1 ], j[ 0 ], k[ 1 ] ).g * u1 + in( i[ 2 ], j[ 0 ], k[ 1 ] ).g * u2 + in( i[ 3 ], j[ 0 ], k[ 1 ] ).g * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 1 ] ).g * u0 + in( i[ 1 ], j[ 1 ], k[ 1 ] ).g * u1 + in( i[ 2 ], j[ 1 ], k[ 1 ] ).g * u2 + in( i[ 3 ], j[ 1 ], k[ 1 ] ).g * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 1 ] ).g * u0 + in( i[ 1 ], j[ 2 ], k[ 1 ] ).g * u1 + in( i[ 2 ], j[ 2 ], k[ 1 ] ).g * u2 + in( i[ 3 ], j[ 2 ], k[ 1 ] ).g * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 1 ] ).g * u0 + in( i[ 1 ], j[ 3 ], k[ 1 ] ).g * u1 + in( i[ 2 ], j[ 3 ], k[ 1 ] ).g * u2 + in( i[ 3 ], j[ 3 ], k[ 1 ] ).g * u3 ) * v3 );
+			double g2 = ( ( in( i[ 0 ], j[ 0 ], k[ 2 ] ).g * u0 + in( i[ 1 ], j[ 0 ], k[ 2 ] ).g * u1 + in( i[ 2 ], j[ 0 ], k[ 2 ] ).g * u2 + in( i[ 3 ], j[ 0 ], k[ 2 ] ).g * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 2 ] ).g * u0 + in( i[ 1 ], j[ 1 ], k[ 2 ] ).g * u1 + in( i[ 2 ], j[ 1 ], k[ 2 ] ).g * u2 + in( i[ 3 ], j[ 1 ], k[ 2 ] ).g * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 2 ] ).g * u0 + in( i[ 1 ], j[ 2 ], k[ 2 ] ).g * u1 + in( i[ 2 ], j[ 2 ], k[ 2 ] ).g * u2 + in( i[ 3 ], j[ 2 ], k[ 2 ] ).g * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 2 ] ).g * u0 + in( i[ 1 ], j[ 3 ], k[ 2 ] ).g * u1 + in( i[ 2 ], j[ 3 ], k[ 2 ] ).g * u2 + in( i[ 3 ], j[ 3 ], k[ 2 ] ).g * u3 ) * v3 );
+			double g3 = ( ( in( i[ 0 ], j[ 0 ], k[ 3 ] ).g * u0 + in( i[ 1 ], j[ 0 ], k[ 3 ] ).g * u1 + in( i[ 2 ], j[ 0 ], k[ 3 ] ).g * u2 + in( i[ 3 ], j[ 0 ], k[ 3 ] ).g * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ).g * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ).g * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ).g * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ).g * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ).g * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ).g * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ).g * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ).g * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ).g * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ).g * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ).g * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ).g * u3 ) * v3 );
+			double b0 = ( ( in( i[ 0 ], j[ 0 ], k[ 0 ] ).b * u0 + in( i[ 1 ], j[ 0 ], k[ 0 ] ).b * u1 + in( i[ 2 ], j[ 0 ], k[ 0 ] ).b * u2 + in( i[ 3 ], j[ 0 ], k[ 0 ] ).b * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 0 ] ).b * u0 + in( i[ 1 ], j[ 1 ], k[ 0 ] ).b * u1 + in( i[ 2 ], j[ 1 ], k[ 0 ] ).b * u2 + in( i[ 3 ], j[ 1 ], k[ 0 ] ).b * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 0 ] ).b * u0 + in( i[ 1 ], j[ 2 ], k[ 0 ] ).b * u1 + in( i[ 2 ], j[ 2 ], k[ 0 ] ).b * u2 + in( i[ 3 ], j[ 2 ], k[ 0 ] ).b * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 0 ] ).b * u0 + in( i[ 1 ], j[ 3 ], k[ 0 ] ).b * u1 + in( i[ 2 ], j[ 3 ], k[ 0 ] ).b * u2 + in( i[ 3 ], j[ 3 ], k[ 0 ] ).b * u3 ) * v3 );
+			double b1 = ( ( in( i[ 0 ], j[ 0 ], k[ 1 ] ).b * u0 + in( i[ 1 ], j[ 0 ], k[ 1 ] ).b * u1 + in( i[ 2 ], j[ 0 ], k[ 1 ] ).b * u2 + in( i[ 3 ], j[ 0 ], k[ 1 ] ).b * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 1 ] ).b * u0 + in( i[ 1 ], j[ 1 ], k[ 1 ] ).b * u1 + in( i[ 2 ], j[ 1 ], k[ 1 ] ).b * u2 + in( i[ 3 ], j[ 1 ], k[ 1 ] ).b * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 1 ] ).b * u0 + in( i[ 1 ], j[ 2 ], k[ 1 ] ).b * u1 + in( i[ 2 ], j[ 2 ], k[ 1 ] ).b * u2 + in( i[ 3 ], j[ 2 ], k[ 1 ] ).b * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 1 ] ).b * u0 + in( i[ 1 ], j[ 3 ], k[ 1 ] ).b * u1 + in( i[ 2 ], j[ 3 ], k[ 1 ] ).b * u2 + in( i[ 3 ], j[ 3 ], k[ 1 ] ).b * u3 ) * v3 );
+			double b2 = ( ( in( i[ 0 ], j[ 0 ], k[ 2 ] ).b * u0 + in( i[ 1 ], j[ 0 ], k[ 2 ] ).b * u1 + in( i[ 2 ], j[ 0 ], k[ 2 ] ).b * u2 + in( i[ 3 ], j[ 0 ], k[ 2 ] ).b * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 2 ] ).b * u0 + in( i[ 1 ], j[ 1 ], k[ 2 ] ).b * u1 + in( i[ 2 ], j[ 1 ], k[ 2 ] ).b * u2 + in( i[ 3 ], j[ 1 ], k[ 2 ] ).b * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 2 ] ).b * u0 + in( i[ 1 ], j[ 2 ], k[ 2 ] ).b * u1 + in( i[ 2 ], j[ 2 ], k[ 2 ] ).b * u2 + in( i[ 3 ], j[ 2 ], k[ 2 ] ).b * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 2 ] ).b * u0 + in( i[ 1 ], j[ 3 ], k[ 2 ] ).b * u1 + in( i[ 2 ], j[ 3 ], k[ 2 ] ).b * u2 + in( i[ 3 ], j[ 3 ], k[ 2 ] ).b * u3 ) * v3 );
+			double b3 = ( ( in( i[ 0 ], j[ 0 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 0 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 0 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 0 ], k[ 3 ] ).b * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ).b * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ).b * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ).b * u3 ) * v3 );
+			return( color(  static_cast< value_type >( r0 * w0 + r1 * w1 + r2 * w2 + r3 * w3 ),
+							static_cast< value_type >( g0 * w0 + g1 * w1 + g2 * w2 + g3 * w3 ),
+							static_cast< value_type >( b0 * w0 + b1 * w1 + b2 * w2 + b3 * w3 ) ) );
+		}
+	};
 
 	template < class Array1, class Array2 >
 	void interpolate( const Array1 &in, Array2 &out,
@@ -320,7 +518,7 @@ namespace __cubic__
 					ii[ 3 ] = ii[ 2 ] < iw - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
 					x -= ii[ 1 ];
 
-					out( i, j, k ) = static_cast< out_value_type >( cubic( in, ii, jj, kk, x, y, z ) );
+					out( i, j, k ) = static_cast< out_value_type >( _cubic_< is_color< value_type >::value >::cubic( in, ii, jj, kk, x, y, z ) );
 				}
 			}
 		}

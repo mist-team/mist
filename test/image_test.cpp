@@ -18,8 +18,8 @@
 #include <mist/interpolate.h>
 
 
-typedef mist::array2< unsigned char > image_type;
-//typedef mist::array2< mist::rgb< unsigned char > > image_type;
+//typedef mist::array2< unsigned char > image_type;
+typedef mist::array2< mist::rgb< unsigned char > > image_type;
 image_type image_object( 100, 100 );
 
 void image_draw_area::draw( )
@@ -91,9 +91,16 @@ void write_dicom_test( const char *filename )
 
 void euclidean_distance_transform_test( )
 {
+	mist::array2< double > tmp1( image_object.width( ), image_object.width( ), image_object.reso1( ), image_object.reso2( ) );
+	mist::array2< double > tmp2( image_object.width( ), image_object.width( ), image_object.reso1( ), image_object.reso2( ) );
+	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
 	{
-		mist::array2< double > tmp( image_object );
-		mist::euclidean_distance_transform( tmp, image_object );
+		tmp1[ i ] = image_object[ i ].get_value( );
+	}
+	mist::euclidean_distance_transform( tmp1, tmp2 );
+	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		image_object[ i ] = static_cast< unsigned char >( tmp2[ i ] );
 	}
 }
 
@@ -101,40 +108,41 @@ void figure_decomposition_test( )
 {
 	//mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
 
-	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
-	{
-		switch( image_object[i] )
-		{
-		case 1:
-			image_object[i] = 50;
-			break;
+	//for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	//{
+	//	switch( image_object[i] )
+	//	{
+	//	case 1:
+	//		image_object[i] = 50;
+	//		break;
 
-		case 2:
-			image_object[i] = 100;
-			break;
+	//	case 2:
+	//		image_object[i] = 100;
+	//		break;
 
-		case 3:
-			image_object[i] = 150;
-			break;
+	//	case 3:
+	//		image_object[i] = 150;
+	//		break;
 
-		case 4:
-			image_object[i] = 200;
-			break;
+	//	case 4:
+	//		image_object[i] = 200;
+	//		break;
 
-		case 5:
-			image_object[i] = 255;
-			break;
-		}
-	}
+	//	case 5:
+	//		image_object[i] = 255;
+	//		break;
+	//	}
+	//}
 }
 
 void labeling4_test( )
 {
-	mist::labeling4( image_object, image_object, 255 );
+	mist::array2< unsigned char > label;
+	mist::labeling4( image_object, label, 255 );
 
-	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	for( image_type::size_type i = 0 ; i < label.size( ) ; i++ )
 	{
-		switch( image_object[i] )
+		switch( label[i] )
 		{
 		case 1:
 			image_object[i] = 50;
@@ -161,11 +169,12 @@ void labeling4_test( )
 
 void labeling8_test( )
 {
-	mist::labeling8( image_object, image_object, 255 );
+	mist::array2< unsigned char > label;
+	mist::labeling8( image_object, label, 255 );
 
-	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	for( image_type::size_type i = 0 ; i < label.size( ) ; i++ )
 	{
-		switch( image_object[i] )
+		switch( label[i] )
 		{
 		case 1:
 			image_object[i] = 50;
