@@ -7,6 +7,7 @@
 #include <mist/io/tiff.h>
 #include <mist/io/bmp.h>
 
+//mist::array2< unsigned char > image_object( 100, 100 );
 mist::array2< mist::rgb< unsigned char > > image_object( 100, 100 );
 
 void image_draw_area::draw( )
@@ -63,5 +64,5 @@ void read_bmp_test( const std::string &filename )
 
 void write_bmp_test( const std::string &filename )
 {
-	mist::write_bmp( image_object, filename, 8 );
+	mist::write_bmp( image_object, filename, 1 );
 }

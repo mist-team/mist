@@ -31,7 +31,7 @@ namespace pixel_data
 		static float get_value( double v ){ return( static_cast< float >( v ) / 255.0f ); }
 	};
 
-	template < class T > struct gl_type_trait { enum{ gl_type = 0 }; };
+	template < class T > struct gl_type_trait { _MIST_CONST( GLenum, gl_type, 0 ); };
 	template <>          struct gl_type_trait< unsigned char > { _MIST_CONST( GLenum, gl_type, GL_UNSIGNED_BYTE ); };
 	template <>          struct gl_type_trait< unsigned short >{ _MIST_CONST( GLenum, gl_type, GL_UNSIGNED_SHORT ); };
 	template <>          struct gl_type_trait< unsigned int >  { _MIST_CONST( GLenum, gl_type, GL_UNSIGNED_INT ); };
@@ -46,26 +46,67 @@ namespace pixel_data
 //	template <>          struct gl_type_trait< double >        { _MIST_CONST( GLenum, gl_type, true  ); };
 //	template <>          struct gl_type_trait< long double >   { _MIST_CONST( GLenum, gl_type, true  ); };
 
+	template < class T > struct gl_format_trait				{ _MIST_CONST( GLenum, gl_type, GL_RGB ); };
+	template < class T > struct gl_format_trait< rgb< T > >	{ _MIST_CONST( GLenum, gl_type, GL_LUMINANCE ); };
+
+	template< class T, class Allocator >
+	void glTexImage2D( const array2< T, Allocator > &image )
+	{
+		T *pixel = new T[ image.width( ) * image.height( ) * 3 ];
+		for( typename array2< T, Allocator >::size_type i = 0 ; i < image.width( ) * image.height( ) ; i++ )
+		{
+			pixel[ i * 3 + 0 ] = image[ i ];
+			pixel[ i * 3 + 1 ] = image[ i ];
+			pixel[ i * 3 + 2 ] = image[ i ];
+		}
+
+		::glTexImage2D(
+						GL_TEXTURE_2D, 0, 3,
+						static_cast< GLsizei >( image.width( ) ),
+						static_cast< GLsizei >( image.height( ) ),
+						0,
+						GL_RGB,
+						gl_type_trait< T >::gl_type,
+						static_cast< const GLvoid* >( pixel )
+					  );
+		delete [] pixel;
+	}
+
+	template< class T, class Allocator >
+	void glTexImage2D( const array2< rgb< T >, Allocator > &image )
+	{
+		::glTexImage2D(
+						GL_TEXTURE_2D, 0, 3,
+						static_cast< GLsizei >( image.width( ) ),
+						static_cast< GLsizei >( image.height( ) ),
+						0,
+						GL_RGB,
+						gl_type_trait< T >::gl_type,
+						static_cast< const GLvoid* >( &( image[0] ) )
+					  );
+	}
 }
 
 template< class T, class Allocator >
-bool draw_buffer( const array2< rgb< T >, Allocator > &image,
-					typename array2< rgb< T >, Allocator >::size_type image_width, typename array2< rgb< T >, Allocator >::size_type image_height,
-					typename array2< rgb< T >, Allocator >::size_type window_width, typename array2< rgb< T >, Allocator >::size_type window_height,
+bool draw_buffer( const array2< T, Allocator > &image,
+					typename array2< T, Allocator >::size_type image_width, typename array2< T, Allocator >::size_type image_height,
+					typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
 					double zoom = 1.0, double xpos = 0.0, double ypos = 0.0, double back_r = 0.0, double back_g = 0.0, double back_b = 0.0, bool interpolate = true )
 {
 	if( image_width > image.width( ) || image_height > image.height( ) ) return( false );
 	if( image.width( ) != image.height( ) ) return( false );
 
-	typedef typename array2< rgb< T >, Allocator >::size_type size_type;
+	typedef typename array2< T, Allocator >::size_type size_type;
 
 	// テクスチャのサイズが2の指数上になっているかどうかをチェック
 	if( image.width( ) != static_cast< size_type >( pow( 2.0, (int)( log10( (double)image.width( ) ) / log10( 2.0 ) + 0.1 ) ) ) ) return( false );
 
-	typedef pixel_data::pixel< is_float< T >::value > pixel_converter;
-	float r = pixel_converter::get_value( back_r );
-	float g = pixel_converter::get_value( back_g );
-	float b = pixel_converter::get_value( back_b );
+
+	typedef typename array2< T, Allocator >::value_type value_type;
+	typedef pixel_data::pixel< is_float< value_type >::value > pixel;
+	float r = pixel::get_value( back_r );
+	float g = pixel::get_value( back_g );
+	float b = pixel::get_value( back_b );
 
 	glClearColor( r, g, b, 1.0f );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -92,13 +133,7 @@ bool draw_buffer( const array2< rgb< T >, Allocator > &image,
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, interpolate_ );
 	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL );
 
-	const GLvoid *pixel_data = static_cast< const GLvoid* >( &( image[0] ) );
-	::glTexImage2D( GL_TEXTURE_2D, 0, 3,
-					static_cast< GLsizei >( image.width( ) ),
-					static_cast< GLsizei >( image.height( ) ),
-					0, GL_RGB,
-					pixel_data::gl_type_trait< T >::gl_type,
-					const_cast< GLvoid* >( pixel_data ) );
+	pixel_data::glTexImage2D( image );
 
 	glEnable( GL_TEXTURE_2D );
 
@@ -165,11 +200,11 @@ bool draw_buffer( const array2< rgb< T >, Allocator > &image,
 
 
 template< class T, class Allocator >
-bool draw_image( const array2< rgb< T >, Allocator > &image,
-					typename array2< rgb< T >, Allocator >::size_type window_width, typename array2< rgb< T >, Allocator >::size_type window_height,
+bool draw_image( const array2< T, Allocator > &image,
+					typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
 					double zoom = 1.0, double xpos = 0.0, double ypos = 0.0, double back_r = 0.0, double back_g = 0.0, double back_b = 0.0, bool interpolate = true )
 {
-	typedef typename array2< rgb< T >, Allocator >::size_type size_type;
+	typedef typename array2< T, Allocator >::size_type size_type;
 	size_type size = image.width( ) > image.height( ) ? image.width( ) : image.height( ); 
 	size_type ttt = static_cast< size_type >( pow( 2.0, ceil( log10( (double)size ) / log10( 2.0 ) ) ) );
 
@@ -179,7 +214,7 @@ bool draw_image( const array2< rgb< T >, Allocator > &image,
 	}
 	else
 	{
-		array2< rgb< T >, Allocator > img( ttt, ttt, image.reso1( ), image.reso2( ) );
+		array2< T, Allocator > img( ttt, ttt, image.reso1( ), image.reso2( ) );
 
 		size_type i, j;
 		for( j = 0 ; j < image.height( ) ; j++ )

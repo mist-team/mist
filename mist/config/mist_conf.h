@@ -20,22 +20,34 @@ _MIST_BEGIN
 
 #if _MSC_VER <= 1200
 
-#define __MIST_MSVC__		6
+	#define __MIST_MSVC__		6
 
 #elif _MSC_VER > 1200
 
-#define __MIST_MSVC__		7
+	#define __MIST_MSVC__		7
 
 #endif
 
 
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 
-#define _MIST_CONST( type, name, value ) enum{ name = value }
+	#define _MIST_CONST( type, name, value ) enum{ name = value }
 
 #else
 
-#define _MIST_CONST( type, name, value ) static const type name = value
+	#define _MIST_CONST( type, name, value ) static const type name = value
+
+#endif
+
+
+// 構造体のアライメントを合わせるためのマクロ
+#ifdef __MIST_MSVC__
+
+	#define _MIST_ALIGN( type, alignment ) type
+
+#else
+
+	#define _MIST_ALIGN( type, alignment ) type __attribute__( ( aligned( alignment ) ) )
 
 #endif
 
@@ -236,6 +248,47 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 	out << c.b << " )";
 	return( out );
 }
+
+
+// 画素の変換をサポートするためのコンバータ
+template < class T >
+struct _pixel_converter_
+{
+	typedef T			value_type;
+	typedef rgb< T >	color_type;
+	enum{ color_num = 1 };
+
+	static T convert_to_pixel( value_type r, value_type g, value_type b )
+	{
+		return( rgb< T >( static_cast< T >( r ), static_cast< T >( g ), static_cast< T >( b ) ).get_value( ) );
+	}
+
+	static rgb< T > convert_from_pixel( const T &pixel )
+	{
+		return( rgb< T >( pixel, pixel, pixel ) );
+	}
+};
+
+// 画素の変換をサポートするためのコンバータ　カラー画素用の特殊化
+template < class T >
+struct _pixel_converter_< rgb< T > >
+{
+	typedef T			value_type;
+	typedef rgb< T >	color_type;
+	enum{ color_num = 3 };
+
+	static rgb< T > convert_to_pixel( value_type r, value_type g, value_type b )
+	{
+		return( rgb< T >( static_cast< T >( r ), static_cast< T >( g ), static_cast< T >( b ) ) );
+	}
+
+	static rgb< T > convert_from_pixel( const rgb< T > &pixel )
+	{
+		return( pixel );
+	}
+};
+
+
 
 
 // mistコンテナで利用する1次元操作用ランダムアクセスイテレータ

@@ -31,41 +31,10 @@ namespace __jpeg_controller__
 	template < class T, class Allocator >
 	struct jpeg_controller
 	{
+		typedef _pixel_converter_< T > pixel_converter;
+		typedef typename _pixel_converter_< T >::color_type color_type;
+
 		static bool read( array2< T, Allocator > &image, const std::string &filename )
-		{
-			array2< rgb< T >, Allocator > img;
-			bool ret = jpeg_controller< rgb< T >, Allocator >::read( img, filename );
-			if( !ret ) return( false );
-
-			typename array2< T, Allocator >::size_type i;
-			image.resize( img.width( ), img.height( ) );
-			for( i = 0 ; i < img.size( ) ; i++ )
-			{
-				image[i] = img[i].get_value( );
-			}
-
-			return( true );
-		}
-
-		static bool write( array2< T, Allocator > &image, const std::string &filename, int quality )
-		{
-			array2< rgb< T >, Allocator > img( image.width( ), image.height( ) );
-			typename array2< T, Allocator >::size_type i;
-			for( i = 0 ; i < img.size( ) ; i++ )
-			{
-				img[i].r = img[i].get_value( );
-				img[i].g = img[i].get_value( );
-				img[i].b = img[i].get_value( );
-			}
-
-			return( jpeg_controller< rgb< T >, Allocator >::write( img, filename, quality ) );
-		}
-	};
-
-	template < class T, class Allocator >
-	struct jpeg_controller< rgb< T >, Allocator >
-	{
-		static bool read( array2< rgb< T >, Allocator > &image, const std::string &filename )
 		{
 			FILE *fin;				// 読み書き用ファイルポインター
 			fin = fopen( filename.c_str( ), "rb" );
@@ -81,16 +50,16 @@ namespace __jpeg_controller__
 			jpeg_create_decompress( &dinfo );
 
 			//jpeg_stdio_src(&dinfo, fin, 0);
-			jpeg_stdio_src(&dinfo, fin);
+			jpeg_stdio_src( &dinfo, fin );
 
 			int n = jpeg_read_header( &dinfo, true );
-			if (n < 1)
+			if( n < 1 )
 			{
-				jpeg_destroy_decompress(&dinfo);
+				jpeg_destroy_decompress( &dinfo );
 				return(false);
 			}
 
-			jpeg_start_decompress(&dinfo);
+			jpeg_start_decompress( &dinfo );
 			scanlen = dinfo.output_width * dinfo.output_components;
 
 			image.resize( dinfo.output_width, dinfo.output_height );
@@ -102,9 +71,7 @@ namespace __jpeg_controller__
 				if( dinfo.output_scanline < dinfo.output_height ) jpeg_read_scanlines( &dinfo, bitmap, 1 );
 				for( i = 0 ; i < dinfo.output_width ; i++ )
 				{
-					image( i, j ).r = static_cast< T >( buffer[ i * 3 ] );
-					image( i, j ).g = static_cast< T >( buffer[ i * 3 + 1 ] );
-					image( i, j ).b = static_cast< T >( buffer[ i * 3 + 2 ] );
+					image( i, j ) = pixel_converter::convert_to_pixel( buffer[ i * 3 + 0 ], buffer[ i * 3 + 1 ], buffer[ i * 3 + 2 ] );
 				}
 			}
 
@@ -118,7 +85,7 @@ namespace __jpeg_controller__
 			return( true );
 		}
 
-		static bool write( array2< rgb< T >, Allocator > &image, const std::string &filename, int quality )
+		static bool write( array2< T, Allocator > &image, const std::string &filename, int quality )
 		{
 			FILE *fout;						// 読み書き用ファイルポインター
 			fout = fopen( filename.c_str( ), "wb" );
@@ -151,9 +118,10 @@ namespace __jpeg_controller__
 			{
 				for( i = 0 ; i < w ; i++ )
 				{
-					*p++ = static_cast< JSAMPLE >( image( i, j ).r );
-					*p++ = static_cast< JSAMPLE >( image( i, j ).g );
-					*p++ = static_cast< JSAMPLE >( image( i, j ).b );
+					color_type c = pixel_converter::convert_from_pixel( image( i, j ) );
+					*p++ = static_cast< JSAMPLE >( c.r );
+					*p++ = static_cast< JSAMPLE >( c.g );
+					*p++ = static_cast< JSAMPLE >( c.b );
 				}
 			}
 

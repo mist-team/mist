@@ -20,43 +20,12 @@ namespace __png_controller__
 	template < class T, class Allocator >
 	struct png_controller
 	{
+		typedef _pixel_converter_< T > pixel_converter;
+		typedef typename _pixel_converter_< T >::color_type color_type;
+		typedef typename array2< T, Allocator >::size_type size_type;
+
 		static bool read( array2< T, Allocator > &image, const std::string &filename )
 		{
-			array2< rgb< T >, Allocator > img;
-			bool ret = png_controller< rgb< T >, Allocator >::read( img, filename );
-			if( !ret ) return( false );
-
-			typename array2< T, Allocator >::size_type i;
-			image.resize( img.width( ), img.height( ) );
-			for( i = 0 ; i < img.size( ) ; i++ )
-			{
-				image[i] = img[i].get_value( );
-			}
-
-			return( true );
-		}
-
-		static bool write( array2< T, Allocator > &image, const std::string &filename, int compression_level )
-		{
-			array2< rgb< T >, Allocator > img( image.width( ), image.height( ) );
-			typename array2< T, Allocator >::size_type i;
-			for( i = 0 ; i < img.size( ) ; i++ )
-			{
-				img[i].r = img[i].get_value( );
-				img[i].g = img[i].get_value( );
-				img[i].b = img[i].get_value( );
-			}
-
-			return( png_controller< rgb< T >, Allocator >::write( img, filename, compression_level ) );
-		}
-	};
-
-	template < class T, class Allocator >
-	struct png_controller< rgb< T >, Allocator >
-	{
-		static bool read( array2< rgb< T >, Allocator > &image, const std::string &filename )
-		{
-			typedef typename array2< rgb< T >, Allocator >::size_type size_type;
 			FILE			*fp;
 			png_structp		png_ptr;
 			png_infop		info_ptr;
@@ -87,9 +56,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < (size_type )width ; i++ )
 					{
-						image( i, j ).r = png_buff[j][i];
-						image( i, j ).g = png_buff[j][i];
-						image( i, j ).b = png_buff[j][i];
+						image( i, j ) = pixel_converter::convert_to_pixel( png_buff[j][i], png_buff[j][i], png_buff[j][i] );
 					}
 				}
 			}
@@ -99,9 +66,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < (size_type )width ; i++ )
 					{
-						image( i, j ).r = png_buff[j][ i * 3 + 0 ];
-						image( i, j ).g = png_buff[j][ i * 3 + 1 ];
-						image( i, j ).b = png_buff[j][ i * 3 + 2 ];
+						image( i, j ) = pixel_converter::convert_to_pixel( png_buff[j][ i * 3 + 0 ], png_buff[j][ i * 3 + 1 ], png_buff[j][ i * 3 + 2 ] );
 					}
 				}
 			}
@@ -115,9 +80,8 @@ namespace __png_controller__
 			return( true );
 		}
 
-		static bool write( array2< rgb< T >, Allocator > &image, const std::string &filename, int compression_level )
+		static bool write( array2< T, Allocator > &image, const std::string &filename, int compression_level )
 		{
-			typedef typename array2< rgb< T >, Allocator >::size_type size_type;
 			FILE *fp;
 			png_structp	png_ptr;
 			png_infop	info_ptr;
@@ -199,9 +163,10 @@ namespace __png_controller__
 				png_buff[j] = new png_byte[width * 3];
 				for( i = 0 ; i < width ; i++ )
 				{
-					png_buff[j][ i * 3 + 0 ] = static_cast< unsigned char >( image( i, j ).r );
-					png_buff[j][ i * 3 + 1 ] = static_cast< unsigned char >( image( i, j ).g );
-					png_buff[j][ i * 3 + 2 ] = static_cast< unsigned char >( image( i, j ).b );
+					color_type c = pixel_converter::convert_from_pixel( image( i, j ) );
+					png_buff[j][ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
+					png_buff[j][ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
+					png_buff[j][ i * 3 + 2 ] = static_cast< unsigned char >( c.b );
 				}
 			}
 

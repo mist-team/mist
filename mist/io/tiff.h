@@ -21,48 +21,16 @@ namespace __tiff_controller__
 	template < class T, class Allocator >
 	struct tiff_controller
 	{
+		typedef _pixel_converter_< T > pixel_converter;
+		typedef typename _pixel_converter_< T >::color_type color_type;
+		typedef typename array2< T, Allocator >::size_type size_type;
+
 		static bool read( array2< T, Allocator > &image, const std::string &filename )
 		{
-			array2< rgb< T >, Allocator > img;
-			bool ret = tiff_controller< rgb< T >, Allocator >::read( img, filename );
-			if( !ret ) return( false );
-
-			typename array2< T, Allocator >::size_type i;
-			image.resize( img.width( ), img.height( ) );
-			for( i = 0 ; i < img.size( ) ; i++ )
-			{
-				image[i] = img[i].get_value( );
-			}
-
-			return( true );
-		}
-
-		static bool write( array2< T, Allocator > &image, const std::string &filename )
-		{
-			array2< rgb< T >, Allocator > img( image.width( ), image.height( ) );
-			typename array2< T, Allocator >::size_type i;
-			for( i = 0 ; i < img.size( ) ; i++ )
-			{
-				img[i].r = img[i].get_value( );
-				img[i].g = img[i].get_value( );
-				img[i].b = img[i].get_value( );
-			}
-
-			return( tiff_controller< rgb< T >, Allocator >::write( img, filename ) );
-		}
-	};
-
-	template < class T, class Allocator >
-	struct tiff_controller< rgb< T >, Allocator >
-	{
-		static bool read( array2< rgb< T >, Allocator > &image, const std::string &filename )
-		{
-			typedef typename array2< rgb< T >, Allocator >::size_type size_type;
-
 			int						cols, rows;
 			register TIFF			*tif;
 			register unsigned char*	inP;
-			register unsigned char	sample;
+			register unsigned char	sample, r, g, b;
 			register int			bitsleft;
 			unsigned short			bps, spp, photomet;
 			unsigned short			*redcolormap;
@@ -139,6 +107,7 @@ namespace __tiff_controller__
 						}
 						bitsleft -= bps;
 						sample = ( *inP >> bitsleft ) & maxval;
+						image( i, j ) = pixel_converter::convert_to_pixel( sample, sample, sample );
 					}
 					break;
 
@@ -152,6 +121,7 @@ namespace __tiff_controller__
 						}
 						bitsleft -= bps;
 						sample = maxval - ( ( *inP >> bitsleft ) & maxval );
+						image( i, j ) = pixel_converter::convert_to_pixel( sample, sample, sample );
 					}
 					break;
 
@@ -166,9 +136,9 @@ namespace __tiff_controller__
 						bitsleft -= bps;
 						sample = ( *inP >> bitsleft ) & maxval;
 
-						image( i, j ).r = static_cast< T >( redcolormap[sample] );
-						image( i, j ).g = static_cast< T >( greencolormap[sample] );
-						image( i, j ).b = static_cast< T >( bluecolormap[sample] );
+						image( i, j ) = pixel_converter::convert_to_pixel( static_cast< unsigned char >( redcolormap[sample] ),
+																			static_cast< unsigned char >( greencolormap[sample] ),
+																			static_cast< unsigned char >( bluecolormap[sample] ) );
 					}
 					break;
 
@@ -182,7 +152,7 @@ namespace __tiff_controller__
 							bitsleft = 8;
 						}
 						bitsleft -= bps;
-						image( i, j ).r = static_cast< T >( (*inP >> bitsleft) & maxval );
+						r = static_cast< unsigned char >( (*inP >> bitsleft) & maxval );
 
 						if( bitsleft == 0 )
 						{
@@ -190,7 +160,7 @@ namespace __tiff_controller__
 							bitsleft = 8;
 						}
 						bitsleft -= bps;
-						image( i, j ).g = static_cast< T >( (*inP >> bitsleft) & maxval );
+						g = static_cast< unsigned char >( (*inP >> bitsleft) & maxval );
 
 						if( bitsleft == 0 )
 						{
@@ -198,7 +168,9 @@ namespace __tiff_controller__
 							bitsleft = 8;
 						}
 						bitsleft -= bps;
-						image( i, j ).b = static_cast< T >( (*inP >> bitsleft) & maxval );
+						b = static_cast< unsigned char >( (*inP >> bitsleft) & maxval );
+
+						image( i, j ) = pixel_converter::convert_to_pixel( r, g, b );
 
 						if( spp == 4 )
 						{
@@ -223,9 +195,8 @@ namespace __tiff_controller__
 			return( true );
 		}
 
-		static bool write( array2< rgb< T >, Allocator > &image, const std::string &filename )
+		static bool write( array2< T, Allocator > &image, const std::string &filename )
 		{
-			typedef typename array2< rgb< T >, Allocator >::size_type size_type;
 			TIFF *tif;
 			size_type tiffW, tiffH;
 			size_type rowsPerStrip;
@@ -258,9 +229,10 @@ namespace __tiff_controller__
 
 			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )
 			{
-				buf[ i * 3 + 0 ] = image[i].r;
-				buf[ i * 3 + 1 ] = image[i].g;
-				buf[ i * 3 + 2 ] = image[i].b;
+				color_type c = pixel_converter::convert_from_pixel( image[i] );
+				buf[ i * 3 + 0 ] = c.r;
+				buf[ i * 3 + 1 ] = c.g;
+				buf[ i * 3 + 2 ] = c.b;
 			}
 
 			bool ret = true;
