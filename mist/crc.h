@@ -47,9 +47,7 @@ namespace crc_generator_polynominal
 
 
 /// @brief CRC を生成・検証を行うクラス
-
 template < int BIT >
-
 struct crc
 {
 

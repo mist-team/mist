@@ -1,6 +1,6 @@
 /// @file mist/environment.h
 //!
-//! @brief 計算機の環境情報を扱うためのライブラリ
+//! @brief 計算機に関する情報を扱うためのライブラリ
 //!
 #ifndef __INCLUDE_MIST_ENVIRONMENT__
 #define __INCLUDE_MIST_ENVIRONMENT__
@@ -186,7 +186,6 @@ namespace __environment__
 
 		if( !fi )
 		{
-			std::cerr << "CPU情報が見つからないよ！！" << std::endl;
 			return( "unknown" );
 		}
 
@@ -258,9 +257,9 @@ namespace __environment__
 		return( str );
 	}
 
-	static std::string user( )
+	static std::string system_command( const std::string &command )
 	{
-		FILE *gid = popen( "whoami", "r" );
+		FILE *gid = popen( command.c_str( ), "r" );
 
 		if( gid == NULL )
 		{
@@ -274,60 +273,21 @@ namespace __environment__
 		pclose( gid );
 
 		return( chomp( std::string( buff ) ) );
+	}
+
+	static std::string user( )
+	{
+		return( system_command( "whoami" ) );
 	}
 
 	static std::string machine( )
 	{
-		FILE *gid = popen( "uname -n", "r" );
-
-		if( gid == NULL )
-		{
-			return( "unknown" );
-		}
-
-		char buff[ 4096 ];
-
-		fgets( buff, 4096, gid );
-
-		pclose( gid );
-
-		return( chomp( std::string( buff ) ) );
+		return( system_command( "uname -n" ) );
 	}
 
 	static std::string os( )
 	{
-		typedef std::string::size_type size_type;
-		std::ifstream fi;
-
-		fi.open( "/proc/version" );
-
-		if( !fi )
-		{
-			std::cerr << "OS情報が見つからないよ！！" << std::endl;
-			return( "unknown, a debian linux?" );
-		}
-
-		std::string osinfo = "";
-
-		char buff[ 4096 ];
-		while( fi )
-		{
-			fi.getline( buff, 4094 );
-			osinfo += buff;
-			osinfo += "\n";
-		}
-
-		fi.close( );
-
-		// OSの情報だけを取得する
-		size_type indx = osinfo.find( '(', 0 );
-
-		if( indx != osinfo.npos )
-		{
-			return( osinfo.substr( 0, indx - 1 ) );
-		}
-
-		return( osinfo );
+		return( system_command( "uname -sr" ) );
 	}
 
 #endif
@@ -350,19 +310,28 @@ namespace __environment__
 	};
 }
 
+
+//! @defgroup environment_group 計算機環境情報
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/environment.h>
+//! @endcode
+//!
+//!  @{
+
 /// @brief OS情報を返す関数
 //! 
 //! @attention WindowsおよびLinuxのみでの動作保証
 //! 
 inline std::string os( ){ return( singleton< __environment__::environment_info >::get_instance( ).os_name ); }
 
-/// @brief CPU情報を返す関数
+/// @brief CPU名を返す関数
 //! 
 //! @attention WindowsおよびLinuxのみでの動作保証
 //! 
 inline std::string cpu( ){ return( singleton< __environment__::environment_info >::get_instance( ).cpu_name ); }
 
-/// @brief CPU情報を返す関数
+/// @brief CPU数を返す関数
 //! 
 //! @attention WindowsおよびLinuxのみでの動作保証
 //! 
@@ -374,11 +343,16 @@ inline size_t cpu_num( ){ return( singleton< __environment__::environment_info >
 //! 
 inline std::string machine( ){ return( singleton< __environment__::environment_info >::get_instance( ).machine_name ); }
 
-/// @brief 現在のユーザー情報を返す関数
+/// @brief 現在のユーザー名を返す関数
 //! 
 //! @attention WindowsおよびLinuxのみでの動作保証
 //! 
 inline std::string user( ){ return( singleton< __environment__::environment_info >::get_instance( ).user_name ); }
+
+
+/// @}
+//  計算機環境情報グループの終わり
+
 
 
 // mist名前空間の終わり

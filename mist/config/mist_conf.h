@@ -408,6 +408,7 @@ struct __mist_console_callback__
 * @subsection implement	実装補助
 * - @ref limits_group						"型に対する情報"
 * - @ref mist::timer						"時間計測"
+* - @ref environment_group					"計算機環境情報"
 * - @ref operator_group						"演算子の実装補助"
 * - @ref thread_group						"マルチスレッド"
 * - @ref mist::singleton					"シングルトン"
@@ -453,7 +454,7 @@ struct __mist_console_callback__
 * - @ref visualization_group				"可視化"
 *   - @ref volumerendering_group			"ボリュームレンダリング"
 *   - @ref a								"等濃度面表示"
-* - @ref a									"キャリブレーション"
+* - キャリブレーション
 *   - @ref calibration_group				"カメラキャリブレーション"
 *
 *

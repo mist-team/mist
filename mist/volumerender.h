@@ -1014,8 +1014,7 @@ bool volumerendering( const Array1 &in, Array2 &out, const volumerender::paramet
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //!
 //! @param[in]  in         … 入力画像
-//! @param[out] out        … 出力画像
-//! @param[in]  param      … ボリュームレンダリングのパラメータ
+//! @param[out] dmap       … レンダリングを高速化するための距離画像の計算結果
 //! @param[in]  table      … ボリュームレンダリングの色－値テーブル
 //! @param[in]  thread_num … 使用するスレッド数
 //! 

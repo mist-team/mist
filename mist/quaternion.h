@@ -636,7 +636,6 @@ const quaternion< T > track_ball( const vector2< T > &p1, const vector2< T > &p2
 //! @param[in] axisX          … トラックボールのX軸
 //! @param[in] axisY          … トラックボールのY軸
 //! @param[in] axisZ          … トラックボールのZ軸
-//! @param[in] trackball_size … トラックボールの半径（デフォルトは0.8）
 //! 
 //! @return 回転を表すクォータニオン
 //! 
@@ -681,7 +680,6 @@ const quaternion< T > track_ball( const typename vector3< T >::value_type &x1, c
 //! @param[in] axisX          … トラックボールのX軸
 //! @param[in] axisY          … トラックボールのY軸
 //! @param[in] axisZ          … トラックボールのZ軸
-//! @param[in] trackball_size … トラックボールの半径（デフォルトは0.8）
 //! 
 //! @return 回転を表すクォータニオン
 //! 
