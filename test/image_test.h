@@ -46,4 +46,9 @@ void labeling8_test( );
 
 void thinning_test( );
 
+void erosion_test( );
+void dilation_test( );
+void opening_test( );
+void closing_test( );
+
 #endif // __INCLUDE_IMAGE_TEST__

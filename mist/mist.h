@@ -5,10 +5,10 @@
 **         We defined following template classes.
 **
 **          array  : template class of one dimensionl array with STL support.
-**          array1 : template class of one dimensionl array containing resolution of each value.
-**          array2 : template class of two dimensionl array containing resolution of each pixel
-**          array3 : template class of three dimensionl array containing resolution of each voxel
-**          matrix : template class of matrix with its operation, and impremented using teqnique of an expression template.
+**          array1 : template class of one dimensionl array containing resolution.
+**          array2 : template class of two dimensionl array containing pixel resolution.
+**          array3 : template class of three dimensionl array containing voxel resolution.
+**          matrix : template class of matrix with its operation, and impremented using expression template teqnique.
 **
 **
 **         We developed these programs since 2003/09/05.
@@ -881,59 +881,69 @@ public:
 
 private:
 	typedef Array base;
-	size_type margin_;
+	size_type margin1_;
+	size_type margin2_;
+	size_type margin3_;
 
 public:
 	void resize( size_type num1 )
 	{
-		base::resize( num1 + margin_ * 2 );
+		base::resize( num1 + margin1_ * 2 );
 	}
 
 	void resize( size_type num1, size_type num2 )
 	{
-		base::resize( num1 + margin_ * 2, num2 + margin_ * 2 );
+		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2 );
 	}
 
 	void resize( size_type num1, size_type num2, size_type num3 )
 	{
-		base::resize( num1 + margin_ * 2, num2 + margin_ * 2, num3 + margin_ * 2 );
+		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, num3 + margin3_ * 2 );
 	}
 
 	void resize( size_type num1, const value_type &val )
 	{
-		base::resize( num1 + margin_ * 2, val );
+		base::resize( num1 + margin1_ * 2, val );
 	}
 
 	void resize( size_type num1, size_type num2, const value_type &val )
 	{
-		base::resize( num1 + margin_ * 2, num2 + margin_ * 2, val );
+		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, val );
 	}
 
 	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
 	{
-		base::resize( num1 + margin_ * 2, num2 + margin_ * 2, num3 + margin_ * 2, val );
+		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, num3 + margin3_ * 2, val );
 	}
 
 	void swap( marray &a )
 	{
 		base::swap( a );
 
-		size_type tmp = margin_;
-		margin_ = a.margin_;
-		a.margin_ = tmp;
+		size_type tmp = margin1_;
+		margin1_ = a.margin1_;
+		a.margin1_ = tmp;
+
+		tmp = margin2_;
+		margin2_ = a.margin2_;
+		a.margin2_ = tmp;
+
+		tmp = margin3_;
+		margin3_ = a.margin3_;
+		a.margin3_ = tmp;
 	}
 
 	void clear( )
 	{
 		base::clear( );
-		margin_ = 0;
+		margin1_ = margin2_ = margin3_ = 0;
 	}
 
 	void fill_margin( const value_type &val = 0 )
 	{
 		base &o = *this;
 
-		for( size_type k = 0 ; k < margin( ) ; k++ )
+		for( size_type k = 0 ; k < margin3( ) ; k++ )
 		{
 			for( size_type j = 0 ; j < o.size2( ) ; j++ )
 			{
@@ -943,7 +953,7 @@ public:
 				}
 			}
 		}
-		for( size_type k = o.size3( ) - margin( ) ; k < o.size3( ) ; k++ )
+		for( size_type k = o.size3( ) - margin3( ) ; k < o.size3( ) ; k++ )
 		{
 			for( size_type j = 0 ; j < o.size2( ) ; j++ )
 			{
@@ -954,7 +964,7 @@ public:
 			}
 		}
 
-		for( size_type j = 0 ; j < margin( ) ; j++ )
+		for( size_type j = 0 ; j < margin2( ) ; j++ )
 		{
 			for( size_type k = 0 ; k < o.size3( ) ; k++ )
 			{
@@ -964,7 +974,7 @@ public:
 				}
 			}
 		}
-		for( size_type j = o.size2( ) - margin( ) ; j < o.size2( ) ; j++ )
+		for( size_type j = o.size2( ) - margin2( ) ; j < o.size2( ) ; j++ )
 		{
 			for( size_type k = 0 ; k < o.size3( ) ; k++ )
 			{
@@ -975,7 +985,7 @@ public:
 			}
 		}
 
-		for( size_type i = 0 ; i < margin( ) ; i++ )
+		for( size_type i = 0 ; i < margin1( ) ; i++ )
 		{
 			for( size_type k = 0 ; k < o.size3( ) ; k++ )
 			{
@@ -985,7 +995,7 @@ public:
 				}
 			}
 		}
-		for( size_type i = o.size1( ) - margin( ) ; i < o.size1( ) ; i++ )
+		for( size_type i = o.size1( ) - margin1( ) ; i < o.size1( ) ; i++ )
 		{
 			for( size_type k = 0 ; k < o.size3( ) ; k++ )
 			{
@@ -997,14 +1007,16 @@ public:
 		}
 	}
 
-	size_type size1( ) const { return( base::size1( ) - 2 * margin_ ); }
-	size_type size2( ) const { return( base::size2( ) - 2 * margin_ ); }
-	size_type size3( ) const { return( base::size3( ) - 2 * margin_ ); }
+	size_type size1( ) const { return( base::size1( ) - 2 * margin1_ ); }
+	size_type size2( ) const { return( base::size2( ) - 2 * margin2_ ); }
+	size_type size3( ) const { return( base::size3( ) - 2 * margin3_ ); }
 	size_type width( ) const { return( size1( ) ); }
 	size_type height( ) const { return( size2( ) ); }
 	size_type depth( ) const { return( size3( ) ); }
 
-	size_type margin( ) const { return( margin_ ); }
+	size_type margin1( ) const { return( margin1_ ); }
+	size_type margin2( ) const { return( margin2_ ); }
+	size_type margin3( ) const { return( margin3_ ); }
 
 private:
 	template < class T, class Allocator >
@@ -1069,7 +1081,9 @@ public:
 		if( this == &o ) return( *this );
 
 		base::operator =( o );
-		margin_ = o.margin_;
+		margin1_ = o.margin1_;
+		margin2_ = o.margin2_;
+		margin3_ = o.margin3_;
 
 		return( *this );
 	}
@@ -1077,14 +1091,14 @@ public:
 	template < class T, class Allocator >
 	const marray& operator =( const array< T, Allocator > &o )
 	{
-		base::resize( o.size( ) + margin_ * 2 );
+		base::resize( o.size( ) + margin1_ * 2 );
 		return( copy( o ) );
 	}
 
 	template < class T, class Allocator >
 	const marray& operator =( const array1< T, Allocator > &o )
 	{
-		base::resize( o.size( ) + margin_ * 2 );
+		base::resize( o.size( ) + margin1_ * 2 );
 		reso1( o.reso1( ) );
 		return( copy( o ) );
 	}
@@ -1092,7 +1106,7 @@ public:
 	template < class T, class Allocator >
 	const marray& operator =( const array2< T, Allocator > &o )
 	{
-		base::resize( o.size1( ) + margin_ * 2, o.size2( ) + margin_ * 2 );
+		base::resize( o.size1( ) + margin1_ * 2, o.size2( ) + margin2_ * 2 );
 		reso1( o.reso1( ) );
 		reso2( o.reso2( ) );
 		return( copy( o ) );
@@ -1101,7 +1115,7 @@ public:
 	template < class T, class Allocator >
 	const marray& operator =( const array3< T, Allocator > &o )
 	{
-		base::resize( o.size1( ) + margin_ * 2, o.size2( ) + margin_ * 2, o.size3( ) + margin_ * 2 );
+		base::resize( o.size1( ) + margin1_ * 2, o.size2( ) + margin2_ * 2, o.size3( ) + margin3_ * 2 );
 		reso1( o.reso1( ) );
 		reso2( o.reso2( ) );
 		reso3( o.reso3( ) );
@@ -1112,92 +1126,92 @@ public:
 public:
 	reference at( difference_type i )
 	{
-		return( base::at( i + margin_ ) );
+		return( base::at( i + margin1_ ) );
 	}
 	reference at( difference_type i, difference_type j )
 	{
-		return( base::at( i + margin_, j + margin_ ) );
+		return( base::at( i + margin1_, j + margin2_ ) );
 	}
 	reference at( difference_type i, difference_type j, difference_type k )
 	{
-		return( base::at( i + margin_, j + margin_, k + margin_ ) );
+		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
 	const_reference at( difference_type i ) const
 	{
-		return( base::at( i + margin_ ) );
+		return( base::at( i + margin1_ ) );
 	}
 	const_reference at( difference_type i, difference_type j ) const
 	{
-		return( base::at( i + margin_, j + margin_ ) );
+		return( base::at( i + margin1_, j + margin2_ ) );
 	}
 	const_reference at( difference_type i, difference_type j, difference_type k ) const
 	{
-		return( base::at( i + margin_, j + margin_, k + margin_ ) );
+		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
 	reference operator ()( difference_type i )
 	{
-		return( base::at( i + margin_ ) );
+		return( base::at( i + margin1_ ) );
 	}
 	reference operator ()( difference_type i, difference_type j )
 	{
-		return( base::at( i + margin_, j + margin_ ) );
+		return( base::at( i + margin1_, j + margin2_ ) );
 	}
 	reference operator ()( difference_type i, difference_type j, difference_type k )
 	{
-		return( base::at( i + margin_, j + margin_, k + margin_ ) );
+		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
 	const_reference operator ()( difference_type i ) const
 	{
-		return( base::at( i + margin_ ) );
+		return( base::at( i + margin1_ ) );
 	}
 	const_reference operator ()( difference_type i, difference_type j ) const
 	{
-		return( base::at( i + margin_, j + margin_ ) );
+		return( base::at( i + margin1_, j + margin2_ ) );
 	}
 	const_reference operator ()( difference_type i, difference_type j, difference_type k ) const
 	{
-		return( base::at( i + margin_, j + margin_, k + margin_ ) );
+		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
 
 public:
 	// ç\íz
-	marray( ) : base( ), margin_( 0 ) {}
+	marray( ) : base( ), margin1_( 0 ), margin2_( 0 ), margin3_( 0 ) {}
 
-	marray( size_type margin ) : base( ), margin_( margin ) {}
+	marray( size_type margin ) : base( ), margin1_( margin ), margin2_( 0 ), margin3_( 0 ) {}
 
-	marray( const marray &o ) : base( o ), margin_( o.margin( ) ) {}
+	marray( const marray &o ) : base( o ), margin1_( o.margin1( ) ), margin2_( o.margin2( ) ), margin3_( o.margin3( ) ) {}
 
 	template < class T, class Allocator >
-	marray( const array< T, Allocator > &o, size_type margin, const value_type &val = 0 )
-		: base( o.size( ) + margin * 2 ), margin_( margin )
+	marray( const array< T, Allocator > &o, size_type margin1, const value_type &val = 0 )
+		: base( o.size( ) + margin1 * 2 ), margin1_( margin1 ), margin2_( 0 ), margin3_( 0 )
 	{
 		fill_margin( val );
 		copy( o );
 	}
 
 	template < class T, class Allocator >
-	marray( const array1< T, Allocator > &o, size_type margin, const value_type &val = 0 )
-		: base( o.size( ) + margin * 2, o.reso1( ) ), margin_( margin )
+	marray( const array1< T, Allocator > &o, size_type margin1, const value_type &val = 0 )
+		: base( o.size( ) + margin1 * 2, o.reso1( ) ), margin1_( margin1 ), margin2_( 0 ), margin3_( 0 )
 	{
 		fill_margin( val );
 		copy( o );
 	}
 
 	template < class T, class Allocator >
-	marray( const array2< T, Allocator > &o, size_type margin, const value_type &val = 0 )
-		: base( o.size1( ) + margin * 2, o.size2( ) + margin * 2, o.reso1( ), o.reso2( ) ), margin_( margin )
+	marray( const array2< T, Allocator > &o, size_type margin1, size_type margin2, const value_type &val = 0 )
+		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin2 * 2, o.reso1( ), o.reso2( ) ), margin1_( margin1 ), margin2_( margin2 ), margin3_( 0 )
 	{
 		fill_margin( val );
 		copy( o );
 	}
 
 	template < class T, class Allocator >
-	marray( const array3< T, Allocator > &o, size_type margin, const value_type &val = 0 )
-		: base( o.size1( ) + margin * 2, o.size2( ) + margin * 2, o.size3( ) + margin * 2, o.reso1( ), o.reso2( ), o.reso3( ) ), margin_( margin )
+	marray( const array3< T, Allocator > &o, size_type margin1, size_type margin2, size_type margin3, const value_type &val = 0 )
+		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin2 * 2, o.size3( ) + margin3 * 2, o.reso1( ), o.reso2( ), o.reso3( ) ), margin1_( margin1 ), margin2_( margin2 ), margin3_( margin3 )
 	{
 		fill_margin( val );
 		copy( o );

@@ -126,7 +126,7 @@ write_dicom_test( filename );}
         xywh {430 610 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
-      Fl_Menu_Bar {} {open
+      Fl_Menu_Bar {} {open selected
         xywh {0 0 550 25} box FLAT_BOX
       } {
         submenu {} {
@@ -155,8 +155,28 @@ write_dicom_test( filename );}
           }
           menuitem {} {
             label Thinning
-            callback {thinning_test( );} selected
+            callback {thinning_test( );}
             xywh {40 40 100 20}
+          }
+          menuitem {} {
+            label Erosion
+            callback {erosion_test( );}
+            xywh {50 50 100 20}
+          }
+          menuitem {} {
+            label Dilation
+            callback {dilation_test( );}
+            xywh {60 60 100 20}
+          }
+          menuitem {} {
+            label Opening
+            callback {opening_test( );}
+            xywh {70 70 100 20}
+          }
+          menuitem {} {
+            label Closing
+            callback {closing_test( );}
+            xywh {80 80 100 20}
           }
         }
       }

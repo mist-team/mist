@@ -13,6 +13,7 @@
 //#include <mist/filter/figure_decomposition.h>
 #include <mist/filter/labeling.h>
 #include <mist/filter/thinning.h>
+#include <mist/filter/morphology.h>
 
 
 mist::array2< unsigned char > image_object( 100, 100 );
@@ -195,4 +196,21 @@ void thinning_test( )
 	{
 		image_object[i] *= 255;
 	}
+}
+
+void erosion_test( )
+{
+	mist::erosion( image_object, 3 );
+}
+
+void dilation_test( )
+{
+}
+
+void opening_test( )
+{
+}
+
+void closing_test( )
+{
 }

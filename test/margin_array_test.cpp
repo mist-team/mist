@@ -15,7 +15,7 @@ int main( int argc, char *argv[] )
 	a( 3, 0 ) = 0.4; a( 3, 1 ) = 4.2; a( 3, 2 ) = 5.9; a( 3, 3 ) = 4.2; a( 3, 4 ) = 0.9;
 	a( 4, 0 ) = 0.2; a( 4, 1 ) = 0.3; a( 4, 2 ) = 0.1; a( 4, 3 ) = 0.1; a( 4, 4 ) = 0.4;
 
-	mist::marray< mist::array2< int > > m( a, 2, 1 );
+	mist::marray< mist::array2< int > > m( a, 2, 1, 1 );
 
 	for( size_type j = 0 ; j < m.height( ) ; j++ )
 	{

@@ -152,6 +152,34 @@ void image_test_window::cb_Thinning(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Thinning_i(o,v);
 }
 
+inline void image_test_window::cb_Erosion_i(Fl_Menu_*, void*) {
+  erosion_test( );
+}
+void image_test_window::cb_Erosion(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Erosion_i(o,v);
+}
+
+inline void image_test_window::cb_Dilation_i(Fl_Menu_*, void*) {
+  dilation_test( );
+}
+void image_test_window::cb_Dilation(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Dilation_i(o,v);
+}
+
+inline void image_test_window::cb_Opening_i(Fl_Menu_*, void*) {
+  opening_test( );
+}
+void image_test_window::cb_Opening(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Opening_i(o,v);
+}
+
+inline void image_test_window::cb_Closing_i(Fl_Menu_*, void*) {
+  closing_test( );
+}
+void image_test_window::cb_Closing(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Closing_i(o,v);
+}
+
 Fl_Menu_Item image_test_window::menu_[] = {
  {"&Edit", 0,  0, 0, 64, 0, 0, 14, 56},
  {"Euclidean Distance Transform", 0,  (Fl_Callback*)image_test_window::cb_Euclidean, 0, 0, 0, 0, 14, 56},
@@ -159,6 +187,10 @@ Fl_Menu_Item image_test_window::menu_[] = {
  {"Labeling 4", 0,  (Fl_Callback*)image_test_window::cb_Labeling, 0, 0, 0, 0, 14, 56},
  {"Labeling 8", 0,  (Fl_Callback*)image_test_window::cb_Labeling1, 0, 0, 0, 0, 14, 56},
  {"Thinning", 0,  (Fl_Callback*)image_test_window::cb_Thinning, 0, 0, 0, 0, 14, 56},
+ {"Erosion", 0,  (Fl_Callback*)image_test_window::cb_Erosion, 0, 0, 0, 0, 14, 56},
+ {"Dilation", 0,  (Fl_Callback*)image_test_window::cb_Dilation, 0, 0, 0, 0, 14, 56},
+ {"Opening", 0,  (Fl_Callback*)image_test_window::cb_Opening, 0, 0, 0, 0, 14, 56},
+ {"Closing", 0,  (Fl_Callback*)image_test_window::cb_Closing, 0, 0, 0, 0, 14, 56},
  {0},
  {0}
 };
