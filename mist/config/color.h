@@ -275,35 +275,31 @@ public:
 	// カラーからグレースケールへの自動キャスト演算子（危険のため一時停止）
 	//operator value_type( ) const { return( get_value( ) ); }
 
-
-
-	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, + )			///< @brief カラー画素の和
-	DEFINE_PROMOTE_MEMBER_OPERATOR2( rgb, + )			///< @brief カラー画素と定数の和
-
-	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, - )			///< @brief カラー画素の差
-	DEFINE_PROMOTE_MEMBER_OPERATOR2( rgb, - )			///< @brief カラー画素と定数の差
-
-	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, * )			///< @brief カラー画素の積
-	DEFINE_PROMOTE_MEMBER_OPERATOR2( rgb, * )			///< @brief カラー画素と定数の積
-
-	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, / )			///< @brief カラー画素の割り算
-	DEFINE_PROMOTE_MEMBER_OPERATOR2( rgb, / )			///< @brief カラー画素を定数で割る
-
-	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, % )			///< @brief カラー画素の剰余
-
-	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, | )			///< @brief カラー画素の | 演算
-
-	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, & )			///< @brief カラー画素の & 演算
-
-	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, ^ )			///< @brief カラー画素の ^ 演算
-
 };
 
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, + )			///< @brief カラー画素の和
+DEFINE_PROMOTE_BIND_OPERATOR2( rgb, + )			///< @brief カラー画素と定数の和
+DEFINE_PROMOTE_BIND_OPERATOR3( rgb, + )			///< @brief 定数とカラー画素の和
 
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, + )			///< @brief 定数とカラー画素の和
-DEFINE_PROMOTE_BIND_OPERATOR2( rgb, - )			///< @brief 定数とカラー画素の差
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, * )			///< @brief 定数とカラー画素の積
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, - )			///< @brief カラー画素の差
+DEFINE_PROMOTE_BIND_OPERATOR2( rgb, - )			///< @brief カラー画素と定数の差
+DEFINE_PROMOTE_BIND_OPERATOR4( rgb, - )			///< @brief 定数とカラー画素の差
 
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, * )			///< @brief カラー画素の積
+DEFINE_PROMOTE_BIND_OPERATOR2( rgb, * )			///< @brief カラー画素と定数の積
+DEFINE_PROMOTE_BIND_OPERATOR3( rgb, * )			///< @brief 定数とカラー画素の積
+
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, / )			///< @brief カラー画素の割り算
+DEFINE_PROMOTE_BIND_OPERATOR2( rgb, / )			///< @brief カラー画素を定数で割る
+
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, % )			///< @brief カラー画素の剰余
+
+
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, | )			///< @brief カラー画素の | 演算
+
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, & )			///< @brief カラー画素の & 演算
+
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, ^ )			///< @brief カラー画素の ^ 演算
 
 
 /// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する

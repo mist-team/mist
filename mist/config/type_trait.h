@@ -190,30 +190,31 @@ PROMOTE_TRAIT(         double,    long double,    long double )
 	//!
 	//! オブジェクト '演算子' オブジェクト を実現する際に利用する．
 	//!
-	#define DEFINE_PROMOTE_MEMBER_OPERATOR1( TYPE, OPERATOR )										\
-		template < class TT >																		\
-		inline TYPE< promote_trait< T, TT >::value_type >											\
-					operator OPERATOR( const TYPE< TT > &t ) const									\
+	#define DEFINE_PROMOTE_BIND_OPERATOR1( TYPE, OPERATOR )											\
+		template < class T1, class T2 >																\
+		inline TYPE< promote_trait< T1, T2 >::value_type >									\
+					operator OPERATOR( const TYPE< T1 > &t1, const TYPE< T2 > &t2 )					\
 		{																							\
-			return( TYPE< promote_trait< T, TT >::value_type >( *this ) OPERATOR ## = t );			\
+			return( TYPE< promote_trait< T1, T2 >::value_type >( t1 ) OPERATOR ## = t2 );	\
 		}
 
 	/// @brief 型の昇格を用いた四則演算子を定義する際に利用する
 	//!
 	//! オブジェクト '演算子' 定数 を実現する際に利用する．
 	//!
-	#define DEFINE_PROMOTE_MEMBER_OPERATOR2( TYPE, OPERATOR )											\
-		inline TYPE< promote_trait< T, double >::value_type >											\
-					operator OPERATOR( const double &t ) const											\
+	#define DEFINE_PROMOTE_BIND_OPERATOR2( TYPE, OPERATOR )												\
+		template < class T >																			\
+		inline TYPE< promote_trait< T, double >::value_type >									\
+					operator OPERATOR( const TYPE< T > &t1, const double &t2 )							\
 		{																								\
-			return( TYPE< promote_trait< T, double >::value_type >( *this ) OPERATOR ## = t );			\
+			return( TYPE< promote_trait< T, double >::value_type >( t1 ) OPERATOR ## = t2 );	\
 		}
 
 	/// @brief 型の昇格を用いた四則演算子を定義する際に利用する
 	//!
 	//! 定数 '演算子' オブジェクト を実現する際に利用する．主に，引き算以外で利用する．
 	//!
-	#define DEFINE_PROMOTE_BIND_OPERATOR1( TYPE, OPERATOR )												\
+	#define DEFINE_PROMOTE_BIND_OPERATOR3( TYPE, OPERATOR )												\
 		template < class T >																			\
 		inline TYPE< promote_trait< T, double >::value_type >									\
 					operator OPERATOR( const double &t1, const TYPE< T > &t2 )							\
@@ -225,13 +226,13 @@ PROMOTE_TRAIT(         double,    long double,    long double )
 	//!
 	//! 定数 '－' オブジェクト を実現する際に利用する．ただし，1引数のコンストラクタが利用可能でなくてはならない．
 	//!
-	#define DEFINE_PROMOTE_BIND_OPERATOR2( TYPE, OPERATOR )												\
+	#define DEFINE_PROMOTE_BIND_OPERATOR4( TYPE, OPERATOR )												\
 		template < class T >																			\
 		inline TYPE< promote_trait< T, double >::value_type >									\
 					operator OPERATOR( const double &t1, const TYPE< T > &t2 )							\
 		{																								\
 			return( TYPE< promote_trait< T, double >::value_type >( t1 ) OPERATOR ## = t2 );	\
-		}
+	}
 
 #else
 
@@ -239,31 +240,31 @@ PROMOTE_TRAIT(         double,    long double,    long double )
 	//!
 	//! オブジェクト '演算子' オブジェクト を実現する際に利用する．
 	//!
-	#define DEFINE_PROMOTE_MEMBER_OPERATOR1( TYPE, OPERATOR )										\
-		template < class TT >																		\
-		inline TYPE< typename promote_trait< T, TT >::value_type >									\
-					operator OPERATOR( const TYPE< TT > &t ) const									\
+	#define DEFINE_PROMOTE_BIND_OPERATOR1( TYPE, OPERATOR )											\
+		template < class T1, class T2 >																\
+		inline TYPE< typename promote_trait< T1, T2 >::value_type >									\
+					operator OPERATOR( const TYPE< T1 > &t1, const TYPE< T2 > &t2 )					\
 		{																							\
-			return( TYPE< typename promote_trait< T, TT >::value_type >( *this ) OPERATOR ## = t );	\
+			return( TYPE< typename promote_trait< T1, T2 >::value_type >( t1 ) OPERATOR ## = t2 );	\
 		}
 
 	/// @brief 型の昇格を用いた四則演算子を定義する際に利用する
 	//!
 	//! オブジェクト '演算子' 定数 を実現する際に利用する．
 	//!
-	#define DEFINE_PROMOTE_MEMBER_OPERATOR2( TYPE, OPERATOR )										\
-		template < class TT >																		\
-		inline TYPE< typename promote_trait< T, TT >::value_type >									\
-					operator OPERATOR( const TT &t ) const											\
+	#define DEFINE_PROMOTE_BIND_OPERATOR2( TYPE, OPERATOR )											\
+		template < class T1, class T2 >																\
+		inline TYPE< typename promote_trait< T1, T2 >::value_type >									\
+					operator OPERATOR( const TYPE< T1 > &t1, const T2 &t2 )							\
 		{																							\
-			return( TYPE< typename promote_trait< T, TT >::value_type >( *this ) OPERATOR ## = t );	\
+			return( TYPE< typename promote_trait< T1, T2 >::value_type >( t1 ) OPERATOR ## = t2 );	\
 		}
 
 	/// @brief 型の昇格を用いた四則演算子を定義する際に利用する
 	//!
 	//! 定数 '演算子' オブジェクト を実現する際に利用する．主に，引き算以外で利用する．
 	//!
-	#define DEFINE_PROMOTE_BIND_OPERATOR1( TYPE, OPERATOR )											\
+	#define DEFINE_PROMOTE_BIND_OPERATOR3( TYPE, OPERATOR )											\
 		template < class T1, class T2 >																\
 		inline TYPE< typename promote_trait< T1, T2 >::value_type >									\
 					operator OPERATOR( const T1 &t1, const TYPE< T2 > &t2 )							\
@@ -275,13 +276,13 @@ PROMOTE_TRAIT(         double,    long double,    long double )
 	//!
 	//! 定数 '－' オブジェクト を実現する際に利用する．ただし，1引数のコンストラクタが利用可能でなくてはならない．
 	//!
-	#define DEFINE_PROMOTE_BIND_OPERATOR2( TYPE, OPERATOR )											\
+	#define DEFINE_PROMOTE_BIND_OPERATOR4( TYPE, OPERATOR )											\
 		template < class T1, class T2 >																\
 		inline TYPE< typename promote_trait< T1, T2 >::value_type >									\
 					operator OPERATOR( const T1 &t1, const TYPE< T2 > &t2 )							\
 		{																							\
 			return( TYPE< typename promote_trait< T1, T2 >::value_type >( t1 ) OPERATOR ## = t2 );	\
-		}
+	}
 
 #endif
 
