@@ -52,12 +52,12 @@ int main( int argc, char *argv[] )
 
 	{
 		double x;
-		double err = mist::gold::minimization( 0, 1, x, f2, 0.00001 );
+		double err = mist::gold::minimization( -1, 1, x, f2, 0.00001, 200, false );
 		cout << "f( " << x << " ) = " << err << endl;
 	}
 	{
 		double x;
-		double err = mist::brent::minimization( 0, 1, x, f2, 0.00001 );
+		double err = mist::brent::minimization( -1, 1, x, f2, 0.00001, 200, false );
 		cout << "f( " << x << " ) = " << err << endl;
 	}
 

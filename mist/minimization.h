@@ -273,16 +273,34 @@ namespace gold
 	//! @param[in]  tolerance      … 許容誤差
 	//! @param[out] iterations     … 実際の反復回数
 	//! @param[in]  max_iterations … 最大反復回数
+	//! @param[in]  use_enclose    … 極小をはさむ区間の更新を行うかどうか
 	//!
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t &iterations, size_t max_iterations )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 200, bool use_enclose = true )
 	{
 		double c, p, q, fa, fb, fc, fp, fq;
 		const double gold = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
 
-		enclose( a, b, c, fa, fb, fc, f );
+		if( use_enclose )
+		{
+			enclose( a, b, c, fa, fb, fc, f );
+		}
+		else
+		{
+			if( a > b )
+			{
+				double tmp = a;
+				a = b;
+				b = tmp;
+			}
+			c = b;
+			b = a + gold * ( c - a );
+			fa = f( a );
+			fb = f( b );
+			fc = f( c );
+		}
 
 		// a <= b <= c となるように区間を変更する
 		if( a > c )
@@ -369,15 +387,16 @@ namespace gold
 	//! @param[in]  f              … 評価関数
 	//! @param[in]  tolerance      … 許容誤差
 	//! @param[in]  max_iterations … 最大反復回数，実際の反復回数
+	//! @param[in]  use_enclose    … 極小をはさむ区間の更新を行うかどうか
 	//!
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 200 )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 200, bool use_enclose = true )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
-		return( minimization( a, b, x, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations ) );
+		return( minimization( a, b, x, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations, use_enclose ) );
 	}
 }
 
@@ -396,18 +415,38 @@ namespace brent
 	//! @param[in]  tolerance      … 許容誤差
 	//! @param[out] iterations     … 実際の反復回数
 	//! @param[in]  max_iterations … 最大反復回数
+	//! @param[in]  use_enclose    … 極小をはさむ区間の更新を行うかどうか
 	//!
 	//! @return 極小を与える座標値における評価値
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t &iterations, size_t max_iterations )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t &iterations, size_t max_iterations, bool use_enclose = true )
 	{
 		double u, v, w, xm, fa, fb, fu, fv, fw, fx;
 		double len, len1, len2;
 		const double gold = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
 		const double dust = type_limits< double >::minimum( );		// ゼロ除算を避けるためのゴミ値
 
-		x = b;
-		enclose( a, x, b, fa, fx, fb, f );
+
+		if( use_enclose )
+		{
+			x = b;
+			enclose( a, x, b, fa, fx, fb, f );
+		}
+		else
+		{
+			if( a > b )
+			{
+				double tmp = a;
+				a = b;
+				b = tmp;
+			}
+			x = b;
+			b = a + gold * ( x - a );
+			fa = f( a );
+			fb = f( b );
+			fx = f( x );
+		}
+
 
 		// a <= x <= b で極小を囲う区間に変更する
 		if( a > b )
@@ -546,15 +585,16 @@ namespace brent
 	//! @param[in]  f              … 評価関数
 	//! @param[in]  tolerance      … 許容誤差
 	//! @param[in]  max_iterations … 最大反復回数
+	//! @param[in]  use_enclose    … 極小をはさむ区間の更新を行うかどうか
 	//!
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 200 )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 200, bool use_enclose = true )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
-		return( minimization( a, b, x, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations ) );
+		return( minimization( a, b, x, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations, use_enclose ) );
 	}
 }
 
@@ -658,7 +698,7 @@ namespace gradient
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, Functor f, double tolerance, double distance, size_t &iterations, size_t max_iterations )
+	double minimization( matrix< T, Allocator > &p, Functor f, double tolerance, double distance, size_t &iterations, size_t max_iterations = 200 )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -773,7 +813,7 @@ namespace powell
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t &iterations, size_t max_iterations )
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 200 )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -849,7 +889,7 @@ namespace powell
 					if( ttt < 0 )
 					{
 						// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
-						fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations );
+						fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations, true );
 						p += dir * x;
 
 						// 方向集合の一番最後に，新しい方向を追加する
