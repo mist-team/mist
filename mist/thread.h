@@ -98,6 +98,7 @@ public:
 	thread_object( const thread_object &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ){ }
 	thread_object(  ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ){ }
 #endif
+	virtual ~thread_object( ){ }
 
 
 	bool create_thread( )

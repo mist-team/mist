@@ -7,6 +7,7 @@ class thread_parameter : public mist::thread_object< thread_parameter< T > >
 {
 public:
 	typedef mist::thread_object< thread_parameter< T > > base;
+	typedef typename base::thread_exit_type thread_exit_type;
 
 private:
 	unsigned int thread_id_;
