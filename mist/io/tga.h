@@ -43,7 +43,7 @@ namespace __tga_controller__
 #if defined( __MIST_MSVC__ )
 	#pragma pack( push, tga_align, 1 )
 #endif
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _tga_header_
 		{
 			enum{ bytes = 18 };
 
@@ -69,7 +69,7 @@ namespace __tga_controller__
 			unsigned char	pixel_depth;
 			unsigned char	image_descriptor;
 
-		} _tga_header_;
+		} _MIST_PACKED;
 
 #if defined( __MIST_MSVC__ )
 	#pragma pack( pop, tga_align )
@@ -158,7 +158,7 @@ namespace __tga_controller__
 			unsigned char	*color_map_data	= tga + _tga_header_::bytes;
 			unsigned char	*image_data		= color_map_data + ( header.color_map_type == 0 ? 0 : header.color_map_length * header.color_map_entry_size / 8 );
 
-			unsigned char	*pfooter		= image_data + width * height * pixel_bytes;
+//			unsigned char	*pfooter		= image_data + width * height * pixel_bytes;
 
 			bool is_RLE		= ( header.image_type & 0x08 ) != 0;
 			bool is_Huffman	= ( header.image_type & 0x20 ) != 0;
@@ -214,7 +214,7 @@ namespace __tga_controller__
 						case 16:
 							{
 								unsigned short v = reinterpret_cast< unsigned short * >( color_map_data + index * 2 )[ 0 ];
-								unsigned char a = ( v & 0x8000 ) >> 15;
+								//unsigned char a = ( v & 0x8000 ) >> 15;
 								unsigned char r = ( ( v & 0x7c00 ) >> 10 ) * 8;
 								unsigned char g = ( ( v & 0x03e0 ) >> 5 ) * 8;
 								unsigned char b = ( v & 0x001f ) * 8;
@@ -234,7 +234,7 @@ namespace __tga_controller__
 						case 32:
 							for( difference_type i = 0 ; i < width ; i++ )
 							{
-								unsigned char a = color_map_data[ index * 4 + 3 ];
+								//unsigned char a = color_map_data[ index * 4 + 3 ];
 								unsigned char r = color_map_data[ index * 4 + 2 ];
 								unsigned char g = color_map_data[ index * 4 + 1 ];
 								unsigned char b = color_map_data[ index * 4 + 0 ];
@@ -260,7 +260,7 @@ namespace __tga_controller__
 						for( difference_type i = 0 ; i < width ; i++ )
 						{
 							unsigned short pix = reinterpret_cast< unsigned short * >( pixel + pixel_skip * i )[ 0 ];
-							unsigned char a = ( pix & 0x8000 ) >> 15;
+							//unsigned char a = ( pix & 0x8000 ) >> 15;
 							unsigned char r = ( ( pix & 0x7c00 ) >> 10 ) * 8;
 							unsigned char g = ( ( pix & 0x03e0 ) >> 5 ) * 8;
 							unsigned char b = ( pix & 0x001f ) * 8;
@@ -346,8 +346,6 @@ namespace __tga_controller__
 
 			difference_type line_skip  = from_top  ? width * pixel_bytes : - width * pixel_bytes;
 			difference_type pixel_skip = from_left ? pixel_bytes : - pixel_bytes;
-
-			bool ret = true;
 
 			for( difference_type j = 0 ; j < height ; j++ )
 			{

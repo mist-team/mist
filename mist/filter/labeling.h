@@ -189,7 +189,7 @@ namespace __labeling_controller__
 		size_type label_num = 0;
 		size_type i, j, k, l, count;
 
-		std::vector< const size_type > T;
+		std::vector< size_type > T;
 		size_type L[ neighbor::array_num ];
 		const size_type width = in.width( );
 		const size_type height = in.height( );

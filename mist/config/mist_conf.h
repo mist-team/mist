@@ -51,9 +51,9 @@ _MIST_BEGIN
 
 // 構造体のアライメントを合わせるためのマクロ
 #ifdef __MIST_MSVC__
-	#define _MIST_ALIGN( type, alignment ) type
+	#define _MIST_PACKED
 #else
-	#define _MIST_ALIGN( type, alignment ) type __attribute__( ( aligned( alignment ) ) )
+	#define _MIST_PACKED __attribute__( ( packed ) )
 #endif
 
 

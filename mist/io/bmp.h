@@ -43,16 +43,16 @@ namespace __bmp_controller__
 #if defined( __MIST_MSVC__ )
 	#pragma pack( push, bmp_align, 1 )
 #endif
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _rgbquad_
 		{
 			enum{ bytes = 4 };
 			unsigned char	rgbBlue;
 			unsigned char	rgbGreen;
 			unsigned char	rgbRed;
 			unsigned char	rgbReserved;
-		} _rgbquad_;
+		} _MIST_PACKED;
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _bitmapinfoheader_
 		{
 			enum{ bytes = 40 };
 			unsigned int	biSize;
@@ -66,16 +66,16 @@ namespace __bmp_controller__
 			signed   int	biYPelsPerMeter;
 			unsigned int	biClrUsed;
 			unsigned int	biClrImportant;
-		} _bitmapinfoheader_;
+		} _MIST_PACKED;
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _bitmapinfo_
 		{
 			enum{ bytes = _rgbquad_::bytes + _bitmapinfoheader_::bytes };
 			_bitmapinfoheader_	bmiHeader;
 			_rgbquad_			bmiColors[1];
-		} _bitmapinfo_;
+		} _MIST_PACKED;
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _bitmapfileheader_
 		{
 			enum{ bytes = 14 };
 			unsigned short	bfType;
@@ -83,7 +83,7 @@ namespace __bmp_controller__
 			unsigned short	bfReserved1;
 			unsigned short	bfReserved2;
 			unsigned int	bfOffBits;
-		} _bitmapfileheader_;
+		} _MIST_PACKED;
 
 #if defined( __MIST_MSVC__ )
 	#pragma pack( pop, bmp_align )

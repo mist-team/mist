@@ -48,20 +48,20 @@ namespace __wav_controller__
 #if defined( __MIST_MSVC__ )
 	#pragma pack( push, wav_align, 1 )
 #endif
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _riffheader_
 		{
 			enum{ bytes = 8 };
 			unsigned char	riff[4];			// WAVの場合は必ず 'RIFF'
 			unsigned  int	file_size;			// RIFFヘッダの後のファイルサイズ　つまりファイルサイズ－8
-		} _riffheader_;
+		} _MIST_PACKED;
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _wavheader_
 		{
 			enum{ bytes = 4 };
 			unsigned char	wav[4];				// WAVの場合は必ず 'WAVE'
-		} _wavheader_;
+		} _MIST_ALIGN( 1 );
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _fmtheader_
 		{
 			enum{ bytes = 24 };
 			unsigned char	fmt[4];				// WAVの場合は必ず 'fmt ' ←スペース重要
@@ -72,14 +72,14 @@ namespace __wav_controller__
 			unsigned  int   bytes_per_second;	// １秒あたりの音声データのバイト数
 			unsigned short  bytes_per_sample;	// １サンプルあたりのバイト数
 			unsigned short  bits_per_sample;	// 量子化ビット数（8、16）
-		} _fmtheader_;
+		} _MIST_PACKED;
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _wavdata_
 		{
 			enum{ bytes = 8 };
 			unsigned char	data[4];			// WAVの場合は必ず 'data'
 			unsigned  int	data_size;			// 本ヘッダの後のファイルサイズ
-		} _wavdata_;
+		} _MIST_PACKED;
 
 #if defined( __MIST_MSVC__ )
 	#pragma pack( pop, wav_align )

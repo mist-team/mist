@@ -46,7 +46,7 @@ namespace ptile
 
 		if( in.empty( ) )
 		{
-			return( value_type( ) );
+			return( value_type( 0 ) );
 		}
 
 		value_type min = in[ 0 ];
@@ -113,7 +113,7 @@ namespace discriminant_analysis
 
 		if( in.empty( ) )
 		{
-			return( value_type( ) );
+			return( value_type( 0 ) );
 		}
 
 		value_type min = in[ 0 ];

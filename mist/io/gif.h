@@ -63,7 +63,7 @@ namespace __gif_controller__
 #if defined( __MIST_MSVC__ )
 	#pragma pack( push, gif_align, 1 )
 #endif
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _gif_header_
 		{
 			enum{ bytes = 13 };
 
@@ -76,9 +76,9 @@ namespace __gif_controller__
 			unsigned char	background_color_index;
 			unsigned char	pixel_aspect_ratio;
 
-		} _gif_header_;
+		} _MIST_PACKED;
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _image_descriptor_
 		{
 			enum{ bytes = 10 };
 
@@ -89,9 +89,9 @@ namespace __gif_controller__
 			unsigned short	image_height;
 			unsigned char	image_flags;
 
-		} _image_descriptor_;
+		} _MIST_PACKED;
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _graphic_control_extension_
 		{
 			enum{ bytes = 7 };
 
@@ -102,18 +102,18 @@ namespace __gif_controller__
 			unsigned short	delay_time;
 			unsigned char	transparent_color_index;
 
-		} _graphic_control_extension_;
+		} _MIST_PACKED;
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _comment_extension_
 		{
 			enum{ bytes = 2 };
 
 			unsigned char	code;
 			unsigned char	label;
 
-		} _comment_extension_;
+		} _MIST_PACKED;
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _plain_text_extension_
 		{
 			enum{ bytes = 15 };
 
@@ -129,9 +129,9 @@ namespace __gif_controller__
 			unsigned char	text_foreground_color_index;
 			unsigned char	text_background_color_index;
 
-		} _plain_text_extension_;
+		} _MIST_PACKED;
 
-		typedef _MIST_ALIGN( struct, 1 )
+		struct _application_extension_
 		{
 			enum{ bytes = 14 };
 
@@ -141,7 +141,7 @@ namespace __gif_controller__
 			unsigned char	application_identifier[ 8 ];
 			unsigned char	authentication_code[ 3 ];
 
-		} _application_extension_;
+		} _MIST_PACKED;
 
 
 
@@ -283,15 +283,15 @@ namespace __gif_controller__
 			_gif_header_	*pheader		= reinterpret_cast < _gif_header_ * >( gif );
 			_gif_header_	&header			= *pheader;
 
-			if( !( header.signature[ 0 ] == 'G' && header.signature[ 0 ] == 'I' && header.signature[ 0 ] == 'F' ) )
+			if( !( header.signature[ 0 ] == 'G' && header.signature[ 1 ] == 'I' && header.signature[ 2 ] == 'F' ) )
 			{
 				// GIFƒtƒ@ƒCƒ‹‚Å‚Í‚È‚¢
 				return( false );
 			}
 
 			bool            global_color_table_flag		= ( header.image_flags & 0x80 ) != 0;
-			difference_type color_resolution			= ( header.image_flags & 0x70 ) >> 4;
-			bool            sort_flag					= ( header.image_flags & 0x08 ) != 0;
+			//difference_type color_resolution			= ( header.image_flags & 0x70 ) >> 4;
+			//bool            sort_flag					= ( header.image_flags & 0x08 ) != 0;
 			difference_type size_of_global_color_table	= ( header.image_flags & 0x07 );
 			difference_type global_color_table_bytes	= 3 * _2[ size_of_global_color_table + 1 ];
 
@@ -318,8 +318,8 @@ namespace __gif_controller__
 
 						bool            local_color_table_flag		= ( image_header.image_flags & 0x80 ) != 0;
 						bool            interlace_flag				= ( image_header.image_flags & 0x40 ) != 0;
-						bool            sort_flag					= ( image_header.image_flags & 0x20 ) != 0;
-						difference_type reserved					= ( image_header.image_flags & 0x18 ) >> 3;
+						//bool            sort_flag					= ( image_header.image_flags & 0x20 ) != 0;
+						//difference_type reserved					= ( image_header.image_flags & 0x18 ) >> 3;
 						difference_type size_of_local_color_table	= ( image_header.image_flags & 0x07 );
 						difference_type local_color_table_bytes		= 3 * _2[ size_of_local_color_table + 1 ];
 
@@ -374,6 +374,10 @@ namespace __gif_controller__
 									}
 								}
 							}
+						}
+						else
+						{
+							std::cout << "LZW Decode failure." << std::endl;
 						}
 
 						delete [] buff;
