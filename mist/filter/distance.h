@@ -318,14 +318,15 @@ namespace __distance_transform_controller__
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief ユークリッド距離変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in         … 引数の説明
-//! @param[out] out        … 引数の説明
-//! @param[in]  max_length … 引数の説明
-//! @param[in]  thread_num … 引数の説明
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  max_length … 伝播させる距離の最大値
+//! @param[in]  thread_num … 使用するスレッド数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void euclidean_distance_transform( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, double max_length = -1.0, typename array< T1, Allocator1 >::size_type thread_num = 0 )
@@ -377,14 +378,15 @@ void euclidean_distance_transform( const array< T1, Allocator1 > &in, array< T2,
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief ユークリッド距離変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in         … 引数の説明
-//! @param[out] out        … 引数の説明
-//! @param[in]  max_length … 引数の説明
-//! @param[in]  thread_num … 引数の説明
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  max_length … 伝播させる距離の最大値
+//! @param[in]  thread_num … 使用するスレッド数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void euclidean_distance_transform( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, double max_length = -1.0, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
@@ -437,14 +439,15 @@ void euclidean_distance_transform( const array1< T1, Allocator1 > &in, array1< T
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief ユークリッド距離変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in         … 引数の説明
-//! @param[out] out        … 引数の説明
-//! @param[in]  max_length … 引数の説明
-//! @param[in]  thread_num … 引数の説明
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  max_length … 伝播させる距離の最大値
+//! @param[in]  thread_num … 使用するスレッド数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void euclidean_distance_transform( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, double max_length = -1.0, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
@@ -520,14 +523,15 @@ void euclidean_distance_transform( const array2< T1, Allocator1 > &in, array2< T
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief ユークリッド距離変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in         … 引数の説明
-//! @param[out] out        … 引数の説明
-//! @param[in]  max_length … 引数の説明
-//! @param[in]  thread_num … 引数の説明
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  max_length … 伝播させる距離の最大値
+//! @param[in]  thread_num … 使用するスレッド数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void euclidean_distance_transform( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, double max_length = -1.0, typename array3< T1, Allocator1 >::size_type thread_num = 0 )

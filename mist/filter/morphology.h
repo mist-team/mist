@@ -786,13 +786,14 @@ namespace __morphology_controller__
 //!  @{
 
 
-/// @brief 任意の構造要素に対応したモルフォロジ演算
+/// @brief 任意の構造要素に対応したErosion演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] s          … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] s          … モルフォロジ演算に用いる構造要素
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 void erosion( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -842,13 +843,14 @@ void erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 任意の構造要素に対応したDilation演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] s          … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] s          … モルフォロジ演算に用いる構造要素
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 void dilation( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -898,13 +900,14 @@ void dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 任意の構造要素に対応したOpening演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] s          … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] s          … モルフォロジ演算に用いる構造要素
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 void opening( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -984,13 +987,14 @@ void opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 任意の構造要素に対応したClosing演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] s          … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] s          … モルフォロジ演算に用いる構造要素
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 void closing( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -1071,13 +1075,14 @@ void closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 
 
 
-/// @brief 円の構造要素専用のモルフォロジ演算
+/// @brief 円を構造要素とするErosion演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] radius     … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] radius     … 円の半径
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 inline void erosion( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -1086,13 +1091,14 @@ inline void erosion( array2< T, Allocator > &in, double radius, typename array2<
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 円を構造要素とするDilation演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] radius     … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] radius     … 円の半径
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 inline void dilation( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -1101,13 +1107,14 @@ inline void dilation( array2< T, Allocator > &in, double radius, typename array2
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 円を構造要素とするOpening演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] radius     … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] radius     … 円の半径
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 inline void opening( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -1116,13 +1123,14 @@ inline void opening( array2< T, Allocator > &in, double radius, typename array2<
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 円を構造要素とするClosing演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] radius     … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] radius     … 円の半径
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 inline void closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -1134,13 +1142,14 @@ inline void closing( array2< T, Allocator > &in, double radius, typename array2<
 
 
 
-/// @brief 任意の構造要素に対応したモルフォロジ演算
+/// @brief 任意の構造要素に対応したErosion演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] s          … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] s          … モルフォロジ演算に用いる構造要素
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 void erosion( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1190,13 +1199,14 @@ void erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 任意の構造要素に対応したDilation演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] s          … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] s          … モルフォロジ演算に用いる構造要素
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 void dilation( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1246,13 +1256,14 @@ void dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 任意の構造要素に対応したOpening演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] s          … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] s          … モルフォロジ演算に用いる構造要素
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 void opening( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1333,13 +1344,14 @@ void opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 任意の構造要素に対応したClosing演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] s          … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] s          … モルフォロジ演算に用いる構造要素
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 void closing( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1420,13 +1432,14 @@ void closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 
 
 
-/// @brief 球の構造要素専用のモルフォロジ演算
+/// @brief 球を構造要素とするErosion演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] radius     … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] radius     … 球の半径
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 inline void erosion( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1435,13 +1448,14 @@ inline void erosion( array3< T, Allocator > &in, double radius, typename array3<
 }
 
 
-/// @brief 球の構造要素専用のモルフォロジ演算
+/// @brief 球を構造要素とするDilation演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] radius     … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] radius     … 球の半径
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 inline void dilation( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1450,13 +1464,14 @@ inline void dilation( array3< T, Allocator > &in, double radius, typename array3
 }
 
 
-/// @brief 球の構造要素専用のモルフォロジ演算
+/// @brief 球を構造要素とするOpening演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] radius     … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] radius     … 球の半径
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 inline void opening( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1465,13 +1480,14 @@ inline void opening( array3< T, Allocator > &in, double radius, typename array3<
 }
 
 
-/// @brief 球の構造要素専用のモルフォロジ演算
+/// @brief 球を構造要素とするClosing演算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
+//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in,out] in     … 引数の説明
-//! @param[in] radius     … 引数の説明
-//! @param[in] thread_num … 引数の説明
+//! @param[in,out] in     … 入出力画像
+//! @param[in] radius     … 球の半径
+//! @param[in] thread_num … 使用するスレッド数
 //! 
 template < class T, class Allocator >
 inline void closing( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )

@@ -84,7 +84,8 @@ struct bspline_base< 1 >
 //! @param K  … Bスプライン曲線の次数
 //!
 //! @code Bスプライン曲線の作成例
-//! mist::bspline< double > b;
+//! // 3次で変数の型が double のBスプラインを作成する
+//! mist::bspline< double, 3 > b;
 //! 
 //! // 制御点を追加
 //! b.push_back( 2.0 );

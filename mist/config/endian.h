@@ -18,53 +18,38 @@ _MIST_BEGIN
 
 /// @brief バイト配列と値のペアを表現するクラス
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 各データ型とバイト列を同時に利用することが可能です
 //! 
-//! @param T … 引数の説明
+//! @param T … 使用するデータ型
 //! 
 template < class T >
 union byte_array
 {
 public:
-	typedef T      value_type;		///< @brief 説明を書く
-	typedef size_t size_type;		///< @brief 説明を書く
+	typedef T      value_type;		///< @brief データ型タイプ
+	typedef size_t size_type;		///< @brief size_tに同じ
 
 private:
-	value_type value;								///< @brief 説明を書く
-	unsigned char byte[ sizeof( value_type ) ];		///< @brief 説明を書く
+	value_type value;								///< @brief データ型タイプが表す値
+	unsigned char byte[ sizeof( value_type ) ];		///< @brief 値をバイト表現に直したもの
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief デフォルトコンストラクタ
 	byte_array( ) : value( 0 ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
+	/// @brief 値 v を用いて初期化する
 	byte_array( const value_type v ) : value( v ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
+	/// @brief 他の byte_array を用いて初期化する
 	byte_array( const byte_array &v ) : value( v.value ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
+	/// @brief バイト列を用いて初期化を行う
+	//!
+	//! @attention 入力されるバイト列の要素数は，sizeof( value_type ) 以上でなくてはならない
+	//!
 	byte_array( const unsigned char *b )
 	{
 		for( size_type i = 0 ; i < sizeof( value_type ) ; i++ )
@@ -73,52 +58,24 @@ public:
 		}
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] index … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief index で指定されて位置のバイトを取得する
 	unsigned char &operator[]( size_type index ){ return( byte[ index ] ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] index … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief index で指定されて位置の const バイトを取得する
 	const unsigned char &operator[]( size_type index ) const { return( byte[ index ] ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 値を取得する
 	const value_type get_value( ) const { return( value ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 値を設定する
 	value_type set_value( const value_type &v ) { return( value = v ); }
 };
 
 
 /// @brief 現在のマシンのエンディアンがリトルエンディアンかどうかを調べる
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … リトルエンディアン
+//! @retval false … ビッグエンディアン
 //! 
 inline bool _is_little_endian_( )
 {
@@ -130,8 +87,8 @@ inline bool _is_little_endian_( )
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … ビッグエンディアン
+//! @retval false … リトルエンディアン
 //! 
 inline bool _is_big_endian_( )
 {
@@ -141,9 +98,7 @@ inline bool _is_big_endian_( )
 
 /// @brief byte_array内のバイトスワップをする
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in,out] bytes … 引数の説明
+//! @param[in,out] bytes … バイトスワップされるデータ
 //! 
 template < class T >
 inline void swap_bytes( byte_array< T > &bytes )
@@ -159,12 +114,14 @@ inline void swap_bytes( byte_array< T > &bytes )
 
 /// @brief byte_array内のデータを現在の計算機のエンディアンに合わせる
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! - リトルエンディアンの計算機で，ビッグエンディアンのデータを入力し，from_little_endian = false とすると，変換後のデータはリトルエンディアンとなる
+//! - ビッグエンディアンの計算機で，リトルエンディアンのデータを入力し，from_little_endian = true  とすると，変換後のデータはビッグエンディアンとなる
+//! - それ以外の場合は何も変換されない
 //! 
-//! @param[in] bytes              … 引数の説明
-//! @param[in] from_little_endian … 引数の説明
+//! @param[in] bytes              … 変換されるデータ
+//! @param[in] from_little_endian … 変換前のエンディアンタイプ
 //! 
-//! @return 戻り値の説明
+//! @return 変換後のデータ
 //! 
 template < class T >
 inline byte_array< T > to_current_endian( const byte_array< T > &bytes, bool from_little_endian )
@@ -185,12 +142,14 @@ inline byte_array< T > to_current_endian( const byte_array< T > &bytes, bool fro
 
 /// @brief byte_array内のデータを現在の計算機のエンディアンから目的のエンディアンに合わせる
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! - リトルエンディアンの計算機で，to_little_endian = false とすると，変換後のデータはビッグエンディアンとなる
+//! - ビッグエンディアンの計算機で，to_little_endian = true  とすると，変換後のデータはリトルエンディアンとなる
+//! - それ以外の場合は，それぞれの計算機のエンディアンのままで何も変換されない
 //! 
-//! @param[in] bytes              … 引数の説明
-//! @param[in] from_little_endian … 引数の説明
+//! @param[in] bytes            … 変換されるデータ
+//! @param[in] to_little_endian … 変換後のエンディアンタイプ
 //! 
-//! @return 戻り値の説明
+//! @return 変換後のデータ
 //! 
 template < class T >
 inline byte_array< T > from_current_endian( const byte_array< T > &bytes, bool to_little_endian )

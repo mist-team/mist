@@ -201,7 +201,7 @@ bool read_jpeg( array2< T, Allocator > &image, const std::string &filename )
 
 /// @brief MISTコンテナの画像をJPEG形式でファイルに出力する
 //! 
-//! @attention JPEGの品質は0から100まであり，数値が大きいほど圧縮率は低くなる．小さくすると，画質が悪くなるので注意．（デフォルト地は100）
+//! @attention JPEGの品質は0から100まであり，数値が大きいほど圧縮率は低くなる．小さくすると，圧縮率が上がるかわりに画質が悪くなるので注意．（デフォルト値は100）
 //! 
 //! @param[in] image    … 出力画像を保持するMISTコンテナ
 //! @param[in] filename … 出力ファイル名

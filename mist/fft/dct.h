@@ -43,15 +43,16 @@ _MIST_BEGIN
 
 /// @brief 1次元高速コサイン変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool dct( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
+bool dct( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.size( ) ) )
 	{
@@ -102,15 +103,16 @@ bool dct( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 
 /// @brief 1次元高速コサイン逆変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool dct_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
+bool dct_inverse( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.size( ) ) )
 	{
@@ -162,15 +164,16 @@ bool dct_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 
 /// @brief 2次元高速コサイン変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool dct( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
+bool dct( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) || !__fft_util__::size_check( ( unsigned int ) in.height( ) ) )
 	{
@@ -229,17 +232,18 @@ bool dct( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 
 
 
-/// @brief 2次元コサイン逆変換
+/// @brief 2次元高速コサイン逆変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool dct_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
+bool dct_inverse( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) || !__fft_util__::size_check( ( unsigned int ) in.height( ) ) )
 	{
@@ -312,15 +316,16 @@ bool dct_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 
 /// @brief 3次元高速コサイン変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool dct( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
+bool dct( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) ||
 		!__fft_util__::size_check( ( unsigned int ) in.height( ) ) ||
@@ -389,15 +394,16 @@ bool dct( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 
 /// @brief 3次元高速コサイン逆変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool dct_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
+bool dct_inverse( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) ||
 		!__fft_util__::size_check( ( unsigned int ) in.height( ) ) ||

@@ -42,14 +42,15 @@ _MIST_BEGIN
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 1次元高速フーリエ変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool fft( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
@@ -102,17 +103,18 @@ bool fft( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 
 
 
-/// @brief 1次元逆フーリエ変換
+/// @brief 1次元高速逆フーリエ変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool fft_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
+bool fft_inverse( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.size( ) ) )
 	{
@@ -164,16 +166,16 @@ bool fft_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 
 /// @brief 2次元高速フーリエ変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
-
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool fft( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
+bool fft( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) || !__fft_util__::size_check( ( unsigned int ) in.height( ) ) )
 	{
@@ -233,17 +235,18 @@ bool fft( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 
 
 
-/// @brief 2次元逆フーリエ変換
+/// @brief 2次元高速逆フーリエ変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool fft_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
+bool fft_inverse( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) || !__fft_util__::size_check( ( unsigned int ) in.height( ) ) )
 	{
@@ -303,15 +306,16 @@ bool fft_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 
 /// @brief 3次元高速フーリエ変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool fft( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
+bool fft( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) ||
 		!__fft_util__::size_check( ( unsigned int ) in.height( ) ) ||
@@ -379,17 +383,18 @@ bool fft( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 
 
 
-/// @brief 3次元高速フーリエ逆変換
+/// @brief 3次元高速逆フーリエ変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
 //! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
-//! @return 戻り値の説明
+//! @return 変換に成功したかどうか
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool fft_inverse( array3< T1, Allocator1 > &in, array3< T2 , Allocator2 > &out )
+bool fft_inverse( const array3< T1, Allocator1 > &in, array3< T2 , Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) ||
 		!__fft_util__::size_check( ( unsigned int ) in.height( ) ) ||
@@ -434,7 +439,7 @@ bool fft_inverse( array3< T1, Allocator1 > &in, array3< T2 , Allocator2 > &out )
 
 	ip[ 0 ] = 0;
 
-	ooura_fft::cdft3d( static_cast< int >(in.width( )), static_cast< int >( in.height( ) ), static_cast< int >( in.depth( ) * 2 ), 1, data, t, ip, w );
+	ooura_fft::cdft3d( static_cast< int >( in.width( ) ), static_cast< int >( in.height( ) ), static_cast< int >( in.depth( ) * 2 ), 1, data, t, ip, w );
 
 	out.resize( in.width( ), in.height( ), in.depth( ) );
 

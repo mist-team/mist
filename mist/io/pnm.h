@@ -438,9 +438,6 @@ bool read_pnm( array2< T, Allocator > &image, const std::string &filename, typen
 //! @attention 出力する画像形式によって，必要なマジックナンバーを選択する必要あり
 //! @attention デフォルトのマジックナンバーはP6のカラー画像で，量子化レベルは256階調
 //! 
-//! @param[in] image    … 出力画像を保持するMISTコンテナ
-//! @param[in] filename … 出力ファイル名
-//! @param[in] pnm_type … 以下に示すマジックナンバーのうちの1つ
 //! - PNM画像のマジックナンバー
 //!   -# bitmap (ASCII) 2値 
 //!   -# graymap (ASCII) グレースケール 
@@ -448,6 +445,10 @@ bool read_pnm( array2< T, Allocator > &image, const std::string &filename, typen
 //!   -# bitmap (Binary) 2値 
 //!   -# graymap (Binary) グレースケール 
 //!   -# pixmap (Binary) カラー 
+//!
+//! @param[in] image    … 出力画像を保持するMISTコンテナ
+//! @param[in] filename … 出力ファイル名
+//! @param[in] pnm_type … PNM画像のマジックナンバーのうちの1つ
 //! @param[in] level    … 出力するPNMファイルの量子化ビット数
 //!
 //! @retval true  … 画像の書き込みに成功

@@ -115,7 +115,7 @@ namespace __interlace_controller__
 
 			if( in.height( ) < 2 )
 			{
-				// 2行異常ない場合はインターレス除去はできない
+				// 2行以上無い場合はインターレス除去はできない
 				return( false );
 			}
 
@@ -160,7 +160,7 @@ namespace __interlace_controller__
 
 			if( in.height( ) < 2 )
 			{
-				// 2行異常ない場合はインターレス除去はできない
+				// 2行以上無い場合はインターレス除去はできない
 				return( false );
 			}
 
@@ -196,15 +196,16 @@ namespace __interlace_controller__
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 2次元画像のインターレス除去を行う
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 偶数ライン・奇数ラインのどちらかを補間する
+//! @attention インターレス除去を行うためには，画像が2行以上でなくてはならない
 //! 
-//! @param[in]  in          … 引数の説明
-//! @param[out] out         … 引数の説明
-//! @param[in]  is_odd_line … 引数の説明
+//! @param[in]  in          … 入力画像
+//! @param[out] out         … 出力画像
+//! @param[in]  is_odd_line … 奇数ラインを偶数ラインで補間する場合は true，偶数ラインを奇数ラインで補間する場合は false を指定する
 //! 
-//! @return 戻り値の説明
+//! @return インターレス除去がうまくいったかどうか
 //! 
 template < class T, class Allocator >
 bool interlace( const array2< T, Allocator > &in, array2< T, Allocator > &out, bool is_odd_line = false )

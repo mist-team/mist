@@ -966,59 +966,90 @@ namespace __median_filter_controller__
 //! @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief メディアン（中央値）フィルタを適用する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in         … 引数の説明
-//! @param[out] out        … 引数の説明
-//! @param[in]  fw         … 引数の説明
-//! @param[in]  thread_num … 引数の説明
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  fw         … 中央値をとるマスクの幅
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
-void median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type thread_num = 0 )
+bool median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type thread_num = 0 )
 {
+	if( reinterpret_cast< const void * >( &in ) == reinterpret_cast< const void * >( &out ) )
+	{
+		return( false );
+	}
+
 	out.resize( in.size( ) );
 
 	__median_filter_controller__::__median_filter__< is_integer< T1 >::value >::median_filter( in, out, fw, 1, 1, 0, 1 );
+	
+	return( true );
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief メディアン（中央値）フィルタを適用する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in         … 引数の説明
-//! @param[out] out        … 引数の説明
-//! @param[in]  fw         … 引数の説明
-//! @param[in]  thread_num … 引数の説明
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  fw         … 中央値をとるマスクの幅
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
-void median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+bool median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 {
+	if( reinterpret_cast< const void * >( &in ) == reinterpret_cast< const void * >( &out ) )
+	{
+		return( false );
+	}
+
 	out.resize( in.size( ) );
 	out.reso1( in.reso1( ) );
 
 	__median_filter_controller__::__median_filter__< is_integer< T1 >::value >::median_filter( in, out, fw, 1, 1, 0, 1 );
+	
+	return( true );
 }
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief メディアン（中央値）フィルタを適用する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in         … 引数の説明
-//! @param[out] out        … 引数の説明
-//! @param[in]  fw         … 引数の説明
-//! @param[in]  fh         … 引数の説明
-//! @param[in]  thread_num … 引数の説明
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  fw         … 中央値をとるマスクのX軸方向の幅
+//! @param[in]  fh         … 中央値をとるマスクのY軸方向の幅
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
-void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+bool median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 				   typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh,
 				   typename array2< T1, Allocator1 >::size_type thread_num )
 {
+	if( reinterpret_cast< const void * >( &in ) == reinterpret_cast< const void * >( &out ) )
+	{
+		return( false );
+	}
+
 	typedef typename array2< T1, Allocator1 >::size_type  size_type;
 	typedef __median_filter_controller__::median_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 > > median_thread;
 
@@ -1055,44 +1086,59 @@ void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 	}
 
 	delete [] thread;
+	
+	return( true );
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief メディアン（中央値）フィルタを適用する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in         … 引数の説明
-//! @param[out] out        … 引数の説明
-//! @param[in]  fw         … 引数の説明
-//! @param[in]  thread_num … 引数の説明
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  fw         … 中央値をとるマスクの幅
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
-inline void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+inline bool median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 				   typename array2< T1, Allocator1 >::size_type fw,
 				   typename array2< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	median( in, out, fw, fw, thread_num );
+	return( median( in, out, fw, fw, thread_num ) );
 }
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief メディアン（中央値）フィルタを適用する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in         … 引数の説明
-//! @param[out] out        … 引数の説明
-//! @param[in]  fw         … 引数の説明
-//! @param[in]  fh         … 引数の説明
-//! @param[in]  fd         … 引数の説明
-//! @param[in]  thread_num … 引数の説明
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  fw         … 中央値をとるマスクのX軸方向の幅
+//! @param[in]  fh         … 中央値をとるマスクのY軸方向の幅
+//! @param[in]  fd         … 中央値をとるマスクのZ軸方向の幅
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
-void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+bool median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 				   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
 				   typename array3< T1, Allocator1 >::size_type thread_num )
 {
+	if( reinterpret_cast< const void * >( &in ) == reinterpret_cast< const void * >( &out ) )
+	{
+		return( false );
+	}
+
 	typedef typename array3< T1, Allocator1 >::size_type  size_type;
 	typedef __median_filter_controller__::median_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 > > median_thread;
 
@@ -1130,24 +1176,30 @@ void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 	}
 
 	delete [] thread;
+	
+	return( true );
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief メディアン（中央値）フィルタを適用する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in         … 引数の説明
-//! @param[out] out        … 引数の説明
-//! @param[in]  fw         … 引数の説明
-//! @param[in]  thread_num … 引数の説明
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  fw         … 中央値をとるマスクの幅
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
-inline void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+inline bool median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 				   typename array3< T1, Allocator1 >::size_type fw,
 				   typename array3< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	median( in, out, fw, fw, fw, thread_num );
+	return( median( in, out, fw, fw, fw, thread_num ) );
 }
 
 

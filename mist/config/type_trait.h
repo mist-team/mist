@@ -22,7 +22,7 @@ _MIST_BEGIN
 //! 
 //! Tが１バイトの文字列型であれば真に評価する
 //! 
-//! @param T  … 引数の説明
+//! @param T  … 調査する型
 //! 
 template< class T > struct is_char        { _MIST_CONST( bool, value, false ); };
 template<> struct is_char< unsigned char >{ _MIST_CONST( bool, value, true  ); };
@@ -34,7 +34,7 @@ template<> struct is_char< char >         { _MIST_CONST( bool, value, true  ); }
 //! 
 //! T が float か double 型であれば真に評価する
 //! 
-//! @param T  … 引数の説明
+//! @param T  … 調査する型
 //! 
 template< class T > struct is_float       { _MIST_CONST( bool, value, false ); };
 template<> struct is_float< float >       { _MIST_CONST( bool, value, true  ); };
@@ -47,7 +47,7 @@ template<> struct is_float< long double > { _MIST_CONST( bool, value, true  ); }
 //! 
 //! T が整数型であれば真に評価する。汎整数型がこれにあたる
 //! 
-//! @param T  … 引数の説明
+//! @param T  … 調査する型
 //! 
 template< class T > struct is_integer                  { _MIST_CONST( bool, value, false ); };
 template<>          struct is_integer< unsigned char > { _MIST_CONST( bool, value, true  ); };
@@ -67,7 +67,7 @@ template<>          struct is_integer< char >          { _MIST_CONST( bool, valu
 //! 
 //! T が算術型であれば真に評価する。汎整数型か浮動小数点型のいずれかがこれにあたる
 //! 
-//! @param T  … 引数の説明
+//! @param T  … 調査する型
 //! 
 template< class T > struct is_arithmetic                  { _MIST_CONST( bool, value, false ); };
 template<>          struct is_arithmetic< unsigned char > { _MIST_CONST( bool, value, true  ); };
@@ -86,28 +86,26 @@ template<>          struct is_arithmetic< long double >   { _MIST_CONST( bool, v
 
 
 
-/// @brief データ型のに関する情報
+/// @brief データ型の確定を避けるために利用する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param T  … 引数の説明
+//! @param T  … 取得したい型
 //! 
 template< class T >
 struct type_trait{ typedef T value_type; };
 
 
 
-/// @brief 型のAND演算を行う型
+/// @brief 型のAND演算を行う
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 全てが真の場合のみ真となる
 //! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! @param[in] b3 … 引数の説明
-//! @param[in] b4 … 引数の説明
-//! @param[in] b5 … 引数の説明
-//! @param[in] b6 … 引数の説明
-//! @param[in] b7 … 引数の説明
+//! @param b1 … パラメータ1
+//! @param b2 … パラメータ2
+//! @param b3 … パラメータ3
+//! @param b4 … パラメータ4
+//! @param b5 … パラメータ5
+//! @param b6 … パラメータ6
+//! @param b7 … パラメータ7
 //! 
 template < bool b1, bool b2, bool b3 = true, bool b4 = true, bool b5 = true, bool b6 = true, bool b7 = true >
 struct type_and
@@ -125,15 +123,15 @@ struct type_and< true, true, true, true, true, true, true >
 
 /// @brief 型のOR演算を行う型
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! どれかひとつでも真の場合に真となる
 //! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! @param[in] b3 … 引数の説明
-//! @param[in] b4 … 引数の説明
-//! @param[in] b5 … 引数の説明
-//! @param[in] b6 … 引数の説明
-//! @param[in] b7 … 引数の説明
+//! @param b1 … パラメータ1
+//! @param b2 … パラメータ2
+//! @param b3 … パラメータ3
+//! @param b4 … パラメータ4
+//! @param b5 … パラメータ5
+//! @param b6 … パラメータ6
+//! @param b7 … パラメータ7
 //! 
 template < bool b1, bool b2, bool b3 = false, bool b4 = false, bool b5 = false, bool b6 = false, bool b7 = false >
 struct type_or
@@ -152,9 +150,9 @@ struct type_or< false, false, false, false, false, false, false >
 
 /// @brief 型のNOT演算を行う型
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 真の場合は偽に，偽の場合は真になる
 //! 
-//! @param[in] b1 … 引数の説明
+//! @param b1 … パラメータ
 //! 
 template < bool b1 >
 struct type_not
@@ -173,10 +171,10 @@ struct type_not< true >
 
 /// @brief 型のEQUAL演算を行う型
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 指定された2つの型が等しい場合のみ真となる
 //! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
+//! @param b1 … パラメータ1
+//! @param b2 … パラメータ2
 //! 
 template < bool b1, bool b2 >
 struct type_equal

@@ -302,15 +302,17 @@ namespace __labeling_controller__
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 2次元画像に対する4近傍型ラベリング
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 2次元画像に対する4近傍型ラベリング
+//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
 //! 
-//! @param[in]  in        … 引数の説明
-//! @param[out] out       … 引数の説明
-//! @param[in]  max_label … 引数の説明
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
 //! 
-//! @return 戻り値の説明
+//! @return 割り当てられたラベル数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num2< T2 >::value )
@@ -335,15 +337,17 @@ typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Alloca
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 2次元画像に対する8近傍型ラベリング
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 2次元画像に対する8近傍型ラベリング
+//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
 //! 
-//! @param[in]  in        … 引数の説明
-//! @param[out] out       … 引数の説明
-//! @param[in]  max_label … 引数の説明
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
 //! 
-//! @return 戻り値の説明
+//! @return 割り当てられたラベル数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num2< T2 >::value )
@@ -368,15 +372,17 @@ typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Alloca
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 3次元画像に対する6近傍型ラベリング
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 2次元画像に対する6近傍型ラベリング
+//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
 //! 
-//! @param[in]  in        … 引数の説明
-//! @param[out] out       … 引数の説明
-//! @param[in]  max_label … 引数の説明
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
 //! 
-//! @return 戻り値の説明
+//! @return 割り当てられたラベル数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
@@ -402,15 +408,17 @@ typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Alloca
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 3次元画像に対する18近傍型ラベリング
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 2次元画像に対する18近傍型ラベリング
+//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
 //! 
-//! @param[in]  in        … 引数の説明
-//! @param[out] out       … 引数の説明
-//! @param[in]  max_label … 引数の説明
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
 //! 
-//! @return 戻り値の説明
+//! @return 割り当てられたラベル数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
@@ -436,15 +444,17 @@ typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Alloc
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 3次元画像に対する26近傍型ラベリング
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 2次元画像に対する26近傍型ラベリング
+//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
 //! 
-//! @param[in]  in        … 引数の説明
-//! @param[out] out       … 引数の説明
-//! @param[in]  max_label … 引数の説明
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
 //! 
-//! @return 戻り値の説明
+//! @return 割り当てられたラベル数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )

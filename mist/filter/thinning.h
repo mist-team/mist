@@ -151,12 +151,10 @@ namespace __thinning_controller__
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 2次元画像に対する細線化アルゴリズム
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in]  in  … 引数の説明
-//! @param[out] out … 引数の説明
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void thinning( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
