@@ -6,19 +6,14 @@
 FXDEFMAP( filter_graph ) filter_graph_map[] =
 	{
 		//________Message_Type_____________________ID_______________Message_Handler_______
-		FXMAPFUNC ( SEL_PAINT,				filter_graph::ID_CANVAS,			filter_graph::onPaint ),
-		FXMAPFUNC ( SEL_LEFTBUTTONPRESS,	filter_graph::ID_CANVAS,			filter_graph::onMouseDown ),
-		FXMAPFUNC ( SEL_RIGHTBUTTONPRESS,	filter_graph::ID_CANVAS,			filter_graph::onMouseDown ),
-		FXMAPFUNC ( SEL_LEFTBUTTONRELEASE,	filter_graph::ID_CANVAS,			filter_graph::onMouseUp ),
-		FXMAPFUNC ( SEL_RIGHTBUTTONRELEASE,	filter_graph::ID_CANVAS,			filter_graph::onMouseUp ),
-		FXMAPFUNC ( SEL_MOTION,				filter_graph::ID_CANVAS,			filter_graph::onMouseMove ),
-		FXMAPFUNC ( SEL_KEYPRESS,			filter_graph::ID_CANVAS,			filter_graph::onKeyDown ),
-		FXMAPFUNC ( SEL_KEYRELEASE,			filter_graph::ID_CANVAS,			filter_graph::onKeyUp ),
-
-		FXMAPFUNC ( SEL_CONFIGURE,			filter_graph::ID_CANVAS,			filter_graph::onResize ),
-
-		FXMAPFUNC ( SEL_CHANGED,			filter_graph::ID_HSCROLLBAR,		filter_graph::onScroll ),
-		FXMAPFUNC ( SEL_CHANGED,			filter_graph::ID_VSCROLLBAR,		filter_graph::onScroll ),
+		FXMAPFUNC ( SEL_PAINT,				0,			filter_graph::onPaint ),
+		FXMAPFUNC ( SEL_LEFTBUTTONPRESS,	0,			filter_graph::onMouseDown ),
+		FXMAPFUNC ( SEL_RIGHTBUTTONPRESS,	0,			filter_graph::onMouseDown ),
+		FXMAPFUNC ( SEL_LEFTBUTTONRELEASE,	0,			filter_graph::onMouseUp ),
+		FXMAPFUNC ( SEL_RIGHTBUTTONRELEASE,	0,			filter_graph::onMouseUp ),
+		FXMAPFUNC ( SEL_MOTION,				0,			filter_graph::onMouseMove ),
+		FXMAPFUNC ( SEL_KEYPRESS,			0,			filter_graph::onKeyDown ),
+		FXMAPFUNC ( SEL_KEYRELEASE,			0,			filter_graph::onKeyUp ),
 	};
 
 
@@ -26,27 +21,15 @@ FXIMPLEMENT( filter_graph, filter_graph::base, filter_graph_map, ARRAYNUMBER( fi
 
 
 // Construct a filter_graph
-filter_graph::filter_graph( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts, FXint x, FXint y, FXint w, FXint h, FXint pl, FXint pr, FXint pt, FXint pb, FXint hs, FXint vs )
-				: base( p, opts, x, y, w, h, pl, pr, pt, pb, hs, vs ),
+filter_graph::filter_graph( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts, FXint x, FXint y, FXint w, FXint h )
+				: base( p, opts | SCROLLERS_NORMAL | SCROLLERS_TRACK, x, y, 1024, 768 ),
 				current_filter_( NULL ), current_pin_( NULL ), damage_( true )
 {
 	// このウィンドウからメッセージを送る先の設定
 	setTarget( tgt );
 	setSelector( sel );
 
-	FXHorizontalFrame *o = new FXHorizontalFrame( this, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-	{
-		FXVerticalFrame *oo = new FXVerticalFrame( o, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-		{
-			canvas_ = new FXCanvas( oo, this, ID_CANVAS, FRAME_NORMAL | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0 );
-			hscrollbar_ = new FXScrollBar( oo, this, ID_HSCROLLBAR, LAYOUT_FILL_X | LAYOUT_SIDE_BOTTOM | SCROLLBAR_HORIZONTAL, 0, 0, 0, 0 );
-			hscrollbar_->setRange( 1024 );
-		}
-		vscrollbar_ = new FXScrollBar( o, this, ID_VSCROLLBAR, LAYOUT_FILL_Y | LAYOUT_SIDE_RIGHT | SCROLLBAR_VERTICAL, 0, 0, 0, 0 );
-		vscrollbar_->setRange( 768 );
-	}
-
-	font_ = new FXFont( getApp( ), "times", 12 );
+	font_ = new FXFont( getApp( ), "arial", 12 );
 	mem_image_ = new FXImage( getApp( ), NULL, IMAGE_OWNED, 1024, 768 );
 }
 
@@ -87,8 +70,8 @@ void filter_graph::append_filter( const filter &f )
 
 	// 全体を再描画する
 	damage_ = true;
-	canvas_->update( );
-	canvas_->repaint( );
+	update( );
+	repaint( );
 }
 
 
@@ -100,8 +83,8 @@ long filter_graph::onMouseDown( FXObject *obj, FXSelector sel, void *ptr )
 	current_filter_ = NULL;
 	current_pin_ = NULL;
 
-	FXint x = e.win_x + hscrollbar_->getPosition( );
-	FXint y = e.win_y + vscrollbar_->getPosition( );
+	FXint x = e.win_x - getXPosition( );
+	FXint y = e.win_y - getYPosition( );
 
 	// まずフィルタがクリックされていないかを検索する
 	size_type i, index = filters_.size( );
@@ -171,8 +154,8 @@ long filter_graph::onMouseDown( FXObject *obj, FXSelector sel, void *ptr )
 	}
 
 	damage_ = true;
-	canvas_->update( );
-	canvas_->repaint( );
+	update( );
+	repaint( );
 
 	return( 1 );
 }
@@ -187,13 +170,13 @@ long filter_graph::onMouseMove( FXObject *obj, FXSelector sel, void *ptr )
 		current_filter_->move( e.win_x - e.last_x, e.win_y - e.last_y );
 
 		damage_ = true;
-		canvas_->update( );
-		canvas_->repaint( );
+		update( );
+		repaint( );
 	}
 	else if( current_pin_ != NULL )
 	{
-		canvas_->update( );
-		canvas_->repaint( );
+		update( );
+		repaint( );
 	}
 
 	return( 1 );
@@ -209,8 +192,8 @@ long filter_graph::onMouseUp( FXObject *obj, FXSelector sel, void *ptr )
 		filter	*target_filter_ = NULL;
 		pin		*target_pin_ = NULL;
 
-		FXint x = e.win_x + hscrollbar_->getPosition( );
-		FXint y = e.win_y + vscrollbar_->getPosition( );
+		FXint x = e.win_x - getXPosition( );
+		FXint y = e.win_y - getYPosition( );
 
 		// 接続先のインプットピンを探す
 		for( size_type i = 0 ; i < filters_.size( ) ; i++ )
@@ -300,8 +283,8 @@ long filter_graph::onMouseUp( FXObject *obj, FXSelector sel, void *ptr )
 				apply_filters( *current_filter_ );
 			}
 		}
-		canvas_->update( );
-		canvas_->repaint( );
+		update( );
+		repaint( );
 	}
 
 	return( 1 );
@@ -323,47 +306,6 @@ long filter_graph::onKeyUp( FXObject *obj, FXSelector sel, void *ptr )
 	return( 1 );
 }
 
-// The mouse button was released again
-long filter_graph::onResize( FXObject *obj, FXSelector sel, void *ptr )
-{
-	FXEvent &e = *( ( FXEvent * )ptr );
-
-	hscrollbar_->setPage( canvas_->getWidth( ) );
-	vscrollbar_->setPage( canvas_->getHeight( ) );
-
-	if( mem_image_->getWidth( ) <= canvas_->getWidth( ) )
-	{
-		hscrollbar_->hide( );
-	}
-	else
-	{
-		hscrollbar_->show( );
-	}
-
-	if( mem_image_->getHeight( ) <= canvas_->getHeight( ) )
-	{
-		vscrollbar_->hide( );
-	}
-	else
-	{
-		vscrollbar_->show( );
-	}
-
-	layout( );
-
-	return( 1 );
-}
-
-// The mouse button was released again
-long filter_graph::onScroll( FXObject *obj, FXSelector sel, void *ptr )
-{
-	FXEvent &e = *( ( FXEvent * )ptr );
-
-	canvas_->update( );
-	canvas_->repaint( );
-
-	return( 1 );
-}
 
 // Paint the canvas
 long filter_graph::onPaint( FXObject *obj, FXSelector sel, void *ptr )
@@ -376,7 +318,7 @@ long filter_graph::onPaint( FXObject *obj, FXSelector sel, void *ptr )
 
 		memdc.setFont( font_ );
 
-		memdc.setForeground( canvas_->getBackColor( ) );
+		memdc.setForeground( getBackColor( ) );
 		memdc.fillRectangle( 0, 0, mem_image_->getWidth( ), mem_image_->getHeight( ) );
 
 		for( size_type i = 0 ; i < filters_.size( ) ; i++ )
@@ -392,10 +334,10 @@ long filter_graph::onPaint( FXObject *obj, FXSelector sel, void *ptr )
 				if( p1.connected_pin( ) != NULL )
 				{
 					pin &p2 = *( p1.connected_pin( ) );
-					FXint sx = p1.x + p1.width / 2 - hscrollbar_->getPosition( );
-					FXint sy = p1.y + p1.height / 2 - vscrollbar_->getPosition( );
-					FXint dx = p2.x + p2.width / 2 - hscrollbar_->getPosition( );
-					FXint dy = p2.y + p2.height / 2 - vscrollbar_->getPosition( );
+					FXint sx = p1.x + p1.width / 2;
+					FXint sy = p1.y + p1.height / 2;
+					FXint dx = p2.x + p2.width / 2;
+					FXint dy = p2.y + p2.height / 2;
 
 					// 接続されているピンの種類によって色分けする
 					if( !f.active )
@@ -448,19 +390,19 @@ long filter_graph::onPaint( FXObject *obj, FXSelector sel, void *ptr )
 		damage_ = false;
 	}
 
-	FXDCWindow dc( canvas_ );
-	dc.drawImage( mem_image_, -hscrollbar_->getPosition( ), -vscrollbar_->getPosition( ) );
+	FXDCWindow dc( this, &e );
+	dc.drawImage( mem_image_, getXPosition( ), getYPosition( ) );
 
 	// キャンバスの範囲外にある領域を塗りつぶす
 	dc.setForeground( FXRGB( 128, 128, 128 ) );
-	dc.fillRectangle( mem_image_->getWidth( ), 0, canvas_->getWidth( ) - mem_image_->getWidth( ), canvas_->getHeight( ) );
-	dc.fillRectangle( 0, mem_image_->getHeight( ), canvas_->getWidth( ), canvas_->getHeight( ) - mem_image_->getHeight( ) );
+	dc.fillRectangle( mem_image_->getWidth( ), 0, getWidth( ) - mem_image_->getWidth( ), getHeight( ) );
+	dc.fillRectangle( 0, mem_image_->getHeight( ), getWidth( ), getHeight( ) - mem_image_->getHeight( ) );
 
 	// 接続先のピンを探している時は，マウスの位置までの矢印を描画する
 	if( current_pin_ != NULL )
 	{
-		FXint sx = current_pin_->x + current_pin_->width / 2 - hscrollbar_->getPosition( );
-		FXint sy = current_pin_->y + current_pin_->height / 2 - vscrollbar_->getPosition( );
+		FXint sx = current_pin_->x + current_pin_->width / 2 + getXPosition( );
+		FXint sy = current_pin_->y + current_pin_->height / 2 + getYPosition( );
 		FXint dx = e.win_x;
 		FXint dy = e.win_y;
 

@@ -34,11 +34,6 @@ void main_window::EnumFilters( )
 	app.filters.push_back( new median_filter3( ) );
 
 	app.filters.push_back( new color2gray_filter( ) );
-	app.filters.push_back( new color2mono_filter( ) );
-	app.filters.push_back( new gray2color_filter( ) );
-	app.filters.push_back( new gray2mono_filter( ) );
-	app.filters.push_back( new mono2color_filter( ) );
-	app.filters.push_back( new mono2gray_filter( ) );
 
 
 	// フィルタデータをリストに登録する

@@ -3,6 +3,8 @@
 
 #include "filter_graph.h"
 #include "data_view.h"
+#include "property.h"
+
 
 // Event Handler Object
 class main_window : public FXMainWindow

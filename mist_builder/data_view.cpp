@@ -162,7 +162,7 @@ data_view::data_view( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts
 	setSelector( sel );
 
 	// クライアント領域に部品を配置する
-	FXHorizontalFrame *client = new FXHorizontalFrame( this, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0 );
+	FXVerticalFrame *client = new FXVerticalFrame( this, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0 );
 	{
 		// メインの描画部分と設定ダイアログ
 		{
@@ -170,19 +170,21 @@ data_view::data_view( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts
 			canvas_ = new FXGLCanvas( client, glvisual_, this, ID_CANVAS, LAYOUT_TOP | LAYOUT_LEFT | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0 );
 		}
 
-		// 左側の設定ダイアログを配置する
+		// 下側の設定ダイアログを配置する
 		{
-			FXVerticalFrame *o = new FXVerticalFrame( client, LAYOUT_SIDE_RIGHT | LAYOUT_FILL_Y | LAYOUT_FIX_WIDTH, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0 );
+			FXHorizontalFrame *o = new FXHorizontalFrame( client, LAYOUT_SIDE_BOTTOM | LAYOUT_FILL_X | LAYOUT_FIX_HEIGHT, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0 );
 			{
-				FXSpring *o1 = new FXSpring( o, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+				FXSpring *o1 = new FXSpring( o, LAYOUT_FILL_X | LAYOUT_FILL_Y, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 				{
-					( new nofocus_toggle_button( o1, "S", "S", 0, 0, this, ID_INTERPOLATE_MODE, TOGGLEBUTTON_KEEPSTATE | FRAME_SUNKEN | LAYOUT_TOP | LAYOUT_FILL_X ) )->setState( interpolate_ );
-					( new nofocus_toggle_button( o1, "", "", icons_[ 0 ], icons_[ 0 ], this, ID_DRAW_CROSS, TOGGLEBUTTON_KEEPSTATE | FRAME_SUNKEN | LAYOUT_TOP | LAYOUT_FILL_X ) )->setState( draw_cross_ );
+					FXHorizontalFrame *h = new FXHorizontalFrame( o1, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+					( new nofocus_toggle_button( h, "S", "S", 0, 0, this, ID_INTERPOLATE_MODE, TOGGLEBUTTON_KEEPSTATE | FRAME_SUNKEN | LAYOUT_TOP | LAYOUT_FILL_Y ) )->setState( interpolate_ );
+					( new nofocus_toggle_button( h, "", "", icons_[ 0 ], icons_[ 0 ], this, ID_DRAW_CROSS, TOGGLEBUTTON_KEEPSTATE | FRAME_SUNKEN | LAYOUT_TOP | LAYOUT_FILL_Y ) )->setState( draw_cross_ );
 				}
-				FXSpring *o2 = new FXSpring( o, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+				FXSpring *o2 = new FXSpring( o, LAYOUT_FILL_X | LAYOUT_FILL_Y, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 				{
-					new FXHorizontalSeparator( o2 );
-					zoom_slider_ = new invert_slider( o2, this, ID_ZOOM_SLIDER, LAYOUT_CENTER_X | LAYOUT_FIX_WIDTH | LAYOUT_FILL_Y | SLIDER_VERTICAL | SLIDER_INVERT, 0, 0, 10, 0, 0, 0, 0, 0 );
+					FXHorizontalFrame *h = new FXHorizontalFrame( o2, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+					new FXVerticalFrame( h );
+					zoom_slider_ = new invert_slider( h, this, ID_ZOOM_SLIDER, LAYOUT_CENTER_Y | LAYOUT_FIX_HEIGHT | LAYOUT_FILL_X | SLIDER_HORIZONTAL, 0, 0, 0, 10, 0, 0, 0, 0 );
 					FXint lo = 0;
 					FXint hi = static_cast< FXint >( ( zoom_maximum - zoom_minimum ) / zoom_step + 1.0 );
 					zoom_slider_->setRange( lo, hi );

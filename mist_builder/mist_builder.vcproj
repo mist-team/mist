@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="FOXD-1.2.lib comctl32.lib wsock32.lib opengl32.lib libjpeg.lib libpng.lib libtiff.lib zlib.lib"
+				AdditionalDependencies="FOXD-1.3.lib comctl32.lib wsock32.lib opengl32.lib libjpeg.lib libpng.lib libtiff.lib zlib.lib"
 				OutputFile="$(OutDir)/mist_builder.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -79,7 +79,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="FOX-1.2.lib comctl32.lib wsock32.lib opengl32.lib libjpeg.lib libpng.lib libtiff.lib zlib.lib"
+				AdditionalDependencies="FOX-1.3.lib comctl32.lib wsock32.lib opengl32.lib libjpeg.lib libpng.lib libtiff.lib zlib.lib"
 				OutputFile="$(OutDir)/mist_builder.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
@@ -137,6 +137,9 @@
 			<File
 				RelativePath=".\mist_builder.cpp">
 			</File>
+			<File
+				RelativePath=".\property.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="ヘッダー ファイル"
@@ -156,6 +159,9 @@
 			</File>
 			<File
 				RelativePath=".\mist_builder.h">
+			</File>
+			<File
+				RelativePath=".\property.h">
 			</File>
 		</Filter>
 		<Filter

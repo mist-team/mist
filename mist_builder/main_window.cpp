@@ -48,7 +48,7 @@ struct progress_callback
 
 
 // Construct a main_window
-main_window::main_window( FXApp *a ) : base( a, "main_window", NULL, NULL, DECOR_ALL, 100, 100, 1024, 768 )
+main_window::main_window( FXApp *a ) : base( a, "main_window", NULL, NULL, DECOR_ALL, 100, 100, 800, 600 )
 //main_window::main_window( FXApp *a ) : base( a, "main_window", NULL, NULL, DECOR_ALL, 0, 0, 600, 450 )
 {
 	FXPacker *client = new FXPacker( this, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0 );
@@ -57,7 +57,7 @@ main_window::main_window( FXApp *a ) : base( a, "main_window", NULL, NULL, DECOR
 	menubar_ = new FXMenuBar( client, LAYOUT_SIDE_TOP | LAYOUT_FILL_X );
 
 	// Separator
-	new FXHorizontalSeparator( client, LAYOUT_SIDE_TOP | LAYOUT_FILL_X | SEPARATOR_GROOVE );
+	//new FXHorizontalSeparator( client, LAYOUT_SIDE_TOP | LAYOUT_FILL_X | SEPARATOR_GROOVE );
 
 	// File Menu
 	filemenu_ = new FXMenuPane( this );
@@ -81,22 +81,18 @@ main_window::main_window( FXApp *a ) : base( a, "main_window", NULL, NULL, DECOR
 	}
 
 	// 一番下のステータスバーの上にセパレータを描画する
-	new FXHorizontalSeparator( client, SEPARATOR_GROOVE | LAYOUT_FILL_X | LAYOUT_SIDE_BOTTOM );
+	//new FXHorizontalSeparator( client, SEPARATOR_GROOVE | LAYOUT_FILL_X | LAYOUT_SIDE_BOTTOM );
 
-	FXHorizontalFrame *o = new FXHorizontalFrame( client, FRAME_NONE | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0/*, 0, 0*/ );
+	FXSplitter *o = new FXSplitter( client, SPLITTER_NORMAL | SPLITTER_REVERSED | LAYOUT_FILL_X | LAYOUT_FILL_Y );
 	{
-		FXSpring *o1 = new FXSpring( o, LAYOUT_FILL_X | LAYOUT_FILL_Y, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-		filter_graph_ = new filter_graph( o1, this, ID_FILTER_GRAPH, FRAME_NONE | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+		FXPacker *p = new FXPacker( o, FRAME_SUNKEN | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+		filter_graph_ = new filter_graph( p, this, ID_FILTER_GRAPH, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0 );
 
-		FXSpring *o2 = new FXSpring( o, LAYOUT_FILL_X | LAYOUT_FILL_Y, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-		FXVerticalFrame *v1 = new FXVerticalFrame( o2, LAYOUT_FILL_X | LAYOUT_FILL_Y );
-//		FXVerticalFrame *v1 = new FXVerticalFrame( o2, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+		FXSplitter *v1 = new FXSplitter( o, SPLITTER_VERTICAL | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 240, 0 );
 		{
-			FXSpring *oo1 = new FXSpring( v1, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-			data_view_ = new data_view( oo1, this, ID_DATA_VIEW, FRAME_NONE | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+			data_view_ = new data_view( v1, this, ID_DATA_VIEW, FRAME_SUNKEN | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 240, 0, 0, 0, 0, 0, 0 );
 
-			FXSpring *oo2 = new FXSpring( v1, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-			FXVerticalFrame *v2 = new FXVerticalFrame( oo2, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0/*, 0, 0*/ );
+			FXVerticalFrame *v2 = new FXVerticalFrame( v1, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 			{
 				FXGroupBox *g1 = new FXGroupBox( v2, "Filter List", GROUPBOX_NORMAL | FRAME_THICK | LAYOUT_FILL_X );
 				new FXButton( g1, "Add", 0, this, ID_APPEND_FILTER, BUTTON_NORMAL | LAYOUT_SIDE_RIGHT );
@@ -104,7 +100,9 @@ main_window::main_window( FXApp *a ) : base( a, "main_window", NULL, NULL, DECOR
 				listbox_->setNumVisible( 5 );
 
 				FXGroupBox *g2 = new FXGroupBox( v2, "Filter Property", GROUPBOX_NORMAL | FRAME_THICK | LAYOUT_FILL_X | LAYOUT_FILL_Y );
-				new FXButton( g1, "Recompute", 0, this, ID_RECOMPUTE_FILTER, BUTTON_NORMAL | LAYOUT_SIDE_RIGHT );
+				new FXButton( g2, "Recompute", 0, this, ID_RECOMPUTE_FILTER, BUTTON_NORMAL | LAYOUT_FILL_X );
+				new FXHorizontalSeparator( g2 );
+				new property( g2, 0, 0, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 			}
 		}
 	}
