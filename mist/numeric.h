@@ -2232,7 +2232,7 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 				v *= m( i, i );
 			}
 
-			v *= count % 2 == 0 ? 1 : -1;
+			v *= static_cast< value_type >( count % 2 == 0 ? 1 : -1 );
 
 			return( v );
 		}

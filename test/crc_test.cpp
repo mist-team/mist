@@ -10,7 +10,7 @@ int main( int argc, char *argv[] )
 	unsigned char	data[ DATALEN ];
 	unsigned char	crc8;
 	unsigned short	crc16;
-	unsigned		crc32;
+	unsigned int	crc32;
 
 	mist::uniform::random	rnd( clock( ) );
 
@@ -19,7 +19,7 @@ int main( int argc, char *argv[] )
 		data[ n ] = ( unsigned char ) ( rnd.int32( ) >> 24 );
 	}
 
-	crc8 = mist::crc< 8 >::generate_implant( data, DATALEN );
+	crc8 = ( unsigned char )mist::crc< 8 >::generate_implant( data, DATALEN );
 
 	printf( "CRC-8:%02X\n", crc8 );
 
@@ -46,7 +46,7 @@ int main( int argc, char *argv[] )
 
 	printf( "----------------------------------\n" );
 
-	crc16 = mist::crc< 16 >::generate_implant( data, DATALEN );
+	crc16 = ( unsigned short )mist::crc< 16 >::generate_implant( data, DATALEN );
 
 	printf( "CRC-16:%X\n", crc16 );
 
@@ -73,7 +73,7 @@ int main( int argc, char *argv[] )
 
 	printf( "----------------------------------\n" );
 
-	crc32 = mist::crc< 32 >::generate_implant( data, DATALEN );
+	crc32 = ( unsigned int )mist::crc< 32 >::generate_implant( data, DATALEN );
 
 	printf( "CRC-32:%08X\n", crc32 );
 
