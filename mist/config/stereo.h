@@ -60,6 +60,8 @@ public:
 	const stereo &operator &=( const stereo &s ){ l &= s.l; r &= s.r; return( *this ); }
 	const stereo &operator ^=( const stereo &s ){ l ^= s.l; r ^= s.r; return( *this ); }
 
+	const stereo &operator +=( const value_type &mono ){ l += mono; r += mono; return( +this ); }
+	const stereo &operator -=( const value_type &mono ){ l -= mono; r -= mono; return( -this ); }
 	const stereo &operator *=( const value_type &mono ){ l *= mono; r *= mono; return( *this ); }
 	const stereo &operator /=( const value_type &mono ){ l /= mono; r /= mono; return( *this ); }
 
@@ -92,6 +94,10 @@ template < class T > inline const stereo< T > operator ^( const stereo< T > &c1,
 template < class T > inline const stereo< T > operator *( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) *= c2 ); }
 template < class T > inline const stereo< T > operator *( const typename stereo< T >::value_type &c1, const stereo< T > &c2 ){ return( stereo< T >( c2 ) *= c1 ); }
 template < class T > inline const stereo< T > operator /( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) /= c2 ); }
+template < class T > inline const stereo< T > operator +( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) += c2 ); }
+template < class T > inline const stereo< T > operator +( const typename stereo< T >::value_type &c1, const stereo< T > &c2 ){ return( stereo< T >( c2 ) += c1 ); }
+template < class T > inline const stereo< T > operator -( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) -= c2 ); }
+template < class T > inline const stereo< T > operator -( const typename stereo< T >::value_type &c1, const stereo< T > &c2 ){ return( stereo< T >( c2 ) -= c1 ); }
 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const stereo< T > &s )
 {

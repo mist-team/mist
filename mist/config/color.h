@@ -99,7 +99,9 @@ template < class T > inline const rgb< T > operator *( const rgb< T > &c1, const
 template < class T > inline const rgb< T > operator *( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) *= c1 ); }
 template < class T > inline const rgb< T > operator /( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) /= c2 ); }
 
+template < class T > inline const rgb< T > operator +( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) += c2 ); }
 template < class T > inline const rgb< T > operator +( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) += c1 ); }
+template < class T > inline const rgb< T > operator -( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) -= c2 ); }
 template < class T > inline const rgb< T > operator -( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) -= c1 ); }
 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const rgb< T > &c )
