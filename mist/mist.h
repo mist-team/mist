@@ -142,16 +142,23 @@ public:
 	}
 
 	/// @brief コンテナ内の要素をトリミングする
-	//! 
+	//!
 	//! @param[in] index … トリミングの開始位置（ゼロから始まるインデックス）
 	//! @param[in] num   … トリミング後の要素数（-1の場合は，最後までをコピーする）
+	//! 
+	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
+	//! @retval false … 不正なトリミングを行おうとした場合
 	//! 
 	bool trim( size_type index, difference_type num = -1 )
 	{
 		difference_type num_ = size( );
-		if( num_ <= static_cast< difference_type >( index ) || num_ <= num || num_ < static_cast< difference_type >( index + num ) )
+		if( num_ <= static_cast< difference_type >( index ) || num_ < static_cast< difference_type >( index + num ) )
 		{
 			return( false );
+		}
+		else if( num_ == num )
+		{
+			return( true );
 		}
 
 		if( num < 0 )
@@ -671,6 +678,9 @@ public: // 配列に対する操作
 	//! @param[in] index … トリミングの開始位置（ゼロから始まるインデックス）
 	//! @param[in] num   … トリミング後の要素数（-1の場合は，最後までをコピーする）
 	//! 
+	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
+	//! @retval false … 不正なトリミングを行おうとした場合
+	//! 
 	bool trim( size_type index, difference_type num = -1 )
 	{
 		double r = reso1( );
@@ -849,17 +859,24 @@ public:
 	//! @param[in] w … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
 	//! @param[in] h … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
 	//! 
+	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
+	//! @retval false … 不正なトリミングを行おうとした場合
+	//! 
 	bool trim( size_type x, size_type y, difference_type w = -1, difference_type h = -1 )
 	{
 		difference_type w_ = width( );
 		difference_type h_ = height( );
-		if( w_ <= static_cast< difference_type >( x ) || w_ <= w || w_ < static_cast< difference_type >( x + w ) )
+		if( w_ <= static_cast< difference_type >( x ) || w_ < static_cast< difference_type >( x + w ) )
 		{
 			return( false );
 		}
-		else if( h_ <= static_cast< difference_type >( y ) || h_ <= h || h_ < static_cast< difference_type >( y + h ) )
+		else if( h_ <= static_cast< difference_type >( y ) || h_ < static_cast< difference_type >( y + h ) )
 		{
 			return( false );
+		}
+		else if( w_ == w && h_ == h )
+		{
+			return( true );
 		}
 
 		if( w < 0 )
@@ -1302,22 +1319,29 @@ public:
 	//! @param[in] h … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
 	//! @param[in] d … トリミング後のZ軸方向の要素数（-1の場合は，最後までをコピーする）
 	//! 
+	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
+	//! @retval false … 不正なトリミングを行おうとした場合
+	//! 
 	bool trim( size_type x, size_type y, size_type z, difference_type w = -1, difference_type h = -1, difference_type d = -1 )
 	{
 		difference_type w_ = width( );
 		difference_type h_ = height( );
 		difference_type d_ = depth( );
-		if( w_ <= static_cast< difference_type >( x ) || w_ <= w || w_ < static_cast< difference_type >( x + w ) )
+		if( w_ <= static_cast< difference_type >( x ) || w_ < static_cast< difference_type >( x + w ) )
 		{
 			return( false );
 		}
-		else if( h_ <= static_cast< difference_type >( y ) || h_ <= h || h_ < static_cast< difference_type >( y + h ) )
+		else if( h_ <= static_cast< difference_type >( y ) || h_ < static_cast< difference_type >( y + h ) )
 		{
 			return( false );
 		}
-		else if( d_ <= static_cast< difference_type >( z ) || d_ <= d || d_ < static_cast< difference_type >( z + d ) )
+		else if( d_ <= static_cast< difference_type >( z ) || d_ < static_cast< difference_type >( z + d ) )
 		{
 			return( false );
+		}
+		else if( w_ == w && h_ == h && d_ == d )
+		{
+			return( true );
 		}
 
 		if( w < 0 )

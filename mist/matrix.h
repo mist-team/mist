@@ -588,17 +588,24 @@ public:
 	//! @param[in] nrows … トリミング後の行数（-1の場合は，最後までをコピーする）
 	//! @param[in] ncols … トリミング後の列数（-1の場合は，最後までをコピーする）
 	//! 
+	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
+	//! @retval false … 不正なトリミングを行おうとした場合
+	//! 
 	bool trim( size_type row, size_type col, difference_type nrows = -1, difference_type ncols = -1 )
 	{
 		difference_type nrows_ = rows( );
 		difference_type ncols_ = cols( );
-		if( nrows_ <= static_cast< difference_type >( row ) || nrows_ <= nrows || nrows_ < static_cast< difference_type >( row + nrows ) )
+		if( nrows_ <= static_cast< difference_type >( row ) || nrows_ < static_cast< difference_type >( row + nrows ) )
 		{
 			return( false );
 		}
-		else if( ncols_ <= static_cast< difference_type >( col ) || ncols_ <= ncols || ncols_ < static_cast< difference_type >( col + ncols ) )
+		else if( ncols_ <= static_cast< difference_type >( col ) || ncols_ < static_cast< difference_type >( col + ncols ) )
 		{
 			return( false );
+		}
+		else if( nrows_ == nrows && ncols_ == ncols )
+		{
+			return( true );
 		}
 
 		if( nrows < 0 )
