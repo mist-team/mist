@@ -148,16 +148,36 @@ namespace __pnm_controller__
 			}
 
 			// 画像サイズを取得する
+			size_type w = 0, h = 0;
 			split_string( line, ' ', elements );
-			if( elements.size( ) != 2 )
+			if( elements.size( ) == 1 )
+			{
+				w = atoi( elements[ 0 ].c_str( ) );
+				p = get_line( p, e, line );
+				split_string( line, ' ', elements );
+				if( elements.size( ) == 1 )
+				{
+					h = atoi( elements[ 0 ].c_str( ) );
+				}
+				else
+				{
+					// 未サポートのビットマップ
+					std::cerr << "Image size is unknown!" << std::endl;
+					return( false );
+				}
+			}
+			else if( elements.size( ) != 2 )
+			{
+				w = atoi( elements[ 0 ].c_str( ) );
+				h = atoi( elements[ 1 ].c_str( ) );
+			}
+			else
 			{
 				// 未サポートのビットマップ
 				std::cerr << "Image size is unknown!" << std::endl;
 				return( false );
 			}
 
-			size_type w = atoi( elements[ 0 ].c_str( ) );
-			size_type h = atoi( elements[ 1 ].c_str( ) );
 			image.resize( w, h );
 
 			// 濃淡のレベル数を取得する
