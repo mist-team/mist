@@ -54,7 +54,7 @@ int main( int argc, char *argv[] )
 
 	typedef mist::matrix< double > matrix_type;
 
-	double ftol = 1.0e-3;
+	double ftol = 1.0e-6;
 
 	{
 		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f1 > functor_reference;

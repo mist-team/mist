@@ -1265,22 +1265,8 @@ namespace powell
 				double len = 0.0;
 				for( r = 0 ; r < p.size( ) ; r++ )
 				{
-					double l = p[ r ] - p0[ r ];
-					len += l;
-					dir[ r ] = l;
-
+					dir[ r ] = p[ r ] - p0[ r ];
 					pn[ r ]  = 2.0 * p[ r ] - p0[ r ];
-					p0[ r ]  = p[ r ];
-				}
-
-				// 次の探索方向を正規化する
-				if( len > 0.0 )
-				{
-					len = std::sqrt( len );
-					for( r = 0 ; r < p.size( ) ; r++ )
-					{
-						dir[ r ] /= len;
-					}
 				}
 
 				double fe = f( pn );
@@ -1294,7 +1280,12 @@ namespace powell
 					{
 						// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
 						fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
-						p += dir * x;
+
+						// 現在のパラメータ更新
+						for( r = 0 ; r < p.size( ) ; r++ )
+						{
+							p[ r ] += dir[ r ] * x;
+						}
 
 						// 方向集合の一番最後に，新しい方向を追加する
 						if( index < dirs.rows( ) - 1 )
@@ -1314,6 +1305,13 @@ namespace powell
 						}
 					}
 				}
+
+				// 新しい方向を求める
+				for( r = 0 ; r < p.size( ) ; r++ )
+				{
+					p0[ r ]  = p[ r ];
+				}
+
 			}
 		}
 
@@ -1401,25 +1399,10 @@ namespace powell
 			if( ite <= max_iterations )
 			{
 				// 新しい方向を求める
-				double len = 0.0;
 				for( r = 0 ; r < p.size( ) ; r++ )
 				{
-					double l = p[ r ] - p0[ r ];
-					len += l;
-					dir[ r ] = l;
-
+					dir[ r ] = p[ r ] - p0[ r ];
 					pn[ r ]  = 2.0 * p[ r ] - p0[ r ];
-					p0[ r ]  = p[ r ];
-				}
-
-				// 次の探索方向を正規化する
-				if( len > 0.0 )
-				{
-					len = std::sqrt( len );
-					for( r = 0 ; r < p.size( ) ; r++ )
-					{
-						dir[ r ] /= len;
-					}
 				}
 
 				double fe = f( pn );
@@ -1435,7 +1418,11 @@ namespace powell
 						{
 							// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
 							fp = brent::minimization( l1, l2, x, functor, tolerance, 200, false );
-							p += dir * x;
+
+							for( r = 0 ; r < p.size( ) ; r++ )
+							{
+								p[ r ] += dir[ r ] * x;
+							}
 						}
 
 						// 方向集合の一番最後に，新しい方向を追加する
@@ -1455,6 +1442,12 @@ namespace powell
 							}
 						}
 					}
+				}
+
+				// 新しい方向を求める
+				for( r = 0 ; r < p.size( ) ; r++ )
+				{
+					p0[ r ]  = p[ r ];
 				}
 			}
 		}
