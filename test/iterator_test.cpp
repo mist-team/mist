@@ -224,7 +224,9 @@ int main( int argc, char *argv[] )
 
 		cout << a << endl;
 
-		sort( a.y_rbegin( 1 ), a.y_rend( 1 ) );
+		//sort( a.y_rbegin( 1 ), a.y_rend( 1 ) );
+		mist::array3< int >::reverse_iterator rite = a.y_rbegin( 1 ) + 9;
+		cout << a.y_rend( 1 ) - rite << endl;
 
 		cout << "sorted result" << endl << a << endl;
 	}
