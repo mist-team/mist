@@ -121,9 +121,9 @@ namespace __median_filter__
 
 							if( ri < w )
 							{
-								hist[ in( x, y, z ) - min ]++;
+								hist[ in( ri, y, z ) - min ]++;
 								pth++;
-								if( in( x, y, z ) - min < med )
+								if( in( ri, y, z ) - min < med )
 								{
 									lt_med++;
 								}
@@ -131,7 +131,7 @@ namespace __median_filter__
 
 							if ( 0 <= li )
 							{
-								leftmost[ leftnum++ ] = in( x, y, z ) - min;
+								leftmost[ leftnum++ ] = in( li, y, z ) - min;
 							}
 						}
 					}
