@@ -213,7 +213,7 @@ public:
 		{
 			return( operator =( integer( 0 ) ) );
 		}
-//		else if( ::std::abs( static_cast< int >( n ) ) >= BASE )
+		//		else if( ::std::abs( static_cast< int >( n ) ) >= BASE )
 		else if( n >= BASE || -n >= BASE )
 		{
 			return( operator *=( integer( n ) ) );
@@ -346,7 +346,7 @@ public:
 			std::cerr << "zero division!!" << std::endl;
 			return( *this );
 		}
-//		else if( ::std::abs( static_cast< int >( n ) ) >= BASE )
+		//		else if( ::std::abs( static_cast< int >( n ) ) >= BASE )
 		else if( n >= BASE || -n >= BASE )
 		{
 			return( operator /=( integer( n ) ) );
@@ -429,26 +429,26 @@ public:
 		return( *this );
 	}
 
-	integer &operator ++( ) // ‘O’uŒ^
+	integer &operator ++( )				// ‘O’uŒ^
 	{
 		*this += 1;
 		return( *this );
 	}
 
-	const integer operator ++( int ) // Œã’uŒ^
+	const integer operator ++( int )	// Œã’uŒ^
 	{
 		integer old_val( *this );
 		*this += 1;
 		return( old_val );
 	}
 
-	integer &operator --( ) // ‘O’uŒ^
+	integer &operator --( )				// ‘O’uŒ^
 	{
 		*this -= 1;
 		return( *this );
 	}
 
-	const integer operator --( int ) // Œã’uŒ^
+	const integer operator --( int )	// Œã’uŒ^
 	{
 		integer old_val( *this );
 		*this -= 1;
@@ -506,7 +506,7 @@ public:
 				{
 					dmy.length_--;
 				}
-				s = ::std::string( static_cast< char >( '0' + t ) ) + s;
+				s = static_cast< char >( '0' + t ) + s;
 			}
 			return( ( sign_ ? "" : "-" ) + s );
 		}
@@ -845,5 +845,9 @@ inline std::ostream &operator <<( std::ostream &out, const integer< __256_N__ > 
 }
 
 
+// mist–¼‘O‹óŠÔ‚ÌI‚í‚è
+_MIST_END
+
 
 #endif // __INCLUDE_MIST_INTEGER_H__
+
