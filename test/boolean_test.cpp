@@ -1,16 +1,11 @@
+#include <mist/mist.h>
 #include <iostream>
-
-template < class T >
-struct value
-{
-	T v[8];
-};
 
 int main( int argc, char *argv[] )
 {
 	using namespace std;
 
-	bool v1 = false, v2 = true;
+	mist::boolean v1 = false, v2 = true;
 
 	cout << " ( A, B ) = ( " << v1 << ", " << v2 << " )" << endl;
 	cout << " 1. Operator A + B = \t" << ( v1 + v2 ) << endl;
@@ -30,7 +25,7 @@ int main( int argc, char *argv[] )
 	cout << "13. Operator A >  B = \t" << ( v1 >  v2 ) << endl;
 	cout << "14. Operator A >= B = \t" << ( v1 >= v2 ) << endl;
 
-	cout << "15. Size of bool = \t" << sizeof( value< bool > ) << endl;
-	cout << "16. Size of int  = \t" << sizeof( value< int > ) << endl;
-	cout << "17. Size of char = \t" << sizeof( value< char > ) << endl;
+	//cout << "15. Size of bool = \t" << sizeof( value< bool > ) << endl;
+	//cout << "16. Size of int  = \t" << sizeof( value< int > ) << endl;
+	//cout << "17. Size of char = \t" << sizeof( value< char > ) << endl;
 }

@@ -140,9 +140,6 @@
 			<File
 				RelativePath="..\mist\config\mist_conf.h">
 			</File>
-			<File
-				RelativePath="..\mist\operator\operators.h">
-			</File>
 		</Filter>
 	</Files>
 	<Globals>
