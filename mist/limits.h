@@ -45,34 +45,30 @@ _MIST_BEGIN
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct type_limits
 {
-	typedef T value_type;	///< @typedef 情報を調べる対象となる型
+	typedef T value_type;	///< @brief 情報を調べる対象となる型
 
 	/// @enum 指定された型が整数かどうか
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	enum{ is_integer = false };
+	enum
+	{
+		 is_integer = false		///< @brief 整数の場合は true になる
+	};
 
 	/// @enum 指定された型が符号付かどうか
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	enum{ is_signed  = false };
+	enum
+	{
+		is_signed  = false		///< @brief 符号付の場合は true になる
+	};
 
 
 	/// @brief 関数・クラスの概要を書く
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
 	//! @return        … 戻り値の説明
 	//! 
 	static value_type minimum( ) { return( 0 ); }
@@ -81,8 +77,6 @@ struct type_limits
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
 	//! @return        … 戻り値の説明
 	//! 
 	static value_type maximum( ) { return( 1 ); }
@@ -91,8 +85,6 @@ struct type_limits
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
 	//! @return        … 戻り値の説明
 	//! 
 	static value_type zero( ){ return( 0 ); }
@@ -222,9 +214,8 @@ namespace __limits_0_255__
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] v … 引数の説明
+//! @return      … 戻り値の説明
 //! 
 template < class T >
 inline const T limits_0_255( const T &v )

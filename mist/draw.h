@@ -157,9 +157,21 @@ namespace pixel_data
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] image         … 引数の説明
+//! @param[in] image_width   … 引数の説明
+//! @param[in] image_height  … 引数の説明
+//! @param[in] window_width  … 引数の説明
+//! @param[in] window_height … 引数の説明
+//! @param[in] zoom          … 引数の説明
+//! @param[in] xpos          … 引数の説明
+//! @param[in] ypos          … 引数の説明
+//! @param[in] back_r        … 引数の説明
+//! @param[in] back_g        … 引数の説明
+//! @param[in] back_b        … 引数の説明
+//! @param[in] interpolate   … 引数の説明
+//!
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template< class T, class Allocator >
 bool draw_buffer( const array2< T, Allocator > &image,
@@ -278,9 +290,19 @@ bool draw_buffer( const array2< T, Allocator > &image,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] image         … 引数の説明
+//! @param[in] window_width  … 引数の説明
+//! @param[in] window_height … 引数の説明
+//! @param[in] zoom          … 引数の説明
+//! @param[in] xpos          … 引数の説明
+//! @param[in] ypos          … 引数の説明
+//! @param[in] back_r        … 引数の説明
+//! @param[in] back_g        … 引数の説明
+//! @param[in] back_b        … 引数の説明
+//! @param[in] interpolate   … 引数の説明
+//!
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template< class T, class Allocator >
 bool draw_image( const array2< T, Allocator > &image,
@@ -325,9 +347,17 @@ bool draw_image( const array2< T, Allocator > &image,
 //! ウィンドウ上の点から画像上の点の座標を計算する
 //! @attention aspectは sizeY / sizeX であり、各ピクセルのアスペクトである
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] pt     … 引数の説明
+//! @param[in] imgX   … 引数の説明
+//! @param[in] imgY   … 引数の説明
+//! @param[in] aspect … 引数の説明
+//! @param[in] winW   … 引数の説明
+//! @param[in] winH   … 引数の説明
+//! @param[in] zoom   … 引数の説明
+//! @param[in] posx   … 引数の説明
+//! @param[in] posy   … 引数の説明
+//!
+//! @return … 戻り値の説明
 //! 
 inline vector2< double > screen2point( const vector2< double > &pt, double imgX, double imgY, double aspect,
 												double winW, double winH, double zoom, double posx, double posy )
@@ -360,9 +390,17 @@ inline vector2< double > screen2point( const vector2< double > &pt, double imgX,
 //! 画像上の点からウィンドウ上の点の座標を計算する
 //! @attention aspectは sizeX / sizeY であり、各ピクセルのアスペクトである
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] pt     … 引数の説明
+//! @param[in] imgX   … 引数の説明
+//! @param[in] imgY   … 引数の説明
+//! @param[in] aspect … 引数の説明
+//! @param[in] winW   … 引数の説明
+//! @param[in] winH   … 引数の説明
+//! @param[in] zoom   … 引数の説明
+//! @param[in] posx   … 引数の説明
+//! @param[in] posy   … 引数の説明
+//!
+//! @return … 戻り値の説明
 //! 
 inline vector2< double > point2screen( const vector2< double > &pt, double imgX, double imgY, double aspect,
 												double winW, double winH, double zoom, double posx, double posy )

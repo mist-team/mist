@@ -71,9 +71,10 @@ namespace __image_controller__
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image    … 引数の説明
+//! @param[in]  filename … 引数の説明
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline bool read_image( mist::array2< T, Allocator > &image, const std::string &filename )
@@ -119,9 +120,10 @@ inline bool read_image( mist::array2< T, Allocator > &image, const std::string &
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] image    … 引数の説明
+//! @param[in] filename … 引数の説明
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline bool write_image( mist::array2< T, Allocator > &image, const std::string &filename )

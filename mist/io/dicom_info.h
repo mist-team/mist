@@ -56,14 +56,11 @@ _MIST_BEGIN
 namespace dicom_controller
 {
 	/// @enum DICOMデータの圧縮タイプ
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
 	enum compress_type
 	{
-		RAW,		///< 無圧縮
-		JPEG,		///< JPEG圧縮
-		RLE,		///< ランレングス（RLE）圧縮
+		RAW,		///< @brief 無圧縮
+		JPEG,		///< @brief JPEG圧縮
+		RLE,		///< @brief ランレングス（RLE）圧縮
 	};
 
 
@@ -71,8 +68,7 @@ namespace dicom_controller
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
+	//! @param[in] uid  … 引数の説明
 	//! @return        … 戻り値の説明
 	//! 
 	inline dicom_uid get_uid( const std::string &uid )
@@ -86,9 +82,9 @@ namespace dicom_controller
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] str      … 引数の説明
+	//! @param[in] numBytes … 引数の説明
+	//! @return             … 戻り値の説明
 	//! 
 	inline dicom_uid get_uid( const unsigned char *str, difference_type numBytes )
 	{
@@ -100,27 +96,21 @@ namespace dicom_controller
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
 	class dicom_element : public dicom_tag
 	{
 	private:
 		typedef dicom_tag base;
 		
 	public:
-		unsigned char *data;
-		size_type num_bytes;
+		unsigned char *data;	///< @brief 説明を書く
+		size_type num_bytes;	///< @brief 説明を書く
 
 
 		/// @brief 関数・クラスの概要を書く
 		//! 
 		//! 詳細な説明や関数の使用例を書く
 		//! 
-		//! @param[in] in  … 引数の説明
-		//! @param[in] out … 引数の説明
-		//! @return        … 戻り値の説明
+		//! @param[in] nbytes … 引数の説明
 		//! 
 		void create( size_type nbytes )
 		{

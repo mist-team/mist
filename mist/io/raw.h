@@ -577,9 +577,16 @@ namespace __raw_controller__
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image              … 引数の説明
+//! @param[in]  filename           … 引数の説明
+//! @param[in]  w                  … 引数の説明
+//! @param[in]  x                  … 引数の説明
+//! @param[in]  offset             … 引数の説明
+//! @param[in]  from_little_endian … 引数の説明
+//! @param[in]  callback           … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator, class Functor >
 bool read_raw( array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::size_type w,
@@ -593,9 +600,14 @@ bool read_raw( array1< T, Allocator > &image, const std::string &filename, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! @param[in]  callback         … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -608,9 +620,14 @@ bool write_raw( const array1< T, Allocator > &image, const std::string &filename
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! @param[in]  callback         … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -623,9 +640,15 @@ bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image              … 引数の説明
+//! @param[in]  filename           … 引数の説明
+//! @param[in]  w                  … 引数の説明
+//! @param[in]  x                  … 引数の説明
+//! @param[in]  offset             … 引数の説明
+//! @param[in]  from_little_endian … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool read_raw( array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::size_type w,
@@ -639,9 +662,13 @@ bool read_raw( array1< T, Allocator > &image, const std::string &filename, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool write_raw( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
@@ -654,9 +681,13 @@ bool write_raw( const array1< T, Allocator > &image, const std::string &filename
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
@@ -671,9 +702,18 @@ bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image              … 引数の説明
+//! @param[in]  filename           … 引数の説明
+//! @param[in]  w                  … 引数の説明
+//! @param[in]  h                  … 引数の説明
+//! @param[in]  x                  … 引数の説明
+//! @param[in]  y                  … 引数の説明
+//! @param[in]  offset             … 引数の説明
+//! @param[in]  from_little_endian … 引数の説明
+//! @param[in]  callback           … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator, class Functor >
 bool read_raw( array2< T, Allocator > &image, const std::string &filename,
@@ -688,9 +728,14 @@ bool read_raw( array2< T, Allocator > &image, const std::string &filename,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! @param[in]  callback         … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -703,9 +748,14 @@ bool write_raw( const array2< T, Allocator > &image, const std::string &filename
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! @param[in]  callback         … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -718,9 +768,17 @@ bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image              … 引数の説明
+//! @param[in]  filename           … 引数の説明
+//! @param[in]  w                  … 引数の説明
+//! @param[in]  h                  … 引数の説明
+//! @param[in]  x                  … 引数の説明
+//! @param[in]  y                  … 引数の説明
+//! @param[in]  offset             … 引数の説明
+//! @param[in]  from_little_endian … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool read_raw( array2< T, Allocator > &image, const std::string &filename,
@@ -735,9 +793,13 @@ bool read_raw( array2< T, Allocator > &image, const std::string &filename,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool write_raw( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
@@ -750,9 +812,13 @@ bool write_raw( const array2< T, Allocator > &image, const std::string &filename
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
@@ -767,9 +833,20 @@ bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image              … 引数の説明
+//! @param[in]  filename           … 引数の説明
+//! @param[in]  w                  … 引数の説明
+//! @param[in]  h                  … 引数の説明
+//! @param[in]  d                  … 引数の説明
+//! @param[in]  x                  … 引数の説明
+//! @param[in]  y                  … 引数の説明
+//! @param[in]  z                  … 引数の説明
+//! @param[in]  offset             … 引数の説明
+//! @param[in]  from_little_endian … 引数の説明
+//! @param[in]  callback           … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator, class Functor >
 bool read_raw( array3< T, Allocator > &image, const std::string &filename,
@@ -784,9 +861,14 @@ bool read_raw( array3< T, Allocator > &image, const std::string &filename,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! @param[in]  callback         … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -799,9 +881,14 @@ bool write_raw( const array3< T, Allocator > &image, const std::string &filename
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! @param[in]  callback         … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -814,9 +901,19 @@ bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image              … 引数の説明
+//! @param[in]  filename           … 引数の説明
+//! @param[in]  w                  … 引数の説明
+//! @param[in]  h                  … 引数の説明
+//! @param[in]  d                  … 引数の説明
+//! @param[in]  x                  … 引数の説明
+//! @param[in]  y                  … 引数の説明
+//! @param[in]  z                  … 引数の説明
+//! @param[in]  offset             … 引数の説明
+//! @param[in]  from_little_endian … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool read_raw( array3< T, Allocator > &image, const std::string &filename,
@@ -831,9 +928,13 @@ bool read_raw( array3< T, Allocator > &image, const std::string &filename,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool write_raw( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
@@ -846,9 +947,13 @@ bool write_raw( const array3< T, Allocator > &image, const std::string &filename
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image            … 引数の説明
+//! @param[in]  filename         … 引数の説明
+//! @param[in]  offset           … 引数の説明
+//! @param[in]  to_little_endian … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool to_little_endian = false )

@@ -733,9 +733,12 @@ namespace __wav_controller__
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] sound         … 引数の説明
+//! @param[in]  filename      … 引数の説明
+//! @param[out] sampling_rate … 引数の説明
+//!
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool read_wav( array< T, Allocator > &sound, const std::string &filename, unsigned int &sampling_rate )
@@ -748,9 +751,11 @@ bool read_wav( array< T, Allocator > &sound, const std::string &filename, unsign
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] sound    … 引数の説明
+//! @param[in] filename … 引数の説明
+//!
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool read_wav( array< T, Allocator > &sound, const std::string &filename )
@@ -764,9 +769,13 @@ bool read_wav( array< T, Allocator > &sound, const std::string &filename )
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] sound         … 引数の説明
+//! @param[in] filename      … 引数の説明
+//! @param[in] wav_bits      … 引数の説明
+//! @param[in] sampling_rate … 引数の説明
+//!
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool write_wav( const array< T, Allocator > &sound, const std::string &filename, typename array< T, Allocator >::size_type wav_bits,

@@ -33,32 +33,34 @@ _MIST_BEGIN
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
-//! 
 namespace __morphology__
 {
 	/// @brief 関数・クラスの概要を書く
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
 	struct point
 	{
-		typedef ptrdiff_t value_type;
-		value_type x;
-		value_type y;
-		value_type z;
-		size_t life;
+		typedef ptrdiff_t value_type;	///< @brief 説明を書く
+		value_type x;					///< @brief 説明を書く
+		value_type y;					///< @brief 説明を書く
+		value_type z;					///< @brief 説明を書く
+		size_t life;					///< @brief 説明を書く
 
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] xx  … 引数の説明
+		//! @param[in] yy … 引数の説明
+		//! @param[in] zz … 引数の説明
+		//! @param[in] l  … 引数の説明
+		//! 
 		point( value_type xx, value_type yy, value_type zz, size_t l ) : x( xx ), y( yy ), z( zz ), life( l )
 		{
 		}
 	};
+
 
 	struct pointer_diff
 	{
@@ -75,29 +77,27 @@ namespace __morphology__
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
 	struct morphology_structure
 	{
-		typedef std::vector< point > list_type;
-		list_type object;
-		list_type update;
-		size_t margin_x;
-		size_t margin_y;
-		size_t margin_z;
+		typedef std::vector< point > list_type;		///< @brief 説明を書く
+		list_type object;							///< @brief 説明を書く
+		list_type update;							///< @brief 説明を書く
+		size_t margin_x;							///< @brief 説明を書く
+		size_t margin_y;							///< @brief 説明を書く
+		size_t margin_z;							///< @brief 説明を書く
 	};
 
 
 	/// @brief モルフォロジ演算に用いる円構造要素
-	//! 
+	//!
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	//!
+	//! @param[in] radius … 引数の説明
+	//! @param[in] resoX … 引数の説明
+	//! @param[in] resoY … 引数の説明
+	//!
+	//! @return 戻り値の説明
+	//!
 	inline morphology_structure circle( double radius, double resoX, double resoY )
 	{
 		typedef array2< bool >::size_type size_type;
@@ -166,13 +166,16 @@ namespace __morphology__
 
 
 	/// @brief モルフォロジ演算に用いる球構造要素
-	//! 
+	//!
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	//!
+	//! @param[in] radius … 引数の説明
+	//! @param[in] resoX … 引数の説明
+	//! @param[in] resoY … 引数の説明
+	//! @param[in] resoZ … 引数の説明
+	//!
+	//! @return 戻り値の説明
+	//!
 	inline morphology_structure sphere( double radius, double resoX, double resoY, double resoZ )
 	{
 		typedef array3< bool >::size_type size_type;
@@ -253,13 +256,15 @@ namespace __morphology__
 
 
 	/// @brief モルフォロジ演算に用いる正方形構造要素
-	//! 
+	//!
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	//!
+	//! @param[in] radius … 引数の説明
+	//! @param[in] resoX … 引数の説明
+	//! @param[in] resoY … 引数の説明
+	//!
+	//! @return 戻り値の説明
+	//!
 	inline morphology_structure square( double radius, double resoX, double resoY )
 	{
 		using namespace std;
@@ -328,13 +333,16 @@ namespace __morphology__
 
 
 	/// @brief モルフォロジ演算に用いる立方体構造要素
-	//! 
+	//!
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	//!
+	//! @param[in] radius … 引数の説明
+	//! @param[in] resoX … 引数の説明
+	//! @param[in] resoY … 引数の説明
+	//! @param[in] resoZ … 引数の説明
+	//!
+	//! @return 戻り値の説明
+	//!
 	inline morphology_structure cube( double radius, double resoX, double resoY, double resoZ )
 	{
 		using namespace std;
@@ -415,13 +423,14 @@ namespace __morphology__
 
 
 	/// @brief 関数・クラスの概要を書く
-	//! 
+	//!
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	//!
+	//! @param[in] in   … 引数の説明
+	//! @param[in] list … 引数の説明
+	//!
+	//! @return 戻り値の説明
+	//!
 	template < class Array >
 	inline std::vector< pointer_diff > create_pointer_diff_list( const Array &in, const std::vector< point > &list )
 	{
@@ -781,9 +790,9 @@ namespace __morphology_controller__
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] s          … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 void erosion( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -837,9 +846,9 @@ void erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] s          … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 void dilation( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -893,9 +902,9 @@ void dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] s          … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 void opening( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -979,9 +988,9 @@ void opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] s          … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 void closing( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -1066,9 +1075,9 @@ void closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] radius     … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 inline void erosion( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -1081,9 +1090,9 @@ inline void erosion( array2< T, Allocator > &in, double radius, typename array2<
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] radius     … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 inline void dilation( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -1096,9 +1105,9 @@ inline void dilation( array2< T, Allocator > &in, double radius, typename array2
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] radius     … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 inline void opening( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -1111,9 +1120,9 @@ inline void opening( array2< T, Allocator > &in, double radius, typename array2<
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] radius     … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 inline void closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
@@ -1129,9 +1138,9 @@ inline void closing( array2< T, Allocator > &in, double radius, typename array2<
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] s          … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 void erosion( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1185,9 +1194,9 @@ void erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] s          … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 void dilation( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1241,9 +1250,9 @@ void dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] s          … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 void opening( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1328,9 +1337,9 @@ void opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] s          … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 void closing( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1415,9 +1424,9 @@ void closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] radius     … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 inline void erosion( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1430,9 +1439,9 @@ inline void erosion( array3< T, Allocator > &in, double radius, typename array3<
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] radius     … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 inline void dilation( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1445,9 +1454,9 @@ inline void dilation( array3< T, Allocator > &in, double radius, typename array3
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] radius     … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 inline void opening( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
@@ -1460,9 +1469,9 @@ inline void opening( array3< T, Allocator > &in, double radius, typename array3<
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in/out] in  … 引数の説明
-//! @param[in] num … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] in     … 引数の説明
+//! @param[in] radius     … 引数の説明
+//! @param[in] thread_num … 引数の説明
 //! 
 template < class T, class Allocator >
 inline void closing( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )

@@ -1485,11 +1485,13 @@ namespace __svd__
 
 /// @brief トレースの計算（対角成分の和）
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! \f[
+//! 	tr\left( {\bf A} \right) = \sum^{n}_{i=1}{ a_{ii} }
+//! \f]
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type trace( const matrix< T, Allocator > &a )
@@ -1511,9 +1513,9 @@ inline const typename matrix< T, Allocator >::value_type trace( const matrix< T,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] expression … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class Expression >
 inline const typename matrix_expression< Expression >::value_type trace( const matrix_expression< Expression > &expression )
@@ -1540,9 +1542,10 @@ inline const typename matrix_expression< Expression >::value_type trace( const m
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a     … 引数の説明
+//! @param[in] style … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type det( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
@@ -1583,9 +1586,10 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] expression … 引数の説明
+//! @param[in] style      … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class Expression >
 inline const typename matrix_expression< Expression >::value_type det( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
@@ -1630,9 +1634,11 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] s1 … 引数の説明
+//! @param[in] s2 … 引数の説明
+//! @param[in] s3 … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class T >
 inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, const typename type_trait< T >::value_type &s2, const typename type_trait< T >::value_type &s3 )
@@ -1694,13 +1700,15 @@ inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, c
 
 
 /// @brief 行列の連立一次方程式を解く関数
-//! 
+//!
 //! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
-//! 
+//!
+//! @param[in]  a     … 引数の説明
+//! @param[out] b     … 引数の説明
+//! @param[in]  style … 引数の説明
+//!
+//! @return 戻り値の説明
+//!
 template < class T, class Allocator >
 inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style = matrix_style::ge )
 {
@@ -1714,9 +1722,11 @@ inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, mat
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  expression … 引数の説明
+//! @param[out] b          … 引数の説明
+//! @param[in]  style      … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
@@ -1737,9 +1747,11 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  a     … 引数の説明
+//! @param[out] pivot … 引数の説明
+//! @param[in]  style … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator1, class Allocator2 >
 const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
@@ -1752,9 +1764,10 @@ const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  a     … 引数の説明
+//! @param[in]  style … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
@@ -1771,9 +1784,11 @@ const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  expression … 引数の説明
+//! @param[out] pivot      … 引数の説明
+//! @param[in]  style      … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class Expression, class Allocator2 >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -1791,9 +1806,10 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  expression … 引数の説明
+//! @param[in]  style      … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -1815,9 +1831,11 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  a     … 引数の説明
+//! @param[out] tau   … 引数の説明
+//! @param[in]  style … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style = matrix_style::ge )
@@ -1830,9 +1848,10 @@ const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  a     … 引数の説明
+//! @param[in]  style … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
@@ -1848,9 +1867,11 @@ const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  expression … 引数の説明
+//! @param[out] tau        … 引数の説明
+//! @param[in]  style      … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -1869,9 +1890,10 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  expression … 引数の説明
+//! @param[in]  style      … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -1894,9 +1916,10 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a     … 引数の説明
+//! @param[in] style … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
@@ -1911,9 +1934,10 @@ matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::s
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] expression … 引数の説明
+//! @param[in] style      … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class Expression >
 inline matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -1936,9 +1960,12 @@ inline matrix< typename matrix_expression< Expression >::value_type, typename ma
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  a            … 引数の説明
+//! @param[out] eigen_value  … 引数の説明
+//! @param[out] eigen_vector … 引数の説明
+//! @param[in]  style        … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style = matrix_style::ge )
@@ -1953,9 +1980,12 @@ const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  expression   … 引数の説明
+//! @param[out] eigen_value  … 引数の説明
+//! @param[out] eigen_vector … 引数の説明
+//! @param[in]  style        … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
@@ -1979,9 +2009,13 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  a     … 引数の説明
+//! @param[out] u     … 引数の説明
+//! @param[out] s     … 引数の説明
+//! @param[out] vt    … 引数の説明
+//! @param[in]  style … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
@@ -1997,9 +2031,13 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  expression … 引数の説明
+//! @param[out] u          … 引数の説明
+//! @param[out] s          … 引数の説明
+//! @param[out] vt         … 引数の説明
+//! @param[in]  style      … 引数の説明
+//!
+//! @return 戻り値の説明
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&

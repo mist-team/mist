@@ -20,25 +20,51 @@ _MIST_BEGIN
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T … 引数の説明
 //! 
 template < class T >
 union byte_array
 {
 public:
-	typedef T      value_type;
-	typedef size_t size_type;
+	typedef T      value_type;		///< @brief 説明を書く
+	typedef size_t size_type;		///< @brief 説明を書く
 
 private:
-	value_type value;
-	unsigned char byte[ sizeof( value_type ) ];
+	value_type value;								///< @brief 説明を書く
+	unsigned char byte[ sizeof( value_type ) ];		///< @brief 説明を書く
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
 	byte_array( ) : value( 0 ){ }
+
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
 	byte_array( const value_type v ) : value( v ){ }
+
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] v … 引数の説明
+	//! 
 	byte_array( const byte_array &v ) : value( v.value ){ }
+
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] b … 引数の説明
+	//! 
 	byte_array( const unsigned char *b )
 	{
 		for( size_type i = 0 ; i < sizeof( value_type ) ; i++ )
@@ -51,9 +77,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] index … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	unsigned char &operator[]( size_type index ){ return( byte[ index ] ); }
 
@@ -61,9 +87,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] index … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const unsigned char &operator[]( size_type index ) const { return( byte[ index ] ); }
 
@@ -71,9 +97,7 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	const value_type get_value( ) const { return( value ); }
 
@@ -81,9 +105,9 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] v … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	value_type set_value( const value_type &v ) { return( value = v ); }
 };
@@ -93,9 +117,8 @@ public:
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 inline bool _is_little_endian_( )
 {
@@ -107,9 +130,8 @@ inline bool _is_little_endian_( )
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 inline bool _is_big_endian_( )
 {
@@ -121,9 +143,7 @@ inline bool _is_big_endian_( )
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in,out] bytes … 引数の説明
 //! 
 template < class T >
 inline void swap_bytes( byte_array< T > &bytes )
@@ -141,9 +161,10 @@ inline void swap_bytes( byte_array< T > &bytes )
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] bytes              … 引数の説明
+//! @param[in] from_little_endian … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T >
 inline byte_array< T > to_current_endian( const byte_array< T > &bytes, bool from_little_endian )
@@ -166,9 +187,10 @@ inline byte_array< T > to_current_endian( const byte_array< T > &bytes, bool fro
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] bytes              … 引数の説明
+//! @param[in] from_little_endian … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T >
 inline byte_array< T > from_current_endian( const byte_array< T > &bytes, bool to_little_endian )

@@ -509,9 +509,9 @@ namespace __linear_filter__
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in     … 引数の説明
+//! @param[out] out    … 引数の説明
+//! @param[in]  kernel … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
 void linear_filter( const mist::array< T_in, Allocator_in >& in, mist::array< T_out, Allocator_out >& out, const mist::array< T_kernel, Allocator_kernel >& kernel )
@@ -524,9 +524,9 @@ void linear_filter( const mist::array< T_in, Allocator_in >& in, mist::array< T_
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in     … 引数の説明
+//! @param[out] out    … 引数の説明
+//! @param[in]  kernel … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
 void linear_filter( const mist::array1< T_in, Allocator_in >& in, mist::array1< T_out, Allocator_out >& out, const mist::array1< T_kernel, Allocator_kernel >& kernel )
@@ -539,9 +539,9 @@ void linear_filter( const mist::array1< T_in, Allocator_in >& in, mist::array1< 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in     … 引数の説明
+//! @param[out] out    … 引数の説明
+//! @param[in]  kernel … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
 void linear_filter( const mist::array2< T_in, Allocator_in >& in, mist::array2< T_out, Allocator_out >& out, const mist::array2< T_kernel, Allocator_kernel >& kernel )
@@ -554,9 +554,9 @@ void linear_filter( const mist::array2< T_in, Allocator_in >& in, mist::array2< 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in     … 引数の説明
+//! @param[out] out    … 引数の説明
+//! @param[in]  kernel … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
 void linear_filter( const mist::array3< T_in, Allocator_in >& in, mist::array3< T_out, Allocator_out >& out, const mist::array3< T_kernel, Allocator_kernel >& kernel )
@@ -569,9 +569,8 @@ void linear_filter( const mist::array3< T_in, Allocator_in >& in, mist::array3< 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out >
 void gaussian( const mist::array< T_in, Allocator_in >& in, mist::array< T_out, Allocator_out >& out )
@@ -593,9 +592,8 @@ void gaussian( const mist::array< T_in, Allocator_in >& in, mist::array< T_out, 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out >
 void gaussian( const mist::array1< T_in, Allocator_in >& in, mist::array1< T_out, Allocator_out >& out )
@@ -617,9 +615,8 @@ void gaussian( const mist::array1< T_in, Allocator_in >& in, mist::array1< T_out
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out >
 void gaussian( const mist::array2< T_in, Allocator_in >& in, mist::array2< T_out, Allocator_out >& out )
@@ -647,9 +644,8 @@ void gaussian( const mist::array2< T_in, Allocator_in >& in, mist::array2< T_out
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out >
 void gaussian( const mist::array3< T_in, Allocator_in >& in, mist::array3< T_out, Allocator_out >& out )
@@ -697,9 +693,8 @@ void gaussian( const mist::array3< T_in, Allocator_in >& in, mist::array3< T_out
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out >
 void laplacian( const mist::array< T_in, Allocator_in >& in, mist::array< T_out, Allocator_out >& out )
@@ -718,9 +713,8 @@ void laplacian( const mist::array< T_in, Allocator_in >& in, mist::array< T_out,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out >
 void laplacian( const mist::array1< T_in, Allocator_in >& in, mist::array1< T_out, Allocator_out >& out )
@@ -739,9 +733,8 @@ void laplacian( const mist::array1< T_in, Allocator_in >& in, mist::array1< T_ou
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out >
 void laplacian( const mist::array2< T_in, Allocator_in >& in, mist::array2< T_out, Allocator_out >& out )
@@ -766,9 +759,8 @@ void laplacian( const mist::array2< T_in, Allocator_in >& in, mist::array2< T_ou
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
 //! 
 template < class T_in, class Allocator_in, class T_out, class Allocator_out >
 void laplacian( const mist::array3< T_in, Allocator_in >& in, mist::array3< T_out, Allocator_out >& out )

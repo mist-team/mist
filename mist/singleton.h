@@ -17,22 +17,18 @@ _MIST_BEGIN
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 class singleton
 {
 public:
-	typedef T value_type;	///< @typedef 型の説明を書く
+	typedef T value_type;	///< @brief 型の説明を書く
 
 	/// @brief 関数・クラスの概要を書く
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
 	//! @return        … 戻り値の説明
 	//! 
 	static value_type &get_instance( )

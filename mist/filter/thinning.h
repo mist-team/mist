@@ -157,9 +157,8 @@ namespace __thinning_controller__
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void thinning( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )

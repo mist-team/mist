@@ -716,9 +716,10 @@ namespace __bmp_controller__
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image    … 引数の説明
+//! @param[in]  filename … 引数の説明
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool read_bmp( array2< T, Allocator > &image, const std::string &filename )
@@ -731,9 +732,11 @@ bool read_bmp( array2< T, Allocator > &image, const std::string &filename )
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] image    … 引数の説明
+//! @param[in] filename … 引数の説明
+//! @param[in] bmp_bits … 引数の説明
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool write_bmp( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type bmp_bits = 24 )

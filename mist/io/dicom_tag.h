@@ -19,7 +19,7 @@
 _MIST_BEGIN
 
 //! @addtogroup dicom_group DICOM画像入出力
-//!  @{
+//! @{
 
 
 
@@ -134,50 +134,48 @@ namespace dicom_controller
 
 
 	/// @enum DICOMのVRタグの種類
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
 	enum dicom_vr
 	{
-		UNKNOWN,	///</< 不明なＶＲ
-		AE,			///< 応用エンティティ　１６バイト以下
-		AS,			///< 年齢　　　　　　　４バイト固定
-		AT,			///< 属性タグ　　　　　４バイト固定
-		CS,			///< コード列　　　　　１６バイト以下
-		DA,			///< 日付　　　　　　　８バイト固定
-		DS,			///< 10進数（文字列）　１６バイト以下
-		DT,			///< 日時　　　　　　　２６バイト以下
-		FL,			///< ４バイト実数　　　４バイト固定
-		FD,			///< ８バイト実数　　　８バイト固定
-		IS,			///< 整数（文字列）　　１６バイト以下
-		LO,			///< 長列　　　　　　　６４バイト以下
-		LT,			///< テキスト　　　　　１０２４バイト以下
-		OB,			///< バイト列　　　　　無制限
-		OF,			///< 浮動小数点文字列　232-4 maximum
-		OW,			///< ワード列　　　　　無制限
-		PN,			///< 患者名　　　　　　６４バイト以下
-		SH,			///< 短列　　　　　　　１６バイト以下
-		SL,			///< 符号つき長　　　　４バイト固定
-		SQ,			///< 項目シーケンス　　無制限
-		SS,			///< 符号つき短　　　　２バイト固定
-		ST,			///< 短テキスト　　　　１０２４バイト以下
-		TM,			///< 時間　　　　　　　１６バイト以下
-		UI,			///< ＵＩＤ　　　　　　６４バイト以下
-		UL,			///< 符号なし長　　　　４バイト固定
-		UN,			///< 未知　　　　　　　不明
-		US,			///< 符号なし短　　　　２バイト固定
-		UT,			///< 無制限テキスト
+		UNKNOWN,	///< @brief 不明なＶＲ
+		AE,			///< @brief 応用エンティティ　１６バイト以下
+		AS,			///< @brief 年齢　　　　　　　４バイト固定
+		AT,			///< @brief 属性タグ　　　　　４バイト固定
+		CS,			///< @brief コード列　　　　　１６バイト以下
+		DA,			///< @brief 日付　　　　　　　８バイト固定
+		DS,			///< @brief 10進数（文字列）　１６バイト以下
+		DT,			///< @brief 日時　　　　　　　２６バイト以下
+		FL,			///< @brief ４バイト実数　　　４バイト固定
+		FD,			///< @brief ８バイト実数　　　８バイト固定
+		IS,			///< @brief 整数（文字列）　　１６バイト以下
+		LO,			///< @brief 長列　　　　　　　６４バイト以下
+		LT,			///< @brief テキスト　　　　　１０２４バイト以下
+		OB,			///< @brief バイト列　　　　　無制限
+		OF,			///< @brief 浮動小数点文字列　232-4 maximum
+		OW,			///< @brief ワード列　　　　　無制限
+		PN,			///< @brief 患者名　　　　　　６４バイト以下
+		SH,			///< @brief 短列　　　　　　　１６バイト以下
+		SL,			///< @brief 符号つき長　　　　４バイト固定
+		SQ,			///< @brief 項目シーケンス　　無制限
+		SS,			///< @brief 符号つき短　　　　２バイト固定
+		ST,			///< @brief 短テキスト　　　　１０２４バイト以下
+		TM,			///< @brief 時間　　　　　　　１６バイト以下
+		UI,			///< @brief ＵＩＤ　　　　　　６４バイト以下
+		UL,			///< @brief 符号なし長　　　　４バイト固定
+		UN,			///< @brief 未知　　　　　　　不明
+		US,			///< @brief 符号なし短　　　　２バイト固定
+		UT,			///< @brief 無制限テキスト
 	};
 
 
 	/// @brief 関数・クラスの概要を書く
-	//! 
+	//!
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	//!
+	//! @param[in] group   … 引数の説明
+	//! @param[in] element … 引数の説明
+	//!
+	//! @return 戻り値の説明
+	//!
 	inline unsigned int construct_dicom_tag( unsigned short group, unsigned short element )
 	{
 		return( ( ( (unsigned int)group << 16 ) & 0xffff0000 ) + ( (unsigned int)element & 0x0000ffff ) );
@@ -185,13 +183,13 @@ namespace dicom_controller
 
 
 	/// @brief 関数・クラスの概要を書く
-	//! 
+	//!
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	//!
+	//! @param[in] vr … 引数の説明
+	//!
+	//! @return 戻り値の説明
+	//!
 	inline dicom_vr get_dicom_vr( const std::string &vr )
 	{
 		dicom_vr ret = UNKNOWN;
@@ -478,6 +476,15 @@ namespace dicom_controller
 		return( ret );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//!
+	//! 詳細な説明や関数の使用例を書く
+	//!
+	//! @param[in] vr … 引数の説明
+	//!
+	//! @return 戻り値の説明
+	//!
 	inline std::string get_dicom_vr( const dicom_vr &vr )
 	{
 		std::string ret = "UNKNOWN";
@@ -572,23 +579,55 @@ namespace dicom_controller
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
 	class dicom_tag
 	{
 	public:
-		unsigned int tag;
-		dicom_vr     vr;
-		int          vm;
-		std::string  comment;
-
+		unsigned int tag;		///< @brief 説明を書く
+		dicom_vr     vr;		///< @brief 説明を書く
+		int          vm;		///< @brief 説明を書く
+		std::string  comment;		///< @brief 説明を書く
 	public:
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] t    … 引数の説明
+		//! @param[in] vvr  … 引数の説明
+		//! @param[in] vvm  … 引数の説明
+		//! @param[in] text … 引数の説明
+		//!
 		dicom_tag( unsigned int t = 0xffffffff, dicom_vr vvr = UNKNOWN, int vvm = 1, const std::string &text = "" ) : tag( t ), vr( vvr ), vm( vvm ), comment( text ) { }
+
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] t    … 引数の説明
+		//! @param[in] vvr  … 引数の説明
+		//! @param[in] vvm  … 引数の説明
+		//! @param[in] text … 引数の説明
+		//!
 		dicom_tag( unsigned int t, const std::string &vvr, int vvm, const std::string &text ) : tag( t ), vr( get_dicom_vr( vvr ) ), vm( vvm ), comment( text ) { }
+
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] t    … 引数の説明
+		//!
 		dicom_tag( const dicom_tag &t ) : tag( t.tag ), vr( t.vr ), vm( t.vm ), comment( t.comment ) { }
 
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] t    … 引数の説明
+		//!
+		//! @return 戻り値の説明を書く
+		//!
 		const dicom_tag &operator =( const dicom_tag &t )
 		{
 			if( &t != this )
@@ -601,6 +640,14 @@ namespace dicom_controller
 			return( *this );
 		}
 
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] t    … 引数の説明
+		//!
+		//! @return 戻り値の説明を書く
+		//!
 		bool operator <( const dicom_tag &t ) const
 		{
 			return( tag < t.tag );
@@ -610,9 +657,7 @@ namespace dicom_controller
 		//! 
 		//! 詳細な説明や関数の使用例を書く
 		//! 
-		//! @param[in] in  … 引数の説明
-		//! @param[in] out … 引数の説明
-		//! @return        … 戻り値の説明
+		//! @return 戻り値の説明
 		//! 
 		unsigned short get_group( ) const { return( static_cast< unsigned short >( 0x0000ffff & ( tag >> 16 ) ) ); }
 
@@ -620,33 +665,52 @@ namespace dicom_controller
 		//! 
 		//! 詳細な説明や関数の使用例を書く
 		//! 
-		//! @param[in] in  … 引数の説明
-		//! @param[in] out … 引数の説明
-		//! @return        … 戻り値の説明
+		//! @return 戻り値の説明
 		//! 
 		unsigned short get_element( ) const { return( static_cast< unsigned short >( 0x0000ffff & tag ) ); }
 	};
 
 
 	/// @brief 関数・クラスの概要を書く
-	//! 
+	//!
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	//!
 	class dicom_uid
 	{
 	public:
-		std::string  uid;
-		std::string  name;
-		std::string  type;
+		std::string  uid;		///< @brief 説明を書く
+		std::string  name;		///< @brief 説明を書く
+		std::string  type;		///< @brief 説明を書く
 
 	public:
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] id … 引数の説明
+		//! @param[in] n  … 引数の説明
+		//! @param[in] t  … 引数の説明
+		//!
 		dicom_uid( const std::string &id = "", const std::string &n = "", const std::string &t = "" ) : uid( id ), name( n ), type( t ){ }
+
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] id … 引数の説明
+		//!
 		dicom_uid( const dicom_uid &id ) : uid( id.uid ), name( id.name ), type( id.type ){ }
 
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] id … 引数の説明
+		//!
+		//! @return 戻り値の説明を書く
+		//!
 		const dicom_uid &operator =( const dicom_uid &id )
 		{
 			if( &id != this )
@@ -658,6 +722,15 @@ namespace dicom_controller
 			return( *this );
 		}
 
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] id … 引数の説明
+		//!
+		//! @return 戻り値の説明を書く
+		//!
 		bool operator <( const dicom_uid &id ) const
 		{
 			return( uid < id.uid );
@@ -669,10 +742,6 @@ namespace dicom_controller
 	/// @brief 関数・クラスの概要を書く
 	//! 
 	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
 	//! 
 	class dicom_tag_table : public std::multiset< dicom_tag >
 	{
@@ -688,16 +757,45 @@ namespace dicom_controller
 			const char *   comment;
 		} dicom_tag_element;
 
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] group   … 引数の説明
+		//! @param[in] element … 引数の説明
+		//! @param[in] vr      … 引数の説明
+		//! @param[in] vm      … 引数の説明
+		//! @param[in] comment … 引数の説明
+		//!
 		void insert_tag( unsigned short group, unsigned short element, const std::string &vr, int vm, const std::string &comment )
 		{
 			baseclass::insert( dicom_tag( construct_dicom_tag( group, element ), vr, vm, comment ) );
 		}
 
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] group   … 引数の説明
+		//! @param[in] element … 引数の説明
+		//! @param[in] vr      … 引数の説明
+		//! @param[in] vm      … 引数の説明
+		//! @param[in] comment … 引数の説明
+		//!
 		void insert_tag( unsigned short group, unsigned short element, dicom_vr vr, int vm, const std::string &comment )
 		{
 			baseclass::insert( dicom_tag( construct_dicom_tag( group, element ), vr, vm, comment ) );
 		}
 
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] dicom_tags   … 引数の説明
+		//!
 		void insert_tag( const dicom_tag_element *dicom_tags )
 		{
 			const dicom_tag_element *tag = dicom_tags;
@@ -713,9 +811,11 @@ namespace dicom_controller
 		//! 
 		//! 詳細な説明や関数の使用例を書く
 		//! 
-		//! @param[in] in  … 引数の説明
-		//! @param[in] out … 引数の説明
-		//! @return        … 戻り値の説明
+		//! @param[in] group   … 引数の説明
+		//! @param[in] element … 引数の説明
+		//!
+		//! @retval true  … 戻り値の説明
+		//! @retval false … 戻り値の説明
 		//! 
 		bool contain_tag( unsigned short group, unsigned short element )
 		{
@@ -724,26 +824,30 @@ namespace dicom_controller
 		}
 
 		/// @brief 関数・クラスの概要を書く
-		//! 
+		//!
 		//! 詳細な説明や関数の使用例を書く
-		//! 
-		//! @param[in] in  … 引数の説明
-		//! @param[in] out … 引数の説明
-		//! @return        … 戻り値の説明
-		//! 
+		//!
+		//! @param[in] group   … 引数の説明
+		//! @param[in] element … 引数の説明
+		//! @param[in] vr      … 引数の説明
+		//!
+		//! @return 戻り値の説明を書く
+		//!
 		dicom_tag get_tag( unsigned short group, unsigned short element, const std::string &vr )
 		{
 			return( get_tag( group, element, get_dicom_vr( vr ) ) );
 		}
 
 		/// @brief 関数・クラスの概要を書く
-		//! 
+		//!
 		//! 詳細な説明や関数の使用例を書く
-		//! 
-		//! @param[in] in  … 引数の説明
-		//! @param[in] out … 引数の説明
-		//! @return        … 戻り値の説明
-		//! 
+		//!
+		//! @param[in] group   … 引数の説明
+		//! @param[in] element … 引数の説明
+		//! @param[in] vr      … 引数の説明
+		//!
+		//! @return 戻り値の説明を書く
+		//!
 		dicom_tag get_tag( unsigned short group, unsigned short element, dicom_vr vr )
 		{
 			dicom_tag tag( construct_dicom_tag( group, element ), UNKNOWN, 1, "" );
@@ -763,6 +867,11 @@ namespace dicom_controller
 			return( *ite );
 		}
 
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
 		dicom_tag_table( )
 		{
 #ifdef __INCLUDE_DICOM_TAG_0000__
@@ -1141,10 +1250,6 @@ namespace dicom_controller
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
 	class dicom_uid_table : public std::set< dicom_uid >
 	{
 	protected:
@@ -1157,11 +1262,27 @@ namespace dicom_controller
 			const char *   type;
 		} dicom_uid_element;
 
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] id … 引数の説明
+		//! @param[in] n  … 引数の説明
+		//! @param[in] t  … 引数の説明
+		//!
 		void insert_uid( const std::string &id = "", const std::string &n = "", const std::string &t = "" )
 		{
 			baseclass::insert( dicom_uid( id, n, t ) );
 		}
 
+
+		/// @brief 関数・クラスの概要を書く
+		//!
+		//! 詳細な説明や関数の使用例を書く
+		//!
+		//! @param[in] dicom_uids … 引数の説明
+		//!
 		void insert_uid( const dicom_uid_element *dicom_uids )
 		{
 			const dicom_uid_element *uid = dicom_uids;
@@ -1174,12 +1295,13 @@ namespace dicom_controller
 
 	public:
 		/// @brief 関数・クラスの概要を書く
-		//! 
+		//!
 		//! 詳細な説明や関数の使用例を書く
-		//! 
-		//! @param[in] in  … 引数の説明
-		//! @param[in] out … 引数の説明
-		//! @return        … 戻り値の説明
+		//!
+		//! @param[in] uid … 引数の説明
+		//!
+		//! @retval true  … 戻り値の説明
+		//! @retval false … 戻り値の説明
 		//! 
 		bool contain_uid( const std::string &uid )
 		{
@@ -1192,9 +1314,9 @@ namespace dicom_controller
 		//! 
 		//! 詳細な説明や関数の使用例を書く
 		//! 
-		//! @param[in] in  … 引数の説明
-		//! @param[in] out … 引数の説明
-		//! @return        … 戻り値の説明
+		//! @param[in] uid … 引数の説明
+		//! 
+		//! @return 戻り値の説明
 		//! 
 		dicom_uid get_uid( const std::string &uid )
 		{
@@ -1207,6 +1329,11 @@ namespace dicom_controller
 			return( *ite );
 		}
 
+
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
 		dicom_uid_table( )
 		{
 			dicom_uid_element dicom_uid_elements[] = {

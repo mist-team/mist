@@ -273,7 +273,7 @@ namespace __tiff_controller__
 //! @addtogroup image_group 画像入出力
 //!  @{
 
-//! @addtogroup image_bmp_group BMP画像入出力
+//! @addtogroup image_tiff_group TIFF画像入出力
 //!  @{
 
 
@@ -281,9 +281,11 @@ namespace __tiff_controller__
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[out] image    … 引数の説明
+//! @param[in]  filename … 引数の説明
+//!
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool read_tiff( array2< T, Allocator > &image, const std::string &filename )
@@ -296,9 +298,11 @@ bool read_tiff( array2< T, Allocator > &image, const std::string &filename )
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] image    … 引数の説明
+//! @param[in] filename … 引数の説明
+//!
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool write_tiff( const array2< T, Allocator > &image, const std::string &filename )
@@ -308,7 +312,7 @@ bool write_tiff( const array2< T, Allocator > &image, const std::string &filenam
 
 
 /// @}
-//  BMP画像入出力グループの終わり
+//  TIFF画像入出力グループの終わり
 
 /// @}
 //  画像入出力グループの終わり

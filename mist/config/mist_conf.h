@@ -12,13 +12,11 @@
 
 // MIST名前空間を定義するためのマクロ
 #ifndef _MIST_BEGIN
-//! @def MIST名前空間の始まり
-#define _MIST_BEGIN		namespace mist{
+#define _MIST_BEGIN		namespace mist{		///< @brief MIST名前空間の始まり
 #endif
 
 #ifndef _MIST_END
-//! @def MIST名前空間の終わり
-#define _MIST_END		}
+#define _MIST_END		}					///< @brief MIST名前空間の終わり
 #endif
 
 
