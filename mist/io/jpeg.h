@@ -10,7 +10,6 @@
 
 #ifdef WIN32
 
-	#include <windows.h>
 	#define XMD_H
 	#define HAVE_INT32			// JPEG用INT32型を持っている宣言
 	#define HAVE_BOOLEAN		// JPEG用boolean型を持っている宣言
@@ -19,11 +18,8 @@
 
 extern "C"
 {
-//#include <jinclude.h>
 #include <jpeglib.h>
-#include <jerror.h>
 }
-
 
 
 // mist名前空間の始まり

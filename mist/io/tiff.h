@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include <tiff.h>
+#define ORIENTATION_BOTTOMLEFT 4
 #include <tiffio.h>
 
 
