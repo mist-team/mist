@@ -250,10 +250,6 @@ namespace __dicom_controller__
 			}
 
 #ifdef __SHOW_DICOM_UNKNOWN_TAG__
-			if( group == 0x7fe0 && element == 0x0000 )
-			{
-				printf( "debugging...\n" );
-			}
 			printf( "( %04x, %04x, %s, % 8d ) = Unknown Tags!!\n", group, element, VR, num_bytes );
 #endif
 			if( data + 4 + num_bytes < e )
@@ -681,6 +677,126 @@ namespace __dicom_controller__
 		return( true );
 	}
 
+	dicom_compress_type get_compress_type( const dicom_uid &uid )
+	{
+		dicom_compress_type compress_type = RAW;
+		if( uid.uid == "1.2.840.10008.1.2.4.50" )
+		{
+			// JPEG 基準（処理 1）：非可逆 JPEG 8 ビット画像圧縮用デフォルト転送構文
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.51" )
+		{
+			// JPEG 拡張（処理 2 & 4）：非可逆 JPEG 12 ビット画像圧縮用デフォルト転送構文（処理4のみ）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.52" )
+		{
+			// JPEG 拡張（処理 3 & 5）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.53" )
+		{
+			// JPEG スペクトル選択，非階層（処理 6 & 8）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.54" )
+		{
+			// JPEG スペクトル選択，非階層（処理 7 & 9）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.55" )
+		{
+			// JPEG 全数列，非階層（処理 10 & 12）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.56" )
+		{
+			// JPEG 全数列,非階層（処理 11 & 13）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.57" )
+		{
+			// JPEG 可逆,非階層（処理 14）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.58" )
+		{
+			// JPEG 可逆,非階層（処理 15）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.59" )
+		{
+			// JPEG 拡張,階層（処理 16 & 18）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.60" )
+		{
+			// JPEG 拡張,階層（処理 17 & 19）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.61" )
+		{
+			// JPEG スペクトル選択,階層（処理 20 & 22）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.62" )
+		{
+			// JPEG スペクトル選択，階層（処理 21 & 23）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.63" )
+		{
+			// JPEG 全数列，階層（処理 24 & 26）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.64" )
+		{
+			// JPEG 全数列，階層（処理 25 & 27）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.65" )
+		{
+			// JPEG 可逆，階層（処理 28）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.66" )
+		{
+			// JPEG 可逆，階層（処理 29）
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.70" )
+		{
+			// JPEG 可逆，非階層，一次予測（処理 14 [選択値 1]）：可逆 JPEG 画像圧縮用デフォルト転送構文
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.80" )
+		{
+			// JPEG-LS 可逆画像圧縮
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.81" )
+		{
+			// JPEG-LS 非可逆（準可逆）画像圧縮
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.90" )
+		{
+			// JPEG 2000 Image Compression (Lossless Only)
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.4.91" )
+		{
+			// JPEG 2000 Image Compression
+			compress_type = JPEG;
+		}
+		else if( uid.uid == "1.2.840.10008.1.2.5" )
+		{
+			compress_type = RLE;
+		}
+		return( compress_type );
+	}
+
 	class dicom_element
 	{
 	public:
@@ -697,6 +813,18 @@ namespace __dicom_controller__
 			num_bytes = nbytes;
 			data = new unsigned char[ num_bytes + 1 ];
 			data[ num_bytes ] = '\0';
+		}
+
+		void copy( unsigned char *p, size_type nbytes )
+		{
+			if( num_bytes != nbytes )
+			{
+				release();
+			}
+			num_bytes = nbytes;
+			data = new unsigned char[ num_bytes + 1 ];
+			data[ num_bytes ] = '\0';
+			memcpy( data, p, num_bytes );
 		}
 
 		void release()
@@ -870,6 +998,15 @@ namespace __dicom_controller__
 		}
 	};
 
+
+	// RLE圧縮ファイルのデコーダ
+	inline bool decode_RLE( unsigned char *pointer, unsigned char *end_pointer, dicom_element &element )
+	{
+		return( false );
+	}
+
+
+
 	inline bool is_sequence_separate_tag( const unsigned char *p, const unsigned char *e )
 	{
 		if( p + 4 >= e )
@@ -897,17 +1034,12 @@ namespace __dicom_controller__
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0xdd && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
 	}
 
-	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
+	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer, dicom_meta &meta_info )
 	{
 		difference_type numBytes = 0;
 		dicom_tag tag;
 
 		pointer = read_dicom_tag( pointer, end_pointer, tag, numBytes );
-
-		if( tag.tag == 0x00080018 )
-		{
-			printf( "debugging...\n" );
-		}
 
 		if( tag.vr == SQ )
 		{
@@ -950,7 +1082,7 @@ namespace __dicom_controller__
 						}
 						else
 						{
-							pointer = process_dicom_tag( dicom, pointer, ep );
+							pointer = process_dicom_tag( dicom, pointer, ep, meta_info );
 							if( pointer == NULL )
 							{
 								return( NULL );
@@ -963,6 +1095,58 @@ namespace __dicom_controller__
 		else if( numBytes < -1 )
 		{
 			return( NULL );
+		}
+		else if( numBytes == -1 )
+		{
+			// 圧縮がかかっている可能性があるのでチェック
+			dicom_tag_container::iterator ite;
+			switch( tag.vr )
+			{
+			case OB:
+			case OW:
+				switch( meta_info.compress_type )
+				{
+				case JPEG:
+					// 現在のところ未対応
+					printf( "This file includes JPEG compressed data.\n" );
+					return( NULL );
+					break;
+
+				case RLE:
+					// ランレングス圧縮
+					printf( "This file includes RLE compressed data.\n" );
+					{
+						dicom_element element;
+						if( decode_RLE( pointer, end_pointer, element ) )
+						{
+							ite = dicom.append( element );
+						}
+						else
+						{
+							return( NULL );
+						}
+					}
+					break;
+
+				case RAW:
+				default:
+					return( NULL );
+					break;
+				}
+				break;
+
+			default:
+				return( NULL );
+			}
+
+			pointer += numBytes;
+
+#ifdef __SHOW_DICOM_TAG__
+			if( ite != dicom.end( ) )
+			{
+				ite->show_tag( );
+			}
+#endif
 		}
 		else if( numBytes > 0 )
 		{
@@ -981,7 +1165,32 @@ namespace __dicom_controller__
 					{
 						// DICOMの固有IDなので，文字列を変換する
 						dicom_uid uid = get_uid( pointer, numBytes );
+						if( tag.tag == 0x00020010 )
+						{
+							meta_info.compress_type = get_compress_type( uid );
+						}
+
 						ite = dicom.append( dicom_element( tag, reinterpret_cast< const unsigned char * >( uid.name.c_str( ) ), uid.name.size( ) ) );
+					}
+					break;
+
+				case OB:
+				case OW:
+					switch( meta_info.compress_type )
+					{
+					case JPEG:
+						// 現在のところ未対応
+						return( NULL );
+						break;
+
+					case RLE:
+						// ランレングス圧縮
+						break;
+
+					case RAW:
+					default:
+						ite = dicom.append( dicom_element( tag, pointer, numBytes ) );
+						break;
 					}
 					break;
 
@@ -1006,6 +1215,7 @@ namespace __dicom_controller__
 			dicom_element( tag, NULL, 0 ).show_tag( );
 		}
 #endif
+
 		return( pointer );
 	}
 
@@ -1041,13 +1251,12 @@ namespace __dicom_controller__
 
 		dicom.clear( );
 
-		difference_type numBytes = 0;
-		dicom_tag tag;
 		bool ret = true;
+		dicom_meta meta_info( RAW );
 
 		while( pointer < end_pointer )
 		{
-			pointer = process_dicom_tag( dicom, pointer, end_pointer );
+			pointer = process_dicom_tag( dicom, pointer, end_pointer, meta_info );
 			if( pointer == NULL )
 			{
 				ret = false;
