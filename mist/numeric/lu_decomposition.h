@@ -11,19 +11,19 @@
 // mistñºëOãÛä‘ÇÃénÇ‹ÇË
 _MIST_BEGIN
 
-template < class T1, class T2, class Allocator >
-void lu_decomposition( matrix< T1, Allocator > &a, matrix< T2, Allocator > &pivot )
+template < class T1, class T2, class Allocator1, class Allocator2 >
+void lu_decomposition( matrix< T1, Allocator1 > &a, matrix< T2, Allocator2 > &pivot )
 {
 	if( a.rows( ) != a.cols( ) ) return;
 
-	typedef typename matrix< T1, Allocator >::size_type size_type;
-	typedef typename matrix< T1, Allocator >::value_type value_type;
-	typedef typename matrix< T2, Allocator >::value_type pivot_value;
+	typedef typename matrix< T1, Allocator1 >::size_type size_type;
+	typedef typename matrix< T1, Allocator1 >::value_type value_type;
+	typedef typename matrix< T2, Allocator2 >::value_type pivot_value;
 
 	size_type i, imax, j, k, n = a.rows( );
 	value_type big, dum, sum, temp;
 
-	matrix< T1, Allocator > v( n, 1 );
+	matrix< T1, Allocator1 > v( n, 1 );
 	pivot.resize( n );
 	
 	// içsjóÒÇ∆Ç†ÇÁÇÌÇ∑
@@ -95,14 +95,14 @@ void lu_decomposition( matrix< T1, Allocator > &a, matrix< T2, Allocator > &pivo
 }
 
 
-template < class T1, class T2, class Allocator >
-void lu_decomposition1( matrix< T1, Allocator > &a, matrix< T2, Allocator > &pivot )
+template < class T1, class T2, class Allocator1, class Allocator2 >
+void lu_decomposition1( matrix< T1, Allocator1 > &a, matrix< T2, Allocator2 > &pivot )
 {
 	if( a.rows( ) != a.cols( ) ) return;
 
-	typedef typename matrix< T1, Allocator >::size_type size_type;
-	typedef typename matrix< T1, Allocator >::value_type value_type;
-	typedef typename matrix< T2, Allocator >::value_type pivot_value;
+	typedef typename matrix< T1, Allocator1 >::size_type size_type;
+	typedef typename matrix< T1, Allocator1 >::value_type value_type;
+	typedef typename matrix< T2, Allocator2 >::value_type pivot_value;
 	size_type i, j, k, n = a.rows( );
 	size_type p;
 	value_type tmp, r;
@@ -146,15 +146,15 @@ void lu_decomposition1( matrix< T1, Allocator > &a, matrix< T2, Allocator > &piv
 	}
 }
 
-template < class T1, class T2, class Allocator >
-void lu_backwardsub( const matrix< T1, Allocator > &a, matrix< T1, Allocator > &b, matrix< T2, Allocator > &pivot )
+template < class T1, class T2, class Allocator1, class Allocator2 >
+void lu_backwardsub( const matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &b, matrix< T2, Allocator2 > &pivot )
 {
 	if(a.rows() != a.cols()) return;
 	if(a.rows() != b.rows()) return;
 
-	typedef typename matrix< T1, Allocator >::size_type size_type;
-	typedef typename matrix< T1, Allocator >::value_type value_type;
-	typedef typename matrix< T2, Allocator >::value_type pivot_value;
+	typedef typename matrix< T1, Allocator1 >::size_type size_type;
+	typedef typename matrix< T1, Allocator1 >::value_type value_type;
+	typedef typename matrix< T2, Allocator2 >::value_type pivot_value;
 
 	size_type i, ii = 0, ip, j, n = a.rows();
 	value_type sum;
@@ -189,19 +189,18 @@ void lu_backwardsub( const matrix< T1, Allocator > &a, matrix< T1, Allocator > &
 }
 
 
-template < class T1, class T2, class Allocator >
-void lu_backwardsub1( const matrix< T1, Allocator > &a, matrix< T1, Allocator > &b, const matrix< T2, Allocator > &pivot )
+template < class T1, class T2, class Allocator1, class Allocator2 >
+void lu_backwardsub1( const matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &b, const matrix< T2, Allocator2 > &pivot )
 {
 	if(a.rows() != a.cols()) return;
 	if(a.rows() != b.rows()) return;
 
-	typedef typename matrix< T1, Allocator >::size_type size_type;
-	typedef typename matrix< T1, Allocator >::value_type value_type;
-	typedef typename matrix< T2, Allocator >::value_type pivot_value;
+	typedef typename matrix< T1, Allocator1 >::size_type size_type;
+	typedef typename matrix< T1, Allocator1 >::value_type value_type;
+	typedef typename matrix< T2, Allocator2 >::value_type pivot_value;
 
 	size_type i, j, k, n = a.rows();
 	value_type tmp;
-	value_type sum;
 
 	for( k = 0 ; k < n - 1 ; k++ )
 	{
@@ -244,7 +243,7 @@ void inverse( matrix< T, Allocator > &a )
 	matrix< T, Allocator > lu( a );
 	matrix< T, Allocator > ret( n, n );
 	matrix< T, Allocator > col( n, 1 );
-	matrix< T, Allocator > pivot;
+	matrix< size_type > pivot;
 
 	lu_decomposition( lu, pivot );
 
@@ -277,7 +276,7 @@ void inverse1( matrix< T, Allocator > &a )
 	matrix< T, Allocator > lu( a );
 	matrix< T, Allocator > ret( n, n );
 	matrix< T, Allocator > col( n, 1 );
-	matrix< T, Allocator > pivot;
+	matrix< size_type > pivot;
 
 	lu_decomposition1( lu, pivot );
 

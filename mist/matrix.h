@@ -704,8 +704,7 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const matrix< T, Alloca
 	{
 		for( c = 0 ; c < m.cols( ) ; c++ )
 		{
-			printf( "%.20f", m( r, c ) );
-//			out << m( r, c );
+			out << m( r, c );
 			if( c != m.cols( ) - 1 ) out << ", ";
 		}
 		out << ::std::endl;

@@ -4,52 +4,7 @@
 #include <mist/mist.h>
 #include <mist/matrix.h>
 #include <mist/numeric.h>
-
-#ifndef WIN32
-#include <ctime>
-#else
-#include <windows.h>
-#include <mmsystem.h>
-#pragma comment ( lib, "winmm.lib" )
-#endif
-
-class timer
-{
-public:
-	timer( )
-	{
-#ifndef WIN32
-		_start_time = std::clock( );
-#else
-		_start_time = timeGetTime( );
-#endif
-	} // postcondition: elapsed()==0
-
-	void restart( )
-	{
-#ifndef WIN32
-		_start_time = std::clock( );
-#else
-		_start_time = timeGetTime( );
-#endif
-	} // post: elapsed()==0
-
-	double elapsed( ) const                  // return elapsed time in seconds
-	{
-#ifndef WIN32
-		return( double(std::clock( ) - _start_time) / CLOCKS_PER_SEC );
-#else
-		return( double(timeGetTime( ) - _start_time) / 1000.0 );
-#endif
-	}
-
-private:
-#ifndef WIN32
-	std::clock_t _start_time;
-#else
-	DWORD _start_time;
-#endif
-}; // timer
+#include <mist/timer.h>
 
 
 void test_matrix_multiply( )
@@ -60,9 +15,11 @@ void test_matrix_multiply( )
 	mist::matrix< double > n( 1000,1000 );
 	mist::matrix< double > l( 1000,1000 );
 
-	for( int r = 0 ; r < m.rows( ) ; r++ )
+	mist::matrix< double >::size_type r, c;
+
+	for( r = 0 ; r < m.rows( ) ; r++ )
 	{
-		for( int c = 0 ; c < m.cols( ) ; c++ )
+		for( c = 0 ; c < m.cols( ) ; c++ )
 		{
 			m( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
 			n( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
@@ -72,9 +29,9 @@ void test_matrix_multiply( )
 	cout << "mat1( 1000, 1000 ) * mat2( 1000, 1000 )" << endl << endl;
 
 	{
-		timer t;
+		mist::timer t;
 		l = m * n;
-		cout << "Calculation Time: " << t.elapsed( ) << " (sec)" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
 }
 
@@ -92,9 +49,9 @@ void test_matrix_operation( )
 	mist::matrix< double > dmy;
 
 	// transpose( mat1 + mat2 * mat3 + mat4 )
-	long i, j, k, l, loop = 1000;
+	mist::matrix< double >::size_type i, j, k, l, loop = 1000;
 	{
-		timer t;
+		mist::timer t;
 		double tmp;
 		for( l = 0 ; l < loop ; l++ )
 		{
@@ -113,17 +70,17 @@ void test_matrix_operation( )
 			dmy = mat;
 		}
 		cout << "< In the case of Non Expression Template >" << endl;
-		cout << "Calculation Time: " << t.elapsed( ) << " (sec)" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
 
 	{
-		timer t;
+		mist::timer t;
 		for( i = 0 ; i < loop ; i++ )
 		{
 			mat = ( mat1 + mat2 * mat3 + mat4 ).t( );
 		}
 		cout << "< In the case of Expression Template >" << endl;
-		cout << "Calculation Time: " << t.elapsed( ) << " (sec)" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
 }
 
@@ -166,7 +123,7 @@ void test_matrix_inverse2( )
 	mist::matrix< double > mat1( 100, 100 );
 	mist::matrix< double > mat2( 100, 100 );
 	mist::matrix< double > mat( 100, 100 );
-	mist::matrix< double >::size_type i, j, k, l, loop = 100;
+	mist::matrix< double >::size_type i, loop = 100;
 
 	for( i = 0 ; i < mat.size( ) ; i++ )
 	{
@@ -175,25 +132,25 @@ void test_matrix_inverse2( )
 
 	// transpose( mat1 + mat2 * mat3 + mat4 )
 	{
-		timer t;
+		mist::timer t;
 		for( i = 0 ; i < loop ; i++ )
 		{
 			mat1 = mat;
 			mist::inverse( mat1 );
 		}
 		cout << "< In the case of Expression Template >" << endl;
-		cout << "Calculation Time: " << t.elapsed( ) << " (sec)" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
 
 	{
-		timer t;
+		mist::timer t;
 		for( i = 0 ; i < loop ; i++ )
 		{
 			mat1 = mat;
 			mist::inverse1( mat2 );
 		}
 		cout << "< In the case of Expression Template >" << endl;
-		cout << "Calculation Time: " << t.elapsed( ) << " (sec)" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
 }
 

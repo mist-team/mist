@@ -155,6 +155,9 @@
 			<File
 				RelativePath="..\mist\operator\operator_array3.h">
 			</File>
+			<File
+				RelativePath="..\mist\timer.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="s—ñ‰‰ŽZ"
