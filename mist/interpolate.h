@@ -680,10 +680,10 @@ namespace __interpolate_controller__
 
 
 	template < class T1, class T2 >
-	class interpolate_thread : public mist::thread_object< interpolate_thread< T1, T2 > >
+	class interpolate_thread : public mist::thread< interpolate_thread< T1, T2 > >
 	{
 	public:
-		typedef mist::thread_object< interpolate_thread< T1, T2 > > base;
+		typedef mist::thread< interpolate_thread< T1, T2 > > base;
 		typedef typename base::thread_exit_type thread_exit_type;
 		typedef typename T1::size_type size_type;
 		typedef typename T1::value_type value_type;
@@ -798,17 +798,17 @@ namespace nearest
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -848,17 +848,17 @@ namespace nearest
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -900,17 +900,17 @@ namespace nearest
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -955,17 +955,17 @@ namespace nearest
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -1008,17 +1008,17 @@ namespace linear
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -1058,17 +1058,17 @@ namespace linear
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -1110,17 +1110,17 @@ namespace linear
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -1165,17 +1165,17 @@ namespace linear
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -1219,17 +1219,17 @@ namespace cubic
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -1269,17 +1269,17 @@ namespace cubic
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -1321,17 +1321,17 @@ namespace cubic
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;
@@ -1376,17 +1376,17 @@ namespace cubic
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 
 		delete [] thread;

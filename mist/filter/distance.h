@@ -221,10 +221,10 @@ namespace __euclidean_distance_transform__
 namespace __distance_transform_controller__
 {
 	template < class T >
-	class euclidean_distance_transform_thread : public mist::thread_object< euclidean_distance_transform_thread< T > >
+	class euclidean_distance_transform_thread : public mist::thread< euclidean_distance_transform_thread< T > >
 	{
 	public:
-		typedef mist::thread_object< euclidean_distance_transform_thread< T > > base;
+		typedef mist::thread< euclidean_distance_transform_thread< T > > base;
 		typedef typename base::thread_exit_type thread_exit_type;
 		typedef typename T::size_type size_type;
 		typedef typename T::value_type value_type;
@@ -333,17 +333,17 @@ void euclidean_distance_transform( const array< T1, Allocator1 > &in, array< T2,
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
@@ -383,17 +383,17 @@ void euclidean_distance_transform( const array1< T1, Allocator1 > &in, array1< T
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
@@ -434,17 +434,17 @@ void euclidean_distance_transform( const array2< T1, Allocator1 > &in, array2< T
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 	{
@@ -456,17 +456,17 @@ void euclidean_distance_transform( const array2< T1, Allocator1 > &in, array2< T
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
@@ -508,17 +508,17 @@ void euclidean_distance_transform( const array3< T1, Allocator1 > &in, array3< T
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 	{
@@ -530,17 +530,17 @@ void euclidean_distance_transform( const array3< T1, Allocator1 > &in, array3< T
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 	{
@@ -552,17 +552,17 @@ void euclidean_distance_transform( const array3< T1, Allocator1 > &in, array3< T
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 

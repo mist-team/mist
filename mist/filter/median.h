@@ -891,10 +891,10 @@ namespace __median_filter_controller__
 
 
 	template < class T1, class T2 >
-	class median_thread : public mist::thread_object< median_thread< T1, T2 > >
+	class median_thread : public mist::thread< median_thread< T1, T2 > >
 	{
 	public:
-		typedef mist::thread_object< median_thread< T1, T2 > > base;
+		typedef mist::thread< median_thread< T1, T2 > > base;
 		typedef typename base::thread_exit_type thread_exit_type;
 		typedef typename T1::size_type size_type;
 		typedef typename T1::value_type value_type;
@@ -1005,17 +1005,17 @@ void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].create_thread( );
+		thread[ i ].create( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].wait_thread( );
+		thread[ i ].wait( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].close_thread( );
+		thread[ i ].close( );
 	}
 
 	delete [] thread;
@@ -1059,17 +1059,17 @@ void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].create_thread( );
+		thread[ i ].create( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].wait_thread( );
+		thread[ i ].wait( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].close_thread( );
+		thread[ i ].close( );
 	}
 
 	delete [] thread;

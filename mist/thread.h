@@ -57,7 +57,7 @@ typedef ThreadExitCode( LPTHREADFUNC ) ( void *thread_param );
 struct thread_dmy_class{ };
 
 template < class thread_parameter = thread_dmy_class >
-class thread_object
+class thread
 {
 public:
 	typedef unsigned long thread_exit_type;
@@ -79,7 +79,7 @@ private:
 public:
 	thread_exit_type exit_code( ) const { return( thread_exit_code_ ); }
 
-	const thread_object &operator =( const thread_object &t )
+	const thread &operator =( const thread &t )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしない
@@ -94,8 +94,8 @@ public:
 		return( *this );
 	}
 
-	// thread_objectの比較演算子
-	bool operator ==( const thread_object &t ) const
+	// threadの比較演算子
+	bool operator ==( const thread &t ) const
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしない
@@ -107,7 +107,7 @@ public:
 #endif
 	}
 
-	bool operator !=( const thread_object &t ) const
+	bool operator !=( const thread &t ) const
 	{
 		return( !( *this == t ) );
 	}
@@ -115,20 +115,20 @@ public:
 
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしない
-	thread_object( const thread_object &t ) :thread_exit_code_( t.thread_exit_code_ ){ }
-	thread_object( ) : thread_exit_code_( 0 ){ }
+	thread( const thread &t ) :thread_exit_code_( t.thread_exit_code_ ){ }
+	thread( ) : thread_exit_code_( 0 ){ }
 #elif defined( WIN32 )
-	thread_object( const thread_object &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
-	thread_object( ) : thread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ){ }
+	thread( const thread &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
+	thread( ) : thread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ){ }
 #else
-	thread_object( const thread_object &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ){ }
-	thread_object(  ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ){ }
+	thread( const thread &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ){ }
+	thread(  ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ){ }
 #endif
 
-	virtual ~thread_object( ){ }
+	virtual ~thread( ){ }
 
 
-	bool create_thread( )
+	bool create( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので直接関数を呼び出す
@@ -146,7 +146,7 @@ public:
 		return ( ret );
 	}
 
-	bool wait_thread( unsigned long dwMilliseconds = INFINITE )
+	bool wait( unsigned long dwMilliseconds = INFINITE )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので何もしない
@@ -186,7 +186,7 @@ public:
 #endif
 	}
 
-	bool close_thread( )
+	bool close( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので常に true を返す
@@ -202,6 +202,30 @@ public:
 #endif
 	}
 
+	bool suspend( )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので常に true を返す
+		return( true );
+#elif defined( WIN32 )
+		return( SuspendThread( thread_handle_ ) != static_cast< DWORD >( -1 ) );
+#else
+		return( pthread_suspend_np( thread_id_ ) == 0 );
+#endif
+	}
+
+	bool resume( )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので常に true を返す
+		return( true );
+#elif defined( WIN32 )
+		return( ResumeThread( thread_handle_ ) == 1 );
+#else
+		return( pthread_resume_np( thread_id_ ) == 0 );
+#endif
+	}
+
 
 protected:
 	// 継承した先で必ず実装されるスレッド関数
@@ -213,14 +237,14 @@ protected:
 #elif defined( WIN32 )
 	static DWORD WINAPI map_thread_function( void *p )
 	{
-		thread_object *obj = (thread_object *)p;
+		thread *obj = static_cast< thread * >( p );
 		obj->thread_exit_code_ = obj->thread_function( static_cast< thread_parameter & >( *obj ) );
 		return( 0 );
 	}
 #else
 	static void *map_thread_function( void *p )
 	{
-		thread_object *obj = (thread_object *)p;
+		thread *obj = static_cast< thread * >( p );
 		obj->thread_exit_code_ = obj->thread_function( static_cast< thread_parameter & >( *obj ) );
 		obj->thread_finished_ = true;
 		return ( NULL );
@@ -233,10 +257,11 @@ protected:
 
 struct lock_object
 {
-private:
+protected:
+	::std::string lock_name_;
 
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-	// スレッドサポートはしないので特に必要な変数は無し
+	typedef char lock_object_type;					// スレッドサポートはしないのでダミー変数用意
 #elif defined( WIN32 )
 	typedef CRITICAL_SECTION lock_object_type;		// Windows用のロックオブジェクト(CRITIFCALSECTIONを利用)
 #else
@@ -246,22 +271,30 @@ private:
 	typedef ::std::map< ::std::string, lock_object_type > lock_table;
 
 public:
-	static bool lock( const ::std::string &lock_name )
-	{
+	lock_object( ) : lock_name_( "mist default lock object!!" ){ }
+	lock_object( const std::string &name ) : lock_name_( name ){ }
+
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-		// スレッドサポートはしないので特に必何もしない
+
+	// スレッドサポートはしないので特に必何もしない
+	bool lock( ){ return( true ); }
+	bool unlock( ){ return( true ); }
+
 #else
+
+	bool lock( )
+	{
 		lock_table &table = singleton< lock_table >::get_instance( );
-		lock_table::iterator ite = table.begin( );
+		lock_table::iterator ite = table.find( lock_name_ );
 		if( ite == table.end( ) )
 		{
 			// まだロックオブジェクトを初期化していないので初期化する
-			::std::pair< lock_table::iterator, bool > p = table.insert( lock_table::value_type( lock_name, lock_object_type( ) ) );
+			::std::pair< lock_table::iterator, bool > p = table.insert( lock_table::value_type( lock_name_, lock_object_type( ) ) );
 			if( p.second )
 			{
 				lock_object_type &obj = p.first->second;
 				initialize( obj );
-				try_lock( obj );
+				lock( obj );
 			}
 			else
 			{
@@ -272,19 +305,15 @@ public:
 		else
 		{
 			// すでに同名のロックオブジェクトが存在するのでそちらをロックする
-			try_lock( ite->second );
+			lock( ite->second );
 		}
-#endif
 		return( true );
 	}
 
-	static bool unlock( const ::std::string &lock_name )
+	bool unlock( )
 	{
-#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-		// スレッドサポートはしないので特に必何もしない
-#else
 		lock_table &table = singleton< lock_table >::get_instance( );
-		lock_table::iterator ite = table.begin( );
+		lock_table::iterator ite = table.find( lock_name_ );
 		if( ite == table.end( ) )
 		{
 			// 指定されたロックオブジェクトが見つからなかったので何もしない
@@ -292,11 +321,13 @@ public:
 		}
 		else
 		{
-			try_unlock( ite->second );
+			unlock( ite->second );
 		}
-#endif
 		return( true );
 	}
+
+#endif
+
 
 protected:
 	static void initialize( lock_object_type &l )
@@ -310,7 +341,7 @@ protected:
 #endif
 	}
 
-	static void try_lock( lock_object_type &l )
+	static void lock( lock_object_type &l )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので特に必何もしない
@@ -321,7 +352,7 @@ protected:
 #endif
 	}
 
-	static void try_unlock( lock_object_type &l )
+	static void unlock( lock_object_type &l )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので特に必何もしない
@@ -339,22 +370,22 @@ protected:
 class lock
 {
 protected:
-	std::string lock_object_name_;
+	lock_object lock_object_;
 
 public:
-	lock( ) : lock_object_name_( "mist default lock object!!" )
+	lock( ) : lock_object_( )
 	{
-		lock_object::lock( lock_object_name_ );
+		lock_object_.lock( );
 	}
 
-	lock( const std::string &name ) : lock_object_name_( name )
+	lock( const std::string &name ) : lock_object_( name )
 	{
-		lock_object::lock( lock_object_name_ );
+		lock_object_.lock( );
 	}
 
 	~lock( )
 	{
-		lock_object::unlock( lock_object_name_ );
+		lock_object_.unlock( );
 	}
 };
 

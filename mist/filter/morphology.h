@@ -621,10 +621,10 @@ namespace __morphology_controller__
 
 
 	template < class T1, class T2 >
-	class morphology_thread : public mist::thread_object< morphology_thread< T1, T2 > >
+	class morphology_thread : public mist::thread< morphology_thread< T1, T2 > >
 	{
 	public:
-		typedef mist::thread_object< morphology_thread< T1, T2 > > base;
+		typedef mist::thread< morphology_thread< T1, T2 > > base;
 		typedef typename base::thread_exit_type thread_exit_type;
 		typedef typename T1::size_type size_type;
 		typedef typename T1::value_type value_type;
@@ -731,17 +731,17 @@ void erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].create_thread( );
+		thread[ i ].create( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].wait_thread( );
+		thread[ i ].wait( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].close_thread( );
+		thread[ i ].close( );
 	}
 
 	delete [] thread;
@@ -779,17 +779,17 @@ void dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].create_thread( );
+		thread[ i ].create( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].wait_thread( );
+		thread[ i ].wait( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].close_thread( );
+		thread[ i ].close( );
 	}
 
 	delete [] thread;
@@ -830,17 +830,17 @@ void opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
@@ -856,17 +856,17 @@ void opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
@@ -908,17 +908,17 @@ void closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
@@ -934,17 +934,17 @@ void closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
@@ -1015,17 +1015,17 @@ void erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].create_thread( );
+		thread[ i ].create( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].wait_thread( );
+		thread[ i ].wait( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].close_thread( );
+		thread[ i ].close( );
 	}
 
 	delete [] thread;
@@ -1063,17 +1063,17 @@ void dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].create_thread( );
+		thread[ i ].create( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].wait_thread( );
+		thread[ i ].wait( );
 	}
 
 	for( i = 0 ; i < thread_num ; i++ )
 	{
-		thread[ i ].close_thread( );
+		thread[ i ].close( );
 	}
 
 	delete [] thread;
@@ -1114,17 +1114,17 @@ void opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
@@ -1140,17 +1140,17 @@ void opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
@@ -1192,17 +1192,17 @@ void closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
@@ -1218,17 +1218,17 @@ void closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].create_thread( );
+			thread[ i ].create( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].wait_thread( );
+			thread[ i ].wait( );
 		}
 
 		for( i = 0 ; i < thread_num ; i++ )
 		{
-			thread[ i ].close_thread( );
+			thread[ i ].close( );
 		}
 	}
 
