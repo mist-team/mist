@@ -13,6 +13,10 @@
 #include "config/color.h"
 #endif
 
+#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
+#include "config/type_trait.h"
+#endif
+
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN
 
