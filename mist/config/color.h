@@ -565,16 +565,6 @@ public:
 	//! 
 	bool operator >=( const rgba &c ) const { return( base::operator >=( c ) ); }
 
-
-	/// @brief NTSC系加重平均法により，グレースケールへ変換する
-	value_type get_value( ) const
-	{
-		return( static_cast< value_type >( r * 0.298912 + g * 0.586610 + b * 0.114478 ) );
-	}
-
-	// カラーからグレースケールへの自動キャスト演算子（危険のため一時停止）
-	//operator value_type( ) const { return( get_value( ) ); }
-
 };
 
 /// @brief カラー画素の和
