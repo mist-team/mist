@@ -56,6 +56,7 @@ namespace __raw_controller__
 					image[ i ] = tmp[ i ];
 				}
 			}
+			return( true );
 		}
 
 		template < class T, class Allocator >
@@ -81,6 +82,7 @@ namespace __raw_controller__
 					image[i] = tmp[i];
 				}
 			}
+			return( true );
 		}
 
 		template < class T, class Allocator >
