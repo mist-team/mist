@@ -5,8 +5,8 @@
 
 int main( )
 {
-	//typedef mist::matrix< double > matrix;
-	typedef mist::matrix< std::complex< double > > matrix;
+	typedef mist::matrix< double > matrix;
+	//typedef mist::matrix< std::complex< double > > matrix;
 	matrix a( 3, 3 ), b( 3, 1 );
 
 	a( 0, 0 ) = 1.0; a( 0, 1 ) =  1.0; a( 0, 2 ) =  1.0;

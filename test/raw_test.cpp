@@ -188,7 +188,7 @@ void ct_draw_area::labeling6( ct_image_window *wnd )
 	if( ct.empty( ) ) return;
 
 	size_t label_num = mist::labeling6( ct, ct );
-	printf( "label_num = %ld\n", label_num );
+	printf( "label_num = %d\n", label_num );
 
 	redraw( );
 	Fl::wait( 0 );
@@ -199,7 +199,7 @@ void ct_draw_area::labeling26( ct_image_window *wnd )
 	if( ct.empty( ) ) return;
 
 	size_t label_num = mist::labeling26( ct, ct );
-	printf( "label_num = %ld\n", label_num );
+	printf( "label_num = %d\n", label_num );
 
 	redraw( );
 	Fl::wait( 0 );
