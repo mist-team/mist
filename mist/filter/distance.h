@@ -9,6 +9,7 @@
 #ifndef __INCLUDE_MIST_DISTANCE_TRANSFORM__
 #define __INCLUDE_MIST_DISTANCE_TRANSFORM__
 
+#include <cmath>
 
 #ifndef __INCLUDE_MIST_H__
 #include "../mist.h"
@@ -44,7 +45,7 @@ namespace __euclidean_distance_transform__
 		const difference_type h = in.height( );
 		const difference_type d = in.depth( );
 
-		value_type max = static_cast< value_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
+		value_type max = static_cast< value_type >( max_length <= 0 ? std::sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		for( k = 0 ; k < d ; k++ )
 		{
@@ -119,7 +120,7 @@ namespace __euclidean_distance_transform__
 		size_type h = in.height( );
 		size_type d = in.depth( );
 
-		value_type max = static_cast< value_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
+		value_type max = static_cast< value_type >( max_length <= 0 ? std::sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		vy = in.reso2( ) / in.reso1( );
 		vyvy = vy * vy;
@@ -140,7 +141,7 @@ namespace __euclidean_distance_transform__
 
 					if( wmin != 0.0 )
 					{
-						irange = static_cast< size_type >( sqrt( wmin ) / vy ) + 1;
+						irange = static_cast< size_type >( std::sqrt( wmin ) / vy ) + 1;
 						irange = static_cast< size_type >( static_cast< value_type >( irange ) < max ? irange : max );
 
 						irange1 = j < irange  ? j : irange;
@@ -184,7 +185,7 @@ namespace __euclidean_distance_transform__
 		vzvz = vz * vz;
 		work = new double[ d ];
 
-		value_type max = static_cast< value_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
+		value_type max = static_cast< value_type >( max_length <= 0 ? std::sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		for( j = 0 ; j < h ; j++ )
 		{
@@ -201,7 +202,7 @@ namespace __euclidean_distance_transform__
 
 					if( wmin != 0.0 )
 					{
-						irange = static_cast< size_type >( sqrt( wmin ) / vz ) + 1;
+						irange = static_cast< size_type >( std::sqrt( wmin ) / vz ) + 1;
 						irange = static_cast< size_type >( static_cast< value_type >( irange ) < max ? irange : max );
 
 						irange1 = k < irange ? k : irange;
