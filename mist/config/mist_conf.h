@@ -4,7 +4,6 @@
 #include <iostream>
 #include <iterator>
 
-
 #ifndef _MIST_BEGIN
 #define _MIST_BEGIN		namespace mist{
 #endif
@@ -226,7 +225,10 @@ public:
 	bool operator >=( const rgb &c ) const { return( !( *this < c ) ); }
 
 	// NTSC系加重平均法により，グレースケールへ変換する
-	value_type get_value( ) const { return( static_cast< value_type >( r * 0.298912 + g * 0.586611 + b + 0.114478 ) ); }
+	value_type get_value( ) const
+	{
+		return( static_cast< value_type >( r * 0.298912 + g * 0.586610 + b * 0.114478 ) );
+	}
 
 	operator value_type( ) const { return( get_value( ) ); }
 };

@@ -1,14 +1,13 @@
 #ifndef __INCLUDE_MIST_LIMITS__
 #define __INCLUDE_MIST_LIMITS__
 
-#include "config/mist_conf.h"
 #include <limits.h>
 #include <float.h>
 
 
 
 // mist名前空間の始まり
-_MIST_BEGIN
+namespace mist{
 
 
 // numeric_limitsの特殊化用マクロ
@@ -18,11 +17,11 @@ _MIST_BEGIN
 	{\
 		typedef _type_ value_type;\
 		\
-		_MIST_CONST( bool, is_integer, _integer_ );\
-		_MIST_CONST( bool, is_signed,  _signed_ );\
+		enum{ is_integer = _integer_ };\
+		enum{ is_signed  = _signed_ };\
 		\
-		static value_type min( ) { return(  _min_ ); }\
-		static value_type max( ) { return(  _max_ ); }\
+		static value_type minimum( ) { return(  _min_ ); }\
+		static value_type maximum( ) { return(  _max_ ); }\
 		static value_type zero( ){ return( _zero_ ); }\
 	};\
 
@@ -32,11 +31,11 @@ struct type_limits
 {
 	typedef T value_type;
 
-	_MIST_CONST( bool, is_integer, false );
-	_MIST_CONST( bool, is_signed,  false );
+	enum{ is_integer = false };
+	enum{ is_signed  = false };
 
-	static value_type min( ) { return( 0 ); }
-	static value_type max( ) { return( 1 ); }
+	static value_type minimum( ) { return( 0 ); }
+	static value_type maximum( ) { return( 1 ); }
 	static value_type zero( ){ return( 0 ); }
 };
 
@@ -58,9 +57,9 @@ _DEFINE_TYPE_LIMITS(       float,   false,  true,   FLT_MIN,   FLT_MAX, 0.0f )
 _DEFINE_TYPE_LIMITS(      double,   false, false,   DBL_MIN,   DBL_MAX, 0 )
 _DEFINE_TYPE_LIMITS( long double,   false, false,  LDBL_MIN,  LDBL_MAX, 0 )
 
+#undef _DEFINE_TYPE_LIMITS
 
 // mist名前空間の終わり
-_MIST_END
-
+}
 
 #endif // __INCLUDE_MIST_LIMITS__

@@ -7,8 +7,8 @@
 #include <mist/io/tiff.h>
 #include <mist/io/bmp.h>
 
-//mist::array2< unsigned char > image_object( 100, 100 );
-mist::array2< mist::rgb< unsigned char > > image_object( 100, 100 );
+mist::array2< unsigned char > image_object( 100, 100 );
+//mist::array2< mist::rgb< unsigned char > > image_object( 100, 100 );
 
 void image_draw_area::draw( )
 {
@@ -20,7 +20,7 @@ void image_draw_area::draw( )
 int main( int argc, char *argv[] )
 {
 	image_test_window window;
-	Fl::gl_visual(FL_RGB);
+	Fl::gl_visual( FL_RGB );
 	window.show( );
 	Fl::background( 212, 208, 200 );
 	Fl::run();
