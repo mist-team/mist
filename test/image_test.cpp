@@ -8,6 +8,7 @@
 #include <mist/io/tiff.h>
 #include <mist/io/bmp.h>
 #include <mist/io/raw.h>
+#include <mist/io/dicom.h>
 
 mist::array2< unsigned char > image_object( 100, 100 );
 //mist::array2< mist::rgb< unsigned char > > image_object( 100, 100 );
@@ -67,4 +68,14 @@ void read_bmp_test( const char *filename )
 void write_bmp_test( const char *filename )
 {
 	mist::write_bmp( image_object, filename, 1 );
+}
+
+void read_dicom_test( const char *filename )
+{
+	mist::read_dicom( image_object, filename );
+}
+
+void write_dicom_test( const char *filename )
+{
+//	mist::write_dicom( image_object, filename, 1 );
 }

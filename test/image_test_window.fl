@@ -80,7 +80,7 @@ Fl::wait( 0 );}
         callback {const char *filename = fl_file_chooser( "Save TIFF", "TIFF File (*.{tif,tiff})", "" );
 if( filename == NULL ) return;
 
-write_tiff_test( filename );} selected
+write_tiff_test( filename );}
         xywh {215 580 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
@@ -103,6 +103,27 @@ if( filename == NULL ) return;
 
 write_bmp_test( filename );}
         xywh {320 580 100 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Button {} {
+        label {Read DICOM}
+        callback {const char *filename = fl_file_chooser( "Open DICOM", "DICOM File (*.*)", "" );
+if( filename == NULL ) return;
+
+read_dicom_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );}
+        xywh {430 545 100 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Button {} {
+        label {Write DICOM}
+        callback {const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*.*)", "" );
+if( filename == NULL ) return;
+
+write_dicom_test( filename );} selected
+        xywh {430 580 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
     }

@@ -156,6 +156,12 @@
 				RelativePath="..\mist\config\color.h">
 			</File>
 			<File
+				RelativePath="..\mist\io\dicom.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\dicom_tag.h">
+			</File>
+			<File
 				RelativePath="..\mist\draw.h">
 			</File>
 			<File

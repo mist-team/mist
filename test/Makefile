@@ -10,6 +10,7 @@ ALL = \
 	iterator_test \
 	thread_test \
 	image_test \
+	raw_test \
 
 
 all: $(ALL)
@@ -36,6 +37,9 @@ thread_test : thread_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 image_test : image_test.obj image_test_window.obj
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) `fltk-config --use-gl --ldflags` $(IMGLIBS)
+
+raw_test : raw_test.obj ct_image_window.obj
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) `fltk-config --use-gl --ldflags` $(IMGLIBS)
 
 

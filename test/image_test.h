@@ -27,5 +27,8 @@ void write_tiff_test( const char *filename );
 void read_bmp_test( const char *filename );
 void write_bmp_test( const char *filename );
 
+void read_dicom_test( const char *filename );
+void write_dicom_test( const char *filename );
+
 
 #endif // __INCLUDE_IMAGE_TEST__

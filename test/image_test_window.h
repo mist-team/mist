@@ -31,6 +31,10 @@ private:
   static void cb_Read3(Fl_Button*, void*);
   inline void cb_Write3_i(Fl_Button*, void*);
   static void cb_Write3(Fl_Button*, void*);
+  inline void cb_Read4_i(Fl_Button*, void*);
+  static void cb_Read4(Fl_Button*, void*);
+  inline void cb_Write4_i(Fl_Button*, void*);
+  static void cb_Write4(Fl_Button*, void*);
 public:
   void show( );
 };

@@ -94,6 +94,29 @@ void image_test_window::cb_Write3(Fl_Button* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Write3_i(o,v);
 }
 
+inline void image_test_window::cb_Read4_i(Fl_Button*, void*) {
+  const char *filename = fl_file_chooser( "Open DICOM", "DICOM File (*.*)", "" );
+if( filename == NULL ) return;
+
+read_dicom_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );
+}
+void image_test_window::cb_Read4(Fl_Button* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Read4_i(o,v);
+}
+
+inline void image_test_window::cb_Write4_i(Fl_Button*, void*) {
+  const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*.*)", "" );
+if( filename == NULL ) return;
+
+write_dicom_test( filename );
+}
+void image_test_window::cb_Write4(Fl_Button* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Write4_i(o,v);
+}
+
 image_test_window::image_test_window() {
   Fl_Double_Window* w;
   { Fl_Double_Window* o = main_window = new Fl_Double_Window(551, 625);
@@ -137,6 +160,12 @@ image_test_window::image_test_window() {
     }
     { Fl_Button* o = new Fl_Button(320, 580, 100, 30, "Write BMP");
       o->callback((Fl_Callback*)cb_Write3);
+    }
+    { Fl_Button* o = new Fl_Button(430, 545, 100, 30, "Read DICOM");
+      o->callback((Fl_Callback*)cb_Read4);
+    }
+    { Fl_Button* o = new Fl_Button(430, 580, 100, 30, "Write DICOM");
+      o->callback((Fl_Callback*)cb_Write4);
     }
     o->end();
   }
