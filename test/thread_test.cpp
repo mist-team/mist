@@ -46,7 +46,7 @@ int main( int argc, char *argv[] )
 	using namespace std;
 
 	parameter param[ CREATE_THREAD_NUM ];
-	mist::thread_object *t[ CREATE_THREAD_NUM ];
+	mist::thread_handle t[ CREATE_THREAD_NUM ];
 
 	int i;
 	for( i = 0 ; i < CREATE_THREAD_NUM ; i++ )

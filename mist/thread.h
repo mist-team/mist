@@ -67,6 +67,7 @@ struct thread_object
 };
 
 
+
 template < class thread_parameter = thread_dmy_class >
 class thread : public thread_object
 {
@@ -288,39 +289,54 @@ namespace __thread_controller__
 	};
 }
 
-template < class Param, class Functor >
-inline thread_object *create_thread( const Param &param, Functor f )
+class thread_handle
 {
-	thread_object *t = new __thread_controller__::thread_object_functor< Param, Functor >( param, f );
-	t->create( );
-	return( t );
-}
+private:
+	thread_object *thread_;
 
-inline bool close_thread( thread_object *t )
-{
-	if( t == NULL )
+public:
+	bool create( ){ return( thread_ == NULL ? false : thread_->create( ) ); }
+	bool wait( unsigned long dwMilliseconds = INFINITE ){ return( thread_ == NULL ? false : thread_->wait( INFINITE ) ); }
+	bool close( )
 	{
-		return( false );
+		if( thread_ == NULL )
+		{
+			return( false );
+		}
+		bool b = thread_->close( );
+		delete thread_;
+		thread_ = NULL;
+		return( b );
 	}
-	bool b = t->close( );
-	delete t;
-	return( b );
+	bool suspend( ){ return( thread_ == NULL ? false : thread_->suspend( ) ); }
+	bool resume( ){ return( thread_ == NULL ? false : thread_->resume( ) ); }
+
+public:
+	thread_handle( ) : thread_( NULL ){ }
+	thread_handle( thread_object *t ) : thread_( t ){ }
+
+	const thread_handle &operator =( const thread_handle &t )
+	{
+		if( &t != this )
+		{
+			thread_ = t.thread_;
+		}
+		return( *this );
+	}
+};
+
+template < class Param, class Functor >
+inline thread_handle create_thread( const Param &param, Functor f )
+{
+	thread_handle thread_( new __thread_controller__::thread_object_functor< Param, Functor >( param, f ) );
+	thread_.create( );
+	return( thread_ );
 }
 
-inline bool wait_thread( thread_object *t, unsigned long dwMilliseconds = INFINITE )
-{
-	return( t == NULL ? false : t->wait( dwMilliseconds ) );
-}
-
-inline bool suspend_thread( thread_object *t )
-{
-	return( t == NULL ? false : t->suspend( ) );
-}
-
-inline bool resume_thread( thread_object *t )
-{
-	return( t == NULL ? false : t->resume( ) );
-}
+inline bool close_thread( thread_handle &thread_ ){ return( thread_.close( ) ); }
+inline bool wait_thread( thread_handle &thread_, unsigned long dwMilliseconds = INFINITE ){ return( thread_.wait( dwMilliseconds ) ); }
+inline bool suspend_thread( thread_handle &thread_ ){ return( thread_.suspend( ) ); }
+inline bool resume_thread( thread_handle &thread_ ){ return( thread_.resume( ) ); }
 
 
 // スレッドの排他制御をサポートするクラス
