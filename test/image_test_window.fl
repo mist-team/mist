@@ -10,127 +10,77 @@ class image_test_window {open
   Function {image_test_window()} {open
   } {
     Fl_Window main_window {open
-      xywh {161 57 551 649} type Double visible
+      xywh {337 190 551 566} type Double visible
     } {
-      Fl_Group {} {open
-        xywh {5 40 540 530} box DOWN_BOX
+      Fl_Group {} {
+        xywh {5 30 540 530} box DOWN_BOX
       } {
         Fl_Box draw_area {
-          label label
-          xywh {10 45 530 520} box FLAT_BOX color 40
+          label label selected
+          xywh {10 35 530 520} box FLAT_BOX color 40
           class image_draw_area
         }
       }
-      Fl_Button {} {
-        label {Read JPEG}
-        callback {const char *filename = fl_file_chooser( "Open JPEG", "JPEG File (*.{jpg,jpeg})", "" );
+      Fl_Menu_Bar {} {
+        xywh {0 0 550 25} box FLAT_BOX
+      } {
+        submenu {} {
+          label {&File}
+          xywh {0 0 100 20}
+        } {
+          submenu {} {
+            label {&Open} open
+            xywh {0 0 100 20}
+          } {
+            menuitem {} {
+              label {Open &Image}
+              callback {const char *filename = fl_file_chooser( "Open Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,pbm,pgm,ppm,pnm})", "" );
 if( filename == NULL ) return;
 
-read_jpeg_test( filename );
+read_image_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {5 575 85 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Button {} {
-        label {Read PNG}
-        callback {const char *filename = fl_file_chooser( "Open PNG", "PNG File (*.png)", "" );
-if( filename == NULL ) return;
-
-read_png_test( filename );
-
-draw_area->redraw( );
-Fl::wait( 0 );}
-        xywh {95 575 85 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Button {} {
-        label {Write JPEG}
-        callback {const char *filename = fl_file_chooser( "Save JPEG", "JPEG File (*.{jpg,jpeg})", "" );
-if( filename == NULL ) return;
-
-write_jpeg_test( filename );}
-        xywh {5 610 85 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Button {} {
-        label {Write PNG}
-        callback {const char *filename = fl_file_chooser( "Save PNG", "PNG File (*.png)", "" );
-if( filename == NULL ) return;
-
-write_png_test( filename );}
-        xywh {95 610 85 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Button {} {
-        label {Read TIFF}
-        callback {const char *filename = fl_file_chooser( "Open TIFF", "TIFF File (*.{tif,tiff})", "" );
-if( filename == NULL ) return;
-
-read_tiff_test( filename );
-
-draw_area->redraw( );
-Fl::wait( 0 );}
-        xywh {185 575 85 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Button {} {
-        label {Write TIFF}
-        callback {const char *filename = fl_file_chooser( "Save TIFF", "TIFF File (*.{tif,tiff})", "" );
-if( filename == NULL ) return;
-
-write_tiff_test( filename );}
-        xywh {185 610 85 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Button {} {
-        label {Read BMP}
-        callback {const char *filename = fl_file_chooser( "Open BMP", "BMP File (*.bmp)", "" );
-if( filename == NULL ) return;
-
-read_bmp_test( filename );
-
-draw_area->redraw( );
-Fl::wait( 0 );}
-        xywh {275 575 85 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Button {} {
-        label {Write BMP}
-        callback {const char *filename = fl_file_chooser( "Save BMP", "BMP File (*.bmp)", "" );
-if( filename == NULL ) return;
-
-write_bmp_test( filename );}
-        xywh {275 610 85 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Button {} {
-        label {Read DICOM}
-        callback {const char *filename = fl_file_chooser( "Open DICOM", "DICOM File (*)", "" );
+              xywh {5 5 100 20}
+              code0 {\#include <FL/Fl_File_Chooser.H>}
+            }
+            menuitem {} {
+              label {Open &DICOM}
+              callback {const char *filename = fl_file_chooser( "Open DICOM", "DICOM File (*)", "" );
 if( filename == NULL ) return;
 
 read_dicom_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {365 575 90 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Button {} {
-        label {Write DICOM}
-        callback {const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*.*)", "" );
+              xywh {15 15 100 20}
+            }
+          }
+          submenu {} {
+            label {&Save} open
+            xywh {10 10 100 20} divider
+          } {
+            menuitem {} {
+              label {Save &Image}
+              xywh {15 15 100 20}
+            }
+            menuitem {} {
+              label {Save &DICOM}
+              callback {const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*.*)", "" );
 if( filename == NULL ) return;
 
-write_dicom_test( filename );} selected
-        xywh {365 610 90 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Menu_Bar {} {open
-        xywh {0 0 550 25} box FLAT_BOX
-      } {
+write_dicom_test( filename );}
+              xywh {25 25 100 20}
+            }
+          }
+          menuitem {} {
+            label {&Exit}
+            callback {main_window->hide( );}
+            xywh {0 0 100 20}
+          }
+        }
         submenu {} {
-          label {&Edit} open
+          label {&Edit}
           xywh {0 0 100 20}
         } {
           menuitem {} {
@@ -219,27 +169,6 @@ write_dicom_test( filename );} selected
             xywh {120 120 100 20}
           }
         }
-      }
-      Fl_Button {} {
-        label {Read PNM}
-        callback {const char *filename = fl_file_chooser( "Open PNM", "PNM File (*.{ppm,pgm,pbm}", "" );
-if( filename == NULL ) return;
-
-read_pnm_test( filename );
-
-draw_area->redraw( );
-Fl::wait( 0 );}
-        xywh {460 575 85 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
-      }
-      Fl_Button {} {
-        label {Write PNM}
-        callback {const char *filename = fl_file_chooser( "Save PNM", "PNM File (*.{ppm,pgm,pbm}", "" );
-if( filename == NULL ) return;
-
-write_pnm_test( filename );}
-        xywh {460 610 85 30}
-        code0 {\#include <FL/Fl_File_Chooser.H>}
       }
     }
   }

@@ -22,23 +22,11 @@ public:
 	}
 };
 
-void read_jpeg_test( const char *filename );
-void write_jpeg_test( const char *filename );
-
-void read_png_test( const char *filename );
-void write_png_test( const char *filename );
-
-void read_tiff_test( const char *filename );
-void write_tiff_test( const char *filename );
-
-void read_bmp_test( const char *filename );
-void write_bmp_test( const char *filename );
+void read_image_test( const char *filename );
+void write_image_test( const char *filename );
 
 void read_dicom_test( const char *filename );
 void write_dicom_test( const char *filename );
-
-void read_pnm_test( const char *filename );
-void write_pnm_test( const char *filename );
 
 void euclidean_distance_transform_test( );
 

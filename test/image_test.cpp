@@ -3,12 +3,7 @@
 
 #include <mist/mist.h>
 #include <mist/draw.h>
-#include <mist/io/jpeg.h>
-#include <mist/io/png.h>
-#include <mist/io/tiff.h>
-#include <mist/io/bmp.h>
-#include <mist/io/pnm.h>
-#include <mist/io/raw.h>
+#include <mist/io/image.h>
 
 #define __INCLUDE_DICOM_TAG_ALL__	// 全てのDICOMタグをインポートする
 #define __SHOW_DICOM_TAG__			// コンソールにインクルードしたタグを表示する
@@ -16,7 +11,7 @@
 #include <mist/io/dicom.h>
 
 #include <mist/filter/distance.h>
-//#include <mist/filter/figure_decomposition.h>
+#include <mist/filter/figure_decomposition.h>
 #include <mist/filter/labeling.h>
 #include <mist/filter/thinning.h>
 #include <mist/filter/median.h>
@@ -48,44 +43,14 @@ int main( int argc, char *argv[] )
 }
 
 
-void read_jpeg_test( const char *filename )
+void read_image_test( const char *filename )
 {
-	mist::read_jpeg( image_object, filename );
+	mist::read_image( image_object, filename );
 }
 
-void write_jpeg_test( const char *filename )
+void write_image_test( const char *filename )
 {
-	mist::write_jpeg( image_object, filename );
-}
-
-void read_png_test( const char *filename )
-{
-	mist::read_png( image_object, filename );
-}
-
-void write_png_test( const char *filename )
-{
-	mist::write_png( image_object, filename );
-}
-
-void read_tiff_test( const char *filename )
-{
-	mist::read_tiff( image_object, filename );
-}
-
-void write_tiff_test( const char *filename )
-{
-	mist::write_tiff( image_object, filename );
-}
-
-void read_bmp_test( const char *filename )
-{
-	mist::read_bmp( image_object, filename );
-}
-
-void write_bmp_test( const char *filename )
-{
-	mist::write_bmp( image_object, filename );
+	mist::write_image( image_object, filename );
 }
 
 void read_dicom_test( const char *filename )
@@ -96,16 +61,6 @@ void read_dicom_test( const char *filename )
 void write_dicom_test( const char *filename )
 {
 //	mist::write_dicom( image_object, filename, 1 );
-}
-
-void read_pnm_test( const char *filename )
-{
-	mist::read_pnm( image_object, filename );
-}
-
-void write_pnm_test( const char *filename )
-{
-	mist::write_pnm( image_object, filename );
 }
 
 void euclidean_distance_transform_test( )
@@ -144,26 +99,26 @@ void euclidean_distance_transform_test( )
 
 void figure_decomposition_test( )
 {
-	//mist::array2< unsigned char > label( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
+	mist::array2< unsigned char > label( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
 
-	//image_type::size_type i;
+	image_type::size_type i;
 
-	//for( i = 0 ; i < image_object.size( ) ; i++ )
-	//{
-	//	label[ i ] = image_object[ i ].get_value( );
-	//}
+	for( i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		label[ i ] = image_object[ i ].get_value( );
+	}
 
-	//size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
+	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
 
-	//if( label_num == 0 )
-	//{
-	//	return;
-	//}
+	if( label_num == 0 )
+	{
+		return;
+	}
 
-	//for( i = 0 ; i < image_object.size( ) ; i++ )
-	//{
-	//	image_object[ i ] = static_cast< unsigned char >( label[ i ] * 255.0 / static_cast< double >( label_num ) );
-	//}
+	for( i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		image_object[ i ] = static_cast< unsigned char >( static_cast< double >( label[ i ] ) * 255.0 / static_cast< double >( label_num ) );
+	}
 }
 
 void thresholding_test( )
