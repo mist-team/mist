@@ -37,6 +37,16 @@
 _MIST_BEGIN
 
 
+
+//! @defgroup calibration_group カメラキャリブレーション
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/calibration.h>
+//! @endcode
+//!
+//!  @{
+
+
 /// @brief Tsai のカメラキャリブレーション手法
 namespace Tsai
 {
@@ -412,6 +422,13 @@ namespace Tsai
 		return( true );
 	}
 }
+
+
+
+/// @}
+//  キャリブレーションの終わり
+
+
 
 // mist名前空間の終わり
 _MIST_END

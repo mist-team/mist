@@ -35,6 +35,22 @@
 _MIST_BEGIN
 
 
+
+
+//! @defgroup visualization_group 可視化
+//!
+//!  @{
+
+
+//! @addtogroup volumerendering_group ボリュームレンダリング
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/volumerender.h>
+//! @endcode
+//!
+//! @{
+
+
 namespace volumerender
 {
 	template < class T >
@@ -625,6 +641,13 @@ bool volumerendering( const Array1 &in, Array2 &out, const volumerender::paramet
 	
 	return( true );
 }
+
+
+/// @}
+// ボリュームレンダリンググループの終わり
+
+/// @}
+//  可視化グループの終わり
 
 
 // mist名前空間の終わり

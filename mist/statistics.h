@@ -238,8 +238,8 @@ bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_t
 //! @param[in] out  … 作成されたヒストグラム（MISTで提供する2次元コンテナ array2 のみ）
 //! @param[in] min1 … ヒストグラム1のデータの最小値
 //! @param[in] max1 … ヒストグラム1のデータの最大値
-//! @param[in] min1 … ヒストグラム2のデータの最小値
-//! @param[in] max1 … ヒストグラム2のデータの最大値
+//! @param[in] min2 … ヒストグラム2のデータの最小値
+//! @param[in] max2 … ヒストグラム2のデータの最大値
 //! @param[in] bin  … ヒストグラムを作成するビン幅
 //! 
 //! @retval true  … ヒストグラムの作成に成功
@@ -326,7 +326,7 @@ bool generate_histogram( const Array1 &in1, const Array2 &in2, array2< T, Alloca
 
 	value_type min1 = in1[ 0 ];
 	value_type max1 = in1[ 0 ];
-	for( size_type i = 1 ; i < in.size( ) ; i++ )
+	for( size_type i = 1 ; i < in1.size( ) ; i++ )
 	{
 		if( min1 > in1[ i ] )
 		{
@@ -340,7 +340,7 @@ bool generate_histogram( const Array1 &in1, const Array2 &in2, array2< T, Alloca
 
 	value_type min2 = in2[ 0 ];
 	value_type max2 = in2[ 0 ];
-	for( size_type i = 1 ; i < in.size( ) ; i++ )
+	for( size_type i = 1 ; i < in2.size( ) ; i++ )
 	{
 		if( min2 > in2[ i ] )
 		{

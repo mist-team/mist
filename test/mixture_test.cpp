@@ -63,9 +63,10 @@ int main( int argc, char *argv[] )
 			mist::timer t;
 			if( !estimate_mixture( data, dp, 2, 100, 0.001 ) )
 			{
-				std::cout << "EMƒAƒ‹ƒSƒŠƒYƒ€‚Å‚Ì„’è‚É¸”s" << std::endl;
+				std::cout << "Estimation is failed during EM algorithm." << std::endl;
 			}
-			std::cout << "Šeƒf[ƒ^—v‘f‚©‚ç‚Ì„’èŠÔ: " << t << " sec" << std::endl;
+			std::cout << "Computation time (Original Data): " << t << " sec" << std::endl;
+
 			std::cout << dp[ 0 ] << std::endl;
 			std::cout << dp[ 1 ] << std::endl << std::endl;
 		}
@@ -80,9 +81,10 @@ int main( int argc, char *argv[] )
 			mist::timer t;
 			if( !histogram::estimate_mixture( hist, dp, 2, 0, 3, 100, 0.001 ) )
 			{
-				std::cout << "EMƒAƒ‹ƒSƒŠƒYƒ€‚Å‚Ì„’è‚É¸”s" << std::endl;
+				std::cout << "Estimation is failed during EM algorithm." << std::endl;
 			}
-			std::cout << "ƒqƒXƒgƒOƒ‰ƒ€‚©‚ç‚Ì„’èŠÔ: " << t << " sec" << std::endl;
+			std::cout << "Computation time (Histogram): " << t << " sec" << std::endl;
+
 			std::cout << dp[ 0 ] << std::endl;
 			std::cout << dp[ 1 ] << std::endl << std::endl;
 		}
@@ -161,9 +163,9 @@ int main( int argc, char *argv[] )
 			mist::timer t;
 			if( !estimate_mixture( data, dp, 2, 100, 0.0001 ) )
 			{
-				std::cout << "EMƒAƒ‹ƒSƒŠƒYƒ€‚Å‚Ì„’è‚É¸”s" << std::endl;
+				std::cout << "Estimation is failed during EM algorithm." << std::endl;
 			}
-			std::cout << "ƒqƒXƒgƒOƒ‰ƒ€‚©‚ç‚Ì„’èŠÔ: " << t << " sec" << std::endl;
+			std::cout << "Computation time (Original Data): " << t << " sec" << std::endl;
 
 			std::cout << dp[ 0 ] << std::endl;
 			std::cout << dp[ 1 ] << std::endl << std::endl;
@@ -185,9 +187,9 @@ int main( int argc, char *argv[] )
 			mist::timer t;
 			if( !histogram::estimate_mixture( hist, dp, 2, 0, 0, 3, 100, 0.0001 ) )
 			{
-				std::cout << "EMƒAƒ‹ƒSƒŠƒYƒ€‚Å‚Ì„’è‚É¸”s" << std::endl;
+				std::cout << "Estimation is failed during EM algorithm." << std::endl;
 			}
-			std::cout << "ƒqƒXƒgƒOƒ‰ƒ€‚©‚ç‚Ì„’èŠÔ: " << t << " sec" << std::endl;
+			std::cout << "Computation time (Histogram): " << t << " sec" << std::endl;
 
 			std::cout << dp[ 0 ] << std::endl;
 			std::cout << dp[ 1 ] << std::endl << std::endl;

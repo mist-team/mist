@@ -28,6 +28,7 @@ ALL = \
 	crc_test \
 	random_test \
 	minimization_test \
+	mixture_test \
 
 
 all: $(ALL)
@@ -108,6 +109,9 @@ random_test : random_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 minimization_test : minimization_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+mixture_test : mixture_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 

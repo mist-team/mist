@@ -327,7 +327,7 @@ struct __mist_console_callback__
 *   - @ref mist::vector       "vector"         : N次元ベクトルを扱うクラス
 *
 *
-* @section class MISTで提供する基本データ型
+* @section element MISTで提供する基本データ型
 * - @ref mist::binary						"バイナリ画素"
 * - @ref mist::rgb							"カラー画素"
 * - @ref mist::stereo						"ステレオ音声"
@@ -379,6 +379,11 @@ struct __mist_console_callback__
 * - @ref a									"グラフ描画(2次元)"
 * - @ref image_draw_group					"2次元画像描画"
 * - @ref minimization_group					"関数の最小化"
+* - @ref visualization_group				"可視化"
+*   - @ref volumerendering_group			"ボリュームレンダリング"
+*   - @ref a								"等濃度面表示"
+* - @ref a									"キャリブレーション"
+*   - @ref calibration_group				"カメラキャリブレーション"
 *
 *
 * @subsection image 主に画像に対して適用される処理

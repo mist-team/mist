@@ -1,8 +1,6 @@
 #include "image_test.h"
 #include "image_test_window.h"
 
-#include <mist/filter/labeling.h>
-
 image_draw_area *draw_area;
 
 #include <mist/mist.h>
@@ -12,6 +10,8 @@ image_draw_area *draw_area;
 #include <mist/filter/distance.h>
 #include <mist/filter/figure_decomposition.h>
 #include <mist/filter/thinning.h>
+#include <mist/filter/labeling.h>
+#include <mist/filter/boundary.h>
 #include <mist/filter/median.h>
 #include <mist/filter/morphology.h>
 #include <mist/filter/interlace.h>

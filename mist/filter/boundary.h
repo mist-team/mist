@@ -1,9 +1,7 @@
-/// @file mist/filter/labeling.h
+/// @file mist/filter/boundary.h
 //!
-//! @brief ŠeŸŒ³‚Ì‰æ‘œ‚É‘Î‰‚µ‚½Cƒ‰ƒxƒŠƒ“ƒOƒAƒ‹ƒSƒŠƒYƒ€
+//! @brief ŠeŸŒ³‚Ì‰æ‘œ‚É‘Î‰‚µ‚½C‹«ŠE‰æ‘f’ŠoƒAƒ‹ƒSƒŠƒYƒ€
 //! 
-//! @section Ql•¶Œ£
-//! -# ’¹˜eƒˆê˜Y, "3ŸŒ³ƒfƒBƒWƒ^ƒ‹‰æ‘œˆ—," ºW“°, 2002
 //!
 
 #ifndef __INCLUDE_MIST_BOUNDARY__
@@ -54,7 +52,6 @@ namespace __boundary_controller__
 			count *= in( i[ 1 ], j[ 0 ], k[ 1 ] );	//  0, -1,  0
 			count *= in( i[ 2 ], j[ 0 ], k[ 1 ] );	// +1, -1,  0
 			count *= in( i[ 0 ], j[ 1 ], k[ 1 ] );	// -1,  0,  0
-//			count *= in( i[ 1 ], j[ 1 ], k[ 1 ] );	//  0,  0,  0
 			count *= in( i[ 2 ], j[ 1 ], k[ 1 ] );	// +1,  0,  0
 			count *= in( i[ 0 ], j[ 2 ], k[ 1 ] );	// -1, +1,  0
 			count *= in( i[ 1 ], j[ 2 ], k[ 1 ] );	//  0, +1,  0
@@ -96,7 +93,6 @@ namespace __boundary_controller__
 			count *= in( i[ 1 ], j[ 0 ], k[ 1 ] );	//  0, -1,  0
 			count *= in( i[ 2 ], j[ 0 ], k[ 1 ] );	// +1, -1,  0
 			count *= in( i[ 0 ], j[ 1 ], k[ 1 ] );	// -1,  0,  0
-//			count *= in( i[ 1 ], j[ 1 ], k[ 1 ] );	//  0,  0,  0
 			count *= in( i[ 2 ], j[ 1 ], k[ 1 ] );	// +1,  0,  0
 			count *= in( i[ 0 ], j[ 2 ], k[ 1 ] );	// -1, +1,  0
 			count *= in( i[ 1 ], j[ 2 ], k[ 1 ] );	//  0, +1,  0
@@ -127,7 +123,6 @@ namespace __boundary_controller__
 			count  = in( i[ 1 ], j[ 1 ], k[ 0 ] );	//  0,  0, -1
 			count *= in( i[ 1 ], j[ 0 ], k[ 1 ] );	//  0, -1,  0
 			count *= in( i[ 0 ], j[ 1 ], k[ 1 ] );	// -1,  0,  0
-//			count *= in( i[ 1 ], j[ 1 ], k[ 1 ] );	//  0,  0,  0
 			count *= in( i[ 2 ], j[ 1 ], k[ 1 ] );	// +1,  0,  0
 			count *= in( i[ 1 ], j[ 2 ], k[ 1 ] );	//  0, +1,  0
 			count *= in( i[ 1 ], j[ 1 ], k[ 2 ] );	//  0,  0, +1
@@ -152,7 +147,6 @@ namespace __boundary_controller__
 			count *= in( i[ 1 ], j[ 0 ], k[ 1 ] );	//  0, -1,  0
 			count *= in( i[ 2 ], j[ 0 ], k[ 1 ] );	// +1, -1,  0
 			count *= in( i[ 0 ], j[ 1 ], k[ 1 ] );	// -1,  0,  0
-//			count *= in( i[ 1 ], j[ 1 ], k[ 1 ] );	//  0,  0,  0
 			count *= in( i[ 2 ], j[ 1 ], k[ 1 ] );	// +1,  0,  0
 			count *= in( i[ 0 ], j[ 2 ], k[ 1 ] );	// -1, +1,  0
 			count *= in( i[ 1 ], j[ 2 ], k[ 1 ] );	//  0, +1,  0
@@ -176,7 +170,6 @@ namespace __boundary_controller__
 
 			count  = in( i[ 1 ], j[ 0 ], k[ 1 ] );	//  0, -1,  0
 			count *= in( i[ 0 ], j[ 1 ], k[ 1 ] );	// -1,  0,  0
-//			count *= in( i[ 1 ], j[ 1 ], k[ 1 ] );	//  0,  0,  0
 			count *= in( i[ 2 ], j[ 1 ], k[ 1 ] );	// +1,  0,  0
 			count *= in( i[ 1 ], j[ 2 ], k[ 1 ] );	//  0, +1,  0
 
@@ -270,16 +263,16 @@ namespace __boundary_controller__
 
 
 
-//! @addtogroup boundary_group ‹«ŠE‰æ‘f’Šo
+//! @addtogroup boundary_group ‹«ŠE‰æ‘f’ŠoƒAƒ‹ƒSƒŠƒYƒ€
 //!
 //! @code Ÿ‚Ìƒwƒbƒ_‚ğƒCƒ“ƒNƒ‹[ƒh‚·‚é
 //! #include <mist/filter/boundary.h>
 //! @endcode
 //!
-//!  @{
+//! @{
 
 
-/// @brief ”wŒi‚Æ4‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo
+/// @brief ”wŒi‚Æ4‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo‚·‚é
 //! 
 //! ”wŒi‚Æ4‹ß–T‚ÅÚ‚·‚é‹«ŠE‚ğ’Šo‚·‚é
 //! ’Šo‚³‚ê‚½‹«ŠE‚ÍC8˜AŒ‹‚Æ‚È‚é
@@ -288,7 +281,7 @@ namespace __boundary_controller__
 //! @param[in]  value c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  f     c isó‹µ‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
 //! 
-//! @return Š„‚è“–‚Ä‚ç‚ê‚½ƒ‰ƒxƒ‹”
+//! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator, class Functor >
 typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type value, Functor f )
@@ -297,7 +290,7 @@ typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in
 }
 
 
-/// @brief ”wŒi‚Æ4‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo
+/// @brief ”wŒi‚Æ4‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo‚·‚é
 //! 
 //! ”wŒi‚Æ4‹ß–T‚ÅÚ‚·‚é‹«ŠE‚ğ’Šo‚·‚é
 //! ’Šo‚³‚ê‚½‹«ŠE‚ÍC8˜AŒ‹‚Æ‚È‚é
@@ -305,7 +298,7 @@ typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in
 //! @param[in]  in    c “ü—Í‰æ‘œ
 //! @param[in]  value c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! 
-//! @return Š„‚è“–‚Ä‚ç‚ê‚½ƒ‰ƒxƒ‹”
+//! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator >
 inline typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type value )
@@ -315,7 +308,7 @@ inline typename array2< T, Allocator >::size_type boundary4( array2< T, Allocato
 
 
 
-/// @brief ”wŒi‚Æ8‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo
+/// @brief ”wŒi‚Æ8‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo‚·‚é
 //! 
 //! ”wŒi‚Æ8‹ß–T‚ÅÚ‚·‚é‹«ŠE‚ğ’Šo‚·‚é
 //! ’Šo‚³‚ê‚½‹«ŠE‚ÍC4˜AŒ‹‚Æ‚È‚é
@@ -324,7 +317,7 @@ inline typename array2< T, Allocator >::size_type boundary4( array2< T, Allocato
 //! @param[in]  value c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  f     c isó‹µ‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
 //! 
-//! @return Š„‚è“–‚Ä‚ç‚ê‚½ƒ‰ƒxƒ‹”
+//! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator, class Functor >
 typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type value, Functor f )
@@ -333,7 +326,7 @@ typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in
 }
 
 
-/// @brief ”wŒi‚Æ8‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo
+/// @brief ”wŒi‚Æ8‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo‚·‚é
 //! 
 //! ”wŒi‚Æ8‹ß–T‚ÅÚ‚·‚é‹«ŠE‚ğ’Šo‚·‚é
 //! ’Šo‚³‚ê‚½‹«ŠE‚ÍC4˜AŒ‹‚Æ‚È‚é
@@ -341,7 +334,7 @@ typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in
 //! @param[in]  in    c “ü—Í‰æ‘œ
 //! @param[in]  value c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! 
-//! @return Š„‚è“–‚Ä‚ç‚ê‚½ƒ‰ƒxƒ‹”
+//! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator >
 inline typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type value )
@@ -350,7 +343,7 @@ inline typename array2< T, Allocator >::size_type boundary8( array2< T, Allocato
 }
 
 
-/// @brief ”wŒi‚Æ6‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo
+/// @brief ”wŒi‚Æ6‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo‚·‚é
 //! 
 //! ”wŒi‚Æ6‹ß–T‚ÅÚ‚·‚é‹«ŠE‚ğ’Šo‚·‚é
 //! ’Šo‚³‚ê‚½‹«ŠE‚ÍC26˜AŒ‹‚Æ‚È‚é
@@ -359,7 +352,7 @@ inline typename array2< T, Allocator >::size_type boundary8( array2< T, Allocato
 //! @param[in]  value c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  f     c isó‹µ‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
 //! 
-//! @return Š„‚è“–‚Ä‚ç‚ê‚½ƒ‰ƒxƒ‹”
+//! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator, class Functor >
 typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value, Functor f )
@@ -368,7 +361,7 @@ typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in
 }
 
 
-/// @brief ”wŒi‚Æ6‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo
+/// @brief ”wŒi‚Æ6‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo‚·‚é
 //! 
 //! ”wŒi‚Æ6‹ß–T‚ÅÚ‚·‚é‹«ŠE‚ğ’Šo‚·‚é
 //! ’Šo‚³‚ê‚½‹«ŠE‚ÍC26˜AŒ‹‚Æ‚È‚é
@@ -376,7 +369,7 @@ typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in
 //! @param[in]  in    c “ü—Í‰æ‘œ
 //! @param[in]  value c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! 
-//! @return Š„‚è“–‚Ä‚ç‚ê‚½ƒ‰ƒxƒ‹”
+//! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator >
 inline typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value )
@@ -385,7 +378,7 @@ inline typename array3< T, Allocator >::size_type boundary6( array3< T, Allocato
 }
 
 
-/// @brief ”wŒi‚Æ18‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo
+/// @brief ”wŒi‚Æ18‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo‚·‚é
 //! 
 //! ”wŒi‚Æ18‹ß–T‚ÅÚ‚·‚é‹«ŠE‚ğ’Šo‚·‚é
 //! ’Šo‚³‚ê‚½‹«ŠE‚ÍC6'˜AŒ‹‚Æ‚È‚é
@@ -394,7 +387,7 @@ inline typename array3< T, Allocator >::size_type boundary6( array3< T, Allocato
 //! @param[in]  value c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  f     c isó‹µ‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
 //! 
-//! @return Š„‚è“–‚Ä‚ç‚ê‚½ƒ‰ƒxƒ‹”
+//! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator, class Functor >
 typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value, Functor f )
@@ -403,7 +396,7 @@ typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &i
 }
 
 
-/// @brief ”wŒi‚Æ18‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo
+/// @brief ”wŒi‚Æ18‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo‚·‚é
 //! 
 //! ”wŒi‚Æ18‹ß–T‚ÅÚ‚·‚é‹«ŠE‚ğ’Šo‚·‚é
 //! ’Šo‚³‚ê‚½‹«ŠE‚ÍC6'˜AŒ‹‚Æ‚È‚é
@@ -411,7 +404,7 @@ typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &i
 //! @param[in]  in    c “ü—Í‰æ‘œ
 //! @param[in]  value c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! 
-//! @return Š„‚è“–‚Ä‚ç‚ê‚½ƒ‰ƒxƒ‹”
+//! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator >
 inline typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value )
@@ -420,7 +413,7 @@ inline typename array3< T, Allocator >::size_type boundary18( array3< T, Allocat
 }
 
 
-/// @brief ”wŒi‚Æ26‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo
+/// @brief ”wŒi‚Æ26‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo‚·‚é
 //! 
 //! ”wŒi‚Æ26‹ß–T‚ÅÚ‚·‚é‹«ŠE‚ğ’Šo‚·‚é
 //! ’Šo‚³‚ê‚½‹«ŠE‚ÍC6˜AŒ‹‚Æ‚È‚é
@@ -429,7 +422,7 @@ inline typename array3< T, Allocator >::size_type boundary18( array3< T, Allocat
 //! @param[in]  value c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  f     c isó‹µ‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
 //! 
-//! @return Š„‚è“–‚Ä‚ç‚ê‚½ƒ‰ƒxƒ‹”
+//! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator, class Functor >
 typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value, Functor f )
@@ -438,7 +431,7 @@ typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &i
 }
 
 
-/// @brief ”wŒi‚Æ18‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo
+/// @brief ”wŒi‚Æ18‹ß–T‚ÅÚ‚·‚é‹«ŠE‰æ‘f‚ğ’Šo‚·‚é
 //! 
 //! ”wŒi‚Æ26‹ß–T‚ÅÚ‚·‚é‹«ŠE‚ğ’Šo‚·‚é
 //! ’Šo‚³‚ê‚½‹«ŠE‚ÍC6˜AŒ‹‚Æ‚È‚é
@@ -446,7 +439,7 @@ typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &i
 //! @param[in]  in    c “ü—Í‰æ‘œ
 //! @param[in]  value c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! 
-//! @return Š„‚è“–‚Ä‚ç‚ê‚½ƒ‰ƒxƒ‹”
+//! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator >
 inline typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value )

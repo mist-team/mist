@@ -89,6 +89,7 @@ namespace mixture
 //! 
 //! @param[in]     rSamples      … 入力サンプル
 //! @param[in]     pdp           … 分布パラメータ
+//! @param[in]     nSamples      … 入力サンプル数
 //! @param[in]     nComponents   … 推定する混合分布の数
 //! @param[in]     nMaxIteration … 最大ループ回数
 //! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
@@ -272,6 +273,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t
 //!
 //! @param[in]     rSamples      … 入力サンプル
 //! @param[in]     pdp           … 分布パラメータ
+//! @param[in]     nSamples      … 入力サンプル数
 //! @param[in]     nComponents   … 推定する混合分布の数
 //! @param[in]     nMaxIteration … 最大ループ回数
 //! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
@@ -515,7 +517,7 @@ bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, typename Array1::siz
 template < class Array1, class Array2 >
 bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, typename Array1::size_type nMaxIteration, double fEpsilon )
 {
-	typename array< T, Allocator >::size_type nIteration = 0;
+	typename Array1::size_type nIteration = 0;
 	return( estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), nMaxIteration, fEpsilon, nIteration ) );
 }
 
@@ -564,6 +566,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, typen
 
 
 
+/// @brief ヒストグラムから正規分布の混合分布を推定する関数群
 namespace histogram
 {
 	/// @brief 1次元ヒストグラムから正規分布の混合分布を推定する
@@ -572,6 +575,7 @@ namespace histogram
 	//! 
 	//! @param[in]     rSamples      … 入力サンプル
 	//! @param[in]     pdp           … 分布パラメータ
+	//! @param[in]     nSamples      … 入力サンプル数
 	//! @param[in]     nComponents   … 推定する混合分布の数
 	//! @param[in]     minimum       … ヒストグラムを作成した際の最小値
 	//! @param[in]     bin           … ヒストグラムを作成した際のビン幅
@@ -795,7 +799,7 @@ namespace histogram
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class T, class Allocator >
-	bool estimate_mixture( const array2< T, Allocator > &rSamples, mixture::distribution2 *pdp, size_t nSamples, size_t nComponents, double minimum1, double minimum2, double bin, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
+	bool estimate_mixture( const array2< T, Allocator > &rSamples, mixture::distribution2 *pdp, size_t nComponents, double minimum1, double minimum2, double bin, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
 	{
 		if( rSamples.empty( ) || nComponents == 0 )
 		{
@@ -1070,7 +1074,7 @@ namespace histogram
 	template < class Array1, class Array2 >
 	bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, double minimum, double bin, typename Array1::size_type nMaxIteration, double fEpsilon )
 	{
-		typename array< T, Allocator >::size_type nIteration = 0;
+		typename Array1::size_type nIteration = 0;
 		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), minimum, bin, nMaxIteration, fEpsilon, nIteration ) );
 	}
 
@@ -1123,7 +1127,7 @@ namespace histogram
 	template < class T, class Allocator, class Array1 >
 	bool estimate_mixture( const array2< T, Allocator > &rSamples, Array1 &pdp, double minimum1, double minimum2, double bin, typename Array1::size_type nMaxIteration, double fEpsilon, typename Array1::size_type &nIteration )
 	{
-		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), minimum1, minimum2, bin, nMaxIteration, fEpsilon, nIteration ) );
+		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], pdp.size( ), minimum1, minimum2, bin, nMaxIteration, fEpsilon, nIteration ) );
 	}
 
 
@@ -1148,7 +1152,7 @@ namespace histogram
 	bool estimate_mixture( const array2< T, Allocator > &rSamples, Array1 &pdp, double minimum1, double minimum2, double bin, typename Array1::size_type nMaxIteration, double fEpsilon )
 	{
 		typename array< T, Allocator >::size_type nIteration = 0;
-		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), minimum1, minimum2, bin, nMaxIteration, fEpsilon, nIteration ) );
+		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], pdp.size( ), minimum1, minimum2, bin, nMaxIteration, fEpsilon, nIteration ) );
 	}
 
 
@@ -1174,7 +1178,7 @@ namespace histogram
 	bool estimate_mixture( const array2< T, Allocator > &rSamples, mixture::distribution2 *pdp, typename array2< T, Allocator >::size_type nComponents, double minimum1, double minimum2, double bin, typename array2< T, Allocator >::size_type nMaxIteration, double fEpsilon )
 	{
 		size_t nIteration = 0;
-		return( histogram::estimate_mixture( rSamples, pdp, rSamples.size( ), nComponents, minimum1, minimum2, bin, nMaxIteration, fEpsilon, nIteration ) );
+		return( histogram::estimate_mixture( rSamples, pdp, nComponents, minimum1, minimum2, bin, nMaxIteration, fEpsilon, nIteration ) );
 	}
 }
 
