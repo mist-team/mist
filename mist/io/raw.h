@@ -73,8 +73,7 @@ namespace __raw_controller__
 				{
 					data[ l ] = tmparray[ i * byte + l ];
 				}
-				to_current_endian( data, raw_is_little_endian );
-				image[ i ] = data.get_value( ) + offset;
+				image[ i ] = to_current_endian( data, raw_is_little_endian ).get_value( ) + offset;
 			}
 			delete [] tmparray;
 
@@ -114,7 +113,7 @@ namespace __raw_controller__
 			for( i = 0 ; i < w ; i++ )
 			{
 				data.set_value( image[ i ] - offset );
-				from_current_endian( data, raw_is_little_endian );
+				data = from_current_endian( data, raw_is_little_endian );
 				for( l = 0 ; l < byte ; l++ )
 				{
 					tmparray[ i * byte + l ] = data[ l ];
@@ -166,7 +165,7 @@ namespace __raw_controller__
 			for( i = 0 ; i < w ; i++ )
 			{
 				data.set_value( image[ i ] - offset );
-				from_current_endian( data, raw_is_little_endian );
+				data = from_current_endian( data, raw_is_little_endian );
 				for( l = 0 ; l < byte ; l++ )
 				{
 					tmparray[ i * byte + l ] = data[ l ];
@@ -237,8 +236,7 @@ namespace __raw_controller__
 					{
 						data[ l ] = tmparray[ i * byte + l ];
 					}
-					to_current_endian( data, raw_is_little_endian );
-					image( i, j ) = data.get_value( ) + offset;
+					image( i, j ) = to_current_endian( data, raw_is_little_endian ).get_value( ) + offset;
 				}
 			}
 			delete [] tmparray;
@@ -283,7 +281,7 @@ namespace __raw_controller__
 				for( i = 0 ; i < w ; i++ )
 				{
 					data.set_value( image( i, j ) - offset );
-					from_current_endian( data, raw_is_little_endian );
+					data = from_current_endian( data, raw_is_little_endian );
 					for( l = 0 ; l < byte ; l++ )
 					{
 						tmparray[ i * byte + l ] = data[ l ];
@@ -322,7 +320,7 @@ namespace __raw_controller__
 				for( i = 0 ; i < w ; i++ )
 				{
 					data.set_value( image( i, j ) - offset );
-					from_current_endian( data, raw_is_little_endian );
+					data = from_current_endian( data, raw_is_little_endian );
 					for( l = 0 ; l < byte ; l++ )
 					{
 						tmparray[ i * byte + l ] = data[ l ];
@@ -381,8 +379,7 @@ namespace __raw_controller__
 						{
 							data[l] = tmparray[ ( i + j * w ) * byte + l ];
 						}
-						to_current_endian( data, raw_is_little_endian );
-						image( i, j, k ) = data.get_value( ) + offset;
+						image( i, j, k ) = to_current_endian( data, raw_is_little_endian ).get_value( ) + offset;
 					}
 				}
 			}
@@ -431,7 +428,7 @@ namespace __raw_controller__
 					for( i = 0 ; i < w ; i++ )
 					{
 						data.set_value( image( i, j, k ) - offset );
-						from_current_endian( data, raw_is_little_endian );
+						data = from_current_endian( data, raw_is_little_endian );
 						for( l = 0 ; l < byte ; l++ )
 						{
 							tmparray[ ( i + j * w ) * byte + l ] = data[l];
@@ -473,7 +470,7 @@ namespace __raw_controller__
 					for( i = 0 ; i < w ; i++ )
 					{
 						data.set_value( image( i, j, k ) - offset );
-						from_current_endian( data, raw_is_little_endian );
+						data = from_current_endian( data, raw_is_little_endian );
 						for( l = 0 ; l < byte ; l++ )
 						{
 							tmparray[ ( i + j * w ) * byte + l ] = data[l];
