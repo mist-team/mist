@@ -213,7 +213,7 @@ namespace __morphology__
 		{
 			const point &pt = list[ i ];
 			const_pointer pp = &( in( cx + pt.x, cy + pt.y, cz + pt.z ) );
-			out.push_back( pointer_diff( p - pp, pt.life ) );
+			out.push_back( pointer_diff( pp - p, pt.life ) );
 		}
 
 		return( out );
@@ -548,6 +548,7 @@ namespace __morphology_controller__
 }
 
 
+// 2éüå≥ÉÇÉãÉtÉHÉçÉWââéZÇÕÇ±Ç±Ç©ÇÁ
 template < class T, class Allocator >
 void erosion( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
@@ -557,6 +558,11 @@ void erosion( array2< T, Allocator > &in, double radius, typename array2< T, All
 	typedef __morphology__::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
 	__morphology__::morphology_structure s = __morphology__::circle( radius, in.reso1( ), in.reso2( ) );
 
 	value_type max = type_limits< value_type >::maximum( );
@@ -565,11 +571,6 @@ void erosion( array2< T, Allocator > &in, double radius, typename array2< T, All
 
 	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
 	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
-
-	if( thread_num == 0 )
-	{
-		thread_num = static_cast< size_type >( get_cpu_num( ) );
-	}
 
 	morphology_thread *thread = new morphology_thread[ thread_num ];
 
@@ -596,6 +597,218 @@ void erosion( array2< T, Allocator > &in, double radius, typename array2< T, All
 
 	delete [] thread;
 }
+
+
+template < class T, class Allocator >
+void dilation( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+{
+	typedef array2< T, Allocator >::value_type value_type;
+	typedef array2< T, Allocator >::size_type  size_type;
+	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
+	typedef __morphology__::pointer_diff pointer_diff;
+	typedef std::vector< pointer_diff >  list_type;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	__morphology__::morphology_structure s = __morphology__::circle( radius, in.reso1( ), in.reso2( ) );
+
+	value_type min = type_limits< value_type >::minimum( );
+
+	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, min );
+
+	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
+	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+
+	morphology_thread *thread = new morphology_thread[ thread_num ];
+
+	size_type i;
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
+	}
+
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].create_thread( );
+	}
+
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].wait_thread( );
+	}
+
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].close_thread( );
+	}
+
+	delete [] thread;
+}
+
+
+template < class T, class Allocator >
+void opening( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+{
+	typedef array2< T, Allocator >::value_type value_type;
+	typedef array2< T, Allocator >::size_type  size_type;
+	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
+	typedef __morphology__::pointer_diff pointer_diff;
+	typedef std::vector< pointer_diff >  list_type;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	__morphology__::morphology_structure s = __morphology__::circle( radius, in.reso1( ), in.reso2( ) );
+
+	value_type max = type_limits< value_type >::maximum( );
+	value_type min = type_limits< value_type >::minimum( );
+
+	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, max );
+
+	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
+	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+
+	morphology_thread *thread = new morphology_thread[ thread_num ];
+
+	size_type i;
+	{
+		// Erosion ââéZ
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].create_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].wait_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].close_thread( );
+		}
+	}
+
+	out = in;
+	out.fill_margin( min );
+
+	{
+		// Dilation ââéZ
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].create_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].wait_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].close_thread( );
+		}
+	}
+
+	delete [] thread;
+}
+
+
+template < class T, class Allocator >
+void closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+{
+	typedef array2< T, Allocator >::value_type value_type;
+	typedef array2< T, Allocator >::size_type  size_type;
+	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
+	typedef __morphology__::pointer_diff pointer_diff;
+	typedef std::vector< pointer_diff >  list_type;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	__morphology__::morphology_structure s = __morphology__::circle( radius, in.reso1( ), in.reso2( ) );
+
+	value_type max = type_limits< value_type >::maximum( );
+	value_type min = type_limits< value_type >::minimum( );
+
+	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, min );
+
+	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
+	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+
+	morphology_thread *thread = new morphology_thread[ thread_num ];
+
+	size_type i;
+	{
+		// Dilation ââéZ
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].create_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].wait_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].close_thread( );
+		}
+	}
+
+	out = in;
+	out.fill_margin( max );
+
+	{
+		// Erosion ââéZ
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].create_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].wait_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].close_thread( );
+		}
+	}
+
+	delete [] thread;
+}
+// 2éüå≥ÉÇÉãÉtÉHÉçÉWââéZÇÕÇ±Ç±Ç‹Ç≈
+
 
 // mistñºëOãÛä‘ÇÃèIÇÌÇË
 _MIST_END
