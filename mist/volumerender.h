@@ -409,7 +409,6 @@ namespace value_interpolation
 
 		vector_type yoko = ( dir * up ).unit( );
 
-		focal *= out.reso2( );
 		if( out.reso1( ) < out.reso2( ) )
 		{
 			yoko *= out.reso1( ) / out.reso2( );
@@ -417,6 +416,7 @@ namespace value_interpolation
 		else
 		{
 			up *= out.reso2( ) / out.reso1( );
+			focal *= out.reso2( ) / out.reso1( );
 		}
 
 		double max_distance = pos.length( ) + std::sqrt( static_cast< double >( w * w + h * h + d * d ) );
