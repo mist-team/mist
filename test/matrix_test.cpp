@@ -2,11 +2,12 @@
 
 #include <cmath>
 #include <mist/mist.h>
+
 #include <mist/matrix.h>
 #include <mist/timer.h>
 
 
-void test_matrix_multiply( )
+void test_matrix_multiply1( )
 {
 	using namespace std;
 
@@ -32,6 +33,21 @@ void test_matrix_multiply( )
 		l = m * n;
 		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
+}
+
+void test_matrix_multiply2( )
+{
+	using namespace std;
+
+	mist::matrix< double > a( 3, 3 );
+
+	a( 0, 0 ) = 1.0; a( 0, 1 ) =  1.0; a( 0, 2 ) =  1.0;
+	a( 1, 0 ) = 3.0; a( 1, 1 ) =  1.0; a( 1, 2 ) = -3.0;
+	a( 2, 0 ) = 1.0; a( 2, 1 ) = -2.0; a( 2, 2 ) = -5.0;
+
+	cout << "mat1( 3, 3 ) * mat2( 3, 3 ).t( )" << endl << endl;
+
+	cout << a * a.t( ) << endl;
 }
 
 void test_matrix_operation( )
@@ -84,6 +100,7 @@ void test_matrix_operation( )
 }
 
 
+
 int main( )
 {
 	using namespace std;
@@ -91,6 +108,7 @@ int main( )
 	cout << "Examination of matrix operation" << endl << endl;
 	cout << "1) Check the calculation time of matrix operation." << endl;
 	cout << "2) Check the calculation time of matrix multiply." << endl;
+	cout << "3) Check matrix multiply operation." << endl;
 
 	int number = -1;
 
@@ -103,7 +121,11 @@ int main( )
 		break;
 
 	case 2:
-		test_matrix_multiply( );
+		test_matrix_multiply1( );
+		break;
+
+	case 3:
+		test_matrix_multiply2( );
 		break;
 
 	default:
