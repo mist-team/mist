@@ -442,6 +442,7 @@ namespace __non_rigid_registration_utility__
 		difference_type maximum;
 		size_type BIN;
 
+		unsigned int __no_data_is_associated__;
 		double H1;
 
 		template < class IMAGETYPE >
@@ -505,6 +506,7 @@ namespace __non_rigid_registration_utility__
 				difference_type v1 = static_cast< difference_type >( ( tgt[ i ] - minimum ) * _1_bin );
 				if( v1 < 0 || upper <= v1 )
 				{
+					target[ i ] = &__no_data_is_associated__;
 					continue;
 				}
 				target[ i ] = &h( 0, v1 );
@@ -547,11 +549,14 @@ namespace __non_rigid_registration_utility__
 
 			__non_rigid_registration_utility__::transformation( transformed_image, source, control_mesh_tmp, x, y, z );
 
+			// ƒf[ƒ^‚ð‰Šú‰»‚·‚é
+			__no_data_is_associated__ = 0;
 			h.fill( );
 			hh.fill( );
 			difference_type upper = h.width( );
 			size_type count = 0;
 			double _1_bin = 1.0 / BIN;
+
 			for( size_t i = 0 ; i < target.size( ) ; i++ )
 			{
 				difference_type v2 = static_cast< difference_type >( ( transformed_image[ i ] - minimum ) * _1_bin );
