@@ -167,7 +167,7 @@ bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_t
 	difference_type num = static_cast< size_type >( ( max - min + 1 ) / bin );
 	out.resize( num );
 
-	for( size_type i = 0 ; i < in.size( ) ; i++ )
+	for( size_type i = 0 ; i < out.size( ) ; i++ )
 	{
 		out[ i ] = 0;
 	}

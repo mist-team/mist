@@ -39,7 +39,7 @@ _MIST_BEGIN
 
 namespace __bmp_controller__
 {
-	// 構造体内のアライメントを1バイトに設定し，パッディングを禁止する
+	// 構造体内のアライメントを1バイトに設定し，パディングを禁止する
 #if defined( __MIST_MSVC__ )
 	#pragma pack( push, bmp_align, 1 )
 #endif
@@ -88,7 +88,7 @@ namespace __bmp_controller__
 #if defined( __MIST_MSVC__ )
 	#pragma pack( pop, bmp_align )
 #endif
-	// 構造体内のアライメントを1バイトに設定し，パッディングを禁止する ～ ここまで ～
+	// 構造体内のアライメントを1バイトに設定し，パディングを禁止する ～ ここまで ～
 
 	template < class T, class Allocator >
 	struct bmp_controller
@@ -724,7 +724,7 @@ namespace __bmp_controller__
 
 /// @brief BMP画像をMISTコンテナに読み込む
 //! 
-//! @attention RLEW圧縮のかかったBMPには未対応
+//! @attention RLE圧縮のかかったBMPには未対応
 //! 
 //! @param[out] image    … 画像を読み込む先のMISTコンテナ
 //! @param[in]  filename … 入力ファイル名

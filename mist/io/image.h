@@ -11,27 +11,31 @@
 #endif
 
 #ifndef __INCLUDE_MIST_JPEG__
-#include <mist/io/jpeg.h>
+#include "jpeg.h"
 #endif
 
 #ifndef __INCLUDE_MIST_BMP__
-#include <mist/io/bmp.h>
+#include "bmp.h"
 #endif
 
 #ifndef __INCLUDE_MIST_PNG__
-#include <mist/io/png.h>
+#include "png.h"
 #endif
 
 #if defined( _MIST_GIF_SUPPORT_ ) && _MIST_GIF_SUPPORT_ != 0 && !defined( __INCLUDE_MIST_GIF__ )
-#include <mist/io/gif.h>
+#include "gif.h"
 #endif
 
 #ifndef __INCLUDE_MIST_TIFF__
-#include <mist/io/tiff.h>
+#include "tiff.h"
 #endif
 
 #ifndef __INCLUDE_MIST_PNM__
-#include <mist/io/pnm.h>
+#include "pnm.h"
+#endif
+
+#ifndef __INCLUDE_MIST_TGA__
+#include "tga.h"
 #endif
 
 #include <iostream>
@@ -118,6 +122,10 @@ inline bool read_image( mist::array2< T, Allocator > &image, const std::string &
 	{
 		ret = mist::read_pnm( image, filename );
 	}
+	else if( ext == ".tga" )
+	{
+		ret = mist::read_tga( image, filename );
+	}
 #if defined( _MIST_GIF_SUPPORT_ ) && _MIST_GIF_SUPPORT_ != 0
 	else if( ext == ".gif" )
 	{
@@ -182,6 +190,10 @@ inline bool write_image( mist::array2< T, Allocator > &image, const std::string 
 	else if( ext == ".ppm" || ext == ".pnm" )
 	{
 		ret = mist::write_pnm( image, filename, 3 );
+	}
+	else if( ext == ".tga" )
+	{
+		ret = mist::write_tga( image, filename );
 	}
 #if defined( _MIST_GIF_SUPPORT_ ) && _MIST_GIF_SUPPORT_ != 0
 	else if( ext == ".gif" )

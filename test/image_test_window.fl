@@ -21,7 +21,7 @@ class image_test_window {open
           class image_draw_area
         }
       }
-      Fl_Menu_Bar {} {open selected
+      Fl_Menu_Bar {} {open
         xywh {0 0 550 30} box FLAT_BOX
       } {
         submenu {} {
@@ -34,7 +34,7 @@ class image_test_window {open
           } {
             menuitem {} {
               label {Open &Image}
-              callback {const char *filename = fl_file_chooser( "Open Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,gif,pbm,pgm,ppm,pnm})", "" );
+              callback {const char *filename = fl_file_chooser( "Open Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,gif,pbm,pgm,ppm,pnm,tga})", "" );
 if( filename == NULL ) return;
 
 read_image_test( filename );
@@ -62,13 +62,13 @@ Fl::wait( 0 );}
           } {
             menuitem {} {
               label {Save &Image}
-              callback {const char *filename = fl_file_chooser( "Save Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,gif,pbm,pgm,ppm,pnm})", "" );
+              callback {const char *filename = fl_file_chooser( "Save Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,gif,pbm,pgm,ppm,pnm,tga})", "" );
 if( filename == NULL ) return;
 
 write_image_test( filename );
 
 draw_area->redraw( );
-Fl::wait( 0 );}
+Fl::wait( 0 );} selected
               xywh {15 15 100 20}
             }
             menuitem {} {

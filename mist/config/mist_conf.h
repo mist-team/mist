@@ -404,7 +404,7 @@ struct __mist_console_callback__
 * - @ref statistics_group					"統計処理"
 *   - @ref mist::average					"平均値計算"
 *   - @ref mist::deviation					"分散計算"
-*   - @ref mist::histogram					"ヒストグラム作成"
+*   - @ref mist::generate_histogram			"ヒストグラム作成"
 *   - @ref mixture_group					"混合正規分布の推定"
 * - @ref random_group						"擬似乱数生成"
 *   - @ref mist::uniform::random			"一様乱数"
@@ -431,6 +431,7 @@ struct __mist_console_callback__
 *   - @ref image_png_group					"PNGデータの読み込み・書き出し"
 *   - @ref image_gif_group					"GIFデータの読み込み・書き出し"
 *   - @ref image_tiff_group					"TIFFデータの読み込み・書き出し"
+*   - @ref image_tga_group					"TGAデータの読み込み・書き出し"
 *   - @ref dicom_group						"DICOMデータの読み込み・書き出し"
 *
 *

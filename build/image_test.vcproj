@@ -229,6 +229,9 @@
 				RelativePath="..\mist\io\pnm.h">
 			</File>
 			<File
+				RelativePath="..\mist\io\tga.h">
+			</File>
+			<File
 				RelativePath="..\mist\io\tiff.h">
 			</File>
 		</Filter>
