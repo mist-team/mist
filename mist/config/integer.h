@@ -554,23 +554,7 @@ protected:
 		}
 		else
 		{
-			difference_type i;
-			for( i = a.length_ - 1 ; i >= 0 ; i-- )
-			{
-				if( a.data_[ i ] != b.data_[ i ] )
-				{
-					break;
-				}
-			}
-
-			if( i < 0 )
-			{
-				return 0;
-			}
-			else
-			{
-				return ( a.data_[ i ] > b.data_[ i ] ? 1 : -1 );
-			}
+			return( ::memcmp( a.data_, b.data_, sizeof( value_type ) * a.length_ ) );
 		}
 	}
 
