@@ -167,29 +167,14 @@ namespace dicom_controller
 	};
 
 
-	/// @brief 関数・クラスの概要を書く
-	//!
-	//! 詳細な説明や関数の使用例を書く
-	//!
-	//! @param[in] group   … 引数の説明
-	//! @param[in] element … 引数の説明
-	//!
-	//! @return 戻り値の説明
-	//!
+	/// @brief (group, element) のDICOMタグ識別子を作成する
 	inline unsigned int construct_dicom_tag( unsigned short group, unsigned short element )
 	{
 		return( ( ( (unsigned int)group << 16 ) & 0xffff0000 ) + ( (unsigned int)element & 0x0000ffff ) );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//!
-	//! 詳細な説明や関数の使用例を書く
-	//!
-	//! @param[in] vr … 引数の説明
-	//!
-	//! @return 戻り値の説明
-	//!
+	/// @brief 文字列からVRタグを作成する
 	inline dicom_vr get_dicom_vr( const std::string &vr )
 	{
 		dicom_vr ret = UNKNOWN;
@@ -477,14 +462,7 @@ namespace dicom_controller
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//!
-	//! 詳細な説明や関数の使用例を書く
-	//!
-	//! @param[in] vr … 引数の説明
-	//!
-	//! @return 戻り値の説明
-	//!
+	/// @brief VRタグを文字列に直す
 	inline std::string get_dicom_vr( const dicom_vr &vr )
 	{
 		std::string ret = "UNKNOWN";
@@ -575,59 +553,28 @@ namespace dicom_controller
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief DICOMタグ（DICOMデータの内容を表すもの）
 	class dicom_tag
 	{
 	public:
-		unsigned int tag;		///< @brief 説明を書く
-		dicom_vr     vr;		///< @brief 説明を書く
-		int          vm;		///< @brief 説明を書く
-		std::string  comment;		///< @brief 説明を書く
+		unsigned int tag;			///< @brief DICOMタグID
+		dicom_vr     vr;			///< @brief VRタグ
+		int          vm;			///< @brief VMタグ
+		std::string  comment;		///< @brief コメント
 	public:
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] t    … 引数の説明
-		//! @param[in] vvr  … 引数の説明
-		//! @param[in] vvm  … 引数の説明
-		//! @param[in] text … 引数の説明
-		//!
+		/// @brief タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを作成する
 		dicom_tag( unsigned int t = 0xffffffff, dicom_vr vvr = UNKNOWN, int vvm = 1, const std::string &text = "" ) : tag( t ), vr( vvr ), vm( vvm ), comment( text ) { }
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] t    … 引数の説明
-		//! @param[in] vvr  … 引数の説明
-		//! @param[in] vvm  … 引数の説明
-		//! @param[in] text … 引数の説明
-		//!
+		/// @brief タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを作成する
 		dicom_tag( unsigned int t, const std::string &vvr, int vvm, const std::string &text ) : tag( t ), vr( get_dicom_vr( vvr ) ), vm( vvm ), comment( text ) { }
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] t    … 引数の説明
-		//!
+		/// @brief 他のDICOMタグで初期化する
 		dicom_tag( const dicom_tag &t ) : tag( t.tag ), vr( t.vr ), vm( t.vm ), comment( t.comment ) { }
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] t    … 引数の説明
-		//!
-		//! @return 戻り値の説明を書く
-		//!
+		/// @brief 他のDICOMタグを代入する
 		const dicom_tag &operator =( const dicom_tag &t )
 		{
 			if( &t != this )
@@ -640,77 +587,38 @@ namespace dicom_controller
 			return( *this );
 		}
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] t    … 引数の説明
-		//!
-		//! @return 戻り値の説明を書く
-		//!
+		/// @brief DICOMタグのIDで大小関係を決定する
 		bool operator <( const dicom_tag &t ) const
 		{
 			return( tag < t.tag );
 		}
 
-		/// @brief 関数・クラスの概要を書く
-		//! 
-		//! 詳細な説明や関数の使用例を書く
-		//! 
-		//! @return 戻り値の説明
-		//! 
+		/// @brief DICOMタグのグループIDを取得する
 		unsigned short get_group( ) const { return( static_cast< unsigned short >( 0x0000ffff & ( tag >> 16 ) ) ); }
 
-		/// @brief 関数・クラスの概要を書く
-		//! 
-		//! 詳細な説明や関数の使用例を書く
-		//! 
-		//! @return 戻り値の説明
-		//! 
+		/// @brief DICOMタグのエレメントIDを取得する
 		unsigned short get_element( ) const { return( static_cast< unsigned short >( 0x0000ffff & tag ) ); }
 	};
 
 
-	/// @brief 関数・クラスの概要を書く
-	//!
-	//! 詳細な説明や関数の使用例を書く
-	//!
+	/// @brief DICOMのUIDを扱うクラス
 	class dicom_uid
 	{
 	public:
-		std::string  uid;		///< @brief 説明を書く
-		std::string  name;		///< @brief 説明を書く
-		std::string  type;		///< @brief 説明を書く
+		std::string  uid;		///< @brief UID
+		std::string  name;		///< @brief UIDの名前
+		std::string  type;		///< @brief UIDの種類
 
 	public:
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] id … 引数の説明
-		//! @param[in] n  … 引数の説明
-		//! @param[in] t  … 引数の説明
-		//!
+		/// @brief UID id，名前 name，タイプ type のUIDを作成する
 		dicom_uid( const std::string &id = "", const std::string &n = "", const std::string &t = "" ) : uid( id ), name( n ), type( t ){ }
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] id … 引数の説明
-		//!
+		/// @brief 他のUIDを用いて初期化する
 		dicom_uid( const dicom_uid &id ) : uid( id.uid ), name( id.name ), type( id.type ){ }
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] id … 引数の説明
-		//!
-		//! @return 戻り値の説明を書く
-		//!
+		/// @brief 他のUIDを代入する
 		const dicom_uid &operator =( const dicom_uid &id )
 		{
 			if( &id != this )
@@ -723,14 +631,7 @@ namespace dicom_controller
 		}
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] id … 引数の説明
-		//!
-		//! @return 戻り値の説明を書く
-		//!
+		/// @brief UID間の大小関係を表す
 		bool operator <( const dicom_uid &id ) const
 		{
 			return( uid < id.uid );
@@ -739,10 +640,7 @@ namespace dicom_controller
 
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief MISTで扱うことができるDICOMタグの一覧を登録するクラス
 	class dicom_tag_table : public std::multiset< dicom_tag >
 	{
 	protected:
@@ -758,44 +656,21 @@ namespace dicom_controller
 		} dicom_tag_element;
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] group   … 引数の説明
-		//! @param[in] element … 引数の説明
-		//! @param[in] vr      … 引数の説明
-		//! @param[in] vm      … 引数の説明
-		//! @param[in] comment … 引数の説明
-		//!
+		/// @brief タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを挿入する
 		void insert_tag( unsigned short group, unsigned short element, const std::string &vr, int vm, const std::string &comment )
 		{
 			baseclass::insert( dicom_tag( construct_dicom_tag( group, element ), vr, vm, comment ) );
 		}
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] group   … 引数の説明
-		//! @param[in] element … 引数の説明
-		//! @param[in] vr      … 引数の説明
-		//! @param[in] vm      … 引数の説明
-		//! @param[in] comment … 引数の説明
-		//!
+		/// @brief タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを挿入する
 		void insert_tag( unsigned short group, unsigned short element, dicom_vr vr, int vm, const std::string &comment )
 		{
 			baseclass::insert( dicom_tag( construct_dicom_tag( group, element ), vr, vm, comment ) );
 		}
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] dicom_tags   … 引数の説明
-		//!
+		/// @brief DICOMタグの配列を挿入する
 		void insert_tag( const dicom_tag_element *dicom_tags )
 		{
 			const dicom_tag_element *tag = dicom_tags;
@@ -807,47 +682,20 @@ namespace dicom_controller
 		}
 
 	public:
-		/// @brief 関数・クラスの概要を書く
-		//! 
-		//! 詳細な説明や関数の使用例を書く
-		//! 
-		//! @param[in] group   … 引数の説明
-		//! @param[in] element … 引数の説明
-		//!
-		//! @retval true  … 戻り値の説明
-		//! @retval false … 戻り値の説明
-		//! 
+		/// @brief (group, element) のタグが含まれているかどうかを調べる
 		bool contain_tag( unsigned short group, unsigned short element )
 		{
 			baseclass::iterator ite = baseclass::find( dicom_tag( construct_dicom_tag( group, element ), UNKNOWN, 1, "" ) );
 			return( ite != baseclass::end( ) );
 		}
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] group   … 引数の説明
-		//! @param[in] element … 引数の説明
-		//! @param[in] vr      … 引数の説明
-		//!
-		//! @return 戻り値の説明を書く
-		//!
+		/// @brief (group, element, vr) のタグを取得する
 		dicom_tag get_tag( unsigned short group, unsigned short element, const std::string &vr )
 		{
 			return( get_tag( group, element, get_dicom_vr( vr ) ) );
 		}
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] group   … 引数の説明
-		//! @param[in] element … 引数の説明
-		//! @param[in] vr      … 引数の説明
-		//!
-		//! @return 戻り値の説明を書く
-		//!
+		/// @brief (group, element, vr) のタグを取得する
 		dicom_tag get_tag( unsigned short group, unsigned short element, dicom_vr vr )
 		{
 			dicom_tag tag( construct_dicom_tag( group, element ), UNKNOWN, 1, "" );
@@ -868,9 +716,56 @@ namespace dicom_controller
 		}
 
 
-		/// @brief 関数・クラスの概要を書く
+		/// @brief デフォルトコンストラクタ
 		//!
-		//! 詳細な説明や関数の使用例を書く
+		//! 必要なDICOMタグのみをインポートする．
+		//! 以下のマクロのうち，1 と定義されているもののみを有効にする
+		//! 
+		//! - __INCLUDE_DICOM_TAG_0000__ … グループIDが 0000 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0002__ … グループIDが 0002 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0004__ … グループIDが 0004 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0008__ … グループIDが 0008 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0010__ … グループIDが 0010 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0012__ … グループIDが 0012 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0018__ … グループIDが 0018 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0020__ … グループIDが 0020 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0028__ … グループIDが 0028 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0032__ … グループIDが 0032 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0038__ … グループIDが 0038 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_003A__ … グループIDが 003A のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0040__ … グループIDが 0040 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0050__ … グループIDが 0050 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0054__ … グループIDが 0054 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0060__ … グループIDが 0060 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0070__ … グループIDが 0070 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0088__ … グループIDが 0088 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0100__ … グループIDが 0100 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0400__ … グループIDが 0400 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_2000__ … グループIDが 2000 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_2010__ … グループIDが 2010 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_2020__ … グループIDが 2020 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_2030__ … グループIDが 2030 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_2040__ … グループIDが 2040 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_2050__ … グループIDが 2050 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_2100__ … グループIDが 2100 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_2110__ … グループIDが 2110 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_2120__ … グループIDが 2120 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_2130__ … グループIDが 2130 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_3002__ … グループIDが 3002 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_3004__ … グループIDが 3004 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_3006__ … グループIDが 3006 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_3008__ … グループIDが 3008 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_300A__ … グループIDが 300A のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_300C__ … グループIDが 300C のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_300E__ … グループIDが 300E のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_4000__ … グループIDが 4000 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_4008__ … グループIDが 4008 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_5000__ … グループIDが 5000 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_5200__ … グループIDが 5200 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_5400__ … グループIDが 5400 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_5600__ … グループIDが 5600 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_6000__ … グループIDが 6000 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_FFFF__ … グループIDが FFFF のタグを挿入する
 		//!
 		dicom_tag_table( )
 		{
@@ -1246,10 +1141,7 @@ namespace dicom_controller
 	};
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief DICOMが扱う UID の一覧を管理するクラス
 	class dicom_uid_table : public std::set< dicom_uid >
 	{
 	protected:
@@ -1263,26 +1155,14 @@ namespace dicom_controller
 		} dicom_uid_element;
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] id … 引数の説明
-		//! @param[in] n  … 引数の説明
-		//! @param[in] t  … 引数の説明
-		//!
+		/// @brief タグID id，名前 n，タイプ t の UID を挿入する
 		void insert_uid( const std::string &id = "", const std::string &n = "", const std::string &t = "" )
 		{
 			baseclass::insert( dicom_uid( id, n, t ) );
 		}
 
 
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] dicom_uids … 引数の説明
-		//!
+		/// @brief dicom_uids の UID を挿入する
 		void insert_uid( const dicom_uid_element *dicom_uids )
 		{
 			const dicom_uid_element *uid = dicom_uids;
@@ -1294,15 +1174,7 @@ namespace dicom_controller
 		}
 
 	public:
-		/// @brief 関数・クラスの概要を書く
-		//!
-		//! 詳細な説明や関数の使用例を書く
-		//!
-		//! @param[in] uid … 引数の説明
-		//!
-		//! @retval true  … 戻り値の説明
-		//! @retval false … 戻り値の説明
-		//! 
+		/// @brief uid が含まれているかどうかを調べる
 		bool contain_uid( const std::string &uid )
 		{
 			baseclass::iterator ite = baseclass::find( dicom_uid( uid ) );
@@ -1310,14 +1182,7 @@ namespace dicom_controller
 		}
 
 
-		/// @brief 関数・クラスの概要を書く
-		//! 
-		//! 詳細な説明や関数の使用例を書く
-		//! 
-		//! @param[in] uid … 引数の説明
-		//! 
-		//! @return 戻り値の説明
-		//! 
+		/// @brief uid を取得する
 		dicom_uid get_uid( const std::string &uid )
 		{
 			dicom_uid id( uid );
@@ -1330,10 +1195,7 @@ namespace dicom_controller
 		}
 
 
-		/// @brief 関数・クラスの概要を書く
-		//! 
-		//! 詳細な説明や関数の使用例を書く
-		//! 
+		/// @brief デフォルトのコンストラクタ
 		dicom_uid_table( )
 		{
 			dicom_uid_element dicom_uid_elements[] = {

@@ -40,20 +40,17 @@ _MIST_BEGIN
 // #define __SHOW_DICOM_UNKNOWN_TAG__
 // #define __SHOW_DICOM_ZEROBYTE_TAG__
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
+/// @brief DICOM画像を操作するための関数群
 namespace dicom_controller
 {
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 指定したメモリ領域がDICOM画像を現しているかどうかをチェックする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention メモリ領域は 132 バイト以上なくてはならない
 	//! 
-	//! @param[in] p … 引数の説明
-	//! @param[in] e … 引数の説明
+	//! @param[in] p … 先頭メモリ位置
+	//! @param[in] e … 末尾メモリ位置
 	//! 
-	//! @return 戻り値の説明
+	//! @return DICOMのプリアンブルの次を指すポインタ
 	//! 
 	inline unsigned char *check_dicom_file( unsigned char *p, unsigned char *e )
 	{
@@ -74,19 +71,19 @@ namespace dicom_controller
 	}
 
 
-	/// @brief DICOMのタグを読み込み，テーブルに登録されているものと照合する．
+	/// @brief DICOMのタグを読み込み，テーブルに登録されているものと照合する
 	//! 
 	//! テーブルに登録されていない場合は，読み飛ばす．
 	//! もし，適切なDICOMファイルでない場合は-2を返し，データの終端もしくはファイルの読み込みに失敗した場合は-1を返す．
 	//! そして，読み飛ばした場合は0を返し，テーブルに登録されている場合は次に存在するデータのバイト数を返す．
 	//! データを処理する先頭のポインタ 'p' と，データの最後＋1をさすポインタ 'e' を与える
 	//! 
-	//! @param[in] p        … 引数の説明
-	//! @param[in] e        … 引数の説明
-	//! @param[in] tag      … 引数の説明
-	//! @param[in] numBytes … 引数の説明
+	//! @param[in]  p        … 先頭メモリ位置
+	//! @param[in]  e        … 末尾メモリ位置
+	//! @param[out] tag      … 取得されたDICOMのタグ
+	//! @param[out] numBytes … DICOMタグが使用しているメモリのバイト数
 	//! 
-	//! @return 戻り値の説明
+	//! @return タグが示すデータ内容を指す先頭ポインタ
 	//! 
 	inline unsigned char *read_dicom_tag( unsigned char *p, unsigned char *e, dicom_tag &tag, difference_type &numBytes )
 	{
@@ -232,15 +229,13 @@ namespace dicom_controller
 
 
 
-	/// @brief DICOMのタグに対し，各VRごとの処理を行う．
+	/// @brief DICOMのタグに対し，各VRごとの処理を行う
 	//! 
-	//! 登録されていないタグの場合は false をかえし，正しく処理された場合のみ true を返す．
+	//! @param[in]     tag       … 処理するDICOMタグ
+	//! @param[in,out] byte      … 処理されるバイト列
+	//! @param[in]     num_bytes … バイト列の長さ
 	//! 
-	//! @param[in] tag       … 引数の説明
-	//! @param[in] byte      … 引数の説明
-	//! @param[in] num_bytes … 引数の説明
-	//! 
-	//! @return 戻り値の説明
+	//! @return 登録されていないタグの場合は false をかえし，正しく処理された場合のみ true を返す
 	//! 
 	inline bool process_dicom_tag( const dicom_tag &tag, unsigned char *byte, difference_type num_bytes )
 	{
@@ -638,15 +633,13 @@ namespace dicom_controller
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief シーケンスタグかどうかを判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @param[in] p … 先頭ポインタ
+	//! @param[in] e … 末尾ポインタ
 	//! 
-	//! @param[in] p … 引数の説明
-	//! @param[in] e … 引数の説明
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … シーケンスタグの場合
+	//! @retval false … それ以外
 	//! 
 	inline bool is_sequence_separate_tag( const unsigned char *p, const unsigned char *e )
 	{
@@ -657,15 +650,13 @@ namespace dicom_controller
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x00 && p[ 3 ] == 0xe0 );
 	}
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief シーケンス要素終了タグかどうか
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @param[in] p … 先頭ポインタ
+	//! @param[in] e … 末尾ポインタ
 	//! 
-	//! @param[in] p … 引数の説明
-	//! @param[in] e … 引数の説明
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … シーケンス要素終了タグの場合
+	//! @retval false … それ以外
 	//! 
 	inline bool is_sequence_element_end( const unsigned char *p, const unsigned char *e )
 	{
@@ -676,15 +667,13 @@ namespace dicom_controller
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x0d && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
 	}
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief シーケンス終了タグかどうか
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @param[in] p … 先頭ポインタ
+	//! @param[in] e … 末尾ポインタ
 	//! 
-	//! @param[in] p … 引数の説明
-	//! @param[in] e … 引数の説明
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … シーケンス終了タグの場合
+	//! @retval false … それ以外
 	//! 
 	inline bool is_sequence_tag_end( const unsigned char *p, const unsigned char *e )
 	{
@@ -696,15 +685,15 @@ namespace dicom_controller
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief DICOMのタグを処理する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! シーケンスを表すDICOMタグが見つかった場合は，再帰的に本関数が適用される
 	//! 
-	//! @param[in] dicom       … 引数の説明
-	//! @param[in] pointer     … 引数の説明
-	//! @param[in] end_pointer … 引数の説明
+	//! @param[out] dicom       … DICOMデータの出力先
+	//! @param[in]  pointer     … 先頭ポインタ
+	//! @param[in]  end_pointer … 末尾先頭ポインタ
 	//! 
-	//! @return 戻り値の説明
+	//! @return 次のタグを指すポインタ
 	//! 
 	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
 	{
@@ -861,15 +850,13 @@ namespace dicom_controller
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief DICOMファイルを読み込んで，全てのDICOMタグを処理しテーブルに登録する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @param[out] dicom    … DICOMタグ毎にデータを登録するテーブル
+	//! @param[in]  filename … 入力DICOM]ファイル名
 	//! 
-	//! @param[in] dicom    … 引数の説明
-	//! @param[in] filename … 引数の説明
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … DICOMファイルの処理に成功
+	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
 	//! 
 	inline bool read_dicom_tags( dicom_tag_container &dicom, const std::string &filename )
 	{
@@ -929,15 +916,15 @@ namespace dicom_controller
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief DICOMデータを画像コンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @note 本処理では，不要なタグは全て取り除かれてしまうため，必要なデータがある場合は，本関数内を参考にして自作してください
 //! 
-//! @param[in] image    … 引数の説明
-//! @param[in] filename … 引数の説明
+//! @param[out] image    … 出力画像
+//! @param[in]  filename … 入力ファイル名
 //! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … DICOMファイルの処理に成功
+//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
 //! 
 template < class T, class Allocator >
 bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
