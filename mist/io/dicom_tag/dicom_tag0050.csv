@@ -1,9 +1,9 @@
-0x0050,0x0004,CS,1,"""Calibration Image""",//
-0x0050,0x0010,SQ,1,"""Device Sequence""",//
-0x0050,0x0014,DS,1,"""Device Length""",//
-0x0050,0x0016,DS,1,"""Device Diameter""",//
-0x0050,0x0017,CS,1,"""Device Diameter Units""",//
-0x0050,0x0018,DS,1,"""Device Volume""",//
-0x0050,0x0019,DS,1,"""Inter-marker Distance""",//
-0x0050,0x0020,LO,1,"""Device Description""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+0x0050,0x0004,CS,1,"Calibration Image",//
+0x0050,0x0010,SQ,1,"Device Sequence",//
+0x0050,0x0014,DS,1,"Device Length",//
+0x0050,0x0016,DS,1,"Device Diameter",//
+0x0050,0x0017,CS,1,"Device Diameter Units",//
+0x0050,0x0018,DS,1,"Device Volume",//
+0x0050,0x0019,DS,1,"Inter-marker Distance",//
+0x0050,0x0020,LO,1,"Device Description",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

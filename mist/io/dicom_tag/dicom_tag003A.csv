@@ -1,26 +1,26 @@
-0x003A,0x0004,CS,1,"""Waveform Originality""",//
-0x003A,0x0005,US,1,"""Number of Waveform Channels""",//
-0x003A,0x0010,UL,1,"""Number of Waveform Samples""",//
-0x003A,0x001A,DS,1,"""Sampling Frequency""",//
-0x003A,0x0020,SH,1,"""Multiplex Group Label""",//
-0x003A,0x0200,SQ,1,"""Channel Definition Sequence""",//
-0x003A,0x0202,IS,1,"""Waveform Channel Number""",//
-0x003A,0x0203,SH,1,"""Channel Label""",//
-0x003A,0x0205,CS,-1,"""Channel Status""",//
-0x003A,0x0208,SQ,1,"""Channel Source Sequence""",//
-0x003A,0x0209,SQ,1,"""Channel Source Modifiers Sequence""",//
-0x003A,0x020A,SQ,1,"""Source Waveform Sequence""",//
-0x003A,0x020C,LO,1,"""Channel Derivation Description""",//
-0x003A,0x0210,DS,1,"""Channel Sensitivity""",//
-0x003A,0x0211,SQ,1,"""Channel Sensitivity Units Sequence""",//
-0x003A,0x0212,DS,1,"""Channel Sensitivity Correction Factor""",//
-0x003A,0x0213,DS,1,"""Channel Baseline""",//
-0x003A,0x0214,DS,1,"""Channel Time Skew""",//
-0x003A,0x0215,DS,1,"""Channel Sample Skew""",//
-0x003A,0x0218,DS,1,"""Channel Offset""",//
-0x003A,0x021A,US,1,"""Waveform Bits Stored""",//
-0x003A,0x0220,DS,1,"""Filter Low Frequency""",//
-0x003A,0x0221,DS,1,"""Filter High Frequency""",//
-0x003A,0x0222,DS,1,"""Notch Filter Frequency""",//
-0x003A,0x0223,DS,1,"""Notch Filter Bandwidth""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+0x003A,0x0004,CS,1,"Waveform Originality",//
+0x003A,0x0005,US,1,"Number of Waveform Channels",//
+0x003A,0x0010,UL,1,"Number of Waveform Samples",//
+0x003A,0x001A,DS,1,"Sampling Frequency",//
+0x003A,0x0020,SH,1,"Multiplex Group Label",//
+0x003A,0x0200,SQ,1,"Channel Definition Sequence",//
+0x003A,0x0202,IS,1,"Waveform Channel Number",//
+0x003A,0x0203,SH,1,"Channel Label",//
+0x003A,0x0205,CS,-1,"Channel Status",//
+0x003A,0x0208,SQ,1,"Channel Source Sequence",//
+0x003A,0x0209,SQ,1,"Channel Source Modifiers Sequence",//
+0x003A,0x020A,SQ,1,"Source Waveform Sequence",//
+0x003A,0x020C,LO,1,"Channel Derivation Description",//
+0x003A,0x0210,DS,1,"Channel Sensitivity",//
+0x003A,0x0211,SQ,1,"Channel Sensitivity Units Sequence",//
+0x003A,0x0212,DS,1,"Channel Sensitivity Correction Factor",//
+0x003A,0x0213,DS,1,"Channel Baseline",//
+0x003A,0x0214,DS,1,"Channel Time Skew",//
+0x003A,0x0215,DS,1,"Channel Sample Skew",//
+0x003A,0x0218,DS,1,"Channel Offset",//
+0x003A,0x021A,US,1,"Waveform Bits Stored",//
+0x003A,0x0220,DS,1,"Filter Low Frequency",//
+0x003A,0x0221,DS,1,"Filter High Frequency",//
+0x003A,0x0222,DS,1,"Notch Filter Frequency",//
+0x003A,0x0223,DS,1,"Notch Filter Bandwidth",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

@@ -1,11 +1,11 @@
-//0x7FE0,0x0000,UL,1,"""Group 7FE0 Length""",//
-0x7E0F,0x0010,OW,1,"""Pixel Data""",//
-0x7E0F,0x0010,OB,1,"""Pixel Data""",//
-0x7FE0,0x0010,OW,1,"""Pixel Data""",//
-0x7FE0,0x0010,OB,1,"""Pixel Data""",//
-0xFFFA,0xFFFA,SQ,1,"""Digital Signatures Sequence""",//
-0xFFFC,0xFFFC,OB,1,"""Data Set Trailing Padding""",//
-//0xFFFE,0xE000,DL,1,"""Item""",//
-//0xFFFE,0xE00D,DL,1,"""Item Delimitation Item""",//
-//0xFFFE,0xE0DD,DL,1,"""Sequence Delimitation Item""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+//0x7FE0,0x0000,UL,1,"Group 7FE0 Length",//
+0x7E0F,0x0010,OW,1,"Pixel Data",//
+0x7E0F,0x0010,OB,1,"Pixel Data",//
+0x7FE0,0x0010,OW,1,"Pixel Data",//
+0x7FE0,0x0010,OB,1,"Pixel Data",//
+0xFFFA,0xFFFA,SQ,1,"Digital Signatures Sequence",//
+0xFFFC,0xFFFC,OB,1,"Data Set Trailing Padding",//
+//0xFFFE,0xE000,DL,1,"Item",//
+//0xFFFE,0xE00D,DL,1,"Item Delimitation Item",//
+//0xFFFE,0xE0DD,DL,1,"Sequence Delimitation Item",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

@@ -1,14 +1,14 @@
-//0x2040,0x0000,UL,1,"""Group 2040 Length""",//
-0x2040,0x0010,SQ,1,"""Referenced Overlay Plane Sequence""",//
-0x2040,0x0011,US,99,"""Refenced Overlay Plane Groups""",//
-0x2040,0x0020,SQ,1,"""Overlay Pixel Data Sequence""",//
-0x2040,0x0060,CS,1,"""Overlay Magnification Type""",//
-0x2040,0x0070,CS,1,"""Overlay Smoothing Type""",//
-0x2040,0x0072,CS,1,"""Overlay or Image Magnification""",//
-0x2040,0x0074,US,1,"""Magnify to Number of Columns""",//
-0x2040,0x0080,CS,1,"""Overlay Foreground Density""",//
-0x2040,0x0082,CS,1,"""Overlay Background Density""",//
-0x2040,0x0090,CS,1,"""overlay Mode(RET)""",//
-0x2040,0x0100,CS,1,"""Threshold Density(RET)""",//
-0x2040,0x0500,SQ,1,"""Referenced Image Box Sequence(RET)""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+//0x2040,0x0000,UL,1,"Group 2040 Length",//
+0x2040,0x0010,SQ,1,"Referenced Overlay Plane Sequence",//
+0x2040,0x0011,US,99,"Refenced Overlay Plane Groups",//
+0x2040,0x0020,SQ,1,"Overlay Pixel Data Sequence",//
+0x2040,0x0060,CS,1,"Overlay Magnification Type",//
+0x2040,0x0070,CS,1,"Overlay Smoothing Type",//
+0x2040,0x0072,CS,1,"Overlay or Image Magnification",//
+0x2040,0x0074,US,1,"Magnify to Number of Columns",//
+0x2040,0x0080,CS,1,"Overlay Foreground Density",//
+0x2040,0x0082,CS,1,"Overlay Background Density",//
+0x2040,0x0090,CS,1,"overlay Mode(RET)",//
+0x2040,0x0100,CS,1,"Threshold Density(RET)",//
+0x2040,0x0500,SQ,1,"Referenced Image Box Sequence(RET)",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

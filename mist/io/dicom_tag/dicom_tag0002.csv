@@ -1,11 +1,11 @@
-0x0002,0x0000,UL,1,"""Group 0002 Length""",//
-0x0002,0x0001,OB,1,"""File Meta Information Version""",//
-0x0002,0x0002,UI,1,"""Media Stored SOP Class UID""",//
-0x0002,0x0003,UI,1,"""Media Stored SOP Instance UID""",//
-0x0002,0x0010,UI,1,"""Transfer Syntax UID""",//
-0x0002,0x0012,UI,1,"""Implementation Class UID""",//
-0x0002,0x0013,SH,1,"""Implementation Version Name""",//
-0x0002,0x0016,AE,1,"""Source Application Entity Title""",//
-0x0002,0x0100,UI,1,"""Private Information Creator UID""",//
-0x0002,0x0102,OB,1,"""Private Information""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+0x0002,0x0000,UL,1,"Group 0002 Length",//
+0x0002,0x0001,OB,1,"File Meta Information Version",//
+0x0002,0x0002,UI,1,"Media Stored SOP Class UID",//
+0x0002,0x0003,UI,1,"Media Stored SOP Instance UID",//
+0x0002,0x0010,UI,1,"Transfer Syntax UID",//
+0x0002,0x0012,UI,1,"Implementation Class UID",//
+0x0002,0x0013,SH,1,"Implementation Version Name",//
+0x0002,0x0016,AE,1,"Source Application Entity Title",//
+0x0002,0x0100,UI,1,"Private Information Creator UID",//
+0x0002,0x0102,OB,1,"Private Information",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

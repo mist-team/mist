@@ -1,26 +1,26 @@
-0x300C,0x0002,SQ,1,"""Referenced RT Plan Sequence""",//
-0x300C,0x0004,SQ,1,"""Referenced Beam Sequence""",//
-0x300C,0x0006,IS,1,"""Referenced Beam Number""",//
-0x300C,0x0007,IS,1,"""Referenced Reference Image Number""",//
-0x300C,0x0008,DS,1,"""Start Cumulative Meterset Weight""",//
-0x300C,0x0009,DS,1,"""End Cumulative Meterset Weight""",//
-0x300C,0x000A,SQ,1,"""Referenced Brachy Application Setup Sequence""",//
-0x300C,0x000C,IS,1,"""Referenced Brachy Application Setup Number""",//
-0x300C,0x000E,IS,1,"""Referenced Source Number""",//
-0x300C,0x0020,SQ,1,"""Referenced Fraction Group Sequence""",//
-0x300C,0x0022,IS,1,"""Referenced Fraction Group Number""",//
-0x300C,0x0040,SQ,1,"""Referenced Verification Image Sequence""",//
-0x300C,0x0042,SQ,1,"""Referenced Reference Image Sequence""",//
-0x300C,0x0050,SQ,1,"""Referenced Dose Reference Sequence""",//
-0x300C,0x0051,IS,1,"""Referenced Dose Reference Number""",//
-0x300C,0x0055,SQ,1,"""Brachy Referenced Dose Reference Sequence""",//
-0x300C,0x0060,SQ,1,"""Referenced Structure Set Sequence""",//
-0x300C,0x006A,IS,1,"""Referenced Patient Setup Number""",//
-0x300C,0x0080,SQ,1,"""Referenced Dose Sequence""",//
-0x300C,0x00A0,IS,1,"""Referenced Tolerance Table Number""",//
-0x300C,0x00B0,SQ,1,"""Referenced Bolus Sequence""",//
-0x300C,0x00C0,IS,1,"""Referenced Wedge Number""",//
-0x300C,0x00D0,IS,1,"""Referenced Compensator Number""",//
-0x300C,0x00E0,IS,1,"""Referenced Block Number""",//
-0x300C,0x00F0,IS,1,"""Referenced Control Point Index""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+0x300C,0x0002,SQ,1,"Referenced RT Plan Sequence",//
+0x300C,0x0004,SQ,1,"Referenced Beam Sequence",//
+0x300C,0x0006,IS,1,"Referenced Beam Number",//
+0x300C,0x0007,IS,1,"Referenced Reference Image Number",//
+0x300C,0x0008,DS,1,"Start Cumulative Meterset Weight",//
+0x300C,0x0009,DS,1,"End Cumulative Meterset Weight",//
+0x300C,0x000A,SQ,1,"Referenced Brachy Application Setup Sequence",//
+0x300C,0x000C,IS,1,"Referenced Brachy Application Setup Number",//
+0x300C,0x000E,IS,1,"Referenced Source Number",//
+0x300C,0x0020,SQ,1,"Referenced Fraction Group Sequence",//
+0x300C,0x0022,IS,1,"Referenced Fraction Group Number",//
+0x300C,0x0040,SQ,1,"Referenced Verification Image Sequence",//
+0x300C,0x0042,SQ,1,"Referenced Reference Image Sequence",//
+0x300C,0x0050,SQ,1,"Referenced Dose Reference Sequence",//
+0x300C,0x0051,IS,1,"Referenced Dose Reference Number",//
+0x300C,0x0055,SQ,1,"Brachy Referenced Dose Reference Sequence",//
+0x300C,0x0060,SQ,1,"Referenced Structure Set Sequence",//
+0x300C,0x006A,IS,1,"Referenced Patient Setup Number",//
+0x300C,0x0080,SQ,1,"Referenced Dose Sequence",//
+0x300C,0x00A0,IS,1,"Referenced Tolerance Table Number",//
+0x300C,0x00B0,SQ,1,"Referenced Bolus Sequence",//
+0x300C,0x00C0,IS,1,"Referenced Wedge Number",//
+0x300C,0x00D0,IS,1,"Referenced Compensator Number",//
+0x300C,0x00E0,IS,1,"Referenced Block Number",//
+0x300C,0x00F0,IS,1,"Referenced Control Point Index",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

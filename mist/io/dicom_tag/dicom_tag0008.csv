@@ -1,137 +1,137 @@
-0x0008,0x0000,UL,1,"""Group 0008 Length""",//
-0x0008,0x0001,UL,1,"""Group 0008 Length to End (RET)""",//
-0x0008,0x0005,CS,-1,"""Specific Character Set""",//
-0x0008,0x0008,CS,-1,"""Image Type""",//
-0x0008,0x0010,SH,1,"""Recognition Code (RET)""",//
-0x0008,0x0012,DA,1,"""Instance Creation Date""",//
-0x0008,0x0013,TM,1,"""Instance Creation Time""",//
-0x0008,0x0014,UI,1,"""Instance Creator UID""",//
-0x0008,0x0016,UI,1,"""SOP Class UID""",//
-0x0008,0x0018,UI,1,"""SOP Instance UID""",//
-0x0008,0x0020,DA,1,"""Study Date""",//
-0x0008,0x0021,DA,1,"""Series Date""",//
-0x0008,0x0022,DA,1,"""Acquisition Date""",//
-0x0008,0x0023,DA,1,"""Image Date""",//
-0x0008,0x0024,DA,1,"""Overlay Date""",//
-0x0008,0x0025,DA,1,"""Curve Date""",//
-0x0008,0x002A,DT,1,"""Acquisition Datetime""",//
-0x0008,0x0030,TM,1,"""Study Time""",//
-0x0008,0x0031,TM,1,"""Series Time""",//
-0x0008,0x0032,TM,1,"""Acquisition Time""",//
-0x0008,0x0033,TM,1,"""Image Time""",//
-0x0008,0x0034,TM,1,"""Overlay Time""",//
-0x0008,0x0035,TM,1,"""Curve Time""",//
-0x0008,0x0040,US,1,"""Data Set Type (RET)""",//
-0x0008,0x0041,SH,1,"""Data Set Subtype (RET)""",//
-0x0008,0x0042,CS,1,"""Nuclear Medicine Series Type""",//
-0x0008,0x0050,SH,1,"""Accession Number""",//
-0x0008,0x0052,CS,1,"""Query/Retrieve Level""",//
-0x0008,0x0054,AE,-1,"""Retrieve AE Title""",//
-0x0008,0x0056,CS,1,"""Instance Availability""",//
-0x0008,0x0058,UI,-1,"""Failed SOP Instance UID List""",//
-0x0008,0x0060,CS,1,"""Modality""",//
-0x0008,0x0061,CS,-1,"""Modality in Study""",//
-0x0008,0x0064,CS,1,"""Conversion Type""",//
-0x0008,0x0068,CS,1,"""Persentation Internet Type""",//
-0x0008,0x0070,LO,1,"""Manufacturer""",//
-0x0008,0x0080,LO,1,"""Institution Name""",//
-0x0008,0x0081,ST,1,"""Institution Address""",//
-0x0008,0x0082,SQ,1,"""Institution Code Sequence""",//
-0x0008,0x0090,PN,1,"""Referring Physician's Name""",//
-0x0008,0x0092,ST,1,"""Referring Physician's Address""",//
-0x0008,0x0094,SH,-1,"""Referring Physician's Telephone Numbers""",//
-0x0008,0x0100,SH,1,"""Code Value""",//
-0x0008,0x0102,SH,1,"""Coding Scheme Designator""",//
-0x0008,0x0103,SH,1,"""Coding Scheme Version""",//
-0x0008,0x0104,LO,1,"""Code Meaning""",//
-0x0008,0x0105,CS,1,"""Mapping Resource""",//
-0x0008,0x0106,DT,1,"""Context Group Version""",//
-0x0008,0x0107,DT,1,"""Context Group Local Version""",//
-0x0008,0x010B,CS,1,"""Context Group Extension Flag""",//
-0x0008,0x010C,UI,1,"""Coding Scheme UID""",//
-0x0008,0x010D,UI,1,"""Context Group Extension Creator UID""",//
-0x0008,0x010F,CS,1,"""Context Identifier""",//
-0x0008,0x0110,SQ,1,"""Coding Scheme Identification Sequence""",//
-0x0008,0x0112,LO,1,"""Coding Scheme Registry""",//
-0x0008,0x0114,ST,1,"""Coding Scheme External ID""",//
-0x0008,0x0115,ST,1,"""Coding Scheme Name""",//
-0x0008,0x0116,ST,1,"""Responsible Organization""",//
-0x0008,0x0201,SH,1,"""Timezone Offset From UTC""",//
-0x0008,0x1000,SH,1,"""Network ID (RET)""",//
-0x0008,0x1010,SH,1,"""Station Name""",//
-0x0008,0x1030,LO,1,"""Study Description""",//
-0x0008,0x1032,SQ,1,"""Procedure Code Sequence""",//
-0x0008,0x103E,LO,1,"""Series Description""",//
-0x0008,0x1040,LO,1,"""Institutional Department Name""",//
-0x0008,0x1048,PN,-1,"""Physician(s) of Record""",//
-0x0008,0x1049,SQ,1,"""Physician(s) of Record Identification Sequence""",//
-0x0008,0x1050,PN,-1,"""Performing Physician's Name""",//
-0x0008,0x1052,SQ,1,"""Performing Physician Identification Sequence""",//
-0x0008,0x1060,PN,-1,"""Name of Physician(s) Reading Study""",//
-0x0008,0x1062,SQ,1,"""Physician(s) Reading Study Identification Sequence""",//
-0x0008,0x1070,PN,-1,"""Operator's Name""",//
-0x0008,0x1072,SQ,1,"""Operator Identification Sequence""",//
-0x0008,0x1080,LO,-1,"""Admitting Diagnoses Description""",//
-0x0008,0x1084,SQ,1,"""Admitting Diagnosis Code Sequence""",//
-0x0008,0x1090,LO,1,"""Manufacturer's Model Name""",//
-0x0008,0x1100,SQ,1,"""Referenced Results Sequence""",//
-0x0008,0x1110,SQ,1,"""Referenced Study Sequence""",//
-0x0008,0x1111,SQ,1,"""Referenced Study Component Sequence""",//
-0x0008,0x1115,SQ,1,"""Referenced Series Sequence""",//
-0x0008,0x1120,SQ,1,"""Referenced Patient Sequence""",//
-0x0008,0x1125,SQ,1,"""Referenced Visit Sequence""",//
-0x0008,0x1130,SQ,1,"""Referenced Overlay Sequence""",//
-0x0008,0x113A,SQ,1,"""Referenced Waveform Sequence""",//
-0x0008,0x1140,SQ,1,"""Referenced Image Sequence""",//
-0x0008,0x1145,SQ,1,"""Referenced Curve Sequence""",//
-0x0008,0x114A,SQ,1,"""Referenced Instance Sequence""",//
-0x0008,0x1150,UI,1,"""Referenced SOP Class UID""",//
-0x0008,0x1155,UI,1,"""Referenced SOP Instance UID""",//
-0x0008,0x115A,UI,-1,"""SOP Classes Supported""",//
-0x0008,0x1160,IS,-1,"""Referenced Frame Number""",//
-0x0008,0x1195,UI,1,"""Transaction UID""",//
-0x0008,0x1197,US,1,"""Failure Reason""",//
-0x0008,0x1198,SQ,1,"""Failed SOP Sequence""",//
-0x0008,0x1199,SQ,1,"""Referenced SOP Sequence""",//
-0x0008,0x2110,CS,1,"""Lossy Image Compression(RET)""",//
-0x0008,0x2111,ST,1,"""Derivation Description""",//
-0x0008,0x2112,SQ,1,"""Source Image Sequence""",//
-0x0008,0x2120,SH,1,"""Stage Name""",//
-0x0008,0x2122,IS,1,"""Stage Number""",//
-0x0008,0x2124,IS,1,"""Number of Stages""",//
-0x0008,0x2127,SH,1,"""View Name""",//
-0x0008,0x2128,IS,1,"""View Number""",//
-0x0008,0x2129,IS,1,"""Number of Event Timers""",//
-0x0008,0x212A,IS,1,"""Number of Views in Stage""",//
-0x0008,0x2130,DS,-1,"""Event Elapsed Time(s)""",//
-0x0008,0x2132,LO,-1,"""Event Timer Name(s)""",//
-0x0008,0x2142,IS,1,"""Start Trim""",//
-0x0008,0x2143,IS,1,"""Stop Trim""",//
-0x0008,0x2144,IS,1,"""Recommended Display Frame Rate""",//
-0x0008,0x2200,CS,1,"""Transducer Position(RET)""",//
-0x0008,0x2204,CS,1,"""Transducer Orientation(RET)""",//
-0x0008,0x2208,CS,1,"""Anatomic Structure(RET)""",//
-0x0008,0x2218,SQ,1,"""Anatomic Region Sequence""",//
-0x0008,0x2220,SQ,1,"""Anatomic Region Modifier Sequence""",//
-0x0008,0x2228,SQ,1,"""Primary Anatomic Structure Sequence""",//
-0x0008,0x2229,SQ,1,"""Anatomic Structure Space or Region Sequence""",//
-0x0008,0x2230,SQ,1,"""Primary Anatomic Structure Modifier Sequence""",//
-0x0008,0x2240,SQ,1,"""Transducer Position Sequence""",//
-0x0008,0x2242,SQ,1,"""Transducer Position Modifier Sequence""",//
-0x0008,0x2244,SQ,1,"""Transducer Orientation Sequence""",//
-0x0008,0x2246,SQ,1,"""Transducer Orientation Modifier Sequence""",//
-0x0008,0x4000,SH,1,"""Group 0008 Comments (RET)""",//
-0x0008,0x9007,CS,4,"""Frame Type""",//
-0x0008,0x9092,SQ,1,"""Referenced Image Evidence Sequence""",//
-0x0008,0x9121,SQ,1,"""Referenced Raw Data Sequence""",//
-0x0008,0x9123,UI,1,"""Creator-Version UID""",//
-0x0008,0x9124,SQ,1,"""Derivation Image Sequence""",//
-0x0008,0x9154,SQ,1,"""Source Image Evidence Sequence""",//
-0x0008,0x9205,CS,1,"""Pixel Presentation""",//
-0x0008,0x9206,CS,1,"""Volumetric Properties""",//
-0x0008,0x9207,CS,1,"""Volume Based Calculation Technique""",//
-0x0008,0x9208,CS,1,"""Complex Image Component""",//
-0x0008,0x9209,CS,1,"""Acquisition Contrast""",//
-0x0008,0x9215,SQ,1,"""Derivation Code Sequence""",//
-0x0008,0x9237,SQ,1,"""Referenced Grayscale Presentation State Sequence""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+0x0008,0x0000,UL,1,"Group 0008 Length",//
+0x0008,0x0001,UL,1,"Group 0008 Length to End (RET)",//
+0x0008,0x0005,CS,-1,"Specific Character Set",//
+0x0008,0x0008,CS,-1,"Image Type",//
+0x0008,0x0010,SH,1,"Recognition Code (RET)",//
+0x0008,0x0012,DA,1,"Instance Creation Date",//
+0x0008,0x0013,TM,1,"Instance Creation Time",//
+0x0008,0x0014,UI,1,"Instance Creator UID",//
+0x0008,0x0016,UI,1,"SOP Class UID",//
+0x0008,0x0018,UI,1,"SOP Instance UID",//
+0x0008,0x0020,DA,1,"Study Date",//
+0x0008,0x0021,DA,1,"Series Date",//
+0x0008,0x0022,DA,1,"Acquisition Date",//
+0x0008,0x0023,DA,1,"Image Date",//
+0x0008,0x0024,DA,1,"Overlay Date",//
+0x0008,0x0025,DA,1,"Curve Date",//
+0x0008,0x002A,DT,1,"Acquisition Datetime",//
+0x0008,0x0030,TM,1,"Study Time",//
+0x0008,0x0031,TM,1,"Series Time",//
+0x0008,0x0032,TM,1,"Acquisition Time",//
+0x0008,0x0033,TM,1,"Image Time",//
+0x0008,0x0034,TM,1,"Overlay Time",//
+0x0008,0x0035,TM,1,"Curve Time",//
+0x0008,0x0040,US,1,"Data Set Type (RET)",//
+0x0008,0x0041,SH,1,"Data Set Subtype (RET)",//
+0x0008,0x0042,CS,1,"Nuclear Medicine Series Type",//
+0x0008,0x0050,SH,1,"Accession Number",//
+0x0008,0x0052,CS,1,"Query/Retrieve Level",//
+0x0008,0x0054,AE,-1,"Retrieve AE Title",//
+0x0008,0x0056,CS,1,"Instance Availability",//
+0x0008,0x0058,UI,-1,"Failed SOP Instance UID List",//
+0x0008,0x0060,CS,1,"Modality",//
+0x0008,0x0061,CS,-1,"Modality in Study",//
+0x0008,0x0064,CS,1,"Conversion Type",//
+0x0008,0x0068,CS,1,"Persentation Internet Type",//
+0x0008,0x0070,LO,1,"Manufacturer",//
+0x0008,0x0080,LO,1,"Institution Name",//
+0x0008,0x0081,ST,1,"Institution Address",//
+0x0008,0x0082,SQ,1,"Institution Code Sequence",//
+0x0008,0x0090,PN,1,"Referring Physician's Name",//
+0x0008,0x0092,ST,1,"Referring Physician's Address",//
+0x0008,0x0094,SH,-1,"Referring Physician's Telephone Numbers",//
+0x0008,0x0100,SH,1,"Code Value",//
+0x0008,0x0102,SH,1,"Coding Scheme Designator",//
+0x0008,0x0103,SH,1,"Coding Scheme Version",//
+0x0008,0x0104,LO,1,"Code Meaning",//
+0x0008,0x0105,CS,1,"Mapping Resource",//
+0x0008,0x0106,DT,1,"Context Group Version",//
+0x0008,0x0107,DT,1,"Context Group Local Version",//
+0x0008,0x010B,CS,1,"Context Group Extension Flag",//
+0x0008,0x010C,UI,1,"Coding Scheme UID",//
+0x0008,0x010D,UI,1,"Context Group Extension Creator UID",//
+0x0008,0x010F,CS,1,"Context Identifier",//
+0x0008,0x0110,SQ,1,"Coding Scheme Identification Sequence",//
+0x0008,0x0112,LO,1,"Coding Scheme Registry",//
+0x0008,0x0114,ST,1,"Coding Scheme External ID",//
+0x0008,0x0115,ST,1,"Coding Scheme Name",//
+0x0008,0x0116,ST,1,"Responsible Organization",//
+0x0008,0x0201,SH,1,"Timezone Offset From UTC",//
+0x0008,0x1000,SH,1,"Network ID (RET)",//
+0x0008,0x1010,SH,1,"Station Name",//
+0x0008,0x1030,LO,1,"Study Description",//
+0x0008,0x1032,SQ,1,"Procedure Code Sequence",//
+0x0008,0x103E,LO,1,"Series Description",//
+0x0008,0x1040,LO,1,"Institutional Department Name",//
+0x0008,0x1048,PN,-1,"Physician(s) of Record",//
+0x0008,0x1049,SQ,1,"Physician(s) of Record Identification Sequence",//
+0x0008,0x1050,PN,-1,"Performing Physician's Name",//
+0x0008,0x1052,SQ,1,"Performing Physician Identification Sequence",//
+0x0008,0x1060,PN,-1,"Name of Physician(s) Reading Study",//
+0x0008,0x1062,SQ,1,"Physician(s) Reading Study Identification Sequence",//
+0x0008,0x1070,PN,-1,"Operator's Name",//
+0x0008,0x1072,SQ,1,"Operator Identification Sequence",//
+0x0008,0x1080,LO,-1,"Admitting Diagnoses Description",//
+0x0008,0x1084,SQ,1,"Admitting Diagnosis Code Sequence",//
+0x0008,0x1090,LO,1,"Manufacturer's Model Name",//
+0x0008,0x1100,SQ,1,"Referenced Results Sequence",//
+0x0008,0x1110,SQ,1,"Referenced Study Sequence",//
+0x0008,0x1111,SQ,1,"Referenced Study Component Sequence",//
+0x0008,0x1115,SQ,1,"Referenced Series Sequence",//
+0x0008,0x1120,SQ,1,"Referenced Patient Sequence",//
+0x0008,0x1125,SQ,1,"Referenced Visit Sequence",//
+0x0008,0x1130,SQ,1,"Referenced Overlay Sequence",//
+0x0008,0x113A,SQ,1,"Referenced Waveform Sequence",//
+0x0008,0x1140,SQ,1,"Referenced Image Sequence",//
+0x0008,0x1145,SQ,1,"Referenced Curve Sequence",//
+0x0008,0x114A,SQ,1,"Referenced Instance Sequence",//
+0x0008,0x1150,UI,1,"Referenced SOP Class UID",//
+0x0008,0x1155,UI,1,"Referenced SOP Instance UID",//
+0x0008,0x115A,UI,-1,"SOP Classes Supported",//
+0x0008,0x1160,IS,-1,"Referenced Frame Number",//
+0x0008,0x1195,UI,1,"Transaction UID",//
+0x0008,0x1197,US,1,"Failure Reason",//
+0x0008,0x1198,SQ,1,"Failed SOP Sequence",//
+0x0008,0x1199,SQ,1,"Referenced SOP Sequence",//
+0x0008,0x2110,CS,1,"Lossy Image Compression(RET)",//
+0x0008,0x2111,ST,1,"Derivation Description",//
+0x0008,0x2112,SQ,1,"Source Image Sequence",//
+0x0008,0x2120,SH,1,"Stage Name",//
+0x0008,0x2122,IS,1,"Stage Number",//
+0x0008,0x2124,IS,1,"Number of Stages",//
+0x0008,0x2127,SH,1,"View Name",//
+0x0008,0x2128,IS,1,"View Number",//
+0x0008,0x2129,IS,1,"Number of Event Timers",//
+0x0008,0x212A,IS,1,"Number of Views in Stage",//
+0x0008,0x2130,DS,-1,"Event Elapsed Time(s)",//
+0x0008,0x2132,LO,-1,"Event Timer Name(s)",//
+0x0008,0x2142,IS,1,"Start Trim",//
+0x0008,0x2143,IS,1,"Stop Trim",//
+0x0008,0x2144,IS,1,"Recommended Display Frame Rate",//
+0x0008,0x2200,CS,1,"Transducer Position(RET)",//
+0x0008,0x2204,CS,1,"Transducer Orientation(RET)",//
+0x0008,0x2208,CS,1,"Anatomic Structure(RET)",//
+0x0008,0x2218,SQ,1,"Anatomic Region Sequence",//
+0x0008,0x2220,SQ,1,"Anatomic Region Modifier Sequence",//
+0x0008,0x2228,SQ,1,"Primary Anatomic Structure Sequence",//
+0x0008,0x2229,SQ,1,"Anatomic Structure Space or Region Sequence",//
+0x0008,0x2230,SQ,1,"Primary Anatomic Structure Modifier Sequence",//
+0x0008,0x2240,SQ,1,"Transducer Position Sequence",//
+0x0008,0x2242,SQ,1,"Transducer Position Modifier Sequence",//
+0x0008,0x2244,SQ,1,"Transducer Orientation Sequence",//
+0x0008,0x2246,SQ,1,"Transducer Orientation Modifier Sequence",//
+0x0008,0x4000,SH,1,"Group 0008 Comments (RET)",//
+0x0008,0x9007,CS,4,"Frame Type",//
+0x0008,0x9092,SQ,1,"Referenced Image Evidence Sequence",//
+0x0008,0x9121,SQ,1,"Referenced Raw Data Sequence",//
+0x0008,0x9123,UI,1,"Creator-Version UID",//
+0x0008,0x9124,SQ,1,"Derivation Image Sequence",//
+0x0008,0x9154,SQ,1,"Source Image Evidence Sequence",//
+0x0008,0x9205,CS,1,"Pixel Presentation",//
+0x0008,0x9206,CS,1,"Volumetric Properties",//
+0x0008,0x9207,CS,1,"Volume Based Calculation Technique",//
+0x0008,0x9208,CS,1,"Complex Image Component",//
+0x0008,0x9209,CS,1,"Acquisition Contrast",//
+0x0008,0x9215,SQ,1,"Derivation Code Sequence",//
+0x0008,0x9237,SQ,1,"Referenced Grayscale Presentation State Sequence",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

@@ -1,10 +1,10 @@
-0x2130,0x0010,SQ,1,"""Print Management Capabilities Sequence""",//
-0x2130,0x0015,SQ,1,"""Printer Characteristics Sequence""",//
-0x2130,0x0030,SQ,1,"""Film Box Content Sequence""",//
-0x2130,0x0040,SQ,1,"""Image Box Content Sequence""",//
-0x2130,0x0050,SQ,1,"""Annotation Content Sequence""",//
-0x2130,0x0060,SQ,1,"""Image Overlay Box Content Sequence""",//
-0x2130,0x0080,SQ,1,"""Presentation LUT Content Sequence""",//
-0x2130,0x00A0,SQ,1,"""Proposed Study Sequence""",//
-0x2130,0x00C0,SQ,1,"""Original Image Sequence""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+0x2130,0x0010,SQ,1,"Print Management Capabilities Sequence",//
+0x2130,0x0015,SQ,1,"Printer Characteristics Sequence",//
+0x2130,0x0030,SQ,1,"Film Box Content Sequence",//
+0x2130,0x0040,SQ,1,"Image Box Content Sequence",//
+0x2130,0x0050,SQ,1,"Annotation Content Sequence",//
+0x2130,0x0060,SQ,1,"Image Overlay Box Content Sequence",//
+0x2130,0x0080,SQ,1,"Presentation LUT Content Sequence",//
+0x2130,0x00A0,SQ,1,"Proposed Study Sequence",//
+0x2130,0x00C0,SQ,1,"Original Image Sequence",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

@@ -1,3 +1,3 @@
-0x5200,0x9229,SQ,1,"""Shared Functional Groups Sequence""",//
-0x5200,0x9230,SQ,1,"""Per-frame Functional Groups Sequence""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+0x5200,0x9229,SQ,1,"Shared Functional Groups Sequence",//
+0x5200,0x9230,SQ,1,"Per-frame Functional Groups Sequence",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

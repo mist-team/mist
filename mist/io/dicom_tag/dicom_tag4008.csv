@@ -1,29 +1,29 @@
-//0x4008,0x0000,UL,1,"""Group 4008 Length""",//
-0x4008,0x0040,SH,1,"""Results ID""",//
-0x4008,0x0042,LO,1,"""Results ID Issuer""",//
-0x4008,0x0050,SQ,1,"""Referenced Interpretation Sequence""",//
-0x4008,0x0100,DA,1,"""Interpretation Recorded Date""",//
-0x4008,0x0101,TM,1,"""Interpretation Recorded Time""",//
-0x4008,0x0102,PN,1,"""Interpretation Recorder""",//
-0x4008,0x0103,LO,1,"""Reference to Recorded Sound""",//
-0x4008,0x0108,DA,1,"""Interpretation Transcription Time""",//
-0x4008,0x0109,TM,1,"""Interpretation Transcription Time""",//
-0x4008,0x010A,PN,1,"""Interpretation Transcriber""",//
-0x4008,0x010B,ST,1,"""Interpretation Text""",//
-0x4008,0x010C,PN,1,"""Interpretation Author""",//
-0x4008,0x0111,SQ,1,"""Interpretation Approver Sequence""",//
-0x4008,0x0112,DA,1,"""Interpretation Approval Date""",//
-0x4008,0x0113,TM,1,"""Interpretation Approval Time""",//
-0x4008,0x0114,PN,1,"""Physician Approving Interpretation""",//
-0x4008,0x0115,LT,1,"""Interpretation Diagnosis Description""",//
-0x4008,0x0117,SQ,1,"""Diagnosis Code Sequence""",//
-0x4008,0x0118,SQ,1,"""Results Distribution List Sequence""",//
-0x4008,0x0119,PN,1,"""Distribution Name""",//
-0x4008,0x011A,LO,1,"""Distribution Address""",//
-0x4008,0x0200,SH,1,"""Interpretation ID""",//
-0x4008,0x0202,LO,1,"""Interpretation ID Issuer""",//
-0x4008,0x0210,CS,1,"""Interpretation Type ID""",//
-0x4008,0x0212,CS,1,"""Interpretation Status ID""",//
-0x4008,0x0300,ST,1,"""Impression""",//
-0x4008,0x4000,SH,1,"""Group 4008 Comments""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+//0x4008,0x0000,UL,1,"Group 4008 Length",//
+0x4008,0x0040,SH,1,"Results ID",//
+0x4008,0x0042,LO,1,"Results ID Issuer",//
+0x4008,0x0050,SQ,1,"Referenced Interpretation Sequence",//
+0x4008,0x0100,DA,1,"Interpretation Recorded Date",//
+0x4008,0x0101,TM,1,"Interpretation Recorded Time",//
+0x4008,0x0102,PN,1,"Interpretation Recorder",//
+0x4008,0x0103,LO,1,"Reference to Recorded Sound",//
+0x4008,0x0108,DA,1,"Interpretation Transcription Time",//
+0x4008,0x0109,TM,1,"Interpretation Transcription Time",//
+0x4008,0x010A,PN,1,"Interpretation Transcriber",//
+0x4008,0x010B,ST,1,"Interpretation Text",//
+0x4008,0x010C,PN,1,"Interpretation Author",//
+0x4008,0x0111,SQ,1,"Interpretation Approver Sequence",//
+0x4008,0x0112,DA,1,"Interpretation Approval Date",//
+0x4008,0x0113,TM,1,"Interpretation Approval Time",//
+0x4008,0x0114,PN,1,"Physician Approving Interpretation",//
+0x4008,0x0115,LT,1,"Interpretation Diagnosis Description",//
+0x4008,0x0117,SQ,1,"Diagnosis Code Sequence",//
+0x4008,0x0118,SQ,1,"Results Distribution List Sequence",//
+0x4008,0x0119,PN,1,"Distribution Name",//
+0x4008,0x011A,LO,1,"Distribution Address",//
+0x4008,0x0200,SH,1,"Interpretation ID",//
+0x4008,0x0202,LO,1,"Interpretation ID Issuer",//
+0x4008,0x0210,CS,1,"Interpretation Type ID",//
+0x4008,0x0212,CS,1,"Interpretation Status ID",//
+0x4008,0x0300,ST,1,"Impression",//
+0x4008,0x4000,SH,1,"Group 4008 Comments",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

@@ -1,78 +1,78 @@
-0x0054,0x0010,US,-1,"""Energy Window Vector""",//
-0x0054,0x0011,US,1,"""Number of Energy Windows""",//
-0x0054,0x0012,SQ,1,"""Energy Window Information Sequence""",//
-0x0054,0x0013,SQ,1,"""Energy Window Range Sequence""",//
-0x0054,0x0014,DS,1,"""Energy Window Lower Limit""",//
-0x0054,0x0015,DS,1,"""Energy Window Upper Limit""",//
-0x0054,0x0016,SQ,1,"""Radiopharmaceutical Information Sequence""",//
-0x0054,0x0017,IS,1,"""Residual Syringe Counts""",//
-0x0054,0x0018,SH,1,"""Energy Window Name""",//
-0x0054,0x0020,US,-1,"""Detector Vector""",//
-0x0054,0x0021,US,1,"""Number of Detectors""",//
-0x0054,0x0022,SQ,1,"""Detector Information Sequence""",//
-0x0054,0x0030,US,-1,"""Phase Vector""",//
-0x0054,0x0031,US,1,"""Number of Phases""",//
-0x0054,0x0032,SQ,1,"""Phase Information Sequence""",//
-0x0054,0x0033,US,1,"""Number of Frames in Phase""",//
-0x0054,0x0036,IS,1,"""Phase Delay""",//
-0x0054,0x0038,IS,1,"""Pause Between Frames""",//
-0x0054,0x0050,US,-1,"""Rotation Vector""",//
-0x0054,0x0051,US,1,"""Number of Rotations""",//
-0x0054,0x0052,SQ,1,"""Rotation Information Sequence""",//
-0x0054,0x0053,US,1,"""Number of Frames in Rotation""",//
-0x0054,0x0060,US,-1,"""R-R Interval Vector""",//
-0x0054,0x0061,US,1,"""Number of R-R Intervals""",//
-0x0054,0x0062,SQ,1,"""Gated Information Sequence""",//
-0x0054,0x0063,SQ,1,"""Data Information Sequence""",//
-0x0054,0x0070,US,-1,"""Time Slot Vector""",//
-0x0054,0x0071,US,1,"""Number of Time Slots""",//
-0x0054,0x0072,SQ,1,"""Time Slot Information Sequence""",//
-0x0054,0x0073,DS,1,"""Time Slot Time""",//
-0x0054,0x0080,US,-1,"""Slice Vector""",//
-0x0054,0x0081,US,1,"""Number of Slices""",//
-0x0054,0x0090,US,-1,"""Angular View Vector""",//
-0x0054,0x0100,US,-1,"""Time Slice Vector""",//
-0x0054,0x0101,US,1,"""Number of Time Slices""",//
-0x0054,0x0200,DS,1,"""Start Angle""",//
-0x0054,0x0202,CS,1,"""Type of Detector Motion""",//
-0x0054,0x0210,IS,-1,"""Trigger Vector""",//
-0x0054,0x0211,US,1,"""Number of Triggers in Phase""",//
-0x0054,0x0220,SQ,1,"""View Code Sequence""",//
-0x0054,0x0222,SQ,1,"""View Modifier Code Sequence""",//
-0x0054,0x0300,SQ,1,"""Radionuclide Code Sequence""",//
-0x0054,0x0302,SQ,1,"""Administration Route Code Sequence""",//
-0x0054,0x0304,SQ,1,"""Radiopharmaceutical Code Sequence""",//
-0x0054,0x0306,SQ,1,"""Calibration Data Sequence""",//
-0x0054,0x0308,US,1,"""Energy Window Number""",//
-0x0054,0x0400,SH,1,"""Image ID""",//
-0x0054,0x0410,SQ,1,"""Patient Orientation Code Sequence""",//
-0x0054,0x0412,SQ,1,"""Patient Orientation Modifier Code Sequence""",//
-0x0054,0x0414,SQ,1,"""Patient Gantry Relationship Code Sequence""",//
-0x0054,0x1000,CS,2,"""Series Type""",//
-0x0054,0x1001,CS,1,"""Units""",//
-0x0054,0x1002,CS,1,"""Counts Source""",//
-0x0054,0x1004,CS,1,"""Reprojection Method""",//
-0x0054,0x1100,CS,1,"""Randoms Correction Method""",//
-0x0054,0x1101,LO,1,"""Attenuation Correction Method""",//
-0x0054,0x1102,CS,1,"""Decay Correction""",//
-0x0054,0x1103,LO,1,"""Reconstruction Method""",//
-0x0054,0x1104,LO,1,"""Detector Lines of Response Used""",//
-0x0054,0x1105,LO,1,"""Scatter Correction Method""",//
-0x0054,0x1200,DS,1,"""Axial Acceptance""",//
-0x0054,0x1201,IS,2,"""Axial Mash""",//
-0x0054,0x1202,IS,1,"""Transverse Mash""",//
-0x0054,0x1203,DS,2,"""Detector Element Size""",//
-0x0054,0x1210,DS,1,"""Coincidence Window Width""",//
-0x0054,0x1220,CS,-1,"""Secondary Counts Type""",//
-0x0054,0x1300,DS,1,"""Frame Reference Time""",//
-0x0054,0x1310,IS,1,"""Primary (Prompts) Counts Accumulated""",//
-0x0054,0x1311,IS,-1,"""Secondary Counts Accumulated""",//
-0x0054,0x1320,DS,1,"""Slice Sensitivity Factor""",//
-0x0054,0x1321,DS,1,"""Decay Factor""",//
-0x0054,0x1322,DS,1,"""Dose Calibration Factor""",//
-0x0054,0x1323,DS,1,"""Scatter Fraction Factor""",//
-0x0054,0x1324,DS,1,"""Dead Time Factor""",//
-0x0054,0x1330,US,1,"""Image Index""",//
-0x0054,0x1400,CS,-1,"""Counts Included""",//
-0x0054,0x1401,CS,1,"""Dead Time Correction Flag""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+0x0054,0x0010,US,-1,"Energy Window Vector",//
+0x0054,0x0011,US,1,"Number of Energy Windows",//
+0x0054,0x0012,SQ,1,"Energy Window Information Sequence",//
+0x0054,0x0013,SQ,1,"Energy Window Range Sequence",//
+0x0054,0x0014,DS,1,"Energy Window Lower Limit",//
+0x0054,0x0015,DS,1,"Energy Window Upper Limit",//
+0x0054,0x0016,SQ,1,"Radiopharmaceutical Information Sequence",//
+0x0054,0x0017,IS,1,"Residual Syringe Counts",//
+0x0054,0x0018,SH,1,"Energy Window Name",//
+0x0054,0x0020,US,-1,"Detector Vector",//
+0x0054,0x0021,US,1,"Number of Detectors",//
+0x0054,0x0022,SQ,1,"Detector Information Sequence",//
+0x0054,0x0030,US,-1,"Phase Vector",//
+0x0054,0x0031,US,1,"Number of Phases",//
+0x0054,0x0032,SQ,1,"Phase Information Sequence",//
+0x0054,0x0033,US,1,"Number of Frames in Phase",//
+0x0054,0x0036,IS,1,"Phase Delay",//
+0x0054,0x0038,IS,1,"Pause Between Frames",//
+0x0054,0x0050,US,-1,"Rotation Vector",//
+0x0054,0x0051,US,1,"Number of Rotations",//
+0x0054,0x0052,SQ,1,"Rotation Information Sequence",//
+0x0054,0x0053,US,1,"Number of Frames in Rotation",//
+0x0054,0x0060,US,-1,"R-R Interval Vector",//
+0x0054,0x0061,US,1,"Number of R-R Intervals",//
+0x0054,0x0062,SQ,1,"Gated Information Sequence",//
+0x0054,0x0063,SQ,1,"Data Information Sequence",//
+0x0054,0x0070,US,-1,"Time Slot Vector",//
+0x0054,0x0071,US,1,"Number of Time Slots",//
+0x0054,0x0072,SQ,1,"Time Slot Information Sequence",//
+0x0054,0x0073,DS,1,"Time Slot Time",//
+0x0054,0x0080,US,-1,"Slice Vector",//
+0x0054,0x0081,US,1,"Number of Slices",//
+0x0054,0x0090,US,-1,"Angular View Vector",//
+0x0054,0x0100,US,-1,"Time Slice Vector",//
+0x0054,0x0101,US,1,"Number of Time Slices",//
+0x0054,0x0200,DS,1,"Start Angle",//
+0x0054,0x0202,CS,1,"Type of Detector Motion",//
+0x0054,0x0210,IS,-1,"Trigger Vector",//
+0x0054,0x0211,US,1,"Number of Triggers in Phase",//
+0x0054,0x0220,SQ,1,"View Code Sequence",//
+0x0054,0x0222,SQ,1,"View Modifier Code Sequence",//
+0x0054,0x0300,SQ,1,"Radionuclide Code Sequence",//
+0x0054,0x0302,SQ,1,"Administration Route Code Sequence",//
+0x0054,0x0304,SQ,1,"Radiopharmaceutical Code Sequence",//
+0x0054,0x0306,SQ,1,"Calibration Data Sequence",//
+0x0054,0x0308,US,1,"Energy Window Number",//
+0x0054,0x0400,SH,1,"Image ID",//
+0x0054,0x0410,SQ,1,"Patient Orientation Code Sequence",//
+0x0054,0x0412,SQ,1,"Patient Orientation Modifier Code Sequence",//
+0x0054,0x0414,SQ,1,"Patient Gantry Relationship Code Sequence",//
+0x0054,0x1000,CS,2,"Series Type",//
+0x0054,0x1001,CS,1,"Units",//
+0x0054,0x1002,CS,1,"Counts Source",//
+0x0054,0x1004,CS,1,"Reprojection Method",//
+0x0054,0x1100,CS,1,"Randoms Correction Method",//
+0x0054,0x1101,LO,1,"Attenuation Correction Method",//
+0x0054,0x1102,CS,1,"Decay Correction",//
+0x0054,0x1103,LO,1,"Reconstruction Method",//
+0x0054,0x1104,LO,1,"Detector Lines of Response Used",//
+0x0054,0x1105,LO,1,"Scatter Correction Method",//
+0x0054,0x1200,DS,1,"Axial Acceptance",//
+0x0054,0x1201,IS,2,"Axial Mash",//
+0x0054,0x1202,IS,1,"Transverse Mash",//
+0x0054,0x1203,DS,2,"Detector Element Size",//
+0x0054,0x1210,DS,1,"Coincidence Window Width",//
+0x0054,0x1220,CS,-1,"Secondary Counts Type",//
+0x0054,0x1300,DS,1,"Frame Reference Time",//
+0x0054,0x1310,IS,1,"Primary (Prompts) Counts Accumulated",//
+0x0054,0x1311,IS,-1,"Secondary Counts Accumulated",//
+0x0054,0x1320,DS,1,"Slice Sensitivity Factor",//
+0x0054,0x1321,DS,1,"Decay Factor",//
+0x0054,0x1322,DS,1,"Dose Calibration Factor",//
+0x0054,0x1323,DS,1,"Scatter Fraction Factor",//
+0x0054,0x1324,DS,1,"Dead Time Factor",//
+0x0054,0x1330,US,1,"Image Index",//
+0x0054,0x1400,CS,-1,"Counts Included",//
+0x0054,0x1401,CS,1,"Dead Time Correction Flag",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//

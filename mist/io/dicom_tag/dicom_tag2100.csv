@@ -1,12 +1,12 @@
-//0x2100,0x0000,UL,1,"""Group 2100 Length""",//
-0x2100,0x0010,SH,1,"""Print Job ID""",//
-0x2100,0x0020,CS,1,"""Execution Status""",//
-0x2100,0x0030,CS,1,"""Execution Status Info""",//
-0x2100,0x0040,DA,1,"""Creation Date""",//
-0x2100,0x0050,TM,1,"""Creation Time""",//
-0x2100,0x0070,AE,1,"""Originator""",//
-0x2100,0x0140,AE,1,"""Destination AE""",//
-0x2100,0x0160,SH,1,"""Owner ID""",//
-0x2100,0x0170,IS,1,"""Number of Films""",//
-0x2100,0x0500,SQ,1,"""Referenced Print Job Sequence""",//
-0x0000,0x0000,UNKNOWN,0,"""Data End""",//
+//0x2100,0x0000,UL,1,"Group 2100 Length",//
+0x2100,0x0010,SH,1,"Print Job ID",//
+0x2100,0x0020,CS,1,"Execution Status",//
+0x2100,0x0030,CS,1,"Execution Status Info",//
+0x2100,0x0040,DA,1,"Creation Date",//
+0x2100,0x0050,TM,1,"Creation Time",//
+0x2100,0x0070,AE,1,"Originator",//
+0x2100,0x0140,AE,1,"Destination AE",//
+0x2100,0x0160,SH,1,"Owner ID",//
+0x2100,0x0170,IS,1,"Number of Films",//
+0x2100,0x0500,SQ,1,"Referenced Print Job Sequence",//
+0x0000,0x0000,UNKNOWN,0,"Data End",//
