@@ -39,6 +39,25 @@ _MIST_BEGIN
 
 
 
+// スレッド用関数
+typedef unsigned long ThreadExitCode;
+typedef ThreadExitCode ( LPTHREADFUNC ) ( void *thread_param );
+
+
+// スレッドを操作する，識別する変数
+struct thread_dmy_class{ };
+
+// スレッドを操作する一番ベースとなるクラス
+struct thread_object
+{
+	virtual bool create( ) = 0;
+	virtual bool wait( unsigned long dwMilliseconds = INFINITE ) = 0;
+	virtual bool close( ) = 0;
+	virtual bool suspend( ) = 0;
+	virtual bool resume( ) = 0;
+};
+
+
 //! @addtogroup thread_group スレッド
 //!
 //! @code 次のヘッダをインクルードする
@@ -68,25 +87,6 @@ inline size_t get_cpu_num( )
 	return( static_cast< size_t >( sysconf( _SC_NPROCESSORS_ONLN ) ) );
 #endif
 }
-
-
-// スレッド用関数
-typedef unsigned long ThreadExitCode;
-typedef ThreadExitCode ( LPTHREADFUNC ) ( void *thread_param );
-
-
-// スレッドを操作する，識別する変数
-struct thread_dmy_class{ };
-
-// スレッドを操作する一番ベースとなるクラス
-struct thread_object
-{
-	virtual bool create( ) = 0;
-	virtual bool wait( unsigned long dwMilliseconds = INFINITE ) = 0;
-	virtual bool close( ) = 0;
-	virtual bool suspend( ) = 0;
-	virtual bool resume( ) = 0;
-};
 
 
 
@@ -473,6 +473,9 @@ inline bool do_threads( Thread *threads, size_t num_threads, unsigned long dwMil
 }
 
 
+/// @}
+//  スレッドグループの終わり
+
 // スレッドを普通の関数形式の呼び出しで簡便に利用するための関数群
 namespace __thread_controller__
 {
@@ -499,6 +502,11 @@ namespace __thread_controller__
 		}
 	};
 }
+
+
+//! @addtogroup thread_group スレッド
+//!
+//!  @{
 
 
 

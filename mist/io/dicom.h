@@ -31,6 +31,9 @@
 _MIST_BEGIN
 
 
+//! @addtogroup image_group 画像入出力
+//!  @{
+
 //! @addtogroup dicom_group DICOM画像入出力
 //!
 //! @code 次のヘッダをインクルードする
@@ -1008,6 +1011,9 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 
 /// @}
 //  DICOM画像入出力グループの終わり
+
+/// @}
+//  画像入出力グループの終わり
 
 
 // mist名前空間の終わり

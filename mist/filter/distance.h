@@ -29,7 +29,7 @@
 _MIST_BEGIN
 
 
-// ユークリッド型距離変換
+// 斉藤先生によるユークリッド型距離変換の実装部分
 namespace __euclidean_distance_transform__
 {
 	template < class T >
@@ -224,7 +224,7 @@ namespace __euclidean_distance_transform__
 }
 
 
-// ユークリッド型距離変換のスレッド部分
+// 斉藤先生によるユークリッド型距離変換のスレッド部分
 namespace __distance_transform_controller__
 {
 	template < class T >
@@ -309,101 +309,7 @@ namespace __distance_transform_controller__
 
 
 
-//! @addtogroup distance_group 距離変換
-//!
-//! @code 次のヘッダをインクルードする
-//! #include <mist/filter/distance.h>
-//! @endcode
-//!
-//!  @{
-
-
-//! @addtogroup euclidean_distance_group ユークリッド距離変換
-//!
-//! @code 次のヘッダをインクルードする
-//! #include <mist/filter/distance.h>
-//! @endcode
-//!
-//!  @{
-
-/// @brief 斉藤先生によるユークリッド距離変換
-namespace euclidean
-{
-	/// @brief ユークリッド距離変換
-	//! 
-	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
-	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-	//! 
-	//! @param[in]  in         … 入力画像
-	//! @param[out] out        … 出力画像
-	//! @param[in]  max_length … 伝播させる距離の最大値
-	//! @param[in]  thread_num … 使用するスレッド数
-	//! 
-	template < class Array1, class Array2 >
-	void distance_transform( const Array1 &in, Array2 &out, double max_length = -1.0, typename Array1::size_type thread_num = 0 )
-	{
-		typedef typename Array2::size_type  size_type;
-		typedef typename Array2::value_type value_type;
-		typedef __distance_transform_controller__::euclidean_distance_transform_thread< Array2 > euclidean_distance_transform_thread;
-
-		if( thread_num == 0 )
-		{
-			thread_num = static_cast< size_type >( get_cpu_num( ) );
-		}
-
-		out.resize( in.size1( ), in.size2( ), in.size3( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-		out.reso3( in.reso3( ) );
-
-		size_type i;
-
-		for( i = 0 ; i < in.size( ) ; i++ )
-		{
-			out[ i ] = static_cast< value_type >( in[ i ] != 0 ? 1 : 0 );
-		}
-
-		euclidean_distance_transform_thread *thread = new euclidean_distance_transform_thread[ thread_num ];
-
-		if( in.width( ) > 1 )
-		{
-			// X軸方向の処理
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].setup_parameters( out, max_length, 0, i, thread_num );
-			}
-
-			do_threads_( thread, thread_num );
-		}
-
-		if( in.height( ) > 1 )
-		{
-			// Y軸方向の処理
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].setup_parameters( out, max_length, 1, i, thread_num );
-			}
-
-			do_threads_( thread, thread_num );
-		}
-
-		if( in.depth( ) > 1 )
-		{
-			// Y軸方向の処理
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].setup_parameters( out, max_length, 2, i, thread_num );
-			}
-
-			do_threads_( thread, thread_num );
-		}
-
-		delete [] thread;
-	}
-}
-
-
-
+// Calvinによるユークリッド型距離変換の実装部分
 namespace __calvin__
 {
 	inline bool remove_edt( const double uR, const double vR, const double wR, const double ud, const double vd, const double wd )
@@ -732,6 +638,105 @@ namespace __calvin__
 			return( true );
 		}
 	};
+}
+
+
+
+
+
+//! @addtogroup distance_group 距離変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/distance.h>
+//! @endcode
+//!
+//!  @{
+
+
+//! @addtogroup euclidean_distance_group ユークリッド距離変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/distance.h>
+//! @endcode
+//!
+//!  @{
+
+
+
+/// @brief 斉藤先生によるユークリッド距離変換
+namespace euclidean
+{
+	/// @brief ユークリッド距離変換
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! 
+	//! @param[in]  in         … 入力画像
+	//! @param[out] out        … 出力画像
+	//! @param[in]  max_length … 伝播させる距離の最大値
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	template < class Array1, class Array2 >
+	void distance_transform( const Array1 &in, Array2 &out, double max_length = -1.0, typename Array1::size_type thread_num = 0 )
+	{
+		typedef typename Array2::size_type  size_type;
+		typedef typename Array2::value_type value_type;
+		typedef __distance_transform_controller__::euclidean_distance_transform_thread< Array2 > euclidean_distance_transform_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+		out.reso3( in.reso3( ) );
+
+		size_type i;
+
+		for( i = 0 ; i < in.size( ) ; i++ )
+		{
+			out[ i ] = static_cast< value_type >( in[ i ] != 0 ? 1 : 0 );
+		}
+
+		euclidean_distance_transform_thread *thread = new euclidean_distance_transform_thread[ thread_num ];
+
+		if( in.width( ) > 1 )
+		{
+			// X軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( out, max_length, 0, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		if( in.height( ) > 1 )
+		{
+			// Y軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( out, max_length, 1, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		if( in.depth( ) > 1 )
+		{
+			// Y軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( out, max_length, 2, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		delete [] thread;
+	}
 }
 
 

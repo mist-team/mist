@@ -70,6 +70,17 @@ _MIST_BEGIN
 #define _MIST_ALLOCATOR_MEMORY_TRIM_	0		///< すでに確保されているメモリ領域の切り詰めを行うアロケータをサポートする場合はオンにする
 
 
+
+//! @addtogroup config_group MIST全般で利用される設定
+//!
+//! @code 次のヘッダを参照
+//! #include <mist/config.h>
+//! @endcode
+//!
+//! @{
+
+
+
 #ifndef NDEBUG
 
 	// デバッグ用の設定を全てオンにする
@@ -118,6 +129,11 @@ _MIST_BEGIN
 #define _USE_DIVIDE_AND_CONQUER_SVD_		1	///< 分割統治法を用いた高速な特異値分解を利用する（若干メモリを大目に食う）
 
 
+
+/// @}
+//  MIST全般で利用される設定の終わり
+
+
 /// @brief 入力された2つのオブジェクトが同じもの（メモリ上で同じ位置にある）かどうかを判定する
 //!
 //! @param[in] o1 … オブジェクト1
@@ -131,6 +147,16 @@ inline bool is_same_object( const Object1 &o1, const Object2 &o2 )
 {
 	return( reinterpret_cast< const void * >( &o1 ) == reinterpret_cast< const void * >( &o2 ) );
 }
+
+
+
+//! @addtogroup callback_group MIST全般で利用できるコールバック関数
+//!
+//! @code 次のヘッダを参照
+//! #include <mist/config.h>
+//! @endcode
+//!
+//! @{
 
 
 /// @brief MISTのアルゴリズム全般で利用するダミーコールバックファンクタ
@@ -236,6 +262,9 @@ struct __mist_console_callback__
 };
 
 
+/// @}
+//  MIST全般で利用できるコールバック関数
+
 
 
 #if _CHECK_ACCESS_VIOLATION_
@@ -311,20 +340,24 @@ struct __mist_console_callback__
 /*! @mainpage MIST ( Media Integration Standard Toolkit )
 *
 *
+* @section config MISTの基本設定
+*
+* - @ref config_group			"基本設定"
+* - @ref callback_group			"MIST全般で利用できるコールバック関数
+*
 * @section class MISTで提供する基本コンテナ
 *
-*
-* - @ref mist::array          "array"          : STLに準拠したメモリ上で連続となる1次元配列であり，音声・画像の全てのデータの基底クラス
-* - @ref mist::array1         "array1"         : 音声を扱うための1次元配列
-* - @ref mist::array2         "array2"         : 2次元画像を扱うための画像クラス
-* - @ref mist::array3         "array3"         : 3次元画像を扱うための画像クラス
-* - @ref mist::marray         "marray"         : 1・2・3次元画像の縁にマージンを持った画像を扱うクラス
-* - @ref mist::buffered_array "buffered_array" : 画像の一辺が2の指数乗となる画像を扱うクラス
-* - @ref mist::matrix         "matrix"         : 任意の行列を扱うためのクラス（Expression template を利用した高速な演算が可能）
-* - @ref vector_group         "ベクトル演算を可能とするクラス"
-*   - @ref mist::vector2      "vector2"        : 2次元ベクトルを扱うクラス
-*   - @ref mist::vector3      "vector3"        : 3次元ベクトルを扱うクラス
-*   - @ref mist::vector       "vector"         : N次元ベクトルを扱うクラス
+* - @ref mist::array			"array"          : STLに準拠したメモリ上で連続となる1次元配列であり，音声・画像の全てのデータの基底クラス
+* - @ref mist::array1			"array1"         : 音声を扱うための1次元配列
+* - @ref mist::array2			"array2"         : 2次元画像を扱うための画像クラス
+* - @ref mist::array3			"array3"         : 3次元画像を扱うための画像クラス
+* - @ref mist::marray			"marray"         : 1・2・3次元画像の縁にマージンを持った画像を扱うクラス
+* - @ref mist::buffered_array	"buffered_array" : 画像の一辺が2の指数乗となる画像を扱うクラス
+* - @ref mist::matrix			"matrix"         : 任意の行列を扱うためのクラス（Expression template を利用した高速な演算が可能）
+* - @ref vector_group			"ベクトル演算を可能とするクラス"
+*   - @ref mist::vector2		"vector2"        : 2次元ベクトルを扱うクラス
+*   - @ref mist::vector3		"vector3"        : 3次元ベクトルを扱うクラス
+*   - @ref mist::vector			"vector"         : N次元ベクトルを扱うクラス
 *
 *
 * @section element MISTで提供する基本データ型

@@ -18,6 +18,10 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
+
+//! @addtogroup image_group 画像入出力
+//!  @{
+
 //! @addtogroup dicom_group DICOM画像入出力
 //! @{
 
@@ -1209,6 +1213,9 @@ namespace dicom_controller
 
 /// @}
 //  DICOM画像入出力グループの終わり
+
+/// @}
+//  画像入出力グループの終わり
 
 
 // mist名前空間の終わり

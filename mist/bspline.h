@@ -17,20 +17,6 @@
 _MIST_BEGIN
 
 
-//! @addtogroup free_form_group 自由曲線・曲面
-//!  @{
-
-
-
-//! @addtogroup bspline_group Bスプライン曲線
-//!
-//! @code 次のヘッダをインクルードする
-//! #include <mist/bspline.h>
-//! @endcode
-//!
-//!  @{
-
-
 /// @brief Bスプラインの基底関数を計算する関数を実装した構造体
 //!
 //! K次のBスプライン基底関数の計算を行う
@@ -84,6 +70,20 @@ struct bspline_base< 1 >
 		return( ( knot[ i ] <= t && t < knot[ i + 1 ] ) ? 1.0 : 0.0 );
 	}
 };
+
+
+//! @addtogroup free_form_group 自由曲線・曲面
+//!  @{
+
+
+
+//! @addtogroup bspline_group Bスプライン曲線
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/bspline.h>
+//! @endcode
+//!
+//!  @{
 
 
 /// @brief Bスプライン曲線を扱うためのクラス

@@ -28,11 +28,6 @@ _MIST_BEGIN
 #define EMALGORITHM_DEBUG	0
 
 
-//! @defgroup statistics_group 統計処理
-//!
-//!  @{
-
-
 //! @addtogroup mixture_group EMアルゴリズムを用いた混合分布の推定
 //!
 //! @code 次のヘッダをインクルードする
@@ -1184,9 +1179,6 @@ namespace histogram
 
 /// @}
 //  EMアルゴリズムを用いた混合分布の推定グループの終わり
-
-/// @}
-//  統計処理グループの終わり
 
 
 

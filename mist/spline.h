@@ -17,20 +17,6 @@
 _MIST_BEGIN
 
 
-//! @addtogroup free_form_group 自由曲線・曲面
-//!  @{
-
-
-
-//! @addtogroup spline_group 3次スプライン曲線
-//!
-//! @code 次のヘッダをインクルードする
-//! #include <mist/spline.h>
-//! @endcode
-//!
-//!  @{
-
-
 // 一般のデータ型用の点演算
 template < class T >
 inline const T add( const T &v1, const T &v2 ){ return( v1 + v2 ); }
@@ -97,6 +83,20 @@ inline const vector2< T > div( const vector2< T > &v1, const vector2< T > &v2 ){
 template < class T >
 inline const vector2< T > div( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x / val, v1.y / val ) ); }
 
+
+
+//! @addtogroup free_form_group 自由曲線・曲面
+//!  @{
+
+
+
+//! @addtogroup spline_group 3次スプライン曲線
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/spline.h>
+//! @endcode
+//!
+//!  @{
 
 
 

@@ -268,6 +268,14 @@ namespace volumerender
 }
 
 
+/// @}
+// ボリュームレンダリンググループの終わり
+
+/// @}
+//  可視化グループの終わり
+
+
+
 // 値補間タイプのボリュームレンダリング
 namespace value_interpolation
 {
@@ -594,6 +602,18 @@ namespace __volumerendering_controller__
 		}
 	};
 }
+
+
+
+//! @defgroup visualization_group
+//!
+//!  @{
+
+
+//! @addtogroup volumerendering_group
+//!
+//! @{
+
 
 
 /// @brief ボリュームレンダリング

@@ -75,16 +75,16 @@ struct type_limits
 	typedef T value_type;	///< @brief 情報を調べる対象となる型
 
 	/// @brief 指定された型が整数かどうか
-	enum
-	{
-		 is_integer = false		///< @brief 整数の場合は true になる
-	};
+	//!
+	//! 整数の場合は true になる
+	//!
+	_MIST_CONST( bool, is_integer, false );
 
 	/// @brief 指定された型が符号付かどうか
-	enum
-	{
-		is_signed  = false		///< @brief 符号付の場合は true になる
-	};
+	//!
+	//! 符号付の場合は true になる
+	//!
+	_MIST_CONST( bool, is_signed, false );
 
 
 	/// @brief 型が表現できる最も最小の値を返す
@@ -96,6 +96,11 @@ struct type_limits
 	/// @brief 型が表現できるゼロに対応する値を返す
 	static value_type zero( ){ return( 0 ); }
 };
+
+
+
+/// @}
+//  型に関する情報の取得グループの終わり
 
 
 _DEFINE_TYPE_LIMITS(          char,  true,  true,  CHAR_MIN,  CHAR_MAX, 0x00 )
@@ -202,23 +207,6 @@ namespace __limits_min_max__
 }
 
 
-/// @brief 入力されたデータを min から max の範囲に変換する
-//! 
-//! min 未満の値は全て min になり，max 以上の値は全て max とする
-//! 
-//! @param[in] v   … 変換を行うデータ
-//! @param[in] min … データの下限
-//! @param[in] max … データの上限
-//! 
-//! @return 変換後のデータ
-//! 
-template < class T >
-inline const T limits_min_max( const T &v, const T &min, const T &max )
-{
-	return( __limits_min_max__::limits_min_max< is_color< T >::value >::limits( v ) );
-}
-
-
 namespace __limits_0_255__
 {
 	template < bool _ISCHAR_ >
@@ -262,6 +250,30 @@ namespace __limits_0_255__
 		}
 	};
 }
+
+
+
+//! @addtogroup limits_group 型に関する情報の取得
+//!
+//! @{
+
+
+/// @brief 入力されたデータを min から max の範囲に変換する
+//! 
+//! min 未満の値は全て min になり，max 以上の値は全て max とする
+//! 
+//! @param[in] v   … 変換を行うデータ
+//! @param[in] min … データの下限
+//! @param[in] max … データの上限
+//! 
+//! @return 変換後のデータ
+//! 
+template < class T >
+inline const T limits_min_max( const T &v, const T &min, const T &max )
+{
+	return( __limits_min_max__::limits_min_max< is_color< T >::value >::limits( v ) );
+}
+
 
 
 /// @brief 入力されたデータを 0 から 255 の範囲に変換する

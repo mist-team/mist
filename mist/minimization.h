@@ -537,7 +537,7 @@ namespace brent
 }
 
 
-/// @brief 最急降下法（勾配を用いた多次元変数関数の極小値の探索）
+/// @brief 最急降下法（勾配を用いた多変数関数の極小値の探索）
 namespace gradient
 {
 	/// @brief 探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する
@@ -731,7 +731,7 @@ namespace gradient
 }
 
 
-/// @brief Powell法（方向集合を用いた多次元変数関数の極小値の探索）
+/// @brief Powell法（方向集合を用いた多変数関数の極小値の探索）
 namespace powell
 {
 	/// @brief Powell 法による多次元変数による極小値の探索を行う
