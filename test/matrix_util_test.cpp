@@ -35,6 +35,13 @@ int main( )
 		std::cout << c << std::endl << std::endl;
 	}
 
+	{
+		matrix c( a );
+		c.trim( 1, 1, 2, 2 );
+		std::cout << "triming test" << std::endl;
+		std::cout << c << std::endl << std::endl;
+	}
+
 	std::cout << matrix::identity( 3, 3 ) * 3 + a * matrix::zero( 3, 3 ) << std::endl << std::endl;
 
 	{
@@ -127,6 +134,7 @@ int main( )
 		std::cout << a << std::endl << std::endl;
 
 		mist::svd( aa, u, s, vt );
+		mist::svd( aa, s, vt );
 		std::cout << u << std::endl << std::endl;
 		std::cout << s << std::endl << std::endl;
 		std::cout << vt << std::endl << std::endl;

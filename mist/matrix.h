@@ -581,6 +581,52 @@ public:
 		base::resize( size1_ * size2_, val );
 	}
 
+	/// @brief コンテナ内の要素をトリミングする
+	//! 
+	//! コンテナのサイズを num 個に変更し，適切にデータをコピーする．
+	//! 
+	//! @param[in] row   … トリミングのX軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] col   … トリミングのY軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] nrows … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in] ncols … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! 
+	bool trim( size_type row, size_type col, difference_type nrows = -1, difference_type ncols = -1 )
+	{
+		difference_type nrows_ = rows( );
+		difference_type ncols_ = cols( );
+		if( nrows_ <= static_cast< difference_type >( row ) || nrows_ <= nrows || nrows_ < static_cast< difference_type >( row + nrows ) )
+		{
+			return( false );
+		}
+		else if( ncols_ <= static_cast< difference_type >( col ) || ncols_ <= ncols || ncols_ < static_cast< difference_type >( col + ncols ) )
+		{
+			return( false );
+		}
+
+		if( nrows < 0 )
+		{
+			nrows = nrows_ - row;
+		}
+		if( ncols < 0 )
+		{
+			ncols = ncols_ - col;
+		}
+
+		matrix o( nrows, ncols );
+		for( difference_type c = 0 ; c < ncols ; c++ )
+		{
+			for( difference_type r = 0 ; r < nrows ; r++ )
+			{
+				o( r, c ) = operator ()( r + row, c + col );
+			}
+		}
+
+		swap( o );
+
+		return( true );
+	}
+
+
 	/// @brief 行列内の全ての内容を入れ替える．
 	//! 
 	//! 入れ替え元の行列 m の中身と全て入れ替える

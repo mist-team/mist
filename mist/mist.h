@@ -141,6 +141,37 @@ public:
 		}
 	}
 
+	/// @brief コンテナ内の要素をトリミングする
+	//! 
+	//! コンテナのサイズを num 個に変更し，適切にデータをコピーする．
+	//! 
+	//! @param[in] index … トリミングの開始位置（ゼロから始まるインデックス）
+	//! @param[in] num   … トリミング後の要素数（-1の場合は，最後までをコピーする）
+	//! 
+	bool trim( size_type index, difference_type num = -1 )
+	{
+		difference_type num_ = size( );
+		if( num_ <= static_cast< difference_type >( index ) || num_ <= num || num_ < static_cast< difference_type >( index + num ) )
+		{
+			return( false );
+		}
+
+		if( num < 0 )
+		{
+			num = size( ) - index;
+		}
+
+		array o( num );
+		for( difference_type i = 0 ; i < num ; i++ )
+		{
+			o[ i ] = operator []( i + index );
+		}
+
+		swap( o );
+
+		return( true );
+	}
+
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
@@ -635,7 +666,29 @@ public:
 	const_reverse_iterator x_rend( ) const { return( base::rend( )  ); }
 
 
-public: // 配列に対する算術演算
+public: // 配列に対する操作
+
+	/// @brief コンテナ内の要素をトリミングする
+	//! 
+	//! コンテナのサイズを num 個に変更し，適切にデータをコピーする．
+	//! 
+	//! @param[in] index … トリミングの開始位置（ゼロから始まるインデックス）
+	//! @param[in] num   … トリミング後の要素数（-1の場合は，最後までをコピーする）
+	//! 
+	bool trim( size_type index, difference_type num = -1 )
+	{
+		double r = reso1( );
+		if( base::trim( index, num ) )
+		{
+			reso( r );
+			return( true );
+		}
+		else
+		{
+			return( false );
+		}
+	}
+
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
@@ -791,6 +844,51 @@ public:
 		base::resize( num1 * num2 );
 		size1_ = num1;
 		size2_ = num2;
+	}
+
+	/// @brief コンテナ内の要素をトリミングする
+	//! 
+	//! コンテナのサイズを num 個に変更し，適切にデータをコピーする．
+	//! 
+	//! @param[in] x … トリミングのX軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] y … トリミングのY軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] w … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in] h … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! 
+	bool trim( size_type x, size_type y, difference_type w = -1, difference_type h = -1 )
+	{
+		difference_type w_ = width( );
+		difference_type h_ = height( );
+		if( w_ <= static_cast< difference_type >( x ) || w_ <= w || w_ < static_cast< difference_type >( x + w ) )
+		{
+			return( false );
+		}
+		else if( h_ <= static_cast< difference_type >( y ) || h_ <= h || h_ < static_cast< difference_type >( y + h ) )
+		{
+			return( false );
+		}
+
+		if( w < 0 )
+		{
+			w = w_ - x;
+		}
+		if( h < 0 )
+		{
+			h = h_ - y;
+		}
+
+		array2 o( w, h, reso1( ), reso2( ) );
+		for( difference_type j = 0 ; j < h ; j++ )
+		{
+			for( difference_type i = 0 ; i < w ; i++ )
+			{
+				o( i, j ) = operator ()( i + x, j + y );
+			}
+		}
+
+		swap( o );
+
+		return( true );
 	}
 
 
@@ -1199,6 +1297,65 @@ public:
 		size1_ = num1;
 		size2_ = num2;
 		size3_ = num3;
+	}
+
+	/// @brief コンテナ内の要素をトリミングする
+	//! 
+	//! コンテナのサイズを num 個に変更し，適切にデータをコピーする．
+	//! 
+	//! @param[in] x … トリミングのX軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] y … トリミングのY軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] z … トリミングのZ軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] w … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in] h … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in] d … トリミング後のZ軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! 
+	bool trim( size_type x, size_type y, size_type z, difference_type w = -1, difference_type h = -1, difference_type d = -1 )
+	{
+		difference_type w_ = width( );
+		difference_type h_ = height( );
+		difference_type d_ = depth( );
+		if( w_ <= static_cast< difference_type >( x ) || w_ <= w || w_ < static_cast< difference_type >( x + w ) )
+		{
+			return( false );
+		}
+		else if( h_ <= static_cast< difference_type >( y ) || h_ <= h || h_ < static_cast< difference_type >( y + h ) )
+		{
+			return( false );
+		}
+		else if( d_ <= static_cast< difference_type >( z ) || d_ <= d || d_ < static_cast< difference_type >( z + d ) )
+		{
+			return( false );
+		}
+
+		if( w < 0 )
+		{
+			w = w_ - x;
+		}
+		if( h < 0 )
+		{
+			h = h_ - y;
+		}
+		if( d < 0 )
+		{
+			d = d_ - z;
+		}
+
+		array3 o( w, h, d, reso1( ), reso2( ), reso3( ) );
+		for( difference_type k = 0 ; k < d ; k++ )
+		{
+			for( difference_type j = 0 ; j < h ; j++ )
+			{
+				for( difference_type i = 0 ; i < w ; i++ )
+				{
+					o( i, j, k ) = operator ()( i + x, j + y, k + z );
+				}
+			}
+		}
+
+		swap( o );
+
+		return( true );
 	}
 
 

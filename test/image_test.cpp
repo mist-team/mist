@@ -22,7 +22,7 @@ image_draw_area *draw_area;
 
 #include <mist/converter.h>
 
-//#define __INCLUDE_DICOM_TAG_ALL__	// 全てのDICOMタグをインポートする
+#define __INCLUDE_DICOM_TAG_ALL__	// 全てのDICOMタグをインポートする
 #define __SHOW_DICOM_TAG__			// コンソールにインクルードしたタグを表示する
 //#define __SHOW_DICOM_UNKNOWN_TAG__	// コンソールに認識出来なかったタグを表示する
 #include <mist/io/dicom.h>
@@ -54,6 +54,7 @@ image_draw_area::image_draw_area( int x, int y, int w, int h ) : Fl_Gl_Window( x
 
 void image_draw_area::draw( )
 {
+//	mist::draw_pixels( image_object, w( ), h( ), -100, 1 );
 	mist::draw_image( image_object, w( ), h( ), 1.0, 0.0, 0.0, 128.0, 128.0, 128.0, interpolate_ );
 }
 

@@ -31,6 +31,16 @@ int main( int argc, char *argv[] )
 		cout << "-----------------------" << endl;
 		cout << "b: " << b.reso1( ) << endl;
 		cout << b << endl << endl;
+
+		a.trim( 1 );
+		b.trim( 1 );
+
+		cout << "triming" << endl;
+		cout << "a: " << a.reso1( ) << endl;
+		cout << a << endl;
+		cout << "-----------------------" << endl;
+		cout << "b: " << b.reso1( ) << endl;
+		cout << b << endl << endl;
 	}
 
 	{
@@ -56,6 +66,16 @@ int main( int argc, char *argv[] )
 		cout << "-----------------------" << endl;
 		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) << endl;
 		cout << b << endl << endl;
+
+		a.trim( 1, 1 );
+		b.trim( 1, 1 );
+
+		cout << "triming" << endl;
+		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) << endl;
+		cout << a << endl;
+		cout << "-----------------------" << endl;
+		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) << endl;
+		cout << b << endl << endl;
 	}
 
 	{
@@ -76,6 +96,16 @@ int main( int argc, char *argv[] )
 
 		a.swap( b );
 
+		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) << ", " << a.reso3( ) << endl;
+		cout << a << endl;
+		cout << "-----------------------" << endl;
+		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) << ", " << b.reso3( ) << endl;
+		cout << b << endl << endl;
+
+		a.trim( 1, 1, 1 );
+		b.trim( 1, 1, 0 );
+
+		cout << "triming" << endl;
 		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) << ", " << a.reso3( ) << endl;
 		cout << a << endl;
 		cout << "-----------------------" << endl;
