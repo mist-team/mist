@@ -243,7 +243,7 @@ public:
 
 protected:
 	// 継承した先で必ず実装されるスレッド関数
-	virtual thread_exit_type thread_function( thread_parameter &p ) = 0;
+	virtual thread_exit_type thread_function( ) = 0;
 
 
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -252,14 +252,14 @@ protected:
 	static DWORD WINAPI map_thread_function( void *p )
 	{
 		thread *obj = static_cast< thread * >( p );
-		obj->thread_exit_code_ = obj->thread_function( static_cast< thread_parameter & >( *obj ) );
+		obj->thread_exit_code_ = obj->thread_function( );
 		return( 0 );
 	}
 #else
 	static void *map_thread_function( void *p )
 	{
 		thread *obj = static_cast< thread * >( p );
-		obj->thread_exit_code_ = obj->thread_function( static_cast< thread_parameter & >( *obj ) );
+		obj->thread_exit_code_ = obj->thread_function( );
 		obj->thread_finished_ = true;
 		return ( NULL );
 	}
@@ -287,7 +287,7 @@ namespace __thread_controller__
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual thread_exit_type thread_function( thread_object_functor &p )
+		virtual thread_exit_type thread_function( )
 		{
 			func_( param_ );
 			return( 0 );

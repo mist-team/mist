@@ -949,7 +949,7 @@ namespace __median_filter_controller__
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual thread_exit_type thread_function( const median_thread &p )
+		virtual thread_exit_type thread_function( )
 		{
 			__median_filter__< is_integer< value_type >::value >::median_filter( *in_, *out_, fw_, fh_, fd_, thread_id_, thread_num_ );
 			return( true );

@@ -278,7 +278,7 @@ namespace __distance_transform_controller__
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual thread_exit_type thread_function( const euclidean_distance_transform_thread &p )
+		virtual thread_exit_type thread_function( )
 		{
 			switch( axis_ )
 			{
