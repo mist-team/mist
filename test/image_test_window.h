@@ -71,6 +71,10 @@ private:
   static void cb_Reso4(Fl_Menu_*, void*);
   inline void cb_Reso5_i(Fl_Menu_*, void*);
   static void cb_Reso5(Fl_Menu_*, void*);
+  inline void cb_Read5_i(Fl_Button*, void*);
+  static void cb_Read5(Fl_Button*, void*);
+  inline void cb_Write5_i(Fl_Button*, void*);
+  static void cb_Write5(Fl_Button*, void*);
 public:
   void show( );
 };

@@ -37,6 +37,9 @@ void write_bmp_test( const char *filename );
 void read_dicom_test( const char *filename );
 void write_dicom_test( const char *filename );
 
+void read_pnm_test( const char *filename );
+void write_pnm_test( const char *filename );
+
 void euclidean_distance_transform_test( );
 
 void figure_decomposition_test( );

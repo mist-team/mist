@@ -7,6 +7,7 @@
 #include <mist/io/png.h>
 #include <mist/io/tiff.h>
 #include <mist/io/bmp.h>
+#include <mist/io/pnm.h>
 #include <mist/io/raw.h>
 #include <mist/io/dicom.h>
 #include <mist/filter/distance.h>
@@ -92,6 +93,16 @@ void write_dicom_test( const char *filename )
 //	mist::write_dicom( image_object, filename, 1 );
 }
 
+void read_pnm_test( const char *filename )
+{
+	mist::read_pnm( image_object, filename );
+}
+
+void write_pnm_test( const char *filename )
+{
+	mist::write_pnm( image_object, filename );
+}
+
 void euclidean_distance_transform_test( )
 {
 	mist::array2< int > tmp1( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
@@ -161,7 +172,7 @@ void thresholding_test( )
 		tmp[ i ] = image_object[ i ].get_value( );
 	}
 
-	int threshold = mist::threshold( tmp );
+	int threshold = mist::discriminant_analysis::threshold( tmp );
 	std::cout << "threshold value: " << threshold << std::endl;
 
 	for( i = 0 ; i < image_object.size( ) ; i++ )

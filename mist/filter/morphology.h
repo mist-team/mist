@@ -16,6 +16,7 @@
 #endif
 
 #include <vector>
+#include <cmath>
 
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è

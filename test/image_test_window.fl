@@ -30,7 +30,7 @@ read_jpeg_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {5 575 100 30}
+        xywh {5 575 85 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -42,7 +42,7 @@ read_png_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {110 575 100 30}
+        xywh {95 575 85 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -51,7 +51,7 @@ Fl::wait( 0 );}
 if( filename == NULL ) return;
 
 write_jpeg_test( filename );}
-        xywh {5 610 100 30}
+        xywh {5 610 85 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -60,7 +60,7 @@ write_jpeg_test( filename );}
 if( filename == NULL ) return;
 
 write_png_test( filename );}
-        xywh {110 610 100 30}
+        xywh {95 610 85 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -72,7 +72,7 @@ read_tiff_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {215 575 100 30}
+        xywh {185 575 85 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -81,7 +81,7 @@ Fl::wait( 0 );}
 if( filename == NULL ) return;
 
 write_tiff_test( filename );}
-        xywh {215 610 100 30}
+        xywh {185 610 85 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -93,7 +93,7 @@ read_bmp_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {320 575 100 30}
+        xywh {275 575 85 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -102,7 +102,7 @@ Fl::wait( 0 );}
 if( filename == NULL ) return;
 
 write_bmp_test( filename );}
-        xywh {320 610 100 30}
+        xywh {275 610 85 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -114,7 +114,7 @@ read_dicom_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {430 575 100 30}
+        xywh {365 575 90 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -122,8 +122,8 @@ Fl::wait( 0 );}
         callback {const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*.*)", "" );
 if( filename == NULL ) return;
 
-write_dicom_test( filename );}
-        xywh {430 610 100 30}
+write_dicom_test( filename );} selected
+        xywh {365 610 90 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Menu_Bar {} {open
@@ -145,7 +145,7 @@ write_dicom_test( filename );}
           }
           menuitem {} {
             label Thresholding
-            callback {thresholding_test( );} selected
+            callback {thresholding_test( );}
             xywh {20 20 100 20}
           }
           menuitem {} {
@@ -219,6 +219,27 @@ write_dicom_test( filename );}
             xywh {120 120 100 20}
           }
         }
+      }
+      Fl_Button {} {
+        label {Read PNM}
+        callback {const char *filename = fl_file_chooser( "Open PNM", "PNM File (*.{ppm,pgm,pbm}", "" );
+if( filename == NULL ) return;
+
+read_pnm_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );}
+        xywh {460 575 85 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Button {} {
+        label {Write PNM}
+        callback {const char *filename = fl_file_chooser( "Save PNM", "PNM File (*.{ppm,pgm,pbm}", "" );
+if( filename == NULL ) return;
+
+write_pnm_test( filename );}
+        xywh {460 610 85 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
       }
     }
   }

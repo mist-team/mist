@@ -198,6 +198,9 @@
 				RelativePath="..\mist\io\png.h">
 			</File>
 			<File
+				RelativePath="..\mist\io\pnm.h">
+			</File>
+			<File
 				RelativePath="..\mist\filter\thinning.h">
 			</File>
 			<File

@@ -259,6 +259,29 @@ Fl_Menu_Item image_test_window::menu_[] = {
  {0}
 };
 
+inline void image_test_window::cb_Read5_i(Fl_Button*, void*) {
+  const char *filename = fl_file_chooser( "Open PNM", "PNM File (*.{ppm,pgm,pbm}", "" );
+if( filename == NULL ) return;
+
+read_pnm_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );
+}
+void image_test_window::cb_Read5(Fl_Button* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Read5_i(o,v);
+}
+
+inline void image_test_window::cb_Write5_i(Fl_Button*, void*) {
+  const char *filename = fl_file_chooser( "Save PNM", "PNM File (*.{ppm,pgm,pbm}", "" );
+if( filename == NULL ) return;
+
+write_pnm_test( filename );
+}
+void image_test_window::cb_Write5(Fl_Button* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Write5_i(o,v);
+}
+
 image_test_window::image_test_window() {
   Fl_Double_Window* w;
   { Fl_Double_Window* o = main_window = new Fl_Double_Window(551, 649);
@@ -279,39 +302,45 @@ image_test_window::image_test_window() {
       }
       o->end();
     }
-    { Fl_Button* o = new Fl_Button(5, 575, 100, 30, "Read JPEG");
+    { Fl_Button* o = new Fl_Button(5, 575, 85, 30, "Read JPEG");
       o->callback((Fl_Callback*)cb_Read);
     }
-    { Fl_Button* o = new Fl_Button(110, 575, 100, 30, "Read PNG");
+    { Fl_Button* o = new Fl_Button(95, 575, 85, 30, "Read PNG");
       o->callback((Fl_Callback*)cb_Read1);
     }
-    { Fl_Button* o = new Fl_Button(5, 610, 100, 30, "Write JPEG");
+    { Fl_Button* o = new Fl_Button(5, 610, 85, 30, "Write JPEG");
       o->callback((Fl_Callback*)cb_Write);
     }
-    { Fl_Button* o = new Fl_Button(110, 610, 100, 30, "Write PNG");
+    { Fl_Button* o = new Fl_Button(95, 610, 85, 30, "Write PNG");
       o->callback((Fl_Callback*)cb_Write1);
     }
-    { Fl_Button* o = new Fl_Button(215, 575, 100, 30, "Read TIFF");
+    { Fl_Button* o = new Fl_Button(185, 575, 85, 30, "Read TIFF");
       o->callback((Fl_Callback*)cb_Read2);
     }
-    { Fl_Button* o = new Fl_Button(215, 610, 100, 30, "Write TIFF");
+    { Fl_Button* o = new Fl_Button(185, 610, 85, 30, "Write TIFF");
       o->callback((Fl_Callback*)cb_Write2);
     }
-    { Fl_Button* o = new Fl_Button(320, 575, 100, 30, "Read BMP");
+    { Fl_Button* o = new Fl_Button(275, 575, 85, 30, "Read BMP");
       o->callback((Fl_Callback*)cb_Read3);
     }
-    { Fl_Button* o = new Fl_Button(320, 610, 100, 30, "Write BMP");
+    { Fl_Button* o = new Fl_Button(275, 610, 85, 30, "Write BMP");
       o->callback((Fl_Callback*)cb_Write3);
     }
-    { Fl_Button* o = new Fl_Button(430, 575, 100, 30, "Read DICOM");
+    { Fl_Button* o = new Fl_Button(365, 575, 90, 30, "Read DICOM");
       o->callback((Fl_Callback*)cb_Read4);
     }
-    { Fl_Button* o = new Fl_Button(430, 610, 100, 30, "Write DICOM");
+    { Fl_Button* o = new Fl_Button(365, 610, 90, 30, "Write DICOM");
       o->callback((Fl_Callback*)cb_Write4);
     }
     { Fl_Menu_Bar* o = new Fl_Menu_Bar(0, 0, 550, 25);
       o->box(FL_FLAT_BOX);
       o->menu(menu_);
+    }
+    { Fl_Button* o = new Fl_Button(460, 575, 85, 30, "Read PNM");
+      o->callback((Fl_Callback*)cb_Read5);
+    }
+    { Fl_Button* o = new Fl_Button(460, 610, 85, 30, "Write PNM");
+      o->callback((Fl_Callback*)cb_Write5);
     }
     o->end();
   }
