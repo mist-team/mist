@@ -970,6 +970,9 @@ namespace __median_filter_controller__
 //! 
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @note マスクの一辺のサイズは奇数でなくてはならない
+//! @note 奇数でない場合は，自動的に-1した物を利用する
 //! 
 //! @param[in]  in         … 入力画像
 //! @param[out] out        … 出力画像
@@ -982,12 +985,14 @@ namespace __median_filter_controller__
 template < class T1, class Allocator1, class T2, class Allocator2 >
 bool median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	if( is_same_object( in, out ) )
+	if( is_same_object( in, out ) || in.empty( ) )
 	{
 		return( false );
 	}
 
 	out.resize( in.size( ) );
+
+	fw = static_cast< size_type >( fw / 2 ) * 2 + 1;
 
 	__median_filter_controller__::__median_filter__< is_integer< T1 >::value >::median_filter( in, out, fw, 1, 1, 0, 1 );
 	
@@ -999,6 +1004,9 @@ bool median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, ty
 //! 
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @note マスクの一辺のサイズは奇数でなくてはならない
+//! @note 奇数でない場合は，自動的に-1した物を利用する
 //! 
 //! @param[in]  in         … 入力画像
 //! @param[out] out        … 出力画像
@@ -1011,13 +1019,15 @@ bool median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, ty
 template < class T1, class Allocator1, class T2, class Allocator2 >
 bool median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	if( is_same_object( in, out ) )
+	if( is_same_object( in, out ) || in.empty( ) )
 	{
 		return( false );
 	}
 
 	out.resize( in.size( ) );
 	out.reso1( in.reso1( ) );
+
+	fw = static_cast< size_type >( fw / 2 ) * 2 + 1;
 
 	__median_filter_controller__::__median_filter__< is_integer< T1 >::value >::median_filter( in, out, fw, 1, 1, 0, 1 );
 	
@@ -1030,6 +1040,9 @@ bool median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, 
 //! 
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @note マスクの一辺のサイズは奇数でなくてはならない
+//! @note 奇数でない場合は，自動的に-1した物を利用する
 //! 
 //! @param[in]  in         … 入力画像
 //! @param[out] out        … 出力画像
@@ -1045,7 +1058,7 @@ bool median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 				   typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh,
 				   typename array2< T1, Allocator1 >::size_type thread_num )
 {
-	if( is_same_object( in, out ) )
+	if( is_same_object( in, out ) || in.empty( ) )
 	{
 		return( false );
 	}
@@ -1063,6 +1076,9 @@ bool median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 	out.reso2( in.reso2( ) );
 
 	median_thread *thread = new median_thread[ thread_num ];
+
+	fw = static_cast< size_type >( fw / 2 ) * 2 + 1;
+	fh = static_cast< size_type >( fw / 2 ) * 2 + 1;
 
 	size_type i;
 	for( i = 0 ; i < thread_num ; i++ )
@@ -1095,6 +1111,9 @@ bool median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 //! 
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @note マスクの一辺のサイズは奇数でなくてはならない
+//! @note 奇数でない場合は，自動的に-1した物を利用する
 //! 
 //! @param[in]  in         … 入力画像
 //! @param[out] out        … 出力画像
@@ -1118,6 +1137,9 @@ inline bool median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 >
 //! 
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @note マスクの一辺のサイズは奇数でなくてはならない
+//! @note 奇数でない場合は，自動的に-1した物を利用する
 //! 
 //! @param[in]  in         … 入力画像
 //! @param[out] out        … 出力画像
@@ -1134,7 +1156,7 @@ bool median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 				   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
 				   typename array3< T1, Allocator1 >::size_type thread_num )
 {
-	if( is_same_object( in, out ) )
+	if( is_same_object( in, out ) || in.empty( ) )
 	{
 		return( false );
 	}
@@ -1153,6 +1175,10 @@ bool median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 	out.reso3( in.reso3( ) );
 
 	median_thread *thread = new median_thread[ thread_num ];
+
+	fw = static_cast< size_type >( fw / 2 ) * 2 + 1;
+	fh = static_cast< size_type >( fw / 2 ) * 2 + 1;
+	fd = static_cast< size_type >( fw / 2 ) * 2 + 1;
 
 	size_type i;
 	for( i = 0 ; i < thread_num ; i++ )
@@ -1185,6 +1211,9 @@ bool median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 //! 
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @note マスクの一辺のサイズは奇数でなくてはならない
+//! @note 奇数でない場合は，自動的に-1した物を利用する
 //! 
 //! @param[in]  in         … 入力画像
 //! @param[out] out        … 出力画像
