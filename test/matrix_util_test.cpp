@@ -45,8 +45,8 @@ int main( )
 		matrix aa( 2, 2 );
 		aa( 0, 0 ) = 1.0; aa( 0, 1 ) = 2.0;
 		aa( 1, 0 ) = 2.0; aa( 1, 1 ) = 3.0;
-
-		std::cout << aa * mist::inverse( matrix( aa ), mist::matrix_style::sy ) << std::endl;
+		matrix aaa = aa;
+		std::cout << aa * mist::inverse( aaa, mist::matrix_style::sy ) << std::endl;
 	}
 
 	{
@@ -55,7 +55,8 @@ int main( )
 		matrix aa( 2, 2 );
 		aa( 0, 0 ) = 1.0; aa( 0, 1 ) = 2.0;
 		aa( 1, 0 ) = 2.0; aa( 1, 1 ) = 3.0;
-		std::cout << aa * mist::inverse( matrix( aa ), mist::matrix_style::ge ) << std::endl;
+		matrix aaa = aa;
+		std::cout << aa * mist::inverse( aaa, mist::matrix_style::ge ) << std::endl;
 	}
 
 	{

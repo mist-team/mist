@@ -11,7 +11,7 @@ RELEASEFLAGS = $(CXXFLAGS) -DNDEBUG
 DEBUGFLAGS   = $(CXXFLAGS) -DDEBUG
 
 IMGLIBS = -ljpeg -lpng -ltiff
-LIBS = -lpthread -lz -lm
+LIBS = -lpthread -lz -lm /usr/local/lib/gcc/i686-pc-linux-gnu/3.4.0/libstdc++.so
 
 # Be quiet when building...
 .SILENT:

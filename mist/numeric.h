@@ -680,7 +680,7 @@ namespace __lu__
 					if( info == 0 )
 					{
 						lwork = __clapack__::get_real( dmy );
-						matrix< T, Allocator > work( lwork, 1 );
+						matrix< T, Allocator1 > work( lwork, 1 );
 
 						// LU•ª‰ğ‚ğs‚¤
 						__clapack__::sytrf( uplo, n, &( a[0] ), lda, &( pivot[0] ), &( work[0] ), lwork, info );
