@@ -21,7 +21,7 @@ public:
 
 		if( filename != "" )
 		{
-			mist::read_image( data_, filename.text( ) );
+			mist::read_image( data_.color_image_, filename.text( ) );
 		}
 		else
 		{

@@ -137,14 +137,14 @@ void main_window::create( )
 
 long main_window::onFileOpen( FXObject *obj, FXSelector sel, void *ptr )
 {
-	FXString filename = FXFileDialog::getOpenFilename( this, "‰æ‘œ‚ğŠJ‚­", "" );
+	//FXString filename = FXFileDialog::getOpenFilename( this, "‰æ‘œ‚ğŠJ‚­", "" );
 
-	if( filename != "" )
-	{
-		data_type image;
-		mist::read_image( image, filename.text( ) );
-		data_view_->draw_image( image );
-	}
+	//if( filename != "" )
+	//{
+	//	data_type image;
+	//	mist::read_image( image, filename.text( ) );
+	//	data_view_->draw_image( image );
+	//}
 
 	return( 1 );
 }
@@ -181,7 +181,7 @@ long main_window::onFilterChanged( FXObject *obj, FXSelector sel, void *ptr )
 
 	if( f != NULL )
 	{
-		data_view_->draw_image( f->data( ) );
+		data_view_->draw_image( f );
 	}
 
 	return( 1 );
@@ -194,7 +194,7 @@ long main_window::onFilterImageChanged( FXObject *obj, FXSelector sel, void *ptr
 
 	if( f != NULL )
 	{
-		data_view_->draw_image( f->data( ) );
+		data_view_->draw_image( f );
 	}
 
 	return( 1 );

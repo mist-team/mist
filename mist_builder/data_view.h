@@ -80,11 +80,6 @@ class data_view : public FXPacker
 public:
 	typedef FXPacker base;
 
-	typedef data_type::size_type size_type;
-	typedef data_type::difference_type difference_type;
-	typedef data_type::value_type value_type;
-	typedef data_type::const_pointer const_pointer;
-
 protected:
 	FXGLVisual		*glvisual_;
 	FXGLCanvas		*canvas_;
@@ -93,7 +88,7 @@ protected:
 	std::vector< FXCursor * >	cursors_;
 	std::vector< FXIcon * >		icons_;
 
-	data_type buffer_;
+	color_image buffer_;
 
 	color_type background_color_;
 
@@ -116,6 +111,7 @@ public:
 
 public:
 	void draw_image( const data_type &buf );
+	void draw_image( const filter *pf );
 	void draw_image( );
 	void set_cursors( bool is_drag );
 

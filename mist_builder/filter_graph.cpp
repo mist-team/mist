@@ -402,7 +402,7 @@ long filter_graph::onPaint( FXObject *obj, FXSelector sel, void *ptr )
 					{
 						switch( p1.pin_type( ) )
 						{
-						case pin::BINARY:
+						case pin::MONO:
 							memdc.setForeground( FXRGB( 50, 50, 128 ) );
 							break;
 
@@ -423,7 +423,7 @@ long filter_graph::onPaint( FXObject *obj, FXSelector sel, void *ptr )
 					{
 						switch( p1.pin_type( ) )
 						{
-						case pin::BINARY:
+						case pin::MONO:
 							memdc.setForeground( FXRGB( 130, 130, 255 ) );
 							break;
 
@@ -608,7 +608,7 @@ bool filter_graph::draw_filter( FXDC &dc, const filter &f )
 		const pin &pn = input_pins[ i ];
 		switch( pn.pin_type( ) )
 		{
-		case pin::BINARY:
+		case pin::MONO:
 			dc.setForeground( FXRGB( 0, 0, 255 ) );
 			break;
 
@@ -633,7 +633,7 @@ bool filter_graph::draw_filter( FXDC &dc, const filter &f )
 		const pin &pn = output_pins[ i ];
 		switch( pn.pin_type( ) )
 		{
-		case pin::BINARY:
+		case pin::MONO:
 			dc.setForeground( FXRGB( 0, 0, 255 ) );
 			break;
 
@@ -687,7 +687,7 @@ bool filter_graph::apply_filters( filter &f )
 					else
 					{
 						// 接続されているフィルタは，フィルタリングの準備ができていないので，データをクリアする
-						pf->data( ).clear( );
+						//pf->data( ).clear( );
 					}
 				}
 			}

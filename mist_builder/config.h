@@ -6,6 +6,10 @@
 #include <mist/mist.h>
 #endif
 
+#ifndef __INCLUDE_MIST_BINARY_H__
+#include <mist/config/binary.h>
+#endif
+
 #ifndef __INCLUDE_MIST_COLOR_H__
 #include <mist/config/color.h>
 #endif
@@ -25,9 +29,53 @@
 
 
 typedef mist::rgb< unsigned char > color_type;
+typedef mist::array2< color_type > color_image;
 
-typedef mist::rgb< unsigned char > element_type;
-typedef mist::array2< element_type > data_type;
+
+// 2値画像用
+typedef char element_type1;
+typedef mist::array2< element_type1 > data_type1;
+
+// グレースケール画像用
+typedef unsigned char element_type2;
+typedef mist::array2< element_type2 > data_type2;
+
+// カラー画像用
+typedef mist::rgb< unsigned char > element_type3;
+typedef mist::array2< element_type3 > data_type3;
+
+
+struct data_type
+{
+	data_type1 mono_image_;
+	data_type2 gray_image_;
+	data_type3 color_image_;
+
+	const data_type &operator =( const data_type &d )
+	{
+		if( &d != this )
+		{
+			mono_image_ = d.mono_image_;
+			gray_image_ = d.gray_image_;
+			color_image_ = d.color_image_;
+		}
+		return( *this );
+	}
+
+	void clear( )
+	{
+		mono_image_.clear( );
+		gray_image_.clear( );
+		color_image_.clear( );
+	}
+
+	data_type( )
+	{
+	}
+
+private:
+	data_type( const data_type &d );
+};
 
 
 typedef mist::vector2< double > point2;
@@ -87,7 +135,7 @@ public:
 	enum PINTYPE
 	{
 		NONE,
-		BINARY,
+		MONO,
 		GRAY,
 		COLOR,
 	};
@@ -100,10 +148,13 @@ private:
 public:
 	PINTYPE pin_type( ) const { return( pin_type_ ); }
 
-	pin *connected_pin( ) const { return( connected_pin_ ); }
+	pin *connected_pin( ){ return( connected_pin_ ); }
+	const pin *connected_pin( ) const { return( connected_pin_ ); }
 	pin *connected_pin( pin *p ){ return( connected_pin_ = p ); }
 
-	filter *related_filter( ) const { return( related_filter_ ); }
+	filter *related_filter( ){ return( related_filter_ ); }
+	const filter *related_filter( ) const { return( related_filter_ ); }
+
 	filter *related_filter( filter *f ){ return( related_filter_ = f ); }
 
 	pin( PINTYPE t = NONE ) : pin_type_( t ), connected_pin_( NULL ){ }
@@ -122,6 +173,7 @@ protected:
 
 	data_type data_;
 
+
 public:
 	/// @brief フィルタの名前を返す
 	virtual std::string name( ) const = 0;
@@ -133,19 +185,15 @@ public:
 	virtual bool filtering( )
 	{
 		// デフォルトは単なる入力データのコピー
+		// デフォルトは単なる入力データのコピー
 		if( !is_input_pins_connected( ) )
 		{
 			data_.clear( );
 		}
-		else
-		{
-			pin *p = input_pins_[ 0 ].connected_pin( );
-			filter *pf = p->related_filter( );
-			data_ = pf->data( );
-		}
 
 		return( true );
 	}
+
 
 public:
 	/// @brief 入力ピンの集合を返す
@@ -169,6 +217,17 @@ public:
 	const data_type &data( ) const { return( data_ ); }
 
 
+	/// @brief ピンに対応するデータを取得する
+	//!
+	//! @attention index が有効な範囲にあり，かつピンが接続されている必要あり
+	data_type &get_input_data( size_type index )
+	{
+		pin *p = input_pins_[ index ].connected_pin( );
+		filter *pf = p->related_filter( );
+		return( pf->data( ) );
+	}
+
+
 	/// @brief 全ての入力ピンが接続されている場合に真を返す
 	bool is_input_pins_connected( ) const
 	{
@@ -181,17 +240,6 @@ public:
 		}
 		return( true );
 	}
-
-	/// @brief ピンに対応するデータを取得する
-	//!
-	//! @attention index が有効な範囲にあり，かつピンが接続されている必要あり
-	data_type &get_input_data( size_type index )
-	{
-		pin *p = input_pins_[ index ].connected_pin( );
-		filter *pf = p->related_filter( );
-		return( pf->data( ) );
-	}
-
 
 	void move( FXint dx, FXint dy )
 	{
@@ -218,27 +266,6 @@ typedef std::deque< filter * > filter_list;
 typedef std::set< filter * > filter_set;
 
 
-struct sample_filter : public filter
-{
-	/// @brief フィルタの名前を返す
-	virtual std::string name( ) const { return( "Median filter" ); }
-
-	/// @brief 自分のコピーを返す
-	virtual filter *clone( ) const { return( new sample_filter( ) ); }
-
-	sample_filter( )
-	{
-		input_pins_.push_back( pin( pin::BINARY ) );
-		input_pins_.push_back( pin( pin::BINARY ) );
-		input_pins_.push_back( pin( pin::COLOR ) );
-		input_pins_.push_back( pin( pin::GRAY ) );
-
-		output_pins_.push_back( pin( pin::BINARY ) );
-		output_pins_.push_back( pin( pin::BINARY ) );
-		output_pins_.push_back( pin( pin::COLOR ) );
-		output_pins_.push_back( pin( pin::GRAY ) );
-	}
-};
 
 
 #endif	// __INCLUDE_DIO_DEF__

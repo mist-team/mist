@@ -365,14 +365,36 @@ void data_view::draw_image( )
 
 void data_view::draw_image( const data_type &buf )
 {
-	// Ý’è‚ð‰Šú’l‚É–ß‚·
-	zoom_ = 1.0;
-	zoom_slider_->setValue( 0 );
+	//// Ý’è‚ð‰Šú’l‚É–ß‚·
+	//zoom_ = 1.0;
+	//zoom_slider_->setValue( 0 );
 
-	current_position_ = point2( 0, 0 );
+	//current_position_ = point2( 0, 0 );
 
-	buffer_ = buf;
+	if( !buf.mono_image_.empty( ) )
+	{
+		buffer_ = buf.mono_image_;
+	}
+	else if( !buf.gray_image_.empty( ) )
+	{
+		buffer_ = buf.gray_image_;
+	}
+	else if( !buf.color_image_.empty( ) )
+	{
+		buffer_ = buf.color_image_;
+	}
+	else
+	{
+		buffer_.clear( );
+	}
+
 	draw_image( );
+}
+
+
+void data_view::draw_image( const filter *pf )
+{
+	draw_image( pf->data( ) );
 }
 
 void data_view::set_cursors( bool is_drag )

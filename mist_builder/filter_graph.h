@@ -12,11 +12,6 @@ class filter_graph : public FXPacker
 public:
 	typedef FXPacker base;
 
-	typedef data_type::size_type size_type;
-	typedef data_type::difference_type difference_type;
-	typedef data_type::value_type value_type;
-	typedef data_type::const_pointer const_pointer;
-
 protected:
 	FXScrollBar		*hscrollbar_;
 	FXScrollBar		*vscrollbar_;

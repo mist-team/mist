@@ -5,6 +5,8 @@
 #include "filter/input.h"
 #include "filter/median.h"
 
+#include "filter/convert.h"
+
 
 void main_window::ClearFilters( )
 {
@@ -26,7 +28,17 @@ void main_window::EnumFilters( )
 
 	// グローバルスペースにフィルタの一覧を作成する
 	app.filters.push_back( new input_filter( ) );
-	app.filters.push_back( new median_filter( ) );
+
+	app.filters.push_back( new median_filter1( ) );
+	app.filters.push_back( new median_filter2( ) );
+	app.filters.push_back( new median_filter3( ) );
+
+	app.filters.push_back( new color2gray_filter( ) );
+	app.filters.push_back( new color2mono_filter( ) );
+	app.filters.push_back( new gray2color_filter( ) );
+	app.filters.push_back( new gray2mono_filter( ) );
+	app.filters.push_back( new mono2color_filter( ) );
+	app.filters.push_back( new mono2gray_filter( ) );
 
 
 	// フィルタデータをリストに登録する
