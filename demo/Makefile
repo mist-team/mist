@@ -9,7 +9,7 @@ OBJECTS = $(CFILES:.cpp=.o)
 all: demo
 
 demo : $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(IMGLIBS) $(LDLIBS)
 
 
 clean:
