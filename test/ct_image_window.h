@@ -38,6 +38,7 @@ public:
 #include "raw_test.h"
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Value_Slider.H>
+#include <FL/Fl_Progress.H>
 
 class ct_image_window {
 public:
@@ -86,6 +87,7 @@ private:
   inline void cb_Indx_i(Fl_Value_Slider*, void*);
   static void cb_Indx(Fl_Value_Slider*, void*);
 public:
+  Fl_Progress *progress_bar;
   void show();
 };
 #endif

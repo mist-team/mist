@@ -27,14 +27,14 @@ _MIST_BEGIN
 
 namespace __raw_controller__
 {
-	template < class T, class Allocator >
+	template < class T, class Allocator, class Functor >
 	struct raw_controller1
 	{
 		typedef typename array1< T, Allocator >::value_type value_type;
 		typedef typename array1< T, Allocator >::size_type size_type;
 
 		static bool read( array1< T, Allocator > &image, const std::string &filename, size_type w, 
-							double x = 1.0, value_type offset = 0, bool raw_is_little_endian = false )
+										double x, value_type offset, bool from_little_endian, Functor f )
 		{
 			gzFile fp;
 			size_type i, l;
@@ -72,7 +72,7 @@ namespace __raw_controller__
 				{
 					data[ l ] = tmparray[ i * byte + l ];
 				}
-				image[ i ] = to_current_endian( data, raw_is_little_endian ).get_value( ) + offset;
+				image[ i ] = to_current_endian( data, from_little_endian ).get_value( ) + offset;
 			}
 			delete [] tmparray;
 
@@ -91,7 +91,7 @@ namespace __raw_controller__
 		}
 
 
-		static bool write( const array1< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )
+		static bool write( const array1< T, Allocator > &image, const std::string &filename, value_type offset, bool to_little_endian, Functor f )
 		{
 			FILE *fp;
 			size_type i, l;
@@ -111,7 +111,7 @@ namespace __raw_controller__
 			for( i = 0 ; i < w ; i++ )
 			{
 				data.set_value( image[ i ] - offset );
-				data = from_current_endian( data, raw_is_little_endian );
+				data = from_current_endian( data, to_little_endian );
 				for( l = 0 ; l < byte ; l++ )
 				{
 					tmparray[ i * byte + l ] = data[ l ];
@@ -142,7 +142,7 @@ namespace __raw_controller__
 			return( true );
 		}
 
-		static bool write_gz( const array1< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )
+		static bool write_gz( const array1< T, Allocator > &image, const std::string &filename, value_type offset, bool to_little_endian, Functor f )
 		{
 			gzFile fp;
 			size_type i, l;
@@ -162,7 +162,7 @@ namespace __raw_controller__
 			for( i = 0 ; i < w ; i++ )
 			{
 				data.set_value( image[ i ] - offset );
-				data = from_current_endian( data, raw_is_little_endian );
+				data = from_current_endian( data, to_little_endian );
 				for( l = 0 ; l < byte ; l++ )
 				{
 					tmparray[ i * byte + l ] = data[ l ];
@@ -193,14 +193,14 @@ namespace __raw_controller__
 	};
 
 
-	template < class T, class Allocator >
+	template < class T, class Allocator, class Functor >
 	struct raw_controller2
 	{
 		typedef typename array2< T, Allocator >::value_type value_type;
 		typedef typename array2< T, Allocator >::size_type size_type;
 
 		static bool read( array2< T, Allocator > &image, const std::string &filename, size_type w, size_type h,
-						double x = 1.0, double y = 1.0, value_type offset = 0, bool raw_is_little_endian = false )
+										double x, double y, value_type offset, bool from_little_endian, Functor f )
 		{
 			gzFile fp;
 			size_type i, j, l;
@@ -221,6 +221,8 @@ namespace __raw_controller__
 			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
 
+			f( 0.0 );
+
 			for( j = 0 ; j < h ; j++ )
 			{
 				if( gzeof( fp ) ) break;
@@ -233,9 +235,21 @@ namespace __raw_controller__
 					{
 						data[ l ] = tmparray[ i * byte + l ];
 					}
-					image( i, j ) = to_current_endian( data, raw_is_little_endian ).get_value( ) + offset;
+					image( i, j ) = to_current_endian( data, from_little_endian ).get_value( ) + offset;
+				}
+
+				// 進行状況を0～100％で表示する
+				// コールバック関数の戻り値が false になった場合は処理を中断し，制御を返す
+				if( !f( static_cast< double >( j + 1 ) / static_cast< double >( h ) * 100.0 ) )
+				{
+					delete [] tmparray;
+					gzclose( fp );
+					return( false );
 				}
 			}
+
+			f( 100.0 );
+
 			delete [] tmparray;
 			gzclose( fp );
 
@@ -250,11 +264,13 @@ namespace __raw_controller__
 				}
 			}
 
+			f( 100.1 );
+
 			return( true );
 		}
 
 
-		static bool write( const array2< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )
+		static bool write( const array2< T, Allocator > &image, const std::string &filename, value_type offset, bool to_little_endian, Functor f )
 		{
 			FILE *fp;
 			size_type i, j, l;
@@ -272,27 +288,42 @@ namespace __raw_controller__
 			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
 
+			f( 0.0 );
+
 			for( j = 0 ; j < h ; j++ )
 			{
 				for( i = 0 ; i < w ; i++ )
 				{
 					data.set_value( image( i, j ) - offset );
-					data = from_current_endian( data, raw_is_little_endian );
+					data = from_current_endian( data, to_little_endian );
 					for( l = 0 ; l < byte ; l++ )
 					{
 						tmparray[ i * byte + l ] = data[ l ];
 					}
 				}
 				fwrite( tmparray, 1, size, fp );
+
+				// 進行状況を0～100％で表示する
+				// コールバック関数の戻り値が false になった場合は処理を中断し，制御を返す
+				if( !f( static_cast< double >( j + 1 ) / static_cast< double >( h ) * 100.0 ) )
+				{
+					delete [] tmparray;
+					gzclose( fp );
+					return( false );
+				}
 			}
+
+			f( 100.0 );
 
 			delete [] tmparray;
 			fclose( fp );
 
+			f( 100.1 );
+
 			return( true );
 		}
 
-		static bool write_gz( const array2< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )
+		static bool write_gz( const array2< T, Allocator > &image, const std::string &filename, value_type offset, bool to_little_endian, Functor f )
 		{
 			gzFile fp;
 			size_type i, j, l;
@@ -315,7 +346,7 @@ namespace __raw_controller__
 				for( i = 0 ; i < w ; i++ )
 				{
 					data.set_value( image( i, j ) - offset );
-					data = from_current_endian( data, raw_is_little_endian );
+					data = from_current_endian( data, to_little_endian );
 					for( l = 0 ; l < byte ; l++ )
 					{
 						tmparray[ i * byte + l ] = data[ l ];
@@ -331,14 +362,14 @@ namespace __raw_controller__
 		}
 	};
 
-	template < class T, class Allocator >
+	template < class T, class Allocator, class Functor >
 	struct raw_controller3
 	{
 		typedef typename array3< T, Allocator >::value_type value_type;
 		typedef typename array3< T, Allocator >::size_type size_type;
 
 		static bool read( array3< T, Allocator > &image, const std::string &filename, size_type w, size_type h, size_type d,
-						double x = 1.0, double y = 1.0, double z = 1.0, value_type offset = 0, bool raw_is_little_endian = false )
+										double x, double y, double z, value_type offset, bool from_little_endian, Functor f )
 		{
 			gzFile fp;
 			size_type i, j, k, l;
@@ -360,6 +391,8 @@ namespace __raw_controller__
 			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
 
+			f( 0.0 );
+
 			for( k = 0 ; k < d ; k++ )
 			{
 				if( gzeof( fp ) ) break;
@@ -374,12 +407,24 @@ namespace __raw_controller__
 						{
 							data[l] = tmparray[ ( i + j * w ) * byte + l ];
 						}
-						image( i, j, k ) = to_current_endian( data, raw_is_little_endian ).get_value( ) + offset;
+						image( i, j, k ) = to_current_endian( data, from_little_endian ).get_value( ) + offset;
 					}
+				}
+
+				// 進行状況を0～100％で表示する
+				// コールバック関数の戻り値が false になった場合は処理を中断し，制御を返す
+				if( !f( static_cast< double >( k + 1 ) / static_cast< double >( d ) * 100.0 ) )
+				{
+					image.clear( );
+					delete [] tmparray;
+					gzclose( fp );
+					return( false );
 				}
 			}
 			delete [] tmparray;
 			gzclose( fp );
+
+			f( 100.0 );
 
 			// ファイルから読み出されたデータ量が，指定されたものよりも少ない場合
 			if( d > k )
@@ -388,15 +433,17 @@ namespace __raw_controller__
 				image.resize( w, h, k );
 				for( i = 0 ; i < image.size( ) ; i++ )
 				{
-					image[i] = tmp[i];
+					image[ i ] = tmp[ i ];
 				}
 			}
+
+			f( 100.1 );
 
 			return( true );
 		}
 
 
-		static bool write( const array3< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )
+		static bool write( const array3< T, Allocator > &image, const std::string &filename, value_type offset, bool to_little_endian, Functor f )
 		{
 			FILE *fp;
 			size_type i, j, k, l;
@@ -415,6 +462,8 @@ namespace __raw_controller__
 			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
 
+			f( 0.0 );
+
 			for( k = 0 ; k < d ; k++ )
 			{
 				for( j = 0 ; j < h ; j++ )
@@ -422,7 +471,7 @@ namespace __raw_controller__
 					for( i = 0 ; i < w ; i++ )
 					{
 						data.set_value( image( i, j, k ) - offset );
-						data = from_current_endian( data, raw_is_little_endian );
+						data = from_current_endian( data, to_little_endian );
 						for( l = 0 ; l < byte ; l++ )
 						{
 							tmparray[ ( i + j * w ) * byte + l ] = data[l];
@@ -430,15 +479,28 @@ namespace __raw_controller__
 					}
 				}
 				fwrite( tmparray, 1, size, fp );
+
+				// 進行状況を0～100％で表示する
+				// コールバック関数の戻り値が false になった場合は処理を中断し，制御を返す
+				if( !f( static_cast< double >( k + 1 ) / static_cast< double >( d ) * 100.0 ) )
+				{
+					delete [] tmparray;
+					fclose( fp );
+					return( false );
+				}
 			}
+
+			f( 100.0 );
 
 			delete [] tmparray;
 			fclose( fp );
 
+			f( 100.1 );
+
 			return( true );
 		}
 
-		static bool write_gz( const array3< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )
+		static bool write_gz( const array3< T, Allocator > &image, const std::string &filename, value_type offset, bool to_little_endian, Functor f )
 		{
 			gzFile fp;
 			size_type i, j, k, l;
@@ -457,6 +519,8 @@ namespace __raw_controller__
 			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
 
+			f( 0.0 );
+
 			for( k = 0 ; k < d ; k++ )
 			{
 				for( j = 0 ; j < h ; j++ )
@@ -464,7 +528,7 @@ namespace __raw_controller__
 					for( i = 0 ; i < w ; i++ )
 					{
 						data.set_value( image( i, j, k ) - offset );
-						data = from_current_endian( data, raw_is_little_endian );
+						data = from_current_endian( data, to_little_endian );
 						for( l = 0 ; l < byte ; l++ )
 						{
 							tmparray[ ( i + j * w ) * byte + l ] = data[l];
@@ -473,10 +537,23 @@ namespace __raw_controller__
 				}
 
 				gzwrite( fp, tmparray, static_cast< unsigned int >( size ) );
+
+				// 進行状況を0～100％で表示する
+				// コールバック関数の戻り値が false になった場合は処理を中断し，制御を返す
+				if( !f( static_cast< double >( k + 1 ) / static_cast< double >( d ) * 100.0 ) )
+				{
+					delete [] tmparray;
+					gzclose( fp );
+					return( false );
+				}
 			}
+
+			f( 100.0 );
 
 			delete [] tmparray;
 			gzclose( fp );
+
+			f( 100.1 );
 
 			return(true);
 		}
@@ -487,68 +564,132 @@ namespace __raw_controller__
 
 
 // 1次元画像配列用の読み込み・書き込み関数
+template < class T, class Allocator, class Functor >
+bool read_raw( array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::size_type w,
+				double x, typename array1< T, Allocator >::value_type offset, bool from_little_endian, Functor callback )
+{
+	return( __raw_controller__::raw_controller1< T, Allocator, Functor >::read( image, filename, w, x, offset, from_little_endian, callback ) );
+}
+
+template < class T, class Allocator, class Functor >
+bool write_raw( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
+{
+	return( __raw_controller__::raw_controller1< T, Allocator, Functor >::write( image, filename, offset, to_little_endian, callback ) );
+}
+
+template < class T, class Allocator, class Functor >
+bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
+{
+	return( __raw_controller__::raw_controller1< T, Allocator, Functor >::write_gz( image, filename, offset, to_little_endian, callback ) );
+}
+
 template < class T, class Allocator >
 bool read_raw( array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::size_type w,
-				double x = 1.0, typename array1< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
+				double x = 1.0, typename array1< T, Allocator >::value_type offset = 0, bool from_little_endian = false )
 {
-	return( __raw_controller__::raw_controller1< T, Allocator >::read( image, filename, w, x, offset, raw_is_little_endian ) );
+	return( read_raw( image, filename, w, x, offset, from_little_endian, __mist_dmy_callback__( ) ) );
 }
 
 template < class T, class Allocator >
-bool write_raw( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
+bool write_raw( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
 {
-	return( __raw_controller__::raw_controller1< T, Allocator >::write( image, filename, offset, raw_is_little_endian ) );
+	return( write_raw( image, filename, offset, to_little_endian, __mist_dmy_callback__( ) ) );
 }
 
 template < class T, class Allocator >
-bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
+bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
 {
-	return( __raw_controller__::raw_controller1< T, Allocator >::write_gz( image, filename, offset, raw_is_little_endian ) );
+	return( write_raw_gz( image, filename, offset, to_little_endian, __mist_dmy_callback__( ) ) );
 }
+
+
 
 
 // 2次元画像配列用の読み込み・書き込み関数
+template < class T, class Allocator, class Functor >
+bool read_raw( array2< T, Allocator > &image, const std::string &filename,
+				typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h,
+				double x, double y, typename array2< T, Allocator >::value_type offset, bool from_little_endian, Functor callback )
+{
+	return( __raw_controller__::raw_controller2< T, Allocator, Functor >::read( image, filename, w, h, x, y, offset, from_little_endian, callback ) );
+}
+
+template < class T, class Allocator, class Functor >
+bool write_raw( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
+{
+	return( __raw_controller__::raw_controller2< T, Allocator, Functor >::write( image, filename, offset, raw_is_little_endian, callback ) );
+}
+
+template < class T, class Allocator, class Functor >
+bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
+{
+	return( __raw_controller__::raw_controller2< T, Allocator, Functor >::write_gz( image, filename, offset, raw_is_little_endian, callback ) );
+}
+
 template < class T, class Allocator >
 bool read_raw( array2< T, Allocator > &image, const std::string &filename,
 				typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h,
-				double x = 1.0, double y = 1.0, typename array2< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
+				double x = 1.0, double y = 1.0, typename array2< T, Allocator >::value_type offset = 0, bool from_little_endian = false )
 {
-	return( __raw_controller__::raw_controller2< T, Allocator >::read( image, filename, w, h, x, y, offset, raw_is_little_endian ) );
+	return( read_raw( image, filename, w, h, x, y, offset, from_little_endian, __mist_dmy_callback__( ) ) );
 }
 
 template < class T, class Allocator >
-bool write_raw( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
+bool write_raw( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
 {
-	return( __raw_controller__::raw_controller2< T, Allocator >::write( image, filename, offset, raw_is_little_endian ) );
+	return( write_raw( image, filename, offset, raw_is_little_endian, __mist_dmy_callback__( ) ) );
 }
 
 template < class T, class Allocator >
-bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
+bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
 {
-	return( __raw_controller__::raw_controller2< T, Allocator >::write_gz( image, filename, offset, raw_is_little_endian ) );
+	return( write_raw_gz( image, filename, offset, raw_is_little_endian, __mist_dmy_callback__( ) ) );
 }
+
+
 
 
 // 3次元画像配列用の読み込み・書き込み関数
+template < class T, class Allocator, class Functor >
+bool read_raw( array3< T, Allocator > &image, const std::string &filename,
+				typename array3< T, Allocator >::size_type w, typename array3< T, Allocator >::size_type h, typename array3< T, Allocator >::size_type d,
+				double x, double y, double z, typename array3< T, Allocator >::value_type offset, bool from_little_endian, Functor callback )
+{
+	return( __raw_controller__::raw_controller3< T, Allocator, Functor >::read( image, filename, w, h, d, x, y, z, offset, from_little_endian, callback ) );
+}
+
+template < class T, class Allocator, class Functor >
+bool write_raw( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
+{
+	return( __raw_controller__::raw_controller3< T, Allocator, Functor >::write( image, filename, offset, to_little_endian, callback ) );
+}
+
+template < class T, class Allocator, class Functor >
+bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
+{
+	return( __raw_controller__::raw_controller3< T, Allocator, Functor >::write_gz( image, filename, offset, to_little_endian, callback ) );
+}
+
 template < class T, class Allocator >
 bool read_raw( array3< T, Allocator > &image, const std::string &filename,
 				typename array3< T, Allocator >::size_type w, typename array3< T, Allocator >::size_type h, typename array3< T, Allocator >::size_type d,
-				double x = 1.0, double y = 1.0, double z = 1.0, typename array3< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
+				double x = 1.0, double y = 1.0, double z = 1.0, typename array3< T, Allocator >::value_type offset = 0, bool from_little_endian = false )
 {
-	return( __raw_controller__::raw_controller3< T, Allocator >::read( image, filename, w, h, d, x, y, z, offset, raw_is_little_endian ) );
+	return( read_raw( image, filename, w, h, d, x, y, z, offset, from_little_endian, __mist_dmy_callback__( ) ) );
 }
 
 template < class T, class Allocator >
-bool write_raw( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
+bool write_raw( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
 {
-	return( __raw_controller__::raw_controller3< T, Allocator >::write( image, filename, offset, raw_is_little_endian ) );
+	return( write_raw( image, filename, offset, to_little_endian, __mist_dmy_callback__( ) ) );
 }
 
 template < class T, class Allocator >
-bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
+bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
 {
-	return( __raw_controller__::raw_controller3< T, Allocator >::write_gz( image, filename, offset, raw_is_little_endian ) );
+	return( write_raw_gz( image, filename, offset, to_little_endian, __mist_dmy_callback__( ) ) );
 }
+
 
 // mist名前空間の終わり
 _MIST_END

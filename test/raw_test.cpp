@@ -11,6 +11,31 @@
 #include <mist/filter/morphology.h>
 #include <mist/timer.h>
 
+
+struct progress_callback
+{
+	Fl_Progress *f_;
+	bool operator()( double percent ) const
+	{
+		if( percent > 100.0 )
+		{
+			f_->hide( );
+			Fl::wait( 0 );
+			return( true );
+		}
+		else if( !f_->visible( ) )
+		{
+			f_->show( );
+		}
+		f_->value( percent );
+		Fl::wait( 0 );
+		return( true );
+	}
+
+	progress_callback( Fl_Progress *f ) : f_( f ){ }
+};
+
+
 void ct_draw_area::draw( )
 {
 	mist::draw_image( buff, w( ), h( ) );
@@ -82,7 +107,7 @@ void ct_draw_area::read_image( ct_image_window *wnd )
 		y = window.sizeY->value( );
 		z = window.sizeZ->value( );
 
-		if( mist::read_raw( ct, filename, w, h, d, x, y, z ) )
+		if( mist::read_raw( ct, filename, w, h, d, x, y, z, 0, false, progress_callback( wnd->progress_bar ) ) )
 		{
 			wnd->Indx->range( 0, ct.depth( ) - 1 );
 		}
@@ -110,7 +135,6 @@ void ct_draw_area::change_index( size_type index )
 		index_ = index;
 		draw_image( );
 		redraw( );
-		Fl::wait( 0 );
 	}
 }
 
@@ -119,7 +143,6 @@ void ct_draw_area::change_window_level( double wl )
 	window_level_ = wl;
 	draw_image( );
 	redraw( );
-	Fl::wait( 0 );
 }
 
 void ct_draw_area::change_window_width( double ww )
@@ -127,7 +150,6 @@ void ct_draw_area::change_window_width( double ww )
 	window_width_ = ww;
 	draw_image( );
 	redraw( );
-	Fl::wait( 0 );
 }
 
 void ct_draw_area::median_filter1D( ct_image_window *wnd )

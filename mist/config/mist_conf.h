@@ -93,6 +93,57 @@ _MIST_BEGIN
 #define _USE_DIVIDE_AND_CONQUER_SVD_		1	// 分割統治法を用いた高速な特異値分解を利用する（若干メモリを大目に食う）
 
 
+// MISTのアルゴリズム全般で利用するダミーコールバックファンクタ
+// MISTのアルゴリズムが提供するコールバックは0～100の間の数を返し，アルゴリズムが終了する際に100よりも大きい数値を返す
+// また，コールバックファンクタの戻り値が false の場合はMISTのアルゴリズムは処理を中断できる場合は中断し，直ちに制御を返します．
+// その際に，途中の処理結果は失われるかもしくは意味のない結果となる可能性があります
+struct __mist_dmy_callback__
+{
+	bool operator()( double percent ) const { return( true ); }
+};
+
+struct __mist_console_callback__
+{
+	bool operator()( double percent ) const
+	{
+		int k3 = static_cast< int >( percent / 100.0 );
+		percent -= k3 * 100.0;
+		int k2 = static_cast< int >( percent / 10.0 );
+		percent -= k2 * 10.0;
+		int k1 = static_cast< int >( percent );
+
+		std::cout << "busy... ";
+		if( k3 == 0 )
+		{
+			std::cout << " ";
+			if( k2 == 0 )
+			{
+				std::cout << " " << k1;
+			}
+			else
+			{
+				std::cout << k2 << k1;
+			}
+		}
+		else
+		{
+			std::cout << 1 << k2 << k1;
+		}
+		if( percent > 100.0 )
+		{
+			std::cout << "%" << std::endl;
+		}
+		else
+		{
+			std::cout << "%\r";
+		}
+		return( true );
+	}
+};
+
+
+
+
 #if _CHECK_ACCESS_VIOLATION_
 
 	inline void mist_debug_assertion( ptrdiff_t index )

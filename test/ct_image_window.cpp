@@ -239,7 +239,7 @@ ct_image_window::ct_image_window( ) {
       }
       o->end();
     }
-    { Fl_Menu_Bar* o = new Fl_Menu_Bar(0, 0, 455, 25);
+    { Fl_Menu_Bar* o = new Fl_Menu_Bar(0, 0, 100, 25);
       o->box(FL_FLAT_BOX);
       o->menu(menu_);
     }
@@ -269,6 +269,11 @@ ct_image_window::ct_image_window( ) {
       o->step(1);
       o->callback((Fl_Callback*)cb_Indx);
       o->align(FL_ALIGN_LEFT);
+    }
+    { Fl_Progress* o = progress_bar = new Fl_Progress(115, 5, 300, 20);
+      o->box(FL_PLASTIC_THIN_UP_BOX);
+      o->selection_color(1);
+      o->hide();
     }
     o->end();
   }

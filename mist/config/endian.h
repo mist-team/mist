@@ -63,12 +63,12 @@ inline void swap_bytes( byte_array< T > &bytes )
 	}
 }
 
-// byte_array内のデータを現在のエンディアンに合わせる
+// byte_array内のデータを現在の計算機のエンディアンに合わせる
 template < class T >
-inline byte_array< T > to_current_endian( const byte_array< T > &bytes, bool is_little_endian )
+inline byte_array< T > to_current_endian( const byte_array< T > &bytes, bool from_little_endian )
 {
 	static bool current_endian = _is_little_endian_( );
-	if( current_endian != is_little_endian )
+	if( current_endian != from_little_endian )
 	{
 		byte_array< T > tmp( bytes );
 		swap_bytes( tmp );
@@ -80,12 +80,12 @@ inline byte_array< T > to_current_endian( const byte_array< T > &bytes, bool is_
 	}
 }
 
-// byte_array内のデータを現在から目的のエンディアンに合わせる
+// byte_array内のデータを現在の計算機のエンディアンから目的のエンディアンに合わせる
 template < class T >
-inline byte_array< T > from_current_endian( const byte_array< T > &bytes, bool is_little_endian )
+inline byte_array< T > from_current_endian( const byte_array< T > &bytes, bool to_little_endian )
 {
 	static bool current_endian = _is_little_endian_( );
-	if( current_endian != is_little_endian )
+	if( current_endian != to_little_endian )
 	{
 		byte_array< T > tmp( bytes );
 		swap_bytes( tmp );
