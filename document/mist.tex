@@ -1,0 +1,274 @@
+%\documentclass[10pt,a4j]{mist}
+\documentclass[twocolumn,10pt,a4j]{mist}
+
+
+\title{Media Integration Standard Toolkit\footnote{http://mist.suenaga.m.is.nagoya-u.ac.jp}}
+\author{高橋 友和\footnote{名古屋大学情報科学研究科メディア科学専攻村瀬研究室}，伊藤 雅紀\footnote{名古屋大学情報科学研究科メディア科学専攻大西研究室}，出口 大輔\footnote{名古屋大学情報科学研究科メディア科学専攻末永研究室}，西堀 研人\footnotemark[2]}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+情報系21世紀COEプロジェクトは，映像や画像，音声などの複数メディアの知的統合を目的とするものであり，そのメディア統合研究開発の基盤整備として，MIST (Media Integration Standard Toolkit)の開発を行っています．
+MISTでは，音声・画像(2次元，3次元)等の異なるメディアの統一的な処理，過去の技術の蓄積を有効活用，プラットホーム非依存の高い汎用性，を目指しています．
+\end{abstract}
+
+\section{はじめに}
+一口に画像といっても「2値画像」「グレースケール画像」「カラー画像」と何種類もあります．それに対し，画像処理のフィルタなどでは，どんな画像に対する処理でも「平滑化フィルタ」「差分フィルタ」等と呼ばれています．このような機能を実現するために，MISTではテンプレートの機能をふんだんに利用しています．
+
+「2値画像」「グレースケール画像」「カラー画像」といっても，要素が異なるだけで，どれも画像という意味では同じです．そこで，画像という入れ物を用意し，中身にいろんな要素（2値，グレースケール，カラー）を入れられるようにします．また，画像に対するアルゴリズムには，汎用的（どのような要素でも動作する）なものと特殊（特定の要素でのみ動作する）なものがあります．そこで，C++の「多重定義」の機能を使って，同じ名前で複数の要素に対するアルゴリズムを準備しています．
+
+画像や音声などは，基本的には1・2・3次元の信号の並びであると考えることができます．それを利用して，MISTでは音声・画像・行列はそれを構成する要素の1・2・3次元の並びであるとして処理を行っています．
+
+
+\subsection{MISTの基本コンテナ}
+MISTのコンテナ（画像や音声を扱う）には，主に次のようなものがあります．
+\begin{itemize}
+\setlength{\itemsep}{0mm}
+\setlength{\parsep}{0em}
+\item{{\bf array} … STLに準拠したメモリ上で連続となる1次元配列であり，音声・画像・行列の全てのデータの基底クラス }
+\item{{\bf array1} … 音声を扱うための1次元配列 }
+\item{{\bf array2} … 2次元画像を扱うための画像クラス }
+\item{{\bf array3} … 3次元画像を扱うための画像クラス }
+\item{{\bf matrix} … 任意の行列を扱うためのクラス（Expression template を利用した高速な演算が可能） }
+\item{{\bf vector} … N次元ベクトルを扱うクラス }
+\end{itemize}
+これに加えて，補助的なクラスとして次のようなものもあります．
+\begin{itemize}
+\setlength{\itemsep}{0mm}
+\setlength{\parsep}{0em}
+\item{{\bf marray} … 1・2・3次元画像の縁にマージンを持った画像を扱うクラス }
+\item{{\bf buffered\_array} … 画像の一辺が2の指数乗となる画像を扱うクラス }
+\item{{\bf set} … 要素の集合を扱うクラス }
+\end{itemize}
+
+\subsection{MISTの基本要素}
+MISTで提供するコンテナの要素として次のようなものがあります．
+\begin{itemize}
+\setlength{\itemsep}{0mm}
+\setlength{\parsep}{0em}
+\item{{\bf rgb} … カラー画素を扱うクラス }
+\item{{\bf binary} … 2値画素を扱うクラス }
+\item{{\bf stereo} … ステレオ音声を扱うクラス }
+\item{{\bf quaternion} … 四元数を扱うクラス }
+\item{{\bf integer} … 多倍長整数を扱うクラス }
+\item{{\bf decimal} … 多倍長浮動小数を扱うクラス }
+\item{{\bf vector2} … 2次元ベクトルを扱うクラス }
+\item{{\bf vector3} … 3次元ベクトルを扱うクラス }
+\end{itemize}
+これ以外にも，通常C/C++で用いる算術型\footnote{unsigned char や double 等}もコンテナの要素となります．
+%これ以外にも，通常C/C++で用いる算術型\footnote{\verb+unsigned char+ や \verb+double+ 等}もコンテナの要素となります．
+
+\section{MISTコンテナの操作}
+\subsection{MISTのヘッダファイルのインクルード}
+MISTを利用するためには，必ず mist/mist.h ヘッダファイルを必ずインクルードします．
+\begin{verbatim}
+#include <mist/mist.h>
+\end{verbatim}
+こんな感じで，利用したい場所の先頭に必ずインクルードしてください．また，MISTはC++を利用しているので，iostream をインクルードする必要があります．
+\begin{verbatim}
+#include <iostream>
+#include <mist/mist.h>
+\end{verbatim}
+この2つのヘッダを必要なところに書いてください．
+
+
+\subsection{MISTのコンテナが格納する要素}
+次に，MISTでは，音声や画像の要素が何であるかをまず決めることから始めます．すでにSTLなどを利用されている方であれば，コンテナの要素と同じと考えていただければ分かりやすいと思います．例えば，グレースケールの画像であれば，要素は \verb+unsigned char+ を利用できるし，カラー画像であれば，\verb+mist::rgb< unsigned char >+ というものも画像の要素になります．
+
+
+\subsection{画像の確保}
+2次元画像を利用する場合は，\verb+mist::array2+ を利用して次のように書きます．
+\begin{verbatim}
+mist::array2< unsigned char > image( 500, 500 );
+\end{verbatim}
+こう書くことで，各要素が \verb+unsigned char+ の2次元画像を利用することができます．また，カラー画像ならこんな感じに書きます．
+\begin{verbatim}
+mist::array2< mist::rgb< unsigned char > >
+                          image( 500, 500 );
+\end{verbatim}
+また，この例では初期化時点で $500\times500$ の画像を用意しています．ここで，\verb+unsigned char+ でなくて \verb+double+ に置き換えてもなんら問題はありません．また，アロケータという概念も利用できるのですが，ここでは割愛します（詳しく知りたい人はSTLを勉強してください）．
+
+そして，MISTのコンテナ内の各要素は，画像確保時に初期値（通常はデフォルトコンストラクタ，算術型では 0 ）で初期化されるようになっています．
+
+\subsection{要素へのアクセス}
+画像を確保しただけでは何にもうれしくありません．それぞれの要素にアクセスできて，はじめて意味があるわけです． MISTでは，各要素へのアクセスには括弧演算子というものを利用します．具体的には次のような画像を確保したとします．
+\begin{verbatim}
+mist::array2< mist::rgb< unsigned char > >
+                           image( 500, 500 );
+\end{verbatim}
+(100, 50) の要素に 1 を代入するなら次のように書きます．
+\begin{verbatim}
+image( 100, 50 ) = 1;
+\end{verbatim}
+要素の値をとってくる場合でも同じように書きます．ただし，ここで指定した \verb+(100, 50)+ の要素が存在する必要があります．つまり，$100\times100$ で確保した画像の \verb+(200, 50)+ の要素を取得・設定することはできないということです．非常に簡単ですが，これだけできれば音声・画像を自由にアクセスすることができるようになります．
+
+また，C/C++言語の配列と同じように，MISTの画像も要素の開始インデックスは 0 から始まります．要するに幅 100 の画像を確保した場合のインデックスの範囲は 0 ～ 99 になるので注意が必要です．
+
+
+\subsection{要素の初期化}
+画像の各要素を何らかの値で初期化したいことがよくあります．そんなときは， \verb+fill+ 関数を利用します． MISTではSTLと同じ処理内容の関数があれば，同じ名前を採用するようにしています．なので，STLに存在している \verb+fill+ 関数と同じ名前となっています．使い方はいたって簡単で，コンテナ内の全要素を初期値（通常はデフォルトコンストラクタ，算術型では 0 ）で初期化する場合には， 
+\begin{verbatim}
+image.fill( );
+\end{verbatim}
+と書けばOKですし，値を指定して要素を初期化したい場合は， 
+\begin{verbatim}
+image.fill( 255 );
+\end{verbatim}
+と書きます．
+
+
+\subsection{画像の開放}
+使用しなくなった画像が利用しているメモリを，明示的に開放したい場合は次のように書きます．
+\begin{verbatim}
+image.clear( );
+\end{verbatim}
+こう書くことで，要素数 0 の画像となります．また，MISTの画像コンテナは，画像オブジェクトのスコープが外れた時点（デストラクタの呼び出し時）で自動的にメモリを開放してくれるので，通常は \verb+clear+ 関数を呼び出す必要はありません．
+
+
+\subsection{画像のリサイズ}
+画像のサイズを変更したい場合は，リサイズ関数を利用します．
+\begin{verbatim}
+image.resize( 100, 200 );
+\end{verbatim}
+こう書くことで，$100\times200$ の画像に変更されます．ただし，リサイズ関数を呼び出しても，画像内の各要素が初期化されるとは限りません． MISTでは，必要なメモリ量が変わったときにのみ全要素を初期化します．そのため，必ずリサイズ後に全要素を初期化したい場合は，前述の \verb+fill+ 関数を利用してください．
+
+
+
+\section{画像の入出力}
+\subsection{MISTでサポートする画像形式}
+MISTでは，画像を簡単に読み込んだり出力したりする機能を提供しています．サポートしている画像形式は，JPEG，TIFF，PNG，BMP，PNM，GIF，TGA, RAW，DICOM の9種類です．ここで，JPEG，TIFF，PNG，RAWには以下に示す外部ライブラリが必要となります．
+\begin{itemize}
+\setlength{\leftmargin}{1cm}
+\setlength{\itemsep}{0mm}
+\item{JPEG … Independent JPEG Group (http://www.ijg.org/) が提供する libjpeg ライブラリ }
+\item{TIFF … http://libtiff.org が提供する libtiff ライブラリ }
+\item{PNG … http://libpng.org が提供する libpng ライブラリ， http://www.zlib.org が提供する zlib ライブラリ }
+\item{RAW … http://www.zlib.org が提供する zlib ライブラリ }
+\end{itemize}
+これらのライブラリは，LinuxとWindowsの両方で動作し，Linuxではパッケージが提供されているので簡単に導入できると思います．また，BMP，PNM，TGA，GIF，DICOM形式に限り外部ライブラリは必要ありません（ただし，GIFは読み込みのみのサポートとなります）．
+
+
+\subsection{ヘッダファイルのインクルード}
+読み込みたい画像の形式によって，インクルードするヘッダファイルを決めます．
+\begin{itemize}
+\setlength{\leftmargin}{1cm}
+\setlength{\itemsep}{0mm}
+\item{JPEG … \verb+#include <mist/io/jpeg.h>+}
+\item{TIFF … \verb+#include <mist/io/tiff.h>+}
+\item{PNG … \verb+#include <mist/io/png.h>+}
+\item{RAW … \verb+#include <mist/io/raw.h>+}
+\item{GIF … \verb+#include <mist/io/gif.h>+}
+\item{TGA … \verb+#include <mist/io/tga.h>+}
+\item{BMP … \verb+#include <mist/io/bmp.h>+}
+\item{PNM\footnote{PBM，PGM，PPMを含む} … \verb+#include <mist/io/pnm.h>+}
+\end{itemize}
+上記のヘッダは，それぞれの画像形式に特化したものです．全ての画像形式を，拡張子で判定して読み書きする関数は次のヘッダで提供しています．
+\begin{verbatim}
+#include <mist/io/image.h>
+\end{verbatim}
+
+
+\subsection{画像の読み込み手順}
+まず，画像を格納するオブジェクトを次のような感じで用意します．
+グレースケール画像として読み込む場合は次のように書き，
+\begin{verbatim}
+mist::array2< unsigned char > img;
+\end{verbatim}
+カラー画像として読み込む場合は次のように書きます．
+\begin{verbatim}
+mist::array2< mist::rgb< unsigned char > >
+                                     img;
+\end{verbatim}
+ここで，BMP画像を読み込みたい場合は \verb+#include <mist/io/bmp.h>+ をインクルードして，必要なところで次のように書きます．
+\begin{verbatim}
+mist::read_bmp( img, "入力BMPファイル名" );
+\end{verbatim}
+また，全てのサポートしている画像形式を拡張子で判別して読み込むなら 
+\begin{verbatim}
+mist::read_image( img, "入力画像ファイル名" );
+\end{verbatim}
+とします．
+
+ここで，各関数の戻り値として画像が正しく読み込まれたかどうかを返します．これを利用して，読み込みに失敗したかどうかを調べるには次のように書くだけです．
+\begin{verbatim}
+if( mist::read_image( img, "ファイル名" ) )
+{
+    std::cout << "成功！！" << std::endl;
+}
+else
+{
+    std::cout << "失敗！！" << std::endl;
+}
+\end{verbatim}
+もし，元データがカラー画像で読込先のコンテナがグレースケール（\verb+mist::array2< unsigned char >+）であった場合は，自動的にグレースケールに変換されます．
+
+\subsection{画像の書き込み手順}
+画像の書き込みと画像の読み込みはほとんど同じ手順で実行でき，こんな感じで書けます．
+\begin{verbatim}
+if( mist::write_image( img, "ファイル名" ) )
+{
+    std::cout << "成功！！" << std::endl;
+}
+else
+{
+    std::cout << "失敗！！" << std::endl;
+}
+\end{verbatim}
+\verb+write_image+ 関数では，画像に出力する際のパラメータ（画質，圧縮率，...）を指定することはできません．そこで，MISTではBMP画像やJPEG画像専用の書き込み関数も用意しています．専用の関数では，画像の圧縮率や品質などのパラメータを指定することができるので，利用したい画像用の書き込み関数を ドキュメント で調べて利用してください．
+
+
+\section{画像のフィルタリング}
+MISTが提供する画像・音声のフィルタは，各コンテナに対して適用することができるようになっています．例えば，音声や2次元画像や3次元画像のどのMISTコンテナに対しても，メディアンフィルタやモルフォロジ演算等を適用することができます．ただし，各次元によって入力パラメータが異なる場合もあるので，詳しくはドキュメントを読んで確認してください． 
+
+
+\subsection{ヘッダの準備}
+どのようなフィルタをかけたいかによって，インクルードするヘッダファイルが異なります．例えば，メディアン（中央値）フィルタでは， 
+\begin{verbatim}
+#include <mist/filter/median.h>
+\end{verbatim}
+とかく必要がありますし，モルフォロジ演算では， 
+\begin{verbatim}
+#include <mist/filter/morphology.h>
+\end{verbatim}
+とかく必要があります． 
+目的のフィルタがMISTに存在するかをドキュメントを読んで確認してください． 
+
+
+\subsection{メディアン（中央値）フィルタ}
+基本的なフィルタの適用方法はいたってシンプルです．今回は，メディアンフィルタの使用例を説明してみます．メディアンフィルタでは，フィルタのマスクサイズ（中央値を計算する範囲）を設定する必要があります． MISTでは，各軸方向で異なるマスクサイズが利用できるようになっています．まず，読み込んだ 2 次元画像に対し $3\times5$ のメディアンフィルタを適用する場合はこんな感じで書きます． 
+\begin{verbatim}
+mist::median( image, oimage, 3, 5 );
+\end{verbatim}
+ここで，\verb+oimage+ はメディアンフィルタを適用後の画像となります．
+また，MISTでは複数スレッドを用いた高速化も行っているので，例えば2個スレッドを使って計算したい時は 
+\begin{verbatim}
+mist::median( image, oimage, 3, 5, 2 );
+\end{verbatim}
+と書きます．この最後の引数は省略することができ，省略した場合は自動的に最適なスレッド数を設定するようになっています．あたりまえですが，入力画像に画像が設定されていない場合は何も起きないので注意してください． 
+
+
+\subsection{モルフォロジ演算}
+基本的なフィルタの適用方法はいたってシンプルです．今回は，モルフォロジ演算の使用例を説明してみます．モルフォロジ演算では，構造要素を設定する必要があります． MISTでは，任意の凸形状の構造要素に対してモルフォロジ演算が適用できるようになっています．まず，読み込んだ 2 次元画像に対し半径3の円を構造要素とする \verb+opening+ 演算を適用する場合はこんな感じで書きます． 
+\begin{verbatim}
+mist::opening( image, 3.0 );
+\end{verbatim}
+ここで，MISTのモルフォロジ演算ではアスペクトを考慮した円・球がデフォルトの構造要素となっていることに注意してください．そのため，設定する半径の値は \verb+double+ 型となっています．また，MISTでは複数スレッドを用いた高速化も行っているので，例えば 2 個スレッドを使って計算したい時は 
+\begin{verbatim}
+mist::opening( image, 3.0, 2 );
+\end{verbatim}
+と書きます．この最後の引数は省略することができ，省略した場合は自動的に最適なスレッド数を設定するようになっています．あたりまえですが，入力画像に画像が設定されていない場合は何も起きないので注意してください．同様の書き方で，\verb+erosion+，\verb+dilation+，\verb+closing+ にも適用することができます． 
+
+次に，任意の構造要素を用いてモルフォロジ演算を行う場合には，まず構造要素の作成を0と1の値を持つ画像として作成します．作成した構造要素画像を element とすると，次のようにして opening 演算を適用することができます． 
+\begin{verbatim}
+using namespace mist::morphology;
+mist::opening( image,
+ create_morphology_structure( element, cx, cy ) );
+\end{verbatim}
+ここで，\verb+create_morphology_structure+ の引数 \verb+(cx, cy)+ は，構造要素の中心座標を表しています．これを用いることで，任意の構造要素でモルフォロジ演算を行うことができます．ただし，構造要素は凸形状である必要があるということに注意してください． 
+
+
+
+\end{document}
