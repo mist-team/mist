@@ -1,0 +1,42 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0104 
+header_name {.h} 
+code_name {.cpp}
+decl {\#include "image_test.h"} {public
+} 
+
+class image_test_window {open
+} {
+  Function {image_test_window()} {open
+  } {
+    Fl_Window main_window {open
+      xywh {102 315 551 586} type Double visible
+    } {
+      Fl_Group {} {open
+        xywh {5 5 540 530} box DOWN_BOX
+      } {
+        Fl_Box draw_area {
+          label label
+          xywh {10 10 530 520} box FLAT_BOX color 40
+          class image_draw_area
+        }
+      }
+      Fl_Button {} {
+        label {Read JPEG}
+        callback {const char *filename = fl_file_chooser( "Open JPEG", "JPEG File (*.{jpg,jpeg})", "" );
+if( filename == NULL ) return;
+
+read_jpeg_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );} selected
+        xywh {5 545 135 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+    }
+  }
+  Function {show( )} {open return_type void
+  } {
+    code {main_window->show( );} {}
+  }
+} 

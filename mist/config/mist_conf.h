@@ -49,6 +49,13 @@ template<> struct is_char< unsigned char >{ _MIST_CONST( bool, value, true  ); }
 template<> struct is_char< signed char >  { _MIST_CONST( bool, value, true  ); };
 template<> struct is_char< char >         { _MIST_CONST( bool, value, true  ); };
 
+// •‚“®¬”“_ ”»’è
+// T ‚ª float ‚© double Œ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚é
+template< class T > struct is_float       { _MIST_CONST( bool, value, false ); };
+template<> struct is_float< float >       { _MIST_CONST( bool, value, true  ); };
+template<> struct is_float< double >      { _MIST_CONST( bool, value, true  ); };
+template<> struct is_float< long double > { _MIST_CONST( bool, value, true  ); };
+
 // arithmetic ”»’è
 // T ‚ªZpŒ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚éB”Ä®”Œ^‚©•‚“®¬”“_Œ^‚Ì‚¢‚¸‚ê‚©‚ª‚±‚ê‚É‚ ‚½‚é
 template< class T > struct is_arithmetic                  { _MIST_CONST( bool, value, false ); };
@@ -187,6 +194,7 @@ public:
 	value_type g;
 	value_type b;
 
+	rgb( ) : r( 0 ), g( 0 ), b( 0 ){ }
 	rgb( const value_type &rr, const value_type &gg, const value_type &bb ) : r( rr ), g( gg ), b( bb ){ }
 
 	const rgb &operator +=( const rgb &c ){ r += c.r; g += c.g; b += c.b; return( *this ); }

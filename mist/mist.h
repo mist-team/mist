@@ -334,7 +334,7 @@ private:
 
 public:
 	double reso1( double r1 ){ return( reso1_ = r1 ); }
-	double reso1( ){ return( reso1_ ); }
+	double reso1( ) const { return( reso1_ ); }
 
 /************************************************************************************************************
 **
@@ -479,7 +479,7 @@ public:
 	size_type height( ) const { return( size2_ ); }
 
 	double reso2( double r2 ){ return( reso2_ = r2 ); }
-	double reso2( ){ return( reso2_ ); }
+	double reso2( ) const { return( reso2_ ); }
 
 
 /************************************************************************************************************
@@ -703,7 +703,7 @@ public:
 	size_type depth( ) const { return( size3_ ); }
 
 	double reso3( double r3 ){ return( reso3_ = r3 ); }
-	double reso3( ){ return( reso3_ ); }
+	double reso3( ) const { return( reso3_ ); }
 
 	// 順方向のランダムアクセスイテレータを返す
 	iterator begin( ){ return( iterator( &( data_[0] ), 1, 0, 0 ) ); }
