@@ -25,12 +25,15 @@ _MIST_BEGIN
 /// @brief MT(Mersenne Twister)法による一様乱数
 namespace uniform
 {
-	/// @brief MT(Mersenne Twister)法による一様乱数発生
+	
+	/// @brief MT(Mersenne Twister)法による一様乱数ジェネレータ
 	//! 
 	//! 長周期, 高次元均等分布を持つ擬似乱数を生成する．
 	//! 周期が2^19937-1で、623次元超立方体の中に 均等に分布することが証明されている．
 	//! 
-	//! 開発者のページ：
+	//! このクラスは，MT法開発者によりCで書かれた乱数生成関数群(MT19937)をクラス化したものである．
+	//! 
+	//! MT法(MT19937)開発者のページ：
 	//! http://www.math.keio.ac.jp/~matumoto/mt.html
 	//!
 	class random
@@ -43,11 +46,10 @@ namespace uniform
 		const unsigned long lower_mask_;	///< @brief least significant r bits
 
 		// static unsigned long mt_[number_n_]; /* the array for the state vector  */
-		// static int mti_=number_n_+1; /* mti_==number_n_+1 means mt_[number_n_] is not initialized */
-		// array< unsigned long > mt_;	
+		// static int mti_=number_n_+1; /* mti_==number_n_+1 means mt_[number_n_] is not initialized */	
 
-		array< unsigned long > mt_;			///< @brief seed array
-		unsigned long mti_;					///< @brief counter for seed array initialization
+		array< unsigned long > mt_;			///< @brief the array for the state vector
+		unsigned long mti_;					///< @brief mti_==number_n_+1 means mt_[number_n_] is not initialized
 
 
 	public:
@@ -59,14 +61,14 @@ namespace uniform
 		//! デフォルトコンストラクタ
 		//! 
 		random( ) :
+			pai_timed_by_2_( 6.283185307179586 ),
 			number_n_( 624 ),
 			number_m_( 397 ),
 			matrix_a_( 0x9908b0dfUL ),
 			upper_mask_( 0x80000000UL ),
 			lower_mask_( 0x7fffffffUL ),
 			mt_( number_n_ ),
-			mti_( number_n_ + 1 ),
-			pai_timed_by_2_( 6.283185307179586 )
+			mti_( number_n_ + 1 )
 		{
 		}
 
@@ -75,17 +77,17 @@ namespace uniform
 		//! 
 		//! 
 		//! 
-		//! @param[in] seed … 乱数のseed(これを用いてseed配列を作る)
+		//! @param[in] seed … 乱数のseed(これを用いてジェネレータの状態を初期化する)
 		//! 
 		random( const unsigned long& seed ) :
+			pai_timed_by_2_( 6.283185307179586 ),
 			number_n_( 624 ),
 			number_m_( 397 ),
 			matrix_a_( 0x9908b0dfUL ),
 			upper_mask_( 0x80000000UL ),
 			lower_mask_( 0x7fffffffUL ),
 			mt_( number_n_ ),
-			mti_( number_n_ + 1 ),
-			pai_timed_by_2_( 6.283185307179586 )
+			mti_( number_n_ + 1 )
 		{
 			init( seed );
 		}
@@ -95,27 +97,40 @@ namespace uniform
 		//! 
 		//! 
 		//! 
-		//! @param[in] seed_array … 乱数のseed配列
+		//! @param[in] seed_array … 乱数のseed配列(これを用いてジェネレータの状態を初期化する)
 		//! 
 		random( const array< unsigned long >& seed_array ) :
+			pai_timed_by_2_( 6.283185307179586 ),
 			number_n_( 624 ),
 			number_m_( 397 ),
 			matrix_a_( 0x9908b0dfUL ),
 			upper_mask_( 0x80000000UL ),
 			lower_mask_( 0x7fffffffUL ),
 			mt_( number_n_ ),
-			mti_( number_n_ + 1 ),
-			pai_timed_by_2_( 6.283185307179586 )
+			mti_( number_n_ + 1 )
 		{
 			init( seed_array );
 		}
 
+		const random& operator=( const random& r )
+		{
+			if( this == &r )
+			{
+				return( *this );
+		
+			}
+
+			mt_ = r.mt_;
+			mti_ = r.mti_;
+
+			return ( *this );
+		}
 
 		/// @brief seedで初期化
 		//! 
 		//! initializes mt_[number_n_] with a seed
 		//! 
-		//! @param[in] seed … 乱数のseed(これを用いてseed配列を作る)
+		//! @param[in] seed … 乱数のseed
 		//! 
 		void init( const unsigned long& seed )
 		{
@@ -304,17 +319,18 @@ namespace uniform
 } // uniform
 
 
+
 /// @brief 正規乱数のジェネレータ
 namespace gauss
 {
 
 	/// @brief 正規乱数のジェネレータ
 	//! 
-	//! 平均値と標準偏差を指定し，一様乱数生成器を用いて正規乱数を発生させるクラス．
+	//! 平均値と標準偏差を指定し，一様乱数ジェネレータを用いて正規乱数を発生させるクラス．
 	//! 
 	class random 
 	{
-		mist::uniform::random u_rand_;	///< @brief 一様乱数生成器 >
+		mist::uniform::random u_rand_;	///< @brief 一様乱数ジェネレータ >
 
 		double mean_;					///< @brief 生成する正規乱数の平均値
 		double standard_deviation_;		///< @brief 生成する正規乱数の標準偏差
@@ -333,7 +349,7 @@ namespace gauss
 
 		/// @brief コンストラクタ
 		//! 
-		//! @param[in] seed … u_rand_のseed(これを用いてseed配列を作る)
+		//! @param[in] seed … u_rand_のseed(これを用いてジェネレータの状態を初期化する)
 		//! @param[in] mean … 正規乱数の平均
 		//! @param[in] standard_deviation … 正規乱数の標準偏差
 		//! 
@@ -460,11 +476,6 @@ _MIST_END
    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
- 
-   Any feedback is very welcome.
-   http://www.math.keio.ac.jp/matumoto/emt.html
-   email: matumoto@math.keio.ac.jp
 */
 
 #endif // __INCLUDE_RANDOM__
