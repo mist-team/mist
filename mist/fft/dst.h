@@ -33,21 +33,27 @@ _MIST_BEGIN
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 {
-	typedef typename Allocator1::size_type size_type;
-	typedef typename Allocator2::value_type value_type;
-	size_type i;
-	double *data;
-	double *w;
-	int *ip;
-
 	if( !__fft_util__::size_check( ( unsigned int ) in.size( ) ) )
 	{
 		return( false );
 	}
 
-	data = ( double * ) malloc( sizeof( double ) * in.size( ) );
-	ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ) );
-	w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.size( ) * 5 / 4 ) );
+	typedef typename Allocator1::size_type size_type;
+	size_type i;
+	__fft_util__::FFT_MEMORY1 mem;
+
+	if( !__fft_util__::allocate_memory( mem,
+									in.size( ),
+									static_cast< size_t >( sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ),
+									in.size( ) * 5 / 4 ) )
+	{
+		deallocate_memory( mem );
+		return( false );
+	}
+
+	double *data	= mem.data;
+	double *w		= mem.w;
+	int    *ip		= mem.ip;
 
 	for( i = 0 ; i < in.size( ) ; i++ )
 	{
@@ -69,9 +75,7 @@ bool dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 		out[ i ] = __fft_util__::convert_complex< T2 >::convert_from( data[ i ], 0.0 );
 	}
 
-	free( w );
-	free( ip );
-	free( data );
+	deallocate_memory( mem );
 
 	return( true );
 }
@@ -80,21 +84,27 @@ bool dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 {
-	typedef typename Allocator1::size_type size_type;
-	typedef typename Allocator2::value_type value_type;
-	size_type i;
-	double *data;
-	double *w;
-	int *ip;
-
 	if( !__fft_util__::size_check( ( unsigned int ) in.size( ) ) )
 	{
 		return( false );
 	}
 
-	data = ( double * ) malloc( sizeof( double ) * in.size( ) );
-	ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ) );
-	w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.size( ) * 5 / 4 ) );
+	typedef typename Allocator1::size_type size_type;
+	size_type i;
+	__fft_util__::FFT_MEMORY1 mem;
+
+	if( !__fft_util__::allocate_memory( mem,
+									in.size( ),
+									static_cast< size_t >( sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ),
+									in.size( ) * 5 / 4 ) )
+	{
+		deallocate_memory( mem );
+		return( false );
+	}
+
+	double *data	= mem.data;
+	double *w		= mem.w;
+	int    *ip		= mem.ip;
 
 	for( i = 1 ; i < in.size( ) ; i++ )
 	{
@@ -117,9 +127,7 @@ bool dst_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 		out[ i ] = __fft_util__::convert_complex< T2 >::convert_from( data[ i ] * 2.0 / out.size( ), 0.0 );
 	}
 
-	free( w );
-	free( ip );
-	free( data );
+	deallocate_memory( mem );
 
 	return( true );
 }
@@ -128,39 +136,30 @@ bool dst_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
-	typedef typename Allocator1::size_type size_type;
-	typedef typename Allocator2::value_type value_type;
-	size_type i,j;
-	double **data;
-	double *t;
-	double *w;
-	int *ip;
-
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) || !__fft_util__::size_check( ( unsigned int ) in.height( ) ) )
 	{
 		return( false );
 	}
 
-	data = ( double ** ) malloc( sizeof( double * ) * in.width( ) );
+	typedef typename Allocator1::size_type size_type;
+	size_type i, j, size = in.width( ) > in.height( ) ? in.width( ) : in.height( );
+	__fft_util__::FFT_MEMORY2 mem;
 
-	for( i = 0 ; i < in.width( ) ; i++ )
+	if( !__fft_util__::allocate_memory( mem,
+									in.width( ),
+									in.height( ),
+									4 * in.width( ) * FFT2D_MAX_THREADS,
+									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
+									size * 3 / 2 ) )
 	{
-		data[ i ] = ( double * ) malloc( sizeof( double ) * in.height( ) );
+		deallocate_memory( mem );
+		return( false );
 	}
 
-	t = ( double * ) malloc( sizeof( double ) * 4 * in.width( ) * FFT2D_MAX_THREADS );
-
-	if( in.width( ) > in.height( ) )
-	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt(  static_cast< double >( in.width( ) / 2 ) ) + 3 ) );
-		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.width( ) * 3 / 2 ) );
-	}
-	else
-	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.height( ) / 2 ) ) + 3 ) );
-		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.height( ) * 3 / 2 ) );
-
-	}
+	double **data	= mem.data;
+	double *t		= mem.t;
+	double *w		= mem.w;
+	int    *ip		= mem.ip;
 
 	for( i = 0 ; i < in.width( ) ; i++ )
 	{
@@ -186,16 +185,7 @@ bool dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 		}
 	}
 
-	free( t );
-	free( w );
-	free( ip );
-
-	for( i = 0 ; i < in.width( ) ; i++ )
-	{
-		free( data[ i ] );
-	}
-
-	free( data );
+	deallocate_memory( mem );
 
 	return( true );
 }
@@ -205,39 +195,30 @@ bool dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
-	typedef typename Allocator1::size_type size_type;
-	typedef typename Allocator2::value_type value_type;
-	size_type i,j;
-	double **data;
-	double *t;
-	double *w;
-	int *ip;
-
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) || !__fft_util__::size_check( ( unsigned int ) in.height( ) ) )
 	{
 		return( false );
 	}
 
-	data = ( double ** ) malloc( sizeof( double * ) * in.width( ) );
+	typedef typename Allocator1::size_type size_type;
+	size_type i, j, size = in.width( ) > in.height( ) ? in.width( ) : in.height( );
+	__fft_util__::FFT_MEMORY2 mem;
 
-	for( i = 0 ; i < in.width( ) ; i++ )
+	if( !__fft_util__::allocate_memory( mem,
+									in.width( ),
+									in.height( ),
+									4 * in.width( ) * FFT2D_MAX_THREADS,
+									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
+									size * 3 / 2 ) )
 	{
-		data[ i ] = ( double * ) malloc( sizeof( double ) * in.height( ) );
+		deallocate_memory( mem );
+		return( false );
 	}
 
-	t = ( double * ) malloc( sizeof( double ) * 4 * in.width( ) * FFT2D_MAX_THREADS );
-
-	if( in.width( ) > in.height( ) )
-	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt(static_cast< double >( in.width( ) / 2 )) + 3 ) );
-		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.width( ) * 3 / 2 ) );
-	}
-	else
-	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.height( ) / 2 )) + 3 ) );
-		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.height( ) * 3 / 2 ) );
-
-	}
+	double **data	= mem.data;
+	double *t		= mem.t;
+	double *w		= mem.w;
+	int    *ip		= mem.ip;
 
 	for( i = 0 ; i < in.width( ) ; i++ )
 	{
@@ -273,16 +254,7 @@ bool dst_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 		}
 	}
 
-	free( t );
-	free( w );
-	free( ip );
-
-	for( i = 0 ; i < in.width( ) ; i++ )
-	{
-		free( data[ i ] );
-	}
-
-	free( data );
+	deallocate_memory( mem );
 
 	return( true );
 }
@@ -292,14 +264,6 @@ bool dst_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 {
-	typedef typename Allocator1::size_type size_type;
-	typedef typename Allocator2::value_type value_type;
-	size_type i,j,k;
-	double ***data;
-	double *t;
-	double *w;
-	int *ip;
-
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) ||
 		!__fft_util__::size_check( ( unsigned int ) in.height( ) ) ||
 		!__fft_util__::size_check( ( unsigned int ) in.depth( ) ) )
@@ -307,39 +271,26 @@ bool dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 		return( false );
 	}
 
-	data = ( double *** ) malloc( sizeof( double ** ) * in.width( ) );
+	typedef typename Allocator1::size_type size_type;
+	size_type i, j, k, size = in.width( ) > in.height( ) ? in.width( ) : in.height( );
+	__fft_util__::FFT_MEMORY3 mem;
 
-	for( i = 0 ; i < in.width( ) ; i++ )
+	if( !__fft_util__::allocate_memory( mem,
+									in.width( ),
+									in.height( ),
+									in.depth( ),
+									4 * size * FFT3D_MAX_THREADS,
+									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
+									size * 3 / 2 ) )
 	{
-		data[ i ] = ( double ** ) malloc( sizeof( double * ) * in.height( ) );
-
-		for( j = 0 ; j < in.height( ) ; j++ )
-		{
-			data[ i ][ j ] = ( double * ) malloc( sizeof( double ) * in.depth( ) );
-		}
+		deallocate_memory( mem );
+		return( false );
 	}
 
-	if( in.width( ) > in.height( ) )
-	{
-		t = ( double * ) malloc( sizeof( double ) * 4 * in.width( ) * FFT3D_MAX_THREADS );
-	}
-	else
-	{
-		t = ( double * ) malloc( sizeof( double ) * 4 * in.height( ) * FFT3D_MAX_THREADS );
-	}
-
-
-	if( in.width( ) > in.height( ) )
-	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.width( ) / 2 )) + 3 ) );
-		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.width( ) * 3 / 2 ) );
-	}
-	else
-	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt(static_cast< double >( in.height( ) / 2 ) ) + 3 ) );
-		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.height( ) * 3 / 2 ) );
-
-	}
+	double ***data	= mem.data;
+	double *t		= mem.t;
+	double *w		= mem.w;
+	int    *ip		= mem.ip;
 
 	for( i = 0 ; i < in.width( ) ; i++ )
 	{
@@ -371,21 +322,7 @@ bool dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 		}
 	}
 
-	free( t );
-	free( w );
-	free( ip );
-
-	for( i = 0 ; i < in.width( ) ; i++ )
-	{
-		for( j = 0 ; j < in.height( ) ; j++ )
-		{
-			free( data[ i ][ j ] );
-		}
-
-		free( data[ i ] );
-	}
-
-	free( data );
+	deallocate_memory( mem );
 
 	return( true );
 }
@@ -395,14 +332,6 @@ bool dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 {
-	typedef typename Allocator1::size_type size_type;
-	typedef typename Allocator2::value_type value_type;
-	size_type i,j,k;
-	double ***data;
-	double *t;
-	double *w;
-	int *ip;
-
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) ||
 		!__fft_util__::size_check( ( unsigned int ) in.height( ) ) ||
 		!__fft_util__::size_check( ( unsigned int ) in.depth( ) ) )
@@ -410,39 +339,26 @@ bool dst_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 		return( false );
 	}
 
-	data = ( double *** ) malloc( sizeof( double ** ) * in.width( ) );
+	typedef typename Allocator1::size_type size_type;
+	size_type i, j, k, size = in.width( ) > in.height( ) ? in.width( ) : in.height( );
+	__fft_util__::FFT_MEMORY3 mem;
 
-	for( i = 0 ; i < in.width( ) ; i++ )
+	if( !__fft_util__::allocate_memory( mem,
+									in.width( ),
+									in.height( ),
+									in.depth( ),
+									4 * size * FFT3D_MAX_THREADS,
+									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
+									size * 3 / 2 ) )
 	{
-		data[ i ] = ( double ** ) malloc( sizeof( double * ) * in.height( ) );
-
-		for( j = 0 ; j < in.height( ) ; j++ )
-		{
-			data[ i ][ j ] = ( double * ) malloc( sizeof( double ) * in.depth( ) );
-		}
+		deallocate_memory( mem );
+		return( false );
 	}
 
-	if( in.width( ) > in.height( ) )
-	{
-		t = ( double * ) malloc( sizeof( double ) * 4 * in.width( ) * FFT3D_MAX_THREADS );
-	}
-	else
-	{
-		t = ( double * ) malloc( sizeof( double ) * 4 * in.height( ) * FFT3D_MAX_THREADS );
-	}
-
-
-	if( in.width( ) > in.height( ) )
-	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt(static_cast< double >( in.width( ) / 2 ) ) + 3 ) );
-		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.width( ) * 3 / 2 ) );
-	}
-	else
-	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.height( ) / 2 ) ) + 3 ) );
-		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.height( ) * 3 / 2 ) );
-
-	}
+	double ***data	= mem.data;
+	double *t		= mem.t;
+	double *w		= mem.w;
+	int    *ip		= mem.ip;
 
 	for( i = 0 ; i < in.width( ) ; i++ )
 	{
@@ -480,9 +396,7 @@ bool dst_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 		}
 	}
 
-
 	ooura_fft::ddst3d( static_cast< int >( in.width( ) ), static_cast< int >( in.height( ) ), static_cast< int >( in.depth( ) ), 1, data, t, ip, w );
-
 
 	out.resize( in.width( ), in.height( ), in.depth( ) );
 
@@ -497,21 +411,7 @@ bool dst_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 		}
 	}
 
-	free( t );
-	free( w );
-	free( ip );
-
-	for( i = 0 ; i < in.width( ) ; i++ )
-	{
-		for( j = 0 ; j < in.height( ) ; j++ )
-		{
-			free( data[ i ][ j ] );
-		}
-
-		free( data[ i ] );
-	}
-
-	free( data );
+	deallocate_memory( mem );
 
 	return( true );
 }

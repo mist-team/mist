@@ -7,7 +7,7 @@
 #include <mist/fft/dst.h>
 #include <mist/io/raw.h>
 
-#define TEST_MODE	1
+#define TEST_MODE	2
 #define FFT_TEST	1
 #define DCT_TEST	2
 #define DST_TEST	3

@@ -163,6 +163,112 @@ namespace __fft_util__
 			return( dmy );
 		}
 	};
+
+
+	struct FFT_MEMORY1
+	{
+		double	*data;
+		double	*w;
+		int		*ip;
+		size_t	size;
+	};
+
+	struct FFT_MEMORY2
+	{
+		double	**data;
+		double	*t;
+		double	*w;
+		int		*ip;
+		size_t	size;
+	};
+
+	struct FFT_MEMORY3
+	{
+		double	***data;
+		double	*t;
+		double	*w;
+		int		*ip;
+		size_t	size1;
+		size_t	size2;
+	};
+
+	inline bool allocate_memory( FFT_MEMORY1 &mem, size_t data_size, size_t ip_size, size_t w_size )
+	{
+		mem.data	= new double[ data_size ];
+		mem.w		= new double[ w_size ];
+		mem.ip		= new int[ ip_size ];
+		mem.size	= data_size;
+		return( true );
+	}
+
+	inline void deallocate_memory( FFT_MEMORY1 &mem )
+	{
+		delete [] mem.data;
+		delete [] mem.w;
+		delete [] mem.ip;
+	}
+
+	inline bool allocate_memory( FFT_MEMORY2 &mem, size_t size1, size_t size2, size_t t_size, size_t ip_size, size_t w_size )
+	{
+		mem.data		= new double *[ size1 ];
+		for( size_t i = 0 ; i < size1 ; i++ )
+		{
+			mem.data[ i ] = new double[ size2 ];
+		}
+		mem.t			= new double[ t_size ];
+		mem.w			= new double[ w_size ];
+		mem.ip			= new int[ ip_size ];
+		mem.size	= size1;
+		return( true );
+	}
+
+	inline void deallocate_memory( FFT_MEMORY2 &mem )
+	{
+		for( size_t i = 0 ; i < mem.size ; i++ )
+		{
+			delete [] mem.data[ i ];
+		}
+		delete [] mem.data;
+		delete [] mem.t;
+		delete [] mem.w;
+		delete [] mem.ip;
+	}
+
+	inline bool allocate_memory( FFT_MEMORY3 &mem, size_t size1, size_t size2, size_t size3, size_t t_size, size_t ip_size, size_t w_size )
+	{
+		mem.data		= new double **[ size1 ];
+		for( size_t i = 0 ; i < size1 ; i++ )
+		{
+			mem.data[ i ] = new double *[ size2 ];
+
+			for( size_t j = 0 ; j < size2 ; j++ )
+			{
+				mem.data[ i ][ j ] = new double[ size3 ];
+			}
+		}
+		mem.t			= new double[ t_size ];
+		mem.w			= new double[ w_size ];
+		mem.ip			= new int[ ip_size ];
+		mem.size1	= size1;
+		mem.size2	= size2;
+		return( true );
+	}
+
+	inline void deallocate_memory( FFT_MEMORY3 &mem )
+	{
+		for( size_t i = 0 ; i < mem.size1 ; i++ )
+		{
+			for( size_t j = 0 ; j < mem.size2 ; j++ )
+			{
+				delete [] mem.data[ i ][ j ];
+			}
+			delete [] mem.data[ i ];
+		}
+		delete [] mem.data;
+		delete [] mem.t;
+		delete [] mem.w;
+		delete [] mem.ip;
+	}
 }
 
 
