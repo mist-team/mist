@@ -436,6 +436,209 @@ namespace __median_filter_divide_conquer__
 
 
 
+
+namespace __median_filter_specialized_version__
+{
+	template < class T >
+	inline void sort3x3( const T v0, const T v1, const T v2, T v[ 3 ] )
+	{
+		if( v0 > v1 )
+		{
+			if( v1 > v2 )
+			{
+				v[ 0 ] = v0;
+				v[ 1 ] = v1;
+				v[ 2 ] = v2;
+			}
+			else
+			{
+				if( v0 > v2 )
+				{
+					v[ 0 ] = v0;
+					v[ 1 ] = v2;
+					v[ 2 ] = v1;
+				}
+				else
+				{
+					v[ 0 ] = v2;
+					v[ 1 ] = v0;
+					v[ 2 ] = v1;
+				}
+			}
+		}
+		else
+		{
+			if( v0 > v2 )
+			{
+				v[ 0 ] = v1;
+				v[ 1 ] = v0;
+				v[ 2 ] = v2;
+			}
+			else
+			{
+				if( v1 > v2 )
+				{
+					v[ 0 ] = v1;
+					v[ 1 ] = v2;
+					v[ 2 ] = v0;
+				}
+				else
+				{
+					v[ 0 ] = v2;
+					v[ 1 ] = v1;
+					v[ 2 ] = v0;
+				}
+			}
+		}
+	}
+
+	template < class T >
+	inline void sort3x3( T const v0[ 3 ], T const v1[ 3 ], T const v2[ 3 ], T *s[ 3 ] )
+	{
+		if( v0[ 1 ] > v1[ 1 ] )
+		{
+			if( v1[ 1 ] > v2[ 1 ] )
+			{
+				s[ 0 ] = v0;
+				s[ 1 ] = v1;
+				s[ 2 ] = v2;
+			}
+			else
+			{
+				if( v0[ 1 ] > v2[ 1 ] )
+				{
+					s[ 0 ] = v0;
+					s[ 1 ] = v2;
+					s[ 2 ] = v1;
+				}
+				else
+				{
+					s[ 0 ] = v2;
+					s[ 1 ] = v0;
+					s[ 2 ] = v1;
+				}
+			}
+		}
+		else
+		{
+			if( v0[ 1 ] > v2[ 1 ] )
+			{
+				s[ 0 ] = v1;
+				s[ 1 ] = v0;
+				s[ 2 ] = v2;
+			}
+			else
+			{
+				if( v1[ 1 ] > v2[ 1 ] )
+				{
+					s[ 0 ] = v1;
+					s[ 1 ] = v2;
+					s[ 2 ] = v0;
+				}
+				else
+				{
+					s[ 0 ] = v2;
+					s[ 1 ] = v1;
+					s[ 2 ] = v0;
+				}
+			}
+		}
+	}
+
+	template < class T >
+	inline const T &minimum( const T &v0, const T &v1, const T &v2 )
+	{
+		return( v0 < v1 ? ( v0 < v2 ? v0 : v2 ) : ( v1 < v2 ? v1 : v2 ) );
+	}
+
+	template < class T >
+	inline const T &maximum( const T &v0, const T &v1, const T &v2 )
+	{
+		return( v0 > v1 ? ( v0 > v2 ? v0 : v2 ) : ( v1 > v2 ? v1 : v2 ) );
+	}
+
+
+	template < class T1, class T2, class Allocator1, class Allocator2 >
+	void median_filter3x3( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+						typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
+	{
+		typedef typename array2< T1, Allocator1 >::size_type  size_type;
+		typedef typename array2< T1, Allocator1 >::value_type value_type;
+		typedef typename array2< T1, Allocator1 >::difference_type difference_type;
+		typedef typename array2< T2, Allocator2 >::value_type out_value_type;
+
+		size_type i, j, wi;
+		size_type w = in.width( );
+		size_type h = in.height( );
+
+		value_type work0[ 3 ];
+		value_type work1[ 3 ];
+		value_type work2[ 3 ];
+		value_type *work[ 3 ] = { work0, work1, work2 };
+		value_type *sort[ 3 ];
+
+		for( j = thread_id + 1 ; j < h - 1 ; j += thread_num )
+		{
+			work[ 0 ][ 0 ] = in( 0, j - 1 );
+			work[ 0 ][ 1 ] = in( 0, j     );
+			work[ 0 ][ 2 ] = in( 0, j + 1 );
+			work[ 1 ][ 0 ] = in( 1, j - 1 );
+			work[ 1 ][ 1 ] = in( 1, j     );
+			work[ 1 ][ 2 ] = in( 1, j + 1 );
+
+			sort3x3( in( 0, j - 1 ), in( 0, j ), in( 0, j + 1 ), work[ 0 ] );
+			sort3x3( in( 1, j - 1 ), in( 1, j ), in( 1, j + 1 ), work[ 1 ] );
+			//work[ 0 ][ 0 ] = in( 0, j - 1 );
+			//work[ 0 ][ 1 ] = in( 0, j     );
+			//work[ 0 ][ 2 ] = in( 0, j + 1 );
+			//work[ 1 ][ 0 ] = in( 1, j - 1 );
+			//work[ 1 ][ 1 ] = in( 1, j     );
+			//work[ 1 ][ 2 ] = in( 1, j + 1 );
+
+			//sort3x3( work[ 0 ][ 0 ], work[ 0 ][ 1 ], work[ 0 ][ 2 ], work[ 0 ] );
+			//sort3x3( work[ 1 ][ 0 ], work[ 1 ][ 1 ], work[ 1 ][ 2 ], work[ 1 ] );
+
+			for( i = 1 ; i < w - 1 ; i++ )
+			{
+				wi = ( i + 1 ) % 3;
+				work[ wi ][ 0 ] = in( i + 1, j - 1 );
+				work[ wi ][ 1 ] = in( i + 1, j     );
+				work[ wi ][ 2 ] = in( i + 1, j + 1 );
+
+				sort3x3( in( i + 1, j - 1 ), in( i + 1, j ), in( i + 1, j + 1 ), work[ wi ] );
+				//work[ wi ][ 0 ] = in( i + 1, j - 1 );
+				//work[ wi ][ 1 ] = in( i + 1, j     );
+				//work[ wi ][ 2 ] = in( i + 1, j + 1 );
+
+				//sort3x3( work[ wi ][ 0 ], work[ wi ][ 1 ], work[ wi ][ 2 ], work[ wi ] );
+
+				sort3x3( work[ 0 ], work[ 1 ], work[ 2 ], sort );
+
+
+				value_type &x = sort[ 1 ][ 1 ];
+				value_type &y = sort[ 0 ][ 2 ];
+				value_type &z = sort[ 2 ][ 0 ];
+
+				if( x < y && x < z )
+				{
+					value_type &w = sort[ 1 ][ 0 ];
+					out( i, j ) = static_cast< out_value_type >( minimum( y, z, w ) );
+				}
+				else if( x > y && x > z )
+				{
+					value_type &w = sort[ 1 ][ 2 ];
+					out( i, j ) = static_cast< out_value_type >( maximum( y, z, w ) );
+				}
+				else
+				{
+					out( i, j ) = static_cast< out_value_type >( x );
+				}
+			}
+		}
+	}
+}
+
+
 // メディアンフィルタのスレッド実装
 namespace __median_filter_controller__
 {
@@ -477,10 +680,18 @@ namespace __median_filter_controller__
 							typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
 		{
 			typedef typename array2< T1, Allocator1 >::value_type value_type;
-			value_type min = in[ 0 ];
-			value_type max = in[ 0 ];
-			get_min_max( in, min, max );
-			__median_filter_with_histogram__::median_filter( in, out, fw, fh, fd, min, max, thread_id, thread_num, 0, 1 );
+
+			if( fw == 3 && fh == 3 )
+			{
+				__median_filter_specialized_version__::median_filter3x3( in, out, thread_id, thread_num );
+			}
+			else
+			{
+				value_type min = in[ 0 ];
+				value_type max = in[ 0 ];
+				get_min_max( in, min, max );
+				__median_filter_with_histogram__::median_filter( in, out, fw, fh, fd, min, max, thread_id, thread_num, 0, 1 );
+			}
 		}
 
 		template < class T1, class Allocator1, class T2, class Allocator2 >
@@ -514,7 +725,14 @@ namespace __median_filter_controller__
 							typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh, typename array2< T1, Allocator1 >::size_type fd,
 							typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
 		{
-			__median_filter_divide_conquer__::median_filter( in, out, fw, fh, fd, thread_id, thread_num, 0, 1 );
+			if( fw == 3 && fh == 3 )
+			{
+				__median_filter_specialized_version__::median_filter3x3( in, out, thread_id, thread_num );
+			}
+			else
+			{
+				__median_filter_divide_conquer__::median_filter( in, out, fw, fh, fd, thread_id, thread_num, 0, 1 );
+			}
 		}
 
 		template < class T1, class Allocator1, class T2, class Allocator2 >
@@ -595,6 +813,7 @@ namespace __median_filter_controller__
 }
 
 
+// 1次元配列用
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type thread_num = 0 )
 {
@@ -612,10 +831,12 @@ void median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, 
 	__median_filter_controller__::__median_filter__< is_integer< T1 >::value >::median_filter( in, out, fw, 1, 1, 0, 1 );
 }
 
+
+// 2次元配列用
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 				   typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh,
-				   typename array2< T1, Allocator1 >::size_type thread_num = 0 )
+				   typename array2< T1, Allocator1 >::size_type thread_num )
 {
 	typedef typename array2< T1, Allocator1 >::size_type  size_type;
 	typedef __median_filter_controller__::median_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 > > median_thread;
@@ -656,9 +877,19 @@ void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 }
 
 template < class T1, class Allocator1, class T2, class Allocator2 >
+inline void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+				   typename array2< T1, Allocator1 >::size_type fw,
+				   typename array2< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	median( in, out, fw, fw, thread_num );
+}
+
+
+// 3次元配列用
+template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 				   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
-				   typename array3< T1, Allocator1 >::size_type thread_num = 0 )
+				   typename array3< T1, Allocator1 >::size_type thread_num )
 {
 	typedef typename array3< T1, Allocator1 >::size_type  size_type;
 	typedef __median_filter_controller__::median_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 > > median_thread;
@@ -699,7 +930,13 @@ void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 	delete [] thread;
 }
 
-
+template < class T1, class Allocator1, class T2, class Allocator2 >
+inline void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+				   typename array3< T1, Allocator1 >::size_type fw,
+				   typename array3< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	median( in, out, fw, fw, fw, thread_num );
+}
 
 // mist名前空間の終わり
 _MIST_END
