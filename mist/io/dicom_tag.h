@@ -17,54 +17,112 @@ _MIST_BEGIN
 
 namespace __dicom_controller__
 {
+	typedef size_t    size_type;
+	typedef ptrdiff_t difference_type;
 
-	// DICOMのタグの内，有効にするタグの種類のみ定義する
-	// 利用するものが多くなるにつれ，コンパイル時間が増加するので注意 
-	//#define __INCLUDE_DICOM_TAG_0000__
-	//#define __INCLUDE_DICOM_TAG_0002__
-	//#define __INCLUDE_DICOM_TAG_0004__
-	//#define __INCLUDE_DICOM_TAG_0008__
-	//#define __INCLUDE_DICOM_TAG_0010__
-	//#define __INCLUDE_DICOM_TAG_0012__
-	//#define __INCLUDE_DICOM_TAG_0018__
-	//#define __INCLUDE_DICOM_TAG_0020__
-	#define __INCLUDE_DICOM_TAG_0028__
-	//#define __INCLUDE_DICOM_TAG_0032__
-	//#define __INCLUDE_DICOM_TAG_0038__
-	//#define __INCLUDE_DICOM_TAG_003A__
-	//#define __INCLUDE_DICOM_TAG_0040__
-	//#define __INCLUDE_DICOM_TAG_0050__
-	//#define __INCLUDE_DICOM_TAG_0054__
-	//#define __INCLUDE_DICOM_TAG_0060__
-	//#define __INCLUDE_DICOM_TAG_0070__
-	//#define __INCLUDE_DICOM_TAG_0088__
-	//#define __INCLUDE_DICOM_TAG_0100__
-	//#define __INCLUDE_DICOM_TAG_0400__
-	//#define __INCLUDE_DICOM_TAG_2000__
-	//#define __INCLUDE_DICOM_TAG_2010__
-	//#define __INCLUDE_DICOM_TAG_2020__
-	//#define __INCLUDE_DICOM_TAG_2030__
-	//#define __INCLUDE_DICOM_TAG_2040__
-	//#define __INCLUDE_DICOM_TAG_2050__
-	//#define __INCLUDE_DICOM_TAG_2100__
-	//#define __INCLUDE_DICOM_TAG_2110__
-	//#define __INCLUDE_DICOM_TAG_2120__
-	//#define __INCLUDE_DICOM_TAG_2130__
-	//#define __INCLUDE_DICOM_TAG_3002__
-	//#define __INCLUDE_DICOM_TAG_3004__
-	//#define __INCLUDE_DICOM_TAG_3006__
-	//#define __INCLUDE_DICOM_TAG_3008__
-	//#define __INCLUDE_DICOM_TAG_300A__
-	//#define __INCLUDE_DICOM_TAG_300C__
-	//#define __INCLUDE_DICOM_TAG_300E__
-	//#define __INCLUDE_DICOM_TAG_4000__
-	//#define __INCLUDE_DICOM_TAG_4008__
-	//#define __INCLUDE_DICOM_TAG_5000__
-	//#define __INCLUDE_DICOM_TAG_5200__
-	//#define __INCLUDE_DICOM_TAG_5400__
-	//#define __INCLUDE_DICOM_TAG_5600__
-	//#define __INCLUDE_DICOM_TAG_6000__
-	#define __INCLUDE_DICOM_TAG_FFFF__
+	#ifdef __INCLUDE_DICOM_TAG_ALL__
+
+		// 対応しているタグを全てインクルードする
+		#define __INCLUDE_DICOM_TAG_0000__
+		#define __INCLUDE_DICOM_TAG_0002__
+		#define __INCLUDE_DICOM_TAG_0004__
+		#define __INCLUDE_DICOM_TAG_0008__
+		#define __INCLUDE_DICOM_TAG_0010__
+		#define __INCLUDE_DICOM_TAG_0012__
+		#define __INCLUDE_DICOM_TAG_0018__
+		#define __INCLUDE_DICOM_TAG_0020__
+		#define __INCLUDE_DICOM_TAG_0028__
+		#define __INCLUDE_DICOM_TAG_0032__
+		#define __INCLUDE_DICOM_TAG_0038__
+		#define __INCLUDE_DICOM_TAG_003A__
+		#define __INCLUDE_DICOM_TAG_0040__
+		#define __INCLUDE_DICOM_TAG_0050__
+		#define __INCLUDE_DICOM_TAG_0054__
+		#define __INCLUDE_DICOM_TAG_0060__
+		#define __INCLUDE_DICOM_TAG_0070__
+		#define __INCLUDE_DICOM_TAG_0088__
+		#define __INCLUDE_DICOM_TAG_0100__
+		#define __INCLUDE_DICOM_TAG_0400__
+		#define __INCLUDE_DICOM_TAG_2000__
+		#define __INCLUDE_DICOM_TAG_2010__
+		#define __INCLUDE_DICOM_TAG_2020__
+		#define __INCLUDE_DICOM_TAG_2030__
+		#define __INCLUDE_DICOM_TAG_2040__
+		#define __INCLUDE_DICOM_TAG_2050__
+		#define __INCLUDE_DICOM_TAG_2100__
+		#define __INCLUDE_DICOM_TAG_2110__
+		#define __INCLUDE_DICOM_TAG_2120__
+		#define __INCLUDE_DICOM_TAG_2130__
+		#define __INCLUDE_DICOM_TAG_3002__
+		#define __INCLUDE_DICOM_TAG_3004__
+		#define __INCLUDE_DICOM_TAG_3006__
+		#define __INCLUDE_DICOM_TAG_3008__
+		#define __INCLUDE_DICOM_TAG_300A__
+		#define __INCLUDE_DICOM_TAG_300C__
+		#define __INCLUDE_DICOM_TAG_300E__
+		#define __INCLUDE_DICOM_TAG_4000__
+		#define __INCLUDE_DICOM_TAG_4008__
+		#define __INCLUDE_DICOM_TAG_5000__
+		#define __INCLUDE_DICOM_TAG_5200__
+		#define __INCLUDE_DICOM_TAG_5400__
+		#define __INCLUDE_DICOM_TAG_5600__
+		#define __INCLUDE_DICOM_TAG_6000__
+		#define __INCLUDE_DICOM_TAG_FFFF__
+
+	#else
+
+		// 個別にインクルードするタグを指定する
+		// DICOMのタグの内，有効にするタグの種類のみ定義する
+		// 利用するものが多くなるにつれ，コンパイル時間が増加するので注意 
+		//#define __INCLUDE_DICOM_TAG_0000__
+		//#define __INCLUDE_DICOM_TAG_0002__
+		//#define __INCLUDE_DICOM_TAG_0004__
+		//#define __INCLUDE_DICOM_TAG_0008__
+		//#define __INCLUDE_DICOM_TAG_0010__
+		//#define __INCLUDE_DICOM_TAG_0012__
+		//#define __INCLUDE_DICOM_TAG_0018__
+		//#define __INCLUDE_DICOM_TAG_0020__
+		//#define __INCLUDE_DICOM_TAG_0032__
+		//#define __INCLUDE_DICOM_TAG_0038__
+		//#define __INCLUDE_DICOM_TAG_003A__
+		//#define __INCLUDE_DICOM_TAG_0040__
+		//#define __INCLUDE_DICOM_TAG_0050__
+		//#define __INCLUDE_DICOM_TAG_0054__
+		//#define __INCLUDE_DICOM_TAG_0060__
+		//#define __INCLUDE_DICOM_TAG_0070__
+		//#define __INCLUDE_DICOM_TAG_0088__
+		//#define __INCLUDE_DICOM_TAG_0100__
+		//#define __INCLUDE_DICOM_TAG_0400__
+		//#define __INCLUDE_DICOM_TAG_2000__
+		//#define __INCLUDE_DICOM_TAG_2010__
+		//#define __INCLUDE_DICOM_TAG_2020__
+		//#define __INCLUDE_DICOM_TAG_2030__
+		//#define __INCLUDE_DICOM_TAG_2040__
+		//#define __INCLUDE_DICOM_TAG_2050__
+		//#define __INCLUDE_DICOM_TAG_2100__
+		//#define __INCLUDE_DICOM_TAG_2110__
+		//#define __INCLUDE_DICOM_TAG_2120__
+		//#define __INCLUDE_DICOM_TAG_2130__
+		//#define __INCLUDE_DICOM_TAG_3002__
+		//#define __INCLUDE_DICOM_TAG_3004__
+		//#define __INCLUDE_DICOM_TAG_3006__
+		//#define __INCLUDE_DICOM_TAG_3008__
+		//#define __INCLUDE_DICOM_TAG_300A__
+		//#define __INCLUDE_DICOM_TAG_300C__
+		//#define __INCLUDE_DICOM_TAG_300E__
+		//#define __INCLUDE_DICOM_TAG_4000__
+		//#define __INCLUDE_DICOM_TAG_4008__
+		//#define __INCLUDE_DICOM_TAG_5000__
+		//#define __INCLUDE_DICOM_TAG_5200__
+		//#define __INCLUDE_DICOM_TAG_5400__
+		//#define __INCLUDE_DICOM_TAG_5600__
+		//#define __INCLUDE_DICOM_TAG_6000__
+
+		// DICOM画像のみを表示するのであれば，以下の2つのマクロのみを有効にすれば良い
+		#define __INCLUDE_DICOM_TAG_0028__
+		#define __INCLUDE_DICOM_TAG_FFFF__
+
+	#endif
 
 
 	enum dicom_vr
@@ -491,29 +549,9 @@ namespace __dicom_controller__
 		std::string  comment;
 
 	public:
-		dicom_tag( unsigned int t = 0xffffffff, dicom_vr vvr = UNKNOWN, int vvm = 1, const std::string &text = "" )
-		{
-			tag = t;
-			vr = vvr;
-			vm = vvm;
-			comment = text;
-		}
-
-		dicom_tag( unsigned int t, const std::string &vvr, int vvm, const std::string &text )
-		{
-			tag = t;
-			vr = get_dicom_vr( vvr );
-			vm = vvm;
-			comment = text;
-		}
-
-		dicom_tag( const dicom_tag &t )
-		{
-			tag = t.tag;
-			vr = t.vr;
-			vm = t.vm;
-			comment = t.comment;
-		}
+		dicom_tag( unsigned int t = 0xffffffff, dicom_vr vvr = UNKNOWN, int vvm = 1, const std::string &text = "" ) : tag( t ), vr( vvr ), vm( vvm ), comment( text ) { }
+		dicom_tag( unsigned int t, const std::string &vvr, int vvm, const std::string &text ) : tag( t ), vr( get_dicom_vr( vvr ) ), vm( vvm ), comment( text ) { }
+		dicom_tag( const dicom_tag &t ) : tag( t.tag ), vr( t.vr ), vm( t.vm ), comment( t.comment ) { }
 
 		const dicom_tag &operator =( const dicom_tag &t )
 		{
@@ -529,7 +567,39 @@ namespace __dicom_controller__
 
 		bool operator <( const dicom_tag &t ) const
 		{
-			return( this->tag < t.tag );
+			return( tag < t.tag );
+		}
+
+		unsigned short get_group( ) const { return( static_cast< unsigned short >( 0x0000ffff & ( tag >> 16 ) ) ); }
+		unsigned short get_element( ) const { return( static_cast< unsigned short >( 0x0000ffff & tag ) ); }
+	};
+
+
+	class dicom_uid
+	{
+	public:
+		std::string  uid;
+		std::string  name;
+		std::string  type;
+
+	public:
+		dicom_uid( const std::string &id = "", const std::string &n = "", const std::string &t = "" ) : uid( id ), name( n ), type( t ){ }
+		dicom_uid( const dicom_uid &id ) : uid( id.uid ), name( id.name ), type( id.type ){ }
+
+		const dicom_uid &operator =( const dicom_uid &id )
+		{
+			if( &id != this )
+			{
+				uid = id.uid;
+				name = id.name;
+				type = id.type;
+			}
+			return( *this );
+		}
+
+		bool operator <( const dicom_uid &id ) const
+		{
+			return( uid < id.uid );
 		}
 	};
 
@@ -603,372 +673,427 @@ namespace __dicom_controller__
 		{
 #ifdef __INCLUDE_DICOM_TAG_0000__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0000.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0002__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0002.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0004__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0004.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0000__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0000.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0008__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0008.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0010__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0010.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0012__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0012.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0018__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0018.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0020__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0020.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0028__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0028.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0032__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0032.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0038__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0038.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_003A__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag003A.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0040__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0040.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0050__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0050.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0060__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0060.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0070__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0070.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0088__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0088.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0100__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0100.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_0400__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0400.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2000__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2000.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2010__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2010.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2020__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2020.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2030__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2030.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2040__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2040.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2050__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2050.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2100__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2100.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2110__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2110.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2120__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2120.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2130__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2130.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_2110__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag2110.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_3002__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag3002.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_3004__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag3004.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_3006__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag3006.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_3008__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag3008.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_300A__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag300A.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_300C__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag300C.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_300E__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag300E.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_4000__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag4000.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_4008__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag4008.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_5000__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag5000.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_5200__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag5200.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_5400__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag5400.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_5600__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag5600.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_6000__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag6000.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
 #ifdef __INCLUDE_DICOM_TAG_FFFF__
 			{
-				dicom_tag_element dicom_tag_element[] = {
+				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tagFFFF.csv"
 				};
-				insert_tag( dicom_tag_element );
+				insert_tag( dicom_tag_elements );
 			}
 #endif
+		}
+	};
+
+
+	class dicom_uid_table : public std::set< dicom_uid >
+	{
+	protected:
+		typedef std::set< dicom_uid > baseclass;
+		typedef struct
+		{
+			unsigned char  dmy;
+			const char *   uid;
+			const char *   name;
+			const char *   type;
+		} dicom_uid_element;
+
+		void insert_uid( const std::string &id = "", const std::string &n = "", const std::string &t = "" )
+		{
+			baseclass::insert( dicom_uid( id, n, t ) );
+		}
+
+		void insert_uid( const dicom_uid_element *dicom_uids )
+		{
+			const dicom_uid_element *uid = dicom_uids;
+			while( !( uid->uid == NULL && uid->name == NULL && uid->type == NULL ) )
+			{
+				insert_uid( uid->uid, uid->name, uid->type );
+				uid++;
+			}
+		}
+
+	public:
+		bool contain_uid( const std::string &uid )
+		{
+			baseclass::iterator ite = baseclass::find( dicom_uid( uid ) );
+			return( ite != baseclass::end( ) );
+		}
+
+		dicom_uid get_uid( const std::string &uid )
+		{
+			dicom_uid id( uid );
+			baseclass::iterator ite = baseclass::find( id );
+			if( ite == baseclass::end( ) )
+			{
+				return( dicom_uid( uid, uid, "no uid exists." ) );
+			}
+			return( *ite );
+		}
+
+		dicom_uid_table( )
+		{
+			dicom_uid_element dicom_uid_elements[] = {
+				#include "dicom_tag/dicom_uid.csv"
+			};
+			insert_uid( dicom_uid_elements );
 		}
 	};
 }

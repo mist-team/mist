@@ -17,7 +17,9 @@
 _MIST_BEGIN
 
 
-#define __SHOW_DICOM_TAG__
+// 次のマクロを定義すると，コンソール上に読み込んだタグ情報を表示する
+// #define __SHOW_DICOM_TAG__
+// #define __SHOW_DICOM_UNKNOWN_TAG__
 
 namespace __dicom_controller__
 {
@@ -27,21 +29,21 @@ namespace __dicom_controller__
 	private:
 		typedef T value_type;
 		value_type value;
-		char byte[ sizeof( value_type ) ];
+		unsigned char byte[ sizeof( value_type ) ];
 
 	public:
 		byte_array( ) : value( 0 ){ }
 		byte_array( const value_type v ) : value( v ){ }
 		byte_array( const byte_array &v ) : value( v.value ){ }
-		byte_array( const char *b )
+		byte_array( const unsigned char *b )
 		{
-			for( size_t i = 0 ; i < sizeof( value_type ) ; i++ )
+			for( size_type i = 0 ; i < sizeof( value_type ) ; i++ )
 			{
 				byte[ i ] = b[ i ];
 			}
 		}
-		char &operator[]( size_t index ){ return( byte[index] ); }
-		const char &operator[]( size_t index ) const { return( byte[index] ); }
+		unsigned char &operator[]( size_type index ){ return( byte[ index ] ); }
+		const unsigned char &operator[]( size_type index ) const { return( byte[ index ] ); }
 		const value_type get_value( ) const { return( value ); }
 		value_type set_value( const value_type &v ) { return( value = v ); }
 	};
@@ -60,7 +62,7 @@ namespace __dicom_controller__
 	void swap_bytes( byte_array< T > &bytes )
 	{
 		byte_array< T > tmp( bytes );
-		for( size_t i = 0 ; i < sizeof( T ) ; ++i )
+		for( size_type i = 0 ; i < sizeof( T ) ; ++i )
 		{
 			bytes[ i ] = tmp[ sizeof( T ) - i - 1 ];
 		}
@@ -98,45 +100,48 @@ namespace __dicom_controller__
 		}
 	}
 
-	inline bool check_dicom_file( FILE *fp )
+	inline unsigned char *check_dicom_file( unsigned char *p, unsigned char *e )
 	{
-		if( fp == NULL ) return( false );
-		if( fseek( fp, 128, SEEK_SET ) != 0 ) return( false );
-
-		char dicom[12];
-		if( fread( dicom, sizeof( char ), 4, fp ) == 4 )
+		if( p == NULL || p + 128 + 4 >= e )
 		{
-			dicom[4] = '\0';
-			if( strcmp( dicom, "DICM" ) == 0 ) return( true );
+			return( NULL );
 		}
 
-		// DICOM用の振案ぶるが存在しないため，ファイルの先頭にポインタを戻す
-		rewind( fp );
-		return( false );
+
+		char *dicom = reinterpret_cast< char * >( p ) + 128;
+		if( dicom[ 0 ] == 'D' && dicom[ 1 ] == 'I' && dicom[ 2 ] == 'C' && dicom[ 3 ] == 'M' )
+		{
+			return( p + 128 + 4 );
+		}
+
+		// DICOM用のプリアンブルが存在しないため，先頭のポインタを返す
+		return( p );
 	}
 
 	// DICOMのタグを読み込み，テーブルに登録されているものと照合する．
 	// テーブルに登録されていない場合は，読み飛ばす．
-	// もし，適切なDICOMファイルでない場合は-2を返し，ファイルの終端もしくはファイルの読み込みに失敗した場合は-1を返す．
+	// もし，適切なDICOMファイルでない場合は-2を返し，データの終端もしくはファイルの読み込みに失敗した場合は-1を返す．
 	// そして，読み飛ばした場合は0を返し，テーブルに登録されている場合は次に存在するデータのバイト数を返す．
-	inline long read_dicom_tag( FILE *fp, dicom_tag &tag )
+	// データを処理する先頭のポインタ 'p' と，データの最後＋1をさすポインタ 'e' を与える
+	inline unsigned char *read_dicom_tag( unsigned char *p, unsigned char *e, dicom_tag &tag, difference_type &numBytes )
 	{
-		if( fp == NULL ) return( -1 );
+		if( p == NULL || p + 8 >= e )
+		{
+			numBytes = -1;
+			return( e );
+		}
 
-		char data[4];
-		if( fread( data, sizeof( char ), 4, fp ) != 4 ) return( -1 );
+		unsigned char *data = p;
 
 		unsigned short group   = to_current_endian( byte_array< unsigned short >( data ), true ).get_value( );
 		unsigned short element = to_current_endian( byte_array< unsigned short >( data + 2 ), true ).get_value( );
-		unsigned int   num_bytes;
 
-		if( fread( data, sizeof( char ), 4, fp ) != 4 ) return( -1 );
-		char tmp[3];
-		tmp[0] = data[0];
-		tmp[1] = data[1];
-		tmp[2] = '\0';
-		dicom_vr vr = get_dicom_vr( tmp );
+		data += 4;
 
+		char VR[ 3 ] = { static_cast< char >( data[ 0 ] ), static_cast< char >( data[ 1 ] ), '\0' };
+		dicom_vr vr = get_dicom_vr( VR );
+
+		difference_type num_bytes = 0;
 		static dicom_tag_table dicom_table;
 		tag = dicom_table.get_tag( group, element, vr );
 
@@ -150,9 +155,9 @@ namespace __dicom_controller__
 				{
 				case OB:
 				case OW:
-				case SQ:
 				case UN:
-					fread( data, sizeof( char ), 4, fp );
+				case SQ:
+					data += 4;
 					num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
 					break;
 
@@ -161,15 +166,33 @@ namespace __dicom_controller__
 					break;
 				}
 			}
+			else if( vr != UNKNOWN )
+			{
+				// 明示的VRであるが，辞書と異なる場合
+				tag.vr = vr;
+				switch( vr )
+				{
+				case OB:
+				case OW:
+				case UN:
+				case SQ:
+					data += 4;
+					num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
+					break;
+
+				default:
+					num_bytes = to_current_endian( byte_array< unsigned short >( data + 2 ), true ).get_value( );
+				}
+			}
 			else
 			{
 				switch( vr )
 				{
 				case OB:
 				case OW:
-				case SQ:
 				case UN:
-					fread( data, sizeof( char ), 4, fp );
+				case SQ:
+					data += 4;
 					num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
 					break;
 
@@ -178,7 +201,8 @@ namespace __dicom_controller__
 					num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
 				}
 			}
-			return( num_bytes );
+			numBytes = num_bytes;
+			return( reinterpret_cast< unsigned char * >( data + 4 ) );
 		}
 		else
 		{
@@ -214,9 +238,9 @@ namespace __dicom_controller__
 
 			case OB:
 			case OW:
-			case SQ:
 			case UN:
-				fread( data, sizeof( char ), 4, fp );
+			case SQ:
+				data += 4;
 				num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
 				break;
 
@@ -225,19 +249,44 @@ namespace __dicom_controller__
 				break;
 			}
 
-#ifdef __SHOW_DICOM_TAG__
-			printf( "Unknown Tags( %04x, %04x )!!\n", group, element );
+#ifdef __SHOW_DICOM_UNKNOWN_TAG__
+			if( group == 0x7fe0 && element == 0x0000 )
+			{
+				printf( "debugging...\n" );
+			}
+			printf( "( %04x, %04x, %s, % 8d ) = Unknown Tags!!\n", group, element, VR, num_bytes );
 #endif
-			if( fseek( fp, num_bytes, SEEK_CUR ) != 0 ) return( -2 );
+			if( data + 4 + num_bytes < e )
+			{
+				numBytes = 0;
+				return( reinterpret_cast< unsigned char * >( data + 4 + num_bytes ) );
+			}
+			else
+			{
+				numBytes = -2;
+				return( p );
+			}
 		}
-
-		return( 0 );
 	}
 
+
+	// DICOMのUIDを変換する
+	inline dicom_uid get_uid( const std::string &uid )
+	{
+		static dicom_uid_table uid_table;
+		return( uid_table.get_uid( uid ) );
+	}
+
+	// DICOMのUIDを変換する
+	inline dicom_uid get_uid( const unsigned char *str, difference_type numBytes )
+	{
+		return( get_uid( std::string( reinterpret_cast< const char * >( str ), str[ numBytes - 1 ] == 0 ? numBytes - 1 : numBytes ) ) );
+	}
+
+
 	// DICOMのタグに対し，各VRごとの処理を行う．
-	// データがVRの要件を満たさない場合は0を返す．
 	// 登録されていないタグの場合は false をかえし，正しく処理された場合のみ true を返す．
-	inline bool process_dicom_tag( const dicom_tag &tag, char *byte, long &num_bytes )
+	inline bool process_dicom_tag( const dicom_tag &tag, unsigned char *byte, difference_type num_bytes )
 	{
 		switch( tag.vr )
 		{
@@ -245,9 +294,10 @@ namespace __dicom_controller__
 			// ＡＥ　応用エンティティ　１６バイト以下
 			// 意味のない先頭と末尾のSPACE（20H）を持つ文字列。
 			// “指定された応用名がない”ことを意味する１６のスペ－スでつくられる値は，使用しない
-			if( tag.vm != -1 && num_bytes > 16 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case AS:
@@ -255,9 +305,10 @@ namespace __dicom_controller__
 			// 次の書式の一つをもつ文字列 - nnnD, nnnW, nnnM, nnnY；
 			// ここで nnn は D に対しては日，W に対しては週，M に対しては月，Y に対しては年の数を含む。
 			// 例： "018M" は 18 月の年齢を表す。
-			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) )
+			{
+				return( false );
+			}
 			break;
 
 		case AT:
@@ -267,17 +318,19 @@ namespace __dicom_controller__
 			// リトルエンディアン転送構文では 18H, 00H, FFH, 00H として，
 			// ビッグエンディアン転送構文では 00H, 18H, 00H, FFH として符号化されるであろう。
 			// 注：ＡＴ値の符号化は節７の中で定義されるデータ要素タグの符号化と正確に同一である。
-			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) )
+			{
+				return( false );
+			}
 			break;
 
 		case CS:
 			// ＣＳ　コード列　　　　　１６バイト以下
 			// 意味のない先頭または末尾のスペ－ス（20H）をもつ文字列。
-			if( tag.vm != -1 && num_bytes > 16 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case DA:
@@ -288,9 +341,10 @@ namespace __dicom_controller__
 			// 例："19930822"は 1993 年 8 月 22 日を表す。
 			// 注：１．V 3.0 より前のこの規格の版との後方互換性のために，
 			// 実装は，このＶＲに対して形式yyyy.mm.dd の文字列を同様にサポートすることを推奨される。
-			if( tag.vm != -1 && ( num_bytes % 8 != 0 || (int)( num_bytes / 8 ) > tag.vm ) ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && ( num_bytes % 8 != 0 || (int)( num_bytes / 8 ) > tag.vm ) )
+			{
+				return( false );
+			}
 			break;
 
 		case DS:
@@ -300,9 +354,10 @@ namespace __dicom_controller__
 			// 浮動小数点数は，ANSI X3.9 の中で定義されるとおり，指数の始まりを示す "E" か "e" を持って伝達される。
 			// 10 進数列は先頭あるいは末尾スペースで充てんされることがある。
 			// 途中のスペースは許されない。
-			if( tag.vm != -1 && num_bytes > 16 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case DT:
@@ -318,15 +373,19 @@ namespace __dicom_controller__
 			// 注：	V 3.0 より前のこの規格の版との後方互換性のために，
 			// 多くの存在するＤＩＣＯＭデータ要素は分離したＤＡおよびＴＭのＶＲを使用する。
 			// 将来制定される標準および私的データ要素は ANSI HISPP MSDS により適合するために可能ならＤＴを使用する。
-			if( tag.vm != -1 && num_bytes > 26 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 26 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case FL:
 			// ＦＬ　４バイト実数　　　４バイト固定
 			// 単精度の２進浮動小数点の数字で，IEEE 754: 1985, 32 ビット浮動小数点数形式で表現される。
-			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) ) return( 0 );
+			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) )
+			{
+				return( false );
+			}
 
 			{
 				byte_array< float > tmp = to_current_endian( byte_array< float >( byte ), true );
@@ -342,7 +401,7 @@ namespace __dicom_controller__
 			// 倍精度の２進浮動小数点の数字で，IEEE 754: 1985, 64 ビット浮動小数点数形式で表現される。
 			if( tag.vm != -1 && ( num_bytes % 8 != 0 || (int)( num_bytes / 8 ) > tag.vm ) )
 			{
-				return( 0 );
+				return( false );
 			}
 
 			{
@@ -365,9 +424,10 @@ namespace __dicom_controller__
 			// これは先頭そして末尾のスペ－スで埋められることがある。
 			// 途中のスペ－スは許されない。表現される整数 n は，下記の範囲である。
 			// -231 ≦ n ≦ (231-1) 
-			if( tag.vm != -1 && num_bytes > 16 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case LO:
@@ -376,9 +436,10 @@ namespace __dicom_controller__
 			// 文字符号 5CH （ISO-IR 6 の中のバックスラッシュ "\" ）は，
 			// 複数値デ－タ要素の中の値の間の区切り記号として使用されるので，存在しない。
 			// この列は， ESC を除き，制御文字を持たない。
-			if( tag.vm != -1 && num_bytes > 64 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 64 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case LT:
@@ -389,9 +450,10 @@ namespace __dicom_controller__
 			// しかし先頭のスペース文字は意味があると考えられる。
 			// このＶＲを持つデ－タ要素は複数値ではない，
 			// 従って文字符号 5CH （ISO-IR 6 の中のバックスラッシュ "\" ）は使用されることがある。
-			if( tag.vm != -1 && num_bytes > 1024 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 1024 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case OB:
@@ -461,9 +523,10 @@ namespace __dicom_controller__
 			//          そしてこの初期の典型的使用法への，またそれからの変換が必要とされることがあることに留意しなければならない。
 			//      ５．版３．０より前のこの規格の版との後方互換性の理由のために，人名は，単一のfamily name（姓）複合体
 			//         （区切り記号 "^" なしの単一の構成要素）と考えられることがある。
-			if( tag.vm != -1 && num_bytes > 64 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 64 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case SH:
@@ -471,9 +534,10 @@ namespace __dicom_controller__
 			// 先頭および／または末尾のスペ－スで埋められることがある文字列。
 			// 文字符号 5CH （ISO-IR 6 の中のバックスラッシュ "\" ）は，複数値デ－タ要素のための値の間の区切り記号として使用されるので，存在しない。
 			// この列は ESC を除き制御文字を持たない。
-			if( tag.vm != -1 && num_bytes > 16 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case SL:
@@ -482,7 +546,7 @@ namespace __dicom_controller__
 			// 次の範囲の整数 n を表す： -2^31 ≦ n ≦ (2^31-1） 
 			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) )
 			{
-				return( 0 );
+				return( false );
 			}
 
 			{
@@ -521,9 +585,10 @@ namespace __dicom_controller__
 			// 図形文字集合と制御文字 CR, LF, FF, および ESC を含むことがある。
 			// 無視されることがある末尾のスペースで埋められることがある，しかし先頭のスペースは意味があると考えられる。
 			// このＶＲを持つデ－タ要素は，複数値ではない，従って文字符号 5CH （ISO-IR 6 の中のバックスラッシュ "\" ）は使用されることがある。
-			if( tag.vm != -1 && num_bytes > 1024 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 1024 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case TM:
@@ -543,9 +608,10 @@ namespace __dicom_controller__
 			//     ３． "021"は違反の値である。
 			// 注：１．V 3.0 より前のこの規格の版との後方互換性のために実装は，このＶＲに書式 hh:mm:ss.frac の文字列をサポートすることを勧められる。
 			//     ２．この表のＤＴ ＶＲを同様に参照。
-			if( tag.vm != -1 && num_bytes > 16 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case UI:
@@ -554,9 +620,10 @@ namespace __dicom_controller__
 			// ＵＩＤはピリオド "." 文字で分けられた数字構成要素のシリーズである。
 			// 一つ以上のＵＩＤを含む値領域の長さが奇数バイト数の場合，値領域が偶数バイトの長さであることを確保するために
 			// 一つの末尾のNULL （00H）で埋められる。完全な仕様と例は節９と付属書Ｂを参照。
-			if( tag.vm != -1 && num_bytes > 64 * tag.vm ) return( 0 );
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
+			if( tag.vm != -1 && num_bytes > 64 * tag.vm )
+			{
+				return( false );
+			}
 			break;
 
 		case UL:
@@ -565,7 +632,7 @@ namespace __dicom_controller__
 			// 下記の範囲の整数 n を表す： 0 ≦n＜ 2^32 
 			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) )
 			{
-				return( 0 );
+				return( false );
 			}
 
 			{
@@ -586,7 +653,10 @@ namespace __dicom_controller__
 			// ＵＳ　符号なし短　　　　２バイト固定
 			// 符号無し１６ビット長２進整数。
 			// 下記の範囲の整数 n を表す： 0 ≦n＜ 2^16 
-			if( tag.vm != -1 && ( num_bytes % 2 != 0 || (int)( num_bytes / 2 ) > tag.vm ) ) return( 0 );
+			if( tag.vm != -1 && ( num_bytes % 2 != 0 || (int)( num_bytes / 2 ) > tag.vm ) )
+			{
+				return( false );
+			}
 
 			{
 				byte_array< unsigned short > tmp = to_current_endian( byte_array< unsigned short >( byte ), true );
@@ -602,8 +672,6 @@ namespace __dicom_controller__
 			// それは，無視されることがある末尾のスペースで埋められることがある。
 			// しかし先頭のスペースは意味があると考えられる。
 			// このＶＲをもつデータ要素は複数値ではない，したがって，文字コード 5CH （ISO-IR 6 におけるバックスラッシュ "\"）は使用されることがある。 
-			byte[ num_bytes ] = '\0';
-			num_bytes++;
 			break;
 
 		default:
@@ -617,17 +685,18 @@ namespace __dicom_controller__
 	{
 	public:
 		dicom_tag tag;
-		char *data;
-		size_t num_bytes;
+		unsigned char *data;
+		size_type num_bytes;
 
-		void create( size_t nbytes )
+		void create( size_type nbytes )
 		{
 			if( num_bytes != nbytes )
 			{
 				release();
 			}
 			num_bytes = nbytes;
-			data = new char[ num_bytes + 1 ];
+			data = new unsigned char[ num_bytes + 1 ];
+			data[ num_bytes ] = '\0';
 		}
 
 		void release()
@@ -644,7 +713,7 @@ namespace __dicom_controller__
 			{
 				tag = dicom.tag;
 				create( dicom.num_bytes );
-				memcpy( data, dicom.data, sizeof( char ) * num_bytes );
+				memcpy( data, dicom.data, sizeof( unsigned char ) * num_bytes );
 			}
 			return( *this );
 		}
@@ -656,7 +725,79 @@ namespace __dicom_controller__
 		unsigned int   to_uint( )   const { return( ( tag.vr == UL && num_bytes == 4 )? byte_array< unsigned int >( data ).get_value( )  : static_cast< unsigned int >  ( atoi( to_string( ).c_str( ) ) ) ); }
 		signed short   to_short( )  const { return( ( tag.vr == SS && num_bytes == 2 )? byte_array< signed short >( data ).get_value( )  : static_cast< signed short >  ( atoi( to_string( ).c_str( ) ) ) ); }
 		unsigned short to_ushort( ) const { return( ( tag.vr == US && num_bytes == 2 )? byte_array< unsigned short >( data ).get_value( ): static_cast< unsigned short >( atoi( to_string( ).c_str( ) ) ) ); }
-		std::string    to_string( ) const { return( ( data[ num_bytes - 1 ] == '\0' ) ? data: "" ); }
+		std::string    to_string( ) const
+		{
+			static char buff[ 128 ];
+			switch( tag.vr )
+			{
+			case FL:
+				sprintf( buff, "%f", byte_array< float >( data ).get_value( ) );
+				break;
+			case FD:
+				sprintf( buff, "%f", byte_array< double >( data ).get_value( ) );
+				break;
+			case SL:
+				sprintf( buff, "%d", byte_array< signed int >( data ).get_value( ) );
+				break;
+			case SS:
+				sprintf( buff, "%d", byte_array< signed short >( data ).get_value( ) );
+				break;
+			case UL:
+				sprintf( buff, "%d", byte_array< unsigned int >( data ).get_value( ) );
+				break;
+			case US:
+				sprintf( buff, "%d", byte_array< unsigned short >( data ).get_value( ) );
+				break;
+
+			default:
+				return( std::string( reinterpret_cast< char * >( data ) ) );
+				break;
+			}
+			return( buff );
+		}
+
+		void show_tag( ) const
+		{
+			if( data == NULL || num_bytes == 0 )
+			{
+				printf( "( %04x, %04x, %s, % 8d, %s ) = undefined!!\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str() );
+			}
+			else
+			{
+				switch( tag.vr )
+				{
+				case FL:
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %f\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_float( ) );
+					break;
+				case FD:
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %f\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_double( ) );
+					break;
+				case SL:
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_int( ) );
+					break;
+				case SS:
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_short( ) );
+					break;
+				case UL:
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_uint( ) );
+					break;
+				case US:
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_ushort( ) );
+					break;
+
+				case OB:
+				case OW:
+				case SQ:
+				case UN:
+					printf( "( %04x, %04x, %s, % 8d, %s ) = ...\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str() );
+					break;
+
+				default:
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %s\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), data );
+					break;
+				}
+			}
+		}
 
 		dicom_element( ) : tag( ), data( NULL ), num_bytes( 0 )
 		{
@@ -664,17 +805,17 @@ namespace __dicom_controller__
 		dicom_element( const dicom_element &dicom ) : tag( dicom.tag ), data( NULL ), num_bytes( 0 )
 		{
 			create( dicom.num_bytes );
-			memcpy( data, dicom.data, sizeof( char ) * num_bytes );
+			memcpy( data, dicom.data, sizeof( unsigned char ) * num_bytes );
 		}
-		dicom_element( unsigned short group, unsigned short element, const char *d = NULL, size_t nbytes = 0 ) : tag( dicom_tag( construct_dicom_tag( group, element ), "", 1, "" ) ), data( NULL ), num_bytes( 0 )
+		dicom_element( unsigned short group, unsigned short element, const unsigned char *d = NULL, size_type nbytes = 0 ) : tag( dicom_tag( construct_dicom_tag( group, element ), "", 1, "" ) ), data( NULL ), num_bytes( 0 )
 		{
 			create( nbytes );
-			memcpy( data, d, sizeof( char ) * num_bytes );
+			memcpy( data, d, sizeof( unsigned char ) * num_bytes );
 		}
-		dicom_element( const dicom_tag &t, const char *d = NULL, size_t nbytes = 0 ) : tag( t ), data( NULL ), num_bytes( 0 )
+		dicom_element( const dicom_tag &t, const unsigned char *d = NULL, size_type nbytes = 0 ) : tag( t ), data( NULL ), num_bytes( 0 )
 		{
 			create( nbytes );
-			memcpy( data, d, sizeof( char ) * num_bytes );
+			memcpy( data, d, sizeof( unsigned char ) * num_bytes );
 		}
 	};
 
@@ -685,10 +826,20 @@ namespace __dicom_controller__
 		typedef std::set< dicom_element > base;
 
 	public:
+		typedef base::iterator iterator;
+		typedef base::const_iterator const_iterator;
+
+	public:
 		bool add( const dicom_element &element )
 		{
-			std::pair< base::iterator, bool > ite = base::insert( element );
+			std::pair< iterator, bool > ite = base::insert( element );
 			return( ite.second );
+		}
+
+		iterator append( const dicom_element &element )
+		{
+			std::pair< iterator, bool > ite = base::insert( element );
+			return( ite.first );
 		}
 
 		void erase( const dicom_element &element )
@@ -696,9 +847,19 @@ namespace __dicom_controller__
 			base::erase( element );
 		}
 
-		base::iterator find( unsigned short group, unsigned short element )
+		iterator find( unsigned short group, unsigned short element )
 		{
 			return( base::find( dicom_element( construct_dicom_tag( group, element ) ) ) );
+		}
+
+		const_iterator find( unsigned short group, unsigned short element ) const
+		{
+			return( base::find( dicom_element( construct_dicom_tag( group, element ) ) ) );
+		}
+
+		bool contain( unsigned short group, unsigned short element ) const
+		{
+			return( find( group, element ) != base::end( ) );
 		}
 
 		dicom_tag_container( )
@@ -709,114 +870,213 @@ namespace __dicom_controller__
 		}
 	};
 
-
-	inline bool read_dicom_tags( dicom_tag_container &dicom, const std::string &filename )
+	inline bool is_sequence_separate_tag( const unsigned char *p, const unsigned char *e )
 	{
-		FILE *fp = fopen( filename.c_str( ), "rb" );
-		if( fp == NULL ) return( false );
-
-		if( fseek( fp, 0, SEEK_END ) != 0 )
+		if( p + 4 >= e )
 		{
-			fclose( fp );
 			return( false );
 		}
+		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x00 && p[ 3 ] == 0xe0 );
+	}
 
-		long nFileSize = ftell( fp );
-
-		// ファイルポインタを先頭に戻す
-		rewind( fp );
-
-		long nPos = 0;
-		long nBytes = 0;
-		long ret = 0;
-
-		// DICOMデータの先頭までポインタを移動
-		check_dicom_file( fp );
-//		bool is_dicom_file = check_dicom_file( fp );
-
-		dicom.clear( );
-
-		dicom_tag tag;
-		char *data = NULL;
-		long nbytes = 0;
-
-		while( feof( fp ) == 0 )
+	inline bool is_sequence_element_end( const unsigned char *p, const unsigned char *e )
+	{
+		if( p + 8 >= e )
 		{
-			nPos = ftell( fp );
-			nBytes = read_dicom_tag( fp, tag );
-			if( nBytes < -1 || nPos + nBytes > nFileSize )
+			return( false );
+		}
+		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x0d && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
+	}
+
+	inline bool is_sequence_tag_end( const unsigned char *p, const unsigned char *e )
+	{
+		if( p + 8 >= e )
+		{
+			return( false );
+		}
+		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0xdd && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
+	}
+
+	inline unsigned char *process_sequence_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer );
+	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
+	{
+		difference_type numBytes = 0;
+		dicom_tag tag;
+
+		pointer = read_dicom_tag( pointer, end_pointer, tag, numBytes );
+
+		if( tag.tag == 0x00400245 )
+		{
+			printf( "debugging...\n" );
+		}
+
+		if( tag.vr == SQ )
+		{
+			unsigned char *ep = numBytes == -1 ? end_pointer : pointer + numBytes;
+			if( ep > end_pointer )
 			{
-				delete [] data;
-				fclose( fp );
-				return( false );
+				// 認識不能なシーケンスタグ発見
+				return( NULL );
 			}
-			else if( nBytes > 0 )
+			while( pointer + 8 < ep )
 			{
-				if( nBytes > nbytes )
+				if( is_sequence_tag_end( pointer, end_pointer ) )
 				{
-					delete [] data;
-					data = new char[ nBytes + 1 ];
-					nbytes = nBytes;
+					pointer += 8;
+					break;
 				}
-				fread( data, sizeof( char ), nBytes, fp );
-				data[ nBytes ] = '\0';
-
-				ret = process_dicom_tag( tag, data, nBytes );
-				if( ret < 0 )
+				else
 				{
-					// 処理することができないDICOMタグを発見したので終了する
-					delete [] data;
-					fclose( fp );
-					return( false );
+					pointer = process_sequence_tag( dicom, pointer, ep );
+					if( pointer == NULL )
+					{
+						return( NULL );
+					}
 				}
-				else if( ret > 0 )
-				{
-					// データがＶＲの要件を満たす場合はリストに追加
-					dicom.add( dicom_element( tag, data, nBytes ) );
-				}
-
-#ifdef __SHOW_DICOM_TAG__
+			}
+		}
+		else if( numBytes < -1 )
+		{
+			return( NULL );
+		}
+		else if( numBytes > 0 )
+		{
+			if( !process_dicom_tag( tag, pointer, numBytes ) )
+			{
+				// 処理することができないDICOMタグを発見したので終了する
+				return( NULL );
+			}
+			else
+			{
+				dicom_tag_container::iterator ite;
+				// データがＶＲの要件を満たす場合はリストに追加
 				switch( tag.vr )
 				{
-				case FL:
-					printf( "( %04x, %04x, %s, %s ) = %f\n", (int)( 0x0000ffff & (tag.tag >> 16 ) ), (int)( 0x0000ffff & tag.tag ), get_dicom_vr( tag.vr ).c_str(), tag.comment.c_str(), byte_array< float >( data ).get_value( ) );
-					break;
-				case FD:
-					printf( "( %04x, %04x, %s, %s ) = %f\n", (int)( 0x0000ffff & (tag.tag >> 16 ) ), (int)( 0x0000ffff & tag.tag ), get_dicom_vr( tag.vr ).c_str(), tag.comment.c_str(), byte_array< double >( data ).get_value( ) );
-					break;
-				case SL:
-					printf( "( %04x, %04x, %s, %s ) = %d\n", (int)( 0x0000ffff & (tag.tag >> 16 ) ), (int)( 0x0000ffff & tag.tag ), get_dicom_vr( tag.vr ).c_str(), tag.comment.c_str(), byte_array< signed int >( data ).get_value( ) );
-					break;
-				case SS:
-					printf( "( %04x, %04x, %s, %s ) = %d\n", (int)( 0x0000ffff & (tag.tag >> 16 ) ), (int)( 0x0000ffff & tag.tag ), get_dicom_vr( tag.vr ).c_str(), tag.comment.c_str(), byte_array< signed short >( data ).get_value( ) );
-					break;
-				case UL:
-					printf( "( %04x, %04x, %s, %s ) = %d\n", (int)( 0x0000ffff & (tag.tag >> 16 ) ), (int)( 0x0000ffff & tag.tag ), get_dicom_vr( tag.vr ).c_str(), tag.comment.c_str(), byte_array< unsigned int >( data ).get_value( ) );
-					break;
-				case US:
-					printf( "( %04x, %04x, %s, %s ) = %d\n", (int)( 0x0000ffff & (tag.tag >> 16 ) ), (int)( 0x0000ffff & tag.tag ), get_dicom_vr( tag.vr ).c_str(), tag.comment.c_str(), byte_array< unsigned short >( data ).get_value( ) );
-					break;
-
-				case OB:
-				case OW:
-				case SQ:
-				case UN:
-					printf( "( %04x, %04x, %s, %s ) = ...\n", (int)( 0x0000ffff & (tag.tag >> 16 ) ), (int)( 0x0000ffff & tag.tag ), get_dicom_vr( tag.vr ).c_str(), tag.comment.c_str() );
+				case UI:
+					{
+						// DICOMの固有IDなので，文字列を変換する
+						dicom_uid uid = get_uid( pointer, numBytes );
+						ite = dicom.append( dicom_element( tag, reinterpret_cast< const unsigned char * >( uid.name.c_str( ) ), uid.name.size( ) ) );
+					}
 					break;
 
 				default:
-					printf( "( %04x, %04x, %s, %s ) = %s\n", (int)( 0x0000ffff & (tag.tag >> 16 ) ), (int)( 0x0000ffff & tag.tag ), get_dicom_vr( tag.vr ).c_str(), tag.comment.c_str(), data );
+					ite = dicom.append( dicom_element( tag, pointer, numBytes ) );
 					break;
+				}
+
+				pointer += numBytes;
+
+#ifdef __SHOW_DICOM_TAG__
+				if( ite != dicom.end( ) )
+				{
+					ite->show_tag( );
 				}
 #endif
 			}
 		}
+#ifdef __SHOW_DICOM_TAG__
+		else if( tag.vr != UNKNOWN )
+		{
+			dicom_element( tag, NULL, 0 ).show_tag( );
+		}
+#endif
+		return( pointer );
+	}
 
-		delete [] data;
+	inline unsigned char *process_sequence_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
+	{
+		difference_type numBytes = 0;
+		dicom_tag tag;
 
+		if( !is_sequence_separate_tag( pointer, end_pointer ) )
+		{
+			return( NULL );
+		}
+
+		pointer += 4;
+		difference_type num_bytes = to_current_endian( byte_array< unsigned int >( pointer ), true ).get_value( );
+		pointer += 4;
+
+		unsigned char *epp = num_bytes == -1 ? end_pointer : pointer + num_bytes;
+		if( epp > end_pointer )
+		{
+			return( NULL );
+		}
+
+		while( pointer + 8 < epp )
+		{
+			if( is_sequence_element_end( pointer, end_pointer ) )
+			{
+				pointer += 8;
+				break;
+			}
+			else
+			{
+				pointer = process_dicom_tag( dicom, pointer, end_pointer );
+				if( pointer == NULL )
+				{
+					return( NULL );
+				}
+			}
+		}
+
+		return( pointer );
+	}
+
+	inline bool read_dicom_tags( dicom_tag_container &dicom, const std::string &filename )
+	{
+		size_type filesize;
+		FILE *fp;
+		if( ( fp = fopen( filename.c_str( ), "rb" ) ) == NULL ) return( false );
+		// ファイルサイズを取得
+		fseek( fp, 0, SEEK_END );
+		filesize = ftell( fp );
+		fseek( fp, 0, SEEK_SET );
+
+		unsigned char *buff = new unsigned char[ filesize + 1 ];
+		unsigned char *pointer = buff;
+		size_type read_size = 0;
+		while( feof( fp ) == 0 )
+		{
+			read_size = fread( pointer, sizeof( unsigned char ), 1024, fp );
+			if( read_size < 1024 )
+			{
+				break;
+			}
+			pointer += read_size;
+		}
 		fclose( fp );
 
-		return( true );
+
+		unsigned char *end_pointer = buff + filesize;
+		pointer = buff;
+		// DICOMデータの先頭までポインタを移動
+		pointer = check_dicom_file( pointer, end_pointer );
+
+		dicom.clear( );
+
+		difference_type numBytes = 0;
+		dicom_tag tag;
+		bool ret = true;
+
+		while( pointer < end_pointer )
+		{
+			pointer = process_dicom_tag( dicom, pointer, end_pointer );
+			if( pointer == NULL )
+			{
+				ret = false;
+				break;
+			}
+		}
+
+		delete [] buff;
+
+#ifdef __SHOW_DICOM_TAG__
+		printf( "\n\n\n" );
+#endif
+
+		return( ret );
 	}
 
 }
@@ -890,17 +1150,35 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 		image.resize( width, height );
 		image.reso1( resoX );
 		image.reso2( resoY );
-		char *data = ite->data;
-		double pix;
-		unsigned char pixel;
-		for( size_type i = 0 ; i < image.size( ) ; i++ )
+		if( ite->tag.vr == __dicom_controller__::OB )
 		{
-			pix = __dicom_controller__::byte_array< short >( data + i * 2 ).get_value( );
-			pix = ( ( pix - window_level ) / window_width + 0.5 ) * 255.0;
-			pix = pix > 255.0 ? 255.0 : pix;
-			pix = pix <   0.0 ?   0.0 : pix;
-			pixel = static_cast< unsigned char >( pix );
-			image[ i ] = pixel_converter::convert_to( pixel, pixel, pixel );
+			unsigned char *data = ite->data;
+			double pix;
+			unsigned char pixel;
+			for( size_type i = 0 ; i < image.size( ) ; i++ )
+			{
+				pix = __dicom_controller__::byte_array< short >( data[ i ] ).get_value( );
+				pix = ( ( pix - window_level ) / window_width + 0.5 ) * 255.0;
+				pix = pix > 255.0 ? 255.0 : pix;
+				pix = pix <   0.0 ?   0.0 : pix;
+				pixel = static_cast< unsigned char >( pix );
+				image[ i ] = pixel_converter::convert_to( pixel, pixel, pixel );
+			}
+		}
+		else
+		{
+			short *data = reinterpret_cast< short * >( ite->data );
+			double pix;
+			unsigned char pixel;
+			for( size_type i = 0 ; i < image.size( ) ; i++ )
+			{
+				pix = __dicom_controller__::byte_array< short >( data[ i ] ).get_value( );
+				pix = ( ( pix - window_level ) / window_width + 0.5 ) * 255.0;
+				pix = pix > 255.0 ? 255.0 : pix;
+				pix = pix <   0.0 ?   0.0 : pix;
+				pixel = static_cast< unsigned char >( pix );
+				image[ i ] = pixel_converter::convert_to( pixel, pixel, pixel );
+			}
 		}
 	}
 	else

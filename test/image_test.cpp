@@ -9,7 +9,12 @@
 #include <mist/io/bmp.h>
 #include <mist/io/pnm.h>
 #include <mist/io/raw.h>
+
+#define __INCLUDE_DICOM_TAG_ALL__	// 全てのDICOMタグをインポートする
+#define __SHOW_DICOM_TAG__			// コンソールにインクルードしたタグを表示する
+#define __SHOW_DICOM_UNKNOWN_TAG__	// コンソールに認識出来なかったタグを表示する
 #include <mist/io/dicom.h>
+
 #include <mist/filter/distance.h>
 //#include <mist/filter/figure_decomposition.h>
 #include <mist/filter/labeling.h>
