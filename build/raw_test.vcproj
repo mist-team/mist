@@ -36,7 +36,7 @@
 				OutputFile="$(OutDir)/raw_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/matrix_test.pdb"
+				ProgramDatabaseFile="$(OutDir)/raw_test.pdb"
 				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool

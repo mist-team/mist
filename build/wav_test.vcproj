@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="color_test"
+	Name="wav_test"
 	ProjectGUID="{5B87E451-7196-400B-9898-D276C6418B72}"
 	Keyword="Win32Proj">
 	<Platforms>
@@ -32,10 +32,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/color_test.exe"
+				OutputFile="$(OutDir)/wav_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/color_test.pdb"
+				ProgramDatabaseFile="$(OutDir)/wav_test.pdb"
 				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool
@@ -87,7 +87,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/color_test.exe"
+				OutputFile="$(OutDir)/wav_test.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="FALSE"
 				SubSystem="1"
@@ -124,16 +124,13 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\test\color_test.cpp">
+				RelativePath="..\test\wav_test.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="ヘッダー ファイル"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath="..\mist\config\color.h">
-			</File>
 			<File
 				RelativePath="..\mist\mist.h">
 			</File>
@@ -142,6 +139,9 @@
 			</File>
 			<File
 				RelativePath="..\mist\config\mist_conf.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\wav.h">
 			</File>
 		</Filter>
 	</Files>

@@ -36,7 +36,7 @@
 				OutputFile="$(OutDir)/image_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/matrix_test.pdb"
+				ProgramDatabaseFile="$(OutDir)/image_test.pdb"
 				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool
