@@ -2172,11 +2172,11 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 //! 
 //! @param[in]  a     … 入力行列 \f$ {\bf A} \f$
 //! @param[out] u     … 列直行行列 \f$ {\bf U} \f$
-//! @param[out] s     … 対角行列 \f$ {\bf Sigma} \f$
+//! @param[out] s     … 対角行列 \f$ {\bf \Sigma} \f$
 //! @param[out] vt    … 直行行列の転置 \f$ {\bf V}^T \f$
 //! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 対角行列 \f$ {\bf Sigma} \f$
+//! @return 対角行列 \f$ {\bf \Sigma} \f$
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
@@ -2194,11 +2194,11 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 //! 
 //! @param[in]  expression … 複数の行列演算を表す式 \f$ {\bf A} \f$
 //! @param[out] u          … 列直行行列 \f$ {\bf U} \f$
-//! @param[out] s          … 対角行列 \f$ {\bf Sigma} \f$
+//! @param[out] s          … 対角行列 \f$ {\bf \Sigma} \f$
 //! @param[out] vt         … 直行行列の転置 \f$ {\bf V}^T \f$
 //! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 対角行列 \f$ {\bf Sigma} \f$
+//! @return 対角行列 \f$ {\bf \Sigma} \f$
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
