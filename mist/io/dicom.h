@@ -30,6 +30,7 @@ _MIST_BEGIN
 // 次のマクロを定義すると，コンソール上に読み込んだタグ情報を表示する
 // #define __SHOW_DICOM_TAG__
 // #define __SHOW_DICOM_UNKNOWN_TAG__
+// #define __SHOW_DICOM_ZEROBYTE_TAG__
 
 namespace dicom_controller
 {
@@ -613,7 +614,7 @@ namespace dicom_controller
 
 	inline bool is_sequence_separate_tag( const unsigned char *p, const unsigned char *e )
 	{
-		if( p + 4 >= e )
+		if( p + 4 > e )
 		{
 			return( false );
 		}
@@ -622,7 +623,7 @@ namespace dicom_controller
 
 	inline bool is_sequence_element_end( const unsigned char *p, const unsigned char *e )
 	{
-		if( p + 8 >= e )
+		if( p + 8 > e )
 		{
 			return( false );
 		}
@@ -631,7 +632,7 @@ namespace dicom_controller
 
 	inline bool is_sequence_tag_end( const unsigned char *p, const unsigned char *e )
 	{
-		if( p + 8 >= e )
+		if( p + 8 > e )
 		{
 			return( false );
 		}
@@ -737,6 +738,7 @@ namespace dicom_controller
 					{
 						numBytes = p - pointer;
 						ite = dicom.append( dicom_element( tag, pointer, numBytes ) );
+						pointer += 8;
 					}
 					else
 					{
@@ -769,21 +771,7 @@ namespace dicom_controller
 			else
 			{
 				dicom_tag_container::iterator ite;
-				// データがＶＲの要件を満たす場合はリストに追加
-				switch( tag.vr )
-				{
-				case UI:
-					{
-						// DICOMの固有IDなので，文字列を変換する
-						dicom_uid uid = get_uid( pointer, numBytes );
-						ite = dicom.append( dicom_element( tag, reinterpret_cast< const unsigned char * >( uid.name.c_str( ) ), uid.name.size( ) ) );
-					}
-					break;
-
-				default:
-					ite = dicom.append( dicom_element( tag, pointer, numBytes ) );
-					break;
-				}
+				ite = dicom.append( dicom_element( tag, pointer, numBytes ) );
 
 				pointer += numBytes;
 
@@ -795,7 +783,7 @@ namespace dicom_controller
 #endif
 			}
 		}
-#ifdef __SHOW_DICOM_TAG__
+#ifdef __SHOW_DICOM_ZEROBYTE_TAG__
 		else if( tag.vr != UNKNOWN )
 		{
 			dicom_element( tag, NULL, 0 ).show_tag( );
@@ -887,6 +875,12 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 	if( dicom.contain( 0x7fe0, 0x0010 ) )
 	{
 		dicom_controller::dicom_element &element = dicom( 0x7fe0, 0x0010 );
+		if( !dicom_controller::decode( element, info ) )
+		{
+			// 圧縮の解凍もしくはデータがおかしい
+			return( false );
+		}
+
 		image.resize( info.cols, info.rows );
 		image.reso1( info.pixel_spacing_x );
 		image.reso2( info.pixel_spacing_y );

@@ -430,14 +430,195 @@ namespace dicom_controller
 		return( true );
 	}
 
+	inline bool is_element_begin( const unsigned char *p, const unsigned char *e )
+	{
+		if( p + 4 > e )
+		{
+			return( false );
+		}
+		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x00 && p[ 3 ] == 0xe0 );
+	}
+	inline bool is_element_end( const unsigned char *p, const unsigned char *e )
+	{
+		if( p + 8 > e )
+		{
+			return( false );
+		}
+		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0xdd && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
+	}
+
+	// RLE圧縮ファイルのデコーダ
+	inline unsigned char *decode_RLE( unsigned char *psrc, unsigned char *psrc_end, unsigned char *pdst, unsigned char *pdst_end )
+	{
+		if( psrc + 64 >= psrc_end )
+		{
+			// RLE圧縮がかかっていません
+			return( NULL );
+		}
+
+		// RLEのヘッダ情報を読み込む
+		size_type number_of_segments = to_current_endian( byte_array< unsigned int >( psrc ), true ).get_value( );
+		difference_type frame_offset[ 15 ] = {
+			to_current_endian( byte_array< unsigned int >( psrc +  4 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc +  8 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 12 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 16 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 20 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 24 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 28 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 32 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 36 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 40 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 44 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 48 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 52 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 56 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 60 ), true ).get_value( ),
+		};
+
+		if( frame_offset[ 0 ] != 64 )
+		{
+			frame_offset[ 0 ] = 64;
+		}
+
+		size_type n = 0;
+		while( n < number_of_segments && psrc < psrc_end && pdst < pdst_end )
+		{
+			char *p = reinterpret_cast< char * >( psrc + frame_offset[ n ] );
+			char *e = reinterpret_cast< char * >( n == number_of_segments - 1 ? psrc_end : psrc + frame_offset[ n + 1 ] );
+			while( p < e && pdst < pdst_end )
+			{
+				difference_type num = *p++;
+				if( 0 <= num && num <= 127 )
+				{
+					num = num + 1;
+					if( p + num <= e && pdst + num <= pdst_end )
+					{
+						for( size_type i = 0 ; i < num ; i++ )
+						{
+							pdst[ i ] = p[ i ];
+						}
+					}
+					p += num;
+					pdst += num;
+				}
+				else if( -127 <= num && num <= -1 )
+				{
+					num = 1 - num;
+					if( p + 1 <= e && pdst + num <= pdst_end )
+					{
+						for( size_type i = 0 ; i < num ; i++ )
+						{
+							pdst[ i ] = *p;
+						}
+					}
+					p++;
+					pdst += num;
+				}
+			}
+			n++;
+		}
+
+		return( pdst );
+	}
+
 	// RLE圧縮ファイルのデコーダ
 	inline bool decode( dicom_element &element, const dicom_info &info )
 	{
-		if( info.compression_type == RAW )
+		switch( info.compression_type )
 		{
+		case RAW:
 			return( true );
+
+		case JPEG:
+			// 今のところ未サポート
+			return( false );
 		}
-		return( false );
+
+		if( element.num_bytes < 8 + 8 )
+		{
+			// 圧縮がかかっていません
+			return( false );
+		}
+
+		unsigned char *pointer = element.data;
+		unsigned char *end_pointer = element.data + element.num_bytes;
+		difference_type num_bytes = element.num_bytes;
+		difference_type frame_offset[ 16 ] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		size_type number_of_fragments = 0;
+
+		// ベーシックオフセットテーブルをスキップ
+		if( !is_element_begin( pointer, end_pointer ) )
+		{
+			return( false );
+		}
+		pointer += 4;
+		num_bytes = to_current_endian( byte_array< unsigned int >( pointer ), true ).get_value( );
+		pointer += 4;
+		if( num_bytes > 0 )
+		{
+			// 各フレームへのポインタが発見されたので調査
+			size_type i = 0;
+			unsigned char *p = pointer;
+			while( p < pointer + num_bytes && number_of_fragments < 16 )
+			{
+				frame_offset[ number_of_fragments++ ] = to_current_endian( byte_array< unsigned int >( p ), true ).get_value( );
+				p += 4;
+			}
+		}
+		else
+		{
+			number_of_fragments = 1;
+		}
+		if( num_bytes < 0 )
+		{
+			return( false );
+		}
+		pointer += num_bytes;
+		if( pointer > end_pointer )
+		{
+			return( false );
+		}
+
+		size_type dstBytes = info.rows * info.cols * info.number_of_frames * info.bits_allocated / 8;
+		unsigned char *buff = new unsigned char[ dstBytes + 1 ];
+		unsigned char *dst_pointer = buff;
+		unsigned char *p = pointer;
+		bool ret = true;
+
+		// ベーシックオフセットテーブルをスキップ
+		size_type i = 0;
+		while( dst_pointer < buff + dstBytes && i < number_of_fragments && ret )
+		{
+			p = pointer + frame_offset[ i ];
+			if( !is_element_begin( p, end_pointer ) )
+			{
+				return( false );
+			}
+			p += 4;
+			num_bytes = to_current_endian( byte_array< unsigned int >( p ), true ).get_value( );
+			p += 4;
+
+			switch( info.compression_type )
+			{
+			case RLE:
+				dst_pointer = decode_RLE( p, p + num_bytes, dst_pointer, buff + dstBytes );
+				if( dst_pointer == NULL )
+				{
+					ret = false;
+				}
+				break;
+			}
+			i++;
+		}
+
+		if( ret )
+		{
+			element.copy( buff, dstBytes );
+		}
+
+		delete [] buff;
+		return( ret );
 	}
 
 }
