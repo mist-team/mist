@@ -41,6 +41,10 @@ private:
   static void cb_Euclidean(Fl_Menu_*, void*);
   inline void cb_Figure_i(Fl_Menu_*, void*);
   static void cb_Figure(Fl_Menu_*, void*);
+  inline void cb_Labeling_i(Fl_Menu_*, void*);
+  static void cb_Labeling(Fl_Menu_*, void*);
+  inline void cb_Labeling1_i(Fl_Menu_*, void*);
+  static void cb_Labeling1(Fl_Menu_*, void*);
 public:
   void show( );
 };

@@ -41,4 +41,7 @@ void euclidean_distance_transform_test( );
 
 void figure_decomposition_test( );
 
+void labeling4_test( );
+void labeling8_test( );
+
 #endif // __INCLUDE_IMAGE_TEST__

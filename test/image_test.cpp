@@ -10,7 +10,8 @@
 #include <mist/io/raw.h>
 #include <mist/io/dicom.h>
 #include <mist/filter/distance.h>
-#include <mist/filter/figure_decomposition.h>
+//#include <mist/filter/figure_decomposition.h>
+#include <mist/filter/labeling.h>
 
 
 mist::array2< unsigned char > image_object( 100, 100 );
@@ -93,7 +94,7 @@ void euclidean_distance_transform_test( )
 
 void figure_decomposition_test( )
 {
-	mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
+	//mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
 
 	for( mist::array2< unsigned char >::size_type i = 0 ; i < image_object.size( ) ; i++ )
 	{
@@ -122,3 +123,64 @@ void figure_decomposition_test( )
 	}
 }
 
+void labeling4_test( )
+{
+	mist::labeling4( image_object, image_object, 255 );
+
+	for( mist::array2< unsigned char >::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		switch( image_object[i] )
+		{
+		case 1:
+			image_object[i] = 50;
+			break;
+
+		case 2:
+			image_object[i] = 100;
+			break;
+
+		case 3:
+			image_object[i] = 150;
+			break;
+
+		case 4:
+			image_object[i] = 200;
+			break;
+
+		case 5:
+			image_object[i] = 255;
+			break;
+		}
+	}
+}
+
+void labeling8_test( )
+{
+	mist::labeling8( image_object, image_object, 255 );
+
+	for( mist::array2< unsigned char >::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		switch( image_object[i] )
+		{
+		case 1:
+			image_object[i] = 50;
+			break;
+
+		case 2:
+			image_object[i] = 100;
+			break;
+
+		case 3:
+			image_object[i] = 150;
+			break;
+
+		case 4:
+			image_object[i] = 200;
+			break;
+
+		case 5:
+			image_object[i] = 255;
+			break;
+		}
+	}
+}

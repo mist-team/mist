@@ -140,8 +140,18 @@ write_dicom_test( filename );}
           }
           menuitem {} {
             label {Figure Decomposition}
-            callback {figure_decomposition_test( );} selected
+            callback {figure_decomposition_test( );}
             xywh {10 10 100 20}
+          }
+          menuitem {} {
+            label {Labeling 4}
+            callback {labeling4_test( );}
+            xywh {20 20 100 20}
+          }
+          menuitem {} {
+            label {Labeling 8}
+            callback {labeling8_test( );} selected
+            xywh {30 30 100 20}
           }
         }
       }
