@@ -48,7 +48,7 @@ namespace __jpeg_controller__
 			bool ret = jpeg_controller< rgb< T >, Allocator >::read_jpeg( img, filename );
 			if( !ret ) return( false );
 
-			array2< T, Allocator >::size_type i;
+			typename array2< T, Allocator >::size_type i;
 			image.resize( img.width( ), img.height( ) );
 			for( i = 0 ; i < img.size( ) ; i++ )
 			{
@@ -61,7 +61,7 @@ namespace __jpeg_controller__
 		static bool write_jpeg( array2< T, Allocator > &image, const std::string &filename, int quality = 100 )
 		{
 			array2< rgb< T >, Allocator > img( image.width( ), image.height( ) );
-			array2< T, Allocator >::size_type i;
+			typename array2< T, Allocator >::size_type i;
 			for( i = 0 ; i < img.size( ) ; i++ )
 			{
 				img[i].r = img[i].get_value( );

@@ -31,8 +31,8 @@ iterator_test : iterator_test.o
 thread_test : thread_test.o
 	$(CXX) $(CXXFLAGS) -o $@ thread_test.o $(LIBS) $(LDLIBS)
 
-image_test : image_test.o image_test_window.cpp.o
-	$(CXX) $(CXXFLAGS) -o $@ image_test.o image_test_window.cpp.o $(LIBS) $(LDLIBS) $(LFLTK)
+image_test : image_test.o image_test_window.o
+	$(CXX) $(CXXFLAGS) -o $@ image_test.o image_test_window.o $(LIBS) $(LDLIBS) $(LFLTK) $(IMGLIBS)
 
 
 

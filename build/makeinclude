@@ -14,7 +14,7 @@ DEBUGFLAGS   = $(CXXFLAGS) -DDEBUG
 IMGLIBS = -ljpeg -lpng -ltiff
 LIBS = -lpthread
 
-LFLTK = -lfltk -lfltkgl -lgl
+LFLTK = -lfltk -lfltk_gl -lgl
 
 # Be quiet when building...
 .SILENT:

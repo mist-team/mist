@@ -57,8 +57,10 @@ bool draw_buffer( const array2< rgb< T >, Allocator > &image,
 	if( image_width > image.width( ) || image_height > image.height( ) ) return( false );
 	if( image.width( ) != image.height( ) ) return( false );
 
+	typedef typename array2< rgb< T >, Allocator >::size_type size_type;
+
 	// テクスチャのサイズが2の指数上になっているかどうかをチェック
-	if( image.width( ) != (int)( pow( 2.0, (int)( log10( (double)image.width( ) ) / log10( 2.0 ) + 0.1 ) ) ) ) return( false );
+	if( image.width( ) != static_cast< size_type >( pow( 2.0, (int)( log10( (double)image.width( ) ) / log10( 2.0 ) + 0.1 ) ) ) ) return( false );
 
 	typedef pixel_data::pixel< is_float< T >::value > pixel_converter;
 	float r = pixel_converter::get_value( back_r );
@@ -167,7 +169,7 @@ bool draw_image( const array2< rgb< T >, Allocator > &image,
 					typename array2< rgb< T >, Allocator >::size_type window_width, typename array2< rgb< T >, Allocator >::size_type window_height,
 					double zoom = 1.0, double xpos = 0.0, double ypos = 0.0, double back_r = 0.0, double back_g = 0.0, double back_b = 0.0, bool interpolate = true )
 {
-	typedef array2< rgb< T >, Allocator >::size_type size_type;
+	typedef typename array2< rgb< T >, Allocator >::size_type size_type;
 	size_type size = image.width( ) > image.height( ) ? image.width( ) : image.height( ); 
 	size_type ttt = static_cast< size_type >( pow( 2.0, ceil( log10( (double)size ) / log10( 2.0 ) ) ) );
 
