@@ -950,7 +950,7 @@ protected:
 		b.exp_ = a.exp_;
 		for( i = NMPA ; i >= n ; i-- )
 		{
-			b.data_[ i ] = b.data_[ NMPA + i - n ];
+			b.data_[ i ] = b.data_[ i - n ];
 		}
 		for( ; i >= 0 ; i-- )
 		{
@@ -1022,7 +1022,7 @@ protected:
 		a.exp_++;
 		if( k >= RADIX_2 )
 		{
-			for( i = NMPA ; ++( a.data_[ NMPA + i ] ) & RADIX ; i-- )
+			for( i = NMPA ; ++( a.data_[ i ] ) & RADIX ; i-- )
 			{
 				a.data_[ i ] &= RADIX1;
 			}
@@ -1032,13 +1032,13 @@ protected:
 
 	static void asub( decimal &a, decimal b )
 	{
-		bool sign = a.sign_;
 		difference_type i = aprs( a, b );
 		if( i == -999 )
 		{
 			return;
 		}
 
+		bool sign = a.sign_;
 		difference_type u = 0, n, m;
 
 		if( i >= RADIX_2 )
@@ -1075,7 +1075,7 @@ protected:
 		{
 			a.data_[ i ] = a.data_[ n + i ];
 		}
-		for( i = 0 ; i < m ; i++ )
+		for( i = 1 ; i <= m ; i++ )
 		{
 			a.data_[ NMPA - m + i ] = 0;
 		}

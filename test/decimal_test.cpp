@@ -5,7 +5,7 @@ int main( int argc, char *argv[] )
 {
 	using namespace std;
 
-	mist::decimal< 100 > v1( "1.1" ), v2( "1.1" );
+	mist::decimal< 10 > v1( "1.1" ), v2( "1.1" );
 //	mist::decimal< 20 > v1( 1.1 ), v2( 1.1 );
 
 

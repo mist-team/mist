@@ -28,7 +28,7 @@ public:
 
 private:
 	_MIST_CONST( unsigned int, BASE, 256 );
-	_MIST_CONST( unsigned int, DATA_NUM, 2 * MAX_KETA / 5 + 2 );
+	_MIST_CONST( unsigned int, DATA_NUM, MAX_KETA );
 
 protected:
 	size_t		length_;
@@ -56,7 +56,7 @@ public:
 			{
 				data_[ length_++ ] = static_cast< value_type >( v % BASE );
 				v /= BASE;
-			} while( v > 0 );
+			} while( v > 0 && length_ < DATA_NUM );
 		}
 	}
 
@@ -773,19 +773,19 @@ protected:
 				return( integer( ::atoi( str.c_str( ) ) ) );
 			}
 
-			::std::string s = "";
 			for( i = k ; i < str.size( ) ; i++ )
 			{
 				// 符号を除いた部分をコピーする．
 				if( '0' <= str[ i ] && str[ i ] <= '9' )
 				{
-					s += str[ i ];
 				}
 				else
 				{
 					break;
 				}
 			}
+
+			::std::string s = str.substr( k, i - k + 1 );
 
 			integer x( 0 );
 			integer base( 100000000 ), b( 1 );
