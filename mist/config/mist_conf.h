@@ -53,48 +53,47 @@ _MIST_BEGIN
 #define _MIST_ALLOCATE_TEST_			0
 
 #ifdef __MIST_MSVC__
-	#define _MIST_ALLOCATOR_MEMORY_TRIM_	0	/// VC標準のSTLではサポートしていないのでオフにする
+	#define _MIST_ALLOCATOR_MEMORY_TRIM_	0	///< VC標準のSTLではサポートしていないのでオフにする
 #else
-	#define _MIST_ALLOCATOR_MEMORY_TRIM_	1	/// VC以外のSTLではサポートしているのでオンにする
+	#define _MIST_ALLOCATOR_MEMORY_TRIM_	1	///< VC以外のSTLではサポートしているのでオンにする
 #endif
 
 
 #ifndef NDEBUG
 
 	// デバッグ用の設定を全てオンにする
-	#define _CHECK_ACCESS_VIOLATION_		1	/// 配列要素へのアクセス違反をチェックするかどうか
-	#define _CHECK_ARRAY_OPERATION_			1	/// 1次元配列の演算の整合性をチェックするかどうか
-	#define _CHECK_ARRAY1_OPERATION_		1	/// 1次元画像の演算の整合性をチェックするかどうか
-	#define _CHECK_ARRAY2_OPERATION_		1	/// 2次元画像の演算の整合性をチェックするかどうか
-	#define _CHECK_ARRAY3_OPERATION_		1	/// 3次元画像の演算の整合性をチェックするかどうか
+	#define _CHECK_ACCESS_VIOLATION_		1	///< 配列要素へのアクセス違反をチェックするかどうか
+	#define _CHECK_ARRAY_OPERATION_			1	///< 1次元配列の演算の整合性をチェックするかどうか
+	#define _CHECK_ARRAY1_OPERATION_		1	///< 1次元画像の演算の整合性をチェックするかどうか
+	#define _CHECK_ARRAY2_OPERATION_		1	///< 2次元画像の演算の整合性をチェックするかどうか
+	#define _CHECK_ARRAY3_OPERATION_		1	///< 3次元画像の演算の整合性をチェックするかどうか
 
-	#define _CHECK_MATRIX_OPERATION_		1	/// 行列演算の整合性をチェックするかどうか
-	#define _USE_EXPRESSION_TEMPLATE_		0	/// Expression Templateを利用するかどうか
+	#define _CHECK_MATRIX_OPERATION_		1	///< 行列演算の整合性をチェックするかどうか
+	#define _USE_EXPRESSION_TEMPLATE_		0	///< Expression Templateを利用するかどうか
 
 #else
 
 	// デバッグ用の設定を全てオフにする
-	#define _CHECK_ACCESS_VIOLATION_		0	/// 配列要素へのアクセス違反をチェックするかどうか
-	#define _CHECK_ARRAY_OPERATION_			0	/// 1次元配列の演算の整合性をチェックするかどうか
-	#define _CHECK_ARRAY1_OPERATION_		0	/// 1次元画像の演算の整合性をチェックするかどうか
-	#define _CHECK_ARRAY2_OPERATION_		0	/// 2次元画像の演算の整合性をチェックするかどうか
-	#define _CHECK_ARRAY3_OPERATION_		0	/// 3次元画像の演算の整合性をチェックするかどうか
+	#define _CHECK_ACCESS_VIOLATION_		0	///< 配列要素へのアクセス違反をチェックするかどうか
+	#define _CHECK_ARRAY_OPERATION_			0	///< 1次元配列の演算の整合性をチェックするかどうか
+	#define _CHECK_ARRAY1_OPERATION_		0	///< 1次元画像の演算の整合性をチェックするかどうか
+	#define _CHECK_ARRAY2_OPERATION_		0	///< 2次元画像の演算の整合性をチェックするかどうか
+	#define _CHECK_ARRAY3_OPERATION_		0	///< 3次元画像の演算の整合性をチェックするかどうか
 
-	#define _CHECK_MATRIX_OPERATION_		0	/// 行列演算の整合性をチェックするかどうか
-	#define _USE_EXPRESSION_TEMPLATE_		1	/// Expression Templateを利用するかどうか
+	#define _CHECK_MATRIX_OPERATION_		0	/// <行列演算の整合性をチェックするかどうか
+	#define _USE_EXPRESSION_TEMPLATE_		1	///< Expression Templateを利用するかどうか
 
 #endif
 
-#define _MIST_THREAD_SUPPORT_				1	/// MISTの各アルゴリズムでのスレッドサポートをするかどうか
-												/// サポートする場合は，LINUX系の場合は pthread ライブラリが必要
 
-#define _MIST_VECTOR_SUPPORT_				0	/// MISTのVECTORを有効にする．MATRIXとの掛け算等もサポートする．
-												/// STLのvectorとクラス名がかぶるため，名前空間を正しくインポートする必要がある．
+#define _MIST_THREAD_SUPPORT_				1	///< MISTの各アルゴリズムでのスレッドサポートをするかどうか．サポートする場合は，LINUX系の場合は pthread ライブラリが必要
+
+#define _MIST_VECTOR_SUPPORT_				0	///< MISTのVECTORを有効にする．MATRIXとの掛け算等もサポートする．STLのvectorとクラス名がかぶるため，名前空間を正しくインポートする必要がある．
 
 
 // 行列演算のオプション
-#define _USE_BALANCING_MATRIX_EIGEN_		1	/// 行列の対角化を行うことで計算精度を上げる（若干メモリを大目に食う）
-#define _USE_DIVIDE_AND_CONQUER_SVD_		1	/// 分割統治法を用いた高速な特異値分解を利用する（若干メモリを大目に食う）
+#define _USE_BALANCING_MATRIX_EIGEN_		1	///< 行列の対角化を行うことで計算精度を上げる（若干メモリを大目に食う）
+#define _USE_DIVIDE_AND_CONQUER_SVD_		1	///< 分割統治法を用いた高速な特異値分解を利用する（若干メモリを大目に食う）
 
 
 /// MISTのアルゴリズム全般で利用するダミーコールバックファンクタ
@@ -233,6 +232,83 @@ struct __mist_console_callback__
 	#define _CHECK_ACCESS_VIOLATION3_( index1, index2, index3 )
 
 #endif
+
+
+
+/*** Doxygen 用のメインページ ***********************************************************************************************/
+/*! @mainpage MIST ( Media Integration Standard Toolkit )
+*
+* @section class MISTで提供する基本データ型
+*
+* - @ref array  : STLに準拠したメモリ上で連続となる１次元配列であり，音声・画像の全てのデータの基底クラス．
+* - @ref array1 : 音声を扱うための１次元配列．
+* - @ref array2 : ２次元画像を扱うための画像クラス．
+* - @ref array3 : ３次元画像を扱うための画像クラス．
+* - @ref matrix : 任意の行列を扱うためのクラス（Expression template teqnique を利用した高速な演算が可能）．
+* - @ref vector : 行列・ベクトル演算を可能とするクラス．
+*
+*
+*
+* @section algorithm MISTで提供するアルゴリズム
+*
+* @subsection implement	実装補助
+* - @ref type_limits			"型に対する情報"
+* - @ref timer					"時間計測"
+* - @ref a						"演算子の実装補助"
+* - @ref thread					"multi threading"
+*
+* @subsection numeric ベクトル・行列演算
+* - @ref inverse				"逆行列を計算"
+* - @ref solve					"連立方程式を解く"
+* - @ref qr_factorization		"QR 分解"
+* - @ref lu_factorization		"LU 分解"
+* - @ref eigen					"固有値・固有ベクトル"
+* - @ref svd					"特異値分解"
+*
+* @subsection common 共通の処理
+* - @ref fft					"フーリエ変換 (FFT)"
+* - @ref dct					"離散コサイン変換(DCT)"
+* - @ref dst					"離散サイン変換 (DST) "
+* - @ref a						"ウェーブレット変換"
+* - @ref a						"統計処理"
+* - @ref a						"ヒストグラム制御"
+* - @ref a						"擬似乱数生成"
+* - @ref a						"グラフ描画(2次元)"
+* - @ref draw_image				"2次元画像描画"
+*
+* @subsection image 主に画像に対して適用される処理
+*
+* @subsubsection image-io 入出力系
+* - @ref read_raw				"RAWデータの読み込み・書き出し"
+* - @ref read_bmp				"BMPデータの読み込み・書き出し"
+* - @ref read_pnm				"PNMデータの読み込み・書き出し"
+* - @ref read_jpeg				"JPEGデータの読み込み・書き出し"
+* - @ref read_png				"PNGデータの読み込み・書き出し"
+* - @ref read_tiff				"TIFFデータの読み込み・書き出し"
+* - @ref read_dicom				"DICOMデータの読み込み・書き出し"
+*
+* @subsubsection image-filter フィルタ系
+* - @ref linear					"線形フィルタ"
+* - @ref median					"メディアンフィルタ"
+* - @ref interpolate			"画像補間"
+* - @ref a						"カラー画像に対する処理"
+* - @ref threshold				"閾値選択"
+* - @ref a						"2値画像に対する処理"
+* - @ref morphology				"モルフォロジー演算"
+*
+* @subsection audio 主に音声に対して適用される処理
+*
+* @subsubsection audio-io 入出力系
+* - @ref read_wav				"WAVデータの読み込み・書き出し"
+*
+* @subsubsection audio-filter フィルタ系
+* - @ref a						"サンプリングレート変更"
+* - @ref a						"再生"
+*
+****************************************************************************************************************************/
+
+
+
 
 
 // mist名前空間の終わり

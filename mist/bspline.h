@@ -1,3 +1,9 @@
+/// Bスプライン曲線を描画するためのライブラリ
+//!
+//! @defgroup bsplinegroup Bスプライン曲線
+//!  @{
+//!
+
 #ifndef __INCLUDE_BSPLINE__
 #define __INCLUDE_BSPLINE__
 
@@ -11,10 +17,20 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
-
+/// Bスプラインの基底関数を計算する関数を実装した構造体
+//!
+//! K次のBスプライン基底関数の計算を行う
+//!
 template < int K >
 struct bspline_base
 {
+	/// K次のBスプライン基底関数の計算を行う
+	//! 
+	//! @arg knot … Bスプラインで利用するノットベクトル
+	//! @arg i    … Bスプラインの制御点番号
+	//! @arg t    … Bスプラインの区間位置
+	//! @return 指定されたノットベクトル，制御点番号，区間位置に基づく基底関数の値
+	//! 
 	static double Base( const std::vector< double > &knot, std::vector< double >::size_type i, double t )
 	{
 		double B = 0.0;
@@ -32,9 +48,21 @@ struct bspline_base
 	}
 };
 
+
+/// Bスプラインの基底関数を計算する関数を実装した構造体の特殊化
+//!
+//! 1次のBスプライン基底関数の計算を行うための特殊化
+//!
 template < >
 struct bspline_base< 1 >
 {
+	/// K次のBスプライン基底関数の計算を行う
+	//! 
+	//! @arg knot … Bスプラインで利用するノットベクトル
+	//! @arg i    … Bスプラインの制御点番号
+	//! @arg t    … Bスプラインの区間位置
+	//! @return 指定されたノットベクトル，制御点番号，区間位置に基づく基底関数の値
+	//! 
 	static double Base( const std::vector< double > &knot, std::vector< double >::size_type i, double t )
 	{
 		return( ( knot[ i ] <= t && t < knot[ i + 1 ] ) ? 1.0 : 0.0 );
@@ -42,6 +70,36 @@ struct bspline_base< 1 >
 };
 
 
+/// Bスプライン曲線を扱うためのクラス
+//!
+//! K次のBスプライン曲線を描画可能．可変個数の制御点に対応し，任意のノットベクトルに対応するBスプライン曲線を描画
+//! @arg T  … 各制御点・補間点を表すデータ構造を指定（double や vector3< double > など）
+//! @arg K  … Bスプライン曲線の次数
+//!
+//! @code Bスプライン曲線の作成例
+//! mist::bspline< double > b;
+//! 
+//! // 制御点を追加
+//! b.push_back( 2.0 );
+//! b.push_back( 3.0 );
+//! ...
+//! 
+//! // ノットベクトルを以下の方法のいずれかを用いて設定
+//! // ・閉曲線の設定
+//! b.knot( mist::bspline< double >::ROUND );
+//! // ・最初と最後の制御点を通る場合の設定
+//! b.knot( mist::bspline< double >::THROUTH );
+//! // ・任意のノットベクトルを設定
+//! b.knot( STLのベクトルタイプのノットのリスト );
+//! 
+//! // 補間点を計算（区間は０～１）
+//! double p1 = b( 0.0 );
+//! double p2 = b( 0.4 );
+//! double p3 = b( 0.7 );
+//! ...
+//! 
+//! @endcode
+//!
 template < class T, int K, class Allocator = std::allocator< T > >
 class bspline : public std::vector< T, Allocator >
 {
@@ -59,22 +117,27 @@ private:
 	typedef std::vector< double > knot_list;
 
 public:
+	/// @enum ノットベクトルを手動で設定しない場合のデフォルトのモード
 	enum BSplineMode
 	{
-		ROUND,
-		THROUTH_SIDEPOINT,
+		ROUND,					///< 閉曲線の設定
+		THROUTH,				///< 最初と最後の制御点を通る場合の設定
 	};
 
 protected:
-	knot_list knot_;
-	BSplineMode mode_;
+	knot_list knot_;			// ノットベクトル
+	BSplineMode mode_;			// デフォルトのノットベクトル設定
 
 
 public:
+	/// 指定された位置（区間０～１）に対応する，Bスプライン補間結果を返す
+	//! @attention 次数＋１の制御点数が入力されている必要あり．足りない場合は，デフォルトのノットベクトルで最初期化される．
+	//! @arg t  … 全体の曲線を区間０～１とした時に，補間される点の位置
+	//! @return 指定された点の位置に対応するBスプライン曲線の補間結果
 	value_type operator( )( double t )
 	{
-		size_type n = base::size( ) - 1;	/* n + 1 は制御点の数 */
-		size_type m = n + K; 				/* m + 1 はノットベクトルの数 */
+		size_type n = base::size( ) - 1;	// n + 1 は制御点の数
+		size_type m = n + K; 				// m + 1 はノットベクトルの数
 		if( knot_.size( ) < m + 1 )
 		{
 			// 不適切なノットベクトルが設定されています
@@ -93,15 +156,21 @@ public:
 		return( p );
 	}
 
+	/// 任意のノットベクトルを設定する
+	//! @attention 次数 K で制御点数 N とした時に，ノットベクトルの数は N + K + 1 必要である
+	//! @arg kknot  … ノットベクトル
 	void knot( const knot_list &kknot )
 	{
 		knot_ = kknot;
 	}
 
+	/// デフォルトのモードでノットベクトルを設定する
+	//! 本クラス内で定義されている列挙型 BSplineMode のうちの一つを利用する
+	//! @arg mode  … 曲線のタイプ
 	void knot( BSplineMode mode )
 	{
-		size_type n = base::size( ) - 1;	/* n + 1 は制御点の数 */
-		size_type m = n + K; 				/* m + 1 はノットベクトルの数 */
+		size_type n = base::size( ) - 1;	// n + 1 は制御点の数
+		size_type m = n + K; 				// m + 1 はノットベクトルの数
 		size_type i;
 
 		knot_list kknot( m + 1 );
@@ -115,7 +184,7 @@ public:
 			}
 			break;
 
-		case THROUTH_SIDEPOINT:
+		case THROUTH:
 			// 最初と最後を通る曲線の場合
 			for( i = 0 ; i < K ; i++ )
 			{
@@ -135,6 +204,7 @@ public:
 		knot( kknot );
 	}
 
+	/// 代入演算子
 	const bspline &operator =( const bspline &b )
 	{
 		if( this != &b )
@@ -146,11 +216,13 @@ public:
 		return( *this );
 	}
 
+	/// コピーコンストラクタ
 	bspline( const bspline &b ) : base( b ), knot_( b.knot_ ), mode_( b.mode_ )
 	{
 	}
 
-	bspline( ) : mode_( THROUTH_SIDEPOINT )
+	/// デフォルトのコンストラクタ．ノットベクトルのデフォルト値を「最初と最後を通る曲線」に設定する
+	bspline( ) : mode_( THROUTH )
 	{
 	}
 };
@@ -160,5 +232,7 @@ public:
 // mist名前空間の終わり
 _MIST_END
 
+
+/** @} */ // Bスプライングループの終わり
 
 #endif // __INCLUDE_BSPLINE__
