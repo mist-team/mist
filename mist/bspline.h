@@ -89,6 +89,10 @@ struct bspline_base< 1 >
 /// @brief Bスプライン曲線を扱うためのクラス
 //!
 //! K次のBスプライン曲線を描画可能．可変個数の制御点に対応し，任意のノットベクトルに対応するBスプライン曲線を描画
+//!
+//! @attention 入力されるデータ型が，加減算と単一のスカラー値を全てに代入する操作と浮動小数との掛け算をサポートする必要がある．
+//! @attention ただし，vector2，vector3 は正しく動作するようになっている．
+//! @attention array 等のMISTコンテナを利用する際には，オペレータを有効にする必要がある．
 //! 
 //! @param T  … 各制御点・補間点を表すデータ構造を指定（double や vector3< double > など）
 //! @param K  … Bスプライン曲線の次数
@@ -165,10 +169,15 @@ public:
 			// 不適切なノットベクトルが設定されています
 			knot( mode_ );
 		}
+		else if( base::empty( ) )
+		{
+			return( value_type( ) );
+		}
 
 		t *= static_cast< double >( m - 2 * K + 2 );
 
-		value_type p = value_type( );
+		// まず，ゼロ要素を作成する
+		value_type p = value_type( base::operator[]( 0 ) ) * 0;
 		for( size_type i = 0 ; i < base::size( ) ; i++ )
 		{
 			double B = bspline_base< K >::Base( knot_, i, t );

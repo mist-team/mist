@@ -112,8 +112,9 @@ _MIST_BEGIN
 //! @{
 
 
+#ifndef _MIST_USER_CONFIG_
 
-#ifndef NDEBUG
+#if !defined( NDEBUG ) || defined( DEBUG )
 
 	// デバッグ用の設定を全てオンにする
 	#define _CHECK_ACCESS_VIOLATION_		1	///< 配列要素へのアクセス違反をチェックするかどうか
@@ -159,6 +160,7 @@ _MIST_BEGIN
 #define _USE_BALANCING_MATRIX_EIGEN_		1	///< 行列の対角化を行うことで計算精度を上げる（若干メモリを大目に食う）
 #define _USE_DIVIDE_AND_CONQUER_SVD_		1	///< 分割統治法を用いた高速な特異値分解を利用する（若干メモリを大目に食う）
 
+#endif
 
 
 /// @}

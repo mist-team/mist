@@ -10,6 +10,14 @@
 #include "config/mist_conf.h"
 #endif
 
+#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
+#include "config/type_trait.h"
+#endif
+
+#ifndef __INCLUDE_MIST_VECTOR__
+#include "vector.h"
+#endif
+
 #include <vector>
 
 
@@ -19,16 +27,28 @@ _MIST_BEGIN
 
 // 一般のデータ型用の点演算
 template < class T >
-inline const T add( const T &v1, const T &v2 ){ return( v1 + v2 ); }
+inline const T add( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 + v2 ); }
 
 template < class T >
-inline const T sub( const T &v1, const T &v2 ){ return( v1 - v2 ); }
+inline const T add( const T &v1, const typename T::value_type &v2 ){ return( v1 + v2 ); }
 
 template < class T >
-inline const T mul( const T &v1, const T &v2 ){ return( v1 * v2 ); }
+inline const T sub( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 - v2 ); }
 
 template < class T >
-inline const T div( const T &v1, const T &v2 ){ return( v1 / v2 ); }
+inline const T sub( const T &v1, const typename T::value_type &v2 ){ return( v1 - v2 ); }
+
+template < class T >
+inline const T mul( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 * v2 ); }
+
+template < class T >
+inline const T mul( const T &v1, const typename T::value_type &v2 ){ return( v1 * v2 ); }
+
+template < class T >
+inline const T div( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 / v2 ); }
+
+template < class T >
+inline const T div( const T &v1, const typename T::value_type &v2 ){ return( v1 / v2 ); }
 
 
 
@@ -103,12 +123,16 @@ inline const vector2< T > div( const vector2< T > &v1, const typename vector2< T
 /// @brief 3次スプライン曲線を扱うためのクラス
 //!
 //! 3次スプライン曲線を描画可能．可変個数の制御点に対応し，開曲線と閉曲線の3次スプライン曲線を描画
+//!
+//! @attention 入力されるデータ型が，四則演算（要素同士の点演算，単一のスカラー値を全てに代入する操作）をサポートする必要がある．
+//! @attention ただし，vector2，vector3 は正しく動作するようになっている．
+//! @attention array 等のMISTコンテナを利用する際には，オペレータを有効にする必要がある．
 //! 
 //! @param T  … 各制御点・補間点を表すデータ構造を指定（double や vector3< double > など）
 //!
 //! @code 3次スプライン曲線の作成例
 //! // 3次で変数の型が double の3次スプラインを作成する
-//! mist::spline< double, 3 > b;
+//! mist::spline< double > b;
 //! 
 //! // 制御点を追加
 //! b.push_back( 2.0 );
@@ -120,6 +144,9 @@ inline const vector2< T > div( const vector2< T > &v1, const typename vector2< T
 //! b.mode( mist::spline< double >::CLOSED );
 //! // ・最初と最後の制御点を通る場合の設定
 //! b.mode( mist::spline< double >::OPEN );
+//! 
+//! // スプラインを描画する前に必ず呼び出す
+//! b.construct_spline( );
 //! 
 //! // 補間点を計算（区間は０～１）
 //! double p1 = b( 0.0 );
@@ -170,26 +197,32 @@ protected:
 		value_type *b = new value_type[ num ];
 		value_type *c = new value_type[ num ];
 
+		// まず，単位要素を作成する
+		value_type _0 = value_type( base::operator[]( 0 ) ) * 0;
+		value_type _1 = add( _0, 1 );
+		value_type _2 = add( _0, 2 );
+		value_type _4 = add( _0, 3 );
+
 		p1_.clear( );
 
 		// 開始点と終点について
-		a[ 0 ]   = value_type( 1 );
-		b[ 0 ]   = value_type( 4 );
-		c[ 0 ]   = value_type( 1 );
+		a[ 0 ]   = _1;
+		b[ 0 ]   = _4;
+		c[ 0 ]   = _1;
 		p1_.push_back( mul( sub( p[ 1 ], p[ num - 2 ] ), 3 ) );
 
 		// 開始点と終点以外の制御点に関して初期化
 		for( n = 1 ; n < num - 1 ; n++ )
 		{
-			a[ n ]   = value_type( 1 );
-			b[ n ]   = value_type( 4 );
-			c[ n ]   = value_type( 1 );
+			a[ n ]   = _1;
+			b[ n ]   = _4;
+			c[ n ]   = _1;
 			p1_.push_back( mul( sub( p[ n + 1 ], p[ n - 1 ] ), 3 ) );
 		}
 
-		a[ num - 1 ]   = value_type( 1 );
-		b[ num - 1 ]   = value_type( 4 );
-		c[ num - 1 ]   = value_type( 1 );
+		a[ num - 1 ]   = _1;
+		b[ num - 1 ]   = _4;
+		c[ num - 1 ]   = _1;
 		p1_.push_back( p1_[ 0 ] );
 
 		// 一次微係数の計算
@@ -242,24 +275,30 @@ protected:
 
 		p1_.clear( );
 
+		// まず，単位要素を作成する
+		value_type _0 = value_type( base::operator[]( 0 ) ) * 0;
+		value_type _1 = add( _0, 1 );
+		value_type _2 = add( _0, 2 );
+		value_type _4 = add( _0, 3 );
+
 		// 開始点と終点について
-		a[ 0 ]   = value_type( 0 );
-		b[ 0 ]   = value_type( 2 );
-		c[ 0 ]   = value_type( 1 );
+		a[ 0 ]   = _0;
+		b[ 0 ]   = _2;
+		c[ 0 ]   = _1;
 		p1_.push_back( mul( sub( p[ 1 ], p[ 0 ] ), 3 ) );
 
 		// 開始点と終点以外の制御点に関して初期化
 		for( n = 1 ; n < num - 1 ; n++ )
 		{
-			a[ n ]   = value_type( 1 );
-			b[ n ]   = value_type( 4 );
-			c[ n ]   = value_type( 1 );
+			a[ n ]   = _1;
+			b[ n ]   = _4;
+			c[ n ]   = _1;
 			p1_.push_back( mul( sub( p[ n + 1 ], p[ n - 1 ] ), 3 ) );
 		}
 
-		a[ num - 1 ]   = value_type( 1 );
-		b[ num - 1 ]   = value_type( 2 );
-		c[ num - 1 ]   = value_type( 0 );
+		a[ num - 1 ]   = _1;
+		b[ num - 1 ]   = _2;
+		c[ num - 1 ]   = _0;
 		p1_.push_back( mul( sub( p[ num-1 ], p[ num-2 ] ), 3 ) );
 
 		// 一次微係数の計算
