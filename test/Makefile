@@ -6,7 +6,7 @@ ALL = \
 
 
 all: $(ALL)
-	 
+
 matrix_test : matrix_test.o
 	$(CXX) $(CXXFLAGS) -o $@ matrix_test.o $(LIBS) $(LDLIBS)
 
