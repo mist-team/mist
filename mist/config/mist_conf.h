@@ -49,7 +49,7 @@ _MIST_BEGIN
 // MISTヘッダ内で利用する設定
 #define _MIST_ALLOCATE_TEST_			0
 
-#ifdef WIN32
+#ifdef __MIST_MSVC__
 	#define _MIST_ALLOCATOR_MEMORY_TRIM__	0	// VC標準のSTLではサポートしていないのでオフにする
 #else
 	#define _MIST_ALLOCATOR_MEMORY_TRIM__	1	// VC以外のSTLではサポートしているのでオンにする
