@@ -997,7 +997,71 @@ public:
 		}
 	}
 
+	size_type size1( ) const { return( base::size1( ) - 2 * margin_ ); }
+	size_type size2( ) const { return( base::size2( ) - 2 * margin_ ); }
+	size_type size3( ) const { return( base::size3( ) - 2 * margin_ ); }
+	size_type width( ) const { return( size1( ) ); }
+	size_type height( ) const { return( size2( ) ); }
+	size_type depth( ) const { return( size3( ) ); }
+
 	size_type margin( ) const { return( margin_ ); }
+
+private:
+	template < class T, class Allocator >
+	const marray& copy( const array< T, Allocator > &o )
+	{
+		size_type length = size( ) < o.size( ) ? size( ) : o.size( );
+		for( size_type i = 0 ; i < length ; i++ )
+		{
+			( *this )[ i ] = static_cast< value_type >( o[ i ] );
+		}
+		return( *this );
+	}
+
+	template < class T, class Allocator >
+	const marray& copy( const array1< T, Allocator > &o )
+	{
+		size_type length = size( ) < o.size( ) ? size( ) : o.size( );
+		for( size_type i = 0 ; i < length ; i++ )
+		{
+			( *this )[ i ] = static_cast< value_type >( o[ i ] );
+		}
+		return( *this );
+	}
+
+	template < class T, class Allocator >
+	const marray& copy( const array2< T, Allocator > &o )
+	{
+		size_type w = width( ) < o.width( ) ? width( ) : o.width( );
+		size_type h = height( ) < o.height( ) ? height( ) : o.height( );
+		for( size_type j = 0 ; j < h ; j++ )
+		{
+			for( size_type i = 0 ; i < w ; i++ )
+			{
+				( *this )( i, j ) = static_cast< value_type >( o( i, j ) );
+			}
+		}
+		return( *this );
+	}
+
+	template < class T, class Allocator >
+	const marray& copy( const array3< T, Allocator > &o )
+	{
+		size_type w = width( ) < o.width( ) ? width( ) : o.width( );
+		size_type h = height( ) < o.height( ) ? height( ) : o.height( );
+		size_type d = depth( ) < o.depth( ) ? depth( ) : o.depth( );
+		for( size_type k = 0 ; k < d ; k++ )
+		{
+			for( size_type j = 0 ; j < h ; j++ )
+			{
+				for( size_type i = 0 ; i < w ; i++ )
+				{
+					( *this )( i, j, k ) = static_cast< value_type >( o( i, j, k ) );
+				}
+			}
+		}
+		return( *this );
+	}
 
 public:
 	const marray& operator =( const marray &o )
@@ -1010,6 +1074,39 @@ public:
 		return( *this );
 	}
 
+	template < class T, class Allocator >
+	const marray& operator =( const array< T, Allocator > &o )
+	{
+		base::resize( o.size( ) + margin_ * 2 );
+		return( copy( o ) );
+	}
+
+	template < class T, class Allocator >
+	const marray& operator =( const array1< T, Allocator > &o )
+	{
+		base::resize( o.size( ) + margin_ * 2 );
+		reso1( o.reso1( ) );
+		return( copy( o ) );
+	}
+
+	template < class T, class Allocator >
+	const marray& operator =( const array2< T, Allocator > &o )
+	{
+		base::resize( o.size1( ) + margin_ * 2, o.size2( ) + margin_ * 2 );
+		reso1( o.reso1( ) );
+		reso2( o.reso2( ) );
+		return( copy( o ) );
+	}
+
+	template < class T, class Allocator >
+	const marray& operator =( const array3< T, Allocator > &o )
+	{
+		base::resize( o.size1( ) + margin_ * 2, o.size2( ) + margin_ * 2, o.size3( ) + margin_ * 2 );
+		reso1( o.reso1( ) );
+		reso2( o.reso2( ) );
+		reso3( o.reso3( ) );
+		return( copy( o ) );
+	}
 
 // 要素へのアクセス
 public:
@@ -1079,10 +1176,7 @@ public:
 		: base( o.size( ) + margin * 2 ), margin_( margin )
 	{
 		fill_margin( val );
-		for( size_type i = 0 ; i < o.size( ) ; i++ )
-		{
-			( *this )[ i ] = o[ i ];
-		}
+		copy( o );
 	}
 
 	template < class T, class Allocator >
@@ -1090,10 +1184,7 @@ public:
 		: base( o.size( ) + margin * 2, o.reso1( ) ), margin_( margin )
 	{
 		fill_margin( val );
-		for( size_type i = 0 ; i < o.size( ) ; i++ )
-		{
-			( *this )[ i ] = o[ i ];
-		}
+		copy( o );
 	}
 
 	template < class T, class Allocator >
@@ -1101,13 +1192,7 @@ public:
 		: base( o.size1( ) + margin * 2, o.size2( ) + margin * 2, o.reso1( ), o.reso2( ) ), margin_( margin )
 	{
 		fill_margin( val );
-		for( size_type j = 0 ; j < o.size2( ) ; j++ )
-		{
-			for( size_type i = 0 ; i < o.size1( ) ; i++ )
-			{
-				( *this )( i, j ) = o( i, j );
-			}
-		}
+		copy( o );
 	}
 
 	template < class T, class Allocator >
@@ -1115,16 +1200,7 @@ public:
 		: base( o.size1( ) + margin * 2, o.size2( ) + margin * 2, o.size3( ) + margin * 2, o.reso1( ), o.reso2( ), o.reso3( ) ), margin_( margin )
 	{
 		fill_margin( val );
-		for( size_type k = 0 ; k < o.size3( ) ; k++ )
-		{
-			for( size_type j = 0 ; j < o.size2( ) ; j++ )
-			{
-				for( size_type i = 0 ; i < o.size1( ) ; i++ )
-				{
-					( *this )( i, j, k ) = o( i, j, k );
-				}
-			}
-		}
+		copy( o );
 	}
 };
 
