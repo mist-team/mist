@@ -434,6 +434,266 @@ namespace __median_filter_divide_conquer__
 	}
 }
 
+
+
+namespace __median_filter_specialized_version__
+{
+	// min, max : 濃淡範囲
+	template < class T1, class T2, class Allocator1, class Allocator2 >
+	void median_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+						typename array3< T1, Allocator1 >::size_type thread_idy, typename array3< T1, Allocator1 >::size_type thread_numy,
+						typename array3< T1, Allocator1 >::size_type thread_idz, typename array3< T1, Allocator1 >::size_type thread_numz )
+	{
+		typedef typename array3< T1, Allocator1 >::size_type  size_type;
+		typedef typename array3< T1, Allocator1 >::value_type value_type;
+		typedef typename array3< T1, Allocator1 >::difference_type difference_type;
+		typedef typename array3< T2, Allocator2 >::value_type out_value_type;
+
+		size_type i, j, k, l;
+		size_type pth, c, th, windex;
+
+		size_type w = in.width( );
+		size_type h = in.height( );
+		size_type d = in.depth( );
+
+		size_type size = 3 * 3 * 3;
+		size_type gt1, gt2, lt1, lt2, eq1, eq2, l1, l2, l3;
+		value_type v, v1, v2, v3;
+
+		value_type work0[ 10 ];
+		value_type work1[ 10 ];
+		value_type work2[ 10 ];
+		value_type *work[ 3 ] = { work0, work1, work2 };
+		value_type *sort[ 3 ];
+		value_type value1[ 12 ];
+		value_type value2[ 12 ];
+
+		for( k = 1 ; k < d - 1 ; k++ )
+		{
+			for( j = 1 ; j < h - 1 ; j++ )
+			{
+				work[ 0 ][ 0 ] = in( 0, j - 1, k - 1 );
+				work[ 0 ][ 1 ] = in( 0, j    , k - 1 );
+				work[ 0 ][ 2 ] = in( 0, j + 1, k - 1 );
+				work[ 0 ][ 3 ] = in( 0, j - 1, k     );
+				work[ 0 ][ 4 ] = in( 0, j    , k     );
+				work[ 0 ][ 5 ] = in( 0, j + 1, k     );
+				work[ 0 ][ 6 ] = in( 0, j - 1, k + 1 );
+				work[ 0 ][ 7 ] = in( 0, j    , k + 1 );
+				work[ 0 ][ 8 ] = in( 0, j + 1, k + 1 );
+				work[ 1 ][ 0 ] = in( 0, j - 1, k - 1 );
+				work[ 1 ][ 1 ] = in( 0, j    , k - 1 );
+				work[ 1 ][ 2 ] = in( 0, j + 1, k - 1 );
+				work[ 1 ][ 3 ] = in( 0, j - 1, k     );
+				work[ 1 ][ 4 ] = in( 0, j    , k     );
+				work[ 1 ][ 5 ] = in( 0, j + 1, k     );
+				work[ 1 ][ 6 ] = in( 0, j - 1, k + 1 );
+				work[ 1 ][ 7 ] = in( 0, j    , k + 1 );
+				work[ 1 ][ 8 ] = in( 0, j + 1, k + 1 );
+
+				std::sort( work0, work0 + 9 );
+				std::sort( work1, work1 + 9 );
+
+				windex = 0;
+
+				for( i = 1 ; i < w - 1 ; i++ )
+				{
+					windex = ( i + 1 ) % 3;
+					work[ windex ][ 0 ] = in( i + 1, j - 1, k - 1 );
+					work[ windex ][ 1 ] = in( i + 1, j    , k - 1 );
+					work[ windex ][ 2 ] = in( i + 1, j + 1, k - 1 );
+					work[ windex ][ 3 ] = in( i + 1, j - 1, k     );
+					work[ windex ][ 4 ] = in( i + 1, j    , k     );
+					work[ windex ][ 5 ] = in( i + 1, j + 1, k     );
+					work[ windex ][ 6 ] = in( i + 1, j - 1, k + 1 );
+					work[ windex ][ 7 ] = in( i + 1, j    , k + 1 );
+					work[ windex ][ 8 ] = in( i + 1, j + 1, k + 1 );
+
+					std::sort( work[ windex ], work[ windex ] + 9 );
+
+					if( work[ 0 ][ 4 ] < work[ 1 ][ 4 ] )
+					{
+						if( work[ 1 ][ 4 ] < work[ 2 ][ 4 ] )
+						{
+							sort[ 0 ] = work[ 0 ];
+							sort[ 1 ] = work[ 1 ];
+							sort[ 2 ] = work[ 2 ];
+						}
+						else
+						{
+							if( work[ 0 ][ 4 ] < work[ 2 ][ 4 ] )
+							{
+								sort[ 0 ] = work[ 0 ];
+								sort[ 1 ] = work[ 2 ];
+								sort[ 2 ] = work[ 1 ];
+							}
+							else
+							{
+								sort[ 0 ] = work[ 2 ];
+								sort[ 1 ] = work[ 0 ];
+								sort[ 2 ] = work[ 1 ];
+							}
+						}
+					}
+					else
+					{
+						if( work[ 0 ][ 4 ] < work[ 2 ][ 4 ] )
+						{
+							sort[ 0 ] = work[ 1 ];
+							sort[ 1 ] = work[ 0 ];
+							sort[ 2 ] = work[ 2 ];
+						}
+						else
+						{
+							if( work[ 1 ][ 4 ] < work[ 2 ][ 4 ] )
+							{
+								sort[ 0 ] = work[ 1 ];
+								sort[ 1 ] = work[ 2 ];
+								sort[ 2 ] = work[ 0 ];
+							}
+							else
+							{
+								sort[ 0 ] = work[ 2 ];
+								sort[ 1 ] = work[ 1 ];
+								sort[ 2 ] = work[ 0 ];
+							}
+						}
+					}
+
+					// とりあえずの中央値を得る
+					v = sort[ 1 ][ 4 ];
+
+					lt1 = lt2 = gt1 = gt2 = eq1 = eq2 = 0;
+					for( l = 5 ; l < 9 ; l++ )
+					{
+						if( sort[ 0 ][ l ] < v )
+						{
+							lt1++;
+						}
+						else if( sort[ 0 ][ l ] > v )
+						{
+							gt1++;
+						}
+						else
+						{
+							eq1++;
+						}
+					}
+					for( l = 0 ; l < 4 ; l++ )
+					{
+						if( sort[ 2 ][ l ] < v )
+						{
+							lt2++;
+						}
+						else if( sort[ 2 ][ l ] > v )
+						{
+							gt2++;
+						}
+						else
+						{
+							eq2++;
+						}
+					}
+
+					if( lt1 + lt2 >= 5 )
+					{
+						if( lt1 + lt2 == 5 )
+						{
+							v = sort[ 0 ][ lt1 + 4 ];
+							v = v > sort[ 1 ][ 3 ] ? v : sort[ 1 ][ 3 ];
+							v = v > sort[ 2 ][ lt2 - 1 ] ? v : sort[ 2 ][ lt2 - 1 ];
+						}
+						else
+						{
+							l1 = l2 = l3 = 0;
+							for( l = 0 ; l <= lt1 + lt2 - 5 ; l++ )
+							{
+								v1 = l1 < lt1 ? sort[ 0 ][ 4 + lt1 - l1 ] : sort[ 0 ][ 0 ];
+								v2 = sort[ 1 ][ 3 - l2 ];
+								v3 = l3 < lt2 ? sort[ 2 ][ lt2 - l3 ] : sort[ 0 ][ 0 ];
+								if( v1 > v2 )
+								{
+									if( v1 > v3 )
+									{
+										l1++;
+										v = v1;
+									}
+									else
+									{
+										l3++;
+										v = v3;
+									}
+								}
+								else
+								{
+									if( v2 > v3 )
+									{
+										l2++;
+										v = v2;
+									}
+									else
+									{
+										l3++;
+										v = v3;
+									}
+								}
+							}
+						}
+					}
+					else if( gt1 + gt2 >= 5 )
+					{
+						if( gt1 + gt2 == 5 )
+						{
+							v = sort[ 0 ][ 9 - gt1 ];
+							v = v < sort[ 1 ][ 5 ] ? v : sort[ 1 ][ 5 ];
+							v = v < sort[ 2 ][ 4 - gt2 ] ? v : sort[ 2 ][ 4 - gt2 ];
+						}
+						else
+						{
+							l1 = l2 = l3 = 0;
+							for( l = 0 ; l <= gt1 + gt2 - 5 ; l++ )
+							{
+								v1 = l1 < gt1 ? sort[ 0 ][ 9 - gt1 + l1 ] : sort[ 2 ][ 8 ];
+								v2 = sort[ 1 ][ 5 + l2 ];
+								v3 = l3 < gt2 ? sort[ 2 ][ 4 - gt2 + l3 ] : sort[ 2 ][ 8 ];
+								if( v1 < v2 )
+								{
+									if( v1 < v3 )
+									{
+										l1++;
+										v = v1;
+									}
+									else
+									{
+										l3++;
+										v = v3;
+									}
+								}
+								else
+								{
+									if( v2 < v3 )
+									{
+										l2++;
+										v = v2;
+									}
+									else
+									{
+										l3++;
+										v = v3;
+									}
+								}
+							}
+						}
+					}
+
+					out( i, j, k ) = static_cast< out_value_type >( v );
+				}
+			}
+		}
+	}
+}
+
+
 // メディアンフィルタのスレッド実装
 namespace __median_filter_controller__
 {
