@@ -14,11 +14,14 @@
 _MIST_BEGIN
 
 // 以下のコードは Tomy 氏が http://www5.airnet.ne.jp/tomy/cpro/csource.htm にて
-// 掲載しているソースを基に作成し，演算ミス等のバグを修正し，独自の拡張を施したものである．
+// 掲載しているソースを参考にして作成し，演算ミス等のバグを修正し，独自の拡張を施したものである．
 // 基底は256であり，無駄なビットが発生しないようにしてある
+// integer< 10 > が表現できる数は，-256^10 以上 256^10 未満の整数となる
+// つまり，-1208925819614629174706176 <= x <= 1208925819614629174706176
+// 10進の桁数で約24桁程度表現可能となる
 
 
-template < unsigned int MAX_KETA >
+template < unsigned int __256_N__ >
 class integer
 {
 public:
@@ -28,7 +31,7 @@ public:
 
 private:
 	_MIST_CONST( unsigned int, BASE, 256 );
-	_MIST_CONST( unsigned int, DATA_NUM, MAX_KETA );
+	_MIST_CONST( unsigned int, DATA_NUM, __256_N__ );
 
 protected:
 	size_t		length_;
@@ -101,40 +104,42 @@ public:
 		}
 		else
 		{
-			integer x;
 			if( sign_ == a.sign_ )
 			{
-				if( acmp( *this, a ) >= 0 )
-				{
-					x = aadd( *this, a );
-				}
-				else
-				{
-					x = aadd( a, *this );
-				}
-
-				x.sign_ = sign_;
+				aadd( *this, a );
 			}
 			else
 			{
-				if( acmp( *this, a ) >= 0 )
-				{
-					x = asub( *this, a );
-					x.sign_ = sign_;
-				}
-				else
-				{
-					x = asub( a, *this );
-					x.sign_ = !sign_;
-				}
+				sign_ = asub( *this, a ) ? sign_ : !sign_;
 			}
-			return ( operator =( x ) );
+			return( *this );
 		}
 	}
 
 	const integer &operator -=( const integer &a )
 	{
-		return( operator +=( -a ) );
+		if( length_ == 0 )
+		{
+			operator =( a );
+			sign_ = !a.sign_;
+			return( *this );
+		}
+		else if( a.length_ == 0 )
+		{
+			return ( *this );
+		}
+		else
+		{
+			if( sign_ == a.sign_ )
+			{
+				sign_ = asub( *this, a ) ? sign_ : !sign_;
+			}
+			else
+			{
+				aadd( *this, a );
+			}
+			return( *this );
+		}
 	}
 
 	const integer &operator *=( const integer &a )
@@ -292,7 +297,7 @@ public:
 			bb *= d;
 		}
 		q.length_ = aa.length_ - bb.length_ + 1;
-		if( ( x = aa.data_[ aa.length_ - 1 ] / bb.data_[ bb.length_ - 1 ]) == 0 )
+		if( ( x = aa.data_[ aa.length_ - 1 ] / bb.data_[ bb.length_ - 1 ] ) == 0 )
 		{
 			q.length_--;
 			x = ( aa.data_[ aa.length_ - 1 ] * BASE + aa.data_[ aa.length_ - 2 ] ) / bb.data_[ bb.length_ - 1 ];
@@ -558,16 +563,15 @@ protected:
 		}
 	}
 
-	static const integer aadd( const integer &a, const integer &b )
+	static void aadd( integer &a0, const integer &b0 )
 	{
-		if( acmp( a, b ) < 0 )
-		{
-			return( aadd( b, a ) );
-		}
+		const integer *pa = a0.length_ >= b0.length_ ? &a0 : &b0;
+		const integer *pb = a0.length_ >= b0.length_ ? &b0 : &a0;
+
+		const integer &a = *pa;
+		const integer &b = *pb;
 
 		size_type i;
-		integer x( 0 );
-
 		difference_type t = 0;
 
 		for( i = 0 ; i < b.length_ ; i++ )
@@ -576,28 +580,28 @@ protected:
 
 			if( t < BASE )
 			{
-				x.data_[ i ] = static_cast< value_type >( t );
+				a0.data_[ i ] = static_cast< value_type >( t );
 				t = 0;
 			}
 			else
 			{
-				x.data_[ i ] = static_cast< value_type >( t - BASE );
+				a0.data_[ i ] = static_cast< value_type >( t - BASE );
 				t = 1;
 			}
 		}
 
-		while( ( i < a.length_ ) && ( t != 0 ) )
+		while( i < a.length_ && t != 0 )
 		{
 			t += a.data_[ i ];
 
 			if( t < BASE )
 			{
-				x.data_[ i ] = static_cast< value_type >( t );
+				a0.data_[ i ] = static_cast< value_type >( t );
 				t = 0;
 			}
 			else
 			{
-				x.data_[ i ] = static_cast< value_type >( t - BASE );
+				a0.data_[ i ] = static_cast< value_type >( t - BASE );
 				t = 1;
 			}
 
@@ -606,44 +610,43 @@ protected:
 
 		for( ; i < a.length_ ; i++ )
 		{
-			x.data_[ i ] = a.data_[ i ];
+			a0.data_[ i ] = a.data_[ i ];
 		}
 
 		if( t == 0 )
 		{
-			x.length_ = a.length_;
+			a0.length_ = a.length_;
 		}
 		else
 		{
 			if( a.length_ <= DATA_NUM )
 			{
-				x.length_ = a.length_ + 1;
-				x.data_[ i ] = 1;
+				a0.length_ = a.length_ + 1;
+				a0.data_[ i ] = 1;
 			}
 			else
 			{
 				std::cerr << "overflow!!" << std::endl;
 			}
 		}
-		return( x );
 	}
 
-	static const integer asub( const integer &a, const integer &b )
+	static bool asub( integer &a0, const integer &b0 )
 	{
-		int c = acmp( a, b );
+		int c = acmp( a0, b0 );
+		if( c == 0 )
+		{
+			a0 = integer( );
+			return( true );
+		}
 
-		if( c < 0 )
-		{
-			return( asub( b, a ) );
-		}
-		else if( c == 0 )
-		{
-			return( integer( 0 ) );
-		}
+		const integer *pa = c >= 0 ? &a0 : &b0;
+		const integer *pb = c >= 0 ? &b0 : &a0;
+
+		const integer &a = *pa;
+		const integer &b = *pb;
 
 		size_type i;
-		integer x( 0 );
-
 		difference_type t = 0;
 
 		for( i = 0 ; i < b.length_ ; i++ )
@@ -652,28 +655,28 @@ protected:
 
 			if( t >= 0 )
 			{
-				x.data_[ i ] = static_cast< value_type >( t );
+				a0.data_[ i ] = static_cast< value_type >( t );
 				t = 0;
 			}
 			else
 			{
-				x.data_[ i ] = static_cast< value_type >( t + BASE );
+				a0.data_[ i ] = static_cast< value_type >( t + BASE );
 				t = 1;
 			}
 		}
 
-		while( ( i < a.length_ ) && ( t != 0 ) )
+		while( i < a.length_ && t != 0 )
 		{
 			t = a.data_[ i ] - t;
 
 			if( t >= 0 )
 			{
-				x.data_[ i ] = static_cast< value_type >( t );
+				a0.data_[ i ] = static_cast< value_type >( t );
 				t = 0;
 			}
 			else
 			{
-				x.data_[ i ] = static_cast< value_type >( t + BASE );
+				a0.data_[ i ] = static_cast< value_type >( t + BASE );
 				t = 1;
 			}
 
@@ -682,17 +685,17 @@ protected:
 
 		for( ; i < a.length_ ; i++ )
 		{
-			x.data_[ i ] = a.data_[ i ];
+			a0.data_[ i ] = a.data_[ i ];
 		}
 
-		x.length_ = a.length_;
+		a0.length_ = a.length_;
 
-		while( x.data_[ x.length_ - 1 ] == 0 )
+		while( a0.data_[ a0.length_ - 1 ] == 0 )
 		{
-			x.length_--;
+			a0.length_--;
 		}
 
-		return( x );
+		return( c >= 0 );
 	}
 
 	static void shift_up( integer &a, difference_type n )
@@ -810,29 +813,29 @@ protected:
 	}
 };
 
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator +( const integer< MAX_KETA > &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v1 ) += v2 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator -( const integer< MAX_KETA > &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v1 ) -= v2 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator *( const integer< MAX_KETA > &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v1 ) *= v2 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator /( const integer< MAX_KETA > &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v1 ) /= v2 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator %( const integer< MAX_KETA > &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v1 ) %= v2 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator |( const integer< MAX_KETA > &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v1 ) |= v2 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator &( const integer< MAX_KETA > &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v1 ) &= v2 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator ^( const integer< MAX_KETA > &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v1 ) ^= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator +( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) += v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator -( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) -= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator *( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) *= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator /( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) /= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator %( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) %= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator |( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) |= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator &( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) &= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator ^( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) ^= v2 ); }
 
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator *( const integer< MAX_KETA > &v1, const typename integer< MAX_KETA >::difference_type &v2 ){ return( integer< MAX_KETA >( v1 ) *= v2 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator *( const typename integer< MAX_KETA >::difference_type &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v2 ) *= v1 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator /( const integer< MAX_KETA > &v1, const typename integer< MAX_KETA >::difference_type &v2 ){ return( integer< MAX_KETA >( v1 ) /= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator *( const integer< __256_N__ > &v1, const typename integer< __256_N__ >::difference_type &v2 ){ return( integer< __256_N__ >( v1 ) *= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator *( const typename integer< __256_N__ >::difference_type &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v2 ) *= v1 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator /( const integer< __256_N__ > &v1, const typename integer< __256_N__ >::difference_type &v2 ){ return( integer< __256_N__ >( v1 ) /= v2 ); }
 
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator +( const integer< MAX_KETA > &v1, const typename integer< MAX_KETA >::difference_type &v2 ){ return( integer< MAX_KETA >( v1 ) += v2 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator +( const typename integer< MAX_KETA >::difference_type &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v2 ) += v1 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator -( const integer< MAX_KETA > &v1, const typename integer< MAX_KETA >::difference_type &v2 ){ return( integer< MAX_KETA >( v1 ) -= v2 ); }
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator -( const typename integer< MAX_KETA >::difference_type &v1, const integer< MAX_KETA > &v2 ){ return( integer< MAX_KETA >( v1 ) -= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator +( const integer< __256_N__ > &v1, const typename integer< __256_N__ >::difference_type &v2 ){ return( integer< __256_N__ >( v1 ) += v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator +( const typename integer< __256_N__ >::difference_type &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v2 ) += v1 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator -( const integer< __256_N__ > &v1, const typename integer< __256_N__ >::difference_type &v2 ){ return( integer< __256_N__ >( v1 ) -= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator -( const typename integer< __256_N__ >::difference_type &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) -= v2 ); }
 
-template < unsigned int MAX_KETA > inline const integer< MAX_KETA > operator %( const integer< MAX_KETA > &v1, const typename integer< MAX_KETA >::difference_type &v2 ){ return( integer< MAX_KETA >( v1 ) %= v2 ); }
+template < unsigned int __256_N__ > inline const integer< __256_N__ > operator %( const integer< __256_N__ > &v1, const typename integer< __256_N__ >::difference_type &v2 ){ return( integer< __256_N__ >( v1 ) %= v2 ); }
 
 
-template < unsigned int MAX_KETA >
-inline std::ostream &operator <<( std::ostream &out, const integer< MAX_KETA > &a )
+template < unsigned int __256_N__ >
+inline std::ostream &operator <<( std::ostream &out, const integer< __256_N__ > &a )
 {
 	out << a.to_string( );
 	return( out );
