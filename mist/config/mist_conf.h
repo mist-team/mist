@@ -269,7 +269,9 @@ struct __mist_console_callback__
 /*** Doxygen 用のメインページ ***********************************************************************************************/
 /*! @mainpage MIST ( Media Integration Standard Toolkit )
 *
-* @section class MISTで提供する基本データ型
+*
+* @section class MISTで提供する基本コンテナ
+*
 *
 * - @ref mist::array          "array"          : STLに準拠したメモリ上で連続となる1次元配列であり，音声・画像の全てのデータの基底クラス
 * - @ref mist::array1         "array1"         : 音声を扱うための1次元配列
@@ -284,24 +286,37 @@ struct __mist_console_callback__
 *   - @ref mist::vector       "vector"         : N次元ベクトルを扱うクラス
 *
 *
+* @section class MISTで提供する基本データ型
+* - @ref mist::binary						"バイナリ画素"
+* - @ref mist::color						"カラー画素"
+* - @ref mist::stereo						"ステレオ音声"
+* - @ref mist::quaternion					"クォータニオン（四元数）"
+* - @ref set_group							"集合"
+*
 *
 * @section algorithm MISTで提供するアルゴリズム
+*
 *
 * @subsection implement	実装補助
 * - @ref mist::type_limits					"型に対する情報"
 * - @ref mist::timer						"時間計測"
 * - @ref operator_group						"演算子の実装補助"
-* - @ref thread_group						"スレッド"
-* - @ref set_group							"集合演算"
+* - @ref thread_group						"マルチスレッド"
+* - @ref mist::singleton					"シングルトン"
+* - @ref bspline_group						"Bスプライン曲線"
+*
 *
 * @subsection numeric ベクトル・行列演算
 * - @ref numeric_group "行列演算"
-*   - @ref mist::inverse					"逆行列を計算"
+*   - @ref mist::trace						"トレース"
+*   - @ref mist::det						"行列式"
+*   - @ref mist::inverse					"逆行列"
 *   - @ref mist::solve						"連立方程式を解く"
 *   - @ref mist::qr_factorization			"QR 分解"
 *   - @ref mist::lu_factorization			"LU 分解"
 *   - @ref mist::eigen						"固有値・固有ベクトル"
 *   - @ref mist::svd						"特異値分解"
+*
 *
 * @subsection common 共通の処理
 * - @ref fourier_group						"フーリエ変換"
@@ -315,7 +330,9 @@ struct __mist_console_callback__
 * - @ref a									"グラフ描画(2次元)"
 * - @ref image_draw_group					"2次元画像描画"
 *
+*
 * @subsection image 主に画像に対して適用される処理
+*
 *
 * @subsubsection image-io 入出力系
 * - @ref image_group						"任意の画像データの読み込み・書き出し"
@@ -328,10 +345,14 @@ struct __mist_console_callback__
 *   - @ref image_tiff_group					"TIFFデータの読み込み・書き出し"
 *   - @ref dicom_group						"DICOMデータの読み込み・書き出し"
 *
+*
 * @subsubsection image-filter フィルタ系
 * - @ref linear_group						"線形フィルタ"
 * - @ref median_group						"メディアンフィルタ"
 * - @ref interpolate_group					"画像補間"
+*   - @ref mist::nearest					"最近傍型補間"
+*   - @ref mist::linear						"線形補間"
+*   - @ref mist::cubic						"3次補間"
 * - カラー画像に対する処理
 *   - @ref interlace_group					"インターレス除去"
 * - @ref threshold_group					"閾値選択"
@@ -346,15 +367,19 @@ struct __mist_console_callback__
 *     - @ref a								"6近傍型距離変換"
 *     - @ref a								"26近傍型距離変換"
 *
+*
 * @subsection audio 主に音声に対して適用される処理
+*
 *
 * @subsubsection audio-io 入出力系
 * - @ref audio_group						"音声データの読み込み・書き出し"
 *   - @ref audio_wav_group					"WAVデータの読み込み・書き出し"
 *
+*
 * @subsubsection audio-filter フィルタ系
 * - @ref a									"サンプリングレート変更"
 * - @ref a									"再生"
+*
 *
 ****************************************************************************************************************************/
 

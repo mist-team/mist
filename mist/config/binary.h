@@ -20,9 +20,11 @@ _MIST_BEGIN
 // MISTで利用する基底のデータ型
 
 
-/// @brief binary演算を行うためのもの
+/// @brief バイナリ演算を行うためのもの
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @code バイナリ画像の作成例
+//! mist::array2< mist::binary > image;
+//! @endcode
 //! 
 class binary
 {
@@ -36,248 +38,172 @@ public:
 	typedef const bool* const_pointer;		///< @brief データ型の const ポインター型．data の場合，const data * となる
 
 private:
-	bool value_;		///< @brief 変数の説明を書く
+	bool value_;		///< @brief バイナリの基本成分
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief デフォルトコンストラクタ（要素を false で初期化する）
 	binary( ) : value_( false ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
+	/// @brief 成分を b で初期化する
 	binary( const value_type &b ) : value_( b ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
+	/// @brief 他のバイナリ画素を用いて初期化する
 	binary( const binary &b ) : value_( b.value_ ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
-	const binary &operator  =( const binary &b ){ value_ = b.value_;  return( *this ); }
+	/// @brief 他のバイナリ画素を代入する
+	const binary &operator  =( const binary &b ){ value_ = b.value_; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
-	const binary &operator  =( const value_type &b ){ value_ = b;   return( *this ); }
+	/// @brief 要素に b を代入する
+	const binary &operator  =( const value_type &b ){ value_ = b; return( *this ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 論理和
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 以下の演算を行う
+	//! - true  + true  -> true
+	//! - true  + false -> true
+	//! - false + true  -> true
+	//! - false + false -> false
 	//! 
-	//! @param[in] b … 引数の説明
+	//! @param[in] b … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 演算結果
 	//! 
-	const binary &operator +=( const binary &b ){ value_ = value_ ||  b.value_; return( *this ); }
+	const binary &operator +=( const binary &b ){ value_ = value_ || b.value_; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 論理差
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 以下の演算を行う
+	//! - true  + true  -> false
+	//! - true  + false -> true
+	//! - false + true  -> false
+	//! - false + false -> false
 	//! 
-	//! @param[in] b … 引数の説明
+	//! @param[in] b … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 演算結果
 	//! 
 	const binary &operator -=( const binary &b ){ value_ = value_ && !b.value_; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 論理積
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 以下の演算を行う
+	//! - true  + true  -> true
+	//! - true  + false -> false
+	//! - false + true  -> false
+	//! - false + false -> false
 	//! 
-	//! @param[in] b … 引数の説明
+	//! @param[in] b … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 演算結果
 	//! 
-	const binary &operator *=( const binary &b ){ value_ = value_ &&  b.value_; return( *this ); }
+	const binary &operator *=( const binary &b ){ value_ = value_ && b.value_; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 排他論理差
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 以下の演算を行う
+	//! - true  + true  -> true
+	//! - true  + false -> false
+	//! - false + true  -> false
+	//! - false + false -> true
 	//! 
-	//! @param[in] b … 引数の説明
+	//! @param[in] b … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 演算結果
 	//! 
-	const binary &operator /=( const binary &b ){ value_ = value_ ==  b.value_; return( *this ); }
+	const binary &operator /=( const binary &b ){ value_ = value_ == b.value_; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 論理差
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 以下の演算を行う
+	//! - true  + true  -> false
+	//! - true  + false -> true
+	//! - false + true  -> false
+	//! - false + false -> false
 	//! 
-	//! @param[in] b … 引数の説明
+	//! @param[in] b … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 演算結果
 	//! 
 	const binary &operator %=( const binary &b ){ value_ = value_ && !b.value_; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 論理和
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 以下の演算を行う
+	//! - true  + true  -> true
+	//! - true  + false -> true
+	//! - false + true  -> true
+	//! - false + false -> false
 	//! 
-	//! @param[in] b … 引数の説明
+	//! @param[in] b … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 演算結果
 	//! 
-	const binary &operator |=( const binary &b ){ value_ = value_ ||  b.value_; return( *this ); }
+	const binary &operator |=( const binary &b ){ value_ = value_ || b.value_; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 論理積
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 以下の演算を行う
+	//! - true  + true  -> true
+	//! - true  + false -> false
+	//! - false + true  -> false
+	//! - false + false -> false
 	//! 
-	//! @param[in] b … 引数の説明
+	//! @param[in] b … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 演算結果
 	//! 
-	const binary &operator &=( const binary &b ){ value_ = value_ &&  b.value_; return( *this ); }
+	const binary &operator &=( const binary &b ){ value_ = value_ && b.value_; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 排他論理和
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 以下の演算を行う
+	//! - true  + true  -> false
+	//! - true  + false -> true
+	//! - false + true  -> true
+	//! - false + false -> false
 	//! 
-	//! @param[in] b … 引数の説明
+	//! @param[in] b … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 演算結果
 	//! 
-	const binary &operator ^=( const binary &b ){ value_ = value_ !=  b.value_; return( *this ); }
+	const binary &operator ^=( const binary &b ){ value_ = value_ != b.value_; return( *this ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 論理和
 	const binary &operator +=( const value_type &b ){ return( operator +=( binary( b ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 論理差
 	const binary &operator -=( const value_type &b ){ return( operator -=( binary( b ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 論理積
 	const binary &operator *=( const value_type &b ){ return( operator *=( binary( b ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 排他論理差
 	const binary &operator /=( const value_type &b ){ return( operator /=( binary( b ) ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false  … 引数の説明
-	//! 
+	/// @brief 入力された2つのオブジェクトが等しいかどうかを判定する
 	bool operator ==( const binary &b ) const { return( value_ == b.value_ ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false  … 引数の説明
-	//! 
+	/// @brief 入力された2つのオブジェクトが等しくないかどうかを判定する
 	bool operator !=( const binary &b ) const { return( value_ != b.value_ ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false  … 引数の説明
-	//! 
+	/// @brief 入力された2つのオブジェクトの < 関係を判定する
 	bool operator < ( const binary &b ) const { return( value_ <  b.value_ ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false  … 引数の説明
-	//! 
+	/// @brief 入力された2つのオブジェクトの <= 関係を判定する
 	bool operator <=( const binary &b ) const { return( value_ <= b.value_ ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false  … 引数の説明
-	//! 
+	/// @brief 入力された2つのオブジェクトの > 関係を判定する
 	bool operator > ( const binary &b ) const { return( value_ >  b.value_ ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] b … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false  … 引数の説明
-	//! 
+	/// @brief 入力された2つのオブジェクトの >= 関係を判定する
 	bool operator >=( const binary &b ) const { return( value_ >= b.value_ ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 内部データを取得する
 	value_type get_value( ) const { return( value_ ); }
 
 	// boolへの自動キャスト演算子（危険のため一時停止）
@@ -285,187 +211,69 @@ public:
 };
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator +( const binary &b1, const binary &b2 ){ return( binary( b1 ) += b2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator -( const binary &b1, const binary &b2 ){ return( binary( b1 ) -= b2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator *( const binary &b1, const binary &b2 ){ return( binary( b1 ) *= b2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator /( const binary &b1, const binary &b2 ){ return( binary( b1 ) /= b2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator %( const binary &b1, const binary &b2 ){ return( binary( b1 ) %= b2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator |( const binary &b1, const binary &b2 ){ return( binary( b1 ) |= b2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator &( const binary &b1, const binary &b2 ){ return( binary( b1 ) &= b2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator ^( const binary &b1, const binary &b2 ){ return( binary( b1 ) ^= b2 ); }
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator *( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) *= b2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator *( const binary::value_type &b1, const binary &b2 ){ return( binary( b2 ) *= b1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator /( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) /= b2 ); }
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator +( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) += b2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator +( const binary::value_type &b1, const binary &b2 ){ return( binary( b2 ) += b1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator -( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) -= b2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] b1 … 引数の説明
-//! @param[in] b2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 論理演算
 inline const binary operator -( const binary::value_type &b1, const binary &b2 ){ return( binary( b1 ) -= b2 ); }
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     b   … バイナリ画素
 //! 
-//! @param[in,out] out … 引数の説明
-//! @param[in]     v   … 引数の説明
+//! @return 入力されたストリーム
 //! 
-//! @return 戻り値の説明
+//! @code 出力例
+//! 1
+//! @endcode
 //! 
-inline std::ostream &operator <<( std::ostream &out, const binary &v )
+inline std::ostream &operator <<( std::ostream &out, const binary &b )
 {
-	out << v.get_value( );
+	out << b.get_value( );
 	return( out );
 }
 

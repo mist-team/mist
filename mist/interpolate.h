@@ -801,7 +801,7 @@ namespace nearest
 			{
 				out[ i ] = static_cast< typename array< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -874,7 +874,7 @@ namespace nearest
 			{
 				out[ i ] = static_cast< typename array1< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -950,7 +950,7 @@ namespace nearest
 			{
 				out[ i ] = static_cast< typename array2< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -1030,7 +1030,7 @@ namespace nearest
 			{
 				out[ i ] = static_cast< typename array3< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -1106,7 +1106,7 @@ namespace linear
 			{
 				out[ i ] = static_cast< typename array< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -1179,7 +1179,7 @@ namespace linear
 			{
 				out[ i ] = static_cast< typename array1< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -1255,7 +1255,7 @@ namespace linear
 			{
 				out[ i ] = static_cast< typename array2< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -1335,7 +1335,7 @@ namespace linear
 			{
 				out[ i ] = static_cast< typename array3< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -1412,7 +1412,7 @@ namespace cubic
 			{
 				out[ i ] = static_cast< typename array< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -1484,7 +1484,7 @@ namespace cubic
 			{
 				out[ i ] = static_cast< typename array1< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -1560,7 +1560,7 @@ namespace cubic
 			{
 				out[ i ] = static_cast< typename array2< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
@@ -1640,7 +1640,7 @@ namespace cubic
 			{
 				out[ i ] = static_cast< typename array3< T2, Allocator2 >::value_type >( in[ i ] );
 			}
-			return;
+			return( true );
 		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];

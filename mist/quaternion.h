@@ -275,7 +275,7 @@ public:
 	//! 	\mbox{\boldmath p} < \mbox{\boldmath q} \rightarrow \overline{ p_w \ge q_w \; \wedge \; p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z }
 	//! \f]
 	//! 
-	//! @param[in] v … 右辺値
+	//! @param[in] q … 右辺値
 	//! 
 	//! @retval true  … p <  q の場合
 	//! @retval false … p >= q の場合
@@ -288,7 +288,7 @@ public:
 	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_w \le q_w \; \wedge \; p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z
 	//! \f]
 	//! 
-	//! @param[in] v … 右辺値
+	//! @param[in] q … 右辺値
 	//! 
 	//! @retval true  … p <= q の場合
 	//! @retval false … p >  q の場合
@@ -301,7 +301,7 @@ public:
 	//! 	\mbox{\boldmath p} > \mbox{\boldmath q} \rightarrow \overline{ p_w \le q_w \; \wedge \; p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z }
 	//! \f]
 	//! 
-	//! @param[in] v … 右辺値
+	//! @param[in] q … 右辺値
 	//! 
 	//! @retval true  … p >  q の場合
 	//! @retval false … p <= q の場合
@@ -314,7 +314,7 @@ public:
 	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_w \ge q_w \; \wedge \; p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z
 	//! \f]
 	//! 
-	//! @param[in] v … 右辺値
+	//! @param[in] q … 右辺値
 	//! 
 	//! @retval true  … p >= q の場合
 	//! @retval false … p <  q の場合

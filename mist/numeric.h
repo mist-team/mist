@@ -1595,7 +1595,7 @@ namespace __svd__
 //! 
 //! @param[in] a … 入力行列
 //!
-//! @return トレースの値
+//! @return \f$tr\left( {\bf A} \right)\f$
 //! 
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type trace( const matrix< T, Allocator > &a )
@@ -1619,7 +1619,7 @@ inline const typename matrix< T, Allocator >::value_type trace( const matrix< T,
 //! 
 //! @param[in] expression … 複数の行列演算を表す式
 //!
-//! @return トレースの値
+//! @return \f$tr\left( {\bf A} \right)\f$
 //! 
 template < class Expression >
 inline const typename matrix_expression< Expression >::value_type trace( const matrix_expression< Expression > &expression )
@@ -1649,28 +1649,29 @@ inline const typename matrix_expression< Expression >::value_type trace( const m
 //!     =
 //!     \left|
 //!          \begin{array}{ccccc}
-//!            a_{11} & \cdots & a_{1j} & \cdots & a_{1n} \\
-//!            a_{21} & \cdots & a_{2j} & \cdots & a_{2n} \\
-//!            \vdots & \cdots & \vdots & \cdots & \vdots \\
-//!            a_{n1} & \cdots & a_{nj} & \cdots & a_{nn} \\
+//!            a_{11} & \cdots & a_{1j} & \cdots & a_{1n} \\ //
+//!            a_{21} & \cdots & a_{2j} & \cdots & a_{2n} \\ //
+//!            \vdots & \cdots & \vdots & \cdots & \vdots \\ //
+//!            a_{n1} & \cdots & a_{nj} & \cdots & a_{nn}
 //!          \end{array}
 //!     \right|
 //!     =
 //!     \sum^{n}_{j=1}{
 //!       \left( -1 \right)^{j+1} a_{1j}
 //!       \left|
-//!            \begin{array}{ccccc}
-//!              a_{21} & \cdots & a_{2,j-1} & a_{2,j+1} & \cdots & a_{2n} \\
-//!              \vdots & \cdots & \vdots    & \vdots    & \cdots & \vdots \\
-//!              a_{n1} & \cdots & a_{n,j-1} & a_{n,j+1} & \cdots & a_{nn} \\
+//!            \begin{array}{cccccc}
+//!              a_{21} & \cdots & a_{2,j-1} & a_{2,j+1} & \cdots & a_{2n} \\ //
+//!              \vdots & \cdots & \vdots    & \vdots    & \cdots & \vdots \\ //
+//!              a_{n1} & \cdots & a_{n,j-1} & a_{n,j+1} & \cdots & a_{nn}
 //!            \end{array}
 //!       \right|
+//!    }
 //! \f]
 //! 
 //! @param[in] a     … 入力行列
 //! @param[in] style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 行列式の値
+//! @return \f$\left| {\bf A} \right|\f$
 //! 
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type det( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
@@ -1753,27 +1754,26 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 
 
 
-/// @brief 3×3 の diagonal 行列を計算する
+/// @brief 3×3 の対角行列を計算する
 //! 
-//! 3つの入力成分の大きいものから順番に並べ替えて，diagonal 行列を作成する
+//! 3つの入力成分の大きいものから順番に並べ替えて，対角行列を作成する
 //! 
 //! \f[
 //!     \left(
 //!          \begin{array}{ccc}
-//!            \sigma_1 &    0     &    0     \\
-//!               0     & \sigma_2 &    0     \\
+//!            \sigma_1 &    0     &    0     \\ //
+//!               0     & \sigma_2 &    0     \\ //
 //!               0     &    0     & \sigma_3
 //!          \end{array}
 //!     \right)
 //! \f]
-//! ただし，
-//! \f[ \sigma_1 \ge \sigma_2 \ge \sigma_3 \f]
+//! ただし，\f$ \sigma_1 \ge \sigma_2 \ge \sigma_3 \f$
 //! 
 //! @param[in] s1 … 成分1
 //! @param[in] s2 … 成分2
 //! @param[in] s3 … 成分3
 //!
-//! @return diagonal 行列
+//! @return 対角行列
 //! 
 template < class T >
 inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, const typename type_trait< T >::value_type &s2, const typename type_trait< T >::value_type &s3 )
@@ -1838,11 +1838,11 @@ inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, c
 //!
 //! \f[ {\bf A}\mbox{\boldmath x} = \mbox{\boldmath b} \f]
 //!
-//! @param[in]  a     … 行列A
-//! @param[out] b     … ベクトルb
+//! @param[in]  a     … 行列 \f${\bf A}\f$
+//! @param[out] b     … ベクトル \f$\mbox{\boldmath b}\f$
 //! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return ベクトル x
+//! @return ベクトル \f$\mbox{\boldmath x}\f$
 //!
 template < class T, class Allocator >
 inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style = matrix_style::ge )
@@ -1858,10 +1858,10 @@ inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, mat
 //! \f[ {\bf A}\mbox{\boldmath x} = \mbox{\boldmath b} \f]
 //! 
 //! @param[in]  expression … 複数の行列演算を表す式A
-//! @param[out] b          … ベクトルb
+//! @param[out] b          … ベクトル \f$\mbox{\boldmath b}\f$
 //! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return ベクトル x
+//! @return ベクトル \f$\mbox{\boldmath x}\f$
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
@@ -1960,7 +1960,7 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 /// @brief 行列のQR分解を行う
 //! 
 //! \f[ {\bf Q} = {\bf H}_1 \; {\bf H}_2 \; \cdots \; {\bf H}_k \f]
-//! \f[ {\bf H}_i = {\bf I} - tau \mbox{\boldmath v} \mbox{\boldmath v}^T \f]
+//! \f[ {\bf H}_i = {\bf I} - tau \cdot \mbox{\boldmath v} \mbox{\boldmath v}^T \f]
 //! 
 //! @param[in]  a     … 入力行列
 //! @param[out] tau   … 基本反射の係数ベクトル
@@ -2044,7 +2044,7 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 //! @param[in] a     … 入力行列
 //! @param[in] style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 逆行列
+//! @return 逆行列 \f$ {\bf A}^{-1} \f$
 //! 
 template < class T, class Allocator >
 matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
@@ -2060,7 +2060,7 @@ matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::s
 //! @param[in] expression … 複数の行列演算を表す式
 //! @param[in] style      … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 逆行列
+//! @return 逆行列 \f$ {\bf A}^{-1} \f$
 //! 
 template < class Expression >
 inline matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -2081,14 +2081,16 @@ inline matrix< typename matrix_expression< Expression >::value_type, typename ma
 
 /// @brief 行列の固有値・固有ベクトルを計算する
 //! 
+//! \f[ {\bf A}\mbox{\boldmath x} = \lambda\mbox{\boldmath x} \f]
+//! 
 //! 計算結果は，固有値の _DESCENDING_ORDER_EIGEN_VALUE_ でした方法で，昇順・降順のどちらかで並ぶように変換される
 //! 
-//! @param[in]  a            … 入力行列
-//! @param[out] eigen_value  … 固有値が昇順・降順のどちらかで入ったベクトル
-//! @param[out] eigen_vector … 固有値の昇順・降順のどちらかに対応し，左から固有ベクトルが並んだ行列
+//! @param[in]  a            … 入力行列 \f${\bf A}\f$
+//! @param[out] eigen_value  … 固有値が昇順・降順のどちらかで入ったベクトル \f$\lambda\f$
+//! @param[out] eigen_vector … 固有値の昇順・降順のどちらかに対応し，左から固有ベクトルが並んだ行列 \f$\mbox{\boldmath x}\f$
 //! @param[in]  style        … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 固有値が並んだベクトル（eigen_valueと同じ）
+//! @return 固有値が並んだベクトル（eigen_valueと同じ） \f$\lambda\f$
 //! 
 template < class T, class Allocator >
 const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style = matrix_style::ge )
@@ -2134,14 +2136,16 @@ const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T,
 
 /// @brief 行列の固有値・固有ベクトルを計算する
 //! 
+//! \f[ {\bf A}\mbox{\boldmath x} = \lambda\mbox{\boldmath x} \f]
+//! 
 //! 計算結果は，固有値の _DESCENDING_ORDER_EIGEN_VALUE_ でした方法で，昇順・降順のどちらかで並ぶように変換される
 //! 
-//! @param[in]  expression   … 複数の行列演算を表す式
-//! @param[out] eigen_value  … 固有値が昇順・降順のどちらかで入ったベクトル
-//! @param[out] eigen_vector … 固有値の昇順・降順のどちらかに対応し，左から固有ベクトルが並んだ行列
+//! @param[in]  expression   … 複数の行列演算を表す式 \f${\bf A}\f$
+//! @param[out] eigen_value  … 固有値が昇順・降順のどちらかで入ったベクトル \f$\lambda\f$
+//! @param[out] eigen_vector … 固有値の昇順・降順のどちらかに対応し，左から固有ベクトルが並んだ行列 \f$\mbox{\boldmath x}\f$
 //! @param[in]  style        … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 固有値が並んだベクトル（eigen_valueと同じ）
+//! @return 固有値が並んだベクトル（eigen_valueと同じ） \f$\lambda\f$
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
@@ -2166,13 +2170,13 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 //! 
 //! @note 対角行列の成分は，左上から値の大きい順に並ぶ
 //! 
-//! @param[in]  a     … 入力行列
-//! @param[out] u     … 列直行行列U
-//! @param[out] s     … 対角行列Σ
-//! @param[out] vt    … 直行行列Vの転置
+//! @param[in]  a     … 入力行列 \f$ {\bf A} \f$
+//! @param[out] u     … 列直行行列 \f$ {\bf U} \f$
+//! @param[out] s     … 対角行列 \f$ {\bf Sigma} \f$
+//! @param[out] vt    … 直行行列の転置 \f$ {\bf V}^T \f$
 //! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 対角行列Σ
+//! @return 対角行列 \f$ {\bf Sigma} \f$
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
@@ -2188,13 +2192,13 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in]  expression … 複数の行列演算を表す式
-//! @param[out] u          … 列直行行列U
-//! @param[out] s          … 対角行列Σ
-//! @param[out] vt         … 直行行列Vの転置
+//! @param[in]  expression … 複数の行列演算を表す式 \f$ {\bf A} \f$
+//! @param[out] u          … 列直行行列 \f$ {\bf U} \f$
+//! @param[out] s          … 対角行列 \f$ {\bf Sigma} \f$
+//! @param[out] vt         … 直行行列の転置 \f$ {\bf V}^T \f$
 //! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 対角行列Σ
+//! @return 対角行列 \f$ {\bf Sigma} \f$
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&

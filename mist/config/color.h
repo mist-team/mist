@@ -71,7 +71,7 @@ public:
 		return( *this );
 	}
 
-	/// @brief 全ての要素に，pix を代入する
+	/// @brief 全ての要素に pix を代入する
 	const rgb &operator =( const value_type &pix )
 	{
 		r = pix;
@@ -154,7 +154,7 @@ public:
 	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b }
 	//! \f]
 	//! 
-	//! @param[in] v … 右辺値
+	//! @param[in] c … 右辺値
 	//! 
 	//! @retval true  … c1 <  c2 の場合
 	//! @retval false … c1 >= c2 の場合
@@ -167,7 +167,7 @@ public:
 	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b
 	//! \f]
 	//! 
-	//! @param[in] v … 右辺値
+	//! @param[in] c … 右辺値
 	//! 
 	//! @retval true  … c1 <= c2 の場合
 	//! @retval false … c1 >  c2 の場合
@@ -180,7 +180,7 @@ public:
 	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b }
 	//! \f]
 	//! 
-	//! @param[in] v … 右辺値
+	//! @param[in] c … 右辺値
 	//! 
 	//! @retval true  … c1 >  c2 の場合
 	//! @retval false … c1 <= c2 の場合
@@ -231,7 +231,6 @@ template < class T > inline const rgb< T > operator %( const rgb< T > &c1, const
 template < class T > inline const rgb< T > operator |( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) |= c2 ); }
 
 /// @brief カラー画素の & 演算
-//! 
 template < class T > inline const rgb< T > operator &( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) &= c2 ); }
 
 /// @brief カラー画素の ^ 演算
@@ -266,7 +265,7 @@ template < class T > inline const rgb< T > operator -( const typename rgb< T >::
 /// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     c   … 3次元ベクトル
+//! @param[in]     c   … カラー画素
 //! 
 //! @return 入力されたストリーム
 //! 

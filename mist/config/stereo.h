@@ -20,11 +20,13 @@ _MIST_BEGIN
 // MISTで利用する基底のデータ型
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief ステレオ音声用のデータ型
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @code ステレオ音声の作成例
+//! mist::array< mist::stereo< double > > sound;
+//! @endcode
 //! 
-//! @param T … 引数の説明
+//! @param T … 各音声成分のデータ型
 //! 
 template< class T >
 struct stereo
@@ -39,43 +41,22 @@ public:
 	typedef const T* const_pointer;			///< @brief データ型の const ポインター型．data の場合，const data * となる
 
 public:
-	value_type l;		///< @brief 変数の説明を書く
-	value_type r;		///< @brief 変数の説明を書く
+	value_type l;		///< @brief Leftチャンネルく
+	value_type r;		///< @brief Rightチャンネル
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
 	stereo( ) : l( 0 ), r( 0 ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] mono … 引数の説明
-	//! 
+	/// @brief 全ての成分を mono で初期化する
 	stereo( const value_type &mono ) : l( mono ), r( mono ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] left  … 引数の説明
-	//! @param[in] right … 引数の説明
-	//! 
+	/// @brief 左 left，右 right を用いて初期化する
 	stereo( const value_type &left, const value_type &right ) : l( left ), r( right ){ }
 
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
-	const stereo &operator  =( const stereo &s )
+	/// @brief 他の音声成分を代入する
+	const stereo &operator =( const stereo &s )
 	{
 		if( &s != this )
 		{
@@ -86,15 +67,8 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] mono … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
-	const stereo &operator  =( const value_type &mono )
+	/// @brief 全ての要素に mono を代入する
+	const stereo &operator =( const value_type &mono )
 	{
 		l = mono;
 		r = mono;
@@ -102,202 +76,125 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分の和
 	const stereo &operator +=( const stereo &s ){ l += s.l; r += s.r; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分の差
 	const stereo &operator -=( const stereo &s ){ l -= s.l; r -= s.r; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分の積
 	const stereo &operator *=( const stereo &s ){ l *= s.l; r *= s.r; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分の割り算
 	const stereo &operator /=( const stereo &s ){ l /= s.l; r /= s.r; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分の剰余
 	const stereo &operator %=( const stereo &s ){ l %= s.l; r %= s.r; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分の | 演算
 	const stereo &operator |=( const stereo &s ){ l |= s.l; r |= s.r; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分の & 演算
 	const stereo &operator &=( const stereo &s ){ l &= s.l; r &= s.r; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分の & 演算
 	const stereo &operator ^=( const stereo &s ){ l ^= s.l; r ^= s.r; return( *this ); }
 
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] mono … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分に mono 値を足す
 	const stereo &operator +=( const value_type &mono ){ l += mono; r += mono; return( +this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] mono … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分から mono 値を引く
 	const stereo &operator -=( const value_type &mono ){ l -= mono; r -= mono; return( -this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] mono … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分に mono 値を掛ける
 	const stereo &operator *=( const value_type &mono ){ l *= mono; r *= mono; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] mono … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 各音声成分を mono 値で割る
 	const stereo &operator /=( const value_type &mono ){ l /= mono; r /= mono; return( *this ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つの音声成分が等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_l = q_l \; \wedge \; p_r = q_r
+	//! \f]
 	//! 
-	//! @param[in] s … 引数の説明
+	//! @param[in] s … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … 2つの音声成分が等しい場合
+	//! @retval false … 2つの音声成分が異なる場合
 	//! 
 	bool operator ==( const stereo &s ) const { return( l == s.l && r == s.r ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つの音声成分が等しくない（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_l = q_l \; \wedge \; p_r = q_r }
+	//! \f]
 	//! 
-	//! @param[in] s … 引数の説明
+	//! @param[in] s … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … 2つの音声成分が異なる場合
+	//! @retval false … 2つの音声成分が等しい場合
 	//! 
 	bool operator !=( const stereo &s ) const { return( !( *this == s ) ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つの音声成分の < を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_l \ge q_l \; \wedge \; p_r \ge q_r }
+	//! \f]
 	//! 
-	//! @param[in] s … 引数の説明
+	//! @param[in] s … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … s1 <  s2 の場合
+	//! @retval false … s1 >= s2 の場合
 	//! 
 	bool operator < ( const stereo &s ) const { return( !( *this >= s ) ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つの音声成分の <= を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_l \le q_l \; \wedge \; p_r \le q_r
+	//! \f]
 	//! 
-	//! @param[in] s … 引数の説明
+	//! @param[in] s … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … s1 <= s2 の場合
+	//! @retval false … s1 >  s2 の場合
 	//! 
 	bool operator <=( const stereo &s ) const { return( s >= *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つの音声成分の > を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_l \le q_l \; \wedge \; p_r \le q_r }
+	//! \f]
 	//! 
-	//! @param[in] s … 引数の説明
+	//! @param[in] s … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … s1 >  s2 の場合
+	//! @retval false … s1 <= s2 の場合
 	//! 
 	bool operator > ( const stereo &s ) const { return( s < *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つの音声成分の >= を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_l \ge q_l \; \wedge \; p_r \ge q_r
+	//! \f]
 	//! 
-	//! @param[in] s … 引数の説明
+	//! @param[in] s … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … s1 >= s2 の場合
+	//! @retval false … s1 <  s2 の場合
 	//! 
 	bool operator >=( const stereo &s ) const { return( l >= s.l && r >= s.r ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ステレオ音声からモノラル音声に変換する
 	value_type get_value( ) const
 	{
 		return( static_cast< value_type >( ( l + r ) / 2.0 ) );
@@ -308,184 +205,66 @@ public:
 };
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator +( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) += c2 ); }
+/// @brief 音声成分の和
+template < class T > inline const stereo< T > operator +( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) += s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator -( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) -= c2 ); }
+/// @brief 音声成分の差
+template < class T > inline const stereo< T > operator -( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) -= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator *( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) *= c2 ); }
+/// @brief 音声成分の積
+template < class T > inline const stereo< T > operator *( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) *= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator /( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) /= c2 ); }
+/// @brief 音声成分の割り算
+template < class T > inline const stereo< T > operator /( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) /= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator %( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) %= c2 ); }
+/// @brief 音声成分の剰余
+template < class T > inline const stereo< T > operator %( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) %= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator |( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) |= c2 ); }
+/// @brief 音声成分の | 演算
+template < class T > inline const stereo< T > operator |( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) |= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator &( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) &= c2 ); }
+/// @brief 音声成分の & 演算
+template < class T > inline const stereo< T > operator &( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) &= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator ^( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) ^= c2 ); }
+/// @brief 音声成分の ^ 演算
+template < class T > inline const stereo< T > operator ^( const stereo< T > &s1, const stereo< T > &s2 ){ return( stereo< T >( s1 ) ^= s2 ); }
 
 
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator *( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) *= c2 ); }
+/// @brief 音声成分と定数の積
+template < class T > inline const stereo< T > operator *( const stereo< T > &s1, const typename stereo< T >::value_type &s2 ){ return( stereo< T >( s1 ) *= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator *( const typename stereo< T >::value_type &c1, const stereo< T > &c2 ){ return( stereo< T >( c2 ) *= c1 ); }
+/// @brief 定数と音声成分の積
+template < class T > inline const stereo< T > operator *( const typename stereo< T >::value_type &s1, const stereo< T > &s2 ){ return( stereo< T >( s2 ) *= s1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator /( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) /= c2 ); }
+/// @brief 音声成分を定数で割る
+template < class T > inline const stereo< T > operator /( const stereo< T > &s1, const typename stereo< T >::value_type &s2 ){ return( stereo< T >( s1 ) /= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator +( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) += c2 ); }
+/// @brief 音声成分と定数の和
+template < class T > inline const stereo< T > operator +( const stereo< T > &s1, const typename stereo< T >::value_type &s2 ){ return( stereo< T >( s1 ) += s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator +( const typename stereo< T >::value_type &c1, const stereo< T > &c2 ){ return( stereo< T >( c2 ) += c1 ); }
+/// @brief 定数と音声成分の和
+template < class T > inline const stereo< T > operator +( const typename stereo< T >::value_type &s1, const stereo< T > &s2 ){ return( stereo< T >( s2 ) += s1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator -( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) -= c2 ); }
+/// @brief 音声成分と定数の差
+template < class T > inline const stereo< T > operator -( const stereo< T > &s1, const typename stereo< T >::value_type &s2 ){ return( stereo< T >( s1 ) -= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const stereo< T > operator -( const typename stereo< T >::value_type &c1, const stereo< T > &c2 ){ return( stereo< T >( c2 ) -= c1 ); }
+/// @brief 定数と音声成分の差
+template < class T > inline const stereo< T > operator -( const typename stereo< T >::value_type &s1, const stereo< T > &s2 ){ return( stereo< T >( s2 ) -= s1 ); }
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     s   … ステレオ音声
 //! 
-//! @param[in,out] out … 引数の説明
-//! @param[in]     s   … 引数の説明
+//! @return 入力されたストリーム
 //! 
-//! @return 戻り値の説明
+//! @code 出力例
+//! ( 1, 2 )
+//! @endcode
 //! 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const stereo< T > &s )
 {
@@ -496,12 +275,7 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 }
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param T  … 引数の説明
-//! 
+/// @brief 入力された型が音声データかどうか調べる
 template < class T >
 struct is_stereo
 {

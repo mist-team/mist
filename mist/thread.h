@@ -284,7 +284,7 @@ public:
 
 	/// @brief スレッドをサスペンドさせる
 	//! 
-	//! @attention Windows以外の環境では，pthread ライブラリ側でサポートされていないことがあるため，現在のところWindowsのみの機能
+	//! @attention Windows以外の環境では，pthread ライブラリ側でサポートされていないことがあるため，現在のところWindowsのみサポート
 	//! 
 	//! @retval true  … サスペンドに成功
 	//! @retval false … サスペンドに失敗
@@ -305,7 +305,7 @@ public:
 
 	/// @brief スレッドをリジュームする
 	//! 
-	//! @attention Windows以外の環境では，pthread ライブラリ側でサポートされていないことがあるため，現在のところWindowsのみの機能
+	//! @attention Windows以外の環境では，pthread ライブラリ側でサポートされていないことがあるため，現在のところWindowsのみのサポート
 	//! 
 	//! @retval true  … リジュームに成功
 	//! @retval false … リジュームに失敗

@@ -24,17 +24,15 @@ _MIST_BEGIN
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 集合を扱うための基本クラス
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param SetType … 引数の説明
+//! @param SetType … 基底クラス（std::set か std::multiset）
 //! 
 template< class SetType >
 class set_base : public SetType
 {
 protected:
-	typedef SetType base;			///< @brief 説明を書く
+	typedef SetType base;			///< @brief 基底クラス（std::set か std::multiset）
 
 public:
 	typedef typename base::key_type key_type;					///< @brief 説明を書く
@@ -59,82 +57,38 @@ public:
 
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief デフォルトコンストラクタ（空集合を作成する）
 	set_base( ) : base( ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pred … 引数の説明
-	//! 
+	/// @brief 集合の要素の比較演算子として pred を用いる
 	explicit set_base( const key_compare &pred ) : base( pred ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] key … 引数の説明
-	//! 
+	/// @brief 1要素 key を持つ集合を作成する
 	explicit set_base( const key_type &key ) : base( ){ base::insert( key ); }
 
-
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pred  … 引数の説明
-	//! @param[in] alloc … 引数の説明
-	//! 
+	/// @brief 集合の要素の比較演算子として pred を用い，alloc のコピーを利用する
 	set_base( const key_compare &pred, const allocator_type &alloc ) : base( pred, alloc ){ }
 
-
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] first … 引数の説明
-	//! @param[in] last  … 引数の説明
-	//! 
+	/// @brief first と last の間の要素を用いて集合を作成する
 	template< class Iterator >
 	set_base( Iterator first, Iterator last ) : base( first, last ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] first … 引数の説明
-	//! @param[in] last  … 引数の説明
-	//! @param[in] pred  … 引数の説明
-	//! 
+	/// @brief first と last の間の要素を用いて集合を作成し，要素の比較演算子として pred を用いる
 	template< class Iterator >
 	set_base( Iterator first, Iterator last, const key_compare &pred ) : base( first, last, pred ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] first … 引数の説明
-	//! @param[in] last  … 引数の説明
-	//! @param[in] pred  … 引数の説明
-	//! @param[in] alloc … 引数の説明
-	//! 
+	/// @brief first と last の間の要素を用いて集合を作成し，要素の比較演算子として pred を用い，alloc のコピーを利用する
 	template< class Iterator >
 	set_base( Iterator first, Iterator last, const key_compare &pred, const allocator_type &alloc ) : base( first, last, pred, alloc ){ }
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 集合和
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
+	//! \f[
+	//!     a = a \bigcup b
+	//! \f]
 	//! 
 	set_base &operator +=( const set_base &s )
 	{
@@ -152,24 +106,15 @@ public:
 		return( *this );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 集合に1要素追加する
 	set_base &operator +=( const key_type &s ){ base::insert( s ); return( *this ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 差集合を計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
+	//! \f[
+	//!     a = a - \left( a \bigcap b \right)
+	//! \f]
 	//! 
 	set_base &operator -=( const set_base &s )
 	{
@@ -223,24 +168,15 @@ public:
 		return( *this );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 集合から1要素取り除く
 	set_base &operator -=( const key_type &s ){ base::erase( s ); return( *this ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 積集合を計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
+	//! \f[
+	//!     a = a \bigcap b
+	//! \f]
 	//! 
 	set_base &operator *=( const set_base &s )
 	{
@@ -278,14 +214,7 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 集合と1要素の集合間の積を取る
 	set_base &operator *=( const key_type &s )
 	{
 		set_base a = *this;
@@ -316,47 +245,18 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 集合に集合を追加する
 	set_base &operator <<=( const set_base &s ){ return( operator +=( s ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 集合に1要素を追加する
 	set_base &operator <<=( const key_type &s ){ return( operator +=( s ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
-	set_base &operator <<( const key_type &s ){ return( operator +=( s ) ); }
+	/// @brief 集合に1要素追加した集合を出力する
+	set_base &operator <<( const key_type &s ) const { return( set_base( *this )+=( s ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
-	//! 
+	/// @brief 全ての要素が等しいかどうかを判定する（\f$ a = b \f$）
 	bool operator ==( const set_base &s ) const
 	{
 		if( base::size( ) != s.size( ) )
@@ -379,15 +279,7 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
-	//! 
+	/// @brief 全ての要素が等しいかどうかを判定する（1要素版）
 	bool operator ==( const key_type &s ) const
 	{
 		if( base::size( ) != 1 )
@@ -409,37 +301,13 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
-	//! 
+	/// @brief 全ての要素が等しくないかどうかを判定する（\f$ a \neq b \f$）
 	bool operator !=( const set_base &s ) const { return( !( *this == s ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
-	//! 
+	/// @brief 全ての要素が等しくないかどうかを判定する（1要素版）
 	bool operator !=( const key_type &s ) const { return( !( *this == s ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
-	//! 
+	/// @brief 集合の包含関係を調べる（\f$ a \subset b \f$）
 	bool operator < ( const set_base &s ) const
 	{
 		if( base::size( ) >= s.size( ) )
@@ -450,15 +318,7 @@ public:
 		return( std::includes( s.begin( ), s.end( ), base::begin( ), base::end( ), key_compare( ) ) );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
-	//! 
+	/// @brief 集合の包含関係を調べる（\f$ a \subseteq b \f$）
 	bool operator <=( const set_base &s ) const
 	{
 		if( base::size( ) > s.size( ) )
@@ -469,61 +329,21 @@ public:
 		return( std::includes( s.begin( ), s.end( ), base::begin( ), base::end( ), key_compare( ) ) );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
-	//! 
+	/// @brief 集合の包含関係を調べる（\f$ a \supset b \f$）
 	bool operator > ( const set_base &s ) const { return( s < *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] s … 引数の説明
-	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
-	//! 
+	/// @brief 集合の包含関係を調べる（\f$ a \supseteq b \f$）
 	bool operator >=( const set_base &s ) const { return( s <= *this ); }
 };
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 和集合を計算する
 template< class SetType > inline const set_base< SetType > operator +( const set_base< SetType > &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) += s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 差集合を計算する
 template< class SetType > inline const set_base< SetType > operator -( const set_base< SetType > &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) -= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 積集合を計算する
 template< class SetType > inline const set_base< SetType > operator *( const set_base< SetType > &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) *= s2 ); }
 
 
@@ -535,229 +355,75 @@ template< class SetType > inline const set_base< SetType > operator *( const set
 
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 集合と1要素の積を計算する
 template< class SetType > inline const set_base< SetType > operator *( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s1 ) *= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 1要素と集合の積を計算する
 template< class SetType > inline const set_base< SetType > operator *( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) *= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 集合と1要素の和を計算する
 template< class SetType > inline const set_base< SetType > operator +( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s1 ) += s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 1要素と集合の和を計算する
 template< class SetType > inline const set_base< SetType > operator +( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s2 ) += s1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 集合と1要素の差を計算する
 template< class SetType > inline const set_base< SetType > operator -( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s1 ) -= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 1要素と集合の差を計算する
 template< class SetType > inline const set_base< SetType > operator -( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) -= s2 ); }
 
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 全ての要素が等しいかどうかを判定する（\f$ a = b \f$）
 template< class SetType > bool operator ==( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s2 ) == s1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 全ての要素が等しくないかどうかを判定する（\f$ a \neq b \f$）
 template< class SetType > bool operator !=( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s2 ) != s1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 集合の包含関係を調べる（\f$ a \subset b \f$）
 template< class SetType > bool operator < ( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( s1 <  set_base< SetType >( s2 ) ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 集合の包含関係を調べる（\f$ a \subseteq b \f$）
 template< class SetType > bool operator <=( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( s1 <= set_base< SetType >( s2 ) ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 集合の包含関係を調べる（\f$ a \supset b \f$）
 template< class SetType > bool operator > ( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( s1 >  set_base< SetType >( s2 ) ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 集合の包含関係を調べる（\f$ a \supseteq b \f$）
 template< class SetType > bool operator >=( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( s1 >= set_base< SetType >( s2 ) ); }
 
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 全ての要素が等しいかどうかを判定する（\f$ a = b \f$）
 template< class SetType > bool operator ==( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) == s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 全ての要素が等しくないかどうかを判定する（\f$ a \neq b \f$）
 template< class SetType > bool operator !=( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) != s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 集合の包含関係を調べる（\f$ a \subset b \f$）
 template< class SetType > bool operator < ( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) <  s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 集合の包含関係を調べる（\f$ a \subseteq b \f$）
 template< class SetType > bool operator <=( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) <= s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 集合の包含関係を調べる（\f$ a \supset b \f$）
 template< class SetType > bool operator > ( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) >  s2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
-//! 
+/// @brief 集合の包含関係を調べる（\f$ a \supseteq b \f$）
 template< class SetType > bool operator >=( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) >= s2 ); }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     s   … 集合
 //! 
-//! @param[in,out] out … 引数の説明
-//! @param[in]     s   … 引数の説明
+//! @return 入力されたストリーム
 //! 
-//! @return 戻り値の説明
+//! @code 出力例
+//! 1, 2, ... , n
+//! @endcode
 //! 
 template< class SetType >
 inline std::ostream &operator <<( std::ostream &out, const set_base< SetType > &s )
@@ -777,13 +443,13 @@ inline std::ostream &operator <<( std::ostream &out, const set_base< SetType > &
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 集合演算を行うことができる，STLの set の拡張版
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 要素の重複を許さない集合を扱う
 //! 
-//! @param Key       … 引数の説明
-//! @param Comp      … 引数の説明
-//! @param Allocator … 引数の説明
+//! @param Key       … 集合の各要素を表す型
+//! @param Comp      … 要素間の大小関係を表す比較関数（省略すると < が適用される）
+//! @param Allocator … アロケータ（省略するとSTLのデフォルトアロケータが適用される）
 //! 
 template< class Key, class Comp = std::less< Key >, class Allocator = std::allocator< Key > >
 class set : public set_base< std::set< Key, Comp, Allocator > >
@@ -813,80 +479,40 @@ public:
 	typedef typename base::value_type value_type;							///< @brief STLのコンテナ内に格納するデータ型．std::set< data > の data と同じ
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief デフォルトコンストラクタ（空集合を作成する）
 	set( ) : base( ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pred … 引数の説明
-	//! 
+	/// @brief 集合の要素の比較演算子として pred を用いる
 	explicit set( const key_compare &pred ) : base( pred ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] key … 引数の説明
-	//! 
+	/// @brief 1要素 key を持つ集合を作成する
 	explicit set( const key_type &key ) : base( ){ base::insert( key ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pred  … 引数の説明
-	//! @param[in] alloc … 引数の説明
-	//! 
+	/// @brief 集合の要素の比較演算子として pred を用い，alloc のコピーを利用する
 	set( const key_compare &pred, const allocator_type &alloc ) : base( pred, alloc ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] first … 引数の説明
-	//! @param[in] last  … 引数の説明
-	//! 
+	/// @brief first と last の間の要素を用いて集合を作成する
 	template< class Iterator >
 	set( Iterator first, Iterator last ) : base( first, last ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] first … 引数の説明
-	//! @param[in] last  … 引数の説明
-	//! @param[in] pred  … 引数の説明
-	//! 
+	/// @brief first と last の間の要素を用いて集合を作成し，要素の比較演算子として pred を用いる
 	template< class Iterator >
 	set( Iterator first, Iterator last, const key_compare &pred ) : base( first, last, pred ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] first … 引数の説明
-	//! @param[in] last  … 引数の説明
-	//! @param[in] pred  … 引数の説明
-	//! @param[in] alloc … 引数の説明
-	//! 
+	/// @brief first と last の間の要素を用いて集合を作成し，要素の比較演算子として pred を用い，alloc のコピーを利用する
 	template< class Iterator >
 	set( Iterator first, Iterator last, const key_compare &pred, const allocator_type &alloc ) : base( first, last, pred, alloc ){ }
 };
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 集合演算を行うことができる，STLの set の拡張版
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 要素の重複を許す集合を扱う
 //! 
-//! @param Key       … 引数の説明
-//! @param Comp      … 引数の説明
-//! @param Allocator … 引数の説明
+//! @param Key       … 集合の各要素を表す型
+//! @param Comp      … 要素間の大小関係を表す比較関数（省略すると < が適用される）
+//! @param Allocator … アロケータ（省略するとSTLのデフォルトアロケータが適用される）
 //! 
 template< class Key, class Comp = std::less< Key >, class Allocator = std::allocator< Key > >
 class multiset : public set_base< std::multiset< Key, Comp, Allocator > >
@@ -916,67 +542,27 @@ public:
 	typedef typename base::value_type value_type;							///< @brief STLのコンテナ内に格納するデータ型．std::set< data > の data と同じ
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief デフォルトコンストラクタ（空集合を作成する）
 	multiset( ) : base( ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pred  … 引数の説明
-	//! 
+	/// @brief 集合の要素の比較演算子として pred を用いる
 	explicit multiset( const key_compare &pred ) : base( pred ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] key … 引数の説明
-	//! 
+	/// @brief 1要素 key を持つ集合を作成する
 	explicit multiset( const key_type &key ) : base( ){ base::insert( key ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pred  … 引数の説明
-	//! @param[in] alloc … 引数の説明
-	//! 
+	/// @brief 集合の要素の比較演算子として pred を用い，alloc のコピーを利用する
 	multiset( const key_compare &pred, const allocator_type &alloc ) : base( pred, alloc ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] first … 引数の説明
-	//! @param[in] last  … 引数の説明
-	//! 
+	/// @brief first と last の間の要素を用いて集合を作成する
 	template< class Iterator >
 	multiset( Iterator first, Iterator last ) : base( first, last ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] first … 引数の説明
-	//! @param[in] last  … 引数の説明
-	//! @param[in] pred  … 引数の説明
-	//! 
+	/// @brief first と last の間の要素を用いて集合を作成し，要素の比較演算子として pred を用いる
 	template< class Iterator >
 	multiset( Iterator first, Iterator last, const key_compare &pred ) : base( first, last, pred ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] first … 引数の説明
-	//! @param[in] last  … 引数の説明
-	//! @param[in] pred  … 引数の説明
-	//! @param[in] alloc … 引数の説明
-	//! 
+	/// @brief first と last の間の要素を用いて集合を作成し，要素の比較演算子として pred を用い，alloc のコピーを利用する
 	template< class Iterator >
 	multiset( Iterator first, Iterator last, const key_compare &pred, const allocator_type &alloc ) : base( first, last, pred, alloc ){ }
 };
