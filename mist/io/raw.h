@@ -47,7 +47,7 @@ namespace __raw_controller__
 
 	bool _is_big_endian_( )
 	{
-		return( byte_array< unsigned short >( 1 )[ 0 ] != 1 );
+		return( byte_array< unsigned short >( 1 )[ 0 ] == 0 );
 	}
 
 	template < class T >
@@ -88,7 +88,7 @@ namespace __raw_controller__
 		typedef typename array3< T, Allocator >::size_type size_type;
 
 		static bool read( array3< T, Allocator > &image, const std::string &filename, size_type w, size_type h, size_type d,
-						double x = 1.0, double y = 1.0, double z = 1.0, value_type offset = 0, bool raw_is_little_endian = true )
+						double x = 1.0, double y = 1.0, double z = 1.0, value_type offset = 0, bool raw_is_little_endian = false )
 		{
 			gzFile fp;
 			size_type i, j, k, l;
@@ -147,7 +147,7 @@ namespace __raw_controller__
 		}
 
 
-		static bool write( const array3< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = true )
+		static bool write( const array3< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )
 		{
 			FILE *fp;
 			size_type i, j, k, l;
@@ -190,7 +190,7 @@ namespace __raw_controller__
 			return(true);
 		}
 
-		static bool write_gz( const array3< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = true )
+		static bool write_gz( const array3< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )
 		{
 			gzFile fp;
 			size_type i, j, k, l;
@@ -240,19 +240,19 @@ namespace __raw_controller__
 template < class T, class Allocator >
 bool read_raw( array3< T, Allocator > &image, const std::string &filename,
 				typename array3< T, Allocator >::size_type w, typename array3< T, Allocator >::size_type h, typename array3< T, Allocator >::size_type d,
-				double x = 1.0, double y = 1.0, double z = 1.0, typename array3< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = true )
+				double x = 1.0, double y = 1.0, double z = 1.0, typename array3< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
 {
 	return( __raw_controller__::raw_controller< T, Allocator >::read( image, filename, w, h, d, x, y, z, offset, raw_is_little_endian ) );
 }
 
 template < class T, class Allocator >
-bool write_raw( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = true )
+bool write_raw( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
 {
 	return( __raw_controller__::raw_controller< T, Allocator >::write( image, filename, offset, raw_is_little_endian ) );
 }
 
 template < class T, class Allocator >
-bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = true )
+bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool raw_is_little_endian = false )
 {
 	return( __raw_controller__::raw_controller< T, Allocator >::write_gz( image, filename, offset, raw_is_little_endian ) );
 }
