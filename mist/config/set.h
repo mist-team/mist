@@ -172,6 +172,9 @@ public:
 		return( *this );
 	}
 
+	const set_base &operator <<=( const set_base &s ){ return( operator +=( s ) ); }
+	const set_base &operator <<=( const key_type &s ){ return( operator +=( s ) ); }
+
 	bool operator ==( const set_base &s ) const
 	{
 		if( base::size( ) != s.size( ) )
@@ -269,6 +272,13 @@ template< class SetType > bool operator < ( const typename set_base< SetType >::
 template< class SetType > bool operator <=( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) <= s2 ); }
 template< class SetType > bool operator > ( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) >  s2 ); }
 template< class SetType > bool operator >=( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) >= s2 ); }
+
+template< class SetType >
+inline set_base< SetType > &operator <<( set_base< SetType > &out, const typename set_base< SetType >::key_type &s )
+{
+	out <<= s;
+	return( out );
+}
 
 template< class SetType >
 inline std::ostream &operator <<( std::ostream &out, const set_base< SetType > &s )
