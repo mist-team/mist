@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <cmath>
 #include <mist/mist.h>
 #include <mist/matrix.h>
 #include <mist/numeric.h>
@@ -51,6 +52,31 @@ private:
 }; // timer
 
 
+void test_matrix_multiply( )
+{
+	using namespace std;
+
+	mist::matrix< double > m( 1000,1000 );
+	mist::matrix< double > n( 1000,1000 );
+	mist::matrix< double > l( 1000,1000 );
+
+	for( int r = 0 ; r < m.rows( ) ; r++ )
+	{
+		for( int c = 0 ; c < m.cols( ) ; c++ )
+		{
+			m( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
+			n( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
+		}
+	}
+
+	cout << "mat1( 1000, 1000 ) * mat2( 1000, 1000 )" << endl << endl;
+
+	{
+		timer t;
+		l = m * n;
+		cout << "Calculation Time: " << t.elapsed( ) << " (sec)" << endl;
+	}
+}
 
 void test_matrix_operation( )
 {
@@ -179,6 +205,7 @@ int main( )
 	cout << "1) Check the calculation time of matrix operation." << endl;
 	cout << "2) Compute the inverse matrix." << endl;
 	cout << "3) Check the calculation time of inverse matrix." << endl;
+	cout << "4) Check the calculation time of matrix multiply." << endl;
 
 	int number = -1;
 
@@ -196,6 +223,13 @@ int main( )
 
 	case 3:
 		test_matrix_inverse2( );
+		break;
+
+	case 4:
+		test_matrix_multiply( );
+		break;
+
+	default:
 		break;
 	}
 }
