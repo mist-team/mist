@@ -2,6 +2,10 @@
 //!
 //! @brief ŠÖ”‚ÌÅ¬‰»‚ğˆµ‚¤‚½‚ß‚Ìƒ‰ƒCƒuƒ‰ƒŠ
 //!
+//! @section ŠÖ”‚ÌÅ¬‰»
+//! -# W. H. Press, S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery, ``Numerical Recipes in C, The Art of Scientific Computing Second Edition,'' Cambridge University Press, pp. 321--336, 1999.
+//!
+
 #ifndef __INCLUDE_MIST_MINIMIZATION__
 #define __INCLUDE_MIST_MINIMIZATION__
 
