@@ -71,6 +71,16 @@ int volr_draw_area::handle( int event )
 		return( 1 );
 		break;
 
+	case FL_FOCUS:
+	case FL_UNFOCUS:
+		return( 1 );
+		break;
+
+	case FL_KEYDOWN:
+		onKeyDown( Fl::event_key( ) );
+		return( 1 );
+		break;
+
 	default:
 		return( Fl_Gl_Window::handle( event ) );
 	}
@@ -268,11 +278,8 @@ void volr_draw_area::rotate_camera( int sx, int sy, int x, int y )
 {
 	volr_parameter_type &p = volr_parameter;
 
-	double winW = w( );
-	double winH = h( );
-
-	double cx = winW / 2.0, cy = winH / 2.0;
-	point2 p1( ( sx - cx ) * 2.0 / winW, ( cy - sy ) * 2.0 / winH ), p2( ( x - cx ) * 2.0 / winW, ( cy - y ) * 2.0 / winH );
+	double cx = w( ) / 2.0, cy = h( ) / 2.0;
+	point2 p1( sx / cx - 1.0, 1.0 - sy / cy ), p2( x / cx - 1.0, 1.0 - y / cy );
 	point3 tdir  = old_camera_.dir;
 	point3 tup   = old_camera_.up;
 	point3 tyoko = old_camera_.dir * old_camera_.up;
@@ -285,6 +292,75 @@ void volr_draw_area::rotate_camera( int sx, int sy, int x, int y )
 	camera_.dir		= - pos.unit( );
 	camera_.up		= q.rotate( old_camera_.up ).unit( );
 }
+
+void volr_draw_area::rotate_camera( int x, int y, double step )
+{
+	double cx = w( ) / 2.0, cy = h( ) / 2.0;
+	point2 p1( 0, 0 ), p2( x / cx - 1.0, 1.0 - y / cy );
+	point3 tdir  = old_camera_.dir;
+	point3 tup   = old_camera_.up;
+	point3 tyoko = old_camera_.dir * old_camera_.up;
+	mist::quaternion< double > q = mist::track_ball( p1, p2, tyoko, tup, tdir, 5.0 );
+
+	camera_.dir    = q.rotate( old_camera_.dir ).unit( );
+	camera_.pos.x += old_camera_.dir.x * step;
+	camera_.pos.y -= old_camera_.dir.y * step;
+	camera_.pos.z += old_camera_.dir.z * step;
+	camera_.up     = q.rotate( old_camera_.up ).unit( );
+}
+
+void volr_draw_area::move_camera( double x, double y, double z )
+{
+	point3 tdir  = camera_.dir;
+	point3 tup   = camera_.up;
+	point3 tyoko = camera_.dir * camera_.up;
+
+	point3 pos = tyoko * x + tup * y + tdir * z;
+	camera_.pos.x += pos.x;
+	camera_.pos.y -= pos.y;
+	camera_.pos.z += pos.z;
+}
+
+
+// Mouse button was pressed somewhere
+void volr_draw_area::onKeyDown( int key )
+{
+	double step = 1.0;
+	point3 yoko = camera_.dir * camera_.up;
+
+	switch( key )
+	{
+	case FL_Down:
+		move_camera( 0.0, -step, 0.0 );
+		draw_flag_ = true;
+		redraw( );
+		Fl::wait( 0 );
+		break;
+
+	case FL_Up:
+		move_camera( 0.0, step, 0.0 );
+		draw_flag_ = true;
+		redraw( );
+		Fl::wait( 0 );
+		break;
+
+	case FL_Left:
+		move_camera( -step, 0.0, 0.0 );
+		draw_flag_ = true;
+		redraw( );
+		Fl::wait( 0 );
+		break;
+
+	case FL_Right:
+		move_camera( step, 0.0, 0.0 );
+		draw_flag_ = true;
+		redraw( );
+		Fl::wait( 0 );
+		break;
+
+	}
+}
+
 
 // Mouse button was pressed somewhere
 void volr_draw_area::onMouseDown( int x, int y )
@@ -300,42 +376,65 @@ void volr_draw_area::onMouseDown( int x, int y )
 
 	redraw( );
 	Fl::wait( 0 );
+
+	if( inside_mode_ )
+	{
+		Fl::remove_timeout( __onInsideViewCallBack__, this );
+		Fl::add_timeout( 0.1, __onInsideViewCallBack__, this );
+	}
 }
 
 // The mouse has moved, draw a line
 void volr_draw_area::onMouseDrag( int button, int x, int y )
 {
-	if( FL_BUTTON1 & button )
+	if( inside_mode_ )
 	{
-		rotate_camera( drag_beg_x, drag_beg_y, x, y );
-
-		draw_flag_ = true;
-
-		redraw( );
-		Fl::wait( 0 );
 	}
-	else if( FL_BUTTON3 & button )
+	else
 	{
-		zoom_ += x - drag_beg_x;
-		zoom_ = zoom_ <= 0.1 ? 0.1 : zoom_;
-		zoom_ = zoom_ > 10000.0 ? 10000.0: zoom_;
-		rotate_camera( 0, 0, 0, 0 );
-		drag_beg_x = x;
-		drag_beg_y = y;
+		if( FL_BUTTON1 & button )
+		{
+			rotate_camera( drag_beg_x, drag_beg_y, x, y );
 
-		draw_flag_ = true;
+			draw_flag_ = true;
 
-		redraw( );
-		Fl::wait( 0 );
+			redraw( );
+			Fl::wait( 0 );
+		}
+		else if( FL_BUTTON3 & button )
+		{
+			zoom_ += x - drag_beg_x;
+			zoom_ = zoom_ <= 0.1 ? 0.1 : zoom_;
+			zoom_ = zoom_ > 10000.0 ? 10000.0: zoom_;
+			rotate_camera( 0, 0, 0, 0 );
+			drag_beg_x = x;
+			drag_beg_y = y;
+
+			draw_flag_ = true;
+
+			redraw( );
+			Fl::wait( 0 );
+		}
 	}
 }
 
 // The mouse button was released again
 void volr_draw_area::onMouseUp( int x, int y )
 {
+	int state = Fl::event_state( );
+
 	old_camera_ = camera_;
 
 	is_high_resolution_ = true;
+
+	if( state & FL_BUTTON1 || state & FL_BUTTON3 )
+	{
+		is_high_resolution_ = false;
+	}
+	else if( inside_mode_ )
+	{
+		Fl::remove_timeout( __onInsideViewCallBack__, this );
+	}
 
 	draw_flag_ = true;
 
@@ -343,7 +442,45 @@ void volr_draw_area::onMouseUp( int x, int y )
 	Fl::wait( 0 );
 }
 
+void volr_draw_area::onInsideViewCallBack( )
+{
+	old_camera_ = camera_;
 
+	std::cout << camera_.dir << ", " << camera_.up << std::endl;
+
+	int state = Fl::event_state( );
+
+	if( state & FL_ALT )
+	{
+		rotate_camera( Fl::event_x( ), Fl::event_y( ), 0.0 );
+	}
+	else
+	{
+		double step = 1.0;
+		if( state & FL_BUTTON3 )
+		{
+			step = -1.0;
+		}
+
+		if( state & FL_CTRL )
+		{
+			step *= 5.0;
+		}
+
+		if( state & FL_SHIFT )
+		{
+			step *= 2.0;
+		}
+
+		rotate_camera( Fl::event_x( ), Fl::event_y( ), step );
+	}
+
+	draw_flag_ = true;
+
+	redraw( );
+	Fl::wait( 0 );
+	Fl::repeat_timeout( 0.1, __onInsideViewCallBack__, this );
+}
 
 void volr_draw_area::write_image( volr_image_window *w )
 {

@@ -35,17 +35,19 @@ public:
 public:
 	volr_draw_area( int x, int y, int w, int h, const char *l ) : Fl_Gl_Window( x, y, w, h, l ), zoom_( 300.0 ), fps_( 1.0 )
 	{
+		is_high_resolution_ = true;
 		draw_flag_ = false;
+		inside_mode_ = false;
 		high_reso_ = 256;
 		low_reso_  = 128;
-		is_high_resolution_ = true;
 	}
 	volr_draw_area( int x, int y, int w, int h ) : Fl_Gl_Window( x, y, w, h ), zoom_( 300.0 ), fps_( 1.0 )
 	{
+		is_high_resolution_ = true;
 		draw_flag_ = false;
+		inside_mode_ = false;
 		high_reso_ = 256;
 		low_reso_  = 128;
-		is_high_resolution_ = true;
 	}
 	virtual ~volr_draw_area(){ }
 
@@ -56,6 +58,7 @@ private:
 
 	bool is_high_resolution_;
 	bool draw_flag_;
+	bool inside_mode_;
 	double zoom_;
 	double fps_;
 	int drag_beg_x;
@@ -76,9 +79,16 @@ public:
 	void draw_image( );
 
 public:
+	void onKeyDown( int key );
 	void onMouseDown( int x, int y );
 	void onMouseDrag( int button, int x, int y );
 	void onMouseUp( int x, int y );
+	void onInsideViewCallBack( );
+
+	static void __onInsideViewCallBack__( void *p )
+	{
+		( ( volr_draw_area * )p )->onInsideViewCallBack( );
+	}
 
 public:
 	size_type high_reso( size_type reso )
@@ -154,10 +164,17 @@ public:
 		Fl::wait( 0 );
 	}
 
+	void inside_mode( bool is_inside )
+	{
+		inside_mode_ = is_inside;
+	}
+
 public:
 	void read_image( volr_image_window *wnd );
 	void write_image( volr_image_window *wnd  );
 	void rotate_camera( int sx, int sy, int x, int y );
+	void rotate_camera( int x, int y, double step );
+	void move_camera( double x, double y, double z );
 	void initialize( );
 };
 
