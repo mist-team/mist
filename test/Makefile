@@ -20,7 +20,7 @@ matrix_test : matrix_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 matrix_util_test : matrix_util_test.o
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) -llapack -lblas -lF77
 
 limits_test : limits_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
