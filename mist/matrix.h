@@ -304,12 +304,12 @@ public:
 		base::resize( size1_ * size2_ );
 	}
 
-	void resize( size_type num, const T &val )
-	{
-		size1_ = num;
-		size2_ = 1;
-		base::resize( size1_ * size2_, val );
-	}
+	//void resize( size_type num, const T &val )
+	//{
+	//	size1_ = num;
+	//	size2_ = 1;
+	//	base::resize( size1_ * size2_, val );
+	//}
 
 	void resize( size_type num1, size_type num2 )
 	{

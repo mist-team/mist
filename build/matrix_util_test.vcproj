@@ -23,7 +23,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="5"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -32,8 +32,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="clapack.lib blas.lib F77.lib"
-				OutputFile="$(OutDir)/matrix_util_test"
+				AdditionalDependencies="clapackd.lib blasd.lib libF77d.lib"
+				OutputFile="$(OutDir)/matrix_util_test.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../lib"
 				GenerateDebugInformation="TRUE"
@@ -79,7 +79,7 @@
 				OptimizeForWindowsApplication="FALSE"
 				AdditionalIncludeDirectories="..,../lib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
-				RuntimeLibrary="4"
+				RuntimeLibrary="0"
 				EnableEnhancedInstructionSet="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -137,6 +137,9 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath="..\mist\matrix.h">
+			</File>
+			<File
+				RelativePath="..\mist\matrix_util.h">
 			</File>
 			<File
 				RelativePath="..\mist\mist.h">
