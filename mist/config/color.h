@@ -14,63 +14,6 @@ _MIST_BEGIN
 
 // MISTで利用する基底のデータ型
 
-// boolean演算を行うためのもの
-class boolean
-{
-public:
-	typedef bool& reference;
-	typedef const bool& const_reference;
-	typedef bool value_type;
-	typedef bool* pointer;
-	typedef const bool* const_pointer;
-
-private:
-	bool value_;
-
-public:
-	boolean( ) : value_( false ){ }
-	boolean( const boolean &b ) : value_( b.value_ ){ }
-	boolean( const value_type &b ) : value_( b ){ }
-
-	const boolean &operator  =( const boolean &b ){ value_ = b.value_;  return( *this ); }
-	const boolean &operator  =( const value_type &b ){ value_ = b;   return( *this ); }
-
-	const boolean &operator +=( const boolean &b ){ value_ = value_ ||  b.value_; return( *this ); }
-	const boolean &operator -=( const boolean &b ){ value_ = value_ && !b.value_; return( *this ); }
-	const boolean &operator *=( const boolean &b ){ value_ = value_ &&  b.value_; return( *this ); }
-	const boolean &operator /=( const boolean &b ){ value_ = value_ ==  b.value_; return( *this ); }
-	const boolean &operator %=( const boolean &b ){ value_ = value_ && !b.value_; return( *this ); }
-	const boolean &operator |=( const boolean &b ){ value_ = value_ ||  b.value_; return( *this ); }
-	const boolean &operator &=( const boolean &b ){ value_ = value_ &&  b.value_; return( *this ); }
-	const boolean &operator ^=( const boolean &b ){ value_ = value_ !=  b.value_; return( *this ); }
-
-	bool operator ==( const boolean &b ) const { return( value_ == b.value_ ); }
-	bool operator !=( const boolean &b ) const { return( value_ != b.value_ ); }
-	bool operator < ( const boolean &b ) const { return( value_ <  b.value_ ); }
-	bool operator <=( const boolean &b ) const { return( value_ <= b.value_ ); }
-	bool operator > ( const boolean &b ) const { return( value_ >  b.value_ ); }
-	bool operator >=( const boolean &b ) const { return( value_ >= b.value_ ); }
-
-	value_type get_value( ) const { return( value_ ); }
-
-	operator bool( ) const { return( value_ ); }
-};
-
-inline const boolean operator +( const boolean &b1, const boolean &b2 ){ return( boolean( b1 ) += b2 ); }
-inline const boolean operator -( const boolean &b1, const boolean &b2 ){ return( boolean( b1 ) -= b2 ); }
-inline const boolean operator *( const boolean &b1, const boolean &b2 ){ return( boolean( b1 ) *= b2 ); }
-inline const boolean operator /( const boolean &b1, const boolean &b2 ){ return( boolean( b1 ) /= b2 ); }
-inline const boolean operator %( const boolean &b1, const boolean &b2 ){ return( boolean( b1 ) %= b2 ); }
-inline const boolean operator |( const boolean &b1, const boolean &b2 ){ return( boolean( b1 ) |= b2 ); }
-inline const boolean operator &( const boolean &b1, const boolean &b2 ){ return( boolean( b1 ) &= b2 ); }
-inline const boolean operator ^( const boolean &b1, const boolean &b2 ){ return( boolean( b1 ) ^= b2 ); }
-
-inline std::ostream &operator <<( std::ostream &out, const boolean &v )
-{
-	out << v.get_value( );
-	return( out );
-}
-
 
 // カラー画像用
 template< class T >
@@ -100,12 +43,12 @@ public:
 	const rgb &operator &=( const rgb &c ){ r &= c.r; g &= c.g; b &= c.b; return( *this ); }
 	const rgb &operator ^=( const rgb &c ){ r ^= c.r; g ^= c.g; b ^= c.b; return( *this ); }
 
-	bool operator ==( const rgb &c ) const { return( r == c.r && g == c.g && c == c.b ); }
+	bool operator ==( const rgb &c ) const { return( r == c.r && g == c.g && b == c.b ); }
 	bool operator !=( const rgb &c ) const { return( !( *this == c ) ); }
-	bool operator < ( const rgb &c ) const { return( r <  c.r || ( r == c.r && g <  c.g ) || ( r == c.r && g == c.g  &&c <  c.b ) ); }
-	bool operator <=( const rgb &c ) const { return( !( c < *this ) ); }
+	bool operator < ( const rgb &c ) const { return( !( *this >= c ) ); }
+	bool operator <=( const rgb &c ) const { return( c >= *this ); }
 	bool operator > ( const rgb &c ) const { return( c < *this ); }
-	bool operator >=( const rgb &c ) const { return( !( *this < c ) ); }
+	bool operator >=( const rgb &c ) const { return( r >= c.r && g >= c.g && b >= c.b ); }
 
 	// NTSC系加重平均法により，グレースケールへ変換する
 	value_type get_value( ) const
@@ -113,7 +56,8 @@ public:
 		return( static_cast< value_type >( r * 0.298912 + g * 0.586610 + b * 0.114478 ) );
 	}
 
-	operator value_type( ) const { return( get_value( ) ); }
+	// カラーからグレースケールへの自動キャスト演算子（危険のため一時停止）
+	//operator value_type( ) const { return( get_value( ) ); }
 };
 
 template < class T > inline const rgb< T > operator +( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) += c2 ); }

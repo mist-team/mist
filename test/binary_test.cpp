@@ -1,11 +1,11 @@
-#include <mist/config/color.h>
+#include <mist/config/binary.h>
 #include <iostream>
 
 int main( int argc, char *argv[] )
 {
 	using namespace std;
 
-	mist::boolean v1 = false, v2 = true;
+	mist::binary v1 = false, v2 = true;
 
 	cout << " ( A, B ) = ( " << v1 << ", " << v2 << " )" << endl;
 	cout << " 1. Operator A + B = \t" << ( v1 + v2 ) << endl;

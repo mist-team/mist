@@ -147,7 +147,13 @@
 			Name="MISTƒtƒ@ƒCƒ‹"
 			Filter="">
 			<File
+				RelativePath="..\mist\config\binary.h">
+			</File>
+			<File
 				RelativePath="..\mist\io\bmp.h">
+			</File>
+			<File
+				RelativePath="..\mist\config\color.h">
 			</File>
 			<File
 				RelativePath="..\mist\draw.h">

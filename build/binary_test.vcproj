@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="boolean_test"
+	Name="binary_test"
 	ProjectGUID="{5B87E451-7196-400B-9898-D276C6418B72}"
 	Keyword="Win32Proj">
 	<Platforms>
@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/boolean_test.exe"
+				OutputFile="$(OutDir)/binary_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/matrix_test.pdb"
@@ -87,7 +87,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/boolean_test.exe"
+				OutputFile="$(OutDir)/binary_test.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="FALSE"
 				SubSystem="1"
@@ -124,7 +124,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\test\boolean_test.cpp">
+				RelativePath="..\test\binary_test.cpp">
 			</File>
 		</Filter>
 		<Filter

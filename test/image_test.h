@@ -3,7 +3,6 @@
 
 
 #include <FL/Fl_Gl_Window.H>
-#include <string>
 
 class image_draw_area : public Fl_Gl_Window
 {
@@ -16,17 +15,17 @@ public:
 	void draw();
 };
 
-void read_jpeg_test( const std::string &filename );
-void write_jpeg_test( const std::string &filename );
+void read_jpeg_test( const char *filename );
+void write_jpeg_test( const char *filename );
 
-void read_png_test( const std::string &filename );
-void write_png_test( const std::string &filename );
+void read_png_test( const char *filename );
+void write_png_test( const char *filename );
 
-void read_tiff_test( const std::string &filename );
-void write_tiff_test( const std::string &filename );
+void read_tiff_test( const char *filename );
+void write_tiff_test( const char *filename );
 
-void read_bmp_test( const std::string &filename );
-void write_bmp_test( const std::string &filename );
+void read_bmp_test( const char *filename );
+void write_bmp_test( const char *filename );
 
 
 #endif // __INCLUDE_IMAGE_TEST__
