@@ -1,3 +1,30 @@
+/****************************************************************************************************************************
+**
+**         MIST ( Media Integration Standard Toolkit )
+**
+**         We defined following template classes.
+**
+**          array  : template class of one dimensionl array with STL support.
+**          array1 : template class of one dimensionl array containing resolution of each value.
+**          array2 : template class of two dimensionl array containing resolution of each pixel
+**          array3 : template class of three dimensionl array containing resolution of each voxel
+**          matrix : template class of matrix with its operation, and impremented using teqnique of an expression template.
+**
+**
+**         We developed these programs since 2003/09/05.
+**
+**                 Last modified : $LastChangedDate$.
+**                  At  revision : $LastChangedRevision$.
+**                  By  author   : $LastChangedBy$.
+**                 URL  location : $HeadURL$.
+**
+**         These programs are developped at
+**             $HeadURL$
+**
+****************************************************************************************************************************/
+
+
+
 #ifndef __INCLUDE_MIST_H__
 #define __INCLUDE_MIST_H__
 
