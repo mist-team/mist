@@ -63,7 +63,7 @@ void set_test( )
 	cout << "32. Operator A >= 3 = \t"; cout << ( s1 >= 3  ) << endl;
 	cout << "33. Operator 3 >= A = \t"; cout << ( 3  >= s1 ) << endl;
 
-	cout << "**. Operator A * { 1, 2, 3 } = \t"; cout << s1 * ( mist::set< int >( 1 ) << 2 << 3 ) << endl;
+	//cout << "**. Operator A * { 1, 2, 3 } = \t"; cout << s1 * ( mist::set< int >( 1 ) << 2 << 3 ) << endl;
 
 	//cout << "15. Size of bool = \t"; cout << sizeof( value< bool > ) << endl;
 	//cout << "16. Size of int  = \t"; cout << sizeof( value< int > ) << endl;
@@ -128,7 +128,7 @@ void multiset_test( )
 	cout << "32. Operator A >= 3 = \t"; cout << ( s1 >= 3  ) << endl;
 	cout << "33. Operator 3 >= A = \t"; cout << ( 3  >= s1 ) << endl;
 
-	cout << "**. Operator A * { 1, 2, 3 } = \t"; cout << s1 * ( mist::multiset< int >( 1 ) << 2 << 3 ) << endl;
+	//cout << "**. Operator A * { 1, 2, 3 } = \t"; cout << s1 * ( mist::multiset< int >( 1 ) << 2 << 3 ) << endl;
 
 	//cout << "15. Size of bool = \t"; cout << sizeof( value< bool > ) << endl;
 	//cout << "16. Size of int  = \t"; cout << sizeof( value< int > ) << endl;

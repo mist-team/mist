@@ -1237,12 +1237,15 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const matrix< T, Alloca
 	typename matrix< T, Allocator >::size_type r, c;
 	for( r = 0 ; r < m.rows( ) ; r++ )
 	{
+		if( r != 0 )
+		{
+			out << ::std::endl;
+		}
 		for( c = 0 ; c < m.cols( ) ; c++ )
 		{
 			out << m( r, c );
 			if( c != m.cols( ) - 1 ) out << ", ";
 		}
-		out << ::std::endl;
 	}
 
 	return( out );

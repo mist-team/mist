@@ -25,16 +25,16 @@ int main( int argc, char *argv[] )
 		}
 	}
 
-	std::cout << a << std::endl;
-	std::cout << m << std::endl;
+	std::cout << a << std::endl << std::endl;
+	std::cout << m << std::endl << std::endl;
 
 	m = a;
 
-	std::cout << m << std::endl;
+	std::cout << m << std::endl << std::endl;
 
 	m.fill_margin( 9 );
 
-	std::cout << m << std::endl;
+	std::cout << m << std::endl << std::endl;
 
 	return( 0 );
 }

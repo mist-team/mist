@@ -879,7 +879,6 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const vector< T, Alloca
 		out << v[ indx ];
 		if( indx != v.size( ) - 1 ) out << ", ";
 	}
-	out << ::std::endl;
 
 	return( out );
 }

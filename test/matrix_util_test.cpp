@@ -18,10 +18,10 @@ int main( )
 	b[2] = -6.0;
 
 	std::cout << "Original Matrix" << std::endl;
-	std::cout << a << std::endl;
-	std::cout << b << std::endl;
+	std::cout << a << std::endl << std::endl;
+	std::cout << b << std::endl << std::endl;
 
-	std::cout << matrix::identity( 3, 3 ) * 3 + a * matrix::zero( 3, 3 ) << std::endl;
+	std::cout << matrix::identity( 3, 3 ) * 3 + a * matrix::zero( 3, 3 ) << std::endl << std::endl;
 
 	{
 		std::cout << "Solve equation" << std::endl;
@@ -30,15 +30,15 @@ int main( )
 
 		mist::solve( aa, bb );
 
-		std::cout << aa << std::endl;
-		std::cout << bb << std::endl;
+		std::cout << aa << std::endl << std::endl;
+		std::cout << bb << std::endl << std::endl;
 	}
 
 	{
 		std::cout << "Inverse Matrix Calculation" << std::endl;
 
 		matrix aa = a;
-		std::cout << mist::inverse( aa ) * b << std::endl;
+		std::cout << mist::inverse( aa ) * b << std::endl << std::endl;
 	}
 
 	{
@@ -48,7 +48,7 @@ int main( )
 		aa( 0, 0 ) = 1.0; aa( 0, 1 ) = 2.0;
 		aa( 1, 0 ) = 2.0; aa( 1, 1 ) = 3.0;
 		matrix aaa = aa;
-		std::cout << aa * mist::inverse( aaa, mist::matrix_style::sy ) << std::endl;
+		std::cout << aa * mist::inverse( aaa, mist::matrix_style::sy ) << std::endl << std::endl;
 	}
 
 	{
@@ -58,55 +58,55 @@ int main( )
 		aa( 0, 0 ) = 1.0; aa( 0, 1 ) = 2.0;
 		aa( 1, 0 ) = 2.0; aa( 1, 1 ) = 3.0;
 		matrix aaa = aa;
-		std::cout << aa * mist::inverse( aaa, mist::matrix_style::ge ) << std::endl;
+		std::cout << aa * mist::inverse( aaa, mist::matrix_style::ge ) << std::endl << std::endl;
 	}
 
 	{
 		std::cout << "LU factorization" << std::endl;
 
 		matrix aa = a;
-		std::cout << mist::lu_factorization( aa ) << std::endl;
+		std::cout << mist::lu_factorization( aa ) << std::endl << std::endl;
 	}
 
 	{
 		std::cout << "QR factorization" << std::endl;
 
 		matrix aa = a;
-		std::cout << mist::qr_factorization( aa ) << std::endl;
+		std::cout << mist::qr_factorization( aa ) << std::endl << std::endl;
 	}
 
 	{
-		std::cout << "Eigen value and vectors" << std::endl;
+		std::cout << "Eigen value and vectors" << std::endl << std::endl;
 
 		matrix aa = a, eval, evec;
 		mist::eigen( aa, eval, evec, mist::matrix_style::ge );
-		std::cout << aa << std::endl;
-		std::cout << eval << std::endl;
-		std::cout << evec << std::endl;
+		std::cout << aa << std::endl << std::endl;
+		std::cout << eval << std::endl << std::endl;
+		std::cout << evec << std::endl << std::endl;
 	}
 
 	{
 		std::cout << "Eigen value and vectors symmetry" << std::endl;
 
 		matrix aa = a * a.t( ), eval, evec;
-		std::cout << aa << std::endl;
+		std::cout << aa << std::endl << std::endl;
 		mist::eigen( aa, eval, evec, mist::matrix_style::sy );
-		std::cout << eval << std::endl;
-		std::cout << evec << std::endl;
+		std::cout << eval << std::endl << std::endl;
+		std::cout << evec << std::endl << std::endl;
 	}
 
 	{
 		std::cout << "Determinant" << std::endl;
 
-		std::cout << mist::det( a ) << std::endl;
-		std::cout << mist::det( a * a.t( ) ) << std::endl;
+		std::cout << mist::det( a ) << std::endl << std::endl;
+		std::cout << mist::det( a * a.t( ) ) << std::endl << std::endl;
 	}
 
 	{
 		std::cout << "Trace" << std::endl;
 
-		std::cout << mist::trace( a ) << std::endl;
-		std::cout << mist::trace( a * a.t( ) ) << std::endl;
+		std::cout << mist::trace( a ) << std::endl << std::endl;
+		std::cout << mist::trace( a * a.t( ) ) << std::endl << std::endl;
 	}
 
 	{
@@ -120,13 +120,13 @@ int main( )
 
 		matrix aa = a, u, s, vt;
 
-		std::cout << a << std::endl;
+		std::cout << a << std::endl << std::endl;
 
 		mist::svd( aa, u, s, vt );
-		std::cout << u << std::endl;
-		std::cout << s << std::endl;
-		std::cout << vt << std::endl;
-		std::cout << u * s * vt << std::endl;
+		std::cout << u << std::endl << std::endl;
+		std::cout << s << std::endl << std::endl;
+		std::cout << vt << std::endl << std::endl;
+		std::cout << u * s * vt << std::endl << std::endl;
 	}
 	return( 0 );
 }

@@ -20,11 +20,11 @@ int main( int argc, char *argv[] )
 				*ite = i;
 			}
 
-			cout << a << endl;
+			cout << a << endl << endl;
 
 			sort( a.row_rbegin( 1 ), a.row_rend( 1 ) );
 
-			cout << "sorted result" << endl << a << endl;
+			cout << "sorted result" << endl << a << endl << endl;
 		}
 		
 		{
@@ -38,11 +38,11 @@ int main( int argc, char *argv[] )
 				*ite = i;
 			}
 
-			cout << a << endl;
+			cout << a << endl << endl;
 
 			sort( a.row_begin( 1 ), a.row_end( 1 ) );
 
-			cout << "sorted result" << endl << a << endl;
+			cout << "sorted result" << endl << a << endl << endl;
 		}
 
 		{
@@ -56,11 +56,11 @@ int main( int argc, char *argv[] )
 				*ite = i;
 			}
 
-			cout << a << endl;
+			cout << a << endl << endl;
 
 			sort( a.col_rbegin( 1 ), a.col_rend( 1 ) );
 
-			cout << "sorted result" << endl << a << endl;
+			cout << "sorted result" << endl << a << endl << endl;
 		}
 
 		{
@@ -74,11 +74,11 @@ int main( int argc, char *argv[] )
 				*ite = i;
 			}
 
-			cout << a << endl;
+			cout << a << endl << endl;
 
 			sort( a.col_begin( 1 ), a.col_end( 1 ) );
 
-			cout << "sorted result" << endl << a << endl;
+			cout << "sorted result" << endl << a << endl << endl;
 		}
 	}
 
@@ -95,11 +95,11 @@ int main( int argc, char *argv[] )
 				*ite = i;
 			}
 
-			cout << a << endl;
+			cout << a << endl << endl;
 
 			sort( a.rbegin( ), a.rend( ) );
 
-			cout << "sorted result" << endl << a << endl;
+			cout << "sorted result" << endl << a << endl << endl;
 		}
 
 		{
@@ -113,11 +113,11 @@ int main( int argc, char *argv[] )
 				*ite = i;
 			}
 
-			cout << a << endl;
+			cout << a << endl << endl;
 
 			sort( a.begin( ), a.end( ) );
 
-			cout << "sorted result" << endl << a << endl;
+			cout << "sorted result" << endl << a << endl << endl;
 		}
 	}
 
@@ -132,11 +132,11 @@ int main( int argc, char *argv[] )
 			*ite = i;
 		}
 
-		cout << a << endl;
+		cout << a << endl << endl;
 
 		sort( a.x_rbegin( 1 ), a.x_rend( 1 ) );
 
-		cout << "sorted result" << endl << a << endl;
+		cout << "sorted result" << endl << a << endl << endl;
 	}
 
 	{
@@ -150,11 +150,11 @@ int main( int argc, char *argv[] )
 			*ite = i;
 		}
 
-		cout << a << endl;
+		cout << a << endl << endl;
 
 		sort( a.y_rbegin( 1 ), a.y_rend( 1 ) );
 
-		cout << "sorted result" << endl << a << endl;
+		cout << "sorted result" << endl << a << endl << endl;
 	}
 
 	{
@@ -168,11 +168,11 @@ int main( int argc, char *argv[] )
 			*ite = i;
 		}
 
-		cout << a << endl;
+		cout << a << endl << endl;
 
 		sort( a.x_begin( 1 ), a.x_end( 1 ) );
 
-		cout << "sorted result" << endl << a << endl;
+		cout << "sorted result" << endl << a << endl << endl;
 	}
 
 	{
@@ -186,11 +186,11 @@ int main( int argc, char *argv[] )
 			*ite = i;
 		}
 
-		cout << a << endl;
+		cout << a << endl << endl;
 
 		sort( a.y_begin( 1 ), a.y_end( 1 ) );
 
-		cout << "sorted result" << endl << a << endl;
+		cout << "sorted result" << endl << a << endl << endl;
 	}
 
 	{
@@ -206,11 +206,11 @@ int main( int argc, char *argv[] )
 				*ite = i;
 			}
 
-			cout << a << endl;
+			cout << a << endl << endl;
 
 			sort( a.rbegin( ), a.rend( ) );
 
-			cout << "sorted result" << endl << a << endl;
+			cout << "sorted result" << endl << a << endl << endl;
 		}
 
 		{
@@ -224,11 +224,11 @@ int main( int argc, char *argv[] )
 				*ite = i;
 			}
 
-			cout << a << endl;
+			cout << a << endl << endl;
 
 			sort( a.begin( ), a.end( ) );
 
-			cout << "sorted result" << endl << a << endl;
+			cout << "sorted result" << endl << a << endl << endl;
 		}
 	}
 
@@ -243,11 +243,11 @@ int main( int argc, char *argv[] )
 			*ite = i;
 		}
 
-		cout << a << endl;
+		cout << a << endl << endl;
 
 		sort( a.x_rbegin( 1 ), a.x_rend( 1 ) );
 
-		cout << "sorted result" << endl << a << endl;
+		cout << "sorted result" << endl << a << endl << endl;
 	}
 
 	{
@@ -261,11 +261,11 @@ int main( int argc, char *argv[] )
 			*ite = i;
 		}
 
-		cout << a << endl;
+		cout << a << endl << endl;
 
 		sort( a.y_rbegin( 1 ), a.y_rend( 1 ) );
 
-		cout << "sorted result" << endl << a << endl;
+		cout << "sorted result" << endl << a << endl << endl;
 	}
 
 	{
@@ -279,11 +279,11 @@ int main( int argc, char *argv[] )
 			*ite = i;
 		}
 
-		cout << a << endl;
+		cout << a << endl << endl;
 
 		sort( a.z_rbegin( 1 ), a.z_rend( 1 ) );
 
-		cout << "sorted result" << endl << a << endl;
+		cout << "sorted result" << endl << a << endl << endl;
 	}
 
 	{
@@ -297,11 +297,11 @@ int main( int argc, char *argv[] )
 			*ite = i;
 		}
 
-		cout << a << endl;
+		cout << a << endl << endl;
 
 		sort( a.x_begin( 1 ), a.x_end( 1 ) );
 
-		cout << "sorted result" << endl << a << endl;
+		cout << "sorted result" << endl << a << endl << endl;
 	}
 
 	{
@@ -315,11 +315,11 @@ int main( int argc, char *argv[] )
 			*ite = i;
 		}
 
-		cout << a << endl;
+		cout << a << endl << endl;
 
 		sort( a.y_begin( 1 ), a.y_end( 1 ) );
 
-		cout << "sorted result" << endl << a << endl;
+		cout << "sorted result" << endl << a << endl << endl;
 	}
 
 	{
@@ -333,11 +333,11 @@ int main( int argc, char *argv[] )
 			*ite = i;
 		}
 
-		cout << a << endl;
+		cout << a << endl << endl;
 
 		sort( a.z_begin( 1 ), a.z_end( 1 ) );
 
-		cout << "sorted result" << endl << a << endl;
+		cout << "sorted result" << endl << a << endl << endl;
 	}
 
 	return( 0 );

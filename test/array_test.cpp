@@ -18,19 +18,19 @@ int main( int argc, char *argv[] )
 		{
 			b[ j ] = i;
 		}
-		cout << "a: " << a.reso1( ) <<endl;
-		cout << a;
+		cout << "a: " << a.reso1( ) << endl;
+		cout << a << endl;
 		cout << "-----------------------" << endl;
-		cout << "b: " << b.reso1( ) <<endl;
-		cout << b << endl;
+		cout << "b: " << b.reso1( ) << endl;
+		cout << b << endl << endl;
 
 		a.swap( b );
 
-		cout << "a: " << a.reso1( ) <<endl;
-		cout << a;
+		cout << "a: " << a.reso1( ) << endl;
+		cout << a << endl;
 		cout << "-----------------------" << endl;
-		cout << "b: " << b.reso1( ) <<endl;
-		cout << b << endl;
+		cout << "b: " << b.reso1( ) << endl;
+		cout << b << endl << endl;
 	}
 
 	{
@@ -43,19 +43,19 @@ int main( int argc, char *argv[] )
 		{
 			b[ j ] = i;
 		}
-		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) <<endl;
-		cout << a;
+		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) << endl;
+		cout << a << endl;
 		cout << "-----------------------" << endl;
-		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) <<endl;
-		cout << b << endl;
+		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) << endl;
+		cout << b << endl << endl;
 
 		a.swap( b );
 
-		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) <<endl;
-		cout << a;
+		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) << endl;
+		cout << a << endl;
 		cout << "-----------------------" << endl;
-		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) <<endl;
-		cout << b << endl;
+		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) << endl;
+		cout << b << endl << endl;
 	}
 
 	{
@@ -68,19 +68,19 @@ int main( int argc, char *argv[] )
 		{
 			b[ j ] = i;
 		}
-		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) << ", " << a.reso3( ) <<endl;
-		cout << a;
+		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) << ", " << a.reso3( ) << endl;
+		cout << a << endl;
 		cout << "-----------------------" << endl;
-		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) << ", " << b.reso3( ) <<endl;
-		cout << b << endl;
+		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) << ", " << b.reso3( ) << endl;
+		cout << b << endl << endl;
 
 		a.swap( b );
 
-		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) << ", " << a.reso3( ) <<endl;
-		cout << a;
+		cout << "a: " << a.reso1( ) << ", " << a.reso2( ) << ", " << a.reso3( ) << endl;
+		cout << a << endl;
 		cout << "-----------------------" << endl;
-		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) << ", " << b.reso3( ) <<endl;
-		cout << b << endl;
+		cout << "b: " << b.reso1( ) << ", " << b.reso2( ) << ", " << b.reso3( ) << endl;
+		cout << b << endl << endl;
 	}
 
 
