@@ -5,13 +5,13 @@
 
 int main( void )
 {
-	const int	DATALEN = 1024;
+	const int		DATALEN = 1024;
 	unsigned char	data[ DATALEN ];
 	unsigned char	crc8;
 	unsigned short	crc16;
-	unsigned	crc32;
+	unsigned		crc32;
 
-	mist::random	rnd( clock( ) );
+	mist::uniform::random	rnd( clock( ) );
 
 	for( int n = 0 ; n < DATALEN ; n++ )
 	{

@@ -72,6 +72,135 @@ namespace __nearest__
 }
 
 
+// 平均値型補間
+namespace __mean__
+{
+	template < bool b >
+	struct _mean_
+	{
+		template < class Array >
+		static double mean___( const Array &in,
+									typename Array::size_type i1,
+									typename Array::size_type i2,
+									typename Array::size_type j1,
+									typename Array::size_type j2,
+									typename Array::size_type k1,
+									typename Array::size_type k2 )
+		{
+			typedef typename Array::size_type size_type;
+			typedef typename Array::value_type value_type;
+			double pix = 0.0;
+			for( size_type k = k1 ; k < k2 ; k++ )
+			{
+				for( size_type j = j1 ; j < j2 ; j++ )
+				{
+					for( size_type i = i1 ; i < i2 ; i++ )
+					{
+						pix += in( i, j, k );
+					}
+				}
+			}
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			pix /= static_cast< double >( ( i2 - i1 ) * ( j2 - j1 ) * ( k2 - k1 ) );
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
+		}
+	};
+
+	template < >
+	struct _mean_< true >
+	{
+		template < class Array >
+		static typename Array::value_type mean___( const Array &in,
+													typename Array::size_type i1,
+													typename Array::size_type i2,
+													typename Array::size_type j1,
+													typename Array::size_type j2,
+													typename Array::size_type k1,
+													typename Array::size_type k2 )
+		{
+			typedef typename Array::value_type color;
+			typedef typename color::value_type value_type;
+			typedef typename Array::size_type size_type;
+			double r = 0.0;
+			double g = 0.0;
+			double b = 0.0;
+			for( size_type k = k1 ; k < k2 ; k++ )
+			{
+				for( size_type j = j1 ; j < j2 ; j++ )
+				{
+					for( size_type i = i1 ; i < i2 ; i++ )
+					{
+						const color &c = in( i, j, k );
+						r += c.r;
+						g += c.g;
+						b += c.b;
+					}
+				}
+			}
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			double numPixels = static_cast< double >( ( i2 - i1 ) * ( j2 - j1 ) * ( k2 - k1 ) );
+			r /= numPixels;
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g /= numPixels;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b /= numPixels;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
+		}
+	};
+
+	template < class Array1, class Array2 >
+	void interpolate( const Array1 &in, Array2 &out,
+						typename Array1::size_type thread_idx, typename Array1::size_type thread_numx,
+						typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
+						typename Array1::size_type thread_idz, typename Array1::size_type thread_numz )
+	{
+		typedef typename Array1::size_type  size_type;
+		typedef typename Array1::value_type value_type;
+		typedef typename Array2::value_type out_value_type;
+
+		size_type i, j, k, i1, i2, j1, j2, k1, k2;
+		size_type iw = in.width( );
+		size_type ih = in.height( );
+		size_type id = in.depth( );
+		size_type ow = out.width( );
+		size_type oh = out.height( );
+		size_type od = out.depth( );
+
+		double sx = static_cast< double >( iw ) / static_cast< double >( ow );
+		double sy = static_cast< double >( ih ) / static_cast< double >( oh );
+		double sz = static_cast< double >( id ) / static_cast< double >( od );
+		double num = sx * sy * sz;
+
+		for( k = thread_idz ; k < od ; k += thread_numz )
+		{
+			k1 = static_cast< size_type >( sz * k );
+			k2 = static_cast< size_type >( k1 + sz );
+			k2 = k1 == k2 ? k1 + 1 : k2;
+			for( j = thread_idy ; j < oh ; j += thread_numy )
+			{
+				j1 = static_cast< size_type >( sy * j );
+				j2 = static_cast< size_type >( j1 + sy );
+				j2 = j1 == j2 ? j1 + 1 : j2;
+				for( i = thread_idx ; i < ow ; i += thread_numx )
+				{
+					i1 = static_cast< size_type >( sx * i );
+					i2 = static_cast< size_type >( i1 + sx );
+					i2 = i1 == i2 ? i1 + 1 : i2;
+					out( i, j, k ) = static_cast< out_value_type >( _mean_< is_color< value_type >::value >::mean___( in, i1, i2, j1, j2, k1, k2 ) );
+				}
+			}
+		}
+	}
+}
+
 // 最近傍型補間
 namespace __linear__
 {
@@ -157,6 +286,12 @@ namespace __linear__
 			double r = in[ i1 ].r * ( 1.0 - x ) + in[ i2 ].r * x;
 			double g = in[ i1 ].g * ( 1.0 - x ) + in[ i2 ].g * x;
 			double b = in[ i1 ].b * ( 1.0 - x ) + in[ i2 ].b * x;
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
 			return( color( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) ) );
 		}
 
@@ -622,6 +757,29 @@ namespace __interpolate_controller__
 	}
 
 
+	// 平均値型補間
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	void mean__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+					typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num )
+	{
+		__mean__::interpolate( in, out, thread_id, thread_num, 0, 1, 0, 1 );
+	}
+
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	void mean__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+					typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
+	{
+		__mean__::interpolate( in, out, 0, 1, thread_id, thread_num, 0, 1 );
+	}
+
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	void mean__( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+					typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num )
+	{
+		__mean__::interpolate( in, out, 0, 1, 0, 1, thread_id, thread_num );
+	}
+
+
 	// 線形補間
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void linear__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
@@ -680,6 +838,7 @@ namespace __interpolate_controller__
 		enum Mode
 		{
 			Nearest,
+			Mean,
 			Linear,
 			Cubic,
 		};
@@ -734,6 +893,10 @@ namespace __interpolate_controller__
 			{
 			case Nearest:
 				nearest__( *in_, *out_, thread_id_, thread_num_ );
+				break;
+
+			case Mean:
+				mean__( *in_, *out_, thread_id_, thread_num_ );
 				break;
 
 			case Cubic:
@@ -1013,6 +1176,259 @@ namespace nearest
 		return( true );
 	}
 }
+
+/// @brief 平均値型補間
+namespace mean
+{
+	/// @brief 1次元配列に対する平均値型補間
+	//!
+	//! 拡大縮小に伴う画素の内挿を，近傍の平均値を用いて決定する
+	//!
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//!
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	bool interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+						typename array< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+	{
+		if( is_same_object( in, out ) || width == 0 )
+		{
+			return( false );
+		}
+
+		typedef typename array< T1, Allocator1 >::size_type  size_type;
+		typedef __interpolate_controller__::interpolate_thread< array< T1, Allocator1 >, array< T2, Allocator2 > > interpolate_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		size_type i;
+		out.resize( width );
+
+		if( in.width( ) == width )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return( true );
+		}
+
+		interpolate_thread *thread = new interpolate_thread[ thread_num ];
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, interpolate_thread::Mean, i, thread_num );
+		}
+
+		do_threads( thread, thread_num );
+
+		delete [] thread;
+
+		return( true );
+	}
+
+
+	/// @brief 1次元配列に対する線形補間
+	//!
+	//! 拡大縮小に伴う画素の内挿を，近傍の平均値を用いて決定する
+	//!
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//!
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	bool interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
+					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+	{
+		if( is_same_object( in, out ) || width == 0 )
+		{
+			return( false );
+		}
+
+		typedef typename array1< T1, Allocator1 >::size_type  size_type;
+		typedef __interpolate_controller__::interpolate_thread< array1< T1, Allocator1 >, array1< T2, Allocator2 > > interpolate_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		size_type i;
+		out.resize( width );
+		out.reso1( in.reso1( ) * static_cast< double >( in.size( ) ) / static_cast< double >( width ) );
+
+		if( in.width( ) == width )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array1< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return( true );
+		}
+
+		interpolate_thread *thread = new interpolate_thread[ thread_num ];
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, interpolate_thread::Mean, i, thread_num );
+		}
+
+		do_threads( thread, thread_num );
+
+		delete [] thread;
+
+		return( false );
+	}
+
+
+	/// @brief 2次元配列に対する線形補間
+	//!
+	//! 拡大縮小に伴う画素の内挿を，近傍の平均値を用いて決定する
+	//!
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのX軸方向のサイズ
+	//! @param[in]  height     … 出力データのY軸方向のサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//!
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	bool interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+					typename array2< T1, Allocator1 >::size_type width, typename array2< T1, Allocator1 >::size_type height,
+					typename array2< T1, Allocator1 >::size_type thread_num = 0 )
+	{
+		if( is_same_object( in, out ) || width == 0 || height == 0 )
+		{
+			return( false );
+		}
+
+		typedef typename array2< T1, Allocator1 >::size_type  size_type;
+		typedef __interpolate_controller__::interpolate_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 > > interpolate_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		size_type i;
+		out.resize( width, height );
+		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
+		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
+
+		if( in.width( ) == width && in.height( ) == height )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array2< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return( true );
+		}
+
+		interpolate_thread *thread = new interpolate_thread[ thread_num ];
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, interpolate_thread::Mean, i, thread_num );
+		}
+
+		do_threads( thread, thread_num );
+
+		delete [] thread;
+
+		return( true );
+	}
+
+
+	/// @brief 3次元配列に対する線形補間
+	//!
+	//! 拡大縮小に伴う画素の内挿を，近傍の平均値を用いて決定する
+	//!
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのX軸方向のサイズ
+	//! @param[in]  height     … 出力データのY軸方向のサイズ
+	//! @param[in]  depth      … 出力データのZ軸方向のサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//!
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	bool interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+					typename array3< T1, Allocator1 >::size_type width,
+					typename array3< T1, Allocator1 >::size_type height,
+					typename array3< T1, Allocator1 >::size_type depth,
+					typename array3< T1, Allocator1 >::size_type thread_num = 0 )
+	{
+		if( is_same_object( in, out ) || width == 0 || height == 0 || depth == 0 )
+		{
+			return( false );
+		}
+
+		typedef typename array3< T1, Allocator1 >::size_type  size_type;
+		typedef __interpolate_controller__::interpolate_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 > > interpolate_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		size_type i;
+		out.resize( width, height, depth );
+		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
+		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
+		out.reso3( in.reso3( ) * static_cast< double >( in.depth( ) ) / static_cast< double >( depth ) );
+
+		if( in.width( ) == width && in.height( ) == height && in.depth( ) == depth )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array3< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return( true );
+		}
+
+		interpolate_thread *thread = new interpolate_thread[ thread_num ];
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, interpolate_thread::Mean, i, thread_num );
+		}
+
+		do_threads( thread, thread_num );
+
+		delete [] thread;
+
+		return( true );
+	}
+}
+
 
 
 /// @brief 線形補間

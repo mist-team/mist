@@ -69,6 +69,8 @@ private:
   static void cb_Reso4(Fl_Menu_*, void*);
   inline void cb_Reso5_i(Fl_Menu_*, void*);
   static void cb_Reso5(Fl_Menu_*, void*);
+  inline void cb_Reso6_i(Fl_Menu_*, void*);
+  static void cb_Reso6(Fl_Menu_*, void*);
   inline void cb_Interlace_i(Fl_Menu_*, void*);
   static void cb_Interlace(Fl_Menu_*, void*);
   inline void cb_Interlace1_i(Fl_Menu_*, void*);

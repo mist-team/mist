@@ -104,7 +104,7 @@ namespace morphology
 	//!
 	//! resoX，resoY の値を変えることで，楕円等を表現可能です
 	//!
-	//! @param[in] radius … 半径
+	//! @param[in] radius … 半径（単位は画素）
 	//! @param[in] resoX  … X軸方向の解像度
 	//! @param[in] resoY  … Y軸方向の解像度
 	//!
@@ -181,7 +181,7 @@ namespace morphology
 	//!
 	//! resoX，resoY，resoZ の値を変えることで，楕円体等を表現可能です
 	//!
-	//! @param[in] radius … 半径
+	//! @param[in] radius … 半径（単位は画素）
 	//! @param[in] resoX  … X軸方向の解像度
 	//! @param[in] resoY  … Y軸方向の解像度
 	//! @param[in] resoZ  … Z軸方向の解像度
@@ -271,7 +271,7 @@ namespace morphology
 	//!
 	//! resoX，resoY，resoZ の値を変えることで，長方形等を表現可能です
 	//!
-	//! @param[in] radius … 引数の説明
+	//! @param[in] radius … 正方形の一辺の長さの半分（単位は画素）
 	//! @param[in] resoX  … X軸方向の解像度
 	//! @param[in] resoY  … Y軸方向の解像度
 	//!
@@ -348,7 +348,7 @@ namespace morphology
 	//!
 	//! resoX，resoY，resoZ の値を変えることで，直方体等を表現可能です
 	//!
-	//! @param[in] radius … 引数の説明
+	//! @param[in] radius … 直方体の一辺の長さの半分（単位は画素）
 	//! @param[in] resoX  … X軸方向の解像度
 	//! @param[in] resoY  … Y軸方向の解像度
 	//! @param[in] resoZ  … Z軸方向の解像度
@@ -1265,7 +1265,7 @@ bool closing( array2< T, Allocator > &in, const morphology::morphology_structure
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径
+//! @param[in] radius     … 円の半径（単位は画素）
 //! @param[in] f          … 進行状況を返すコールバック関数
 //! @param[in] thread_num … 使用するスレッド数
 //! 
@@ -1285,7 +1285,7 @@ inline bool erosion( array2< T, Allocator > &in, double radius, Functor f, typen
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径
+//! @param[in] radius     … 円の半径（単位は画素）
 //! @param[in] f          … 進行状況を返すコールバック関数
 //! @param[in] thread_num … 使用するスレッド数
 //! 
@@ -1305,7 +1305,7 @@ inline bool dilation( array2< T, Allocator > &in, double radius, Functor f, type
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径
+//! @param[in] radius     … 円の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! @param[in] f          … 進行状況を返すコールバック関数
 //! 
@@ -1325,7 +1325,7 @@ inline bool opening( array2< T, Allocator > &in, double radius, Functor f, typen
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径
+//! @param[in] radius     … 円の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! @param[in] f          … 進行状況を返すコールバック関数
 //! 
@@ -1348,7 +1348,7 @@ inline bool closing( array2< T, Allocator > &in, double radius, Functor f, typen
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径
+//! @param[in] radius     … 円の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1367,7 +1367,7 @@ inline bool erosion( array2< T, Allocator > &in, double radius, typename array2<
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径
+//! @param[in] radius     … 円の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1386,7 +1386,7 @@ inline bool dilation( array2< T, Allocator > &in, double radius, typename array2
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径
+//! @param[in] radius     … 円の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1405,7 +1405,7 @@ inline bool opening( array2< T, Allocator > &in, double radius, typename array2<
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径
+//! @param[in] radius     … 円の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1783,7 +1783,7 @@ bool closing( array3< T, Allocator > &in, const morphology::morphology_structure
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 球の半径
+//! @param[in] radius     … 球の半径（単位は画素）
 //! @param[in] f          … 進行状況を返すコールバック関数
 //! @param[in] thread_num … 使用するスレッド数
 //! 
@@ -1803,7 +1803,7 @@ inline bool erosion( array3< T, Allocator > &in, double radius, Functor f, typen
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 球の半径
+//! @param[in] radius     … 球の半径（単位は画素）
 //! @param[in] f          … 進行状況を返すコールバック関数
 //! @param[in] thread_num … 使用するスレッド数
 //! 
@@ -1823,7 +1823,7 @@ inline bool dilation( array3< T, Allocator > &in, double radius, Functor f, type
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 球の半径
+//! @param[in] radius     … 球の半径（単位は画素）
 //! @param[in] f          … 進行状況を返すコールバック関数
 //! @param[in] thread_num … 使用するスレッド数
 //! 
@@ -1843,7 +1843,7 @@ inline bool opening( array3< T, Allocator > &in, double radius, Functor f, typen
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 球の半径
+//! @param[in] radius     … 球の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! @param[in] f          … 進行状況を返すコールバック関数
 //! 
@@ -1864,7 +1864,7 @@ inline bool closing( array3< T, Allocator > &in, double radius, Functor f, typen
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 球の半径
+//! @param[in] radius     … 球の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1883,7 +1883,7 @@ inline bool erosion( array3< T, Allocator > &in, double radius, typename array3<
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 球の半径
+//! @param[in] radius     … 球の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1902,7 +1902,7 @@ inline bool dilation( array3< T, Allocator > &in, double radius, typename array3
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 球の半径
+//! @param[in] radius     … 球の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1921,7 +1921,7 @@ inline bool opening( array3< T, Allocator > &in, double radius, typename array3<
 //! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 球の半径
+//! @param[in] radius     … 球の半径（単位は画素）
 //! @param[in] thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功

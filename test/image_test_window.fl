@@ -21,7 +21,7 @@ class image_test_window {open
           class image_draw_area
         }
       }
-      Fl_Menu_Bar {} {selected
+      Fl_Menu_Bar {} {open
         xywh {0 0 550 30} box FLAT_BOX
       } {
         submenu {} {
@@ -174,7 +174,7 @@ Fl::wait( 0 );}
             }
           }
           submenu {} {
-            label Resolution
+            label Resolution open
             xywh {0 0 100 20}
           } {
             menuitem {} {
@@ -196,6 +196,11 @@ Fl::wait( 0 );}
               label {Reso down with nearest}
               callback {interpolate_test( 0, false );}
               xywh {105 105 100 20}
+            }
+            menuitem {} {
+              label {Reso down with mean}
+              callback {interpolate_test( 3, false );} selected
+              xywh {125 125 100 20}
             }
             menuitem {} {
               label {Reso down with linear}

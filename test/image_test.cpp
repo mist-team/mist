@@ -387,6 +387,10 @@ void interpolate_test( int mode, bool reso_up )
 		mist::linear::interpolate( tmp, image_object, w, h );
 		break;
 
+	case 3:
+		mist::mean::interpolate( tmp, image_object, w, h );
+		break;
+
 	case 1:
 	default:
 		mist::cubic::interpolate( tmp, image_object, w, h );
