@@ -1250,8 +1250,6 @@ namespace powell
 					index = c;
 					delta = d;
 				}
-
-				//std::cout << fp << p.t( ) << std::endl;
 			}
 
 			// 相対誤差を用いた収束判定
@@ -1391,8 +1389,6 @@ namespace powell
 						delta = d;
 					}
 				}
-
-				//std::cout << fp << p.t( ) << std::endl;
 			}
 
 			// 相対誤差を用いた収束判定
@@ -1510,6 +1506,168 @@ namespace powell
 	}
 }
 
+
+/// @brief Powell法（方向集合を用いた多変数関数の極小値の探索）
+namespace lucidi
+{
+	template < class Functor >
+	inline double expantion_step( double alpha, double alpha_max, double delta, double gamma, double fp0, Functor f )
+	{
+		while( true )
+		{
+			double a = alpha / delta;
+			a = a < alpha_max ? a : alpha_max;
+
+			if( alpha == alpha_max )
+			{
+				return( alpha );
+			}
+
+			double fp = f( a );
+			if( fp > fp0 - gamma * a * a )
+			{
+				return( alpha );
+			}
+
+			alpha = a;
+		}
+	}
+
+
+	/// @brief Powell 法による多次元変数による極小値の探索を行う
+	//! 
+	//! 手法について何か書く
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in,out] dirs           … 探索に用いる方向集合
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[out]    iterations     … 実際の反復回数
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor >
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 200 )
+	{
+		typedef typename matrix< T, Allocator >::value_type value_type;
+		typedef typename matrix< T, Allocator >::size_type size_type;
+		typedef typename matrix< T, Allocator >::difference_type difference_type;
+		typedef matrix< T, Allocator > matrix_type;
+
+		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 ), p0( p ), a( p.size( ), 1 );
+		double fp0 = 1.0e100, fp = f( p );
+
+		// 他変数関数を１変数関数に変換する
+		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );
+
+		const double __alpha__ = 0.5;
+		const double theta = 0.5;
+		const double gamma = 1.0e-6;
+		const double delta = 0.25;
+		const double infinity = type_limits< double >::maximum( );
+
+		size_t ite;
+		size_type r, c;
+
+		for( r = 0 ; r < a.size( ) ; r++ )
+		{
+			a[ r ] = __alpha__;
+		}
+
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		{
+			// 探索開始前の評価値を覚えておく
+			fp0 = fp;
+
+			size_type alpha_count = 0;
+
+			for( c = 0 ; c < dirs.cols( ) ; c++ )
+			{
+				double alpha = a[ c ];
+
+				// 探索に用いる方向集合をコピーする
+				for( r = 0 ; r < dirs.rows( ) ; r++ )
+				{
+					dir[ r ] = dirs( r, c );
+				}
+
+				bool flag = false;
+				if( alpha > 0.0 && functor( alpha ) <= fp0 - gamma * alpha * alpha )
+				{
+					a[ c ] = alpha = expantion_step( alpha, infinity, delta, gamma, fp0, functor );
+
+					// 位置を更新
+					for( r = 0 ; r < p.size( ) ; r++ )
+					{
+						p[ r ] += dir[ r ] * alpha;
+					}
+				}
+				else
+				{ 
+					if( alpha > 0.0 && ( fp = functor( -alpha ) ) <= fp0 - gamma * alpha * alpha )
+					{
+						// 探索に用いる方向集合をコピーする
+						for( r = 0 ; r < dirs.rows( ) ; r++ )
+						{
+							dir[ r ] = dirs( r, c ) = -dir[ r ];
+						}
+
+						a[ c ] = alpha = expantion_step( alpha, infinity, delta, gamma, fp0, functor );
+
+						// 位置を更新
+						for( r = 0 ; r < p.size( ) ; r++ )
+						{
+							p[ r ] += dir[ r ] * alpha;
+						}
+					}
+					else
+					{
+						a[ c ] = theta * alpha;
+						alpha = 0.0;
+						alpha_count++;
+					}
+				}
+			}
+ 
+			fp = f( p );
+
+			if( alpha_count < dirs.cols( ) )
+			{
+				// 相対誤差を用いた収束判定
+				if( 2.0 * std::abs( fp - fp0 ) <= tolerance * ( std::abs( fp ) + std::abs( fp0 ) ) )
+				{
+					break;
+				}
+			}
+		}
+
+		iterations = ite;
+
+		return( fp );
+	}
+
+
+	/// @brief Powell 法による多次元変数による極小値の探索を行う
+	//! 
+	//! 手法について何か書く
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in,out] dirs           … 探索に用いる方向集合
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor >
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t max_iterations = 200 )
+	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
+		size_t itenum = 0;
+		return( minimization( p, dirs, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations ) );
+	}
+}
 
 
 /// @}

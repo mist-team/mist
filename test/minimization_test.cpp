@@ -54,14 +54,17 @@ int main( int argc, char *argv[] )
 
 	typedef mist::matrix< double > matrix_type;
 
+	double ftol = 1.0e-3;
+
 	{
 		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f1 > functor_reference;
 		matrix_type p( 2, 1 );
 		f1 func;
 		p[ 0 ] = 100;
 		p[ 1 ] = 200;
-		double err = mist::gradient::minimization( p, functor_reference( func ), 0.0 );
-		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl;
+		double err = mist::gradient::minimization( p, functor_reference( func ), ftol );
+		cout << "Gradient descent" << endl;
+		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
 
 	{
@@ -70,8 +73,20 @@ int main( int argc, char *argv[] )
 		f1 func;
 		p[ 0 ] = 100;
 		p[ 1 ] = 200;
-		double err = mist::powell::minimization( p, d, functor_reference( func ), 0.0 );
-		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl;
+		double err = mist::powell::minimization( p, d, functor_reference( func ), ftol );
+		cout << "Powell's method" << endl;
+		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
+	}
+
+	{
+		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f1 > functor_reference;
+		matrix_type p( 2, 1 ), d = mist::matrix< double >::identity( 2, 2 );
+		f1 func;
+		p[ 0 ] = 100;
+		p[ 1 ] = 200;
+		double err = mist::lucidi::minimization( p, d, functor_reference( func ), ftol );
+		cout << "Lucidi's method" << endl;
+		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
 
 	{
@@ -79,14 +94,16 @@ int main( int argc, char *argv[] )
 		double x;
 		f2 func;
 		double err = mist::gold::minimization( -90, 270, x, functor_reference( func ), 0.00001, 100, false );
-		cout << "f( " << x << " ) = " << err << " , count= " << func.count << endl;
+		cout << "Golden-ratio divide method" << endl;
+		cout << "f( " << x << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
 	{
 		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f2 > functor_reference;
 		double x;
 		f2 func;
 		double err = mist::brent::minimization( -90, 270, x, functor_reference( func ), 0.00001, 100, false );
-		cout << "f( " << x << " ) = " << err << " , count= " << func.count << endl;
+		cout << "Brent's method" << endl;
+		cout << "f( " << x << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
 
 	{
@@ -100,8 +117,9 @@ int main( int argc, char *argv[] )
 		bound( 1, 1 ) = 5;
 		p[ 0 ] = -5;
 		p[ 1 ] = 4;
-		double err = mist::powell::minimization( p, d, bound, functor_reference( func ), 0.0 );
-		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl;
+		double err = mist::gradient::minimization( p, bound, functor_reference( func ), ftol );
+		cout << "Gradient descent [constrained]" << endl;
+		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
 
 	{
@@ -115,8 +133,9 @@ int main( int argc, char *argv[] )
 		bound( 1, 1 ) = 5;
 		p[ 0 ] = -5;
 		p[ 1 ] = 4;
-		double err = mist::gradient::minimization( p, bound, functor_reference( func ), 0.0 );
-		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl;
+		double err = mist::powell::minimization( p, d, bound, functor_reference( func ), ftol );
+		cout << "Powell's method [constrained]" << endl;
+		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
 
 	return( 0 );
