@@ -13,6 +13,7 @@ ALL = \
 	image_test \
 	raw_test \
 	wav_test \
+	margin_array_test\
 
 
 all: $(ALL)
@@ -50,6 +51,8 @@ raw_test : raw_test.obj ct_image_window.obj
 wav_test : wav_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
+margin_array_test : margin_array_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 
 clean:

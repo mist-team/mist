@@ -567,7 +567,7 @@ public:
 		return( data_[ i + j * size1_ ] );
 	}
 
-	const_reference at( size_type index, size_type j, size_type dmy = 0 ) const
+	const_reference at( size_type i, size_type j, size_type dmy = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
 		return( data_[ i + j * size1_ ] );
@@ -817,7 +817,7 @@ public:
 		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
-	const_reference at( size_type index, size_type j, size_type k ) const
+	const_reference at( size_type i, size_type j, size_type k ) const
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
 		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
@@ -855,6 +855,277 @@ public:
 	array3( const array3< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( o.size3( ) ), reso3_( o.reso3( ) ) {}
 
 	array3( const array3< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), size3_( o.size3_ ), reso3_( o.reso3_ ) {}
+};
+
+
+
+
+// マージンを持った配列
+template < class Array >
+class marray : public Array
+{
+public:
+	typedef typename Array::allocator_type allocator_type;
+	typedef typename Array::reference reference;
+	typedef typename Array::const_reference const_reference;
+	typedef typename Array::value_type value_type;
+	typedef typename Array::size_type size_type;
+	typedef typename Array::difference_type difference_type;
+	typedef typename Array::pointer pointer;
+	typedef typename Array::const_pointer const_pointer;
+
+	typedef typename Array::iterator iterator;
+	typedef typename Array::const_iterator const_iterator;
+	typedef typename Array::reverse_iterator reverse_iterator;
+	typedef typename Array::const_reverse_iterator const_reverse_iterator;
+
+private:
+	typedef Array base;
+	size_type margin_;
+
+public:
+	void resize( size_type num1 )
+	{
+		base::resize( num1 + margin_ * 2 );
+	}
+
+	void resize( size_type num1, size_type num2 )
+	{
+		base::resize( num1 + margin_ * 2, num2 + margin_ * 2 );
+	}
+
+	void resize( size_type num1, size_type num2, size_type num3 )
+	{
+		base::resize( num1 + margin_ * 2, num2 + margin_ * 2, num3 + margin_ * 2 );
+	}
+
+	void resize( size_type num1, const value_type &val )
+	{
+		base::resize( num1 + margin_ * 2, val );
+	}
+
+	void resize( size_type num1, size_type num2, const value_type &val )
+	{
+		base::resize( num1 + margin_ * 2, num2 + margin_ * 2, val );
+	}
+
+	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
+	{
+		base::resize( num1 + margin_ * 2, num2 + margin_ * 2, num3 + margin_ * 2, val );
+	}
+
+	void swap( marray &a )
+	{
+		base::swap( a );
+
+		size_type tmp = margin_;
+		margin_ = a.margin_;
+		a.margin_ = tmp;
+	}
+
+	void clear( )
+	{
+		base::clear( );
+		margin_ = 0;
+	}
+
+	void fill_margin( const value_type &val = 0 )
+	{
+		base &o = *this;
+
+		for( size_type k = 0 ; k < margin( ) ; k++ )
+		{
+			for( size_type j = 0 ; j < o.size2( ) ; j++ )
+			{
+				for( size_type i = 0 ; i < o.size1( ) ; i++ )
+				{
+					o( i, j, k ) = val;
+				}
+			}
+		}
+		for( size_type k = o.size3( ) - margin( ) ; k < o.size3( ) ; k++ )
+		{
+			for( size_type j = 0 ; j < o.size2( ) ; j++ )
+			{
+				for( size_type i = 0 ; i < o.size1( ) ; i++ )
+				{
+					o( i, j, k ) = val;
+				}
+			}
+		}
+
+		for( size_type j = 0 ; j < margin( ) ; j++ )
+		{
+			for( size_type k = 0 ; k < o.size3( ) ; k++ )
+			{
+				for( size_type i = 0 ; i < o.size1( ) ; i++ )
+				{
+					o( i, j, k ) = val;
+				}
+			}
+		}
+		for( size_type j = o.size2( ) - margin( ) ; j < o.size2( ) ; j++ )
+		{
+			for( size_type k = 0 ; k < o.size3( ) ; k++ )
+			{
+				for( size_type i = 0 ; i < o.size1( ) ; i++ )
+				{
+					o( i, j, k ) = val;
+				}
+			}
+		}
+
+		for( size_type i = 0 ; i < margin( ) ; i++ )
+		{
+			for( size_type k = 0 ; k < o.size3( ) ; k++ )
+			{
+				for( size_type j = 0 ; j < o.size2( ) ; j++ )
+				{
+					o( i, j, k ) = val;
+				}
+			}
+		}
+		for( size_type i = o.size1( ) - margin( ) ; i < o.size1( ) ; i++ )
+		{
+			for( size_type k = 0 ; k < o.size3( ) ; k++ )
+			{
+				for( size_type j = 0 ; j < o.size2( ) ; j++ )
+				{
+					o( i, j, k ) = val;
+				}
+			}
+		}
+	}
+
+	size_type margin( ) const { return( margin_ ); }
+
+public:
+	const marray& operator =( const marray &o )
+	{
+		if( this == &o ) return( *this );
+
+		base::operator =( o );
+		margin_ = o.margin_;
+
+		return( *this );
+	}
+
+
+// 要素へのアクセス
+public:
+	reference at( size_type i )
+	{
+		return( base::at( i + margin_ ) );
+	}
+	reference at( size_type i, size_type j )
+	{
+		return( base::at( i + margin_, j + margin_ ) );
+	}
+	reference at( size_type i, size_type j, size_type k )
+	{
+		return( base::at( i + margin_, j + margin_, k + margin_ ) );
+	}
+
+	const_reference at( size_type i ) const
+	{
+		return( base::at( i + margin_ ) );
+	}
+	const_reference at( size_type i, size_type j ) const
+	{
+		return( base::at( i + margin_, j + margin_ ) );
+	}
+	const_reference at( size_type i, size_type j, size_type k ) const
+	{
+		return( base::at( i + margin_, j + margin_, k + margin_ ) );
+	}
+
+	reference operator ()( size_type i )
+	{
+		return( base::at( i + margin_ ) );
+	}
+	reference operator ()( size_type i, size_type j )
+	{
+		return( base::at( i + margin_, j + margin_ ) );
+	}
+	reference operator ()( size_type i, size_type j, size_type k )
+	{
+		return( base::at( i + margin_, j + margin_, k + margin_ ) );
+	}
+
+	const_reference operator ()( size_type i ) const
+	{
+		return( base::at( i + margin_ ) );
+	}
+	const_reference operator ()( size_type i, size_type j ) const
+	{
+		return( base::at( i + margin_, j + margin_ ) );
+	}
+	const_reference operator ()( size_type i, size_type j, size_type k ) const
+	{
+		return( base::at( i + margin_, j + margin_, k + margin_ ) );
+	}
+
+
+public:
+	// 構築
+	marray( ) : base( ), margin_( 0 ) {}
+
+	marray( size_type margin ) : base( ), margin_( margin ) {}
+
+	marray( const marray &o ) : base( o ), margin_( o.margin( ) ) {}
+
+	template < class T, class Allocator >
+	marray( const array< T, Allocator > &o, size_type margin, const value_type &val = 0 )
+		: base( o.size( ) + margin * 2 ), margin_( margin )
+	{
+		fill_margin( val );
+		for( size_type i = 0 ; i < o.size( ) ; i++ )
+		{
+			( *this )[ i ] = o[ i ];
+		}
+	}
+
+	template < class T, class Allocator >
+	marray( const array1< T, Allocator > &o, size_type margin, const value_type &val = 0 )
+		: base( o.size( ) + margin * 2, o.reso1( ) ), margin_( margin )
+	{
+		fill_margin( val );
+		for( size_type i = 0 ; i < o.size( ) ; i++ )
+		{
+			( *this )[ i ] = o[ i ];
+		}
+	}
+
+	template < class T, class Allocator >
+	marray( const array2< T, Allocator > &o, size_type margin, const value_type &val = 0 )
+		: base( o.size1( ) + margin * 2, o.size2( ) + margin * 2, o.reso1( ), o.reso2( ) ), margin_( margin )
+	{
+		fill_margin( val );
+		for( size_type j = 0 ; j < o.size2( ) ; j++ )
+		{
+			for( size_type i = 0 ; i < o.size1( ) ; i++ )
+			{
+				( *this )( i, j ) = o( i, j );
+			}
+		}
+	}
+
+	template < class T, class Allocator >
+	marray( const array3< T, Allocator > &o, size_type margin, const value_type &val = 0 )
+		: base( o.size1( ) + margin * 2, o.size2( ) + margin * 2, o.size3( ) + margin * 2, o.reso1( ), o.reso2( ), o.reso3( ) ), margin_( margin )
+	{
+		fill_margin( val );
+		for( size_type k = 0 ; k < o.size3( ) ; k++ )
+		{
+			for( size_type j = 0 ; j < o.size2( ) ; j++ )
+			{
+				for( size_type i = 0 ; i < o.size1( ) ; i++ )
+				{
+					( *this )( i, j, k ) = o( i, j, k );
+				}
+			}
+		}
+	}
 };
 
 
