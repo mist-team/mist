@@ -90,11 +90,29 @@ void euclidean_distance_transform_test( )
 {
 	mist::array2< int > tmp1( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
 	mist::array2< int > tmp2( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
+	mist::array2< int > tmp3( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
 	image_type::size_type i = 0;
 
 	mist::convert( image_object, tmp1 );
 
-	mist::euclidean_distance_transform( tmp1, tmp2 );
+	{
+		mist::timer t;
+		mist::calvin::distance_transform( tmp1, tmp2 );
+		std::cout << "Computation time for Calvin: " << t << " sec" << std::endl;
+	}
+	{
+		mist::timer t;
+		mist::euclidean::distance_transform( tmp1, tmp3, -1, 1 );
+		std::cout << "Computation time for Saito: " << t << " sec" << std::endl;
+	}
+
+	double err = 0.0;
+	for( i = 0 ; i < tmp2.size( ) ; i++ )
+	{
+		err += ( tmp2[ i ] - tmp3[ i ] ) * ( tmp2[ i ] - tmp3[ i ] );
+	}
+
+	std::cout << "Error: " << err << std::endl;
 
 	double min = tmp2[ 0 ];
 	double max = tmp2[ 0 ];

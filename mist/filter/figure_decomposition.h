@@ -95,7 +95,7 @@ namespace __distance_figure_dedomposition__
 		}
 
 		printf( "disteu start\n" );
-		euclidean_distance_transform( dist, dist );
+		euclidean::distance_transform( dist, dist );
 
 		//out = dist;
 		//return(0);
