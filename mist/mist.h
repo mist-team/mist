@@ -1220,6 +1220,304 @@ public:
 };
 
 
+
+
+
+// １辺が2の指数乗のバッファを持った画像を作成する
+template < class Array >
+class buffered_array : public Array
+{
+public:
+	typedef typename Array::allocator_type allocator_type;
+	typedef typename Array::reference reference;
+	typedef typename Array::const_reference const_reference;
+	typedef typename Array::value_type value_type;
+	typedef typename Array::size_type size_type;
+	typedef typename Array::difference_type difference_type;
+	typedef typename Array::pointer pointer;
+	typedef typename Array::const_pointer const_pointer;
+
+	typedef typename Array::iterator iterator;
+	typedef typename Array::const_iterator const_iterator;
+	typedef typename Array::reverse_iterator reverse_iterator;
+	typedef typename Array::const_reverse_iterator const_reverse_iterator;
+
+private:
+	typedef Array base;
+	size_type size1_;
+	size_type size2_;
+	size_type size3_;
+
+	inline size_t floor_square_index( size_t v )
+	{
+		if( v == 0 )
+		{
+			return( 0 );
+		}
+
+		for( size_t i = 1, _2 = 2 ; i < 64 ; i++ )
+		{
+			if( v <= _2 )
+			{
+				return( i );
+			}
+			_2 *= 2;
+		}
+
+		return( 0 );
+	}
+
+	inline size_t floor_square( size_t v )
+	{
+		if( v == 0 )
+		{
+			return( 0 );
+		}
+
+		for( size_t i = 1, _2 = 2 ; i < 64 ; i++ )
+		{
+			if( v <= _2 )
+			{
+				return( _2 );
+			}
+			_2 *= 2;
+		}
+
+		return( 0 );
+	}
+
+public:
+	void resize( size_type num1 )
+	{
+		size1_ = num1;
+		base::resize( floor_square( size1_ ) );
+	}
+
+	void resize( size_type num1, size_type num2 )
+	{
+		size_type s1 = floor_square( num1 );
+		size_type s2 = floor_square( num2 );
+		size1_ = num1;
+		size2_ = num2;
+		s1 = s1 > s2 ? s1 : s2;
+		base::resize( s1, s1 );
+	}
+
+	void resize( size_type num1, size_type num2, size_type num3 )
+	{
+		size_type s1 = floor_square( num1 );
+		size_type s2 = floor_square( num2 );
+		size_type s3 = floor_square( num3 );
+		size1_ = num1;
+		size2_ = num2;
+		size3_ = num3;
+		s1 = s1 > s2 ? s1 : s2;
+		s1 = s1 > s3 ? s1 : s3;
+		base::resize( s1, s1, s1 );
+	}
+
+	void resize( size_type num1, const value_type &val )
+	{
+		size1_ = num1;
+		base::resize( floor_square( size1_ ), val );
+	}
+
+	void resize( size_type num1, size_type num2, const value_type &val )
+	{
+		size_type s1 = floor_square( num1 );
+		size_type s2 = floor_square( num2 );
+		size1_ = num1;
+		size2_ = num2;
+		s1 = s1 > s2 ? s1 : s2;
+		base::resize( s1, s1, val );
+	}
+
+	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
+	{
+		size_type s1 = floor_square( num1 );
+		size_type s2 = floor_square( num2 );
+		size_type s3 = floor_square( num3 );
+		size1_ = num1;
+		size2_ = num2;
+		size3_ = num3;
+		s1 = s1 > s2 ? s1 : s2;
+		s1 = s1 > s3 ? s1 : s3;
+		base::resize( s1, s1, s1, val );
+	}
+
+	void swap( buffered_array &a )
+	{
+		base::swap( a );
+
+		size_type tmp = size1_;
+		size1_ = a.size1_;
+		a.size1_ = tmp;
+
+		tmp = size2_;
+		size2_ = a.size2_;
+		a.size2_ = tmp;
+
+		tmp = size3_;
+		size3_ = a.size3_;
+		a.size3_ = tmp;
+	}
+
+	void clear( )
+	{
+		base::clear( );
+		size1_ = size2_ = size3_ = 0;
+	}
+
+	size_type size1( ) const { return( size1_ > 0 ? size1_ : base::size1( ) ); }
+	size_type size2( ) const { return( size2_ > 0 ? size2_ : base::size2( ) ); }
+	size_type size3( ) const { return( size3_ > 0 ? size3_ : base::size3( ) ); }
+	size_type width( ) const { return( size1( ) ); }
+	size_type height( ) const { return( size2( ) ); }
+	size_type depth( ) const { return( size3( ) ); }
+
+
+private:
+	template < class T, class Allocator >
+	const buffered_array& copy( const array< T, Allocator > &o )
+	{
+		size_type length = size( ) < o.size( ) ? size( ) : o.size( );
+		for( size_type i = 0 ; i < length ; i++ )
+		{
+			( *this )[ i ] = static_cast< value_type >( o[ i ] );
+		}
+		return( *this );
+	}
+
+	template < class T, class Allocator >
+	const buffered_array& copy( const array1< T, Allocator > &o )
+	{
+		size_type length = size( ) < o.size( ) ? size( ) : o.size( );
+		for( size_type i = 0 ; i < length ; i++ )
+		{
+			( *this )[ i ] = static_cast< value_type >( o[ i ] );
+		}
+		return( *this );
+	}
+
+	template < class T, class Allocator >
+	const buffered_array& copy( const array2< T, Allocator > &o )
+	{
+		size_type w = width( ) < o.width( ) ? width( ) : o.width( );
+		size_type h = height( ) < o.height( ) ? height( ) : o.height( );
+		for( size_type j = 0 ; j < h ; j++ )
+		{
+			for( size_type i = 0 ; i < w ; i++ )
+			{
+				( *this )( i, j ) = static_cast< value_type >( o( i, j ) );
+			}
+		}
+		return( *this );
+	}
+
+	template < class T, class Allocator >
+	const buffered_array& copy( const array3< T, Allocator > &o )
+	{
+		size_type w = width( ) < o.width( ) ? width( ) : o.width( );
+		size_type h = height( ) < o.height( ) ? height( ) : o.height( );
+		size_type d = depth( ) < o.depth( ) ? depth( ) : o.depth( );
+		for( size_type k = 0 ; k < d ; k++ )
+		{
+			for( size_type j = 0 ; j < h ; j++ )
+			{
+				for( size_type i = 0 ; i < w ; i++ )
+				{
+					( *this )( i, j, k ) = static_cast< value_type >( o( i, j, k ) );
+				}
+			}
+		}
+		return( *this );
+	}
+
+
+public:
+	const buffered_array& operator =( const buffered_array &o )
+	{
+		if( this == &o ) return( *this );
+
+		base::operator =( o );
+		size1_ = o.size1_;
+		size2_ = o.size2_;
+		size3_ = o.size3_;
+
+		return( *this );
+	}
+
+	template < class T, class Allocator >
+	const buffered_array& operator =( const array< T, Allocator > &o )
+	{
+		resize( o.size( ) );
+		return( copy( o ) );
+	}
+
+	template < class T, class Allocator >
+	const buffered_array& operator =( const array1< T, Allocator > &o )
+	{
+		resize( o.size( ) );
+		reso1( o.reso1( ) );
+		return( copy( o ) );
+	}
+
+	template < class T, class Allocator >
+	const buffered_array& operator =( const array2< T, Allocator > &o )
+	{
+		resize( o.size1( ), o.size2( ) );
+		reso1( o.reso1( ) );
+		reso2( o.reso2( ) );
+		return( copy( o ) );
+	}
+
+	template < class T, class Allocator >
+	const buffered_array& operator =( const array3< T, Allocator > &o )
+	{
+		resize( o.size1( ), o.size2( ), o.size3( ) );
+		reso1( o.reso1( ) );
+		reso2( o.reso2( ) );
+		reso3( o.reso3( ) );
+		return( copy( o ) );
+	}
+
+public:
+	// 構築
+	buffered_array( ) : base( ), size1_( 0 ), size2_( 0 ), size3_( 0 ) {}
+
+	buffered_array( const buffered_array &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( o.size3( ) ) {}
+
+	template < class T, class Allocator >
+	buffered_array( const array< T, Allocator > &o )
+		: base( floor_square( o.size( ) ) ), size1_( o.size( ) ), size2_( 0 ), size3_( 0 )
+	{
+		copy( o );
+	}
+
+	template < class T, class Allocator >
+	buffered_array( const array1< T, Allocator > &o )
+		: base( floor_square( o.size( ) ), o.reso1( ) ), size1_( o.size( ) ), size2_( 0 ), size3_( 0 )
+	{
+		copy( o );
+	}
+
+	template < class T, class Allocator >
+	buffered_array( const array2< T, Allocator > &o )
+		: base( floor_square( o.size1( ) ), floor_square( o.size2( ) ), o.reso1( ), o.reso2( ) ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( 0 )
+	{
+		copy( o );
+	}
+
+	template < class T, class Allocator >
+	buffered_array( const array3< T, Allocator > &o )
+		: base( floor_square( o.size1( ) ), floor_square( o.size2( ) ), floor_square( o.size3( ) ), o.reso1( ), o.reso2( ), o.reso3( ) ),
+			size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( o.size3( ) )
+	{
+		copy( o );
+	}
+};
+
+
 template < class T, class Allocator >
 inline std::ostream &operator <<( std::ostream &out, const array< T, Allocator > &a )
 {
