@@ -62,6 +62,14 @@ private:
   static void cb_Labeling(Fl_Menu_*, void*);
   inline void cb_Labeling1_i(Fl_Menu_*, void*);
   static void cb_Labeling1(Fl_Menu_*, void*);
+  inline void cb_Erosion_i(Fl_Menu_*, void*);
+  static void cb_Erosion(Fl_Menu_*, void*);
+  inline void cb_Dilation_i(Fl_Menu_*, void*);
+  static void cb_Dilation(Fl_Menu_*, void*);
+  inline void cb_Opening_i(Fl_Menu_*, void*);
+  static void cb_Opening(Fl_Menu_*, void*);
+  inline void cb_Closing_i(Fl_Menu_*, void*);
+  static void cb_Closing(Fl_Menu_*, void*);
 public:
   Fl_Value_Slider *WL;
 private:

@@ -150,6 +150,34 @@ void ct_image_window::cb_Labeling1(Fl_Menu_* o, void* v) {
   ((ct_image_window*)(o->parent()->user_data()))->cb_Labeling1_i(o,v);
 }
 
+inline void ct_image_window::cb_Erosion_i(Fl_Menu_*, void*) {
+  ct_image->erosion( this );
+}
+void ct_image_window::cb_Erosion(Fl_Menu_* o, void* v) {
+  ((ct_image_window*)(o->parent()->user_data()))->cb_Erosion_i(o,v);
+}
+
+inline void ct_image_window::cb_Dilation_i(Fl_Menu_*, void*) {
+  ct_image->dilation( this );
+}
+void ct_image_window::cb_Dilation(Fl_Menu_* o, void* v) {
+  ((ct_image_window*)(o->parent()->user_data()))->cb_Dilation_i(o,v);
+}
+
+inline void ct_image_window::cb_Opening_i(Fl_Menu_*, void*) {
+  ct_image->opening( this );
+}
+void ct_image_window::cb_Opening(Fl_Menu_* o, void* v) {
+  ((ct_image_window*)(o->parent()->user_data()))->cb_Opening_i(o,v);
+}
+
+inline void ct_image_window::cb_Closing_i(Fl_Menu_*, void*) {
+  ct_image->closing( this );
+}
+void ct_image_window::cb_Closing(Fl_Menu_* o, void* v) {
+  ((ct_image_window*)(o->parent()->user_data()))->cb_Closing_i(o,v);
+}
+
 Fl_Menu_Item ct_image_window::menu_[] = {
  {"&File", 0,  0, 0, 64, 0, 0, 14, 56},
  {"&Open", 0,  (Fl_Callback*)ct_image_window::cb_Open, 0, 0, 0, 0, 14, 56},
@@ -162,6 +190,10 @@ Fl_Menu_Item ct_image_window::menu_[] = {
  {"&Euclidean Distance Transform", 0,  (Fl_Callback*)ct_image_window::cb_Euclidean, 0, 0, 0, 0, 14, 56},
  {"Labeling 6", 0,  (Fl_Callback*)ct_image_window::cb_Labeling, 0, 0, 0, 0, 14, 56},
  {"Labeling 26", 0,  (Fl_Callback*)ct_image_window::cb_Labeling1, 0, 0, 0, 0, 14, 56},
+ {"Erosion", 0,  (Fl_Callback*)ct_image_window::cb_Erosion, 0, 0, 0, 0, 14, 56},
+ {"Dilation", 0,  (Fl_Callback*)ct_image_window::cb_Dilation, 0, 0, 0, 0, 14, 56},
+ {"Opening", 0,  (Fl_Callback*)ct_image_window::cb_Opening, 0, 0, 0, 0, 14, 56},
+ {"Closing", 0,  (Fl_Callback*)ct_image_window::cb_Closing, 0, 0, 0, 0, 14, 56},
  {0},
  {0}
 };

@@ -31,4 +31,8 @@ int main( int argc, char *argv[] )
 	m = a;
 
 	std::cout << m << std::endl;
+
+	m.fill_margin( 9 );
+
+	std::cout << m << std::endl;
 }

@@ -8,6 +8,7 @@
 #include <mist/filter/median.h>
 #include <mist/filter/distance.h>
 #include <mist/filter/labeling.h>
+#include <mist/filter/morphology.h>
 #include <mist/timer.h>
 
 void ct_draw_area::draw( )
@@ -216,6 +217,23 @@ void ct_draw_area::labeling26( ct_image_window *wnd )
 
 	redraw( );
 	Fl::wait( 0 );
+}
+
+void ct_draw_area::erosion( ct_image_window *wnd )
+{
+	mist::__morphology__::sphere( 3, 1.0, 3.0, 3.0 );
+}
+
+void ct_draw_area::dilation( ct_image_window *wnd )
+{
+}
+
+void ct_draw_area::opening( ct_image_window *wnd )
+{
+}
+
+void ct_draw_area::closing( ct_image_window *wnd )
+{
 }
 
 int main( int argc, char *argv[] )

@@ -21,7 +21,7 @@ mist::array2< unsigned char > image_object( 100, 100 );
 
 void image_draw_area::draw( )
 {
-	mist::draw_image( image_object, w( ), h( ), 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, interpolate_ );
+	mist::draw_image( image_object, w( ), h( ), 1.0, 0.0, 0.0, 128.0, 128.0, 128.0, interpolate_ );
 }
 
 
@@ -205,12 +205,15 @@ void erosion_test( )
 
 void dilation_test( )
 {
+	mist::dilation( image_object, 3 );
 }
 
 void opening_test( )
 {
+	mist::opening( image_object, 3 );
 }
 
 void closing_test( )
 {
+	mist::closing( image_object, 3 );
 }
