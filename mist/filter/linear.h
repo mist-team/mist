@@ -4,340 +4,321 @@
 #include "../mist.h"
 #include "../config/mist_conf.h"
 #include "../config/mist_alloc.h"
+#include "../config/type_trait.h"
+#include "../limits.h"
+#include <cmath>
 
 // mist名前空間の始まり
 _MIST_BEGIN
 
-template < class Top, class Allocator = std::allocator< Top > > 
-
-class linear_operator
-{
-	array< Top, Allocator >	l_operator_;
-	Allocator::size_type	size1_;
-	Allocator::size_type	size2_;
-	Allocator::size_type	size3_;
-
-public:
-
-	//コンストラクタ
-
-	linear_operator( ) :
-		l_operator_( 1 ),
-		size1_( 1 ),
-		size2_( 1 ),
-		size3_( 1 )
-	{
-	}
-
-	linear_operator( mist::array1< Top, Allocator >& l_operator ) :
-		l_operator_( l_operator ),
-		size1_( l_operator.size1( ) ),
-		size2_( 1 ),
-		size3_( 1 )
-	{
-	}
-
-	linear_operator( mist::array2< Top, Allocator >& l_operator ) :
-		l_operator_( l_operator ),
-		size1_( l_operator.size1( ) ),
-		size2_( l_operator.size2( ) ),
-		size3_( 1 )
-	{
-	}
-
-	linear_operator( mist::array3< Top, Allocator >& l_operator ) :
-		l_operator_( l_operator ),
-		size1_( l_operator.size1( ) ),
-		size2_( l_operator.size2( ) ),
-		size3_( l_operator.size3( ) )
-	{
-	}
-
-	//オペレータ定義
-
-	void define( )
-	{
-		l_operator_.resize( 1 );
-		size1_ = size2_ = size3_ = 1;
-	}
-
-	void define( mist::array1< Top, Allocator >& l_operator )
-	{
-		l_operator_ = l_operator;
-		size1_ = l_operator.size1( );
-		size2_ = size3_ = 1;
-	}
-
-	void define( mist::array2< Top, Allocator >& l_operator )
-	{
-		l_operator_ = l_operator;
-		size1_ = l_operator.size1( );
-		size2_ = l_operator.size2( );
-		size3_ = 1;
-	}
-
-	void define( mist::array3< Top, Allocator >& l_operator )
-	{
-		l_operator_ = l_operator;
-		size1_ = l_operator.size1( );
-		size2_ = l_operator.size2( );
-		size3_ = l_operator.size3( );
-	}
-
-	void normalize()
-	{
-		Top norm = Top( );
-
-		int		i;
-		for( i = 0 ; i < l_operator_.size() ; i++ )
-		{
-			norm += l_operator_( i );
-		}
-		for( i = 0 ; i < l_operator_.size() ; i++ )
-		{
-			l_operator_( i ) /= norm;
-		}
-
-	}
-
-	//オペレータ適用
-
-	template < class Tin, class Tout >
-	void apply( const mist::array1< Tin >& input, mist::array1< Tout >& output ) const
-	{
-		output.resize( input.size1() );
-
-		int		i, ii;
-		Top		result;
-		for( i = size1_ / 2 ; i < (input.size1() - size1_ / 2) ; i++ )
-		{
-			result = Top( );
-			for( ii = 0 ; ii < size1_ ; ii++ ){
-				result += input( i - size1_ / 2 + ii) * l_operator_( ii );
-			}
-			output( i ) = result;
-		}
-	}
-
-	template < class Tin, class Tout >
-	void apply( const mist::array2< Tin >& input, mist::array2< Tout >& output ) const
-	{
-		output.resize( input.size1( ), input.size2( ) );
-
-		int		i, j, ii, jj;
-		Top		result;
-		for( j = (size2_ / 2) ; j < (input.size2() - size2_ / 2) ; j++ )
-		{
-			for( i = (size1_ / 2) ; i < (input.size1() - size1_ / 2) ; i++ )
-			{
-				result = Top( );
-				for( jj = 0 ; jj < size2_ ; jj++ )
-				{
-					for( ii = 0 ; ii < size1_ ; ii++ )
-					{
-						result += input( i - size1_ / 2 + ii, j - size2_ / 2 + jj) * l_operator_( jj * size1_ + ii );
-					}
-				}
-				output( i, j ) = result;
-			}
-		}
-	}
-
-	template < class Tin, class Tout >
-	void apply( const mist::array3< Tin >& input, mist::array3< Tout >& output ) const
-	{
-		output.resize( input.size1( ), input.size2( ), input.size3( ) );
-
-		int		i, j, k, ii, jj, kk;
-		Top		result;
-		for( k = (size3_ / 2) ; k < (input.size3() - size3_ / 2) ; k++ )
-		{
-			for( j = (size2_ / 2) ; j < (input.size2() - size2_ / 2) ; j++ )
-			{
-				for( i = (size1_ / 2) ; i < (input.size1() - size1_ / 2) ; i++ )
-				{
-					result = Top( );
-					for( kk = 0 ; kk < size3_ ; kk++ )
-					{
-						for( jj = 0 ; jj < size2_ ; jj++ )
-						{
-							for( ii = 0 ; ii < size1_ ; ii++ )
-							{
-								result += input( i - size1_ / 2 + ii, j - size2_ / 2 + jj, k - size3_ / 2 + kk ) * l_operator_( kk * size1_ * size2_ + jj * size1_ + ii);
-							}
-						}
-					}
-					output( i, j, k ) = result;
-				}
-			}
-		}
-	}
-
-	~linear_operator( ) 
-	{
-		l_operator_.clear( );
-	}
-
-};
-
 namespace linear_filter
 {
-	
-	//array1用ガウシアン
-	template < class Tin, class Tout >
-	void gaussian( const mist::array1< Tin >& input, mist::array1< Tout >& output )
+
+	template < class T_in, class T_kernel >
+	double get_value( const mist::array1< T_in >& in, const mist::array1< T_kernel >& kernel, const int& i )
 	{
-		mist::array1< double > gaussian_array( 3 );
+		int		ii;
+		double	val = 0;
+		for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
+		{
+			val += in( i - kernel.size1( ) / 2 + ii ) * kernel( ii );
+		}
+		return( val );
+	}
 
-		gaussian_array( 0 ) = 0.60653066;
-		gaussian_array( 1 ) = 1.0;
-		gaussian_array( 2 ) = 0.60653066;
+	template < class T_in, class T_kernel >
+	double get_value( const mist::array2< T_in >& in, const mist::array2< T_kernel >& kernel, const int& i, const int& j )
+	{
+		int		ii, jj;
+		double	val = 0;
+		for( jj = 0 ; jj < kernel.size2( ) ; jj++ )
+		{
+			for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
+			{
+				val += in( i - kernel.size1( ) / 2 + ii, j - kernel.size2( ) / 2 + jj ) * kernel( ii, jj );
+			}
+		}
+		return( val );
+	}
 
-		linear_operator< double > l_operator( gaussian_array );
-		l_operator.normalize();
+	template < class T_in, class T_kernel >
+	double get_value( const mist::array3< T_in >& in, const mist::array3< T_kernel >& kernel, const int& i, const int& j, const int& k )
+	{
+		int		ii, jj, kk;
+		double	val = 0;
+		for( kk = 0 ; kk < kernel.size3( ) ; kk++ )
+		{
+			for( jj = 0 ; jj < kernel.size2( ) ; jj++ )
+			{
+				for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
+				{
+					val += in( i - kernel.size1( ) / 2 + ii, j - kernel.size2( ) / 2 + jj, k - kernel.size3( ) / 2 + kk ) * kernel( ii, jj, kk );
+				}
+			}
+		}
+		return( val );
+	}
 
-		l_operator.apply( input, output );
+	template < class T_in, class T_out, class T_kernel >
+	void apply( const mist::array1< T_in >& in, mist::array1< T_out >& out, const mist::array1< T_kernel >& kernel )
+	{
+		out.resize( in.size1( ) );
+		int		i;
+		for( i = (kernel.size1( ) / 2) ; i < (in.size1() - kernel.size1( ) / 2) ; i++ )
+		{
+			 out( i ) = get_value( in, kernel, i );	
+		}
+	}
+
+	template < class T_in, class T_out, class T_kernel >
+	void apply( const mist::array2< T_in >& in, mist::array2< T_out >& out, const mist::array2< T_kernel >& kernel )
+	{
+		out.resize( in.size1( ), in.size2( ) );
+		int		i, j;
+		for( j = (kernel.size2( ) / 2) ; j < (in.size2() - kernel.size2( ) / 2) ; j++ )
+		{
+			for( i = (kernel.size1( ) / 2) ; i < (in.size1() - kernel.size1( ) / 2) ; i++ )
+			{
+				out( i, j ) = get_value( in, kernel, i, j );
+			}
+		}
+	}
+
+	template < class T_in, class T_out, class T_kernel >
+	void apply( const mist::array3< T_in >& in, mist::array3< T_out >& out, const mist::array3< T_kernel >& kernel )
+	{
+		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		int		i, j, k;
+		for( k = (kernel.size3( ) / 2) ; k < (in.size3( ) - kernel.size3( ) / 2) ; k++ )
+		{
+			for( j = (kernel.size2( ) / 2) ; j < (in.size2() - kernel.size2( ) / 2) ; j++ )
+			{
+				for( i = (kernel.size1( ) / 2) ; i < (in.size1() - kernel.size1( ) / 2) ; i++ )
+				{
+					out( i, j, k ) = get_value( in, kernel, i, j, k );
+				}
+			}
+		}
+	}
+
+	template < class T_in, class T_out >
+	void normalize( const mist::array1< T_in >& in, mist::array1< T_out >& out)
+	{
+		double	norm;
+		int		i;
+		norm = 0;
+		for( i = 0 ; i < in.size1( ) ; i++ )
+		{
+			norm += in( i );
+		}
+		out.resize( in.size1( ) );
+		for( i = 0 ; i < out.size1() ; i++ )
+		{
+			out( i ) /= norm;
+		}
+	}
+
+	template < class T_in, class T_out >
+	void normalize( const mist::array2< T_in >& in, mist::array2< T_out >& out )
+	{
+		double	norm;
+		int		i, j;
+		norm = 0;
+		for( i = 0 ; i < in.size1( ) ; i++ )
+		{
+			for( j = 0 ; j < in.size2( ) ; j++ )
+			{
+				norm += in( i, j );
+			}
+		}
+		out.resize( in.size1( ), in.size2( ) );
+		for( i = 0 ; i < out.size1() ; i++ )
+		{
+			for( j = 0 ; j < out.size2() ; j++ )
+			{
+				out( i, j ) /= norm;
+			}
+		}
+	}
+
+	template < class T_in, class T_out >
+	void normalize( const mist::array3< T_in >& in, mist::array3< T_out >& out )
+	{
+		double	norm;
+		int		i, j, k;
+		norm = 0;
+		for( i = 0 ; i < in.size1( ) ; i++ )
+		{
+			for( j = 0 ; j < in.size2( ) ; j++ )
+			{
+				for( k = 0 ; k < in.size3( ) ; k++ )
+				{
+					norm += in( i, j, k );
+				}
+			}
+		}
+		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		for( i = 0 ; i < out.size1() ; i++ )
+		{
+			for( j = 0 ; j < out.size2() ; j++ )
+			{
+				for( k = 0 ; k < out.size3() ; k++ )
+				{
+					out( i, j, k ) /= norm;
+				}
+			}
+		}
+	}
+
+	//array1用ガウシアン
+	template < class T_in, class T_out >
+	void gaussian( const mist::array1< T_in >& in, mist::array1< T_out >& out )
+	{
+		mist::array1< double > kernel( 3 );
+
+		kernel( 0 ) = 0.60653066;
+		kernel( 1 ) = 1.0;
+		kernel( 2 ) = 0.60653066;
+
+		mist::array1< double >	n_kernel;
+		normalize( kernel, n_kernel );
+
+		apply( in, out, n_kernel );
 	}
 
 	//array2用ガウシアン
-	template < class Tin, class Tout >
-	void gaussian( const mist::array2< Tin >& input, mist::array2< Tout >& output )
+	template < class T_in, class T_out >
+	void gaussian( const mist::array2< T_in >& in, mist::array2< T_out >& out )
 	{
-		mist::array2< double > gaussian_array( 3, 3 );
+		mist::array2< double > kernel( 3, 3 );
 
-		gaussian_array( 0, 0 ) = 0.367879441;
-		gaussian_array( 1, 0 ) = 0.60653066;
-		gaussian_array( 2, 0 ) = 0.367879441;
-		gaussian_array( 0, 1 ) = 0.60653066;
-		gaussian_array( 1, 1 ) = 1.0;
-		gaussian_array( 2, 1 ) = 0.60653066;
-		gaussian_array( 0, 2 ) = 0.367879441;
-		gaussian_array( 1, 2 ) = 0.60653066;
-		gaussian_array( 2, 2 ) = 0.367879441;
+		kernel( 0, 0 ) = 0.367879441;
+		kernel( 1, 0 ) = 0.60653066;
+		kernel( 2, 0 ) = 0.367879441;
+		kernel( 0, 1 ) = 0.60653066;
+		kernel( 1, 1 ) = 1.0;
+		kernel( 2, 1 ) = 0.60653066;
+		kernel( 0, 2 ) = 0.367879441;
+		kernel( 1, 2 ) = 0.60653066;
+		kernel( 2, 2 ) = 0.367879441;
 
-		linear_operator< double > l_operator( gaussian_array );
-		l_operator.normalize();
+		mist::array2< double >	n_kernel;
+		normalize( kernel, n_kernel );
 
-		l_operator.apply( input, output );
+		apply( in, out, n_kernel );
 	}
 
 	//array3用ガウシアン
-	template < class Tin, class Tout >
-	void gaussian( const mist::array3< Tin >& input, mist::array3< Tout >& output )
+	template < class T_in, class T_out >
+	void gaussian( const mist::array3< T_in >& in, mist::array3< T_out >& out )
 	{
-		mist::array3< double > gaussian_array( 3, 3, 3 );
+		mist::array3< double > kernel( 3, 3, 3 );
 
-		gaussian_array( 0, 0, 0 ) = 0.22313016;
-		gaussian_array( 1, 0, 0 ) = 0.367879441;
-		gaussian_array( 2, 0, 0 ) = 0.22313016;
-		gaussian_array( 0, 1, 0 ) = 0.367879441;
-		gaussian_array( 1, 1, 0 ) = 0.60653066;
-		gaussian_array( 2, 1, 0 ) = 0.367879441;
-		gaussian_array( 0, 2, 0 ) = 0.22313016;
-		gaussian_array( 1, 2, 0 ) = 0.367879441;
-		gaussian_array( 2, 2, 0 ) = 0.22313016;
+		kernel( 0, 0, 0 ) = 0.22313016;
+		kernel( 1, 0, 0 ) = 0.367879441;
+		kernel( 2, 0, 0 ) = 0.22313016;
+		kernel( 0, 1, 0 ) = 0.367879441;
+		kernel( 1, 1, 0 ) = 0.60653066;
+		kernel( 2, 1, 0 ) = 0.367879441;
+		kernel( 0, 2, 0 ) = 0.22313016;
+		kernel( 1, 2, 0 ) = 0.367879441;
+		kernel( 2, 2, 0 ) = 0.22313016;
 
-		gaussian_array( 0, 0, 1 ) = 0.367879441;
-		gaussian_array( 1, 0, 1 ) = 0.60653066;
-		gaussian_array( 2, 0, 1 ) = 0.367879441;
-		gaussian_array( 0, 1, 1 ) = 0.60653066;
-		gaussian_array( 1, 1, 1 ) = 1.0;
-		gaussian_array( 2, 1, 1 ) = 0.60653066;
-		gaussian_array( 0, 2, 1 ) = 0.367879441;
-		gaussian_array( 1, 2, 1 ) = 0.60653066;
-		gaussian_array( 2, 2, 1 ) = 0.367879441;
+		kernel( 0, 0, 1 ) = 0.367879441;
+		kernel( 1, 0, 1 ) = 0.60653066;
+		kernel( 2, 0, 1 ) = 0.367879441;
+		kernel( 0, 1, 1 ) = 0.60653066;
+		kernel( 1, 1, 1 ) = 1.0;
+		kernel( 2, 1, 1 ) = 0.60653066;
+		kernel( 0, 2, 1 ) = 0.367879441;
+		kernel( 1, 2, 1 ) = 0.60653066;
+		kernel( 2, 2, 1 ) = 0.367879441;
 
-		gaussian_array( 0, 0, 2 ) = 0.22313016;
-		gaussian_array( 1, 0, 2 ) = 0.367879441;
-		gaussian_array( 2, 0, 2 ) = 0.22313016;
-		gaussian_array( 0, 1, 2 ) = 0.367879441;
-		gaussian_array( 1, 1, 2 ) = 0.60653066;
-		gaussian_array( 2, 1, 2 ) = 0.367879441;
-		gaussian_array( 0, 2, 2 ) = 0.22313016;
-		gaussian_array( 1, 2, 2 ) = 0.367879441;
-		gaussian_array( 2, 2, 2 ) = 0.22313016;
+		kernel( 0, 0, 2 ) = 0.22313016;
+		kernel( 1, 0, 2 ) = 0.367879441;
+		kernel( 2, 0, 2 ) = 0.22313016;
+		kernel( 0, 1, 2 ) = 0.367879441;
+		kernel( 1, 1, 2 ) = 0.60653066;
+		kernel( 2, 1, 2 ) = 0.367879441;
+		kernel( 0, 2, 2 ) = 0.22313016;
+		kernel( 1, 2, 2 ) = 0.367879441;
+		kernel( 2, 2, 2 ) = 0.22313016;
 
-		linear_operator< double > l_operator( gaussian_array );
-		l_operator.normalize();
+		mist::array3< double >	n_kernel;
+		normalize( kernel, n_kernel );
 
-		l_operator.apply( input, output );
+		apply( in, out, n_kernel );
 	}
 
 	//array1用ラプラシアン
-	template < class Tin, class Tout >
-	void laplacian( const mist::array1< Tin >& input, mist::array1< Tout >& output )
+	template < class T_in, class T_out >
+	void laplacian( const mist::array1< T_in >& in, mist::array1< T_out >& out )
 	{
-		mist::array1< double > laplacian_array( 3 );
+		mist::array1< double > kernel( 3 );
 
-		laplacian_array( 0 ) = 1.0;
-		laplacian_array( 1 ) = -2.0;
-		laplacian_array( 2 ) = 1.0;
-
-		linear_operator< double > l_operator( laplacian_array );
+		kernel( 0 ) = 1.0;
+		kernel( 1 ) = -2.0;
+		kernel( 2 ) = 1.0;
 		
-		l_operator.apply( input, output );
+		apply( in, out, kernel );
 	}
 
 	//array2用ラプラシアン
-	template < class Tin, class Tout >
-	void laplacian( const mist::array2< Tin >& input, mist::array2< Tout >& output )
+	template < class T_in, class T_out >
+	void laplacian( const mist::array2< T_in >& in, mist::array2< T_out >& out )
 	{
-		mist::array2< double > laplacian_array( 3, 3 );
+		mist::array2< double > kernel( 3, 3 );
 
-		laplacian_array( 0, 0 ) = 1.0;
-		laplacian_array( 1, 0 ) = 1.0;
-		laplacian_array( 2, 0 ) = 1.0;
-		laplacian_array( 0, 1 ) = 1.0;
-		laplacian_array( 1, 1 ) = -8.0;
-		laplacian_array( 2, 1 ) = 1.0;
-		laplacian_array( 0, 2 ) = 1.0;
-		laplacian_array( 1, 2 ) = 1.0;
-		laplacian_array( 2, 2 ) = 1.0;
+		kernel( 0, 0 ) = 1.0;
+		kernel( 1, 0 ) = 1.0;
+		kernel( 2, 0 ) = 1.0;
+		kernel( 0, 1 ) = 1.0;
+		kernel( 1, 1 ) = -8.0;
+		kernel( 2, 1 ) = 1.0;
+		kernel( 0, 2 ) = 1.0;
+		kernel( 1, 2 ) = 1.0;
+		kernel( 2, 2 ) = 1.0;
 
-		linear_operator< double > l_operator( laplacian_array );
-
-		l_operator.apply( input, output );
+		apply( in, out, kernel );
 	}
 
 	//array3用ラプラシアン
-	template < class Tin, class Tout >
-	void laplacian( const mist::array3< Tin >& input, mist::array3< Tout >& output )
+	template < class T_in, class T_out >
+	void laplacian( const mist::array3< T_in >& in, mist::array3< T_out >& out )
 	{
-		mist::array3< double > laplacian_array( 3, 3, 3 );
+		mist::array3< double > kernel( 3, 3, 3 );
 
-		laplacian_array( 0, 0, 0 ) = 1.0;
-		laplacian_array( 1, 0, 0 ) = 1.0;
-		laplacian_array( 2, 0, 0 ) = 1.0;
-		laplacian_array( 0, 1, 0 ) = 1.0;
-		laplacian_array( 1, 1, 0 ) = 1.0;
-		laplacian_array( 2, 1, 0 ) = 1.0;
-		laplacian_array( 0, 2, 0 ) = 1.0;
-		laplacian_array( 1, 2, 0 ) = 1.0;
-		laplacian_array( 2, 2, 0 ) = 1.0;
+		kernel( 0, 0, 0 ) = 1.0;
+		kernel( 1, 0, 0 ) = 1.0;
+		kernel( 2, 0, 0 ) = 1.0;
+		kernel( 0, 1, 0 ) = 1.0;
+		kernel( 1, 1, 0 ) = 1.0;
+		kernel( 2, 1, 0 ) = 1.0;
+		kernel( 0, 2, 0 ) = 1.0;
+		kernel( 1, 2, 0 ) = 1.0;
+		kernel( 2, 2, 0 ) = 1.0;
 
-		laplacian_array( 0, 0, 1 ) = 1.0;
-		laplacian_array( 1, 0, 1 ) = 1.0;
-		laplacian_array( 2, 0, 1 ) = 1.0;
-		laplacian_array( 0, 1, 1 ) = 1.0;
-		laplacian_array( 1, 1, 1 ) = -26.0;
-		laplacian_array( 2, 1, 1 ) = 1.0;
-		laplacian_array( 0, 2, 1 ) = 1.0;
-		laplacian_array( 1, 2, 1 ) = 1.0;
-		laplacian_array( 2, 2, 1 ) = 1.0;
+		kernel( 0, 0, 1 ) = 1.0;
+		kernel( 1, 0, 1 ) = 1.0;
+		kernel( 2, 0, 1 ) = 1.0;
+		kernel( 0, 1, 1 ) = 1.0;
+		kernel( 1, 1, 1 ) = -26.0;
+		kernel( 2, 1, 1 ) = 1.0;
+		kernel( 0, 2, 1 ) = 1.0;
+		kernel( 1, 2, 1 ) = 1.0;
+		kernel( 2, 2, 1 ) = 1.0;
 
-		laplacian_array( 0, 0, 2 ) = 1.0;
-		laplacian_array( 1, 0, 2 ) = 1.0;
-		laplacian_array( 2, 0, 2 ) = 1.0;
-		laplacian_array( 0, 1, 2 ) = 1.0;
-		laplacian_array( 1, 1, 2 ) = 1.0;
-		laplacian_array( 2, 1, 2 ) = 1.0;
-		laplacian_array( 0, 2, 2 ) = 1.0;
-		laplacian_array( 1, 2, 2 ) = 1.0;
-		laplacian_array( 2, 2, 2 ) = 1.0;
+		kernel( 0, 0, 2 ) = 1.0;
+		kernel( 1, 0, 2 ) = 1.0;
+		kernel( 2, 0, 2 ) = 1.0;
+		kernel( 0, 1, 2 ) = 1.0;
+		kernel( 1, 1, 2 ) = 1.0;
+		kernel( 2, 1, 2 ) = 1.0;
+		kernel( 0, 2, 2 ) = 1.0;
+		kernel( 1, 2, 2 ) = 1.0;
+		kernel( 2, 2, 2 ) = 1.0;
 
-		linear_operator< double > l_operator( laplacian_array );
-
-		l_operator.apply( input, output );
+		apply( in, out, kernel );
 	}
 }
 	
