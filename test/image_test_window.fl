@@ -34,7 +34,7 @@ class image_test_window {open
           } {
             menuitem {} {
               label {Open &Image}
-              callback {const char *filename = fl_file_chooser( "Open Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,pbm,pgm,ppm,pnm})", "" );
+              callback {const char *filename = fl_file_chooser( "Open Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,gif,pbm,pgm,ppm,pnm})", "" );
 if( filename == NULL ) return;
 
 read_image_test( filename );
@@ -62,13 +62,13 @@ Fl::wait( 0 );}
           } {
             menuitem {} {
               label {Save &Image}
-              callback {const char *filename = fl_file_chooser( "Save Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,pbm,pgm,ppm,pnm})", "" );
+              callback {const char *filename = fl_file_chooser( "Save Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,gif,pbm,pgm,ppm,pnm})", "" );
 if( filename == NULL ) return;
 
 write_image_test( filename );
 
 draw_area->redraw( );
-Fl::wait( 0 );}
+Fl::wait( 0 );} selected
               xywh {15 15 100 20}
             }
             menuitem {} {
@@ -79,7 +79,7 @@ if( filename == NULL ) return;
 write_dicom_test( filename );
 
 draw_area->redraw( );
-Fl::wait( 0 );} selected
+Fl::wait( 0 );}
               xywh {25 25 100 20}
             }
           }

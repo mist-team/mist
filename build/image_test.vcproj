@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltkd.lib fltkgld.lib wsock32.lib libjpeg.lib libtiff.lib libpng.lib zlib.lib"
+				AdditionalDependencies="fltkd.lib fltkgld.lib wsock32.lib libjpeg.lib libtiff.lib libpng.lib libgif.lib zlib.lib"
 				OutputFile="$(OutDir)/image_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -88,7 +88,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltk.lib fltkgl.lib wsock32.lib libjpeg.lib libtiff.lib libpng.lib zlib.lib"
+				AdditionalDependencies="fltk.lib fltkgl.lib wsock32.lib libjpeg.lib libtiff.lib libpng.lib libgif.lib zlib.lib"
 				OutputFile="$(OutDir)/image_test.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="FALSE"
@@ -175,6 +175,12 @@
 			</File>
 			<File
 				RelativePath="..\mist\filter\figure_decomposition.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\gif.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\image.h">
 			</File>
 			<File
 				RelativePath="..\mist\filter\interlace.h">

@@ -3,7 +3,7 @@
 #include "image_test_window.h"
 
 inline void image_test_window::cb_Open_i(Fl_Menu_*, void*) {
-  const char *filename = fl_file_chooser( "Open Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,pbm,pgm,ppm,pnm})", "" );
+  const char *filename = fl_file_chooser( "Open Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,gif,pbm,pgm,ppm,pnm})", "" );
 if( filename == NULL ) return;
 
 read_image_test( filename );
@@ -29,7 +29,7 @@ void image_test_window::cb_Open1(Fl_Menu_* o, void* v) {
 }
 
 inline void image_test_window::cb_Save_i(Fl_Menu_*, void*) {
-  const char *filename = fl_file_chooser( "Save Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,pbm,pgm,ppm,pnm})", "" );
+  const char *filename = fl_file_chooser( "Save Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,gif,pbm,pgm,ppm,pnm})", "" );
 if( filename == NULL ) return;
 
 write_image_test( filename );

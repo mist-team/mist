@@ -22,6 +22,10 @@
 #include <mist/io/png.h>
 #endif
 
+#ifndef __INCLUDE_MIST_GIF__
+#include <mist/io/gif.h>
+#endif
+
 #ifndef __INCLUDE_MIST_TIFF__
 #include <mist/io/tiff.h>
 #endif
@@ -105,6 +109,10 @@ inline bool read_image( mist::array2< T, Allocator > &image, const std::string &
 	{
 		ret = mist::read_png( image, filename );
 	}
+	else if( ext == ".gif" )
+	{
+		ret = mist::read_gif( image, filename );
+	}
 	else if( ext == ".pbm" || ext == ".pgm" || ext == ".ppm" || ext == ".pnm" )
 	{
 		ret = mist::read_pnm( image, filename );
@@ -154,6 +162,10 @@ inline bool write_image( mist::array2< T, Allocator > &image, const std::string 
 	else if( ext == ".png" )
 	{
 		ret = mist::write_png( image, filename );
+	}
+	else if( ext == ".gif" )
+	{
+		ret = mist::write_gif( image, filename );
 	}
 	else if( ext == ".pbm" )
 	{
