@@ -3,12 +3,16 @@ include ../build/makeinclude
 
 ALL = \
 	matrix_test \
+	limits_test \
 
 
 all: $(ALL)
 
 matrix_test : matrix_test.o
 	$(CXX) $(CXXFLAGS) -o $@ matrix_test.o $(LIBS) $(LDLIBS)
+
+limits_test : limits_test.o
+	$(CXX) $(CXXFLAGS) -o $@ limits_test.o $(LIBS) $(LDLIBS)
 
 clean:
 	for binary in $(ALL); do\
