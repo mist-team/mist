@@ -7,10 +7,10 @@
 
 int main( )
 {
-	typedef mist::matrix< double > matrix;
-	typedef mist::matrix< double >::size_type size_type;
+	typedef mist::matrix< float > matrix;
+	typedef mist::matrix< float >::size_type size_type;
 	//typedef mist::matrix< std::complex< double > > matrix;
-	matrix a( 1000, 1000 );
+	matrix a( 200, 200 );
 
 	mist::random r( 123 );      //—”¶¬Ší‚Ì\’z
 
