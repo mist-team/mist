@@ -6,6 +6,12 @@
 #include "../mist.h"
 #endif
 
+// ƒJƒ‰[‰æ‘œ‚Ìİ’è‚ğ“Ç‚İ‚Ş
+#ifndef __INCLUDE_MIST_COLOR_H__
+#include "../config/color.h"
+#endif
+
+
 #include <string>
 
 #include <png.h>
@@ -21,7 +27,7 @@ namespace __png_controller__
 	struct png_controller
 	{
 		typedef _pixel_converter_< T > pixel_converter;
-		typedef typename _pixel_converter_< T >::color_type color_type;
+		typedef typename pixel_converter::color_type color_type;
 		typedef typename array2< T, Allocator >::size_type size_type;
 
 		static bool read( array2< T, Allocator > &image, const std::string &filename )

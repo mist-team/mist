@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="boolean_test" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="image_test" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** 編集しないでください **
 
 # TARGTYPE "Win32 (x86) Console Application" 0x0103
 
-CFG=boolean_test - Win32 Debug
+CFG=image_test - Win32 Debug
 !MESSAGE これは有効なﾒｲｸﾌｧｲﾙではありません。 このﾌﾟﾛｼﾞｪｸﾄをﾋﾞﾙﾄﾞするためには NMAKE を使用してください。
 !MESSAGE [ﾒｲｸﾌｧｲﾙのｴｸｽﾎﾟｰﾄ] ｺﾏﾝﾄﾞを使用して実行してください
 !MESSAGE 
-!MESSAGE NMAKE /f "boolean_test.mak".
+!MESSAGE NMAKE /f "image_test.mak".
 !MESSAGE 
 !MESSAGE NMAKE の実行時に構成を指定できます
 !MESSAGE ｺﾏﾝﾄﾞ ﾗｲﾝ上でﾏｸﾛの設定を定義します。例:
 !MESSAGE 
-!MESSAGE NMAKE /f "boolean_test.mak" CFG="boolean_test - Win32 Debug"
+!MESSAGE NMAKE /f "image_test.mak" CFG="image_test - Win32 Debug"
 !MESSAGE 
 !MESSAGE 選択可能なﾋﾞﾙﾄﾞ ﾓｰﾄﾞ:
 !MESSAGE 
-!MESSAGE "boolean_test - Win32 Release" ("Win32 (x86) Console Application" 用)
-!MESSAGE "boolean_test - Win32 Debug" ("Win32 (x86) Console Application" 用)
+!MESSAGE "image_test - Win32 Release" ("Win32 (x86) Console Application" 用)
+!MESSAGE "image_test - Win32 Debug" ("Win32 (x86) Console Application" 用)
 !MESSAGE 
 
 # Begin Project
@@ -28,7 +28,7 @@ CFG=boolean_test - Win32 Debug
 CPP=cl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "boolean_test - Win32 Release"
+!IF  "$(CFG)" == "image_test - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -50,14 +50,14 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
+# ADD LINK32 libjpeg.lib libtiff.lib libpng.lib zlib.lib fltk.lib fltkgl.lib opengl32.lib wsock32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
 
-!ELSEIF  "$(CFG)" == "boolean_test - Win32 Debug"
+!ELSEIF  "$(CFG)" == "image_test - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir "boolean_test___Win32_Debug"
-# PROP BASE Intermediate_Dir "boolean_test___Win32_Debug"
+# PROP BASE Output_Dir "image_test___Win32_Debug"
+# PROP BASE Intermediate_Dir "image_test___Win32_Debug"
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
@@ -74,20 +74,24 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 libjpegd.lib libtiffd.lib libpngd.lib zlibd.lib fltkd.lib fltkgld.lib opengl32.lib wsock32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
 
 !ENDIF 
 
 # Begin Target
 
-# Name "boolean_test - Win32 Release"
-# Name "boolean_test - Win32 Debug"
+# Name "image_test - Win32 Release"
+# Name "image_test - Win32 Debug"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=..\test\boolean_test.cpp
+SOURCE=..\test\image_test.cpp
+# End Source File
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\test\image_test_window.cpp"
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -95,7 +99,31 @@ SOURCE=..\test\boolean_test.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=\mist\mist\matrix.h
+SOURCE="\SVN Projects\mist\test\image_test.h"
+# End Source File
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\test\image_test_window.h"
+# End Source File
+# End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# End Group
+# Begin Group "MIST ファイル"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\mist\io\bmp.h"
+# End Source File
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\mist\draw.h"
+# End Source File
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\mist\io\jpeg.h"
 # End Source File
 # Begin Source File
 
@@ -109,10 +137,14 @@ SOURCE="\SVN Projects\mist\mist\config\mist_alloc.h"
 
 SOURCE="\SVN Projects\mist\mist\config\mist_conf.h"
 # End Source File
-# End Group
-# Begin Group "Resource Files"
+# Begin Source File
 
-# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+SOURCE="\SVN Projects\mist\mist\io\png.h"
+# End Source File
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\mist\io\tiff.h"
+# End Source File
 # End Group
 # End Target
 # End Project

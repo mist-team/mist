@@ -5,9 +5,13 @@
 #include <float.h>
 
 
+#ifndef __INCLUDE_MIST_CONF_H__
+#include "config/mist_conf.h"
+#endif
+
 
 // mist名前空間の始まり
-namespace mist{
+_MIST_BEGIN
 
 
 // numeric_limitsの特殊化用マクロ
@@ -60,6 +64,6 @@ _DEFINE_TYPE_LIMITS( long double,   false, false,  LDBL_MIN,  LDBL_MAX, 0 )
 #undef _DEFINE_TYPE_LIMITS
 
 // mist名前空間の終わり
-}
+_MIST_END
 
 #endif // __INCLUDE_MIST_LIMITS__

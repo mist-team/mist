@@ -15,6 +15,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "image_test"=".\image_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "iterator_test"=".\iterator_test.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -52,6 +64,18 @@ Package=<4>
 ###############################################################################
 
 Project: "operators_test"=".\operators_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "thread_test"=".\thread_test.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

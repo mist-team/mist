@@ -4,6 +4,13 @@
 
 #include "mist.h"
 
+// カラー画像の設定を読み込む
+#ifndef __INCLUDE_MIST_COLOR_H__
+#include "config/color.h"
+#endif
+
+
+
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -11,6 +18,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <cmath>
+
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -45,9 +53,6 @@ namespace pixel_data
 	template <>          struct gl_type_trait< float >         { _MIST_CONST( GLenum, gl_type, GL_FLOAT ); };
 //	template <>          struct gl_type_trait< double >        { _MIST_CONST( GLenum, gl_type, true  ); };
 //	template <>          struct gl_type_trait< long double >   { _MIST_CONST( GLenum, gl_type, true  ); };
-
-	template < class T > struct gl_format_trait				{ _MIST_CONST( GLenum, gl_type, GL_RGB ); };
-	template < class T > struct gl_format_trait< rgb< T > >	{ _MIST_CONST( GLenum, gl_type, GL_LUMINANCE ); };
 
 	template< class T, class Allocator >
 	void glTexImage2D( const array2< T, Allocator > &image )

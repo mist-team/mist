@@ -29,9 +29,9 @@
 #ifndef __INCLUDE_MIST_H__
 #define __INCLUDE_MIST_H__
 
-#include <memory>
 #include "config/mist_conf.h"
 #include "config/mist_alloc.h"
+#include "config/iterator.h"
 
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è

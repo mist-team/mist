@@ -1,4 +1,4 @@
-#include <mist/mist.h>
+#include <mist/config/color.h>
 #include <iostream>
 
 int main( int argc, char *argv[] )

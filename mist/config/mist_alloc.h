@@ -1,7 +1,16 @@
 #ifndef __INCLUDE_MIST_ALLOC_H__
 #define __INCLUDE_MIST_ALLOC_H__
 
+#include <memory>
+
+#ifndef __INCLUDE_MIST_CONF_H__
 #include "mist_conf.h"
+#endif
+
+#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
+#include "type_trait.h"
+#endif
+
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN
