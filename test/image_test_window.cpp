@@ -95,7 +95,7 @@ void image_test_window::cb_Write3(Fl_Button* o, void* v) {
 }
 
 inline void image_test_window::cb_Read4_i(Fl_Button*, void*) {
-  const char *filename = fl_file_chooser( "Open DICOM", "DICOM File (*.*)", "" );
+  const char *filename = fl_file_chooser( "Open DICOM", "DICOM File (*)", "" );
 if( filename == NULL ) return;
 
 read_dicom_test( filename );

@@ -105,15 +105,24 @@ namespace __raw_controller__
 			size_type byte = sizeof( T );
 			size_type ret;
 			size_type size = w * byte; // スライス1枚分のメモリを確保
-			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
+
+			unsigned char *tmparray = new unsigned char[ size + 1 ];
+			unsigned char *pointer = tmparray;
+			size_type read_size = 0;
+			while( gzeof( fp ) == 0 )
+			{
+                read_size = gzread( fp, pointer, 4096, fp );
+				if( read_size < 4096 )
+				{
+					break;
+				}
+				pointer += read_size;
+			}
+			gzclose( fp );
 
 			for( i = 0 ; i < w ; i++ )
 			{
-				if( gzeof( fp ) ) break;
-				ret = gzread( fp, (void*)tmparray, static_cast< unsigned int >( size ) );
-				if( ret != size ) break;
-
 				for( l = 0 ; l < byte ; l++ )
 				{
 					data[ l ] = tmparray[ i * byte + l ];
@@ -122,7 +131,6 @@ namespace __raw_controller__
 				image[ i ] = data.get_value( ) + offset;
 			}
 			delete [] tmparray;
-			gzclose( fp );
 
 			// ファイルから読み出されたデータ量が，指定されたものよりも少ない場合
 			if( w > i )
@@ -166,7 +174,22 @@ namespace __raw_controller__
 					tmparray[ i * byte + l ] = data[ l ];
 				}
 			}
-			fwrite( tmparray, 1, size, fp );
+
+			// ファイルへ書き出し
+			unsigned char *pointer = tmparray;
+			size_type write_size = 0;
+			while( size > 0 )
+			{
+                write_size = fwrite( pointer, sizeof( unsigned char ), 4096, fp );
+				pointer += write_size;
+				size -= write_size;
+				if( write_size != 4096 )
+				{
+					fclose( fp );
+					delete [] buff;
+					return( false );
+				}
+			}
 
 			delete [] tmparray;
 			fclose( fp );
@@ -201,7 +224,22 @@ namespace __raw_controller__
 					tmparray[ i * byte + l ] = data[ l ];
 				}
 			}
-			gzwrite( fp, tmparray, size );
+
+			// ファイルへ書き出し
+			unsigned char *pointer = tmparray;
+			size_type write_size = 0;
+			while( size > 0 )
+			{
+                write_size = gzwrite( fp, pointer, 4096 );
+				pointer += write_size;
+				size -= write_size;
+				if( write_size != 4096 )
+				{
+					fclose( fp );
+					delete [] buff;
+					return( false );
+				}
+			}
 
 			delete [] tmparray;
 			gzclose( fp );

@@ -28,7 +28,7 @@ namespace __dicom_controller__
 	//#define __INCLUDE_DICOM_TAG_0012__
 	//#define __INCLUDE_DICOM_TAG_0018__
 	//#define __INCLUDE_DICOM_TAG_0020__
-	//#define __INCLUDE_DICOM_TAG_0028__
+	#define __INCLUDE_DICOM_TAG_0028__
 	//#define __INCLUDE_DICOM_TAG_0032__
 	//#define __INCLUDE_DICOM_TAG_0038__
 	//#define __INCLUDE_DICOM_TAG_003A__

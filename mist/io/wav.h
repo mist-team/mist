@@ -365,7 +365,7 @@ namespace __wav_controller__
 				return( false );
 			}
 
-			// ファイルサイズを書き出し
+			// ファイルへ書き出し
 			unsigned char *pointer = buff;
 			size_type write_size = 0;
 			while( size > 0 )
@@ -380,7 +380,6 @@ namespace __wav_controller__
 					return( false );
 				}
 			}
-			fwrite( buff, sizeof(unsigned char), size, fp);
 			fclose( fp );
 
 			delete [] buff;
@@ -421,7 +420,7 @@ namespace __wav_controller__
 				return( false );
 			}
 
-			// ファイルサイズを書き出し
+			// ファイルへ書き出し
 			unsigned char *pointer = buff;
 			size_type write_size = 0;
 			while( size > 0 )
@@ -436,7 +435,7 @@ namespace __wav_controller__
 					return( false );
 				}
 			}
-			fwrite( buff, sizeof(unsigned char), size, fp);
+
 			fclose( fp );
 
 			delete [] buff;

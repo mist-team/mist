@@ -630,7 +630,17 @@ namespace __bmp_controller__
 			fseek( fp, 0, SEEK_SET );
 
 			unsigned char *buff = new unsigned char[ filesize + 1 ];
-			fread( buff, sizeof( unsigned char ), filesize, fp );
+			unsigned char *pointer = buff;
+			size_type read_size = 0;
+			while( feof( fp ) == 0 )
+			{
+                read_size = fread( pointer, sizeof( unsigned char ), 4096, fp );
+				if( read_size < 4096 )
+				{
+					break;
+				}
+				pointer += read_size;
+			}
 			fclose( fp );
 
 			bool ret = convert_from_bmp_data( buff, image );
@@ -665,8 +675,22 @@ namespace __bmp_controller__
 				return( false );
 			}
 
-			// ファイルサイズを取得
-			fwrite( buff, sizeof(unsigned char), size, fp);
+
+			// ファイルへ書き出し
+			unsigned char *pointer = buff;
+			size_type write_size = 0;
+			while( size > 0 )
+			{
+                write_size = fwrite( pointer, sizeof( unsigned char ), 4096, fp );
+				pointer += write_size;
+				size -= write_size;
+				if( write_size != 4096 )
+				{
+					fclose( fp );
+					delete [] buff;
+					return( false );
+				}
+			}
 			fclose( fp );
 
 			delete [] buff;
