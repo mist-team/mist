@@ -143,6 +143,9 @@
 				RelativePath="..\mist\fft\fft.h">
 			</File>
 			<File
+				RelativePath="..\mist\fft\fft_util.h">
+			</File>
+			<File
 				RelativePath="..\mist\fft\fftsg.h">
 			</File>
 			<File

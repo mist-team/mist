@@ -1,12 +1,16 @@
-#include <iostream.h>
+#include <iostream>
 
+#include <mist/timer.h>
 #include <mist/mist.h>
 #include <mist/fft/fft.h>
 #include <mist/fft/dct.h>
 #include <mist/fft/dst.h>
 #include <mist/io/raw.h>
-#include <stdio.h>
-#include <time.h>
+
+#define TEST_MODE	3
+#define FFT_TEST	1
+#define DCT_TEST	2
+#define DST_TEST	3
 
 int main( int argc, char *argv[ ] )
 {
@@ -16,159 +20,196 @@ int main( int argc, char *argv[ ] )
 	mist::array3< float > a3df;
 	mist::array2< float > a2df;
 	mist::array1< float > a1df;
-	//mist::array3< std::complex< float > > work3d;
-	//mist::array2< std::complex< float > > work2d;
-	//mist::array1< std::complex< float > > work1d;
+	mist::array3< std::complex< float > > work3d;
+	mist::array2< std::complex< float > > work2d;
+	mist::array1< std::complex< float > > work1d;
 
-	mist::array3< float > work3d;
-	mist::array2< float > work2d;
-	mist::array1< float > work1d;
-	time_t start,end;
+	//mist::array3< float > work3d;
+	//mist::array2< float > work2d;
+	//mist::array1< float > work1d;
+
+#if TEST_MODE == DCT_TEST
+	std::string mode = "dct";
+#elif TEST_MODE == DST_TEST
+	std::string mode = "dst";
+#else
+	std::string mode = "fft";
+#endif
+
 	std::string fname = "//eagle/data4/ctlung/haigeta/haigeta212.512.gz";
 
 	mist::read_raw( in, fname, 512, 512, 128 );
 
+
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//1ŽŸŒ³dst
-	printf( "1D-dst check( data size %d )\n", in.width() );
-	a1df.resize( in.width() );
-	for( i = 0 ; i < in.width() ; i++ )
+	std::cout << "1D-" << mode << " check( data size " << in.width( ) << " )" << std::endl;
+	a1df.resize( in.width( ) );
+
+	for( i = 0 ; i < in.width( ) ; i++ )
 	{
-		a1df[i] = ( float )in[i];
+		a1df[ i ] = static_cast< float >( in[ i ] );
 	}
 
-	printf("dst start\n");
-	start = clock();
+	{
+		std::cout << mode << " start" << std::endl;
+		mist::timer t;
 
-	mist::dst( a1df, work1d );
+#if TEST_MODE == DCT_TEST
+		mist::dct( a1df, work1d );
+#elif TEST_MODE == DST_TEST
+		mist::dst( a1df, work1d );
+#else
+		mist::fft( a1df, work1d );
+#endif
 
-	end = clock();
-	printf("dst end\n");
-	printf("time %f sec.\n", (end - start )/(double)CLOCKS_PER_SEC );
+		std::cout << mode << " computation Time: " << t.elapse( ) << " (sec)" << std::endl;
+	}
 
 	a1df.fill( 0.0f );
 
-	printf("dst_inverse start\n");
-	start = clock();	
-
-	mist::dst_inverse( work1d, a1df );
-
-	end = clock();
-	printf("dst_inverse end\n");
-	printf("time %f sec.\n", (end - start )/(double)CLOCKS_PER_SEC );
-
-	for( i = 0 ; i < in.width() ; i++ )
 	{
-		if( in[i] != ( short )( a1df[i] +0.5f ) )
+		std::cout << mode << "_inverse start" << std::endl;
+		mist::timer t;
+
+#if TEST_MODE == DCT_TEST
+		mist::dct_inverse( work1d, a1df );
+#elif TEST_MODE == DST_TEST
+		mist::dst_inverse( work1d, a1df );
+#else
+		mist::fft_inverse( work1d, a1df );
+#endif
+
+		std::cout << mode << "_inverse computation Time: " << t.elapse( ) << " (sec)" << std::endl;
+	}
+
+	for( i = 0 ; i < in.width( ) ; i++ )
+	{
+		if( in[ i ] != ( short ) ( a1df[ i ] + 0.5f ) )
 		{
 			break;
 		}
 	}
 
-	if( i == in.width() )
-	{
-		printf("result match\n\n");
-	}else{
-		printf("result miss-match\n\n");
-	}
+	std::cout << "result: " << ( i == in.width( ) ? "match" : "miss-match" ) << std::endl << std::endl;
 
-	a1df.clear();
-	work1d.clear();
+	a1df.clear( );
+	work1d.clear( );
+
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//2ŽŸŒ³dst
-	printf( "2D-dst check( data size %d~%d )\n",in.width() ,in.height() );
-	a2df.resize( in.width(), in.height() );
-	for( i = 0 ; i < in.width() * in.height() ; i++ )
+	std::cout << "2D-" << mode << " check( data size " << in.width( ) << "x" << in.height( ) << " )" << std::endl;
+	a2df.resize( in.width( ), in.height( ) );
+
+	for( i = 0 ; i < in.width( ) * in.height( ) ; i++ )
 	{
-		a2df[i] = ( float )in[i];
+		a2df[ i ] = static_cast< float >( in[ i ] );
 	}
 
-	printf("dst start\n");
-	start = clock();
+	{
+		std::cout << mode << " start" << std::endl;
+		mist::timer t;
 
-	mist::dst( a2df, work2d );
+#if TEST_MODE == DCT_TEST
+		mist::dct( a2df, work2d );
+#elif TEST_MODE == DST_TEST
+		mist::dst( a2df, work2d );
+#else
+		mist::fft( a2df, work2d );
+#endif
 
-	end = clock();
-	printf("dst end\n");
-	printf("time %f sec.\n", (end - start )/(double)CLOCKS_PER_SEC );
+		std::cout << mode << " computation Time: " << t.elapse( ) << " (sec)" << std::endl;
+	}
 
 	a2df.fill( 0.0f );
 
-	printf("dst_inverse start\n");
-	start = clock();	
-
-	mist::dst_inverse( work2d, a2df );
-
-	end = clock();
-	printf("dst_inverse end\n");
-	printf("time %f sec.\n", (end - start )/(double)CLOCKS_PER_SEC );
-
-	for( i = 0 ; i < in.width() * in.height() ; i++ )
 	{
-		if( in[i] != ( short )( a2df[i] +0.5f ) )
+		std::cout << mode << "_inverse start" << std::endl;
+		mist::timer t;
+
+#if TEST_MODE == DCT_TEST
+		mist::dct_inverse( work2d, a2df );
+#elif TEST_MODE == DST_TEST
+		mist::dst_inverse( work2d, a2df );
+#else
+		mist::fft_inverse( work2d, a2df );
+#endif
+
+		std::cout << mode << "_inverse computation Time: " << t.elapse( ) << " (sec)" << std::endl;
+	}
+
+	for( i = 0 ; i < in.width( ) * in.height( ) ; i++ )
+	{
+		if( in[ i ] != ( short ) ( a2df[ i ] + 0.5f ) )
 		{
 			break;
 		}
 	}
 
-	if( i == in.width() * in.height() )
-	{
-		printf("result match\n\n");
-	}else{
-		printf("result miss-match\n\n");
-	}
+	std::cout << "result: " << ( i == in.width( ) * in.height( ) ? "match" : "miss-match" ) << std::endl << std::endl;
 
-	a2df.clear();
-	work2d.clear();
+	a2df.clear( );
+	work2d.clear( );
+
+
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//3ŽŸŒ³dst
-	printf( "3D-dst check( data size %d~%d~%d )\n",in.width() ,in.height(),in.depth() );
-	a3df.resize( in.width(), in.height(), in.depth() );
-	for( i = 0 ; i < in.size() ; i++ )
+	std::cout << "3D-" << mode << " check( data size " << in.width( ) << "x" << in.height( ) << "x" << in.depth( ) << " )" << std::endl;
+	a3df.resize( in.width( ), in.height( ), in.depth( ) );
+
+	for( i = 0 ; i < in.size( ) ; i++ )
 	{
-		a3df[i] = ( float )in[i];
+		a3df[ i ] = static_cast< float >( in[ i ] );
 	}
 
-	printf("dst start\n");
-	start = clock();
+	{
+		std::cout << mode << " start" << std::endl;
+		mist::timer t;
 
-	mist::dst( a3df, work3d );
+#if TEST_MODE == DCT_TEST
+		mist::dct( a3df, work3d );
+#elif TEST_MODE == DST_TEST
+		mist::dst( a3df, work3d );
+#else
+		mist::fft( a3df, work3d );
+#endif
 
-	end = clock();
-	printf("dst end\n");
-	printf("time %f sec.\n", (end - start )/(double)CLOCKS_PER_SEC );
+		std::cout << mode << " computation Time: " << t.elapse( ) << " (sec)" << std::endl;
+	}
 
 	a3df.fill( 0.0f );
 
-	printf("dst_inverse start\n");
-	start = clock();	
-
-	mist::dst_inverse( work3d, a3df );
-
-	end = clock();
-	printf("dst_inverse end\n");
-	printf("time %f sec.\n", (end - start )/(double)CLOCKS_PER_SEC );
-
-	for( i = 0 ; i < in.size() ; i++ )
 	{
-		if( in[i] != ( short )( a3df[i] +0.5f ) )
+		std::cout << mode << "_inverse start" << std::endl;
+		mist::timer t;
+
+#if TEST_MODE == DCT_TEST
+		mist::dct_inverse( work3d, a3df );
+#elif TEST_MODE == DST_TEST
+		mist::dst_inverse( work3d, a3df );
+#else
+		mist::fft_inverse( work3d, a3df );
+#endif
+
+		std::cout << mode << "_inverse computation Time: " << t.elapse( ) << " (sec)" << std::endl;
+	}
+
+	for( i = 0 ; i < in.size( ) ; i++ )
+	{
+		if( in[ i ] != ( short ) ( a3df[ i ] + 0.5f ) )
 		{
 			break;
 		}
 	}
 
-	if( i == in.size() )
-	{
-		printf("result match\n\n");
-	}else{
-		printf("result miss-match\n\n");
-	}
+	std::cout << "result: " << ( i == in.size( ) ? "match" : "miss-match" ) << std::endl << std::endl;
 
-	a3df.clear();
-	work3d.clear();
-	
-	return( 0 );
+	a3df.clear( );
+	work3d.clear( );
+
+	return ( 0 );
 }

@@ -2,8 +2,9 @@
 #define __INCLUDE_MIST_TIMER__
 
 
+#ifndef __INCLUDE_MIST_CONF_H__
 #include "config/mist_conf.h"
-
+#endif
 
 #ifdef WIN32
 
