@@ -60,7 +60,7 @@ OUTPUT_LANGUAGE        = Japanese
 # whereas setting the tag to NO uses a Unix-style encoding (the default for 
 # all platforms other than Windows).
 
-USE_WINDOWS_ENCODING   = YES
+USE_WINDOWS_ENCODING   = NO
 
 # If the BRIEF_MEMBER_DESC tag is set to YES (the default) Doxygen will 
 # include brief member descriptions after the members that are listed in 
@@ -408,7 +408,7 @@ WARN_FORMAT            = "$file:$line: $text"
 WARN_LOGFILE           = 
 
 #---------------------------------------------------------------------------
-# configuration options related to the input files
+# configuration options related to the inputfiles
 #---------------------------------------------------------------------------
 
 # The INPUT tag can be used to specify the files and/or directories that contain 
@@ -483,13 +483,13 @@ IMAGE_PATH             =
 # input file. Doxygen will then use the output that the filter program writes 
 # to standard output.
 
-INPUT_FILTER           = 
+INPUT_FILTER           = "nkf --euc"
 
 # If the FILTER_SOURCE_FILES tag is set to YES, the input filter (if set using 
 # INPUT_FILTER) will be used to filter the input files when producing source 
 # files to browse (i.e. when SOURCE_BROWSER is set to YES).
 
-FILTER_SOURCE_FILES    = NO
+FILTER_SOURCE_FILES    = YES
 
 #---------------------------------------------------------------------------
 # configuration options related to source browsing
@@ -673,7 +673,7 @@ TREEVIEW_WIDTH         = 250
 # If the GENERATE_LATEX tag is set to YES (the default) Doxygen will 
 # generate Latex output.
 
-GENERATE_LATEX         = NO
+GENERATE_LATEX         = YES
 
 # The LATEX_OUTPUT tag is used to specify where the LaTeX docs will be put. 
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be 
@@ -684,7 +684,7 @@ LATEX_OUTPUT           = latex
 # The LATEX_CMD_NAME tag can be used to specify the LaTeX command name to be 
 # invoked. If left blank `latex' will be used as the default command name.
 
-LATEX_CMD_NAME         = latex
+LATEX_CMD_NAME         = platex
 
 # The MAKEINDEX_CMD_NAME tag can be used to specify the command name to 
 # generate index for LaTeX. If left blank `makeindex' will be used as the 

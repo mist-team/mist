@@ -3,9 +3,6 @@
 //! @brief Bスプライン曲線を描画するためのライブラリ
 //!
 
-//! @defgroup bspline_group Bスプライン曲線
-//!  @{
-
 #ifndef __INCLUDE_BSPLINE__
 #define __INCLUDE_BSPLINE__
 
@@ -18,6 +15,11 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
+
+
+//! @defgroup bspline_group Bスプライン曲線
+//!  @{
+
 
 /// @brief Bスプラインの基底関数を計算する関数を実装した構造体
 //!
@@ -229,12 +231,12 @@ public:
 	}
 };
 
+/// @}
+//  Bスプライングループの終わり
 
 
 // mist名前空間の終わり
 _MIST_END
 
-
-/** @} */ // Bスプライングループの終わり
 
 #endif // __INCLUDE_BSPLINE__
