@@ -487,8 +487,6 @@ bool draw_pixels( const array2< T, Allocator > &image, typename array2< T, Alloc
 
 	if( image.empty( ) ) return( false );
 
-	double ttt = static_cast< double >( image.width( ) );
-
 	if( !blend )
 	{
 		glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
@@ -497,16 +495,12 @@ bool draw_pixels( const array2< T, Allocator > &image, typename array2< T, Alloc
 
 	GLsizei w = static_cast< GLsizei >( window_width / 2 );
 	GLsizei h = static_cast< GLsizei >( window_height / 2 );
-	GLsizei rw = static_cast< GLsizei >( window_width ) - w - 1;
-	GLsizei rh = static_cast< GLsizei >( window_height ) - h - 1;
 
 	glMatrixMode( GL_PROJECTION );
-	glPushMatrix( );
 	glLoadIdentity( );
-	gluOrtho2D( -w, rw, -h, rh );
+	gluOrtho2D( -w, w, -h, h );
 
 	glMatrixMode( GL_MODELVIEW );
-	glPushMatrix( );
 	glLoadIdentity( );
 
 	// ¶ã‚ğŒ´“_‚Æ‚·‚é‰æ‘œÀ•WŒn‚ğİ’è
