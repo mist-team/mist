@@ -554,7 +554,8 @@ protected:
 		}
 		else
 		{
-			for( difference_type i = a.length_ - 1 ; i >= 0 ; i-- )
+			difference_type i;
+			for( i = a.length_ - 1 ; i >= 0 ; i-- )
 			{
 				if( a.data_[ i ] != b.data_[ i ] )
 				{

@@ -907,9 +907,9 @@ protected:
 			b = decimal( );
 			return( 0 );
 		}
-		difference_type  r = b.data_[ NMPA - n + 1 ];
+		difference_type  r = b.data_[ NMPA - n + 1 ], i;
 		b.exp_ = a.exp_;
-		for( difference_type i = NMPA ; i >= n ; i-- )
+		for( i = NMPA ; i >= n ; i-- )
 		{
 			b.data_[ i ] = b.data_[ NMPA + i - n ];
 		}
@@ -1072,7 +1072,7 @@ protected:
 				if( pflag )
 				{
 					::std::cout << "Error : Illegal parameter!!" << ::std::endl;
-					return( decimal( ) );
+					return decimal( );
 				}
 				pflag = true;
 			}
@@ -1090,7 +1090,7 @@ protected:
 			else if( *p != ' ' && ( *p < '0' || *p > '9' ) )
 			{
 				::std::cout << "Error : Illegal parameter!!" << ::std::endl;
-				return( decimal( ) );
+				return decimal( );
 			}
 			else
 			{
@@ -1108,7 +1108,7 @@ protected:
 					else if( zflag == 1 )
 					{
 						::std::cout << "Error : Illegal parameter!!" << ::std::endl;
-						return( decimal( ) );
+						return decimal( );
 					}
 				}
 
@@ -1128,13 +1128,13 @@ protected:
 		if( exp > MAXEXP )
 		{
 			::std::cout << "Error : Overflow!!" << ::std::endl;
-			return( decimal( ) );
+			return decimal( );
 //			return _MMAX;
 		}
 		if( exp < MINEXP )
 		{
 			::std::cout << "Error : Underflow!!" << ::std::endl;
-			return( decimal( ) );
+			return decimal( );
 		}
 		a.sign_ = sign;
 		if( exp > 0 )
@@ -1153,7 +1153,7 @@ protected:
 		}
 		if( a.is_zero( ) )
 		{
-			return( decimal( ) );
+			return decimal( );
 		}
 		else
 		{
