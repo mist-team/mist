@@ -19,8 +19,6 @@
 _MIST_BEGIN
 
 
-// メディアンフィルタ
-
 namespace __thinning_controller__
 {
 	template < class T, class Allocator >

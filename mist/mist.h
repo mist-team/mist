@@ -329,7 +329,7 @@ public:
 	//! 
 	//! @param[in] o  … コピー元のコンテナ
 	//! 
-	//! @return       … 自分自身
+	//! @return 自分自身
 	//! 
 	const array& operator =( const array  &o )
 	{
@@ -357,17 +357,18 @@ protected:
 	//! 
 	//! @param[in] index  … コンテナ内の要素位置
 	//! 
-	//! @return           … 指定された要素を示すポインタ
+	//! @return 指定された要素を示すポインタ
 	//! 
 	pointer paccess( size_type index )
 	{
 		return( data_ + index );
 	}
+
 	/// @brief index で示される位置の要素の const ポインタを返す
 	//! 
 	//! @param[in] index  … コンテナ内の要素位置
 	//! 
-	//! @return           … 指定された要素を示す const ポインタ
+	//! @return 指定された要素を示す const ポインタ
 	//! 
 	const_pointer paccess( size_type index ) const
 	{
@@ -383,7 +384,7 @@ public:
 	/// @param[in] dmy1  … 使用しない
 	/// @param[in] dmy2  … 使用しない
 	//! 
-	/// @return          … 指定された要素を示す参照
+	/// @return 指定された要素を示す参照
 	//!
 	reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
@@ -400,7 +401,7 @@ public:
 	/// @param[in] dmy1  … 使用しない
 	/// @param[in] dmy2  … 使用しない
 	//! 
-	/// @return          … 指定された要素を示す const 参照
+	/// @return 指定された要素を示す const 参照
 	//!
 	const_reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
@@ -417,7 +418,7 @@ public:
 	/// @param[in] dmy1  … 使用しない
 	/// @param[in] dmy2  … 使用しない
 	//! 
-	/// @return          … 指定された要素を示す参照
+	/// @return 指定された要素を示す参照
 	//!
 	reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
@@ -434,7 +435,7 @@ public:
 	/// @param[in] dmy1  … 使用しない
 	/// @param[in] dmy2  … 使用しない
 	//! 
-	/// @return          … 指定された要素を示す const 参照
+	/// @return 指定された要素を示す const 参照
 	//!
 	const_reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
@@ -449,7 +450,7 @@ public:
 	//!
 	/// @param[in] index … コンテナ内の要素位置
 	//! 
-	/// @return          … 指定された要素を示す参照
+	/// @return 指定された要素を示す参照
 	//!
 	reference operator []( size_type index )
 	{
@@ -464,7 +465,7 @@ public:
 	//!
 	/// @param[in] index … コンテナ内の要素位置
 	//! 
-	/// @return          … 指定された要素を示す const 参照
+	/// @return 指定された要素を示す const 参照
 	//!
 	const_reference operator []( size_type index ) const
 	{
@@ -683,7 +684,8 @@ public:
 	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
 	//! @param[in] o  … コピー元のコンテナ
-	//! @return       … 自分自身
+	//! 
+	//! @return 自分自身
 	//! 
 	const array1& operator =( const array1 &o )
 	{
@@ -998,7 +1000,8 @@ public:
 	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
 	//! @param[in] o  … コピー元のコンテナ
-	//! @return       … 自分自身
+	//! 
+	//! @return 自分自身
 	//! 
 	const array2& operator =( const array2 &o )
 	{
@@ -1528,7 +1531,8 @@ public:
 	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
 	//! @param[in] o  … コピー元のコンテナ
-	//! @return       … 自分自身
+	//! 
+	//! @return 自分自身
 	//! 
 	const array3& operator =( const array3 &o )
 	{

@@ -108,7 +108,7 @@ namespace __converter__
 //! 
 //! @param[in] in  … 引数の説明
 //! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @return 戻り値の説明
 //! 
 template < class Array1, class Array2 >
 inline void convert( const Array1 &in, Array2 &out )

@@ -704,7 +704,7 @@ namespace dicom_controller
 	//! @param[in] pointer     … 引数の説明
 	//! @param[in] end_pointer … 引数の説明
 	//! 
-	//! @return        … 戻り値の説明
+	//! @return 戻り値の説明
 	//! 
 	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
 	{

@@ -19,7 +19,9 @@
 _MIST_BEGIN
 
 
-// MISTで利用する基底のデータ型
+
+//! @addtogroup set_group 集合演算
+//!  @{
 
 
 /// @brief 関数・クラスの概要を書く
@@ -978,6 +980,12 @@ public:
 	template< class Iterator >
 	multiset( Iterator first, Iterator last, const key_compare &pred, const allocator_type &alloc ) : base( first, last, pred, alloc ){ }
 };
+
+
+
+/// @}
+//  集合演算グループの終わり
+
 
 
 // mist名前空間の終わり

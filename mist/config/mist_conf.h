@@ -246,12 +246,17 @@ struct __mist_console_callback__
 *
 * @section class MISTで提供する基本データ型
 *
-* - @ref mist::array "array"   : STLに準拠したメモリ上で連続となる１次元配列であり，音声・画像の全てのデータの基底クラス．
-* - @ref mist::array1 "array1" : 音声を扱うための１次元配列．
-* - @ref mist::array2 "array2" : ２次元画像を扱うための画像クラス．
-* - @ref mist::array3 "array3" : ３次元画像を扱うための画像クラス．
-* - @ref mist::matrix "matrix" : 任意の行列を扱うためのクラス（Expression template teqnique を利用した高速な演算が可能）．
-* - @ref mist::vector "vector" : 行列・ベクトル演算を可能とするクラス．
+* - @ref mist::array          "array"          : STLに準拠したメモリ上で連続となる1次元配列であり，音声・画像の全てのデータの基底クラス
+* - @ref mist::array1         "array1"         : 音声を扱うための1次元配列
+* - @ref mist::array2         "array2"         : 2次元画像を扱うための画像クラス
+* - @ref mist::array3         "array3"         : 3次元画像を扱うための画像クラス
+* - @ref mist::marray         "marray"         : 1・2・3次元画像の縁にマージンを持った画像を扱うクラス
+* - @ref mist::buffered_array "buffered_array" : 画像の一辺が2の指数乗となる画像を扱うクラス
+* - @ref mist::matrix         "matrix"         : 任意の行列を扱うためのクラス（Expression template を利用した高速な演算が可能）
+* - @ref vector_group         "ベクトル演算を可能とするクラス"
+*   - @ref mist::vector2      "vector2"        : 2次元ベクトルを扱うクラス
+*   - @ref mist::vector3      "vector3"        : 3次元ベクトルを扱うクラス
+*   - @ref mist::vector       "vector"         : N次元ベクトルを扱うクラス
 *
 *
 *
@@ -262,6 +267,7 @@ struct __mist_console_callback__
 * - @ref mist::timer						"時間計測"
 * - @ref operator_group						"演算子の実装補助"
 * - @ref thread_group						"スレッド"
+* - @ref set_group							"集合演算"
 *
 * @subsection numeric ベクトル・行列演算
 * - @ref numeric_group "行列演算"
@@ -300,10 +306,19 @@ struct __mist_console_callback__
 * - @ref linear_group						"線形フィルタ"
 * - @ref median_group						"メディアンフィルタ"
 * - @ref interpolate_group					"画像補間"
-* - @ref a									"カラー画像に対する処理"
+* - カラー画像に対する処理
+*   - @ref interlace_group					"インターレス除去"
 * - @ref threshold_group					"閾値選択"
-* - @ref a									"2値画像に対する処理"
 * - @ref morphology_group					"モルフォロジー演算"
+* - 2値画像に対する処理
+*   - @ref labeling_group					"ラベリング"
+*   - @ref thinning_group					"細線化"
+*   - @ref distance_group					"距離変換"
+*     - @ref euclidean_distance_group		"ユークリッド距離変換"
+*     - @ref a								"4近傍型距離変換"
+*     - @ref a								"8近傍型距離変換"
+*     - @ref a								"6近傍型距離変換"
+*     - @ref a								"26近傍型距離変換"
 *
 * @subsection audio 主に音声に対して適用される処理
 *

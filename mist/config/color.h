@@ -503,7 +503,7 @@ template < class T > inline const rgb< T > operator -( const typename rgb< T >::
 //! 
 //! @param[in] in  … 引数の説明
 //! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @return 戻り値の説明
 //! 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const rgb< T > &c )
 {
@@ -521,7 +521,7 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 //! 
 //! @param[in] in  … 引数の説明
 //! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @return 戻り値の説明
 //! 
 template < class T >
 struct is_color

@@ -314,6 +314,9 @@ namespace __distance_transform_controller__
 //!  @{
 
 
+//! @addtogroup euclidean_distance_group ユークリッド距離変換
+//!  @{
+
 
 /// @brief 関数・クラスの概要を書く
 //! 
@@ -621,6 +624,9 @@ void euclidean_distance_transform( const array3< T1, Allocator1 > &in, array3< T
 
 	delete [] thread;
 }
+
+/// @}
+//  ユークリッド距離変換グループの終わり
 
 /// @}
 //  距離変換グループの終わり

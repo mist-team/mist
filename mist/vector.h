@@ -20,11 +20,11 @@ _MIST_BEGIN
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 3次元ベクトルを扱うクラス
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! ベクトルの内積・外積等を簡便に扱うためのクラス
 //! 
-//! @param T  … 引数の説明
+//! @param T … ベクトル内に各座標を表すデータ型
 //! 
 template < class T >
 class vector3
@@ -35,53 +35,36 @@ public:
 	typedef ptrdiff_t difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 public:
-	value_type x;		///< @brief 変数の説明を書く
-	value_type y;		///< @brief 変数の説明を書く
-	value_type z;		///< @brief 変数の説明を書く
+	value_type x;		///< @brief X座標値
+	value_type y;		///< @brief Y座標値
+	value_type z;		///< @brief Z座標値
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief デフォルトコンストラクタ．( 0, 0, 0 ) に初期化する
 	vector3( ) : x( 0 ), y( 0 ), z( 0 ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] xx … 引数の説明
-	//! @param[in] yy … 引数の説明
-	//! @param[in] zz … 引数の説明
-	//! 
+	/// @brief ( xx, yy, zz ) のベクトルを作成する
 	vector3( const value_type &xx, const value_type &yy, const value_type &zz ) : x( xx ), y( yy ), z( zz ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
+	/// @brief 他の3次元ベクトルで要素の型が異なるものから同じ要素を持つベクトルを作成する
+	//!
+	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
+	//!
 	template < class TT >
 	vector3( const vector3< TT > &v ) : x( static_cast< value_type >( v.x ) ), y( static_cast< value_type >( v.y ) ), z( static_cast< value_type >( v.z ) ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
+	/// @brief 他の3次元ベクトルで同じ要素型のものを用いて初期化する
 	vector3( const vector3< T > &v ) : x( v.x ), y( v.y ), z( v.z ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 他の3次元ベクトルを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるベクトル v と全く同じベクトルを作成する．
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … コピー元のベクトル
 	//! 
-	//! @return 戻り値の説明
+	//! @return 自分自身
 	//! 
 	const vector3 &operator =( const vector3 &v )
 	{
@@ -95,23 +78,11 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 符号反転したベクトルを返す
 	vector3 operator -( ) const { return ( vector3( -x, -y, -z ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ベクトル和
 	const vector3 &operator +=( const vector3 &v )
 	{
 		x = x + v.x;
@@ -121,14 +92,7 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ベクトル差
 	const vector3 &operator -=( const vector3 &v )
 	{
 		x = x - v.x;
@@ -138,14 +102,7 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] a … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ベクトルの定数倍
 	const vector3 &operator *=( const value_type &a )
 	{
 		x *= a;
@@ -155,14 +112,7 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] a … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ベクトルを定数で割る
 	const vector3 &operator /=( const value_type &a )
 	{
 		x /= a;
@@ -172,89 +122,94 @@ public:
 	}
 
 
-	/// @brief 内積
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ベクトルの内積
 	value_type operator ^( const vector3 &v ) const { return( inner( v ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルが等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	x_1 == x_2 \; \wedge \; y_1 == y_2 \; \wedge \; z_1 == z_2
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … 2つのベクトルが等しい場合
+	//! @retval false … 2つのベクトルが異なる場合
 	//! 
 	bool operator ==( const vector3 &v ) const { return( x == v.x && y == v.y && z == v.z ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルが等しくない（どれか１つでも異なる要素を持つ）かどうかを判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\overline{x_1 == x_2 \; \wedge \; y_1 == y_2 \; \wedge \; z_1 == z_2}
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … 2つのベクトルが異なる場合
+	//! @retval false … 2つのベクトルが等しい場合
 	//! 
 	bool operator !=( const vector3 &v ) const { return( !( *this == v ) ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルの < を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\overline{x_1 \ge x_2 \; \wedge \; y_1 \ge y_2 \; \wedge \; z_1 \ge z_2}
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … v1 <  v2 の場合
+	//! @retval false … v1 >= v2 の場合
 	//! 
 	bool operator < ( const vector3 &v ) const { return( !( *this >= v ) ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルの <= を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	x_1 \le x_2 \; \wedge \; y_1 \le y_2 \; \wedge \; z_1 \le z_2
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … v1 <= v2 の場合
+	//! @retval false … v1 >  v2 の場合
 	//! 
 	bool operator <=( const vector3 &v ) const { return( v >= *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルの > を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\overline{x_1 \le x_2 \; \wedge \; y_1 \le y_2 \; \wedge \; z_1 \le z_2}
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … v1 >  v2 の場合
+	//! @retval false … v1 <= v2 の場合
 	//! 
 	bool operator > ( const vector3 &v ) const { return( v < *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルの >= を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	x_1 \ge x_2 \; \wedge \; y_1 \ge y_2 \; \wedge \; z_1 \ge z_2
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … v1 >= v2 の場合
+	//! @retval false … v1 <  v2 の場合
 	//! 
 	bool operator >=( const vector3 &v ) const { return( x >= v.x && y >= v.y && z >= v.z ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 単位ベクトルを計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
+	//! \f[
+	//! 	\frac{\bf v}{\left\|{\bf v}\right\|}
+	//! \f]
 	//! 
 	vector3 unit( ) const
 	{
@@ -263,44 +218,44 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ベクトルの内積を計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	{\bf p} \cdot {\bf q} = p_x \times q_x + p_y \times q_y + p_z \times q_z
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
+	//! @param[in] v … 右辺値
 	//! 
 	value_type inner( const vector3 &v ) const { return( x * v.x + y * v.y + z * v.z ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ベクトルの外積を計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	{\bf p} \times {\bf q} = \left( p_y \times q_z - p_z \times q_y \;,\; p_z \times q_x - p_x \times q_z \;,\; p_x \times q_y - p_y \times q_x \right)^T
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
+	//! @param[in] v … 右辺値
 	//! 
 	vector3 outer( const vector3 &v ) const { return( vector3( y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ベクトルの大きさを計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\left\|{\bf v}\right\| = \sqrt{v_x^2 + v_y^2 + v_z^2}
+	//! \f]
 	//! 
 	//! @return 戻り値の説明
 	//! 
 	value_type length( ) const { return ( value_type( sqrt( (double)( x * x + y * y + z * z ) ) ) ); }
 
-	/// @brief ベクトルの回転
+	/// @brief 任意軸周りのベクトルの回転
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @param[in] v     … 回転軸
+	//! @param[in] theta … 右ねじ方向？で測った回転角度
 	//! 
-	//! @param[in] v     … 引数の説明
-	//! @param[in] theta … 引数の説明
-	//! 
-	//! @return 戻り値の説明
+	//! @return 回転後のベクトル
 	//! 
 	vector3 rotate( const vector3 &v, double theta ) const
 	{
@@ -315,104 +270,39 @@ public:
 
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトル同士の足し算
 template < class T > inline const vector3< T > operator +( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1 ) += v2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトル同士の引き算
 template < class T > inline const vector3< T > operator -( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1 ) -= v2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const vector3< T > operator /( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1 ) /= v2 ); }
-
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトル同士の外積
 template < class T > inline const vector3< T > operator *( const vector3< T > &v1, const vector3< T > &v2 ){ return( v1.outer( v2 ) ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトル同士の内積
 template < class T > inline const typename vector3< T >::value_type operator ^( const vector3< T > &v1, const vector3< T > &v2 ){ return( v1.inner( v2 ) ); }
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトルと定数の積
 template < class T > inline const vector3< T > operator *( const vector3< T > &v1, const typename vector3< T >::value_type &v2 ){ return( vector3< T >( v1 ) *= v2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 定数とベクトルの積
 template < class T > inline const vector3< T > operator *( const typename vector3< T >::value_type &v1, const vector3< T > &v2 ){ return( vector3< T >( v2 ) *= v1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトルとを定数で割る
 template < class T > inline const vector3< T > operator /( const vector3< T > &v1, const typename vector3< T >::value_type &v2 ){ return( vector3< T >( v1 ) /= v2 ); }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     v   … 3次元ベクトル
 //! 
-//! @param[in,out] out … 引数の説明
-//! @param[in]     v   … 引数の説明
+//! @return 入力されたストリーム
 //! 
-//! @return 戻り値の説明
+//! @code 出力例
+//! ( 1, 2, 3 )
+//! @endcode
 //! 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const vector3< T > &v )
 {
@@ -425,11 +315,11 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 2次元ベクトルを扱うクラス
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! ベクトルの内積・外積等を簡便に扱うためのクラス
 //! 
-//! @param T  … 引数の説明
+//! @param T … ベクトル内に各座標を表すデータ型
 //! 
 template < class T >
 class vector2
@@ -440,51 +330,35 @@ public:
 	typedef ptrdiff_t difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 public:
-	value_type x;		///< @brief 変数の説明を書く
-	value_type y;		///< @brief 変数の説明を書く
+	value_type x;		///< @brief X軸座標値
+	value_type y;		///< @brief Y軸座標値
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief デフォルトコンストラクタ．( 0, 0 ) に初期化する
 	vector2( ) : x( 0 ), y( 0 ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] xx … 引数の説明
-	//! @param[in] yy … 引数の説明
-	//! 
+	/// @brief ( xx, yy ) のベクトルを作成する
 	vector2( const value_type &xx, const value_type &yy ) : x( xx ), y( yy ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
+	/// @brief 他の2次元ベクトルで要素の型が異なるものから同じ要素を持つベクトルを作成する
+	//!
+	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
+	//!
 	template < class TT >
 	vector2( const vector2< TT > &v ) : x( static_cast< value_type >( v.x ) ), y( static_cast< value_type >( v.y ) ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
+	/// @brief 他の2次元ベクトルで同じ要素型のものを用いて初期化する
 	vector2( const vector2< T > &v ) : x( v.x ), y( v.y ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 他の2次元ベクトルを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるベクトル v と全く同じベクトルを作成する．
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … コピー元のベクトル
 	//! 
-	//! @return 戻り値の説明
+	//! @return 自分自身
 	//! 
 	const vector2 &operator =( const vector2 &v )
 	{
@@ -497,23 +371,11 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 符号反転したベクトルを返す
 	vector2 operator -( ) const { return ( vector2( -x, -y ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ベクトル和
 	const vector2 &operator +=( const vector2 &v )
 	{
 		x = x + v.x;
@@ -522,14 +384,7 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ベクトル差
 	const vector2 &operator -=( const vector2 &v )
 	{
 		x = x - v.x;
@@ -538,14 +393,7 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] a … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ベクトルの定数倍
 	const vector2 &operator *=( const value_type &a )
 	{
 		x *= a;
@@ -554,14 +402,7 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] a … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ベクトルを定数で割る
 	const vector2 &operator /=( const value_type &a )
 	{
 		x /= a;
@@ -570,89 +411,94 @@ public:
 	}
 
 
-	/// @brief 内積
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief ベクトルの内積
 	value_type operator ^( const vector2 &v ) const { return( inner( v ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルが等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	x_1 == x_2 \wedge y_1 == y_2
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … 2つのベクトルが等しい場合
+	//! @retval false … 2つのベクトルが異なる場合
 	//! 
 	bool operator ==( const vector2 &v ) const { return( x == v.x && y == v.y ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルが等しくない（どれか１つでも異なる要素を持つ）かどうかを判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\overline{x_1 == x_2 \; \wedge \; y_1 == y_2}
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … 2つのベクトルが異なる場合
+	//! @retval false … 2つのベクトルが等しい場合
 	//! 
 	bool operator !=( const vector2 &v ) const { return( !( *this == v ) ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルの < を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\overline{x_1 \ge x_2 \; \wedge \; y_1 \ge y_2}
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … v1 <  v2 の場合
+	//! @retval false … v1 >= v2 の場合
 	//! 
 	bool operator < ( const vector2 &v ) const { return( !( *this >= v ) ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルの <= を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	x_1 \le x_2 \; \wedge \; y_1 \le y_2
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … v1 <= v2 の場合
+	//! @retval false … v1 >  v2 の場合
 	//! 
 	bool operator <=( const vector2 &v ) const { return( v >= *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルの > を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\overline{x_1 \le x_2 \; \wedge \; y_1 \le y_2}
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … v1 >  v2 の場合
+	//! @retval false … v1 <= v2 の場合
 	//! 
 	bool operator > ( const vector2 &v ) const { return( v < *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのベクトルの >= を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	x_1 \ge x_2 \; \wedge \; y_1 \ge y_2
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … v1 >= v2 の場合
+	//! @retval false … v1 <  v2 の場合
 	//! 
 	bool operator >=( const vector2 &v ) const { return( x >= v.x && y >= v.y ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 単位ベクトルを計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
+	//! \f[
+	//! 	\frac{\bf v}{\left\|{\bf v}\right\|}
+	//! \f]
 	//! 
 	vector2 unit( ) const
 	{
@@ -661,31 +507,33 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ベクトルの内積を計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	{\bf p} \cdot {\bf q} = p_x \times q_x + p_y \times q_y
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
+	//! @param[in] v … 右辺値
 	//! 
 	value_type inner( const vector2 &v ) const { return( x * v.x + y * v.y ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ベクトルの外積を計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	{\bf p} \times {\bf q} = p_x \times q_y - p_y \times q_x
+	//! \f]
 	//! 
-	//! @param[in] v … 引数の説明
-	//! 
-	//! @return 戻り値の説明
+	//! @param[in] v … 右辺値
 	//! 
 	value_type outer( const vector2 &v ) const { return( x * v.y - y * v.x ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ベクトルの大きさを計算する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\left\|{\bf v}\right\| = \sqrt{v_x^2+v_y^2}
+	//! \f]
 	//! 
 	//! @return 戻り値の説明
 	//! 
@@ -704,104 +552,39 @@ public:
 };
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトル同士の足し算
 template < class T > inline const vector2< T > operator +( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1 ) += v2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトル同士の引き算
 template < class T > inline const vector2< T > operator -( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1 ) -= v2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
-template < class T > inline const vector2< T > operator /( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1 ) /= v2 ); }
-
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトル同士の外積
 template < class T > inline const typename vector2< T >::value_type operator *( const vector2< T > &v1, const vector2< T > &v2 ){ return( v1.outer( v2 ) ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトル同士の内積
 template < class T > inline const typename vector2< T >::value_type operator ^( const vector2< T > &v1, const vector2< T > &v2 ){ return( v1.inner( v2 ) ); }
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトルと定数の積
 template < class T > inline const vector2< T > operator *( const vector2< T > &v1, const typename vector2< T >::value_type &v2 ){ return( vector2< T >( v1 ) *= v2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 定数とベクトルの積
 template < class T > inline const vector2< T > operator *( const typename vector2< T >::value_type &v1, const vector2< T > &v2 ){ return( vector2< T >( v2 ) *= v1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief ベクトルとを定数で割る
 template < class T > inline const vector2< T > operator /( const vector2< T > &v1, const typename vector2< T >::value_type &v2 ){ return( vector2< T >( v1 ) /= v2 ); }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     v   … 2次元ベクトル
 //! 
-//! @param[in,out] out … 引数の説明
-//! @param[in]     v   … 引数の説明
+//! @return 入力されたストリーム
 //! 
-//! @return 戻り値の説明
+//! @code 出力例
+//! ( 1, 2 )
+//! @endcode
 //! 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const vector2< T > &v )
 {
@@ -817,12 +600,14 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 #if defined( _MIST_VECTOR_SUPPORT_ ) && _MIST_VECTOR_SUPPORT_ != 0
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief N次元ベクトルを扱うクラス
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! - _USE_EXPRESSION_TEMPLATE_  マクロが1の場合は，Expression Template を利用して，行列・ベクトル演算を高速化する
+//! - _CHECK_MATRIX_OPERATION_   マクロが1の場合は，行列・ベクトル演算の左辺と右辺でベクトルのサイズが適切であるかをチェックする
+//! - _CHECK_ACCESS_VIOLATION2_  マクロが1の場合は，ベクトルの要素へアクセスする際に，範囲外かどうかを判定する
 //! 
-//! @param T         … 引数の説明
-//! @param Allocator … 引数の説明
+//! @param T         … 行列内に格納するデータ型
+//! @param Allocator … MISTコンテナが利用するアロケータ型．省略した場合は，STLのデフォルトアロケータを使用する
 //! 
 template < class T, class Allocator = ::std::allocator< T > >
 class vector : public matrix< T, Allocator >
@@ -861,13 +646,13 @@ public:
 	//}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ベクトルの外積
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention 外積を計算する2つのベクトルの次元が等しくなくてはならない
 	//! 
-	//! @param[in] v2 … 引数の説明
+	//! @param[in] v2 … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 自分自身
 	//! 
 	template < class TT, class AAlocator >
 	const vector& operator *=( const vector< TT, AAlocator > &v2 )
@@ -900,24 +685,24 @@ public:
 	}
 
 
-	/// @brief 内積
+	/// @brief ベクトルの内積
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention 内積を計算する2つのベクトルの次元が等しくなくてはならない
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 内積結果のスカラー値
 	//! 
 	value_type operator ^( const vector &v ) const { return( inner( v ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ベクトルの内積
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention 内積を計算する2つのベクトルの次元が等しくなくてはならない
 	//! 
-	//! @param[in] v2 … 引数の説明
+	//! @param[in] v2 … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 内積結果のスカラー値
 	//! 
 	value_type inner( const vector &v2 ) const
 	{
@@ -942,13 +727,13 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ベクトルの外積
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention 外積を計算する2つのベクトルの次元が等しくなくてはならない
 	//! 
-	//! @param[in] v … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @return 戻り値の説明
+	//! @return 自分自身
 	//! 
 	vector outer( const vector &v ) const
 	{
@@ -957,84 +742,40 @@ public:
 
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief ディフォルトコンストラクタ．0 次元のベクトルを作成する
 	vector( ) : base( ) {}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] a … 引数の説明
-	//! 
+	/// @brief アロケータ a のコピーを利用し，0 次元のベクトルを作成する
 	explicit vector( const Allocator &a ) : base( a ) {}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] num … 引数の説明
-	//! 
+	/// @brief num 次元のベクトルを作成し，デフォルト値で要素を初期化する
 	vector( size_type num ) : base( num, 1 ) {}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] num … 引数の説明
-	//! @param[in] a   … 引数の説明
-	//! 
+	/// @brief num 次元で，アロケータ a のコピーを利用したベクトルを作成し，デフォルト値で要素を初期化する
 	vector( size_type num, const Allocator &a ) : base( num, 1, a ) {}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] num … 引数の説明
-	//! @param[in] val … 引数の説明
-	//! 
+	/// @brief num 次元のベクトルを作成し，全要素を値 val で要素を初期化する
 	vector( size_type num, const T &val ) : base( num, 1, val ) {}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] num … 引数の説明
-	//! @param[in] val … 引数の説明
-	//! @param[in] a   … 引数の説明
-	//! 
+	/// @brief num 次元で，アロケータ a のコピーを利用したベクトルを作成し，全要素を値 val で要素を初期化する
 	vector( size_type num, const T &val, const Allocator &a ) : base( num, 1, val, a ) {}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] o … 引数の説明
-	//! 
+	/// @brief 他のベクトルで要素の型が異なるものから同じサイズのベクトルを作成する
+	//!
+	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
+	//!
 	template < class TT, class AAlocator >
 	vector( const vector< TT, AAlocator > &o ) : base( o ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] o … 引数の説明
-	//! 
+	/// @brief 他のベクトルで同じ要素型のものを用いて初期化する
 	vector( const vector< T, Allocator > &o ) : base( o ){ }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] expression … 引数の説明
-	//! 
+	/// @brief 複数の行列・ベクトル演算の結果を用いてベクトルを初期化する
 	template < class Expression >
 	vector( const matrix_expression< Expression > &expression ) : base( expression.size( ), 1 )
 	{
@@ -1049,14 +790,16 @@ public:
 
 
 
-/// @brief 標準出力へのベクトルの出力
+/// @brief 指定されたストリームに，行列内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     v   … 出力する行列
 //! 
-//! @param[in,out] out … 引数の説明
-//! @param[in]     v   … 引数の説明
+//! @return 入力されたストリーム
 //! 
-//! @return 戻り値の説明
+//! @code 出力例
+//! 1, 2, 3, 4
+//! @endcode
 //! 
 template < class T, class Allocator >
 inline ::std::ostream &operator <<( ::std::ostream &out, const vector< T, Allocator > &v )
@@ -1075,14 +818,14 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const vector< T, Alloca
 #if 0
 #else
 
-/// @brief 関数・クラスの概要を書く
+/// @brief ベクトルの外積を計算する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 外積を計算する2つのベクトルの次元が等しくなくてはならない
 //! 
-//! @param[in] v1 … 引数の説明
-//! @param[in] v2 … 引数の説明
+//! @param[in] v1 … 左辺値ベクトル
+//! @param[in] v2 … 右辺値ベクトル
 //! 
-//! @return 戻り値の説明
+//! @return 外積結果
 //! 
 template < class T, class Allocator >
 inline vector< T, Allocator > operator *( const vector< T, Allocator > &v1, const vector< T, Allocator > &v2 )
