@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="matrix_test"
+	Name="limits_test"
 	ProjectGUID="{5B87E451-7196-400B-9898-D276C6418B72}"
 	Keyword="Win32Proj">
 	<Platforms>
@@ -87,7 +87,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/matrix_test.exe"
+				OutputFile="$(OutDir)/limits_test.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				SubSystem="1"
@@ -124,7 +124,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\test\matrix_test.cpp">
+				RelativePath="..\test\limits_test.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -132,7 +132,7 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="..\mist\matrix.h">
+				RelativePath="..\mist\limits.h">
 			</File>
 			<File
 				RelativePath="..\mist\mist.h">
@@ -142,28 +142,6 @@
 			</File>
 			<File
 				RelativePath="..\mist\config\mist_conf.h">
-			</File>
-			<File
-				RelativePath="..\mist\operator\operator_array.h">
-			</File>
-			<File
-				RelativePath="..\mist\operator\operator_array1.h">
-			</File>
-			<File
-				RelativePath="..\mist\operator\operator_array2.h">
-			</File>
-			<File
-				RelativePath="..\mist\operator\operator_array3.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="s—ñ‰‰ŽZ"
-			Filter="">
-			<File
-				RelativePath="..\mist\numeric\lu_decomposition.h">
-			</File>
-			<File
-				RelativePath="..\mist\numeric.h">
 			</File>
 		</Filter>
 	</Files>

@@ -13,64 +13,42 @@
 // mist–¼‘O‹óŠÔ‚Ìn‚Ü‚è
 _MIST_BEGIN
 
-
-// Œ^‘®«‚ğ’²‚×‚é
 #if _MSC_VER <= 1200
 
-// char ”»’è
-// T‚ª‚PƒoƒCƒg‚Ì•¶š—ñŒ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚é
-template< class T > struct is_char{ enum{ value = false }; };
-template<> struct is_char< unsigned char >{ enum{ value = true }; };
-template<> struct is_char< signed char >{ enum{ value = true }; };
-template<> struct is_char< char >{ enum{ value = true }; };
-
-// arithmetic ”»’è
-// T ‚ªZpŒ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚éB”Ä®”Œ^‚©•‚“®¬”“_Œ^‚Ì‚¢‚¸‚ê‚©‚ª‚±‚ê‚É‚ ‚½‚é
-template< class T > struct is_arithmetic{ enum{ value = false }; };
-template<> struct is_arithmetic< unsigned char >{ enum{ value = true }; };
-template<> struct is_arithmetic< unsigned short >{ enum{ value = true }; };
-template<> struct is_arithmetic< unsigned int >{ enum{ value = true }; };
-template<> struct is_arithmetic< unsigned long >{ enum{ value = true }; };
-template<> struct is_arithmetic< signed char >{ enum{ value = true }; };
-template<> struct is_arithmetic< signed short >{ enum{ value = true }; };
-template<> struct is_arithmetic< signed int >{ enum{ value = true }; };
-template<> struct is_arithmetic< signed long >{ enum{ value = true }; };
-template<> struct is_arithmetic< bool >{ enum{ value = true }; };
-template<> struct is_arithmetic< char >{ enum{ value = true }; };
-template<> struct is_arithmetic< float >{ enum{ value = true }; };
-template<> struct is_arithmetic< double >{ enum{ value = true }; };
-template<> struct is_arithmetic< long double >{ enum{ value = true }; };
+#define _MIST_CONST( type, name, value ) enum{ name = value }
 
 #else
 
-
-// char ”»’è
-// T‚ª‚PƒoƒCƒg‚Ì•¶š—ñŒ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚é
-template< class T > struct is_char{ static const bool value = false; };
-template<> struct is_char< unsigned char >{ static const bool value = true; };
-template<> struct is_char< signed char >{ static const bool value = true; };
-template<> struct is_char< char >{ static const bool value = true; };
-
-// arithmetic ”»’è
-// T ‚ªZpŒ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚éB”Ä®”Œ^‚©•‚“®¬”“_Œ^‚Ì‚¢‚¸‚ê‚©‚ª‚±‚ê‚É‚ ‚½‚é
-template< class T > struct is_arithmetic{ static const bool value = false; };
-template<> struct is_arithmetic< unsigned char >{ static const bool value = true; };
-template<> struct is_arithmetic< unsigned short >{ static const bool value = true; };
-template<> struct is_arithmetic< unsigned int >{ static const bool value = true; };
-template<> struct is_arithmetic< unsigned long >{ static const bool value = true; };
-template<> struct is_arithmetic< signed char >{ static const bool value = true; };
-template<> struct is_arithmetic< signed short >{ static const bool value = true; };
-template<> struct is_arithmetic< signed int >{ static const bool value = true; };
-template<> struct is_arithmetic< signed long >{ static const bool value = true; };
-template<> struct is_arithmetic< bool >{ static const bool value = true; };
-template<> struct is_arithmetic< char >{ static const bool value = true; };
-template<> struct is_arithmetic< float >{ static const bool value = true; };
-template<> struct is_arithmetic< double >{ static const bool value = true; };
-template<> struct is_arithmetic< long double >{ static const bool value = true; };
-
+#define _MIST_CONST( type, name, value ) static const type name = value
 
 #endif
 
+
+// Œ^‘®«‚ğ’²‚×‚é
+
+// char ”»’è
+// T‚ª‚PƒoƒCƒg‚Ì•¶š—ñŒ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚é
+template< class T > struct is_char        { _MIST_CONST( bool, value, false ); };
+template<> struct is_char< unsigned char >{ _MIST_CONST( bool, value, true  ); };
+template<> struct is_char< signed char >  { _MIST_CONST( bool, value, true  ); };
+template<> struct is_char< char >         { _MIST_CONST( bool, value, true  ); };
+
+// arithmetic ”»’è
+// T ‚ªZpŒ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚éB”Ä®”Œ^‚©•‚“®¬”“_Œ^‚Ì‚¢‚¸‚ê‚©‚ª‚±‚ê‚É‚ ‚½‚é
+template< class T > struct is_arithmetic                  { _MIST_CONST( bool, value, false ); };
+template<>          struct is_arithmetic< unsigned char > { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< unsigned short >{ _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< unsigned int >  { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< unsigned long > { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< signed char >   { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< signed short >  { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< signed int >    { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< signed long >   { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< bool >          { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< char >          { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< float >         { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< double >        { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_arithmetic< long double >   { _MIST_CONST( bool, value, true  ); };
 
 // ƒf[ƒ^Œ^‚Ì‚ÉŠÖ‚·‚éî•ñ
 template< class T >
