@@ -236,17 +236,17 @@ namespace dicom_controller
 	class dicom_info
 	{
 	public:
-		compress_type compress_type;
+		compress_type compression_type;
 
 	public:
-		dicom_info( compress_type c = RAW ) : compress_type( c ) { }
-		dicom_info( const dicom_info &info ) : compress_type( info.compress_type ) { }
+		dicom_info( compress_type c = RAW ) : compression_type( c ) { }
+		dicom_info( const dicom_info &info ) : compression_type( info.compress_type ) { }
 
 		const dicom_info &operator =( const dicom_info &info )
 		{
 			if( &info != this )
 			{
-				compress_type = info.compress_type;
+				compression_type = info.compression_type;
 			}
 			return( *this );
 		}
