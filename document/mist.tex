@@ -270,5 +270,218 @@ mist::opening( image,
 ここで，\verb+create_morphology_structure+ の引数 \verb+(cx, cy)+ は，構造要素の中心座標を表しています．これを用いることで，任意の構造要素でモルフォロジ演算を行うことができます．ただし，構造要素は凸形状である必要があるということに注意してください． 
 
 
+\section{行列演算}
+MISTを用いると，本来は手間のかかる行列演算処理を，変数の演算と同じように記述することができます．
+本チュートリアルでは，MISTの行列演算処理を利用して簡単な画像回転処理を記述するサンプルを紹介します．
+行列演算に関してはDocument:行列演算と基礎編の行列演算も参考になります．
+
+\subsection{ヘッダの準備}
+基本的な行列演算（四則演算）を行うには，以下のファイルをインクルードします．
+\begin{verbatim}
+#include <mist/matrix.h>
+\end{verbatim}
+また，逆行列の計算や固有値計算を行う場合は以下のファイルもインクルードする必要があります．
+上の matrix.h とセットでインクルードしておくと良いでしょう．
+\begin{verbatim}
+#include <mist/numeric.h>
+\end{verbatim}
+なお，numeric.h を用いる場合は，行列計算ライブラリCLAPACKを準備しておかなければコンパイルできません．
+もし準備がまだできていなければCLAPACK導入の方法を参照し，numeric.h が使えるようにしておきましょう．
+パスを通すのと，コンパイル時のオプションを追加するのも忘れずに・・・ 
+
+\subsection{行列の表現}
+行列の基本的な定義法は次のようになります．
+\begin{verbatim}
+// 3行3列の行列rを作成
+mist::matrix< double > r( 3 , 3 );
+// 3行1列の行列pを作成
+mist::matrix< double > p( 3 , 1 );
+\end{verbatim}
+行列へのアクセスは( 行番号, 列番号 )のように記述します．
+\begin{verbatim}
+// 行列pの2行1列目に1.0を代入
+p( 1 , 0 ) = 1.0;
+\end{verbatim}
+
+\subsection{行列の応用演算}
+それではここで，numeric.h を用いた行列の応用演算をいくらか紹介しましょう．
+\begin{verbatim}
+// 正方行列 r の行列式を計算 
+double det_r = mist::det( r );
+// 行列 r の逆行列を計算
+mist::matrix< double > r_inv =
+                         mist::inverse( r );
+// 係数行列 a と定数項ベクトル b から連立方程式　 を解く
+mist::matrix< double > a( 2 , 2 );
+mist::matrix< double > b( 2 , 1 );
+a( 0 , 0 ) = 2; a( 0 , 1 ) = 1;  b( 0 , 0 ) = 1;
+a( 1 , 0 ) = 1; a( 1 , 1 ) = -1; b( 1 , 0 ) = 5;
+mist::matrix< double > x = mist::solve( a , b );
+\end{verbatim}
+
+
+\section{STLの利用}
+標準テンプレートライブラリ(STL：Standard Template Library)とは，C++言語でプログラミングする際によく利用される，
+汎用的なデータ構造とアルゴリズムを実装した，クラステンプレートおよび関数テンプレートを利用しやすいかたちでまとめたものです．
+ここでは，MISTと関連する事項を簡単に説明します．STL自体の詳細は，各種参考書に譲ります(Web上で読めるSTLの本).
+
+\subsection{STLの構成要素}
+STLはコンテナ，アルゴリズム，イテレータの3つの基本要素で構成されています．
+\begin{itemize}
+\setlength{\leftmargin}{1cm}
+\setlength{\itemsep}{0mm}
+\item{コンテナ … 任意の型のデータを格納できる様々な汎用データ構造(mistコンテナのようなもの)}
+\item{アルゴリズム … コンテナに格納されたデータに対して行われる操作(ソート，検索，変換など)}
+\item{イテレータ … コンテナに格納されたデータの場所を示すもの(ポインタのようなもの)}
+\end{itemize}
+アルゴリズムはイテレータを介してコンテナに作用します．
+これにより，アルゴリズムはコンテナの種類を意識することなく，適用することができます．
+
+\subsection{STLを用いた簡単なプログラムの作成}
+STLには様々な種類のコンテナが用意されていますが，ここでは両端キュー(deque：double ended queue) コンテナを用いた
+簡単なプログラムを作成してみましょう．\\
+　はじめに，dequeコンテナを用いるために次のヘッダをインクルードします．
+\begin{verbatim}
+#include <deque>
+\end{verbatim}
+次に，dequeコンテナを作成します．
+\begin{verbatim}
+// サイズ5のchar型dequeコンテナqueを作成
+std::deque< char > que(5);
+\end{verbatim}
+当然ですが，この段階のqueは空のコンテナです．そこで，適当な文字列"ABCDE"を格納してみましょう．
+\begin{verbatim}
+int i;
+// que.size()：
+// queのサイズを返す
+for( i=0; i<que.size(); i++ )
+{
+        que[i] = 'A' + i;
+}
+\end{verbatim}
+この処理では添え字演算子[ ]を介してコンテナにアクセスしていますが，
+前述したように，STLではイテレータを介してコンテナにアクセスする方法が一般的です．上記の処理を書き換えてみましょう．
+まず，以下のようにイテレータを作成します．
+\begin{verbatim}
+// char型dequeコンテナのイテレータを作成
+std::deque< char >::iterator itr;
+\end{verbatim}
+このイテレータitrを介して文字列"ABCDE"を格納してみましょう．
+\begin{verbatim}
+int i;
+// que.begin()：
+// queの先頭を指すイテレータを返す
+// que.end()：
+// queの(末尾+1)を指すイテレータを返す
+for( itr=que.begin(), i=0; itr!=que.end();
+                                itr++, i++ )
+{
+        *itr = 'A' + i;
+}
+\end{verbatim}
+このように，イテレータはポインタのような働きをします．\\
+　ここまでで，メンバ関数size，begin，endを利用しましたが， STLには，他にも多くのメンバ関数が用意されています．
+ここで，dequeコンテナの主要なメンバ関数をいくつか紹介します． dequeはコンテナの両端からのアクセスが可能です．
+そこで，queの先頭と末尾にそれぞれ適当な文字 '\{'，'\}'を追加してみましょう．
+\begin{verbatim}
+// que.push_front()：
+// queの先頭に要素を追加する
+que.push_front('{');
+// que.push_back()：
+// queの末尾に要素を追加する
+que.push_back('}');
+\end{verbatim}
+当初，queはサイズ5のコンテナとして作成されましたが，要素数が追加されれば，その都度サイズは確保されます．
+その逆もまたしかりです．ここで紹介したメンバ関数以外にも，push\_front，push\_backの逆処理で，コンテナの先頭と末尾の要素を削除する 
+pop\_front，pop\_backなども用意されています．\\
+　最後に，実際にコンテナにアルゴリズムを適用させてみましょう．アルゴリズムを用いる場合は，次のヘッダをインクルードします．
+\begin{verbatim}
+#include <algorithm>
+\end{verbatim}
+では，"\{\}"内の文字列を反転アルゴリズムreverse()と検索アルゴリズムfind()用いて，反転してみましょう．
+\begin{verbatim}
+// reverse()：
+// 指定した2つのイテレータ間の順序を逆にする
+// find()：
+// 指定した2つのイテレータ間で，指定したクエリ
+// に一致する要素を指すイテレータを返す
+reverse( find( que.begin(), que.end(), '{' ) + 1,
+           find( que.begin(), que.end(), '}' ) );
+\end{verbatim}
+
+
+\section{MISTコンテナとSTLの併用}
+STLではvectorやqueue等のコンテナに対して適用できるアルゴリズムを提供していますが，
+MISTの用意したコンテナに対してもこれらのアルゴリズムを適用できます．実際にMISTコンテナをSTLのアルゴリズムに利用してみましょう．
+
+\subsection{ヘッダファイルの準備}
+MISTコンテナを利用するために次のヘッダファイルをインクルードしておきます．
+\begin{verbatim}
+#include <mist/mist.h>
+\end{verbatim}
+また今回は画像を読み込みたいので，次のヘッダファイルもインクルードします．
+\begin{verbatim}
+#include <mist/io/bmp.h>
+\end{verbatim}
+STLのアルゴリズムを利用するには，次のヘッダファイルをインクルードしておく必要があります． 
+\begin{verbatim}
+#include <algorithm>
+\end{verbatim}
+
+\subsection{アルゴリズム例}
+MISTコンテナとSTLのアルゴリズムを使用する簡単な例を作成してみましょう．まずarray2を利用して，画像を読み込んでおきます．
+\begin{verbatim}
+mist::array2< unsigned char > image;
+mist::read_bmp( image,"入力画像ファイル名" );
+\end{verbatim}
+ついでに書き込み関数も書いておきます．
+\begin{verbatim}
+mist::write_bmp( image,"出力画像ファイル名" );
+\end{verbatim}
+読み込みと書き込みの間にSTLのアルゴリズムを挿入して，その結果出力された画像を見てみましょう．
+
+\subsubsection{画像を逆さする}
+コンテナ内の要素を反転させて，画像を逆さにしてみましょう．これには先ほど紹介したreverse()を利用します．
+\begin{verbatim}
+std::reverse( 要素の先頭を指すイテレータ,
+               要素の終わりを指すイテレータ );
+\end{verbatim}
+イテレータは配列にとってのポインタのようなものなので，MISTコンテナの最初と最後の要素を指定してやります．
+指定した範囲の要素が反転するので，画像が逆さになります．
+MISTコンテナはSTLのコンテナと同様の使い方ができるので，上記のソースに次のコードを挿入します． 
+\begin{verbatim}
+std::reverse( image.begin(), image.end() );
+\end{verbatim}
+
+\subsubsection{画像内の画素をソートする}
+sort()を使って，画像内の全画素をソートしてみましょう．
+\begin{verbatim}
+std::sort( image.begin(), image.end() );
+\end{verbatim}
+デフォルトでは昇順にソートされますので，降順にしたい場合は第三引数にgreater関数オブジェクトを記述します．
+関数オブジェクトとは，operator()が定義されているクラスのことです． 
+\begin{verbatim}
+std::sort( image.begin(), image.end(),
+           std::greater< unsigned char >() );
+\end{verbatim}
+
+\subsubsection{画像内の画素をランダムソート}
+random\_shuffle()を用いることで，画素をランダムに並び替えることができます．
+\begin{verbatim}
+std::random_shuffle( image.begin(), image.end() );
+\end{verbatim}
+
+\subsubsection{各画素に対する処理}
+最後に，特定の関数を各画素に対して適用できるアルゴリズムfor\_each()を紹介します．
+\begin{verbatim}
+std::for_each( 先頭を指すイテレータ,
+               終わりを指すイテレータ, 関数 );
+\end{verbatim}
+for\_each()はイテレータで定義される範囲の要素に関数を適用します．
+この関数はなかなか便利で，毎回for文を使ってアルゴリズムを記述しなくてもよくなります(関数を書かなければいけませんが)． \\
+
+今回は入力画像を二値化する処理を例に用います．呼び出す関数として，しきい値を関数内で自分で書くものと，
+画像に適したしきい値を渡せるようにクラスで記述したものの，二種類を試してみましょう．
+
 
 \end{document}
