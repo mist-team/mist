@@ -10,6 +10,9 @@
 #include <mist/io/raw.h>
 #include <mist/io/dicom.h>
 #include <mist/filter/distance.h>
+#include <mist/filter/figure_decomposition.h>
+
+
 mist::array2< unsigned char > image_object( 100, 100 );
 //mist::array2< mist::rgb< unsigned char > > image_object( 100, 100 );
 
@@ -85,5 +88,30 @@ void euclidean_distance_transform_test( )
 	mist::euclidean_distance_transform( image_object, image_object );
 }
 
+void figure_decomposition_test( )
+{
+	mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
 
+	for( mist::array2< unsigned char >::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		switch( image_object[i] )
+		{
+		case 1:
+			image_object[i] = 50;
+			break;
+
+		case 2:
+			image_object[i] = 100;
+			break;
+
+		case 3:
+			image_object[i] = 150;
+			break;
+
+		case 4:
+			image_object[i] = 200;
+			break;
+		}
+	}
+}
 

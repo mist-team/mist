@@ -165,6 +165,9 @@
 				RelativePath="..\mist\draw.h">
 			</File>
 			<File
+				RelativePath="..\mist\filter\figure_decomposition.h">
+			</File>
+			<File
 				RelativePath="..\mist\io\jpeg.h">
 			</File>
 			<File

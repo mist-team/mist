@@ -391,7 +391,7 @@ public:
 	const array1& operator =( const array1< TT, AAlocator > &o )
 	{
 		base::operator =( o );
-		reso1_ = o.reso1_;
+		reso1_ = o.reso1( );
 
 		return( *this );
 	}
@@ -550,9 +550,9 @@ public:
 	const array2& operator =( const array2< TT, AAlocator > &o )
 	{
 		base::operator =( o );
-		size1_ = o.size1_;
-		size2_ = o.size2_;
-		reso2_ = o.reso2_;
+		size1_ = o.size1( );
+		size2_ = o.size2( );
+		reso2_ = o.reso2( );
 
 		return( *this );
 	}
@@ -818,10 +818,10 @@ public:
 	const array3& operator =( const array3< TT, AAlocator > &o )
 	{
 		base::operator =( o );
-		size1_ = o.size1_;
-		size2_ = o.size2_;
-		size3_ = o.size3_;
-		reso3_ = o.reso3_;
+		size1_ = o.size1( );
+		size2_ = o.size2( );
+		size3_ = o.size3( );
+		reso3_ = o.reso3( );
 
 		return( *this );
 	}

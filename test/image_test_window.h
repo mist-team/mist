@@ -39,6 +39,8 @@ private:
   static Fl_Menu_Item menu_[];
   inline void cb_Euclidean_i(Fl_Menu_*, void*);
   static void cb_Euclidean(Fl_Menu_*, void*);
+  inline void cb_Figure_i(Fl_Menu_*, void*);
+  static void cb_Figure(Fl_Menu_*, void*);
 public:
   void show( );
 };

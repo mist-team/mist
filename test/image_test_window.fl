@@ -135,8 +135,13 @@ write_dicom_test( filename );}
         } {
           menuitem {} {
             label {Euclidean Distance Transform}
-            callback {euclidean_distance_transform_test( );} selected
+            callback {euclidean_distance_transform_test( );}
             xywh {0 0 100 20}
+          }
+          menuitem {} {
+            label {Figure Decomposition}
+            callback {figure_decomposition_test( );} selected
+            xywh {10 10 100 20}
           }
         }
       }

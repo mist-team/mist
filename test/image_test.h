@@ -32,4 +32,6 @@ void write_dicom_test( const char *filename );
 
 void euclidean_distance_transform_test( );
 
+void figure_decomposition_test( );
+
 #endif // __INCLUDE_IMAGE_TEST__
