@@ -141,7 +141,6 @@ namespace Tsai
 		{
 		}
 
-
 		template < class TT >
 		double operator( )( const matrix< TT > &v ) const
 		{
@@ -168,9 +167,9 @@ namespace Tsai
 
 				//std::cout << x << ", " << y << ", " << z << std::endl;
 
-				//			err += std::sqrt( e1 * e1 );
+				//err += std::sqrt( e1 * e1 );
 				err += std::sqrt( e2 * e2 );
-				//			err += std::sqrt( e1 * e1 + e2 * e2 );
+				//err += std::sqrt( e1 * e1 + e2 * e2 );
 			}
 			return( err );
 		}
@@ -324,7 +323,7 @@ namespace Tsai
 		r5 = r5_ * Ty;
 		Tx = Ty_Tx * Ty;
 
-		std::cout << "( Tx, Ty ) = ( " << Tx << ", " << Ty << " )" << std::endl;
+		//std::cout << "( Tx, Ty ) = ( " << Tx << ", " << Ty << " )" << std::endl;
 
 		// (iii.3) 回転行列Rを決定する
 		{
@@ -381,6 +380,30 @@ namespace Tsai
 		f = L[ 0 ];
 		Tz = L[ 1 ];
 
+		if( f < 0.0 )
+		{
+			// 求まった焦点距離が負となるため，回転行列を再設定して計算しなおす
+			r3 = -r3;
+			r6 = -r6;
+			r7 = -r7;
+			r8 = -r8;
+			for( i = 0 ; i < num ; i++ )
+			{
+				const point3 &w = world[ i ];
+				const point2 &p = image[ i ];
+				double Yd = ( p.y - Cy ) * dpy;
+
+				A( i, 0 ) = r4 * w.x + r5 * w.y + r6 * 0 + Ty;
+				A( i, 1 ) = -Yd;
+				B( i, 0 ) = ( r7 * w.x + r8 * w.y + r9 * 0 ) * Yd;
+			}
+
+			L = mist::inverse( A.t( ) * A ) * A.t( ) * B;
+
+			f = L[ 0 ];
+			Tz = L[ 1 ];
+		}
+
 		// (v) 最急降下法を用いて正確な焦点距離とTzの値を求める
 		__parameter__< T1, T2 > param( p, world, image );
 		param.dpx = dpx;	// カメラのX軸方向の1画素あたりの大きさ [mm/pixel]
@@ -401,14 +424,15 @@ namespace Tsai
 		param.ka1 = ka1;	// キャリブレーションの結果得られる円形の歪成分
 
 		{
-			mist::matrix< double > ppp( 3, 1 );
+			mist::matrix< double > ppp( 3, 1 );//, dirs = matrix_type::identity( 3, 3 );
 			ppp[ 0 ] = f;
 			ppp[ 1 ] = Tz;
 			ppp[ 2 ] = ka1;
 
 			//std::cout << "( f, Tz, ka1 ) = " << ppp.t( ) << std::endl;
 
-			mist::gradient::minimization( ppp, param, 0.001, 0.1 );
+			//mist::powell::minimization( ppp, dirs, param, 0.0000001 );
+			mist::gradient::minimization( ppp, param, 0.00001, 0.01 );
 
 			//std::cout << "( f, Tz, ka1 ) = " << ppp.t( ) << std::endl;
 
