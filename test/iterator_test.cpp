@@ -8,71 +8,144 @@ int main( int argc, char *argv[] )
 	using namespace std;
 
 	{
-		mist::matrix< double > mat( 3, 3 );
-
-		mat( 0, 0 ) = 1; mat( 0, 1 ) = 2; mat( 0, 2 ) = 3;
-		mat( 1, 0 ) = 4; mat( 1, 1 ) = 5; mat( 1, 2 ) = 6;
-		mat( 2, 0 ) = 7; mat( 2, 1 ) = 8; mat( 2, 2 ) = 9;
-
-		cout << mat << endl;
-
-		mist::matrix< double >::iterator rite = mat.row_begin( 1 );
-
-		for( ; rite != mat.row_end( 1 ) ; rite++ )
 		{
-			*rite = 3;
+			cout << "Forward Iterator Test row axis" << endl;
+
+			mist::matrix< double > mat( 3, 3 );
+			mist::matrix< double >::iterator ite = mat.row_begin( 1 );
+
+			for( int i = 1 ; ite != mat.row_end( 1 ) ; ite++, i++ )
+			{
+				*ite = i;
+			}
+
+			cout << mat << endl;
 		}
 
-		cout << mat << endl;
-
-		mist::matrix< double >::reverse_iterator cite = mat.col_rbegin( 2 );
-
-		for( ; cite != mat.col_rend( 2 ) ; cite++ )
 		{
-			*cite = 4;
+			cout << "Reverse Iterator Test row axis" << endl;
+
+			mist::matrix< double > mat( 3, 3 );
+			mist::matrix< double >::reverse_iterator ite = mat.row_rbegin( 1 );
+
+			for( int i = 1 ; ite != mat.row_rend( 1 ) ; ite++, i++ )
+			{
+				*ite = i;
+			}
+
+			cout << mat << endl;
 		}
 
-		cout << mat << endl;
+		{
+			cout << "Forward Iterator Test col axis" << endl;
+
+			mist::matrix< double > mat( 3, 3 );
+			mist::matrix< double >::iterator ite = mat.col_begin( 1 );
+
+			for( int i = 1 ; ite != mat.col_end( 1 ) ; ite++, i++ )
+			{
+				*ite = i;
+			}
+
+			cout << mat << endl;
+		}
+
+		{
+			cout << "Reverse Iterator Test col axis" << endl;
+
+			mist::matrix< double > mat( 3, 3 );
+			mist::matrix< double >::reverse_iterator ite = mat.col_rbegin( 1 );
+
+			for( int i = 1 ; ite != mat.col_rend( 1 ) ; ite++, i++ )
+			{
+				*ite = i;
+			}
+
+			cout << mat << endl;
+		}
 	}
-//	return( 0 );
 
 	{
-		mist::array3< int > a( 3, 3, 3, 1 );
+		cout << "Forward Iterator Test X axis" << endl;
 
-		//a( 0, 0, 0 ) = 1; a( 0, 1, 0 ) = 2; a( 0, 2, 0 ) = 3;
-		//a( 1, 0, 0 ) = 4; a( 1, 1, 0 ) = 5; a( 1, 2, 0 ) = 6;
-		//a( 2, 0, 0 ) = 7; a( 2, 1, 0 ) = 8; a( 2, 2, 0 ) = 9;
+		mist::array3< int > a( 3, 3, 3, 0 );
+		mist::array3< int >::iterator ite = a.x_begin( 1 );
 
-		//a( 0, 0, 1 ) = 1; a( 0, 1, 1 ) = 2; a( 0, 2, 1 ) = 3;
-		//a( 1, 0, 1 ) = 4; a( 1, 1, 1 ) = 5; a( 1, 2, 1 ) = 6;
-		//a( 2, 0, 1 ) = 7; a( 2, 1, 1 ) = 8; a( 2, 2, 1 ) = 9;
-
-		//a( 0, 0, 2 ) = 1; a( 0, 1, 2 ) = 2; a( 0, 2, 2 ) = 3;
-		//a( 1, 0, 2 ) = 4; a( 1, 1, 2 ) = 5; a( 1, 2, 2 ) = 6;
-		//a( 2, 0, 0 ) = 7; a( 2, 1, 0 ) = 8; a( 2, 2, 0 ) = 9;
-
-
+		for( int i = 1 ; ite != a.x_end( 1 ) ; ite++, i++ )
 		{
-			mist::array3< int >::iterator ite = a.x_begin( 1 );
-
-			for( ; ite != a.x_end( 1 ) ; ite++ )
-			{
-				*ite = 2;
-			}
-
-			cout << a << endl;
+			*ite = i;
 		}
 
+		cout << a << endl;
+	}
 
+	{
+		cout << "Forward Iterator Test Y axis" << endl;
+
+		mist::array3< int > a( 3, 3, 3, 0 );
+		mist::array3< int >::iterator ite = a.y_begin( 1 );
+
+		for( int i = 1 ; ite != a.y_end( 1 ) ; ite++, i++ )
 		{
-			mist::array3< int >::iterator ite = a.y_begin( 1 );
-
-			for( ; ite != a.y_end( 1 ) ; ite++ )
-			{
-				*ite = 3;
-			}
-
-			cout << a << endl;
+			*ite = i;
 		}
+
+		cout << a << endl;
+	}
+
+	{
+		cout << "Forward Iterator Test Z axis" << endl;
+
+		mist::array3< int > a( 3, 3, 3, 0 );
+		mist::array3< int >::iterator ite = a.z_begin( 1 );
+
+		for( int i = 1 ; ite != a.z_end( 1 ) ; ite++, i++ )
+		{
+			*ite = i;
+		}
+
+		cout << a << endl;
+	}
+
+	{
+		cout << "Reverse Iterator Test X axis" << endl;
+
+		mist::array3< int > a( 3, 3, 3, 0 );
+		mist::array3< int >::reverse_iterator ite = a.x_rbegin( 1 );
+
+		for( int i = 1 ; ite != a.x_rend( 1 ) ; ite++, i++ )
+		{
+			*ite = i;
+		}
+
+		cout << a << endl;
+	}
+
+	{
+		cout << "Reverse Iterator Test Y axis" << endl;
+
+		mist::array3< int > a( 3, 3, 3, 0 );
+		mist::array3< int >::reverse_iterator ite = a.y_rbegin( 1 );
+
+		for( int i = 1 ; ite != a.y_rend( 1 ) ; ite++, i++ )
+		{
+			*ite = i;
+		}
+
+		cout << a << endl;
+	}
+
+	{
+		cout << "Reverse Iterator Test Z axis" << endl;
+
+		mist::array3< int > a( 3, 3, 3, 0 );
+		mist::array3< int >::reverse_iterator ite = a.z_rbegin( 1 );
+
+		for( int i = 1 ; ite != a.z_rend( 1 ) ; ite++, i++ )
+		{
+			*ite = i;
+		}
+
+		cout << a << endl;
 	}
 }
