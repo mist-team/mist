@@ -308,7 +308,7 @@ public:
 		if( num < 0 ) return( NULL );				// トリム先の配列サイズが0より小さい例外
 		if( num == dest_num ) return( ptr );		// トリムによる変更の必要なし
 		if( num == 0 ) return( NULL );
-#if _MIST_ALLOCATOR_MEMORY_TRIM__ != 0
+#if _MIST_ALLOCATOR_MEMORY_TRIM_ != 0
 		deallocate_objects( ptr + dest_num, num - dest_num );
 		fill_objects( ptr, dest_num );
 #else
@@ -325,7 +325,7 @@ public:
 		if( num < 0 ) return( NULL );				// トリム先の配列サイズが0より小さい例外
 		if( num == dest_num ) return( ptr );		// トリムによる変更の必要なし
 		if( num == 0 ) return( NULL );
-#if _MIST_ALLOCATOR_MEMORY_TRIM__ != 0
+#if _MIST_ALLOCATOR_MEMORY_TRIM_ != 0
 		deallocate_objects( ptr + dest_num, num - dest_num );
 		fill_objects( ptr, dest_num, obj );
 #else

@@ -50,9 +50,9 @@ _MIST_BEGIN
 #define _MIST_ALLOCATE_TEST_			0
 
 #ifdef __MIST_MSVC__
-	#define _MIST_ALLOCATOR_MEMORY_TRIM__	0	// VC標準のSTLではサポートしていないのでオフにする
+	#define _MIST_ALLOCATOR_MEMORY_TRIM_	0	// VC標準のSTLではサポートしていないのでオフにする
 #else
-	#define _MIST_ALLOCATOR_MEMORY_TRIM__	1	// VC以外のSTLではサポートしているのでオンにする
+	#define _MIST_ALLOCATOR_MEMORY_TRIM_	1	// VC以外のSTLではサポートしているのでオンにする
 #endif
 
 
@@ -82,7 +82,7 @@ _MIST_BEGIN
 
 #endif
 
-#define _MIST_THREAD_SUPPORT_				0	// MISTの各アルゴリズムでのスレッドサポートをするかどうか
+#define _MIST_THREAD_SUPPORT_				1	// MISTの各アルゴリズムでのスレッドサポートをするかどうか
 												// サポートする場合は，LINUX系の場合は pthread ライブラリが必要
 
 
