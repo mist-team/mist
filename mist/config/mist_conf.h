@@ -303,7 +303,9 @@ struct __mist_console_callback__
 * - @ref operator_group						"演算子の実装補助"
 * - @ref thread_group						"マルチスレッド"
 * - @ref mist::singleton					"シングルトン"
-* - @ref bspline_group						"Bスプライン曲線"
+* - @ref 曲線
+*   - @ref bspline_group						"Bスプライン曲線"
+*   - @ref spline_group							"3次スプライン曲線"
 *
 *
 * @subsection numeric ベクトル・行列演算

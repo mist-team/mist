@@ -222,6 +222,54 @@ protected:
 	/// @brief 開曲線の各制御点上での1次微係数を計算する
 	void open_spline( )
 	{
+		const base &p = *this;
+
+		difference_type n, num = p.size( );
+
+		value_type *a = new value_type[ num ];
+		value_type *b = new value_type[ num ];
+		value_type *c = new value_type[ num ];
+
+		p1_.clear( );
+
+		// 開始点と終点について
+		a[ 0 ]   = value_type( 0 );
+		b[ 0 ]   = value_type( 2 );
+		c[ 0 ]   = value_type( 1 );
+		p1_.push_back( mul( sub( p[ 1 ], p[ 0 ] ), 3 ) );
+
+		// 開始点と終点以外の制御点に関して初期化
+		for( n = 1 ; n < num - 1 ; n++ )
+		{
+			a[ n ]   = value_type( 1 );
+			b[ n ]   = value_type( 4 );
+			c[ n ]   = value_type( 1 );
+			p1_.push_back( mul( sub( p[ n + 1 ], p[ n - 1 ] ), 3 ) );
+		}
+
+		a[ num - 1 ]   = value_type( 1 );
+		b[ num - 1 ]   = value_type( 2 );
+		c[ num - 1 ]   = value_type( 0 );
+		p1_.push_back( mul( sub( p[ num-1 ], p[ num-2 ] ), 3 ) );
+
+		// 一次微係数の計算
+		for( n = 1; n < num; n++ )
+		{
+			a[ n ]   = div( a[ n ], b[ n - 1 ] );
+			b[ n ]   = sub( b[ n ], mul( a[ n ], c[ n - 1 ] ) );
+			p1_[ n ] = sub( p1_[ n ],  mul( a[ n ],  p1_[ n - 1 ] ) );
+		}
+
+		p1_[ num-1 ] = div( p1_[ num-1 ], b[ num-1 ] );
+
+		for( n = num-2; n >= 0; n-- )
+		{
+			p1_[ n ] = div( sub( p1_[n], mul( c[n], p1_[ n+1 ] ) ), b[n] );
+		}
+
+		delete [] a;
+		delete [] b;
+		delete [] c;
 	}
 
 public:
@@ -236,6 +284,7 @@ public:
 
 		case OPEN:
 		default:
+			open_spline( );
 			break;
 		}
 	}
@@ -248,6 +297,12 @@ public:
 	//!
 	value_type operator( )( double t )
 	{
+		// 曲線を構築するのに必要な点数が存在しない場合
+		if( size( ) < 3 || p1_.size( ) < size( ) )
+		{
+			return( empty( ) ? value_type( ) : at( 0 ) );
+		}
+
 		if( t < 0.0 )
 		{
 			t = 0.0;
@@ -277,20 +332,19 @@ public:
 		value_type a0, a1, a2, a3;
 		const base &p = *this;
 
-		if( n > num - 1 )
-		{
-			n = num - 1;
-		}
-
 		switch( mode_ )
 		{
 		case CLOSED:
-			if( n == num - 1 )
+			if( n >= num - 1 )
 			{
-				a3 = add( mul( sub( p[ n ], p[ 0 ] ), 2 ), add( p1_[ n ], p1_[ 0 ] ) );
-				a2 = sub( add( mul( sub( p[ n ], p[ 0 ] ), -3 ), mul( p1_[ n ], -2 ) ), p1_[ 0 ] );
-				a1 = p1_[ n ];
-				a0 = p[ n ];
+				a3 = add( mul( sub( p[ num - 1 ], p[ 0 ] ), 2 ), add( p1_[ num - 1 ], p1_[ 0 ] ) );
+				a2 = sub( add( mul( sub( p[ num - 1 ], p[ 0 ] ), -3 ), mul( p1_[ num - 1 ], -2 ) ), p1_[ 0 ] );
+				a1 = p1_[ num - 1 ];
+				a0 = p[ num - 1 ];
+				if( n == num )
+				{
+					n--;
+				}
 			}
 			else
 			{
@@ -303,14 +357,17 @@ public:
 
 		case OPEN:
 		default:
-			if( n == num - 1 )
+			if( n == num )
 			{
-				n--;
+				return( p[ n ] );
 			}
-			a3 = add( mul( sub( p[ n ], p[ n + 1 ] ), 2 ), add( p1_[ n ], p1_[ n + 1 ] ) );
-			a2 = sub( add( mul( sub( p[ n ], p[ n + 1 ] ), -3 ), mul( p1_[ n ], -2 ) ), p1_[ n + 1 ] );
-			a1 = p1_[ n ];
-			a0 = p[ n ];
+			else
+			{
+				a3 = add( mul( sub( p[ n ], p[ n + 1 ] ), 2 ), add( p1_[ n ], p1_[ n + 1 ] ) );
+				a2 = sub( add( mul( sub( p[ n ], p[ n + 1 ] ), -3 ), mul( p1_[ n ], -2 ) ), p1_[ n + 1 ] );
+				a1 = p1_[ n ];
+				a0 = p[ n ];
+			}
 			break;
 		}
 
@@ -327,7 +384,7 @@ public:
 	SplineMode mode( ) const { return( mode_ ); }
 
 	/// @brief スプライン曲線の種類を設定
-	SplineMode mode( SplineMode m ) const { return( mode_ = m ); }
+	SplineMode mode( SplineMode m ){ return( mode_ = m ); }
 
 
 	/// @brief 代入演算子
