@@ -2042,14 +2042,14 @@ namespace __svd__
 /// @brief 行列×行列の演算を行う
 //! 
 //! \f[
-//! 	\alpha \time {\bf A} \times {\bf B} + \beta {\bf C}
+//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
 //! \f]
 //! 
-//! @param[in]  a … 入力行列 f${\bf A}f$
-//! @param[in]  b … 入力行列 f${\bf B}f$
-//! @param[out] c … 計算結果を出力する行列 f${\bf C}f$
-//! @param[in]  a_is_transpose … 行列 f${\bf A}f$ を転置行列として掛け算する場合は true とする
-//! @param[in]  b_is_transpose … 行列 f${\bf B}f$ を転置行列として掛け算する場合は true とする
+//! @param[in]  a … 入力行列 \f${\bf A}\f$
+//! @param[in]  b … 入力行列 \f${\bf B}\f$
+//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
+//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする
+//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする
 //! @param[in]  alpha … 行列演算の和を計算するときの係数
 //! @param[in]  beta  … 行列演算の和を計算するときの係数
 //!
@@ -2104,14 +2104,14 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 /// @brief 行列×行列の演算を行う
 //! 
 //! \f[
-//! 	\alpha \time {\bf A} \times {\bf B} + \beta {\bf C}
+//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
 //! \f]
 //! 
-//! @param[in]  a … 入力行列 f${\bf A}f$
-//! @param[in]  b … 入力行列 f${\bf B}f$
-//! @param[out] c … 計算結果を出力する行列 f${\bf C}f$
-//! @param[in]  a_is_transpose … 行列 f${\bf A}f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
-//! @param[in]  b_is_transpose … 行列 f${\bf B}f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
+//! @param[in]  a … 入力行列 \f${\bf A}\f$
+//! @param[in]  b … 入力行列 \f${\bf B}\f$
+//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
+//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
+//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
 //! @param[in]  alpha … 行列演算の和を計算するときの係数
 //! @param[in]  beta  … 行列演算の和を計算するときの係数
 //!
