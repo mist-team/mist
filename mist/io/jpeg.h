@@ -105,7 +105,7 @@ namespace __jpeg_controller__
 			return( true );
 		}
 
-		static bool write( array2< T, Allocator > &image, const std::string &filename, int quality )
+		static bool write( const array2< T, Allocator > &image, const std::string &filename, int quality )
 		{
 			FILE *fout;						// 読み書き用ファイルポインター
 			fout = fopen( filename.c_str( ), "wb" );
@@ -171,7 +171,7 @@ bool read_jpeg( array2< T, Allocator > &image, const std::string &filename )
 }
 
 template < class T, class Allocator >
-bool write_jpeg( array2< T, Allocator > &image, const std::string &filename, int quality = 100 )
+bool write_jpeg( const array2< T, Allocator > &image, const std::string &filename, int quality = 100 )
 {
 	return( __jpeg_controller__::jpeg_controller< T, Allocator >::write( image, filename, quality ) );
 }

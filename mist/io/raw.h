@@ -49,7 +49,6 @@ namespace __raw_controller__
 			image.reso1( x );
 
 			size_type byte = sizeof( T );
-			size_type ret;
 			size_type size = w * byte; // スライス1枚分のメモリを確保
 			byte_array< T > data;
 
@@ -88,7 +87,7 @@ namespace __raw_controller__
 				}
 			}
 
-			return(true);
+			return( true );
 		}
 
 
@@ -105,7 +104,6 @@ namespace __raw_controller__
 
 			size_type w = image.width( );
 			size_type byte = sizeof( T );
-			size_type ret;
 			size_type size = w * byte; // スライス1枚分のメモリを確保
 			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
@@ -141,7 +139,7 @@ namespace __raw_controller__
 			delete [] tmparray;
 			fclose( fp );
 
-			return(true);
+			return( true );
 		}
 
 		static bool write_gz( const array1< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )
@@ -157,7 +155,6 @@ namespace __raw_controller__
 
 			size_type w = image.width( );
 			size_type byte = sizeof( T );
-			size_type ret;
 			size_type size = w * byte; // スライス1枚分のメモリを確保
 			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
@@ -191,7 +188,7 @@ namespace __raw_controller__
 			delete [] tmparray;
 			gzclose( fp );
 
-			return(true);
+			return( true );
 		}
 	};
 
@@ -253,7 +250,7 @@ namespace __raw_controller__
 				}
 			}
 
-			return(true);
+			return( true );
 		}
 
 
@@ -271,7 +268,6 @@ namespace __raw_controller__
 			size_type w = image.width( );
 			size_type h = image.height( );
 			size_type byte = sizeof( T );
-			size_type ret;
 			size_type size = w * byte; // スライス1枚分のメモリを確保
 			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
@@ -293,7 +289,7 @@ namespace __raw_controller__
 			delete [] tmparray;
 			fclose( fp );
 
-			return(true);
+			return( true );
 		}
 
 		static bool write_gz( const array2< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )
@@ -310,7 +306,6 @@ namespace __raw_controller__
 			size_type w = image.width( );
 			size_type h = image.height( );
 			size_type byte = sizeof( T );
-			size_type ret;
 			size_type size = w * byte; // スライス1枚分のメモリを確保
 			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
@@ -326,7 +321,7 @@ namespace __raw_controller__
 						tmparray[ i * byte + l ] = data[ l ];
 					}
 				}
-				gzwrite( fp, tmparray, size );
+				gzwrite( fp, tmparray, static_cast< unsigned int >( size ) );
 			}
 
 			delete [] tmparray;
@@ -397,7 +392,7 @@ namespace __raw_controller__
 				}
 			}
 
-			return(true);
+			return( true );
 		}
 
 
@@ -416,7 +411,6 @@ namespace __raw_controller__
 			size_type h = image.height( );
 			size_type d = image.depth( );
 			size_type byte = sizeof( T );
-			size_type ret;
 			size_type size = w * h * byte; // スライス1枚分のメモリを確保
 			unsigned char *tmparray =  new unsigned char[ size ];
 			byte_array< T > data;
@@ -441,7 +435,7 @@ namespace __raw_controller__
 			delete [] tmparray;
 			fclose( fp );
 
-			return(true);
+			return( true );
 		}
 
 		static bool write_gz( const array3< T, Allocator > &image, const std::string &filename, value_type offset = 0, bool raw_is_little_endian = false )

@@ -407,7 +407,7 @@ bool read_pnm( array2< T, Allocator > &image, const std::string &filename )
 }
 
 template < class T, class Allocator >
-bool write_pnm( array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type pnm_type = 6 )
+bool write_pnm( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type pnm_type = 6 )
 {
 	if( pnm_type > 6 ) 
 	{

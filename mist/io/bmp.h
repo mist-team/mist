@@ -703,7 +703,7 @@ bool read_bmp( array2< T, Allocator > &image, const std::string &filename )
 }
 
 template < class T, class Allocator >
-bool write_bmp( array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type bmp_bits = 24 )
+bool write_bmp( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type bmp_bits = 24 )
 {
 	return( __bmp_controller__::bmp_controller< T, Allocator >::write( image, filename, bmp_bits ) );
 }

@@ -127,7 +127,7 @@ namespace __png_controller__
 			return( ret );
 		}
 
-		static bool write( array2< T, Allocator > &image, const std::string &filename, int compression_level )
+		static bool write( const array2< T, Allocator > &image, const std::string &filename, int compression_level )
 		{
 			FILE *fp;
 			png_structp	png_ptr;
@@ -239,7 +239,7 @@ bool read_png( array2< T, Allocator > &image, const std::string &filename )
 }
 
 template < class T, class Allocator >
-bool write_png( array2< T, Allocator > &image, const std::string &filename, int compression_level = -1 )
+bool write_png( const array2< T, Allocator > &image, const std::string &filename, int compression_level = -1 )
 {
 	return( __png_controller__::png_controller< T, Allocator >::write( image, filename, compression_level ) );
 }

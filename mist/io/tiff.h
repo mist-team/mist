@@ -201,7 +201,7 @@ namespace __tiff_controller__
 			return( true );
 		}
 
-		static bool write( array2< T, Allocator > &image, const std::string &filename )
+		static bool write( const array2< T, Allocator > &image, const std::string &filename )
 		{
 			TIFF *tif;
 			size_type tiffW, tiffH;
@@ -269,7 +269,7 @@ bool read_tiff( array2< T, Allocator > &image, const std::string &filename )
 }
 
 template < class T, class Allocator >
-bool write_tiff( array2< T, Allocator > &image, const std::string &filename )
+bool write_tiff( const array2< T, Allocator > &image, const std::string &filename )
 {
 	return( __tiff_controller__::tiff_controller< T, Allocator >::write( image, filename ) );
 }
