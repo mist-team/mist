@@ -139,7 +139,7 @@ struct _stereo_converter_
 
 	#define __STEREO_CONVERTER__( type ) \
 		template < >\
-		struct _pixel_converter_< stereo< type > >\
+		struct _stereo_converter_< stereo< type > >\
 		{\
 			typedef type value_type;\
 			typedef stereo< type > stereo_type;\
