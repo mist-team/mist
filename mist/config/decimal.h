@@ -6,6 +6,10 @@
 #include "mist_conf.h"
 #endif
 
+#ifndef __INCLUDE_MIST_LIMITS__
+#include "../limits.h"
+#endif
+
 #include <iostream>
 #include <string>
 
@@ -20,34 +24,34 @@ _MIST_BEGIN
 
 namespace __decimal_util__
 {
-	template < unsigned int N >
+	template < int N >
 	struct log10
 	{
-		_MIST_CONST( unsigned int, value, log10< N / 10 >::value + 1 );
+		_MIST_CONST( int, value, log10< N / 10 >::value + 1 );
 	};
 
 	template < >
 	struct log10< 1 >
 	{
-		_MIST_CONST( unsigned int, value, 0 );
+		_MIST_CONST( int, value, 0 );
 	};
 
 	template < >
 	struct log10< 0 >
 	{
-		_MIST_CONST( unsigned int, value, 0 );
+		_MIST_CONST( int, value, 0 );
 	};
 
-	template < unsigned int N >
+	template < int N >
 	struct pow2
 	{
-		_MIST_CONST( unsigned int, value, 2 * pow2< N - 1 >::value );
+		_MIST_CONST( int, value, 2 * pow2< N - 1 >::value );
 	};
 
 	template < >
 	struct pow2< 0 >
 	{
-		_MIST_CONST( unsigned int, value, 1 );
+		_MIST_CONST( int, value, 1 );
 	};
 }
 
@@ -58,19 +62,17 @@ class decimal
 public:
 	typedef size_t size_type;
 	typedef ptrdiff_t difference_type;
-	typedef unsigned int value_type;
+	typedef unsigned short value_type;
 
 private:
 	_MIST_CONST( long, RADIXBITS,	15 );
 	_MIST_CONST( long, RADIX,		__decimal_util__::pow2< RADIXBITS >::value );
 	_MIST_CONST( long, RADIX1,		RADIX - 1 );
 	_MIST_CONST( long, RADIX_2,		RADIX / 2 );
-	_MIST_CONST( long, RADIX2,		RADIX * RADIX );
-	_MIST_CONST( long, MAXEXP,		16383 );
-	_MIST_CONST( long, MINEXP,		-16384 );
-	_MIST_CONST( long, MAX_K,		180 );			// < (sqrt(4 * RADIX + 1) - 1) * 0.5 */
-	_MIST_CONST( long, MAX_LONG,	0x7FFFFFFFL );
-	_MIST_CONST( long, MIN_LONG,	0x80000000L );
+	_MIST_CONST( long, MAXEXP,		__decimal_util__::pow2< RADIXBITS - 1 >::value - 1 );
+	_MIST_CONST( long, MINEXP,		- __decimal_util__::pow2< RADIXBITS - 1 >::value );
+	//_MIST_CONST( long, MAXEXP,		16383 );
+	//_MIST_CONST( long, MINEXP,		-16384 );
 
 	_MIST_CONST( long, NMPA,	MAX_KETA );
 	_MIST_CONST( long, NMPA1,	NMPA + 1 );
@@ -270,13 +272,12 @@ public:
 		}
 		if( exp_ > MAXEXP )
 		{
-			::std::cout << "Error : Overflow!!" << ::std::endl;
-			//*a = _MMAX;
-			return( operator =( decimal ( ) ) );
+			::std::cerr << "Error : Overflow!!" << ::std::endl;
+			return( operator =( maximum( ) ) );
 		}
 		if( exp_ < MINEXP )
 		{
-			::std::cout << "Error : Underflow!!" << ::std::endl;
+			::std::cerr << "Error : Underflow!!" << ::std::endl;
 			return( operator =( decimal( ) ) );
 		}
 		for( j = 0 ; ( j <= NMPA ) && ( i < NMPA2 ) ; i++, j++, xp++ )
@@ -327,9 +328,8 @@ public:
 		{
 			if( exp_ == MAXEXP )
 			{
-				::std::cout << "Error : Overflow!!" << ::std::endl;
-				//*a = _MMAX;
-				return( operator =( decimal( ) ) );
+				::std::cerr << "Error : Overflow!!" << ::std::endl;
+				return( operator =( maximum( ) ) );
 			}
 			for( i = NMPA ; i > 0 ; i-- )
 			{
@@ -460,8 +460,7 @@ public:
 		{
 			// ゼロ除算
 			std::cerr << "zero division!!" << std::endl;
-			//*a = _MMAX;
-			return( operator =( decimal( ) ) );
+			return( operator =( maximum( ) ) );
 		}
 		else if( zero_ )
 		{
@@ -507,32 +506,6 @@ public:
 		return( *this );
 	}
 
-	const decimal &operator %=( const decimal &a )
-	{
-		return( operator =( *this - ( *this / a ) ) );
-	}
-
-	const decimal &operator %=( difference_type n )
-	{
-		return( operator =( *this - ( *this / n ) ) );
-	}
-
-
-	const decimal &operator &=( const decimal &a )
-	{
-		return( *this );
-	}
-
-	const decimal &operator |=( const decimal &a )
-	{
-		return( *this );
-	}
-
-	const decimal &operator ^=( const decimal &a )
-	{
-		return( *this );
-	}
-
 	decimal &operator ++( ) // 前置型
 	{
 		*this += 1;
@@ -559,7 +532,6 @@ public:
 		return( old_val );
 	}
 
-
 	bool operator ==( const decimal &a ) const { return( cmp( *this, a ) == 0 ); }
 	bool operator !=( const decimal &a ) const { return( !( *this == a ) ); }
 	bool operator < ( const decimal &a ) const { return( !( *this >= a ) ); }
@@ -583,9 +555,8 @@ public:
 			return( "0" );
 		}
 
-		unsigned int c[ MMPA ], t[ NMPA1 ];
-		unsigned int *cp, *p, *q, w;
-		difference_type i;
+		unsigned int c[ MMPA ], t[ NMPA1 ], w;
+		difference_type i, cp;
 
 		for( i = 0 ; i <= mmpa ; i++ )
 		{
@@ -605,11 +576,11 @@ public:
 
 		decimal a( *this );
 
-		cp = c;
+		cp = 0;
 		difference_type n = a.exp_, u, m = 0, mp = -1;
 		if( n >= 0 )
 		{
-			for( i = 0, p = a.data_, q = t; i <= n; i++ )
+			for( i = 0 ; i <= n ; i++ )
 			{
 				t[ i ] = data_[ i ];
 			}
@@ -622,7 +593,7 @@ public:
 					t[ i ] = static_cast< value_type >( u / 10000 );
 					u %= 10000;
 				}
-				*cp++ = static_cast< value_type >( u );
+				c[ cp++ ] = static_cast< value_type >( u );
 				m++;
 				mp++;
 				bool zflag = true;
@@ -639,19 +610,19 @@ public:
 					break;
 				}
 			}
-			for( p = c, q = c + m - 1 ; p < q ; p++, q-- )
+			for( i = 0 ; i < m - i - 1 ; i++ )
 			{
-				w = *p;
-				*p = *q;
-				*q = w;
+				w = c[ i ];
+				c[ i ] = c[ m - i - 1 ];
+				c[ m - i - 1 ] = w;
 			}
-			for( i = n + 1, p = a.data_, q = a.data_ + i ; i <= nmpa ; i++ )
+			for( i = 0 ; i <= nmpa - ( n + 1 ) ; i++ )
 			{
-				*p++ = *q++;
+				a.data_[ i ] = a.data_[ i + n + 1 ];
 			}
-			for( i = 0 ; i <= n ; i++)
+			for( ; i <= nmpa ; i++)
 			{
-				*p++ = 0;
+				a.data_[ i ] = 0;
 			}
 			a.exp_ = -1;
 		}
@@ -666,28 +637,28 @@ public:
 				}
 				else
 				{
-					*cp++ = a.data_[ 0 ];
+					c[ cp++ ] = a.data_[ 0 ];
 					m++;
 					break;
 				}
 			}
-			for( i = 1, p = a.data_, q = p + 1 ; i <= nmpa ; i++ )
+			for( i = 0 ; i < nmpa ; i++ )
 			{
-				*p++ = *q++;
+				a.data_[ i ] = a.data_[ i + 1 ];
 			}
-			*p = 0;
+			a.data_[ i ] = 0;
 			a.exp_ = -1;
 		}
 		a *= 10000;
 		m++;
 		if( a.exp_ == 0 )
 		{
-			*cp++ = a.data_[ 0 ];
+			c[ cp++ ] = a.data_[ 0 ];
 			a.data_[ 0 ] = 0;
 		}
 		else
 		{
-			*cp++ = 0;
+			c[ cp++ ] = 0;
 		}
 		while( m <= mmpa )
 		{
@@ -697,30 +668,30 @@ public:
 				break;
 			}
 			a *= 10000;
-			*cp++ = a.data_[ 0 ];
+			c[ cp++ ] = a.data_[ 0 ];
 			m++;
 			a.data_[ 0 ] = 0;
 		}
-		if( *( c + mmpa ) < 5000 )
+		if( c[ mmpa ] < 5000 )
 		{
-			*( c + mmpa ) = 0;
+			c[ mmpa ] = 0;
 		}
 		else
 		{
-			*( c + mmpa ) = 0;
-			for( m = mmpa - 1, cp = c + m ; m >= 0 ; m-- )
+			c[ mmpa ] = 0;
+			for( m = mmpa - 1 ; m >= 0 ; m-- )
 			{
-				(*cp)++;
-				if( *cp != 10000 )
+				c[ m ]++;
+				if( c[ m ] != 10000 )
 				{
 					break;
 				}
-				*cp-- = 0;
+				c[ m ] = 0;
 			}
 		}
-		for( cp = c + mmpa, p = c ; cp >= p ; )
+		for( i = mmpa ; i >= 0 ; i-- )
 		{
-			if( *cp-- )
+			if( c[ i ] )
 			{
 				break;
 			}
@@ -740,17 +711,18 @@ public:
 			}
 			mp = -1;
 		}
-		cp = c;
 
-		char str[ 20 ];
+		cp = 0;
+
+		char str[ 10 ];
 		if( mp < 0 )
 		{
-			sprintf( str, "%04u", *cp++ );
+			sprintf( str, "%04u", c[ cp++ ] );
 			s += str;
 		}
 		else
 		{
-			sprintf( str, "%u", *cp++ );
+			sprintf( str, "%u", c[ cp++ ] );
 			s += str;
 			if( !mp )
 			{
@@ -760,7 +732,7 @@ public:
 
 		for( m = 1 ; m <= mmpa ; m++ )
 		{
-			sprintf( str, "%04u", *cp++ );
+			sprintf( str, "%04u", c[ cp++ ] );
 			s += str;
 			if( m == mp )
 			{
@@ -777,41 +749,95 @@ public:
 		return( s );
 	}
 
-	//int to_int32( ) const
-	//{
-	//	if( length_ == 0 )
-	//	{
-	//		return( 0 );
-	//	}
-	//	else if( length_ > 4 )
-	//	{
-	//		// オーバーフロー
-	//		std::cerr << "overflow!!" << std::endl;
-	//		return( 0 );
-	//	}
-	//	else
-	//	{
-	//		return( ( sign_ ? 1 : -1 ) * ( data_[ 0 ] + BASE * ( data_[ 1 ] + BASE * ( data_[ 2 ] + BASE * data_[ 3 ] ) ) ) );
-	//	}
-	//}
+	int to_int( ) const
+	{
+		if( zero_ || exp_ < 0 )
+		{
+			return( 0 );
+		}
+		else if( exp_ > NMPA )
+		{
+			::std::cerr << "Error : Overflow!!" << ::std::endl;
+			return( sign_ ? type_limits< int >::maximum( ) : type_limits< int >::minimum( ) );
+		}
+		else
+		{
+			size_type i, index;
+			for( index = 0 ; index <= NMPA ; index++ )
+			{
+				if( data_[ index ] )
+				{
+					break;
+				}
+			}
+			if( exp_ >= 3 || ( exp_ == 2 && data_[ 0 ] > 2 ) )
+			{
+				::std::cerr << "Error : Overflow!!" << ::std::endl;
+				return( sign_ ? type_limits< int >::maximum( ) : type_limits< int >::minimum( ) );
+			}
+			else
+			{
+				int d = 0;
+				for( i = index ; i <= index + exp_ && i <= NMPA ; i++ )
+				{
+                    d = d * RADIX + data_[ i ];
+				}
+				return( sign_ ? d : -d );
+			}
+		}
+	}
 
-	//int to_uint32( ) const
-	//{
-	//	if( length_ == 0 )
-	//	{
-	//		return( 0 );
-	//	}
-	//	else if( length_ > 4 )
-	//	{
-	//		// オーバーフロー
-	//		std::cerr << "overflow!!" << std::endl;
-	//		return( 0 );
-	//	}
-	//	else
-	//	{
-	//		return( data_[ 0 ] + BASE * ( data_[ 1 ] + BASE * ( data_[ 2 ] + BASE * data_[ 3 ] ) ) );
-	//	}
-	//}
+	double to_double( ) const
+	{
+		if( zero_ )
+		{
+			return( 0.0 );
+		}
+		if( exp_ > 68 )
+		{
+			::std::cerr << "Error : Overflow!!" << ::std::endl;
+			return( type_limits< double >::maximum( ) );
+		}
+		if( exp_ < -68 )
+		{
+			::std::cerr << "Error : Underflow!!" << ::std::endl;
+			return( type_limits< double >::minimum( ) );
+		}
+
+		decimal a( *this );
+		size_type i;
+		while( a.data_[ 0 ] == 0 )
+		{
+			for( i = 0 ; i < NMPA ; i++ )
+			{
+				a.data_[ i ] = a.data_[ i + 1 ];
+			}
+			a.data_[ i ];
+			a.exp_--;
+		}
+
+		double d = static_cast< double >( a.data_[ 0 ] );
+		for( i = 1; i < 7; i++ )
+		{
+			d = d * static_cast< double >( RADIX ) + static_cast< double >( a.data_[ i ] );
+			a.exp_--;
+		}
+		if( a.data_[ i ] >= RADIX_2 )
+		{
+			d += 1.0;
+		}
+		while( a.exp_ > 0 )
+		{
+			d *= static_cast< double >( RADIX );
+			a.exp_--;
+		}
+		while( a.exp_ < 0 )
+		{
+			d /= static_cast< double >( RADIX );
+			a.exp_++;
+		}
+		return( a.sign_ ? d : -d );
+	}
 
 	bool is_zero( ) const
 	{
@@ -829,31 +855,31 @@ public:
 		return( true );
 	}
 
-	decimal sqrt( ) const
+	bool is_plus( ) const
 	{
-		if( zero_ )
-		{
-			return decimal( );
-		}
-		else if( !sign_)
-		{
-			::std::cout << "Error : Illegal parameter!!" << ::std::endl;
-			return( *this );
-		}
-		decimal s( 1 );
-		decimal b = *this;
-		while( s < b )
-		{
-			s *= 2;
-			b /= 2;
-		}
+		return( sign_ );
+	}
 
-		do
+
+public:	// 定数
+	static decimal maximum( )
+	{
+		static decimal max;
+		if( max.is_zero( ) )
 		{
-			b = s;
-			s = ( ( *this / s ) + s ) / 2;
-		} while( s < b );
-		return( b );
+			max.sign_ = true;
+			max.exp_  = MAXEXP;
+			for( size_type i = 0 ; i <= NMPA1 ; i++ )
+			{
+				max.data_[ i ] = RADIX1;
+			}
+		}
+		return( max );
+	}
+
+	static decimal zero( )
+	{
+		return( decimal( ) );
 	}
 
 protected:
@@ -924,51 +950,6 @@ protected:
 		}
 		return( 0 );
 	}
-
-	//static int acmp( decimal a, decimal b )
-	//{
-	//	if( a.zero_ )
-	//	{
-	//		return( b.zero_ ? 0 : -1 );
-	//	}
-	//	else if( b.zero_ )
-	//	{
-	//		return( 1 );
-	//	}
-
-	//	size_type i;
-
-	//	while( a.data_[ 0 ] == 0 && a.exp_ != MINEXP )
-	//	{
-	//		for( i = 0 ; i < NMPA ; i++ )
-	//		{
-	//			a.data_[ i ] = a.data_[ i + 1 ];
-	//		}
-	//		a.data_[ i ] = 0;
-	//		a.exp_--;
-	//	}
-	//	while( b.data_[ 0 ] == 0 && b.exp_ != MINEXP )
-	//	{
-	//		for( i = 0 ; i < NMPA ; i++ )
-	//		{
-	//			b.data_[ i ] = b.data_[ i + 1 ];
-	//		}
-	//		b.data_[ i ] = 0;
-	//		b.exp_--;
-	//	}
-	//	if( a.exp_ != b.exp_ )
-	//	{
-	//		return( a.exp_ > b.exp_ ? 1: -1 );
-	//	}
-	//	for( i = 0 ; i <= NMPA ; i++ )
-	//	{
-	//		if( a.data_[ i ] != b.data_[ i ] )
-	//		{
-	//			return( a.data_[ i ] > b.data_[ i ] ? 1 : -1 );
-	//		}
-	//	}
-	//	return( 0 );
-	//}
 
 	static difference_type aprs( const decimal &a, decimal &b )
 	{
@@ -1049,9 +1030,8 @@ protected:
 		}
 		if( a.exp_ == MAXEXP )
 		{
-			::std::cout << "Error : Overflow!!" << ::std::endl;
-			a = decimal( );
-			//*a = _MMAX;
+			::std::cerr << "Error : Overflow!!" << ::std::endl;
+			a = maximum( );
 			return;
 		}
 		difference_type k = a.data_[ NMPA ];
@@ -1151,7 +1131,7 @@ protected:
 			{
 				if( pflag )
 				{
-					::std::cout << "Error : Illegal parameter!!" << ::std::endl;
+					::std::cerr << "Error : Illegal parameter!!" << ::std::endl;
 					return decimal( );
 				}
 				pflag = true;
@@ -1169,7 +1149,7 @@ protected:
 			}
 			else if( *p != ' ' && ( *p < '0' || *p > '9' ) )
 			{
-				::std::cout << "Error : Illegal parameter!!" << ::std::endl;
+				::std::cerr << "Error : Illegal parameter!!" << ::std::endl;
 				return decimal( );
 			}
 			else
@@ -1187,7 +1167,7 @@ protected:
 					}
 					else if( zflag == 1 )
 					{
-						::std::cout << "Error : Illegal parameter!!" << ::std::endl;
+						::std::cerr << "Error : Illegal parameter!!" << ::std::endl;
 						return decimal( );
 					}
 				}
@@ -1207,13 +1187,12 @@ protected:
 		}
 		if( exp > MAXEXP )
 		{
-			::std::cout << "Error : Overflow!!" << ::std::endl;
-			return decimal( );
-//			return _MMAX;
+			::std::cerr << "Error : Overflow!!" << ::std::endl;
+			return( maximum( ) );
 		}
 		if( exp < MINEXP )
 		{
-			::std::cout << "Error : Underflow!!" << ::std::endl;
+			::std::cerr << "Error : Underflow!!" << ::std::endl;
 			return decimal( );
 		}
 		a.sign_ = sign;
@@ -1247,21 +1226,16 @@ template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator +( 
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator -( const decimal< MAX_KETA > &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) -= v2 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator *( const decimal< MAX_KETA > &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) *= v2 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator /( const decimal< MAX_KETA > &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) /= v2 ); }
-//template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator %( const decimal< MAX_KETA > &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) %= v2 ); }
-//template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator |( const decimal< MAX_KETA > &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) |= v2 ); }
-//template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator &( const decimal< MAX_KETA > &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) &= v2 ); }
-//template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator ^( const decimal< MAX_KETA > &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) ^= v2 ); }
-//
+
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator *( const decimal< MAX_KETA > &v1, const typename decimal< MAX_KETA >::difference_type &v2 ){ return( decimal< MAX_KETA >( v1 ) *= v2 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator *( const typename decimal< MAX_KETA >::difference_type &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v2 ) *= v1 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator /( const decimal< MAX_KETA > &v1, const typename decimal< MAX_KETA >::difference_type &v2 ){ return( decimal< MAX_KETA >( v1 ) /= v2 ); }
-//
+
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator +( const decimal< MAX_KETA > &v1, const typename decimal< MAX_KETA >::difference_type &v2 ){ return( decimal< MAX_KETA >( v1 ) += v2 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator +( const typename decimal< MAX_KETA >::difference_type &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v2 ) += v1 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator -( const decimal< MAX_KETA > &v1, const typename decimal< MAX_KETA >::difference_type &v2 ){ return( decimal< MAX_KETA >( v1 ) -= v2 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator -( const typename decimal< MAX_KETA >::difference_type &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) -= v2 ); }
-//
-//template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator %( const decimal< MAX_KETA > &v1, const typename decimal< MAX_KETA >::difference_type &v2 ){ return( decimal< MAX_KETA >( v1 ) %= v2 ); }
+
 
 
 template < unsigned int MAX_KETA >
@@ -1280,7 +1254,30 @@ namespace std
 	template < unsigned int MAX_KETA >
 	inline mist::decimal< MAX_KETA > sqrt( const mist::decimal< MAX_KETA > &a )
 	{
-		return( a.sqrt( ) );
+		if( a.is_zero( ) )
+		{
+			return mist::decimal< MAX_KETA >( );
+		}
+		else if( !a.is_plus( ) )
+		{
+			::std::cerr << "Error : Illegal parameter!!" << ::std::endl;
+			return( a );
+		}
+
+		mist::decimal< MAX_KETA > s( 1 );
+		mist::decimal< MAX_KETA > b = a;
+		while( s < b )
+		{
+			s *= 2;
+			b /= 2;
+		}
+
+		do
+		{
+			b = s;
+			s = ( ( a / s ) + s ) / 2;
+		} while( s < b );
+		return( b );
 	}
 }
 

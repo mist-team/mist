@@ -505,7 +505,7 @@ public:
 		}
 	}
 
-	int to_int32( ) const
+	int to_int( ) const
 	{
 		if( length_ == 0 )
 		{
@@ -523,7 +523,7 @@ public:
 		}
 	}
 
-	int to_uint32( ) const
+	int to_uint( ) const
 	{
 		if( length_ == 0 )
 		{
