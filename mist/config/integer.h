@@ -565,7 +565,18 @@ protected:
 		}
 		else
 		{
-			return( ::memcmp( a.data_, b.data_, sizeof( value_type ) * a.length_ ) );
+			for( difference_type i = a.length_ - 1 ; i >= 0 ; i-- )
+			{
+				if( a.data_[ i ] < b.data_[ i ] )
+				{
+					return( -1 );
+				}
+				else if( a.data_[ i ] > b.data_[ i ] )
+				{
+					return( 1 );
+				}
+			}
+			return( 0 );
 		}
 	}
 
