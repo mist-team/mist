@@ -177,7 +177,6 @@ namespace __mean__
 		double sx = static_cast< double >( iw ) / static_cast< double >( ow );
 		double sy = static_cast< double >( ih ) / static_cast< double >( oh );
 		double sz = static_cast< double >( id ) / static_cast< double >( od );
-		double num = sx * sy * sz;
 
 		for( k = thread_idz ; k < od ; k += thread_numz )
 		{

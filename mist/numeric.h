@@ -2215,7 +2215,9 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 				v *= m( i, i );
 			}
 
-			return( v * ( count % 2 == 0 ? 1 : -1 ) );
+			v *= count % 2 == 0 ? 1 : -1;
+
+			return( v );
 		}
 		break;
 	}
@@ -2264,21 +2266,21 @@ inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, c
 				d( 1, 1 ) = s2;
 				d( 2, 2 ) = s1;
 			}
-			elsse
+			else
 			{
 				d( 0, 0 ) = s2;
 				d( 1, 1 ) = s3;
 				d( 2, 2 ) = s1;
 			}
 		}
-		elsse
+		else
 		{
 			d( 0, 0 ) = s2;
 			d( 1, 1 ) = s1;
 			d( 2, 2 ) = s3;
 		}
 	}
-	elsse
+	else
 	{
 		// ss2 < ss1
 		if( ss1 < ss3 )
@@ -2287,7 +2289,7 @@ inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, c
 			d( 1, 1 ) = s1;
 			d( 2, 2 ) = s2;
 		}
-		elsse
+		else
 		{
 			if( ss2 < ss3 )
 			{
@@ -2295,7 +2297,7 @@ inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, c
 				d( 1, 1 ) = s3;
 				d( 2, 2 ) = s2;
 			}
-			elsse
+			else
 			{
 				d( 0, 0 ) = s1;
 				d( 1, 1 ) = s2;

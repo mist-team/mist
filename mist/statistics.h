@@ -64,7 +64,6 @@ template < class T, class Allocator >
 inline typename __utility__::__value_type__< T >::value_type average( const array< T, Allocator > &a )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
-	typedef typename array< T, Allocator >::value_type value_type;
 	typedef typename __utility__::__value_type__< T >::value_type value_type;
 
 	if( a.empty( ) )
@@ -94,7 +93,6 @@ template < class T, class Allocator >
 inline typename __utility__::__value_type__< T >::value_type deviation( const array< T, Allocator > &a, double ave )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
-	typedef typename array< T, Allocator >::value_type value_type;
 	typedef typename __utility__::__value_type__< T >::value_type value_type;
 
 	if( a.empty( ) )

@@ -1,9 +1,10 @@
-#include <stdio.h>
-#include <time.h>
+#include <iostream>
+#include <ctime>
+
 #include <mist/crc.h>
 #include <mist/random.h>
 
-int main( void )
+int main( int argc, char *argv[] )
 {
 	const int		DATALEN = 1024;
 	unsigned char	data[ DATALEN ];
@@ -18,84 +19,84 @@ int main( void )
 		data[ n ] = ( unsigned char ) ( rnd.int32( ) >> 24 );
 	}
 
-	crc8 = mist::__crc__::generate_crc_8( data, DATALEN );
+	crc8 = mist::crc< 8 >::generate_implant( data, DATALEN );
 
 	printf( "CRC-8:%02X\n", crc8 );
 
-	if( mist::__crc__::check_crc_8( data, DATALEN ) )
+	if( mist::crc< 8 >::check_implant( data, DATALEN ) )
 	{
-		printf( "一致しました．\n" );
+		printf( "CRC is matched.\n" );
 	}
 	else
 	{
-		printf( "一致しませんでした．改竄されています．改竄後のCRC-8は %02X です．\n", mist::__crc__::generate_crc_8( data, DATALEN ) );
+		printf( "CRC is not matched. CRC-8 is %02X.\n", mist::crc< 8 >::generate_implant( data, DATALEN ) );
 	}
 
 	// 改竄する！
 	data[ DATALEN / 2 ] ++;
 
-	if( mist::__crc__::check_crc_8( data, DATALEN ) )
+	if( mist::crc< 8 >::check_implant( data, DATALEN ) )
 	{
-		printf( "一致しました．\n" );
+		printf( "CRC is matched.\n" );
 	}
 	else
 	{
-		printf( "一致しませんでした．改竄されています．改竄後のCRC-8は %02X です．\n", mist::__crc__::generate_crc_8( data, DATALEN ) );
+		printf( "CRC is not matched. CRC-8 is %02X.\n", mist::crc< 8 >::generate_implant( data, DATALEN ) );
 	}
 
 	printf( "----------------------------------\n" );
 
-	crc16 = mist::__crc__::generate_crc_16( data, DATALEN );
+	crc16 = mist::crc< 16 >::generate_implant( data, DATALEN );
 
 	printf( "CRC-16:%X\n", crc16 );
 
-	if( mist::__crc__::check_crc_16( data, DATALEN ) )
+	if( mist::crc< 16 >::check_implant( data, DATALEN ) )
 	{
-		printf( "一致しました．\n" );
+		printf( "CRC is matched.\n" );
 	}
 	else
 	{
-		printf( "一致しませんでした．改竄されています．改竄後のCRC-16は %04X です．\n", mist::__crc__::generate_crc_16( data, DATALEN ) );
+		printf( "CRC is not matched. CRC-16 is %04X.\n", mist::crc< 16 >::generate_implant( data, DATALEN ) );
 	}
 
 	// 改竄する！
 	data[ DATALEN / 3 ] --;
 
-	if( mist::__crc__::check_crc_16( data, DATALEN ) )
+	if( mist::crc< 16 >::check_implant( data, DATALEN ) )
 	{
-		printf( "一致しました．\n" );
+		printf( "CRC is matched.\n" );
 	}
 	else
 	{
-		printf( "一致しませんでした．改竄されています．改竄後のCRC-16は %04X です．\n", mist::__crc__::generate_crc_16( data, DATALEN ) );
+		printf( "CRC is not matched. CRC-16 is %04X.\n", mist::crc< 16 >::generate_implant( data, DATALEN ) );
 	}
 
 	printf( "----------------------------------\n" );
 
-	crc32 = mist::__crc__::generate_crc_32( data, DATALEN );
+	crc32 = mist::crc< 32 >::generate_implant( data, DATALEN );
 
 	printf( "CRC-32:%08X\n", crc32 );
 
-	if( mist::__crc__::check_crc_32( data, DATALEN ) )
+	if( mist::crc< 32 >::check_implant( data, DATALEN ) )
 	{
-		printf( "一致しました．\n" );
+		printf( "CRC is matched.\n" );
 	}
 	else
 	{
-		printf( "一致しませんでした．改竄されています．改竄後のCRC-32は %08X です．\n", mist::__crc__::generate_crc_32( data, DATALEN ) );
+		printf( "CRC is not matched. CRC-32 is %08X.\n", mist::crc< 32 >::generate_implant( data, DATALEN ) );
 	}
 
 	// 改竄する！
 	data[ DATALEN / 4 ] += 2;
 
-	if( mist::__crc__::check_crc_32( data, DATALEN ) )
+	if( mist::crc< 32 >::check_implant( data, DATALEN ) )
 	{
-		printf( "一致しました．\n" );
+		printf( "CRC is matched.\n" );
 	}
 	else
 	{
-		printf( "一致しませんでした．改竄されています．改竄後のCRC-32は %08X です．\n", mist::__crc__::generate_crc_32( data, DATALEN ) );
+		printf( "CRC is not matched. CRC-32 is %08X.\n", mist::crc< 32 >::generate_implant( data, DATALEN ) );
 	}
 
-	return 0;
+	return( 0 );
 }

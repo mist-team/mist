@@ -12,7 +12,7 @@ int main( )
 	//typedef mist::matrix< std::complex< double > > matrix;
 	matrix a( 200, 200 );
 
-	mist::random r( 123 );      //—”¶¬Ší‚Ì\’z
+	mist::uniform::random r( 123 );      //—”¶¬Ší‚Ì\’z
 
 	size_type i;
 	for( i = 0 ; i < a.size( ) ; i++ )

@@ -40,8 +40,10 @@ struct crc
 	//! デフォルトCRC-8 生成多項式 x^8 + x^2 + x^1 + 1
 	//! デフォルトCRC-16生成多項式 x^16 + x^15 + x^2 + 1
 	//! デフォルトCRC-32生成多項式 x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x^1 + 1
+	//! 
+	//! @return データから生成したCRC
 	//!
-	size_t generate( const unsigned char * pdata, size_t len, size_t gen_poly = crc_generator_polynominal::crc_default< BIT >::gen_poly )
+	static size_t generate( const unsigned char * pdata, size_t len, size_t gen_poly = crc_generator_polynominal::crc_default< BIT >::gen_poly )
 	{
 		size_t	crc = 0;
 		size_t	mask;
@@ -101,7 +103,10 @@ struct crc
 	//! デフォルトCRC-16生成多項式 x^16 + x^15 + x^2 + 1
 	//! デフォルトCRC-32生成多項式 x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x^1 + 1
 	//!
-	bool check( const unsigned char * pdata, size_t len, size_t crc_, size_t gen_poly = crc_generator_polynominal::crc_default< BIT >::gen_poly )
+	//! @retval true  … CRCが一致した
+	//! @retval false … CRCが一致しないため，データが改変された可能性あり
+	//!
+	static bool check( const unsigned char * pdata, size_t len, size_t crc_, size_t gen_poly = crc_generator_polynominal::crc_default< BIT >::gen_poly )
 	{
 		return( generate( pdata, len, gen_poly ) == crc_ );
 	}
@@ -112,8 +117,10 @@ struct crc
 	//! デフォルトCRC-8 生成多項式 x^8 + x^2 + x^1 + 1
 	//! デフォルトCRC-16生成多項式 x^16 + x^15 + x^2 + 1
 	//! デフォルトCRC-32生成多項式 x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x^1 + 1
+	//! 
+	//! @return データから生成したCRC
 	//!
-	size_t generate_implant( unsigned char * pdata, size_t len, size_t gen_poly = crc_generator_polynominal::crc_default< BIT >::gen_poly )
+	static size_t generate_implant( unsigned char * pdata, size_t len, size_t gen_poly = crc_generator_polynominal::crc_default< BIT >::gen_poly )
 	{
 		size_t	crc = 0;
 		size_t	mask;
@@ -178,8 +185,11 @@ struct crc
 	//! デフォルトCRC-8 生成多項式 x^8 + x^2 + x^1 + 1
 	//! デフォルトCRC-16生成多項式 x^16 + x^15 + x^2 + 1
 	//! デフォルトCRC-32生成多項式 x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x^1 + 1
+	//! 
+	//! @retval true  … CRCが一致した
+	//! @retval false … CRCが一致しないため，データが改変された可能性あり
 	//!
-	bool check_implant( const unsigned char * pdata, size_t len, size_t gen_poly = crc_generator_polynominal::crc_default< BIT >::gen_poly )
+	static bool check_implant( const unsigned char * pdata, size_t len, size_t gen_poly = crc_generator_polynominal::crc_default< BIT >::gen_poly )
 	{
 		return( generate( pdata, len, gen_poly ) == 0 );
 	}
