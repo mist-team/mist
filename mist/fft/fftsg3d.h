@@ -429,6 +429,7 @@ macro definitions
         .
 */
 
+namespace ooura_fft{
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -489,377 +490,483 @@ macro definitions
 }
 #endif /* USE_FFT3D_WINTHREADS */
 
+    void ddst(int n, int isgn, double *a, int *ip, double *w);
 
-void cdft3d(int n1, int n2, int n3, int isgn, double ***a, 
-    double *t, int *ip, double *w)
+#ifdef USE_FFT3D_THREADS
+struct fft3d_arg_st {
+    int nthread;
+    int n0;
+    int n1;
+    int n2;
+    int n3;
+    int ic;
+    int isgn;
+    double ***a;
+    double *t;
+    int *ip;
+    double *w;
+};
+typedef struct fft3d_arg_st fft3d_arg_t;
+
+
+inline void *xdft3da_th(void *p)
 {
-    void makewt(int nw, int *ip, double *w);
-    void xdft3da_sub(int n1, int n2, int n3, int icr, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-    void cdft3db_sub(int n1, int n2, int n3, int isgn, double ***a, 
-        double *t, int *ip, double *w);
-#ifdef USE_FFT3D_THREADS
-    void xdft3da_subth(int n1, int n2, int n3, int icr, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-    void cdft3db_subth(int n1, int n2, int n3, int isgn, double ***a, 
-        double *t, int *ip, double *w);
-#endif /* USE_FFT3D_THREADS */
-    int n, itnull, nt;
+    int nthread, n0, n1, n2, n3, icr, isgn, *ip, i, j, k;
+    double ***a, *t, *w;
     
-    n = n1;
-    if (n < n2) {
-        n = n2;
-    }
-    n <<= 1;
-    if (n < n3) {
-        n = n3;
-    }
-    if (n > (ip[0] << 2)) {
-        makewt(n >> 2, ip, w);
-    }
-    itnull = 0;
-    if (t == NULL) {
-        itnull = 1;
-        nt = n1;
-        if (nt < n2) {
-            nt = n2;
-        }
-        nt *= 8;
-#ifdef USE_FFT3D_THREADS
-        nt *= FFT3D_MAX_THREADS;
-#endif /* USE_FFT3D_THREADS */
-        if (n3 == 4) {
-            nt >>= 1;
-        } else if (n3 < 4) {
-            nt >>= 2;
-        }
-        t = (double *) malloc(sizeof(double) * nt);
-        fft3d_alloc_error_check(t);
-    }
-#ifdef USE_FFT3D_THREADS
-    if ((double) n1 * n2 * n3 >= (double) FFT3D_THREADS_BEGIN_N) {
-        xdft3da_subth(n1, n2, n3, 0, isgn, a, t, ip, w);
-        cdft3db_subth(n1, n2, n3, isgn, a, t, ip, w);
-    } else 
-#endif /* USE_FFT3D_THREADS */
-    {
-        xdft3da_sub(n1, n2, n3, 0, isgn, a, t, ip, w);
-        cdft3db_sub(n1, n2, n3, isgn, a, t, ip, w);
-    }
-    if (itnull != 0) {
-        free(t);
-    }
-}
-
-
-void rdft3d(int n1, int n2, int n3, int isgn, double ***a, 
-    double *t, int *ip, double *w)
-{
-    void makewt(int nw, int *ip, double *w);
-    void makect(int nc, int *ip, double *c);
-    void xdft3da_sub(int n1, int n2, int n3, int icr, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-    void cdft3db_sub(int n1, int n2, int n3, int isgn, double ***a, 
-        double *t, int *ip, double *w);
-    void rdft3d_sub(int n1, int n2, int n3, int isgn, double ***a);
-#ifdef USE_FFT3D_THREADS
-    void xdft3da_subth(int n1, int n2, int n3, int icr, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-    void cdft3db_subth(int n1, int n2, int n3, int isgn, double ***a, 
-        double *t, int *ip, double *w);
-#endif /* USE_FFT3D_THREADS */
-    int n, nw, nc, itnull, nt;
-    
-    n = n1;
-    if (n < n2) {
-        n = n2;
-    }
-    n <<= 1;
-    if (n < n3) {
-        n = n3;
-    }
-    nw = ip[0];
-    if (n > (nw << 2)) {
-        nw = n >> 2;
-        makewt(nw, ip, w);
-    }
-    nc = ip[1];
-    if (n3 > (nc << 2)) {
-        nc = n3 >> 2;
-        makect(nc, ip, w + nw);
-    }
-    itnull = 0;
-    if (t == NULL) {
-        itnull = 1;
-        nt = n1;
-        if (nt < n2) {
-            nt = n2;
-        }
-        nt *= 8;
-#ifdef USE_FFT3D_THREADS
-        nt *= FFT3D_MAX_THREADS;
-#endif /* USE_FFT3D_THREADS */
-        if (n3 == 4) {
-            nt >>= 1;
-        } else if (n3 < 4) {
-            nt >>= 2;
-        }
-        t = (double *) malloc(sizeof(double) * nt);
-        fft3d_alloc_error_check(t);
-    }
-#ifdef USE_FFT3D_THREADS
-    if ((double) n1 * n2 * n3 >= (double) FFT3D_THREADS_BEGIN_N) {
-        if (isgn < 0) {
-            rdft3d_sub(n1, n2, n3, isgn, a);
-            cdft3db_subth(n1, n2, n3, isgn, a, t, ip, w);
-        }
-        xdft3da_subth(n1, n2, n3, 1, isgn, a, t, ip, w);
-        if (isgn >= 0) {
-            cdft3db_subth(n1, n2, n3, isgn, a, t, ip, w);
-            rdft3d_sub(n1, n2, n3, isgn, a);
-        }
-    } else 
-#endif /* USE_FFT3D_THREADS */
-    {
-        if (isgn < 0) {
-            rdft3d_sub(n1, n2, n3, isgn, a);
-            cdft3db_sub(n1, n2, n3, isgn, a, t, ip, w);
-        }
-        xdft3da_sub(n1, n2, n3, 1, isgn, a, t, ip, w);
-        if (isgn >= 0) {
-            cdft3db_sub(n1, n2, n3, isgn, a, t, ip, w);
-            rdft3d_sub(n1, n2, n3, isgn, a);
-        }
-    }
-    if (itnull != 0) {
-        free(t);
-    }
-}
-
-
-void rdft3dsort(int n1, int n2, int n3, int isgn, double ***a)
-{
-    int n1h, n2h, i, j;
-    double x, y;
-    
-    n1h = n1 >> 1;
-    n2h = n2 >> 1;
-    if (isgn < 0) {
-        for (i = 0; i < n1; i++) {
-            for (j = n2h + 1; j < n2; j++) {
-                a[i][j][0] = a[i][j][n3 + 1];
-                a[i][j][1] = a[i][j][n3];
+    nthread = ((fft3d_arg_t *) p)->nthread;
+    n0 = ((fft3d_arg_t *) p)->n0;
+    n1 = ((fft3d_arg_t *) p)->n1;
+    n2 = ((fft3d_arg_t *) p)->n2;
+    n3 = ((fft3d_arg_t *) p)->n3;
+    icr = ((fft3d_arg_t *) p)->ic;
+    isgn = ((fft3d_arg_t *) p)->isgn;
+    a = ((fft3d_arg_t *) p)->a;
+    t = ((fft3d_arg_t *) p)->t;
+    ip = ((fft3d_arg_t *) p)->ip;
+    w = ((fft3d_arg_t *) p)->w;
+    for (i = n0; i < n1; i += nthread) {
+        if (icr == 0) {
+            for (j = 0; j < n2; j++) {
+                cdft(n3, isgn, a[i][j], ip, w);
+            }
+        } else if (isgn >= 0) {
+            for (j = 0; j < n2; j++) {
+                rdft(n3, isgn, a[i][j], ip, w);
             }
         }
-        for (i = n1h + 1; i < n1; i++) {
-            a[i][0][0] = a[i][0][n3 + 1];
-            a[i][0][1] = a[i][0][n3];
-            a[i][n2h][0] = a[i][n2h][n3 + 1];
-            a[i][n2h][1] = a[i][n2h][n3];
-        }
-        a[0][0][1] = a[0][0][n3];
-        a[0][n2h][1] = a[0][n2h][n3];
-        a[n1h][0][1] = a[n1h][0][n3];
-        a[n1h][n2h][1] = a[n1h][n2h][n3];
-    } else {
-        for (j = n2h + 1; j < n2; j++) {
-            y = a[0][j][0];
-            x = a[0][j][1];
-            a[0][j][n3] = x;
-            a[0][j][n3 + 1] = y;
-            a[0][n2 - j][n3] = x;
-            a[0][n2 - j][n3 + 1] = -y;
-            a[0][j][0] = a[0][n2 - j][0];
-            a[0][j][1] = -a[0][n2 - j][1];
-        }
-        for (i = 1; i < n1; i++) {
-            for (j = n2h + 1; j < n2; j++) {
-                y = a[i][j][0];
-                x = a[i][j][1];
-                a[i][j][n3] = x;
-                a[i][j][n3 + 1] = y;
-                a[n1 - i][n2 - j][n3] = x;
-                a[n1 - i][n2 - j][n3 + 1] = -y;
-                a[i][j][0] = a[n1 - i][n2 - j][0];
-                a[i][j][1] = -a[n1 - i][n2 - j][1];
+        if (n3 > 4) {
+            for (k = 0; k < n3; k += 8) {
+                for (j = 0; j < n2; j++) {
+                    t[2 * j] = a[i][j][k];
+                    t[2 * j + 1] = a[i][j][k + 1];
+                    t[2 * n2 + 2 * j] = a[i][j][k + 2];
+                    t[2 * n2 + 2 * j + 1] = a[i][j][k + 3];
+                    t[4 * n2 + 2 * j] = a[i][j][k + 4];
+                    t[4 * n2 + 2 * j + 1] = a[i][j][k + 5];
+                    t[6 * n2 + 2 * j] = a[i][j][k + 6];
+                    t[6 * n2 + 2 * j + 1] = a[i][j][k + 7];
+                }
+                cdft(2 * n2, isgn, t, ip, w);
+                cdft(2 * n2, isgn, &t[2 * n2], ip, w);
+                cdft(2 * n2, isgn, &t[4 * n2], ip, w);
+                cdft(2 * n2, isgn, &t[6 * n2], ip, w);
+                for (j = 0; j < n2; j++) {
+                    a[i][j][k] = t[2 * j];
+                    a[i][j][k + 1] = t[2 * j + 1];
+                    a[i][j][k + 2] = t[2 * n2 + 2 * j];
+                    a[i][j][k + 3] = t[2 * n2 + 2 * j + 1];
+                    a[i][j][k + 4] = t[4 * n2 + 2 * j];
+                    a[i][j][k + 5] = t[4 * n2 + 2 * j + 1];
+                    a[i][j][k + 6] = t[6 * n2 + 2 * j];
+                    a[i][j][k + 7] = t[6 * n2 + 2 * j + 1];
+                }
+            }
+        } else if (n3 == 4) {
+            for (j = 0; j < n2; j++) {
+                t[2 * j] = a[i][j][0];
+                t[2 * j + 1] = a[i][j][1];
+                t[2 * n2 + 2 * j] = a[i][j][2];
+                t[2 * n2 + 2 * j + 1] = a[i][j][3];
+            }
+            cdft(2 * n2, isgn, t, ip, w);
+            cdft(2 * n2, isgn, &t[2 * n2], ip, w);
+            for (j = 0; j < n2; j++) {
+                a[i][j][0] = t[2 * j];
+                a[i][j][1] = t[2 * j + 1];
+                a[i][j][2] = t[2 * n2 + 2 * j];
+                a[i][j][3] = t[2 * n2 + 2 * j + 1];
+            }
+        } else if (n3 == 2) {
+            for (j = 0; j < n2; j++) {
+                t[2 * j] = a[i][j][0];
+                t[2 * j + 1] = a[i][j][1];
+            }
+            cdft(2 * n2, isgn, t, ip, w);
+            for (j = 0; j < n2; j++) {
+                a[i][j][0] = t[2 * j];
+                a[i][j][1] = t[2 * j + 1];
             }
         }
-        for (i = n1h + 1; i < n1; i++) {
-            y = a[i][0][0];
-            x = a[i][0][1];
-            a[i][0][n3] = x;
-            a[i][0][n3 + 1] = y;
-            a[n1 - i][0][n3] = x;
-            a[n1 - i][0][n3 + 1] = -y;
-            a[i][0][0] = a[n1 - i][0][0];
-            a[i][0][1] = -a[n1 - i][0][1];
-            y = a[i][n2h][0];
-            x = a[i][n2h][1];
-            a[i][n2h][n3] = x;
-            a[i][n2h][n3 + 1] = y;
-            a[n1 - i][n2h][n3] = x;
-            a[n1 - i][n2h][n3 + 1] = -y;
-            a[i][n2h][0] = a[n1 - i][n2h][0];
-            a[i][n2h][1] = -a[n1 - i][n2h][1];
+        if (icr != 0 && isgn < 0) {
+            for (j = 0; j < n2; j++) {
+                rdft(n3, isgn, a[i][j], ip, w);
+            }
         }
-        a[0][0][n3] = a[0][0][1];
-        a[0][0][n3 + 1] = 0;
-        a[0][0][1] = 0;
-        a[0][n2h][n3] = a[0][n2h][1];
-        a[0][n2h][n3 + 1] = 0;
-        a[0][n2h][1] = 0;
-        a[n1h][0][n3] = a[n1h][0][1];
-        a[n1h][0][n3 + 1] = 0;
-        a[n1h][0][1] = 0;
-        a[n1h][n2h][n3] = a[n1h][n2h][1];
-        a[n1h][n2h][n3 + 1] = 0;
-        a[n1h][n2h][1] = 0;
+    }
+    return (void *) 0;
+}
+
+
+inline void *cdft3db_th(void *p)
+{
+    int nthread, n0, n1, n2, n3, isgn, *ip, i, j, k;
+    double ***a, *t, *w;
+    
+    nthread = ((fft3d_arg_t *) p)->nthread;
+    n0 = ((fft3d_arg_t *) p)->n0;
+    n1 = ((fft3d_arg_t *) p)->n1;
+    n2 = ((fft3d_arg_t *) p)->n2;
+    n3 = ((fft3d_arg_t *) p)->n3;
+    isgn = ((fft3d_arg_t *) p)->isgn;
+    a = ((fft3d_arg_t *) p)->a;
+    t = ((fft3d_arg_t *) p)->t;
+    ip = ((fft3d_arg_t *) p)->ip;
+    w = ((fft3d_arg_t *) p)->w;
+    if (n3 > 4) {
+        for (j = n0; j < n2; j += nthread) {
+            for (k = 0; k < n3; k += 8) {
+                for (i = 0; i < n1; i++) {
+                    t[2 * i] = a[i][j][k];
+                    t[2 * i + 1] = a[i][j][k + 1];
+                    t[2 * n1 + 2 * i] = a[i][j][k + 2];
+                    t[2 * n1 + 2 * i + 1] = a[i][j][k + 3];
+                    t[4 * n1 + 2 * i] = a[i][j][k + 4];
+                    t[4 * n1 + 2 * i + 1] = a[i][j][k + 5];
+                    t[6 * n1 + 2 * i] = a[i][j][k + 6];
+                    t[6 * n1 + 2 * i + 1] = a[i][j][k + 7];
+                }
+                cdft(2 * n1, isgn, t, ip, w);
+                cdft(2 * n1, isgn, &t[2 * n1], ip, w);
+                cdft(2 * n1, isgn, &t[4 * n1], ip, w);
+                cdft(2 * n1, isgn, &t[6 * n1], ip, w);
+                for (i = 0; i < n1; i++) {
+                    a[i][j][k] = t[2 * i];
+                    a[i][j][k + 1] = t[2 * i + 1];
+                    a[i][j][k + 2] = t[2 * n1 + 2 * i];
+                    a[i][j][k + 3] = t[2 * n1 + 2 * i + 1];
+                    a[i][j][k + 4] = t[4 * n1 + 2 * i];
+                    a[i][j][k + 5] = t[4 * n1 + 2 * i + 1];
+                    a[i][j][k + 6] = t[6 * n1 + 2 * i];
+                    a[i][j][k + 7] = t[6 * n1 + 2 * i + 1];
+                }
+            }
+        }
+    } else if (n3 == 4) {
+        for (j = n0; j < n2; j += nthread) {
+            for (i = 0; i < n1; i++) {
+                t[2 * i] = a[i][j][0];
+                t[2 * i + 1] = a[i][j][1];
+                t[2 * n1 + 2 * i] = a[i][j][2];
+                t[2 * n1 + 2 * i + 1] = a[i][j][3];
+            }
+            cdft(2 * n1, isgn, t, ip, w);
+            cdft(2 * n1, isgn, &t[2 * n1], ip, w);
+            for (i = 0; i < n1; i++) {
+                a[i][j][0] = t[2 * i];
+                a[i][j][1] = t[2 * i + 1];
+                a[i][j][2] = t[2 * n1 + 2 * i];
+                a[i][j][3] = t[2 * n1 + 2 * i + 1];
+            }
+        }
+    } else if (n3 == 2) {
+        for (j = n0; j < n2; j += nthread) {
+            for (i = 0; i < n1; i++) {
+                t[2 * i] = a[i][j][0];
+                t[2 * i + 1] = a[i][j][1];
+            }
+            cdft(2 * n1, isgn, t, ip, w);
+            for (i = 0; i < n1; i++) {
+                a[i][j][0] = t[2 * i];
+                a[i][j][1] = t[2 * i + 1];
+            }
+        }
+    }
+    return (void *) 0;
+}
+
+
+inline void *ddxt3da_th(void *p)
+{
+    int nthread, n0, n1, n2, n3, ics, isgn, *ip, i, j, k;
+    double ***a, *t, *w;
+    
+    nthread = ((fft3d_arg_t *) p)->nthread;
+    n0 = ((fft3d_arg_t *) p)->n0;
+    n1 = ((fft3d_arg_t *) p)->n1;
+    n2 = ((fft3d_arg_t *) p)->n2;
+    n3 = ((fft3d_arg_t *) p)->n3;
+    ics = ((fft3d_arg_t *) p)->ic;
+    isgn = ((fft3d_arg_t *) p)->isgn;
+    a = ((fft3d_arg_t *) p)->a;
+    t = ((fft3d_arg_t *) p)->t;
+    ip = ((fft3d_arg_t *) p)->ip;
+    w = ((fft3d_arg_t *) p)->w;
+    for (i = n0; i < n1; i += nthread) {
+        if (ics == 0) {
+            for (j = 0; j < n2; j++) {
+                ddct(n3, isgn, a[i][j], ip, w);
+            }
+        } else {
+            for (j = 0; j < n2; j++) {
+                ddst(n3, isgn, a[i][j], ip, w);
+            }
+        }
+        if (n3 > 2) {
+            for (k = 0; k < n3; k += 4) {
+                for (j = 0; j < n2; j++) {
+                    t[j] = a[i][j][k];
+                    t[n2 + j] = a[i][j][k + 1];
+                    t[2 * n2 + j] = a[i][j][k + 2];
+                    t[3 * n2 + j] = a[i][j][k + 3];
+                }
+                if (ics == 0) {
+                    ddct(n2, isgn, t, ip, w);
+                    ddct(n2, isgn, &t[n2], ip, w);
+                    ddct(n2, isgn, &t[2 * n2], ip, w);
+                    ddct(n2, isgn, &t[3 * n2], ip, w);
+                } else {
+                    ddst(n2, isgn, t, ip, w);
+                    ddst(n2, isgn, &t[n2], ip, w);
+                    ddst(n2, isgn, &t[2 * n2], ip, w);
+                    ddst(n2, isgn, &t[3 * n2], ip, w);
+                }
+                for (j = 0; j < n2; j++) {
+                    a[i][j][k] = t[j];
+                    a[i][j][k + 1] = t[n2 + j];
+                    a[i][j][k + 2] = t[2 * n2 + j];
+                    a[i][j][k + 3] = t[3 * n2 + j];
+                }
+            }
+        } else if (n3 == 2) {
+            for (j = 0; j < n2; j++) {
+                t[j] = a[i][j][0];
+                t[n2 + j] = a[i][j][1];
+            }
+            if (ics == 0) {
+                ddct(n2, isgn, t, ip, w);
+                ddct(n2, isgn, &t[n2], ip, w);
+            } else {
+                ddst(n2, isgn, t, ip, w);
+                ddst(n2, isgn, &t[n2], ip, w);
+            }
+            for (j = 0; j < n2; j++) {
+                a[i][j][0] = t[j];
+                a[i][j][1] = t[n2 + j];
+            }
+        }
+    }
+    return (void *) 0;
+}
+
+
+inline void *ddxt3db_th(void *p)
+{
+    int nthread, n0, n1, n2, n3, ics, isgn, *ip, i, j, k;
+    double ***a, *t, *w;
+    
+    nthread = ((fft3d_arg_t *) p)->nthread;
+    n0 = ((fft3d_arg_t *) p)->n0;
+    n1 = ((fft3d_arg_t *) p)->n1;
+    n2 = ((fft3d_arg_t *) p)->n2;
+    n3 = ((fft3d_arg_t *) p)->n3;
+    ics = ((fft3d_arg_t *) p)->ic;
+    isgn = ((fft3d_arg_t *) p)->isgn;
+    a = ((fft3d_arg_t *) p)->a;
+    t = ((fft3d_arg_t *) p)->t;
+    ip = ((fft3d_arg_t *) p)->ip;
+    w = ((fft3d_arg_t *) p)->w;
+    if (n3 > 2) {
+        for (j = n0; j < n2; j += nthread) {
+            for (k = 0; k < n3; k += 4) {
+                for (i = 0; i < n1; i++) {
+                    t[i] = a[i][j][k];
+                    t[n1 + i] = a[i][j][k + 1];
+                    t[2 * n1 + i] = a[i][j][k + 2];
+                    t[3 * n1 + i] = a[i][j][k + 3];
+                }
+                if (ics == 0) {
+                    ddct(n1, isgn, t, ip, w);
+                    ddct(n1, isgn, &t[n1], ip, w);
+                    ddct(n1, isgn, &t[2 * n1], ip, w);
+                    ddct(n1, isgn, &t[3 * n1], ip, w);
+                } else {
+                    ddst(n1, isgn, t, ip, w);
+                    ddst(n1, isgn, &t[n1], ip, w);
+                    ddst(n1, isgn, &t[2 * n1], ip, w);
+                    ddst(n1, isgn, &t[3 * n1], ip, w);
+                }
+                for (i = 0; i < n1; i++) {
+                    a[i][j][k] = t[i];
+                    a[i][j][k + 1] = t[n1 + i];
+                    a[i][j][k + 2] = t[2 * n1 + i];
+                    a[i][j][k + 3] = t[3 * n1 + i];
+                }
+            }
+        }
+    } else if (n3 == 2) {
+        for (j = n0; j < n2; j += nthread) {
+            for (i = 0; i < n1; i++) {
+                t[i] = a[i][j][0];
+                t[n1 + i] = a[i][j][1];
+            }
+            if (ics == 0) {
+                ddct(n1, isgn, t, ip, w);
+                ddct(n1, isgn, &t[n1], ip, w);
+            } else {
+                ddst(n1, isgn, t, ip, w);
+                ddst(n1, isgn, &t[n1], ip, w);
+            }
+            for (i = 0; i < n1; i++) {
+                a[i][j][0] = t[i];
+                a[i][j][1] = t[n1 + i];
+            }
+        }
+    }
+    return (void *) 0;
+}
+
+inline void xdft3da_subth(int n1, int n2, int n3, int icr, int isgn, 
+    double ***a, double *t, int *ip, double *w)
+{
+    fft3d_thread_t th[FFT3D_MAX_THREADS];
+    fft3d_arg_t ag[FFT3D_MAX_THREADS];
+    int nthread, nt, i;
+    
+    nthread = FFT3D_MAX_THREADS;
+    if (nthread > n1) {
+        nthread = n1;
+    }
+    nt = 8 * n2;
+    if (n3 == 4) {
+        nt >>= 1;
+    } else if (n3 < 4) {
+        nt >>= 2;
+    }
+    for (i = 0; i < nthread; i++) {
+        ag[i].nthread = nthread;
+        ag[i].n0 = i;
+        ag[i].n1 = n1;
+        ag[i].n2 = n2;
+        ag[i].n3 = n3;
+        ag[i].ic = icr;
+        ag[i].isgn = isgn;
+        ag[i].a = a;
+        ag[i].t = &t[nt * i];
+        ag[i].ip = ip;
+        ag[i].w = w;
+        fft3d_thread_create(&th[i], xdft3da_th, &ag[i]);
+    }
+    for (i = 0; i < nthread; i++) {
+        fft3d_thread_wait(th[i]);
     }
 }
 
 
-void ddct3d(int n1, int n2, int n3, int isgn, double ***a, 
+inline void cdft3db_subth(int n1, int n2, int n3, int isgn, double ***a, 
     double *t, int *ip, double *w)
 {
-    void makewt(int nw, int *ip, double *w);
-    void makect(int nc, int *ip, double *c);
-    void ddxt3da_sub(int n1, int n2, int n3, int ics, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-    void ddxt3db_sub(int n1, int n2, int n3, int ics, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-#ifdef USE_FFT3D_THREADS
-    void ddxt3da_subth(int n1, int n2, int n3, int ics, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-    void ddxt3db_subth(int n1, int n2, int n3, int ics, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-#endif /* USE_FFT3D_THREADS */
-    int n, nw, nc, itnull, nt;
+    fft3d_thread_t th[FFT3D_MAX_THREADS];
+    fft3d_arg_t ag[FFT3D_MAX_THREADS];
+    int nthread, nt, i;
     
-    n = n1;
-    if (n < n2) {
-        n = n2;
+    nthread = FFT3D_MAX_THREADS;
+    if (nthread > n2) {
+        nthread = n2;
     }
-    if (n < n3) {
-        n = n3;
+    nt = 8 * n1;
+    if (n3 == 4) {
+        nt >>= 1;
+    } else if (n3 < 4) {
+        nt >>= 2;
     }
-    nw = ip[0];
-    if (n > (nw << 2)) {
-        nw = n >> 2;
-        makewt(nw, ip, w);
+    for (i = 0; i < nthread; i++) {
+        ag[i].nthread = nthread;
+        ag[i].n0 = i;
+        ag[i].n1 = n1;
+        ag[i].n2 = n2;
+        ag[i].n3 = n3;
+        ag[i].isgn = isgn;
+        ag[i].a = a;
+        ag[i].t = &t[nt * i];
+        ag[i].ip = ip;
+        ag[i].w = w;
+        fft3d_thread_create(&th[i], cdft3db_th, &ag[i]);
     }
-    nc = ip[1];
-    if (n > nc) {
-        nc = n;
-        makect(nc, ip, w + nw);
-    }
-    itnull = 0;
-    if (t == NULL) {
-        itnull = 1;
-        nt = n1;
-        if (nt < n2) {
-            nt = n2;
-        }
-        nt *= 4;
-#ifdef USE_FFT3D_THREADS
-        nt *= FFT3D_MAX_THREADS;
-#endif /* USE_FFT3D_THREADS */
-        if (n3 == 2) {
-            nt >>= 1;
-        }
-        t = (double *) malloc(sizeof(double) * nt);
-        fft3d_alloc_error_check(t);
-    }
-#ifdef USE_FFT3D_THREADS
-    if ((double) n1 * n2 * n3 >= (double) FFT3D_THREADS_BEGIN_N) {
-        ddxt3da_subth(n1, n2, n3, 0, isgn, a, t, ip, w);
-        ddxt3db_subth(n1, n2, n3, 0, isgn, a, t, ip, w);
-    } else 
-#endif /* USE_FFT3D_THREADS */
-    {
-        ddxt3da_sub(n1, n2, n3, 0, isgn, a, t, ip, w);
-        ddxt3db_sub(n1, n2, n3, 0, isgn, a, t, ip, w);
-    }
-    if (itnull != 0) {
-        free(t);
+    for (i = 0; i < nthread; i++) {
+        fft3d_thread_wait(th[i]);
     }
 }
 
 
-void ddst3d(int n1, int n2, int n3, int isgn, double ***a, 
-    double *t, int *ip, double *w)
+inline void ddxt3da_subth(int n1, int n2, int n3, int ics, int isgn, 
+    double ***a, double *t, int *ip, double *w)
 {
-    void makewt(int nw, int *ip, double *w);
-    void makect(int nc, int *ip, double *c);
-    void ddxt3da_sub(int n1, int n2, int n3, int ics, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-    void ddxt3db_sub(int n1, int n2, int n3, int ics, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-#ifdef USE_FFT3D_THREADS
-    void ddxt3da_subth(int n1, int n2, int n3, int ics, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-    void ddxt3db_subth(int n1, int n2, int n3, int ics, int isgn, 
-        double ***a, double *t, int *ip, double *w);
-#endif /* USE_FFT3D_THREADS */
-    int n, nw, nc, itnull, nt;
+    fft3d_thread_t th[FFT3D_MAX_THREADS];
+    fft3d_arg_t ag[FFT3D_MAX_THREADS];
+    int nthread, nt, i;
     
-    n = n1;
-    if (n < n2) {
-        n = n2;
+    nthread = FFT3D_MAX_THREADS;
+    if (nthread > n1) {
+        nthread = n1;
     }
-    if (n < n3) {
-        n = n3;
+    nt = 4 * n2;
+    if (n3 == 2) {
+        nt >>= 1;
     }
-    nw = ip[0];
-    if (n > (nw << 2)) {
-        nw = n >> 2;
-        makewt(nw, ip, w);
+    for (i = 0; i < nthread; i++) {
+        ag[i].nthread = nthread;
+        ag[i].n0 = i;
+        ag[i].n1 = n1;
+        ag[i].n2 = n2;
+        ag[i].n3 = n3;
+        ag[i].ic = ics;
+        ag[i].isgn = isgn;
+        ag[i].a = a;
+        ag[i].t = &t[nt * i];
+        ag[i].ip = ip;
+        ag[i].w = w;
+        fft3d_thread_create(&th[i], ddxt3da_th, &ag[i]);
     }
-    nc = ip[1];
-    if (n > nc) {
-        nc = n;
-        makect(nc, ip, w + nw);
-    }
-    itnull = 0;
-    if (t == NULL) {
-        itnull = 1;
-        nt = n1;
-        if (nt < n2) {
-            nt = n2;
-        }
-        nt *= 4;
-#ifdef USE_FFT3D_THREADS
-        nt *= FFT3D_MAX_THREADS;
-#endif /* USE_FFT3D_THREADS */
-        if (n3 == 2) {
-            nt >>= 1;
-        }
-        t = (double *) malloc(sizeof(double) * nt);
-        fft3d_alloc_error_check(t);
-    }
-#ifdef USE_FFT3D_THREADS
-    if ((double) n1 * n2 * n3 >= (double) FFT3D_THREADS_BEGIN_N) {
-        ddxt3da_subth(n1, n2, n3, 1, isgn, a, t, ip, w);
-        ddxt3db_subth(n1, n2, n3, 1, isgn, a, t, ip, w);
-    } else 
-#endif /* USE_FFT3D_THREADS */
-    {
-        ddxt3da_sub(n1, n2, n3, 1, isgn, a, t, ip, w);
-        ddxt3db_sub(n1, n2, n3, 1, isgn, a, t, ip, w);
-    }
-    if (itnull != 0) {
-        free(t);
+    for (i = 0; i < nthread; i++) {
+        fft3d_thread_wait(th[i]);
     }
 }
+
+
+inline void ddxt3db_subth(int n1, int n2, int n3, int ics, int isgn, 
+    double ***a, double *t, int *ip, double *w)
+{
+    fft3d_thread_t th[FFT3D_MAX_THREADS];
+    fft3d_arg_t ag[FFT3D_MAX_THREADS];
+    int nthread, nt, i;
+    
+    nthread = FFT3D_MAX_THREADS;
+    if (nthread > n2) {
+        nthread = n2;
+    }
+    nt = 4 * n1;
+    if (n3 == 2) {
+        nt >>= 1;
+    }
+    for (i = 0; i < nthread; i++) {
+        ag[i].nthread = nthread;
+        ag[i].n0 = i;
+        ag[i].n1 = n1;
+        ag[i].n2 = n2;
+        ag[i].n3 = n3;
+        ag[i].ic = ics;
+        ag[i].isgn = isgn;
+        ag[i].a = a;
+        ag[i].t = &t[nt * i];
+        ag[i].ip = ip;
+        ag[i].w = w;
+        fft3d_thread_create(&th[i], ddxt3db_th, &ag[i]);
+    }
+    for (i = 0; i < nthread; i++) {
+        fft3d_thread_wait(th[i]);
+    }
+}
+
+#endif /* USE_FFT3D_THREADS */
 
 
 /* -------- child routines -------- */
 
 
-void xdft3da_sub(int n1, int n2, int n3, int icr, int isgn, 
+inline void xdft3da_sub(int n1, int n2, int n3, int icr, int isgn, 
     double ***a, double *t, int *ip, double *w)
 {
-    void cdft(int n, int isgn, double *a, int *ip, double *w);
-    void rdft(int n, int isgn, double *a, int *ip, double *w);
     int i, j, k;
     
     for (i = 0; i < n1; i++) {
@@ -934,10 +1041,9 @@ void xdft3da_sub(int n1, int n2, int n3, int icr, int isgn,
 }
 
 
-void cdft3db_sub(int n1, int n2, int n3, int isgn, double ***a, 
+inline void cdft3db_sub(int n1, int n2, int n3, int isgn, double ***a, 
     double *t, int *ip, double *w)
 {
-    void cdft(int n, int isgn, double *a, int *ip, double *w);
     int i, j, k;
     
     if (n3 > 4) {
@@ -1002,7 +1108,7 @@ void cdft3db_sub(int n1, int n2, int n3, int isgn, double ***a,
 }
 
 
-void rdft3d_sub(int n1, int n2, int n3, int isgn, double ***a)
+inline void rdft3d_sub(int n1, int n2, int n3, int isgn, double ***a)
 {
     int n1h, n2h, i, j, k, l;
     double xi;
@@ -1093,11 +1199,9 @@ void rdft3d_sub(int n1, int n2, int n3, int isgn, double ***a)
 }
 
 
-void ddxt3da_sub(int n1, int n2, int n3, int ics, int isgn, 
+inline void ddxt3da_sub(int n1, int n2, int n3, int ics, int isgn, 
     double ***a, double *t, int *ip, double *w)
 {
-    void ddct(int n, int isgn, double *a, int *ip, double *w);
-    void ddst(int n, int isgn, double *a, int *ip, double *w);
     int i, j, k;
     
     for (i = 0; i < n1; i++) {
@@ -1157,11 +1261,9 @@ void ddxt3da_sub(int n1, int n2, int n3, int ics, int isgn,
 }
 
 
-void ddxt3db_sub(int n1, int n2, int n3, int ics, int isgn, 
+inline void ddxt3db_sub(int n1, int n2, int n3, int ics, int isgn, 
     double ***a, double *t, int *ip, double *w)
 {
-    void ddct(int n, int isgn, double *a, int *ip, double *w);
-    void ddst(int n, int isgn, double *a, int *ip, double *w);
     int i, j, k;
     
     if (n3 > 2) {
@@ -1214,482 +1316,319 @@ void ddxt3db_sub(int n1, int n2, int n3, int ics, int isgn,
 }
 
 
-#ifdef USE_FFT3D_THREADS
-struct fft3d_arg_st {
-    int nthread;
-    int n0;
-    int n1;
-    int n2;
-    int n3;
-    int ic;
-    int isgn;
-    double ***a;
-    double *t;
-    int *ip;
-    double *w;
-};
-typedef struct fft3d_arg_st fft3d_arg_t;
 
 
-void xdft3da_subth(int n1, int n2, int n3, int icr, int isgn, 
-    double ***a, double *t, int *ip, double *w)
-{
-    void *xdft3da_th(void *p);
-    fft3d_thread_t th[FFT3D_MAX_THREADS];
-    fft3d_arg_t ag[FFT3D_MAX_THREADS];
-    int nthread, nt, i;
-    
-    nthread = FFT3D_MAX_THREADS;
-    if (nthread > n1) {
-        nthread = n1;
-    }
-    nt = 8 * n2;
-    if (n3 == 4) {
-        nt >>= 1;
-    } else if (n3 < 4) {
-        nt >>= 2;
-    }
-    for (i = 0; i < nthread; i++) {
-        ag[i].nthread = nthread;
-        ag[i].n0 = i;
-        ag[i].n1 = n1;
-        ag[i].n2 = n2;
-        ag[i].n3 = n3;
-        ag[i].ic = icr;
-        ag[i].isgn = isgn;
-        ag[i].a = a;
-        ag[i].t = &t[nt * i];
-        ag[i].ip = ip;
-        ag[i].w = w;
-        fft3d_thread_create(&th[i], xdft3da_th, &ag[i]);
-    }
-    for (i = 0; i < nthread; i++) {
-        fft3d_thread_wait(th[i]);
-    }
-}
-
-
-void cdft3db_subth(int n1, int n2, int n3, int isgn, double ***a, 
+inline void cdft3d(int n1, int n2, int n3, int isgn, double ***a, 
     double *t, int *ip, double *w)
 {
-    void *cdft3db_th(void *p);
-    fft3d_thread_t th[FFT3D_MAX_THREADS];
-    fft3d_arg_t ag[FFT3D_MAX_THREADS];
-    int nthread, nt, i;
+    int n, itnull, nt;
     
-    nthread = FFT3D_MAX_THREADS;
-    if (nthread > n2) {
-        nthread = n2;
+    n = n1;
+    if (n < n2) {
+        n = n2;
     }
-    nt = 8 * n1;
-    if (n3 == 4) {
-        nt >>= 1;
-    } else if (n3 < 4) {
-        nt >>= 2;
+    n <<= 1;
+    if (n < n3) {
+        n = n3;
     }
-    for (i = 0; i < nthread; i++) {
-        ag[i].nthread = nthread;
-        ag[i].n0 = i;
-        ag[i].n1 = n1;
-        ag[i].n2 = n2;
-        ag[i].n3 = n3;
-        ag[i].isgn = isgn;
-        ag[i].a = a;
-        ag[i].t = &t[nt * i];
-        ag[i].ip = ip;
-        ag[i].w = w;
-        fft3d_thread_create(&th[i], cdft3db_th, &ag[i]);
+    if (n > (ip[0] << 2)) {
+        makewt(n >> 2, ip, w);
     }
-    for (i = 0; i < nthread; i++) {
-        fft3d_thread_wait(th[i]);
-    }
-}
-
-
-void ddxt3da_subth(int n1, int n2, int n3, int ics, int isgn, 
-    double ***a, double *t, int *ip, double *w)
-{
-    void *ddxt3da_th(void *p);
-    fft3d_thread_t th[FFT3D_MAX_THREADS];
-    fft3d_arg_t ag[FFT3D_MAX_THREADS];
-    int nthread, nt, i;
-    
-    nthread = FFT3D_MAX_THREADS;
-    if (nthread > n1) {
-        nthread = n1;
-    }
-    nt = 4 * n2;
-    if (n3 == 2) {
-        nt >>= 1;
-    }
-    for (i = 0; i < nthread; i++) {
-        ag[i].nthread = nthread;
-        ag[i].n0 = i;
-        ag[i].n1 = n1;
-        ag[i].n2 = n2;
-        ag[i].n3 = n3;
-        ag[i].ic = ics;
-        ag[i].isgn = isgn;
-        ag[i].a = a;
-        ag[i].t = &t[nt * i];
-        ag[i].ip = ip;
-        ag[i].w = w;
-        fft3d_thread_create(&th[i], ddxt3da_th, &ag[i]);
-    }
-    for (i = 0; i < nthread; i++) {
-        fft3d_thread_wait(th[i]);
-    }
-}
-
-
-void ddxt3db_subth(int n1, int n2, int n3, int ics, int isgn, 
-    double ***a, double *t, int *ip, double *w)
-{
-    void *ddxt3db_th(void *p);
-    fft3d_thread_t th[FFT3D_MAX_THREADS];
-    fft3d_arg_t ag[FFT3D_MAX_THREADS];
-    int nthread, nt, i;
-    
-    nthread = FFT3D_MAX_THREADS;
-    if (nthread > n2) {
-        nthread = n2;
-    }
-    nt = 4 * n1;
-    if (n3 == 2) {
-        nt >>= 1;
-    }
-    for (i = 0; i < nthread; i++) {
-        ag[i].nthread = nthread;
-        ag[i].n0 = i;
-        ag[i].n1 = n1;
-        ag[i].n2 = n2;
-        ag[i].n3 = n3;
-        ag[i].ic = ics;
-        ag[i].isgn = isgn;
-        ag[i].a = a;
-        ag[i].t = &t[nt * i];
-        ag[i].ip = ip;
-        ag[i].w = w;
-        fft3d_thread_create(&th[i], ddxt3db_th, &ag[i]);
-    }
-    for (i = 0; i < nthread; i++) {
-        fft3d_thread_wait(th[i]);
-    }
-}
-
-
-void *xdft3da_th(void *p)
-{
-    void cdft(int n, int isgn, double *a, int *ip, double *w);
-    void rdft(int n, int isgn, double *a, int *ip, double *w);
-    int nthread, n0, n1, n2, n3, icr, isgn, *ip, i, j, k;
-    double ***a, *t, *w;
-    
-    nthread = ((fft3d_arg_t *) p)->nthread;
-    n0 = ((fft3d_arg_t *) p)->n0;
-    n1 = ((fft3d_arg_t *) p)->n1;
-    n2 = ((fft3d_arg_t *) p)->n2;
-    n3 = ((fft3d_arg_t *) p)->n3;
-    icr = ((fft3d_arg_t *) p)->ic;
-    isgn = ((fft3d_arg_t *) p)->isgn;
-    a = ((fft3d_arg_t *) p)->a;
-    t = ((fft3d_arg_t *) p)->t;
-    ip = ((fft3d_arg_t *) p)->ip;
-    w = ((fft3d_arg_t *) p)->w;
-    for (i = n0; i < n1; i += nthread) {
-        if (icr == 0) {
-            for (j = 0; j < n2; j++) {
-                cdft(n3, isgn, a[i][j], ip, w);
-            }
-        } else if (isgn >= 0) {
-            for (j = 0; j < n2; j++) {
-                rdft(n3, isgn, a[i][j], ip, w);
-            }
+    itnull = 0;
+    if (t == NULL) {
+        itnull = 1;
+        nt = n1;
+        if (nt < n2) {
+            nt = n2;
         }
-        if (n3 > 4) {
-            for (k = 0; k < n3; k += 8) {
-                for (j = 0; j < n2; j++) {
-                    t[2 * j] = a[i][j][k];
-                    t[2 * j + 1] = a[i][j][k + 1];
-                    t[2 * n2 + 2 * j] = a[i][j][k + 2];
-                    t[2 * n2 + 2 * j + 1] = a[i][j][k + 3];
-                    t[4 * n2 + 2 * j] = a[i][j][k + 4];
-                    t[4 * n2 + 2 * j + 1] = a[i][j][k + 5];
-                    t[6 * n2 + 2 * j] = a[i][j][k + 6];
-                    t[6 * n2 + 2 * j + 1] = a[i][j][k + 7];
-                }
-                cdft(2 * n2, isgn, t, ip, w);
-                cdft(2 * n2, isgn, &t[2 * n2], ip, w);
-                cdft(2 * n2, isgn, &t[4 * n2], ip, w);
-                cdft(2 * n2, isgn, &t[6 * n2], ip, w);
-                for (j = 0; j < n2; j++) {
-                    a[i][j][k] = t[2 * j];
-                    a[i][j][k + 1] = t[2 * j + 1];
-                    a[i][j][k + 2] = t[2 * n2 + 2 * j];
-                    a[i][j][k + 3] = t[2 * n2 + 2 * j + 1];
-                    a[i][j][k + 4] = t[4 * n2 + 2 * j];
-                    a[i][j][k + 5] = t[4 * n2 + 2 * j + 1];
-                    a[i][j][k + 6] = t[6 * n2 + 2 * j];
-                    a[i][j][k + 7] = t[6 * n2 + 2 * j + 1];
-                }
-            }
-        } else if (n3 == 4) {
-            for (j = 0; j < n2; j++) {
-                t[2 * j] = a[i][j][0];
-                t[2 * j + 1] = a[i][j][1];
-                t[2 * n2 + 2 * j] = a[i][j][2];
-                t[2 * n2 + 2 * j + 1] = a[i][j][3];
-            }
-            cdft(2 * n2, isgn, t, ip, w);
-            cdft(2 * n2, isgn, &t[2 * n2], ip, w);
-            for (j = 0; j < n2; j++) {
-                a[i][j][0] = t[2 * j];
-                a[i][j][1] = t[2 * j + 1];
-                a[i][j][2] = t[2 * n2 + 2 * j];
-                a[i][j][3] = t[2 * n2 + 2 * j + 1];
-            }
-        } else if (n3 == 2) {
-            for (j = 0; j < n2; j++) {
-                t[2 * j] = a[i][j][0];
-                t[2 * j + 1] = a[i][j][1];
-            }
-            cdft(2 * n2, isgn, t, ip, w);
-            for (j = 0; j < n2; j++) {
-                a[i][j][0] = t[2 * j];
-                a[i][j][1] = t[2 * j + 1];
-            }
-        }
-        if (icr != 0 && isgn < 0) {
-            for (j = 0; j < n2; j++) {
-                rdft(n3, isgn, a[i][j], ip, w);
-            }
-        }
-    }
-    return (void *) 0;
-}
-
-
-void *cdft3db_th(void *p)
-{
-    void cdft(int n, int isgn, double *a, int *ip, double *w);
-    int nthread, n0, n1, n2, n3, isgn, *ip, i, j, k;
-    double ***a, *t, *w;
-    
-    nthread = ((fft3d_arg_t *) p)->nthread;
-    n0 = ((fft3d_arg_t *) p)->n0;
-    n1 = ((fft3d_arg_t *) p)->n1;
-    n2 = ((fft3d_arg_t *) p)->n2;
-    n3 = ((fft3d_arg_t *) p)->n3;
-    isgn = ((fft3d_arg_t *) p)->isgn;
-    a = ((fft3d_arg_t *) p)->a;
-    t = ((fft3d_arg_t *) p)->t;
-    ip = ((fft3d_arg_t *) p)->ip;
-    w = ((fft3d_arg_t *) p)->w;
-    if (n3 > 4) {
-        for (j = n0; j < n2; j += nthread) {
-            for (k = 0; k < n3; k += 8) {
-                for (i = 0; i < n1; i++) {
-                    t[2 * i] = a[i][j][k];
-                    t[2 * i + 1] = a[i][j][k + 1];
-                    t[2 * n1 + 2 * i] = a[i][j][k + 2];
-                    t[2 * n1 + 2 * i + 1] = a[i][j][k + 3];
-                    t[4 * n1 + 2 * i] = a[i][j][k + 4];
-                    t[4 * n1 + 2 * i + 1] = a[i][j][k + 5];
-                    t[6 * n1 + 2 * i] = a[i][j][k + 6];
-                    t[6 * n1 + 2 * i + 1] = a[i][j][k + 7];
-                }
-                cdft(2 * n1, isgn, t, ip, w);
-                cdft(2 * n1, isgn, &t[2 * n1], ip, w);
-                cdft(2 * n1, isgn, &t[4 * n1], ip, w);
-                cdft(2 * n1, isgn, &t[6 * n1], ip, w);
-                for (i = 0; i < n1; i++) {
-                    a[i][j][k] = t[2 * i];
-                    a[i][j][k + 1] = t[2 * i + 1];
-                    a[i][j][k + 2] = t[2 * n1 + 2 * i];
-                    a[i][j][k + 3] = t[2 * n1 + 2 * i + 1];
-                    a[i][j][k + 4] = t[4 * n1 + 2 * i];
-                    a[i][j][k + 5] = t[4 * n1 + 2 * i + 1];
-                    a[i][j][k + 6] = t[6 * n1 + 2 * i];
-                    a[i][j][k + 7] = t[6 * n1 + 2 * i + 1];
-                }
-            }
-        }
-    } else if (n3 == 4) {
-        for (j = n0; j < n2; j += nthread) {
-            for (i = 0; i < n1; i++) {
-                t[2 * i] = a[i][j][0];
-                t[2 * i + 1] = a[i][j][1];
-                t[2 * n1 + 2 * i] = a[i][j][2];
-                t[2 * n1 + 2 * i + 1] = a[i][j][3];
-            }
-            cdft(2 * n1, isgn, t, ip, w);
-            cdft(2 * n1, isgn, &t[2 * n1], ip, w);
-            for (i = 0; i < n1; i++) {
-                a[i][j][0] = t[2 * i];
-                a[i][j][1] = t[2 * i + 1];
-                a[i][j][2] = t[2 * n1 + 2 * i];
-                a[i][j][3] = t[2 * n1 + 2 * i + 1];
-            }
-        }
-    } else if (n3 == 2) {
-        for (j = n0; j < n2; j += nthread) {
-            for (i = 0; i < n1; i++) {
-                t[2 * i] = a[i][j][0];
-                t[2 * i + 1] = a[i][j][1];
-            }
-            cdft(2 * n1, isgn, t, ip, w);
-            for (i = 0; i < n1; i++) {
-                a[i][j][0] = t[2 * i];
-                a[i][j][1] = t[2 * i + 1];
-            }
-        }
-    }
-    return (void *) 0;
-}
-
-
-void *ddxt3da_th(void *p)
-{
-    void ddct(int n, int isgn, double *a, int *ip, double *w);
-    void ddst(int n, int isgn, double *a, int *ip, double *w);
-    int nthread, n0, n1, n2, n3, ics, isgn, *ip, i, j, k;
-    double ***a, *t, *w;
-    
-    nthread = ((fft3d_arg_t *) p)->nthread;
-    n0 = ((fft3d_arg_t *) p)->n0;
-    n1 = ((fft3d_arg_t *) p)->n1;
-    n2 = ((fft3d_arg_t *) p)->n2;
-    n3 = ((fft3d_arg_t *) p)->n3;
-    ics = ((fft3d_arg_t *) p)->ic;
-    isgn = ((fft3d_arg_t *) p)->isgn;
-    a = ((fft3d_arg_t *) p)->a;
-    t = ((fft3d_arg_t *) p)->t;
-    ip = ((fft3d_arg_t *) p)->ip;
-    w = ((fft3d_arg_t *) p)->w;
-    for (i = n0; i < n1; i += nthread) {
-        if (ics == 0) {
-            for (j = 0; j < n2; j++) {
-                ddct(n3, isgn, a[i][j], ip, w);
-            }
-        } else {
-            for (j = 0; j < n2; j++) {
-                ddst(n3, isgn, a[i][j], ip, w);
-            }
-        }
-        if (n3 > 2) {
-            for (k = 0; k < n3; k += 4) {
-                for (j = 0; j < n2; j++) {
-                    t[j] = a[i][j][k];
-                    t[n2 + j] = a[i][j][k + 1];
-                    t[2 * n2 + j] = a[i][j][k + 2];
-                    t[3 * n2 + j] = a[i][j][k + 3];
-                }
-                if (ics == 0) {
-                    ddct(n2, isgn, t, ip, w);
-                    ddct(n2, isgn, &t[n2], ip, w);
-                    ddct(n2, isgn, &t[2 * n2], ip, w);
-                    ddct(n2, isgn, &t[3 * n2], ip, w);
-                } else {
-                    ddst(n2, isgn, t, ip, w);
-                    ddst(n2, isgn, &t[n2], ip, w);
-                    ddst(n2, isgn, &t[2 * n2], ip, w);
-                    ddst(n2, isgn, &t[3 * n2], ip, w);
-                }
-                for (j = 0; j < n2; j++) {
-                    a[i][j][k] = t[j];
-                    a[i][j][k + 1] = t[n2 + j];
-                    a[i][j][k + 2] = t[2 * n2 + j];
-                    a[i][j][k + 3] = t[3 * n2 + j];
-                }
-            }
-        } else if (n3 == 2) {
-            for (j = 0; j < n2; j++) {
-                t[j] = a[i][j][0];
-                t[n2 + j] = a[i][j][1];
-            }
-            if (ics == 0) {
-                ddct(n2, isgn, t, ip, w);
-                ddct(n2, isgn, &t[n2], ip, w);
-            } else {
-                ddst(n2, isgn, t, ip, w);
-                ddst(n2, isgn, &t[n2], ip, w);
-            }
-            for (j = 0; j < n2; j++) {
-                a[i][j][0] = t[j];
-                a[i][j][1] = t[n2 + j];
-            }
-        }
-    }
-    return (void *) 0;
-}
-
-
-void *ddxt3db_th(void *p)
-{
-    void ddct(int n, int isgn, double *a, int *ip, double *w);
-    void ddst(int n, int isgn, double *a, int *ip, double *w);
-    int nthread, n0, n1, n2, n3, ics, isgn, *ip, i, j, k;
-    double ***a, *t, *w;
-    
-    nthread = ((fft3d_arg_t *) p)->nthread;
-    n0 = ((fft3d_arg_t *) p)->n0;
-    n1 = ((fft3d_arg_t *) p)->n1;
-    n2 = ((fft3d_arg_t *) p)->n2;
-    n3 = ((fft3d_arg_t *) p)->n3;
-    ics = ((fft3d_arg_t *) p)->ic;
-    isgn = ((fft3d_arg_t *) p)->isgn;
-    a = ((fft3d_arg_t *) p)->a;
-    t = ((fft3d_arg_t *) p)->t;
-    ip = ((fft3d_arg_t *) p)->ip;
-    w = ((fft3d_arg_t *) p)->w;
-    if (n3 > 2) {
-        for (j = n0; j < n2; j += nthread) {
-            for (k = 0; k < n3; k += 4) {
-                for (i = 0; i < n1; i++) {
-                    t[i] = a[i][j][k];
-                    t[n1 + i] = a[i][j][k + 1];
-                    t[2 * n1 + i] = a[i][j][k + 2];
-                    t[3 * n1 + i] = a[i][j][k + 3];
-                }
-                if (ics == 0) {
-                    ddct(n1, isgn, t, ip, w);
-                    ddct(n1, isgn, &t[n1], ip, w);
-                    ddct(n1, isgn, &t[2 * n1], ip, w);
-                    ddct(n1, isgn, &t[3 * n1], ip, w);
-                } else {
-                    ddst(n1, isgn, t, ip, w);
-                    ddst(n1, isgn, &t[n1], ip, w);
-                    ddst(n1, isgn, &t[2 * n1], ip, w);
-                    ddst(n1, isgn, &t[3 * n1], ip, w);
-                }
-                for (i = 0; i < n1; i++) {
-                    a[i][j][k] = t[i];
-                    a[i][j][k + 1] = t[n1 + i];
-                    a[i][j][k + 2] = t[2 * n1 + i];
-                    a[i][j][k + 3] = t[3 * n1 + i];
-                }
-            }
-        }
-    } else if (n3 == 2) {
-        for (j = n0; j < n2; j += nthread) {
-            for (i = 0; i < n1; i++) {
-                t[i] = a[i][j][0];
-                t[n1 + i] = a[i][j][1];
-            }
-            if (ics == 0) {
-                ddct(n1, isgn, t, ip, w);
-                ddct(n1, isgn, &t[n1], ip, w);
-            } else {
-                ddst(n1, isgn, t, ip, w);
-                ddst(n1, isgn, &t[n1], ip, w);
-            }
-            for (i = 0; i < n1; i++) {
-                a[i][j][0] = t[i];
-                a[i][j][1] = t[n1 + i];
-            }
-        }
-    }
-    return (void *) 0;
-}
+        nt *= 8;
+#ifdef USE_FFT3D_THREADS
+        nt *= FFT3D_MAX_THREADS;
 #endif /* USE_FFT3D_THREADS */
+        if (n3 == 4) {
+            nt >>= 1;
+        } else if (n3 < 4) {
+            nt >>= 2;
+        }
+        t = (double *) malloc(sizeof(double) * nt);
+        fft3d_alloc_error_check(t);
+    }
+#ifdef USE_FFT3D_THREADS
+    if ((double) n1 * n2 * n3 >= (double) FFT3D_THREADS_BEGIN_N) {
+        xdft3da_subth(n1, n2, n3, 0, isgn, a, t, ip, w);
+        cdft3db_subth(n1, n2, n3, isgn, a, t, ip, w);
+    } else 
+#endif /* USE_FFT3D_THREADS */
+    {
+        xdft3da_sub(n1, n2, n3, 0, isgn, a, t, ip, w);
+        cdft3db_sub(n1, n2, n3, isgn, a, t, ip, w);
+    }
+    if (itnull != 0) {
+        free(t);
+    }
+}
 
+
+inline void rdft3d(int n1, int n2, int n3, int isgn, double ***a, 
+    double *t, int *ip, double *w)
+{
+    int n, nw, nc, itnull, nt;
+    
+    n = n1;
+    if (n < n2) {
+        n = n2;
+    }
+    n <<= 1;
+    if (n < n3) {
+        n = n3;
+    }
+    nw = ip[0];
+    if (n > (nw << 2)) {
+        nw = n >> 2;
+        makewt(nw, ip, w);
+    }
+    nc = ip[1];
+    if (n3 > (nc << 2)) {
+        nc = n3 >> 2;
+        makect(nc, ip, w + nw);
+    }
+    itnull = 0;
+    if (t == NULL) {
+        itnull = 1;
+        nt = n1;
+        if (nt < n2) {
+            nt = n2;
+        }
+        nt *= 8;
+#ifdef USE_FFT3D_THREADS
+        nt *= FFT3D_MAX_THREADS;
+#endif /* USE_FFT3D_THREADS */
+        if (n3 == 4) {
+            nt >>= 1;
+        } else if (n3 < 4) {
+            nt >>= 2;
+        }
+        t = (double *) malloc(sizeof(double) * nt);
+        fft3d_alloc_error_check(t);
+    }
+#ifdef USE_FFT3D_THREADS
+    if ((double) n1 * n2 * n3 >= (double) FFT3D_THREADS_BEGIN_N) {
+        if (isgn < 0) {
+            rdft3d_sub(n1, n2, n3, isgn, a);
+            cdft3db_subth(n1, n2, n3, isgn, a, t, ip, w);
+        }
+        xdft3da_subth(n1, n2, n3, 1, isgn, a, t, ip, w);
+        if (isgn >= 0) {
+            cdft3db_subth(n1, n2, n3, isgn, a, t, ip, w);
+            rdft3d_sub(n1, n2, n3, isgn, a);
+        }
+    } else 
+#endif /* USE_FFT3D_THREADS */
+    {
+        if (isgn < 0) {
+            rdft3d_sub(n1, n2, n3, isgn, a);
+            cdft3db_sub(n1, n2, n3, isgn, a, t, ip, w);
+        }
+        xdft3da_sub(n1, n2, n3, 1, isgn, a, t, ip, w);
+        if (isgn >= 0) {
+            cdft3db_sub(n1, n2, n3, isgn, a, t, ip, w);
+            rdft3d_sub(n1, n2, n3, isgn, a);
+        }
+    }
+    if (itnull != 0) {
+        free(t);
+    }
+}
+
+
+inline void rdft3dsort(int n1, int n2, int n3, int isgn, double ***a)
+{
+    int n1h, n2h, i, j;
+    double x, y;
+    
+    n1h = n1 >> 1;
+    n2h = n2 >> 1;
+    if (isgn < 0) {
+        for (i = 0; i < n1; i++) {
+            for (j = n2h + 1; j < n2; j++) {
+                a[i][j][0] = a[i][j][n3 + 1];
+                a[i][j][1] = a[i][j][n3];
+            }
+        }
+        for (i = n1h + 1; i < n1; i++) {
+            a[i][0][0] = a[i][0][n3 + 1];
+            a[i][0][1] = a[i][0][n3];
+            a[i][n2h][0] = a[i][n2h][n3 + 1];
+            a[i][n2h][1] = a[i][n2h][n3];
+        }
+        a[0][0][1] = a[0][0][n3];
+        a[0][n2h][1] = a[0][n2h][n3];
+        a[n1h][0][1] = a[n1h][0][n3];
+        a[n1h][n2h][1] = a[n1h][n2h][n3];
+    } else {
+        for (j = n2h + 1; j < n2; j++) {
+            y = a[0][j][0];
+            x = a[0][j][1];
+            a[0][j][n3] = x;
+            a[0][j][n3 + 1] = y;
+            a[0][n2 - j][n3] = x;
+            a[0][n2 - j][n3 + 1] = -y;
+            a[0][j][0] = a[0][n2 - j][0];
+            a[0][j][1] = -a[0][n2 - j][1];
+        }
+        for (i = 1; i < n1; i++) {
+            for (j = n2h + 1; j < n2; j++) {
+                y = a[i][j][0];
+                x = a[i][j][1];
+                a[i][j][n3] = x;
+                a[i][j][n3 + 1] = y;
+                a[n1 - i][n2 - j][n3] = x;
+                a[n1 - i][n2 - j][n3 + 1] = -y;
+                a[i][j][0] = a[n1 - i][n2 - j][0];
+                a[i][j][1] = -a[n1 - i][n2 - j][1];
+            }
+        }
+        for (i = n1h + 1; i < n1; i++) {
+            y = a[i][0][0];
+            x = a[i][0][1];
+            a[i][0][n3] = x;
+            a[i][0][n3 + 1] = y;
+            a[n1 - i][0][n3] = x;
+            a[n1 - i][0][n3 + 1] = -y;
+            a[i][0][0] = a[n1 - i][0][0];
+            a[i][0][1] = -a[n1 - i][0][1];
+            y = a[i][n2h][0];
+            x = a[i][n2h][1];
+            a[i][n2h][n3] = x;
+            a[i][n2h][n3 + 1] = y;
+            a[n1 - i][n2h][n3] = x;
+            a[n1 - i][n2h][n3 + 1] = -y;
+            a[i][n2h][0] = a[n1 - i][n2h][0];
+            a[i][n2h][1] = -a[n1 - i][n2h][1];
+        }
+        a[0][0][n3] = a[0][0][1];
+        a[0][0][n3 + 1] = 0;
+        a[0][0][1] = 0;
+        a[0][n2h][n3] = a[0][n2h][1];
+        a[0][n2h][n3 + 1] = 0;
+        a[0][n2h][1] = 0;
+        a[n1h][0][n3] = a[n1h][0][1];
+        a[n1h][0][n3 + 1] = 0;
+        a[n1h][0][1] = 0;
+        a[n1h][n2h][n3] = a[n1h][n2h][1];
+        a[n1h][n2h][n3 + 1] = 0;
+        a[n1h][n2h][1] = 0;
+    }
+}
+
+
+inline void ddct3d(int n1, int n2, int n3, int isgn, double ***a, 
+    double *t, int *ip, double *w)
+{
+    int n, nw, nc, itnull, nt;
+    
+    n = n1;
+    if (n < n2) {
+        n = n2;
+    }
+    if (n < n3) {
+        n = n3;
+    }
+    nw = ip[0];
+    if (n > (nw << 2)) {
+        nw = n >> 2;
+        makewt(nw, ip, w);
+    }
+    nc = ip[1];
+    if (n > nc) {
+        nc = n;
+        makect(nc, ip, w + nw);
+    }
+    itnull = 0;
+    if (t == NULL) {
+        itnull = 1;
+        nt = n1;
+        if (nt < n2) {
+            nt = n2;
+        }
+        nt *= 4;
+#ifdef USE_FFT3D_THREADS
+        nt *= FFT3D_MAX_THREADS;
+#endif /* USE_FFT3D_THREADS */
+        if (n3 == 2) {
+            nt >>= 1;
+        }
+        t = (double *) malloc(sizeof(double) * nt);
+        fft3d_alloc_error_check(t);
+    }
+#ifdef USE_FFT3D_THREADS
+    if ((double) n1 * n2 * n3 >= (double) FFT3D_THREADS_BEGIN_N) {
+        ddxt3da_subth(n1, n2, n3, 0, isgn, a, t, ip, w);
+        ddxt3db_subth(n1, n2, n3, 0, isgn, a, t, ip, w);
+    } else 
+#endif /* USE_FFT3D_THREADS */
+    {
+        ddxt3da_sub(n1, n2, n3, 0, isgn, a, t, ip, w);
+        ddxt3db_sub(n1, n2, n3, 0, isgn, a, t, ip, w);
+    }
+    if (itnull != 0) {
+        free(t);
+    }
+}
+
+
+inline void ddst3d(int n1, int n2, int n3, int isgn, double ***a, 
+    double *t, int *ip, double *w)
+{
+    int n, nw, nc, itnull, nt;
+    
+    n = n1;
+    if (n < n2) {
+        n = n2;
+    }
+    if (n < n3) {
+        n = n3;
+    }
+    nw = ip[0];
+    if (n > (nw << 2)) {
+        nw = n >> 2;
+        makewt(nw, ip, w);
+    }
+    nc = ip[1];
+    if (n > nc) {
+        nc = n;
+        makect(nc, ip, w + nw);
+    }
+    itnull = 0;
+    if (t == NULL) {
+        itnull = 1;
+        nt = n1;
+        if (nt < n2) {
+            nt = n2;
+        }
+        nt *= 4;
+#ifdef USE_FFT3D_THREADS
+        nt *= FFT3D_MAX_THREADS;
+#endif /* USE_FFT3D_THREADS */
+        if (n3 == 2) {
+            nt >>= 1;
+        }
+        t = (double *) malloc(sizeof(double) * nt);
+        fft3d_alloc_error_check(t);
+    }
+#ifdef USE_FFT3D_THREADS
+    if ((double) n1 * n2 * n3 >= (double) FFT3D_THREADS_BEGIN_N) {
+        ddxt3da_subth(n1, n2, n3, 1, isgn, a, t, ip, w);
+        ddxt3db_subth(n1, n2, n3, 1, isgn, a, t, ip, w);
+    } else 
+#endif /* USE_FFT3D_THREADS */
+    {
+        ddxt3da_sub(n1, n2, n3, 1, isgn, a, t, ip, w);
+        ddxt3db_sub(n1, n2, n3, 1, isgn, a, t, ip, w);
+    }
+    if (itnull != 0) {
+        free(t);
+    }
+}
+
+}
