@@ -5,18 +5,20 @@
 struct f1
 {
 	std::string str;
-	f1( const std::string &s ) : str( s )
+	int count;
+	f1( ) : count( 0 )
 	{
 	}
 
-	f1( const f1 &f ) : str( f.str )
+	f1( const f1 &f ) : count( f.count )
 	{
-		std::cout << "ƒRƒs[‚ª”­¶‚µ‚Ü‚µ‚½" << std::endl;
+		std::cout << "copy constructor" << std::endl;
 	}
 
 	double operator ()( const mist::matrix< double > &v )
 	{
-		//std::cout << str << std::endl;
+		std::cout << count++ << std::endl;
+//		std::cout << count++ << "                                     \r";
 		double x = v[ 0 ];
 		double y = v[ 1 ];
 		return( 4.0 * ( x - 1.0 ) * ( x - 1.0 ) + ( y - 2.0 ) * ( y - 2.0 ) + 100 );
@@ -36,7 +38,7 @@ int main( int argc, char *argv[] )
 		mist::matrix< double > p( 2, 1 );
 		//p[ 0 ] = 0.1;
 		//p[ 1 ] = 0.2;
-		double err = mist::gradient::minimization( p, f1( "‚ ‚¢‚¤‚¦‚¨" ), 0.0 );
+		double err = mist::gradient::minimization( p, f1( ), 0.0 );
 		cout << "f( " << p.t( ) << " ) = " << err << endl;
 	}
 
@@ -44,7 +46,7 @@ int main( int argc, char *argv[] )
 		mist::matrix< double > p( 2, 1 ), d = mist::matrix< double >::identity( 2, 2 );
 		//p[ 0 ] = 0.1;
 		//p[ 1 ] = 0.2;
-		double err = mist::powell::minimization( p, d, f1( "‚ ‚¢‚¤‚¦‚¨" ), 0.0 );
+		double err = mist::powell::minimization( p, d, f1( ), 0.0 );
 		cout << "f( " << p.t( ) << " ) = " << err << endl;
 	}
 

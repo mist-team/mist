@@ -130,7 +130,7 @@ namespace __minimization_utility__
 //! @param[in]     f  c •]‰¿ŠÖ”
 //! 
 template < class Functor >
-void enclose( double &a, double &b, double &c, double &fa, double &fb, double &fc, Functor &f )
+void enclose( double &a, double &b, double &c, double &fa, double &fb, double &fc, Functor f )
 {
 	const double gold = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
 	const double _1_gold = 1.0 / gold;
@@ -257,7 +257,7 @@ namespace gold
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	//! 
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor &f, double tolerance, size_t &iterations, size_t max_iterations )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t &iterations, size_t max_iterations )
 	{
 		double c, p, q, fa, fb, fc, fp, fq;
 		const double gold = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
@@ -353,7 +353,7 @@ namespace gold
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	//! 
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor &f, double tolerance, size_t max_iterations = 200 )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 200 )
 	{
 		size_t itenum = 0;
 		return( minimization( a, b, x, f, tolerance, itenum, max_iterations ) );
@@ -378,7 +378,7 @@ namespace brent
 	//!
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor &f, double tolerance, size_t &iterations, size_t max_iterations )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t &iterations, size_t max_iterations )
 	{
 		double u, v, w, xm, fa, fb, fu, fv, fw, fx;
 		double len, len1, len2;
@@ -529,7 +529,7 @@ namespace brent
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	//! 
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor &f, double tolerance, size_t max_iterations = 200 )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 200 )
 	{
 		size_t itenum = 0;
 		return( minimization( a, b, x, f, tolerance, itenum, max_iterations ) );
@@ -554,7 +554,7 @@ namespace gradient
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	//! 
 	template < class T, class Allocator, class Functor1, class Functor2 >
-	double minimization( matrix< T, Allocator > &p, Functor1 &f, Functor2 &g, double tolerance, size_t &iterations, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t &iterations, size_t max_iterations = 200 )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -614,7 +614,7 @@ namespace gradient
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	//! 
 	template < class T, class Allocator, class Functor1, class Functor2 >
-	double minimization( matrix< T, Allocator > &p, Functor1 &f, Functor2 &g, double tolerance, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t max_iterations = 200 )
 	{
 		size_t itenum = 0;
 		return( minimization( p, f, g, tolerance, itenum, max_iterations ) );
@@ -634,7 +634,7 @@ namespace gradient
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, Functor &f, double tolerance, double distance, size_t &iterations, size_t max_iterations )
+	double minimization( matrix< T, Allocator > &p, Functor f, double tolerance, double distance, size_t &iterations, size_t max_iterations )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -723,7 +723,7 @@ namespace gradient
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, Functor &f, double tolerance, double distance = 1.0, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor f, double tolerance, double distance = 1.0, size_t max_iterations = 200 )
 	{
 		size_t itenum = 0;
 		return( minimization( p, f, tolerance, distance, itenum, max_iterations ) );
@@ -748,7 +748,7 @@ namespace powell
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor &f, double tolerance, size_t &iterations, size_t max_iterations )
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t &iterations, size_t max_iterations )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -860,7 +860,7 @@ namespace powell
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor &f, double tolerance, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t max_iterations = 200 )
 	{
 		size_t itenum = 0;
 		return( minimization( p, dirs, f, tolerance, itenum, max_iterations ) );
