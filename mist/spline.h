@@ -44,28 +44,16 @@ template < class T >
 inline const vector3< T > add( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x + val, v1.y + val, v1.z + val ) ); }
 
 template < class T >
-inline const vector3< T > add( const typename vector3< T >::value_type &val, const vector3< T > &v1 ){ return( vector3< T >( val + v1.x, val + v1.y, val + v1.z ) ); }
-
-
-template < class T >
 inline const vector3< T > sub( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x - v2.x, v1.y - v2.y, v1.z - v2.z ) ); }
 
 template < class T >
 inline const vector3< T > sub( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x - val, v1.y - val, v1.z - val ) ); }
 
 template < class T >
-inline const vector3< T > sub( const typename vector3< T >::value_type &val, const vector3< T > &v1 ){ return( vector3< T >( val - v1.x, val - v1.y, val - v1.z ) ); }
-
-
-template < class T >
 inline const vector3< T > mul( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ) ); }
 
 template < class T >
 inline const vector3< T > mul( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x * val, v1.y * val, v1.z * val ) ); }
-
-template < class T >
-inline const vector3< T > mul( const typename vector3< T >::value_type &val, const vector3< T > &v1 ){ return( vector3< T >( val * v1.x, val * v1.y, val * v1.z ) ); }
-
 
 template < class T >
 inline const vector3< T > div( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x / v2.x, v1.y / v2.y, v1.z / v2.z ) ); }
@@ -82,28 +70,16 @@ template < class T >
 inline const vector2< T > add( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x + val, v1.y + val ) ); }
 
 template < class T >
-inline const vector2< T > add( const typename vector2< T >::value_type &val, const vector2< T > &v1 ){ return( vector2< T >( val + v1.x, val + v1.y ) ); }
-
-
-template < class T >
 inline const vector2< T > sub( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x - v2.x, v1.y - v2.y ) ); }
 
 template < class T >
 inline const vector2< T > sub( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x - val, v1.y - val ) ); }
 
 template < class T >
-inline const vector2< T > sub( const typename vector2< T >::value_type &val, const vector2< T > &v1 ){ return( vector2< T >( val - v1.x, val - v1.y ) ); }
-
-
-template < class T >
 inline const vector2< T > mul( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x * v2.x, v1.y * v2.y ) ); }
 
 template < class T >
 inline const vector2< T > mul( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x * val, v1.y * val ) ); }
-
-template < class T >
-inline const vector2< T > mul( const typename vector2< T >::value_type &val, const vector2< T > &v1 ){ return( vector2< T >( val * v1.x, val * v1.y ) ); }
-
 
 template < class T >
 inline const vector2< T > div( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x / v2.x, v1.y / v2.y ) ); }
@@ -119,7 +95,6 @@ inline const vector2< T > div( const vector2< T > &v1, const typename vector2< T
 //! K次の3次スプライン曲線を描画可能．可変個数の制御点に対応し，任意のノットベクトルに対応する3次スプライン曲線を描画
 //! 
 //! @param T  … 各制御点・補間点を表すデータ構造を指定（double や vector3< double > など）
-//! @param K  … 3次スプライン曲線の次数
 //!
 //! @code 3次スプライン曲線の作成例
 //! // 3次で変数の型が double の3次スプラインを作成する
@@ -130,13 +105,11 @@ inline const vector2< T > div( const vector2< T > &v1, const typename vector2< T
 //! b.push_back( 3.0 );
 //! ...
 //! 
-//! // ノットベクトルを以下の方法のいずれかを用いて設定
+//! // 曲線の種類を以下の方法のいずれかを用いて設定
 //! // ・閉曲線の設定
-//! b.knot( mist::spline< double >::ROUND );
+//! b.mode( mist::spline< double >::CLOSED );
 //! // ・最初と最後の制御点を通る場合の設定
-//! b.knot( mist::spline< double >::THROUGH );
-//! // ・任意のノットベクトルを設定
-//! b.knot( STLのベクトルタイプのノットのリスト );
+//! b.mode( mist::spline< double >::OPEN );
 //! 
 //! // 補間点を計算（区間は０～１）
 //! double p1 = b( 0.0 );
@@ -146,7 +119,7 @@ inline const vector2< T > div( const vector2< T > &v1, const typename vector2< T
 //! 
 //! @endcode
 //!
-template < class T, int K, class Allocator = std::allocator< T > >
+template < class T, class Allocator = std::allocator< T > >
 class spline : public std::vector< T, Allocator >
 {
 private:
@@ -160,21 +133,21 @@ private:
 	typedef typename base::pointer pointer;						///< @brief STLのコンテナ内に格納するデータ型のポインター型
 	typedef typename base::const_pointer const_pointer;			///< @brief STLのコンテナ内に格納するデータ型の const ポインター型
 
-	typedef std::vector< double > point_list;
+	typedef std::vector< value_type > point_list;
 
 public:
 	/// @brief ノットベクトルを手動で設定しない場合のデフォルトのモード
 	enum SplineMode
 	{
-		ROUND,					///< @brief 閉曲線の設定
-		THROUGH,				///< @brief 最初と最後の制御点を通る場合の設定
+		CLOSED,				///< @brief 閉曲線の設定
+		OPEN,				///< @brief 開曲線の設定
 	};
 
 protected:
-	SplineMode mode_;			///< @brief デフォルトのノットベクトル設定
-	point_list p1_;				///< @brief デフォルトのノットベクトル設定
+	SplineMode mode_;			///< @brief スプライン曲線の設定
+	point_list p1_;				///< @brief 各制御点上での微係数
 
-	/// @brief 閉曲線の各制御点上での1次美係数を計算する
+	/// @brief 閉曲線の各制御点上での微係数を計算する
 	void closed_spline( )
 	{
 		base p = *this;
@@ -187,18 +160,13 @@ protected:
 		value_type *b = new value_type[ num ];
 		value_type *c = new value_type[ num ];
 
-		p1_.reserve( num );
+		p1_.clear( );
 
 		// 開始点と終点について
 		a[ 0 ]   = value_type( 1 );
 		b[ 0 ]   = value_type( 4 );
 		c[ 0 ]   = value_type( 1 );
-		p1_[ 0 ] = mul( sub( p[ 1 ], p[ num - 2 ] ), 3 );
-
-		a[ num - 1 ]   = value_type( 1 );
-		b[ num - 1 ]   = value_type( 4 );
-		c[ num - 1 ]   = value_type( 1 );
-		p1_[ num - 1 ] = p1_[ 0 ];
+		p1_.push_back( mul( sub( p[ 1 ], p[ num - 2 ] ), 3 ) );
 
 		// 開始点と終点以外の制御点に関して初期化
 		for( n = 1 ; n < num - 1 ; n++ )
@@ -206,53 +174,70 @@ protected:
 			a[ n ]   = value_type( 1 );
 			b[ n ]   = value_type( 4 );
 			c[ n ]   = value_type( 1 );
-			p1_[ n ] = mul( sub( p[ n + 1 ], p[ n - 1 ] ), 3 );
+			p1_.push_back( mul( sub( p[ n + 1 ], p[ n - 1 ] ), 3 ) );
 		}
 
+		a[ num - 1 ]   = value_type( 1 );
+		b[ num - 1 ]   = value_type( 4 );
+		c[ num - 1 ]   = value_type( 1 );
+		p1_.push_back( p1_[ 0 ] );
+
 		// 一次微係数の計算
-
-		p_type tmp;
-
 		for( n = 1; n < num - 1; n++ )		// 開始点と終点以外に関して
 		{
 			a[ n ]   = div( a[ n ], b[ n - 1 ] );
 			b[ n ]   = sub( b[ n ], mul( a[ n ], c[ n - 1 ] ) );
-			p1_[ n ] = sub( p1_[ n ],  mul( a[ n ],  p1[ n - 1 ] ) );
-			a[ n ]   = mul( -1, mul( a[ n - 1 ],  a[ n ] ) );
+			p1_[ n ] = sub( p1_[ n ],  mul( a[ n ],  p1_[ n - 1 ] ) );
+			a[ n ]   = mul( mul( a[ n - 1 ],  a[ n ] ), -1 );
 		}
 
-		a[ num - 2 ] = mul( -1, div( c[ num - 2 ], add( a[ num - 2 ], b[ num - 2 ] ) ) );
-		b[ num - 2 ] = mul( -1, mul( a[ num - 2 ], div( p1[ num - 2 ], c[ num - 2 ] ) ) );
+		a[ num - 2 ] = mul( div( c[ num - 2 ], add( a[ num - 2 ], b[ num - 2 ] ) ), -1 );
+		b[ num - 2 ] = mul( mul( a[ num - 2 ], div( p1_[ num - 2 ], c[ num - 2 ] ) ), -1 );
 
 		value_type tmp( a[ num - 3 ] );
-		a[ num - 3 ] = mul( -1, div( mul( add( a[ num - 3 ], c[ num - 3 ] ), a[ num - 2 ] ), b[ num - 3 ] ) );
-		b[ num - 3 ] = div( sub( p1[ num - 3 ], mul( add( tmp, c[ num - 2 ] ), b[ num - 2 ] ), b[ num - 3 ] ) );
+		a[ num - 3 ] = mul( div( mul( add( a[ num - 3 ], c[ num - 3 ] ), a[ num - 2 ] ), b[ num - 3 ] ), -1 );
+		b[ num - 3 ] = div( sub( p1_[ num - 3 ], mul( add( tmp, c[ num - 2 ] ), b[ num - 2 ] ) ), b[ num - 3 ] );
 
 		for( n = num - 4 ; n >= 0 ; n-- )
 		{
 			value_type tmp( a[ n ] );
-			a[ n ] = div( mul( -1, add( mul( c[ n ], a[ n + 1 ] ), mul( a[ n ], a[ num - 2 ] ) ) ), b[ n ] );
-			b[ n ] = div( sub( sub( p1[ n ], mul( c[ n ], b[ n + 1 ] ) ), mul( tmp, b[ num - 2 ] ) ), b[ n ] );
+			a[ n ] = div( mul( add( mul( c[ n ], a[ n + 1 ] ), mul( a[ n ], a[ num - 2 ] ) ), -1 ), b[ n ] );
+			b[ n ] = div( sub( sub( p1_[ n ], mul( c[ n ], b[ n + 1 ] ) ), mul( tmp, b[ num - 2 ] ) ), b[ n ] );
 		}
 
 		p1_[ 0 ] = div( b[ 0 ], add( a[ 0 ], 1 ) );
 
 		for( n = 1 ; n < num - 1 ; n++ )
 		{
-			p1_[ n ] = add( mul( a[ n ], p1[ 0 ] ), b[ n ] );
+			p1_[ n ] = add( mul( a[ n ], p1_[ 0 ] ), b[ n ] );
 		}
-		p1_[ num - 1 ] = p1[ 0 ];
+
+		p1_.pop_back( );
 
 		delete [] a;
 		delete [] b;
 		delete [] c;
 	}
 
+	/// @brief 開曲線の各制御点上での1次微係数を計算する
+	void open_spline( )
+	{
+	}
+
 public:
 	/// @brief スプラインを描画する前に必ず呼び出す
 	void construct_spline( )
 	{
-		closed_spline( );
+		switch( mode_ )
+		{
+		case CLOSED:
+            closed_spline( );
+			break;
+
+		case OPEN:
+		default:
+			break;
+		}
 	}
 
 	/// @brief 指定された位置（区間０～１）に対応する，3次スプライン補間結果を返す
@@ -272,27 +257,77 @@ public:
 			t = 1.0;
 		}
 
-		size_type n = static_cast< size_type >( t * static_cast< double >( p1_.size( ) ) );
-		double step = 1.0 / static_cast< double >( p1_.size( ) );
+		size_type num;
 
-		if( t == 1.0 )
+		switch( mode_ )
 		{
-			n--;
+		case CLOSED:
+			num = p1_.size( );
+			break;
+
+		case OPEN:
+		default:
+			num = p1_.size( ) - 1;
+			break;
 		}
 
+		size_type n = static_cast< size_type >( t * static_cast< double >( num ) );
+		double step = 1.0 / static_cast< double >( num );
+
+		value_type a0, a1, a2, a3;
 		const base &p = *this;
 
-		value_type a3 = add( mul( sub( p[ n ], p[ n + 1 ] ), 2 ), add( p1[ n ], p1[ n + 1 ] ) );
-		value_type a2 = sub( add( mul( sub( p[ n ], p[ n + 1 ] ), -3 ), mul( p1_[ n ], -2 ) ), p1_[ n + 1 ] );
-		value_type a1 = p1_[ n ];
-		value_type a0 = p[ n ];
+		if( n > num - 1 )
+		{
+			n = num - 1;
+		}
+
+		switch( mode_ )
+		{
+		case CLOSED:
+			if( n == num - 1 )
+			{
+				a3 = add( mul( sub( p[ n ], p[ 0 ] ), 2 ), add( p1_[ n ], p1_[ 0 ] ) );
+				a2 = sub( add( mul( sub( p[ n ], p[ 0 ] ), -3 ), mul( p1_[ n ], -2 ) ), p1_[ 0 ] );
+				a1 = p1_[ n ];
+				a0 = p[ n ];
+			}
+			else
+			{
+				a3 = add( mul( sub( p[ n ], p[ n + 1 ] ), 2 ), add( p1_[ n ], p1_[ n + 1 ] ) );
+				a2 = sub( add( mul( sub( p[ n ], p[ n + 1 ] ), -3 ), mul( p1_[ n ], -2 ) ), p1_[ n + 1 ] );
+				a1 = p1_[ n ];
+				a0 = p[ n ];
+			}
+			break;
+
+		case OPEN:
+		default:
+			if( n == num - 1 )
+			{
+				n--;
+			}
+			a3 = add( mul( sub( p[ n ], p[ n + 1 ] ), 2 ), add( p1_[ n ], p1_[ n + 1 ] ) );
+			a2 = sub( add( mul( sub( p[ n ], p[ n + 1 ] ), -3 ), mul( p1_[ n ], -2 ) ), p1_[ n + 1 ] );
+			a1 = p1_[ n ];
+			a0 = p[ n ];
+			break;
+		}
+
 
 		double s1 = t / step - static_cast< double >( n );
-		double s2 = s * s;
-		double s3 = s2 * s;
+		double s2 = s1 * s1;
+		double s3 = s2 * s1;
 
 		return( add( add( add( mul( a3, s3 ), mul( a2, s2 ) ), mul( a1, s1 ) ), a0 ) );
 	}
+
+
+	/// @brief スプライン曲線の種類を取得
+	SplineMode mode( ) const { return( mode_ ); }
+
+	/// @brief スプライン曲線の種類を設定
+	SplineMode mode( SplineMode m ) const { return( mode_ = m ); }
 
 
 	/// @brief 代入演算子
@@ -308,13 +343,13 @@ public:
 	}
 
 	/// @brief コピーコンストラクタ
-	spline( const spline &b ) : base( b ), mode_( b.mode_ ){ }
+	spline( const spline &b ) : base( b ), mode_( b.mode_ ), p1_( b.p1_ ){ }
 
 	/// @brief デフォルトのコンストラクタ
 	//!
 	//! デフォルト値を「最初と最後を通る曲線」に設定する
 	//!
-	spline( ) : mode_( THROUGH ){ }
+	spline( ) : mode_( OPEN ){ }
 };
 
 /// @}

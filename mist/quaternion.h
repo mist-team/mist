@@ -491,7 +491,7 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 //! 
 template < class T >
 const quaternion< T > track_ball( const vector2< T > &p1, const vector2< T > &p2, const vector3< T > &axisX, const vector3< T > axisY, const vector3< T > axisZ,
-									const typename vector3< T >::value_type &trackball_size = typename vector3< T >::value_type( 0.8 ) )
+									const typename vector3< T >::value_type &trackball_size = vector3< T >::value_type( 0.8 ) )
 {
 	typedef typename quaternion< T >::value_type value_type;
 
