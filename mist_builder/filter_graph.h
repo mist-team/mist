@@ -19,6 +19,10 @@ protected:
 	FXFont			*font_;
 	FXImage			*mem_image_;
 
+	FXScrollBar		*hscrollbar_;
+	FXScrollBar		*vscrollbar_;
+	FXScrollCorner	*corner_;
+
 	bool			damage_;
 	filter			*current_filter_;
 	pin				*current_pin_;
@@ -57,6 +61,9 @@ public:
 	FXint getXPosition( ) const { return( posX_ ); }
 	FXint getYPosition( ) const { return( posY_ ); }
 
+	FXint setXPosition( FXint pos ){ hscrollbar_->setPosition( -pos ); return( posX_ = -hscrollbar_->getPosition( ) ); }
+	FXint setYPosition( FXint pos ){ vscrollbar_->setPosition( -pos ); return( posY_ = -vscrollbar_->getPosition( ) ); }
+
 public:
 	void append_filter( const filter &f );
 	void recompute_current_filter( );
@@ -79,12 +86,17 @@ public:
 
 	long onDataChanged( FXObject *obj, FXSelector sel, void *ptr );
 
+	long onScroll( FXObject *obj, FXSelector sel, void *ptr );
+
 	virtual void create( );
+	virtual void layout( );
 
 public:
 	enum
 	{
 		ID_CANVAS = base::ID_LAST,
+		ID_HSCROLLBAR,
+		ID_VSCROLLBAR,
 		ID_LAST
 	};
 

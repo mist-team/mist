@@ -14,6 +14,9 @@ FXDEFMAP( filter_graph ) filter_graph_map[] =
 		FXMAPFUNC ( SEL_MOTION,					filter_graph::ID_CANVAS,			filter_graph::onMouseMove ),
 		FXMAPFUNC ( SEL_KEYPRESS,				filter_graph::ID_CANVAS,			filter_graph::onKeyDown ),
 		FXMAPFUNC ( SEL_KEYRELEASE,				filter_graph::ID_CANVAS,			filter_graph::onKeyUp ),
+
+		FXMAPFUNC ( SEL_CHANGED,				filter_graph::ID_HSCROLLBAR,		filter_graph::onScroll ),
+		FXMAPFUNC ( SEL_CHANGED,				filter_graph::ID_VSCROLLBAR,		filter_graph::onScroll ),
 	};
 
 
@@ -29,6 +32,12 @@ filter_graph::filter_graph( FXComposite *p, FXObject *tgt, FXSelector sel, FXuin
 	// このウィンドウからメッセージを送る先の設定
 	setTarget( tgt );
 	setSelector( sel );
+
+	corner_ = new FXScrollCorner( this );
+	hscrollbar_ = new FXScrollBar( this, this, ID_HSCROLLBAR, SCROLLBAR_HORIZONTAL );
+	vscrollbar_ = new FXScrollBar( this, this, ID_VSCROLLBAR, SCROLLBAR_VERTICAL );
+	//hscrollbar_ = new FXScrollBar( this, this, ID_HSCROLLBAR, SCROLLBAR_HORIZONTAL | LAYOUT_SIDE_BOTTOM | LAYOUT_FILL_X );
+	//vscrollbar_ = new FXScrollBar( this, this, ID_VSCROLLBAR, SCROLLBAR_VERTICAL | LAYOUT_SIDE_RIGHT | LAYOUT_FILL_Y );
 
 	canvas_ = new FXCanvas( this, this, ID_CANVAS, LAYOUT_FILL_X | LAYOUT_FILL_Y );
 
@@ -51,6 +60,101 @@ void filter_graph::create( )
 	mem_image_->create( );
 
 	base::create( );
+}
+
+void filter_graph::layout( )
+{
+	FXint shH = hscrollbar_->getDefaultHeight();
+	FXint svW = vscrollbar_->getDefaultWidth();
+
+	FXint viewportW  =  getWidth( );
+	FXint viewportH  =  getHeight( );
+
+	FXint contentW = getContentWidth( );
+	FXint contentH = getContentHeight( );
+
+	FXint width = getWidth( );
+	FXint height = getHeight( );
+
+	if( contentW <= viewportW && contentH <= viewportH )
+	{
+		shH = svW = 0;
+	}
+	if( contentW <= viewportW - svW || 0 >= viewportH - shH * 2 )
+	{
+		shH = 0;
+	}
+	if( contentH <= viewportH - shH || 0 >= viewportW - svW * 2 )
+	{
+		svW = 0;
+	}
+	if( contentW <= viewportW - svW || 0 >= viewportH - shH * 2 )
+	{
+		shH = 0;
+	}
+
+	viewportW -= svW;
+	viewportH -= shH;
+
+	hscrollbar_->setRange( contentW );
+	vscrollbar_->setRange( contentH );
+
+	hscrollbar_->setPage( viewportW );
+	vscrollbar_->setPage( viewportH );
+
+	hscrollbar_->setPosition( -posX_ );
+	vscrollbar_->setPosition( -posY_ );
+
+	posX_ = -hscrollbar_->getPosition( );
+	posY_ = -vscrollbar_->getPosition( );
+
+	if( shH > 0 )
+	{
+		hscrollbar_->position( 0, height - shH, width - svW, shH );
+		hscrollbar_->show( );
+		hscrollbar_->raise( );
+	}
+	else
+	{
+		hscrollbar_->hide( );
+	}
+
+	if( svW > 0 )
+	{
+		vscrollbar_->position( width - svW, 0, svW, height - shH );
+		vscrollbar_->show( );
+		vscrollbar_->raise( );
+	}
+	else
+	{
+		vscrollbar_->hide( );
+	}
+
+	if( svW > 0 && shH > 0 )
+	{
+		corner_->position( width - svW, height - shH, svW, shH );
+		corner_->show( );
+		corner_->raise( );
+	}
+	else
+	{
+		corner_->hide( );
+	}
+
+	canvas_->position( 0, 0, viewportW, viewportH );
+}
+
+
+// Mouse button was pressed somewhere
+long filter_graph::onScroll( FXObject *obj, FXSelector sel, void *ptr )
+{
+	posX_ = - hscrollbar_->getPosition( );
+	posY_ = - vscrollbar_->getPosition( );
+
+	canvas_->update( );
+	canvas_->repaint( );
+
+	return( 1 );
 }
 
 void filter_graph::set_cursors( bool is_drag )
@@ -197,8 +301,8 @@ long filter_graph::onMouseMove( FXObject *obj, FXSelector sel, void *ptr )
 	if( e.state & ALTMASK && e.state & LEFTBUTTONMASK )
 	{
 		set_cursors( true );
-		posX_ += e.win_x - e.last_x;
-		posY_ += e.win_y - e.last_y;
+		setXPosition( posX_ + e.win_x - e.last_x );
+		setYPosition( posY_ + e.win_y - e.last_y );
 		canvas_->update( );
 		canvas_->repaint( );
 	}
