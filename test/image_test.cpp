@@ -1,6 +1,9 @@
 #include "image_test.h"
 #include "image_test_window.h"
 
+
+image_draw_area *draw_area;
+
 #include <mist/mist.h>
 #include <mist/draw.h>
 #include <mist/io/image.h>
@@ -20,10 +23,26 @@
 #include <mist/threshold.h>
 #include <mist/timer.h>
 
+#define USE_COLOR_IMAGE		0
 
-//typedef mist::array2< unsigned char > image_type;
+#if USE_COLOR_IMAGE == 1
 typedef mist::array2< mist::rgb< unsigned char > > image_type;
+#else
+typedef mist::array2< unsigned char > image_type;
+#endif
+
 image_type image_object( 100, 100 );
+
+
+image_draw_area::image_draw_area( int x, int y, int w, int h, const char *l ) : Fl_Gl_Window( x, y, w, h, l), interpolate_( false )
+{
+	draw_area = this;
+}
+
+image_draw_area::image_draw_area( int x, int y, int w, int h ) : Fl_Gl_Window( x, y, w, h ), interpolate_( false )
+{
+	draw_area = this;
+}
 
 void image_draw_area::draw( )
 {
@@ -70,7 +89,11 @@ void euclidean_distance_transform_test( )
 	image_type::size_type i = 0;
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
+#if USE_COLOR_IMAGE == 1
 		tmp1[ i ] = image_object[ i ].get_value( );
+#else
+		tmp1[ i ] = image_object[ i ];
+#endif
 	}
 
 	mist::euclidean_distance_transform( tmp1, tmp2 );
@@ -105,10 +128,15 @@ void figure_decomposition_test( )
 
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
+#if USE_COLOR_IMAGE == 1
 		label[ i ] = image_object[ i ].get_value( );
+#else
+		label[ i ] = image_object[ i ];
+#endif
 	}
 
-	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
+	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
+//	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
 
 	if( label_num == 0 )
 	{
@@ -129,7 +157,11 @@ void thresholding_test( )
 
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
+#if USE_COLOR_IMAGE == 1
 		tmp[ i ] = image_object[ i ].get_value( );
+#else
+		tmp[ i ] = image_object[ i ];
+#endif
 	}
 
 	int threshold = mist::discriminant_analysis::threshold( tmp );
