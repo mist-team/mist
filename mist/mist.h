@@ -740,7 +740,7 @@ public:
 	void clear( )
 	{
 		base::clear( );
-		size1_ = size2_ = 0;
+		size1_ = size2_ = size3_ = 0;
 	}
 
 	size_type size1( ) const { return( size1_ ); }
