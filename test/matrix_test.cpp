@@ -11,9 +11,9 @@ void test_matrix_multiply1( )
 {
 	using namespace std;
 
-	mist::matrix< double > m( 1000,1000 );
-	mist::matrix< double > n( 1000,1000 );
-	mist::matrix< double > l( 1000,1000 );
+	mist::matrix< double > m( 1000, 1000 );
+	mist::matrix< double > n( 1000, 1000 );
+	mist::matrix< double > l( 1000, 1000 );
 
 	mist::matrix< double >::size_type r, c;
 

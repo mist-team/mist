@@ -7,15 +7,20 @@ int main( )
 {
 	typedef mist::matrix< std::complex<float> > matrix;
 	//typedef mist::matrix< std::complex< double > > matrix;
-	matrix a( 3, 3 ), b( 3, 1 );
+	matrix a( 3, 3 ), b( 3, 2 );
 
 	a( 0, 0 ) = 1.0; a( 0, 1 ) =  3.0; a( 0, 2 ) =  1.0;
 	a( 1, 0 ) = 3.0; a( 1, 1 ) =  1.0; a( 1, 2 ) = -2.0;
 	a( 2, 0 ) = 1.0; a( 2, 1 ) = -2.0; a( 2, 2 ) = -5.0;
 
-	b[0] =  3.0;
-	b[1] =  1.0;
-	b[2] = -6.0;
+	b( 0, 0 ) =  3.0;
+	b( 1, 0 ) =  1.0;
+	b( 2, 0 ) = -6.0;
+	b( 0, 1 ) =  3.0;
+	b( 1, 1 ) =  1.0;
+	b( 2, 1 ) = -6.0;
+
+	a = a + 1;
 
 	std::cout << "Original Matrix" << std::endl;
 	std::cout << a << std::endl << std::endl;

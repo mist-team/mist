@@ -58,6 +58,8 @@ namespace __utility__
 //!
 //! @param[in] a … 平均値を計算するデータ配列
 //! 
+//! @return データの平均値
+//! 
 template < class T, class Allocator >
 inline typename __utility__::__value_type__< T >::value_type average( const array< T, Allocator > &a )
 {
@@ -85,6 +87,8 @@ inline typename __utility__::__value_type__< T >::value_type average( const arra
 //!
 //! @param[in] a   … 分散を計算するデータ配列
 //! @param[in] ave … データ配列の平均値
+//! 
+//! @return データの分散
 //! 
 template < class T, class Allocator >
 inline typename __utility__::__value_type__< T >::value_type deviation( const array< T, Allocator > &a, double ave )
@@ -114,10 +118,107 @@ inline typename __utility__::__value_type__< T >::value_type deviation( const ar
 //!
 //! @param[in] a … 分散を計算するデータ配列
 //! 
+//! @return データの分散
+//! 
 template < class T, class Allocator >
 inline typename __utility__::__value_type__< T >::value_type deviation( const array< T, Allocator > &a )
 {
 	return( deviation( a, average( a ) ) );
+}
+
+
+
+
+/// データの範囲を指定してヒストグラムを作成する
+//!
+//! @param[in] in  … ヒストグラムを作成するデータ配列
+//! @param[in] min … ヒストグラムを作成するデータの最小値
+//! @param[in] max … ヒストグラムを作成するデータの最大値
+//! @param[in] bin … ヒストグラムを作成するビン幅
+//! 
+//! @retval true  … ヒストグラムの作成に成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2 >
+bool histogram( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+				typename array< T1, Allocator1 >::value_type min,
+				typename array< T1, Allocator1 >::value_type max,
+				typename array< T1, Allocator1 >::value_type bin = array< T1, Allocator1 >::value_type( 1 )
+			  )
+{
+	if( is_same_object( in, out ) || in.empty( ) )
+	{
+		return( false );
+	}
+
+	typedef typename array< T1, Allocator1 >::size_type size_type;
+	typedef typename array< T1, Allocator1 >::difference_type difference_type;
+	typedef typename array< T1, Allocator1 >::value_type value_type;
+
+	if( bin <= 0 )
+	{
+		return( false );
+	}
+
+	if( min > max )
+	{
+		value_type tmp = min;
+		min = max;
+		max = tmp;
+	}
+
+	difference_type num = static_cast< size_type >( ( max - min + 1 ) / bin );
+	out.resize( num );
+	out.fill( );
+
+	for( size_type i = 0 ; i < in.size( ) ; i++ )
+	{
+		difference_type index = static_cast< difference_type >( ( in[ i ] - min ) / bin );
+		if( index >= 0 && index < num )
+		{
+			out[ index ]++;
+		}
+	}
+
+	return( true );
+}
+
+
+/// データ全体からヒストグラムを作成する
+//!
+//! @param[in] in  … ヒストグラムを作成するデータ配列
+//! @param[in] bin … ヒストグラムを作成するビン幅
+//! 
+//! @retval true  … ヒストグラムの作成に成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2 >
+bool histogram( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::value_type bin = array< T1, Allocator1 >::value_type( 1 ) )
+{
+	typedef typename array< T1, Allocator1 >::size_type size_type;
+	typedef typename array< T1, Allocator1 >::difference_type difference_type;
+	typedef typename array< T1, Allocator1 >::value_type value_type;
+
+	if( in.empty( ) )
+	{
+		return( false );
+	}
+
+	value_type min = in[ 0 ];
+	value_type max = in[ 0 ];
+	for( size_type i = 0 ; i < in.size( ) ; i++ )
+	{
+		if( min > in[ i ] )
+		{
+			min = in[ i ];
+		}
+		else if( max < in[ i ] )
+		{
+			max = in[ i ];
+		}
+	}
+
+	return( histogram( in, out, min, max, bin ) );
 }
 
 
