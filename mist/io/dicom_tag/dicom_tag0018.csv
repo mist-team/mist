@@ -1,4 +1,3 @@
-{0,0x0018,0x0000,UL,1,"""Group 0018 Length""",},//
 {0,0x0018,0x0010,LO,1,"""Contrast/Bolus Agent""",},//
 {0,0x0018,0x0012,SQ,1,"""Contrast/Bolus Agent Sequence""",},//
 {0,0x0018,0x0014,SQ,1,"""Contrast/Bolus Administration Route Sequence""",},//
@@ -12,24 +11,20 @@
 {0,0x0018,0x0026,SQ,1,"""Intervention Drug Information Sequence""",},//
 {0,0x0018,0x0027,TM,1,"""Intervention Drug Stop Time""",},//
 {0,0x0018,0x0028,DS,1,"""Intervention Drug Dose""",},//
-{0,0x0018,0x0029,SQ,1,"""Intervention Drug Code Sequence""",},//
+{0,0x0018,0x0029,SQ,1,"""Intervention Drug Sequence""",},//
 {0,0x0018,0x002A,SQ,1,"""Additional Drug Sequence""",},//
-{0,0x0018,0x0030,LO,-1,"""Radionuclide(RET)""",},//
 {0,0x0018,0x0031,LO,1,"""Radiopharmaceutical""",},//
-{0,0x0018,0x0032,DS,1,"""Energy Window Centerline(RET)""",},//
-{0,0x0018,0x0033,DS,-1,"""Energy Window Total Width""",},//
 {0,0x0018,0x0034,LO,1,"""Intervention Drug Name""",},//
 {0,0x0018,0x0035,TM,1,"""Intervention Drug Start Time""",},//
-{0,0x0018,0x0036,SQ,1,"""Interventional Therapy Sequence""",},//
-{0,0x0018,0x0037,CS,1,"""Therapy Type(RET)""",},//
-{0,0x0018,0x0038,CS,1,"""Interventional Status""",},//
-{0,0x0018,0x0039,CS,1,"""Therapy Description""",},//
+{0,0x0018,0x0036,SQ,1,"""Intervention Sequence""",},//
+{0,0x0018,0x0038,CS,1,"""Intervention Status""",},//
+{0,0x0018,0x003A,ST,1,"""Intervention Description""",},//
 {0,0x0018,0x0040,IS,1,"""Cine Rate""",},//
 {0,0x0018,0x0050,DS,1,"""Slice Thickness""",},//
 {0,0x0018,0x0060,DS,1,"""KVP""",},//
 {0,0x0018,0x0070,IS,1,"""Counts Accumulated""",},//
 {0,0x0018,0x0071,CS,1,"""Acquisition Termination Condition""",},//
-{0,0x0018,0x0072,DS,1,"""Effective Series Duration""",},//
+{0,0x0018,0x0072,DS,1,"""Effective Duration""",},//
 {0,0x0018,0x0073,CS,1,"""Acquisition Start Condition""",},//
 {0,0x0018,0x0074,IS,1,"""Acquisition Start Condition Data""",},//
 {0,0x0018,0x0075,IS,1,"""Acquisition Termination Condition Data""",},//
@@ -39,7 +34,7 @@
 {0,0x0018,0x0083,DS,1,"""Number of Averages""",},//
 {0,0x0018,0x0084,DS,1,"""Imaging Frequency""",},//
 {0,0x0018,0x0085,SH,1,"""Imaged Nucleus""",},//
-{0,0x0018,0x0086,IS,-1,"""Echo Numbers(s)""",},//
+{0,0x0018,0x0086,IS,-1,"""Echo Number(s)""",},//
 {0,0x0018,0x0087,DS,1,"""Magnetic Field Strength""",},//
 {0,0x0018,0x0088,DS,1,"""Spacing Between Slices""",},//
 {0,0x0018,0x0089,IS,1,"""Number of Phase Encoding Steps""",},//
@@ -56,11 +51,11 @@
 {0,0x0018,0x1014,TM,1,"""Time of Secondary Capture""",},//
 {0,0x0018,0x1016,LO,1,"""Secondary Capture Device Manufacturer""",},//
 {0,0x0018,0x1017,LO,1,"""Hardcopy Device Manufacturer""",},//
-{0,0x0018,0x1018,LO,1,"""Secondary Capture Device Manufacturer's Model Name""",},//
+{0,0x0018,0x1018,LO,1,"""Secondary Capture Device ManufacturerÅfs Model Name""",},//
 {0,0x0018,0x1019,LO,-1,"""Secondary Capture Device Software Version(s)""",},//
 {0,0x0018,0x101A,LO,-1,"""Hardcopy Device Software Version""",},//
 {0,0x0018,0x101B,LO,1,"""Hardcopy Device Manfuacturer's Model Name""",},//
-{0,0x0018,0x1020,LO,-1,"""Software Versions(s)""",},//
+{0,0x0018,0x1020,LO,-1,"""Software Version(s)""",},//
 {0,0x0018,0x1022,SH,1,"""Video Image Format Acquired""",},//
 {0,0x0018,0x1023,LO,1,"""Digital Image Format Acquired""",},//
 {0,0x0018,0x1030,LO,1,"""Protocol Name""",},//
@@ -70,10 +65,10 @@
 {0,0x0018,0x1043,TM,1,"""Contrast/Bolus Stop Time""",},//
 {0,0x0018,0x1044,DS,1,"""Contrast/Bolus Total Dose""",},//
 {0,0x0018,0x1045,IS,1,"""Syringe Counts""",},//
-{0,0x0018,0x1046,DS,-1,"""Contrast Flow Rate(s)""",},//
-{0,0x0018,0x1047,DS,-1,"""Contrast Flow Duration(s)""",},//
+{0,0x0018,0x1046,DS,-1,"""Contrast Flow Rate""",},//
+{0,0x0018,0x1047,DS,-1,"""Contrast Flow Duration""",},//
 {0,0x0018,0x1048,CS,1,"""Contrast/Bolus Ingredient""",},//
-{0,0x0018,0x1049,DS,1,"""Contrast/Bolus Ingredient""",},//
+{0,0x0018,0x1049,DS,1,"""Contrast/Bolus Ingredient Concentration""",},//
 {0,0x0018,0x1050,DS,1,"""Spatial Resolution""",},//
 {0,0x0018,0x1060,DS,1,"""Trigger Time""",},//
 {0,0x0018,0x1061,LO,1,"""Trigger Source or Type""",},//
@@ -88,10 +83,10 @@
 {0,0x0018,0x106A,CS,1,"""Synchronization Trigger""",},//
 {0,0x0018,0x106C,US,2,"""Synchronization Channel""",},//
 {0,0x0018,0x106E,UL,1,"""Trigger Sample Position""",},//
-{0,0x0018,0x1070,LO,1,"""Radionuclide Route""",},//
-{0,0x0018,0x1071,DS,1,"""Radionuclide Volume""",},//
-{0,0x0018,0x1072,TM,1,"""Radionuclide Start Time""",},//
-{0,0x0018,0x1073,TM,1,"""Radionuclide Stop Time""",},//
+{0,0x0018,0x1070,LO,1,"""Radiopharmaceutical Route""",},//
+{0,0x0018,0x1071,DS,1,"""Radiopharmaceutical Volume""",},//
+{0,0x0018,0x1072,TM,1,"""Radiopharmaceutical Start Time""",},//
+{0,0x0018,0x1073,TM,1,"""Radiopharmaceutical Stop Time""",},//
 {0,0x0018,0x1074,DS,1,"""Radionuclide Total Dose""",},//
 {0,0x0018,0x1075,DS,1,"""Radionuclide Half Life""",},//
 {0,0x0018,0x1076,DS,1,"""Radionuclide Positron Fraction""",},//
@@ -117,7 +112,7 @@
 {0,0x0018,0x1134,CS,1,"""Table Motion""",},//
 {0,0x0018,0x1135,DS,-1,"""Table Vertical Increment""",},//
 {0,0x0018,0x1136,DS,-1,"""Table Lateral Increment""",},//
-{0,0x0018,0x1137,DS,-1,"""Table Longitudinal Increment DS""",},//
+{0,0x0018,0x1137,DS,-1,"""Table Longitudinal Increment""",},//
 {0,0x0018,0x1138,DS,1,"""Table Angle""",},//
 {0,0x0018,0x113A,CS,1,"""Table Type""",},//
 {0,0x0018,0x1140,CS,1,"""Rotation Direction""",},//
@@ -126,9 +121,8 @@
 {0,0x0018,0x1143,DS,1,"""Scan Arc""",},//
 {0,0x0018,0x1144,DS,1,"""Angular Step""",},//
 {0,0x0018,0x1145,DS,1,"""Center of Rotation Offset""",},//
-{0,0x0018,0x1146,DS,-1,"""Rotation Offset(RET)""",},//
 {0,0x0018,0x1147,CS,1,"""Field of View Shape""",},//
-{0,0x0018,0x1149,IS,2,"""Field of View Dimensions(s)""",},//
+{0,0x0018,0x1149,IS,2,"""Field of View Dimension(s)""",},//
 {0,0x0018,0x1150,IS,1,"""Exposure Time""",},//
 {0,0x0018,0x1151,IS,1,"""X-ray Tube Current""",},//
 {0,0x0018,0x1152,IS,1,"""Exposure""",},//
@@ -140,7 +134,7 @@
 {0,0x0018,0x115E,DS,1,"""Image Area Dose Product""",},//
 {0,0x0018,0x1160,SH,1,"""Filter Type""",},//
 {0,0x0018,0x1161,LO,-1,"""Type of Filters""",},//
-{0,0x0018,0x1162,DS,-1,"""Intensifier Size""",},//
+{0,0x0018,0x1162,DS,1,"""Intensifier Size""",},//
 {0,0x0018,0x1164,DS,2,"""Imager Pixel Spacing""",},//
 {0,0x0018,0x1166,CS,-1,"""Grid""",},//
 {0,0x0018,0x1170,IS,1,"""Generator Power""",},//
@@ -156,19 +150,18 @@
 {0,0x0018,0x1200,DA,-1,"""Date of Last Calibration""",},//
 {0,0x0018,0x1201,TM,-1,"""Time of Last Calibration""",},//
 {0,0x0018,0x1210,SH,-1,"""Convolution Kernel""",},//
-{0,0x0018,0x1240,DS,1,"""Upper/Lower Pixel Values (RET)""",},//
 {0,0x0018,0x1242,IS,1,"""Actual Frame Duration""",},//
 {0,0x0018,0x1243,IS,1,"""Count Rate""",},//
 {0,0x0018,0x1244,US,1,"""Preferred Playback Sequencing""",},//
-{0,0x0018,0x1250,SH,1,"""Receiving Coil Name""",},//
-{0,0x0018,0x1251,SH,1,"""Transmitting Coil Name""",},//
+{0,0x0018,0x1250,SH,1,"""Receive Coil Name""",},//
+{0,0x0018,0x1251,SH,1,"""Transmit Coil Name""",},//
 {0,0x0018,0x1260,SH,1,"""Plate Type""",},//
 {0,0x0018,0x1261,LO,1,"""Phosphor Type""",},//
 {0,0x0018,0x1300,DS,1,"""Scan Velocity""",},//
 {0,0x0018,0x1301,CS,-1,"""Whole Body Technique""",},//
 {0,0x0018,0x1302,IS,1,"""Scan Length""",},//
 {0,0x0018,0x1310,US,4,"""Acquisition Matrix""",},//
-{0,0x0018,0x1312,CS,1,"""Phase Encoding Direction""",},//
+{0,0x0018,0x1312,CS,1,"""In-plane Phase Encoding Direction""",},//
 {0,0x0018,0x1314,DS,1,"""Flip Angle""",},//
 {0,0x0018,0x1315,CS,1,"""Variable Flip Angle Flag""",},//
 {0,0x0018,0x1316,DS,1,"""SAR""",},//
@@ -204,7 +197,6 @@
 {0,0x0018,0x1620,IS,-1,"""Vertices of the Polygonal Shutter""",},//
 {0,0x0018,0x1622,US,1,"""Shutter Presentation Value""",},//
 {0,0x0018,0x1623,US,1,"""Shutter Overlay Group""",},//
-//{0,0x0018,0x1628,FD,1,"""Reference Pixel Physical Value X""",},//
 {0,0x0018,0x1700,CS,3,"""Collimator Shape""",},//
 {0,0x0018,0x1702,IS,1,"""Collimator Left Vertical Edge""",},//
 {0,0x0018,0x1704,IS,1,"""Collimator Right Vertical Edge""",},//
@@ -216,6 +208,7 @@
 {0,0x0018,0x1800,CS,1,"""Acquisition Time Synchronized""",},//
 {0,0x0018,0x1801,SH,1,"""Time Source""",},//
 {0,0x0018,0x1802,CS,1,"""Time Distribution Protocol""",},//
+{0,0x0018,0x1803,LO,1,"""NTP Source Address""",},//
 {0,0x0018,0x2001,IS,-1,"""Page Number Vector""",},//
 {0,0x0018,0x2002,SH,-1,"""Frame Label Vector""",},//
 {0,0x0018,0x2003,DS,-1,"""Frame Primary Angle Vector""",},//
@@ -231,26 +224,21 @@
 {0,0x0018,0x3103,IS,1,"""IVUS Pullback Start Frame Number""",},//
 {0,0x0018,0x3104,IS,1,"""IVUS Pullback Stop Frame Number""",},//
 {0,0x0018,0x3105,IS,-1,"""Lesion Number""",},//
-{0,0x0018,0x4000,SH,1,"""Group 0018 Comments (RET)""",},//
 {0,0x0018,0x5000,SH,-1,"""Output Power""",},//
 {0,0x0018,0x5010,LO,3,"""Transducer Data""",},//
 {0,0x0018,0x5012,DS,1,"""Focus Depth""",},//
-{0,0x0018,0x5020,LO,1,"""Preprocessing Function""",},//
+{0,0x0018,0x5020,LO,1,"""Processing Function""",},//
 {0,0x0018,0x5021,LO,1,"""Postprocessing Function""",},//
 {0,0x0018,0x5022,DS,1,"""Mechanical Index""",},//
-{0,0x0018,0x5024,DS,1,"""Thermal Index""",},//
+{0,0x0018,0x5024,DS,1,"""Bone Thermal Index""",},//
 {0,0x0018,0x5026,DS,1,"""Cranial Thermal Index""",},//
 {0,0x0018,0x5027,DS,1,"""Soft Tissue Thermal Index""",},//
 {0,0x0018,0x5028,DS,1,"""Soft Tissue-focus Thermal Index""",},//
 {0,0x0018,0x5029,DS,1,"""Soft Tissue-surface Thermal Index""",},//
-{0,0x0018,0x5030,IS,1,"""Dynamic Range (RET)""",},//
-{0,0x0018,0x5040,IS,1,"""Total Gain (RET)""",},//
 {0,0x0018,0x5050,IS,1,"""Depth of Scan Field""",},//
 {0,0x0018,0x5100,CS,1,"""Patient Position""",},//
 {0,0x0018,0x5101,CS,1,"""View Position""",},//
 {0,0x0018,0x5104,SQ,1,"""Projection Eponymous Name Code Sequence""",},//
-{0,0x0018,0x5210,DS,6,"""Image Transformation Matrix""",},//
-{0,0x0018,0x5212,DS,3,"""Image Translation Vector""",},//
 {0,0x0018,0x6000,DS,1,"""Sensitivity""",},//
 {0,0x0018,0x6011,SQ,1,"""Sequence of Ultrasound Regions""",},//
 {0,0x0018,0x6012,US,1,"""Region Spatial Format""",},//
@@ -272,21 +260,15 @@
 {0,0x0018,0x6031,CS,1,"""Transducer Type""",},//
 {0,0x0018,0x6032,UL,1,"""Pulse Repetition Frequency""",},//
 {0,0x0018,0x6034,FD,1,"""Doppler Correction Angle""",},//
-{0,0x0018,0x6036,FD,1,"""Sterring Angle""",},//
-{0,0x0018,0x6038,UL,1,"""Doppler Sample Volume X Position(RET)""",},//
+{0,0x0018,0x6036,FD,1,"""Steering Angle""",},//
 {0,0x0018,0x6039,SL,1,"""Doppler Sample Volume X Position""",},//
-{0,0x0018,0x603A,UL,1,"""Doppler Sample Volume Y Position(RET)""",},//
 {0,0x0018,0x603B,SL,1,"""Doppler Sample Volume Y Position""",},//
-{0,0x0018,0x603C,UL,1,"""TM-Line Position X0(RET)""",},//
 {0,0x0018,0x603D,SL,1,"""TM-Line Position X0""",},//
-{0,0x0018,0x603E,UL,1,"""TM-Line Position Y0(RET)""",},//
 {0,0x0018,0x603F,SL,1,"""TM-Line Position Y0""",},//
-{0,0x0018,0x6040,UL,1,"""TM-Line Position X1(RET)""",},//
 {0,0x0018,0x6041,SL,1,"""TM-Line Position X1""",},//
-{0,0x0018,0x6042,UL,1,"""TM-Line Position Y1(RET)""",},//
 {0,0x0018,0x6043,SL,1,"""TM-Line Position Y1""",},//
 {0,0x0018,0x6044,US,1,"""Pixel Component Organization""",},//
-{0,0x0018,0x6046,UL,1,"""Pixel Component Organization""",},//
+{0,0x0018,0x6046,UL,1,"""Pixel Component Mask""",},//
 {0,0x0018,0x6048,UL,1,"""Pixel Component Range Start""",},//
 {0,0x0018,0x604A,UL,1,"""Pixel Component Range Stop""",},//
 {0,0x0018,0x604C,US,1,"""Pixel Component Physical Units""",},//
@@ -297,6 +279,7 @@
 {0,0x0018,0x6056,UL,1,"""Number of Table Entries""",},//
 {0,0x0018,0x6058,UL,-1,"""Table of Pixel Values""",},//
 {0,0x0018,0x605A,FL,-1,"""Table of Parameter Values""",},//
+{0,0x0018,0x6060,FL,-1,"""R Wave Time Vector""",},//
 {0,0x0018,0x7000,CS,1,"""Detector Conditions Nominal Flag""",},//
 {0,0x0018,0x7001,DS,1,"""Detector Temperature""",},//
 {0,0x0018,0x7004,CS,1,"""Detector Type""",},//
@@ -317,6 +300,8 @@
 {0,0x0018,0x7024,CS,1,"""Detector Active Shape""",},//
 {0,0x0018,0x7026,DS,2,"""Detector Active Dimension(s)""",},//
 {0,0x0018,0x7028,DS,2,"""Detector Active Origin""",},//
+{0,0x0018,0x702A,LO,1,"""Detector Manufacturer Name""",},//
+{0,0x0018,0x702B,LO,1,"""Detector ManufacturerÅfs Model Name""",},//
 {0,0x0018,0x7030,DS,2,"""Field of View Origin""",},//
 {0,0x0018,0x7032,DS,1,"""Field of View Rotation""",},//
 {0,0x0018,0x7034,CS,1,"""Field of View Horizontal Flip""",},//
@@ -388,7 +373,7 @@
 {0,0x0018,0x9062,CS,1,"""De-coupling Method""",},//
 {0,0x0018,0x9063,FD,2,"""De-coupling Chemical Shift Reference""",},//
 {0,0x0018,0x9064,CS,1,"""k-space Filtering""",},//
-{0,0x0018,0x9065,CS,2,"""Time Domain Filtering CS""",},//
+{0,0x0018,0x9065,CS,2,"""Time Domain Filtering""",},//
 {0,0x0018,0x9066,US,2,"""Number of Zero fills""",},//
 {0,0x0018,0x9067,CS,1,"""Baseline Correction""",},//
 {0,0x0018,0x9069,FD,1,"""Parallel Reduction Factor In-plane""",},//
@@ -403,6 +388,7 @@
 {0,0x0018,0x9080,ST,1,"""Metabolite Map Description""",},//
 {0,0x0018,0x9081,CS,1,"""Partial Fourier""",},//
 {0,0x0018,0x9082,FD,1,"""Effective Echo Time""",},//
+{0,0x0018,0x9083,SQ,1,"""Metabolite Map Code Sequence""",},//
 {0,0x0018,0x9084,SQ,1,"""Chemical Shift Sequence""",},//
 {0,0x0018,0x9085,CS,1,"""Cardiac Signal Source""",},//
 {0,0x0018,0x9087,FD,1,"""Diffusion b-value""",},//
@@ -452,15 +438,13 @@
 {0,0x0018,0x9182,FD,1,"""Gradient Output""",},//
 {0,0x0018,0x9183,CS,1,"""Flow Compensation Direction""",},//
 {0,0x0018,0x9184,FD,1,"""Tagging Delay""",},//
-{0,0x0018,0x9195,FD,1,"""Chemical Shifts Minimum Integration Limit""",},//
-{0,0x0018,0x9196,FD,1,"""Chemical Shifts Maximum Integration Limit""",},//
 {0,0x0018,0x9197,SQ,1,"""MR Velocity Encoding Sequence""",},//
 {0,0x0018,0x9198,CS,1,"""First Order Phase Correction""",},//
 {0,0x0018,0x9199,CS,1,"""Water Referenced Phase Correction""",},//
 {0,0x0018,0x9200,CS,1,"""MR Spectroscopy Acquisition Type""",},//
 {0,0x0018,0x9214,CS,1,"""Respiratory Cycle Position""",},//
 {0,0x0018,0x9217,FD,1,"""Velocity Encoding Maximum Value""",},//
-{0,0x0018,0x9218,SS,1,"""Tag Spacing Second Dimension""",},//
+{0,0x0018,0x9218,FD,1,"""Tag Spacing Second Dimension""",},//
 {0,0x0018,0x9219,SS,1,"""Tag Angle Second Axis""",},//
 {0,0x0018,0x9220,FD,1,"""Frame Acquisition Duration""",},//
 {0,0x0018,0x9226,SQ,1,"""MR Image Frame Type Sequence""",},//
@@ -470,6 +454,52 @@
 {0,0x0018,0x9234,UL,1,"""Spectroscopy Acquisition Phase Columns""",},//
 {0,0x0018,0x9236,CS,1,"""Cardiac Cycle Position""",},//
 {0,0x0018,0x9239,SQ,1,"""Specific Absorption Rate Sequence""",},//
+{0,0x0018,0x9295,FD,1,"""Chemical Shifts Minimum Integration Limit in ppm""",},//
+{0,0x0018,0x9296,FD,1,"""Chemical Shifts Maximum Integration Limit in ppm""",},//
+{0,0x0018,0x9240,US,1,"""RF Echo Train Length""",},//
+{0,0x0018,0x9241,US,1,"""Gradient Echo Train Length""",},//
+{0,0x0018,0x9301,SQ,1,"""CT Acquisition Type Sequence""",},//
+{0,0x0018,0x9302,CS,1,"""Acquisition Type""",},//
+{0,0x0018,0x9303,FD,1,"""Tube Angle""",},//
+{0,0x0018,0x9304,SQ,1,"""CT Acquisition Details Sequence""",},//
+{0,0x0018,0x9305,FD,1,"""Revolution Time""",},//
+{0,0x0018,0x9306,FD,1,"""Single Collimation Width""",},//
+{0,0x0018,0x9307,FD,1,"""Total Collimation Width""",},//
+{0,0x0018,0x9308,SQ,1,"""CT Table Dynamics Sequence""",},//
+{0,0x0018,0x9309,FD,1,"""Table Speed""",},//
+{0,0x0018,0x9310,FD,1,"""Table Feed per Rotation""",},//
+{0,0x0018,0x9311,FD,1,"""Spiral Pitch Factor""",},//
+{0,0x0018,0x9312,SQ,1,"""CT Geometry Sequence""",},//
+{0,0x0018,0x9313,FD,3,"""Data Collection Center (Patient)""",},//
+{0,0x0018,0x9314,SQ,1,"""CT Reconstruction Sequence""",},//
+{0,0x0018,0x9315,CS,1,"""Reconstruction Algorithm""",},//
+{0,0x0018,0x9316,CS,1,"""Convolution Kernel Group""",},//
+{0,0x0018,0x9317,FD,2,"""Reconstruction Field of View""",},//
+{0,0x0018,0x9318,FD,3,"""Reconstruction Target Center (Patient)""",},//
+{0,0x0018,0x9319,FD,1,"""Reconstruction Angle""",},//
+{0,0x0018,0x9320,SH,1,"""Image Filter""",},//
+{0,0x0018,0x9321,SQ,1,"""CT Exposure Sequence""",},//
+{0,0x0018,0x9322,FD,2,"""Reconstruction Pixel Spacing""",},//
+{0,0x0018,0x9323,CS,1,"""Exposure Modulation Type""",},//
+{0,0x0018,0x9324,FD,1,"""Estimated Dose Saving""",},//
+{0,0x0018,0x9325,SQ,1,"""CT X-ray Details Sequence""",},//
+{0,0x0018,0x9326,SQ,1,"""CT Position Sequence""",},//
+{0,0x0018,0x9327,FD,1,"""Table Position""",},//
+{0,0x0018,0x9328,FD,1,"""Exposure Time in ms""",},//
+{0,0x0018,0x9329,SQ,1,"""CT Image Frame Type Sequence""",},//
+{0,0x0018,0x9330,FD,1,"""X-Ray Tube Current in mA""",},//
+{0,0x0018,0x9332,FD,1,"""Exposure in mAs""",},//
+{0,0x0018,0x9333,CS,1,"""Constant Volume Flag""",},//
+{0,0x0018,0x9334,CS,1,"""Fluoroscopy Flag""",},//
+{0,0x0018,0x9335,FD,1,"""Distance Source to Data Collection Center""",},//
+{0,0x0018,0x9337,US,1,"""Contrast/Bolus Agent Number""",},//
+{0,0x0018,0x9338,SQ,1,"""Contrast/Bolus Ingredient Code Sequence""",},//
+{0,0x0018,0x9340,SQ,1,"""Contrast Administration Profile Sequence""",},//
+{0,0x0018,0x9341,SQ,1,"""Contrast/Bolus Usage Sequence""",},//
+{0,0x0018,0x9342,CS,1,"""Contrast/Bolus Agent Administered""",},//
+{0,0x0018,0x9343,CS,1,"""Contrast/Bolus Agent Detected""",},//
+{0,0x0018,0x9344,CS,1,"""Contrast/Bolus Agent Phase""",},//
+{0,0x0018,0x9345,FD,1,"""CTDIvol""",},//
 {0,0x0018,0xA001,SQ,1,"""Contributing Equipment Sequence""",},//
 {0,0x0018,0xA002,DT,1,"""Contribution DateTime""",},//
 {0,0x0018,0xA003,ST,1,"""Contribution Description""",},//

@@ -20,7 +20,6 @@
 {0,0x3008,0x0042,DS,1,"""Specified Meterset""",},//
 {0,0x3008,0x0044,DS,1,"""Delivered Meterset""",},//
 {0,0x3008,0x0048,DS,1,"""Dose Rate Delivered""",},//
-{0,0x3008,0x0050,SQ,1,"""Treatment Summary Calculated Dose Reference Sequence""",},//
 {0,0x3008,0x0052,DS,1,"""Cumulative Dose to Dose Reference""",},//
 {0,0x3008,0x0054,DA,1,"""First Treatment Date""",},//
 {0,0x3008,0x0056,DA,1,"""Most Recent Treatment Date""",},//
@@ -43,7 +42,6 @@
 {0,0x3008,0x00B0,SQ,1,"""Recorded Wedge Sequence""",},//
 {0,0x3008,0x00C0,SQ,1,"""Recorded Compensator Sequence""",},//
 {0,0x3008,0x00D0,SQ,1,"""Recorded Block Sequence""",},//
-{0,0x3008,0x00E0,SQ,1,"""Treatment Summary Measured Dose Reference Sequence""",},//
 {0,0x3008,0x0100,SQ,1,"""Recorded Source Sequence""",},//
 {0,0x3008,0x0105,LO,1,"""Source Serial Number""",},//
 {0,0x3008,0x0110,SQ,1,"""Treatment Session Application Setup Sequence""",},//

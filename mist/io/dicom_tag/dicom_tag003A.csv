@@ -23,4 +23,7 @@
 {0,0x003A,0x0221,DS,1,"""Filter High Frequency""",},//
 {0,0x003A,0x0222,DS,1,"""Notch Filter Frequency""",},//
 {0,0x003A,0x0223,DS,1,"""Notch Filter Bandwidth""",},//
+{0,0x003A,0x0300,SQ,1,"""Multiplexed Audio Channels Description Code Sequence""",},//
+{0,0x003A,0x0301,IS,1,"""Channel Identification Code""",},//
+{0,0x003A,0x0302,CS,1,"""Channel Mode""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

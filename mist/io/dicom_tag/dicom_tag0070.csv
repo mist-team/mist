@@ -26,13 +26,28 @@
 {0,0x0070,0x0066,US,1,"""Graphic Layer Recommended Display Grayscale Value""",},//
 {0,0x0070,0x0067,US,3,"""Graphic Layer Recommended Display RGB Value""",},//
 {0,0x0070,0x0068,LO,1,"""Graphic Layer Description""",},//
-{0,0x0070,0x0080,CS,1,"""Presentation Label""",},//
-{0,0x0070,0x0081,LO,1,"""Presentation Description""",},//
+{0,0x0070,0x0080,CS,1,"""Content Label""",},//
+{0,0x0070,0x0081,LO,1,"""Content Description""",},//
 {0,0x0070,0x0082,DA,1,"""Presentation Creation Date""",},//
 {0,0x0070,0x0083,TM,1,"""Presentation Creation Time""",},//
-{0,0x0070,0x0084,PN,1,"""Presentation Creator's Name""",},//
+{0,0x0070,0x0084,PN,1,"""Content CreatorÅfs Name""",},//
 {0,0x0070,0x0100,CS,1,"""Presentation Size Mode""",},//
 {0,0x0070,0x0101,DS,2,"""Presentation Pixel Spacing""",},//
 {0,0x0070,0x0102,IS,2,"""Presentation Pixel Aspect Ratio""",},//
 {0,0x0070,0x0103,FL,1,"""Presentation Pixel Magnification Ratio""",},//
+{0,0x0070,0x0306,CS,1,"""Shape Type""",},//
+{0,0x0070,0x0308,SQ,1,"""Registration Sequence""",},//
+{0,0x0070,0x0309,SQ,1,"""Matrix Registration Sequence""",},//
+{0,0x0070,0x030A,SQ,1,"""Matrix Sequence""",},//
+{0,0x0070,0x030C,CS,1,"""Frame of Reference Transformation Matrix Type""",},//
+{0,0x0070,0x030D,SQ,1,"""Registration Type Code Sequence""",},//
+{0,0x0070,0x030F,ST,1,"""Fiducial Description""",},//
+{0,0x0070,0x0310,SH,1,"""Fiducial Identifier""",},//
+{0,0x0070,0x0311,SQ,1,"""Fiducial Identifier Code Sequence""",},//
+{0,0x0070,0x0312,FD,1,"""Contour Uncertainty Radius""",},//
+{0,0x0070,0x0314,SQ,1,"""Used Fiducials Sequence""",},//
+{0,0x0070,0x0318,SQ,1,"""Graphic Coordinates Data Sequence""",},//
+{0,0x0070,0x031A,UI,1,"""Fiducial UID""",},//
+{0,0x0070,0x031C,SQ,1,"""Fiducial Set Sequence""",},//
+{0,0x0070,0x031E,SQ,1,"""Fiducial Sequence""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -1,23 +1,20 @@
-{0,0x0010,0x0000,UL,1,"""Group 0010 Length""",},//
-{0,0x0010,0x0010,PN,1,"""Patient's Name""",},//
+{0,0x0010,0x0010,PN,1,"""PatientÅfs Name""",},//
 {0,0x0010,0x0020,LO,1,"""Patient ID""",},//
 {0,0x0010,0x0021,LO,1,"""Issuer of Patient ID""",},//
 {0,0x0010,0x0030,DA,1,"""Patient's Birth Date""",},//
 {0,0x0010,0x0032,TM,1,"""Patient's Birth Time""",},//
 {0,0x0010,0x0040,CS,1,"""Patient's Sex""",},//
-{0,0x0010,0x0042,SH,1,"""Patient's Social Security Number""",},//
 {0,0x0010,0x0050,SQ,1,"""Patient's Insurance Plan Code Sequence""",},//
-{0,0x0010,0x0101,SQ,1,"""Patient's Primary Language Code Sequence""",},//
-{0,0x0010,0x0102,SQ,1,"""Patient's Primary Language Code Modifier Sequence""",},//
+{0,0x0010,0x0101,SQ,1,"""PatientÅfs Primary Language Code Sequence""",},//
+{0,0x0010,0x0102,SQ,1,"""PatientÅfs Primary Language Code Modifier Sequence""",},//
 {0,0x0010,0x1000,LO,-1,"""Other Patient IDs""",},//
 {0,0x0010,0x1001,PN,-1,"""Other Patient Names""",},//
-{0,0x0010,0x1005,PN,1,"""Patient's Maiden Name""",},//
+{0,0x0010,0x1005,PN,1,"""Patient's Birth Name""",},//
 {0,0x0010,0x1010,AS,1,"""Patient's Age""",},//
 {0,0x0010,0x1020,DS,1,"""Patient's Size""",},//
 {0,0x0010,0x1030,DS,1,"""Patient's Weight""",},//
 {0,0x0010,0x1040,LO,1,"""Patient's Address""",},//
-{0,0x0010,0x1050,SH,1,"""Insurance Plan Identification (RET)""",},//
-{0,0x0010,0x1060,PN,1,"""Patient's Mother's Maiden Name""",},//
+{0,0x0010,0x1060,PN,1,"""Patient's Mother's Birth Name""",},//
 {0,0x0010,0x1080,LO,1,"""Military Rank""",},//
 {0,0x0010,0x1081,LO,1,"""Branch of Service""",},//
 {0,0x0010,0x1090,LO,1,"""Medical Record Locator""",},//
@@ -25,7 +22,7 @@
 {0,0x0010,0x2110,LO,-1,"""Contrast Allergies""",},//
 {0,0x0010,0x2150,LO,1,"""Country of Residence""",},//
 {0,0x0010,0x2152,LO,1,"""Region of Residence""",},//
-{0,0x0010,0x2154,SH,-1,"""Patient's Telephone Numbers""",},//
+{0,0x0010,0x2154,SH,-1,"""PatientÅfs Telephone Numbers""",},//
 {0,0x0010,0x2160,SH,1,"""Ethnic Group""",},//
 {0,0x0010,0x2180,SH,1,"""Occupation""",},//
 {0,0x0010,0x21A0,CS,1,"""Smoking Status""",},//

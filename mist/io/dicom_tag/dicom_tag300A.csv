@@ -10,6 +10,7 @@
 {0,0x300A,0x000E,ST,1,"""Prescription Description""",},//
 {0,0x300A,0x0010,SQ,1,"""Dose Reference Sequence""",},//
 {0,0x300A,0x0012,IS,1,"""Dose Reference Number""",},//
+{0,0x300A,0x0013,UI,1,"""Dose Reference UID""",},//
 {0,0x300A,0x0014,CS,1,"""Dose Reference Structure Type""",},//
 {0,0x300A,0x0015,CS,1,"""Nominal Beam Energy Unit""",},//
 {0,0x300A,0x0016,LO,1,"""Dose Reference Description""",},//
@@ -42,6 +43,7 @@
 {0,0x300A,0x0055,CS,1,"""RT Plan Relationship""",},//
 {0,0x300A,0x0070,SQ,1,"""Fraction Group Sequence""",},//
 {0,0x300A,0x0071,IS,1,"""Fraction Group Number""",},//
+{0,0x300A,0x0072,LO,1,"""Fraction Group Description""",},//
 {0,0x300A,0x0078,IS,1,"""Number of Fractions Planned""",},//
 {0,0x300A,0x0079,IS,1,"""Number of Fraction Pattern Digits Per Day""",},//
 {0,0x300A,0x007A,IS,1,"""Repeat Fraction Cycle Length""",},//
@@ -102,6 +104,7 @@
 {0,0x300A,0x00F5,SH,1,"""Block Tray ID""",},//
 {0,0x300A,0x00F6,DS,1,"""Source to Block Tray Distance""",},//
 {0,0x300A,0x00F8,CS,1,"""Block Type""",},//
+{0,0x300A,0x00F9,LO,1,"""Accessory Code""",},//
 {0,0x300A,0x00FA,CS,1,"""Block Divergence""",},//
 {0,0x300A,0x00FB,CS,1,"""Block Mounting Position""",},//
 {0,0x300A,0x00FC,IS,1,"""Block Number""",},//

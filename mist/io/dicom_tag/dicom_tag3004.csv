@@ -8,6 +8,7 @@
 {0,0x3004,0x000E,DS,1,"""Dose Grid Scaling""",},//
 {0,0x3004,0x0010,SQ,1,"""RT Dose ROI Sequence""",},//
 {0,0x3004,0x0012,DS,1,"""Dose Value""",},//
+{0,0x3004,0x0014,CS,3,"""Tissue Heterogeneity Correction""",},//
 {0,0x3004,0x0040,DS,3,"""DVH Normalization Point""",},//
 {0,0x3004,0x0042,DS,1,"""DVH Normalization Dose Value""",},//
 {0,0x3004,0x0050,SQ,1,"""DVH Sequence""",},//

@@ -1,4 +1,3 @@
-{0,0x2010,0x0000,UL,1,"""Group 2010 Length""",},//
 {0,0x2010,0x0010,ST,1,"""Image Display Format""",},//
 {0,0x2010,0x0030,CS,1,"""Annotation Display Format ID""",},//
 {0,0x2010,0x0040,CS,1,"""Film Orientation""",},//
@@ -23,6 +22,6 @@
 {0,0x2010,0x0160,US,1,"""Reflected Ambient Light""",},//
 {0,0x2010,0x0376,DS,2,"""Printer Pixel Spacing""",},//
 {0,0x2010,0x0500,SQ,1,"""Referenced Film Session Sequence""",},//
-{0,0x2010,0x0510,SQ,1,"""Referenced Basic Image Box Sequence""",},//
+{0,0x2010,0x0510,SQ,1,"""Referenced Image Box Sequence""",},//
 {0,0x2010,0x0520,SQ,1,"""Referenced Basic Annotation Box Sequence""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -16,6 +16,7 @@
 {0,0x0054,0x0033,US,1,"""Number of Frames in Phase""",},//
 {0,0x0054,0x0036,IS,1,"""Phase Delay""",},//
 {0,0x0054,0x0038,IS,1,"""Pause Between Frames""",},//
+{0,0x0054,0x0039,CS,1,"""Phase Description""",},//
 {0,0x0054,0x0050,US,-1,"""Rotation Vector""",},//
 {0,0x0054,0x0051,US,1,"""Number of Rotations""",},//
 {0,0x0054,0x0052,SQ,1,"""Rotation Information Sequence""",},//
@@ -48,6 +49,7 @@
 {0,0x0054,0x0410,SQ,1,"""Patient Orientation Code Sequence""",},//
 {0,0x0054,0x0412,SQ,1,"""Patient Orientation Modifier Code Sequence""",},//
 {0,0x0054,0x0414,SQ,1,"""Patient Gantry Relationship Code Sequence""",},//
+{0,0x0054,0x0500,CS,1,"""Slice Progression Direction""",},//
 {0,0x0054,0x1000,CS,2,"""Series Type""",},//
 {0,0x0054,0x1001,CS,1,"""Units""",},//
 {0,0x0054,0x1002,CS,1,"""Counts Source""",},//

@@ -1,58 +1,36 @@
-{0,0x0020,0x0000,UL,1,"""Group 0020 Length""",},//
 {0,0x0020,0x000D,UI,1,"""Study Instance UID""",},//
 {0,0x0020,0x000E,UI,1,"""Series Instance UID""",},//
 {0,0x0020,0x0010,SH,1,"""Study ID""",},//
 {0,0x0020,0x0011,IS,1,"""Series Number""",},//
 {0,0x0020,0x0012,IS,1,"""Acquisition Number""",},//
-{0,0x0020,0x0013,IS,1,"""Image Number""",},//
-{0,0x0020,0x0014,IS,1,"""Isotope Number(RET)""",},//
-{0,0x0020,0x0015,IS,1,"""Phase Number(RET)""",},//
-{0,0x0020,0x0016,IS,1,"""Interval Number(RET)""",},//
-{0,0x0020,0x0017,IS,1,"""Time Slot Number(RET)""",},//
-{0,0x0020,0x0018,IS,1,"""Angle Number(RET)""",},//
+{0,0x0020,0x0013,IS,1,"""Instance Number""",},//
 {0,0x0020,0x0019,IS,1,"""Item Number""",},//
 {0,0x0020,0x0020,CS,2,"""Patient Orientation""",},//
 {0,0x0020,0x0022,IS,1,"""Overlay Number""",},//
 {0,0x0020,0x0024,IS,1,"""Curve Number""",},//
 {0,0x0020,0x0026,IS,1,"""Lookup Table Number""",},//
-{0,0x0020,0x0030,DS,1,"""Image Position (RET)""",},//
 {0,0x0020,0x0032,DS,3,"""Image Position (Patient)""",},//
-{0,0x0020,0x0035,DS,1,"""Image Orientation (RET)""",},//
 {0,0x0020,0x0037,DS,6,"""Image Orientation (Patient)""",},//
-{0,0x0020,0x0050,DS,1,"""Location (RET)""",},//
 {0,0x0020,0x0052,UI,1,"""Frame of Reference UID""",},//
 {0,0x0020,0x0060,CS,1,"""Laterality""",},//
 {0,0x0020,0x0062,CS,1,"""Image Laterality""",},//
-{0,0x0020,0x0070,SH,1,"""Image Geometry Type (RET)""",},//
-{0,0x0020,0x0080,UI,1,"""Masking Image UID""",},//
 {0,0x0020,0x0100,IS,1,"""Temporal Position Identifier""",},//
 {0,0x0020,0x0105,IS,1,"""Number of Temporal Positions""",},//
 {0,0x0020,0x0110,DS,1,"""Temporal Resolution""",},//
 {0,0x0020,0x0200,UI,1,"""Synchronization Frame of Reference UID""",},//
 {0,0x0020,0x1000,IS,1,"""Series in Study""",},//
-{0,0x0020,0x1001,IS,1,"""Acquisitions in Series (RET)""",},//
 {0,0x0020,0x1002,IS,1,"""Images in Acquisition""",},//
-{0,0x0020,0x1004,IS,1,"""Acquisition in Study""",},//
-{0,0x0020,0x1020,SH,1,"""Reference (RET)""",},//
+{0,0x0020,0x1004,IS,1,"""Acquisitions in Study""",},//
 {0,0x0020,0x1040,LO,1,"""Position Reference Indicator""",},//
 {0,0x0020,0x1041,DS,1,"""Slice Location""",},//
 {0,0x0020,0x1070,IS,-1,"""Other Study Numbers""",},//
 {0,0x0020,0x1200,IS,1,"""Number of Patient Related Studies""",},//
 {0,0x0020,0x1202,IS,1,"""Number of Patient Related Series""",},//
-{0,0x0020,0x1204,IS,1,"""Number of Patient Related Images""",},//
+{0,0x0020,0x1204,IS,1,"""Number of Patient Related Instances""",},//
 {0,0x0020,0x1206,IS,1,"""Number of Study Related Series""",},//
-{0,0x0020,0x1208,IS,1,"""Number of Study Related Images""",},//
+{0,0x0020,0x1208,IS,1,"""Number of Study Related Instances""",},//
 {0,0x0020,0x1209,IS,1,"""Number of Series Related Instances""",},//
-{0,0x0020,0x3100,SH,1,"""Source Image ID (RET)s""",},//
-{0,0x0020,0x3401,SH,1,"""Modifying Device ID (RET)""",},//
-{0,0x0020,0x3402,SH,1,"""Modified Image ID (RET)""",},//
-{0,0x0020,0x3403,SH,1,"""Modified Image Date (RET)""",},//
-{0,0x0020,0x3404,SH,1,"""Modifying Device Manufacturer (RET)""",},//
-{0,0x0020,0x3405,SH,1,"""Modified Image Time (RET)""",},//
-{0,0x0020,0x3406,SH,1,"""Modified Image Description (RET)""",},//
 {0,0x0020,0x4000,LT,1,"""Image Comments""",},//
-{0,0x0020,0x5000,US,1,"""Original Image Identification (RET)""",},//
-{0,0x0020,0x5002,SH,1,"""Original Image Identification Nomenclature (RET)""",},//
 {0,0x0020,0x9056,SH,1,"""Stack ID""",},//
 {0,0x0020,0x9057,UL,1,"""In-Stack Position Number""",},//
 {0,0x0020,0x9071,SQ,1,"""Frame Anatomy Sequence""",},//

@@ -17,4 +17,7 @@
 {0,0x3002,0x0030,SQ,1,"""Exposure Sequence""",},//
 {0,0x3002,0x0032,DS,1,"""Meterset Exposure""",},//
 {0,0x3002,0x0034,DS,4,"""Diaphragm Position""",},//
+{0,0x3002,0x0040,SQ,1,"""Fluence Map Sequence""",},//
+{0,0x3002,0x0041,CS,1,"""Fluence Data Source""",},//
+{0,0x3002,0x0042,DS,1,"""Fluence Data Scale""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//
