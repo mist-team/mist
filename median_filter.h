@@ -577,6 +577,8 @@ void median_filter( const array< T, Allocator > &in, array< T, Allocator > &out,
 	{
 		thread[ i ].close_thread( );
 	}
+
+	delete [] thread;
 }
 
 template < class T, class Allocator >
@@ -616,6 +618,8 @@ void median_filter( const array1< T, Allocator > &in, array1< T, Allocator > &ou
 	{
 		thread[ i ].close_thread( );
 	}
+
+	delete [] thread;
 }
 
 template < class T, class Allocator >
@@ -658,6 +662,8 @@ void median_filter( const array2< T, Allocator > &in, array2< T, Allocator > &ou
 	{
 		thread[ i ].close_thread( );
 	}
+
+	delete [] thread;
 }
 
 template < class T, class Allocator >
@@ -701,6 +707,8 @@ void median_filter( const array3< T, Allocator > &in, array3< T, Allocator > &ou
 	{
 		thread[ i ].close_thread( );
 	}
+
+	delete [] thread;
 }
 
 
