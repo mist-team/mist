@@ -99,10 +99,15 @@ inline void enum_face_parts( mist::array2< T, Allocator > &in, face_parts_list &
 		list.push_back( f0 );
 	}
 
-	for( j = 0 ; j < label.height( ) ; j++ )
+	// 画像の縁5分の1のところは計算しない
+	for( j = in.height( ) / 5 ; j < in.height( ) / 5 * 4 ; j++ )
 	{
-		for( i = 0 ; i < label.width( ) ; i++ )
+		for( i = in.width( ) / 5 ; i < in.width( ) / 5 * 4 ; i++ )
 		{
+	//for( j = 0 ; j < label.height( ) ; j++ )
+	//{
+	//	for( i = 0 ; i < label.width( ) ; i++ )
+	//	{
 			if( label( i, j ) == 0 ) continue;
 			face_parts &f = list[ label( i, j ) ];
 			f.left   = f.left < i ? f.left : i;
@@ -243,6 +248,7 @@ inline bool eye_template_matching( mist::array2< T1, Allocator1 > &in, const mis
 	const double MINDME = 5.0;		// 棄却判定の距離閾値[pixel]
 	double d_re_le = sqrt( ( eye_left.cx - eye_right.cx ) * ( eye_left.cx - eye_right.cx ) + ( eye_left.cy - eye_right.cy ) * ( eye_left.cy - eye_right.cy ) );
 
+	// 両目が離れすぎている場合，右目と左目が入れ替わっている場合，両目の距離が近すぎる場合は棄却する
 	if( d_re_le > MAXDME || eye_left.cx < eye_right.cx || eye_left.cx - eye_right.cx < MINDME )
 	{
 		// 目領域無し
@@ -259,6 +265,7 @@ inline bool eye_template_matching( mist::array2< T1, Allocator1 > &in, const mis
 }
 
 
+// 右目と左目を囲む四角形領域を黒く塗りつぶす
 template < class T, class Allocator >
 inline void eye_masking( mist::array2< T, Allocator > &in, const face_parts &leye, const face_parts &reye )
 {
@@ -278,6 +285,7 @@ inline void eye_masking( mist::array2< T, Allocator > &in, const face_parts &ley
 	{
 		for( size_type i = 0 ; i < in.width( ) ; i++ )
 		{
+			// 四角形との衝突判定
 			p0 = vector_type( i, j, 0 );
 			vec = ( p2 - p1 ) * ( p1 - p0 );
 			if( ( vec ^ ( ( p3 - p2 ) * ( p2 - p0 ) ) ) <= 0.0 )
@@ -304,6 +312,10 @@ inline bool eye_masking( mist::array2< T, Allocator > &in )
 	typedef typename mist::array2< T, Allocator >::value_type value_type;
 	typedef typename mist::array2< T, Allocator >::difference_type difference_type;
 
+	size_type i;
+	mist::array2< double > image1, image2;
+
+	// テンプレート画像の初期化
 	static unsigned char ftemplate[] = {
 			#include "./face_template.dat"
 	};
@@ -311,30 +323,36 @@ inline bool eye_masking( mist::array2< T, Allocator > &in )
 	const size_type fheight = 95;
 
 	mist::array2< unsigned char > face_template( fwidth, fheight );
-	size_type i;
-
 	for( i = 0 ; i < face_template.size( ) ; i++ )
 	{
 		face_template[ i ] = ftemplate[ i ];
 	}
+	// テンプレート画像の初期化はここまで
 
-	mist::array2< double > image1, image2;
+
+	// カラー画像からグレースケールに変換
 	mist::convert( in, image1 );
 
+	// 最小値フィルタ
 	mist::erosion( image1, mist::__morphology__::square( 1.0, image1.reso1( ), image1.reso2( ) ) );
 	vertical( image1, image2 );
 
+	// Pタイル法を用いた閾値処理
 	double th = mist::ptile::threshold( image2, 95.0 );
-
 	for( i = 0 ; i < image2.size( ) ; i++ )
 	{
 		image2[ i ] = image2[ i ] < th ? 0 : 1;
 	}
 
 	face_parts_list list;
+
+	// 顔部品候補領域を抽出する却
 	enum_face_parts( image2, list );
+
+	// 顔部品候補領域に対し，テンプレートマッチングを用いて最も目と思われる部分を選択する
 	if( !eye_template_matching( image2, face_template, list ) )
 	{
+		// 目領域にマッチする部分が存在しないので棄却
 		for( i = 0 ; i < image2.size( ) ; i++ )
 		{
 			in[ i ] = image2[ i ] == 0 ? 0 : 255;
@@ -343,6 +361,7 @@ inline bool eye_masking( mist::array2< T, Allocator > &in )
 	}
 	else
 	{
+		// 目領域にマッチする部分が存在しないので棄却
 		eye_masking( in, list[ 0 ], list[ 1 ] );
 		return( true );
 	}

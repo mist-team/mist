@@ -291,12 +291,7 @@ namespace __pnm_controller__
 			fprintf( fp, "# Created by MIST\n" );
 			fprintf( fp, "%d %d\n", static_cast< int >( image.width( ) ), static_cast< int >( image.height( ) ) );
 
-			color_type max = image[ 0 ];
 			size_type i, j;
-			for( i = 1 ; i < image.size( ) ; i++ )
-			{
-				max = max > image[ i ] ? max : image[ i ];
-			}
 
 			switch( pnm_type )
 			{
@@ -304,7 +299,14 @@ namespace __pnm_controller__
 			case P3:
 			case P5:
 			case P6:
-				fprintf( fp, "%d\n", static_cast< int >( pixel_converter::convert_from( max ).get_value( ) ) );
+				{
+					color_type max = image[ 0 ];
+					for( i = 1 ; i < image.size( ) ; i++ )
+					{
+						max = max > image[ i ] ? max : image[ i ];
+					}
+					fprintf( fp, "%d\n", static_cast< int >( pixel_converter::convert_from( max ).get_value( ) ) );
+				}
 				break;
 
 			default:
