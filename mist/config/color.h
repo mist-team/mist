@@ -84,12 +84,6 @@ struct is_color
 	_MIST_CONST( bool, value, false );
 };
 
-template < class T >
-struct is_color< rgb< T > >
-{
-	_MIST_CONST( bool, value, true );
-};
-
 
 // 画素の変換をサポートするためのコンバータ
 template < class T >
@@ -112,6 +106,13 @@ struct _pixel_converter_
 
 #ifndef defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
 
+	#define IS_COLOR( type ) \
+		template < >\
+		struct is_color< rgb< type > >\
+		{\
+			_MIST_CONST( bool, value, true );\
+		};\
+
 	#define __PIXEL_CONVERTER__( type ) \
 		template < >\
 		struct _pixel_converter_< rgb< type > >\
@@ -132,6 +133,19 @@ struct _pixel_converter_
 		};\
 
 		// 各型に対する特殊化
+		IS_COLOR(unsigned char)
+		IS_COLOR(unsigned short)
+		IS_COLOR(unsigned int)
+		IS_COLOR(unsigned long)
+		IS_COLOR(signed char)
+		IS_COLOR(signed short)
+		IS_COLOR(signed int)
+		IS_COLOR(signed long)
+		IS_COLOR(bool)
+		IS_COLOR(char)
+		IS_COLOR(float)
+		IS_COLOR(double)
+		IS_COLOR(long double)
 		__PIXEL_CONVERTER__(unsigned char)
 		__PIXEL_CONVERTER__(unsigned short)
 		__PIXEL_CONVERTER__(unsigned int)
@@ -146,9 +160,16 @@ struct _pixel_converter_
 		__PIXEL_CONVERTER__(double)
 		__PIXEL_CONVERTER__(long double)
 
+		#undef IS_COLOR
 		#undef __PIXEL_CONVERTER__
 
 #else
+
+	template < class T >
+	struct is_color< rgb< T > >
+	{
+		_MIST_CONST( bool, value, true );
+	};
 
 	template < class T >
 	struct _pixel_converter_< rgb< T > >
