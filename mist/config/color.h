@@ -32,7 +32,8 @@ public:
 	value_type b;
 
 	rgb( ) : r( 0 ), g( 0 ), b( 0 ){ }
-	rgb( const value_type &pix ) : r( pix ), g( pix ), b( pix ){ }
+	explicit rgb( const value_type &pix ) : r( pix ), g( pix ), b( pix ){ }
+	rgb( const rgb &c ) : r( c.r ), g( c.g ), b( c.b ){ }
 	rgb( const value_type &rr, const value_type &gg, const value_type &bb ) : r( rr ), g( gg ), b( bb ){ }
 
 	const rgb &operator  =( const rgb &c )
@@ -63,6 +64,8 @@ public:
 	const rgb &operator &=( const rgb &c ){ r &= c.r; g &= c.g; b &= c.b; return( *this ); }
 	const rgb &operator ^=( const rgb &c ){ r ^= c.r; g ^= c.g; b ^= c.b; return( *this ); }
 
+	const rgb &operator +=( const value_type &pix ){ r += pix; g += pix; b += pix; return( *this ); }
+	const rgb &operator -=( const value_type &pix ){ r -= pix; g -= pix; b -= pix; return( *this ); }
 	const rgb &operator *=( const value_type &pix ){ r *= pix; g *= pix; b *= pix; return( *this ); }
 	const rgb &operator /=( const value_type &pix ){ r /= pix; g /= pix; b /= pix; return( *this ); }
 
@@ -95,6 +98,9 @@ template < class T > inline const rgb< T > operator ^( const rgb< T > &c1, const
 template < class T > inline const rgb< T > operator *( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) *= c2 ); }
 template < class T > inline const rgb< T > operator *( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) *= c1 ); }
 template < class T > inline const rgb< T > operator /( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) /= c2 ); }
+
+template < class T > inline const rgb< T > operator +( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) += c1 ); }
+template < class T > inline const rgb< T > operator -( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) -= c1 ); }
 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const rgb< T > &c )
 {

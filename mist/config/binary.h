@@ -29,7 +29,6 @@ private:
 
 public:
 	binary( ) : value_( false ){ }
-	binary( const binary &b ) : value_( b.value_ ){ }
 	binary( const value_type &b ) : value_( b ){ }
 
 	const binary &operator  =( const binary &b ){ value_ = b.value_;  return( *this ); }
@@ -53,6 +52,7 @@ public:
 
 	value_type get_value( ) const { return( value_ ); }
 
+	// boolへの自動キャスト演算子（危険のため一時停止）
 	operator bool( ) const { return( value_ ); }
 };
 
