@@ -20,4 +20,6 @@ int main( int argc, char *argv[] )
 		mist::read_wav( right, argv[2] );
 		mist::write_wav( left, right, std::string( argv[1] ) + ".wav", 8, sampling_rate );
 	}
+
+	return( 0 );
 }

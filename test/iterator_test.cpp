@@ -339,4 +339,6 @@ int main( int argc, char *argv[] )
 
 		cout << "sorted result" << endl << a << endl;
 	}
+
+	return( 0 );
 }

@@ -28,4 +28,6 @@ int main( int argc, char *argv[] )
 	//cout << "15. Size of bool = \t" << sizeof( value< bool > ) << endl;
 	//cout << "16. Size of int  = \t" << sizeof( value< int > ) << endl;
 	//cout << "17. Size of char = \t" << sizeof( value< char > ) << endl;
+
+	return( 0 );
 }

@@ -36,6 +36,7 @@ int main( int argc, char *argv[] )
 	window.show( );
 	Fl::background( 212, 208, 200 );
 	Fl::run();
+	return( 0 );
 }
 
 
@@ -93,12 +94,13 @@ void euclidean_distance_transform_test( )
 {
 	mist::array2< double > tmp1( image_object.width( ), image_object.width( ), image_object.reso1( ), image_object.reso2( ) );
 	mist::array2< double > tmp2( image_object.width( ), image_object.width( ), image_object.reso1( ), image_object.reso2( ) );
-	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	image_type::size_type i = 0;
+	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
 		tmp1[ i ] = image_object[ i ].get_value( );
 	}
 	mist::euclidean_distance_transform( tmp1, tmp2 );
-	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
 		image_object[ i ] = static_cast< unsigned char >( tmp2[ i ] );
 	}

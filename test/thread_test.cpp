@@ -78,4 +78,6 @@ int main( int argc, char *argv[] )
 	{
 		param[i].close_thread( );
 	}
+
+	return( 0 );
 }

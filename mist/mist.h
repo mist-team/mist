@@ -943,63 +943,64 @@ public:
 	{
 		base &o = *this;
 
-		for( size_type k = 0 ; k < margin3( ) ; k++ )
+		size_type i, j, k;
+		for( k = 0 ; k < margin3( ) ; k++ )
 		{
-			for( size_type j = 0 ; j < o.size2( ) ; j++ )
+			for( j = 0 ; j < o.size2( ) ; j++ )
 			{
-				for( size_type i = 0 ; i < o.size1( ) ; i++ )
+				for( i = 0 ; i < o.size1( ) ; i++ )
 				{
 					o( i, j, k ) = val;
 				}
 			}
 		}
-		for( size_type k = o.size3( ) - margin3( ) ; k < o.size3( ) ; k++ )
+		for( k = o.size3( ) - margin3( ) ; k < o.size3( ) ; k++ )
 		{
-			for( size_type j = 0 ; j < o.size2( ) ; j++ )
+			for( j = 0 ; j < o.size2( ) ; j++ )
 			{
-				for( size_type i = 0 ; i < o.size1( ) ; i++ )
-				{
-					o( i, j, k ) = val;
-				}
-			}
-		}
-
-		for( size_type j = 0 ; j < margin2( ) ; j++ )
-		{
-			for( size_type k = 0 ; k < o.size3( ) ; k++ )
-			{
-				for( size_type i = 0 ; i < o.size1( ) ; i++ )
-				{
-					o( i, j, k ) = val;
-				}
-			}
-		}
-		for( size_type j = o.size2( ) - margin2( ) ; j < o.size2( ) ; j++ )
-		{
-			for( size_type k = 0 ; k < o.size3( ) ; k++ )
-			{
-				for( size_type i = 0 ; i < o.size1( ) ; i++ )
+				for( i = 0 ; i < o.size1( ) ; i++ )
 				{
 					o( i, j, k ) = val;
 				}
 			}
 		}
 
-		for( size_type i = 0 ; i < margin1( ) ; i++ )
+		for( j = 0 ; j < margin2( ) ; j++ )
 		{
-			for( size_type k = 0 ; k < o.size3( ) ; k++ )
+			for( k = 0 ; k < o.size3( ) ; k++ )
 			{
-				for( size_type j = 0 ; j < o.size2( ) ; j++ )
+				for( i = 0 ; i < o.size1( ) ; i++ )
 				{
 					o( i, j, k ) = val;
 				}
 			}
 		}
-		for( size_type i = o.size1( ) - margin1( ) ; i < o.size1( ) ; i++ )
+		for( j = o.size2( ) - margin2( ) ; j < o.size2( ) ; j++ )
 		{
-			for( size_type k = 0 ; k < o.size3( ) ; k++ )
+			for( k = 0 ; k < o.size3( ) ; k++ )
 			{
-				for( size_type j = 0 ; j < o.size2( ) ; j++ )
+				for( i = 0 ; i < o.size1( ) ; i++ )
+				{
+					o( i, j, k ) = val;
+				}
+			}
+		}
+
+		for( i = 0 ; i < margin1( ) ; i++ )
+		{
+			for( k = 0 ; k < o.size3( ) ; k++ )
+			{
+				for( j = 0 ; j < o.size2( ) ; j++ )
+				{
+					o( i, j, k ) = val;
+				}
+			}
+		}
+		for( i = o.size1( ) - margin1( ) ; i < o.size1( ) ; i++ )
+		{
+			for( k = 0 ; k < o.size3( ) ; k++ )
+			{
+				for( j = 0 ; j < o.size2( ) ; j++ )
 				{
 					o( i, j, k ) = val;
 				}

@@ -262,4 +262,6 @@ int main( int argc, char *argv[] )
 	window.show( );
 	Fl::background( 212, 208, 200 );
 	Fl::run();
+
+	return( 0 );
 }

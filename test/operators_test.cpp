@@ -57,4 +57,6 @@ int main( int argc, char *argv[] )
 	cout << "12. Operator A <= B = \t" << ( v1 <= v2 ) << endl;
 	cout << "13. Operator A >  B = \t" << ( v1 >  v2 ) << endl;
 	cout << "14. Operator A >= B = \t" << ( v1 >= v2 ) << endl;
+
+	return( 0 );
 }

@@ -123,6 +123,10 @@ SOURCE="\SVN Projects\mist\mist\draw.h"
 # End Source File
 # Begin Source File
 
+SOURCE="\SVN Projects\mist\mist\interpolate.h"
+# End Source File
+# Begin Source File
+
 SOURCE="\SVN Projects\mist\mist\io\jpeg.h"
 # End Source File
 # Begin Source File

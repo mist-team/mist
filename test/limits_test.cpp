@@ -58,4 +58,6 @@ int main( int argc, char *argv[] )
 	cout << "46. Is          float integer ?\t" << type_limits< float >::is_integer << endl;
 	cout << "47. Is         double integer ?\t" << type_limits< double >::is_integer << endl;
 	cout << "48. Is    long double integer ?\t" << type_limits< long double >::is_integer << endl;
+
+	return( 0 );
 }
