@@ -337,6 +337,9 @@ public:
 	double reso1( double r1 ){ return( reso1_ = r1 ); }
 	double reso1( ) const { return( reso1_ ); }
 
+	void reso( double r1 ){ reso1_ = r1; }
+
+
 /************************************************************************************************************
 **
 **      X方向に対する順方向・逆方向の反復子
@@ -477,6 +480,9 @@ public:
 
 	double reso2( double r2 ){ return( reso2_ = r2 ); }
 	double reso2( ) const { return( reso2_ ); }
+
+	void reso( double r1, double r2 ){ base::reso1_ = r1; reso2_ = r2; }
+
 
 
 /************************************************************************************************************
@@ -684,6 +690,9 @@ public:
 
 	double reso3( double r3 ){ return( reso3_ = r3 ); }
 	double reso3( ) const { return( reso3_ ); }
+
+	void reso( double r1, double r2, double r3 ){ base::reso1_ = r1; base:reso2_ = r2; reso3_ = r3; }
+
 
 	// 順方向のランダムアクセスイテレータを返す
 	iterator begin( ){ return( iterator( paccess( 0, 0, 0 ), 0, base::size( ), 0 ) ); }

@@ -10,8 +10,8 @@ CXXFLAGS = -Wall -O2
 RELEASEFLAGS = $(CXXFLAGS) -DNDEBUG
 DEBUGFLAGS   = $(CXXFLAGS) -DDEBUG
 
-IMGLIBS = -ljpeg -lpng -ltiff -lz -lm
-LIBS = -lpthread
+IMGLIBS = -ljpeg -lpng -ltiff
+LIBS = -lpthread -lz -lm
 
 # Be quiet when building...
 .SILENT:

@@ -7,71 +7,7 @@
 #include <mist/filter/morphology.h>
 #include <mist/timer.h>
 
-#include <mist/io/jpeg.h>
-#include <mist/io/bmp.h>
-#include <mist/io/png.h>
-#include <mist/io/tiff.h>
-#include <mist/io/pnm.h>
-
-// ここから，ユーティリティ関数群
-inline std::string to_lower_case( const std::string &str )
-{
-	std::string s = "";
-	for( std::string::size_type i = 0 ; i < str.size( ) ; i++ )
-	{
-		s += static_cast< char >( tolower( str[ i ] ) );
-	}
-	return( s );
-}
-
-inline std::string get_ext( const std::string &str )
-{
-	std::string::size_type index = str.find_last_of( "." );
-	if( index == str.npos )
-	{
-		return( "" );
-	}
-	return( str.substr( index ) );
-}
-
-template < class T, class Allocator >
-inline bool read_image( mist::array2< T, Allocator > &image, const std::string &filename )
-{
-	typedef typename mist::array2< T, Allocator >::size_type size_type;
-
-	std::string ext = to_lower_case( get_ext( filename ) );
-	if( ext == "" )
-	{
-		return( false );
-	}
-
-	bool ret = false;
-	if( ext == ".jpeg" || ext == ".jpg" )
-	{
-		ret = mist::read_jpeg( image, filename );
-	}
-	else if( ext == ".bmp" )
-	{
-		ret = mist::read_bmp( image, filename );
-	}
-	else if( ext == ".tiff" || ext == ".tif" )
-	{
-		ret = mist::read_tiff( image, filename );
-	}
-	else if( ext == ".png" )
-	{
-		ret = mist::read_png( image, filename );
-	}
-	else if( ext == ".pbm" || ext == ".pgm" || ext == ".ppm" || ext == ".pnm" )
-	{
-		ret = mist::read_pnm( image, filename );
-	}
-	else
-	{
-		ret = false;
-	}
-	return( ret );
-}
+#include <mist/io/image.h>
 
 
 namespace orthodox
@@ -256,7 +192,7 @@ int main( int argc, char *argv[] )
 
 	mist::array2< unsigned char > a;
 
-	read_image( a, argv[ 1 ] );
+	mist::read_image( a, argv[ 1 ] );
 
 	mist::array2< unsigned char >::size_type i, loop = 10;
 
