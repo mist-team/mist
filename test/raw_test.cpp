@@ -221,19 +221,38 @@ void ct_draw_area::labeling26( ct_image_window *wnd )
 
 void ct_draw_area::erosion( ct_image_window *wnd )
 {
-	mist::__morphology__::sphere( 3, 1.0, 3.0, 3.0 );
+	{
+		mist::timer t;
+		mist::erosion( ct, 7 );
+		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
+	}
 }
 
 void ct_draw_area::dilation( ct_image_window *wnd )
 {
+	{
+		mist::timer t;
+		mist::dilation( ct, 7 );
+		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
+	}
 }
 
 void ct_draw_area::opening( ct_image_window *wnd )
 {
+	{
+		mist::timer t;
+		mist::opening( ct, 7 );
+		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
+	}
 }
 
 void ct_draw_area::closing( ct_image_window *wnd )
 {
+	{
+		mist::timer t;
+		mist::closing( ct, 7 );
+		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
+	}
 }
 
 int main( int argc, char *argv[] )

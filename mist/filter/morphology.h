@@ -57,10 +57,12 @@ namespace __morphology__
 		size_t margin_z;
 	};
 
+	// モルフォロジ演算に用いる円構造要素
 	inline morphology_structure circle( double radius, double resoX, double resoY )
 	{
 		typedef array2< unsigned short >::size_type size_type;
 		typedef array2< unsigned short >::difference_type difference_type;
+
 		double min_reso = resoX < resoY ? resoX: resoY;
 
 		double ax = resoX / min_reso;
@@ -121,10 +123,12 @@ namespace __morphology__
 		return( s );
 	}
 
+	// モルフォロジ演算に用いる球構造要素
 	inline morphology_structure sphere( double radius, double resoX, double resoY, double resoZ )
 	{
 		typedef array3< unsigned short >::size_type size_type;
 		typedef array3< unsigned short >::difference_type difference_type;
+
 		double min_reso = resoX < resoY ? resoX: resoY;
 		min_reso = min_reso < resoZ ? min_reso : resoZ;
 
@@ -197,8 +201,152 @@ namespace __morphology__
 		return( s );
 	}
 
+	// モルフォロジ演算に用いる正方形構造要素
+	inline morphology_structure square( double radius, double resoX, double resoY )
+	{
+		typedef array2< unsigned short >::size_type size_type;
+		typedef array2< unsigned short >::difference_type difference_type;
+
+		double min_reso = resoX < resoY ? resoX: resoY;
+
+		double ax = resoX / min_reso;
+		double ay = resoY / min_reso;
+		double xx, yy;
+		difference_type rx = static_cast< size_type >( ceil( radius / ax ) );
+		difference_type ry = static_cast< size_type >( ceil( radius / ay ) );
+		difference_type x, y;
+
+		size_type ox = rx + 1;
+		size_type oy = ry + 1;
+
+		size_type w = 2 * ox + 1;
+		size_type h = 2 * oy + 1;
+
+		morphology_structure s;
+		array2< bool > m( w, h );
+
+		// 球の構造要素を作成する
+		for( y = -ry ; y <= ry ; y++ )
+		{
+			yy = y * ay;
+			for( x = -rx ; x <= rx ; x++ )
+			{
+				xx = x * ax;
+				if( fabs( xx ) <= radius && fabs( yy ) <= radius )
+				{
+					m( x + ox, y + oy ) = true;
+				}
+			}
+		}
+
+		// 球の構造要素の各点に生存期間を設定する
+		for( y = -ry ; y <= ry ; y++ )
+		{
+			size_t life = 0;
+			for( x = -rx ; x <= rx ; x++ )
+			{
+				if( m( x + ox, y + oy ) )
+				{
+					s.object.push_back( point( x, y, 0, ++life ) );
+				}
+				else
+				{
+					life = 0;
+				}
+				if( m( x + ox, y + oy ) && !m( x + ox + 1, y + oy ) )
+				{
+					s.update.push_back( point( x, y, 0, life ) );
+				}
+			}
+		}
+
+		s.margin_x = rx;
+		s.margin_y = ry;
+		s.margin_z = 0;
+
+		return( s );
+	}
+
+	// モルフォロジ演算に用いる立方体構造要素
+	inline morphology_structure cube( double radius, double resoX, double resoY, double resoZ )
+	{
+		typedef array3< unsigned short >::size_type size_type;
+		typedef array3< unsigned short >::difference_type difference_type;
+
+		double min_reso = resoX < resoY ? resoX: resoY;
+		min_reso = min_reso < resoZ ? min_reso : resoZ;
+
+		double ax = resoX / min_reso;
+		double ay = resoY / min_reso;
+		double az = resoZ / min_reso;
+		double xx, yy, zz;
+		difference_type rx = static_cast< size_type >( ceil( radius / ax ) );
+		difference_type ry = static_cast< size_type >( ceil( radius / ay ) );
+		difference_type rz = static_cast< size_type >( ceil( radius / az ) );
+		difference_type x, y, z;
+
+		size_type ox = rx + 1;
+		size_type oy = ry + 1;
+		size_type oz = rz + 1;
+
+		size_type w = 2 * ox + 1;
+		size_type h = 2 * oy + 1;
+		size_type d = 2 * oz + 1;
+
+		morphology_structure s;
+		array3< bool > m( w, h, d );
+
+		// 球の構造要素を作成する
+		for( z = -rz ; z <= rz ; z++ )
+		{
+			zz = z * az;
+			for( y = -ry ; y <= ry ; y++ )
+			{
+				yy = y * ay;
+				for( x = -rx ; x <= rx ; x++ )
+				{
+					xx = x * ax;
+					if( fabs( xx ) <= radius && fabs( yy ) <= radius && fabs( zz ) <= radius )
+					{
+						m( x + ox, y + oy, z + oz ) = true;
+					}
+				}
+			}
+		}
+
+		// 球の構造要素の各点に生存期間を設定する
+		for( z = -rz ; z <= rz ; z++ )
+		{
+			for( y = -ry ; y <= ry ; y++ )
+			{
+				size_t life = 0;
+				for( x = -rx ; x <= rx ; x++ )
+				{
+					if( m( x + ox, y + oy, z + oz ) )
+					{
+						s.object.push_back( point( x, y, z, ++life ) );
+					}
+					else
+					{
+						life = 0;
+					}
+					if( m( x + ox, y + oy, z + oz ) && !m( x + ox + 1, y + oy, z + oz ) )
+					{
+						s.update.push_back( point( x, y, z, life ) );
+					}
+				}
+			}
+		}
+
+		s.margin_x = rx;
+		s.margin_y = ry;
+		s.margin_z = rz;
+
+		return( s );
+	}
+
 	template < class Array >
-	std::vector< pointer_diff > create_pointer_diff_list( const Array &in, const std::vector< point > &list )
+	inline std::vector< pointer_diff > create_pointer_diff_list( const Array &in, const std::vector< point > &list )
 	{
 		typedef typename Array::size_type     size_type;
 		typedef typename Array::const_pointer const_pointer;
@@ -549,8 +697,10 @@ namespace __morphology_controller__
 
 
 // 2次元モルフォロジ演算はここから
+
+// 任意の構造要素に対応したモルフォロジ演算
 template < class T, class Allocator >
-void erosion( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+void erosion( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	typedef array2< T, Allocator >::value_type value_type;
 	typedef array2< T, Allocator >::size_type  size_type;
@@ -562,8 +712,6 @@ void erosion( array2< T, Allocator > &in, double radius, typename array2< T, All
 	{
 		thread_num = static_cast< size_type >( get_cpu_num( ) );
 	}
-
-	__morphology__::morphology_structure s = __morphology__::circle( radius, in.reso1( ), in.reso2( ) );
 
 	value_type max = type_limits< value_type >::maximum( );
 
@@ -600,7 +748,7 @@ void erosion( array2< T, Allocator > &in, double radius, typename array2< T, All
 
 
 template < class T, class Allocator >
-void dilation( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+void dilation( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	typedef array2< T, Allocator >::value_type value_type;
 	typedef array2< T, Allocator >::size_type  size_type;
@@ -612,8 +760,6 @@ void dilation( array2< T, Allocator > &in, double radius, typename array2< T, Al
 	{
 		thread_num = static_cast< size_type >( get_cpu_num( ) );
 	}
-
-	__morphology__::morphology_structure s = __morphology__::circle( radius, in.reso1( ), in.reso2( ) );
 
 	value_type min = type_limits< value_type >::minimum( );
 
@@ -650,7 +796,7 @@ void dilation( array2< T, Allocator > &in, double radius, typename array2< T, Al
 
 
 template < class T, class Allocator >
-void opening( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+void opening( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	typedef array2< T, Allocator >::value_type value_type;
 	typedef array2< T, Allocator >::size_type  size_type;
@@ -662,8 +808,6 @@ void opening( array2< T, Allocator > &in, double radius, typename array2< T, All
 	{
 		thread_num = static_cast< size_type >( get_cpu_num( ) );
 	}
-
-	__morphology__::morphology_structure s = __morphology__::circle( radius, in.reso1( ), in.reso2( ) );
 
 	value_type max = type_limits< value_type >::maximum( );
 	value_type min = type_limits< value_type >::minimum( );
@@ -730,7 +874,7 @@ void opening( array2< T, Allocator > &in, double radius, typename array2< T, All
 
 
 template < class T, class Allocator >
-void closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+void closing( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	typedef array2< T, Allocator >::value_type value_type;
 	typedef array2< T, Allocator >::size_type  size_type;
@@ -742,8 +886,6 @@ void closing( array2< T, Allocator > &in, double radius, typename array2< T, All
 	{
 		thread_num = static_cast< size_type >( get_cpu_num( ) );
 	}
-
-	__morphology__::morphology_structure s = __morphology__::circle( radius, in.reso1( ), in.reso2( ) );
 
 	value_type max = type_limits< value_type >::maximum( );
 	value_type min = type_limits< value_type >::minimum( );
@@ -807,7 +949,317 @@ void closing( array2< T, Allocator > &in, double radius, typename array2< T, All
 
 	delete [] thread;
 }
+
+
+// 円の構造要素専用のモルフォロジ演算
+template < class T, class Allocator >
+inline void erosion( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+{
+	erosion( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
+}
+
+template < class T, class Allocator >
+inline void dilation( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+{
+	dilation( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
+}
+
+template < class T, class Allocator >
+inline void opening( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+{
+	opening( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
+}
+
+template < class T, class Allocator >
+inline void closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+{
+	closing( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
+}
 // 2次元モルフォロジ演算はここまで
+
+
+
+
+// 3次元モルフォロジ演算はここから
+
+// 任意の構造要素に対応したモルフォロジ演算
+template < class T, class Allocator >
+void erosion( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+{
+	typedef array3< T, Allocator >::value_type value_type;
+	typedef array3< T, Allocator >::size_type  size_type;
+	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
+	typedef __morphology__::pointer_diff pointer_diff;
+	typedef std::vector< pointer_diff >  list_type;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	value_type max = type_limits< value_type >::maximum( );
+
+	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, max );
+
+	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
+	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+
+	morphology_thread *thread = new morphology_thread[ thread_num ];
+
+	size_type i;
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
+	}
+
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].create_thread( );
+	}
+
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].wait_thread( );
+	}
+
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].close_thread( );
+	}
+
+	delete [] thread;
+}
+
+
+template < class T, class Allocator >
+void dilation( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+{
+	typedef array3< T, Allocator >::value_type value_type;
+	typedef array3< T, Allocator >::size_type  size_type;
+	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
+	typedef __morphology__::pointer_diff pointer_diff;
+	typedef std::vector< pointer_diff >  list_type;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	value_type min = type_limits< value_type >::minimum( );
+
+	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, min );
+
+	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
+	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+
+	morphology_thread *thread = new morphology_thread[ thread_num ];
+
+	size_type i;
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
+	}
+
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].create_thread( );
+	}
+
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].wait_thread( );
+	}
+
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].close_thread( );
+	}
+
+	delete [] thread;
+}
+
+
+template < class T, class Allocator >
+void opening( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+{
+	typedef array3< T, Allocator >::value_type value_type;
+	typedef array3< T, Allocator >::size_type  size_type;
+	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
+	typedef __morphology__::pointer_diff pointer_diff;
+	typedef std::vector< pointer_diff >  list_type;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	value_type max = type_limits< value_type >::maximum( );
+	value_type min = type_limits< value_type >::minimum( );
+
+	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, max );
+
+	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
+	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+
+	morphology_thread *thread = new morphology_thread[ thread_num ];
+
+	size_type i;
+	{
+		// Erosion 演算
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].create_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].wait_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].close_thread( );
+		}
+	}
+
+	out = in;
+	out.fill_margin( min );
+
+	{
+		// Dilation 演算
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].create_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].wait_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].close_thread( );
+		}
+	}
+
+	delete [] thread;
+}
+
+
+template < class T, class Allocator >
+void closing( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+{
+	typedef array3< T, Allocator >::value_type value_type;
+	typedef array3< T, Allocator >::size_type  size_type;
+	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
+	typedef __morphology__::pointer_diff pointer_diff;
+	typedef std::vector< pointer_diff >  list_type;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	value_type max = type_limits< value_type >::maximum( );
+	value_type min = type_limits< value_type >::minimum( );
+
+	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, min );
+
+	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
+	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+
+	morphology_thread *thread = new morphology_thread[ thread_num ];
+
+	size_type i;
+	{
+		// Dilation 演算
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].create_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].wait_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].close_thread( );
+		}
+	}
+
+	out = in;
+	out.fill_margin( max );
+
+	{
+		// Erosion 演算
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].create_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].wait_thread( );
+		}
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].close_thread( );
+		}
+	}
+
+	delete [] thread;
+}
+
+
+// 球の構造要素専用のモルフォロジ演算
+template < class T, class Allocator >
+inline void erosion( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+{
+	erosion( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
+}
+
+template < class T, class Allocator >
+inline void dilation( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+{
+	dilation( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
+}
+
+template < class T, class Allocator >
+inline void opening( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+{
+	opening( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
+}
+
+template < class T, class Allocator >
+inline void closing( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+{
+	closing( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
+}
+// 3次元モルフォロジ演算はここまで
 
 
 // mist名前空間の終わり
