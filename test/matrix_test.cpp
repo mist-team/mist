@@ -150,6 +150,135 @@ void test_matrix_operation2( )
 }
 
 
+void evaluate_matrix_operation1( )
+{
+	using namespace std;
+	typedef mist::matrix< double >::size_type size_type;
+
+	cout << "transpose( mat1 + mat2 * mat3 + mat4 )" << endl << endl;
+
+	mist::matrix< double > mat1( 100, 100 );
+	mist::matrix< double > mat2( 100, 100 );
+	mist::matrix< double > mat3( 100, 100 );
+	mist::matrix< double > mat4( 100, 100 );
+	mist::matrix< double > A( 100, 100 );
+	mist::matrix< double > B( 100, 100 );
+
+	for( size_type r = 0 ; r < mat1.rows( ) ; r++ )
+	{
+		for( size_type c = 0 ; c < mat1.cols( ) ; c++ )
+		{
+			mat1( r, c ) = rand( ) / 3.0 * 100.0;
+			mat2( r, c ) = rand( ) / 3.0 * 100.0;
+			mat3( r, c ) = rand( ) / 3.0 * 100.0;
+			mat4( r, c ) = rand( ) / 3.0 * 100.0;
+			//mat1( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
+			//mat2( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
+			//mat3( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
+			//mat4( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
+		}
+	}
+
+	// transpose( mat1 + mat2 * mat3 + mat4 )
+	size_type i, j, k, l, loop = 1000;
+	{
+		mist::timer t;
+		double tmp;
+		for( j = 0 ; j < A.rows( ) ; j++ )
+		{
+			for( i = 0 ; i < A.cols( ) ; i++ )
+			{
+				tmp = 0.0;
+				for( k = 0 ; k < mat3.rows( ) ; k++ )
+				{
+					tmp += mat2( i, k ) * mat3( k, j );
+				}
+				A( j, i ) = mat1( i, j ) + tmp + mat4( i, j );
+			}
+		}
+		cout << "< In the case of Non Expression Template >" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
+	}
+
+	{
+		mist::timer t;
+
+		B = ( mat1 + mat2 * mat3 + mat4 ).t( );
+
+		cout << "< In the case of Expression Template >" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
+	}
+
+	double err = 0.0;
+	for( l = 0 ; l < A.size( ) ; l++ )
+	{
+		err += ( A[ l ] - B[ l ] ) * ( A[ l ] - B[ l ] );
+	}
+
+	cout << "Estimate Error: " << err << endl;
+}
+
+
+
+void evaluate_matrix_operation2( )
+{
+	using namespace std;
+	typedef mist::matrix< double >::size_type size_type;
+
+	mist::matrix< double > a( 3, 3 );
+
+	a( 0, 0 ) = 1.0; a( 0, 1 ) =  1.0; a( 0, 2 ) =  1.0;
+	a( 1, 0 ) = 3.0; a( 1, 1 ) =  1.0; a( 1, 2 ) = -3.0;
+	a( 2, 0 ) = 1.0; a( 2, 1 ) = -2.0; a( 2, 2 ) = -5.0;
+
+	mist::matrix< double > mat1( 3, 3 );
+	mist::matrix< double > mat2( 3, 3 );
+	mist::matrix< double > mat3( 3, 3 );
+	mist::matrix< double > mat4( 3, 3 );
+	mist::matrix< double > A( 3, 3 );
+	mist::matrix< double > B( 3, 3 );
+
+	mat1 = mat2 = mat3 = mat4 = a;
+
+	// transpose( mat1 + mat2 * mat3 + mat4 )
+	size_type i, j, k, l, loop = 1000;
+	{
+		mist::timer t;
+		double tmp;
+		for( j = 0 ; j < A.rows( ) ; j++ )
+		{
+			for( i = 0 ; i < A.cols( ) ; i++ )
+			{
+				tmp = 0.0;
+				for( k = 0 ; k < mat3.rows( ) ; k++ )
+				{
+					tmp += mat2( i, k ) * mat3( k, j );
+				}
+				A( j, i ) = mat1( i, j ) + tmp + mat4( i, j );
+			}
+		}
+		cout << "< In the case of Non Expression Template >" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
+	}
+
+	{
+		mist::timer t;
+
+		B = ( mat1 + mat2 * mat3 + mat4 ).t( );
+
+		cout << "< In the case of Expression Template >" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
+	}
+
+	double err = 0.0;
+	for( l = 0 ; l < A.size( ) ; l++ )
+	{
+		err += ( A[ l ] - B[ l ] ) * ( A[ l ] - B[ l ] );
+	}
+
+	cout << "Estimate Error: " << err << endl;
+}
+
 int main( )
 {
 	using namespace std;
@@ -159,6 +288,8 @@ int main( )
 	cout << "2) Check the calculation time of matrix multiply." << endl;
 	cout << "3) Check matrix multiply operation." << endl;
 	cout << "4) Check A <- M x MT operation." << endl;
+	cout << "5) Evaluate Matrix operation 1." << endl;
+	cout << "6) Evaluate Matrix operation 2." << endl;
 
 	int number = -1;
 
@@ -180,6 +311,14 @@ int main( )
 
 	case 4:
 		test_matrix_operation2( );
+		break;
+
+	case 5:
+		evaluate_matrix_operation1( );
+		break;
+
+	case 6:
+		evaluate_matrix_operation2( );
 		break;
 
 	default:
