@@ -22,6 +22,8 @@ operators_test : operators_test.o
 boolean_test : boolean_test.o
 	$(CXX) $(CXXFLAGS) -o $@ boolean_test.o $(LIBS) $(LDLIBS)
 
+
+
 clean:
 	for binary in $(ALL); do\
 		echo "=== deleting $$binary ===";\
