@@ -94,6 +94,8 @@ _MIST_BEGIN
 
 #define _MIST_VECTOR_SUPPORT_				0	///< MISTのVECTORを有効にする．MATRIXとの掛け算等もサポートする．STLのvectorとクラス名がかぶるため，名前空間を正しくインポートする必要がある．
 
+#define _MIST_GIF_SUPPORT_					0	///< GIF画像の入出力をサポートするかどうか
+
 #define _LZW_COMPRESSION_SUPPORT_		false	///< TIFFとGIF画像の出力で，LZW圧縮を有効にするオプションをデフォルトにするかどうか
 
 
