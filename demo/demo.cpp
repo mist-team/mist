@@ -104,10 +104,6 @@ inline void enum_face_parts( mist::array2< T, Allocator > &in, face_parts_list &
 	{
 		for( i = in.width( ) / 5 ; i < in.width( ) / 5 * 4 ; i++ )
 		{
-	//for( j = 0 ; j < label.height( ) ; j++ )
-	//{
-	//	for( i = 0 ; i < label.width( ) ; i++ )
-	//	{
 			if( label( i, j ) == 0 ) continue;
 			face_parts &f = list[ label( i, j ) ];
 			f.left   = f.left < i ? f.left : i;
