@@ -5,12 +5,12 @@
 
 int main( )
 {
-	typedef mist::matrix< double > matrix;
+	typedef mist::matrix< std::complex<float> > matrix;
 	//typedef mist::matrix< std::complex< double > > matrix;
 	matrix a( 3, 3 ), b( 3, 1 );
 
-	a( 0, 0 ) = 1.0; a( 0, 1 ) =  1.0; a( 0, 2 ) =  1.0;
-	a( 1, 0 ) = 3.0; a( 1, 1 ) =  1.0; a( 1, 2 ) = -3.0;
+	a( 0, 0 ) = 1.0; a( 0, 1 ) =  3.0; a( 0, 2 ) =  1.0;
+	a( 1, 0 ) = 3.0; a( 1, 1 ) =  1.0; a( 1, 2 ) = -2.0;
 	a( 2, 0 ) = 1.0; a( 2, 1 ) = -2.0; a( 2, 2 ) = -5.0;
 
 	b[0] =  3.0;
@@ -44,28 +44,19 @@ int main( )
 	{
 		std::cout << "Inverse Matrix Calculation Symmetry" << std::endl;
 
-		matrix aa( 2, 2 );
-		aa( 0, 0 ) = 1.0; aa( 0, 1 ) = 2.0;
-		aa( 1, 0 ) = 2.0; aa( 1, 1 ) = 3.0;
-		matrix aaa = aa;
-		std::cout << aa * mist::inverse( aaa, mist::matrix_style::sy ) << std::endl << std::endl;
-	}
-
-	{
-		std::cout << "Inverse Matrix Calculation Symmetry" << std::endl;
-
-		matrix aa( 2, 2 );
-		aa( 0, 0 ) = 1.0; aa( 0, 1 ) = 2.0;
-		aa( 1, 0 ) = 2.0; aa( 1, 1 ) = 3.0;
-		matrix aaa = aa;
-		std::cout << aa * mist::inverse( aaa, mist::matrix_style::ge ) << std::endl << std::endl;
+		matrix aaa = a;
+		std::cout << mist::inverse( aaa, mist::matrix_style::sy ) * a << std::endl << std::endl;
+		std::cout << mist::inverse( aaa, mist::matrix_style::ge ) * a << std::endl << std::endl;
+		std::cout << mist::inverse( aaa, mist::matrix_style::sy ) << std::endl << std::endl;
+		std::cout << mist::inverse( aaa, mist::matrix_style::ge ) << std::endl << std::endl;
 	}
 
 	{
 		std::cout << "LU factorization" << std::endl;
 
 		matrix aa = a;
-		std::cout << mist::lu_factorization( aa ) << std::endl << std::endl;
+		std::cout << mist::lu_factorization( aa, mist::matrix_style::sy ) << std::endl << std::endl;
+		std::cout << mist::lu_factorization( aa, mist::matrix_style::ge ) << std::endl << std::endl;
 	}
 
 	{
@@ -88,8 +79,7 @@ int main( )
 	{
 		std::cout << "Eigen value and vectors symmetry" << std::endl;
 
-		matrix aa = a * a.t( ), eval, evec;
-		std::cout << aa << std::endl << std::endl;
+		matrix aa = a, eval, evec;
 		mist::eigen( aa, eval, evec, mist::matrix_style::sy );
 		std::cout << eval << std::endl << std::endl;
 		std::cout << evec << std::endl << std::endl;
