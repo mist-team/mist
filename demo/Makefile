@@ -3,7 +3,7 @@ include ../build/makeinclude
 CFILES = \
 	demo.cpp \
 
-OBJECTS = $(CFILES:.c=.o)
+OBJECTS = $(CFILES:.cpp=.o)
 
 
 all: demo
