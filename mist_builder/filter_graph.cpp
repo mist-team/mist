@@ -438,7 +438,7 @@ long filter_graph::onKeyDown( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
 
-	set_cursors( e.state & ALTMASK );
+	set_cursors( ( e.state & ALTMASK ) != 0 );
 
 	if( e.code == KEY_Delete && current_filter_ != NULL )
 	{
@@ -503,7 +503,7 @@ long filter_graph::onKeyUp( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
 
-	set_cursors( e.state & ALTMASK );
+	set_cursors( ( e.state & ALTMASK ) != 0 );
 
 	return( 1 );
 }

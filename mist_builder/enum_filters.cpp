@@ -3,10 +3,17 @@
 #include "main_window.h"
 
 #include "filter/input.h"
+
+#include "filter/threshold.h"
+
 #include "filter/median.h"
+#include "filter/interlace.h"
 
+#include "filter/morphology.h"
+
+#include "filter/copy.h"
 #include "filter/convert.h"
-
+#include "filter/blend.h"
 
 void main_window::ClearFilters( )
 {
@@ -44,13 +51,33 @@ void main_window::EnumFilters( )
 		treelist_->expandTree( input );
 
 		insert_filter( treelist_, input, flist, new input_filter( ) );
+
+		treelist_->collapseTree( input );
 	}
 
 	{
-		FXTreeItem *convert = treelist_->addItemLast( root, "Converter" );
-		treelist_->expandTree( convert );
+		FXTreeItem *utility = treelist_->addItemLast( root, "Utility" );
+		treelist_->expandTree( utility );
 
-		insert_filter( treelist_, convert, flist, new color2gray_filter( ) );
+		insert_filter( treelist_, utility, flist, new color2gray_filter( ) );
+
+		insert_filter( treelist_, utility, flist, new copy_filter1( ) );
+		insert_filter( treelist_, utility, flist, new copy_filter2( ) );
+		insert_filter( treelist_, utility, flist, new copy_filter3( ) );
+
+		insert_filter( treelist_, utility, flist, new blend_filter( ) );
+
+		treelist_->collapseTree( utility );
+	}
+
+	{
+		FXTreeItem *threshold = treelist_->addItemLast( root, "Threshold" );
+		treelist_->expandTree( threshold );
+
+		insert_filter( treelist_, threshold, flist, new ptile_threshold_filter( ) );
+		insert_filter( treelist_, threshold, flist, new discriminant_analysis_threshold_filter( ) );
+
+		treelist_->collapseTree( threshold );
 	}
 
 	{
@@ -64,7 +91,32 @@ void main_window::EnumFilters( )
 			insert_filter( treelist_, median, flist, new median_filter1( ) );
 			insert_filter( treelist_, median, flist, new median_filter2( ) );
 			insert_filter( treelist_, median, flist, new median_filter3( ) );
+
+			treelist_->collapseTree( median );
 		}
+
+		{
+			FXTreeItem *interlace = treelist_->addItemLast( smoothing, "Interlace" );
+			treelist_->expandTree( interlace );
+
+			insert_filter( treelist_, interlace, flist, new interlace_filter1( ) );
+			insert_filter( treelist_, interlace, flist, new interlace_filter2( ) );
+			insert_filter( treelist_, interlace, flist, new interlace_filter3( ) );
+
+			treelist_->collapseTree( interlace );
+		}
+	}
+
+	{
+		FXTreeItem *morphology = treelist_->addItemLast( root, "Morphology" );
+		treelist_->expandTree( morphology );
+
+		insert_filter( treelist_, morphology, flist, new erosion_filter( ) );
+		insert_filter( treelist_, morphology, flist, new dilation_filter( ) );
+		insert_filter( treelist_, morphology, flist, new opening_filter( ) );
+		insert_filter( treelist_, morphology, flist, new closing_filter( ) );
+
+		treelist_->collapseTree( morphology );
 	}
 }
 

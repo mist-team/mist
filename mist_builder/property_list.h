@@ -22,6 +22,7 @@ protected:
 protected:
 	property			*current_item_;
 	FXComboBox			*boolean_combo_;
+	FXComboBox			*text_combo_;
 	FXTextField			*text_input_;
 	FXHorizontalFrame	*filename_area_;
 	FXTextField			*filename_;
@@ -61,7 +62,8 @@ public:
 	enum
 	{
 		ID_LIST = base::ID_LAST,
-		ID_COMBO,
+		ID_BOOLCOMBO,
+		ID_TEXTCOMBO,
 		ID_TEXT,
 		ID_FILENAME,
 		ID_BUTTON,

@@ -795,9 +795,17 @@ namespace __morphology_controller__
 //! @param[in] s          … モルフォロジ演算に用いる構造要素
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-void erosion( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+bool erosion( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
+	if( in.empty( ) )
+	{
+		return( false );
+	}
+
 	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
@@ -840,6 +848,8 @@ void erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 	}
 
 	delete [] thread;
+
+	return( true );
 }
 
 
@@ -852,9 +862,17 @@ void erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 //! @param[in] s          … モルフォロジ演算に用いる構造要素
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-void dilation( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+bool dilation( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
+	if( in.empty( ) )
+	{
+		return( false );
+	}
+
 	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
@@ -897,6 +915,8 @@ void dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 	}
 
 	delete [] thread;
+
+	return( true );
 }
 
 
@@ -909,9 +929,17 @@ void dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 //! @param[in] s          … モルフォロジ演算に用いる構造要素
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-void opening( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+bool opening( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
+	if( in.empty( ) )
+	{
+		return( false );
+	}
+
 	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
@@ -984,6 +1012,8 @@ void opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 	}
 
 	delete [] thread;
+
+	return( true );
 }
 
 
@@ -996,9 +1026,17 @@ void opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 //! @param[in] s          … モルフォロジ演算に用いる構造要素
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-void closing( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+bool closing( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
+	if( in.empty( ) )
+	{
+		return( false );
+	}
+
 	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
@@ -1071,6 +1109,8 @@ void closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 	}
 
 	delete [] thread;
+
+	return( true );
 }
 
 
@@ -1084,10 +1124,13 @@ void closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 //! @param[in] radius     … 円の半径
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-inline void erosion( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+inline bool erosion( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	erosion( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
+	return( erosion( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
 }
 
 
@@ -1100,10 +1143,13 @@ inline void erosion( array2< T, Allocator > &in, double radius, typename array2<
 //! @param[in] radius     … 円の半径
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-inline void dilation( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+inline bool dilation( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	dilation( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
+	return( dilation( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
 }
 
 
@@ -1116,10 +1162,13 @@ inline void dilation( array2< T, Allocator > &in, double radius, typename array2
 //! @param[in] radius     … 円の半径
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-inline void opening( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+inline bool opening( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	opening( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
+	return( opening( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
 }
 
 
@@ -1132,10 +1181,13 @@ inline void opening( array2< T, Allocator > &in, double radius, typename array2<
 //! @param[in] radius     … 円の半径
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-inline void closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
+inline bool closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	closing( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
+	return( closing( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
 }
 
 
@@ -1151,9 +1203,17 @@ inline void closing( array2< T, Allocator > &in, double radius, typename array2<
 //! @param[in] s          … モルフォロジ演算に用いる構造要素
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-void erosion( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+bool erosion( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
+	if( in.empty( ) )
+	{
+		return( false );
+	}
+
 	typedef typename array3< T, Allocator >::value_type value_type;
 	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
@@ -1196,6 +1256,8 @@ void erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 	}
 
 	delete [] thread;
+
+	return( true );
 }
 
 
@@ -1208,9 +1270,17 @@ void erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 //! @param[in] s          … モルフォロジ演算に用いる構造要素
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-void dilation( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+bool dilation( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
+	if( in.empty( ) )
+	{
+		return( false );
+	}
+
 	typedef typename array3< T, Allocator >::value_type value_type;
 	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
@@ -1253,6 +1323,8 @@ void dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 	}
 
 	delete [] thread;
+
+	return( true );
 }
 
 
@@ -1265,9 +1337,17 @@ void dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 //! @param[in] s          … モルフォロジ演算に用いる構造要素
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-void opening( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+bool opening( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
+	if( in.empty( ) )
+	{
+		return( false );
+	}
+
 	typedef typename array3< T, Allocator >::value_type value_type;
 	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
@@ -1340,6 +1420,8 @@ void opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 	}
 
 	delete [] thread;
+
+	return( true );
 }
 
 
@@ -1353,9 +1435,17 @@ void opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 //! @param[in] s          … モルフォロジ演算に用いる構造要素
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-void closing( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+bool closing( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
+	if( in.empty( ) )
+	{
+		return( false );
+	}
+
 	typedef typename array3< T, Allocator >::value_type value_type;
 	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
@@ -1428,6 +1518,8 @@ void closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 	}
 
 	delete [] thread;
+
+	return( true );
 }
 
 
@@ -1441,10 +1533,13 @@ void closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 //! @param[in] radius     … 球の半径
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-inline void erosion( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+inline bool erosion( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	erosion( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
+	return( erosion( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
 }
 
 
@@ -1457,10 +1552,13 @@ inline void erosion( array3< T, Allocator > &in, double radius, typename array3<
 //! @param[in] radius     … 球の半径
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-inline void dilation( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+inline bool dilation( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	dilation( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
+	return( dilation( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
 }
 
 
@@ -1473,10 +1571,13 @@ inline void dilation( array3< T, Allocator > &in, double radius, typename array3
 //! @param[in] radius     … 球の半径
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-inline void opening( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+inline bool opening( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	opening( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
+	return( opening( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
 }
 
 
@@ -1489,10 +1590,13 @@ inline void opening( array3< T, Allocator > &in, double radius, typename array3<
 //! @param[in] radius     … 球の半径
 //! @param[in] thread_num … 使用するスレッド数
 //! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力画像が空の場合
+//! 
 template < class T, class Allocator >
-inline void closing( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+inline bool closing( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	closing( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
+	return( closing( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
 }
 
 

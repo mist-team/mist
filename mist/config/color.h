@@ -118,8 +118,26 @@ public:
 	/// @brief RGB成分に pix 値を掛ける
 	const rgb &operator *=( const value_type &pix ){ r *= pix; g *= pix; b *= pix; return( *this ); }
 
+	/// @brief RGB成分に pix 値を掛ける
+	const rgb &operator *=( const double &pix )
+	{
+		r = static_cast< value_type >( r * pix );
+		g = static_cast< value_type >( g * pix );
+		b = static_cast< value_type >( b * pix );
+		return( *this );
+	}
+
 	/// @brief RGB成分を pix 値で割る
 	const rgb &operator /=( const value_type &pix ){ r /= pix; g /= pix; b /= pix; return( *this ); }
+
+	/// @brief RGB成分を pix 値で割る
+	const rgb &operator /=( const double &pix )
+	{
+		r = static_cast< value_type >( r / pix );
+		g = static_cast< value_type >( g / pix );
+		b = static_cast< value_type >( b / pix );
+		return( *this );
+	}
 
 
 	/// @brief 2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する
@@ -246,6 +264,17 @@ template < class T > inline const rgb< T > operator *( const typename rgb< T >::
 
 /// @brief カラー画素を定数で割る
 template < class T > inline const rgb< T > operator /( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) /= c2 ); }
+
+
+
+/// @brief カラー画素と定数の積
+template < class T > inline const rgb< T > operator *( const rgb< T > &c1, const double &c2 ){ return( rgb< T >( c1 ) *= c2 ); }
+
+/// @brief 定数とカラー画素の積
+template < class T > inline const rgb< T > operator *( const double &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) *= c1 ); }
+
+/// @brief カラー画素を定数で割る
+template < class T > inline const rgb< T > operator /( const rgb< T > &c1, const double &c2 ){ return( rgb< T >( c1 ) /= c2 ); }
 
 
 

@@ -19,7 +19,8 @@ FXDEFMAP( property_list ) property_list_map[] =
 		FXMAPFUNC ( SEL_COMMAND,			property_list::ID_BUTTON,		property_list::onFileOpen ),
 
 		FXMAPFUNC ( SEL_CHANGED,			property_list::ID_TEXT,			property_list::onDataChanged ),
-		FXMAPFUNC ( SEL_CHANGED,			property_list::ID_COMBO,		property_list::onDataChanged ),
+		FXMAPFUNC ( SEL_COMMAND,			property_list::ID_BOOLCOMBO,	property_list::onDataChanged ),
+		FXMAPFUNC ( SEL_COMMAND,			property_list::ID_TEXTCOMBO,	property_list::onDataChanged ),
 		FXMAPFUNC ( SEL_CHANGED,			property_list::ID_FILENAME,		property_list::onDataChanged ),
 	};
 
@@ -35,10 +36,12 @@ property_list::property_list( FXComposite *p, FXObject *tgt, FXSelector sel, FXu
 	setTarget( this );
 
 	// true false の選択用
-	boolean_combo_ = new FXComboBox( this, 1, this, ID_COMBO, COMBOBOX_STATIC | LAYOUT_FIX_X | LAYOUT_FIX_Y | LAYOUT_FIX_WIDTH | LAYOUT_FIX_HEIGHT, 0, 0, 0, 0, 5, 6, 2, 0 );
+	boolean_combo_ = new FXComboBox( this, 1, this, ID_BOOLCOMBO, COMBOBOX_STATIC | LAYOUT_FIX_X | LAYOUT_FIX_Y | LAYOUT_FIX_WIDTH | LAYOUT_FIX_HEIGHT, 0, 0, 0, 0, 5, 6, 2, 0 );
 	boolean_combo_->appendItem( "false" );
 	boolean_combo_->appendItem( "true" );
 	boolean_combo_->setNumVisible( 2 );
+
+	text_combo_ = new FXComboBox( this, 1, this, ID_TEXTCOMBO, COMBOBOX_STATIC | LAYOUT_FIX_X | LAYOUT_FIX_Y | LAYOUT_FIX_WIDTH | LAYOUT_FIX_HEIGHT, 0, 0, 0, 0, 5, 6, 2, 0 );
 
 	// 文字列・数値を入力用
 	text_input_ = new FXTextField( this, 255, this, ID_TEXT, FRAME_NONE | LAYOUT_FIX_X | LAYOUT_FIX_Y | LAYOUT_FIX_WIDTH | LAYOUT_FIX_HEIGHT, 0, 0, 0, 0, 5, 6, 2, 0 );
@@ -58,8 +61,10 @@ property_list::~property_list( )
 void property_list::create( )
 {
 	boolean_combo_->setFont( getFont( ) );
+	text_combo_->setFont( getFont( ) );
 	text_input_->setFont( getFont( ) );
 
+	text_combo_->hide( );
 	boolean_combo_->hide( );
 	text_input_->hide( );
 
@@ -107,6 +112,7 @@ long property_list::onSelected( FXObject *obj, FXSelector sel, void *ptr )
 		boolean_combo_->hide( );
 		text_input_->hide( );
 		filename_area_->hide( );
+		text_combo_->hide( );
 	}
 
 	// ボックスの表示位置を決定する
@@ -203,6 +209,37 @@ long property_list::onSelected( FXObject *obj, FXSelector sel, void *ptr )
 			filename_->setFocus( );
 			break;
 
+		case property::TEXTCOMBO:
+			{
+				text_combo_->clearItems( );
+				FXString text = item->text;
+				FXString tmp = "";
+				FXint count = 0;
+				for( FXint i = 0 ; i < text.length( ) ; i++ )
+				{
+					if( text[ i ] == ';' )
+					{
+						text_combo_->appendItem( tmp );
+						tmp = "";
+						count++;
+					}
+					else
+					{
+						tmp += text[ i ];
+					}
+				}
+				if( tmp != "" )
+				{
+					text_combo_->appendItem( tmp );
+					count++;
+				}
+				text_combo_->setNumVisible( count < 6 ? count : 6 );
+				text_combo_->setCurrentItem( item->integer );
+				text_combo_->position( l, t, w, h );
+				text_combo_->show( );
+			}
+			break;
+
 		default:
 			break;
 		}
@@ -219,6 +256,7 @@ long property_list::onDeSelected( FXObject *obj, FXSelector sel, void *ptr )
 	boolean_combo_->hide( );
 	text_input_->hide( );
 	filename_area_->hide( );
+	text_combo_->hide( );
 
 	return( 1 );
 }
@@ -249,6 +287,10 @@ long property_list::onDataChanged( FXObject *obj, FXSelector sel, void *ptr )
 		case property::FILEOPEN:
 		case property::FILESAVE:
 			current_item_->text = filename_->getText( );
+			break;
+
+		case property::TEXTCOMBO:
+			current_item_->integer = text_combo_->getCurrentItem( );
 			break;
 
 		default:
@@ -360,6 +402,34 @@ long property_list::onPaint( FXObject *obj, FXSelector sel, void *ptr )
 			case property::FILEOPEN:
 			case property::FILESAVE:
 				text = item->text;
+				break;
+
+			case property::TEXTCOMBO:
+				{
+					text = "";
+					FXint index = item->integer;
+					if( index >= 0 )
+					{
+						FXString tmp = item->text;
+						FXint count = 0;
+						for( FXint i = 0 ; i < tmp.length( ) ; i++ )
+						{
+							if( tmp[ i ] == ';' )
+							{
+								if( count == index )
+								{
+									break;
+								}
+								text = "";
+								count++;
+							}
+							else
+							{
+								text += tmp[ i ];
+							}
+						}
+					}
+				}
 				break;
 
 			default:

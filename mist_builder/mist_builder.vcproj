@@ -173,13 +173,28 @@
 			Name="ƒtƒBƒ‹ƒ^"
 			Filter="">
 			<File
+				RelativePath=".\filter\blend.h">
+			</File>
+			<File
 				RelativePath=".\filter\convert.h">
+			</File>
+			<File
+				RelativePath=".\filter\copy.h">
 			</File>
 			<File
 				RelativePath=".\filter\input.h">
 			</File>
 			<File
+				RelativePath=".\filter\interlace.h">
+			</File>
+			<File
 				RelativePath=".\filter\median.h">
+			</File>
+			<File
+				RelativePath=".\filter\morphology.h">
+			</File>
+			<File
+				RelativePath=".\filter\threshold.h">
 			</File>
 		</Filter>
 	</Files>

@@ -259,7 +259,7 @@ void median_test( )
 	image_type tmp( image_object );
 	{
 		mist::timer t;
-		mist::median( tmp, image_object, 3 );
+		mist::median( tmp, image_object, 10 );
 		std::cout << "Computation Time: " << t.elapse( ) << " sec." << std::endl;
 	}
 }

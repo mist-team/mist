@@ -175,6 +175,7 @@ struct property
 		BOOLEAN,
 		INTEGER,
 		REAL,
+		TEXTCOMBO,
 	};
 
 	PROPERTY_TYPE	type;
@@ -204,6 +205,10 @@ struct property
 	property( PROPERTY_TYPE t, const FXString &l, const char *v ) : type( t ), label( l ), text( v ), boolean( false ), integer( 0 ), real( 0.0 ){ }
 	property( PROPERTY_TYPE t, const FXString &l, bool v ) : type( t ), label( l ), text( "" ), boolean( v ), integer( 0 ), real( 0.0 ){ }
 	property( PROPERTY_TYPE t, const FXString &l, FXint v ) : type( t ), label( l ), text( "" ), boolean( false ), integer( v ), real( 0.0 ){ }
+
+	// コンボボックスの選択タイプ
+	property( PROPERTY_TYPE t, const FXString &l, const FXString &list, FXint v ) : type( t ), label( l ), text( list ), boolean( false ), integer( v ), real( 0 ){ }
+
 	property( PROPERTY_TYPE t, const FXString &l, FXdouble v ) : type( t ), label( l ), text( "" ), boolean( false ), integer( 0 ), real( v ){ }
 
 	property( const property &p ) : type( p.type ), label( p.label ), text( p.text ), boolean( p.boolean ), integer( p.integer ), real( p.real ){ }

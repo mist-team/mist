@@ -284,7 +284,12 @@ void data_view::draw_image( const data_type &buf )
 
 	if( !buf.mono_image_.empty( ) )
 	{
-		buffer_ = buf.mono_image_;
+		buffer_.resize( buf.mono_image_.width( ), buf.mono_image_.height( ) );
+		buffer_.reso( buf.mono_image_.reso1( ), buf.mono_image_.reso2( ) );
+		for( size_type i = 0 ; i < buffer_.size( ) ; i++ )
+		{
+			buffer_[ i ] = buf.mono_image_[ i ] == 0 ? 0 : 255;
+		}
 	}
 	else if( !buf.gray_image_.empty( ) )
 	{
