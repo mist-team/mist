@@ -38,7 +38,7 @@ int main( int argc, char *argv[] )
 {
 	using namespace std;
 
-	value< int > v1( 1 ), v2( 2 );
+	value< int > v1( 2 ), v2( 2 );
 
 	cout << " ( A, B ) = ( " << v1 << ", " << v2 << " )" << endl;
 	cout << " 1. Operator A + B = \t" << ( v1 + v2 ) << endl;
