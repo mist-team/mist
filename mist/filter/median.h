@@ -440,7 +440,7 @@ namespace __median_filter_divide_conquer__
 namespace __median_filter_specialized_version__
 {
 	template < class T >
-	inline void sort3x3( const T v0, const T v1, const T v2, T v[ 3 ] )
+	inline void sort3x3( const T &v0, const T &v1, const T &v2, T v[ 3 ] )
 	{
 		if( v0 > v1 )
 		{
@@ -493,7 +493,7 @@ namespace __median_filter_specialized_version__
 	}
 
 	template < class T >
-	inline void sort2x2( const T v0, const T v1, T v[ 3 ] )
+	inline void sort2x2( const T &v0, const T &v1, T v[ 3 ] )
 	{
 		if( v0 > v1 )
 		{
@@ -504,74 +504,6 @@ namespace __median_filter_specialized_version__
 		{
 			v[ 0 ] = v1;
 			v[ 1 ] = v0;
-		}
-	}
-
-	template < class T >
-	inline void sortm3x3( T v0[ 3 ], T v1[ 3 ], T v2[ 3 ], T *s[ 3 ] )
-	{
-		if( v0[ 1 ] > v1[ 1 ] )
-		{
-			if( v1[ 1 ] > v2[ 1 ] )
-			{
-				s[ 0 ] = v0;
-				s[ 1 ] = v1;
-				s[ 2 ] = v2;
-			}
-			else
-			{
-				if( v0[ 1 ] > v2[ 1 ] )
-				{
-					s[ 0 ] = v0;
-					s[ 1 ] = v2;
-					s[ 2 ] = v1;
-				}
-				else
-				{
-					s[ 0 ] = v2;
-					s[ 1 ] = v0;
-					s[ 2 ] = v1;
-				}
-			}
-		}
-		else
-		{
-			if( v0[ 1 ] > v2[ 1 ] )
-			{
-				s[ 0 ] = v1;
-				s[ 1 ] = v0;
-				s[ 2 ] = v2;
-			}
-			else
-			{
-				if( v1[ 1 ] > v2[ 1 ] )
-				{
-					s[ 0 ] = v1;
-					s[ 1 ] = v2;
-					s[ 2 ] = v0;
-				}
-				else
-				{
-					s[ 0 ] = v2;
-					s[ 1 ] = v1;
-					s[ 2 ] = v0;
-				}
-			}
-		}
-	}
-
-	template < class T >
-	inline void sortm3x2( T v0[ 3 ], T v1[ 3 ], T *s[ 3 ] )
-	{
-		if( v0[ 1 ] > v1[ 1 ] )
-		{
-			s[ 0 ] = v0;
-			s[ 1 ] = v1;
-		}
-		else
-		{
-			s[ 0 ] = v1;
-			s[ 1 ] = v0;
 		}
 	}
 
@@ -600,6 +532,18 @@ namespace __median_filter_specialized_version__
 	}
 
 
+	/****************************************************************************************************************************************
+	**
+	**  参考文献:
+	**
+	**     浜村倫行, 入江文平, ``３×３メディアンフィルタの高速アルゴリズム,'' FIT（情報科学技術フォーラム）, LI-9, 2002
+	**           ``A Fast Algorithm for 3x3 Median Filtering''
+	**
+	**     ※ヒストグラムを利用するもの等と比較し，中央値を求めるのに必要な比較回数が非常に少なく，高速な動作が可能
+	**
+	**        Coded by ddeguchi.
+	**
+	****************************************************************************************************************************************/
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void median_filter3x3( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 						typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
@@ -623,17 +567,17 @@ namespace __median_filter_specialized_version__
 		// 一番上の部分
 		for( j = thread_id ; j < 1 ; j += thread_num )
 		{
-			sort2x2( in( 0, j ), in( 0, j + 1 ), work[ 0 ] );
-			sort2x2( in( 1, j ), in( 1, j + 1 ), work[ 1 ] );
+			sort2x2( in( 0, 0 ), in( 0, 1 ), work[ 0 ] );
+			sort2x2( in( 1, 0 ), in( 1, 1 ), work[ 1 ] );
 
-			sortm3x2( work[ 0 ], work[ 1 ], sort );
-			out( i, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
+			sort2x2( work[ 0 ], work[ 1 ], sort );
+			out( 0, 0 ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
 
 			for( i = 1 ; i < w - 1 ; i++ )
 			{
 				wi = ( i + 1 ) % 3;
-				sort2x2( in( i + 1, j ), in( i + 1, j + 1 ), work[ wi ] );
-				sortm3x3( work[ 0 ], work[ 1 ], work[ 2 ], sort );
+				sort2x2( in( i + 1, 0 ), in( i + 1, 0 + 1 ), work[ wi ] );
+				sort3x3( work[ 0 ], work[ 1 ], work[ 2 ], sort );
 
 				value_type &x = sort[ 1 ][ 1 ];
 				value_type &y = sort[ 0 ][ 1 ];
@@ -642,16 +586,16 @@ namespace __median_filter_specialized_version__
 				if( x < z )
 				{
 					value_type &w = sort[ 1 ][ 0 ];
-					out( i, j ) = static_cast< out_value_type >( minimum( y, z, w ) );
+					out( i, 0 ) = static_cast< out_value_type >( minimum( y, z, w ) );
 				}
 				else
 				{
-					out( i, j ) = static_cast< out_value_type >( x );
+					out( i, 0 ) = static_cast< out_value_type >( x );
 				}
 			}
 
-			sortm3x2( work[ ( i - 1 ) % 3 ], work[ i % 3 ], sort );
-			out( i, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
+			sort2x2( work[ ( i - 1 ) % 3 ], work[ i % 3 ], sort );
+			out( i, 0 ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
 		}
 
 		// 真ん中部分
@@ -660,14 +604,14 @@ namespace __median_filter_specialized_version__
 			sort3x3( in( 0, j - 1 ), in( 0, j ), in( 0, j + 1 ), work[ 0 ] );
 			sort3x3( in( 1, j - 1 ), in( 1, j ), in( 1, j + 1 ), work[ 1 ] );
 
-			sortm3x2( work[ 0 ], work[ 1 ], sort );
-			out( i, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 2 ], sort[ 1 ][ 0 ], sort[ 1 ][ 1 ] ) );
+			sort2x2( work[ 0 ], work[ 1 ], sort );
+			out( 0, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 2 ], sort[ 1 ][ 0 ], sort[ 1 ][ 1 ] ) );
 
 			for( i = 1 ; i < w - 1 ; i++ )
 			{
 				wi = ( i + 1 ) % 3;
 				sort3x3( in( i + 1, j - 1 ), in( i + 1, j ), in( i + 1, j + 1 ), work[ wi ] );
-				sortm3x3( work[ 0 ], work[ 1 ], work[ 2 ], sort );
+				sort3x3( work[ 0 ], work[ 1 ], work[ 2 ], sort );
 
 				value_type &x = sort[ 1 ][ 1 ];
 				value_type &y = sort[ 0 ][ 2 ];
@@ -689,7 +633,7 @@ namespace __median_filter_specialized_version__
 				}
 			}
 
-			sortm3x2( work[ ( i - 1 ) % 3 ], work[ i % 3 ], sort );
+			sort2x2( work[ ( i - 1 ) % 3 ], work[ i % 3 ], sort );
 			out( i, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 2 ], sort[ 1 ][ 0 ], sort[ 1 ][ 1 ] ) );
 		}
 
@@ -697,17 +641,17 @@ namespace __median_filter_specialized_version__
 		// 一番下の部分
 		for( ; j < h ; j += thread_num )
 		{
-			sort2x2( in( 0, j - 1 ), in( 0, j ), work[ 0 ] );
-			sort2x2( in( 1, j - 1 ), in( 1, j ), work[ 1 ] );
+			sort2x2( in( 0, h - 2 ), in( 0, h - 1 ), work[ 0 ] );
+			sort2x2( in( 1, h - 2 ), in( 1, h - 1 ), work[ 1 ] );
 
-			sortm3x2( work[ 0 ], work[ 1 ], sort );
-			out( i, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
+			sort2x2( work[ 0 ], work[ 1 ], sort );
+			out( 0, h - 1 ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
 
 			for( i = 1 ; i < w - 1 ; i++ )
 			{
 				wi = ( i + 1 ) % 3;
-				sort2x2( in( i + 1, j - 1 ), in( i + 1, j ), work[ wi ] );
-				sortm3x3( work[ 0 ], work[ 1 ], work[ 2 ], sort );
+				sort2x2( in( i + 1, h - 2 ), in( i + 1, h - 1 ), work[ wi ] );
+				sort3x3( work[ 0 ], work[ 1 ], work[ 2 ], sort );
 
 				value_type &x = sort[ 1 ][ 1 ];
 				value_type &y = sort[ 0 ][ 1 ];
@@ -716,16 +660,16 @@ namespace __median_filter_specialized_version__
 				if( x < z )
 				{
 					value_type &w = sort[ 1 ][ 0 ];
-					out( i, j ) = static_cast< out_value_type >( minimum( y, z, w ) );
+					out( i, h - 1 ) = static_cast< out_value_type >( minimum( y, z, w ) );
 				}
 				else
 				{
-					out( i, j ) = static_cast< out_value_type >( x );
+					out( i, h - 1 ) = static_cast< out_value_type >( x );
 				}
 			}
 
-			sortm3x2( work[ ( i - 1 ) % 3 ], work[ i % 3 ], sort );
-			out( i, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
+			sort2x2( work[ ( i - 1 ) % 3 ], work[ i % 3 ], sort );
+			out( i, h - 1 ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
 		}
 	}
 }

@@ -17,6 +17,8 @@
 #include <mist/filter/morphology.h>
 #include <mist/interpolate.h>
 #include <mist/threshold.h>
+#include <mist/timer.h>
+
 
 //typedef mist::array2< unsigned char > image_type;
 typedef mist::array2< mist::rgb< unsigned char > > image_type;
@@ -77,7 +79,7 @@ void read_bmp_test( const char *filename )
 
 void write_bmp_test( const char *filename )
 {
-	mist::write_bmp( image_object, filename, 1 );
+	mist::write_bmp( image_object, filename );
 }
 
 void read_dicom_test( const char *filename )
@@ -214,7 +216,11 @@ void thinning_test( )
 void median_test( )
 {
 	image_type tmp( image_object );
-	mist::median( tmp, image_object, 3 );
+	{
+		mist::timer t;
+		mist::median( tmp, image_object, 3 );
+		std::cout << "Computation Time: " << t.elapse( ) << " sec." << std::endl;
+	}
 }
 
 void erosion_test( )
