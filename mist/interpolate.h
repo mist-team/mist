@@ -914,7 +914,7 @@ namespace nearest
 		}
 
 		size_type i;
-		out.resize( width, height );
+		out.resize( width, height, depth );
 		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
 		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
 		out.reso3( in.reso3( ) * static_cast< double >( in.depth( ) ) / static_cast< double >( depth ) );
@@ -1123,7 +1123,7 @@ namespace linear
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
-		out.resize( width, height );
+		out.resize( width, height, depth );
 		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
 		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
 		out.reso3( in.reso3( ) * static_cast< double >( in.depth( ) ) / static_cast< double >( depth ) );
@@ -1335,7 +1335,7 @@ namespace cubic
 		}
 
 		size_type i;
-		out.resize( width, height );
+		out.resize( width, height, depth );
 		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
 		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
 		out.reso3( in.reso3( ) * static_cast< double >( in.depth( ) ) / static_cast< double >( depth ) );
