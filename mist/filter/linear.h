@@ -1357,6 +1357,114 @@ inline void  gaussian(
 	__linear_filter__::apply_pre_defined_kernel< filter_style::gaus, calc_type >( in, out, __linear_filter__::default_func< calc_type, out_type >( ) );
 }
 
+template < class T_in, class Allocator_in, class T_out, class Allocator_out >
+inline void  gaussian(
+							const array< T_in, Allocator_in >			&in, 
+							array< T_out, Allocator_out >				&out, 
+							double										sigma )
+{
+	typedef typename array< T_out, Allocator_out >::value_type															out_type;
+	typedef typename array< T_out, Allocator_out >::size_type															size_type;
+	typedef typename array< T_out, Allocator_out >::difference_type														difference_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+
+	double _2sigma = 2.0 * sigma * sigma;
+
+	sigma *= 2.0;
+	difference_type r = sigma - static_cast< int >( sigma ) == 0.0 ? static_cast< int >( sigma ) : static_cast< int >( sigma ) + 1;
+	array< double > kernel( 2 * r + 1 );
+
+
+	double sum = 0.0;
+	for( difference_type i = -r ; i <= r ; i++ )
+	{
+		double e = std::exp( -( i * i ) / _2sigma );
+		kernel[ i + r ] = e;
+		sum += e;
+	}
+
+	for( slze_type l = 0 ; l < kernel.slze( ) ; l++ )
+	{
+		kernel[ l ] /= sum;
+	}
+
+	linear_filter( in, out, kernel );
+}
+
+template < class T_in, class Allocator_in, class T_out, class Allocator_out >
+inline void  gaussian(
+							const array2< T_in, Allocator_in >			&in, 
+							array2< T_out, Allocator_out >				&out, 
+							double										sigma )
+{
+	typedef typename array2< T_out, Allocator_out >::value_type															out_type;
+	typedef typename array2< T_out, Allocator_out >::size_type															size_type;
+	typedef typename array2< T_out, Allocator_out >::difference_type													difference_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+
+	difference_type r = sigma - static_cast< int >( sigma ) == 0.0 ? static_cast< int >( sigma ) : static_cast< int >( sigma ) + 1;
+	array2< double > kernel( 2 * r + 1, 2 * r + 1 );
+	double _2sigma = 2.0 * sigma * sigma;
+
+
+	double sum = 0.0;
+	for( difference_type j = -r ; j <= r ; j++ )
+	{
+		for( difference_type i = -r ; i <= r ; i++ )
+		{
+			double e = std::exp( -( i * i + j * j ) / _2sigma );
+			kernel( i + r, j + r ) = e;
+			sum += e;
+		}
+	}
+
+	for( size_type i = 0 ; i < kernel.size( ) ; i++ )
+	{
+		kernel[ i ] /= sum;
+	}
+
+	linear_filter( in, out, kernel );
+}
+
+template < class T_in, class Allocator_in, class T_out, class Allocator_out >
+inline void  gaussian(
+							const array3< T_in, Allocator_in >			&in, 
+							array3< T_out, Allocator_out >				&out, 
+							double										sigma )
+{
+	typedef typename array3< T_out, Allocator_out >::value_type															out_type;
+	typedef typename array3< T_out, Allocator_out >::size_type															size_type;
+	typedef typename array3< T_out, Allocator_out >::difference_type													difference_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+
+	difference_type r = sigma - static_cast< int >( sigma ) == 0.0 ? static_cast< int >( sigma ) : static_cast< int >( sigma ) + 1;
+	array3< double > kernel( 2 * r + 1, 2 * r + 1, 2 * r + 1 );
+	double _2sigma = 2.0 * sigma * sigma;
+
+
+	double sum = 0.0;
+	for( difference_type k = -r ; k <= r ; k++ )
+	{
+		for( difference_type j = -r ; j <= r ; j++ )
+		{
+			for( difference_type i = -r ; i <= r ; i++ )
+			{
+				double e = std::exp( -( i * i + j * j + k * k ) / _2sigma );
+				kernel( i + r, j + r, k + r ) = e;
+				sum += e;
+			}
+		}
+	}
+
+	for( size_type i = 0 ; i < kernel.size( ) ; i++ )
+	{
+		kernel[ i ] /= sum;
+	}
+
+	linear_filter( in, out, kernel );
+}
+
+
 
 /// @brief ƒ‰ƒvƒ‰ƒVƒAƒ“( array, array1, array2, array3 )
 //! 

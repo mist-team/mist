@@ -521,6 +521,9 @@ namespace dicom
 	{
 	public:
 		bool			little_endian_encoding;		///< @brief データがリトルエンディアン形式かどうか
+		int				series_number;				///< @brief シリーズ番号
+		int				acquisition_number;			///< @brief 収集番号
+		int				instance_number;			///< @brief インスタンス番号
 
 	public:
 		/// @brief デフォルトのコンストラクタ
@@ -532,7 +535,10 @@ namespace dicom
 		/// @brief 他のオブジェクトで初期化する
 		dicom_info( const dicom_info &info ) :
 			dicom_image_info( info ),
-			little_endian_encoding( true )
+			little_endian_encoding( true ),
+			series_number( 0 ),
+			acquisition_number( 0 ),
+			instance_number( 0 )
 		{
 		}
 
@@ -764,6 +770,12 @@ namespace dicom
 		info.pixel_representation	= find_tag( dicm, 0x0028, 0x0103, info.pixel_representation );
 		info.window_center			= find_tag( dicm, 0x0028, 0x1050, info.window_center );
 		info.window_width			= find_tag( dicm, 0x0028, 0x1051, info.window_width );
+
+
+		// データのシリーズを識別するデータを取得
+		info.series_number			= find_tag( dicm, 0x0020, 0x0011, info.series_number );
+		info.acquisition_number		= find_tag( dicm, 0x0020, 0x0012, info.acquisition_number );
+		info.instance_number		= find_tag( dicm, 0x0020, 0x0013, info.instance_number );
 
 		return( true );
 	}
