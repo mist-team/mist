@@ -1,4 +1,4 @@
-//{0,0x0020,0x0000,UL,1,"""Group 0020 Length""",},//
+{0,0x0020,0x0000,UL,1,"""Group 0020 Length""",},//
 {0,0x0020,0x000D,UI,1,"""Study Instance UID""",},//
 {0,0x0020,0x000E,UI,1,"""Series Instance UID""",},//
 {0,0x0020,0x0010,SH,1,"""Study ID""",},//

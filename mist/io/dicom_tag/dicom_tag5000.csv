@@ -1,4 +1,4 @@
-//{0,0x5000,0x0000,UL,1,"""Group 5000 Length""",},//
+{0,0x5000,0x0000,UL,1,"""Group 5000 Length""",},//
 {0,0x5000,0x0005,US,1,"""Curve Dimensions""",},//
 {0,0x5000,0x0010,US,1,"""Number of Points""",},//
 {0,0x5000,0x0020,CS,1,"""Type of Data""",},//

@@ -15,7 +15,7 @@
 _MIST_BEGIN
 
 
-namespace __dicom_controller__
+namespace dicom_controller
 {
 	typedef size_t    size_type;
 	typedef ptrdiff_t difference_type;
@@ -157,12 +157,6 @@ namespace __dicom_controller__
 		UT,			// 無制限テキスト
 	};
 
-	enum dicom_compress_type
-	{
-		RAW,		// 無圧縮
-		JPEG,		// JPEG圧縮
-		RLE,		// ランレングス（RLE）圧縮
-	};
 
 	inline unsigned int construct_dicom_tag( unsigned short group, unsigned short element )
 	{
@@ -578,25 +572,6 @@ namespace __dicom_controller__
 
 		unsigned short get_group( ) const { return( static_cast< unsigned short >( 0x0000ffff & ( tag >> 16 ) ) ); }
 		unsigned short get_element( ) const { return( static_cast< unsigned short >( 0x0000ffff & tag ) ); }
-	};
-
-	class dicom_meta
-	{
-	public:
-		dicom_compress_type compress_type;
-
-	public:
-		dicom_meta( dicom_compress_type t = RAW ) : compress_type( t ) { }
-		dicom_meta( const dicom_meta &m ) : compress_type( m.compress_type ) { }
-
-		const dicom_meta &operator =( const dicom_meta &m )
-		{
-			if( &m != this )
-			{
-				compress_type = m.compress_type;
-			}
-			return( *this );
-		}
 	};
 
 

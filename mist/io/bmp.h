@@ -11,6 +11,9 @@
 #include "../config/color.h"
 #endif
 
+#ifndef __INCLUDE_MIST_ENDIAN__
+#include "../config/endian.h"
+#endif
 
 #include <iostream>
 #include <string>
@@ -26,15 +29,6 @@ _MIST_BEGIN
 
 namespace __bmp_controller__
 {
-	template < class T >
-	union byte_array
-	{
-		typedef T value_type;
-		value_type value;
-		unsigned char byte[ sizeof( value_type ) ];
-		byte_array( const value_type &v = 0 ) : value( v ){ }
-	};
-
 	// 構造体内のアライメントを1バイトに設定し，パッディングを禁止する
 #if defined( __MIST_MSVC__ )
 	#pragma pack( push, bmp_align, 1 )

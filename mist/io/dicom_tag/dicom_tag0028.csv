@@ -1,4 +1,4 @@
-//{0,0x0028,0x0000,UL,1,"""Group 0028 Length""",},//
+{0,0x0028,0x0000,UL,1,"""Group 0028 Length""",},//
 {0,0x0028,0x0002,US,1,"""Samples per Pixel""",},//
 {0,0x0028,0x0004,CS,1,"""Photometric Interpretation""",},//
 {0,0x0028,0x0005,US,1,"""Image Dimensions (RET)""",},//

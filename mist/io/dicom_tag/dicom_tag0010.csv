@@ -1,11 +1,11 @@
-//{0,0x0010,0x0000,UL,1,"""Group 0010 Length""",},//
+{0,0x0010,0x0000,UL,1,"""Group 0010 Length""",},//
 {0,0x0010,0x0010,PN,1,"""Patient's Name""",},//
 {0,0x0010,0x0020,LO,1,"""Patient ID""",},//
 {0,0x0010,0x0021,LO,1,"""Issuer of Patient ID""",},//
 {0,0x0010,0x0030,DA,1,"""Patient's Birth Date""",},//
 {0,0x0010,0x0032,TM,1,"""Patient's Birth Time""",},//
 {0,0x0010,0x0040,CS,1,"""Patient's Sex""",},//
-//{0,0x0010,0x0042,SH,1,"""Patient's Social Security Number""",},//
+{0,0x0010,0x0042,SH,1,"""Patient's Social Security Number""",},//
 {0,0x0010,0x0050,SQ,1,"""Patient's Insurance Plan Code Sequence""",},//
 {0,0x0010,0x0101,SQ,1,"""Patient's Primary Language Code Sequence""",},//
 {0,0x0010,0x0102,SQ,1,"""Patient's Primary Language Code Modifier Sequence""",},//

@@ -1,4 +1,4 @@
-//{0,0x0032,0x0000,UL,1,"""Group 0032 Length""",},//
+{0,0x0032,0x0000,UL,1,"""Group 0032 Length""",},//
 {0,0x0032,0x000A,CS,1,"""Study Status ID""",},//
 {0,0x0032,0x000C,CS,1,"""Study Priority ID""",},//
 {0,0x0032,0x0012,LO,1,"""Study ID Issuer""",},//

@@ -1,4 +1,4 @@
-//{0,0x7FE0,0x0000,UL,1,"""Group 7FE0 Length""",},//
+{0,0x7FE0,0x0000,UL,1,"""Group 7FE0 Length""",},//
 {0,0x7E0F,0x0010,OW,1,"""Pixel Data""",},//
 {0,0x7E0F,0x0010,OB,1,"""Pixel Data""",},//
 {0,0x7FE0,0x0010,OW,1,"""Pixel Data""",},//

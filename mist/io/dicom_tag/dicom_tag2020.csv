@@ -1,4 +1,4 @@
-//{0,0x2020,0x0000,UL,1,"""Group 2020 Length""",},//
+{0,0x2020,0x0000,UL,1,"""Group 2020 Length""",},//
 {0,0x2020,0x0010,US,1,"""Image Position""",},//
 {0,0x2020,0x0020,CS,1,"""Polarity""",},//
 {0,0x2020,0x0030,DS,1,"""Requested Image Size""",},//

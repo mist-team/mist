@@ -1,4 +1,4 @@
-//{0,0x0004,0x0000,UL,1,"""Group 0004 Length""",},//
+{0,0x0004,0x0000,UL,1,"""Group 0004 Length""",},//
 {0,0x0004,0x1130,CS,1,"""File-set ID""",},//
 {0,0x0004,0x1141,CS,8,"""File-set Descriptor File File ID""",},//
 {0,0x0004,0x1142,CS,1,"""Specific Character Set of File-set Descriptor File""",},//

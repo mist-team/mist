@@ -1,4 +1,4 @@
-//{0,0x2010,0x0000,UL,1,"""Group 2010 Length""",},//
+{0,0x2010,0x0000,UL,1,"""Group 2010 Length""",},//
 {0,0x2010,0x0010,ST,1,"""Image Display Format""",},//
 {0,0x2010,0x0030,CS,1,"""Annotation Display Format ID""",},//
 {0,0x2010,0x0040,CS,1,"""Film Orientation""",},//

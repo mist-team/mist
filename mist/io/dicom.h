@@ -6,12 +6,22 @@
 #include "../mist.h"
 #endif
 
+#ifndef __INCLUDE_MIST_ENDIAN__
+#include "../config/endian.h"
+#endif
+
 // カラー画像の設定を読み込む
 #ifndef __INCLUDE_MIST_COLOR_H__
 #include "../config/color.h"
 #endif
 
+#ifndef __INCLUDE_MIST_DICOM_TAG__
 #include "./dicom_tag.h"
+#endif
+
+#ifndef __INCLUDE_MIST_DICOM_INFO__
+#include "./dicom_info.h"
+#endif
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -21,85 +31,8 @@ _MIST_BEGIN
 // #define __SHOW_DICOM_TAG__
 // #define __SHOW_DICOM_UNKNOWN_TAG__
 
-namespace __dicom_controller__
+namespace dicom_controller
 {
-	template < class T >
-	union byte_array
-	{
-	private:
-		typedef T value_type;
-		value_type value;
-		unsigned char byte[ sizeof( value_type ) ];
-
-	public:
-		byte_array( ) : value( 0 ){ }
-		byte_array( const value_type v ) : value( v ){ }
-		byte_array( const byte_array &v ) : value( v.value ){ }
-		byte_array( const unsigned char *b )
-		{
-			for( size_type i = 0 ; i < sizeof( value_type ) ; i++ )
-			{
-				byte[ i ] = b[ i ];
-			}
-		}
-		unsigned char &operator[]( size_type index ){ return( byte[ index ] ); }
-		const unsigned char &operator[]( size_type index ) const { return( byte[ index ] ); }
-		const value_type get_value( ) const { return( value ); }
-		value_type set_value( const value_type &v ) { return( value = v ); }
-	};
-
-	inline bool _is_little_endian_( )
-	{
-		return( byte_array< unsigned short >( 1 )[ 0 ] == 1 );
-	}
-
-	inline bool _is_big_endian_( )
-	{
-		return( byte_array< unsigned short >( 1 )[ 0 ] == 0 );
-	}
-
-	template < class T >
-	void swap_bytes( byte_array< T > &bytes )
-	{
-		byte_array< T > tmp( bytes );
-		for( size_type i = 0 ; i < sizeof( T ) ; ++i )
-		{
-			bytes[ i ] = tmp[ sizeof( T ) - i - 1 ];
-		}
-	}
-
-	template < class T >
-	byte_array< T > to_current_endian( const byte_array< T > &bytes, bool is_little_endian )
-	{
-		static bool current_endian = _is_little_endian_( );
-		if( current_endian != is_little_endian )
-		{
-			byte_array< T > tmp( bytes );
-			swap_bytes( tmp );
-			return( tmp );
-		}
-		else
-		{
-			return( bytes );
-		}
-	}
-
-	template < class T >
-	byte_array< T > from_current_endian( const byte_array< T > &bytes, bool is_little_endian )
-	{
-		static bool current_endian = _is_little_endian_( );
-		if( current_endian != is_little_endian )
-		{
-			byte_array< T > tmp( bytes );
-			swap_bytes( tmp );
-			return( tmp );
-		}
-		else
-		{
-			return( bytes );
-		}
-	}
-
 	inline unsigned char *check_dicom_file( unsigned char *p, unsigned char *e )
 	{
 		if( p == NULL || p + 128 + 4 >= e )
@@ -677,335 +610,6 @@ namespace __dicom_controller__
 		return( true );
 	}
 
-	dicom_compress_type get_compress_type( const dicom_uid &uid )
-	{
-		dicom_compress_type compress_type = RAW;
-		if( uid.uid == "1.2.840.10008.1.2.4.50" )
-		{
-			// JPEG 基準（処理 1）：非可逆 JPEG 8 ビット画像圧縮用デフォルト転送構文
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.51" )
-		{
-			// JPEG 拡張（処理 2 & 4）：非可逆 JPEG 12 ビット画像圧縮用デフォルト転送構文（処理4のみ）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.52" )
-		{
-			// JPEG 拡張（処理 3 & 5）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.53" )
-		{
-			// JPEG スペクトル選択，非階層（処理 6 & 8）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.54" )
-		{
-			// JPEG スペクトル選択，非階層（処理 7 & 9）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.55" )
-		{
-			// JPEG 全数列，非階層（処理 10 & 12）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.56" )
-		{
-			// JPEG 全数列,非階層（処理 11 & 13）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.57" )
-		{
-			// JPEG 可逆,非階層（処理 14）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.58" )
-		{
-			// JPEG 可逆,非階層（処理 15）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.59" )
-		{
-			// JPEG 拡張,階層（処理 16 & 18）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.60" )
-		{
-			// JPEG 拡張,階層（処理 17 & 19）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.61" )
-		{
-			// JPEG スペクトル選択,階層（処理 20 & 22）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.62" )
-		{
-			// JPEG スペクトル選択，階層（処理 21 & 23）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.63" )
-		{
-			// JPEG 全数列，階層（処理 24 & 26）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.64" )
-		{
-			// JPEG 全数列，階層（処理 25 & 27）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.65" )
-		{
-			// JPEG 可逆，階層（処理 28）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.66" )
-		{
-			// JPEG 可逆，階層（処理 29）
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.70" )
-		{
-			// JPEG 可逆，非階層，一次予測（処理 14 [選択値 1]）：可逆 JPEG 画像圧縮用デフォルト転送構文
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.80" )
-		{
-			// JPEG-LS 可逆画像圧縮
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.81" )
-		{
-			// JPEG-LS 非可逆（準可逆）画像圧縮
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.90" )
-		{
-			// JPEG 2000 Image Compression (Lossless Only)
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.4.91" )
-		{
-			// JPEG 2000 Image Compression
-			compress_type = JPEG;
-		}
-		else if( uid.uid == "1.2.840.10008.1.2.5" )
-		{
-			compress_type = RLE;
-		}
-		return( compress_type );
-	}
-
-	class dicom_element
-	{
-	public:
-		dicom_tag tag;
-		unsigned char *data;
-		size_type num_bytes;
-
-		void create( size_type nbytes )
-		{
-			if( num_bytes != nbytes )
-			{
-				release();
-			}
-			num_bytes = nbytes;
-			data = new unsigned char[ num_bytes + 1 ];
-			data[ num_bytes ] = '\0';
-		}
-
-		void copy( unsigned char *p, size_type nbytes )
-		{
-			if( num_bytes != nbytes )
-			{
-				release();
-			}
-			num_bytes = nbytes;
-			data = new unsigned char[ num_bytes + 1 ];
-			data[ num_bytes ] = '\0';
-			memcpy( data, p, num_bytes );
-		}
-
-		void release()
-		{
-			delete [] data;
-			data = NULL;
-			num_bytes = 0;
-		}
-
-		bool operator <( const dicom_element &dicom ) const { return( tag < dicom.tag ); }
-		const dicom_element &operator =( const dicom_element &dicom )
-		{
-			if( &dicom != this )
-			{
-				tag = dicom.tag;
-				create( dicom.num_bytes );
-				memcpy( data, dicom.data, sizeof( unsigned char ) * num_bytes );
-			}
-			return( *this );
-		}
-
-		// 変換オペレータ
-		double         to_double( ) const { return( ( tag.vr == FD && num_bytes == 8 )? byte_array< double >( data ).get_value( )        : static_cast< double >        ( atof( to_string( ).c_str( ) ) ) ); }
-		float          to_float( )  const { return( ( tag.vr == FL && num_bytes == 4 )? byte_array< float >( data ).get_value( )         : static_cast< float >         ( atof( to_string( ).c_str( ) ) ) ); }
-		signed int     to_int( )    const { return( ( tag.vr == SL && num_bytes == 4 )? byte_array< signed int >( data ).get_value( )    : static_cast< signed int >    ( atoi( to_string( ).c_str( ) ) ) ); }
-		unsigned int   to_uint( )   const { return( ( tag.vr == UL && num_bytes == 4 )? byte_array< unsigned int >( data ).get_value( )  : static_cast< unsigned int >  ( atoi( to_string( ).c_str( ) ) ) ); }
-		signed short   to_short( )  const { return( ( tag.vr == SS && num_bytes == 2 )? byte_array< signed short >( data ).get_value( )  : static_cast< signed short >  ( atoi( to_string( ).c_str( ) ) ) ); }
-		unsigned short to_ushort( ) const { return( ( tag.vr == US && num_bytes == 2 )? byte_array< unsigned short >( data ).get_value( ): static_cast< unsigned short >( atoi( to_string( ).c_str( ) ) ) ); }
-		std::string    to_string( ) const
-		{
-			static char buff[ 128 ];
-			switch( tag.vr )
-			{
-			case FL:
-				sprintf( buff, "%f", byte_array< float >( data ).get_value( ) );
-				break;
-			case FD:
-				sprintf( buff, "%f", byte_array< double >( data ).get_value( ) );
-				break;
-			case SL:
-				sprintf( buff, "%d", byte_array< signed int >( data ).get_value( ) );
-				break;
-			case SS:
-				sprintf( buff, "%d", byte_array< signed short >( data ).get_value( ) );
-				break;
-			case UL:
-				sprintf( buff, "%d", byte_array< unsigned int >( data ).get_value( ) );
-				break;
-			case US:
-				sprintf( buff, "%d", byte_array< unsigned short >( data ).get_value( ) );
-				break;
-
-			default:
-				return( std::string( reinterpret_cast< char * >( data ) ) );
-				break;
-			}
-			return( buff );
-		}
-
-		void show_tag( ) const
-		{
-			if( data == NULL || num_bytes == 0 )
-			{
-				printf( "( %04x, %04x, %s, % 8d, %s ) = undefined!!\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str() );
-			}
-			else
-			{
-				switch( tag.vr )
-				{
-				case FL:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %f\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_float( ) );
-					break;
-				case FD:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %f\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_double( ) );
-					break;
-				case SL:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_int( ) );
-					break;
-				case SS:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_short( ) );
-					break;
-				case UL:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_uint( ) );
-					break;
-				case US:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_ushort( ) );
-					break;
-
-				case OB:
-				case OW:
-				case SQ:
-				case UN:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = ...\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str() );
-					break;
-
-				default:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %s\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), data );
-					break;
-				}
-			}
-		}
-
-		dicom_element( ) : tag( ), data( NULL ), num_bytes( 0 )
-		{
-		}
-		dicom_element( const dicom_element &dicom ) : tag( dicom.tag ), data( NULL ), num_bytes( 0 )
-		{
-			create( dicom.num_bytes );
-			memcpy( data, dicom.data, sizeof( unsigned char ) * num_bytes );
-		}
-		dicom_element( unsigned short group, unsigned short element, const unsigned char *d = NULL, size_type nbytes = 0 ) : tag( dicom_tag( construct_dicom_tag( group, element ), "", 1, "" ) ), data( NULL ), num_bytes( 0 )
-		{
-			create( nbytes );
-			memcpy( data, d, sizeof( unsigned char ) * num_bytes );
-		}
-		dicom_element( const dicom_tag &t, const unsigned char *d = NULL, size_type nbytes = 0 ) : tag( t ), data( NULL ), num_bytes( 0 )
-		{
-			create( nbytes );
-			memcpy( data, d, sizeof( unsigned char ) * num_bytes );
-		}
-	};
-
-
-	class dicom_tag_container : public std::set< dicom_element >
-	{
-	private:
-		typedef std::set< dicom_element > base;
-
-	public:
-		typedef base::iterator iterator;
-		typedef base::const_iterator const_iterator;
-
-	public:
-		bool add( const dicom_element &element )
-		{
-			std::pair< iterator, bool > ite = base::insert( element );
-			return( ite.second );
-		}
-
-		iterator append( const dicom_element &element )
-		{
-			std::pair< iterator, bool > ite = base::insert( element );
-			return( ite.first );
-		}
-
-		void erase( const dicom_element &element )
-		{
-			base::erase( element );
-		}
-
-		iterator find( unsigned short group, unsigned short element )
-		{
-			return( base::find( dicom_element( construct_dicom_tag( group, element ) ) ) );
-		}
-
-		const_iterator find( unsigned short group, unsigned short element ) const
-		{
-			return( base::find( dicom_element( construct_dicom_tag( group, element ) ) ) );
-		}
-
-		bool contain( unsigned short group, unsigned short element ) const
-		{
-			return( find( group, element ) != base::end( ) );
-		}
-
-		dicom_tag_container( )
-		{
-		}
-		dicom_tag_container( const dicom_tag_container &dicom ) : base( dicom )
-		{
-		}
-	};
-
-
-	// RLE圧縮ファイルのデコーダ
-	inline bool decode_RLE( unsigned char *pointer, unsigned char *end_pointer, dicom_element &element )
-	{
-		return( false );
-	}
-
-
 
 	inline bool is_sequence_separate_tag( const unsigned char *p, const unsigned char *e )
 	{
@@ -1034,7 +638,7 @@ namespace __dicom_controller__
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0xdd && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
 	}
 
-	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer, dicom_meta &meta_info )
+	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
 	{
 		difference_type numBytes = 0;
 		dicom_tag tag;
@@ -1049,7 +653,7 @@ namespace __dicom_controller__
 				// 認識不能なシーケンスタグ発見
 				return( NULL );
 			}
-			while( pointer + 8 < ep )
+			while( pointer + 8 <= ep )
 			{
 				if( is_sequence_tag_end( pointer, end_pointer ) )
 				{
@@ -1073,7 +677,7 @@ namespace __dicom_controller__
 						return( NULL );
 					}
 
-					while( pointer + 8 < epp )
+					while( pointer + 8 <= epp )
 					{
 						if( is_sequence_element_end( pointer, ep ) )
 						{
@@ -1082,7 +686,7 @@ namespace __dicom_controller__
 						}
 						else
 						{
-							pointer = process_dicom_tag( dicom, pointer, ep, meta_info );
+							pointer = process_dicom_tag( dicom, pointer, ep );
 							if( pointer == NULL )
 							{
 								return( NULL );
@@ -1104,34 +708,41 @@ namespace __dicom_controller__
 			{
 			case OB:
 			case OW:
-				switch( meta_info.compress_type )
 				{
-				case JPEG:
-					// 現在のところ未対応
-					printf( "This file includes JPEG compressed data.\n" );
-					return( NULL );
-					break;
-
-				case RLE:
-					// ランレングス圧縮
-					printf( "This file includes RLE compressed data.\n" );
+					unsigned char *p = pointer;
+					while( p + 8 <= end_pointer )
 					{
-						dicom_element element;
-						if( decode_RLE( pointer, end_pointer, element ) )
+						if( is_sequence_tag_end( p, end_pointer ) )
 						{
-							ite = dicom.append( element );
+							break;
 						}
 						else
 						{
-							return( NULL );
+							if( !is_sequence_separate_tag( p, end_pointer ) )
+							{
+								return( NULL );
+							}
+
+							p += 4;
+							numBytes = to_current_endian( byte_array< unsigned int >( p ), true ).get_value( );
+							p += 4 + numBytes;
+
+							if( numBytes < 0 || p > end_pointer )
+							{
+								return( NULL );
+							}
 						}
 					}
-					break;
-
-				case RAW:
-				default:
-					return( NULL );
-					break;
+					if( p < end_pointer )
+					{
+						numBytes = p - pointer;
+						ite = dicom.append( dicom_element( tag, pointer, numBytes ) );
+					}
+					else
+					{
+						// 圧縮シーケンスの終わりをうまく検出できなかった
+						return( NULL );
+					}
 				}
 				break;
 
@@ -1165,32 +776,7 @@ namespace __dicom_controller__
 					{
 						// DICOMの固有IDなので，文字列を変換する
 						dicom_uid uid = get_uid( pointer, numBytes );
-						if( tag.tag == 0x00020010 )
-						{
-							meta_info.compress_type = get_compress_type( uid );
-						}
-
 						ite = dicom.append( dicom_element( tag, reinterpret_cast< const unsigned char * >( uid.name.c_str( ) ), uid.name.size( ) ) );
-					}
-					break;
-
-				case OB:
-				case OW:
-					switch( meta_info.compress_type )
-					{
-					case JPEG:
-						// 現在のところ未対応
-						return( NULL );
-						break;
-
-					case RLE:
-						// ランレングス圧縮
-						break;
-
-					case RAW:
-					default:
-						ite = dicom.append( dicom_element( tag, pointer, numBytes ) );
-						break;
 					}
 					break;
 
@@ -1252,11 +838,10 @@ namespace __dicom_controller__
 		dicom.clear( );
 
 		bool ret = true;
-		dicom_meta meta_info( RAW );
 
 		while( pointer < end_pointer )
 		{
-			pointer = process_dicom_tag( dicom, pointer, end_pointer, meta_info );
+			pointer = process_dicom_tag( dicom, pointer, end_pointer );
 			if( pointer == NULL )
 			{
 				ret = false;
@@ -1286,15 +871,16 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 	typedef _pixel_converter_< T > pixel_converter;
 	typedef typename pixel_converter::color_type color_type;
 
-	__dicom_controller__::dicom_tag_container dicom;
-	__dicom_controller__::dicom_tag_container::iterator ite;
-	if( !__dicom_controller__::read_dicom_tags( dicom, filename ) )
+	dicom_controller::dicom_tag_container dicom;
+	dicom_controller::dicom_tag_container::iterator ite;
+	if( !dicom_controller::read_dicom_tags( dicom, filename ) )
 	{
 		return( false );
 	}
 
 	size_type height = 0;
 	size_type width  = 0;
+	size_type bitsAllocated = 8;
 	double window_level = 128;
 	double window_width = 256;
 	double resoX = 0.625;
@@ -1338,20 +924,26 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 		sscanf( ite->to_string( ).c_str( ), "%lf\\%lf", &resoX, &resoY );
 	}
 
+	ite = dicom.find( 0x0028, 0x0100 );
+	if( ite != dicom.end( ) )
+	{
+		bitsAllocated = ite->to_ushort( );
+	}
+
 	ite = dicom.find( 0x7fe0, 0x0010 );
 	if( ite != dicom.end( ) )
 	{
 		image.resize( width, height );
 		image.reso1( resoX );
 		image.reso2( resoY );
-		if( ite->tag.vr == __dicom_controller__::OB )
+		if( bitsAllocated == 8 )
 		{
 			unsigned char *data = ite->data;
 			double pix;
 			unsigned char pixel;
 			for( size_type i = 0 ; i < image.size( ) ; i++ )
 			{
-				pix = __dicom_controller__::byte_array< short >( data[ i ] ).get_value( );
+				pix = byte_array< short >( data[ i ] ).get_value( );
 				pix = ( ( pix - window_level ) / window_width + 0.5 ) * 255.0;
 				pix = pix > 255.0 ? 255.0 : pix;
 				pix = pix <   0.0 ?   0.0 : pix;
@@ -1359,14 +951,14 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 				image[ i ] = pixel_converter::convert_to( pixel, pixel, pixel );
 			}
 		}
-		else
+		else if( bitsAllocated == 16 )
 		{
 			short *data = reinterpret_cast< short * >( ite->data );
 			double pix;
 			unsigned char pixel;
 			for( size_type i = 0 ; i < image.size( ) ; i++ )
 			{
-				pix = __dicom_controller__::byte_array< short >( data[ i ] ).get_value( );
+				pix = byte_array< short >( data[ i ] ).get_value( );
 				pix = ( ( pix - window_level ) / window_width + 0.5 ) * 255.0;
 				pix = pix > 255.0 ? 255.0 : pix;
 				pix = pix <   0.0 ?   0.0 : pix;

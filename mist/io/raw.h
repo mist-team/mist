@@ -11,6 +11,10 @@
 #include "../config/color.h"
 #endif
 
+#ifndef __INCLUDE_MIST_ENDIAN__
+#include "../config/endian.h"
+#endif
+
 #include <iostream>
 #include <string>
 #include <zlib.h>
@@ -23,64 +27,6 @@ _MIST_BEGIN
 
 namespace __raw_controller__
 {
-	template < class T >
-	union byte_array
-	{
-	private:
-		typedef T value_type;
-		value_type value;
-		unsigned char byte[ sizeof( value_type ) ];
-
-	public:
-		byte_array( ) : value( 0 ){ }
-		byte_array( const value_type v ) : value( v ){ }
-		unsigned char &operator[]( size_t index ){ return( byte[index] ); }
-		const unsigned char &operator[]( size_t index ) const { return( byte[index] ); }
-		const value_type get_value( ) const { return( value ); }
-		value_type set_value( const value_type &v ) { return( value = v ); }
-	};
-
-	inline bool _is_little_endian_( )
-	{
-		return( byte_array< unsigned short >( 1 )[ 0 ] == 1 );
-	}
-
-	inline bool _is_big_endian_( )
-	{
-		return( byte_array< unsigned short >( 1 )[ 0 ] == 0 );
-	}
-
-	template < class T >
-	void swap_bytes( byte_array< T > &bytes )
-	{
-		byte_array< T > tmp( bytes );
-		for( size_t i = 0 ; i < sizeof( T ) ; ++i )
-		{
-			bytes[ i ] = tmp[ sizeof( T ) - i - 1 ];
-		}
-	}
-
-	template < class T >
-	void to_current_endian( byte_array< T > &bytes, bool is_little_endian )
-	{
-		static bool current_endian = _is_little_endian_( );
-		if( current_endian != is_little_endian )
-		{
-			swap_bytes( bytes );
-		}
-	}
-
-	template < class T >
-	void from_current_endian( byte_array< T > &bytes, bool is_little_endian )
-	{
-		static bool current_endian = _is_little_endian_( );
-		if( current_endian != is_little_endian )
-		{
-			swap_bytes( bytes );
-		}
-	}
-
-
 	template < class T, class Allocator >
 	struct raw_controller1
 	{

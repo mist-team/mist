@@ -1,4 +1,4 @@
-//{0,0x2030,0x0000,UL,1,"""Group 2030 Length""",},//
+{0,0x2030,0x0000,UL,1,"""Group 2030 Length""",},//
 {0,0x2030,0x0010,US,1,"""Annotation Position""",},//
 {0,0x2030,0x0020,LO,1,"""Text String""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

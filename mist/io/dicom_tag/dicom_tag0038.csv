@@ -1,4 +1,4 @@
-//{0,0x0038,0x0000,UL,1,"""Group 0038 Length""",},//
+{0,0x0038,0x0000,UL,1,"""Group 0038 Length""",},//
 {0,0x0038,0x0004,SQ,1,"""Referenced Patient Alias Sequence""",},//
 {0,0x0038,0x0008,CS,1,"""Visit Status ID""",},//
 {0,0x0038,0x0010,LO,1,"""Admissin ID""",},//
