@@ -54,32 +54,46 @@ namespace pixel_data
 //	template <>          struct gl_type_trait< double >        { _MIST_CONST( GLenum, gl_type, true  ); };
 //	template <>          struct gl_type_trait< long double >   { _MIST_CONST( GLenum, gl_type, true  ); };
 
+	template < bool color >
+	struct __glTexImage2D__
+	{
+		template < class T, class Allocator >
+		static void glTexImage2D( const array2< T, Allocator > &image )
+		{
+			::glTexImage2D(
+				GL_TEXTURE_2D, 0, 3,
+				static_cast< GLsizei >( image.width( ) ),
+				static_cast< GLsizei >( image.height( ) ),
+				0,
+				GL_LUMINANCE,
+				gl_type_trait< T >::gl_type,
+				static_cast< const GLvoid* >( &( image[0] ) )
+				);
+		}
+	};
+
+	template < >
+	struct __glTexImage2D__< true >
+	{
+		template < class T, class Allocator >
+		static void glTexImage2D( const array2< rgb< T >, Allocator > &image )
+		{
+			::glTexImage2D(
+							GL_TEXTURE_2D, 0, 3,
+							static_cast< GLsizei >( image.width( ) ),
+							static_cast< GLsizei >( image.height( ) ),
+							0,
+							GL_RGB,
+							gl_type_trait< T >::gl_type,
+							static_cast< const GLvoid* >( &( image[0] ) )
+						  );
+		}
+	};
+
 	template< class T, class Allocator >
 	void glTexImage2D( const array2< T, Allocator > &image )
 	{
-		::glTexImage2D(
-						GL_TEXTURE_2D, 0, 3,
-						static_cast< GLsizei >( image.width( ) ),
-						static_cast< GLsizei >( image.height( ) ),
-						0,
-						GL_LUMINANCE,
-						gl_type_trait< T >::gl_type,
-						static_cast< const GLvoid* >( &( image[0] ) )
-					  );
-	}
-
-	template< class T, class Allocator >
-	void glTexImage2D( const array2< rgb< T >, Allocator > &image )
-	{
-		::glTexImage2D(
-						GL_TEXTURE_2D, 0, 3,
-						static_cast< GLsizei >( image.width( ) ),
-						static_cast< GLsizei >( image.height( ) ),
-						0,
-						GL_RGB,
-						gl_type_trait< T >::gl_type,
-						static_cast< const GLvoid* >( &( image[0] ) )
-					  );
+		__glTexImage2D__< is_color< T >::value >::glTexImage2D( image );
 	}
 }
 

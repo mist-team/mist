@@ -3,7 +3,19 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "boolean_test"=".\boolean_test.dsp" - Package Owner=<4>
+Project: "binary_test"=".\binary_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "color_test"=".\color_test.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

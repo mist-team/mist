@@ -104,14 +104,15 @@ struct _pixel_converter_
 	}
 };
 
-#if __MIST_MSVC__ == 6
+#if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
 
 	#define IS_COLOR( type ) \
 		template < >\
 		struct is_color< rgb< type > >\
 		{\
-			_MIST_CONST( bool, value, true );\
+			enum{ value = true };\
 		};\
+
 
 	#define __PIXEL_CONVERTER__( type ) \
 		template < >\
@@ -128,7 +129,7 @@ struct _pixel_converter_
 			\
 			static color_type convert_from_pixel( const color_type &pixel )\
 			{\
-				return( pixel ) );\
+				return( pixel );\
 			}\
 		};\
 
