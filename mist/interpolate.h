@@ -23,27 +23,6 @@ _MIST_BEGIN
 // ç≈ãﬂñTå^ï‚ä‘
 namespace __nearest__
 {
-	template < class T, class Allocator >
-	inline typename array< T, Allocator >::value_type nearest___( const array< T, Allocator > &in, double x, double y, double z )
-	{
-		typedef typename array< T, Allocator >::size_type size_type;
-		return( in[ static_cast< size_type >( x + 0.5 ) ] );
-	}
-
-	template < class T, class Allocator >
-	inline typename array2< T, Allocator >::value_type nearest___( const array2< T, Allocator > &in, double x, double y, double z )
-	{
-		typedef typename array2< T, Allocator >::size_type size_type;
-		return( in( static_cast< size_type >( x + 0.5 ), static_cast< size_type >( y + 0.5 ) ) );
-	}
-
-	template < class T, class Allocator >
-	inline typename array3< T, Allocator >::value_type nearest___( const array3< T, Allocator > &in, double x, double y, double z )
-	{
-		typedef typename array2< T, Allocator >::size_type size_type;
-		return( in( static_cast< size_type >( x + 0.5 ), static_cast< size_type >( y + 0.5 ), static_cast< size_type >( z + 0.5 ) ) );
-	}
-
 	template < class Array1, class Array2 >
 	void interpolate( const Array1 &in, Array2 &out,
 						typename Array1::size_type thread_idx, typename Array1::size_type thread_numx,
@@ -65,18 +44,21 @@ namespace __nearest__
 		double sx = static_cast< double >( iw ) / static_cast< double >( ow );
 		double sy = static_cast< double >( ih ) / static_cast< double >( oh );
 		double sz = static_cast< double >( id ) / static_cast< double >( od );
-		double x, y, z;
+		size_type x, y, z;
 
 		for( k = thread_idz ; k < od ; k += thread_numz )
 		{
-			z = sz * k;
+			z = static_cast< size_type >( sz * k + 0.5 );
+			z = z < id ? z : id;
 			for( j = thread_idy ; j < oh ; j += thread_numy )
 			{
-				y = sy * j;
+				y = static_cast< size_type >( sy * j + 0.5 );
+				y = y < ih ? y : id;
 				for( i = thread_idx ; i < ow ; i += thread_numx )
 				{
-					x = sx * i;
-					out( i, j, k ) = static_cast< out_value_type >( nearest___( in, x, y, z ) );
+					x = static_cast< size_type >( sx * i + 0.5 );
+					x = x < iw ? x : id;
+					out( i, j, k ) = static_cast< out_value_type >( in( x, y, z ) );
 				}
 			}
 		}
@@ -705,11 +687,11 @@ namespace __interpolate_controller__
 		Mode interpolate_;
 
 	public:
-		void setup_parameters( const T1 &in, T2 &out, Mode interpolate_, size_type thread_id, size_type thread_num )
+		void setup_parameters( const T1 &in, T2 &out, Mode interpolate, size_type thread_id, size_type thread_num )
 		{
 			in_  = &in;
 			out_ = &out;
-			interpolate_ = interpolate_;
+			interpolate_ = interpolate;
 			thread_id_ = thread_id;
 			thread_num_ = thread_num;
 		}

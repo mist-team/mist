@@ -29,13 +29,29 @@ void image_test_window::cb_Open1(Fl_Menu_* o, void* v) {
 }
 
 inline void image_test_window::cb_Save_i(Fl_Menu_*, void*) {
-  const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*.*)", "" );
+  const char *filename = fl_file_chooser( "Save Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,pbm,pgm,ppm,pnm})", "" );
 if( filename == NULL ) return;
 
-write_dicom_test( filename );
+write_image_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );
 }
 void image_test_window::cb_Save(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Save_i(o,v);
+}
+
+inline void image_test_window::cb_Save1_i(Fl_Menu_*, void*) {
+  const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*)", "" );
+if( filename == NULL ) return;
+
+write_dicom_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );
+}
+void image_test_window::cb_Save1(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Save1_i(o,v);
 }
 
 inline void image_test_window::cb_Exit_i(Fl_Menu_*, void*) {
@@ -185,8 +201,8 @@ Fl_Menu_Item image_test_window::menu_[] = {
  {"Open &DICOM", 0,  (Fl_Callback*)image_test_window::cb_Open1, 0, 0, 0, 0, 14, 56},
  {0},
  {"&Save", 0,  0, 0, 192, 0, 0, 14, 56},
- {"Save &Image", 0,  0, 0, 0, 0, 0, 14, 56},
- {"Save &DICOM", 0,  (Fl_Callback*)image_test_window::cb_Save, 0, 0, 0, 0, 14, 56},
+ {"Save &Image", 0,  (Fl_Callback*)image_test_window::cb_Save, 0, 0, 0, 0, 14, 56},
+ {"Save &DICOM", 0,  (Fl_Callback*)image_test_window::cb_Save1, 0, 0, 0, 0, 14, 56},
  {0},
  {"&Exit", 0,  (Fl_Callback*)image_test_window::cb_Exit, 0, 0, 0, 0, 14, 56},
  {0},

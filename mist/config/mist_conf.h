@@ -2,6 +2,8 @@
 #define __INCLUDE_MIST_CONF_H__
 
 
+#include <iostream>
+
 
 // MIST名前空間を定義するためのマクロ
 #ifndef _MIST_BEGIN
@@ -93,11 +95,27 @@ _MIST_BEGIN
 
 #if _CHECK_ACCESS_VIOLATION_
 
+	inline void mist_debug_assertion( ptrdiff_t index )
+	{
+		::std::cout << "Access Violation at ( " << static_cast< int >( index ) << " )" << ::std::endl;
+	}
+
+	inline void mist_debug_assertion( ptrdiff_t index1, ptrdiff_t index2 )
+	{
+		::std::cout << "Access Violation at ( " << static_cast< int >( index1 ) << ", " << static_cast< int >( index2 ) << " )" << ::std::endl;
+	}
+
+	inline void mist_debug_assertion( ptrdiff_t index1, ptrdiff_t index2, ptrdiff_t index3 )
+	{
+		::std::cout << "Access Violation at ( " << static_cast< int >( index1 ) << ", " << static_cast< int >( index2 ) << ", " << static_cast< int >( index3 ) << " )" << ::std::endl;
+	}
+
+
 	#define _CHECK_ACCESS_VIOLATION1_( index ) \
 		if( index < 0 || index >= size_ )\
 		{\
 			static value_type dmy;\
-			std::cout << "Access Violation at ( " << index << " )" << std::endl;\
+			mist_debug_assertion( index );\
 			return( dmy );\
 		}\
 
@@ -105,7 +123,7 @@ _MIST_BEGIN
 		if( index1 < 0 || index1 >= size1_ || index2 < 0 || index2 >= size2_ )\
 		{\
 			static value_type dmy;\
-			std::cout << "Access Violation at ( " << index1 << ", " << index2 << " )" << std::endl;\
+			mist_debug_assertion( index1, index2 );\
 			return( dmy );\
 		}\
 
@@ -113,7 +131,7 @@ _MIST_BEGIN
 		if( index1 < 0 || index1 >= size1_ || index2 < 0 || index2 >= size2_ || index3 < 0 || index3 >= size3_ )\
 		{\
 			static value_type dmy;\
-			std::cout << "Access Violation at ( " << index1 << ", " << index2 << ", " << index3 << " )" << std::endl;\
+			mist_debug_assertion( index1, index2, index3 );\
 			return( dmy );\
 		}\
 

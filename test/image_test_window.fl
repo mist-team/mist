@@ -25,7 +25,7 @@ class image_test_window {open
         xywh {0 0 550 25} box FLAT_BOX
       } {
         submenu {} {
-          label {&File}
+          label {&File} open
           xywh {0 0 100 20}
         } {
           submenu {} {
@@ -62,14 +62,24 @@ Fl::wait( 0 );}
           } {
             menuitem {} {
               label {Save &Image}
+              callback {const char *filename = fl_file_chooser( "Save Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,pbm,pgm,ppm,pnm})", "" );
+if( filename == NULL ) return;
+
+write_image_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );}
               xywh {15 15 100 20}
             }
             menuitem {} {
               label {Save &DICOM}
-              callback {const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*.*)", "" );
+              callback {const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*)", "" );
 if( filename == NULL ) return;
 
-write_dicom_test( filename );}
+write_dicom_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );} selected
               xywh {25 25 100 20}
             }
           }
@@ -80,7 +90,7 @@ write_dicom_test( filename );}
           }
         }
         submenu {} {
-          label {&Edit} open
+          label {&Edit}
           xywh {0 0 100 20}
         } {
           menuitem {} {
@@ -175,7 +185,7 @@ write_dicom_test( filename );}
           }
           menuitem {} {
             label {Interlace Odd}
-            callback {interlace_test( true );} selected
+            callback {interlace_test( true );}
             xywh {40 40 100 20}
           }
         }
