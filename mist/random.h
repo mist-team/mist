@@ -59,14 +59,14 @@ namespace uniform
 		//! デフォルトコンストラクタ
 		//! 
 		random( ) :
-			pai_timed_by_2_( 6.283185307179586 ),
 			number_n_( 624 ),
 			number_m_( 397 ),
 			matrix_a_( 0x9908b0dfUL ),
 			upper_mask_( 0x80000000UL ),
 			lower_mask_( 0x7fffffffUL ),
 			mt_( number_n_ ),
-			mti_( number_n_ + 1 )
+			mti_( number_n_ + 1 ),
+			pai_timed_by_2_( 6.283185307179586 )
 		{
 		}
 
@@ -78,14 +78,14 @@ namespace uniform
 		//! @param[in] seed … 乱数のseed(これを用いてseed配列を作る)
 		//! 
 		random( const unsigned long& seed ) :
-			pai_timed_by_2_( 6.283185307179586 ),
 			number_n_( 624 ),
 			number_m_( 397 ),
 			matrix_a_( 0x9908b0dfUL ),
 			upper_mask_( 0x80000000UL ),
 			lower_mask_( 0x7fffffffUL ),
 			mt_( number_n_ ),
-			mti_( number_n_ + 1 )
+			mti_( number_n_ + 1 ),
+			pai_timed_by_2_( 6.283185307179586 )
 		{
 			init( seed );
 		}
@@ -98,14 +98,14 @@ namespace uniform
 		//! @param[in] seed_array … 乱数のseed配列
 		//! 
 		random( const array< unsigned long >& seed_array ) :
-			pai_timed_by_2_( 6.283185307179586 ),
 			number_n_( 624 ),
 			number_m_( 397 ),
 			matrix_a_( 0x9908b0dfUL ),
 			upper_mask_( 0x80000000UL ),
 			lower_mask_( 0x7fffffffUL ),
 			mt_( number_n_ ),
-			mti_( number_n_ + 1 )
+			mti_( number_n_ + 1 ),
+			pai_timed_by_2_( 6.283185307179586 )
 		{
 			init( seed_array );
 		}

@@ -347,9 +347,9 @@ public:
 	value_type operator( )( double t )
 	{
 		// 曲線を構築するのに必要な点数が存在しない場合
-		if( size( ) < 3 || p1_.size( ) < size( ) )
+		if( base::size( ) < 3 || p1_.size( ) < base::size( ) )
 		{
-			return( empty( ) ? value_type( ) : at( 0 ) );
+			return( base::empty( ) ? value_type( ) : base::at( 0 ) );
 		}
 
 		if( t < 0.0 )
