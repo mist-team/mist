@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <mist/mist.h>
-#include <mist/matrix.h>
+//#include <mist/matrix.h>
 #include <mist/matrix_et.h>
 
 #ifndef WIN32
@@ -51,7 +51,7 @@ private:
 }; // timer
 
 
-/*
+//*
 int main( )
 {
 	using namespace std;
@@ -66,7 +66,7 @@ int main( )
 	mist::matrix< double > dmy;
 
 	// transpose( mat1 + mat2 * mat3 + mat4 )
-	long i, j, k, l, loop = 1000;
+	long i, j, k, l, loop = 100;
 	{
 		timer t;
 		double tmp;

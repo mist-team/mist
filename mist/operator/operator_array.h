@@ -114,8 +114,8 @@ template < class T, class Allocator >
 inline array< T, Allocator > operator -( const array< T, Allocator > &a )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
-	array< T, Allocator > o( a );
-	for( size_type i = 0 ; i < o.size( ) ; i++ ) o[i] = -o[i];
+	array< T, Allocator > o( a.size( ) );
+	for( size_type i = 0 ; i < o.size( ) ; i++ ) o[i] = -a[i];
 	return( o );
 }
 
@@ -124,18 +124,7 @@ inline array< T, Allocator > operator -( const array< T, Allocator > &a )
 template < class T, class Allocator >
 inline array< T, Allocator > operator +( const array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
-#ifdef _CHECK_ARRAY_OPERATION_
-	if( a1.size( ) != a2.size( ) )
-	{
-		// ‘«‚µZ‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't add arrays." << ::std::endl;
-		return( a1 );
-	}
-#endif
-	array< T, Allocator > a = a1;
-	typename array< T, Allocator >::size_type i;
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] += a2[i];
-	return( a );
+	return( array< T, Allocator >( a1 ) += a2 );
 }
 
 
@@ -143,19 +132,7 @@ inline array< T, Allocator > operator +( const array< T, Allocator > &a1, const 
 template < class T, class Allocator >
 inline array< T, Allocator > operator -( const array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
-#ifdef _CHECK_ARRAY_OPERATION_
-	if( a1.size( ) != a2.size( ) )
-	{
-		// ˆø‚«Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't subtract arrays." << ::std::endl;
-		return( a1 );
-	}
-#endif
-
-	array< T, Allocator > a = a1;
-	typename array< T, Allocator >::size_type i;
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] -= a2[i];
-	return( a );
+	return( array< T, Allocator >( a1 ) -= a2 );
 }
 
 
@@ -163,129 +140,64 @@ inline array< T, Allocator > operator -( const array< T, Allocator > &a1, const 
 template < class T, class Allocator >
 inline array< T, Allocator > operator *( const array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
-#ifdef _CHECK_ARRAY_OPERATION_
-	if( a1.size( ) != a2.size( ) )
-	{
-		// Š|‚¯Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't multiply arrays." << ::std::endl;
-		return( a1 );
-	}
-#endif
-
-	array< T, Allocator > a( a1 );
-	typename array< T, Allocator >::size_type i;
-
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] *= a2[i];
-
-	return( a );
+	return( array< T, Allocator >( a1 ) *= a2 );
 }
 
 // Š„‚èZ
 template < class T, class Allocator >
 inline array< T, Allocator > operator /( const array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
-#ifdef _CHECK_ARRAY_OPERATION_
-	if( a1.size( ) != a2.size( ) )
-	{
-		// Š„‚èZ‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't divide arrays." << ::std::endl;
-		return( a1 );
-	}
-#endif
-
-	array< T, Allocator > a( a1 );
-	typename array< T, Allocator >::size_type i;
-
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] /= a2[i];
-
-	return( a );
+	return( array< T, Allocator >( a1 ) /= a2 );
 }
 
 // ’è”‚Æ‚Ì‘«‚µZ
 template < class T, class Allocator >
-inline array< T, Allocator > operator +( const array< T, Allocator > &m, typename array< T, Allocator >::value_type val )
+inline array< T, Allocator > operator +( const array< T, Allocator > &a, typename array< T, Allocator >::value_type val )
 {
-	array< T, Allocator > a( m );
-	typename array< T, Allocator >::size_type i;
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] += val;
-
-	return( a );
+	return( array< T, Allocator >( a ) += val );
 }
 
 template < class T, class Allocator >
-inline array< T, Allocator > operator +( typename array< T, Allocator >::value_type val, const array< T, Allocator > &m )
+inline array< T, Allocator > operator +( typename array< T, Allocator >::value_type val, const array< T, Allocator > &a )
 {
-	array< T, Allocator > a( m );
-	typename array< T, Allocator >::size_type i;
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] += val;
-
-	return( a );
+	return( array< T, Allocator >( a ) += val );
 }
 
 
 
 // ’è”‚Æ‚Ìˆø‚«
 template < class T, class Allocator >
-inline array< T, Allocator > operator -( const array< T, Allocator > &m, typename array< T, Allocator >::value_type val )
+inline array< T, Allocator > operator -( const array< T, Allocator > &a, typename array< T, Allocator >::value_type val )
 {
-	array< T, Allocator > a( m );
-	typename array< T, Allocator >::size_type i;
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] -= val;
-
-	return( a );
+	return( array< T, Allocator >( a ) -= val );
 }
 
 template < class T, class Allocator >
-inline array< T, Allocator > operator -( typename array< T, Allocator >::value_type val, const array< T, Allocator > &m )
+inline array< T, Allocator > operator -( typename array< T, Allocator >::value_type val, const array< T, Allocator > &a )
 {
-	array< T, Allocator > a( m.size( ) );
-	typename array< T, Allocator >::size_type i;
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] = val - a[i];
-
-	return( a );
+	return( array< T, Allocator >( a ) -= val );
 }
 
 
 // ’è”‚Æ‚ÌŠ|‚¯Z
 template < class T, class Allocator >
-inline array< T, Allocator > operator *( const array< T, Allocator > &m, typename array< T, Allocator >::value_type val )
+inline array< T, Allocator > operator *( const array< T, Allocator > &a, typename array< T, Allocator >::value_type val )
 {
-	array< T, Allocator > a( m );
-	typename array< T, Allocator >::size_type i;
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] *= val;
-
-	return( a );
+	return( array< T, Allocator >( a ) *= val );
 }
 
 template < class T, class Allocator >
-inline array< T, Allocator > operator *( typename array< T, Allocator >::value_type val, const array< T, Allocator > &m )
+inline array< T, Allocator > operator *( typename array< T, Allocator >::value_type val, const array< T, Allocator > &a )
 {
-	array< T, Allocator > a( m );
-	typename array< T, Allocator >::size_type i;
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] *= val;
-
-	return( a );
+	return( array< T, Allocator >( a ) *= val );
 }
 
 
 // ’è”‚Æ‚ÌŠ„‚è
 template < class T, class Allocator >
-inline array< T, Allocator > operator /( const array< T, Allocator > &m, typename array< T, Allocator >::value_type val )
+inline array< T, Allocator > operator /( const array< T, Allocator > &a, typename array< T, Allocator >::value_type val )
 {
-#ifdef _CHECK_ARRAY_OPERATION_
-	if( val == 0 )
-	{
-		// ƒ[ƒœZ”­¶
-		::std::cout << "zero division occured." << ::std::endl;
-		return( a1 );
-	}
-#endif
-
-	array< T, Allocator > a( m );
-	typename array< T, Allocator >::size_type i;
-	for( i = 0 ; i < a.size( ) ; i++ ) a[i] /= val;
-
-	return( a );
+	return( array< T, Allocator >( a ) /= val );
 }
 
 #endif // __INCLUDE_MIST_OPERATOR_ARRAY__
