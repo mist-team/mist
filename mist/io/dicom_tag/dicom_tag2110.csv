@@ -1,0 +1,6 @@
+//0x2110,0x0000,UL,1,"""Group 2110 Length""",//
+0x2110,0x0010,CS,1,"""Printer Status""",//
+0x2110,0x0020,CS,1,"""Printer Status Info""",//
+0x2110,0x0030,LO,1,"""Printer Name""",//
+0x2110,0x0099,SH,1,"""Print Queue ID""",//
+0x0000,0x0000,UNKNOWN,0,"""Data End""",//

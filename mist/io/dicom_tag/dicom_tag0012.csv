@@ -1,0 +1,11 @@
+0x0012,0x0010,LO,1,"""Clinical Trial Sponsor Name""",//
+0x0012,0x0020,LO,1,"""Clinical Trial Protocol ID""",//
+0x0012,0x0021,LO,1,"""Clinical Trial Protocol Name""",//
+0x0012,0x0030,LO,1,"""Clinical Trial Site ID""",//
+0x0012,0x0031,LO,1,"""Clinical Trial Site Name""",//
+0x0012,0x0040,LO,1,"""Clinical Trial Subject ID""",//
+0x0012,0x0042,LO,1,"""Clinical Trial Subject Reading ID""",//
+0x0012,0x0050,LO,1,"""Clinical Trial Time Point ID""",//
+0x0012,0x0051,ST,1,"""Clinical Trial Time Point Description""",//
+0x0012,0x0060,LO,1,"""Clinical Trial Coordinating Center Name""",//
+0x0000,0x0000,UNKNOWN,0,"""Data End""",//

@@ -1,0 +1,47 @@
+0x3006,0x0002,SH,1,"""Structure Set Label""",//
+0x3006,0x0004,LO,1,"""Structure Set Name""",//
+0x3006,0x0006,ST,1,"""Structure Set Description""",//
+0x3006,0x0008,DA,1,"""Structure Set Date""",//
+0x3006,0x0009,TM,1,"""Structure Set Time""",//
+0x3006,0x0010,SQ,1,"""Referenced Frame of Reference Sequence""",//
+0x3006,0x0012,SQ,1,"""RT Referenced Study Sequence""",//
+0x3006,0x0014,SQ,1,"""RT Referenced Series Sequence""",//
+0x3006,0x0016,SQ,1,"""Contour Image Sequence""",//
+0x3006,0x0020,SQ,1,"""Structure Set ROI Sequence""",//
+0x3006,0x0022,IS,1,"""ROI Number""",//
+0x3006,0x0024,UI,1,"""Referenced Frame of Reference UID""",//
+0x3006,0x0026,LO,1,"""ROI Name""",//
+0x3006,0x0028,ST,1,"""ROI Description""",//
+0x3006,0x002A,IS,3,"""ROI Display Color""",//
+0x3006,0x002C,DS,1,"""ROI Volume""",//
+0x3006,0x0030,SQ,1,"""RT Related ROI Sequence""",//
+0x3006,0x0033,CS,1,"""RT ROI Relationship""",//
+0x3006,0x0036,CS,1,"""ROI Generation Algorithm""",//
+0x3006,0x0038,LO,1,"""ROI Generation Description""",//
+0x3006,0x0039,SQ,1,"""ROI Contour Sequence""",//
+0x3006,0x0040,SQ,1,"""Contour Sequence""",//
+0x3006,0x0042,CS,1,"""Contour Geometric Type""",//
+0x3006,0x0044,DS,1,"""Contour Slab Thickness""",//
+0x3006,0x0045,DS,3,"""Contour Offset Vector""",//
+0x3006,0x0046,IS,1,"""Number of Contour Points""",//
+0x3006,0x0048,IS,1,"""Contour Number""",//
+0x3006,0x0049,IS,-1,"""Attached Contours""",//
+0x3006,0x0050,DS,-1,"""Contour Data""",//
+0x3006,0x0080,SQ,1,"""RT ROI Observations Sequence""",//
+0x3006,0x0082,IS,1,"""Observation Number""",//
+0x3006,0x0084,IS,1,"""Referenced ROI Number""",//
+0x3006,0x0085,SH,1,"""ROI Observation Label""",//
+0x3006,0x0086,SQ,1,"""RT ROI Identification Code Sequence""",//
+0x3006,0x0088,ST,1,"""ROI Observation Description""",//
+0x3006,0x00A0,SQ,1,"""Related RT ROI Observations Sequence""",//
+0x3006,0x00A4,CS,1,"""RT ROI Interpreted Type""",//
+0x3006,0x00A6,PN,1,"""ROI Interpreter""",//
+0x3006,0x00B0,SQ,1,"""ROI Physical Properties Sequence""",//
+0x3006,0x00B2,CS,1,"""ROI Physical Property""",//
+0x3006,0x00B4,DS,1,"""ROI Physical Property Value""",//
+0x3006,0x00C0,SQ,1,"""Frame of Reference Relationship Sequence""",//
+0x3006,0x00C2,UI,1,"""Related Frame of Reference UID""",//
+0x3006,0x00C4,CS,1,"""Frame of Reference Transformation Type""",//
+0x3006,0x00C6,DS,16,"""Frame of Reference Transformation Matrix""",//
+0x3006,0x00C8,LO,1,"""Frame of Reference Transformation Comment""",//
+0x0000,0x0000,UNKNOWN,0,"""Data End""",//

@@ -1,0 +1,33 @@
+//0x6000,0x0000,UL,1,"""Group 6000 Length""",//
+0x6000,0x0010,US,1,"""Overlay Rows""",//
+0x6000,0x0011,US,1,"""Overlay Columns""",//
+0x6000,0x0012,US,1,"""Overlay Planes""",//
+0x6000,0x0015,IS,1,"""Number of Frames in Overlay""",//
+0x6000,0x0022,LO,1,"""Overlay Description""",//
+0x6000,0x0040,CS,1,"""Overlay Type""",//
+0x6000,0x0045,LO,1,"""Overlay Subtype""",//
+0x6000,0x0050,SS,2,"""Overlay Origin""",//
+0x6000,0x0051,US,1,"""Image Frame Origin""",//
+0x6000,0x0052,US,1,"""Overlay Plane Origin""",//
+0x6000,0x0060,SH,1,"""Compression Code (RET)""",//
+0x6000,0x0100,US,1,"""Bits Allocated""",//
+0x6000,0x0102,US,1,"""Bit Position""",//
+0x6000,0x0110,SH,1,"""Overlay Format (RET)""",//
+0x6000,0x0200,US,1,"""Overlay Location (RET)""",//
+0x6000,0x1001,CS,1,"""Overlay Activation Layer""",//
+0x6000,0x1100,US,1,"""Overlay Descriptor - Gray(RET)""",//
+0x6000,0x1101,US,1,"""Overlay Descriptor - Red(RET)""",//
+0x6000,0x1102,US,1,"""Overlay Descriptor - Green(RET)""",//
+0x6000,0x1103,US,1,"""Overlay Descriptor - Blue(RET)""",//
+0x6000,0x1200,US,-1,"""Overlays - Gray(RET)""",//
+0x6000,0x1201,US,-1,"""Overlays - Red(RET)""",//
+0x6000,0x1202,US,-1,"""Overlays - Green(RET)""",//
+0x6000,0x1203,US,-1,"""Overlays - Blue(RET)""",//
+0x6000,0x1301,IS,1,"""ROI Area""",//
+0x6000,0x1302,DS,1,"""ROI Mean""",//
+0x6000,0x1303,DS,1,"""ROI Standard Deviation""",//
+0x6000,0x1500,LO,1,"""Overlay Label""",//
+0x6000,0x3000,OW,1,"""Overlay Data""",//
+0x6000,0x3000,OB,1,"""Overlay Data""",//
+0x6000,0x4000,SH,1,"""Group 6000 Comments (RET)""",//
+0x0000,0x0000,UNKNOWN,0,"""Data End""",//

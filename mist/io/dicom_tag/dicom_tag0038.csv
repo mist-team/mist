@@ -1,0 +1,23 @@
+//0x0038,0x0000,UL,1,"""Group 0038 Length""",//
+0x0038,0x0004,SQ,1,"""Referenced Patient Alias Sequence""",//
+0x0038,0x0008,CS,1,"""Visit Status ID""",//
+0x0038,0x0010,LO,1,"""Admissin ID""",//
+0x0038,0x0011,LO,1,"""Issuer of Admission ID""",//
+0x0038,0x0016,LO,1,"""Route of Admissions""",//
+0x0038,0x001A,DA,1,"""Scheduled Admissin Date""",//
+0x0038,0x001B,TM,1,"""Scheduled Adission Time""",//
+0x0038,0x001C,DA,1,"""Scheduled Discharge Date""",//
+0x0038,0x001D,TM,1,"""Scheduled Discharge Time""",//
+0x0038,0x001E,LO,1,"""Scheduled Patient Institution Residence""",//
+0x0038,0x0020,DA,1,"""Admitting Date""",//
+0x0038,0x0021,TM,1,"""Admitting Time""",//
+0x0038,0x0030,DA,1,"""Discharge Date""",//
+0x0038,0x0032,TM,1,"""Discharge Time""",//
+0x0038,0x0040,LO,1,"""Discharge Diagnosis Description""",//
+0x0038,0x0044,SQ,1,"""Discharge Diagnosis Code Sequence""",//
+0x0038,0x0050,LO,1,"""Special Needs""",//
+0x0038,0x0300,LO,1,"""Current Patient Location""",//
+0x0038,0x0400,LO,1,"""Patient's Institution Residence""",//
+0x0038,0x0500,LO,1,"""Patient State""",//
+0x0038,0x4000,LT,1,"""Visit Comments""",//
+0x0000,0x0000,UNKNOWN,0,"""Data End""",//

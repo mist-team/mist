@@ -1,0 +1,232 @@
+0x300A,0x0002,SH,1,"""RT Plan Label""",//
+0x300A,0x0003,LO,1,"""RT Plan Name""",//
+0x300A,0x0004,ST,1,"""RT Plan Description""",//
+0x300A,0x0006,DA,1,"""RT Plan Date""",//
+0x300A,0x0007,TM,1,"""RT Plan Time""",//
+0x300A,0x0009,LO,-1,"""Treatment Protocols""",//
+0x300A,0x000A,CS,1,"""Treatment Intent""",//
+0x300A,0x000B,LO,-1,"""Treatment Sites""",//
+0x300A,0x000C,CS,1,"""RT Plan Geometry""",//
+0x300A,0x000E,ST,1,"""Prescription Description""",//
+0x300A,0x0010,SQ,1,"""Dose Reference Sequence""",//
+0x300A,0x0012,IS,1,"""Dose Reference Number""",//
+0x300A,0x0014,CS,1,"""Dose Reference Structure Type""",//
+0x300A,0x0015,CS,1,"""Nominal Beam Energy Unit""",//
+0x300A,0x0016,LO,1,"""Dose Reference Description""",//
+0x300A,0x0018,DS,3,"""Dose Reference Point Coordinates""",//
+0x300A,0x001A,DS,1,"""Nominal Prior Dose""",//
+0x300A,0x0020,CS,1,"""Dose Reference Type""",//
+0x300A,0x0021,DS,1,"""Constraint Weight""",//
+0x300A,0x0022,DS,1,"""Delivery Warning Dose""",//
+0x300A,0x0023,DS,1,"""Delivery Maximum Dose""",//
+0x300A,0x0025,DS,1,"""Target Minimum Dose""",//
+0x300A,0x0026,DS,1,"""Target Prescription Dose""",//
+0x300A,0x0027,DS,1,"""Target Maximum Dose""",//
+0x300A,0x0028,DS,1,"""Target Underdose Volume Fraction""",//
+0x300A,0x002A,DS,1,"""Organ at Risk Full-volume Dose""",//
+0x300A,0x002B,DS,1,"""Organ at Risk Limit Dose""",//
+0x300A,0x002C,DS,1,"""Organ at Risk Maximum Dose""",//
+0x300A,0x002D,DS,1,"""Organ at Risk Overdose Volume Fraction""",//
+0x300A,0x0040,SQ,1,"""Tolerance Table Sequence""",//
+0x300A,0x0042,IS,1,"""Tolerance Table Number""",//
+0x300A,0x0043,SH,1,"""Tolerance Table Label""",//
+0x300A,0x0044,DS,1,"""Gantry Angle Tolerance""",//
+0x300A,0x0046,DS,1,"""Beam Limiting Device Angle Tolerance""",//
+0x300A,0x0048,SQ,1,"""Beam Limiting Device Tolerance Sequence""",//
+0x300A,0x004A,DS,1,"""Beam Limiting Device Position Tolerance""",//
+0x300A,0x004C,DS,1,"""Patient Support Angle Tolerance""",//
+0x300A,0x004E,DS,1,"""Table Top Eccentric Angle Tolerance""",//
+0x300A,0x0051,DS,1,"""Table Top Vertical Position Tolerance""",//
+0x300A,0x0052,DS,1,"""Table Top Longitudinal Position Tolerance""",//
+0x300A,0x0053,DS,1,"""Table Top Lateral Position Tolerance""",//
+0x300A,0x0055,CS,1,"""RT Plan Relationship""",//
+0x300A,0x0070,SQ,1,"""Fraction Group Sequence""",//
+0x300A,0x0071,IS,1,"""Fraction Group Number""",//
+0x300A,0x0078,IS,1,"""Number of Fractions Planned""",//
+0x300A,0x0079,IS,1,"""Number of Fraction Pattern Digits Per Day""",//
+0x300A,0x007A,IS,1,"""Repeat Fraction Cycle Length""",//
+0x300A,0x007B,LT,1,"""Fraction Pattern""",//
+0x300A,0x0080,IS,1,"""Number of Beams""",//
+0x300A,0x0082,DS,3,"""Beam Dose Specification Point""",//
+0x300A,0x0084,DS,1,"""Beam Dose""",//
+0x300A,0x0086,DS,1,"""Beam Meterset""",//
+0x300A,0x00A0,IS,1,"""Number of Brachy Application Setups""",//
+0x300A,0x00A2,DS,3,"""Brachy Application Setup Dose Specification Point""",//
+0x300A,0x00A4,DS,1,"""Brachy Application Setup Dose""",//
+0x300A,0x00B0,SQ,1,"""Beam Sequence""",//
+0x300A,0x00B2,SH,1,"""Treatment Machine Name""",//
+0x300A,0x00B3,CS,1,"""Primary Dosimeter Unit""",//
+0x300A,0x00B4,DS,1,"""Source-Axis Distance""",//
+0x300A,0x00B6,SQ,1,"""Beam Limiting Device Sequence""",//
+0x300A,0x00B8,CS,1,"""RT Beam Limiting Device Type""",//
+0x300A,0x00BA,DS,1,"""Source to Beam Limiting Device Distance""",//
+0x300A,0x00BC,IS,1,"""Number of Leaf/Jaw Pairs""",//
+0x300A,0x00BE,DS,-1,"""Leaf Position Boundaries""",//
+0x300A,0x00C0,IS,1,"""Beam Number""",//
+0x300A,0x00C2,LO,1,"""Beam Name""",//
+0x300A,0x00C3,ST,1,"""Beam Description""",//
+0x300A,0x00C4,CS,1,"""Beam Type""",//
+0x300A,0x00C6,CS,1,"""Radiation Type""",//
+0x300A,0x00C7,CS,1,"""High-Dose Technique Type""",//
+0x300A,0x00C8,IS,1,"""Reference Image Number""",//
+0x300A,0x00CA,SQ,1,"""Planned Verification Image Sequence""",//
+0x300A,0x00CC,LO,-1,"""Imaging Device-Specific Acquisition Parameters""",//
+0x300A,0x00CE,CS,1,"""Treatment Delivery Type""",//
+0x300A,0x00D0,IS,1,"""Number of Wedges""",//
+0x300A,0x00D1,SQ,1,"""Wedge Sequence""",//
+0x300A,0x00D2,IS,1,"""Wedge Number""",//
+0x300A,0x00D3,CS,1,"""Wedge Type""",//
+0x300A,0x00D4,SH,1,"""Wedge ID""",//
+0x300A,0x00D5,IS,1,"""Wedge Angle""",//
+0x300A,0x00D6,DS,1,"""Wedge Factor""",//
+0x300A,0x00D8,DS,1,"""Wedge Orientation""",//
+0x300A,0x00DA,DS,1,"""Source to Wedge Tray Distance""",//
+0x300A,0x00E0,IS,1,"""Number of Compensators""",//
+0x300A,0x00E1,SH,1,"""Material ID""",//
+0x300A,0x00E2,DS,1,"""Total Compensator Tray Factor""",//
+0x300A,0x00E3,SQ,1,"""Compensator Sequence""",//
+0x300A,0x00E4,IS,1,"""Compensator Number""",//
+0x300A,0x00E5,SH,1,"""Compensator ID""",//
+0x300A,0x00E6,DS,1,"""Source to Compensator Tray Distance""",//
+0x300A,0x00E7,IS,1,"""Compensator Rows""",//
+0x300A,0x00E8,IS,1,"""Compensator Columns""",//
+0x300A,0x00E9,DS,2,"""Compensator Pixel Spacing""",//
+0x300A,0x00EA,DS,2,"""Compensator Position""",//
+0x300A,0x00EB,DS,-1,"""Compensator Transmission Data""",//
+0x300A,0x00EC,DS,-1,"""Compensator Thickness Data""",//
+0x300A,0x00ED,IS,1,"""Number of Boli""",//
+0x300A,0x00EE,CS,1,"""Compensator Type""",//
+0x300A,0x00F0,IS,1,"""Number of Blocks""",//
+0x300A,0x00F2,DS,1,"""Total Block Tray Factor""",//
+0x300A,0x00F4,SQ,1,"""Block Sequence""",//
+0x300A,0x00F5,SH,1,"""Block Tray ID""",//
+0x300A,0x00F6,DS,1,"""Source to Block Tray Distance""",//
+0x300A,0x00F8,CS,1,"""Block Type""",//
+0x300A,0x00FA,CS,1,"""Block Divergence""",//
+0x300A,0x00FB,CS,1,"""Block Mounting Position""",//
+0x300A,0x00FC,IS,1,"""Block Number""",//
+0x300A,0x00FE,LO,1,"""Block Name""",//
+0x300A,0x0100,DS,1,"""Block Thickness""",//
+0x300A,0x0102,DS,1,"""Block Transmission""",//
+0x300A,0x0104,IS,1,"""Block Number of Points""",//
+0x300A,0x0106,DS,-1,"""Block Data""",//
+0x300A,0x0107,SQ,1,"""Applicator Sequence""",//
+0x300A,0x0108,SH,1,"""Applicator ID""",//
+0x300A,0x0109,CS,1,"""Applicator Type""",//
+0x300A,0x010A,LO,1,"""Applicator Description""",//
+0x300A,0x010C,DS,1,"""Cumulative Dose Reference Coefficient""",//
+0x300A,0x010E,DS,1,"""Final Cumulative Meterset Weight""",//
+0x300A,0x0110,IS,1,"""Number of Control Points""",//
+0x300A,0x0111,SQ,1,"""Control Point Sequence""",//
+0x300A,0x0112,IS,1,"""Control Point Index""",//
+0x300A,0x0114,DS,1,"""Nominal Beam Energy""",//
+0x300A,0x0115,DS,1,"""Dose Rate Set""",//
+0x300A,0x0116,SQ,1,"""Wedge Position Sequence""",//
+0x300A,0x0118,CS,1,"""Wedge Position""",//
+0x300A,0x011A,SQ,1,"""Beam Limiting Device Position Sequence""",//
+0x300A,0x011C,DS,-1,"""Leaf/Jaw Positions""",//
+0x300A,0x011E,DS,1,"""Gantry Angle""",//
+0x300A,0x011F,CS,1,"""Gantry Rotation Direction""",//
+0x300A,0x0120,DS,1,"""Beam Limiting Device Angle""",//
+0x300A,0x0121,CS,1,"""Beam Limiting Device Rotation Direction""",//
+0x300A,0x0122,DS,1,"""Patient Support Angle""",//
+0x300A,0x0123,CS,1,"""Patient Support Rotation Direction""",//
+0x300A,0x0124,DS,1,"""Table Top Eccentric Axis Distance""",//
+0x300A,0x0125,DS,1,"""Table Top Eccentric Angle""",//
+0x300A,0x0126,CS,1,"""Table Top Eccentric Rotation Direction""",//
+0x300A,0x0128,DS,1,"""Table Top Vertical Position""",//
+0x300A,0x0129,DS,1,"""Table Top Longitudinal Position""",//
+0x300A,0x012A,DS,1,"""Table Top Lateral Position""",//
+0x300A,0x012C,DS,3,"""Isocenter Position""",//
+0x300A,0x012E,DS,3,"""Surface Entry Point""",//
+0x300A,0x0130,DS,1,"""Source to Surface Distance""",//
+0x300A,0x0134,DS,1,"""Cumulative Meterset Weight""",//
+0x300A,0x0180,SQ,1,"""Patient Setup Sequence""",//
+0x300A,0x0182,IS,1,"""Patient Setup Number""",//
+0x300A,0x0184,LO,1,"""Patient Additional Position""",//
+0x300A,0x0190,SQ,1,"""Fixation Device Sequence""",//
+0x300A,0x0192,CS,1,"""Fixation Device Type""",//
+0x300A,0x0194,SH,1,"""Fixation Device Label""",//
+0x300A,0x0196,ST,1,"""Fixation Device Description""",//
+0x300A,0x0198,SH,1,"""Fixation Device Position""",//
+0x300A,0x01A0,SQ,1,"""Shielding Device Sequence""",//
+0x300A,0x01A2,CS,1,"""Shielding Device Type""",//
+0x300A,0x01A4,SH,1,"""Shielding Device Label""",//
+0x300A,0x01A6,ST,1,"""Shielding Device Description""",//
+0x300A,0x01A8,SH,1,"""Shielding Device Position""",//
+0x300A,0x01B0,CS,1,"""Setup Technique""",//
+0x300A,0x01B2,ST,1,"""Setup Technique Description""",//
+0x300A,0x01B4,SQ,1,"""Setup Device Sequence""",//
+0x300A,0x01B6,CS,1,"""Setup Device Type""",//
+0x300A,0x01B8,SH,1,"""Setup Device Label""",//
+0x300A,0x01BA,ST,1,"""Setup Device Description""",//
+0x300A,0x01BC,DS,1,"""Setup Device Parameter""",//
+0x300A,0x01D0,ST,1,"""Setup Reference Description""",//
+0x300A,0x01D2,DS,1,"""Table Top Vertical Setup Displacement""",//
+0x300A,0x01D4,DS,1,"""Table Top Longitudinal Setup Displacement""",//
+0x300A,0x01D6,DS,1,"""Table Top Lateral Setup Displacement""",//
+0x300A,0x0200,CS,1,"""Brachy Treatment Technique""",//
+0x300A,0x0202,CS,1,"""Brachy Treatment Type""",//
+0x300A,0x0206,SQ,1,"""Treatment Machine Sequence""",//
+0x300A,0x0210,SQ,1,"""Source Sequence""",//
+0x300A,0x0212,IS,1,"""Source Number""",//
+0x300A,0x0214,CS,1,"""Source Type""",//
+0x300A,0x0216,LO,1,"""Source Manufacturer""",//
+0x300A,0x0218,DS,1,"""Active Source Diameter""",//
+0x300A,0x021A,DS,1,"""Active Source Length""",//
+0x300A,0x0222,DS,1,"""Source Encapsulation Nominal Thickness""",//
+0x300A,0x0224,DS,1,"""Source Encapsulation Nominal Transmission""",//
+0x300A,0x0226,LO,1,"""Source Isotope Name""",//
+0x300A,0x0228,DS,1,"""Source Isotope Half Life""",//
+0x300A,0x022A,DS,1,"""Reference Air Kerma Rate""",//
+0x300A,0x022C,DA,1,"""Air Kerma Rate Reference Date""",//
+0x300A,0x022E,TM,1,"""Air Kerma Rate Reference Time""",//
+0x300A,0x0230,SQ,1,"""Application Setup Sequence""",//
+0x300A,0x0232,CS,1,"""Application Setup Type""",//
+0x300A,0x0234,IS,1,"""Application Setup Number""",//
+0x300A,0x0236,LO,1,"""Application Setup Name""",//
+0x300A,0x0238,LO,1,"""Application Setup Manufacturer""",//
+0x300A,0x0240,IS,1,"""Template Number""",//
+0x300A,0x0242,SH,1,"""Template Type""",//
+0x300A,0x0244,LO,1,"""Template Name""",//
+0x300A,0x0250,DS,1,"""Total Reference Air Kerma""",//
+0x300A,0x0260,SQ,1,"""Brachy Accessory Device Sequence""",//
+0x300A,0x0262,IS,1,"""Brachy Accessory Device Number""",//
+0x300A,0x0263,SH,1,"""Brachy Accessory Device ID""",//
+0x300A,0x0264,CS,1,"""Brachy Accessory Device Type""",//
+0x300A,0x0266,LO,1,"""Brachy Accessory Device Name""",//
+0x300A,0x026A,DS,1,"""Brachy Accessory Device Nominal Thickness""",//
+0x300A,0x026C,DS,1,"""Brachy Accessory Device Nominal Transmission""",//
+0x300A,0x0280,SQ,1,"""Channel Sequence""",//
+0x300A,0x0282,IS,1,"""Channel Number""",//
+0x300A,0x0284,DS,1,"""Channel Length""",//
+0x300A,0x0286,DS,1,"""Channel Total Time""",//
+0x300A,0x0288,CS,1,"""Source Movement Type""",//
+0x300A,0x028A,IS,1,"""Number of Pulses""",//
+0x300A,0x028C,DS,1,"""Pulse Repetition Interval""",//
+0x300A,0x0290,IS,1,"""Source Applicator Number""",//
+0x300A,0x0291,SH,1,"""Source Applicator ID""",//
+0x300A,0x0292,CS,1,"""Source Applicator Type""",//
+0x300A,0x0294,LO,1,"""Source Applicator Name""",//
+0x300A,0x0296,DS,1,"""Source Applicator Length""",//
+0x300A,0x0298,LO,1,"""Source Applicator Manufacturer""",//
+0x300A,0x029C,DS,1,"""Source Applicator Wall Nominal Thickness""",//
+0x300A,0x029E,DS,1,"""Source Applicator Wall Nominal Transmission""",//
+0x300A,0x02A0,DS,1,"""Source Applicator Step Size""",//
+0x300A,0x02A2,IS,1,"""Transfer Tube Number""",//
+0x300A,0x02A4,DS,1,"""Transfer Tube Length""",//
+0x300A,0x02B0,SQ,1,"""Channel Shield Sequence""",//
+0x300A,0x02B2,IS,1,"""Channel Shield Number""",//
+0x300A,0x02B3,SH,1,"""Channel Shield ID""",//
+0x300A,0x02B4,LO,1,"""Channel Shield Name""",//
+0x300A,0x02B8,DS,1,"""Channel Shield Nominal Thickness""",//
+0x300A,0x02BA,DS,1,"""Channel Shield Nominal Transmission""",//
+0x300A,0x02C8,DS,1,"""Final Cumulative Time Weight""",//
+0x300A,0x02D0,SQ,1,"""Brachy Control Point Sequence""",//
+0x300A,0x02D2,DS,1,"""Control Point Relative Position""",//
+0x300A,0x02D4,DS,3,"""Control Point 3D Position""",//
+0x300A,0x02D6,DS,1,"""Cumulative Time Weight""",//
+0x300A,0x02E0,CS,1,"""Compensator Divergence""",//
+0x300A,0x02E1,CS,1,"""Compensator Mounting Position""",//
+0x300A,0x02E2,DS,-1,"""Source to Compensator Distance""",//
+0x0000,0x0000,UNKNOWN,0,"""Data End""",//

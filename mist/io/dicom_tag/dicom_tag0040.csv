@@ -1,0 +1,185 @@
+0x0040,0x0001,AE,-1,"""Scheduled Station AE Title""",//
+0x0040,0x0002,DA,1,"""Scheduled Procedure Step Start Date""",//
+0x0040,0x0003,TM,1,"""Scheduled Procedure Step Start Time""",//
+0x0040,0x0004,DA,1,"""Scheduled Procedure Step End Date""",//
+0x0040,0x0005,TM,1,"""Scheduled Procedure Step End Time""",//
+0x0040,0x0006,PN,1,"""Scheduled Performing Physician's Name""",//
+0x0040,0x0007,LO,1,"""Scheduled Procedure Step Description""",//
+0x0040,0x0008,SQ,1,"""Scheduled Protocol Code Sequence""",//
+0x0040,0x0009,SH,1,"""Scheduled Procedure Step ID""",//
+0x0040,0x000A,SQ,1,"""Stage Code Sequence""",//
+0x0040,0x000B,SQ,1,"""Scheduled Performing Physician Identification Sequence""",//
+0x0040,0x0010,SH,-1,"""Scheduled Station Name""",//
+0x0040,0x0011,SH,1,"""Scheduled Procedure Step Location""",//
+0x0040,0x0012,LO,1,"""Pre-Medication""",//
+0x0040,0x0020,CS,1,"""Scheduled Procedure Step Status""",//
+0x0040,0x0100,SQ,1,"""Scheduled Procedure Step Sequence""",//
+0x0040,0x0220,SQ,1,"""Referenced Non-Image Composite SOP Instance Sequence""",//
+0x0040,0x0241,AE,1,"""Performed Station AE Title""",//
+0x0040,0x0242,SH,1,"""Performed Station Name""",//
+0x0040,0x0243,SH,1,"""Performed Location""",//
+0x0040,0x0244,DA,1,"""Performed Procedure Step Start Date""",//
+0x0040,0x0245,TM,1,"""Performed Procedure Step Start Time""",//
+0x0040,0x0250,DA,1,"""Performed Procedure Step End Date""",//
+0x0040,0x0251,TM,1,"""Performed Procedure Step End Time""",//
+0x0040,0x0252,CS,1,"""Performed Procedure Step Status""",//
+0x0040,0x0253,SH,1,"""Performed Procedure Step ID""",//
+0x0040,0x0254,LO,1,"""Performed Procedure Step Description""",//
+0x0040,0x0255,LO,1,"""Performed Procedure Type Description""",//
+0x0040,0x0260,SQ,1,"""Performed Protocol Code Sequence""",//
+0x0040,0x0270,SQ,1,"""Scheduled Step Attributes Sequence""",//
+0x0040,0x0275,SQ,1,"""Request Attributes Sequence""",//
+0x0040,0x0280,ST,1,"""Comments on the Performed Procedure Step""",//
+0x0040,0x0281,SQ,1,"""Performed Procedure Step Discontinuation Reason Code Sequence""",//
+0x0040,0x0293,SQ,1,"""Quantity Sequence""",//
+0x0040,0x0294,DS,1,"""Quantity""",//
+0x0040,0x0295,SQ,1,"""Measuring Units Sequence""",//
+0x0040,0x0296,SQ,1,"""Billing Item Sequence""",//
+0x0040,0x0300,US,1,"""Total Time of Fluoroscopy""",//
+0x0040,0x0301,US,1,"""Total Number of Exposures""",//
+0x0040,0x0302,US,1,"""Entrance Dose""",//
+0x0040,0x0303,US,2,"""Exposed Area""",//
+0x0040,0x0306,DS,1,"""Distance Source to Entrance""",//
+0x0040,0x0307,DS,1,"""Distance Source to Support(RET)""",//
+0x0040,0x030E,SQ,1,"""Exposure Dose Sequence""",//
+0x0040,0x0310,ST,1,"""Comments on Radiation Dose""",//
+0x0040,0x0312,DS,1,"""X-Ray Output""",//
+0x0040,0x0314,DS,1,"""Half Value Layer""",//
+0x0040,0x0316,DS,1,"""Organ Dose""",//
+0x0040,0x0318,CS,1,"""Organ Exposed""",//
+0x0040,0x0320,SQ,1,"""Billing Procedure Step Sequence""",//
+0x0040,0x0321,SQ,1,"""Film Consumption Sequence""",//
+0x0040,0x0324,SQ,1,"""Billing Supplies and Devices Sequence""",//
+0x0040,0x0330,SQ,1,"""Referenced Procedure Step Sequence(RET)""",//
+0x0040,0x0340,SQ,1,"""Performed Series Sequence""",//
+0x0040,0x0400,LT,1,"""Comments on the Scheduled Procedure Step""",//
+0x0040,0x050A,LO,1,"""Specimen Accession Number""",//
+0x0040,0x0550,SQ,1,"""Specimen Sequence""",//
+0x0040,0x0551,LO,1,"""Specimen Identifier""",//
+0x0040,0x0555,SQ,1,"""Acquisition Context Sequence""",//
+0x0040,0x0556,ST,1,"""Acquisition Context Description""",//
+0x0040,0x059A,SQ,1,"""Specimen Type Code Sequence""",//
+0x0040,0x06FA,LO,1,"""Slide Identifier""",//
+0x0040,0x071A,SQ,1,"""Image Center Point Coordinates Sequence""",//
+0x0040,0x072A,DS,1,"""X offset in Slide Coordinate System""",//
+0x0040,0x073A,DS,1,"""Y offset in Slide Coordinate System""",//
+0x0040,0x074A,DS,1,"""Z offset in Slide Coordinate System""",//
+0x0040,0x08D8,SQ,1,"""Pixel Spacing Sequence""",//
+0x0040,0x08DA,SQ,1,"""Coordinate System Axis Code Sequence""",//
+0x0040,0x08EA,SQ,1,"""Measurement Units Code Sequence""",//
+0x0040,0x1001,SH,1,"""Requested Procedure ID""",//
+0x0040,0x1002,LO,1,"""Reason for the Requested Procedure""",//
+0x0040,0x1003,SH,1,"""Requested Procedure Priority""",//
+0x0040,0x1004,LO,1,"""Patient Transport Arrangements""",//
+0x0040,0x1005,LO,1,"""Requested Procedure Location""",//
+0x0040,0x1006,SH,1,"""Placer Order Number / Procedure(RET)""",//
+0x0040,0x1007,SH,1,"""Filler Order Number / Procedure(RET)""",//
+0x0040,0x1008,LO,1,"""Confidentiality Code""",//
+0x0040,0x1009,SH,1,"""Reporting Priority""",//
+0x0040,0x1010,PN,-1,"""Names of Intended Recipients of Results""",//
+0x0040,0x1011,SQ,1,"""Intended Recipients of Results Identification Sequence""",//
+0x0040,0x1101,SQ,1,"""Person Identification Code Sequence""",//
+0x0040,0x1102,ST,1,"""Person's Address""",//
+0x0040,0x1103,LO,-1,"""Person's Telephone Numbers""",//
+0x0040,0x1400,LT,1,"""Requested Procedure Comments""",//
+0x0040,0x2001,LO,1,"""Reason for the Imaging Service Request""",//
+0x0040,0x2004,DA,1,"""Issue Date of Imaging Service Request""",//
+0x0040,0x2005,TM,1,"""Issue Time of Imaging Service Request""",//
+0x0040,0x2006,SH,1,"""Placer Order Number / Imaging Service Request(RET)""",//
+0x0040,0x2007,SH,1,"""Filler Order Number / Imaging Service Request(RET)""",//
+0x0040,0x2008,PN,1,"""Order Entered By""",//
+0x0040,0x2009,SH,1,"""Order Enterer's Location""",//
+0x0040,0x2010,SH,1,"""Order Callback Phone Number""",//
+0x0040,0x2016,LO,1,"""Placer Order Number / Imaging Service Request""",//
+0x0040,0x2017,LO,1,"""Filler Order Number / Imaging Service Request""",//
+0x0040,0x2400,LT,1,"""Imaging Service Request Comments""",//
+0x0040,0x3001,LO,1,"""Confidentiality Constraint on Patient Data Description""",//
+0x0040,0x4001,CS,1,"""General Purpose Scheduled Procedure Step Status""",//
+0x0040,0x4002,CS,1,"""General Purpose Performed Procedure Step Status""",//
+0x0040,0x4003,CS,1,"""General Purpose Scheduled Procedure Step Priority""",//
+0x0040,0x4004,SQ,1,"""Scheduled Processing Applications Code Sequence""",//
+0x0040,0x4005,DT,1,"""Scheduled Procedure Step Start Date and Time""",//
+0x0040,0x4006,CS,1,"""Multiple Copies Flag""",//
+0x0040,0x4007,SQ,1,"""Performed Processing Applications Code Sequence""",//
+0x0040,0x4009,SQ,1,"""Human Performer Code Sequence""",//
+0x0040,0x4011,DT,1,"""Expected Completion Date and Time""",//
+0x0040,0x4015,SQ,1,"""Resulting General Purpose Performed Procedure Steps Sequence""",//
+0x0040,0x4016,SQ,1,"""Referenced General Purpose Scheduled Procedure Step Sequence""",//
+0x0040,0x4018,SQ,1,"""Scheduled Workitem Code Sequence""",//
+0x0040,0x4019,SQ,1,"""Performed Workitem Code Sequence""",//
+0x0040,0x4020,CS,1,"""Input Availability Flag""",//
+0x0040,0x4021,SQ,1,"""Input InformationSequence""",//
+0x0040,0x4022,SQ,1,"""Relevant Information Sequence""",//
+0x0040,0x4023,UI,1,"""Referenced General Purpose Scheduled Procedure Step Transaction UID""",//
+0x0040,0x4025,SQ,1,"""Scheduled Station Name Code Sequence""",//
+0x0040,0x4026,SQ,1,"""Scheduled Station Class Code Sequence""",//
+0x0040,0x4027,SQ,1,"""Scheduled Station Geographic Location Code Sequence""",//
+0x0040,0x4028,SQ,1,"""Performed Station Name Code Sequence""",//
+0x0040,0x4029,SQ,1,"""Performed Station Class Code Sequence""",//
+0x0040,0x4030,SQ,1,"""Performed Station Geographic Location Code Sequence""",//
+0x0040,0x4031,SQ,1,"""Requested Subsequent Workitem Code Sequence""",//
+0x0040,0x4032,SQ,1,"""Non-DICOM Output Code Sequence""",//
+0x0040,0x4033,SQ,1,"""Output Information Sequence""",//
+0x0040,0x4034,SQ,1,"""Scheduled Human Performers Sequence""",//
+0x0040,0x4035,SQ,1,"""Actual Human Performers Sequence""",//
+0x0040,0x4036,LO,1,"""Human Performer's Organization""",//
+0x0040,0x4037,PN,1,"""Human Performer's Name""",//
+0x0040,0x8302,DS,1,"""Entrance Dose in mGy""",//
+0x0040,0x9096,SQ,1,"""Real World Value Mapping Sequence""",//
+0x0040,0x9210,SS,1,"""LUT Label""",//
+0x0040,0x9211,US,1,"""Real World Value Last Value Mapped""",//
+0x0040,0x9211,SS,1,"""Real World Value Last Value Mapped""",//
+0x0040,0x9212,FD,-1,"""Real World Value LUT Data""",//
+0x0040,0x9216,US,1,"""Real World Value First Value Mapped""",//
+0x0040,0x9216,SS,1,"""Real World Value First Value Mapped""",//
+0x0040,0x9224,FD,1,"""Real World Value Intercept""",//
+0x0040,0x9225,FD,1,"""Real World Value Slope""",//
+0x0040,0xA010,CS,1,"""Relationship Type""",//
+0x0040,0xA027,LO,1,"""Verifying Organization""",//
+0x0040,0xA030,DT,1,"""Verification DateTime""",//
+0x0040,0xA032,DT,1,"""Observation DateTime""",//
+0x0040,0xA040,CS,1,"""Value Type""",//
+0x0040,0xA043,SQ,1,"""Concept Name Code Sequence""",//
+0x0040,0xA050,CS,1,"""Continuity Of Content""",//
+0x0040,0xA073,SQ,1,"""Verifying Observer Sequence""",//
+0x0040,0xA075,PN,1,"""Verifying Observer Name""",//
+0x0040,0xA088,SQ,1,"""Verifying Observer Identification Code Sequence""",//
+0x0040,0xA0B0,US,-1,"""Referenced Waveform Channels""",//
+0x0040,0xA120,DT,1,"""DateTime""",//
+0x0040,0xA121,DA,1,"""Date""",//
+0x0040,0xA122,TM,1,"""Time""",//
+0x0040,0xA123,PN,1,"""Person Name""",//
+0x0040,0xA124,UI,1,"""UID""",//
+0x0040,0xA130,CS,1,"""Temporal Range Type""",//
+0x0040,0xA132,US,-1,"""Referenced Sample Positions""",//
+0x0040,0xA136,US,-1,"""Referenced Frame Numbers""",//
+0x0040,0xA138,DS,-1,"""Referenced Time Offsets""",//
+0x0040,0xA13A,DT,-1,"""Referenced Datetime""",//
+0x0040,0xA160,UT,1,"""Text Value""",//
+0x0040,0xA168,SQ,1,"""Concept Code Sequence""",//
+0x0040,0xA170,SQ,1,"""Purpose of Reference Code Sequence""",//
+0x0040,0xA180,US,1,"""Annotation Group Number""",//
+0x0040,0xA195,SQ,1,"""Modifier Code Sequence""",//
+0x0040,0xA300,SQ,1,"""Measured Value Sequence""",//
+0x0040,0xA301,SQ,1,"""Numeric Value Qualifier Code Sequence""",//
+0x0040,0xA30A,DS,-1,"""Numeric Value""",//
+0x0040,0xA360,SQ,1,"""Predecessor Documents Sequence""",//
+0x0040,0xA370,SQ,1,"""Referenced Request Sequence""",//
+0x0040,0xA372,SQ,1,"""Performed Procedure Code Sequence""",//
+0x0040,0xA375,SQ,1,"""Current Requested Procedure Evidence Sequence""",//
+0x0040,0xA385,SQ,1,"""Pertinent Other Evidence Sequence""",//
+0x0040,0xA491,CS,1,"""Completion Flag""",//
+0x0040,0xA492,LO,1,"""Completion Flag Description""",//
+0x0040,0xA493,CS,1,"""Verification Flag""",//
+0x0040,0xA504,SQ,1,"""Content Template Sequence""",//
+0x0040,0xA525,SQ,1,"""Identical Documents Sequence""",//
+0x0040,0xA730,SQ,1,"""Content Sequence""",//
+0x0040,0xB020,SQ,1,"""Annotation Sequence""",//
+0x0040,0xDB00,CS,1,"""Template Identifier""",//
+0x0040,0xDB06,DT,1,"""Template Version(RET)""",//
+0x0040,0xDB07,DT,1,"""Template Local Version(RET)""",//
+0x0040,0xDB0B,CS,1,"""Template Extension Flag(RET)""",//
+0x0040,0xDB0C,UI,1,"""Template Extension Organization UID(RET)""",//
+0x0040,0xDB0D,UI,1,"""Template Extension Creator UID(RET)""",//
+0x0040,0xDB73,UL,-1,"""Referenced Content Item Identifier""",//
+0x0000,0x0000,UNKNOWN,0,"""Data End""",//

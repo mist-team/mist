@@ -1,0 +1,23 @@
+0x3004,0x0001,CS,1,"""DVH Type""",//
+0x3004,0x0002,CS,1,"""Dose Units""",//
+0x3004,0x0004,CS,1,"""Dose Type""",//
+0x3004,0x0006,LO,1,"""Dose Comment""",//
+0x3004,0x0008,DS,3,"""Normalization Point""",//
+0x3004,0x000A,CS,1,"""Dose Summation Type""",//
+0x3004,0x000C,DS,-1,"""Grid Frame Offset Vector""",//
+0x3004,0x000E,DS,1,"""Dose Grid Scaling""",//
+0x3004,0x0010,SQ,1,"""RT Dose ROI Sequence""",//
+0x3004,0x0012,DS,1,"""Dose Value""",//
+0x3004,0x0040,DS,3,"""DVH Normalization Point""",//
+0x3004,0x0042,DS,1,"""DVH Normalization Dose Value""",//
+0x3004,0x0050,SQ,1,"""DVH Sequence""",//
+0x3004,0x0052,DS,1,"""DVH Dose Scaling""",//
+0x3004,0x0054,CS,1,"""DVH Volume Units""",//
+0x3004,0x0056,IS,1,"""DVH Number of Bins""",//
+0x3004,0x0058,DS,-1,"""DVH Data""",//
+0x3004,0x0060,SQ,1,"""DVH Referenced ROI Sequence""",//
+0x3004,0x0062,CS,1,"""DVH ROI Contribution Type""",//
+0x3004,0x0070,DS,1,"""DVH Minimum Dose""",//
+0x3004,0x0072,DS,1,"""DVH Maximum Dose""",//
+0x3004,0x0074,DS,1,"""DVH Mean Dose""",//
+0x0000,0x0000,UNKNOWN,0,"""Data End""",//

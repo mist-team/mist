@@ -1,0 +1,13 @@
+//0x2020,0x0000,UL,1,"""Group 2020 Length""",//
+0x2020,0x0010,US,1,"""Image Position""",//
+0x2020,0x0020,CS,1,"""Polarity""",//
+0x2020,0x0030,DS,1,"""Requested Image Size""",//
+0x2020,0x0040,CS,1,"""Requested Decimate/Crop Behavior""",//
+0x2020,0x0050,CS,1,"""Requested Resolution ID""",//
+0x2020,0x00A0,CS,1,"""Requested Image Size Flag""",//
+0x2020,0x00A2,CS,1,""" Decimate/Crop Result""",//
+0x2020,0x0110,SQ,1,"""Preformatted Greyscale Image Sequence""",//
+0x2020,0x0111,SQ,1,"""Preformatted Color Image Sequence""",//
+0x2020,0x0130,SQ,1,"""Referenced Image Overlay Box Sequence(RET)""",//
+0x2020,0x0140,SQ,1,"""Referenced VOI LUT Sequence(RET)""",//
+0x0000,0x0000,UNKNOWN,0,"""Data End""",//

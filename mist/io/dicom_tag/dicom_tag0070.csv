@@ -1,0 +1,38 @@
+0x0070,0x0001,SQ,1,"""Graphic Annotation Sequence""",//
+0x0070,0x0002,CS,1,"""Graphic Layer""",//
+0x0070,0x0003,CS,1,"""Bounding Box Annotation Units""",//
+0x0070,0x0004,CS,1,"""Anchor Point Annotation Units""",//
+0x0070,0x0005,CS,1,"""Graphic Annotation Units""",//
+0x0070,0x0006,ST,1,"""Unformatted Text Value""",//
+0x0070,0x0008,SQ,1,"""Text Object Sequence""",//
+0x0070,0x0009,SQ,1,"""Graphic Object Sequence""",//
+0x0070,0x0010,FL,2,"""Bounding Box Top Left Hand Corner""",//
+0x0070,0x0011,FL,2,"""Bounding Box Bottom Right Hand Corner""",//
+0x0070,0x0012,CS,1,"""Bounding Box Text Horizontal Justification""",//
+0x0070,0x0014,FL,2,"""Anchor Point""",//
+0x0070,0x0015,CS,1,"""Anchor Point Visibility""",//
+0x0070,0x0020,US,1,"""Graphic Dimensions""",//
+0x0070,0x0021,US,1,"""Number of Graphic Points""",//
+0x0070,0x0022,FL,-1,"""Graphic Data""",//
+0x0070,0x0023,CS,1,"""Graphic Type""",//
+0x0070,0x0024,CS,1,"""Graphic Filled""",//
+0x0070,0x0041,CS,1,"""Image Horizontal Flip""",//
+0x0070,0x0042,US,1,"""Image Rotation""",//
+0x0070,0x0052,SL,2,"""Displayed Area Top Left Hand Corner""",//
+0x0070,0x0053,SL,2,"""Displayed Area Bottom Right Hand Corner""",//
+0x0070,0x005A,SQ,1,"""Displayed Area Selection Sequence""",//
+0x0070,0x0060,SQ,1,"""Graphic Layer Sequence""",//
+0x0070,0x0062,IS,1,"""Graphic Layer Order""",//
+0x0070,0x0066,US,1,"""Graphic Layer Recommended Display Grayscale Value""",//
+0x0070,0x0067,US,3,"""Graphic Layer Recommended Display RGB Value""",//
+0x0070,0x0068,LO,1,"""Graphic Layer Description""",//
+0x0070,0x0080,CS,1,"""Presentation Label""",//
+0x0070,0x0081,LO,1,"""Presentation Description""",//
+0x0070,0x0082,DA,1,"""Presentation Creation Date""",//
+0x0070,0x0083,TM,1,"""Presentation Creation Time""",//
+0x0070,0x0084,PN,1,"""Presentation Creator's Name""",//
+0x0070,0x0100,CS,1,"""Presentation Size Mode""",//
+0x0070,0x0101,DS,2,"""Presentation Pixel Spacing""",//
+0x0070,0x0102,IS,2,"""Presentation Pixel Aspect Ratio""",//
+0x0070,0x0103,FL,1,"""Presentation Pixel Magnification Ratio""",//
+0x0000,0x0000,UNKNOWN,0,"""Data End""",//
