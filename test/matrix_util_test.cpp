@@ -21,6 +21,8 @@ int main( )
 	std::cout << a << std::endl;
 	std::cout << b << std::endl;
 
+	std::cout << matrix::identity( 3, 3 ) * 3 + a * matrix::zero( 3, 3 ) << std::endl;
+
 	{
 		std::cout << "Solve equation" << std::endl;
 

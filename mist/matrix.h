@@ -94,6 +94,24 @@ struct matrix_single_operation
 	explicit matrix_single_operation( const T &mhs ) : middle_( mhs ){}
 };
 
+// 固定演算子
+template< class T >
+struct matrix_static_operation
+{
+	typedef typename T::value_type		value_type;
+	typedef typename T::size_type		size_type;
+	typedef typename T::allocator_type	allocator_type;
+
+	const size_type rows_;
+	const size_type cols_;
+
+	size_type size( ) const { return( rows_ * cols_ ); };
+	size_type rows( ) const { return( rows_ ); }
+	size_type cols( ) const { return( cols_ ); }
+
+	explicit matrix_static_operation( const size_type rows, const size_type cols ) : rows_( rows ), cols_( cols ){}
+};
+
 // ２項演算子
 template< class T1, class T2 >
 struct matrix_bind_operation 
@@ -142,6 +160,36 @@ struct matrix_transpose : public matrix_single_operation< T >
 	size_type cols( ) const { return( base::middle_.rows( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( base::middle_( c, r ) ); }
 	value_type operator[]( size_type indx ) const { return( base::middle_[ indx ] ); }
+};
+
+
+// 単位行列オペレータ
+template< class T >
+struct matrix_identity : public matrix_static_operation< T >
+{
+	typedef typename T::value_type		value_type;
+	typedef typename T::size_type		size_type;
+	typedef typename T::allocator_type	allocator_type;
+	typedef matrix_static_operation< T > base;
+
+	explicit matrix_identity( const size_type rows, const size_type cols ) : base( rows, cols ){}
+	value_type operator()( size_type r, size_type c ) const { return( r == c ? 1 : 0 ); }
+	value_type operator[]( size_type indx ) const { return( 0 ); }
+};
+
+
+// ゼロ行列オペレータ
+template< class T >
+struct matrix_zero : public matrix_static_operation< T >
+{
+	typedef typename T::value_type		value_type;
+	typedef typename T::size_type		size_type;
+	typedef typename T::allocator_type	allocator_type;
+	typedef matrix_static_operation< T > base;
+
+	explicit matrix_zero( const size_type rows, const size_type cols ): base( rows, cols ){}
+	value_type operator()( size_type r, size_type c ) const { return( 0 ); }
+	value_type operator[]( size_type indx ) const { return( 0 ); }
 };
 
 
@@ -575,11 +623,45 @@ public:
 public:
 
 	
-/************************************************************************************************************
-**
-**      符号反転オペレータと転置行列オペレータ
-**
-************************************************************************************************************/
+// 単位行列とゼロ行列を生成する
+#if _USE_EXPRESSION_TEMPLATE_ != 0
+
+	/// @brief 符号反転した行列を返す
+	static matrix_expression< matrix_identity< matrix > > identity( size_type rows, size_type cols )
+	{
+		return( matrix_expression< matrix_identity< matrix > >( matrix_identity< matrix >( rows, cols ) ) );
+	}
+
+	/// @brief 転置行列を返す
+	static matrix_expression< matrix_zero< matrix > > zero( size_type rows, size_type cols )
+	{
+		return( matrix_expression< matrix_zero< matrix > >( matrix_zero< matrix >( rows, cols ) ) );
+	}
+
+#else
+
+	/// @brief 任意の単位行列を返す
+	static const matrix identity( size_type rows, size_type cols )
+	{
+		size_type size = rows < cols ? rows : cols;
+		matrix o( rows, cols );
+		for( size_type i = 0 ; i < size ; i++ )
+		{
+			o( i, i ) = 1;
+		}
+		return( o );
+	}
+
+	/// @brief 任意のゼロ行列を返す
+	static const matrix zero( size_type rows, size_type cols )
+	{
+		return( matrix( rows, cols ) );
+	}
+
+#endif
+
+
+// 符号反転オペレータと転置行列オペレータ
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
 	/// @brief 符号反転した行列を返す
@@ -626,21 +708,14 @@ public:
 #endif
 
 
-/************************************************************************************************************
-**
-**      行列に対する演算子
-**        += 行列
-**        += 定数
-**
-**        -= 行列
-**        -= 定数
-**
-**        *= 行列
-**        *= 定数
-**
-**        /= 定数
-**
-************************************************************************************************************/
+// 行列に対する演算子
+//   += 行列
+//   += 定数
+//   -= 行列
+//   -= 定数
+//   *= 行列
+//   *= 定数
+//   /= 定数
 
 	/// @brief 行列の足し算
 	//! 

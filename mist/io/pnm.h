@@ -38,11 +38,26 @@ namespace __pnm_controller__
 		P6,
 	};
 
+	template < bool b >
+	struct _gray_converter_
+	{
+		template < class T >
+		static T get_value( const T &v ){ return( v ); }
+	};
+
+	template < >
+	struct _gray_converter_< true >
+	{
+		template < class T >
+		static typename T::value_type get_value( const T &v ){ return( v.get_value( ) ); }
+	};
+
 	template < class T, class Allocator >
 	struct pnm_controller
 	{
 		typedef typename array2< T, Allocator >::size_type  size_type;
 		typedef _pixel_converter_< T > pixel_converter;
+		typedef _gray_converter_< is_color< T >::value > gray_converter;
 		typedef typename pixel_converter::color_type color_type;
 		typedef typename pixel_converter::value_type value_type;
 
@@ -331,7 +346,7 @@ namespace __pnm_controller__
 					{
 						max = max > image[ i ] ? max : image[ i ];
 					}
-					int max_level = static_cast< int >( pixel_converter::convert_from( max ).get_value( ) );
+					int max_level = static_cast< int >( gray_converter::get_value( max ) );
 					max_level = max_level > static_cast< int >( level ) ? max_level : static_cast< int >( level );
 					fprintf( fp, "%d\n", max_level );
 				}
@@ -351,7 +366,7 @@ namespace __pnm_controller__
 				{
 					for( i = 0 ; i < image.width( ) ; i++ )
 					{
-						fprintf( fp, "%d ", static_cast< int >( pixel_converter::convert_from( image( i, j ) ).get_value( ) ) );
+						fprintf( fp, "%d ", static_cast< int >( gray_converter::get_value( image( i, j ) ) ) );
 					}
 					fputc( '\n', fp );
 				}
@@ -377,7 +392,7 @@ namespace __pnm_controller__
 				{
 					for( i = 0 ; i < image.width( ) ; i++ )
 					{
-						fprintf( fp, "%c", static_cast< unsigned char >( pixel_converter::convert_from( image( i, j ) ).get_value( ) ) );
+						fprintf( fp, "%c", static_cast< unsigned char >( gray_converter::get_value( image( i, j ) ) ) );
 					}
 				}
 				break;
