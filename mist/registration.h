@@ -437,12 +437,12 @@ namespace __non_rigid_registration_utility__
 
 		array2< unsigned int > h;
 		array< unsigned int > hh;
+		array< unsigned int > __no_data_is_associated__;
 
 		difference_type minimum;
 		difference_type maximum;
 		size_type BIN;
 
-		unsigned int __no_data_is_associated__;
 		double H1;
 
 		template < class IMAGETYPE >
@@ -497,6 +497,7 @@ namespace __non_rigid_registration_utility__
 			maximum = get_maximum( get_maximum( tgt ), get_maximum( src ) );
 			h.resize( ( maximum - minimum ) / BIN + 1, ( maximum - minimum ) / BIN + 1 );
 			hh.resize( ( maximum - minimum ) / BIN + 1, 1 );
+			__no_data_is_associated__.resize( ( maximum - minimum ) / BIN + 1, 1 );
 
 			size_type count = 0;
 			difference_type upper = h.width( );
@@ -506,7 +507,7 @@ namespace __non_rigid_registration_utility__
 				difference_type v1 = static_cast< difference_type >( ( tgt[ i ] - minimum ) * _1_bin );
 				if( v1 < 0 || upper <= v1 )
 				{
-					target[ i ] = &__no_data_is_associated__;
+					target[ i ] = &__no_data_is_associated__[ 0 ];
 					continue;
 				}
 				target[ i ] = &h( 0, v1 );
@@ -550,7 +551,7 @@ namespace __non_rigid_registration_utility__
 			__non_rigid_registration_utility__::transformation( transformed_image, source, control_mesh_tmp, x, y, z );
 
 			// ƒf[ƒ^‚ð‰Šú‰»‚·‚é
-			__no_data_is_associated__ = 0;
+			__no_data_is_associated__.fill( );
 			h.fill( );
 			hh.fill( );
 			difference_type upper = h.width( );
