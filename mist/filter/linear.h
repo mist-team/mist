@@ -1055,7 +1055,7 @@ inline void  linear_filter(
 //! @param[out] out             … 出力配列
 //! @param[in]  u_func          … 後処理関数 ( 無くても良い )
 //! @param[in]  kernel          … カーネル配列
-//! @param[in]  kernel_center_i … カーネルの中心位置
+//! @param[in]  kernel_center   … カーネルの中心位置
 //!
 // 通常の関数を渡す場合
 template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_arg, class Unary_res, class T_kernel, class Allocator_kernel >

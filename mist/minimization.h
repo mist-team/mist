@@ -172,11 +172,12 @@ namespace __minimization_utility__
 		typedef typename matrix_type::size_type size_type;
 
 		double infinity = 0.0;
+		size_type r;
 
 		matrix_type offset( p.size( ), 1 );
 
 		// もっとも長い対角方向の長さを取得し，バウンディングボックスの中央を求める
-		for( size_type r = 0 ; r < box.rows( ) ; r++ )
+		for( r = 0 ; r < box.rows( ) ; r++ )
 		{
 			double l = ( box( r, 0 ) - box( r, 1 ) );
 			infinity += l * l;
@@ -191,7 +192,7 @@ namespace __minimization_utility__
 
 		bool flag = true;
 
-		for( size_type r = 0 ; r < box.rows( ) ; r++ )
+		for( r = 0 ; r < box.rows( ) ; r++ )
 		{
 			// まず，下限をチェックする
 			flag = flag && clipping( p1, p2, p1[ r ], p2[ r ], std::abs( box( r, 0 ) - offset[ r ] ) );
@@ -1217,6 +1218,7 @@ namespace powell
 		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );
 
 		size_t ite;
+		size_type r, c;
 		for( ite = 1 ; ite <= max_iterations ; ite++ )
 		{
 			// 探索開始前の評価値を覚えておく
@@ -1224,10 +1226,10 @@ namespace powell
 			delta = 0.0;
 			size_type index = 0;
 
-			for( size_type c = 0 ; c < dirs.cols( ) ; c++ )
+			for( c = 0 ; c < dirs.cols( ) ; c++ )
 			{
 				// 探索に用いる方向集合をコピーする
-				for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
+				for( r = 0 ; r < dirs.rows( ) ; r++ )
 				{
 					dir[ r ] = dirs( r, c );
 				}
@@ -1237,7 +1239,7 @@ namespace powell
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
 				fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
 
-				for( size_type r = 0 ; r < p.size( ) ; r++ )
+				for( r = 0 ; r < p.size( ) ; r++ )
 				{
 					p[ r ] += dir[ r ] * x;
 				}
@@ -1262,7 +1264,7 @@ namespace powell
 			if( ite <= max_iterations )
 			{
 				// 新しい方向を求める
-				for( size_type r = 0 ; r < p.size( ) ; r++ )
+				for( r = 0 ; r < p.size( ) ; r++ )
 				{
 					pn[ r ]  = 2.0 * p[ r ] - p0[ r ];
 					dir[ r ] = p[ r ] - p0[ r ];
@@ -1285,7 +1287,7 @@ namespace powell
 						// 方向集合の一番最後に，新しい方向を追加する
 						if( index < dirs.rows( ) - 1 )
 						{
-							for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
+							for( r = 0 ; r < dirs.rows( ) ; r++ )
 							{
 								dirs( r, index ) = dirs( r, dirs.rows( ) - 1 );
 								dirs( r, dirs.rows( ) - 1 ) = dir[ r ];
@@ -1293,7 +1295,7 @@ namespace powell
 						}
 						else
 						{
-							for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
+							for( r = 0 ; r < dirs.rows( ) ; r++ )
 							{
 								dirs( r, index ) = dir[ r ];
 							}
@@ -1339,6 +1341,7 @@ namespace powell
 		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );
 
 		size_t ite;
+		size_type r, c;
 		for( ite = 1 ; ite <= max_iterations ; ite++ )
 		{
 			// 探索開始前の評価値を覚えておく
@@ -1346,10 +1349,10 @@ namespace powell
 			delta = 0.0;
 			size_type index = 0;
 
-			for( size_type c = 0 ; c < dirs.cols( ) ; c++ )
+			for( c = 0 ; c < dirs.cols( ) ; c++ )
 			{
 				// 探索に用いる方向集合をコピーする
-				for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
+				for( r = 0 ; r < dirs.rows( ) ; r++ )
 				{
 					dir[ r ] = dirs( r, c );
 				}
@@ -1362,7 +1365,7 @@ namespace powell
 					// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
 					fp = brent::minimization( l1, l2, x, functor, tolerance, 200, false );
 
-					for( size_type r = 0 ; r < p.size( ) ; r++ )
+					for( r = 0 ; r < p.size( ) ; r++ )
 					{
 						p[ r ] += dir[ r ] * x;
 					}
@@ -1388,7 +1391,7 @@ namespace powell
 			if( ite <= max_iterations )
 			{
 				// 新しい方向を求める
-				for( size_type r = 0 ; r < p.size( ) ; r++ )
+				for( r = 0 ; r < p.size( ) ; r++ )
 				{
 					pn[ r ]  = 2.0 * p[ r ] - p0[ r ];
 					dir[ r ] = p[ r ] - p0[ r ];
@@ -1414,7 +1417,7 @@ namespace powell
 						// 方向集合の一番最後に，新しい方向を追加する
 						if( index < dirs.rows( ) - 1 )
 						{
-							for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
+							for( r = 0 ; r < dirs.rows( ) ; r++ )
 							{
 								dirs( r, index ) = dirs( r, dirs.rows( ) - 1 );
 								dirs( r, dirs.rows( ) - 1 ) = dir[ r ];
@@ -1422,7 +1425,7 @@ namespace powell
 						}
 						else
 						{
-							for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
+							for( r = 0 ; r < dirs.rows( ) ; r++ )
 							{
 								dirs( r, index ) = dir[ r ];
 							}

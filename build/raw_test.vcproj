@@ -88,7 +88,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltk.lib fltkgl.lib wsock32.lib zlib.lib"
+				AdditionalDependencies="fltk.lib fltkgl.lib wsock32.lib zlib.lib opengl32.lib comctl32.lib"
 				OutputFile="$(OutDir)/raw_test.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="FALSE"

@@ -340,6 +340,7 @@ struct rgba : public rgb< T >
 {
 protected:
 	typedef rgb< T > base;
+
 public:
 	typedef typename base::size_type		size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 	typedef typename base::difference_type	difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
@@ -411,31 +412,31 @@ public:
 
 	/// @brief RGB成分の和
 	template < class TT >
-	const rgba &operator +=( const rgba< TT > &c ){ base::operator +=( static_cast< const base & >( c ) ); return( *this ); }
+	const rgba &operator +=( const rgba< TT > &c ){ base::operator +=( ( const base &)c ); return( *this ); }
 
 	/// @brief RGB成分の差
 	template < class TT >
-	const rgba &operator -=( const rgba< TT > &c ){ base::operator -=( static_cast< const base & >( c ) ); return( *this ); }
+	const rgba &operator -=( const rgba< TT > &c ){ base::operator -=( ( const base &)c ); return( *this ); }
 
 	/// @brief RGB成分の積
 	template < class TT >
-	const rgba &operator *=( const rgba< TT > &c ){ base::operator *=( static_cast< const base & >( c ) ); return( *this ); }
+	const rgba &operator *=( const rgba< TT > &c ){ base::operator *=( ( const base &)c ); return( *this ); }
 
 	/// @brief RGB成分の割り算
 	template < class TT >
-	const rgba &operator /=( const rgba< TT > &c ){ base::operator /=( static_cast< const base & >( c ) ); return( *this ); }
+	const rgba &operator /=( const rgba< TT > &c ){ base::operator /=( ( const base &)c ); return( *this ); }
 
 	/// @brief RGB成分の剰余
-	const rgba &operator %=( const rgba &c ){ base::operator %=( static_cast< const base & >( c ) ); return( *this ); }
+	const rgba &operator %=( const rgba &c ){ base::operator %=( ( const base &)c ); return( *this ); }
 
 	/// @brief RGB成分の | 演算
-	const rgba &operator |=( const rgba &c ){ base::operator |=( static_cast< const base & >( c ) ); return( *this ); }
+	const rgba &operator |=( const rgba &c ){ base::operator |=( ( const base &)c ); return( *this ); }
 
 	/// @brief RGB成分の & 演算
-	const rgba &operator &=( const rgba &c ){ base::operator &=( static_cast< const base & >( c ) ); return( *this ); }
+	const rgba &operator &=( const rgba &c ){ base::operator &=( ( const base &)c ); return( *this ); }
 
 	/// @brief RGB成分の ^ 演算
-	const rgba &operator ^=( const rgba &c ){ base::operator ^=( static_cast< const base & >( c ) ); return( *this ); }
+	const rgba &operator ^=( const rgba &c ){ base::operator ^=( ( const base &)c ); return( *this ); }
 
 
 	/// @brief RGB成分に pix 値を足す
