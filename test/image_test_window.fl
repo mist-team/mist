@@ -150,8 +150,13 @@ write_dicom_test( filename );}
           }
           menuitem {} {
             label {Labeling 8}
-            callback {labeling8_test( );} selected
+            callback {labeling8_test( );}
             xywh {30 30 100 20}
+          }
+          menuitem {} {
+            label Thinning
+            callback {thinning_test( );} selected
+            xywh {40 40 100 20}
           }
         }
       }

@@ -145,12 +145,20 @@ void image_test_window::cb_Labeling1(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Labeling1_i(o,v);
 }
 
+inline void image_test_window::cb_Thinning_i(Fl_Menu_*, void*) {
+  thinning_test( );
+}
+void image_test_window::cb_Thinning(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Thinning_i(o,v);
+}
+
 Fl_Menu_Item image_test_window::menu_[] = {
  {"&Edit", 0,  0, 0, 64, 0, 0, 14, 56},
  {"Euclidean Distance Transform", 0,  (Fl_Callback*)image_test_window::cb_Euclidean, 0, 0, 0, 0, 14, 56},
  {"Figure Decomposition", 0,  (Fl_Callback*)image_test_window::cb_Figure, 0, 0, 0, 0, 14, 56},
  {"Labeling 4", 0,  (Fl_Callback*)image_test_window::cb_Labeling, 0, 0, 0, 0, 14, 56},
  {"Labeling 8", 0,  (Fl_Callback*)image_test_window::cb_Labeling1, 0, 0, 0, 0, 14, 56},
+ {"Thinning", 0,  (Fl_Callback*)image_test_window::cb_Thinning, 0, 0, 0, 0, 14, 56},
  {0},
  {0}
 };

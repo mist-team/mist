@@ -12,6 +12,7 @@
 #include <mist/filter/distance.h>
 //#include <mist/filter/figure_decomposition.h>
 #include <mist/filter/labeling.h>
+#include <mist/filter/thinning.h>
 
 
 mist::array2< unsigned char > image_object( 100, 100 );
@@ -182,5 +183,16 @@ void labeling8_test( )
 			image_object[i] = 255;
 			break;
 		}
+	}
+}
+
+
+void thinning_test( )
+{
+	mist::thinning( image_object, image_object );
+
+	for( mist::array2< unsigned char >::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		image_object[i] *= 255;
 	}
 }

@@ -45,6 +45,8 @@ private:
   static void cb_Labeling(Fl_Menu_*, void*);
   inline void cb_Labeling1_i(Fl_Menu_*, void*);
   static void cb_Labeling1(Fl_Menu_*, void*);
+  inline void cb_Thinning_i(Fl_Menu_*, void*);
+  static void cb_Thinning(Fl_Menu_*, void*);
 public:
   void show( );
 };

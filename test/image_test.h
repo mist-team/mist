@@ -44,4 +44,6 @@ void figure_decomposition_test( );
 void labeling4_test( );
 void labeling8_test( );
 
+void thinning_test( );
+
 #endif // __INCLUDE_IMAGE_TEST__
