@@ -102,7 +102,7 @@ main_window::main_window( FXApp *a ) : base( a, "main_window", NULL, NULL, DECOR
 				FXGroupBox *g2 = new FXGroupBox( v2, "Filter Property", GROUPBOX_NORMAL | FRAME_THICK | LAYOUT_FILL_X | LAYOUT_FILL_Y );
 				new FXButton( g2, "Recompute", 0, this, ID_RECOMPUTE_FILTER, BUTTON_NORMAL | LAYOUT_FILL_X );
 				new FXHorizontalSeparator( g2 );
-				new property( g2, 0, 0, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+				new property( g2, 0, 0, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0 );
 			}
 		}
 	}
