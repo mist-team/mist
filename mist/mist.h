@@ -91,7 +91,7 @@ public:
 		}
 		else if( size_ > num )
 		{
-			data_ = allocator_.trim_objects( data_, size_, num );
+			data_ = allocator_.trim_objects( data_, size_, num, val );
 			size_ = num;
 		}
 	}

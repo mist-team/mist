@@ -292,7 +292,7 @@ public:
 		mist_memory_operator< is_arithmetic< T >::value >::fill_objects2( *this, ptr, num );
 	}
 
-	// ptr から始まり num 個存在するオブジェクトを dest_num 個まで縮める
+	// ptr から始まり num 個存在するオブジェクトを dest_num 個まで縮め，全ての要素をデフォルトの値で初期化する
 	pointer trim_objects( pointer ptr, size_type num, size_type dest_num )
 	{
 		if( num < dest_num ) return( ptr );			// 開放しようとしている配列の要素数は，トリム後の配列サイズよりサイズよりも小さい例外
@@ -301,9 +301,27 @@ public:
 		if( num == 0 ) return( NULL );
 #if _MIST_ALLOCATOR_MEMORY_TRIM__ != 0
 		deallocate_objects( ptr + dest_num, num - dest_num );
+		fill_objects( ptr, dest_num );
 #else
 		deallocate_objects( ptr, num );
 		ptr = allocate_objects( num );
+#endif
+		return( dest_num == 0 ? NULL : ptr );
+	}
+
+	// ptr から始まり num 個存在するオブジェクトを dest_num 個まで縮め，全ての要素を値 obj で初期化する
+	pointer trim_objects( pointer ptr, size_type num, size_type dest_num, const_reference obj )
+	{
+		if( num < dest_num ) return( ptr );			// 開放しようとしている配列の要素数は，トリム後の配列サイズよりサイズよりも小さい例外
+		if( num < 0 ) return( NULL );				// トリム先の配列サイズが0より小さい例外
+		if( num == dest_num ) return( ptr );		// トリムによる変更の必要なし
+		if( num == 0 ) return( NULL );
+#if _MIST_ALLOCATOR_MEMORY_TRIM__ != 0
+		deallocate_objects( ptr + dest_num, num - dest_num );
+		fill_objects( ptr, dest_num, obj );
+#else
+		deallocate_objects( ptr, num );
+		ptr = allocate_objects( num, obj );
 #endif
 		return( dest_num == 0 ? NULL : ptr );
 	}
