@@ -1,7 +1,11 @@
 #ifndef __INCLUDE_MIST_VECTOR__
 #define __INCLUDE_MIST_VECTOR__
 
-#include "mist.h"
+
+#ifndef __INCLUDE_MIST_CONF_H__
+#include "config/mist_conf.h"
+#endif
+
 #include <cmath>
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
