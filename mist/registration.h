@@ -309,6 +309,342 @@ namespace __non_rigid_registration_utility__
 		}
 	}
 
+	struct ffd_coefficient
+	{
+		struct coefficient
+		{
+			double a;
+			double b;
+			double c;
+			double d;
+		};
+
+		typedef size_t size_type;
+		typedef ptrdiff_t difference_type;
+		typedef mist::array< coefficient > coefficient_type;
+
+		coefficient_type coeff_x;
+		coefficient_type coeff_y;
+		coefficient_type coeff_z;
+
+		template < class CONTROLMESHTYPE >
+		initialize( size_type width, size_type height, size_type depth, const CONTROLMESHTYPE &control_mesh )
+		{
+			coeff_x.resize( width );
+			coeff_y.resize( height );
+			coeff_z.resize( depth );
+
+			double stepW = control_mesh.width( )  == 1 ? 1.0 : width / static_cast< double >( control_mesh.width( ) - 1 );
+			double stepH = control_mesh.height( ) == 1 ? 1.0 : height / static_cast< double >( control_mesh.height( ) - 1 );
+			double stepD = control_mesh.depth( )  == 1 ? 1.0 : depth / static_cast< double >( control_mesh.depth( ) - 1 );
+			double _1_stepW = 1.0 / stepW;
+			double _1_stepH = 1.0 / stepH;
+			double _1_stepD = 1.0 / stepD;
+
+			for( size_type z = 0 ; z < coeff_z.size( ) ; z++ )
+			{
+				double w = z * _1_stepD;
+				w -= static_cast< difference_type >( w );
+
+				FFD( w, coeff_z[ z ].a, coeff_z[ z ].b, coeff_z[ z ].c, coeff_z[ z ].d );
+			}
+
+			for( size_type y = 0 ; y < coeff_y.size( ) ; y++ )
+			{
+				double v = y * _1_stepH;
+				v -= static_cast< difference_type >( v );
+
+				FFD( v, coeff_y[ y ].a, coeff_y[ y ].b, coeff_y[ y ].c, coeff_y[ y ].d );
+			}
+
+			for( size_type x = 0 ; x < coeff_x.size( ) ; x++ )
+			{
+				double u = x * _1_stepW;
+				u -= static_cast< difference_type >( u );
+
+				FFD( u, coeff_x[ x ].a, coeff_x[ x ].b, coeff_x[ x ].c, coeff_x[ x ].d );
+			}
+		}
+	};
+
+
+
+	// 制御点情報を用いて，ソース画像をターゲット画像に変形する
+	template < class TARGETTYPE, class TARGETTYPEA, class SOURCETYPE, class SOURCETYPEA, class CONTROLMESH >
+	static void non_rigid_transformation_( array2< TARGETTYPE, TARGETTYPEA > &target, const array2< SOURCETYPE, SOURCETYPEA > &source, const CONTROLMESH &control_mesh,
+											const ffd_coefficient &ffd_coeff,
+											typename CONTROLMESH::difference_type mx = -1,
+											typename CONTROLMESH::difference_type my = -1,
+											typename CONTROLMESH::difference_type mz = -1,
+											typename CONTROLMESH::size_type thread_id = 0,
+											typename CONTROLMESH::size_type thread_num = 1
+										)
+	{
+		typedef array2< TARGETTYPE, TARGETTYPEA >  target_image_type;
+		typedef array2< SOURCETYPE, SOURCETYPEA >  source_image_type;
+		typedef CONTROLMESH control_mesh_type;
+
+		typedef typename target_image_type::size_type size_type;
+		typedef typename target_image_type::difference_type difference_type;
+
+		difference_type i, j;
+		double sx[ 4 ], sy[ 4 ];
+		double stepW = control_mesh.width( ) == 1 ? 1.0 : target.width( ) / static_cast< double >( control_mesh.width( ) - 1 );
+		double stepH = control_mesh.height( ) == 1 ? 1.0 : target.height( ) / static_cast< double >( control_mesh.height( ) - 1 );
+		double _1_stepW = 1.0 / stepW;
+		double _1_stepH = 1.0 / stepH;
+		double _1_ax = 1.0 / source.reso1( );
+		double _1_ay = 1.0 / source.reso2( );
+
+		difference_type d0, d1, d2, d3;
+		{
+			difference_type cx = source.width( ) / 2;
+			difference_type cy = source.height( ) / 2;
+			typename source_image_type::const_pointer ppp = &source( cx, cy );
+			d0 = 0;
+			d1 = &source( cx    , cy + 1 ) - ppp;
+			d2 = &source( cx + 1, cy + 1 ) - ppp;
+			d3 = &source( cx + 1, cy     ) - ppp;
+		}
+
+		difference_type isx, isy, iex, iey;
+		difference_type mw = control_mesh.width( );
+		difference_type mh = control_mesh.height( );
+		if( mx < 0 || mw <= mx || my < 0 || mh <= my )
+		{
+			isx = 0;
+			iex = target.width( ) - 1;
+			isy = 0;
+			iey = target.height( ) - 1;
+		}
+		else
+		{
+			isx = static_cast< difference_type >( ( mx - 2 ) * stepW );
+			iex = static_cast< difference_type >( ( mx + 2 ) * stepW );
+			isy = static_cast< difference_type >( ( my - 2 ) * stepH );
+			iey = static_cast< difference_type >( ( my + 2 ) * stepH );
+
+			difference_type tw = target.width( );
+			difference_type th = target.height( );
+			isx = isx > 0  ? isx : 0;
+			isy = isy > 0  ? isy : 0;
+			iex = iex < tw ? iex : tw - 1;
+			iey = iey < th ? iey : th - 1;
+		}
+
+		typedef ffd_coefficient::coefficient_type coefficient_type;
+		const coefficient_type &ffd_coeff_x = ffd_coeff.coeff_x;
+		const coefficient_type &ffd_coeff_y = ffd_coeff.coeff_y;
+
+
+		for( difference_type y = isy + thread_id ; y <= iey ; y += thread_num )
+		{
+			j = static_cast< difference_type >( y * _1_stepH ) - 1;
+
+			sy[ 0 ] = ffd_coeff_y[ y ].a;
+			sy[ 1 ] = ffd_coeff_y[ y ].b;
+			sy[ 2 ] = ffd_coeff_y[ y ].c;
+			sy[ 3 ] = ffd_coeff_y[ y ].d;
+
+			for( difference_type x = isx ; x <= iex ; x++ )
+			{
+				i = static_cast< difference_type >( x * _1_stepW ) - 1;
+
+				sx[ 0 ] = ffd_coeff_x[ x ].a;
+				sx[ 1 ] = ffd_coeff_x[ x ].b;
+				sx[ 2 ] = ffd_coeff_x[ x ].c;
+				sx[ 3 ] = ffd_coeff_x[ x ].d;
+
+				double xx = 0.0, yy = 0.0;
+				for( difference_type m = 0 ; m <= 3 ; m++ )
+				{
+					typename control_mesh_type::const_pointer p = &control_mesh( i, j + m, 0 );
+					for( difference_type l = 0 ; l <= 3 ; l++ )
+					{
+						double val = sx[ l ] * sy[ m ];
+						xx += val * p[ l ].x;
+						yy += val * p[ l ].y;
+					}
+				}
+
+				xx *= _1_ax;
+				yy *= _1_ay;
+
+				double ct = -2000.0;
+				if( xx < 0 || source.width( ) <= xx + 1 || yy < 0 || source.height( ) <= yy + 1 )
+				{
+				}
+				else
+				{
+					difference_type ixx = static_cast< size_type >( xx );
+					difference_type iyy = static_cast< size_type >( yy );
+					typename source_image_type::const_pointer p = &source( ixx, iyy, 0 );
+					xx -= ixx;
+					yy -= iyy;
+
+					ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
+				}
+				target( x, y ) = static_cast< typename target_image_type::value_type >( ct );
+			}
+		}
+	}
+
+
+
+	// 制御点情報を用いて，ソース画像をターゲット画像に変形する
+	template < class TARGETTYPE, class TARGETTYPEA, class SOURCETYPE, class SOURCETYPEA, class CONTROLMESH >
+	static void non_rigid_transformation_( array3< TARGETTYPE, TARGETTYPEA > &target, const array3< SOURCETYPE, SOURCETYPEA > &source, const CONTROLMESH &control_mesh,
+											const ffd_coefficient &ffd_coeff,
+											typename CONTROLMESH::difference_type mx = -1,
+											typename CONTROLMESH::difference_type my = -1,
+											typename CONTROLMESH::difference_type mz = -1,
+											typename CONTROLMESH::size_type thread_id = 0,
+											typename CONTROLMESH::size_type thread_num = 1
+										)
+	{
+		typedef array3< TARGETTYPE, TARGETTYPEA >  target_image_type;
+		typedef array3< SOURCETYPE, SOURCETYPEA >  source_image_type;
+		typedef CONTROLMESH control_mesh_type;
+
+		typedef typename target_image_type::size_type size_type;
+		typedef typename target_image_type::difference_type difference_type;
+
+		difference_type i, j, k;
+		double sx[ 4 ], sy[ 4 ], sz[ 4 ];
+		double stepW = control_mesh.width( )  == 1 ? 1.0 : target.width( ) / static_cast< double >( control_mesh.width( ) - 1 );
+		double stepH = control_mesh.height( ) == 1 ? 1.0 : target.height( ) / static_cast< double >( control_mesh.height( ) - 1 );
+		double stepD = control_mesh.depth( )  == 1 ? 1.0 : target.depth( ) / static_cast< double >( control_mesh.depth( ) - 1 );
+		double _1_stepW = 1.0 / stepW;
+		double _1_stepH = 1.0 / stepH;
+		double _1_stepD = 1.0 / stepD;
+		double _1_ax = 1.0 / source.reso1( );
+		double _1_ay = 1.0 / source.reso2( );
+		double _1_az = 1.0 / source.reso3( );
+
+		difference_type d0, d1, d2, d3, d4, d5, d6, d7;
+		{
+			difference_type cx = source.width( ) / 2;
+			difference_type cy = source.height( ) / 2;
+			difference_type cz = source.depth( ) / 2;
+			typename source_image_type::const_pointer ppp = &source( cx, cy, cz );
+			d0 = 0;
+			d1 = &source( cx    , cy + 1, cz     ) - ppp;
+			d2 = &source( cx + 1, cy + 1, cz     ) - ppp;
+			d3 = &source( cx + 1, cy    , cz     ) - ppp;
+			d4 = &source( cx    , cy    , cz + 1 ) - ppp;
+			d5 = &source( cx    , cy + 1, cz + 1 ) - ppp;
+			d6 = &source( cx + 1, cy + 1, cz + 1 ) - ppp;
+			d7 = &source( cx + 1, cy    , cz + 1 ) - ppp;
+		}
+
+		difference_type isx, isy, isz, iex, iey, iez;
+		difference_type mw = control_mesh.width( );
+		difference_type mh = control_mesh.height( );
+		difference_type md = control_mesh.depth( );
+		if( mx < 0 || mw <= mx || my < 0 || mh <= my || mz < 0 || md <= mz )
+		{
+			isx = 0;
+			iex = target.width( ) - 1;
+			isy = 0;
+			iey = target.height( ) - 1;
+			isz = 0;
+			iez = target.depth( ) - 1;
+		}
+		else
+		{
+			isx = static_cast< difference_type >( ( mx - 2 ) * stepW );
+			iex = static_cast< difference_type >( ( mx + 2 ) * stepW );
+			isy = static_cast< difference_type >( ( my - 2 ) * stepH );
+			iey = static_cast< difference_type >( ( my + 2 ) * stepH );
+			isz = static_cast< difference_type >( ( mz - 2 ) * stepD );
+			iez = static_cast< difference_type >( ( mz + 2 ) * stepD );
+
+			difference_type tw = target.width( );
+			difference_type th = target.height( );
+			difference_type td = target.depth( );
+			isx = isx > 0  ? isx : 0;
+			isy = isy > 0  ? isy : 0;
+			isz = isz > 0  ? isz : 0;
+			iex = iex < tw ? iex : tw - 1;
+			iey = iey < th ? iey : th - 1;
+			iez = iez < td ? iez : td - 1;
+		}
+
+		typedef ffd_coefficient::coefficient_type coefficient_type;
+		const coefficient_type &ffd_coeff_x = ffd_coeff.coeff_x;
+		const coefficient_type &ffd_coeff_y = ffd_coeff.coeff_y;
+		const coefficient_type &ffd_coeff_z = ffd_coeff.coeff_z;
+
+		for( difference_type z = isz + thread_id ; z <= iez ; z += thread_num )
+		{
+			k = static_cast< difference_type >( z * _1_stepD ) - 1;
+
+			sz[ 0 ] = ffd_coeff_z[ z ].a;
+			sz[ 1 ] = ffd_coeff_z[ z ].b;
+			sz[ 2 ] = ffd_coeff_z[ z ].c;
+			sz[ 3 ] = ffd_coeff_z[ z ].d;
+
+			for( difference_type y = isy ; y <= iey ; y++ )
+			{
+				j = static_cast< difference_type >( y * _1_stepH ) - 1;
+
+				sy[ 0 ] = ffd_coeff_y[ y ].a;
+				sy[ 1 ] = ffd_coeff_y[ y ].b;
+				sy[ 2 ] = ffd_coeff_y[ y ].c;
+				sy[ 3 ] = ffd_coeff_y[ y ].d;
+
+				for( difference_type x = isx ; x <= iex ; x++ )
+				{
+					i = static_cast< difference_type >( x * _1_stepW ) - 1;
+
+					sx[ 0 ] = ffd_coeff_x[ x ].a;
+					sx[ 1 ] = ffd_coeff_x[ x ].b;
+					sx[ 2 ] = ffd_coeff_x[ x ].c;
+					sx[ 3 ] = ffd_coeff_x[ x ].d;
+
+					double xx = 0.0, yy = 0.0, zz = 0.0;
+					for( difference_type n = 0 ; n <= 3 ; n++ )
+					{
+						for( difference_type m = 0 ; m <= 3 ; m++ )
+						{
+							typename control_mesh_type::const_pointer p = &control_mesh( i, j + m, k + n );
+							double vvv = sy[ m ] * sz[ n ];
+							for( difference_type l = 0 ; l <= 3 ; l++ )
+							{
+								double vv = sx[ l ] * vvv;
+								xx += vv * p[ l ].x;
+								yy += vv * p[ l ].y;
+								zz += vv * p[ l ].z;
+							}
+						}
+					}
+
+					xx *= _1_ax;
+					yy *= _1_ay;
+					zz *= _1_az;
+
+					double ct = -2000.0;
+					if( xx < 0 || source.width( ) <= xx + 1 || yy < 0 || source.height( ) <= yy + 1 || zz < 0 || source.depth( ) <= zz + 1 )
+					{
+					}
+					else
+					{
+						difference_type ixx = static_cast< size_type >( xx );
+						difference_type iyy = static_cast< size_type >( yy );
+						difference_type izz = static_cast< size_type >( zz );
+						typename source_image_type::const_pointer p = &source( ixx, iyy, izz );
+						xx -= ixx;
+						yy -= iyy;
+						zz -= izz;
+
+						ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
+						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
+					}
+					target( x, y, z ) = static_cast< typename target_image_type::value_type >( ct );
+				}
+			}
+		}
+	}
 
 
 	template < class TARGETTYPE, class SOURCETYPE, class CONTROLMESH >
@@ -333,17 +669,33 @@ namespace __non_rigid_registration_utility__
 		size_type mx_;
 		size_type my_;
 		size_type mz_;
+		const ffd_coefficient *ffd_coefficient_;
 
 	private:
 		const non_rigid_registration_thread& operator =( const non_rigid_registration_thread &p );
 
 	public:
 		void setup_parameters( target_image_type &target, const source_image_type &source, const control_mesh_type &control_mesh,
-													size_t mx, size_type my, size_type mz, size_type thread_id, size_type thread_num )
+								const ffd_coefficient &ffd_coefficient__, size_t mx, size_type my, size_type mz, size_type thread_id, size_type thread_num )
 		{
 			target_  = &target;
 			source_ = &source;
 			control_mesh_ = &control_mesh;
+			ffd_coefficient_ = &ffd_coefficient__;
+			mx_ = mx;
+			my_ = my;
+			mz_ = mz;
+			thread_id_ = thread_id;
+			thread_num_ = thread_num;
+		}
+
+		void setup_parameters( target_image_type &target, const source_image_type &source, const control_mesh_type &control_mesh,
+												size_t mx, size_type my, size_type mz, size_type thread_id, size_type thread_num )
+		{
+			target_  = &target;
+			source_ = &source;
+			control_mesh_ = &control_mesh;
+			ffd_coefficient_ = NULL;
 			mx_ = mx;
 			my_ = my;
 			mz_ = mz;
@@ -352,12 +704,12 @@ namespace __non_rigid_registration_utility__
 		}
 
 		non_rigid_registration_thread( size_type id = 0, size_type num = 1 ) : thread_id_( id ), thread_num_( num ),
-			target_( NULL ), source_( NULL ), control_mesh_( NULL ), mx_( -1 ), my_( -1 ), mz_( -1 )
+			target_( NULL ), source_( NULL ), control_mesh_( NULL ), mx_( -1 ), my_( -1 ), mz_( -1 ), ffd_coefficient_( NULL )
 		{
 		}
 
 		non_rigid_registration_thread( const non_rigid_registration_thread &p ) : base( p ), thread_id_( p.thread_id_ ), thread_num_( p.thread_num_ ),
-			target_( p.target_ ), source_( p.source_ ), control_mesh_( p.control_mesh_ ), mx_( p.mx_ ), my_( p.my_ ), mz_( p.mz_ )
+			target_( p.target_ ), source_( p.source_ ), control_mesh_( p.control_mesh_ ), mx_( p.mx_ ), my_( p.my_ ), mz_( p.mz_ ), ffd_coefficient_( p.ffd_coefficient_ )
 		{
 		}
 
@@ -365,7 +717,14 @@ namespace __non_rigid_registration_utility__
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( )
 		{
-			non_rigid_transformation_( *target_, *source_, *control_mesh_, mx_, my_, mz_, thread_id_, thread_num_ );
+			if( ffd_coefficient_ != NULL )
+			{
+				non_rigid_transformation_( *target_, *source_, *control_mesh_, *ffd_coefficient_, mx_, my_, mz_, thread_id_, thread_num_ );
+			}
+			else
+			{
+				non_rigid_transformation_( *target_, *source_, *control_mesh_, mx_, my_, mz_, thread_id_, thread_num_ );
+			}
 			return( true );
 		}
 	};
@@ -388,14 +747,14 @@ namespace __non_rigid_registration_utility__
 		typedef SOURCETYPE source_image_type;
 		typedef CONTROLMESH control_mesh_type;
 		typedef typename target_image_type::size_type  size_type;
-		typedef non_rigid_registration_thread< target_image_type, source_image_type, control_mesh_type > non_rigid_registration_thread;
+		typedef non_rigid_registration_thread< target_image_type, source_image_type, control_mesh_type > _non_rigid_registration_thread_;
 
 		if( thread_num == 0 )
 		{
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
-		non_rigid_registration_thread *thread = new non_rigid_registration_thread[ thread_num ];
+		_non_rigid_registration_thread_ *thread = new _non_rigid_registration_thread_[ thread_num ];
 
 		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
@@ -410,6 +769,48 @@ namespace __non_rigid_registration_utility__
 		
 		return( true );
 	}
+
+	// 制御点情報を用いて，ソース画像をターゲット画像に変形する
+	template < class TARGETTYPE, class SOURCETYPE, class CONTROLMESH >
+	static bool transformation( TARGETTYPE &target, const SOURCETYPE &source, const CONTROLMESH &control_mesh, const ffd_coefficient &ffd_coeff,
+									typename CONTROLMESH::difference_type mx = -1,
+									typename CONTROLMESH::difference_type my = -1,
+									typename CONTROLMESH::difference_type mz = -1,
+									typename CONTROLMESH::size_type thread_num = 0
+								)
+	{
+		if( is_same_object( target, source ) || target.empty( ) || source.empty( ) )
+		{
+			return( false );
+		}
+
+		typedef TARGETTYPE target_image_type;
+		typedef SOURCETYPE source_image_type;
+		typedef CONTROLMESH control_mesh_type;
+		typedef typename target_image_type::size_type  size_type;
+		typedef non_rigid_registration_thread< target_image_type, source_image_type, control_mesh_type > _non_rigid_registration_thread_;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		_non_rigid_registration_thread_ *thread = new _non_rigid_registration_thread_[ thread_num ];
+
+		size_type i;
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( target, source, control_mesh, ffd_coeff, mx, my, mz, i, thread_num );
+		}
+
+		// スレッドを実行して，終了まで待機する
+		do_threads_( thread, thread_num );
+
+		delete [] thread;
+		
+		return( true );
+	}
+
 
 
 	template < class TARGETTYPE, class SOURCETYPE, class CONTROLMESH >
@@ -435,6 +836,7 @@ namespace __non_rigid_registration_utility__
 		difference_type minimum;
 		difference_type maximum;
 		size_type BIN;
+		ffd_coefficient ffd_coeff;
 
 		double H1;
 
@@ -483,8 +885,11 @@ namespace __non_rigid_registration_utility__
 		registration_functor( const target_image_type &tgt, const source_image_type &src, const control_mesh_type &cmesh, size_type bin )
 			: target( tgt.size( ) ), transformed_image( tgt ), source( src ), control_mesh ( cmesh ), control_mesh_tmp( cmesh ), x( 0 ), y( 0 ), z( 0 ), BIN( bin )
 		{
+			// FFD 用の係数テーブルを作成する
+			ffd_coeff.initialize( tgt.width( ), tgt.height( ), tgt.depth( ), control_mesh );
+
 			// 初期画像を作成する
-			transformation( transformed_image, source, control_mesh );
+			transformation( transformed_image, source, control_mesh, ffd_coeff );
 
 			minimum = get_maximum( get_minimum( get_minimum( tgt ), get_minimum( src ) ), -1000 );
 			maximum = get_maximum( get_maximum( tgt ), get_maximum( src ) );
@@ -532,7 +937,7 @@ namespace __non_rigid_registration_utility__
 			y = j;
 			z = k;
 			control_mesh_tmp = control_mesh;
-			__non_rigid_registration_utility__::transformation( transformed_image, source, control_mesh );
+			__non_rigid_registration_utility__::transformation( transformed_image, source, control_mesh, ffd_coeff );
 		}
 
 		template < class PARAMETER >
@@ -542,7 +947,7 @@ namespace __non_rigid_registration_utility__
 			control_mesh_tmp( x, y, z ).y = control_mesh( x, y, z ).y + p[ 1 ];
 			control_mesh_tmp( x, y, z ).z = control_mesh( x, y, z ).z + p[ 2 ];
 
-			__non_rigid_registration_utility__::transformation( transformed_image, source, control_mesh_tmp, x, y, z );
+			__non_rigid_registration_utility__::transformation( transformed_image, source, control_mesh_tmp, ffd_coeff, x, y, z );
 
 			// データを初期化する
 			__no_data_is_associated__.fill( );
