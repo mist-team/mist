@@ -56,7 +56,7 @@ namespace __image_controller__
 
 	inline std::string get_ext( const std::string &str )
 	{
-		std::string::size_type index = str.find_last_of( "." );
+		std::string::size_type index = str.rfind( '.' );
 		if( index == str.npos )
 		{
 			return( "" );
