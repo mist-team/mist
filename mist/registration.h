@@ -332,7 +332,7 @@ namespace __non_rigid_registration_utility__
 		mist::array2< coefficients > coeff_xy;
 
 		template < class CONTROLMESHTYPE >
-		initialize( size_type width, size_type height, size_type depth, const CONTROLMESHTYPE &control_mesh )
+		void initialize( size_type width, size_type height, size_type depth, const CONTROLMESHTYPE &control_mesh )
 		{
 			coeff_z.resize( depth );
 			coeff_xy.resize( width, height );
@@ -855,6 +855,8 @@ namespace __non_rigid_registration_utility__
 		typedef typename TARGETTYPE::difference_type difference_type;
 		typedef typename CONTROLMESH::value_type vector_type;
 		typedef matrix< double > matrix_type;							///< @brief 内部で利用する行列の型
+		typedef thread< registration_functor< TARGETTYPE, SOURCETYPE, CONTROLMESH > > base;
+		typedef typename base::thread_exit_type thread_exit_type;
 
 		array< unsigned int * > target;
 		target_image_type transformed_image;		///< @brief レジストレーション時に利用し，制御点情報を用いてソースを目標画像へ変換した一時画像
@@ -1010,7 +1012,6 @@ namespace __non_rigid_registration_utility__
 			__no_data_is_associated__.fill( );
 			h.fill( );
 			hh.fill( );
-			difference_type upper = h.width( );
 			size_type count = 0;
 			double _1_bin = 1.0 / BIN;
 
@@ -1527,7 +1528,7 @@ namespace non_rigid
 					}
 
 					// メッシュの再分割を行ったので，FFDの係数の再設定を行う
-					for( numthreads = 0 ; numthreads < thread_num ; numthreads++, i++ )
+					for( numthreads = 0 ; numthreads < thread_num ; numthreads++ )
 					{
 						f[ numthreads ]->force_initialize( );
 					}
