@@ -10,7 +10,7 @@ class image_test_window {open
   Function {image_test_window()} {open
   } {
     Fl_Window main_window {open
-      xywh {337 190 551 566} type Double visible
+      xywh {461 365 551 568} type Double visible
     } {
       Fl_Group {} {
         xywh {5 30 540 530} box DOWN_BOX
@@ -21,8 +21,8 @@ class image_test_window {open
           class image_draw_area
         }
       }
-      Fl_Menu_Bar {} {open
-        xywh {0 0 550 25} box FLAT_BOX
+      Fl_Menu_Bar {} {selected
+        xywh {0 0 550 30} box FLAT_BOX
       } {
         submenu {} {
           label {&File}
@@ -174,7 +174,7 @@ Fl::wait( 0 );}
             }
           }
           submenu {} {
-            label Resolution selected
+            label Resolution
             xywh {0 0 100 20}
           } {
             menuitem {} {
@@ -229,6 +229,9 @@ Fl::wait( 0 );}
             xywh {70 70 100 20}
           }
         }
+      }
+      Fl_Progress progress_bar {
+        xywh {125 5 420 20} box PLASTIC_THIN_UP_BOX selection_color 1 hide
       }
     }
   }

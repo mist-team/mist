@@ -55,10 +55,40 @@ void image_draw_area::draw( )
 }
 
 
+struct progress_callback
+{
+	Fl_Progress *f_;
+	bool operator()( double percent ) const
+	{
+		if( percent > 100.0 )
+		{
+			f_->hide( );
+			Fl::wait( 0 );
+			return( true );
+		}
+		else if( !f_->visible( ) )
+		{
+			f_->show( );
+		}
+		f_->value( percent );
+		Fl::wait( 0 );
+		return( true );
+	}
+
+	progress_callback( ){ }
+	progress_callback( Fl_Progress *f ) : f_( f ){ }
+};
+
+
+
+image_test_window *pwindow;
 
 int main( int argc, char *argv[] )
 {
 	image_test_window window;
+
+	pwindow = &window;
+
 	Fl::gl_visual( FL_RGB );
 	window.show( );
 	Fl::background( 212, 208, 200 );
@@ -260,29 +290,33 @@ void median_test( )
 	image_type tmp( image_object );
 	{
 		mist::timer t;
-		mist::median( tmp, image_object, 10 );
+		mist::median( tmp, image_object, 5, 5, progress_callback( pwindow->progress_bar ), 0 );
 		std::cout << "Computation Time: " << t.elapse( ) << " sec." << std::endl;
 	}
 }
 
 void erosion_test( )
 {
-	mist::erosion( image_object, 3 );
+	mist::erosion( image_object, 3, progress_callback( pwindow->progress_bar ), 0 );
+	pwindow->draw_area->redraw( );
 }
 
 void dilation_test( )
 {
-	mist::dilation( image_object, 3 );
+	mist::dilation( image_object, 3, progress_callback( pwindow->progress_bar ), 0 );
+	pwindow->draw_area->redraw( );
 }
 
 void opening_test( )
 {
-	mist::opening( image_object, 3 );
+	mist::opening( image_object, 3, progress_callback( pwindow->progress_bar ), 0 );
+	pwindow->draw_area->redraw( );
 }
 
 void closing_test( )
 {
-	mist::closing( image_object, 3 );
+	mist::closing( image_object, 3, progress_callback( pwindow->progress_bar ), 0 );
+	pwindow->draw_area->redraw( );
 }
 
 void erosion_triangle_test( )
@@ -294,7 +328,8 @@ void erosion_triangle_test( )
 	element( 1, 3 ) = 1; element( 2, 3 ) = 1; element( 3, 3 ) = 1; element( 4, 3 ) = 1; element( 5, 3 ) = 1; element( 6, 3 ) = 1; element( 7, 3 ) = 1;
 	element( 0, 4 ) = 1; element( 1, 4 ) = 1; element( 2, 4 ) = 1; element( 3, 4 ) = 1; element( 4, 4 ) = 1; element( 5, 4 ) = 1; element( 6, 4 ) = 1; element( 7, 4 ) = 1; element( 8, 4 ) = 1;
 
-	mist::erosion( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ) );
+	mist::erosion( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ), progress_callback( pwindow->progress_bar ), 0 );
+	pwindow->draw_area->redraw( );
 }
 
 void dilation_triangle_test( )
@@ -306,7 +341,8 @@ void dilation_triangle_test( )
 	element( 1, 3 ) = 1; element( 2, 3 ) = 1; element( 3, 3 ) = 1; element( 4, 3 ) = 1; element( 5, 3 ) = 1; element( 6, 3 ) = 1; element( 7, 3 ) = 1;
 	element( 0, 4 ) = 1; element( 1, 4 ) = 1; element( 2, 4 ) = 1; element( 3, 4 ) = 1; element( 4, 4 ) = 1; element( 5, 4 ) = 1; element( 6, 4 ) = 1; element( 7, 4 ) = 1; element( 8, 4 ) = 1;
 
-	mist::dilation( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ) );
+	mist::dilation( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ), progress_callback( pwindow->progress_bar ), 0 );
+	pwindow->draw_area->redraw( );
 }
 
 void opening_triangle_test( )
@@ -318,7 +354,8 @@ void opening_triangle_test( )
 	element( 1, 3 ) = 1; element( 2, 3 ) = 1; element( 3, 3 ) = 1; element( 4, 3 ) = 1; element( 5, 3 ) = 1; element( 6, 3 ) = 1; element( 7, 3 ) = 1;
 	element( 0, 4 ) = 1; element( 1, 4 ) = 1; element( 2, 4 ) = 1; element( 3, 4 ) = 1; element( 4, 4 ) = 1; element( 5, 4 ) = 1; element( 6, 4 ) = 1; element( 7, 4 ) = 1; element( 8, 4 ) = 1;
 
-	mist::opening( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ) );
+	mist::opening( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ), progress_callback( pwindow->progress_bar ), 0 );
+	pwindow->draw_area->redraw( );
 }
 
 void closing_triangle_test( )
@@ -330,7 +367,8 @@ void closing_triangle_test( )
 	element( 1, 3 ) = 1; element( 2, 3 ) = 1; element( 3, 3 ) = 1; element( 4, 3 ) = 1; element( 5, 3 ) = 1; element( 6, 3 ) = 1; element( 7, 3 ) = 1;
 	element( 0, 4 ) = 1; element( 1, 4 ) = 1; element( 2, 4 ) = 1; element( 3, 4 ) = 1; element( 4, 4 ) = 1; element( 5, 4 ) = 1; element( 6, 4 ) = 1; element( 7, 4 ) = 1; element( 8, 4 ) = 1;
 
-	mist::closing( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ) );
+	mist::closing( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ), progress_callback( pwindow->progress_bar ), 0 );
+	pwindow->draw_area->redraw( );
 }
 
 void interpolate_test( int mode, bool reso_up )
@@ -366,7 +404,7 @@ void interlace_test( bool is_odd_line )
 void expand_test( )
 {
 	mist::array2< unsigned char > original, figure, tmp;
-	image_type::size_type size = 5, i;
+	image_type::size_type size = 3, i;
 
 	mist::convert( image_object, original );
 
@@ -382,12 +420,13 @@ void expand_test( )
 	double err = 0;
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
-		err = ( tmp[ i ] - figure[ i ] ) * ( tmp[ i ] - figure[ i ] );
+		err += tmp[ i ] != figure[ i ] ? 1 : 0;
 	}
 	std::cout << "Error: " << err << std::endl;
 
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
+//		if( tmp[ i ] != 0 )
 		if( figure[ i ] != 0 )
 		{
 			image_object[ i ] = original[ i ] != 0 ? 255 : 127;
@@ -416,7 +455,7 @@ void shrink_test( )
 	double err = 0;
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
-		err = ( tmp[ i ] - figure[ i ] ) * ( tmp[ i ] - figure[ i ] );
+		err += tmp[ i ] != figure[ i ] ? 1 : 0;
 	}
 	std::cout << "Error: " << err << std::endl;
 

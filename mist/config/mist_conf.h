@@ -143,6 +143,36 @@ struct __mist_dmy_callback__
 	bool operator()( double percent ) const { return( true ); }
 };
 
+/// @brief 指定したコールバックの戻り値 [0,100] を指定した区間に変換する
+//!
+//! MISTのアルゴリズムが提供するコールバックは0～100の間の数を返し，アルゴリズムが終了する際に100よりも大きい数値を返す
+//! また，コールバックファンクタの戻り値が false の場合はMISTのアルゴリズムは処理を中断できる場合は中断し，直ちに制御を返します．
+//! その際に，途中の処理結果は失われるかもしくは意味のない結果となる可能性があります
+//!
+template < class Functor >
+struct __mist_convert_callback__
+{
+	Functor f_;
+	double lower_;
+	double upper_;
+
+	/// @brief MISTのアルゴリズムの進行状況を，0～100パーセントで受け取り，指定した区間に変換する関数．
+	//!
+	//! @param[in] percent … アルゴリズムの進行状況
+	//!
+	//! @return true  … アルゴリズムの実行を継続
+	//! @return false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止
+	//!
+	bool operator()( double percent ) const
+	{
+		percent = lower_ + percent / 100.0 * ( upper_ - lower_ );
+		return( f_( percent ) );
+	}
+
+	__mist_convert_callback__( ) : lower_( 0.0 ), upper_( 100.0 ){ }
+	__mist_convert_callback__( Functor f, double l = 0.0, double u = 100.0 ) : f_( f ), lower_( l ), upper_( u ){ }
+};
+
 
 /// @brief MISTのアルゴリズム全般で利用可能な，標準出力型ダミーコールバックファンクタ
 //!

@@ -179,8 +179,8 @@ namespace __labeling_controller__
 	};
 
 
-	template < class Array, class neighbor >
-	typename Array::size_type labeling( Array &in, const typename Array::size_type label_max, const neighbor dmy )
+	template < class Array, class neighbor, class Functor >
+	typename Array::size_type labeling( Array &in, const typename Array::size_type label_max, const neighbor dmy, Functor f )
 	{
 		typedef typename Array::size_type  size_type;
 		typedef typename Array::value_type value_type;
@@ -195,6 +195,12 @@ namespace __labeling_controller__
 		const size_type depth = in.depth( );
 
 		T[ 0 ] = T[ 1 ] = 0;
+
+
+		const bool bprogress1 = depth == 1;
+		const bool bprogress2 = depth >  1;
+
+		f( 0.0 );
 
 		for( k = 0 ; k < depth ; k++ )
 		{
@@ -263,8 +269,20 @@ namespace __labeling_controller__
 						}
 					}
 				}
+
+				if( bprogress1 )
+				{
+					f( static_cast< double >( j + 1 ) / static_cast< double >( height ) * 100.0 );
+				}
+			}
+
+			if( bprogress2 )
+			{
+				f( static_cast< double >( k + 1 ) / static_cast< double >( depth ) * 100.0 );
 			}
 		}
+
+		f( 100.0 );
 
 		// ラベルの振り直しを行う
 		size_type *NT = new size_type[ label_num + 1 ];
@@ -304,6 +322,8 @@ namespace __labeling_controller__
 			}
 		}
 
+		f( 100.1 );
+
 		delete [] T;
 		delete [] NT;
 
@@ -325,11 +345,12 @@ namespace __labeling_controller__
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
 //! @param[in]  max_label … 最大で割り当てるラベル数
+//! @param[in]  f         … 進行状況を返すコールバック関数
 //! 
 //! @return 割り当てられたラベル数
 //! 
-template < class T1, class T2, class Allocator1, class Allocator2 >
-typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num2< T2 >::value )
+template < class T1, class T2, class Allocator1, class Allocator2, class Functor >
+typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T2, Allocator2 >::size_type max_label, Functor f )
 {
 	typedef typename array2< T2, Allocator2 >::size_type  size_type;
 	typedef typename array2< T2, Allocator2 >::value_type value_type;
@@ -347,7 +368,62 @@ typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Alloca
 	{
 		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
-	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 4 >( ) ) );
+	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 4 >( ), f ) );
+}
+
+
+/// @brief 2次元画像に対する4近傍型ラベリング
+//! 
+//! 2次元画像に対する4近傍型ラベリング
+//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
+//! 
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
+//! 
+//! @return 割り当てられたラベル数
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2 >
+typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num2< T2 >::value )
+{
+	return( labeling4( in, out, max_label, __mist_dmy_callback__( ) ) );
+}
+
+
+/// @brief 2次元画像に対する8近傍型ラベリング
+//! 
+//! 2次元画像に対する8近傍型ラベリング
+//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
+//! 
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
+//! @param[in]  f         … 進行状況を返すコールバック関数
+//! 
+//! @return 割り当てられたラベル数
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2, class Functor >
+typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T2, Allocator2 >::size_type max_label, Functor f )
+{
+	typedef typename array2< T2, Allocator2 >::size_type  size_type;
+	typedef typename array2< T2, Allocator2 >::value_type value_type;
+
+	if( max_label == 0 )
+	{
+		max_label = type_limits< value_type >::maximum( );
+	}
+
+	out.resize( in.size1( ), in.size2( ) );
+	out.reso1( in.reso1( ) );
+	out.reso2( in.reso2( ) );
+
+	for( size_type i = 0 ; i < in.size( ) ; i++ )
+	{
+		out[ i ] = in[ i ] > 0 ? 1 : 0;
+	}
+	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 8 >( ), f ) );
 }
 
 
@@ -364,27 +440,47 @@ typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Alloca
 //! @return 割り当てられたラベル数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num2< T2 >::value )
+inline typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num2< T2 >::value )
 {
-	typedef typename array2< T2, Allocator2 >::size_type  size_type;
-	typedef typename array2< T2, Allocator2 >::value_type value_type;
+	return( labeling8( in, out, max_label, __mist_dmy_callback__( ) ) );
+}
+
+
+/// @brief 3次元画像に対する6近傍型ラベリング
+//! 
+//! 2次元画像に対する6近傍型ラベリング
+//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
+//! 
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
+//! @param[in]  f         … 進行状況を返すコールバック関数
+//! 
+//! @return 割り当てられたラベル数
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2, class Functor >
+typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label, Functor f )
+{
+	typedef typename array3< T2, Allocator2 >::size_type  size_type;
+	typedef typename array3< T2, Allocator2 >::value_type value_type;
 
 	if( max_label == 0 )
 	{
 		max_label = type_limits< value_type >::maximum( );
 	}
 
-	out.resize( in.size1( ), in.size2( ) );
+	out.resize( in.size1( ), in.size2( ), in.size3( ) );
 	out.reso1( in.reso1( ) );
 	out.reso2( in.reso2( ) );
+	out.reso3( in.reso3( ) );
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
 		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
-	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 8 >( ) ) );
+	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 6 >( ), f ) );
 }
-
 
 /// @brief 3次元画像に対する6近傍型ラベリング
 //! 
@@ -399,7 +495,27 @@ typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Alloca
 //! @return 割り当てられたラベル数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
+inline typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
+{
+	return( labeling6( in, out, max_label, __mist_dmy_callback__( ) ) );
+}
+
+
+/// @brief 3次元画像に対する18近傍型ラベリング
+//! 
+//! 2次元画像に対する18近傍型ラベリング
+//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
+//! 
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
+//! @param[in]  f         … 進行状況を返すコールバック関数
+//! 
+//! @return 割り当てられたラベル数
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2, class Functor >
+typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label, Functor f )
 {
 	typedef typename array3< T2, Allocator2 >::size_type  size_type;
 	typedef typename array3< T2, Allocator2 >::value_type value_type;
@@ -418,9 +534,8 @@ typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Alloca
 	{
 		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
-	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 6 >( ) ) );
+	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 18 >( ), f ) );
 }
-
 
 /// @brief 3次元画像に対する18近傍型ラベリング
 //! 
@@ -435,7 +550,27 @@ typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Alloca
 //! @return 割り当てられたラベル数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
+inline typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
+{
+	return( labeling18( in, out, max_label, __mist_dmy_callback__( ) ) );
+}
+
+
+/// @brief 3次元画像に対する26近傍型ラベリング
+//! 
+//! 2次元画像に対する26近傍型ラベリング
+//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
+//! 
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
+//! @param[in]  f         … 進行状況を返すコールバック関数
+//! 
+//! @return 割り当てられたラベル数
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2, class Functor >
+typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label, Functor f )
 {
 	typedef typename array3< T2, Allocator2 >::size_type  size_type;
 	typedef typename array3< T2, Allocator2 >::value_type value_type;
@@ -454,7 +589,7 @@ typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Alloc
 	{
 		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
-	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 18 >( ) ) );
+	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 26 >( ), f ) );
 }
 
 
@@ -471,26 +606,9 @@ typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Alloc
 //! @return 割り当てられたラベル数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
+inline typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
 {
-	typedef typename array3< T2, Allocator2 >::size_type  size_type;
-	typedef typename array3< T2, Allocator2 >::value_type value_type;
-
-	if( max_label == 0 )
-	{
-		max_label = type_limits< value_type >::maximum( );
-	}
-
-	out.resize( in.size1( ), in.size2( ), in.size3( ) );
-	out.reso1( in.reso1( ) );
-	out.reso2( in.reso2( ) );
-	out.reso3( in.reso3( ) );
-
-	for( size_type i = 0 ; i < in.size( ) ; i++ )
-	{
-		out[ i ] = in[ i ] > 0 ? 1 : 0;
-	}
-	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 26 >( ) ) );
+	return( labeling26( in, out, max_label, __mist_dmy_callback__( ) ) );
 }
 
 /// @}

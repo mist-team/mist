@@ -626,13 +626,13 @@ public:
 // 単位行列とゼロ行列を生成する
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
-	/// @brief 符号反転した行列を返す
+	/// @brief 任意サイズの単位行列を返す
 	static matrix_expression< matrix_identity< matrix > > identity( size_type rows, size_type cols )
 	{
 		return( matrix_expression< matrix_identity< matrix > >( matrix_identity< matrix >( rows, cols ) ) );
 	}
 
-	/// @brief 転置行列を返す
+	/// @brief 任意サイズのゼロ行列を返す
 	static matrix_expression< matrix_zero< matrix > > zero( size_type rows, size_type cols )
 	{
 		return( matrix_expression< matrix_zero< matrix > >( matrix_zero< matrix >( rows, cols ) ) );
@@ -640,7 +640,7 @@ public:
 
 #else
 
-	/// @brief 任意の単位行列を返す
+	/// @brief 任意サイズの単位行列を返す
 	static const matrix identity( size_type rows, size_type cols )
 	{
 		size_type size = rows < cols ? rows : cols;
@@ -652,7 +652,7 @@ public:
 		return( o );
 	}
 
-	/// @brief 任意のゼロ行列を返す
+	/// @brief 任意サイズのゼロ行列を返す
 	static const matrix zero( size_type rows, size_type cols )
 	{
 		return( matrix( rows, cols ) );

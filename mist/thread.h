@@ -6,6 +6,15 @@
 #define __INCLUDE_MIST_THREAD__
 
 
+#ifndef __INCLUDE_MIST_CONF_H__
+#include "config/mist_conf.h"
+#endif
+
+#ifndef __INCLUDE_MIST_SINGLETON__
+#include "singleton.h"
+#endif
+
+
 // スレッド用ライブラリのインクルード
 // UNIX系とWindows用を使い分ける
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -23,14 +32,6 @@
 
 #include <map>
 #include <string>
-
-#ifndef __INCLUDE_MIST_CONF_H__
-#include "config/mist_conf.h"
-#endif
-
-#ifndef __INCLUDE_MIST_SINGLETON__
-#include "singleton.h"
-#endif
 
 
 // mist名前空間の始まり
@@ -66,7 +67,7 @@ inline size_t get_cpu_num( )
 
 // スレッド用関数
 typedef unsigned long ThreadExitCode;
-typedef ThreadExitCode( LPTHREADFUNC ) ( void *thread_param );
+typedef ThreadExitCode ( LPTHREADFUNC ) ( void *thread_param );
 
 
 // スレッドを操作する，識別する変数
@@ -194,7 +195,7 @@ public:
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので直接関数を呼び出す
 		bool ret = true;
-		thread_exit_code_ = thread_function( static_cast< thread_parameter & >( *this ) );
+		thread_exit_code_ = thread_function( );
 #elif defined( WIN32 )
 		if( thread_handle_ != NULL ) return( false );
 		thread_handle_ = CreateThread( NULL, 0, map_thread_function, ( void * )this, 0, &( thread_id_ ) );
@@ -205,6 +206,18 @@ public:
 #endif
 
 		return ( ret );
+	}
+
+
+	/// @brief スレッド無しで関数を実行する
+	//! 
+	//! @retval true  … スレッドの作成に成功
+	//! @retval false … スレッドの作成に失敗
+	//! 
+	virtual bool create_without_thread( )
+	{
+		thread_exit_code_ = thread_function( );
+		return ( true );
 	}
 
 
@@ -354,6 +367,58 @@ protected:
 	}
 #endif
 };
+
+
+
+/// @brief スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う
+//! 
+//! @param[in] threads        … スレッドオブジェクト
+//! @param[in] num_threads    … スレッド数
+//! @param[in] dwMilliseconds … タイムアウト時間（ミリ秒単位）
+//!
+//! @retval true  … 複数のスレッドの実行に成功
+//! @retval false … 複数のスレッドの実行に失敗
+//! 
+template < class Thread >
+inline bool do_threads_( Thread *threads, size_t num_threads, unsigned long dwMilliseconds = INFINITE )
+{
+	bool ret = true;
+	size_t i = 0;
+
+	// スレッドの生成
+	for( i = 1 ; i < num_threads ; i++ )
+	{
+		if( !threads[ i ].create( ) )
+		{
+			ret = false;
+		}
+	}
+	if( num_threads > 0 )
+	{
+		// 先頭のパラメータのみ実行スレッドで行う
+		threads[ 0 ].create_without_thread( );
+	}
+
+	// スレッドの終了待ち
+	for( i = 1 ; i < num_threads ; i++ )
+	{
+		if( !threads[ i ].wait( dwMilliseconds ) )
+		{
+			ret = false;
+		}
+	}
+
+	// リソースの開放
+	for( i = 1 ; i < num_threads ; i++ )
+	{
+		if( !threads[ i ].close( ) )
+		{
+			ret = false;
+		}
+	}
+
+	return( ret );
+}
 
 
 

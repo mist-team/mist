@@ -284,7 +284,7 @@ Fl_Menu_Item image_test_window::menu_[] = {
 
 image_test_window::image_test_window() {
   Fl_Double_Window* w;
-  { Fl_Double_Window* o = main_window = new Fl_Double_Window(551, 566);
+  { Fl_Double_Window* o = main_window = new Fl_Double_Window(551, 568);
     w = o;
     o->user_data((void*)(this));
     { Fl_Group* o = new Fl_Group(5, 30, 540, 530);
@@ -302,9 +302,14 @@ image_test_window::image_test_window() {
       }
       o->end();
     }
-    { Fl_Menu_Bar* o = new Fl_Menu_Bar(0, 0, 550, 25);
+    { Fl_Menu_Bar* o = new Fl_Menu_Bar(0, 0, 550, 30);
       o->box(FL_FLAT_BOX);
       o->menu(menu_);
+    }
+    { Fl_Progress* o = progress_bar = new Fl_Progress(125, 5, 420, 20);
+      o->box(FL_PLASTIC_THIN_UP_BOX);
+      o->selection_color(1);
+      o->hide();
     }
     o->end();
   }

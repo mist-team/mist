@@ -8,6 +8,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_File_Chooser.H>
+#include <FL/Fl_Progress.H>
 
 class image_test_window {
 public:
@@ -77,6 +78,7 @@ private:
   inline void cb_Shrink_i(Fl_Menu_*, void*);
   static void cb_Shrink(Fl_Menu_*, void*);
 public:
+  Fl_Progress *progress_bar;
   void show( );
 };
 #endif
