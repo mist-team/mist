@@ -141,7 +141,7 @@ inline typename __utility__::__value_type__< T >::value_type deviation( const ar
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空
 //! 
 template < class Array1, class Array2 >
-bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_type min, typename Array1::value_type max, typename Array1::value_type bin = Array1::value_type( 1 ) )
+bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_type min, typename Array1::value_type max, typename Array1::value_type bin = typename Array1::value_type( 1 ) )
 {
 	if( is_same_object( in, out ) || in.empty( ) )
 	{
@@ -198,7 +198,7 @@ bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_t
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空
 //! 
 template < class Array1, class Array2 >
-bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_type bin = Array1::value_type( 1 ) )
+bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_type bin = typename Array1::value_type( 1 ) )
 {
 	typedef typename Array1::size_type size_type;
 	typedef typename Array1::difference_type difference_type;
@@ -251,7 +251,7 @@ bool generate_histogram(
 							const Array1 &in1, const Array2 &in2, array2< T, Allocator > &out,
 							typename Array1::value_type min1, typename Array1::value_type max1,
 							typename Array1::value_type min2, typename Array1::value_type max2,
-							typename Array1::value_type bin = Array1::value_type( 1 )
+							typename Array1::value_type bin = typename Array1::value_type( 1 )
 						)
 {
 	if( is_same_object( in1, out ) || is_same_object( in2, out ) || in1.empty( ) || in2.empty( ) || in1.size( ) != in2.size( ) )
@@ -314,7 +314,7 @@ bool generate_histogram(
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空，入力となる2つのデータ数が異なる
 //! 
 template < class Array1, class Array2, class T, class Allocator >
-bool generate_histogram( const Array1 &in1, const Array2 &in2, array2< T, Allocator > &out, typename Array1::value_type bin = Array1::value_type( 1 ) )
+bool generate_histogram( const Array1 &in1, const Array2 &in2, array2< T, Allocator > &out, typename Array1::value_type bin = typename Array1::value_type( 1 ) )
 {
 	typedef typename Array1::size_type size_type;
 	typedef typename Array1::difference_type difference_type;
