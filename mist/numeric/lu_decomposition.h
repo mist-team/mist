@@ -249,7 +249,7 @@ void inverse( matrix< T, Allocator > &a )
 
 	for( j = 0 ; j < n ; j++ )
 	{
-		col.clean( );
+		col.fill( );
 		col[ j ] = 1;
 		lu_backwardsub( lu, col, pivot );
 		for( i = 0 ; i < n ; i++ )
@@ -282,7 +282,7 @@ void inverse1( matrix< T, Allocator > &a )
 
 	for( j = 0 ; j < n ; j++ )
 	{
-		col.clean( );
+		col.fill( );
 		col[ j ] = 1;
 		lu_backwardsub1( lu, col, pivot );
 		for( i = 0 ; i < n ; i++ )
