@@ -17,7 +17,7 @@ struct f1
 
 	double operator ()( const mist::matrix< double > &v )
 	{
-		std::cout << count++ << std::endl;
+//		std::cout << count++ << std::endl;
 //		std::cout << count++ << "                                     \r";
 		double x = v[ 0 ];
 		double y = v[ 1 ];

@@ -56,6 +56,26 @@ namespace __minimization_utility__
 	};
 
 
+	template < class Functor >
+	struct __no_copy_constructor_functor__
+	{
+		Functor &f_;
+		__no_copy_constructor_functor__( Functor &f ) : f_( f ){ }
+
+		template < class PARAMETER >
+		double operator ()( const PARAMETER &x )
+		{
+			return( f_( x ) );
+		}
+
+		template < class PARAMETER >
+		double operator ()( const PARAMETER &x ) const
+		{
+			return( f_( x ) );
+		}
+	};
+
+
 	template < class T, class Allocator, class Functor >
 	struct __gradient_vector_functor__
 	{
@@ -355,8 +375,9 @@ namespace gold
 	template < class Functor >
 	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 200 )
 	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
-		return( minimization( a, b, x, f, tolerance, itenum, max_iterations ) );
+		return( minimization( a, b, x, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations ) );
 	}
 }
 
@@ -531,8 +552,9 @@ namespace brent
 	template < class Functor >
 	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 200 )
 	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
-		return( minimization( a, b, x, f, tolerance, itenum, max_iterations ) );
+		return( minimization( a, b, x, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations ) );
 	}
 }
 
@@ -616,8 +638,10 @@ namespace gradient
 	template < class T, class Allocator, class Functor1, class Functor2 >
 	double minimization( matrix< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t max_iterations = 200 )
 	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor1 > __no_copy_constructor_functor1__;
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor2 > __no_copy_constructor_functor2__;
 		size_t itenum = 0;
-		return( minimization( p, f, g, tolerance, itenum, max_iterations ) );
+		return( minimization( p, __no_copy_constructor_functor1__( f ), __no_copy_constructor_functor2__( g ), tolerance, itenum, max_iterations ) );
 	}
 
 	/// @brief 探索の開始点を指定し，勾配を計算しながら最小値を探索する
@@ -725,8 +749,9 @@ namespace gradient
 	template < class T, class Allocator, class Functor >
 	double minimization( matrix< T, Allocator > &p, Functor f, double tolerance, double distance = 1.0, size_t max_iterations = 200 )
 	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
-		return( minimization( p, f, tolerance, distance, itenum, max_iterations ) );
+		return( minimization( p, __no_copy_constructor_functor__( f ), tolerance, distance, itenum, max_iterations ) );
 	}
 }
 
@@ -868,8 +893,9 @@ namespace powell
 	template < class T, class Allocator, class Functor >
 	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t max_iterations = 200 )
 	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
-		return( minimization( p, dirs, f, tolerance, itenum, max_iterations ) );
+		return( minimization( p, dirs, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations ) );
 	}
 }
 
