@@ -1,6 +1,10 @@
 /// @file mist/filter/labeling.h
 //!
 //! @brief 各次元の画像に対応した，ラベリングアルゴリズム
+//! 
+//! @subject 参考文献
+//! -# 米倉達広, 横井茂樹, 鳥脇純一郎, 福村晃夫, "三次元ディジタル空間における図形の連結性とオイラー数," 電子通信学会論文誌D, J65-D, No.1, pp.80-87, 1982.1
+//! -# 鳥脇純一郎, "3次元ディジタル画像処理," 昭晃堂, 2002.7.5
 //!
 
 #ifndef __INCLUDE_MIST_LABELING__
@@ -60,261 +64,187 @@ namespace __labeling_controller__
 	template < int nc >
 	struct neighbors
 	{
-		_MIST_CONST( size_t, array_num, 14 );
+		_MIST_CONST( size_t, array_num, 13 );
 
-		template < class T, class Allocator >
-		static inline void neighbor( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type *l,
-								typename array3< T, Allocator >::size_type i, typename array3< T, Allocator >::size_type j, typename array3< T, Allocator >::size_type k,
-								typename array3< T, Allocator >::size_type w, typename array3< T, Allocator >::size_type h )
+		template < class Array >
+		static inline void neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
+										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
+										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
-			l[ 0 ]  = ( i     > 0 && j > 0 && k > 0       ) ? in( i - 1, j - 1, k - 1 ) : 0;
-			l[ 1 ]  = ( j     > 0 && k > 0                ) ? in( i    , j - 1, k - 1 ) : 0;
-			l[ 2 ]  = ( i + 1 < w && j > 0 && k > 0       ) ? in( i + 1, j - 1, k - 1 ) : 0;
-			l[ 3 ]  = ( i     > 0 && k > 0                ) ? in( i - 1, j    , k - 1 ) : 0;
-			l[ 4 ]  = ( k     > 0                         ) ? in( i    , j    , k - 1 ) : 0;
-			l[ 5 ]  = ( i + 1 < w && k > 0                ) ? in( i + 1, j    , k - 1 ) : 0;
-			l[ 6 ]  = ( i     > 0 && j + 1 < h  &&  k > 0 ) ? in( i - 1, j + 1, k - 1 ) : 0;
-			l[ 7 ]  = ( j + 1 < h && k > 0                ) ? in( i    , j + 1, k - 1 ) : 0;
-			l[ 8 ]  = ( i + 1 < w && j + 1 < h  &&  k > 0 ) ? in( i + 1, j + 1, k - 1 ) : 0;
-			l[ 9 ]  = ( i     > 0 && j > 0                ) ? in( i - 1, j - 1, k     ) : 0;
-			l[ 10 ] = ( j     > 0                         ) ? in( i    , j - 1, k     ) : 0;
-			l[ 11 ] = ( i + 1 < w  &&  j > 0              ) ? in( i + 1, j - 1, k     ) : 0;
-			l[ 12 ] = ( i     > 0                         ) ? in( i - 1, j    , k     ) : 0;
-			l[ 13 ] = in( i, j, k );
+			typedef typename Array::size_type size_type;
+
+			L[  0 ] =                        && k > 0 ? T[ static_cast< size_type >( in( i    , j    , k - 1 ) ) ] : 0;
+			L[  1 ] =              j     > 0 &&       ? T[ static_cast< size_type >( in( i    , j - 1, k     ) ) ] : 0;
+			L[  2 ] = i     > 0 &&                    ? T[ static_cast< size_type >( in( i - 1, j    , k     ) ) ] : 0;
+			L[  3 ] =              j     > 0 && k > 0 ? T[ static_cast< size_type >( in( i    , j - 1, k - 1 ) ) ] : 0;
+			L[  4 ] = i     > 0 &&              k > 0 ? T[ static_cast< size_type >( in( i - 1, j    , k - 1 ) ) ] : 0;
+			L[  5 ] = i + 1 > w &&              k > 0 ? T[ static_cast< size_type >( in( i + 1, j    , k - 1 ) ) ] : 0;
+			L[  6 ] =              j + 1 > h && k > 0 ? T[ static_cast< size_type >( in( i    , j + 1, k - 1 ) ) ] : 0;
+			L[  7 ] = i     > 0 && j     > 0 &&       ? T[ static_cast< size_type >( in( i - 1, j - 1, k     ) ) ] : 0;
+			L[  8 ] = i + 1 > w && j     > 0 &&       ? T[ static_cast< size_type >( in( i + 1, j - 1, k     ) ) ] : 0;
+			L[  9 ] = i     > 0 && j     > 0 && k > 0 ? T[ static_cast< size_type >( in( i - 1, j - 1, k - 1 ) ) ] : 0;
+			L[ 10 ] = i + 1 > w && j     > 0 && k > 0 ? T[ static_cast< size_type >( in( i + 1, j - 1, k - 1 ) ) ] : 0;
+			L[ 11 ] = i     > 0 && j + 1 > h && k > 0 ? T[ static_cast< size_type >( in( i - 1, j + 1, k - 1 ) ) ] : 0;
+			L[ 12 ] = i + 1 > w && j + 1 > h && k > 0 ? T[ static_cast< size_type >( in( i + 1, j + 1, k - 1 ) ) ] : 0;
+		}
+	};
+
+	template < >
+	struct neighbors< 18 >
+	{
+		_MIST_CONST( size_t, array_num, 9 );
+
+		template < class Array >
+		static inline void neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
+										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
+										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
+		{
+			typedef typename Array::size_type size_type;
+
+			L[  0 ] =                        && k > 0 ? T[ static_cast< size_type >( in( i    , j    , k - 1 ) ) ] : 0;
+			L[  1 ] =              j     > 0 &&       ? T[ static_cast< size_type >( in( i    , j - 1, k     ) ) ] : 0;
+			L[  2 ] = i     > 0 &&                    ? T[ static_cast< size_type >( in( i - 1, j    , k     ) ) ] : 0;
+			L[  3 ] =              j     > 0 && k > 0 ? T[ static_cast< size_type >( in( i    , j - 1, k - 1 ) ) ] : 0;
+			L[  4 ] = i     > 0 &&              k > 0 ? T[ static_cast< size_type >( in( i - 1, j    , k - 1 ) ) ] : 0;
+			L[  5 ] = i + 1 > w &&              k > 0 ? T[ static_cast< size_type >( in( i + 1, j    , k - 1 ) ) ] : 0;
+			L[  6 ] =              j + 1 > h && k > 0 ? T[ static_cast< size_type >( in( i    , j + 1, k - 1 ) ) ] : 0;
+			L[  7 ] = i     > 0 && j     > 0 &&       ? T[ static_cast< size_type >( in( i - 1, j - 1, k     ) ) ] : 0;
+			L[  8 ] = i + 1 > w && j     > 0 &&       ? T[ static_cast< size_type >( in( i + 1, j - 1, k     ) ) ] : 0;
 		}
 	};
 
 	template < >
 	struct neighbors< 6 >
 	{
-		_MIST_CONST( size_t, array_num, 4 );
+		_MIST_CONST( size_t, array_num, 3 );
 
-		template < class T, class Allocator >
-		static inline void neighbor( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type *l,
-								typename array3< T, Allocator >::size_type i, typename array3< T, Allocator >::size_type j, typename array3< T, Allocator >::size_type k,
-								typename array3< T, Allocator >::size_type w, typename array3< T, Allocator >::size_type h )
+		template < class Array >
+		static inline void neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
+										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
+										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
-			l[ 0 ] = ( k > 0 ) ? in( i    , j    , k - 1 ) : 0;
-			l[ 1 ] = ( j > 0 ) ? in( i    , j - 1, k     ) : 0;
-			l[ 2 ] = ( i > 0 ) ? in( i - 1, j    , k     ) : 0;
-			l[ 3 ] = in( i, j, k );
+			typedef typename Array::size_type size_type;
+
+			L[  0 ] =                        && k > 0 ? T[ static_cast< size_type >( in( i    , j    , k - 1 ) ) ] : 0;
+			L[  1 ] =              j     > 0 &&       ? T[ static_cast< size_type >( in( i    , j - 1, k     ) ) ] : 0;
+			L[  2 ] = i     > 0 &&                    ? T[ static_cast< size_type >( in( i - 1, j    , k     ) ) ] : 0;
 		}
 	};
 
 	template < >
 	struct neighbors< 8 >
 	{
-		_MIST_CONST( size_t, array_num, 5 );
+		_MIST_CONST( size_t, array_num, 4 );
 
-		template < class T, class Allocator >
-		static inline void neighbor( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type *l,
-								typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j, typename array2< T, Allocator >::size_type k,
-								typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h )
+		template < class Array >
+		static inline void neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
+										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
+										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
-			l[ 0 ] = ( i > 0 && j > 0     ) ? in( i - 1, j - 1 ) : 0;
-			l[ 1 ] = ( j > 0              ) ? in( i    , j - 1 ) : 0;
-			l[ 2 ] = ( i + 1 < w && j > 0 ) ? in( i + 1, j - 1 ) : 0;
-			l[ 3 ] = ( i > 0              ) ? in( i - 1, j     ) : 0;
-			l[ 4 ] = in( i, j );
+			typedef typename Array::size_type size_type;
+
+			L[ 0 ] = i     > 0 && j > 0 ? T[ static_cast< size_type >( in( i - 1, j - 1 ) ) ] : 0;
+			L[ 1 ] =              j > 0 ? T[ static_cast< size_type >( in( i    , j - 1 ) ) ] : 0;
+			L[ 2 ] = i + 1 < w && j > 0 ? T[ static_cast< size_type >( in( i + 1, j - 1 ) ) ] : 0;
+			L[ 3 ] = i     > 0          ? T[ static_cast< size_type >( in( i - 1, j     ) ) ] : 0;
 		}
 	};
 
 	template < >
 	struct neighbors< 4 >
 	{
-		_MIST_CONST( size_t, array_num, 3 );
+		_MIST_CONST( size_t, array_num, 2 );
 
-		template < class T, class Allocator >
-		static inline void neighbor( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type *l,
-								typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j, typename array2< T, Allocator >::size_type k,
-								typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h )
+		template < class Array >
+		static inline void neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
+										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
+										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
-			l[ 0 ] = ( j > 0 ) ? in( i    , j - 1 ) : 0;
-			l[ 1 ] = ( i > 0 ) ? in( i - 1, j     ) : 0;
-			l[ 2 ] = in( i, j );
+			typedef typename Array::size_type size_type;
+
+			L[ 0 ] = j > 0 ? T[ static_cast< size_type >( in( i    , j - 1 ) ) ] : 0;
+			L[ 1 ] = i > 0 ? T[ static_cast< size_type >( in( i - 1, j     ) ) ] : 0;
 		}
 	};
 
+
 	template < class Array, class neighbor >
-	typename Array::size_type labeling( Array &in, typename Array::size_type max_label, const neighbor dmy )
+	typename Array::size_type labeling( Array &in, const typename Array::size_type label_max, const neighbor dmy )
 	{
 		typedef typename Array::size_type  size_type;
 		typedef typename Array::value_type value_type;
 
-		size_type i, j, k, ii, jj, kk, pos;
-		size_type array_num = neighbor::array_num;
-		size_type w = in.width( );
-		size_type h = in.height( );
-		size_type d = in.depth( );
-		size_type label = 0;
-		value_type l[ neighbor::array_num ];
-		value_type min, max, nmin;
-		value_type m, n;
-		value_type buf[ neighbor::array_num - 1 ];
-		bool flag;
-		value_type *t = new value_type[ max_label + 1 ];
+		size_type label_num = 0;
+		size_type i, j, k, l, count;
 
-		for( i = 0 ; i < max_label ; i++ )
-		{
-			t[ i ] = 0;
-		}
+		size_type *T = new size_type[ label_max * 4 + 1 ];
+		size_type L[ neighbor::array_num ];
+		const size_type width = in.width( );
+		const size_type height = in.height( );
+		const size_type depth = in.depth( );
 
-		for( k = 0 ; k < d ; k++ )
+		T[ 0 ] = T[ 1 ] = 0;
+
+		for( k = 0 ; k < depth ; k++ )
 		{
-			for( j = 0 ; j < h ; j++ )
+			for( j = 0 ; j < height ; j++ )
 			{
-				for( i = 0 ; i < w ; i++ )
+				for( i = 0 ; i < width ; i++ )
 				{
-					if( in( i, j, k ) != 0 )
+					// 0画素はラベリングしない
+					if( in( i, j, k ) == 0 )
 					{
-						// 近傍の半分の取り出し
-						neighbor::neighbor( in, l, i, j, k, w, h );
+						continue;
+					}
 
-						// 近傍値の最大・最小を求める
-						min = max = l[ 0 ];
+					// 操作済みの要素のラベルを取得する
+					neighbor::neighbor( in, T, L, i, j, k, width, height, depth );
 
-						for( ii = 1 ; ii < array_num - 1 ; ii++ )
+					// 近傍で最小のラベル番号を持つものを取得し，ラベル番号が0で無い物の数を数え上げる
+					size_type L1 = type_limits< value_type >::maximum( );
+					for( l = 0, count = 0 ; l < neighbor::array_num ; l++ )
+					{
+						if( L[ l ] > 0 )
 						{
-							if( min > l[ ii ] )
+							if( L1 > L[ l ] )
 							{
-								min = l[ ii ];
+								L1 = L[ l ];
 							}
-							else if( max < l[ ii ] )
-							{
-								max = l[ ii ];
-							}
+							count++;
 						}
+					}
 
-						if( min == 0 && max == 0 )
+					if( count == 0 )
+					{
+						// 近傍に，すでに割り当てられているラベルは存在しないため，新規にラベルを割り当てる
+						if( label_num < label_max )
 						{
-							// 近傍値がすべて0なら
-							if( label < max_label )
-							{
-								// 次のラベルがテーブルの大きさ以下なら
-								label++;
-
-								// テーブルに新しいラベルを登録
-								t[ label ] = static_cast< value_type >( label );
-
-								// 画像にラベルをつける
-								in( i, j, k ) = static_cast< value_type >( label );
-							}
-							else
-							{
-								// もしラベル番号がいっぱいならガベージコレクション
-								// テーブルの中の整理
-								n = 1;
-
-								for( ii = 1 ; ii <= label ; ii++ )
-								{
-									t[ ii ] = t[ ii ] < static_cast< value_type >( ii ) ? t[ t[ ii ] ] : t[ ii ];
-								}
-
-								for( ii = 1 ; ii <= label ; ii++ )
-								{
-									if( t[ ii ] > n )
-									{
-										m = t[ ii ];
-
-										for( jj = 1 ; jj <= label ; jj++ )
-										{
-											t[ jj ] = t[ jj ] == m ? n : t[ jj ];
-										}
-									}
-
-									n = t[ ii ] >= n ? n + 1 : n;
-								}
-
-								// ラベル番号の付け直し
-								for( kk = 0 ; kk <= k ; kk++ )
-								{
-									for( jj = 0 ; jj <= j ; jj++ )
-									{
-										for( ii = 0 ; ii <= i ; ii++ )
-										{
-											in( ii, jj, kk ) = t[ in( ii, jj, kk ) ];
-										}
-									}
-								}
-
-								// テーブルの中を元に戻す
-								for( ii = 1 ; ii <= static_cast< size_type >( n ) ; ii++ )
-								{
-									t[ ii ] = static_cast< value_type >( ii );
-								}
-
-								label = n;
-
-								// それでも足りない
-								if( label >= max_label )
-								{
-									std::cerr << " TABLE is NOT ENOUGH" << std::endl;
-									delete [] t;
-									return ( max_label + 1 );
-								}
-
-								t[ label ] = static_cast< value_type >( label );
-								in( i, j, k ) = static_cast< value_type >( label );
-							}
+							label_num++;
 						}
-						else
+						T[ label_num ] = label_num;
+						in( i, j, k ) = static_cast< value_type >( label_num );
+					}
+					else if( count == 1 )
+					{
+						// 近傍に，割り当てられているラベルが1つしか存在しないため，そのラベルを割り当てる
+						in( i, j, k ) = static_cast< value_type >( L1 );
+					}
+					else
+					{
+						in( i, j, k ) = static_cast< value_type >( L1 );
+
+						// 複数のラベルが結合するため，テーブルを修正する
+						for( l = 0 ; l < neighbor::array_num ; l++ )
 						{
-							pos = 0;
-
-							// 近傍値の中の数値をとってくる
-							for( ii = 0 ; ii < array_num - 1 ; ii++ )
+							if( T[ L[ l ] ] != L1 )
 							{
-								flag = false;
-
-								for( jj = 0 ; jj < pos ; jj++ )
+								for( size_type m = 1 ; m <= label_num ; m++ )
 								{
-									if( buf[ jj ] == l[ ii ] && l[ ii ] > 0 )
+									if( T[ m ] == L[ l ] )
 									{
-										flag = true;
-										break;
+										T[ m ] = L1;
 									}
 								}
-
-								if( !flag && l[ ii ] > 0 )
-								{
-									buf[ pos ] = l[ ii ];
-									pos++;
-								}
-							}
-
-							// 近傍値の中で最も小さい値をつける
-							if( pos > 1 )
-							{
-								for( ii = 1 ; ii <= label ; ii++ )
-								{
-									t[ ii ] = t[ ii ] < static_cast< value_type >( ii ) ? t[ t[ ii ] ] : t[ ii ];
-								}
-
-								nmin = t[ buf[ 0 ] ];
-
-								for( ii = 0 ; ii < pos ; ii++ )
-								{
-									nmin = t[ buf[ ii ] ] < nmin ? t[ buf[ ii ] ] : nmin;
-								}
-
-								for( ii = 0 ; ii < pos ; ii++ )
-								{
-									if( t[ buf[ ii ] ] > nmin )
-									{
-										for( jj = 1 ; jj <= label ; jj++ )
-										{
-											t[ jj ] = t[ jj ] == t[ buf[ ii ] ] ? nmin : t[ jj ];
-										}
-									}
-
-									t[ buf[ ii ] ] = nmin;
-								}
-
-								in( i, j, k ) = nmin;
-							}
-							else
-							{
-								in( i, j, k ) = t[ buf[ 0 ] ];
 							}
 						}
 					}
@@ -322,38 +252,48 @@ namespace __labeling_controller__
 			}
 		}
 
-		// テーブルの整理
-		n = 1;
-
-		for( ii = 1 ; ii <= label ; ii++ )
+		// ラベルの振り直しを行う
+		size_type *NT = new size_type[ label_num + 1 ];
+		for( i = 0 ; i <= label_num ; i++ )
 		{
-			t[ ii ] = t[ ii ] < static_cast< value_type >( ii ) ? t[ t[ ii ] ] : t[ ii ];
+			NT[ i ] = 0;
 		}
 
-		for( ii = 1 ; ii <= label ; ii++ )
+		// 使用しているラベルをチェックする
+		for( i = 1 ; i <= label_num ; i++ )
 		{
-			if( t[ ii ] > n )
+			NT[ T[ i ] ] = 1;
+		}
+
+		// 使用しているラベルをチェックする
+		for( i = 1, count = 1 ; i <= label_num ; i++ )
+		{
+			if( NT[ i ] != 0 )
 			{
-				m = t[ ii ];
-
-				for( jj = 1 ; jj <= label ; jj++ )
-				{
-					t[ jj ] = t[ jj ] == m ? n : t[ jj ];
-				}
+				NT[ i ] = count++;
 			}
-
-			n = t[ ii ] >= n ? n + 1 : n;
 		}
 
-		label = n - 1;
-
+		label_num = 0;
 		for( i = 0 ; i < in.size( ) ; i++ )
 		{
-			in[ i ] = t[ in[ i ] ];
+			if( in[ i ] == 0 )
+			{
+				continue;
+			}
+
+			size_type label = NT[ T[ static_cast< size_type >( in[ i ] ) ] ];
+			in[ i ] = static_cast< value_type >( label );
+			if( label_num < label )
+			{
+				label_num = label;
+			}
 		}
 
-		delete [] t;
-		return ( label );
+		delete [] T;
+		delete [] NT;
+
+		return( label_num );
 	}
 }
 
@@ -456,6 +396,39 @@ typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Alloca
 		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 6 >( ) ) );
+}
+
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in]  in        … 引数の説明
+//! @param[out] out       … 引数の説明
+//! @param[in]  max_label … 引数の説明
+//! @return               … 戻り値の説明
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2 >
+typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
+{
+	typedef typename array3< T2, Allocator2 >::size_type  size_type;
+	typedef typename array3< T2, Allocator2 >::value_type value_type;
+
+	if( max_label == 0 )
+	{
+		max_label = type_limits< value_type >::maximum( );
+	}
+
+	out.resize( in.size1( ), in.size2( ), in.size3( ) );
+	out.reso1( in.reso1( ) );
+	out.reso2( in.reso2( ) );
+	out.reso3( in.reso3( ) );
+
+	for( size_type i = 0 ; i < in.size( ) ; i++ )
+	{
+		out[ i ] = in[ i ] > 0 ? 1 : 0;
+	}
+	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 18 >( ) ) );
 }
 
 

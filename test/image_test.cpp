@@ -180,11 +180,13 @@ void thresholding_test( )
 
 void labeling4_test( )
 {
-	mist::array2< unsigned char > label;
+	mist::array2< unsigned int > label;
 
 	mist::convert( image_object, label );
 
 	size_t label_num = mist::labeling4( label, label, 255 );
+
+	std::cout << "Label Num: " << label_num << std::endl;
 
 	if( label_num == 0 )
 	{
@@ -199,11 +201,13 @@ void labeling4_test( )
 
 void labeling8_test( )
 {
-	mist::array2< unsigned char > label;
+	mist::array2< unsigned int > label;
 
 	mist::convert( image_object, label );
 
 	size_t label_num = mist::labeling8( label, label, 255 );
+
+	std::cout << "Label Num: " << label_num << std::endl;
 
 	if( label_num == 0 )
 	{

@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltkd.lib fltkgld.lib wsock32.lib libjpegd.lib libtiffd.lib libpngd.lib zlibd.lib"
+				AdditionalDependencies="fltkd.lib fltkgld.lib wsock32.lib libjpeg.lib libtiff.lib libpng.lib zlib.lib"
 				OutputFile="$(OutDir)/image_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
