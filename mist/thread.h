@@ -33,6 +33,14 @@
 _MIST_BEGIN
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline unsigned int get_cpu_num( )
 {
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -68,6 +76,14 @@ struct thread_object
 
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class thread_parameter = thread_dmy_class >
 class thread : public thread_object
 {
@@ -89,8 +105,26 @@ private:
 	thread_exit_type thread_exit_code_;	// スレッドの戻り値
 
 public:
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	thread_exit_type exit_code( ) const { return( thread_exit_code_ ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const thread &operator =( const thread &t )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -106,7 +140,15 @@ public:
 		return( *this );
 	}
 
-	// threadの比較演算子
+
+	/// @brief threadの比較演算子
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool operator ==( const thread &t ) const
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -140,6 +182,14 @@ public:
 	virtual ~thread( ){ }
 
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	virtual bool create( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -158,6 +208,15 @@ public:
 		return ( ret );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	virtual bool wait( unsigned long dwMilliseconds = INFINITE )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -198,6 +257,15 @@ public:
 #endif
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	virtual bool close( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -214,6 +282,15 @@ public:
 #endif
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	virtual bool suspend( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -227,6 +304,15 @@ public:
 #endif
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	virtual bool resume( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -295,14 +381,53 @@ namespace __thread_controller__
 	};
 }
 
+
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 class thread_handle
 {
 private:
 	thread_object *thread_;
 
 public:
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool create( ){ return( thread_ == NULL ? false : thread_->create( ) ); }
+
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool wait( unsigned long dwMilliseconds = INFINITE ){ return( thread_ == NULL ? false : thread_->wait( INFINITE ) ); }
+
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool close( )
 	{
 		if( thread_ == NULL )
@@ -314,13 +439,41 @@ public:
 		thread_ = NULL;
 		return( b );
 	}
+
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool suspend( ){ return( thread_ == NULL ? false : thread_->suspend( ) ); }
+
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool resume( ){ return( thread_ == NULL ? false : thread_->resume( ) ); }
 
 public:
 	thread_handle( ) : thread_( NULL ){ }
 	thread_handle( thread_object *t ) : thread_( t ){ }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const thread_handle &operator =( const thread_handle &t )
 	{
 		if( &t != this )
@@ -331,6 +484,14 @@ public:
 	}
 };
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Param, class Functor >
 inline thread_handle create_thread( Param &param, Functor f )
 {
@@ -339,13 +500,62 @@ inline thread_handle create_thread( Param &param, Functor f )
 	return( thread_ );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline bool close_thread( thread_handle &thread_ ){ return( thread_.close( ) ); }
+
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline bool wait_thread( thread_handle &thread_, unsigned long dwMilliseconds = INFINITE ){ return( thread_.wait( dwMilliseconds ) ); }
+
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline bool suspend_thread( thread_handle &thread_ ){ return( thread_.suspend( ) ); }
+
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline bool resume_thread( thread_handle &thread_ ){ return( thread_.resume( ) ); }
 
 
-// スレッドの排他制御をサポートするクラス
+
+
+
+/// @brief スレッドの排他制御をサポートするクラス
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 struct lock_object
 {
 protected:
@@ -373,6 +583,14 @@ public:
 
 #else
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool lock( )
 	{
 		lock_table &table = singleton< lock_table >::get_instance( );
@@ -401,6 +619,15 @@ public:
 		return( true );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool unlock( )
 	{
 		lock_table &table = singleton< lock_table >::get_instance( );
@@ -458,7 +685,14 @@ protected:
 
 
 
-// スレッドの排他制御を簡便に記述するためのヘルパクラス
+/// @brief スレッドの排他制御を簡便に記述するためのヘルパクラス
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 class lock
 {
 protected:

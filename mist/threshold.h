@@ -10,10 +10,26 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
+
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 namespace ptile
 {
-	// ----- p-tile法による閾値決定 -----
-	// ratio は 0 ～ 100％の範囲で指定する
+	/// @brief p-tile法による閾値決定
+	//! 
+	//! ratio は 0 ～ 100％の範囲で指定する
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	typename array< T, Allocator >::value_type threshold( const array< T, Allocator > &in, double ratio )
 	{
@@ -65,9 +81,26 @@ namespace ptile
 	}
 }
 
+
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 namespace discriminant_analysis
 {
-	// ----- 判別分析法による閾値決定 -----
+	/// @brief 判別分析法による閾値決定
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	typename array< T, Allocator >::value_type threshold( const array< T, Allocator > &in )
 	{

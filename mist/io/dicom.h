@@ -32,8 +32,24 @@ _MIST_BEGIN
 // #define __SHOW_DICOM_UNKNOWN_TAG__
 // #define __SHOW_DICOM_ZEROBYTE_TAG__
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 namespace dicom_controller
 {
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline unsigned char *check_dicom_file( unsigned char *p, unsigned char *e )
 	{
 		if( p == NULL || p + 128 + 4 >= e )
@@ -52,11 +68,18 @@ namespace dicom_controller
 		return( p );
 	}
 
-	// DICOMのタグを読み込み，テーブルに登録されているものと照合する．
-	// テーブルに登録されていない場合は，読み飛ばす．
-	// もし，適切なDICOMファイルでない場合は-2を返し，データの終端もしくはファイルの読み込みに失敗した場合は-1を返す．
-	// そして，読み飛ばした場合は0を返し，テーブルに登録されている場合は次に存在するデータのバイト数を返す．
-	// データを処理する先頭のポインタ 'p' と，データの最後＋1をさすポインタ 'e' を与える
+
+	/// @brief DICOMのタグを読み込み，テーブルに登録されているものと照合する．
+	//! 
+	//! テーブルに登録されていない場合は，読み飛ばす．
+	//! もし，適切なDICOMファイルでない場合は-2を返し，データの終端もしくはファイルの読み込みに失敗した場合は-1を返す．
+	//! そして，読み飛ばした場合は0を返し，テーブルに登録されている場合は次に存在するデータのバイト数を返す．
+	//! データを処理する先頭のポインタ 'p' と，データの最後＋1をさすポインタ 'e' を与える
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline unsigned char *read_dicom_tag( unsigned char *p, unsigned char *e, dicom_tag &tag, difference_type &numBytes )
 	{
 		if( p == NULL || p + 8 >= e )
@@ -200,8 +223,15 @@ namespace dicom_controller
 	}
 
 
-	// DICOMのタグに対し，各VRごとの処理を行う．
-	// 登録されていないタグの場合は false をかえし，正しく処理された場合のみ true を返す．
+
+	/// @brief DICOMのタグに対し，各VRごとの処理を行う．
+	//! 
+	//! 登録されていないタグの場合は false をかえし，正しく処理された場合のみ true を返す．
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline bool process_dicom_tag( const dicom_tag &tag, unsigned char *byte, difference_type num_bytes )
 	{
 		switch( tag.vr )
@@ -598,6 +628,14 @@ namespace dicom_controller
 	}
 
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline bool is_sequence_separate_tag( const unsigned char *p, const unsigned char *e )
 	{
 		if( p + 4 > e )
@@ -607,6 +645,14 @@ namespace dicom_controller
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x00 && p[ 3 ] == 0xe0 );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline bool is_sequence_element_end( const unsigned char *p, const unsigned char *e )
 	{
 		if( p + 8 > e )
@@ -616,6 +662,14 @@ namespace dicom_controller
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x0d && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline bool is_sequence_tag_end( const unsigned char *p, const unsigned char *e )
 	{
 		if( p + 8 > e )
@@ -625,6 +679,15 @@ namespace dicom_controller
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0xdd && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
 	{
 		difference_type numBytes = 0;
@@ -779,6 +842,15 @@ namespace dicom_controller
 		return( pointer );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline bool read_dicom_tags( dicom_tag_container &dicom, const std::string &filename )
 	{
 		size_type filesize;
@@ -837,6 +909,14 @@ namespace dicom_controller
 
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 {

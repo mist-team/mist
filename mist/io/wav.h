@@ -718,12 +718,29 @@ namespace __wav_controller__
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 bool read_wav( array< T, Allocator > &sound, const std::string &filename, unsigned int &sampling_rate )
 {
 	return( __wav_controller__::wav_controller< T, Allocator >::read( sound, filename, sampling_rate ) );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 bool read_wav( array< T, Allocator > &sound, const std::string &filename )
 {
@@ -731,6 +748,15 @@ bool read_wav( array< T, Allocator > &sound, const std::string &filename )
 	return( read_wav( sound, filename, sampling_rate ) );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 bool write_wav( const array< T, Allocator > &sound, const std::string &filename, typename array< T, Allocator >::size_type wav_bits,
 						typename array< T, Allocator >::size_type sampling_rate )

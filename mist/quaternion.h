@@ -17,6 +17,14 @@
 _MIST_BEGIN
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 class quaternion
 {
@@ -31,7 +39,16 @@ public:
 	value_type y;
 	value_type z;
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	quaternion( ) : w( 0 ), x( 0 ), y( 0 ), z( 0 ){ }
+
 	quaternion( const value_type &ww, const value_type &xx, const value_type &yy, const value_type &zz ) : w( ww ), x( xx ), y( yy ), z( zz ){ }
 
 	template < class TT >
@@ -42,8 +59,14 @@ public:
 	template < class TT >
 	quaternion( value_type ww, const vector3< TT > &v ) : w( ww ), x( static_cast< value_type >( v.x ) ), y( static_cast< value_type >( v.y ) ), z( static_cast< value_type >( v.z ) ){ }
 
-	// クォータニオンを用いた任意軸周りの回転
-	// 右手系の場合は右ねじ回転，左手系の場合は左ねじ回転となるので注意！！
+	/// @brief クォータニオンを用いた任意軸周りの回転
+	//! 
+	//! @attention 右手系の場合は右ねじ回転，左手系の場合は左ねじ回転となるので注意！！
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class TT >
 	quaternion( const vector3< TT > &axis, value_type theta )
 	{
@@ -56,7 +79,14 @@ public:
 		z = static_cast< value_type >( s * axis.z );
 	}
 
-	// オペレータのオーバーライド
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion &operator =( const quaternion &q )
 	{
 		if( &q != this )
@@ -69,6 +99,14 @@ public:
 		return ( *this );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion &operator +=( const quaternion &q )
 	{
 		w = w + q.w;
@@ -78,12 +116,28 @@ public:
 		return( *this );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion &operator +=( const value_type &a )
 	{
 		w += a;
 		return( *this );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion &operator -=( const quaternion &q )
 	{
 		w = w - q.w;
@@ -93,12 +147,28 @@ public:
 		return( *this );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion &operator -=( const value_type &a )
 	{
 		w -= a;
 		return( *this );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion &operator *=( const quaternion &q )
 	{
 		value_type ww = w * q.w - x * q.x - y * q.y - z * q.z;
@@ -112,6 +182,14 @@ public:
 		return( *this );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion &operator *=( const value_type &a )
 	{
 		w *= a;
@@ -121,11 +199,27 @@ public:
 		return( *this );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion &operator /=( const quaternion &q )
 	{
 		return( this->operator *=( q.inv( ) ) );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion &operator /=( const value_type &a )
 	{
 		w /= a;
@@ -136,7 +230,14 @@ public:
 	}
 
 
-	// 比較関数
+	/// @brief 比較関数
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool operator ==( const quaternion &q ) const { return( w == q.w && x == q.x && y == q.y && z == q.z ); }
 	bool operator !=( const quaternion &q ) const { return( !( *this == q ) ); }
 	bool operator < ( const quaternion &q ) const { return( !( *this >= q ) ); }
@@ -146,26 +247,67 @@ public:
 
 
 public:	// その他の関数
-	const quaternion conjugate( ) const	// 共役クォータニオン
+
+	/// @brief 共役クォータニオン
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	const quaternion conjugate( ) const 
 	{
 		return( quaternion( w, -x, -y, -z ) );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion inv( ) const
 	{
 		value_type length_ = length( );
 		return( conjugate( ) / ( length_ * length_ ) );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const quaternion unit( ) const
 	{
 		value_type length_ = length( );
 		return quaternion( w / length_, x / length_, y / length_, z / length_ );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	value_type length( ) const { return ( static_cast< value_type >( sqrt( (double)( w * w + x * x + y * y + z * z ) ) ) ); }
 
-	// ベクトルの回転
+
+	/// @brief ベクトルの回転
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class TT >
 	const vector3< TT > rotate( const vector3< TT > &v ) const
 	{
@@ -174,6 +316,14 @@ public:	// その他の関数
 	}
 };
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T > inline const quaternion< T > operator +( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) += q2 ); }
 template < class T > inline const quaternion< T > operator -( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) -= q2 ); }
 template < class T > inline const quaternion< T > operator /( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) /= q2 ); }
@@ -219,23 +369,34 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 //	return( mat );
 //}
 
-// 仮想トラックボールの実装(左手座標系)
-// 以下のソースコードを参考にした
+// 
+// 
 //
-//* Trackball code:
-//*
-//* Implementation of a virtual trackball.
-//* Implemented by Gavin Bell, lots of ideas from Thant Tessman and
-//*   the August '88 issue of Siggraph's "Computer Graphics," pp. 121-129.
-//*
-//* Vector manip code:
-//*
-//* Original code from:
-//* David M. Ciemiewicz, Mark Grossman, Henry Moreton, and Paul Haeberli
-//*
-//* Much mucking with by:
-//* Gavin Bell
 //
+
+
+/// @brief 仮想トラックボールの実装(左手座標系)
+//! 
+//! @note 以下のソースコードを参考にした
+//! 
+//! Trackball code:
+//! 
+//! Implementation of a virtual trackball.
+//! Implemented by Gavin Bell, lots of ideas from Thant Tessman and
+//!   the August '88 issue of Siggraph's "Computer Graphics," pp. 121-129.
+//! 
+//! Vector manip code:
+//! 
+//! Original code from:
+//! David M. Ciemiewicz, Mark Grossman, Henry Moreton, and Paul Haeberli
+//! 
+//! Much mucking with by:
+//! Gavin Bell
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 const quaternion< T > track_ball( const vector2< T > &p1, const vector2< T > &p2, const vector3< T > &axisX, const vector3< T > axisY, const vector3< T > axisZ, const typename vector3< T >::value_type &trackball_size = 0.8 )
 {
@@ -288,6 +449,15 @@ const quaternion< T > track_ball( const vector2< T > &p1, const vector2< T > &p2
 	return( quaternion< T >( std::cos( phi ), std::sin( phi ) * axis ) );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 const quaternion< T > track_ball( const typename vector3< T >::value_type &x1, const typename vector3< T >::value_type &y1, const typename vector3< T >::value_type &x2, const typename vector3< T >::value_type &y2,
 									const vector3< T > &axisX, const vector3< T > &axisY, const vector3< T > &axisZ, const typename vector3< T >::value_type &trackball_size = typename vector3< T >::value_type( 0.8 ) )

@@ -236,12 +236,30 @@ namespace __png_controller__
 }
 
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 bool read_png( array2< T, Allocator > &image, const std::string &filename )
 {
 	return( __png_controller__::png_controller< T, Allocator >::read( image, filename ) );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 bool write_png( const array2< T, Allocator > &image, const std::string &filename, int compression_level = -1 )
 {

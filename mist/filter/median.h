@@ -958,7 +958,15 @@ namespace __median_filter_controller__
 }
 
 
-// 1次元配列用
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type thread_num = 0 )
 {
@@ -967,6 +975,15 @@ void median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, ty
 	__median_filter_controller__::__median_filter__< is_integer< T1 >::value >::median_filter( in, out, fw, 1, 1, 0, 1 );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 {
@@ -977,7 +994,15 @@ void median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, 
 }
 
 
-// 2次元配列用
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 				   typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh,
@@ -1021,6 +1046,15 @@ void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 	delete [] thread;
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 inline void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 				   typename array2< T1, Allocator1 >::size_type fw,
@@ -1030,7 +1064,15 @@ inline void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 >
 }
 
 
-// 3次元配列用
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 				   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
@@ -1075,6 +1117,15 @@ void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 	delete [] thread;
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 inline void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 				   typename array3< T1, Allocator1 >::size_type fw,

@@ -13,7 +13,14 @@ _MIST_BEGIN
 
 
 
-// mistコンテナで利用する1次元操作用ランダムアクセスイテレータ
+/// @brief mistコンテナで利用する1次元操作用ランダムアクセスイテレータ
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 class mist_iterator1 : public std::iterator< std::random_access_iterator_tag, T, Distance >
@@ -38,7 +45,15 @@ public:
 	mist_iterator1( pointer p = NULL, size_type diff = 1 ) : data_( p ), diff_pointer_( diff ){ }
 	mist_iterator1( const mist_iterator1 &ite ) : data_( ite.data_ ), diff_pointer_( ite.diff_pointer_ ){ }
 
-	// コピー演算子
+
+	/// @brief コピー演算子
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const mist_iterator1& operator =( const mist_iterator1 &ite )
 	{
 		data_ = ite.data_;
@@ -46,54 +61,157 @@ public:
 		return( *this );
 	}
 
-	// 要素のアクセス
+
+	/// @brief 要素のアクセス
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator *(){ return( *data_ ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator *() const { return( *data_ ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator []( difference_type dist ){ return( data_[ dist * diff_pointer_ ] ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator []( difference_type dist ) const { return( data_[ dist * diff_pointer_ ] ); }
 
-	// 移動
-	mist_iterator1& operator ++( ) // 前置型
+
+	/// @brief 前置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	mist_iterator1& operator ++( )
 	{
 		*this += 1;
 		return( *this );
 	}
-	const mist_iterator1 operator ++( int ) // 後置型
+
+	/// @brief 後置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	const mist_iterator1 operator ++( int )
 	{
 		mist_iterator1 old_val( *this );
 		*this += 1;
 		return( old_val );
 	}
-	mist_iterator1& operator --( ) // 前置型
+
+	/// @brief 前置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	mist_iterator1& operator --( )
 	{
 		*this -= 1;
 		return( *this );
 	}
-	const mist_iterator1 operator --( int ) // 後置型
+
+	/// @brief 後置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	const mist_iterator1 operator --( int )
 	{
 		mist_iterator1 old_val( *this );
 		*this -= 1;
 		return( old_val );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const mist_iterator1& operator +=( difference_type dist )
 	{
 		data_ += dist * diff_pointer_;
 		return( *this );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const mist_iterator1& operator -=( difference_type dist )
 	{
 		data_ -= dist * diff_pointer_;
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const difference_type operator -( const mist_iterator1 &ite ) const
 	{
 		return( ( data_ - ite.data_ ) / diff_pointer_ );
 	}
 
-	// 比較
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool operator ==( const mist_iterator1 &ite ) const { return( data_ == ite.data_ ); }
 	bool operator !=( const mist_iterator1 &ite ) const { return( !( *this == ite )  ); }
 	bool operator < ( const mist_iterator1 &ite ) const { return( data_ <  ite.data_ ); }
@@ -103,18 +221,42 @@ public:
 };
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T, class Distance, class Pointer, class Reference >
 inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( const mist_iterator1< T, Distance, Pointer, Reference > &ite, typename mist_iterator1< T, Distance, Pointer, Reference >::difference_type dist )
 {
 	return( mist_iterator1< T, Distance, Pointer, Reference >( ite ) += dist );
 }
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T, class Distance, class Pointer, class Reference >
 inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( typename mist_iterator1< T, Distance, Pointer, Reference >::difference_type dist, const mist_iterator1< T, Distance, Pointer, Reference > &ite )
 {
 	return( mist_iterator1< T, Distance, Pointer, Reference >( ite ) += dist );
 }
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T, class Distance, class Pointer, class Reference >
 inline const mist_iterator1< T, Distance, Pointer, Reference > operator -( const mist_iterator1< T, Distance, Pointer, Reference > &ite, typename mist_iterator1< T, Distance, Pointer, Reference >::difference_type dist )
 {
@@ -123,7 +265,14 @@ inline const mist_iterator1< T, Distance, Pointer, Reference > operator -( const
 
 
 
-// mistコンテナで利用する2次元操作用ランダムアクセスイテレータ
+/// @brief mistコンテナで利用する2次元操作用ランダムアクセスイテレータ
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 class mist_iterator2 : public std::iterator< std::random_access_iterator_tag, T, Distance >
@@ -156,7 +305,15 @@ public:
 	{
 	}
 
-	// コピー演算子
+
+	/// @brief コピー演算子
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const mist_iterator2& operator =( const mist_iterator2 &ite )
 	{
 		if( &ite != this )
@@ -169,63 +326,166 @@ public:
 		return( *this );
 	}
 
-	// 要素のアクセス
+
+	/// @brief 要素のアクセス
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator *()
 	{
 		difference_type step = index_ / width_;
 		difference_type rest = index_ - step * width_;
 		return( *( data_ + rest + step * step_ ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator *() const
 	{
 		difference_type step = index_ / width_;
 		difference_type rest = index_ - step * width_;
 		return( *( data_ + rest + step * step_ ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator []( difference_type dist ){ return( *( *this += dist ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator []( difference_type dist ) const { return( *( *this += dist ) ); }
 
-	// 移動
-	mist_iterator2& operator ++( ) // 前置型
+
+	/// @brief 前置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	mist_iterator2& operator ++( )
 	{
 		*this += 1;
 		return( *this );
 	}
-	const mist_iterator2 operator ++( int ) // 後置型
+
+	/// @brief 後置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	const mist_iterator2 operator ++( int )
 	{
 		mist_iterator2 old_val( *this );
 		*this += 1;
 		return( old_val );
 	}
-	mist_iterator2& operator --( ) // 前置型
+
+	/// @brief 前置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	mist_iterator2& operator --( )
 	{
 		*this -= 1;
 		return( *this );
 	}
-	const mist_iterator2 operator --( int ) // 後置型
+
+	/// @brief 後置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	const mist_iterator2 operator --( int )
 	{
 		mist_iterator2 old_val( *this );
 		*this -= 1;
 		return( old_val );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const mist_iterator2& operator +=( difference_type dist )
 	{
 		index_ += dist;
 		return( *this );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const mist_iterator2& operator -=( difference_type dist )
 	{
 		index_ -= dist;
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const difference_type operator -( const mist_iterator2 &ite ) const
 	{
 		return( index_ - ite.index_ );
 	}
 
-	// 比較
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool operator ==( const mist_iterator2 &ite ) const { return( *this - ite == 0 ); }
 	bool operator !=( const mist_iterator2 &ite ) const { return( !( *this == ite ) ); }
 	bool operator < ( const mist_iterator2 &ite ) const { return( *this - ite < 0 ); }
@@ -236,18 +496,42 @@ public:
 
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T, class Distance, class Pointer, class Reference >
 inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( const mist_iterator2< T, Distance, Pointer, Reference > &ite, typename mist_iterator2< T, Distance, Pointer, Reference >::difference_type dist )
 {
 	return( mist_iterator2< T, Distance, Pointer, Reference >( ite ) += dist );
 }
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T, class Distance, class Pointer, class Reference >
 inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( typename mist_iterator2< T, Distance, Pointer, Reference >::difference_type dist, const mist_iterator2< T, Distance, Pointer, Reference > &ite )
 {
 	return( mist_iterator2< T, Distance, Pointer, Reference >( ite ) += dist );
 }
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T, class Distance, class Pointer, class Reference >
 inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const mist_iterator2< T, Distance, Pointer, Reference > &ite, typename mist_iterator2< T, Distance, Pointer, Reference >::difference_type dist )
 {
@@ -256,7 +540,15 @@ inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const
 
 
 
-// mistで用いる
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class _Ite >
 class mist_reverse_iterator :
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
@@ -285,79 +577,205 @@ protected:
 	_Ite current_iterator_;
 
 public:
-	// コンストラクタ
+	/// @brief コンストラクタ
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	mist_reverse_iterator( ){ }
 	mist_reverse_iterator( const _Ite &ite ) : current_iterator_( ite ){ }
 	mist_reverse_iterator( const mist_reverse_iterator &ite ) : current_iterator_( ite.current_iterator_ ){ }
 
-	// コピー演算子
+
+	/// @brief コピー演算子
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const mist_reverse_iterator& operator =( const _Ite &ite )
 	{
 		current_iterator_ = ite;
 		return( *this );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const mist_reverse_iterator& operator =( const mist_reverse_iterator &ite )
 	{
 		current_iterator_ = ite.current_iterator_;
 		return( *this );
 	}
 
-	// 要素のアクセス
+
+	/// @brief 要素のアクセス
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator *()
 	{
 		_Ite _tmp = current_iterator_;
 		return( *( --_tmp ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator *() const
 	{
 		_Ite _tmp = current_iterator_;
 		return( *( --_tmp ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator []( difference_type dist ){ return( *( *this + dist ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator []( difference_type dist ) const { return( *( *this + dist ) ); }
 
-	// 移動
-	mist_reverse_iterator& operator ++( ) // 前置型
+
+	/// @brief 前置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	mist_reverse_iterator& operator ++( )
 	{
 		--current_iterator_;
 		return( *this );
 	}
-	const mist_reverse_iterator operator ++( int ) // 後置型
+
+	/// @brief 後置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	const mist_reverse_iterator operator ++( int )
 	{
 		mist_reverse_iterator old_val( *this );
 		current_iterator_--;
 		return( old_val );
 	}
-	mist_reverse_iterator& operator --( ) // 前置型
+
+	/// @brief 前置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	mist_reverse_iterator& operator --( )
 	{
 		++current_iterator_;
 		return( *this );
 	}
-	const mist_reverse_iterator operator --( int ) // 後置型
+
+	/// @brief 後置型
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
+	const mist_reverse_iterator operator --( int )
 	{
 		mist_reverse_iterator old_val( *this );
 		current_iterator_++;
 		return( old_val );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const mist_reverse_iterator& operator +=( difference_type dist )
 	{
 		current_iterator_ -= dist;
 		return( *this );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const mist_reverse_iterator& operator -=( difference_type dist )
 	{
 		current_iterator_ += dist;
 		return( *this );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const difference_type operator -( const mist_reverse_iterator &ite ) const
 	{
 		return( ite.current_iterator_ - current_iterator_ );
 	}
 
 
-	// 比較
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool operator ==( const mist_reverse_iterator &ite ) const { return( current_iterator_ == ite.current_iterator_ ); }
 	bool operator !=( const mist_reverse_iterator &ite ) const { return( !( *this == ite ) ); }
 	bool operator < ( const mist_reverse_iterator &ite ) const { return( ite.current_iterator_ < current_iterator_  ); }
@@ -367,18 +785,42 @@ public:
 };
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class _Ite >
 inline const mist_reverse_iterator< _Ite > operator +( const mist_reverse_iterator< _Ite > &ite1, const mist_reverse_iterator< _Ite > ite2 )
 {
 	return( mist_reverse_iterator< _Ite >( ite1 ) += ite2 );
 }
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class _Ite >
 inline const mist_reverse_iterator< _Ite > operator +( const mist_reverse_iterator< _Ite > &ite, typename _Ite::difference_type dist )
 {
 	return( mist_reverse_iterator< _Ite >( ite ) += dist );
 }
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class _Ite >
 inline const mist_reverse_iterator< _Ite > operator +( typename _Ite::difference_type dist, const mist_reverse_iterator< _Ite > &ite )
 {
@@ -392,6 +834,15 @@ inline const mist_reverse_iterator< _Ite > operator +( typename _Ite::difference
 //	return( ite1 - ite2 );
 //}
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class _Ite >
 inline const mist_reverse_iterator< _Ite > operator -( const mist_reverse_iterator< _Ite > &ite, typename _Ite::difference_type dist )
 {

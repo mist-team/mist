@@ -301,6 +301,15 @@ namespace __distance_transform_controller__
 }
 
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void euclidean_distance_transform( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, double max_length = -1.0, typename array< T1, Allocator1 >::size_type thread_num = 0 )
 {
@@ -350,6 +359,15 @@ void euclidean_distance_transform( const array< T1, Allocator1 > &in, array< T2,
 	delete [] thread;
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void euclidean_distance_transform( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, double max_length = -1.0, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 {
@@ -400,6 +418,15 @@ void euclidean_distance_transform( const array1< T1, Allocator1 > &in, array1< T
 	delete [] thread;
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void euclidean_distance_transform( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, double max_length = -1.0, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
 {
@@ -473,6 +500,15 @@ void euclidean_distance_transform( const array2< T1, Allocator1 > &in, array2< T
 	delete [] thread;
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void euclidean_distance_transform( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, double max_length = -1.0, typename array3< T1, Allocator1 >::size_type thread_num = 0 )
 {

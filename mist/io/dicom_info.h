@@ -47,27 +47,55 @@ _MIST_BEGIN
 
 namespace dicom_controller
 {
+	/// @enum DICOMデータの圧縮タイプ
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
 	enum compress_type
 	{
-		RAW,		// 無圧縮
-		JPEG,		// JPEG圧縮
-		RLE,		// ランレングス（RLE）圧縮
+		RAW,		///< 無圧縮
+		JPEG,		///< JPEG圧縮
+		RLE,		///< ランレングス（RLE）圧縮
 	};
 
 
-	// DICOMのUIDを変換する
+	/// @brief DICOMのUIDを変換する
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline dicom_uid get_uid( const std::string &uid )
 	{
 		static dicom_uid_table uid_table;
 		return( uid_table.get_uid( uid ) );
 	}
 
-	// DICOMのUIDを変換する
+
+	/// @brief DICOMのUIDを変換する
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline dicom_uid get_uid( const unsigned char *str, difference_type numBytes )
 	{
 		return( get_uid( std::string( reinterpret_cast< const char * >( str ), str[ numBytes - 1 ] == 0 ? numBytes - 1 : numBytes ) ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	class dicom_element : public dicom_tag
 	{
 	private:
@@ -77,6 +105,15 @@ namespace dicom_controller
 		unsigned char *data;
 		size_type num_bytes;
 
+
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		void create( size_type nbytes )
 		{
 			if( num_bytes != nbytes )
@@ -91,6 +128,15 @@ namespace dicom_controller
 			}
 		}
 
+
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		void copy( unsigned char *p, size_type nbytes )
 		{
 			if( num_bytes != nbytes )
@@ -106,6 +152,15 @@ namespace dicom_controller
 			}
 		}
 
+
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		void release()
 		{
 			delete [] data;
@@ -125,7 +180,15 @@ namespace dicom_controller
 			return( *this );
 		}
 
-		// 変換オペレータ
+
+		/// @brief 変換オペレータ
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		double         to_double( ) const { return( ( vr == FD && num_bytes == 8 )? byte_array< double >( data ).get_value( )        : static_cast< double >        ( atof( to_string( ).c_str( ) ) ) ); }
 		float          to_float( )  const { return( ( vr == FL && num_bytes == 4 )? byte_array< float >( data ).get_value( )         : static_cast< float >         ( atof( to_string( ).c_str( ) ) ) ); }
 		signed int     to_int( )    const { return( ( vr == SL && num_bytes == 4 )? byte_array< signed int >( data ).get_value( )    : static_cast< signed int >    ( atoi( to_string( ).c_str( ) ) ) ); }
@@ -163,6 +226,14 @@ namespace dicom_controller
 			return( buff );
 		}
 
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		void show_tag( ) const
 		{
 			if( data == NULL || num_bytes == 0 )
@@ -234,6 +305,14 @@ namespace dicom_controller
 	};
 
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	class dicom_tag_container : public std::map< unsigned int, dicom_element >
 	{
 	private:
@@ -247,7 +326,24 @@ namespace dicom_controller
 		typedef base::reference reference;
 
 	public:
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		dicom_element &operator ()( unsigned short group, unsigned short element ){ return( base::operator []( construct_dicom_tag( group, element ) ) ); }
+
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		const dicom_element &operator ()( unsigned short group, unsigned short element ) const
 		{
 			const_iterator cite = find( group, element );
@@ -255,33 +351,83 @@ namespace dicom_controller
 		}
 
 	public:
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		bool add( const dicom_element &element )
 		{
 			std::pair< iterator, bool > ite = base::insert( element_pair( element.tag, element ) );
 			return( ite.second );
 		}
 
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		iterator append( const dicom_element &element )
 		{
 			std::pair< iterator, bool > ite = base::insert( element_pair( element.tag, element ) );
 			return( ite.first );
 		}
 
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		void erase( const dicom_element &element )
 		{
 			base::erase( element.tag );
 		}
 
+
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		iterator find( unsigned short group, unsigned short element )
 		{
 			return( base::find( construct_dicom_tag( group, element ) ) );
 		}
 
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		const_iterator find( unsigned short group, unsigned short element ) const
 		{
 			return( base::find( construct_dicom_tag( group, element ) ) );
 		}
 
+
+		/// @brief 関数・クラスの概要を書く
+		//! 
+		//! 詳細な説明や関数の使用例を書く
+		//! 
+		//! @param[in] in  … 引数の説明
+		//! @param[in] out … 引数の説明
+		//! @return        … 戻り値の説明
+		//! 
 		bool contain( unsigned short group, unsigned short element ) const
 		{
 			return( find( group, element ) != base::end( ) );
@@ -295,6 +441,14 @@ namespace dicom_controller
 		}
 	};
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	class dicom_image_info
 	{
 	public:
@@ -330,6 +484,15 @@ namespace dicom_controller
 		}
 	};
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	class dicom_info : public dicom_image_info
 	{
 	public:
@@ -354,6 +517,15 @@ namespace dicom_controller
 		compress_type type;
 	} __dicom_compress_type__;
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	compress_type get_compress_type( const std::string &uid )
 	{
 		static __dicom_compress_type__ compress_type_list[] = {
@@ -396,55 +568,127 @@ namespace dicom_controller
 		return( RAW );
 	}
 
-	// コンテナからタグを検索し，double値を返す
+
+	/// @brief コンテナからタグを検索し，double値を返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	double find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, double default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
 		return( cite == dicom.end( ) ? default_value : cite->second.to_double( ) );
 	}
-	// コンテナからタグを検索し，float値を返す
+
+	/// @brief コンテナからタグを検索し，float値を返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	float find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, float default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
 		return( cite == dicom.end( ) ? default_value : cite->second.to_float( ) );
 	}
-	// コンテナからタグを検索し，signed int値を返す
+
+	/// @brief コンテナからタグを検索し，signed int値を返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	signed int find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, signed int default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
 		return( cite == dicom.end( ) ? default_value : cite->second.to_int( ) );
 	}
-	// コンテナからタグを検索し，unsigned int値を返す
+
+	/// @brief コンテナからタグを検索し，unsigned int値を返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	unsigned int find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, unsigned int default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
 		return( cite == dicom.end( ) ? default_value : cite->second.to_uint( ) );
 	}
-	// コンテナからタグを検索し，signed short値を返す
+
+	/// @brief コンテナからタグを検索し，signed short値を返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	signed short find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, signed short default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
 		return( cite == dicom.end( ) ? default_value : cite->second.to_short( ) );
 	}
-	// コンテナからタグを検索し，unsigned short値を返す
+
+	/// @brief コンテナからタグを検索し，unsigned short値を返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	unsigned short find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, unsigned short default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
 		return( cite == dicom.end( ) ? default_value : cite->second.to_ushort( ) );
 	}
-	// コンテナからタグを検索し，std::string値を返す
+
+	/// @brief コンテナからタグを検索し，std::string値を返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	std::string find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, const std::string &default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
 		return( cite == dicom.end( ) ? default_value : cite->second.to_string( ) );
 	}
-	// コンテナからタグを検索し，const char*値を返す
+
+	/// @brief コンテナからタグを検索し，const char*値を返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	std::string find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, const char *default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
 		return( cite == dicom.end( ) ? default_value : cite->second.to_string( ) );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool get_dicom_info( const dicom_tag_container &dicom, dicom_info &info )
 	{
 		info.compression_type		= get_compress_type( find_tag( dicom, 0x0002, 0x0010, "" ) );
@@ -472,6 +716,14 @@ namespace dicom_controller
 		return( true );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline bool is_element_begin( const unsigned char *p, const unsigned char *e )
 	{
 		if( p + 4 > e )
@@ -480,6 +732,15 @@ namespace dicom_controller
 		}
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x00 && p[ 3 ] == 0xe0 );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline bool is_element_end( const unsigned char *p, const unsigned char *e )
 	{
 		if( p + 8 > e )
@@ -489,7 +750,15 @@ namespace dicom_controller
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0xdd && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
 	}
 
-	// RLE圧縮ファイルのデコーダ
+
+	/// @brief RLE圧縮ファイルのデコーダ
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline unsigned char *decode_RLE( unsigned char *psrc, unsigned char *psrc_end, unsigned char *pdst, unsigned char *pdst_end )
 	{
 		if( psrc + 64 >= psrc_end )
@@ -587,7 +856,14 @@ namespace dicom_controller
 	}
 #endif
 
-	// JPEG圧縮ファイルのデコーダ
+	/// @brief JPEG圧縮ファイルのデコーダ
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline unsigned char *decode_JPEG( unsigned char *psrc, unsigned char *psrc_end, unsigned char *pdst, unsigned char *pdst_end )
 	{
 #ifdef __DECODE_JPEG_COMPRESSION__
@@ -646,7 +922,15 @@ namespace dicom_controller
 #endif
 	}
 
-	// 圧縮ファイルのデコーダ
+
+	/// @brief 圧縮ファイルのデコーダ
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline bool decode( dicom_element &element, const dicom_info &info )
 	{
 		switch( info.compression_type )

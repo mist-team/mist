@@ -18,21 +18,23 @@
 _MIST_BEGIN
 
 
-// 行列計算をする際の入力となる行列の形式
-// この形式に従って，内部で呼び出す関数が変更される
+/// @enum 行列計算をする際の入力となる行列の形式
+//! 
+//! @attention この形式に従って，内部で呼び出す関数が変更される
+//! 
 struct matrix_style
 {
 	enum style
 	{
-		ge,		// 一般 
-		gb,		// 一般帯 
-		gt,		// 一般3重対角 
-		sy,		// 対称 
-		sb,		// 対称帯 
-		st,		// 対称3重対角 
-		he,		// エルミート 
-		hb,		// エルミート帯 
-		ht,		// エルミート3重対角 
+		ge,		///< 一般 
+		gb,		///< 一般帯 
+		gt,		///< 一般3重対角 
+		sy,		///< 対称 
+		sb,		///< 対称帯 
+		st,		///< 対称3重対角 
+		he,		///< エルミート 
+		hb,		///< エルミート帯 
+		ht,		///< エルミート3重対角 
 	};
 };
 
@@ -432,8 +434,14 @@ namespace __clapack__
 
 
 
-// トレースの計算（対角成分の和）
-
+/// @brief トレースの計算（対角成分の和）
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type trace( const matrix< T, Allocator > &a )
 {
@@ -471,7 +479,14 @@ inline const typename matrix_expression< Expression >::value_type trace( const m
 #endif
 
 
-// 行列式の計算
+/// @brief 行列式の計算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type det( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
@@ -507,6 +522,14 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Expression >
 inline const typename matrix_expression< Expression >::value_type det( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
 {
@@ -546,6 +569,14 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, const typename type_trait< T >::value_type &s2, const typename type_trait< T >::value_type &s3 )
 {
@@ -755,7 +786,14 @@ namespace __solve__
 }
 
 
-// 行列の連立一次方程式を解く関数
+/// @brief 行列の連立一次方程式を解く関数
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style = matrix_style::ge )
 {
@@ -765,6 +803,14 @@ inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, mat
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
 			solve( const matrix_expression< Expression > &expression, matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &b, matrix_style::style style = matrix_style::ge )
@@ -904,7 +950,14 @@ namespace __lu__
 	};
 }
 
-// 一般行列のLU分解を行う
+/// @brief 一般行列のLU分解を行う
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator1, class Allocator2 >
 const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
 {
@@ -912,7 +965,14 @@ const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a
 	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
 }
 
-// 一般行列のLU分解を行う
+/// @brief 一般行列のLU分解を行う
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
@@ -924,6 +984,14 @@ const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, 
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Expression, class Allocator2 >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
 			lu_factorization( const matrix_expression< Expression > &expression, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
@@ -935,6 +1003,14 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 	return( __lu__::__lu__< __numeric__::is_complex< value_type >::value >::lu_factorization( a_, pivot, style ) );
 }
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
 						lu_factorization( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
@@ -1037,7 +1113,14 @@ namespace __qr__
 	};
 }
 
-// 一般行列のQR分解を行う
+/// @brief 一般行列のQR分解を行う
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style = matrix_style::ge )
 {
@@ -1045,7 +1128,14 @@ const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, 
 	return( __qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a_, tau, style ) );
 }
 
-// 一般行列のQR分解を行う
+/// @brief 一般行列のQR分解を行う
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
@@ -1056,6 +1146,14 @@ const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, 
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
 			qr_factorization( const matrix_expression< Expression > &expression,
@@ -1069,6 +1167,14 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 	return( __qr__::__qr__< __numeric__::is_complex< value_type >::value >::qr_factorization( a_, tau, style ) );
 }
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
 						qr_factorization( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
@@ -1236,7 +1342,15 @@ namespace __inverse__
 	};
 }
 
-// 一般行列の逆行列をLU分解を用いて計算する
+
+/// @brief 一般行列の逆行列をLU分解を用いて計算する
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
@@ -1246,6 +1360,14 @@ matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::s
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Expression >
 inline matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
 						inverse( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
@@ -1540,7 +1662,14 @@ namespace __eigen__
 }
 
 
-// 一般行列の固有値・固有ベクトルを計算する
+/// @brief 一般行列の固有値・固有ベクトルを計算する
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style = matrix_style::ge )
 {
@@ -1550,6 +1679,14 @@ const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T,
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
 						eigen( const matrix_expression< Expression > &expression,
@@ -1805,7 +1942,15 @@ namespace __svd__
 
 }
 
-// 一般行列の特異値分解を計算する
+
+/// @brief 一般行列の特異値分解を計算する
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
 {
@@ -1816,6 +1961,14 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
 						svd( const matrix_expression< Expression > &expression,

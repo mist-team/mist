@@ -748,8 +748,24 @@ namespace __interpolate_controller__
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 namespace nearest
 {
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
 						typename array< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
@@ -799,6 +815,15 @@ namespace nearest
 		delete [] thread;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
 					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
@@ -849,6 +874,15 @@ namespace nearest
 		delete [] thread;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 					typename array2< T1, Allocator1 >::size_type width, typename array2< T1, Allocator1 >::size_type height,
@@ -901,6 +935,15 @@ namespace nearest
 		delete [] thread;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					typename array3< T1, Allocator1 >::size_type width,
@@ -958,8 +1001,24 @@ namespace nearest
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 namespace linear
 {
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
 						typename array< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
@@ -1009,6 +1068,15 @@ namespace linear
 		delete [] thread;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
 					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
@@ -1059,6 +1127,15 @@ namespace linear
 		delete [] thread;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 					typename array2< T1, Allocator1 >::size_type width, typename array2< T1, Allocator1 >::size_type height,
@@ -1111,6 +1188,15 @@ namespace linear
 		delete [] thread;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					typename array3< T1, Allocator1 >::size_type width,
@@ -1169,8 +1255,24 @@ namespace linear
 
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 namespace cubic
 {
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
 						typename array< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
@@ -1220,6 +1322,14 @@ namespace cubic
 		delete [] thread;
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
 					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
@@ -1270,6 +1380,15 @@ namespace cubic
 		delete [] thread;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 					typename array2< T1, Allocator1 >::size_type width, typename array2< T1, Allocator1 >::size_type height,
@@ -1322,6 +1441,15 @@ namespace cubic
 		delete [] thread;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					typename array3< T1, Allocator1 >::size_type width,

@@ -144,6 +144,15 @@ namespace pixel_data
 	}
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T, class Allocator >
 bool draw_buffer( const array2< T, Allocator > &image,
 					typename array2< T, Allocator >::size_type image_width, typename array2< T, Allocator >::size_type image_height,
@@ -257,6 +266,14 @@ bool draw_buffer( const array2< T, Allocator > &image,
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T, class Allocator >
 bool draw_image( const array2< T, Allocator > &image,
 					typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
@@ -295,8 +312,15 @@ bool draw_image( const array2< T, Allocator > &image,
 }
 
 
-// ウィンドウ上の点から画像上の点の座標を計算する
-// aspectは sizeY / sizeX であり、各ピクセルのアスペクトである
+/// @brief 関数・クラスの概要を書く
+//! 
+//! ウィンドウ上の点から画像上の点の座標を計算する
+//! @attention aspectは sizeY / sizeX であり、各ピクセルのアスペクトである
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline vector2< double > screen2point( const vector2< double > &pt, double imgX, double imgY, double aspect,
 												double winW, double winH, double zoom, double posx, double posy )
 {
@@ -323,8 +347,15 @@ inline vector2< double > screen2point( const vector2< double > &pt, double imgX,
 	return( vector2< double >( ( xx + 1.0 ) * imgX * 0.5, ( yy + 1.0 ) * imgY * 0.5 ) );
 }
 
-// 画像上の点からウィンドウ上の点の座標を計算する
-// aspectは sizeX / sizeY であり、各ピクセルのアスペクトである
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 画像上の点からウィンドウ上の点の座標を計算する
+//! @attention aspectは sizeX / sizeY であり、各ピクセルのアスペクトである
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline vector2< double > point2screen( const vector2< double > &pt, double imgX, double imgY, double aspect,
 												double winW, double winH, double zoom, double posx, double posy )
 {

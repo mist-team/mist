@@ -10,7 +10,15 @@
 _MIST_BEGIN
 
 
-// バイト配列と値のペアを表現するクラス
+
+/// @brief バイト配列と値のペアを表現するクラス
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 union byte_array
 {
@@ -33,25 +41,85 @@ public:
 			byte[ i ] = b[ i ];
 		}
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	unsigned char &operator[]( size_type index ){ return( byte[ index ] ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const unsigned char &operator[]( size_type index ) const { return( byte[ index ] ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const value_type get_value( ) const { return( value ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	value_type set_value( const value_type &v ) { return( value = v ); }
 };
 
-// 現在のマシンのエンディアンがリトルエンディアンかどうかを調べる
+
+/// @brief 現在のマシンのエンディアンがリトルエンディアンかどうかを調べる
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline bool _is_little_endian_( )
 {
 	return( byte_array< unsigned short >( 1 )[ 0 ] == 1 );
 }
 
-// 現在のマシンのエンディアンがビッグエンディアンかどうかを調べる
+
+/// @brief 現在のマシンのエンディアンがビッグエンディアンかどうかを調べる
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline bool _is_big_endian_( )
 {
 	return( byte_array< unsigned short >( 1 )[ 0 ] == 0 );
 }
 
-// byte_array内のバイトスワップをする
+
+/// @brief byte_array内のバイトスワップをする
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 inline void swap_bytes( byte_array< T > &bytes )
 {
@@ -63,7 +131,15 @@ inline void swap_bytes( byte_array< T > &bytes )
 	}
 }
 
-// byte_array内のデータを現在の計算機のエンディアンに合わせる
+
+/// @brief byte_array内のデータを現在の計算機のエンディアンに合わせる
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 inline byte_array< T > to_current_endian( const byte_array< T > &bytes, bool from_little_endian )
 {
@@ -80,7 +156,15 @@ inline byte_array< T > to_current_endian( const byte_array< T > &bytes, bool fro
 	}
 }
 
-// byte_array内のデータを現在の計算機のエンディアンから目的のエンディアンに合わせる
+
+/// @brief byte_array内のデータを現在の計算機のエンディアンから目的のエンディアンに合わせる
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 inline byte_array< T > from_current_endian( const byte_array< T > &bytes, bool to_little_endian )
 {

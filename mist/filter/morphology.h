@@ -23,8 +23,25 @@
 _MIST_BEGIN
 
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 namespace __morphology__
 {
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	struct point
 	{
 		typedef ptrdiff_t value_type;
@@ -48,6 +65,15 @@ namespace __morphology__
 		}
 	};
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	struct morphology_structure
 	{
 		typedef std::vector< point > list_type;
@@ -58,7 +84,15 @@ namespace __morphology__
 		size_t margin_z;
 	};
 
-	// モルフォロジ演算に用いる円構造要素
+
+	/// @brief モルフォロジ演算に用いる円構造要素
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline morphology_structure circle( double radius, double resoX, double resoY )
 	{
 		typedef array2< bool >::size_type size_type;
@@ -124,7 +158,16 @@ namespace __morphology__
 		return( s );
 	}
 
-	// モルフォロジ演算に用いる球構造要素
+
+
+	/// @brief モルフォロジ演算に用いる球構造要素
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline morphology_structure sphere( double radius, double resoX, double resoY, double resoZ )
 	{
 		typedef array3< bool >::size_type size_type;
@@ -202,7 +245,16 @@ namespace __morphology__
 		return( s );
 	}
 
-	// モルフォロジ演算に用いる正方形構造要素
+
+
+	/// @brief モルフォロジ演算に用いる正方形構造要素
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline morphology_structure square( double radius, double resoX, double resoY )
 	{
 		using namespace std;
@@ -269,7 +321,15 @@ namespace __morphology__
 		return( s );
 	}
 
-	// モルフォロジ演算に用いる立方体構造要素
+
+	/// @brief モルフォロジ演算に用いる立方体構造要素
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline morphology_structure cube( double radius, double resoX, double resoY, double resoZ )
 	{
 		using namespace std;
@@ -348,6 +408,15 @@ namespace __morphology__
 		return( s );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class Array >
 	inline std::vector< pointer_diff > create_pointer_diff_list( const Array &in, const std::vector< point > &list )
 	{
@@ -699,9 +768,16 @@ namespace __morphology_controller__
 }
 
 
-// 2次元モルフォロジ演算はここから
 
-// 任意の構造要素に対応したモルフォロジ演算
+
+/// @brief 任意の構造要素に対応したモルフォロジ演算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 void erosion( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
@@ -750,6 +826,14 @@ void erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 void dilation( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
@@ -798,6 +882,14 @@ void dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 void opening( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
@@ -876,6 +968,14 @@ void opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 void closing( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
@@ -954,38 +1054,78 @@ void closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 }
 
 
-// 円の構造要素専用のモルフォロジ演算
+
+/// @brief 円の構造要素専用のモルフォロジ演算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline void erosion( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	erosion( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline void dilation( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	dilation( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline void opening( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	opening( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline void closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	closing( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num );
 }
-// 2次元モルフォロジ演算はここまで
 
 
 
 
-// 3次元モルフォロジ演算はここから
 
-// 任意の構造要素に対応したモルフォロジ演算
+/// @brief 任意の構造要素に対応したモルフォロジ演算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 void erosion( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
@@ -1034,6 +1174,14 @@ void erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 void dilation( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
@@ -1082,6 +1230,14 @@ void dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 void opening( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
@@ -1160,6 +1316,15 @@ void opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 }
 
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 void closing( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
@@ -1238,31 +1403,65 @@ void closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 }
 
 
-// 球の構造要素専用のモルフォロジ演算
+
+/// @brief 球の構造要素専用のモルフォロジ演算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline void erosion( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
 	erosion( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
 }
 
+
+/// @brief 球の構造要素専用のモルフォロジ演算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline void dilation( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
 	dilation( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
 }
 
+
+/// @brief 球の構造要素専用のモルフォロジ演算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline void opening( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
 	opening( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
 }
 
+
+/// @brief 球の構造要素専用のモルフォロジ演算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline void closing( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
 	closing( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
 }
-// 3次元モルフォロジ演算はここまで
 
 
 // mist名前空間の終わり

@@ -15,7 +15,14 @@ _MIST_BEGIN
 // MISTで利用する基底のデータ型
 
 
-// カラー画像用
+/// @brief カラー画像用
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T >
 struct rgb
 {
@@ -36,6 +43,15 @@ public:
 	rgb( const rgb &c ) : r( c.r ), g( c.g ), b( c.b ){ }
 	rgb( const value_type &rr, const value_type &gg, const value_type &bb ) : r( rr ), g( gg ), b( bb ){ }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const rgb &operator  =( const rgb &c )
 	{
 		if( &c != this )
@@ -47,6 +63,14 @@ public:
 		return( *this );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const rgb &operator  =( const value_type &pix )
 	{
 		r = pix;
@@ -55,6 +79,15 @@ public:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const rgb  operator -( ) const { return( rgb( -r, -g, -b ) ); }
 	const rgb &operator +=( const rgb &c ){ r += c.r; g += c.g; b += c.b; return( *this ); }
 	const rgb &operator -=( const rgb &c ){ r -= c.r; g -= c.g; b -= c.b; return( *this ); }
@@ -77,7 +110,15 @@ public:
 	bool operator > ( const rgb &c ) const { return( c < *this ); }
 	bool operator >=( const rgb &c ) const { return( r >= c.r && g >= c.g && b >= c.b ); }
 
-	// NTSC系加重平均法により，グレースケールへ変換する
+
+	/// @brief NTSC系加重平均法により，グレースケールへ変換する
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	value_type get_value( ) const
 	{
 		return( static_cast< value_type >( r * 0.298912 + g * 0.586610 + b * 0.114478 ) );
@@ -87,6 +128,15 @@ public:
 	//operator value_type( ) const { return( get_value( ) ); }
 };
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T > inline const rgb< T > operator +( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) += c2 ); }
 template < class T > inline const rgb< T > operator -( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) -= c2 ); }
 template < class T > inline const rgb< T > operator *( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) *= c2 ); }
@@ -105,6 +155,15 @@ template < class T > inline const rgb< T > operator +( const typename rgb< T >::
 template < class T > inline const rgb< T > operator -( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) -= c2 ); }
 template < class T > inline const rgb< T > operator -( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) -= c2 ); }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const rgb< T > &c )
 {
 	out << "( ";
@@ -114,6 +173,15 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 	return( out );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 struct is_color
 {

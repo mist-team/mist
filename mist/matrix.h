@@ -326,7 +326,14 @@ struct matrix_div_const : public matrix_bind_operation< T1, T2 >
 #endif
 
 
-// 行列
+/// @brief 行列クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator = ::std::allocator< T > >
 class matrix : public array< T, Allocator >
 {
@@ -351,6 +358,14 @@ private:
 	size_type size2_;
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num )
 	{
 		size1_ = num;
@@ -365,6 +380,14 @@ public:
 	//	base::resize( size1_ * size2_, val );
 	//}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2 )
 	{
 		size1_ = num1;
@@ -372,6 +395,14 @@ public:
 		base::resize( size1_ * size2_ );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2, const T &val )
 	{
 		size1_ = num1;
@@ -379,6 +410,14 @@ public:
 		base::resize( size1_ * size2_, val );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void clear( )
 	{
 		base::clear( );
@@ -397,19 +436,46 @@ public:
 **      行に対する順方向・逆方向の反復子
 **
 ************************************************************************************************************/
-	// 順方向のランダムアクセスイテレータを返す
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! @param[in] r  … 引数の説明
+	//! @return       … 戻り値の説明
 	iterator row_begin( size_type r ){ return( iterator( paccess( r, 0 ), rows( ) ) ); }
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! @param[in] r  … 引数の説明
+	//! @return       … 戻り値の説明
 	const_iterator row_begin( size_type r ) const { return( const_iterator( paccess( r, 0 ), rows( ) ) ); }
 
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! @param[in] r  … 引数の説明
+	//! @return       … 戻り値の説明
 	iterator row_end( size_type r ){ return( iterator( paccess( r, cols( ) ), rows( ) ) ); }
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! @param[in] r  … 引数の説明
+	//! @return       … 戻り値の説明
 	const_iterator row_end( size_type r ) const { return( const_iterator( paccess( r, cols( ) ), rows( ) ) ); }
 
 
-	// 逆方向のランダムアクセスイテレータを返す
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! @param[in] r  … 引数の説明
+	//! @return       … 戻り値の説明
 	reverse_iterator row_rbegin( size_type r ){ return( reverse_iterator( row_end( r )  ) ); }
+
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! @param[in] r  … 引数の説明
+	//! @return       … 戻り値の説明
 	const_reverse_iterator row_rbegin( size_type r ) const { return( const_reverse_iterator( row_end( r ) ) ); }
 
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! @param[in] r  … 引数の説明
+	//! @return       … 戻り値の説明
 	reverse_iterator row_rend( size_type r ){ return( reverse_iterator( row_begin( r ) ) ); }
+
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! @param[in] r  … 引数の説明
+	//! @return       … 戻り値の説明
 	const_reverse_iterator row_rend( size_type r ) const { return( const_reverse_iterator( row_begin( r ) ) ); }
 
 
@@ -418,19 +484,46 @@ public:
 **      列に対する順方向・逆方向の反復子
 **
 ************************************************************************************************************/
-	// 順方向のランダムアクセスイテレータを返す
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! @param[in] c   … 引数の説明
+	//! @return        … 戻り値の説明
 	iterator col_begin( size_type c ){ return( iterator( paccess( 0, c ), 1 ) ); }
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! @param[in] c   … 引数の説明
+	//! @return        … 戻り値の説明
 	const_iterator col_begin( size_type c ) const { return( const_iterator( paccess( 0, c ), 1 ) ); }
 
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! @param[in] c   … 引数の説明
+	//! @return        … 戻り値の説明
 	iterator col_end( size_type c ){ return( iterator( paccess( rows( ), c ), 1 ) ); }
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! @param[in] c   … 引数の説明
+	//! @return        … 戻り値の説明
 	const_iterator col_end( size_type c ) const { return( const_iterator( paccess( rows( ), c ), 1 ) ); }
 
 
-	// 逆方向のランダムアクセスイテレータを返す
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! @param[in] c   … 引数の説明
+	//! @return        … 戻り値の説明
 	reverse_iterator col_rbegin( size_type c ){ return( reverse_iterator( col_end( c ) ) ); }
+
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! @param[in] c   … 引数の説明
+	//! @return        … 戻り値の説明
 	const_reverse_iterator col_rbegin( size_type c ) const { return( const_reverse_iterator(  col_end( c ) ) ); }
 
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! @param[in] c   … 引数の説明
+	//! @return        … 戻り値の説明
 	reverse_iterator col_rend( size_type c ){ return( reverse_iterator( col_begin( c ) ) ); }
+
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! @param[in] c   … 引数の説明
+	//! @return        … 戻り値の説明
 	const_reverse_iterator col_rend( size_type c ) const { return( const_reverse_iterator( col_begin( c ) ) ); }
 
 
@@ -447,13 +540,27 @@ public: // 配列に対する算術演算
 ************************************************************************************************************/
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
-	// 符号反転
+	/// @brief 符号反転
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	matrix_expression< matrix_minus< matrix > > operator -( ) const
 	{
 		return( matrix_expression< matrix_minus< matrix > >( matrix_minus< matrix >( *this ) ) );
 	}
 
-	// 転置行列
+	/// @brief 転置行列
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	matrix_expression< matrix_transpose< matrix > > t( ) const
 	{
 		return( matrix_expression< matrix_transpose< matrix > >( matrix_transpose< matrix >( *this ) ) );
@@ -461,7 +568,14 @@ public: // 配列に対する算術演算
 
 #else
 
-	// 符号反転
+	/// @brief 符号反転
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	matrix operator -( ) const
 	{
 		const matrix &m = *this;
@@ -473,7 +587,14 @@ public: // 配列に対する算術演算
 		return( o );
 	}
 
-	// 転置行列
+	/// @brief 転置行列
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	matrix t( ) const
 	{
 		const matrix &m = *this;
@@ -506,6 +627,15 @@ public: // 配列に対する算術演算
 **        /= 定数
 **
 ************************************************************************************************************/
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class TT, class AAlocator >
 	const matrix& operator +=( const matrix< TT, AAlocator > &m2 )
 	{
@@ -522,6 +652,15 @@ public: // 配列に対する算術演算
 		return( m1 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class TT, class AAlocator >
 	const matrix& operator -=( const matrix< TT, AAlocator > &m2 )
 	{
@@ -538,6 +677,15 @@ public: // 配列に対する算術演算
 		return( m1 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class TT, class AAlocator >
 	const matrix& operator *=( const matrix< TT, AAlocator > &m2 )
 	{
@@ -571,6 +719,15 @@ public: // 配列に対する算術演算
 		return( m1 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const matrix& operator +=( typename type_trait< T >::value_type val )
 	{
 		matrix &m = *this;
@@ -579,6 +736,15 @@ public: // 配列に対する算術演算
 		return( m );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const matrix& operator -=( typename type_trait< T >::value_type val )
 	{
 		matrix &m = *this;
@@ -587,6 +753,15 @@ public: // 配列に対する算術演算
 		return( m );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const matrix& operator *=( typename type_trait< T >::value_type val )
 	{
 		matrix &m = *this;
@@ -594,6 +769,15 @@ public: // 配列に対する算術演算
 		return( m );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const matrix& operator /=( typename type_trait< T >::value_type val )
 	{
 		matrix &m = *this;
@@ -611,6 +795,15 @@ public: // 配列に対する算術演算
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class Expression >
 	matrix& operator +=( const matrix_expression< Expression > &m2 )
 	{
@@ -633,6 +826,15 @@ public: // 配列に対する算術演算
 		return( m1 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class Expression >
 	matrix& operator -=( const matrix_expression< Expression > &m2 )
 	{
@@ -655,6 +857,15 @@ public: // 配列に対する算術演算
 		return( m1 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class Expression >
 	matrix& operator *=( const matrix_expression< Expression > &m2 )
 	{
@@ -689,6 +900,14 @@ public: // 配列に対する算術演算
 #endif
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void swap( matrix &m )
 	{
 		base::swap( m );
@@ -701,6 +920,14 @@ public:
 	}
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class TT, class AAlocator >
 	const matrix& operator =( const matrix< TT, AAlocator > &o )
 	{
@@ -711,6 +938,14 @@ public:
 		return( *this );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const matrix< T, Allocator >& operator =( const matrix< T, Allocator > &o )
 	{
 		if( this == &o ) return( *this );
@@ -723,6 +958,14 @@ public:
 	}
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class Expression >
 	const matrix& operator =( const matrix_expression< Expression > &expression )
 	{
@@ -753,24 +996,56 @@ private:
 
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference at( size_type r, size_type c )
 	{
 		_CHECK_ACCESS_VIOLATION2_( r, c )
 		return( base::data_[ r + c * size1_ ] );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference at( size_type r, size_type c ) const
 	{
 		_CHECK_ACCESS_VIOLATION2_( r, c )
 		return( base::data_[ r + c * size1_ ] );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator ()( size_type r, size_type c )
 	{
 		_CHECK_ACCESS_VIOLATION2_( r, c )
 		return( base::data_[ r + c * size1_ ] );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator ()( size_type r, size_type c ) const
 	{
 		_CHECK_ACCESS_VIOLATION2_( r, c )
@@ -779,7 +1054,14 @@ public:
 
 
 public:
-	// 構築
+	/// @brief 構築の概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	matrix( ) : base( ), size1_( 0 ), size2_( 0 ) {}
 	explicit matrix( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ) {}
 
@@ -812,11 +1094,14 @@ public:
 
 
 
-/************************************************************************************************************
-**
-** 標準出力への行列の出力
-**
-************************************************************************************************************/
+/// @brief 標準出力への行列の出力
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline ::std::ostream &operator <<( ::std::ostream &out, const matrix< T, Allocator > &m )
 {
@@ -837,6 +1122,15 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const matrix< T, Alloca
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 inline ::std::ostream &operator <<( ::std::ostream &out,  const matrix_expression< T > &m )
 {
@@ -1056,7 +1350,14 @@ inline matrix_expression< matrix_div_const< matrix_expression< Left >, typename 
 #else
 
 
-// 足し算
+/// @brief 足し算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator +( const matrix< T, Allocator > &m1, const matrix< T, Allocator > &m2 )
 {
@@ -1064,7 +1365,14 @@ inline matrix< T, Allocator > operator +( const matrix< T, Allocator > &m1, cons
 }
 
 
-// 引き算
+/// @brief 引き算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator -( const matrix< T, Allocator > &m1, const matrix< T, Allocator > &m2 )
 {
@@ -1072,7 +1380,14 @@ inline matrix< T, Allocator > operator -( const matrix< T, Allocator > &m1, cons
 }
 
 
-// 掛け算
+/// @brief 掛け算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m1, const matrix< T, Allocator > &m2 )
 {
@@ -1103,13 +1418,28 @@ inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m1, cons
 }
 
 
-// 定数との足し算
+/// @brief 定数との足し算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator +( const matrix< T, Allocator > &m, typename type_trait< T >::value_type val )
 {
 	return( matrix< T, Allocator >( m ) += val );
 }
 
+/// @brief 定数との足し算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator +( typename matrix< T, Allocator >::value_type val, const matrix< T, Allocator > &m )
 {
@@ -1118,13 +1448,28 @@ inline matrix< T, Allocator > operator +( typename matrix< T, Allocator >::value
 
 
 
-// 定数との引き
+/// @brief 定数との引き算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator -( const matrix< T, Allocator > &m, typename type_trait< T >::value_type val )
 {
 	return( matrix< T, Allocator >( m ) -= val );
 }
 
+/// @brief 定数との引き算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator -( typename matrix< T, Allocator >::value_type val, const matrix< T, Allocator > &m )
 {
@@ -1132,13 +1477,28 @@ inline matrix< T, Allocator > operator -( typename matrix< T, Allocator >::value
 }
 
 
-// 定数との掛け算
+/// @brief 定数との掛け算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m, typename type_trait< T >::value_type val )
 {
 	return( matrix< T, Allocator >( m ) *= val );
 }
 
+/// @brief 定数との掛け算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator *( typename matrix< T, Allocator >::value_type val, const matrix< T, Allocator > &m )
 {
@@ -1146,7 +1506,14 @@ inline matrix< T, Allocator > operator *( typename matrix< T, Allocator >::value
 }
 
 
-// 定数との割り算
+// @brief 定数との割り算
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator /( const matrix< T, Allocator > &m, typename type_trait< T >::value_type val )
 {

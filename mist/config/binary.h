@@ -14,7 +14,15 @@ _MIST_BEGIN
 
 // MISTで利用する基底のデータ型
 
-// binary演算を行うためのもの
+
+/// @brief binary演算を行うためのもの
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 class binary
 {
 public:
@@ -32,9 +40,35 @@ public:
 	binary( const value_type &b ) : value_( b ){ }
 	binary( const binary &b ) : value_( b.value_ ){ }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const binary &operator  =( const binary &b ){ value_ = b.value_;  return( *this ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const binary &operator  =( const value_type &b ){ value_ = b;   return( *this ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const binary &operator +=( const binary &b ){ value_ = value_ ||  b.value_; return( *this ); }
 	const binary &operator -=( const binary &b ){ value_ = value_ && !b.value_; return( *this ); }
 	const binary &operator *=( const binary &b ){ value_ = value_ &&  b.value_; return( *this ); }
@@ -56,12 +90,29 @@ public:
 	bool operator > ( const binary &b ) const { return( value_ >  b.value_ ); }
 	bool operator >=( const binary &b ) const { return( value_ >= b.value_ ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	value_type get_value( ) const { return( value_ ); }
 
 	// boolへの自動キャスト演算子（危険のため一時停止）
 	//operator bool( ) const { return( value_ ); }
 };
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline const binary operator +( const binary &b1, const binary &b2 ){ return( binary( b1 ) += b2 ); }
 inline const binary operator -( const binary &b1, const binary &b2 ){ return( binary( b1 ) -= b2 ); }
 inline const binary operator *( const binary &b1, const binary &b2 ){ return( binary( b1 ) *= b2 ); }
@@ -80,6 +131,16 @@ inline const binary operator +( const binary::value_type &b1, const binary &b2 )
 inline const binary operator -( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) -= b2 ); }
 inline const binary operator -( const binary::value_type &b1, const binary &b2 ){ return( binary( b1 ) -= b2 ); }
 
+
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 inline std::ostream &operator <<( std::ostream &out, const binary &v )
 {
 	out << v.get_value( );

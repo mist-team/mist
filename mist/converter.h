@@ -94,6 +94,14 @@ namespace __converter__
 	}
 }
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Array1, class Array2 >
 inline void convert( const Array1 &in, Array2 &out )
 {

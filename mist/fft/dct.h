@@ -30,8 +30,16 @@ _MIST_BEGIN
 
 
 
-// 1次元高速コサイン変換
 
+
+/// @brief 1次元高速コサイン変換
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dct( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 {
@@ -80,7 +88,16 @@ bool dct( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 	return( true );
 }
 
-//1次元高速コサイン逆変換
+
+
+/// @brief 1次元高速コサイン逆変換
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dct_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 {
@@ -130,7 +147,16 @@ bool dct_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 	return( true );
 }
 
-//2次元高速コサイン変換
+
+
+/// @brief 2次元高速コサイン変換
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dct( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
@@ -189,7 +215,16 @@ bool dct( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 }
 
 
-// 2次元コサイン逆変換
+
+
+/// @brief 2次元コサイン逆変換
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dct_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
@@ -260,7 +295,16 @@ bool dct_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 }
 
 
-// 3次元高速コサイン変換
+
+
+/// @brief 3次元高速コサイン変換
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dct( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 {
@@ -328,7 +372,15 @@ bool dct( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 }
 
 
-//3次元高速コサイン逆変換
+
+/// @brief 3次元高速コサイン逆変換
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dct_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 {

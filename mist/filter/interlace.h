@@ -187,6 +187,14 @@ namespace __interlace_controller__
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 bool interlace( const array2< T, Allocator > &in, array2< T, Allocator > &out, bool is_odd_line = false )
 {

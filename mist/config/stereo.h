@@ -15,7 +15,14 @@ _MIST_BEGIN
 // MISTで利用する基底のデータ型
 
 
-// カラー画像用
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template< class T >
 struct stereo
 {
@@ -34,6 +41,15 @@ public:
 	stereo( const value_type &mono ) : l( mono ), r( mono ){ }
 	stereo( const value_type &left, const value_type &right ) : l( left ), r( right ){ }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const stereo &operator  =( const stereo &s )
 	{
 		if( &s != this )
@@ -44,6 +60,15 @@ public:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const stereo &operator  =( const value_type &mono )
 	{
 		l = mono;
@@ -51,6 +76,15 @@ public:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const stereo &operator +=( const stereo &s ){ l += s.l; r += s.r; return( *this ); }
 	const stereo &operator -=( const stereo &s ){ l -= s.l; r -= s.r; return( *this ); }
 	const stereo &operator *=( const stereo &s ){ l *= s.l; r *= s.r; return( *this ); }
@@ -60,11 +94,29 @@ public:
 	const stereo &operator &=( const stereo &s ){ l &= s.l; r &= s.r; return( *this ); }
 	const stereo &operator ^=( const stereo &s ){ l ^= s.l; r ^= s.r; return( *this ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const stereo &operator +=( const value_type &mono ){ l += mono; r += mono; return( +this ); }
 	const stereo &operator -=( const value_type &mono ){ l -= mono; r -= mono; return( -this ); }
 	const stereo &operator *=( const value_type &mono ){ l *= mono; r *= mono; return( *this ); }
 	const stereo &operator /=( const value_type &mono ){ l /= mono; r /= mono; return( *this ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool operator ==( const stereo &s ) const { return( l == s.l && r == s.r ); }
 	bool operator !=( const stereo &s ) const { return( !( *this == s ) ); }
 	bool operator < ( const stereo &s ) const { return( !( *this >= s ) ); }
@@ -72,7 +124,14 @@ public:
 	bool operator > ( const stereo &s ) const { return( s < *this ); }
 	bool operator >=( const stereo &s ) const { return( l >= s.l && r >= s.r ); }
 
-	// NTSC系加重平均法により，グレースケールへ変換する
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	value_type get_value( ) const
 	{
 		return( static_cast< value_type >( ( l + r ) / 2.0 ) );
@@ -82,6 +141,14 @@ public:
 	//operator value_type( ) const { return( get_value( ) ); }
 };
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T > inline const stereo< T > operator +( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) += c2 ); }
 template < class T > inline const stereo< T > operator -( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) -= c2 ); }
 template < class T > inline const stereo< T > operator *( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) *= c2 ); }
@@ -91,6 +158,15 @@ template < class T > inline const stereo< T > operator |( const stereo< T > &c1,
 template < class T > inline const stereo< T > operator &( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) &= c2 ); }
 template < class T > inline const stereo< T > operator ^( const stereo< T > &c1, const stereo< T > &c2 ){ return( stereo< T >( c1 ) ^= c2 ); }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T > inline const stereo< T > operator *( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) *= c2 ); }
 template < class T > inline const stereo< T > operator *( const typename stereo< T >::value_type &c1, const stereo< T > &c2 ){ return( stereo< T >( c2 ) *= c1 ); }
 template < class T > inline const stereo< T > operator /( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) /= c2 ); }
@@ -99,6 +175,15 @@ template < class T > inline const stereo< T > operator +( const typename stereo<
 template < class T > inline const stereo< T > operator -( const stereo< T > &c1, const typename stereo< T >::value_type &c2 ){ return( stereo< T >( c1 ) -= c2 ); }
 template < class T > inline const stereo< T > operator -( const typename stereo< T >::value_type &c1, const stereo< T > &c2 ){ return( stereo< T >( c2 ) -= c1 ); }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const stereo< T > &s )
 {
 	out << "( ";
@@ -107,6 +192,15 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 	return( out );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T >
 struct is_stereo
 {
