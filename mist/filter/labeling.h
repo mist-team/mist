@@ -185,8 +185,6 @@ namespace __labeling_controller__
 		typedef typename Array::size_type  size_type;
 		typedef typename Array::value_type value_type;
 
-		typedef std::set< size_type > label_set;
-
 		size_type label_num = 0;
 		size_type i, j, k, l, count;
 
