@@ -103,15 +103,7 @@ bool draw_buffer( const array2< T, Allocator > &image,
 					typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
 					double zoom = 1.0, double xpos = 0.0, double ypos = 0.0, double back_r = 0.0, double back_g = 0.0, double back_b = 0.0, bool interpolate = true )
 {
-	if( image_width > image.width( ) || image_height > image.height( ) ) return( false );
-	if( image.width( ) != image.height( ) ) return( false );
-
-	typedef typename array2< T, Allocator >::size_type size_type;
-
-	// テクスチャのサイズが2の指数上になっているかどうかをチェック
-	if( image.width( ) != static_cast< size_type >( pow( 2.0, (int)( log10( (double)image.width( ) ) / log10( 2.0 ) + 0.1 ) ) ) ) return( false );
-
-
+	// 背景の初期化を行う
 	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef pixel_data::pixel< is_float< value_type >::value > pixel;
 	float r = pixel::get_value( back_r );
@@ -120,6 +112,15 @@ bool draw_buffer( const array2< T, Allocator > &image,
 
 	glClearColor( r, g, b, 1.0f );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+
+	if( image_width > image.width( ) || image_height > image.height( ) ) return( false );
+	if( image.width( ) != image.height( ) ) return( false );
+
+	typedef typename array2< T, Allocator >::size_type size_type;
+
+	// テクスチャのサイズが2の指数上になっているかどうかをチェック
+	if( image.width( ) != static_cast< size_type >( pow( 2.0, (int)( log10( (double)image.width( ) ) / log10( 2.0 ) + 0.1 ) ) ) ) return( false );
 
 
 	if( image.empty( ) ) return( false );
