@@ -66,6 +66,37 @@ int main( int argc, char *argv[] )
 	}
 
 	{
+
+		{
+			cout << "Forward Iterator Test all element" << endl;
+
+			mist::array2< int > a( 3, 3 );
+			mist::array2< int >::iterator ite = a.begin( );
+
+			for( int i = 1 ; ite != a.end( ) ; ite++, i++ )
+			{
+				*ite = i;
+			}
+
+			cout << a << endl;
+		}
+
+		{
+			cout << "Reverse Iterator Test all element" << endl;
+
+			mist::array2< int > a( 3, 3 );
+			mist::array2< int >::reverse_iterator ite = a.rbegin( );
+
+			for( int i = 1 ; ite != a.rend( ) ; ite++, i++ )
+			{
+				*ite = i;
+			}
+
+			cout << a << endl;
+		}
+	}
+
+	{
 		cout << "Forward Iterator Test X axis" << endl;
 
 		mist::array3< int > a( 3, 3, 3, 0 );
