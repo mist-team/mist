@@ -54,7 +54,7 @@ namespace __labeling_controller__
 
 
 	template < int nc >
-	struct neighbor3
+	struct neighbors
 	{
 		_MIST_CONST( size_t, array_num, 14 );
 
@@ -81,7 +81,7 @@ namespace __labeling_controller__
 	};
 
 	template < >
-	struct neighbor3< 6 >
+	struct neighbors< 6 >
 	{
 		_MIST_CONST( size_t, array_num, 4 );
 
@@ -97,9 +97,8 @@ namespace __labeling_controller__
 		}
 	};
 
-
-	template < int nc >
-	struct neighbor2
+	template < >
+	struct neighbors< 8 >
 	{
 		_MIST_CONST( size_t, array_num, 5 );
 
@@ -117,7 +116,7 @@ namespace __labeling_controller__
 	};
 
 	template < >
-	struct neighbor2< 4 >
+	struct neighbors< 4 >
 	{
 		_MIST_CONST( size_t, array_num, 3 );
 
@@ -374,7 +373,7 @@ typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Alloca
 	{
 		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
-	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbor2< 4 >( ) ) );
+	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 4 >( ) ) );
 }
 
 template < class T1, class T2, class Allocator1, class Allocator2 >
@@ -396,7 +395,7 @@ typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Alloca
 	{
 		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
-	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbor2< 8 >( ) ) );
+	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 8 >( ) ) );
 }
 
 template < class T1, class T2, class Allocator1, class Allocator2 >
@@ -419,7 +418,7 @@ typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Alloca
 	{
 		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
-	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbor3< 6 >( ) ) );
+	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 6 >( ) ) );
 }
 
 
@@ -443,7 +442,7 @@ typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Alloc
 	{
 		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
-	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbor3< 26 >( ) ) );
+	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 26 >( ) ) );
 }
 
 // mistñºëOãÛä‘ÇÃèIÇÌÇË
