@@ -37,7 +37,7 @@ _MIST_BEGIN
 
 
 
-//! @defgroup visualization_group ‰ÂŽ‹‰»
+//! @addtogroup visualization_group ‰ÂŽ‹‰»
 //!
 //!  @{
 
@@ -691,7 +691,7 @@ namespace __volumerendering_controller__
 
 
 
-//! @defgroup visualization_group
+//! @addtogroup visualization_group
 //!
 //!  @{
 

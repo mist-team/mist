@@ -2402,8 +2402,6 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 //! @param[out] c c ŒvŽZŒ‹‰Ê‚ðo—Í‚·‚és—ñ \f${\bf C}\f$
 //! @param[in]  a_is_transpose c s—ñ \f${\bf A}\f$ ‚ð“]’us—ñ‚Æ‚µ‚ÄŠ|‚¯ŽZ‚·‚éê‡‚Í true ‚Æ‚·‚éiƒfƒtƒHƒ‹ƒg‚Í false j
 //! @param[in]  b_is_transpose c s—ñ \f${\bf B}\f$ ‚ð“]’us—ñ‚Æ‚µ‚ÄŠ|‚¯ŽZ‚·‚éê‡‚Í true ‚Æ‚·‚éiƒfƒtƒHƒ‹ƒg‚Í false j
-//! @param[in]  alpha c s—ñ‰‰ŽZ‚Ì˜a‚ðŒvŽZ‚·‚é‚Æ‚«‚ÌŒW”
-//! @param[in]  beta  c s—ñ‰‰ŽZ‚Ì˜a‚ðŒvŽZ‚·‚é‚Æ‚«‚ÌŒW”
 //!
 //! @return \f$tr\left( {\bf A} \right)\f$
 //! 

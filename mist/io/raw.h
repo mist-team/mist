@@ -333,7 +333,6 @@ namespace __raw_controller__
 //! @param[out] image              … 画像を読み込む先のMISTコンテナ
 //! @param[in]  filename           … 入力ファイル名
 //! @param[in]  w                  … 入力画像の幅
-//! @param[in]  x                  … 入力画像の画素サイズ
 //! @param[in]  offset             … 画像に足しこむオフセット値
 //! @param[in]  from_little_endian … 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）
 //! @param[in]  callback           … 進行状況を通知するコールバック関数
@@ -393,7 +392,6 @@ bool write_raw_gz( const array< T, Allocator > &image, const std::string &filena
 //! @param[out] image              … 画像を読み込む先のMISTコンテナ
 //! @param[in]  filename           … 入力ファイル名
 //! @param[in]  w                  … 入力画像の幅
-//! @param[in]  x                  … 入力画像の画素サイズ
 //! @param[in]  offset             … 画像に足しこむオフセット値
 //! @param[in]  from_little_endian … 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）
 //!
