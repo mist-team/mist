@@ -1,4 +1,4 @@
-/// @file mist/io/dicm.h
+/// @file mist/io/dicom.h
 //!
 //! @brief DICOM‰æ‘œ‚ğ“Ç‚İ‘‚«‚·‚é‚½‚ß‚Ìƒ‰ƒCƒuƒ‰ƒŠ
 //!

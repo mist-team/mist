@@ -699,7 +699,7 @@ void maximum_region(
 	typedef typename array2< T1, Allocator1 >::difference_type difference_type;
 
 	array2< int > tmp;
-	size_type i, j, k;
+	size_type i, j;
 
 	size_type label_num = mist::labeling8( in, tmp, max_label );
 
@@ -724,7 +724,7 @@ void maximum_region(
 	{
 		for( i = sx ; i <= ex ; i++ )
 		{
-			menseki[ tmp( i, j, k ) ]++;
+			menseki[ tmp( i, j ) ]++;
 		}
 	}
 
