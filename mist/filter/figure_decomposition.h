@@ -89,7 +89,7 @@ namespace __distance_figure_dedomposition__
 		size_type px, py;
 		double aspect = in.reso2( ) / in.reso1( );
 
-		for( i = 0 ; i < in.size( ) ; i++ )
+		for( i = 0 ; i < static_cast< int >( in.size( ) ) ; i++ )
 		{
 			dist[i] = in[i];
 		}
@@ -225,7 +225,7 @@ namespace __distance_figure_dedomposition__
 		}
 
 		// MAXƒ‰ƒxƒ‹”‚ğ’´‚¦‚½‚à‚Ì‚ğœ‹
-		for( i = 0 ; i < out.size( ) ; i++ )
+		for( i = 0 ; i < static_cast< int >( out.size( ) ) ; i++ )
 		{
 			out[i] = out[i] > label_max ? 0 : out[i];
 		}

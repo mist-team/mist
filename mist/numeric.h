@@ -1684,7 +1684,7 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 		return( value_type( ) );
 	}
 
-	switch( e.rows( ) )
+	switch( a.rows( ) )
 	{
 	case 1:
 		return( a( 0, 0 ) );
@@ -1738,12 +1738,16 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 template < class Expression >
 inline const typename matrix_expression< Expression >::value_type det( const matrix_expression< Expression > &e, matrix_style::style style = matrix_style::ge )
 {
+	typedef typename matrix_expression< Expression >::value_type value_type;
+	typedef typename matrix_expression< Expression >::size_type size_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
+
 	if( e.rows( ) * e.cols( ) == 0 || e.rows( ) != e.cols( ) )
 	{
 		return( value_type( ) );
 	}
 
-	const matrix_expression< Expression > 
 	switch( e.rows( ) )
 	{
 	case 1:
@@ -1761,11 +1765,6 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 
 	default:
 		{
-			typedef typename matrix_expression< Expression >::value_type value_type;
-			typedef typename matrix_expression< Expression >::size_type size_type;
-			typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-			typedef matrix< value_type, allocator_type > matrix_type;
-
 			matrix< __clapack__::integer, typename allocator_type::template rebind< __clapack__::integer >::other > pivot;
 			matrix_type m = lu_factorization( e, pivot, style );
 

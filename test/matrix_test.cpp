@@ -181,7 +181,7 @@ void evaluate_matrix_operation1( )
 	}
 
 	// transpose( mat1 + mat2 * mat3 + mat4 )
-	size_type i, j, k, l;
+	size_type i, j, k;
 	{
 		mist::timer t;
 		double tmp;

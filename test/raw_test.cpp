@@ -226,10 +226,10 @@ void ct_draw_area::euclidean_distance_transform( ct_image_window *wnd )
 	}
 
 	double err = 0.0;
-	for( int i = 0 ; i < tmp1.size( ) ; i++ )
+	for( size_t i = 0 ; i < tmp1.size( ) ; i++ )
 	{
 		err += ( tmp1[ i ] - tmp2[ i ] ) * ( tmp1[ i ] - tmp2[ i ] );
-		ct[ i ] = tmp1[ i ] - tmp2[ i ];
+		ct[ i ] = static_cast< short >( tmp1[ i ] - tmp2[ i ] );
 	}
 
 	std::cout << "Error: " << err << std::endl;
