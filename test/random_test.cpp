@@ -21,7 +21,7 @@ int main( int argc, char *argv[] )
 	}
 
 	std::cout << "Average: " << mist::average( data ) << std::endl;
-	std::cout << "SD:      " << mist::standard_deviation( data ) << std::endl;
+	std::cout << "SD:      " << std::sqrt( mist::deviation( data ) ) << std::endl;
 
 	return( 0 );
 }

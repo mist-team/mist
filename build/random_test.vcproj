@@ -143,6 +143,9 @@
 			<File
 				RelativePath="..\mist\random.h">
 			</File>
+			<File
+				RelativePath="..\mist\statistics.h">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
