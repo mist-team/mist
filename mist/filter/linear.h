@@ -17,7 +17,7 @@ _MIST_BEGIN
 
 namespace __linear_filter__
 {
-	//double型から任意の型への変換
+	//オーバーフロー制御
 	template< class T >
 	struct type_limits_2 : public mist::type_limits < T >
 	{
@@ -51,9 +51,9 @@ namespace __linear_filter__
 	{
 		static float cast( const float& arg )
 		{
-			if( ( arg >= minimum( ) ) && ( arg <= maximum( ) ) )
+			if( ( arg >= -maximum( ) ) && ( arg <= maximum( ) ) )
 			{
-				return( arg );
+				return( static_cast< float >( arg ) );
 			}
 			if( arg < -maximum( ) )
 			{
@@ -84,123 +84,110 @@ namespace __linear_filter__
 		}
 	};
 
+	//double型から任意の型への変換
+	template < class T >
+	inline T cast_to( const double& arg )
+	{
+		return( type_limits_2< T >::cast( arg )  );
+	}
+
 	//画面端の処理
 	template < class T_in, class Allocator_in >
-	inline double margin( const mist::array< T_in, Allocator_in >& in, typename mist::array< T_in, Allocator_in >::size_type &i )
+	inline double copy_value( const mist::array< T_in, Allocator_in >& in, typename mist::array< T_in, Allocator_in >::size_type &i )
 	{
 		return( in( i ) );
 	} 
 
 	template < class T_in, class Allocator_in >
-	inline double margin( const mist::array1< T_in, Allocator_in >& in, typename mist::array1< T_in, Allocator_in >::size_type &i )
+	inline double copy_value( const mist::array1< T_in, Allocator_in >& in, typename mist::array1< T_in, Allocator_in >::size_type &i )
 	{
 		return( in( i ) );
 	}
 
 	template < class T_in, class Allocator_in >
-	inline double margin( const mist::array2< T_in, Allocator_in >& in, const typename mist::array2< T_in, Allocator_in >::size_type &i, 
+	inline double copy_value( const mist::array2< T_in, Allocator_in >& in, const typename mist::array2< T_in, Allocator_in >::size_type &i, 
 							const typename mist::array2< T_in, Allocator_in >::size_type &j )
 	{
 		return( in( i, j ) );
 	}
 
 	template < class T_in, class Allocator_in >
-	inline double margin( const mist::array3< T_in, Allocator_in >& in, const typename mist::array3< T_in, Allocator_in >::size_type &i,
+	inline double copy_value( const mist::array3< T_in, Allocator_in >& in, const typename mist::array3< T_in, Allocator_in >::size_type &i,
 							const typename mist::array3< T_in, Allocator_in >::size_type &j, const typename mist::array3< T_in, Allocator_in >::size_type &k )
 	{
 		return( in( i, j, k ) );
 	}
 
-	//各要素に対する演算を画面端とそれ以外に場合分け
+	//各要素に対する演算
 	template < class T_in, class Allocator_in, class T_kernel, class Allocator_kernel >
 	inline double get_value( const mist::array< T_in, Allocator_in > &in, const mist::array< T_kernel, Allocator_kernel > &kernel, const typename mist::array< T_kernel, Allocator_kernel >::size_type &i )
-	{
-		if( ( i >= (kernel.size( ) / 2) ) && (i < (in.size() - kernel.size( ) / 2) ) )
+	{	
+		double	val = 0;
+
+		typedef typename mist::array< T_kernel, Allocator_kernel >::size_type size_type; 
+
+		size_type ii;
+		for( ii = 0 ; ii < kernel.size( ) ; ii++ )
 		{
-			typedef typename mist::array< T_kernel, Allocator_kernel >::size_type size_type; 
-			syze_type ii;
-			double	val = 0;
-			for( ii = 0 ; ii < kernel.size( ) ; ii++ )
-			{
-				val += in( i - kernel.size( ) / 2 + ii ) * kernel( ii );
-			}
-			return( val );
+			val += in( i - kernel.size( ) / 2 + ii ) * kernel( ii );
 		}
-		else
-		{
-			return( margin( in, i ) );
-		}
+		return( val );
 	}
 
 	template < class T_in, class Allocator_in, class T_kernel, class Allocator_kernel >
 	inline double get_value( const mist::array1< T_in, Allocator_in > &in, const mist::array1< T_kernel, Allocator_kernel > &kernel, const typename mist::array1< T_kernel, Allocator_kernel >::size_type &i )
 	{
-		if( ( i >= (kernel.size1( ) / 2) ) && (i < (in.size1() - kernel.size1( ) / 2) ) )
+		double	val = 0;
+
+		typedef typename mist::array1< T_kernel, Allocator_kernel >::size_type size_type;
+		
+		size_type ii;
+		for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
 		{
-			typedef typename mist::array1< T_kernel, Allocator_kernel >::size_type size_type; 
-			syze_type ii;
-			double	val = 0;
-			for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
-			{
-				val += in( i - kernel.size1( ) / 2 + ii ) * kernel( ii );
-			}
-			return( val );
+			val += in( i - kernel.size1( ) / 2 + ii ) * kernel( ii );
 		}
-		else
-		{
-			return( margin( in, i ) );
-		}
+		return( val );
 	}
 
 	template < class T_in, class Allocator_in, class T_kernel, class Allocator_kernel >
 	inline double get_value( const mist::array2< T_in, Allocator_in > &in, const mist::array2< T_kernel, Allocator_kernel > &kernel,
 								const typename mist::array2< T_kernel, Allocator_kernel >::size_type &i, const typename mist::array2< T_kernel, Allocator_kernel >::size_type &j )
 	{
-		if( ( j >= (kernel.size2( ) / 2) ) && (j < (in.size2() - kernel.size2( ) / 2) ) && ( i >= (kernel.size1( ) / 2) ) && (i < (in.size1() - kernel.size1( ) / 2) ) )
+		double	val = 0;
+		
+		typedef typename mist::array2< T_kernel, Allocator_kernel >::size_type size_type;
+		
+		size_type ii, jj;
+		for( jj = 0 ; jj < kernel.size2( ) ; jj++ )
 		{
-			typedef typename mist::array2< T_kernel, Allocator_kernel >::size_type size_type;
-			size_type ii, jj;
-			double	val = 0;
-			for( jj = 0 ; jj < kernel.size2( ) ; jj++ )
+			for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
 			{
-				for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
-				{
-					val += in( i - kernel.size1( ) / 2 + ii, j - kernel.size2( ) / 2 + jj ) * kernel( ii, jj );
-				}
+				val += in( i - kernel.size1( ) / 2 + ii, j - kernel.size2( ) / 2 + jj ) * kernel( ii, jj );
 			}
-			return( val );
 		}
-		else
-		{
-			return( margin( in, i, j ) );
-		}
+		return( val );
 	}
 
 	template < class T_in, class Allocator_in, class T_kernel, class Allocator_kernel >
 	inline double get_value( const mist::array3< T_in, Allocator_in >& in, const mist::array3< T_kernel,Allocator_kernel >& kernel,
 							const typename mist::array3< T_kernel, Allocator_kernel >::size_type &i, const typename mist::array3< T_kernel, Allocator_kernel >::size_type &j, const typename mist::array3< T_kernel, Allocator_kernel >::size_type &k )
 	{
-		if( ( k >= (kernel.size3( ) / 2) ) && (k < (in.size3() - kernel.size3( ) / 2) ) && ( j >= (kernel.size2( ) / 2) ) && (j < (in.size2() - kernel.size2( ) / 2) ) && ( i >= (kernel.size1( ) / 2) ) && (i < (in.size1() - kernel.size1( ) / 2) ) )
+		double	val = 0;
+
+		typedef typename mist::array3< T_kernel, Allocator_kernel >::size_type size_type;
+		
+		size_type ii, jj, kk;
+		for( kk = 0 ; kk < kernel.size3( ) ; kk++ )
 		{
-			typedef typename mist::array3< T_kernel, Allocator_kernel >::size_type size_type;
-			size_type ii, jj, kk;
-			double	val = 0;
-			for( kk = 0 ; kk < kernel.size3( ) ; kk++ )
+			for( jj = 0 ; jj < kernel.size2( ) ; jj++ )
 			{
-				for( jj = 0 ; jj < kernel.size2( ) ; jj++ )
+				for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
 				{
-					for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
-					{
-						val += in( i - kernel.size1( ) / 2 + ii, j - kernel.size2( ) / 2 + jj, k - kernel.size3( ) / 2 + kk ) * kernel( ii, jj, kk );
-					}
+					val += in( i - kernel.size1( ) / 2 + ii, j - kernel.size2( ) / 2 + jj, k - kernel.size3( ) / 2 + kk ) * kernel( ii, jj, kk );
 				}
 			}
-			return( val );
 		}
-		else
-		{
-			return( margin( in, i, j, k ) );
-		}
+		return( val );
 	}
 
 	//カーネル適用
@@ -210,10 +197,25 @@ namespace __linear_filter__
 		out.resize( in.size( ) );
 
 		typedef typename mist::array< T_in, Allocator_in >::size_type size_type;
+		typedef typename mist::array< T_out, Allocator_out >::value_type out_value_type;
+
+		const size_type s_i = kernel.size( ) / 2;
+		const size_type e_i = in.size( ) - (kernel.size( ) - 1) / 2;  
+
 		size_type i;
-		for( i = 0 ; i < in.size() ; i++ )
+		for( i = s_i ; i < e_i ; i++ )
 		{
-			 out( i ) = type_limits_2< T_out >::cast( get_value( in, kernel, i ) );	
+			out( i ) = cast_to< out_value_type >( get_value( in, kernel, i ) );	
+		}
+
+		//画像端の処理
+		for( i = 0 ; i < s_i ; i++ )
+		{
+			out( i ) = cast_to< out_value_type >( copy_value( in, i ) );	
+		}
+		for( i = e_i ; i < in.size( ) ; i++ )
+		{
+			out( i ) = cast_to< out_value_type >( copy_value( in, i ) );	
 		}		
 	}
 
@@ -221,57 +223,162 @@ namespace __linear_filter__
 	void apply( const mist::array1< T_in, Allocator_in >& in, mist::array1< T_out, Allocator_out >& out, const mist::array1< T_kernel, Allocator_kernel >& kernel )
 	{
 		out.resize( in.size1( ) );
+		out.reso1( in.reso1( ) );
 
 		typedef typename mist::array1< T_in, Allocator_in >::size_type size_type;
+		typedef typename mist::array1< T_out, Allocator_out >::value_type out_value_type;
+
+		const size_type s_i = kernel.size1( ) / 2;
+		const size_type e_i = in.size1( ) - (kernel.size1( ) - 1) / 2;
+
 		size_type i;
-		for( i = 0 ; i < in.size1() ; i++ )
+		for( i = s_i ; i < e_i ; i++ )
 		{
-			 out( i ) = type_limits_2< T_out >::cast( get_value( in, kernel, i ) );	
+			 out( i ) = cast_to< out_value_type >( get_value( in, kernel, i ) );	
 		}
 
-		out.reso1( in.reso1( ) );		
+		//画像端の処理
+		for( i = 0 ; i < s_i ; i++ )
+		{
+			out( i ) = cast_to< out_value_type >( copy_value( in, i ) );	
+		}
+		for( i = e_i ; i < in.size1( ) ; i++ )
+		{
+			out( i ) = cast_to< out_value_type >( copy_value( in, i ) );	
+		}		
 	}
 
 	template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
 	void apply( const mist::array2< T_in, Allocator_in >& in, mist::array2< T_out, Allocator_out >& out, const mist::array2< T_kernel, Allocator_kernel >& kernel )
-	{
+	{	
 		out.resize( in.size1( ), in.size2( ) );
-		
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+
 		typedef typename mist::array2< T_in, Allocator_in >::size_type size_type;
+		typedef typename mist::array2< T_out, Allocator_out >::value_type out_value_type;
+
+		const size_type s_i = kernel.size1( ) / 2;
+		const size_type e_i = in.size1( ) - (kernel.size1( ) - 1) / 2;
+		const size_type s_j = kernel.size2( ) / 2;
+		const size_type e_j = in.size2( ) - (kernel.size2( ) - 1) / 2;
+
 		size_type i, j;
-		for( j = 0 ; j < in.size2() ; j++ )
+		for( j = s_j ; j < e_j ; j++ )
 		{
-			for( i = 0 ; i < in.size1() ; i++ )
+			for( i = s_i ; i < e_i ; i++ )
 			{
-				out( i, j ) = type_limits_2< T_out >::cast( get_value( in, kernel, i, j ) );
+				out( i, j ) = cast_to< out_value_type >( get_value( in, kernel, i, j ) );
 			}
 		}
 
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
+		//画像端の処理
+		for( j = 0 ; j < in.size2( ) ; j++ )
+		{
+			for( i = 0 ; i < s_i ; i++ )
+			{
+				out( i, j ) = cast_to< out_value_type >( copy_value( in, i, j ) );
+			}
+			for( i = e_i ; i < in.size1( ) ; i++ )
+			{
+				out( i, j ) = cast_to< out_value_type >( copy_value( in, i, j ) );
+			}
+		}
+		for( j = 0 ; j < s_j ; j++ )
+		{
+			for( i = s_i ; i < e_i ; i++ )
+			{
+				out( i, j ) = cast_to< out_value_type >( copy_value( in, i, j ) );
+			}
+		}
+		for( j = e_j ; j < in.size2( ) ; j++ )
+		{
+			for( i = s_i ; i < e_i ; i++ )
+			{
+				out( i, j ) = cast_to< out_value_type >( copy_value( in, i, j ) );
+			}
+		}
 	}
 
 	template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
 	void apply( const mist::array3< T_in, Allocator_in >& in, mist::array3< T_out, Allocator_out >& out, const mist::array3< T_kernel, Allocator_kernel >& kernel )
 	{
 		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+		out.reso3( in.reso3( ) );
 		
 		typedef typename mist::array3< T_in, Allocator_in >::size_type size_type;
+		typedef typename mist::array3< T_out, Allocator_out >::value_type out_value_type;
+
+		const size_type s_i = kernel.size1( ) / 2;
+		const size_type e_i = in.size1( ) - (kernel.size1( ) - 1) / 2;
+		const size_type s_j = kernel.size2( ) / 2;
+		const size_type e_j = in.size2( ) - (kernel.size2( ) - 1) / 2;
+		const size_type s_k = kernel.size3( ) / 2;
+		const size_type e_k = in.size3( ) - (kernel.size3( ) - 1) / 2;
+
 		size_type i, j, k;
-		for( k = 0 ; k < in.size3( ) ; k++ )
+		for( k = s_k ; k < e_k ; k++ )
 		{
-			for( j = 0 ; j < in.size2( ) ; j++ )
+			for( j = s_j ; j < e_j ; j++ )
 			{
-				for( i = 0 ; i < in.size1( ) ; i++ )
+				for( i = s_i ; i < e_i ; i++ )
 				{
-					out( i, j, k ) = type_limits_2< T_out >::cast( get_value( in, kernel, i, j, k ) );
+					out( i, j, k ) = cast_to< out_value_type >( get_value( in, kernel, i, j, k ) );
 				}
 			}
 		}
 
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-		out.reso3( in.reso3( ) );
+		//画像端の処理
+		for( k = 0 ; k < in.size3( ) ; k++ )
+		{
+			for( j = 0 ; j < in.size2( ) ; j++ )
+			{
+				for( i = 0 ; i < s_i ; i++ )
+				{
+					out( i, j, k ) = cast_to< out_value_type >( copy_value( in, i, j, k ) );
+				}
+				for( i = e_i ; i < in.size1( ) ; i++ )
+				{
+					out( i, j, k ) = cast_to< out_value_type >( copy_value( in, i, j, k ) );
+				}
+			}
+			for( j = 0 ; j < s_j ; j++ )
+			{
+				for( i = s_i ; i < e_i ; i++ )
+				{
+					out( i, j, k ) = cast_to< out_value_type >( copy_value( in, i, j, k ) );
+				}
+			}
+			for( j = e_j ; j < in.size2( ) ; j++ )
+			{
+				for( i = s_i ; i < e_i ; i++ )
+				{
+					out( i, j, k ) = cast_to< out_value_type >( copy_value( in, i, j, k ) );
+				}
+			}
+		}
+		for( k = 0 ; k < s_k ; k++ )
+		{
+			for( j = s_j ; j < e_j ; j++ )
+			{
+				for( i = s_i ; i < e_i ; i++ )
+				{
+					out( i, j, k ) = cast_to< out_value_type >( copy_value( in, i, j, k ) );
+				}
+			}
+		}
+		for( k = e_k ; k < in.size3() ; k++ )
+		{
+			for( j = s_j ; j < e_j ; j++ )
+			{
+				for( i = s_i ; i < e_i ; i++ )
+				{
+					out( i, j, k ) = cast_to< out_value_type >( copy_value( in, i, j, k ) );
+				}
+			}
+		}
 	}
 
 	//カーネルの正規化
@@ -279,18 +386,21 @@ namespace __linear_filter__
 	void normalize( const mist::array< T_in, Allocator_in >& in, mist::array< T_out, Allocator_out >& out )
 	{
 		typedef typename mist::array< T_in, Allocator_in >::size_type size_type;
-		typedef typename mist::array< T_out, Allocaotr_out >::value_type value_type;
+		typedef typename mist::array< T_out, Allocator_out >::value_type out_value_type;
+		
+		double norm = 0;
+
 		size_type i;
-		value_type norm;
-		norm = 0;
 		for( i = 0 ; i < in.size( ) ; i++ )
 		{
 			norm += in( i );
 		}
+
 		out.resize( in.size( ) );
+
 		for( i = 0 ; i < out.size( ) ; i++ )
 		{
-			out( i ) =  in( i ) / norm;
+			out( i ) =  cast_to< out_value_type >( in( i ) / norm );
 		}
 	}
 
@@ -298,30 +408,34 @@ namespace __linear_filter__
 	void normalize( const mist::array1< T_in, Allocator_in >& in, mist::array1< T_out, Allocator_out >& out )
 	{
 		typedef typename mist::array1< T_in, Allocator_in >::size_type size_type;
-		typedef typename mist::array1< T_out, Allocator_out >::value_type value_type;
+		typedef typename mist::array1< T_out, Allocator_out >::value_type out_value_type;
+		
+		double norm = 0;
+
 		size_type i;
-		value_type norm;
-		norm = 0;
 		for( i = 0 ; i < in.size1( ) ; i++ )
 		{
 			norm += in( i );
 		}
+
 		out.resize( in.size1( ) );
+		out.reso1( in.reso1( ) );
+
 		for( i = 0 ; i < out.size1( ) ; i++ )
 		{
-			out( i ) =  in( i ) / norm;
+			out( i ) =  cast_to< out_value_type >( in( i ) / norm );
 		}
-		out.reso1( in.reso1( ) );
 	}
 
 	template < class T_in, class Allocator_in, class T_out, class Allocator_out >
 	void normalize( const mist::array2< T_in, Allocator_in >& in, mist::array2< T_out, Allocator_out >& out )
 	{
 		typedef typename mist::array2< T_in, Allocator_in >::size_type size_type;
-		typedef typename mist::array2< T_out, Allocator_out >::value_type value_type;
+		typedef typename mist::array2< T_out, Allocator_out >::value_type out_value_type;
+		
+		double norm = 0;
+
 		size_type i, j;
-		value_type norm;
-		norm = 0;
 		for( i = 0 ; i < in.size1( ) ; i++ )
 		{
 			for( j = 0 ; j < in.size2( ) ; j++ )
@@ -329,26 +443,29 @@ namespace __linear_filter__
 				norm += in( i, j );
 			}
 		}
+
 		out.resize( in.size1( ), in.size2( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+
 		for( i = 0 ; i < out.size1( ) ; i++ )
 		{
 			for( j = 0 ; j < out.size2() ; j++ )
 			{
-				out( i, j ) = in( i, j ) / norm;
+				out( i, j ) = cast_to< out_value_type >( in( i, j ) / norm );
 			}
 		}
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
 	}
 
 	template < class T_in, class Allocator_in, class T_out, class Allocator_out >
 	void normalize( const mist::array3< T_in, Allocator_in >& in, mist::array3< T_out, Allocator_out >& out )
 	{
 		typedef typename mist::array3< T_in, Allocator_in >::size_type size_type;
-		typedef typename mist::array3< T_out, Allocator_out >::value_type value_type;
+		typedef typename mist::array3< T_out, Allocator_out >::value_type out_value_type;
+		
+		double norm = 0;
+
 		size_type i, j, k;
-		value_type norm;
-		norm = 0;
 		for( i = 0 ; i < in.size1( ) ; i++ )
 		{
 			for( j = 0 ; j < in.size2( ) ; j++ )
@@ -359,24 +476,32 @@ namespace __linear_filter__
 				}
 			}
 		}
+
 		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+		out.reso3( in.reso3( ) );
+
 		for( i = 0 ; i < out.size1() ; i++ )
 		{
 			for( j = 0 ; j < out.size2() ; j++ )
 			{
 				for( k = 0 ; k < out.size3() ; k++ )
 				{
-					out( i, j, k ) = in( i, j, k ) / norm;
+					out( i, j, k ) = cast_to< out_value_type >( in( i, j, k ) / norm );
 				}
 			}
 		}
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-		out.reso3( in.reso3( ) );
 	}
 }
 
 //kernelを渡す場合
+template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
+void linear_filter( const mist::array< T_in, Allocator_in >& in, mist::array< T_out, Allocator_out >& out, const mist::array< T_kernel, Allocator_kernel >& kernel )
+{
+	__linear_filter__::apply( in, out, kernel );
+}
+
 template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
 void linear_filter( const mist::array1< T_in, Allocator_in >& in, mist::array1< T_out, Allocator_out >& out, const mist::array1< T_kernel, Allocator_kernel >& kernel )
 {
@@ -571,9 +696,7 @@ void laplacian( const mist::array3< T_in, Allocator_in >& in, mist::array3< T_ou
 	kernel( 2, 2, 2 ) = 1.0;
 
 	__linear_filter__::apply( in, out, kernel );
-}
-
-	
+}	
 
 // mist名前空間の終わり
 _MIST_END
