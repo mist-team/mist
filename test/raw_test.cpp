@@ -7,6 +7,7 @@
 
 #include <mist/filter/median_filter.h>
 #include <mist/filter/distance.h>
+#include <mist/filter/labeling.h>
 #include <mist/timer.h>
 
 void ct_draw_area::draw( )
@@ -178,6 +179,28 @@ void ct_draw_area::euclidean_distance_transform( ct_image_window *wnd )
 
 	mist::array3< short > tmp = ct;
 	mist::euclidean_distance_transform( tmp, ct );
+	redraw( );
+	Fl::wait( 0 );
+}
+
+void ct_draw_area::labeling6( ct_image_window *wnd )
+{
+	if( ct.empty( ) ) return;
+
+	size_t label_num = mist::labeling6( ct, ct );
+	printf( "label_num = %ld\n", label_num );
+
+	redraw( );
+	Fl::wait( 0 );
+}
+
+void ct_draw_area::labeling26( ct_image_window *wnd )
+{
+	if( ct.empty( ) ) return;
+
+	size_t label_num = mist::labeling26( ct, ct );
+	printf( "label_num = %ld\n", label_num );
+
 	redraw( );
 	Fl::wait( 0 );
 }

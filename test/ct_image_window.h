@@ -58,6 +58,10 @@ private:
   static void cb_Median2(Fl_Menu_*, void*);
   inline void cb_Euclidean_i(Fl_Menu_*, void*);
   static void cb_Euclidean(Fl_Menu_*, void*);
+  inline void cb_Labeling_i(Fl_Menu_*, void*);
+  static void cb_Labeling(Fl_Menu_*, void*);
+  inline void cb_Labeling1_i(Fl_Menu_*, void*);
+  static void cb_Labeling1(Fl_Menu_*, void*);
 public:
   Fl_Value_Slider *WL;
 private:

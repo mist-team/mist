@@ -2,8 +2,7 @@
 version 1.0104 
 header_name {.h} 
 code_name {.cpp}
-class parameter_window {open
-} {
+class parameter_window {} {
   Function {parameter_window()} {open
   } {
     Fl_Window param_window {
@@ -126,8 +125,18 @@ class ct_image_window {open
           }
           menuitem {} {
             label {&Euclidean Distance Transform}
-            callback {ct_image->euclidean_distance_transform( this );} selected
+            callback {ct_image->euclidean_distance_transform( this );}
             xywh {20 20 100 20}
+          }
+          menuitem {} {
+            label {Labeling 6}
+            callback {ct_image->labeling6( this );}
+            xywh {30 30 100 20}
+          }
+          menuitem {} {
+            label {Labeling 26}
+            callback {ct_image->labeling26( this );} selected
+            xywh {40 40 100 20}
           }
         }
       }

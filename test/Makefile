@@ -11,11 +11,15 @@ ALL = \
 	thread_test \
 	image_test \
 	raw_test \
+	wav_test \
 
 
 all: $(ALL)
 
 matrix_test : matrix_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+matrix_util_test : matrix_util_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 limits_test : limits_test.o
@@ -41,6 +45,9 @@ image_test : image_test.obj image_test_window.obj
 
 raw_test : raw_test.obj ct_image_window.obj
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) `fltk-config --use-gl --ldflags` $(IMGLIBS)
+
+wav_test : wav_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 
 
