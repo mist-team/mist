@@ -583,12 +583,10 @@ public:
 
 	/// @brief コンテナ内の要素をトリミングする
 	//! 
-	//! コンテナのサイズを num 個に変更し，適切にデータをコピーする．
-	//! 
-	//! @param[in] row   … トリミングのX軸方向の開始位置（ゼロから始まるインデックス）
-	//! @param[in] col   … トリミングのY軸方向の開始位置（ゼロから始まるインデックス）
-	//! @param[in] nrows … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
-	//! @param[in] ncols … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in] row   … トリミングの行方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] col   … トリミングの列方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] nrows … トリミング後の行数（-1の場合は，最後までをコピーする）
+	//! @param[in] ncols … トリミング後の列数（-1の場合は，最後までをコピーする）
 	//! 
 	bool trim( size_type row, size_type col, difference_type nrows = -1, difference_type ncols = -1 )
 	{

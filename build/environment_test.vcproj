@@ -143,6 +143,9 @@
 			<File
 				RelativePath="..\mist\config\mist_conf.h">
 			</File>
+			<File
+				RelativePath="..\mist\singleton.h">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
