@@ -579,7 +579,7 @@ public: // ”z—ñ‚É‘Î‚·‚éZp‰‰Z
 		{
 			// ƒ[ƒœZ”­¶
 			::std::cout << "zero division occured." << ::std::endl;
-			return;
+			return( m );
 		}
 #endif
 		for( size_type i = 0 ; i < m.size( ) ; i++ ) m[i] /= val;
