@@ -12,6 +12,9 @@
 _MIST_BEGIN
 
 
+//! @defgroup random_group 擬似乱数の生成
+//!  @{
+
 
 
 /// @brief MT(Mersenne Twister)法による一様乱数
@@ -363,6 +366,11 @@ namespace gauss
 	};
 
 } // gauss
+
+
+/// @}
+//  擬似乱数の生成の終わり
+
 
 // mist名前空間の終わり
 _MIST_END

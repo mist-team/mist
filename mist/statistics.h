@@ -19,6 +19,12 @@
 _MIST_BEGIN
 
 
+
+//! @defgroup statistics_group 統計処理
+//!  @{
+
+
+
 /// データの平均値を計算する
 //!
 //! @param[in] a … 平均値を計算するデータ配列
@@ -78,6 +84,11 @@ inline double standard_deviation( const array< T, Allocator > &a )
 {
 	return( standard_deviation( a, average( a ) ) );
 }
+
+
+/// @}
+//  統計処理の終わり
+
 
 // mist名前空間の終わり
 _MIST_END

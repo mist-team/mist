@@ -197,7 +197,9 @@ namespace __limits_min_max__
 //! 
 //! min 未満の値は全て min になり，max 以上の値は全て max とする
 //! 
-//! @param[in] v … 変換を行うデータ
+//! @param[in] v   … 変換を行うデータ
+//! @param[in] min … データの下限
+//! @param[in] max … データの上限
 //! 
 //! @return 変換後のデータ
 //! 
