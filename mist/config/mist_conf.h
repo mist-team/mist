@@ -20,16 +20,16 @@ _MIST_BEGIN
 
 #if _MSC_VER <= 1200
 
-#define __MIST_MSVC6__
+#define __MIST_MSVC__		6
 
 #elif _MSC_VER > 1200
 
-#define __MIST_MSVC7__
+#define __MIST_MSVC__		7
 
 #endif
 
 
-#ifdef __MIST_MSVC6__
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 
 #define _MIST_CONST( type, name, value ) enum{ name = value }
 
@@ -232,7 +232,7 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 
 // mistコンテナで利用する1次元操作用ランダムアクセスイテレータ
 template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
-#ifdef __MIST_MSVC6__
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 class mist_iterator1 : public std::iterator< std::random_access_iterator_tag, T, Distance >
 #else
 class mist_iterator1 : public std::iterator< std::random_access_iterator_tag, T, Distance, Pointer, Reference >
@@ -346,7 +346,7 @@ inline const mist_iterator1< T, Distance, Pointer, Reference > operator -( const
 
 // mistコンテナで利用する2次元操作用ランダムアクセスイテレータ
 template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
-#ifdef __MIST_MSVC6__
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 class mist_iterator2 : public std::iterator< std::random_access_iterator_tag, T, Distance >
 #else
 class mist_iterator2 : public std::iterator< std::random_access_iterator_tag, T, Distance, Pointer, Reference >
@@ -505,7 +505,7 @@ inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const
 // mistで用いる
 template< class _Ite >
 class mist_reverse_iterator :
-#ifdef __MIST_MSVC6__
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 	public std::iterator<
 		typename _Ite::iterator_category,
 		typename _Ite::value_type,

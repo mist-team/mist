@@ -7,6 +7,7 @@ ALL = \
 	operators_test \
 	boolean_test \
 	iterator_test \
+	thread_test \
 
 
 all: $(ALL)
@@ -26,12 +27,15 @@ boolean_test : boolean_test.o
 iterator_test : iterator_test.o
 	$(CXX) $(CXXFLAGS) -o $@ iterator_test.o $(LIBS) $(LDLIBS)
 
+thread_test : thread_test.o
+	$(CXX) $(CXXFLAGS) -o $@ thread_test.o $(LIBS) $(LDLIBS)
+
 
 
 clean:
 	for binary in $(ALL); do\
 		echo "=== deleting $$binary ===";\
-		( cd ./; rm -f $$binary ) || break;\
+		( cd ./; rm -f $$binary; rm -f $$binary.exe ) || break;\
 	done
 	rm -f ./*.o
 	rm -f ./*~

@@ -12,7 +12,7 @@ RELEASEFLAGS = $(CXXFLAGS) -DNDEBUG
 DEBUGFLAGS   = $(CXXFLAGS) -DDEBUG
 
 IMGLIBS = -ljpeg -lpng -ltiff
-LIBS = 
+LIBS = -lpthread
 
 
 # Be quiet when building...
