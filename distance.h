@@ -36,13 +36,13 @@ namespace __euclidean_distance_transform__
 		size_type h = in.height( );
 		size_type d = in.depth( );
 
-		size_type max = static_cast< size_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
+		double max = max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length;
 
 		for( k = 0 ; k < d ; k++ )
 		{
 			for( j = thread_id ; j < h ; j += thread_num )
 			{
-				if( in[ 0 + ( j + k * h ) * w ] != 0 )
+				if( in( 0, j, k ) != 0 )
 				{
 					nd = w < max ? w : max;
 					in( 0, j, k ) = static_cast< value_type >( nd * nd );
@@ -112,7 +112,7 @@ namespace __euclidean_distance_transform__
 		size_type h = in.height( );
 		size_type d = in.depth( );
 
-		size_type max = static_cast< size_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
+		double max = max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length;
 
 		vy = in.reso2( ) / in.reso1( );
 		vyvy = vy * vy;
@@ -176,7 +176,7 @@ namespace __euclidean_distance_transform__
 		vzvz = vz * vz;
 		work = new double[ d ];
 
-		size_type max = static_cast< size_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
+		double max = max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length;
 
 		for( j = 0 ; j < h ; j++ )
 		{
