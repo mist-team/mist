@@ -4,14 +4,19 @@ CXX = g++
 INCLUDE = -I../ -I/usr/local/include -I/usr/X11R6/include
 LDLIBS = -L../lib -L/usr/local/lib -L/usr/X11R6/lib
 
-CFLGS = -Wall -O2
-CXXFLGS = -Wall -O2
+
+CFLAGS = -Wall -O2 
+CXXFLAGS = -Wall -O2 
+
+RELEASEFLAGS = $(CXXFLAGS) -DNDEBUG
+DEBUGFLAGS   = $(CXXFLAGS) -DDEBUG
+
 IMGLIBS = -ljpeg -lpng -ltiff
-LIBS = -lpthread -lz -lXext -lX11 -lm -lGL
+LIBS = 
 
 
 # Be quiet when building...
-.SILENT:
+#.SILENT:
 
 # Build commands and filename extensions...
 .SUFFIXES:	.c .cpp .cxx .h .o
@@ -22,8 +27,8 @@ LIBS = -lpthread -lz -lXext -lX11 -lm -lGL
 
 .cxx.o:
 	echo Compiling $<...
-	$(CXX) $(CFLAGS) -c $< $(INCLUDE)
+	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE)
 
 .cpp.o:
 	echo Compiling $<...
-	$(CXX) $(CFLAGS) -c $< $(INCLUDE)
+	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE)

@@ -3,11 +3,20 @@ include ./makeinclude
 
 DIRS = ../test
 
-all: makeinclude
+all: release
+
+release: makeinclude
 	for dir in $(DIRS); do\
 		echo "=== making $$dir ===";\
-		( cd $$dir; $(MAKE) $(MFLAGS) ) || break;\
+		( cd $$dir; $(MAKE) $(MFLAGS) CXXFLAGS="$(RELEASEFLAGS)" ) || break;\
 	done
+
+debug: makeinclude
+	for dir in $(DIRS); do\
+		echo "=== making $$dir ===";\
+		( cd $$dir; $(MAKE) $(MFLAGS) CXXFLAGS="$(DEBUGFLAGS)" ) || break;\
+	done
+
 
 clean:
 	for dir in $(DIRS); do\

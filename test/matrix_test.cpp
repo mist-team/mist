@@ -50,7 +50,7 @@ private:
 }; // timer
 
 
-/*
+//*
 int main( )
 {
 	using namespace std;
@@ -65,7 +65,7 @@ int main( )
 	mist::matrix< double > dmy;
 
 	// transpose( mat1 + mat2 * mat3 + mat4 )
-	long i, j, k, l, loop = 100;
+	long i, j, k, l, loop = 1000;
 	{
 		timer t;
 		double tmp;
@@ -165,6 +165,7 @@ int main( )
 	mat = ( mat1 + 2 ).t( );
 	cout << mat << endl << endl << endl;
 
+	mat( 10, 10 ) = 100;
 
 	return( 0 );
 }
