@@ -334,7 +334,7 @@ inline bool eye_masking( mist::array2< T, Allocator > &in )
 	double ay = image1.height( ) / static_cast< double >( in.height( ) );
 
 	// 最小値フィルタ
-	mist::erosion( image1, mist::__morphology__::square( 1.0, image1.reso1( ), image1.reso2( ) ) );
+	mist::erosion( image1, mist::morphology::square( 1.0, image1.reso1( ), image1.reso2( ) ) );
 	vertical( image1, image2 );
 
 	// Pタイル法を用いた閾値処理

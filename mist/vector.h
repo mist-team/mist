@@ -589,6 +589,8 @@ DEFINE_PROMOTE_BIND_OPERATOR3( vector2, * )			///< @brief 定数とベクトルの積
 DEFINE_PROMOTE_BIND_OPERATOR2( vector2, / )			///< @brief ベクトルを定数で割る
 
 
+
+
 /// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム

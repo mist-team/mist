@@ -109,6 +109,8 @@ public:
 	//! また，組み込み型（int や double など）の場合は，全ての要素を0で初期化する．
 	//! 
 	//! @param[in] num  … リサイズ後のコンテナ内の要素数
+	//! @param[in] dmy1 … ダミー変数（使用しない）
+	//! @param[in] dmy2 … ダミー変数（使用しない）
 	//! 
 	void resize( size_type num, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
@@ -787,6 +789,7 @@ public:
 	//! 
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
+	//! @param[in] dmy1 … ダミー変数（使用しない）
 	//! 
 	void resize( size_type num1, size_type num2, size_type dmy1 = 0 )
 	{

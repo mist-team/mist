@@ -108,7 +108,6 @@ namespace __fusion_controller__
 			typedef typename Array::size_type  size_type;
 			typedef typename Array::value_type value_type;
 
-			value_type infinity = type_limits< value_type >::maximum( );
 			for( size_type i = 0 ; i < in.size( ) ; i++ )
 			{
 				in[ i ] = in[ i ] > 0 ? 1 : 0;
@@ -316,7 +315,7 @@ namespace __fusion_controller__
 		}
 
 		fusion_thread( size_type id = 0, size_type num = 1 )
-			: thread_id_( id ), thread_num_( num ), in_( NULL ), axis_( 0 ), length_( 1 )
+			: thread_id_( id ), thread_num_( num ), in_( NULL ), length_( 1 ), axis_( 0 )
 		{
 		}
 

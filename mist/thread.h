@@ -537,7 +537,7 @@ inline thread_handle create_thread( Param &param, Functor f )
 /// @brief 指定したスレッド関数を利用する，スレッドを複数作成する
 //! 
 //! @param[out]    handles     … スレッドオブジェクト
-//! @param[in,out] params      … スレッドの関数に渡すパラメータ
+//! @param[in,out] param       … スレッドの関数に渡すパラメータ
 //! @param[in]     num_threads … スレッド数
 //! @param[in]     f           … 実行されるスレッド関数
 //! 

@@ -97,7 +97,7 @@ namespace morphology
 
 	/// @brief モルフォロジ演算に用いる円構造要素
 	//!
-	//! resoX，resoY の値を変えることで，楕円等を表現可能
+	//! resoX，resoY の値を変えることで，楕円等を表現可能です
 	//!
 	//! @param[in] radius … 半径
 	//! @param[in] resoX  … X軸方向の解像度
@@ -174,7 +174,7 @@ namespace morphology
 
 	/// @brief モルフォロジ演算に用いる球構造要素
 	//!
-	//! resoX，resoY，resoZ の値を変えることで，楕円体等を表現可能
+	//! resoX，resoY，resoZ の値を変えることで，楕円体等を表現可能です
 	//!
 	//! @param[in] radius … 半径
 	//! @param[in] resoX  … X軸方向の解像度
@@ -264,7 +264,7 @@ namespace morphology
 
 	/// @brief モルフォロジ演算に用いる正方形構造要素
 	//!
-	//! resoX，resoY，resoZ の値を変えることで，長方形等を表現可能
+	//! resoX，resoY，resoZ の値を変えることで，長方形等を表現可能です
 	//!
 	//! @param[in] radius … 引数の説明
 	//! @param[in] resoX  … X軸方向の解像度
@@ -341,7 +341,7 @@ namespace morphology
 
 	/// @brief モルフォロジ演算に用いる立方体構造要素
 	//!
-	//! resoX，resoY，resoZ の値を変えることで，直方体等を表現可能
+	//! resoX，resoY，resoZ の値を変えることで，直方体等を表現可能です
 	//!
 	//! @param[in] radius … 引数の説明
 	//! @param[in] resoX  … X軸方向の解像度
@@ -435,6 +435,9 @@ namespace morphology
 	//! @attention resoX，resoY，resoZ の値は無視される
 	//!
 	//! @param[in] in … 構造要素の画像
+	//! @param[in] cx … 構造要素の中心を表すX座標値
+	//! @param[in] cy … 構造要素の中心を表すY座標値
+	//! @param[in] cz … 構造要素の中心を表すZ座標値
 	//!
 	//! @return モルフォロジ演算用の構造要素
 	//!
