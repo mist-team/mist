@@ -225,7 +225,11 @@ bool draw_image( const array2< T, Allocator > &image,
 	}
 	else
 	{
-		static array2< T, Allocator > img( ttt, ttt, image.reso1( ), image.reso2( ) );
+		static array2< T, Allocator > img;
+
+		img.resize( ttt, ttt );
+		img.reso1( image.reso1( ) );
+		img.reso2( image.reso2( ) );
 
 		size_type i, j;
 		for( j = 0 ; j < image.height( ) ; j++ )
