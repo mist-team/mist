@@ -412,12 +412,10 @@ namespace value_interpolation
 		if( out.reso1( ) < out.reso2( ) )
 		{
 			yoko *= out.reso1( ) / out.reso2( );
-			dir *= 1.0 / out.reso2( );
 		}
 		else
 		{
 			up *= out.reso2( ) / out.reso1( );
-			dir *= 1.0 / out.reso1( );
 		}
 
 		double max_distance = pos.length( ) + std::sqrt( static_cast< double >( w * w + h * h + d * d ) );
