@@ -177,7 +177,7 @@ public:	// ÇªÇÃëºÇÃä÷êî
 template < class T > inline const quaternion< T > operator +( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) += q2 ); }
 template < class T > inline const quaternion< T > operator -( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) -= q2 ); }
 template < class T > inline const quaternion< T > operator /( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) /= q2 ); }
-template < class T > inline const quaternion< T > operator *( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( q1.outer( q2 ) ); }
+template < class T > inline const quaternion< T > operator *( const quaternion< T > &q1, const quaternion< T > &q2 ){ return( quaternion< T >( q1 ) *= q2 ); }
 
 template < class T > inline const quaternion< T > operator *( const quaternion< T > &q, const typename quaternion< T >::value_type &a ){ return( quaternion< T >( q ) *= a ); }
 template < class T > inline const quaternion< T > operator *( const typename quaternion< T >::value_type &a, const quaternion< T > &q ){ return( quaternion< T >( q ) *= a ); }
