@@ -15,6 +15,7 @@
 #endif
 
 #include <iostream>
+#include <map>
 #include <string>
 
 
@@ -31,10 +32,12 @@ namespace dicom_controller
 		RLE,		// ランレングス（RLE）圧縮
 	};
 
-	class dicom_element
+	class dicom_element : public dicom_tag
 	{
+	private:
+		typedef dicom_tag base;
+		
 	public:
-		dicom_tag tag;
 		unsigned char *data;
 		size_type num_bytes;
 
@@ -45,8 +48,11 @@ namespace dicom_controller
 				release();
 			}
 			num_bytes = nbytes;
-			data = new unsigned char[ num_bytes + 1 ];
-			data[ num_bytes ] = '\0';
+			if( num_bytes != 0 )
+			{
+				data = new unsigned char[ num_bytes + 1 ];
+				data[ num_bytes ] = '\0';
+			}
 		}
 
 		void copy( unsigned char *p, size_type nbytes )
@@ -56,9 +62,12 @@ namespace dicom_controller
 				release();
 			}
 			num_bytes = nbytes;
-			data = new unsigned char[ num_bytes + 1 ];
-			data[ num_bytes ] = '\0';
-			memcpy( data, p, num_bytes );
+			if( num_bytes != 0 )
+			{
+				data = new unsigned char[ num_bytes + 1 ];
+				data[ num_bytes ] = '\0';
+				memcpy( data, p, num_bytes );
+			}
 		}
 
 		void release()
@@ -68,12 +77,12 @@ namespace dicom_controller
 			num_bytes = 0;
 		}
 
-		bool operator <( const dicom_element &dicom ) const { return( tag < dicom.tag ); }
+		bool operator <( const dicom_element &dicom ) const { return( base::operator <( dicom ) ); }
 		const dicom_element &operator =( const dicom_element &dicom )
 		{
 			if( &dicom != this )
 			{
-				tag = dicom.tag;
+				base::operator =( dicom );
 				create( dicom.num_bytes );
 				memcpy( data, dicom.data, sizeof( unsigned char ) * num_bytes );
 			}
@@ -81,16 +90,16 @@ namespace dicom_controller
 		}
 
 		// 変換オペレータ
-		double         to_double( ) const { return( ( tag.vr == FD && num_bytes == 8 )? byte_array< double >( data ).get_value( )        : static_cast< double >        ( atof( to_string( ).c_str( ) ) ) ); }
-		float          to_float( )  const { return( ( tag.vr == FL && num_bytes == 4 )? byte_array< float >( data ).get_value( )         : static_cast< float >         ( atof( to_string( ).c_str( ) ) ) ); }
-		signed int     to_int( )    const { return( ( tag.vr == SL && num_bytes == 4 )? byte_array< signed int >( data ).get_value( )    : static_cast< signed int >    ( atoi( to_string( ).c_str( ) ) ) ); }
-		unsigned int   to_uint( )   const { return( ( tag.vr == UL && num_bytes == 4 )? byte_array< unsigned int >( data ).get_value( )  : static_cast< unsigned int >  ( atoi( to_string( ).c_str( ) ) ) ); }
-		signed short   to_short( )  const { return( ( tag.vr == SS && num_bytes == 2 )? byte_array< signed short >( data ).get_value( )  : static_cast< signed short >  ( atoi( to_string( ).c_str( ) ) ) ); }
-		unsigned short to_ushort( ) const { return( ( tag.vr == US && num_bytes == 2 )? byte_array< unsigned short >( data ).get_value( ): static_cast< unsigned short >( atoi( to_string( ).c_str( ) ) ) ); }
+		double         to_double( ) const { return( ( vr == FD && num_bytes == 8 )? byte_array< double >( data ).get_value( )        : static_cast< double >        ( atof( to_string( ).c_str( ) ) ) ); }
+		float          to_float( )  const { return( ( vr == FL && num_bytes == 4 )? byte_array< float >( data ).get_value( )         : static_cast< float >         ( atof( to_string( ).c_str( ) ) ) ); }
+		signed int     to_int( )    const { return( ( vr == SL && num_bytes == 4 )? byte_array< signed int >( data ).get_value( )    : static_cast< signed int >    ( atoi( to_string( ).c_str( ) ) ) ); }
+		unsigned int   to_uint( )   const { return( ( vr == UL && num_bytes == 4 )? byte_array< unsigned int >( data ).get_value( )  : static_cast< unsigned int >  ( atoi( to_string( ).c_str( ) ) ) ); }
+		signed short   to_short( )  const { return( ( vr == SS && num_bytes == 2 )? byte_array< signed short >( data ).get_value( )  : static_cast< signed short >  ( atoi( to_string( ).c_str( ) ) ) ); }
+		unsigned short to_ushort( ) const { return( ( vr == US && num_bytes == 2 )? byte_array< unsigned short >( data ).get_value( ): static_cast< unsigned short >( atoi( to_string( ).c_str( ) ) ) ); }
 		std::string    to_string( ) const
 		{
 			static char buff[ 128 ];
-			switch( tag.vr )
+			switch( vr )
 			{
 			case FL:
 				sprintf( buff, "%f", byte_array< float >( data ).get_value( ) );
@@ -122,59 +131,60 @@ namespace dicom_controller
 		{
 			if( data == NULL || num_bytes == 0 )
 			{
-				printf( "( %04x, %04x, %s, % 8d, %s ) = undefined!!\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str() );
+				printf( "( %04x, %04x, %s, % 8d, %s ) = undefined!!\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str() );
 			}
 			else
 			{
-				switch( tag.vr )
+				switch( vr )
 				{
 				case FL:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %f\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_float( ) );
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %f\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), to_float( ) );
 					break;
 				case FD:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %f\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_double( ) );
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %f\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), to_double( ) );
 					break;
 				case SL:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_int( ) );
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), to_int( ) );
 					break;
 				case SS:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_short( ) );
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), to_short( ) );
 					break;
 				case UL:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_uint( ) );
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), to_uint( ) );
 					break;
 				case US:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), to_ushort( ) );
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %d\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), to_ushort( ) );
 					break;
 
 				case OB:
 				case OW:
 				case SQ:
 				case UN:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = ...\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str() );
+					printf( "( %04x, %04x, %s, % 8d, %s ) = ...\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str() );
 					break;
 
 				default:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %s\n", tag.get_group( ), tag.get_element( ), get_dicom_vr( tag.vr ).c_str(), static_cast< unsigned int >( num_bytes ), tag.comment.c_str(), data );
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %s\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), data );
 					break;
 				}
 			}
 		}
 
-		dicom_element( ) : tag( ), data( NULL ), num_bytes( 0 )
+		dicom_element( ) : base( ), data( NULL ), num_bytes( 0 )
 		{
 		}
-		dicom_element( const dicom_element &dicom ) : tag( dicom.tag ), data( NULL ), num_bytes( 0 )
+		dicom_element( const dicom_element &dicom ) : base( dicom ), data( NULL ), num_bytes( 0 )
 		{
 			create( dicom.num_bytes );
 			memcpy( data, dicom.data, sizeof( unsigned char ) * num_bytes );
 		}
-		dicom_element( unsigned short group, unsigned short element, const unsigned char *d = NULL, size_type nbytes = 0 ) : tag( dicom_tag( construct_dicom_tag( group, element ), "", 1, "" ) ), data( NULL ), num_bytes( 0 )
+		dicom_element( unsigned short group, unsigned short element, const unsigned char *d = NULL, size_type nbytes = 0 )
+						: base( construct_dicom_tag( group, element ), "", 1, "" ), data( NULL ), num_bytes( 0 )
 		{
 			create( nbytes );
 			memcpy( data, d, sizeof( unsigned char ) * num_bytes );
 		}
-		dicom_element( const dicom_tag &t, const unsigned char *d = NULL, size_type nbytes = 0 ) : tag( t ), data( NULL ), num_bytes( 0 )
+		dicom_element( const dicom_tag &t, const unsigned char *d = NULL, size_type nbytes = 0 ) : base( t ), data( NULL ), num_bytes( 0 )
 		{
 			create( nbytes );
 			memcpy( data, d, sizeof( unsigned char ) * num_bytes );
@@ -182,41 +192,47 @@ namespace dicom_controller
 	};
 
 
-	class dicom_tag_container : public std::set< dicom_element >
+	class dicom_tag_container : public std::map< unsigned int, dicom_element >
 	{
 	private:
-		typedef std::set< dicom_element > base;
+		typedef std::map< unsigned int, dicom_element > base;
+		typedef std::pair< unsigned int, dicom_element > element_pair;
 
 	public:
 		typedef base::iterator iterator;
 		typedef base::const_iterator const_iterator;
+		typedef base::const_reference const_reference;
+		typedef base::reference reference;
+
+	public:
+		mapped_type operator ()( unsigned short group, unsigned short element ){ return( base::operator []( construct_dicom_tag( group, element ) ) ); }
 
 	public:
 		bool add( const dicom_element &element )
 		{
-			std::pair< iterator, bool > ite = base::insert( element );
+			std::pair< iterator, bool > ite = base::insert( element_pair( element.tag, element ) );
 			return( ite.second );
 		}
 
 		iterator append( const dicom_element &element )
 		{
-			std::pair< iterator, bool > ite = base::insert( element );
+			std::pair< iterator, bool > ite = base::insert( element_pair( element.tag, element ) );
 			return( ite.first );
 		}
 
 		void erase( const dicom_element &element )
 		{
-			base::erase( element );
+			base::erase( element.tag );
 		}
 
 		iterator find( unsigned short group, unsigned short element )
 		{
-			return( base::find( dicom_element( construct_dicom_tag( group, element ) ) ) );
+			return( base::find( construct_dicom_tag( group, element ) ) );
 		}
 
 		const_iterator find( unsigned short group, unsigned short element ) const
 		{
-			return( base::find( dicom_element( construct_dicom_tag( group, element ) ) ) );
+			return( base::find( construct_dicom_tag( group, element ) ) );
 		}
 
 		bool contain( unsigned short group, unsigned short element ) const
@@ -337,49 +353,49 @@ namespace dicom_controller
 	double find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, double default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->to_double( ) );
+		return( cite == dicom.end( ) ? default_value : cite->second.to_double( ) );
 	}
 	// コンテナからタグを検索し，float値を返す
 	float find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, float default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->to_float( ) );
+		return( cite == dicom.end( ) ? default_value : cite->second.to_float( ) );
 	}
 	// コンテナからタグを検索し，signed int値を返す
 	signed int find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, signed int default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->to_int( ) );
+		return( cite == dicom.end( ) ? default_value : cite->second.to_int( ) );
 	}
 	// コンテナからタグを検索し，unsigned int値を返す
 	unsigned int find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, unsigned int default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->to_uint( ) );
+		return( cite == dicom.end( ) ? default_value : cite->second.to_uint( ) );
 	}
 	// コンテナからタグを検索し，signed short値を返す
 	signed short find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, signed short default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->to_short( ) );
+		return( cite == dicom.end( ) ? default_value : cite->second.to_short( ) );
 	}
 	// コンテナからタグを検索し，unsigned short値を返す
 	unsigned short find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, unsigned short default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->to_ushort( ) );
+		return( cite == dicom.end( ) ? default_value : cite->second.to_ushort( ) );
 	}
 	// コンテナからタグを検索し，std::string値を返す
 	std::string find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, const std::string &default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->to_string( ) );
+		return( cite == dicom.end( ) ? default_value : cite->second.to_string( ) );
 	}
 	// コンテナからタグを検索し，const char*値を返す
 	std::string find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, const char *default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->to_string( ) );
+		return( cite == dicom.end( ) ? default_value : cite->second.to_string( ) );
 	}
 
 	bool get_dicom_info( const dicom_tag_container &dicom, dicom_info &info )

@@ -755,7 +755,7 @@ namespace dicom_controller
 #ifdef __SHOW_DICOM_TAG__
 			if( ite != dicom.end( ) )
 			{
-				ite->show_tag( );
+				ite->second.show_tag( );
 			}
 #endif
 		}
@@ -790,7 +790,7 @@ namespace dicom_controller
 #ifdef __SHOW_DICOM_TAG__
 				if( ite != dicom.end( ) )
 				{
-					ite->show_tag( );
+					ite->second.show_tag( );
 				}
 #endif
 			}
@@ -890,14 +890,15 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 	double resoY = 0.625;
 
 	dicom_controller::dicom_tag_container::iterator ite = dicom.find( 0x7fe0, 0x0010 );
-	if( ite != dicom.end( ) )
+	if( dicom.contain( 0x7fe0, 0x0010 ) )
 	{
+		dicom_controller::dicom_element &element = dicom( 0x7fe0, 0x0010 );
 		image.resize( info.cols, info.rows );
 		image.reso1( info.pixel_spacing_x );
 		image.reso2( info.pixel_spacing_y );
 		if( info.bits_allocated == 8 )
 		{
-			unsigned char *data = ite->data;
+			unsigned char *data = element.data;
 			double pix;
 			unsigned char pixel;
 			for( size_type i = 0 ; i < image.size( ) ; i++ )
@@ -912,7 +913,7 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 		}
 		else if( info.bits_allocated == 16 )
 		{
-			short *data = reinterpret_cast< short * >( ite->data );
+			short *data = reinterpret_cast< short * >( element.data );
 			double pix;
 			unsigned char pixel;
 			for( size_type i = 0 ; i < image.size( ) ; i++ )
@@ -925,7 +926,7 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 				image[ i ] = pixel_converter::convert_to( pixel, pixel, pixel );
 			}
 		}
-		ite->release( );
+		element.release( );
 	}
 	else
 	{
