@@ -357,57 +357,189 @@ namespace __clapack__
 	}
 }
 
-// 一般行列の連立一次方程式を解く関数
+
+namespace __solve__
+{
+	// 行列の連立一次方程式を解く関数
+	template < bool b >
+	struct __solve__
+	{
+		// 実数バージョン
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& solve( matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+
+			switch( style )
+			{
+			case matrix_style::sy:
+			case matrix_style::ge:
+			default:
+				{
+					b.resize( a.rows( ), 1 );
+
+					// LAPACK関数の引数
+					integer n     = static_cast< integer >( a.cols( ) );
+					integer nrhs  = 1;
+					integer lda   = static_cast< integer >( a.rows( ) );
+					integer ldb   = static_cast< integer >( b.rows( ) );
+					integer *ipiv = new integer[ n ];
+					integer info  = 0;
+
+					// integer     n: マトリックス a の列数
+					// integer  nrhs: マトリックス b の列数
+					// double*     a: 連立方程式を解く係数の配列（ lda×n 要素 ）
+					// integer   lda: マトリックス a の行数
+					// integer* ipiv: ピボット選択に用いる配列（ lda要素 ）
+					// double*     b: 連立方程式を解く係数の配列（ ldb×n 要素 ）
+					// integer   ldb: マトリックス b の行数
+					// integer  info: 正常終了したか否かを知らせてくれる変数
+					//
+					// この関数を呼ぶ場合，入力となる a の内容は変更される
+					// 最終的な結果は b に代入される
+					__clapack__::gesv( n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, info );
+					delete [] ipiv;
+				}
+				break;
+			}
+
+			return( b );
+		}
+	};
+
+	template < >
+	struct __solve__< true >
+	{
+		// 複素数バージョン
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& solve( matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename T::value_type value_type;
+
+			switch( style )
+			{
+			case matrix_style::ge:
+			default:
+				{
+					b.resize( a.rows( ), 1 );
+
+					// LAPACK関数の引数
+					integer n     = static_cast< integer >( a.cols( ) );
+					integer nrhs  = 1;
+					integer lda   = static_cast< integer >( a.rows( ) );
+					integer ldb   = static_cast< integer >( b.rows( ) );
+					integer *ipiv = new integer[ n ];
+					integer info  = 0;
+
+					// integer     n: マトリックス a の列数
+					// integer  nrhs: マトリックス b の列数
+					// double*     a: 連立方程式を解く係数の配列（ lda×n 要素 ）
+					// integer   lda: マトリックス a の行数
+					// integer* ipiv: ピボット選択に用いる配列（ lda要素 ）
+					// double*     b: 連立方程式を解く係数の配列（ ldb×n 要素 ）
+					// integer   ldb: マトリックス b の行数
+					// integer  info: 正常終了したか否かを知らせてくれる変数
+					//
+					// この関数を呼ぶ場合，入力となる a の内容は変更される
+					// 最終的な結果は b に代入される
+					__clapack__::gesv( n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, info );
+					delete [] ipiv;
+				}
+				break;
+			}
+
+			return( b );
+		}
+	};
+}
+
+
+// 行列の連立一次方程式を解く関数
 template < class T, class Allocator >
 matrix< T, Allocator >& solve( matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style = matrix_style::ge )
 {
-	typedef __clapack__::integer integer;
-
-	b.resize( a.rows( ), 1 );
-
-	// LAPACK関数の引数
-	integer n     = static_cast< integer >( a.cols( ) );
-	integer nrhs  = 1;
-	integer lda   = static_cast< integer >( a.rows( ) );
-	integer ldb   = static_cast< integer >( b.rows( ) );
-	integer *ipiv = new integer[ n ];
-	integer info  = 0;
-
-	// integer     n: マトリックス a の列数
-	// integer  nrhs: マトリックス b の列数
-	// double*     a: 連立方程式を解く係数の配列（ lda×n 要素 ）
-	// integer   lda: マトリックス a の行数
-	// integer* ipiv: ピボット選択に用いる配列（ lda要素 ）
-	// double*     b: 連立方程式を解く係数の配列（ ldb×n 要素 ）
-	// integer   ldb: マトリックス b の行数
-	// integer  info: 正常終了したか否かを知らせてくれる変数
-	//
-	// この関数を呼ぶ場合，入力となる a の内容は変更される
-	// 最終的な結果は b に代入される
-	__clapack__::gesv( n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, info );
-	delete [] ipiv;
-	return( b );
+	return( __solve__::__solve__< __numeric__::is_complex< T >::value >::solve( a, b, style ) );
 }
 
+
+
+
+namespace __lu__
+{
+	// 行列の連立一次方程式を解く関数
+	template < bool b >
+	struct __lu__
+	{
+		// 実数バージョン
+		template < class T, class Allocator1, class Allocator2 >
+		static matrix< T, Allocator1 >& lu_factorization( matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+
+			switch( style )
+			{
+			case matrix_style::sy:
+			case matrix_style::ge:
+			default:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer info   = 0;
+
+					pivot.resize( n, 1 );
+
+					// LU分解を行う
+					__clapack__::getrf( m, n, &( a[0] ), lda, &( pivot[0] ), info );
+				}
+				break;
+			}
+
+			return( a );
+		}
+	};
+
+	template < >
+	struct __lu__< true >
+	{
+		// 複素数バージョン
+		template < class T, class Allocator1, class Allocator2 >
+		static matrix< T, Allocator1 >& lu_factorization( matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename T::value_type value_type;
+
+			switch( style )
+			{
+			case matrix_style::ge:
+			default:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer info   = 0;
+
+					pivot.resize( n, 1 );
+
+					// LU分解を行う
+					__clapack__::getrf( m, n, &( a[0] ), lda, &( pivot[0] ), info );
+				}
+				break;
+			}
+
+			return( a );
+		}
+	};
+}
 
 // 一般行列のLU分解を行う
 template < class T, class Allocator1, class Allocator2 >
 matrix< T, Allocator1 >& lu_factorization( matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
 {
-	typedef __clapack__::integer integer;
-
-	// LAPACK関数の引数
-	integer m      = static_cast< integer >( a.rows( ) );
-	integer n      = static_cast< integer >( a.cols( ) );
-	integer lda    = m;
-	integer info   = 0;
-
-	pivot.resize( n, 1 );
-
-	// LU分解を行う
-	__clapack__::getrf( m, n, &( a[0] ), lda, &( pivot[0] ), info );
-
-	return( a );
+	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a, pivot, style ) );
 }
 
 // 一般行列のLU分解を行う
@@ -421,35 +553,101 @@ matrix< T, Allocator >& lu_factorization( matrix< T, Allocator > &a, matrix_styl
 
 
 
+
+namespace __qr__
+{
+	// 行列の連立一次方程式を解く関数
+	template < bool b >
+	struct __qr__
+	{
+		// 実数バージョン
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& qr_factorization( matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+
+			switch( style )
+			{
+			case matrix_style::sy:
+			case matrix_style::ge:
+			default:
+				{
+					tau.resize( a.rows( ), a.cols( ) );
+
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					typename matrix< T, Allocator >::value_type dmy;
+					integer lwork  = -1;
+					integer info   = 0;
+
+					// QR分解を行う前に，必要な作業用配列のサイズを取得する
+					__clapack__::geqrf( m, n, NULL, lda, NULL, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						lwork = __clapack__::get_real( dmy );
+						matrix< T, Allocator > work( lwork, 1 );
+						__clapack__::geqrf( m, n, &( a[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
+					}
+				}
+				break;
+			}
+
+			return( a );
+		}
+	};
+
+	template < >
+	struct __qr__< true >
+	{
+		// 複素数バージョン
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& qr_factorization( matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename T::vaqre_type vaqre_type;
+
+			switch( style )
+			{
+			case matrix_style::ge:
+			default:
+				{
+					tau.resize( a.rows( ), a.cols( ) );
+
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					typename matrix< T, Allocator >::value_type dmy;
+					integer lwork  = -1;
+					integer info   = 0;
+
+					// QR分解を行う前に，必要な作業用配列のサイズを取得する
+					__clapack__::geqrf( m, n, NULL, lda, NULL, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						lwork = __clapack__::get_real( dmy );
+						matrix< T, Allocator > work( lwork, 1 );
+						__clapack__::geqrf( m, n, &( a[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
+					}
+				}
+				break;
+			}
+
+			return( a );
+		}
+	};
+}
+
 // 一般行列のQR分解を行う
 template < class T, class Allocator >
 matrix< T, Allocator >& qr_factorization( matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style = matrix_style::ge )
 {
-	typedef __clapack__::integer integer;
-
-	tau.resize( a.rows( ), a.cols( ) );
-
-	// LAPACK関数の引数
-	integer m      = static_cast< integer >( a.rows( ) );
-	integer n      = static_cast< integer >( a.cols( ) );
-	integer lda    = m;
-	typename matrix< T, Allocator >::value_type dmy;
-	integer lwork  = -1;
-	integer info   = 0;
-
-	// QR分解を行う前に，必要な作業用配列のサイズを取得する
-	__clapack__::geqrf( m, n, NULL, lda, NULL, &dmy, lwork, info );
-	if( info == 0 )
-	{
-		lwork = __clapack__::get_real( dmy );
-		matrix< T, Allocator > work( lwork, 1 );
-		__clapack__::geqrf( m, n, &( a[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
-	}
-
-	return( a );
+	return( __qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a, tau, style ) );
 }
 
-// 一般行列のLU分解を行う
+// 一般行列のQR分解を行う
 template < class T, class Allocator >
 matrix< T, Allocator >& qr_factorization( matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
@@ -459,35 +657,107 @@ matrix< T, Allocator >& qr_factorization( matrix< T, Allocator > &a, matrix_styl
 }
 
 
+
+
+namespace __inverse__
+{
+	// 行列の連立一次方程式を解く関数
+	template < bool b >
+	struct __inverse__
+	{
+		// 実数バージョン
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& inverse( matrix< T, Allocator > &a, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+
+			switch( style )
+			{
+			case matrix_style::sy:
+			case matrix_style::ge:
+			default:
+				{
+					// LAPACK関数の引数
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = static_cast< integer >( a.rows( ) );
+					integer *ipiv  = new integer[ n ];
+					typename matrix< T, Allocator >::value_type dmy;
+					integer lwork  = -1;
+					integer info   = 0;
+
+					// LU分解を行う
+					__clapack__::getrf( lda, n, &( a[0] ), lda, ipiv, info );
+					if( info == 0 )
+					{
+						// まず最適な作業用配列のサイズを取得する
+						__clapack__::getri( n, NULL, lda, NULL, &dmy, lwork, info );
+						if( info == 0 )
+						{
+							lwork = __clapack__::get_real( dmy );
+							matrix< T, Allocator > work( lwork, 1 );
+							__clapack__::getri( n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
+						}
+					}
+					delete [] ipiv;
+				}
+				break;
+			}
+
+			return( a );
+		}
+	};
+
+	template < >
+	struct __inverse__< true >
+	{
+		// 複素数バージョン
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& inverse( matrix< T, Allocator > &a, matrix_style::style style )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename T::vaqre_type vaqre_type;
+
+			switch( style )
+			{
+			case matrix_style::ge:
+			default:
+				{
+					// LAPACK関数の引数
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = static_cast< integer >( a.rows( ) );
+					integer *ipiv  = new integer[ n ];
+					typename matrix< T, Allocator >::value_type dmy;
+					integer lwork  = -1;
+					integer info   = 0;
+
+					// LU分解を行う
+					__clapack__::getrf( lda, n, &( a[0] ), lda, ipiv, info );
+					if( info == 0 )
+					{
+						// まず最適な作業用配列のサイズを取得する
+						__clapack__::getri( n, NULL, lda, NULL, &dmy, lwork, info );
+						if( info == 0 )
+						{
+							lwork = __clapack__::get_real( dmy );
+							matrix< T, Allocator > work( lwork, 1 );
+							__clapack__::getri( n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
+						}
+					}
+					delete [] ipiv;
+				}
+				break;
+			}
+
+			return( a );
+		}
+	};
+}
+
 // 一般行列の逆行列をLU分解を用いて計算する
 template < class T, class Allocator >
 matrix< T, Allocator >& inverse( matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
-	typedef __clapack__::integer integer;
-
-	// LAPACK関数の引数
-	integer n      = static_cast< integer >( a.cols( ) );
-	integer lda    = static_cast< integer >( a.rows( ) );
-	integer *ipiv  = new integer[ n ];
-	typename matrix< T, Allocator >::value_type dmy;
-	integer lwork  = -1;
-	integer info   = 0;
-
-	// LU分解を行う
-	__clapack__::getrf( lda, n, &( a[0] ), lda, ipiv, info );
-	if( info == 0 )
-	{
-		// まず最適な作業用配列のサイズを取得する
-		__clapack__::getri( n, NULL, lda, NULL, &dmy, lwork, info );
-		if( info == 0 )
-		{
-			lwork = __clapack__::get_real( dmy );
-			matrix< T, Allocator > work( lwork, 1 );
-			__clapack__::getri( n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
-		}
-	}
-	delete [] ipiv;
-	return( a );
+	return( __inverse__::__inverse__< __numeric__::is_complex< T >::value >::inverse( a, style ) );
 }
 
 
@@ -789,43 +1059,51 @@ namespace __svd__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt )
+		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::size_type size_type;
 
-			// LAPACK関数の引数
-			integer m      = static_cast< integer >( a.rows( ) );
-			integer n      = static_cast< integer >( a.cols( ) );
-			integer lda    = m;
-			integer ldu    = m;
-			integer size   = m < n ? m : n;
-			typename matrix< T, Allocator >::value_type dmy;
-			integer ldvt   = n;
-			integer lwork  = -1;
-			integer info   = 0;
-			char *jobz = "A";
-
-			// まず最適な作業用配列のサイズを取得する
-			__clapack__::gesdd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
-			if( info == 0 )
+			switch( style )
 			{
-				u.resize( ldu, m );
-				matrix< T, Allocator > ss( size, 1 );
-				vt.resize( ldvt, n );
-				integer *iwork = new integer[ 8 * size ];
-
-				lwork = __clapack__::get_real( dmy );
-				matrix< T, Allocator > work( lwork, 1 );
-				__clapack__::gesdd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, iwork, info );
-
-				delete [] iwork;
-
-				s.resize( m, n );
-				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+			case matrix_style::ge:
+			default:
 				{
-					s( i, i ) = ss[ i ];
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer ldu    = m;
+					integer size   = m < n ? m : n;
+					typename matrix< T, Allocator >::value_type dmy;
+					integer ldvt   = n;
+					integer lwork  = -1;
+					integer info   = 0;
+					char *jobz = "A";
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::gesdd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
+					if( info == 0 )
+					{
+						u.resize( ldu, m );
+						matrix< T, Allocator > ss( size, 1 );
+						vt.resize( ldvt, n );
+						integer *iwork = new integer[ 8 * size ];
+
+						lwork = __clapack__::get_real( dmy );
+						matrix< T, Allocator > work( lwork, 1 );
+						__clapack__::gesdd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, iwork, info );
+
+						delete [] iwork;
+
+						s.resize( m, n );
+						for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+						{
+							s( i, i ) = ss[ i ];
+						}
+					}
 				}
+				break;
 			}
 
 			return( s );
@@ -837,46 +1115,54 @@ namespace __svd__
 	{
 		// 複素数バージョン
 		template < class T1, class T2, class Allocator1, class Allocator2 >
-		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt )
+		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T1, Allocator1 >::size_type size_type;
 			typedef typename T1::value_type value_type;
 
-			// LAPACK関数の引数
-			integer m      = static_cast< integer >( a.rows( ) );
-			integer n      = static_cast< integer >( a.cols( ) );
-			integer lda    = m;
-			integer ldu    = m;
-			integer size   = m < n ? m : n;
-			typename matrix< T1, Allocator1 >::value_type dmy;
-			integer ldvt   = n;
-			integer lwork  = -1;
-			integer info   = 0;
-			char *jobz = "A";
-
-			// まず最適な作業用配列のサイズを取得する
-			__clapack__::gesdd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, NULL, info );
-			if( info == 0 )
+			switch( style )
 			{
-				u.resize( ldu, m );
-				matrix< typename T1::value_type > ss( size, 1 );
-				vt.resize( ldvt, n );
-				value_type *rwork = new value_type[ 5 * size * size + 5 * size ];
-				integer *iwork = new integer[ 8 * size ];
-
-				lwork = __clapack__::get_real( dmy );
-				matrix< T1, Allocator1 > work( lwork, 1 );
-				__clapack__::gesdd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, iwork, info );
-
-				delete [] rwork;
-				delete [] iwork;
-
-				s.resize( m, n );
-				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+			case matrix_style::ge:
+			default:
 				{
-					s( i, i ) = ss[ i ];
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer ldu    = m;
+					integer size   = m < n ? m : n;
+					typename matrix< T1, Allocator1 >::value_type dmy;
+					integer ldvt   = n;
+					integer lwork  = -1;
+					integer info   = 0;
+					char *jobz = "A";
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::gesdd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, NULL, info );
+					if( info == 0 )
+					{
+						u.resize( ldu, m );
+						matrix< typename T1::value_type > ss( size, 1 );
+						vt.resize( ldvt, n );
+						value_type *rwork = new value_type[ 5 * size * size + 5 * size ];
+						integer *iwork = new integer[ 8 * size ];
+
+						lwork = __clapack__::get_real( dmy );
+						matrix< T1, Allocator1 > work( lwork, 1 );
+						__clapack__::gesdd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, iwork, info );
+
+						delete [] rwork;
+						delete [] iwork;
+
+						s.resize( m, n );
+						for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+						{
+							s( i, i ) = ss[ i ];
+						}
+					}
 				}
+				break;
 			}
 
 			return( s );
@@ -890,40 +1176,48 @@ namespace __svd__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt )
+		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::size_type size_type;
 
-			// LAPACK関数の引数
-			integer m      = static_cast< integer >( a.rows( ) );
-			integer n      = static_cast< integer >( a.cols( ) );
-			integer lda    = m;
-			integer ldu    = m;
-			typename matrix< T, Allocator >::value_type dmy;
-			integer ldvt   = n;
-			integer lwork  = -1;
-			integer info   = 0;
-			char *jobu = "A";
-			char *jobvt = "A";
-
-			// まず最適な作業用配列のサイズを取得する
-			__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, info );
-			if( info == 0 )
+			switch( style )
 			{
-				u.resize( ldu, m );
-				matrix< T, Allocator > ss( m < n ? m : n, 1 );
-				vt.resize( ldvt, n );
-
-				lwork = __clapack__::get_real( dmy );
-				matrix< T, Allocator > work( lwork, 1 );
-				__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, info );
-
-				s.resize( m, n );
-				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+			case matrix_style::ge:
+			default:
 				{
-					s( i, i ) = ss[ i ];
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer ldu    = m;
+					typename matrix< T, Allocator >::value_type dmy;
+					integer ldvt   = n;
+					integer lwork  = -1;
+					integer info   = 0;
+					char *jobu = "A";
+					char *jobvt = "A";
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						u.resize( ldu, m );
+						matrix< T, Allocator > ss( m < n ? m : n, 1 );
+						vt.resize( ldvt, n );
+
+						lwork = __clapack__::get_real( dmy );
+						matrix< T, Allocator > work( lwork, 1 );
+						__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, info );
+
+						s.resize( m, n );
+						for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+						{
+							s( i, i ) = ss[ i ];
+						}
+					}
 				}
+				break;
 			}
 
 			return( s );
@@ -935,44 +1229,52 @@ namespace __svd__
 	{
 		// 複素数バージョン
 		template < class T1, class T2, class Allocator1, class Allocator2 >
-		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt )
+		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T1, Allocator1 >::size_type size_type;
 			typedef typename T1::value_type value_type;
 
-			// LAPACK関数の引数
-			integer m      = static_cast< integer >( a.rows( ) );
-			integer n      = static_cast< integer >( a.cols( ) );
-			integer lda    = m;
-			integer ldu    = m;
-			typename matrix< T1, Allocator1 >::value_type dmy;
-			integer ldvt   = n;
-			integer lwork  = -1;
-			integer info   = 0;
-			char *jobu = "A";
-			char *jobvt = "A";
-
-			// まず最適な作業用配列のサイズを取得する
-			__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
-			if( info == 0 )
+			switch( style )
 			{
-				u.resize( ldu, m );
-				matrix< typename T1::value_type > ss( m < n ? m : n, 1 );
-				vt.resize( ldvt, n );
-				value_type *rwork = new value_type[ 5 * ( m < n ? m : n ) ];
-
-				lwork = __clapack__::get_real( dmy );
-				matrix< T1, Allocator1 > work( lwork, 1 );
-				__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, info );
-
-				s.resize( m, n );
-				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+			case matrix_style::ge:
+			default:
 				{
-					s( i, i ) = ss[ i ];
-				}
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer ldu    = m;
+					typename matrix< T1, Allocator1 >::value_type dmy;
+					integer ldvt   = n;
+					integer lwork  = -1;
+					integer info   = 0;
+					char *jobu = "A";
+					char *jobvt = "A";
 
-				delete [] rwork;
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
+					if( info == 0 )
+					{
+						u.resize( ldu, m );
+						matrix< typename T1::value_type > ss( m < n ? m : n, 1 );
+						vt.resize( ldvt, n );
+						value_type *rwork = new value_type[ 5 * ( m < n ? m : n ) ];
+
+						lwork = __clapack__::get_real( dmy );
+						matrix< T1, Allocator1 > work( lwork, 1 );
+						__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, info );
+
+						s.resize( m, n );
+						for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+						{
+							s( i, i ) = ss[ i ];
+						}
+
+						delete [] rwork;
+					}
+				}
+				break;
 			}
 
 			return( s );
@@ -987,7 +1289,7 @@ namespace __svd__
 template < class T1, class T2, class Allocator1, class Allocator2 >
 matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
 {
-	return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( a, u, s, vt ) );
+	return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( a, u, s, vt, style ) );
 }
 
 
