@@ -26,8 +26,8 @@ filter_graph::filter_graph( FXComposite *p, FXObject *tgt, FXSelector sel, FXuin
 				font_( NULL ), mem_image_( NULL ), damage_( true ), current_filter_( NULL ), current_pin_( NULL )
 {
 	// このウィンドウからメッセージを送る先の設定
-//	setTarget( tgt );
-//	setSelector( sel );
+	setTarget( tgt );
+	setSelector( sel );
 
 	font_ = new FXFont( getApp( ), "helvetica", 12 );
 	mem_image_ = new FXImage( getApp( ), NULL, IMAGE_OWNED, 1024, 768 );
@@ -56,9 +56,18 @@ void filter_graph::append_filter( const filter &f )
 	initialize_filter( *ff );
 	filters_.push_back( ff );
 
+	if( current_filter_ != NULL )
+	{
+		current_filter_->active = false;
+	}
+
 	current_filter_ = ff;
+	current_filter_->active = true;
+
 	// メインウィンドウへ，選択フィルタが変更されたことを通知する
 	SendUserMessage( MIST_FILTER_CHANGED, static_cast< void * >( current_filter_ ) );
+
+	setFocus( );
 
 	// 全体を再描画する
 	damage_ = true;
