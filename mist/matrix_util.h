@@ -449,7 +449,6 @@ namespace __eigen__
 			// LAPACKŠÖ”‚Ìˆø”
 			integer n      = static_cast< integer >( a.cols( ) );
 			integer lda    = static_cast< integer >( a.rows( ) );
-			integer *ipiv  = new integer[ n ];
 			typename matrix< T, Allocator >::value_type dmy;
 			integer ldvl   = 1;
 			integer ldvr   = n;
@@ -594,7 +593,7 @@ namespace __svd__
 		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt )
 		{
 			typedef __clapack__::integer integer;
-			typedef matrix< T, Allocator >::size_type size_type;
+			typedef typename matrix< T, Allocator >::size_type size_type;
 
 			// LAPACKŠÖ”‚Ìˆø”
 			integer m      = static_cast< integer >( a.rows( ) );
@@ -641,7 +640,7 @@ namespace __svd__
 		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt )
 		{
 			typedef __clapack__::integer integer;
-			typedef matrix< T1, Allocator1 >::size_type size_type;
+			typedef typename matrix< T1, Allocator1 >::size_type size_type;
 			typedef typename T1::value_type value_type;
 
 			// LAPACKŠÖ”‚Ìˆø”
