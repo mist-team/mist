@@ -80,6 +80,17 @@ struct type_trait{ typedef T value_type; };
 
 #define _MIST_ALLOCATE_TEST_			0
 
+#ifdef WIN32
+
+#define _MIST_ALLOCATOR_MEMORY_TRIM__	0	// VC標準のSTLではサポートしていないのでオフにする
+
+#else
+
+#define _MIST_ALLOCATOR_MEMORY_TRIM__	1	// VC標準のSTLではサポートしていないのでオフにする
+
+#endif
+
+
 #ifndef NDEBUG
 
 #define _CHECK_ACCESS_VIOLATION_		1	// 配列要素へのアクセス違反をチェックするかどうか

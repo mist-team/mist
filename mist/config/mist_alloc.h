@@ -299,7 +299,12 @@ public:
 		if( num < 0 ) return( NULL );				// トリム先の配列サイズが0より小さい例外
 		if( num == dest_num ) return( ptr );		// トリムによる変更の必要なし
 		if( num == 0 ) return( NULL );
+#if _MIST_ALLOCATOR_MEMORY_TRIM__ != 0
 		deallocate_objects( ptr + dest_num, num - dest_num );
+#else
+		deallocate_objects( ptr, num );
+		ptr = allocate_objects( num );
+#endif
 		return( dest_num == 0 ? NULL : ptr );
 	}
 

@@ -12,52 +12,55 @@
 _MIST_BEGIN
 
 template < class T1, class T2, class Allocator >
-void lu_decomposition( matrix< T1, Allocator > &m, matrix< T2, Allocator > &p )
+void lu_decomposition( matrix< T1, Allocator > &a, matrix< T2, Allocator > &pivot )
 {
-	if( m.rows( ) != m.cols( ) ) return;
+	if( a.rows( ) != a.cols( ) ) return;
 
-	int i, imax, j, k, n = a.rows( );
-	double big, dum, sum, temp;
-	matrix< T, Allocator > v( n, 1 );
-	p.resize( n, 1 );
+	typedef typename matrix< T1, Allocator >::size_type size_type;
+	typedef typename matrix< T1, Allocator >::value_type value_type;
+	typedef typename matrix< T2, Allocator >::value_type pivot_value;
+
+	size_type i, imax, j, k, n = a.rows( );
+	value_type big, dum, sum, temp;
+
+	matrix< T1, Allocator > v( n, 1 );
+	pivot.resize( n );
 	
-	d = 1;
 	// içsjóÒÇ∆Ç†ÇÁÇÌÇ∑
 	for( i = 0 ; i < n ; i++ )
 	{
-		big = 0.0;
+		big = 0;
 		for( j = 0 ; j < n ; j++ )
 		{
-			if( ( temp = std::abs( m( i, j ) ) ) > big )
-			{
-				big = temp;
-			}
+			temp = std::abs( a( i, j ) );
+			big = temp < big ? big : temp;
 		}
-		if( big == 0.0 ) // Singular matrix in routine ludcmp
-		v[i] = 1.0 / big;
+		if( big == 0 ) // Singular matrix in routine ludcmp
+		v[i] = 1 / big;
 	}
 	for( j = 0 ; j < n ; j++ )
 	{
 		for( i = 0 ; i < j ; i++ )
 		{
-			sum = m( i, j );
+			sum = a( i, j );
 			for( k = 0 ; k < i ; k++ )
 			{
-				sum -= m( i, k ) * m( k, j );
+				sum -= a( i, k ) * a( k, j );
 			}
-			m( i, j ) = sum;
+			a( i, j ) = sum;
 		}
 
-		big = 0.0;
+		big = 0;
 		for( i = j ; i < n ; i++ )
 		{
-			sum = m( i, j );
+			sum = a( i, j );
 			for( k = 0 ; k < j ; k++ )
 			{
-				sum -= m(i, k) * m(k, j);
+				sum -= a(i, k) * a(k, j);
 			}
-			m( i, j ) = sum;
-			if( ( dum = v[i] * std::abs( sum ) ) >= big )
+			a( i, j ) = sum;
+			dum = v[i] * std::abs( sum );
+			if( dum >= big )
 			{
 				big = dum;
 				imax = i;
@@ -67,23 +70,25 @@ void lu_decomposition( matrix< T1, Allocator > &m, matrix< T2, Allocator > &p )
 		{
 			for( k = 0 ; k < n ; k++ )
 			{
-				dum = m( imax, k );
-				m( imax, k ) = m( j, k );
-				m( j, k ) = dum;
+				dum = a( imax, k );
+				a( imax, k ) = a( j, k );
+				a( j, k ) = dum;
 			}
 			v[imax] = v[j];
 		}
-		p[j] = imax;
-		if( m( j, j ) == 0.0 )
+
+		pivot[j] = static_cast< pivot_value >( imax );
+
+		if( a( j, j ) == 0 )
 		{
-			m( j, j ) = 1.0e-20;
+			a( j, j ) = 1.0e-20;
 		}
 		if( j != n - 1 )
 		{
-			dum = 1.0 / m( j, j );
+			dum = 1 / a( j, j );
 			for( i = j + 1 ; i < n ; i++ )
 			{
-				m( i, j ) *= dum;
+				a( i, j ) *= dum;
 			}
 		}
 	}
@@ -91,13 +96,14 @@ void lu_decomposition( matrix< T1, Allocator > &m, matrix< T2, Allocator > &p )
 
 
 template < class T1, class T2, class Allocator >
-void lu_decomposition1( matrix< T1, Allocator > &m, matrix< T2, Allocator > &pivot )
+void lu_decomposition1( matrix< T1, Allocator > &a, matrix< T2, Allocator > &pivot )
 {
-	if( m.rows( ) != m.cols( ) ) return;
+	if( a.rows( ) != a.cols( ) ) return;
 
 	typedef typename matrix< T1, Allocator >::size_type size_type;
 	typedef typename matrix< T1, Allocator >::value_type value_type;
-	size_type i, j, k, n = m.rows( );
+	typedef typename matrix< T2, Allocator >::value_type pivot_value;
+	size_type i, j, k, n = a.rows( );
 	size_type p;
 	value_type tmp, r;
 	pivot.resize( n );
@@ -105,37 +111,185 @@ void lu_decomposition1( matrix< T1, Allocator > &m, matrix< T2, Allocator > &piv
 	for( k = 0 ; k < n - 1 ; k++ )
 	{
 		p = k;
-		for( i = k + 1 ; k < n ; i++ )
+		for( i = k + 1 ; i < n ; i++ )
 		{
-			p = std::abs( m( p, k ) ) < std::abs( m( i, k ) ) ? i : p;
+			p = std::abs( a( p, k ) ) < std::abs( a( i, k ) ) ? i : p;
 		}
 
-		if( std::abs( m( p, k ) ) < 1.0e-20 )
+		if( std::abs( a( p, k ) ) < 1.0e-20 )
 		{
-			// ì¸óÕçsóÒ m ÇÕîÒê≥ë•
+			// ì¸óÕçsóÒ a ÇÕîÒê≥ë•
 			return;
 		}
 
-		pivot[k] = p;
+		pivot[k] = static_cast< pivot_value >( p );
 
 		if( p != k )
 		{
 			for( j = k ; j < n ; j++ )
 			{
-				tmp = m( k, j );
-				m( k, j ) = m( p, j );
-				m( p, j ) = tmp;
+				tmp = a( k, j );
+				a( k, j ) = a( p, j );
+				a( p, j ) = tmp;
 			}
 		}
 
 		for( i = k + 1 ; i < n ; i++ )
 		{
-			r = m( i, k ) / m( k, k );
-			m( i, k ) = r;
+			r = a( i, k ) / a( k, k );
+			a( i, k ) = r;
 			for( j = k + 1 ; j < n ; j++ )
 			{
-				m( i, j ) = m( i, j ) - r * m( k, j );
+				a( i, j ) -= r * a( k, j );
 			}
+		}
+	}
+}
+
+
+template < class T1, class T2, class Allocator >
+void lu_backwardsub( const matrix< T1, Allocator > &a, matrix< T1, Allocator > &b, matrix< T2, Allocator > &pivot )
+{
+	if(a.rows() != a.cols()) return;
+	if(a.rows() != b.rows()) return;
+
+	typedef typename matrix< T1, Allocator >::size_type size_type;
+	typedef typename matrix< T1, Allocator >::value_type value_type;
+	typedef typename matrix< T2, Allocator >::value_type pivot_value;
+
+	size_type i, ii = 0, ip, j, n = a.rows();
+	value_type sum;
+	
+	for( i = 1 ; i <= n ; i++ )
+	{
+		ip = static_cast< size_type >( pivot[ i - 1 ] );
+		sum = b[ ip ];
+		b[ ip ] = b[ i - 1 ];
+		if( ii > 0 )
+		{
+			for( j = ii ; j <= i - 1 ; j++ )
+			{
+				sum -= a( i - 1, j - 1 ) * b[ j - 1 ];
+			}
+		}
+		else if( sum > 0 )
+		{
+			ii = i;
+		}
+		b[ i - 1 ] = sum;
+	}
+	for( i = n ; i > 0 ; i-- )
+	{
+		sum = b[ i - 1 ];
+        for( j = i + 1 ; j <= n ; j++ )
+		{
+			sum -= a( i - 1 , j - 1 ) * b[ j - 1 ];
+		}
+		b[ i - 1 ] = sum / a( i - 1, i - 1 );
+	}
+}
+
+
+template < class T1, class T2, class Allocator >
+void lu_backwardsub1( const matrix< T1, Allocator > &a, matrix< T1, Allocator > &b, const matrix< T2, Allocator > &pivot )
+{
+	if(a.rows() != a.cols()) return;
+	if(a.rows() != b.rows()) return;
+
+	typedef typename matrix< T1, Allocator >::size_type size_type;
+	typedef typename matrix< T1, Allocator >::value_type value_type;
+	typedef typename matrix< T2, Allocator >::value_type pivot_value;
+
+	size_type i, j, k, n = a.rows();
+	value_type tmp;
+	value_type sum;
+
+	for( k = 0 ; k < n - 1 ; k++ )
+	{
+		tmp = b[ k ];
+		b[ k ] = b[ pivot[ k ] ];
+		b[ pivot[ k ] ] = tmp;
+
+		for( i = k + 1 ; i < n ; i++ )
+		{
+			b[ i ] -= a( i, k ) * b[ k ];
+		}
+	}
+
+	for( k = n ; k > 0 ; k-- )
+	{
+		i = k - 1;
+		tmp = 0;
+		for( j = i + 1 ; j < n; j++ )
+		{
+			tmp += a( i, j ) * b[ j ];
+		}
+		b[ i ] = ( b[ i ] - tmp ) / a( i, i );
+	}
+}
+
+
+template < class T, class Allocator >
+void inverse( matrix< T, Allocator > &a )
+{
+	if( a.rows( ) != a.cols( ) )
+	{
+		return;
+	}
+
+	typedef typename matrix< T, Allocator >::size_type size_type;
+	typedef typename matrix< T, Allocator >::value_type value_type;
+
+	size_type i, j, n = a.rows();
+
+	matrix< T, Allocator > lu( a );
+	matrix< T, Allocator > ret( n, n );
+	matrix< T, Allocator > col( n, 1 );
+	matrix< T, Allocator > pivot;
+
+	lu_decomposition( lu, pivot );
+
+	for( j = 0 ; j < n ; j++ )
+	{
+		col.clean( );
+		col[ j ] = 1;
+		lu_backwardsub( lu, col, pivot );
+		for( i = 0 ; i < n ; i++ )
+		{
+			a( i, j ) = col[ i ];
+		}
+	}
+}
+
+
+template < class T, class Allocator >
+void inverse1( matrix< T, Allocator > &a )
+{
+	if( a.rows( ) != a.cols( ) )
+	{
+		return;
+	}
+
+	typedef typename matrix< T, Allocator >::size_type size_type;
+	typedef typename matrix< T, Allocator >::value_type value_type;
+
+	size_type i, j, n = a.rows();
+
+	matrix< T, Allocator > lu( a );
+	matrix< T, Allocator > ret( n, n );
+	matrix< T, Allocator > col( n, 1 );
+	matrix< T, Allocator > pivot;
+
+	lu_decomposition1( lu, pivot );
+
+	for( j = 0 ; j < n ; j++ )
+	{
+		col.clean( );
+		col[ j ] = 1;
+		lu_backwardsub1( lu, col, pivot );
+		for( i = 0 ; i < n ; i++ )
+		{
+			a( i, j ) = col[ i ];
 		}
 	}
 }
