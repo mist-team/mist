@@ -39,7 +39,10 @@ _MIST_BEGIN
 
 
 
-// １次元配列
+/// MISTのアルゴリズム全般で利用する1次元配列
+//!
+//! 詳細な記述をここに書く
+//!
 template < class T, class Allocator = std::allocator< T > >
 class array
 {
@@ -310,7 +313,10 @@ public:
 
 
 
-// １次元配列
+/// MISTのアルゴリズム全般で利用する1次元配列（解像度付き）
+//!
+//! 詳細な記述をここに書く
+//!
 template < class T, class Allocator = std::allocator< T > >
 class array1 : public array< T, Allocator >
 {
@@ -411,8 +417,11 @@ public:
 };
 
 
-// ２次元配列
-template < class T, class Allocator = std::allocator< T > >
+
+/// MISTのアルゴリズム全般で利用する2次元配列（解像度付き）
+//!
+//! 詳細な記述をここに書く
+//!template < class T, class Allocator = std::allocator< T > >
 class array2 : public array1< T, Allocator >
 {
 public:
@@ -613,8 +622,11 @@ public:
 
 
 
-// ３次元配列
-template < class T, class Allocator = std::allocator< T > >
+
+/// MISTのアルゴリズム全般で利用する3次元配列（解像度付き）
+//!
+//! 詳細な記述をここに書く
+//!template < class T, class Allocator = std::allocator< T > >
 class array3 : public array2< T, Allocator >
 {
 public:
