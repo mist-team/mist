@@ -27,7 +27,7 @@ image_draw_area *draw_area;
 #include <mist/converter.h>
 
 
-#define USE_COLOR_IMAGE		1
+#define USE_COLOR_IMAGE		0
 
 #if USE_COLOR_IMAGE == 1
 typedef mist::array2< mist::rgb< unsigned char > > image_type;
@@ -114,7 +114,14 @@ void euclidean_distance_transform_test( )
 
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
-		image_object[ i ] = static_cast< unsigned char >( ( tmp2[ i ] - min ) / range * 255.0 );
+		if( tmp2[ i ] == 0 )
+		{
+			image_object[ i ] = 0;
+		}
+		else
+		{
+			image_object[ i ] = static_cast< unsigned char >( ( tmp2[ i ] - min ) / range * 200.0 + 55.0 );
+		}
 	}
 }
 
@@ -126,8 +133,8 @@ void figure_decomposition_test( )
 
 	mist::convert( image_object, label );
 
-//	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
-	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
+	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
+//	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
 
 	if( label_num == 0 )
 	{
@@ -136,6 +143,20 @@ void figure_decomposition_test( )
 
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
+		//switch( label[ i ] )
+		//{
+		//case 1:
+		//	image_object[ i ] = 128.0;
+		//	break;
+
+		//case 2:
+		//	image_object[ i ] = 255.0;
+		//	break;
+
+		//default:
+		//	image_object[ i ] = 0;
+		//	break;
+		//}
 		image_object[ i ] = static_cast< unsigned char >( static_cast< double >( label[ i ] ) * 255.0 / static_cast< double >( label_num ) );
 	}
 }
@@ -249,7 +270,7 @@ void interpolate_test( int mode, bool reso_up )
 	switch( mode )
 	{
 	case 0:
-		mist::nearest::interpolate( tmp, image_object, w, h );
+		mist::nearest::interpolate( tmp, image_object, w, h, 1 );
 		break;
 
 	case 2:

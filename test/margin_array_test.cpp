@@ -35,4 +35,6 @@ int main( int argc, char *argv[] )
 	m.fill_margin( 9 );
 
 	std::cout << m << std::endl;
+
+	return( 0 );
 }

@@ -27,6 +27,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "decimal_test"=".\decimal_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "fft_test"=".\fft_test.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -40,6 +52,18 @@ Package=<4>
 ###############################################################################
 
 Project: "image_test"=".\image_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "integer_test"=".\integer_test.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

@@ -213,7 +213,8 @@ public:
 		{
 			return( operator =( integer( 0 ) ) );
 		}
-		else if( ::std::abs( static_cast< int >( n ) ) >= BASE )
+//		else if( ::std::abs( static_cast< int >( n ) ) >= BASE )
+		else if( n >= BASE || -n >= BASE )
 		{
 			return( operator *=( integer( n ) ) );
 		}
@@ -345,7 +346,8 @@ public:
 			std::cerr << "zero division!!" << std::endl;
 			return( *this );
 		}
-		else if( ::std::abs( static_cast< int >( n ) ) >= BASE )
+//		else if( ::std::abs( static_cast< int >( n ) ) >= BASE )
+		else if( n >= BASE || -n >= BASE )
 		{
 			return( operator /=( integer( n ) ) );
 		}
@@ -504,7 +506,7 @@ public:
 				{
 					dmy.length_--;
 				}
-				s = static_cast< char >( '0' + t ) + s;
+				s = ::std::string( static_cast< char >( '0' + t ) ) + s;
 			}
 			return( ( sign_ ? "" : "-" ) + s );
 		}
@@ -813,6 +815,7 @@ protected:
 	}
 };
 
+
 template < unsigned int __256_N__ > inline const integer< __256_N__ > operator +( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) += v2 ); }
 template < unsigned int __256_N__ > inline const integer< __256_N__ > operator -( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) -= v2 ); }
 template < unsigned int __256_N__ > inline const integer< __256_N__ > operator *( const integer< __256_N__ > &v1, const integer< __256_N__ > &v2 ){ return( integer< __256_N__ >( v1 ) *= v2 ); }
@@ -841,9 +844,6 @@ inline std::ostream &operator <<( std::ostream &out, const integer< __256_N__ > 
 	return( out );
 }
 
-
-// mist–¼‘O‹óŠÔ‚ÌI‚í‚è
-_MIST_END
 
 
 #endif // __INCLUDE_MIST_INTEGER_H__
