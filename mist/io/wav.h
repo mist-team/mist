@@ -729,16 +729,14 @@ namespace __wav_controller__
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief WAVファイルから音声データををMISTコンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] sound         … 引数の説明
-//! @param[in]  filename      … 引数の説明
-//! @param[out] sampling_rate … 引数の説明
+//! @param[out] sound         … 音声データを出力するMISTコンテナ
+//! @param[in]  filename      … WAVファイル名
+//! @param[out] sampling_rate … WAVファイルに記録されているサンプリングレート
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … WAVファイルの読み込みに成功
+//! @retval false … ファイルの読み込みに失敗（ファイルが存在しない，不適切なファイル等・・・）
 //! 
 template < class T, class Allocator >
 bool read_wav( array< T, Allocator > &sound, const std::string &filename, unsigned int &sampling_rate )
@@ -747,15 +745,13 @@ bool read_wav( array< T, Allocator > &sound, const std::string &filename, unsign
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief WAVファイルから音声データををMISTコンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] sound    … 引数の説明
-//! @param[in] filename … 引数の説明
+//! @param[out] sound         … 音声データを出力するMISTコンテナ
+//! @param[in]  filename      … WAVファイル名
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … WAVファイルの読み込みに成功
+//! @retval false … ファイルの読み込みに失敗（ファイルが存在しない，不適切なファイル等・・・）
 //! 
 template < class T, class Allocator >
 bool read_wav( array< T, Allocator > &sound, const std::string &filename )
@@ -765,17 +761,17 @@ bool read_wav( array< T, Allocator > &sound, const std::string &filename )
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナのデータをWAVファイルへ出力する
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] sound         … 引数の説明
-//! @param[in] filename      … 引数の説明
-//! @param[in] wav_bits      … 引数の説明
-//! @param[in] sampling_rate … 引数の説明
+//! @param[in] sound         … 音声データの入ったMISTコンテナ
+//! @param[in] filename      … 出力ファイル名
+//! @param[in] wav_bits      … 出力するWAVファイルの量子化ビット数
+//! @param[in] sampling_rate … 出力するWAVファイルのサンプリングレート
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … WAVファイルの出力に成功
+//! @retval false … ファイルの出力に失敗
 //! 
 template < class T, class Allocator >
 bool write_wav( const array< T, Allocator > &sound, const std::string &filename, typename array< T, Allocator >::size_type wav_bits,

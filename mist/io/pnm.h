@@ -415,16 +415,16 @@ namespace __pnm_controller__
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief PNM画像をMISTコンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! P1～P6までの全てのPNM画像を読み込むことが可能
 //! 
-//! @param[out] image    … 引数の説明
-//! @param[in]  filename … 引数の説明
-//! @param[in]  level    … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//! @param[in]  level    … 読み込んだPNMファイルをMISTコンテナに格納する際の量子化レベル
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 bool read_pnm( array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type level = 255 )
@@ -433,17 +433,25 @@ bool read_pnm( array2< T, Allocator > &image, const std::string &filename, typen
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナの画像をPNM形式でファイルに出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 出力する画像形式によって，必要なマジックナンバーを選択する必要あり
+//! @attention デフォルトのマジックナンバーはP6のカラー画像で，量子化レベルは256階調
 //! 
-//! @param[in] image    … 引数の説明
-//! @param[in] filename … 引数の説明
-//! @param[in] pnm_type … 引数の説明
-//! @param[in] level    … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image    … 出力画像を保持するMISTコンテナ
+//! @param[in] filename … 出力ファイル名
+//! @param[in] pnm_type … 以下に示すマジックナンバーのうちの1つ
+//! - PNM画像のマジックナンバー
+//!   -# bitmap (ASCII) 2値 
+//!   -# graymap (ASCII) グレースケール 
+//!   -# pixmap (ASCII) カラー 
+//!   -# bitmap (Binary) 2値 
+//!   -# graymap (Binary) グレースケール 
+//!   -# pixmap (Binary) カラー 
+//! @param[in] level    … 出力するPNMファイルの量子化ビット数
+//!
+//! @retval true  … 画像の書き込みに成功
+//! @retval false … 画像の書き込みに失敗
 //! 
 template < class T, class Allocator >
 bool write_pnm( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type pnm_type = 6, typename array2< T, Allocator >::size_type level = 255 )

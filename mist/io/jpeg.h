@@ -182,15 +182,15 @@ namespace __jpeg_controller__
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief JPEG画像をMISTコンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 全てのJPEG画像形式（ロスレスのJPEGを除く）を読み込むことが可能
 //! 
-//! @param[out] image    … 引数の説明
-//! @param[in]  filename … 引数の説明
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 bool read_jpeg( array2< T, Allocator > &image, const std::string &filename )
@@ -199,16 +199,16 @@ bool read_jpeg( array2< T, Allocator > &image, const std::string &filename )
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナの画像をJPEG形式でファイルに出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention JPEGの品質は0から100まであり，数値が大きいほど圧縮率は低くなる．小さくすると，画質が悪くなるので注意．（デフォルト地は100）
 //! 
-//! @param[in] image    … 引数の説明
-//! @param[in] filename … 引数の説明
-//! @param[in] quality  … 引数の説明
+//! @param[in] image    … 出力画像を保持するMISTコンテナ
+//! @param[in] filename … 出力ファイル名
+//! @param[in] quality  … 出力するJPEG画像の品質
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … 画像の書き込みに成功
+//! @retval false … 画像の書き込みに失敗
 //! 
 template < class T, class Allocator >
 bool write_jpeg( const array2< T, Allocator > &image, const std::string &filename, int quality = 100 )

@@ -71,15 +71,15 @@ namespace __image_controller__
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief JPEG，TIFF，PNG，BMP，PNM，GIF 画像を拡張子に基づいてMISTコンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 拡張子に基づいて画像形式を判別するため，正しいファイル拡張子が付いている必要あり
 //! 
-//! @param[out] image    … 引数の説明
-//! @param[in]  filename … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 inline bool read_image( mist::array2< T, Allocator > &image, const std::string &filename )
@@ -127,15 +127,16 @@ inline bool read_image( mist::array2< T, Allocator > &image, const std::string &
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナの画像をTIFF形式でJPEG，TIFF，PNG，BMP，PNM，GIF 画像形式でファイルに出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 拡張子に基づいて画像形式を判別するため，正しいファイル拡張子が付いている必要あり
+//! @attention 出力されるファイルの圧縮率は，各 read_jpeg 等のデフォルト値が用いられる
 //! 
-//! @param[in] image    … 引数の説明
-//! @param[in] filename … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 inline bool write_image( mist::array2< T, Allocator > &image, const std::string &filename )

@@ -573,20 +573,21 @@ namespace __raw_controller__
 
 
 
-/// @brief 関数・クラスの概要を書く
+
+/// @brief 無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image              … 引数の説明
-//! @param[in]  filename           … 引数の説明
-//! @param[in]  w                  … 引数の説明
-//! @param[in]  x                  … 引数の説明
-//! @param[in]  offset             … 引数の説明
-//! @param[in]  from_little_endian … 引数の説明
-//! @param[in]  callback           … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[out] image              … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename           … 入力ファイル名
+//! @param[in]  w                  … 入力画像の幅
+//! @param[in]  x                  … 入力画像の画素サイズ
+//! @param[in]  offset             … 画像に足しこむオフセット値
+//! @param[in]  from_little_endian … 入力画像が記録されている形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//! @param[in]  callback           … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator, class Functor >
 bool read_raw( array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::size_type w,
@@ -596,18 +597,18 @@ bool read_raw( array1< T, Allocator > &image, const std::string &filename, typen
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を 無圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! @param[in]  callback         … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//! @param[in] callback         … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -616,18 +617,18 @@ bool write_raw( const array1< T, Allocator > &image, const std::string &filename
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! @param[in]  callback         … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//! @param[in] callback         … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -636,19 +637,19 @@ bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filen
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image              … 引数の説明
-//! @param[in]  filename           … 引数の説明
-//! @param[in]  w                  … 引数の説明
-//! @param[in]  x                  … 引数の説明
-//! @param[in]  offset             … 引数の説明
-//! @param[in]  from_little_endian … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[out] image              … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename           … 入力ファイル名
+//! @param[in]  w                  … 入力画像の幅
+//! @param[in]  x                  … 入力画像の画素サイズ
+//! @param[in]  offset             … 画像に足しこむオフセット値
+//! @param[in]  from_little_endian … 入力画像が記録されている形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 bool read_raw( array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::size_type w,
@@ -658,17 +659,17 @@ bool read_raw( array1< T, Allocator > &image, const std::string &filename, typen
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を 無圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 bool write_raw( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
@@ -677,17 +678,17 @@ bool write_raw( const array1< T, Allocator > &image, const std::string &filename
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
@@ -698,22 +699,22 @@ bool write_raw_gz( const array1< T, Allocator > &image, const std::string &filen
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image              … 引数の説明
-//! @param[in]  filename           … 引数の説明
-//! @param[in]  w                  … 引数の説明
-//! @param[in]  h                  … 引数の説明
-//! @param[in]  x                  … 引数の説明
-//! @param[in]  y                  … 引数の説明
-//! @param[in]  offset             … 引数の説明
-//! @param[in]  from_little_endian … 引数の説明
-//! @param[in]  callback           … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[out] image              … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename           … 入力ファイル名
+//! @param[in]  w                  … 入力画像のX軸方向のサイズ
+//! @param[in]  h                  … 入力画像のY軸方向のサイズ
+//! @param[in]  x                  … 入力画像のX軸方向の画素サイズ
+//! @param[in]  y                  … 入力画像のY軸方向の画素サイズ
+//! @param[in]  offset             … 画像に足しこむオフセット値
+//! @param[in]  from_little_endian … 入力画像が記録されている形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//! @param[in]  callback           … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator, class Functor >
 bool read_raw( array2< T, Allocator > &image, const std::string &filename,
@@ -724,18 +725,18 @@ bool read_raw( array2< T, Allocator > &image, const std::string &filename,
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を 無圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! @param[in]  callback         … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//! @param[in] callback         … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -744,18 +745,18 @@ bool write_raw( const array2< T, Allocator > &image, const std::string &filename
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! @param[in]  callback         … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//! @param[in] callback         … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -764,21 +765,21 @@ bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filen
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image              … 引数の説明
-//! @param[in]  filename           … 引数の説明
-//! @param[in]  w                  … 引数の説明
-//! @param[in]  h                  … 引数の説明
-//! @param[in]  x                  … 引数の説明
-//! @param[in]  y                  … 引数の説明
-//! @param[in]  offset             … 引数の説明
-//! @param[in]  from_little_endian … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[out] image              … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename           … 入力ファイル名
+//! @param[in]  w                  … 入力画像のX軸方向のサイズ
+//! @param[in]  h                  … 入力画像のY軸方向のサイズ
+//! @param[in]  x                  … 入力画像のX軸方向の画素サイズ
+//! @param[in]  y                  … 入力画像のY軸方向の画素サイズ
+//! @param[in]  offset             … 画像に足しこむオフセット値
+//! @param[in]  from_little_endian … 入力画像が記録されている形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 bool read_raw( array2< T, Allocator > &image, const std::string &filename,
@@ -789,17 +790,17 @@ bool read_raw( array2< T, Allocator > &image, const std::string &filename,
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を 無圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 bool write_raw( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
@@ -808,17 +809,17 @@ bool write_raw( const array2< T, Allocator > &image, const std::string &filename
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
@@ -829,24 +830,24 @@ bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filen
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image              … 引数の説明
-//! @param[in]  filename           … 引数の説明
-//! @param[in]  w                  … 引数の説明
-//! @param[in]  h                  … 引数の説明
-//! @param[in]  d                  … 引数の説明
-//! @param[in]  x                  … 引数の説明
-//! @param[in]  y                  … 引数の説明
-//! @param[in]  z                  … 引数の説明
-//! @param[in]  offset             … 引数の説明
-//! @param[in]  from_little_endian … 引数の説明
-//! @param[in]  callback           … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[out] image              … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename           … 入力ファイル名
+//! @param[in]  w                  … 入力画像のX軸方向のサイズ
+//! @param[in]  h                  … 入力画像のY軸方向のサイズ
+//! @param[in]  d                  … 入力画像のZ軸方向のサイズ
+//! @param[in]  x                  … 入力画像のX軸方向の画素サイズ
+//! @param[in]  y                  … 入力画像のY軸方向の画素サイズ
+//! @param[in]  z                  … 入力画像のZ軸方向の画素サイズ
+//! @param[in]  offset             … 画像に足しこむオフセット値
+//! @param[in]  from_little_endian … 入力画像が記録されている形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//! @param[in]  callback           … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator, class Functor >
 bool read_raw( array3< T, Allocator > &image, const std::string &filename,
@@ -857,18 +858,18 @@ bool read_raw( array3< T, Allocator > &image, const std::string &filename,
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を 無圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! @param[in]  callback         … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//! @param[in] callback         … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -877,18 +878,18 @@ bool write_raw( const array3< T, Allocator > &image, const std::string &filename
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! @param[in]  callback         … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//! @param[in] callback         … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator, class Functor >
 bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
@@ -924,17 +925,18 @@ bool read_raw( array3< T, Allocator > &image, const std::string &filename,
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を 無圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//! @param[in]  callback         … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 bool write_raw( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
@@ -943,17 +945,17 @@ bool write_raw( const array3< T, Allocator > &image, const std::string &filename
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[out] image            … 引数の説明
-//! @param[in]  filename         … 引数の説明
-//! @param[in]  offset           … 引数の説明
-//! @param[in]  to_little_endian … 引数の説明
-//! 
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式
+//!   - リトルエンディアン … true
+//!   - ビッグエンディアン … false
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
 //! 
 template < class T, class Allocator >
 bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filename, typename array3< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
