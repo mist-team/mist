@@ -60,7 +60,7 @@ struct matrix_expression
 	size_type rows( ) const { return( expression.rows( ) ); };
 	size_type cols( ) const { return( expression.cols( ) ); };
 
-	matrix_expression( const T &exp ) : expression( exp ){ }
+	explicit matrix_expression( const T &exp ) : expression( exp ){ }
 
 	matrix_expression< matrix_minus< matrix_expression< T > > > operator -() const
 	{
@@ -82,7 +82,7 @@ struct matrix_single_operation
 
 	const T &middle_;
 
-	matrix_single_operation( const T &mhs ) : middle_( mhs ){}
+	explicit matrix_single_operation( const T &mhs ) : middle_( mhs ){}
 };
 
 // ÇQçÄââéZéq
@@ -108,7 +108,7 @@ struct matrix_minus : public matrix_single_operation< T >
 	typedef typename T::size_type		size_type;
 	typedef typename T::allocator_type	allocator_type;
 
-	matrix_minus( const T &mhs ) : matrix_single_operation< T >( mhs ){}
+	explicit matrix_minus( const T &mhs ) : matrix_single_operation< T >( mhs ){}
 	size_type rows( ) const { return( middle_.rows( ) ); }
 	size_type cols( ) const { return( middle_.cols( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( - middle_( r, c ) ); }
@@ -123,7 +123,7 @@ struct matrix_transpose : public matrix_single_operation< T >
 	typedef typename T::size_type		size_type;
 	typedef typename T::allocator_type	allocator_type;
 
-	matrix_transpose( const T &mhs ) : matrix_single_operation< T >( mhs ){}
+	explicit matrix_transpose( const T &mhs ) : matrix_single_operation< T >( mhs ){}
 	size_type rows( ) const { return( middle_.cols( ) ); }
 	size_type cols( ) const { return( middle_.rows( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( middle_( c, r ) ); }
@@ -402,13 +402,45 @@ public:
 
 
 
+
+
 public: // îzóÒÇ…ëŒÇ∑ÇÈéZèpââéZ
+
+	
+/************************************************************************************************************
+**
+**      ïÑçÜîΩì]ÉIÉyÉåÅ[É^Ç∆ì]íuçsóÒÉIÉyÉåÅ[É^
+**
+************************************************************************************************************/
 #if _USE_EXPRESSION_TEMPLATE_ != 0
-	matrix_expression< matrix_transpose< matrix > > t( )
+
+	// ïÑçÜîΩì]
+	matrix_expression< matrix_minus< matrix > > operator -( ) const
+	{
+		return( matrix_expression< matrix_minus< matrix > >( matrix_minus< matrix >( *this ) ) );
+	}
+
+	// ì]íuçsóÒ
+	matrix_expression< matrix_transpose< matrix > > t( ) const
 	{
 		return( matrix_expression< matrix_transpose< matrix > >( matrix_transpose< matrix >( *this ) ) );
 	}
+
 #else
+
+	// ïÑçÜîΩì]
+	matrix operator -( ) const
+	{
+		const matrix &m = *this;
+		matrix o( size1_, size2_ );
+		for( size_type i = 0 ; i < o.size( ) ; i++ )
+		{
+			o[ i ] = -m[ i ];
+		}
+		return( o );
+	}
+
+	// ì]íuçsóÒ
 	matrix t() const
 	{
 		const matrix &m = *this;
@@ -422,6 +454,7 @@ public: // îzóÒÇ…ëŒÇ∑ÇÈéZèpââéZ
 		}
 		return( o );
 	}
+
 #endif
 
 
@@ -783,52 +816,6 @@ inline ::std::ostream &operator <<( ::std::ostream &out,  const matrix_expressio
 
 
 
-/************************************************************************************************************
-**
-**      ïÑçÜîΩì]ÉIÉyÉåÅ[É^Ç∆ì]íuçsóÒÉIÉyÉåÅ[É^
-**
-************************************************************************************************************/
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-// ïÑçÜîΩì]
-template< class T, class A >
-inline matrix_expression< matrix_minus< matrix< T, A > > > operator -( const matrix< T, A > &mhs )
-{
-	return( matrix_expression< matrix_minus< matrix< T, A > > >( matrix_minus< matrix< T, A > >( mhs ) ) );
-}
-
-
-// ì]íuçsóÒ
-template< class T, class A >
-inline matrix_expression< matrix_transpose< matrix< T, A > > > transpose( const matrix< T, A > &mhs )
-{
-	return( matrix_expression< matrix_transpose< matrix< T, A > > >( matrix_transpose< matrix< T, A > >( mhs ) ) );
-}
-
-#else
-
-// ïÑçÜîΩì]
-template < class T, class A >
-inline matrix< T, A > operator -( const matrix< T, A > &m )
-{
-	typedef typename matrix< T, A >::size_type size_type;
-	matrix< T, A > o( m );
-	for( size_type i = 0 ; i < o.size( ) ; i++ ) o[i] = -o[i];
-	return( o );
-}
-
-
-// ì]íuçsóÒ
-template< class T, class A >
-inline matrix< T, A > transpose( const matrix< T, A > &mhs )
-{
-	return( mhs.t( ) );
-}
-
-#endif
-
-
-
 
 /************************************************************************************************************
 **
@@ -895,7 +882,7 @@ inline matrix_expression< matrix_add_const< matrix_expression< Left >, typename 
 								operator +( const matrix_expression< Left > &lhs, const typename matrix_expression< Left >::value_type &rhs )
 {
 	typedef typename matrix_expression< Left >::value_type value_type;
-	return( matrix_expression< matrix_add_const< matrix_expression< Left >, typename matrix_expression< Left >::value_type >( matrix_add_const< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
+	return( matrix_expression< matrix_add_const< matrix_expression< Left >, typename matrix_expression< Left >::value_type > >( matrix_add_const< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
 }
 
 template< class Right >
@@ -903,7 +890,7 @@ inline matrix_expression< matrix_add_const< matrix_expression< Right >, typename
 								operator +( const typename matrix_expression< Right >::value_type &lhs, const matrix_expression< Right > &rhs )
 {
 	typedef typename matrix_expression< Right >::value_type value_type;
-	return( matrix_add_const< matrix_expression< Right >, value_type >( rhs, lhs ) );
+	return( matrix_expression< matrix_add_const< matrix_expression< Right >, typename matrix_expression< Right >::value_type > >( matrix_add_const< matrix_expression< Right >, value_type >( rhs, lhs ) ) );
 }
 
 
@@ -951,7 +938,7 @@ inline matrix_expression< matrix_sub_const1< matrix_expression< Left >, typename
 					operator -( const matrix_expression< Left > &lhs, const typename matrix_expression< Left >::value_type &rhs )
 {
 	typedef typename matrix_expression< Left >::value_type value_type;
-	return( matrix_expression< matrix_sub_const1< matrix_expression< Left >, typename matrix_expression< Left >::value_type > >( matrix_sub_const1< matrix_expression< Left, A, Derive >, value_type >( lhs, rhs ) ) );
+	return( matrix_expression< matrix_sub_const1< matrix_expression< Left >, typename matrix_expression< Left >::value_type > >( matrix_sub_const1< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
 }
 
 template< class Right >

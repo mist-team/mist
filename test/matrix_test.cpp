@@ -45,9 +45,12 @@ void test_matrix_multiply2( )
 	a( 1, 0 ) = 3.0; a( 1, 1 ) =  1.0; a( 1, 2 ) = -3.0;
 	a( 2, 0 ) = 1.0; a( 2, 1 ) = -2.0; a( 2, 2 ) = -5.0;
 
+	cout << a << endl;
+
 	cout << "mat1( 3, 3 ) * mat2( 3, 3 ).t( )" << endl << endl;
 
-	cout << a * a.t( ) << endl;
+	cout << a * a.t( ) << endl << endl;
+	cout << ( - a + a.t( ) ).t( ) << endl << endl;
 }
 
 void test_matrix_operation( )
