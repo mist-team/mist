@@ -5,7 +5,7 @@
 #include <FL/Fl_File_Chooser.H>
 
 
-#include <mist/filter/median_filter.h>
+#include <mist/filter/median.h>
 #include <mist/filter/distance.h>
 #include <mist/filter/labeling.h>
 #include <mist/timer.h>
@@ -141,7 +141,7 @@ void ct_draw_area::median_filter1D( ct_image_window *wnd )
 	a[ 6 ] = 0;
 
 	std::cout << a << std::endl;
-	mist::median_filter( a, b, 3 );
+	mist::median( a, b, 3 );
 	std::cout << b << std::endl;
 }
 
@@ -155,7 +155,7 @@ void ct_draw_area::median_filter2D( ct_image_window *wnd )
 	a( 4, 0 ) = 0; a( 4, 1 ) = 0; a( 4, 2 ) = 0; a( 4, 3 ) = 0; a( 4, 4 ) = 0;
 
 	std::cout << a << std::endl;
-	mist::median_filter( a, b, 3, 3 );
+	mist::median( a, b, 3, 3 );
 	std::cout << b << std::endl;
 }
 
@@ -166,7 +166,7 @@ void ct_draw_area::median_filter3D( ct_image_window *wnd )
 	mist::array3< short > tmp = ct;
 	{
 		mist::timer t;
-		mist::median_filter( tmp, ct, 3, 3, 3 );
+		mist::median( tmp, ct, 3, 3, 3 );
 		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
 	}
 	redraw( );
