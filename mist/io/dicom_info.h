@@ -232,21 +232,54 @@ namespace dicom_controller
 		}
 	};
 
-
-	class dicom_info
+	class dicom_image_info
 	{
 	public:
-		compress_type compression_type;
+		compress_type	compression_type;
+		unsigned short	samples_per_pixel;
+		signed int		number_of_frames;
+		unsigned short	rows;
+		unsigned short	cols;
+		double			pixel_spacing_x;
+		double			pixel_spacing_y;
+		unsigned short	bits_allocated;
+		unsigned short	bits_stored;
+		unsigned short	high_bits;
+		unsigned short	pixel_representation;
+		double			window_center;
+		double			window_width;
+
+		dicom_image_info( ) :
+			compression_type( RAW ),
+			samples_per_pixel( 1 ),
+			number_of_frames( 1 ),
+			rows( 0 ),
+			cols( 0 ),
+			pixel_spacing_x( 1.0 ),
+			pixel_spacing_y( 1.0 ),
+			bits_allocated( 8 ),
+			bits_stored( 8 ),
+			high_bits( 7 ),
+			pixel_representation( 0 ),
+			window_center( 128 ),
+			window_width( 256 )
+		{
+		}
+	};
+
+	class dicom_info : public dicom_image_info
+	{
+	public:
 
 	public:
-		dicom_info( compress_type c = RAW ) : compression_type( c ) { }
-		dicom_info( const dicom_info &info ) : compression_type( info.compression_type ) { }
+		dicom_info( ){ }
+		dicom_info( const dicom_info &info ) : dicom_image_info( info ) { }
 
 		const dicom_info &operator =( const dicom_info &info )
 		{
 			if( &info != this )
 			{
-				compression_type = info.compression_type;
+				dicom_image_info::operator =( info );
 			}
 			return( *this );
 		}
@@ -294,11 +327,87 @@ namespace dicom_controller
 			{
 				return( list->type );
 			}
+			list++;
 		}
 
 		return( RAW );
 	}
 
+	// コンテナからタグを検索し，double値を返す
+	double find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, double default_value )
+	{
+		dicom_tag_container::const_iterator cite = dicom.find( group, element );
+		return( cite == dicom.end( ) ? default_value : cite->to_double( ) );
+	}
+	// コンテナからタグを検索し，float値を返す
+	float find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, float default_value )
+	{
+		dicom_tag_container::const_iterator cite = dicom.find( group, element );
+		return( cite == dicom.end( ) ? default_value : cite->to_float( ) );
+	}
+	// コンテナからタグを検索し，signed int値を返す
+	signed int find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, signed int default_value )
+	{
+		dicom_tag_container::const_iterator cite = dicom.find( group, element );
+		return( cite == dicom.end( ) ? default_value : cite->to_int( ) );
+	}
+	// コンテナからタグを検索し，unsigned int値を返す
+	unsigned int find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, unsigned int default_value )
+	{
+		dicom_tag_container::const_iterator cite = dicom.find( group, element );
+		return( cite == dicom.end( ) ? default_value : cite->to_uint( ) );
+	}
+	// コンテナからタグを検索し，signed short値を返す
+	signed short find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, signed short default_value )
+	{
+		dicom_tag_container::const_iterator cite = dicom.find( group, element );
+		return( cite == dicom.end( ) ? default_value : cite->to_short( ) );
+	}
+	// コンテナからタグを検索し，unsigned short値を返す
+	unsigned short find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, unsigned short default_value )
+	{
+		dicom_tag_container::const_iterator cite = dicom.find( group, element );
+		return( cite == dicom.end( ) ? default_value : cite->to_ushort( ) );
+	}
+	// コンテナからタグを検索し，std::string値を返す
+	std::string find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, const std::string &default_value )
+	{
+		dicom_tag_container::const_iterator cite = dicom.find( group, element );
+		return( cite == dicom.end( ) ? default_value : cite->to_string( ) );
+	}
+	// コンテナからタグを検索し，const char*値を返す
+	std::string find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, const char *default_value )
+	{
+		dicom_tag_container::const_iterator cite = dicom.find( group, element );
+		return( cite == dicom.end( ) ? default_value : cite->to_string( ) );
+	}
+
+	bool get_dicom_info( const dicom_tag_container &dicom, dicom_info &info )
+	{
+		info.compression_type		= get_compress_type( find_tag( dicom, 0x0002, 0x0010, "" ) );
+		info.samples_per_pixel		= find_tag( dicom, 0x0028, 0x0002, info.samples_per_pixel );
+		info.number_of_frames		= find_tag( dicom, 0x0028, 0x0008, info.number_of_frames );
+		info.rows					= find_tag( dicom, 0x0028, 0x0010, info.rows );
+		info.cols					= find_tag( dicom, 0x0028, 0x0011, info.cols );
+
+		std::string pixel_spacing	= find_tag( dicom, 0x0028, 0x0030, "" );
+		if( pixel_spacing != "" )
+		{
+			double resoX = 1.0, resoY = 1.0;
+			sscanf( pixel_spacing.c_str( ), "%lf\\%lf", &resoX, &resoY );
+			info.pixel_spacing_x	= resoX;
+			info.pixel_spacing_y	= resoY;
+		}
+
+		info.bits_allocated			= find_tag( dicom, 0x0028, 0x0100, info.bits_allocated );
+		info.bits_stored			= find_tag( dicom, 0x0028, 0x0101, info.bits_stored );
+		info.high_bits				= find_tag( dicom, 0x0028, 0x0102, info.high_bits );
+		info.pixel_representation	= find_tag( dicom, 0x0028, 0x0103, info.pixel_representation );
+		info.window_center			= find_tag( dicom, 0x0028, 0x1050, info.window_center );
+		info.window_width			= find_tag( dicom, 0x0028, 0x1051, info.window_width );
+
+		return( true );
+	}
 
 	// RLE圧縮ファイルのデコーダ
 	inline bool decode_RLE( unsigned char *pointer, unsigned char *end_pointer, dicom_element &element )

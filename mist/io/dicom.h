@@ -185,7 +185,7 @@ namespace dicom_controller
 #ifdef __SHOW_DICOM_UNKNOWN_TAG__
 			printf( "( %04x, %04x, %s, % 8d ) = Unknown Tags!!\n", group, element, VR, num_bytes );
 #endif
-			if( data + 4 + num_bytes < e )
+			if( data + 4 + num_bytes <= e )
 			{
 				numBytes = 0;
 				return( reinterpret_cast< unsigned char * >( data + 4 + num_bytes ) );
@@ -733,7 +733,7 @@ namespace dicom_controller
 							}
 						}
 					}
-					if( p < end_pointer )
+					if( p <= end_pointer )
 					{
 						numBytes = p - pointer;
 						ite = dicom.append( dicom_element( tag, pointer, numBytes ) );
@@ -872,71 +872,30 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 	typedef typename pixel_converter::color_type color_type;
 
 	dicom_controller::dicom_tag_container dicom;
-	dicom_controller::dicom_tag_container::iterator ite;
+	dicom_controller::dicom_info info;
+
 	if( !dicom_controller::read_dicom_tags( dicom, filename ) )
 	{
 		return( false );
 	}
 
+	get_dicom_info( dicom, info );
+
 	size_type height = 0;
 	size_type width  = 0;
 	size_type bitsAllocated = 8;
-	double window_level = 128;
-	double window_width = 256;
+	double window_level = info.window_center;
+	double window_width = info.window_width;
 	double resoX = 0.625;
 	double resoY = 0.625;
 
-	ite = dicom.find( 0x0028, 0x1050 );
+	dicom_controller::dicom_tag_container::iterator ite = dicom.find( 0x7fe0, 0x0010 );
 	if( ite != dicom.end( ) )
 	{
-		window_level = ite->to_double( );
-	}
-
-	ite = dicom.find( 0x0028, 0x1051 );
-	if( ite != dicom.end( ) )
-	{
-		window_width = ite->to_double( );
-	}
-
-	ite = dicom.find( 0x0028, 0x0011 );
-	if( ite != dicom.end( ) )
-	{
-		width = ite->to_ushort( );
-	}
-	else
-	{
-		return( false );
-	}
-
-	ite = dicom.find( 0x0028, 0x0010 );
-	if( ite != dicom.end( ) )
-	{
-		height = ite->to_ushort( );
-	}
-	else
-	{
-		return( false );
-	}
-
-	ite = dicom.find( 0x0028, 0x0030 );
-	if( ite != dicom.end() )
-	{
-		sscanf( ite->to_string( ).c_str( ), "%lf\\%lf", &resoX, &resoY );
-	}
-
-	ite = dicom.find( 0x0028, 0x0100 );
-	if( ite != dicom.end( ) )
-	{
-		bitsAllocated = ite->to_ushort( );
-	}
-
-	ite = dicom.find( 0x7fe0, 0x0010 );
-	if( ite != dicom.end( ) )
-	{
-		image.resize( width, height );
-		image.reso1( resoX );
-		image.reso2( resoY );
-		if( bitsAllocated == 8 )
+		image.resize( info.cols, info.rows );
+		image.reso1( info.pixel_spacing_x );
+		image.reso2( info.pixel_spacing_y );
+		if( info.bits_allocated == 8 )
 		{
 			unsigned char *data = ite->data;
 			double pix;
@@ -951,7 +910,7 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 				image[ i ] = pixel_converter::convert_to( pixel, pixel, pixel );
 			}
 		}
-		else if( bitsAllocated == 16 )
+		else if( info.bits_allocated == 16 )
 		{
 			short *data = reinterpret_cast< short * >( ite->data );
 			double pix;
