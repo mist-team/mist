@@ -95,6 +95,7 @@ void euclidean_distance_transform_test( )
 
 	mist::convert( image_object, tmp1 );
 
+	tmp1.reso( 1.0, 2.0 );
 	{
 		mist::timer t;
 		mist::calvin::distance_transform( tmp1, tmp2 );

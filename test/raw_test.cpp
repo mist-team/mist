@@ -213,8 +213,27 @@ void ct_draw_area::euclidean_distance_transform( ct_image_window *wnd )
 {
 	if( ct.empty( ) ) return;
 
-	mist::array3< short > tmp = ct;
-	mist::euclidean_distance_transform( tmp, ct );
+	mist::array3< double > tmp1 = ct, tmp2 = ct;
+	{
+		mist::timer t;
+		mist::calvin::distance_transform( tmp1, tmp1 );
+		std::cout << "Computation time for Calvin: " << t << " sec" << std::endl;
+	}
+	{
+		mist::timer t;
+		mist::euclidean::distance_transform( tmp2, tmp2 );
+		std::cout << "Computation time for Saito: " << t << " sec" << std::endl;
+	}
+
+	double err = 0.0;
+	for( int i = 0 ; i < tmp1.size( ) ; i++ )
+	{
+		err += ( tmp1[ i ] - tmp2[ i ] ) * ( tmp1[ i ] - tmp2[ i ] );
+		ct[ i ] = tmp1[ i ] - tmp2[ i ];
+	}
+
+	std::cout << "Error: " << err << std::endl;
+
 	redraw( );
 	Fl::wait( 0 );
 }

@@ -652,13 +652,16 @@ namespace calvin
 		}
 
 		template < class Array >
-		inline static typename Array::size_type size1( Array &in ){ return( in.size1( ) ); }
+		inline static typename Array::size_type size1( const Array &in ){ return( in.size1( ) ); }
 
 		template < class Array >
-		inline static typename Array::size_type size2( Array &in ){ return( in.size2( ) ); }
+		inline static typename Array::size_type size2( const Array &in ){ return( in.size2( ) ); }
 
 		template < class Array >
-		inline static typename Array::size_type size3( Array &in ){ return( in.size3( ) ); }
+		inline static typename Array::size_type size3( const Array &in ){ return( in.size3( ) ); }
+
+		template < class Array >
+		inline static double aspect( const Array &in ){ return( 1.0 ); }
 	};
 
 	template < >
@@ -671,13 +674,16 @@ namespace calvin
 		}
 
 		template < class Array >
-		inline static typename Array::size_type size1( Array &in ){ return( in.size2( ) ); }
+		inline static typename Array::size_type size1( const Array &in ){ return( in.size2( ) ); }
 
 		template < class Array >
-		inline static typename Array::size_type size2( Array &in ){ return( in.size1( ) ); }
+		inline static typename Array::size_type size2( const Array &in ){ return( in.size1( ) ); }
 
 		template < class Array >
-		inline static typename Array::size_type size3( Array &in ){ return( in.size3( ) ); }
+		inline static typename Array::size_type size3( const Array &in ){ return( in.size3( ) ); }
+
+		template < class Array >
+		inline static double aspect( const Array &in ){ return( in.reso2( ) / in.reso1( ) ); }
 	};
 
 	template < >
@@ -686,17 +692,20 @@ namespace calvin
 		template < class Array >
 		inline static typename Array::value_type &at( Array &in, typename Array::size_type _1, typename Array::size_type _2, typename Array::size_type _3 )
 		{
-			return( in( _3, _1, _2 ) );
+			return( in( _2, _3, _1 ) );
 		}
 
 		template < class Array >
-		inline static typename Array::size_type size1( Array &in ){ return( in.size3( ) ); }
+		inline static typename Array::size_type size1( const Array &in ){ return( in.size3( ) ); }
 
 		template < class Array >
-		inline static typename Array::size_type size2( Array &in ){ return( in.size1( ) ); }
+		inline static typename Array::size_type size2( const Array &in ){ return( in.size1( ) ); }
 
 		template < class Array >
-		inline static typename Array::size_type size3( Array &in ){ return( in.size2( ) ); }
+		inline static typename Array::size_type size3( const Array &in ){ return( in.size2( ) ); }
+
+		template < class Array >
+		inline static double aspect( const Array &in ){ return( in.reso3( ) / in.reso1( ) ); }
 	};
 
 	/// @brief Y,Z軸方向用の距離伝播関数（1次以外の全ての次元）
@@ -719,7 +728,7 @@ namespace calvin
 
 			value_type infinity = type_limits< value_type >::maximum( );
 
-			double vy = in.reso2( ) / in.reso1( );
+			double as = access::aspect( in );
 
 			double *f = new double[ _1 + 1 ];
 			double *g = new double[ _1 + 1 ];
@@ -734,6 +743,7 @@ namespace calvin
 					for( i1 = 0 ; i1 < _1 ; i1++ )
 					{
 						difference_type n = i1 + 1;
+						double nd = static_cast< double >( n ) * as;
 
 						f[ n ] = access::at( in, i1, i2, i3 );
 						if( f[ n ] == infinity )
@@ -745,17 +755,17 @@ namespace calvin
 						{
 							l++;
 							g[ l ] = f[ n ];
-							h[ l ] = n;
+							h[ l ] = nd;
 						}
 						else
 						{
-							while( l >= 2 && remove_edt( g[ l - 1 ], g[ l ], f[ n ], h[ l - 1 ], h[ l ], n ) )
+							while( l >= 2 && remove_edt( g[ l - 1 ], g[ l ], f[ n ], h[ l - 1 ], h[ l ], nd ) )
 							{
 								l--;
 							}
 							l++;
 							g[ l ] = f[ n ];
-							h[ l ] = n;
+							h[ l ] = nd;
 						}
 					}
 
@@ -770,10 +780,11 @@ namespace calvin
 					for( i1 = 0 ; i1 < _1 ; i1++ )
 					{
 						double n = i1 + 1;
-						double len = g[ l ] + ( h[ l ] - n ) * ( h[ l ] - n ), len_;
+						double nd = n * as;
+						double len = g[ l ] + ( h[ l ] - nd ) * ( h[ l ] - nd ), len_;
 						for( ; l < ns ; l++ )
 						{
-							len_ = g[ l + 1 ] + ( h[ l + 1 ] - n ) * ( h[ l + 1 ] - n );
+							len_ = g[ l + 1 ] + ( h[ l + 1 ] - nd ) * ( h[ l + 1 ] - nd );
 							if( len > len_ )
 							{
 								len = len_;
@@ -814,7 +825,6 @@ namespace calvin
 			const difference_type d = in.depth( );
 
 			const value_type max = type_limits< value_type >::maximum( );
-			const value_type infinity = static_cast< value_type >( ( w + h + d ) * ( w + h + d ) );
 
 			for( k = 0 ; k < d ; k++ )
 			{
@@ -935,9 +945,10 @@ namespace calvin
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
-		out.resize( in.size1( ), in.size2( ) );
+		out.resize( in.size1( ), in.size2( ), in.size3( ) );
 		out.reso1( in.reso1( ) );
 		out.reso2( in.reso2( ) );
+		out.reso3( in.reso3( ) );
 
 		size_type i;
 
