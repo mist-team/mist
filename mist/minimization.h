@@ -121,6 +121,113 @@ namespace __minimization_utility__
 		}
 	};
 
+	template < class T, class Allocator >
+	inline bool clipping( matrix< T, Allocator > &p1, matrix< T, Allocator > &p2, const double d1, const double d2, const double d )
+	{
+		typedef matrix< T, Allocator > matrix_type;
+
+		bool c1 = d + d1 >= 0;
+		bool c2 = d + d2 >= 0;
+
+		if( c1 && c2 )
+		{
+			return( true );
+		}
+		else if( !c1 && !c2 )
+		{
+			return( false );
+		}
+
+		matrix_type v1 = p1;
+		matrix_type v2 = p2;
+		if( !c1 )
+		{
+			p1 = v2 + ( v1 - v2 ) * ( ( d + d2 ) / ( d2 - d1 ) );
+		}
+		if( !c2 )
+		{
+			p2 = v1 + ( v2 - v1 ) * ( ( d + d1 ) / ( d1 - d2 ) );
+		}
+
+		return( true );
+	}
+
+	template < class T, class Allocator >
+	inline bool clipping( matrix< T, Allocator > &p1, matrix< T, Allocator > &p2, const matrix< T, Allocator > &p, const matrix< T, Allocator > &dir, const matrix< T, Allocator > &box )
+	{
+		typedef matrix< T, Allocator > matrix_type;
+		typedef typename matrix_type::value_type value_type;
+		typedef typename matrix_type::size_type size_type;
+
+		double infinity = 0.0;
+
+		matrix_type offset( p.size( ), 1 );
+
+		// もっとも長い対角方向の長さを取得し，バウンディングボックスの中央を求める
+		for( size_type r = 0 ; r < box.rows( ) ; r++ )
+		{
+			double l = ( box( r, 0 ) - box( r, 1 ) );
+			infinity += l * l;
+			offset[ r ] = ( box( r, 0 ) + box( r, 1 ) ) / 2.0;
+		}
+
+		infinity = std::sqrt( infinity );
+
+		// まず，十分に遠い天を設定する
+		p1 = p - dir * infinity - offset;
+		p2 = p + dir * infinity - offset;
+
+		bool flag = true;
+
+		for( size_type r = 0 ; r < box.rows( ) ; r++ )
+		{
+			// まず，下限をチェックする
+			flag = flag && clipping( p1, p2, p1[ r ], p2[ r ], std::abs( box( r, 0 ) - offset[ r ] ) );
+
+			// 次に，上限をチェックする
+			flag = flag && clipping( p1, p2, -p1[ r ], -p2[ r ], std::abs( box( r, 1 ) - offset[ r ] ) );
+		}
+
+		p1 += offset;
+		p2 += offset;
+
+		return( flag );
+	}
+
+	template < class T, class Allocator >
+	inline bool clipping_length( double &l1, double &l2, const matrix< T, Allocator > &p, const matrix< T, Allocator > &dir, const matrix< T, Allocator > &box )
+	{
+		typedef matrix< T, Allocator > matrix_type;
+		typedef typename matrix_type::value_type value_type;
+		typedef typename matrix_type::size_type size_type;
+
+		matrix_type p1, p2;
+
+		if( !clipping( p1, p2, p, dir, box ) )
+		{
+			return( false );
+		}
+
+		l1 = l2 = 0.0;
+
+		// もっとも長い対角方向の長さを取得し，バウンディングボックスの中央を求める
+		for( size_type r = 0 ; r < p1.size( ) ; r++ )
+		{
+			l1 += ( p[ r ] - p1[ r ] ) * ( p[ r ] - p1[ r ] );
+			l2 += ( p[ r ] - p2[ r ] ) * ( p[ r ] - p2[ r ] );
+		}
+
+		// 数値計算誤差の関係で，バウンディングボックスを越えるのを回避する
+		l1 = - std::sqrt( l1 ) + 0.000000000001;
+		l2 = + std::sqrt( l2 ) - 0.000000000001;
+
+		//std::cout << ( p + l1 * dir ).t( ) << std::endl;
+		//std::cout << ( p + l2 * dir ).t( ) << std::endl;
+
+
+		return( l1 < 0.0 || l2 > 0.0 );
+	}
+
 }
 
 
@@ -607,8 +714,8 @@ namespace brent
 }
 
 
-/// @brief 最急降下法（勾配を用いた多変数関数の極小値の探索）
-namespace gradient
+/// @brief 勾配関数をユーザーが定義する最急降下法（勾配を用いた多変数関数の極小値の探索）
+namespace gradient_with_vector
 {
 	/// @brief 探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する
 	//! 
@@ -671,6 +778,97 @@ namespace gradient
 		return( err );
 	}
 
+
+	/// @brief 探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する
+	//! 
+	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in]     bound          … 探索に用いる各要素の探索範囲
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     g              … 勾配関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[out]    iterations     … 実際の反復回数
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor1, class Functor2 >
+	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor1 f, Functor2 g, double tolerance, size_t &iterations, size_t max_iterations = 200 )
+	{
+		typedef typename matrix< T, Allocator >::value_type value_type;
+		typedef typename matrix< T, Allocator >::size_type size_type;
+		typedef typename matrix< T, Allocator >::difference_type difference_type;
+		typedef matrix< T, Allocator > matrix_type;
+
+		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 );
+		double x, err, old_err = f( p );
+
+		// 他変数関数を１変数関数に変換する
+		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor1 > functor( p, dir, tmp, f );
+
+		size_t ite;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		{
+			// 勾配方向を計算する
+			dir = g( p );
+
+			double l1, l2;
+			if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
+			{
+				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
+				err = brent::minimization( l1, l2, x, functor, tolerance, max_iterations, false );
+			}
+
+			std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
+
+			if( old_err - err < tolerance )
+			{
+				// 前回の最小化の結果からの変化量が、許容誤差内であったので終了する
+				if( err < old_err )
+				{
+					p += dir * x;
+				}
+				break;
+			}
+			else
+			{
+				old_err = err;
+				p += dir * x;
+			}
+		}
+
+		iterations = ite;
+
+		//std::cout << ite << std::endl;
+
+		return( err );
+	}
+
+
+	/// @brief 探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する
+	//! 
+	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in]     bound          … 探索に用いる各要素の探索範囲
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     g              … 勾配関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor1, class Functor2 >
+	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor1 f, Functor2 g, double tolerance, size_t max_iterations = 200 )
+	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor1 > __no_copy_constructor_functor1__;
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor2 > __no_copy_constructor_functor2__;
+		size_t itenum = 0;
+		return( minimization( p, bound, __no_copy_constructor_functor1__( f ), __no_copy_constructor_functor2__( g ), tolerance, itenum, max_iterations ) );
+	}
+
+
 	/// @brief 探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する
 	//! 
 	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
@@ -691,6 +889,12 @@ namespace gradient
 		size_t itenum = 0;
 		return( minimization( p, __no_copy_constructor_functor1__( f ), __no_copy_constructor_functor2__( g ), tolerance, itenum, max_iterations ) );
 	}
+}
+
+
+/// @brief 最急降下法（勾配を用いた多変数関数の極小値の探索）
+namespace gradient
+{
 
 	/// @brief 探索の開始点を指定し，勾配を計算しながら最小値を探索する
 	//! 
@@ -787,6 +991,102 @@ namespace gradient
 	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
 	//! 
 	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in]     bound          … 探索に用いる各要素の探索範囲
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[in]     distance       … 勾配を計算する際の幅
+	//! @param[out]    iterations     … 実際の反復回数
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor >
+	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor f, double tolerance, double distance, size_t &iterations, size_t max_iterations = 200 )
+	{
+		typedef typename matrix< T, Allocator >::value_type value_type;
+		typedef typename matrix< T, Allocator >::size_type size_type;
+		typedef typename matrix< T, Allocator >::difference_type difference_type;
+		typedef matrix< T, Allocator > matrix_type;
+
+		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 );
+		double x = 0.0, v1, v2, err = 1.0e100, old_err = f( p );
+		size_type i;
+
+		// 他変数関数を１変数関数に変換する
+		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );
+
+		size_t ite;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		{
+			// 勾配方向を計算する
+			double len = 0.0;
+			for( i = 0 ; i < dir.size( ) ; i++ )
+			{
+				tmp[ i ] = p[ i ] + distance;
+				v1 = f( tmp );
+
+				tmp[ i ] = p[ i ] - distance;
+				v2 = f( tmp );
+
+				tmp[ i ] = p[ i ];
+
+				dir[ i ] = v2 - v1;
+				len += dir[ i ] * dir[ i ];
+			}
+
+			if( len > 0 )
+			{
+				// 勾配方向ベクトルの正規化
+				len = std::sqrt( len );
+				for( i = 0 ; i < dir.size( ) ; i++ )
+				{
+					dir[ i ] /= len;
+				}
+			}
+			else
+			{
+				// 勾配の計算ができなくなったので終了する
+				break;
+			}
+
+			double l1, l2;
+			if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
+			{
+				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
+				err = brent::minimization( l1, l2, x, functor, tolerance, max_iterations, false );
+			}
+
+			//std::cout << err << ", " << p.t( ) << ", " << dir.t( ) << std::endl;
+
+			if( 2.0 * std::abs( old_err - err ) < tolerance * ( std::abs( old_err ) + std::abs( err ) ) )
+			{
+				// 前回の最小化の結果からの変化量が、許容誤差内であったので終了する
+				if( err < old_err )
+				{
+					p += dir * x;
+				}
+				break;
+			}
+			else
+			{
+				old_err = err;
+				p += dir * x;
+			}
+		}
+
+		iterations = ite;
+		//std::cout << ite << std::endl;
+
+		return( err );
+	}
+
+
+
+	/// @brief 探索の開始点を指定し，勾配を計算しながら最小値を探索する
+	//! 
+	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
 	//! @param[in]     f              … 評価関数
 	//! @param[in]     tolerance      … 許容誤差
 	//! @param[in]     distance       … 勾配を計算する際の幅
@@ -800,6 +1100,28 @@ namespace gradient
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
 		return( minimization( p, __no_copy_constructor_functor__( f ), tolerance, distance, itenum, max_iterations ) );
+	}
+
+
+	/// @brief 探索の開始点を指定し，勾配を計算しながら最小値を探索する
+	//! 
+	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in]     bound          … 探索に用いる各要素の探索範囲
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[in]     distance       … 勾配を計算する際の幅
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor >
+	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor f, double tolerance, double distance = 1.0, size_t max_iterations = 200 )
+	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
+		size_t itenum = 0;
+		return( minimization( p, bound, __no_copy_constructor_functor__( f ), tolerance, distance, itenum, max_iterations ) );
 	}
 }
 
@@ -926,6 +1248,135 @@ namespace powell
 		return( fp );
 	}
 
+
+	/// @brief Powell 法による多次元変数による極小値の探索を行う
+	//! 
+	//! 手法について何か書く
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in,out] dirs           … 探索に用いる方向集合
+	//! @param[in,out] bound          … 探索に用いる各要素の探索範囲
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[out]    iterations     … 実際の反復回数
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor >
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, matrix< T, Allocator > &bound, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 200 )
+	{
+		typedef typename matrix< T, Allocator >::value_type value_type;
+		typedef typename matrix< T, Allocator >::size_type size_type;
+		typedef typename matrix< T, Allocator >::difference_type difference_type;
+		typedef matrix< T, Allocator > matrix_type;
+
+		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 ), p0( p ), pn( p );
+		double x = 0.0, fp0 = 1.0e100, fp = f( p ), delta;
+		double l1, l2;
+
+		// 他変数関数を１変数関数に変換する
+		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );
+
+		size_t ite;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		{
+			// 探索開始前の評価値を覚えておく
+			fp0 = fp;
+			delta = 0.0;
+			size_type index = 0;
+
+			for( size_type c = 0 ; c < dirs.cols( ) ; c++ )
+			{
+				// 探索に用いる方向集合をコピーする
+				for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
+				{
+					dir[ r ] = dirs( r, c );
+				}
+
+				double old_fp = fp;
+
+
+				if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
+				{
+					// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
+					fp = brent::minimization( l1, l2, x, functor, tolerance, max_iterations, false );
+
+					for( size_type r = 0 ; r < p.size( ) ; r++ )
+					{
+						p[ r ] += dir[ r ] * x;
+					}
+
+					double d = std::abs( fp - old_fp );
+					if( d > delta )
+					{
+						index = c;
+						delta = d;
+					}
+				}
+
+				//std::cout << fp << p.t( ) << std::endl;
+			}
+
+			// 相対誤差を用いた収束判定
+			if( 2.0 * std::abs( fp - fp0 ) <= tolerance * ( std::abs( fp ) + std::abs( fp0 ) ) )
+			{
+				break;
+			}
+
+			// Acton の方法を用いて，新しい方向集合を求める
+			if( ite <= max_iterations )
+			{
+				// 新しい方向を求める
+				for( size_type r = 0 ; r < p.size( ) ; r++ )
+				{
+					pn[ r ]  = 2.0 * p[ r ] - p0[ r ];
+					dir[ r ] = p[ r ] - p0[ r ];
+					p0[ r ]  = p[ r ];
+				}
+
+				double fe = f( pn );
+
+				if( fe < fp )
+				{
+					// 現在の方向集合を更新する
+					double tmp = fp0 - fe - delta;
+					double ttt = 2.0 * ( fp0 - 2.0 * fp + fe ) * tmp * tmp - delta * ( fp0 - fe ) * ( fp0 - fe );
+					if( ttt < 0 )
+					{
+						if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
+						{
+							// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
+							fp = brent::minimization( l1, l2, x, functor, tolerance, max_iterations, false );
+							p += dir * x;
+						}
+
+						// 方向集合の一番最後に，新しい方向を追加する
+						if( index < dirs.rows( ) - 1 )
+						{
+							for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
+							{
+								dirs( r, index ) = dirs( r, dirs.rows( ) - 1 );
+								dirs( r, dirs.rows( ) - 1 ) = dir[ r ];
+							}
+						}
+						else
+						{
+							for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
+							{
+								dirs( r, index ) = dir[ r ];
+							}
+						}
+					}
+				}
+			}
+		}
+
+		iterations = ite;
+
+		return( fp );
+	}
+
 	/// @brief Powell 法による多次元変数による極小値の探索を行う
 	//! 
 	//! 手法について何か書く
@@ -944,6 +1395,27 @@ namespace powell
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
 		return( minimization( p, dirs, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations ) );
+	}
+
+	/// @brief Powell 法による多次元変数による極小値の探索を行う
+	//! 
+	//! 手法について何か書く
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in,out] dirs           … 探索に用いる方向集合
+	//! @param[in,out] bound          … 探索に用いる各要素の探索範囲
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor >
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, matrix< T, Allocator > &bound, Functor f, double tolerance, size_t max_iterations = 200 )
+	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
+		size_t itenum = 0;
+		return( minimization( p, dirs, bound, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations ) );
 	}
 }
 
