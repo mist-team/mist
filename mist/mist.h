@@ -925,8 +925,8 @@ public:
 
 public:
 	// ç\íz
-	array3( ) : base( ), size1_( 0 ), size2_( 0 ), reso3_( 1.0 ) {}
-	explicit array3( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ), reso3_( 1.0 ) {}
+	array3( ) : base( ), size1_( 0 ), size2_( 0 ), size3_( 0 ), reso3_( 1.0 ) {}
+	explicit array3( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ), size3_( 0 ), reso3_( 1.0 ) {}
 
 	array3( size_type num1, size_type num2, size_type num3 ) : base( num1 * num2, num3 ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
 	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3 ) : base( num1 * num2, num3, r1, r2 ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
