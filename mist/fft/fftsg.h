@@ -1,3 +1,6 @@
+#ifndef __INCLUDE_FFTSG_H__
+#define __INCLUDE_FFTSG_H__
+
 /*
 Fast Fourier/Cosine/Sine Transform
     dimension   :one
@@ -3229,3 +3232,5 @@ inline void dfst(int n, double *a, double *t, int *ip, double *w)
 }
 
 }
+
+#endif

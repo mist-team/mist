@@ -1,3 +1,6 @@
+#ifndef __INCLUDE_FFTSG3D_H__
+#define __INCLUDE_FFTSG3D_H__
+
 /*
 Fast Fourier/Cosine/Sine Transform
     dimension   :three
@@ -1632,3 +1635,5 @@ inline void ddst3d(int n1, int n2, int n3, int isgn, double ***a,
 }
 
 }
+
+#endif

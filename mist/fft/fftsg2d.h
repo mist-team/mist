@@ -1,3 +1,5 @@
+#ifndef __INCLUDE_FFTSG2D_H__
+#define __INCLUDE_FFTSG2D_H__
 /*
 Fast Fourier/Cosine/Sine Transform
     dimension   :two
@@ -1138,3 +1140,5 @@ inline void ddst2d(int n1, int n2, int isgn, double **a, double *t,
 }
 
 }
+
+#endif
