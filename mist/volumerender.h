@@ -294,22 +294,20 @@ namespace volumerender
 		return( true );
 	}
 
-	template < class T >
 	struct parameter
 	{
-		typedef vector3< T > vector_type;
-		typedef typename vector3< T >::value_type value_type;
+		typedef vector3< double > vector_type;
 
 		vector_type	pos;
 		vector_type	dir;
 		vector_type	up;
 		vector_type	offset;
-		value_type	fovy;
-		value_type	ambient_ratio;
-		value_type	diffuse_ratio;
-		value_type	light_attenuation;
-		value_type	sampling_step;
-		value_type	termination;
+		double	fovy;
+		double	ambient_ratio;
+		double	diffuse_ratio;
+		double	light_attenuation;
+		double	sampling_step;
+		double	termination;
 		bool		specular;
 
 		boundingbox box[ 6 ];
@@ -328,13 +326,13 @@ namespace volumerender
 // 値補間タイプのボリュームレンダリング
 namespace value_interpolation
 {
-	template < class Array1, class Array2, class T1, class T2 >
-		bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter< T1 > &p, const volumerender::attribute_table< T2 > &table,
+	template < class Array1, class Array2, class T >
+		bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter &p, const volumerender::attribute_table< T > &table,
 		typename Array1::size_type thread_id, typename Array1::size_type thread_num )
 	{
-		typedef typename volumerender::parameter< T1 >::vector_type vector_type;
-		typedef typename volumerender::attribute_table< T2 >::attribute_type attribute_type;
-		typedef typename volumerender::attribute_table< T2 >::pixel_type pixel_type;
+		typedef typename volumerender::parameter::vector_type vector_type;
+		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
+		typedef typename volumerender::attribute_table< T >::pixel_type pixel_type;
 		typedef typename Array1::size_type size_type;
 		typedef typename Array1::difference_type difference_type;
 		typedef typename Array1::value_type value_type;
@@ -543,8 +541,13 @@ namespace value_interpolation
 						n8.y = p8[ -_2 ] - p7[  0  ];
 						n8.z = p8[  _3 ] - p4[  0  ];
 
-						normal = ( n1 + ( n4 - n1 ) * xx ) + ( n2 - n1 + ( n1 - n2 + n3 - n4 ) * xx ) * yy;
-						normal = normal + ( ( n5 + ( n8 - n5 ) * xx ) + ( n6 - n5 + ( n5 - n6 + n7 - n8 ) * xx ) * yy - normal ) * zz;
+						normal.x = ( n1.x + ( n4.x - n1.x ) * xx ) + ( n2.x - n1.x + ( n1.x - n2.x + n3.x - n4.x ) * xx ) * yy;
+						normal.x += ( ( n5.x + ( n8.x - n5.x ) * xx ) + ( n6.x - n5.x + ( n5.x - n6.x + n7.x - n8.x ) * xx ) * yy - normal.x ) * zz;
+						normal.y = ( n1.y + ( n4.y - n1.y ) * xx ) + ( n2.y - n1.y + ( n1.y - n2.y + n3.y - n4.y ) * xx ) * yy;
+						normal.y += ( ( n5.y + ( n8.y - n5.y ) * xx ) + ( n6.y - n5.y + ( n5.y - n6.y + n7.y - n8.y ) * xx ) * yy - normal.y ) * zz;
+						normal.z = ( n1.z + ( n4.z - n1.z ) * xx ) + ( n2.z - n1.z + ( n1.z - n2.z + n3.z - n4.z ) * xx ) * yy;
+						normal.z += ( ( n5.z + ( n8.z - n5.z ) * xx ) + ( n6.z - n5.z + ( n5.z - n6.z + n7.z - n8.z ) * xx ) * yy - normal.z ) * zz;
+
 						normal.x /=  ax;
 						normal.y /=  -ay;
 						normal.z /=  az;
@@ -619,11 +622,11 @@ namespace value_interpolation
 // ボリュームレンダリングのスレッド実装
 namespace __volumerendering_controller__
 {
-	template < class Array1, class Array2, class T1, class T2 >
-	class volumerendering_thread : public mist::thread< volumerendering_thread< Array1, Array2, T1, T2 > >
+	template < class Array1, class Array2, class T >
+	class volumerendering_thread : public mist::thread< volumerendering_thread< Array1, Array2, T > >
 	{
 	public:
-		typedef mist::thread< volumerendering_thread< Array1, Array2, T1, T2 > > base;
+		typedef mist::thread< volumerendering_thread< Array1, Array2, T > > base;
 		typedef typename base::thread_exit_type thread_exit_type;
 		typedef typename Array1::size_type size_type;
 		typedef typename Array1::value_type value_type;
@@ -635,11 +638,11 @@ namespace __volumerendering_controller__
 		// 入出力用の画像へのポインタ
 		const Array1 *in_;
 		Array2 *out_;
-		const volumerender::parameter< T1 > *param_;
-		const volumerender::attribute_table< T2 > *table_;
+		const volumerender::parameter *param_;
+		const volumerender::attribute_table< T > *table_;
 
 	public:
-		void setup_parameters( const Array1 &in, Array2 &out, const volumerender::parameter< T1 > &p, const volumerender::attribute_table< T2 > &t, size_type thread_id, size_type thread_num )
+		void setup_parameters( const Array1 &in, Array2 &out, const volumerender::parameter &p, const volumerender::attribute_table< T > &t, size_type thread_id, size_type thread_num )
 		{
 			in_  = &in;
 			out_ = &out;
@@ -695,8 +698,8 @@ namespace __volumerendering_controller__
 //! @retval true  … ボリュームレンダリングに成功
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
-template < class Array1, class Array2, class T1, class T2 >
-bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter< T1 > &param, const volumerender::attribute_table< T2 > &table, typename Array1::size_type thread_num = 0 )
+template < class Array1, class Array2, class ATTRIBUTETYPE >
+bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter &param, const volumerender::attribute_table< ATTRIBUTETYPE > &table, typename Array1::size_type thread_num = 0 )
 {
 	if( is_same_object( in, out ) || in.empty( ) )
 	{
@@ -704,7 +707,7 @@ bool volumerendering( const Array1 &in, Array2 &out, const volumerender::paramet
 	}
 
 	typedef typename Array1::size_type size_type;
-	typedef __volumerendering_controller__::volumerendering_thread< Array1, Array2, T1, T2 > volumerendering_thread;
+	typedef __volumerendering_controller__::volumerendering_thread< Array1, Array2, ATTRIBUTETYPE > volumerendering_thread;
 
 	if( thread_num == 0 )
 	{
