@@ -139,9 +139,6 @@
 				RelativePath="..\mist\matrix.h">
 			</File>
 			<File
-				RelativePath="..\mist\matrix_util.h">
-			</File>
-			<File
 				RelativePath="..\mist\mist.h">
 			</File>
 			<File
@@ -151,12 +148,11 @@
 				RelativePath="..\mist\config\mist_conf.h">
 			</File>
 			<File
+				RelativePath="..\mist\numeric.h">
+			</File>
+			<File
 				RelativePath="..\mist\timer.h">
 			</File>
-		</Filter>
-		<Filter
-			Name="numeric"
-			Filter="">
 		</Filter>
 	</Files>
 	<Globals>

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <mist/mist.h>
 #include <mist/matrix.h>
-#include <mist/matrix_util.h>
+#include <mist/numeric.h>
 
 int main( )
 {
