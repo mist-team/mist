@@ -79,7 +79,19 @@ namespace __jpeg_controller__
 				if( dinfo.output_scanline < dinfo.output_height ) jpeg_read_scanlines( &dinfo, bitmap, 1 );
 				for( i = 0 ; i < dinfo.output_width ; i++ )
 				{
-					image( i, j ) = pixel_converter::convert_to( buffer[ i * 3 + 0 ], buffer[ i * 3 + 1 ], buffer[ i * 3 + 2 ] );
+					switch( dinfo.output_components )
+					{
+					case 1:
+                        image( i, j ) = pixel_converter::convert_to( buffer[ i ], buffer[ i ], buffer[ i ] );
+						break;
+
+					case 3:
+                        image( i, j ) = pixel_converter::convert_to( buffer[ i * 3 + 0 ], buffer[ i * 3 + 1 ], buffer[ i * 3 + 2 ] );
+						break;
+						
+					default:
+						break;
+					}
 				}
 			}
 

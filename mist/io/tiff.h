@@ -78,7 +78,7 @@ namespace __tiff_controller__
 				}
 			}
 
-			unsigned char *buf = ( unsigned char* )malloc( TIFFScanlineSize( tif ) );
+			unsigned char *buf = new unsigned char[ TIFFScanlineSize( tif ) ];
 
 			if( buf == NULL )
 			{
@@ -195,7 +195,7 @@ namespace __tiff_controller__
 				}
 			}
 
-			free( buf );
+			delete [] buf;
 			TIFFClose( tif );
 
 			return( true );
@@ -230,7 +230,7 @@ namespace __tiff_controller__
 
 			size_type size = image.width( ) * image.height( ) * 3;
 			size_type lsize = image.width( ) * 3;
-			unsigned char *buf = new unsigned char[size];
+			unsigned char *buf = new unsigned char[ size ];
 			size_type i;
 
 			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )

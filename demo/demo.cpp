@@ -58,7 +58,11 @@ inline void vertical( const mist::array2< T1, Allocator1 > &in, mist::array2< T2
 
 	size_type i, j;
 	double A1, A2, A3;
-	for( j = 7 ; j < in.height( ) - 8 ; j++ )
+	size_type js = in.height( ) / 5;
+	size_type je = in.height( ) / 5 * 4;
+	js = js < 7 ? 7 : js;
+	je = je > in.height( ) - 8 ? in.height( ) - 8 : je;
+	for( j = js ; j < je ; j++ )
 	{
 		for( i = 0 ; i < in.width( ) ; i++ )
 		{
@@ -74,7 +78,6 @@ template < class T, class Allocator >
 inline void enum_face_parts( mist::array2< T, Allocator > &in, face_parts_list &parts_list )
 {
 	typedef typename mist::array2< T, Allocator >::size_type  size_type;
-	typedef typename mist::array2< T, Allocator >::value_type value_type;
 
 	mist::array2< unsigned int > label;
 
@@ -181,7 +184,6 @@ template < class T1, class T2, class Allocator1, class Allocator2 >
 inline bool eye_template_matching( mist::array2< T1, Allocator1 > &in, const mist::array2< T2, Allocator2 > &face_template, face_parts_list &list )
 {
 	typedef typename mist::array2< T1, Allocator1 >::size_type  size_type;
-	typedef typename mist::array2< T1, Allocator1 >::value_type value_type;
 	typedef typename mist::array2< T1, Allocator1 >::difference_type difference_type;
 	const size_type TREYEX = 24;			// テンプレート右目領域重心位置x座標
 	const size_type TREYEY = 30;			// テンプレート右目領域重心位置y座標
@@ -266,8 +268,6 @@ template < class T, class Allocator >
 inline void eye_masking( mist::array2< T, Allocator > &in, const face_parts &leye, const face_parts &reye )
 {
 	typedef typename mist::array2< T, Allocator >::size_type  size_type;
-	typedef typename mist::array2< T, Allocator >::value_type value_type;
-	typedef typename mist::array2< T, Allocator >::difference_type difference_type;
 	typedef mist::vector3< double > vector_type;
 
 	double margin = 2;
@@ -305,8 +305,6 @@ template < class T, class Allocator >
 inline bool eye_masking( mist::array2< T, Allocator > &in )
 {
 	typedef typename mist::array2< T, Allocator >::size_type  size_type;
-	typedef typename mist::array2< T, Allocator >::value_type value_type;
-	typedef typename mist::array2< T, Allocator >::difference_type difference_type;
 
 	size_type i;
 	mist::array2< double > image1, image2;
@@ -349,10 +347,10 @@ inline bool eye_masking( mist::array2< T, Allocator > &in )
 	if( !eye_template_matching( image2, face_template, list ) )
 	{
 		// 目領域にマッチする部分が存在しないので棄却
-		for( i = 0 ; i < image2.size( ) ; i++ )
-		{
-			in[ i ] = image2[ i ] == 0 ? 0 : 255;
-		}
+		//for( i = 0 ; i < image2.size( ) ; i++ )
+		//{
+		//	in[ i ] = image2[ i ] == 0 ? 0 : 255;
+		//}
 		return( false );
 	}
 	else

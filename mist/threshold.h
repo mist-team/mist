@@ -20,9 +20,6 @@ namespace ptile
 		typedef typename array< T, Allocator >::size_type  size_type;
 		typedef typename array< T, Allocator >::value_type value_type;
 
-		typedef typename array< T, Allocator >::size_type  size_type;
-		typedef typename array< T, Allocator >::value_type value_type;
-
 		value_type min = in[ 0 ];
 		value_type max = in[ 0 ];
 
