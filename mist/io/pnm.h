@@ -103,14 +103,104 @@ namespace __pnm_controller__
 					if( s + 1 != e && s[ 1 ] == '\n' )
 					{
 						s = s + 2;
-						break;
 					}
-					s = s + 1;
+					else
+					{
+						s++;
+					}
 					break;
 				}
 				else if( s[ 0 ] == '\n' )
 				{
 					s = s + 1;
+					break;
+				}
+				line += *s;
+				s++;
+			}
+			return( s > e ? e : s );
+		}
+
+		static const unsigned char *get_value( const unsigned char *s, const unsigned char *e, std::string &line, bool &flag )
+		{
+			line = "";
+			// 先頭の空白（改行やタブを含む）を飛ばす
+			while( s < e )
+			{
+				if( flag && s[ 0 ] == '#' )
+				{
+					// コメント行なのですっ飛ばす
+					while( s < e )
+					{
+						if( s[ 0 ] == '\r' )
+						{
+							if( s + 1 != e && s[ 1 ] == '\n' )
+							{
+								s = s + 2;
+							}
+							else
+							{
+								s++;
+							}
+							break;
+						}
+						else if( s[ 0 ] == '\n' )
+						{
+							s++;
+							break;
+						}
+						s++;
+					}
+				}
+				else if( s[ 0 ] == '\r' )
+				{
+					if( s + 1 != e && s[ 1 ] == '\n' )
+					{
+						s = s + 2;
+					}
+					s = s + 1;
+					flag = true;
+				}
+				else if( s[ 0 ] == '\n' )
+				{
+					s++;
+					flag = true;
+				}
+				else if( s[ 0 ] == ' ' || s[ 0 ] == '\t' )
+				{
+					s++;
+				}
+				else
+				{
+					break;
+				}
+			}
+			// 次に空白が来る前まで進める
+			flag = false;
+			while( s < e )
+			{
+				if( s[ 0 ] == '\r' )
+				{
+					if( s + 1 != e && s[ 1 ] == '\n' )
+					{
+						s = s + 2;
+					}
+					else
+					{
+						s++;
+					}
+					flag = true;
+					break;
+				}
+				else if( s[ 0 ] == '\n' )
+				{
+					s++;
+					flag = true;
+					break;
+				}
+				else if( s[ 0 ] == ' ' || s[ 0 ] == '\t' )
+				{
+					s++;
 					break;
 				}
 				line += *s;
@@ -142,6 +232,18 @@ namespace __pnm_controller__
 			return( elements.size( ) );
 		}
 
+		static bool is_number( const std::string &line )
+		{
+			for( size_t i = 0 ; i < line.size( ) ; i++ )
+			{
+				if( line[ i ] < '0' || '9' < line[ i ] )
+				{
+					return( false );
+				}
+			}
+			return( true );
+		}
+
 		static bool convert_from_pnm_data( array2< T, Allocator > &image, const unsigned char *buff, size_type len, typename array2< T, Allocator >::size_type level )
 		{
 			// PNM形式のヘッダ部分
@@ -150,7 +252,8 @@ namespace __pnm_controller__
 			std::string line = "";
 			std::vector< std::string > elements;
 
-			p = get_line( p, e, line );
+			bool flag = true;
+			p = get_value( p, e, line, flag );
 			PNM_TYPE pnm_type = pnm_format( line );
 			if( pnm_type == UNKNOWN )
 			{
@@ -159,42 +262,28 @@ namespace __pnm_controller__
 				return( false );
 			}
 
-			// コメント行を飛ばす
-			p = get_line( p, e, line );
-			while( line[ 0 ] == '#' )
-			{
-				p = get_line( p, e, line );
-			}
-
 			// 画像サイズを取得する
 			size_type w = 0, h = 0, gray_level = level;
-			split_string( line, ' ', elements );
-			if( elements.size( ) == 1 )
+			p = get_value( p, e, line, flag );
+			if( is_number( line ) )
 			{
-				w = atoi( elements[ 0 ].c_str( ) );
-				p = get_line( p, e, line );
-				split_string( line, ' ', elements );
-				if( elements.size( ) == 1 )
-				{
-					h = atoi( elements[ 0 ].c_str( ) );
-				}
-				else
-				{
-					// 未サポートのビットマップ
-					std::cerr << "Image size is unknown!" << std::endl;
-					return( false );
-				}
-			}
-			else if( elements.size( ) == 2 )
-			{
-				w = atoi( elements[ 0 ].c_str( ) );
-				h = atoi( elements[ 1 ].c_str( ) );
+				w = atoi( line.c_str( ) );
 			}
 			else
 			{
 				// 未サポートのビットマップ
 				std::cerr << "Image size is unknown!" << std::endl;
-				return( false );
+			}
+
+			p = get_value( p, e, line, flag );
+			if( is_number( line ) )
+			{
+				h = atoi( line.c_str( ) );
+			}
+			else
+			{
+				// 未サポートのビットマップ
+				std::cerr << "Image size is unknown!" << std::endl;
 			}
 
 			image.resize( w, h );
@@ -206,15 +295,14 @@ namespace __pnm_controller__
 			case P3:
 			case P5:
 			case P6:
-				p = get_line( p, e, line );
-				split_string( line, ' ', elements );
-				if( elements.size( ) != 1 )
+				p = get_value( p, e, line, flag );
+				if( !is_number( line ) )
 				{
 					// 未サポートのビットマップ
 					std::cerr << "Image size is unknown!" << std::endl;
 					return( false );
 				}
-				gray_level = atoi( elements[ 0 ].c_str( ) );
+				gray_level = atoi( line.c_str( ) );
 				break;
 
 			default:
