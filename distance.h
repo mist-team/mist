@@ -24,14 +24,17 @@ _MIST_BEGIN
 namespace __euclidean_distance_transform__
 {
 	template < class T >
-	void euclidean_distance_transform_x( T &in, typename T::size_type w, typename T::size_type h,typename T::size_type d,
-											double max_length = -1.0, typename T::size_type thread_id = 0, typename T::size_type thread_num = 1 )
+	void euclidean_distance_transform_x( T &in, double max_length = -1.0, typename T::size_type thread_id = 0, typename T::size_type thread_num = 1 )
 	{
 		typedef typename T::size_type  size_type;
 		typedef typename T::value_type value_type;
 
 		size_type i, j, k;
 		size_type nd, n;
+
+		size_type w = in.width( );
+		size_type h = in.height( );
+		size_type d = in.depth( );
 
 		size_type max = static_cast< size_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
@@ -42,7 +45,7 @@ namespace __euclidean_distance_transform__
 				if( in[ 0 + ( j + k * h ) * w ] != 0 )
 				{
 					nd = w < max ? w : max;
-					in[ 0 + ( j + k * h ) * w ] = static_cast< value_type >( nd * nd );
+					in( 0, j, k ) = static_cast< value_type >( nd * nd );
 				}
 				else
 				{
@@ -51,7 +54,7 @@ namespace __euclidean_distance_transform__
 
 				for( i = 1 ; i < w ; i++ )
 				{
-					if( in[ i + ( j + k * h ) * w ] != 0 )
+					if( in( i, j, k ) != 0 )
 					{
 						nd = nd + 1 < max ? nd + 1 : nd;
 					}
@@ -60,10 +63,10 @@ namespace __euclidean_distance_transform__
 						nd = 0;
 					}
 
-					in[ i + ( j + k * h ) * w ] = static_cast< value_type >( nd * nd );
+					in( i, j, k ) = static_cast< value_type >( nd * nd );
 				}
 
-				if( in[ w - 1 + ( j + k * h ) * w ] != 0 )
+				if( in( w - 1, j, k ) != 0 )
 				{
 					nd = w < max ? w : max;
 				}
@@ -74,7 +77,7 @@ namespace __euclidean_distance_transform__
 
 				for( i = w - 1 ; i > 0 ; i-- )
 				{
-					if( in[ i - 1 + ( j + k * h ) * w ] != 0 )
+					if( in( i - 1, j, k ) != 0 )
 					{
 						nd = nd + 1 < max ? nd + 1 : nd;
 					}
@@ -84,15 +87,14 @@ namespace __euclidean_distance_transform__
 					}
 
 					n = nd * nd;
-					in[ i - 1 + ( j + k * h ) * w ] = static_cast< value_type >( static_cast< size_type >( in[ i - 1 + ( j + k * h ) * w ] ) < n ? in[ i - 1 + ( j + k * h ) * w ] : n );
+					in( i - 1, j, k ) = static_cast< value_type >( static_cast< size_type >( in( i - 1, j, k ) ) < n ? in( i - 1, j, k ) : n );
 				}
 			}
 		}
 	}
 
 	template < class T >
-	void euclidean_distance_transform_y( T &in, typename T::size_type w, typename T::size_type h,typename T::size_type d,
-											double max_length = -1.0, typename T::size_type thread_id = 0, typename T::size_type thread_num = 1 )
+	void euclidean_distance_transform_y( T &in, double max_length = -1.0, typename T::size_type thread_id = 0, typename T::size_type thread_num = 1 )
 	{
 		typedef typename T::size_type  size_type;
 		typedef typename T::value_type value_type;
@@ -106,6 +108,10 @@ namespace __euclidean_distance_transform__
 		double *work;
 		double vy, vyvy;
 
+		size_type w = in.width( );
+		size_type h = in.height( );
+		size_type d = in.depth( );
+
 		size_type max = static_cast< size_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		vy = in.reso2( ) / in.reso1( );
@@ -118,7 +124,7 @@ namespace __euclidean_distance_transform__
 			{
 				for( j = 0 ; j < h ; j++ )
 				{
-					work[ j ] = static_cast< double >( in[ i + ( j + k * h ) * w ] );
+					work[ j ] = static_cast< double >( in( i, j, k ) );
 				}
 
 				for( j = 0 ; j < h ; j++ )
@@ -138,7 +144,7 @@ namespace __euclidean_distance_transform__
 							wmin = wmin > wtmp ? wtmp : wmin;
 						}
 
-						in[ i + ( j + k * h ) * w ] = static_cast< value_type >( wmin );
+						in( i, j, k ) = static_cast< value_type >( wmin );
 					}
 				}
 			}
@@ -149,8 +155,7 @@ namespace __euclidean_distance_transform__
 
 
 	template < class T >
-	void euclidean_distance_transform_z( T &in, typename T::size_type w, typename T::size_type h,typename T::size_type d,
-											double max_length = -1.0, typename T::size_type thread_id = 0, typename T::size_type thread_num = 1 )
+	void euclidean_distance_transform_z( T &in, double max_length = -1.0, typename T::size_type thread_id = 0, typename T::size_type thread_num = 1 )
 	{
 		typedef typename T::size_type  size_type;
 		typedef typename T::value_type value_type;
@@ -162,6 +167,10 @@ namespace __euclidean_distance_transform__
 		int irange1, irange2;
 		double *work;
 		double vz, vzvz;
+
+		size_type w = in.width( );
+		size_type h = in.height( );
+		size_type d = in.depth( );
 
 		vz = in.reso3( ) / in.reso1( );
 		vzvz = vz * vz;
@@ -209,58 +218,6 @@ namespace __euclidean_distance_transform__
 // ユークリッド型距離変換のスレッド部分
 namespace __distance_transform_controller__
 {
-	template < class T, class Allocator >
-	void euclidean_distance_transform_x( array< T, Allocator > &in, double max_length = -1.0, typename array< T, Allocator >::size_type thread_id = 0, typename array< T, Allocator >::size_type thread_num = 1 )
-	{
-		__euclidean_distance_transform__::euclidean_distance_transform_x( in, in.width( ), 1, 1, max_length, thread_id, thread_num );
-	}
-
-	template < class T, class Allocator >
-	void euclidean_distance_transform_x( array2< T, Allocator > &in, double max_length = -1.0, typename array< T, Allocator >::size_type thread_id = 0, typename array< T, Allocator >::size_type thread_num = 1 )
-	{
-		__euclidean_distance_transform__::euclidean_distance_transform_x( in, in.width( ), in.height( ), 1, max_length, thread_id, thread_num );
-	}
-
-	template < class T, class Allocator >
-	void euclidean_distance_transform_x( array3< T, Allocator > &in, double max_length = -1.0, typename array< T, Allocator >::size_type thread_id = 0, typename array< T, Allocator >::size_type thread_num = 1 )
-	{
-		__euclidean_distance_transform__::euclidean_distance_transform_x( in, in.width( ), in.height( ), in.depth( ), max_length, thread_id, thread_num );
-	}
-
-	template < class T, class Allocator >
-	void euclidean_distance_transform_y( array< T, Allocator > &in, double max_length = -1.0, typename array< T, Allocator >::size_type thread_id = 0, typename array< T, Allocator >::size_type thread_num = 1 )
-	{
-	}
-
-	template < class T, class Allocator >
-	void euclidean_distance_transform_y( array2< T, Allocator > &in, double max_length = -1.0, typename array< T, Allocator >::size_type thread_id = 0, typename array< T, Allocator >::size_type thread_num = 1 )
-	{
-		__euclidean_distance_transform__::euclidean_distance_transform_y( in, in.width( ), in.height( ), 1, max_length, thread_id, thread_num );
-	}
-
-	template < class T, class Allocator >
-	void euclidean_distance_transform_y( array3< T, Allocator > &in, double max_length = -1.0, typename array< T, Allocator >::size_type thread_id = 0, typename array< T, Allocator >::size_type thread_num = 1 )
-	{
-		__euclidean_distance_transform__::euclidean_distance_transform_y( in, in.width( ), in.height( ), in.depth( ), max_length, thread_id, thread_num );
-	}
-
-	template < class T, class Allocator >
-	void euclidean_distance_transform_z( array< T, Allocator > &in, double max_length = -1.0, typename array< T, Allocator >::size_type thread_id = 0, typename array< T, Allocator >::size_type thread_num = 1 )
-	{
-	}
-
-	template < class T, class Allocator >
-	void euclidean_distance_transform_z( array2< T, Allocator > &in, double max_length = -1.0, typename array< T, Allocator >::size_type thread_id = 0, typename array< T, Allocator >::size_type thread_num = 1 )
-	{
-	}
-
-	template < class T, class Allocator >
-	void euclidean_distance_transform_z( array3< T, Allocator > &in, double max_length = -1.0, typename array< T, Allocator >::size_type thread_id = 0, typename array< T, Allocator >::size_type thread_num = 1 )
-	{
-		__euclidean_distance_transform__::euclidean_distance_transform_y( in, in.width( ), in.height( ), in.depth( ), max_length, thread_id, thread_num );
-	}
-
-
 	template < class T >
 	class euclidean_distance_transform_thread : public mist::thread_object< euclidean_distance_transform_thread< T > >
 	{
@@ -324,16 +281,16 @@ namespace __distance_transform_controller__
 			switch( axis_ )
 			{
 			case 1:
-				euclidean_distance_transform_y( *in_, max_length_, thread_id_, thread_num_ );
+				__euclidean_distance_transform__::euclidean_distance_transform_y( *in_, max_length_, thread_id_, thread_num_ );
 				break;
 
 			case 2:
-				euclidean_distance_transform_z( *in_, max_length_, thread_id_, thread_num_ );
+				__euclidean_distance_transform__::euclidean_distance_transform_z( *in_, max_length_, thread_id_, thread_num_ );
 				break;
 
 			case 0:
 			default:
-				euclidean_distance_transform_x( *in_, max_length_, thread_id_, thread_num_ );
+				__euclidean_distance_transform__::euclidean_distance_transform_x( *in_, max_length_, thread_id_, thread_num_ );
 				break;
 			}
 			return( true );
