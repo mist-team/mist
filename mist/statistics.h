@@ -90,7 +90,7 @@ inline typename __utility__::__value_type__< T >::value_type average( const arra
 //! @return データの分散
 //! 
 template < class T, class Allocator >
-inline typename __utility__::__value_type__< T >::value_type deviation( const array< T, Allocator > &a, double ave )
+inline typename __utility__::__value_type__< T >::value_type variance( const array< T, Allocator > &a, double ave )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
 	typedef typename __utility__::__value_type__< T >::value_type value_type;
@@ -119,9 +119,9 @@ inline typename __utility__::__value_type__< T >::value_type deviation( const ar
 //! @return データの分散
 //! 
 template < class T, class Allocator >
-inline typename __utility__::__value_type__< T >::value_type deviation( const array< T, Allocator > &a )
+inline typename __utility__::__value_type__< T >::value_type variance( const array< T, Allocator > &a )
 {
-	return( deviation( a, average( a ) ) );
+	return( variance( a, average( a ) ) );
 }
 
 

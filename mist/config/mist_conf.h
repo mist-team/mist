@@ -437,7 +437,7 @@ struct __mist_console_callback__
 * - @ref a									"ウェーブレット変換"
 * - @ref statistics_group					"統計処理"
 *   - @ref mist::average					"平均値計算"
-*   - @ref mist::deviation					"分散計算"
+*   - @ref mist::variance					"分散計算"
 *   - @ref mist::generate_histogram			"ヒストグラム作成"
 *   - @ref mixture_group					"混合正規分布の推定"
 * - @ref random_group						"擬似乱数生成"
