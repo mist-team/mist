@@ -258,9 +258,9 @@ namespace __tiff_controller__
 			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )
 			{
 				color_type c = limits_0_255( pixel_converter::convert_from( image[ i ] ) );
-				buf[ i * 3 + 0 ] = c.r;
-				buf[ i * 3 + 1 ] = c.g;
-				buf[ i * 3 + 2 ] = c.b;
+				buf[ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
+				buf[ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
+				buf[ i * 3 + 2 ] = static_cast< unsigned char >( c.b );
 			}
 
 			bool ret = true;

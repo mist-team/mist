@@ -200,12 +200,12 @@ namespace Tsai
 		double f;
 		double ka1 = 0.0;
 
-		double Ncx = p.Ncx;		// カメラのX軸方向のセンサー素子数 [sel]
-		double Ncy = p.Ncy;		// カメラのY軸方向のセンサー素子数 [sel]
+		double Ncx = p.Ncx;		// カメラのX軸方向のセンサー素子数 [cell]
+		double Ncy = p.Ncy;		// カメラのY軸方向のセンサー素子数 [cell]
 		double Nfx = p.Nfx;		// 撮影される画像のX軸方向の画素数 [pixel]
 		double Nfy = p.Nfy;		// 撮影される画像のY軸方向の画素数 [pixel]
-		double dx  = p.dx;		// カメラのX軸方向のセンサー素子の大きさ [mm/sel]
-		double dy  = p.dy;		// カメラのY軸方向のセンサー素子の大きさ [mm/sel]
+		double dx  = p.dx;		// カメラのX軸方向のセンサー素子の大きさ [mm/cell]
+		double dy  = p.dy;		// カメラのY軸方向のセンサー素子の大きさ [mm/cell]
 		double Cx  = p.Cx;		// カメラ座標系におけるZ軸と画像平面の交点のX座標（画像中心を与える）[pixel]
 		double Cy  = p.Cy;		// カメラ座標系におけるZ軸と画像平面の交点のY座標（画像中心を与える）[pixel]
 		double sx  = p.sx;		// 複数平面を用いたキャリブレーションの際に用いる，X軸方向の解像度を調整する係数
