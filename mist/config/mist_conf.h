@@ -61,11 +61,13 @@ _MIST_BEGIN
 // MISTヘッダ内で利用する設定
 #define _MIST_ALLOCATE_TEST_			0
 
-#ifdef __MIST_MSVC__
-	#define _MIST_ALLOCATOR_MEMORY_TRIM_	0	///< VC標準のSTLではサポートしていないのでオフにする
-#else
-	#define _MIST_ALLOCATOR_MEMORY_TRIM_	1	///< VC以外のSTLではサポートしているのでオンにする
-#endif
+//#ifdef __MIST_MSVC__
+//	#define _MIST_ALLOCATOR_MEMORY_TRIM_	0	///< VC標準のSTLではサポートしていないのでオフにする
+//#else
+//	#define _MIST_ALLOCATOR_MEMORY_TRIM_	1	///< VC以外のSTLではサポートしているのでオンにする
+//#endif
+
+#define _MIST_ALLOCATOR_MEMORY_TRIM_	0		///< すでに確保されているメモリ領域の切り詰めを行うアロケータをサポートする場合はオンにする
 
 
 #ifndef NDEBUG
