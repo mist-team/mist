@@ -46,9 +46,9 @@ public:
 	double elapse( ) const
 	{
 #ifdef WIN32
-		return( double(timeGetTime( ) - _start_time) / 1000.0 );
+		return( double( timeGetTime( ) - _start_time ) / 1000.0 );
 #else
-		return( double(std::clock( ) - _start_time) / CLOCKS_PER_SEC );
+		return( double( std::clock( ) - _start_time ) / double( CLOCKS_PER_SEC ) );
 #endif
 	}
 
