@@ -55,15 +55,15 @@ namespace __nearest__
 		for( k = thread_idz ; k < od ; k += thread_numz )
 		{
 			z = static_cast< size_type >( sz * k + 0.5 );
-			z = z < id ? z : id;
+			z = z < id ? z : id - 1;
 			for( j = thread_idy ; j < oh ; j += thread_numy )
 			{
 				y = static_cast< size_type >( sy * j + 0.5 );
-				y = y < ih ? y : ih;
+				y = y < ih ? y : ih - 1;
 				for( i = thread_idx ; i < ow ; i += thread_numx )
 				{
 					x = static_cast< size_type >( sx * i + 0.5 );
-					x = x < iw ? x : iw;
+					x = x < iw ? x : iw - 1;
 					out( i, j, k ) = static_cast< out_value_type >( in( x, y, z ) );
 				}
 			}
