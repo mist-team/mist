@@ -15,6 +15,10 @@
 #include "mist.h"
 #endif
 
+#ifndef __INCLUDE_MIST_VECTOR__
+#include "vector.h"
+#endif
+
 #ifndef __INCLUDE_MIST_MINIMIZATION__
 #include "minimization.h"
 #endif
@@ -26,6 +30,9 @@
 #ifndef __INCLUDE_MIST_LIMITS__
 #include "limits.h"
 #endif
+
+
+#include <vector>
 
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
