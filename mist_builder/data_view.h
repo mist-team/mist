@@ -114,8 +114,6 @@ public:
 	void draw_image( const filter *pf );
 	void draw_image( );
 
-	void set_cursors( bool is_drag );
-
 protected:
 	data_view( ){}
 	data_view( const data_view& ){}
@@ -131,8 +129,6 @@ public:
 	long onMouseDown( FXObject *obj, FXSelector sel, void *ptr );
 	long onMouseUp( FXObject *obj, FXSelector sel, void *ptr );
 	long onMouseMove( FXObject *obj, FXSelector sel, void *ptr );
-	long onKeyDown( FXObject *obj, FXSelector sel, void *ptr );
-	long onKeyUp( FXObject *obj, FXSelector sel, void *ptr );
 
 	long onInterpolateChange( FXObject *obj, FXSelector sel, void *ptr );
 	long onDrawCrossChange( FXObject *obj, FXSelector sel, void *ptr );

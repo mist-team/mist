@@ -8,7 +8,7 @@ FXDEFMAP( main_window ) main_window_map[] =
 {
 	//________Message_Type______________________________ID_____________________________Message_Handler_______
 	FXMAPFUNC( SEL_COMMAND,					main_window::ID_FILE_OPEN,			main_window::onFileOpen ),
-	FXMAPFUNC( SEL_COMMAND,					main_window::ID_APPEND_FILTER,		main_window::onAppendFilter ),
+	FXMAPFUNC( SEL_DOUBLECLICKED,			main_window::ID_FILTER_LIST,		main_window::onAppendFilter ),
 	FXMAPFUNC( SEL_COMMAND,					main_window::ID_RECOMPUTE_FILTER,	main_window::onRecomputeFilter ),
 
 	FXMAPFUNC( MIST_FILTER_CHANGED,			main_window::ID_FILTER_GRAPH,		main_window::onFilterChanged ),
@@ -94,15 +94,25 @@ main_window::main_window( FXApp *a ) : base( a, "main_window", NULL, NULL, DECOR
 
 			FXVerticalFrame *v2 = new FXVerticalFrame( v1, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 			{
-				FXGroupBox *g1 = new FXGroupBox( v2, "Filter List", GROUPBOX_NORMAL | FRAME_THICK | LAYOUT_FILL_X );
-				new FXButton( g1, "Add", 0, this, ID_APPEND_FILTER, BUTTON_NORMAL | LAYOUT_SIDE_RIGHT );
-				listbox_ = new FXListBox( g1, this, ID_FILTER_LIST, FRAME_LINE | LAYOUT_FILL_X );
-				listbox_->setNumVisible( 5 );
+				FXSpring *s1 = new FXSpring( v2, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+				{
+					FXGroupBox *g1 = new FXGroupBox( s1, "Filter List", GROUPBOX_NORMAL | FRAME_THICK | LAYOUT_FILL_X | LAYOUT_FILL_Y );
+					FXuint tree_layout = TREELIST_ROOT_BOXES | TREELIST_SHOWS_LINES  | TREELIST_SHOWS_BOXES  | TREELIST_SINGLESELECT;
+					treelist_ = new FXTreeList( g1, this, ID_FILTER_LIST, LAYOUT_FILL_X | LAYOUT_FILL_Y | tree_layout );
+				}
 
-				FXGroupBox *g2 = new FXGroupBox( v2, "Filter Property", GROUPBOX_NORMAL | FRAME_THICK | LAYOUT_FILL_X | LAYOUT_FILL_Y );
-				new FXButton( g2, "Recompute", 0, this, ID_RECOMPUTE_FILTER, BUTTON_NORMAL | LAYOUT_FILL_X );
-				new FXHorizontalSeparator( g2 );
-				property_list_ = new property_list( g2, 0, 0, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0 );
+				FXSpring *s2 = new FXSpring( v2, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+				{
+					FXGroupBox *g2 = new FXGroupBox( s2, "Filter Property", GROUPBOX_NORMAL | FRAME_THICK | LAYOUT_FILL_X | LAYOUT_FILL_Y );
+					FXHorizontalFrame *hhh = new FXHorizontalFrame( g2, LAYOUT_FILL_X, 0, 0, 0, 0, 0, 0, 0, 0 );
+					{
+						filter_name_ = new FXLabel( hhh, "", NULL, JUSTIFY_LEFT | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 5, 5 );
+						filter_name_->setBackColor( RGB( 255, 255, 255 ) );
+						new FXButton( hhh, "Recompute", 0, this, ID_RECOMPUTE_FILTER, BUTTON_NORMAL );
+					}
+					new FXHorizontalSeparator( g2 );
+					property_list_ = new property_list( g2, 0, 0, LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0 );
+				}
 			}
 		}
 	}
@@ -150,17 +160,15 @@ long main_window::onFileOpen( FXObject *obj, FXSelector sel, void *ptr )
 
 long main_window::onAppendFilter( FXObject *obj, FXSelector sel, void *ptr )
 {
-	size_type indx = listbox_->getCurrentItem( );
-
-	mist_builder &app = getAppInstance( );
-
-	if( indx < 0 || indx >= app.filters.size( ) )
+	FXTreeItem *item = treelist_->getCurrentItem( );
+	if( item != NULL )
 	{
-		return( 0 );
+		filter *f = reinterpret_cast< filter * >( item->getData( ) );
+		if( f != NULL )
+		{
+			filter_graph_->append_filter( *f );
+		}
 	}
-
-	filter_graph_->append_filter( *( app.filters[ indx ] ) );
-
 	return( 1 );
 }
 
@@ -190,6 +198,12 @@ long main_window::onFilterChanged( FXObject *obj, FXSelector sel, void *ptr )
 		{
 			property_list_->appendItem( list[ i ] );
 		}
+
+		filter_name_->setText( f->name( ).c_str( ) );
+	}
+	else
+	{
+		filter_name_->setText( "" );
 	}
 
 	return( 1 );
@@ -207,6 +221,4 @@ long main_window::onFilterImageChanged( FXObject *obj, FXSelector sel, void *ptr
 
 	return( 1 );
 }
-
-
 

@@ -46,6 +46,8 @@ public:
 	FXint getContentWidth( ){ return( mem_image_ ? mem_image_->getWidth( ) : 1 ); }
 	FXint getContentHeight( ){ return( mem_image_ ? mem_image_->getHeight( ) : 1 ); }
 
+	virtual FXbool canFocus( ) const { return( true ); }
+
 public:
 	void append_filter( const filter &f );
 	void recompute_current_filter( );

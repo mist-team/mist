@@ -22,6 +22,7 @@
 #include <mist/matrix.h>
 #endif
 
+#include <fxkeys.h>
 
 #include <vector>
 #include <deque>

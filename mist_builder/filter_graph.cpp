@@ -29,7 +29,7 @@ filter_graph::filter_graph( FXComposite *p, FXObject *tgt, FXSelector sel, FXuin
 	setTarget( tgt );
 	setSelector( sel );
 
-	font_ = new FXFont( getApp( ), "arial", 12 );
+	font_ = new FXFont( getApp( ), "helvetica", 12 );
 	mem_image_ = new FXImage( getApp( ), NULL, IMAGE_OWNED, 1024, 768 );
 }
 
@@ -44,18 +44,6 @@ filter_graph::~filter_graph( )
 void filter_graph::create( )
 {
 	font_->create( );
-
-	//filters_.push_back( new sample_filter( ) );
-	//filters_.push_back( new sample_filter( ) );
-	//filters_.push_back( new sample_filter( ) );
-	//filters_.push_back( new sample_filter( ) );
-	//filters_.push_back( new sample_filter( ) );
-
-	//for( size_type i = 0 ; i < filters_.size( ) ; i++ )
-	//{
-	//	filter &f = *( filters_[ i ] );
-	//	initialize_filter( f );
-	//}
 
 	mem_image_->create( );
 
@@ -79,6 +67,10 @@ void filter_graph::append_filter( const filter &f )
 long filter_graph::onMouseDown( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
+
+	setFocus( );
+
+	filter *old_filter = current_filter_;
 
 	current_filter_ = NULL;
 	current_pin_ = NULL;
@@ -118,8 +110,11 @@ long filter_graph::onMouseDown( FXObject *obj, FXSelector sel, void *ptr )
 
 	}
 
-	// メインウィンドウへ，選択フィルタが変更されたことを通知する
-	SendUserMessage( MIST_FILTER_CHANGED, static_cast< void * >( current_filter_ ) );
+	if( old_filter != current_filter_ )
+	{
+		// メインウィンドウへ，選択フィルタが変更されたことを通知する
+		SendUserMessage( MIST_FILTER_CHANGED, static_cast< void * >( current_filter_ ) );
+	}
 
 	// ピンがクリックされたかどうかを判定する
 	if( current_filter_ == NULL )
@@ -296,6 +291,58 @@ long filter_graph::onKeyDown( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
 
+	if( e.code == KEY_Delete && current_filter_ != NULL )
+	{
+		pin_list &input_pins = current_filter_->input_pins( );
+		pin_list &output_pins = current_filter_->output_pins( );
+
+		// 入力ピン側の接続を解除する
+		for( size_type i = 0 ; i < input_pins.size( ) ; i++ )
+		{
+			pin &p = input_pins[ i ];
+			if( p.connected_pin( ) != NULL )
+			{
+				pin *tpin = p.connected_pin( );
+				p.connected_pin( NULL );
+				tpin->connected_pin( NULL );
+			}
+		}
+
+		// 出力ピン側の接続を解除する
+		for( size_type i = 0 ; i < output_pins.size( ) ; i++ )
+		{
+			pin &p = output_pins[ i ];
+			if( p.connected_pin( ) != NULL )
+			{
+				pin *tpin = p.connected_pin( );
+				p.connected_pin( NULL );
+				tpin->connected_pin( NULL );
+			}
+		}
+
+		// 選択されているフィルタを，リストから除外する
+		filter_list::iterator ite = filters_.begin( );
+		for( ; ite != filters_.end( ) ; ++ite )
+		{
+			if( *ite == current_filter_ )
+			{
+				break;
+			}
+		}
+		if( ite != filters_.end( ) )
+		{
+			delete current_filter_;
+			filters_.erase( ite );
+		}
+
+		// フィルタの接続が解除されたので，フィルタ全体の再計算を行う
+
+		// 変更されたフィルタを再描画する
+		damage_ = true;
+		update( );
+		repaint( );
+	}
+
 	return( 1 );
 }
 
@@ -436,8 +483,8 @@ void filter_graph::initialize_filter( filter &f )
 	FXint pin_num = ipins > opins ? ipins : opins;
 	FXint hh = ( pin_num * 2 + 1 ) * box_size;
 
-	f.x      = 100;
-	f.y      = 150;
+	f.x      = getWidth( ) / 2 - getXPosition( );
+	f.y      = getHeight( ) / 2 - getYPosition( );
 	f.width  = w;
 	f.height = h > hh ? h : hh;
 

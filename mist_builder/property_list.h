@@ -34,6 +34,7 @@ public:
 
 	void clearItems( FXbool notify = FALSE )
 	{
+		onDeSelected( NULL, 0, NULL );
 		base::clearItems( notify );
 	}
 

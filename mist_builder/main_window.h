@@ -3,7 +3,7 @@
 
 #include "filter_graph.h"
 #include "data_view.h"
-#include "property.h"
+#include "property_list.h"
 
 
 // Event Handler Object
@@ -22,8 +22,10 @@ private:
 	filter_graph	*filter_graph_;
 	data_view		*data_view_;
 	property_list	*property_list_;
+	FXLabel			*filter_name_;
 
-	FXListBox		*listbox_;
+	FXTreeList		*treelist_;
+
 	FXStatusBar		*statusbar_;
 	FXProgressBar	*progressbar_;
 
@@ -54,7 +56,6 @@ public:
 		ID_FILTER_GRAPH,
 		ID_DATA_VIEW,
 		ID_FILTER_LIST,
-		ID_APPEND_FILTER,
 		ID_RECOMPUTE_FILTER,
 		ID_LAST
 	};

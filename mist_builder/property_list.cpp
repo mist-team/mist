@@ -1,6 +1,6 @@
 #include "config.h"
 
-#include "property.h"
+#include "property_list.h"
 
 
 #include <mist/draw.h>
@@ -12,6 +12,7 @@ FXDEFMAP( property_list ) property_list_map[] =
 		FXMAPFUNC ( SEL_PAINT,				0,								property_list::onPaint ),
 		FXMAPFUNC ( SEL_SELECTED,			property_list::ID_LIST,			property_list::onSelected ),
 		FXMAPFUNC ( SEL_DESELECTED,			property_list::ID_LIST,			property_list::onDeSelected ),
+
 		FXMAPFUNC ( SEL_KEYPRESS,			0,								property_list::onKeyDown ),
 		FXMAPFUNC ( SEL_KEYRELEASE,			0,								property_list::onKeyUp ),
 
@@ -47,17 +48,6 @@ property_list::property_list( FXComposite *p, FXObject *tgt, FXSelector sel, FXu
 	filename_ = new FXTextField( filename_area_, 255, this, ID_FILENAME, FRAME_NONE | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 5, 6, 2, 0 );
 	new FXButton( filename_area_, "...", NULL, this, ID_BUTTON, BUTTON_NORMAL | LAYOUT_SIDE_RIGHT | LAYOUT_FILL_Y );
 
-	//data[ 0 ] = property( property::TEXT, "•¶Žš—ñ‚Å‚·" );
-	//data[ 1 ] = property( property::BOOLEAN, true );
-	//data[ 2 ] = property( property::INTEGER, 3 );
-	//data[ 3 ] = property( property::REAL, 2.5 );
-	//data[ 4 ] = property( property::FILEOPEN, 2.5 );
-
-	//appendItem( "string", NULL, &( data[ 0 ] ) );
-	//appendItem( "boolean", NULL, &( data[ 1 ] ) );
-	//appendItem( "integer", NULL, &( data[ 2 ] ) );
-	//appendItem( "real", NULL, &( data[ 3 ] ) );
-	//appendItem( "filename", NULL, &( data[ 4 ] ) );
 }
 
 property_list::~property_list( )

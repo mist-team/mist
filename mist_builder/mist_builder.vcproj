@@ -138,7 +138,7 @@
 				RelativePath=".\mist_builder.cpp">
 			</File>
 			<File
-				RelativePath=".\property.cpp">
+				RelativePath=".\property_list.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -161,7 +161,7 @@
 				RelativePath=".\mist_builder.h">
 			</File>
 			<File
-				RelativePath=".\property.h">
+				RelativePath=".\property_list.h">
 			</File>
 		</Filter>
 		<Filter

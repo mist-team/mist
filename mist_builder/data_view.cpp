@@ -63,8 +63,6 @@ FXDEFMAP( data_view ) data_view_map[] =
 		FXMAPFUNC ( SEL_LEFTBUTTONRELEASE,	data_view::ID_CANVAS,			data_view::onMouseUp ),
 		FXMAPFUNC ( SEL_RIGHTBUTTONRELEASE,	data_view::ID_CANVAS,			data_view::onMouseUp ),
 		FXMAPFUNC ( SEL_MOTION,				data_view::ID_CANVAS,			data_view::onMouseMove ),
-		FXMAPFUNC ( SEL_KEYPRESS,			data_view::ID_CANVAS,			data_view::onKeyDown ),
-		FXMAPFUNC ( SEL_KEYRELEASE,			data_view::ID_CANVAS,			data_view::onKeyUp ),
 		FXMAPFUNC ( SEL_COMMAND,			data_view::ID_INTERPOLATE_MODE,	data_view::onInterpolateChange ),
 		FXMAPFUNC ( SEL_COMMAND,			data_view::ID_DRAW_CROSS,		data_view::onDrawCrossChange ),
 		FXMAPFUNC ( SEL_CHANGED,			data_view::ID_ZOOM_SLIDER,		data_view::onZoomChanged ),
@@ -222,6 +220,9 @@ void data_view::create( )
 	cursors_[ 0 ]->create( ); 
 	cursors_[ 1 ]->create( );
 	cursors_[ 2 ]->create( );
+
+	canvas_->setDefaultCursor( cursors_[ 1 ] );
+	canvas_->setDragCursor( cursors_[ 2 ] );
 }
 
 
@@ -233,8 +234,6 @@ long data_view::onMouseDown( FXObject *obj, FXSelector sel, void *ptr )
 
 	mark_position_ = screen2point( point2( e.win_x, e.win_y ) );
 
-	set_cursors( ( e.state & ALTMASK ) != 0 );
-
 	return( 1 );
 }
 
@@ -245,9 +244,7 @@ long data_view::onMouseMove( FXObject *obj, FXSelector sel, void *ptr )
 
 	point2 pt = screen2point( point2( e.win_x, e.win_y ) );
 
-	set_cursors( ( e.state & ALTMASK ) != 0 );
-
-	if( e.state & ALTMASK && e.state & LEFTBUTTONMASK )
+	if( e.state & LEFTBUTTONMASK )
 	{
 		current_position_ += mark_position_ - pt;
 
@@ -262,30 +259,9 @@ long data_view::onMouseUp( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
 
-	set_cursors( ( e.state & ALTMASK ) != 0 );
-
 	return( 1 );
 }
 
-// The mouse button was released again
-long data_view::onKeyDown( FXObject *obj, FXSelector sel, void *ptr )
-{
-	FXEvent &e = *( ( FXEvent * )ptr );
-
-	set_cursors( ( e.state & ALTMASK ) != 0 );
-
-	return( 1 );
-}
-
-// The mouse button was released again
-long data_view::onKeyUp( FXObject *obj, FXSelector sel, void *ptr )
-{
-	FXEvent &e = *( ( FXEvent * )ptr );
-
-	set_cursors( ( e.state & ALTMASK ) != 0 );
-
-	return( 1 );
-}
 
 // Paint the canvas
 long data_view::onPaint( FXObject *obj, FXSelector sel, void *ptr )
@@ -407,19 +383,6 @@ void data_view::draw_image( const filter *pf )
 	}
 }
 
-void data_view::set_cursors( bool is_drag )
-{
-	if( is_drag )
-	{
-		canvas_->setDefaultCursor( cursors_[ 1 ] );
-		canvas_->setDragCursor( cursors_[ 2 ] );
-	}
-	else
-	{
-		canvas_->setDefaultCursor( cursors_[ 0 ] );
-		canvas_->setDragCursor( cursors_[ 0 ] );
-	}
-}
 
 // 出力座標はスクリーン上の点で，単位は画素
 point2 data_view::point2screen( const point2 &pt ) const
