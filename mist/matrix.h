@@ -1331,14 +1331,14 @@ template< class T, class A >
 inline matrix_expression< matrix_add_const< matrix< T, A >, typename matrix< T, A >::value_type > > operator +( const matrix< T, A > &lhs, const typename matrix< T, A >::value_type &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
-	return( matrix_expression< matrix_add_const< matrix< T, A >, typename matrix< T, A >::value_type > >( matrix_add_const< matrix< T, A >, value_type >( lhs, rhs ) ) );
+	return( matrix_expression< matrix_add_const< matrix< T, A >, value_type > >( matrix_add_const< matrix< T, A >, value_type >( lhs, rhs ) ) );
 }
 
 template< class T, class A >
 inline matrix_expression< matrix_add_const< matrix< T, A >, typename matrix< T, A >::value_type > > operator +( const typename matrix< T, A >::value_type &lhs, const matrix< T, A > &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
-	return( matrix_expression< matrix_add_const< matrix< T, A >, typename matrix< T, A >::value_type > >( matrix_add_const< matrix< T, A >, value_type >( rhs, lhs ) ) );
+	return( matrix_expression< matrix_add_const< matrix< T, A >, value_type > >( matrix_add_const< matrix< T, A >, value_type >( rhs, lhs ) ) );
 }
 
 template< class Left >
@@ -1346,7 +1346,7 @@ inline matrix_expression< matrix_add_const< matrix_expression< Left >, typename 
 								operator +( const matrix_expression< Left > &lhs, const typename matrix_expression< Left >::value_type &rhs )
 {
 	typedef typename matrix_expression< Left >::value_type value_type;
-	return( matrix_expression< matrix_add_const< matrix_expression< Left >, typename matrix_expression< Left >::value_type > >( matrix_add_const< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
+	return( matrix_expression< matrix_add_const< matrix_expression< Left >, value_type > >( matrix_add_const< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
 }
 
 template< class Right >
@@ -1354,7 +1354,7 @@ inline matrix_expression< matrix_add_const< matrix_expression< Right >, typename
 								operator +( const typename matrix_expression< Right >::value_type &lhs, const matrix_expression< Right > &rhs )
 {
 	typedef typename matrix_expression< Right >::value_type value_type;
-	return( matrix_expression< matrix_add_const< matrix_expression< Right >, typename matrix_expression< Right >::value_type > >( matrix_add_const< matrix_expression< Right >, value_type >( rhs, lhs ) ) );
+	return( matrix_expression< matrix_add_const< matrix_expression< Right >, value_type > >( matrix_add_const< matrix_expression< Right >, value_type >( rhs, lhs ) ) );
 }
 
 
@@ -1387,14 +1387,14 @@ template< class T, class A >
 inline matrix_expression< matrix_sub_const1< matrix< T, A >, typename matrix< T, A >::value_type > > operator -( const matrix< T, A > &lhs, const typename matrix< T, A >::value_type &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
-	return( matrix_expression< matrix_sub_const1< matrix< T, A >, typename matrix< T, A >::value_type > >( matrix_sub_const1< matrix< T, A >, value_type >( lhs, rhs ) ) );
+	return( matrix_expression< matrix_sub_const1< matrix< T, A >, value_type > >( matrix_sub_const1< matrix< T, A >, value_type >( lhs, rhs ) ) );
 }
 
 template< class T, class A >
 inline matrix_expression< matrix_sub_const2< matrix< T, A >, typename matrix< T, A >::value_type > > operator -( const typename matrix< T, A >::value_type &lhs, const matrix< T, A > &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
-	return( matrix_expression< matrix_sub_const2< matrix< T, A >, typename matrix< T, A >::value_type > >( matrix_sub_const2< matrix< T, A >, value_type >( rhs, lhs ) ) );
+	return( matrix_expression< matrix_sub_const2< matrix< T, A >, value_type > >( matrix_sub_const2< matrix< T, A >, value_type >( rhs, lhs ) ) );
 }
 
 template< class Left >
@@ -1402,7 +1402,7 @@ inline matrix_expression< matrix_sub_const1< matrix_expression< Left >, typename
 					operator -( const matrix_expression< Left > &lhs, const typename matrix_expression< Left >::value_type &rhs )
 {
 	typedef typename matrix_expression< Left >::value_type value_type;
-	return( matrix_expression< matrix_sub_const1< matrix_expression< Left >, typename matrix_expression< Left >::value_type > >( matrix_sub_const1< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
+	return( matrix_expression< matrix_sub_const1< matrix_expression< Left >, value_type > >( matrix_sub_const1< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
 }
 
 template< class Right >
@@ -1410,7 +1410,7 @@ inline matrix_expression< matrix_sub_const2< matrix_expression< Right >, typenam
 					operator -( const typename matrix_expression< Right >::value_type &lhs, const matrix_expression< Right > &rhs )
 {
 	typedef typename matrix_expression< Right >::value_type value_type;
-	return( matrix_expression< matrix_sub_const2< matrix_expression< Right >, typename matrix_expression< Right >::value_type > >( matrix_sub_const2< matrix_expression< Right >, value_type >( rhs, lhs ) ) );
+	return( matrix_expression< matrix_sub_const2< matrix_expression< Right >, value_type > >( matrix_sub_const2< matrix_expression< Right >, value_type >( rhs, lhs ) ) );
 }
 
 
@@ -1443,28 +1443,28 @@ template< class T, class A >
 inline matrix_expression< matrix_mul_const< matrix< T, A >, typename matrix< T, A >::value_type > > operator *( const matrix< T, A > &lhs, const typename matrix< T, A >::value_type &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
-	return( matrix_expression< matrix_mul_const< matrix< T, A >, typename matrix< T, A >::value_type > >( matrix_mul_const< matrix< T, A >, value_type >( lhs, rhs ) ) );
+	return( matrix_expression< matrix_mul_const< matrix< T, A >, value_type > >( matrix_mul_const< matrix< T, A >, value_type >( lhs, rhs ) ) );
 }
 
 template< class T, class A >
 inline matrix_expression< matrix_mul_const< matrix< T, A >, typename matrix< T, A >::value_type > > operator *( const typename matrix< T, A >::value_type &lhs, const matrix< T, A > &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
-	return( matrix_expression< matrix_mul_const< matrix< T, A >, typename matrix< T, A >::value_type > >( matrix_mul_const< matrix< T, A >, value_type >( rhs, lhs ) ) );
+	return( matrix_expression< matrix_mul_const< matrix< T, A >, value_type > >( matrix_mul_const< matrix< T, A >, value_type >( rhs, lhs ) ) );
 }
 
 template< class Left >
 inline matrix_expression< matrix_mul_const< matrix_expression< Left >, typename matrix_expression< Left >::value_type > > operator *( const matrix_expression< Left > &lhs, const typename matrix_expression< Left >::value_type &rhs )
 {
 	typedef typename matrix_expression< Left >::value_type value_type;
-	return( matrix_expression< matrix_mul_const< matrix_expression< Left >, typename matrix_expression< Left >::value_type > >( matrix_mul_const< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
+	return( matrix_expression< matrix_mul_const< matrix_expression< Left >, value_type > >( matrix_mul_const< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
 }
 
 template< class Right >
 inline matrix_expression< matrix_mul_const< matrix_expression< Right >, typename matrix_expression< Right >::value_type > > operator *( const typename matrix_expression< Right >::value_type &lhs, const matrix_expression< Right > &rhs )
 {
 	typedef typename matrix_expression< Right >::value_type value_type;
-	return( matrix_expression< matrix_mul_const< matrix_expression< Right >, typename matrix_expression< Right >::value_type > >( matrix_mul_const< matrix_expression< Right >, value_type >( rhs, lhs ) ) );
+	return( matrix_expression< matrix_mul_const< matrix_expression< Right >, value_type > >( matrix_mul_const< matrix_expression< Right >, value_type >( rhs, lhs ) ) );
 }
 
 
@@ -1473,14 +1473,14 @@ template< class T, class A >
 inline matrix_expression< matrix_div_const< matrix< T, A >, typename matrix< T, A >::value_type > > operator /( const matrix< T, A > &lhs, const typename matrix< T, A >::value_type &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
-	return( matrix_expression< matrix_div_const< matrix< T, A >, typename matrix< T, A >::value_type > >( matrix_div_const< matrix< T, A >, value_type >( lhs, rhs ) ) );
+	return( matrix_expression< matrix_div_const< matrix< T, A >, value_type > >( matrix_div_const< matrix< T, A >, value_type >( lhs, rhs ) ) );
 }
 
 template< class Left >
 inline matrix_expression< matrix_div_const< matrix_expression< Left >, typename matrix_expression< Left >::value_type > > operator /( const matrix_expression< Left > &lhs, const typename matrix_expression< Left >::value_type &rhs )
 {
 	typedef typename matrix_expression< Left >::value_type value_type;
-	return( matrix_expression< matrix_div_const< matrix_expression< Left >, typename matrix_expression< Left >::value_type > >( matrix_div_const< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
+	return( matrix_expression< matrix_div_const< matrix_expression< Left >, value_type > >( matrix_div_const< matrix_expression< Left >, value_type >( lhs, rhs ) ) );
 }
 
 

@@ -329,7 +329,8 @@ public:
 template < class T1, class T2 >
 inline typename promote_trait< T1, T2 >::value_type operator ^( const vector3< T1 > &v1, const vector3< T2 > &v2 )
 {
-	return( vector3< typename promote_trait< T1, T2 >::value_type >( v1 ).inner( v2 ) );
+	typedef typename promote_trait< T1, T2 >::value_type value_type;
+	return( vector3< value_type >( v1 ).inner( v2 ) );
 }
 
 // 型の昇格を行う演算の定義
@@ -635,14 +636,16 @@ public:
 template < class T1, class T2 >
 inline typename promote_trait< T1, T2 >::value_type operator ^( const vector2< T1 > &v1, const vector2< T2 > &v2 )
 {
-	return( vector2< typename promote_trait< T1, T2 >::value_type >( v1 ).inner( v2 ) );
+	typedef typename promote_trait< T1, T2 >::value_type value_type;
+	return( vector2< value_type >( v1 ).inner( v2 ) );
 }
 
 /// @brief ベクトルの外積
 template < class T1, class T2 >
 inline typename promote_trait< T1, T2 >::value_type operator *( const vector2< T1 > &v1, const vector2< T2 > &v2 )
 {
-	return( vector2< typename promote_trait< T1, T2 >::value_type >( v1 ).outer( v2 ) );
+	typedef typename promote_trait< T1, T2 >::value_type value_type;
+	return( vector2< value_type >( v1 ).outer( v2 ) );
 }
 
 

@@ -1826,7 +1826,12 @@ namespace __svd__
 					if( info == 0 )
 					{
 						u.resize( ldu, m );
-						matrix< typename T1::value_type > ss( size, 1 );
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+						// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
+						matrix< value_type > ss( size, 1 );
+#else
+						matrix< value_type, typename Allocator1::template rebind< value_type >::other > ss( size, 1 );
+#endif
 						vt.resize( ldvt, n );
 						value_type *rwork = new value_type[ 5 * size * size + 5 * size ];
 						integer *iwork = new integer[ 8 * size ];
@@ -1955,6 +1960,7 @@ namespace __svd__
 					integer n      = static_cast< integer >( a.cols( ) );
 					integer lda    = m;
 					integer ldu    = m;
+					integer size   = m < n ? m : n;
 					typename matrix< T1, Allocator1 >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
@@ -1966,9 +1972,14 @@ namespace __svd__
 					if( info == 0 )
 					{
 						u.resize( ldu, m );
-						matrix< typename T1::value_type > ss( m < n ? m : n, 1 );
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+						// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
+						matrix< value_type > ss( size, 1 );
+#else
+						matrix< value_type, typename Allocator1::template rebind< value_type >::other > ss( size, 1 );
+#endif
 						vt.resize( ldvt, n );
-						value_type *rwork = new value_type[ 5 * ( m < n ? m : n ) ];
+						value_type *rwork = new value_type[ 5 * size ];
 
 						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T1, Allocator1 > work( lwork, 1 );

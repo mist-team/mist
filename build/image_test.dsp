@@ -25,7 +25,7 @@ CFG=image_test - Win32 Debug
 # PROP AllowPerConfigDependencies 0
 # PROP Scc_ProjName ""
 # PROP Scc_LocalPath ""
-CPP=icl.exe
+CPP=cl.exe
 RSC=rc.exe
 
 !IF  "$(CFG)" == "image_test - Win32 Release"
@@ -91,7 +91,7 @@ SOURCE=..\test\image_test.cpp
 # End Source File
 # Begin Source File
 
-SOURCE="\SVN Projects\mist\test\image_test_window.cpp"
+SOURCE=..\test\image_test_window.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
