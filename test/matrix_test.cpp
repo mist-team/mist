@@ -98,9 +98,9 @@ void test_matrix_operation( )
 		double tmp;
 		for( l = 0 ; l < loop ; l++ )
 		{
-			for( i = 0 ; i < mat.cols( ) ; i++ )
+			for( j = 0 ; j < mat.rows( ) ; j++ )
 			{
-				for( j = 0 ; j < mat.rows( ) ; j++ )
+				for( i = 0 ; i < mat.cols( ) ; i++ )
 				{
 					tmp = 0.0;
 					for( k = 0 ; k < mat3.rows( ) ; k++ )

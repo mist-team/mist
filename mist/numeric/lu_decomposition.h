@@ -146,7 +146,6 @@ void lu_decomposition1( matrix< T1, Allocator > &a, matrix< T2, Allocator > &piv
 	}
 }
 
-
 template < class T1, class T2, class Allocator >
 void lu_backwardsub( const matrix< T1, Allocator > &a, matrix< T1, Allocator > &b, matrix< T2, Allocator > &pivot )
 {

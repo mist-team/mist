@@ -1,3 +1,38 @@
+/****************************************************************************************************************************
+**
+**         MIST ( Media Integration Standard Toolkit )
+**
+**         matrix template class implementation using teqnique of an expression template.
+**
+**
+**           All matrix operations are described in row order.
+**           All matrix elements are allocated as one dimensional array on the memory space.
+**
+**             ex) The order of 3x3 matrix are
+**
+**                   1  4  7
+**                   2  5  8
+**                   3  6  9
+**
+**
+**         use atrix( row, col ) accesses operation. 
+**
+**
+**
+**         We developed these programs since 2003/09/05.
+**
+**             $LastChangedDate$
+**             $LastChangedRevision$
+**             $LastChangedBy$
+**             $HeadURL$
+**
+**              Copyright ***********************.
+**                    All Rights Reserved.
+**
+****************************************************************************************************************************/
+
+
+
 #ifndef __INCLUDE_MIST_MATRIX__
 #define __INCLUDE_MIST_MATRIX__
 
@@ -383,9 +418,9 @@ public: // îzóÒÇ…ëŒÇ∑ÇÈéZèpââéZ
 		matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
 		size_type r, c, t;
 
-		for( r = 0 ; r < mat.rows( ) ; r++ )
+		for( c = 0 ; c < mat.cols( ) ; c++ )
 		{
-			for( c = 0 ; c < mat.cols( ) ; c++ )
+			for( r = 0 ; r < mat.rows( ) ; r++ )
 			{
 				for( t = 0 ; t < m1.cols( ) ; t++ )
 				{
@@ -451,9 +486,9 @@ public: // îzóÒÇ…ëŒÇ∑ÇÈéZèpââéZ
 			return( m1 );
 		}
 #endif
-		for( size_type r = 0 ; r < m1.rows( ) ; r++ )
+		for( size_type c = 0 ; c < m1.cols( ) ; c++ )
 		{
-			for( size_type c = 0 ; c < m1.cols( ) ; c++ )
+			for( size_type r = 0 ; r < m1.rows( ) ; r++ )
 			{
 				m1( r, c ) += m2( r, c );
 			}
@@ -473,9 +508,9 @@ public: // îzóÒÇ…ëŒÇ∑ÇÈéZèpââéZ
 			return( m1 );
 		}
 #endif
-		for( size_type r = 0 ; r < m1.rows( ) ; r++ )
+		for( size_type c = 0 ; c < m1.cols( ) ; c++ )
 		{
-			for( size_type c = 0 ; c < m1.cols( ) ; c++ )
+			for( size_type r = 0 ; r < m1.rows( ) ; r++ )
 			{
 				m1( r, c ) -= m2( r, c );
 			}
@@ -498,9 +533,9 @@ public: // îzóÒÇ…ëŒÇ∑ÇÈéZèpââéZ
 
 		matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
 
-		for( size_type r = 0 ; r < mat.rows( ) ; r++ )
+		for( size_type c = 0 ; c < mat.cols( ) ; c++ )
 		{
-			for( size_type c = 0 ; c < mat.cols( ) ; c++ )
+			for( size_type r = 0 ; r < mat.rows( ) ; r++ )
 			{
 				for( size_type t = 0 ; t < m1.cols( ) ; t++ )
 				{
@@ -555,9 +590,9 @@ public:
 	const matrix& operator =( const matrix_expression< T, Allocator, Derive > &expression )
 	{
 		matrix m( expression.rows( ), expression.cols( ) );
-		for( size_type r = 0 ; r < m.rows( ) ; r++ )
+		for( size_type c = 0 ; c < m.cols( ) ; c++ )
 		{
-			for( size_type c = 0 ; c < m.cols( ) ; c++ )
+			for( size_type r = 0 ; r < m.rows( ) ; r++ )
 			{
 				m( r, c ) = expression( r, c );
 			}
@@ -643,9 +678,9 @@ public:
 	explicit matrix( const matrix_expression< T, Allocator, Derive > &expression ) : base( expression.rows( ) * expression.cols( ) ), size1_( expression.rows( ) ), size2_( expression.cols( ) )
 	{
 		matrix &m = *this;
-		for( size_type r = 0 ; r < m.rows( ) ; r++ )
+		for( size_type c = 0 ; c < m.cols( ) ; c++ )
 		{
-			for( size_type c = 0 ; c < m.cols( ) ; c++ )
+			for( size_type r = 0 ; r < m.rows( ) ; r++ )
 			{
 				m( r, c ) = expression( r, c );
 			}
@@ -975,9 +1010,9 @@ inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m1, cons
 	matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
 	typename matrix< T, Allocator >::size_type r, c, t;
 
-	for( r = 0 ; r < mat.rows( ) ; r++ )
+	for( c = 0 ; c < mat.cols( ) ; c++ )
 	{
-		for( c = 0 ; c < mat.cols( ) ; c++ )
+		for( r = 0 ; r < mat.rows( ) ; r++ )
 		{
 			for( t = 0 ; t < m1.cols( ) ; t++ )
 			{

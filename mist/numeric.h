@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_MIST_NUMERIC_H__
-#define __INCLUDE_MIST_NUMERIC_H__
+#ifndef __INCLUDE_MIST_NUMERIC__
+#define __INCLUDE_MIST_NUMERIC__
 
 #include "numeric/lu_decomposition.h"
 
