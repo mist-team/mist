@@ -6,7 +6,7 @@ int main( int argc, char *argv[] )
 	using namespace std;
 
 //	mist::integer< 21 > v1( 100000 ), v2( 2 );
-	mist::integer< 10, char, 10 > v1( 900 ), v2( 1000 );
+	mist::integer< 20 > v1( 900 ), v2( "1234567890123456789" );
 //	mist::integer< 10, short, 100 > v1( 900 ), v2( 1000 );
 
 
@@ -24,9 +24,9 @@ int main( int argc, char *argv[] )
 	cout << "11. Operator A / 2 = \t"; cout << ( v1 / 2  ) << endl;
 
 	cout << "12. Operator A % B = \t"; cout << ( v1 % v2 ) << endl;
-	//cout << "13. Operator A | B = \t"; cout << ( v1 | v2 ) << endl;
-	//cout << "14. Operator A & B = \t"; cout << ( v1 & v2 ) << endl;
-	//cout << "15. Operator A ^ B = \t"; cout << ( v1 ^ v2 ) << endl;
+	cout << "13. Operator A | B = \t"; cout << ( v1 | v2 ) << endl;
+	cout << "14. Operator A & B = \t"; cout << ( v1 & v2 ) << endl;
+	cout << "15. Operator A ^ B = \t"; cout << ( v1 ^ v2 ) << endl;
 
 	cout << "16. Operator A == B = \t"; cout << ( v1 == v2 ) << endl;
 	cout << "17. Operator A != B = \t"; cout << ( v1 != v2 ) << endl;
