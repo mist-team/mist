@@ -40,12 +40,101 @@
 #ifndef __INCLUDE_MIST_MATRIX__
 #define __INCLUDE_MIST_MATRIX__
 
+#include <complex>
+
+#ifndef __INCLUDE_MIST_H__
 #include "mist.h"
+#endif
+
 #include <cmath>
+
 
 // mist名前空間の始まり
 _MIST_BEGIN
 
+
+
+namespace __numeric__
+{
+	template < class T >
+	struct is_complex
+	{
+		_MIST_CONST( bool, value, false );
+	};
+
+#if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
+
+	#define IS_COMPLEX( type ) \
+		template < >\
+	struct is_complex< std::complex< type > >\
+		{\
+		enum{ value = true };\
+		};\
+
+		// 各型に対する特殊化
+		IS_COMPLEX(unsigned char)
+		IS_COMPLEX(unsigned short)
+		IS_COMPLEX(unsigned int)
+		IS_COMPLEX(unsigned long)
+		IS_COMPLEX(signed char)
+		IS_COMPLEX(signed short)
+		IS_COMPLEX(signed int)
+		IS_COMPLEX(signed long)
+		IS_COMPLEX(bool)
+		IS_COMPLEX(char)
+		IS_COMPLEX(float)
+		IS_COMPLEX(double)
+		IS_COMPLEX(long double)
+
+	#undef IS_COLOR
+
+#else
+
+	template < class T >
+	struct is_complex< std::complex< T > >
+	{
+		_MIST_CONST( bool, value, true );
+	};
+
+#endif
+
+	template< bool b >
+	struct value_compare
+	{
+		template < class T > static bool le( const T &v1, const T &v2 ){ return( v1 <= v2 ); }
+		template < class T > static bool ge( const T &v1, const T &v2 ){ return( v1 >= v2 ); }
+		template < class T > static bool lt( const T &v1, const T &v2 ){ return( v1 <  v2 ); }
+		template < class T > static bool gt( const T &v1, const T &v2 ){ return( v1 >  v2 ); }
+	};
+
+	template< >
+	struct value_compare< true >
+	{
+		template < class T >
+		static bool lt( const T &v1, const T &v2 )
+		{
+			if( v1.real( ) < v2.real( ) )
+			{
+				return( true );
+			}
+			else if( v1.real( ) > v2.real( ) )
+			{
+				return( false );
+			}
+			else if( v1.imag( ) < v2.imag( ) )
+			{
+				return( true );
+			}
+			else
+			{
+				return( false );
+			}
+		}
+		template < class T > static bool ge( const T &v1, const T &v2 ){ return( !lt( v1, v2 ) ); }
+		template < class T > static bool le( const T &v1, const T &v2 ){ return( !lt( v2, v1 ) ); }
+		template < class T > static bool gt( const T &v1, const T &v2 ){ return( lt( v2, v1 ) ); }
+	};
+}
 
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
@@ -173,7 +262,8 @@ struct matrix_identity : public matrix_static_operation< T >
 	typedef matrix_static_operation< T > base;
 
 	explicit matrix_identity( const size_type rows, const size_type cols ) : base( rows, cols ){}
-	value_type operator()( size_type r, size_type c ) const { return( r == c ? value_type( 1 ) : 0 ); }
+	value_type operator()( size_type r, size_type c ) const { return( static_cast< value_type >( !( r - c ) ) ); }
+//	value_type operator()( size_type r, size_type c ) const { return( r == c ? value_type( 1 ) : 0 ); }
 	value_type operator[]( size_type indx ) const { return( 0 ); }
 };
 
@@ -621,6 +711,134 @@ public:
 
 
 public:
+	/// @brief 3×3 の対角行列を計算する
+	//! 
+	//! 3つの入力成分の大きいものから順番に並べ替えて，対角行列を作成する
+	//! 
+	//! \f[
+	//!     \left(
+	//!          \begin{array}{ccc}
+	//!            \sigma_1 &    0     &    0     \\ //
+	//!               0     & \sigma_2 &    0     \\ //
+	//!               0     &    0     & \sigma_3
+	//!          \end{array}
+	//!     \right)
+	//! \f]
+	//! ただし，\f$ \sigma_1 \ge \sigma_2 \ge \sigma_3 \f$
+	//! 
+	//! @param[in] s1 … 成分1
+	//! @param[in] s2 … 成分2
+	//! @param[in] s3 … 成分3
+	//!
+	//! @return 対角行列
+	//! 
+	static const matrix diag( const value_type &s1, const value_type &s2, const value_type &s3 )
+	{
+		typedef __numeric__::value_compare< __numeric__::is_complex< value_type >::value > value_compare;
+		matrix d( 3, 3 );
+
+		if( value_compare::lt( s1, s2 ) )
+		{
+			// s1 < s2
+			if( value_compare::lt( s1, s3 ) )
+			{
+				if( value_compare::lt( s2, s3 ) )
+				{
+					d( 0, 0 ) = s3;
+					d( 1, 1 ) = s2;
+					d( 2, 2 ) = s1;
+				}
+				else
+				{
+					d( 0, 0 ) = s2;
+					d( 1, 1 ) = s3;
+					d( 2, 2 ) = s1;
+				}
+			}
+			else
+			{
+				d( 0, 0 ) = s2;
+				d( 1, 1 ) = s1;
+				d( 2, 2 ) = s3;
+			}
+		}
+		else
+		{
+			// s2 < s1
+			if( value_compare::lt( s1, s3 ) )
+			{
+				d( 0, 0 ) = s3;
+				d( 1, 1 ) = s1;
+				d( 2, 2 ) = s2;
+			}
+			else
+			{
+				if( value_compare::lt( s2, s3 ) )
+				{
+					d( 0, 0 ) = s1;
+					d( 1, 1 ) = s3;
+					d( 2, 2 ) = s2;
+				}
+				else
+				{
+					d( 0, 0 ) = s1;
+					d( 1, 1 ) = s2;
+					d( 2, 2 ) = s3;
+				}
+			}
+		}
+		return( d );
+	}
+
+
+
+	/// @brief 入力データを用いて4×4の行列を返す
+	static const matrix _44(
+								const value_type &a00, const value_type &a01, const value_type &a02, const value_type &a03,
+								const value_type &a10, const value_type &a11, const value_type &a12, const value_type &a13,
+								const value_type &a20, const value_type &a21, const value_type &a22, const value_type &a23,
+								const value_type &a30, const value_type &a31, const value_type &a32, const value_type &a33
+							)
+	{
+		matrix o( 4, 4 );
+
+		o( 0, 0 ) = a00; o( 0, 1 ) = a01; o( 0, 2 ) = a02; o( 0, 2 ) = a03;
+		o( 1, 0 ) = a10; o( 1, 1 ) = a11; o( 1, 2 ) = a12; o( 1, 2 ) = a13;
+		o( 2, 0 ) = a20; o( 2, 1 ) = a21; o( 2, 2 ) = a22; o( 2, 2 ) = a23;
+		o( 3, 0 ) = a30; o( 3, 1 ) = a31; o( 3, 2 ) = a32; o( 3, 2 ) = a33;
+
+		return( o );
+	}
+
+	/// @brief 入力データを用いて3×3の行列を返す
+	static const matrix _33(
+								const value_type &a00, const value_type &a01, const value_type &a02,
+								const value_type &a10, const value_type &a11, const value_type &a12,
+								const value_type &a20, const value_type &a21, const value_type &a22
+							)
+	{
+		matrix o( 3, 3 );
+
+		o( 0, 0 ) = a00; o( 0, 1 ) = a01; o( 0, 2 ) = a02;
+		o( 1, 0 ) = a10; o( 1, 1 ) = a11; o( 1, 2 ) = a12;
+		o( 2, 0 ) = a20; o( 2, 1 ) = a21; o( 2, 2 ) = a22;
+
+		return( o );
+	}
+
+	/// @brief 入力データを用いて2×2の行列を返す
+	static const matrix _22(
+								const value_type &a00, const value_type &a01,
+								const value_type &a10, const value_type &a11
+							)
+	{
+		matrix o( 2, 2 );
+
+		o( 0, 0 ) = a00; o( 0, 1 ) = a01;
+		o( 1, 0 ) = a10; o( 1, 1 ) = a11;
+
+		return( o );
+	}
 
 	
 // 単位行列とゼロ行列を生成する
@@ -1271,9 +1489,21 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const matrix< T, Alloca
 template < class T >
 inline ::std::ostream &operator <<( ::std::ostream &out,  const matrix_expression< T > &m )
 {
-	typedef typename matrix_expression< T >::allocator_type	allocator_type;
-	typedef typename matrix_expression< T >::value_type		value_type;
-	return( operator <<( out, matrix< value_type, allocator_type >( m ) ) );
+	typename matrix_expression< T >::size_type r, c;
+	for( r = 0 ; r < m.rows( ) ; r++ )
+	{
+		if( r != 0 )
+		{
+			out << ::std::endl;
+		}
+		for( c = 0 ; c < m.cols( ) ; c++ )
+		{
+			out << m( r, c );
+			if( c != m.cols( ) - 1 ) out << ", ";
+		}
+	}
+
+	return( out );
 }
 
 #endif

@@ -5,8 +5,6 @@
 #ifndef __INCLUDE_NUMERIC__
 #define __INCLUDE_NUMERIC__
 
-#include <complex>
-
 
 #ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
 #include "config/type_trait.h"
@@ -57,50 +55,6 @@ struct matrix_style
 //  行列演算グループの終わり
 
 
-namespace __numeric__
-{
-	template < class T >
-	struct is_complex
-	{
-		_MIST_CONST( bool, value, false );
-	};
-
-#if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
-
-	#define IS_COMPLEX( type ) \
-		template < >\
-	struct is_complex< std::complex< type > >\
-		{\
-		enum{ value = true };\
-		};\
-
-		// 各型に対する特殊化
-		IS_COMPLEX(unsigned char)
-		IS_COMPLEX(unsigned short)
-		IS_COMPLEX(unsigned int)
-		IS_COMPLEX(unsigned long)
-		IS_COMPLEX(signed char)
-		IS_COMPLEX(signed short)
-		IS_COMPLEX(signed int)
-		IS_COMPLEX(signed long)
-		IS_COMPLEX(bool)
-		IS_COMPLEX(char)
-		IS_COMPLEX(float)
-		IS_COMPLEX(double)
-		IS_COMPLEX(long double)
-
-	#undef IS_COLOR
-
-#else
-
-	template < class T >
-	struct is_complex< std::complex< T > >
-	{
-		_MIST_CONST( bool, value, true );
-	};
-
-#endif
-}
 
 namespace __clapack__
 {
@@ -2251,89 +2205,6 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 }
 
 #endif
-
-
-
-/// @brief 3×3 の対角行列を計算する
-//! 
-//! 3つの入力成分の大きいものから順番に並べ替えて，対角行列を作成する
-//! 
-//! \f[
-//!     \left(
-//!          \begin{array}{ccc}
-//!            \sigma_1 &    0     &    0     \\ //
-//!               0     & \sigma_2 &    0     \\ //
-//!               0     &    0     & \sigma_3
-//!          \end{array}
-//!     \right)
-//! \f]
-//! ただし，\f$ \sigma_1 \ge \sigma_2 \ge \sigma_3 \f$
-//! 
-//! @param[in] s1 … 成分1
-//! @param[in] s2 … 成分2
-//! @param[in] s3 … 成分3
-//!
-//! @return 対角行列
-//! 
-template < class T >
-inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, const typename type_trait< T >::value_type &s2, const typename type_trait< T >::value_type &s3 )
-{
-	matrix< typename type_trait< T >::value_type > d( 3, 3 );
-	double ss1 = static_cast< double >( __clapack__::get_real( s1 ) );
-	double ss2 = static_cast< double >( __clapack__::get_real( s2 ) );
-	double ss3 = static_cast< double >( __clapack__::get_real( s3 ) );
-	if( ss1 < ss2 )
-	{
-		// ss1 < ss2
-		if( ss1 < ss3 )
-		{
-			if( ss2 < ss3 )
-			{
-				d( 0, 0 ) = s3;
-				d( 1, 1 ) = s2;
-				d( 2, 2 ) = s1;
-			}
-			else
-			{
-				d( 0, 0 ) = s2;
-				d( 1, 1 ) = s3;
-				d( 2, 2 ) = s1;
-			}
-		}
-		else
-		{
-			d( 0, 0 ) = s2;
-			d( 1, 1 ) = s1;
-			d( 2, 2 ) = s3;
-		}
-	}
-	else
-	{
-		// ss2 < ss1
-		if( ss1 < ss3 )
-		{
-			d( 0, 0 ) = s3;
-			d( 1, 1 ) = s1;
-			d( 2, 2 ) = s2;
-		}
-		else
-		{
-			if( ss2 < ss3 )
-			{
-				d( 0, 0 ) = s1;
-				d( 1, 1 ) = s3;
-				d( 2, 2 ) = s2;
-			}
-			else
-			{
-				d( 0, 0 ) = s1;
-				d( 1, 1 ) = s2;
-				d( 2, 2 ) = s3;
-			}
-		}
-	}
-	return( d );
-}
 
 
 
