@@ -288,8 +288,8 @@ public:
 
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
 	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
-	typedef mist_reverse_iterator1< T, ptrdiff_t, pointer, reference > reverse_iterator;
-	typedef mist_reverse_iterator1< T, ptrdiff_t, pointer, const_reference > const_reverse_iterator;
+	typedef std::reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
+	typedef std::reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
 private:
 	typedef array< T, Allocator > base;
@@ -352,11 +352,11 @@ public:
 
 
 	// 逆方向のランダムアクセスイテレータを返す
-	reverse_iterator row_rbegin( size_type r ){ return( reverse_iterator( &access( r, cols( ) - 1 ), rows( ) ) ); }
-	const_reverse_iterator row_rbegin( size_type r ) const { return( const_reverse_iterator( &access( r, cols( ) - 1 ), rows( ) ) ); }
+	reverse_iterator row_rbegin( size_type r ){ return( reverse_iterator( row_end( r )  ) ); }
+	const_reverse_iterator row_rbegin( size_type r ) const { return( const_reverse_iterator( row_end( r ) ) ); }
 
-	reverse_iterator row_rend( size_type r ){ return( reverse_iterator( &access( r, 0 ), rows( ) ) + 1 ); }
-	const_reverse_iterator row_rend( size_type r ) const { return( const_reverse_iterator( &access( r, 0 ), rows( ) ) + 1 ); }
+	reverse_iterator row_rend( size_type r ){ return( reverse_iterator( row_begin( r ) ) ); }
+	const_reverse_iterator row_rend( size_type r ) const { return( const_reverse_iterator( row_begin( r ) ) ); }
 
 
 /************************************************************************************************************
@@ -373,11 +373,11 @@ public:
 
 
 	// 逆方向のランダムアクセスイテレータを返す
-	reverse_iterator col_rbegin( size_type c ){ return( reverse_iterator( &access( rows( ) - 1, c ), 1 ) ); }
-	const_reverse_iterator col_rbegin( size_type c ) const { return( const_reverse_iterator( &access( rows( ) - 1, c ), 1 ) ); }
+	reverse_iterator col_rbegin( size_type c ){ return( reverse_iterator( col_end( c ) ) ); }
+	const_reverse_iterator col_rbegin( size_type c ) const { return( const_reverse_iterator(  col_end( c ) ) ); }
 
-	reverse_iterator col_rend( size_type c ){ return( reverse_iterator( &access( 0, c ), 1 ) + 1 ); }
-	const_reverse_iterator col_rend( size_type c ) const { return( const_reverse_iterator( &access( 0, c ), 1 ) + 1 ); }
+	reverse_iterator col_rend( size_type c ){ return( reverse_iterator( col_begin( c ) ) ); }
+	const_reverse_iterator col_rend( size_type c ) const { return( const_reverse_iterator( col_begin( c ) ) ); }
 
 
 
