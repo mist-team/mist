@@ -269,9 +269,12 @@ namespace __minimization_utility__
 //! @param[out]    fb … 評価関数値 @f$ f(b) @f$
 //! @param[out]    fc … 評価関数値 @f$ f(c) @f$
 //! @param[in]     f  … 評価関数
+//! @param[in]     max_iterations … 最大反復回数
+//!
+//! @return 極小を囲む区間を見つけることができたかどうか
 //! 
 template < class Functor >
-void enclose( double &a, double &b, double &c, double &fa, double &fb, double &fc, Functor f )
+bool enclose( double &a, double &b, double &c, double &fa, double &fb, double &fc, Functor f, size_t max_iterations = 100 )
 {
 	const double gold = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
 	const double _1_gold = 1.0 / gold;
@@ -301,8 +304,16 @@ void enclose( double &a, double &b, double &c, double &fa, double &fb, double &f
 	c = a + _1_gold * ( b - a );
 	fc = f( c );
 
+	// 区間の更新が不可能な場合の判定
+	if( fa == fb && fb == fc )
+	{
+		return( false );
+	}
+
 	// f( a ) > f( b ) < f( c ) となるまで，区間の更新を続ける
-	while( fb > fc )
+	// また，最大反復回数を超えた場合も終了する
+	size_t ite = 0;
+	while( fb > fc && ite++ < max_iterations )
 	{
 		// a, b, c, fa, fb, fc の値に，放物線を当てはめて極小が存在する位置を計算する
 		double ba = b - a;
@@ -377,6 +388,8 @@ void enclose( double &a, double &b, double &c, double &fa, double &fb, double &f
 			fc = f( c );
 		}
 	}
+
+	return( ite < max_iterations );
 }
 
 
@@ -412,7 +425,10 @@ namespace gold
 		{
 			p = b;
 			double fa, fb;
-			enclose( a, p, b, fa, fp, fb, f );
+			if( !enclose( a, p, b, fa, fp, fb, f ) )
+			{
+				return( fp );
+			}
 
 			// a <= b <= c となるように区間を変更する
 			if( a > b )
@@ -551,7 +567,10 @@ namespace brent
 		{
 			double fa, fb;
 			x = b;
-			enclose( a, x, b, fa, fx, fb, f );
+			if( !enclose( a, x, b, fa, fx, fb, f ) )
+			{
+				return( fx );
+			}
 
 			// a <= x <= b で極小を囲う区間に変更する
 			if( a > b )
