@@ -11,6 +11,10 @@
 #include "../config/color.h"
 #endif
 
+#ifndef __INCLUDE_MIST_LIMITS__
+#include "../limits.h"
+#endif
+
 
 #include <string>
 
@@ -210,13 +214,7 @@ namespace __png_controller__
 				png_buff[j] = new png_byte[width * 3];
 				for( i = 0 ; i < width ; i++ )
 				{
-					color_type c = pixel_converter::convert_from( image( i, j ) );
-					c.r = c.r < 0   ?   0 : c.r;
-					c.r = c.r > 255 ? 255 : c.r;
-					c.g = c.g < 0   ?   0 : c.g;
-					c.g = c.g > 255 ? 255 : c.g;
-					c.b = c.b < 0   ?   0 : c.b;
-					c.b = c.b > 255 ? 255 : c.b;
+					color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
 					png_buff[j][ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
 					png_buff[j][ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
 					png_buff[j][ i * 3 + 2 ] = static_cast< unsigned char >( c.b );

@@ -11,6 +11,11 @@
 #include "../config/color.h"
 #endif
 
+#ifndef __INCLUDE_MIST_LIMITS__
+#include "../limits.h"
+#endif
+
+
 #include <iostream>
 #include <string>
 
@@ -235,13 +240,7 @@ namespace __tiff_controller__
 
 			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )
 			{
-				color_type c = pixel_converter::convert_from( image[i] );
-				c.r = c.r < 0   ?   0 : c.r;
-				c.r = c.r > 255 ? 255 : c.r;
-				c.g = c.g < 0   ?   0 : c.g;
-				c.g = c.g > 255 ? 255 : c.g;
-				c.b = c.b < 0   ?   0 : c.b;
-				c.b = c.b > 255 ? 255 : c.b;
+				color_type c = limits_0_255( pixel_converter::convert_from( image[ i ] ) );
 				buf[ i * 3 + 0 ] = c.r;
 				buf[ i * 3 + 1 ] = c.g;
 				buf[ i * 3 + 2 ] = c.b;

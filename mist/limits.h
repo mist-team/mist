@@ -120,6 +120,58 @@ _DEFINE_TYPE_LIMITS( long double,   false,  true,  LDBL_MIN,  LDBL_MAX, 0 )
 
 #undef _DEFINE_TYPE_LIMITS
 
+
+namespace __limits_0_255__
+{
+	template < bool _ISCHAR_ >
+	struct limits_0_255__
+	{
+		template < class T >
+		static const T limits( const T &v )
+		{
+			return( v );
+		}
+	};
+
+	template < >
+	struct limits_0_255__< false >
+	{
+		template < class T >
+		static const T limits( const T &v )
+		{
+			return( v < 0 ? 0 : ( v > 255 ? 255 : v ) );
+		}
+	};
+
+	template < bool _ISCOLOR_ >
+	struct limits_0_255
+	{
+		template < class T >
+		static const T limits( const T &v )
+		{
+			return( limits_0_255__< is_char< T >::value >::limits( v ) );
+		}
+	};
+
+	template < >
+	struct limits_0_255< true >
+	{
+		template < class T >
+		static const rgb< T > limits( const rgb< T > &v )
+		{
+			typedef limits_0_255__< is_char< T >::value > limits_0_255_;
+			return( rgb< T >( limits_0_255_::limits( v.r ), limits_0_255_::limits( v.g ), limits_0_255_::limits( v.b ) ) );
+		}
+	};
+}
+
+template < class T >
+inline const T limits_0_255( const T &v )
+{
+	return( __limits_0_255__::limits_0_255< is_color< T >::value >::limits( v ) );
+}
+
+
 // mist–¼‘O‹óŠÔ‚ÌI‚í‚è
 _MIST_END
 

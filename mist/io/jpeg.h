@@ -11,6 +11,10 @@
 #include "../config/color.h"
 #endif
 
+#ifndef __INCLUDE_MIST_LIMITS__
+#include "../limits.h"
+#endif
+
 
 #include <iostream>
 #include <string>
@@ -138,13 +142,7 @@ namespace __jpeg_controller__
 			{
 				for( i = 0 ; i < w ; i++ )
 				{
-					color_type c = pixel_converter::convert_from( image( i, j ) );
-					c.r = c.r < 0   ?   0 : c.r;
-					c.r = c.r > 255 ? 255 : c.r;
-					c.g = c.g < 0   ?   0 : c.g;
-					c.g = c.g > 255 ? 255 : c.g;
-					c.b = c.b < 0   ?   0 : c.b;
-					c.b = c.b > 255 ? 255 : c.b;
+					color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
 					*p++ = static_cast< JSAMPLE >( c.r );
 					*p++ = static_cast< JSAMPLE >( c.g );
 					*p++ = static_cast< JSAMPLE >( c.b );
