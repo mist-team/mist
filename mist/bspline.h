@@ -17,6 +17,11 @@
 _MIST_BEGIN
 
 
+//! @defgroup free_form_group 自由曲線・曲面
+//!  @{
+
+
+
 //! @defgroup bspline_group Bスプライン曲線
 //!  @{
 
@@ -250,6 +255,10 @@ public:
 
 /// @}
 //  Bスプライングループの終わり
+
+
+/// @}
+//  自由曲線・曲面グループの終わり
 
 
 // mist名前空間の終わり

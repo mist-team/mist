@@ -22,7 +22,7 @@ _MIST_BEGIN
 //! @{
 
 
-
+/// DICOMファイルを操作する関数・クラスを含む名前空間
 namespace dicom_controller
 {
 	typedef size_t    size_type;
@@ -133,7 +133,7 @@ namespace dicom_controller
 	#endif
 
 
-	/// @enum DICOMのVRタグの種類
+	/// @brief DICOMのVRタグの種類
 	enum dicom_vr
 	{
 		UNKNOWN,	///< @brief 不明なＶＲ

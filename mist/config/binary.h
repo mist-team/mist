@@ -211,51 +211,51 @@ public:
 };
 
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator +( const binary &b1, const binary &b2 ){ return( binary( b1 ) += b2 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator -( const binary &b1, const binary &b2 ){ return( binary( b1 ) -= b2 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator *( const binary &b1, const binary &b2 ){ return( binary( b1 ) *= b2 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator /( const binary &b1, const binary &b2 ){ return( binary( b1 ) /= b2 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator %( const binary &b1, const binary &b2 ){ return( binary( b1 ) %= b2 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator |( const binary &b1, const binary &b2 ){ return( binary( b1 ) |= b2 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator &( const binary &b1, const binary &b2 ){ return( binary( b1 ) &= b2 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator ^( const binary &b1, const binary &b2 ){ return( binary( b1 ) ^= b2 ); }
 
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator *( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) *= b2 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator *( const binary::value_type &b1, const binary &b2 ){ return( binary( b2 ) *= b1 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator /( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) /= b2 ); }
 
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator +( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) += b2 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator +( const binary::value_type &b1, const binary &b2 ){ return( binary( b2 ) += b1 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator -( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) -= b2 ); }
 
-/// @brief ˜_—‰‰Z
+/// ˜_—‰‰Z
 inline const binary operator -( const binary::value_type &b1, const binary &b2 ){ return( binary( b1 ) -= b2 ); }
 
 

@@ -93,6 +93,11 @@ namespace __minimization_utility__
 
 
 
+//! @addtogroup minimization_group 関数の最小化
+//!  @{
+
+
+
 /// @brief f(x)の一次元探索において，極小値を与える x を囲む区間を決定する
 //! 
 //! @f$ a \ge b \ge c @f$ もしくは @f$ c \ge b \ge a @f$ 内で極小値を持つ区間を決定する．
@@ -214,6 +219,7 @@ void enclose( double &a, double &b, double &c, double &fa, double &fb, double &f
 }
 
 
+/// @brief 黄金分割を用いた極小値の1次元探索（1次収束）
 namespace gold
 {
 	/// @brief 黄金分割を利用して，f(x)の極小値の一次元探索を行う（1次収束）
@@ -335,6 +341,7 @@ namespace gold
 }
 
 
+/// @brief Brent の放物線補間を用いた極小値の1次元探索（2次収束）
 namespace brent
 {
 	/// @brief Brent の放物線補間を用いて，f(x)の極小値の一次元探索を行う（2次収束）
@@ -506,6 +513,7 @@ namespace brent
 }
 
 
+/// @brief 最急降下法（勾配を用いた多次元変数関数の極小値の探索）
 namespace gradient
 {
 	/// @brief 探索の開始点を指定し，ユーザーが指定した勾配計算関数を用いて最小値を探索する
@@ -698,6 +706,8 @@ namespace gradient
 	}
 }
 
+
+/// @brief Powell法（方向集合を用いた多次元変数関数の極小値の探索）
 namespace powell
 {
 	/// @brief Powell 法による多次元変数による極小値の探索を行う
@@ -705,7 +715,7 @@ namespace powell
 	//! 手法について何か書く
 	//! 
 	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
-	//! @param[in,out] dir            … 探索に用いる方向集合
+	//! @param[in,out] dirs           … 探索に用いる方向集合
 	//! @param[in]     f              … 評価関数
 	//! @param[in]     tolerance      … 許容誤差
 	//! @param[out]    iterations     … 実際の反復回数
@@ -724,7 +734,7 @@ namespace powell
 	//! 手法について何か書く
 	//! 
 	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
-	//! @param[in,out] dir            … 探索に用いる方向集合
+	//! @param[in,out] dirs           … 探索に用いる方向集合
 	//! @param[in]     f              … 評価関数
 	//! @param[in]     tolerance      … 許容誤差
 	//! @param[in]     max_iterations … 最大反復回数
@@ -738,6 +748,11 @@ namespace powell
 		return( minimization( p, dirs, f, tolerance, itenum, max_iterations ) );
 	}
 }
+
+
+
+/// @}
+//  関数の最小化グループの終わり
 
 
 

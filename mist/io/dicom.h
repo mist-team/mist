@@ -40,7 +40,8 @@ _MIST_BEGIN
 // #define __SHOW_DICOM_UNKNOWN_TAG__
 // #define __SHOW_DICOM_ZEROBYTE_TAG__
 
-/// @brief DICOM画像を操作するための関数群
+
+/// DICOMファイルを操作する関数・クラスを含む名前空間
 namespace dicom_controller
 {
 	/// @brief 指定したメモリ領域がDICOM画像を現しているかどうかをチェックする

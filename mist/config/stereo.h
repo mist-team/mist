@@ -269,30 +269,50 @@ public:
 
 };
 
+/// @brief ステレオ音声データの和
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, + )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, + )			///< @brief ステレオ音声データの和
-DEFINE_PROMOTE_BIND_OPERATOR2( stereo, + )			///< @brief ステレオ音声データと定数の和
-DEFINE_PROMOTE_BIND_OPERATOR3( stereo, + )			///< @brief 定数とステレオ音声データの和
+/// @brief ステレオ音声データと定数の和
+DEFINE_PROMOTE_BIND_OPERATOR2( stereo, + )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, - )			///< @brief ステレオ音声データの差
-DEFINE_PROMOTE_BIND_OPERATOR2( stereo, - )			///< @brief ステレオ音声データと定数の差
-DEFINE_PROMOTE_BIND_OPERATOR4( stereo, - )			///< @brief 定数とステレオ音声データの差
+/// @brief 定数とステレオ音声データの和
+DEFINE_PROMOTE_BIND_OPERATOR3( stereo, + )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, * )			///< @brief ステレオ音声データの積
-DEFINE_PROMOTE_BIND_OPERATOR2( stereo, * )			///< @brief ステレオ音声データと定数の積
-DEFINE_PROMOTE_BIND_OPERATOR3( stereo, * )			///< @brief 定数とステレオ音声データの積
+/// @brief ステレオ音声データの差
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, - )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, / )			///< @brief ステレオ音声データの割り算
-DEFINE_PROMOTE_BIND_OPERATOR2( stereo, / )			///< @brief ステレオ音声データを定数で割る
+/// @brief ステレオ音声データと定数の差
+DEFINE_PROMOTE_BIND_OPERATOR2( stereo, - )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, % )			///< @brief ステレオ音声データの剰余
+/// @brief 定数とステレオ音声データの差
+DEFINE_PROMOTE_BIND_OPERATOR4( stereo, - )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, | )			///< @brief ステレオ音声データの | 演算
+/// @brief ステレオ音声データの積
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, * )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, & )			///< @brief ステレオ音声データの & 演算
+/// @brief ステレオ音声データと定数の積
+DEFINE_PROMOTE_BIND_OPERATOR2( stereo, * )
 
+/// @brief 定数とステレオ音声データの積
+DEFINE_PROMOTE_BIND_OPERATOR3( stereo, * )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, ^ )			///< @brief ステレオ音声データの ^ 演算
+/// @brief ステレオ音声データの割り算
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, / )
+
+/// @brief ステレオ音声データを定数で割る
+DEFINE_PROMOTE_BIND_OPERATOR2( stereo, / )
+
+/// @brief ステレオ音声データの剰余
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, % )
+
+/// @brief ステレオ音声データの | 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, | )
+
+/// @brief ステレオ音声データの & 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, & )
+
+/// @brief ステレオ音声データの ^ 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, ^ )
 
 
 

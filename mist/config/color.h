@@ -277,29 +277,51 @@ public:
 
 };
 
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, + )			///< @brief ƒJƒ‰[‰æ‘f‚Ì˜a
-DEFINE_PROMOTE_BIND_OPERATOR2( rgb, + )			///< @brief ƒJƒ‰[‰æ‘f‚Æ’è”‚Ì˜a
-DEFINE_PROMOTE_BIND_OPERATOR3( rgb, + )			///< @brief ’è”‚ÆƒJƒ‰[‰æ‘f‚Ì˜a
+/// @brief ƒJƒ‰[‰æ‘f‚Ì˜a
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, + )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, - )			///< @brief ƒJƒ‰[‰æ‘f‚Ì·
-DEFINE_PROMOTE_BIND_OPERATOR2( rgb, - )			///< @brief ƒJƒ‰[‰æ‘f‚Æ’è”‚Ì·
-DEFINE_PROMOTE_BIND_OPERATOR4( rgb, - )			///< @brief ’è”‚ÆƒJƒ‰[‰æ‘f‚Ì·
+/// @brief ƒJƒ‰[‰æ‘f‚Æ’è”‚Ì˜a
+DEFINE_PROMOTE_BIND_OPERATOR2( rgb, + )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, * )			///< @brief ƒJƒ‰[‰æ‘f‚ÌÏ
-DEFINE_PROMOTE_BIND_OPERATOR2( rgb, * )			///< @brief ƒJƒ‰[‰æ‘f‚Æ’è”‚ÌÏ
-DEFINE_PROMOTE_BIND_OPERATOR3( rgb, * )			///< @brief ’è”‚ÆƒJƒ‰[‰æ‘f‚ÌÏ
+/// @brief ’è”‚ÆƒJƒ‰[‰æ‘f‚Ì˜a
+DEFINE_PROMOTE_BIND_OPERATOR3( rgb, + )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, / )			///< @brief ƒJƒ‰[‰æ‘f‚ÌŠ„‚èŽZ
-DEFINE_PROMOTE_BIND_OPERATOR2( rgb, / )			///< @brief ƒJƒ‰[‰æ‘f‚ð’è”‚ÅŠ„‚é
+/// @brief ƒJƒ‰[‰æ‘f‚Ì·
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, - )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, % )			///< @brief ƒJƒ‰[‰æ‘f‚Ìè—]
+/// @brief ƒJƒ‰[‰æ‘f‚Æ’è”‚Ì·
+DEFINE_PROMOTE_BIND_OPERATOR2( rgb, - )
+
+/// @brief ’è”‚ÆƒJƒ‰[‰æ‘f‚Ì·
+DEFINE_PROMOTE_BIND_OPERATOR4( rgb, - )
+
+/// @brief ƒJƒ‰[‰æ‘f‚ÌÏ
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, * )
+
+/// @brief ƒJƒ‰[‰æ‘f‚Æ’è”‚ÌÏ
+DEFINE_PROMOTE_BIND_OPERATOR2( rgb, * )
+
+/// @brief ’è”‚ÆƒJƒ‰[‰æ‘f‚ÌÏ
+DEFINE_PROMOTE_BIND_OPERATOR3( rgb, * )
+
+/// @brief ƒJƒ‰[‰æ‘f‚ÌŠ„‚èŽZ
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, / )
+
+/// @brief ƒJƒ‰[‰æ‘f‚ð’è”‚ÅŠ„‚é
+DEFINE_PROMOTE_BIND_OPERATOR2( rgb, / )
+
+/// @brief ƒJƒ‰[‰æ‘f‚Ìè—]
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, % )
 
 
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, | )			///< @brief ƒJƒ‰[‰æ‘f‚Ì | ‰‰ŽZ
+/// @brief ƒJƒ‰[‰æ‘f‚Ì | ‰‰ŽZ
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, | )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, & )			///< @brief ƒJƒ‰[‰æ‘f‚Ì & ‰‰ŽZ
+/// @brief ƒJƒ‰[‰æ‘f‚Ì & ‰‰ŽZ
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, & )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, ^ )			///< @brief ƒJƒ‰[‰æ‘f‚Ì ^ ‰‰ŽZ
+/// @brief ƒJƒ‰[‰æ‘f‚Ì ^ ‰‰ŽZ
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, ^ )
 
 
 /// @brief Žw’è‚³‚ê‚½ƒXƒgƒŠ[ƒ€‚ÉCƒRƒ“ƒeƒi“à‚Ì—v‘f‚ð®Œ`‚µ‚Äo—Í‚·‚é

@@ -17,6 +17,11 @@
 _MIST_BEGIN
 
 
+//! @defgroup free_form_group 自由曲線・曲面
+//!  @{
+
+
+
 //! @defgroup spline_group 3次スプライン曲線
 //!  @{
 
@@ -411,6 +416,10 @@ public:
 
 /// @}
 //  3次スプライングループの終わり
+
+
+/// @}
+//  自由曲線・曲面グループの終わり
 
 
 // mist名前空間の終わり

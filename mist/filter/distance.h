@@ -315,6 +315,7 @@ namespace __distance_transform_controller__
 //! @addtogroup euclidean_distance_group ユークリッド距離変換
 //!  @{
 
+/// @brief 斉藤先生によるユークリッド距離変換
 namespace euclidean
 {
 	/// @brief ユークリッド距離変換
@@ -392,6 +393,7 @@ namespace euclidean
 
 
 
+/// @brief Calvinによるユークリッド距離変換
 namespace calvin
 {
 	inline bool remove_edt( const double uR, const double vR, const double wR, const double ud, const double vd, const double wd )

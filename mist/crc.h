@@ -1,3 +1,7 @@
+/// @file mist/crc.h
+//!
+//! @brief 任意のバイト列のCRCを計算する
+//!
 #ifndef __INCLUDE_CRC__
 #define __INCLUDE_CRC__
 
@@ -7,6 +11,11 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
+
+
+//! @defgroup crc_group CRC
+//!  @{
+
 
 
 template < int BIT >
@@ -417,6 +426,10 @@ namespace __crc__
 	}
 
 }
+
+
+/// @}
+//  CRCグループの終わり
 
 
 // mist名前空間の終わり

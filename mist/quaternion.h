@@ -426,20 +426,39 @@ public:	// その他の関数
 };
 
 // 型の昇格を行う演算の定義
-DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, + )			///< @brief クォータニオンの和
-DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, + )			///< @brief クォータニオンと定数の和
-DEFINE_PROMOTE_BIND_OPERATOR3( quaternion, + )			///< @brief 定数とクォータニオンの和
 
-DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, - )			///< @brief クォータニオンの差
-DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, - )			///< @brief クォータニオンと定数の差
-DEFINE_PROMOTE_BIND_OPERATOR4( quaternion, - )			///< @brief 定数とクォータニオンの差
+/// @brief クォータニオンの和
+DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, + )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, * )			///< @brief クォータニオンの積
-DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, * )			///< @brief クォータニオンと定数の積
-DEFINE_PROMOTE_BIND_OPERATOR3( quaternion, * )			///< @brief 定数とクォータニオンの積
+/// @brief クォータニオンと定数の和
+DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, + )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, / )			///< @brief クォータニオンの割り算
-DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, / )			///< @brief クォータニオンを定数で割る
+/// @brief 定数とクォータニオンの和
+DEFINE_PROMOTE_BIND_OPERATOR3( quaternion, + )
+
+/// @brief クォータニオンの差
+DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, - )
+
+/// @brief クォータニオンと定数の差
+DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, - )
+
+/// @brief 定数とクォータニオンの差
+DEFINE_PROMOTE_BIND_OPERATOR4( quaternion, - )
+
+/// @brief クォータニオンの積
+DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, * )
+
+/// @brief クォータニオンと定数の積
+DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, * )
+
+/// @brief 定数とクォータニオンの積
+DEFINE_PROMOTE_BIND_OPERATOR3( quaternion, * )
+
+/// @brief クォータニオンの割り算
+DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, / )
+
+/// @brief クォータニオンを定数で割る
+DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, / )
 
 
 
@@ -466,6 +485,7 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 	out << q.z << " )";
 	return( out );
 }
+
 
 // クォータニオンから行列へ変換する
 //template < class T >

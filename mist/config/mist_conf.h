@@ -12,6 +12,11 @@
 
 // MIST名前空間を定義するためのマクロ
 #ifndef _MIST_BEGIN
+/// @namespace mist
+//!
+//! MISTプロジェクトの名前空間．
+//! すべての関数・クラスは mist 名前空間に含まれる．
+//! 
 #define _MIST_BEGIN		namespace mist{		///< @brief MIST名前空間の始まり
 #endif
 
@@ -125,6 +130,7 @@ inline bool is_same_object( const Object1 &o1, const Object2 &o2 )
 	return( reinterpret_cast< const void * >( &o1 ) == reinterpret_cast< const void * >( &o2 ) );
 }
 
+
 /// @brief MISTのアルゴリズム全般で利用するダミーコールバックファンクタ
 //!
 //! MISTのアルゴリズムが提供するコールバックは0～100の間の数を返し，アルゴリズムが終了する際に100よりも大きい数値を返す
@@ -142,6 +148,7 @@ struct __mist_dmy_callback__
 	//!
 	bool operator()( double percent ) const { return( true ); }
 };
+
 
 /// @brief 指定したコールバックの戻り値 [0,100] を指定した区間に変換する
 //!
@@ -240,6 +247,7 @@ struct __mist_console_callback__
 		::std::cout << "Access Violation at ( " << static_cast< int >( index ) << " )" << ::std::endl;
 	}
 
+
 	/// @brief DEBUGでMISTをビルドした際に，2次元アクセスでの範囲外アクセスをチェックし，エラーの際に呼ばれる関数．
 	//!
 	//! @param[in] index1 … MISTコンテナに対するX軸でのアクセス要求位置
@@ -249,6 +257,7 @@ struct __mist_console_callback__
 	{
 		::std::cout << "Access Violation at ( " << static_cast< int >( index1 ) << ", " << static_cast< int >( index2 ) << " )" << ::std::endl;
 	}
+
 
 	/// @brief DEBUGでMISTをビルドした際に，3次元アクセスでの範囲外アクセスをチェックし，エラーの際に呼ばれる関数．
 	//!
@@ -333,9 +342,10 @@ struct __mist_console_callback__
 * - @ref operator_group						"演算子の実装補助"
 * - @ref thread_group						"マルチスレッド"
 * - @ref mist::singleton					"シングルトン"
-* - @ref 曲線
-*   - @ref bspline_group						"Bスプライン曲線"
-*   - @ref spline_group							"3次スプライン曲線"
+* - @ref free_form_group					"自由曲線・曲面"
+*   - @ref bspline_group					"Bスプライン曲線"
+*   - @ref spline_group						"3次スプライン曲線"
+* - @ref crc_group							"CRC"
 *
 *
 * @subsection numeric ベクトル・行列演算
@@ -361,6 +371,7 @@ struct __mist_console_callback__
 * - @ref mist::random						"擬似乱数生成"
 * - @ref a									"グラフ描画(2次元)"
 * - @ref image_draw_group					"2次元画像描画"
+* - @ref minimization_group					"関数の最小化"
 *
 *
 * @subsection image 主に画像に対して適用される処理

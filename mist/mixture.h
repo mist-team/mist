@@ -1,3 +1,10 @@
+/// @file mist/mixture.h
+//!
+//! @brief EMアルゴリズムを用いた混合分布の推定
+//!
+//! - 参考文献
+//!   - ・・・
+//!
 #ifndef __INCLUDE_MIXTURE__
 #define __INCLUDE_MIXTURE__
 

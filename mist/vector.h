@@ -322,21 +322,30 @@ public:
 
 /// @brief ベクトルの内積
 template < class T1, class T2 >
-typename promote_trait< T1, T2 >::value_type operator ^( const vector3< T1 > &v1, const vector3< T2 > &v2 )
+inline typename promote_trait< T1, T2 >::value_type operator ^( const vector3< T1 > &v1, const vector3< T2 > &v2 )
 {
 	return( vector3< typename promote_trait< T1, T2 >::value_type >( v1 ).inner( v2 ) );
 }
 
 // 型の昇格を行う演算の定義
-DEFINE_PROMOTE_BIND_OPERATOR1( vector3, + )			///< @brief ベクトルの和
 
-DEFINE_PROMOTE_BIND_OPERATOR1( vector3, - )			///< @brief ベクトルの差
+/// @brief ベクトルの和
+DEFINE_PROMOTE_BIND_OPERATOR1( vector3, + )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( vector3, * )			///< @brief ベクトルの外積
-DEFINE_PROMOTE_BIND_OPERATOR2( vector3, * )			///< @brief ベクトルと定数の積
-DEFINE_PROMOTE_BIND_OPERATOR3( vector3, * )			///< @brief 定数とベクトルの積
+/// @brief ベクトルの差
+DEFINE_PROMOTE_BIND_OPERATOR1( vector3, - )
 
-DEFINE_PROMOTE_BIND_OPERATOR2( vector3, / )			///< @brief ベクトルを定数で割る
+/// @brief ベクトルの外積
+DEFINE_PROMOTE_BIND_OPERATOR1( vector3, * )
+
+/// @brief ベクトルと定数の積
+DEFINE_PROMOTE_BIND_OPERATOR2( vector3, * )
+
+/// @brief 定数とベクトルの積
+DEFINE_PROMOTE_BIND_OPERATOR3( vector3, * )
+
+/// @brief ベクトルを定数で割る
+DEFINE_PROMOTE_BIND_OPERATOR2( vector3, / )
 
 
 
@@ -350,7 +359,7 @@ DEFINE_PROMOTE_BIND_OPERATOR2( vector3, / )			///< @brief ベクトルを定数で割る
 //! @code 出力例
 //! ( 1, 2, 3 )
 //! @endcode
-//! 
+//!
 template < class T > inline std::ostream &operator <<( std::ostream &out, const vector3< T > &v )
 {
 	out << "( ";
@@ -620,29 +629,34 @@ public:
 
 /// @brief ベクトルの内積
 template < class T1, class T2 >
-typename promote_trait< T1, T2 >::value_type operator ^( const vector2< T1 > &v1, const vector2< T2 > &v2 )
+inline typename promote_trait< T1, T2 >::value_type operator ^( const vector2< T1 > &v1, const vector2< T2 > &v2 )
 {
 	return( vector2< typename promote_trait< T1, T2 >::value_type >( v1 ).inner( v2 ) );
 }
 
 /// @brief ベクトルの外積
 template < class T1, class T2 >
-typename promote_trait< T1, T2 >::value_type operator *( const vector2< T1 > &v1, const vector2< T2 > &v2 )
+inline typename promote_trait< T1, T2 >::value_type operator *( const vector2< T1 > &v1, const vector2< T2 > &v2 )
 {
 	return( vector2< typename promote_trait< T1, T2 >::value_type >( v1 ).outer( v2 ) );
 }
 
 
 // 型の昇格を行う演算の定義
-DEFINE_PROMOTE_BIND_OPERATOR1( vector2, + )			///< @brief ベクトルの和
+/// @brief ベクトルの和
+DEFINE_PROMOTE_BIND_OPERATOR1( vector2, + )
 
-DEFINE_PROMOTE_BIND_OPERATOR1( vector2, - )			///< @brief ベクトルの差
+/// @brief ベクトルの差
+DEFINE_PROMOTE_BIND_OPERATOR1( vector2, - )
 
-DEFINE_PROMOTE_BIND_OPERATOR2( vector2, * )			///< @brief ベクトルと定数の積
-DEFINE_PROMOTE_BIND_OPERATOR3( vector2, * )			///< @brief 定数とベクトルの積
+/// @brief ベクトルと定数の積
+DEFINE_PROMOTE_BIND_OPERATOR2( vector2, * )
 
-DEFINE_PROMOTE_BIND_OPERATOR2( vector2, / )			///< @brief ベクトルを定数で割る
+/// @brief 定数とベクトルの積
+DEFINE_PROMOTE_BIND_OPERATOR3( vector2, * )
 
+/// @brief ベクトルを定数で割る
+DEFINE_PROMOTE_BIND_OPERATOR2( vector2, / )
 
 
 /// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
@@ -655,7 +669,7 @@ DEFINE_PROMOTE_BIND_OPERATOR2( vector2, / )			///< @brief ベクトルを定数で割る
 //! @code 出力例
 //! ( 1, 2 )
 //! @endcode
-//! 
+//!
 template < class T > inline std::ostream &operator <<( std::ostream &out, const vector2< T > &v )
 {
 	out << "( ";
