@@ -360,7 +360,7 @@ namespace __median_filter_divide_conquer__
 				}
 
 				pth = ( bw + 1 ) * bbh * bbd;
-				th = ( pth % 2 ) == 0 ? pth / 2 - 1 : pth / 2;
+				th = ( pth - 1 ) / 2;
 				out( i, j, k ) = static_cast< out_value_type >( nth_value( work, pth, th, work1, work2, work3 ) );
 
 				for( i = 1 ; i < bw ; i++ )
@@ -378,7 +378,7 @@ namespace __median_filter_divide_conquer__
 						}
 					}
 
-					th = ( pth % 2 ) == 0 ? pth / 2 - 1 : pth / 2;
+					th = ( pth - 1 ) / 2;
 
 					out( i, j, k ) = static_cast< out_value_type >( nth_value( work, pth, th, work1, work2, work3 ) );
 
@@ -386,7 +386,7 @@ namespace __median_filter_divide_conquer__
 				}
 
 				pth = fw * bbh * bbd;
-				th = ( pth % 2 ) == 0 ? pth / 2 - 1 : pth / 2;
+				th = ( pth - 1 ) / 2;
 				for( ; i + bw < w ; i++ )
 				{
 					ri = i + bw;
@@ -599,6 +599,47 @@ namespace __median_filter_specialized_version__
 		return( v0 > v1 ? v0 : v1 );
 	}
 
+	template < class T >
+	inline const T &median( const T &v0, const T &v1, const T &v2 )
+	{
+		if( v0 > v1 )
+		{
+			if( v1 > v2 )
+			{
+				return( v1 );
+			}
+			else
+			{
+				if( v0 > v2 )
+				{
+					return( v2 );
+				}
+				else
+				{
+					return( v0 );
+				}
+			}
+		}
+		else
+		{
+			if( v0 > v2 )
+			{
+				return( v0 );
+			}
+			else
+			{
+				if( v1 > v2 )
+				{
+					return( v2 );
+				}
+				else
+				{
+					return( v1 );
+				}
+			}
+		}
+	}
+
 
 	/****************************************************************************************************************************************
 	**
@@ -673,7 +714,7 @@ namespace __median_filter_specialized_version__
 			sort3x3( in( 1, j - 1 ), in( 1, j ), in( 1, j + 1 ), work1 );
 
 			sort2x2( work0[ 1 ], work1[ 1 ], work0, work1, sort );
-			out( 0, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 2 ], sort[ 1 ][ 0 ], sort[ 1 ][ 1 ] ) );
+			out( 0, j ) = static_cast< out_value_type >( median( sort[ 0 ][ 2 ], sort[ 1 ][ 0 ], sort[ 1 ][ 1 ] ) );
 
 			for( i = 1 ; i < w - 1 ; i++ )
 			{
@@ -702,7 +743,7 @@ namespace __median_filter_specialized_version__
 			}
 
 			sort2x2( work[ ( w - 2 ) % 3 ][ 1 ], work[ ( w - 1 ) % 3 ][ 1 ], work[ ( w - 2 ) % 3 ], work[ ( w - 1 ) % 3 ], sort );
-			out( w - 1, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 2 ], sort[ 1 ][ 0 ], sort[ 1 ][ 1 ] ) );
+			out( w - 1, j ) = static_cast< out_value_type >( median( sort[ 0 ][ 2 ], sort[ 1 ][ 0 ], sort[ 1 ][ 1 ] ) );
 		}
 
 
