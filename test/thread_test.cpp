@@ -45,7 +45,7 @@ protected:
 		{
 			std::cout << thread_id_;
 //			std::cout << "( " << thread_id_ << ", " << thread_num_ << " )" << std::endl;
-			for( int j = 0, k = 0 ; j < 10000 ; j++ )
+			for( int j = 0, k = 0 ; j < 1000000 ; j++ )
 			{
 				k++;
 			}
@@ -81,6 +81,8 @@ int main( int argc, char *argv[] )
 	{
 		param[i].close_thread( );
 	}
+
+	std::cout << std::endl;
 
 	return( 0 );
 }

@@ -240,7 +240,7 @@ private:
 #elif defined( WIN32 )
 	typedef CRITICAL_SECTION lock_object_type;		// Windows用のロックオブジェクト(CRITIFCALSECTIONを利用)
 #else
-	typedef pthread_mutexattr_t lock_object_type;	// pthreadライブラリでのロックオブジェクト
+	typedef pthread_mutex_t lock_object_type;		// pthreadライブラリでのロックオブジェクト
 #endif
 
 	typedef ::std::map< ::std::string, lock_object_type > lock_table;
