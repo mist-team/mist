@@ -2132,7 +2132,6 @@ namespace __svd__
 					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
 					if( info == 0 )
 					{
-						u.resize( ldu, m );
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
 						// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
 						s.resize( size, 1 );
