@@ -308,10 +308,21 @@ namespace volumerender
 		double	light_attenuation;
 		double	sampling_step;
 		double	termination;
-		bool		specular;
+		double	specular;
 
 		boundingbox box[ 6 ];
 	};
+
+
+	// 倍精度浮動小数を整数に丸める
+	// 正の数の場合は，通常の int キャストと同じ動作をする
+	// 負の数のときは，値の小さいほうに丸められる
+	inline long to_integer( double val )
+	{
+		return( static_cast< long >( val ) );
+		//val += 68719476736.0 * 1.5;
+		//return( ( ( long * )&val )[ 0 ] >> 16 );
+	}
 }
 
 
@@ -346,7 +357,8 @@ namespace value_interpolation
 		double fovy = p.fovy;
 		double ambient_ratio = p.ambient_ratio;
 		double diffuse_ratio = p.diffuse_ratio;
-		bool specular = p.specular;
+		double specular = p.specular;
+		bool   bSpecular = specular > 0.0;
 		const volumerender::boundingbox *box = p.box;
 		double lightAtten = p.light_attenuation;
 		double sampling_step = p.sampling_step;
@@ -379,7 +391,6 @@ namespace value_interpolation
 		}
 
 		// スライス座標系の実寸をワールドと考える
-		vector_type ray, yoko, light, slight, slightstep, slightstep2, spos;
 		vector_type normal, n1, n2, n3, n4, n5, n6, n7, n8;
 		vector_type casting_start, casting_end;
 
@@ -394,7 +405,7 @@ namespace value_interpolation
 		double ay = in.reso2( );
 		double az = in.reso3( );
 
-		yoko = ( dir * up ).unit( );
+		vector_type yoko = ( dir * up ).unit( );
 
 		if( out.reso1( ) < out.reso2( ) )
 		{
@@ -415,13 +426,13 @@ namespace value_interpolation
 				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
 
 				// レイ方向をカメラ座標系からワールド座標系に変換
-				ray = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
+				vector_type light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
 
 				pixel_type add_intensity( 0 );
 				double add_opacity = 1;
 
 				casting_start = pos;
-				casting_end = pos + ray * max_distance;
+				casting_end = pos + light * max_distance;
 
 				// 物体との衝突判定
 				if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ] )
@@ -431,13 +442,6 @@ namespace value_interpolation
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
 				{
-					//vector_type vec = ( casting_end - casting_start ).unit( );
-					//if( ray.inner( vec ) < 0.9999999 )
-					//{
-					//	std::cout << "方向が一致していません: " << ray << " , " << vec << " = " << ray.inner( vec ) << std::endl;
-					//	getchar( );
-					//}
-
 					// ワールド座標系（左手）からスライス座標系（右手）に変換
 					// 以降は，全てスライス座標系で計算する
 					casting_start.x = (  casting_start.x + offset.x ) / ax;
@@ -447,20 +451,22 @@ namespace value_interpolation
 					casting_end.y   = ( -casting_end.y   + offset.y ) / ay;
 					casting_end.z   = (  casting_end.z   + offset.z ) / az;
 
-					spos = casting_start;
-					ray = ( casting_end - casting_start ).unit( );
+					vector_type spos = casting_start;
+					vector_type ray = ( casting_end - casting_start ).unit( );
+
+					double accelerated_step = 2.0;
+					vector_type ray_accelerated_step = ray * accelerated_step;
 					vector_type ray_step = ray * sampling_step;
 
 					double dlen = vector_type( ray_step.x * ax, ray_step.y * ay, ray_step.z * az ).length( );
-
-					difference_type n = static_cast< difference_type  >( ( casting_end - casting_start ).length( ) / sampling_step );
-					difference_type l = 0;
+					double n = ( casting_end - casting_start ).length( );
+					double l = 0;
 
 					while( l < n )
 					{
-						difference_type si = static_cast< difference_type >( spos.x );
-						difference_type sj = static_cast< difference_type >( spos.y );
-						difference_type sk = static_cast< difference_type >( spos.z );
+						difference_type si = volumerender::to_integer( spos.x );
+						difference_type sj = volumerender::to_integer( spos.y );
+						difference_type sk = volumerender::to_integer( spos.z );
 
 						const_pointer p = &in( si, sj, sk );
 
@@ -471,21 +477,22 @@ namespace value_interpolation
 						{
 							if( l > 0 )
 							{
-								spos -= ray_step;
-								l--;
+								spos -= ray * ( accelerated_step - sampling_step );
+								l -= accelerated_step - sampling_step;
 							}
 							break;
 						}
 
-						l++;
-						spos += ray_step;
+						l += accelerated_step;
+						spos += ray_accelerated_step;
 					}
+
 
 					while( l < n )
 					{
-						difference_type si = static_cast< difference_type >( spos.x );
-						difference_type sj = static_cast< difference_type >( spos.y );
-						difference_type sk = static_cast< difference_type >( spos.z );
+						difference_type si = volumerender::to_integer( spos.x );
+						difference_type sj = volumerender::to_integer( spos.y );
+						difference_type sk = volumerender::to_integer( spos.z );
 
 						double xx = spos.x - si;
 						double yy = spos.y - sj;
@@ -495,15 +502,15 @@ namespace value_interpolation
 
 						// CT値に対応する色と不透明度を取得
 						double ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
-						ct = ct + ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
+						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
 
-						const attribute_type &oc = table[ static_cast< difference_type >( ct ) ];
+						const attribute_type &oc = table[ volumerender::to_integer( ct ) ];
 
 						// この位置における物体が透明の場合は次のステップへ移行する
 						if( !oc.has_alpha )
 						{
 							spos += ray_step;
-							l++;
+							l += sampling_step;
 							continue;
 						}
 
@@ -548,13 +555,13 @@ namespace value_interpolation
 						normal.z = ( n1.z + ( n4.z - n1.z ) * xx ) + ( n2.z - n1.z + ( n1.z - n2.z + n3.z - n4.z ) * xx ) * yy;
 						normal.z += ( ( n5.z + ( n8.z - n5.z ) * xx ) + ( n6.z - n5.z + ( n5.z - n6.z + n7.z - n8.z ) * xx ) * yy - normal.z ) * zz;
 
-						normal.x /=  ax;
-						normal.y /=  -ay;
-						normal.z /=  az;
+						normal.x /= ax;
+						normal.y /= ay;
+						normal.z /= az;
 						double len = std::sqrt( normal.x * normal.x + normal.y * normal.y + normal.z * normal.z ) + 1.0e-10;
-						normal.x /=  len;
-						normal.y /=  len;
-						normal.z /=  len;
+						normal.x /= len;
+						normal.y /= len;
+						normal.z /= len;
 
 						if( lightAtten > 0.0 )
 						{
@@ -566,10 +573,10 @@ namespace value_interpolation
 							lAtten = 1.0;
 						}
 
-						double c = ray.inner( normal );
+						double c = light.inner( normal );
 						c = c < 0.0 ? -c : c;
 
-						if( !specular )
+						if( !bSpecular )
 						{
 							spec = 0.0;
 						}
@@ -591,11 +598,13 @@ namespace value_interpolation
 								spec *= spec; //^64
 								//spec *= spec; //^128
 							}
+							spec *= specular;
 						}
 
 						c = c * diffuse_ratio + ambient_ratio;
 
 						alpha = oc.alpha * sampling_step;
+						alpha = alpha < 1.0 ? alpha : 1.0;
 						add_intensity += alpha * add_opacity * ( oc.pixel * c + spec ) * lAtten;
 						add_opacity *= ( 1 - alpha );
 
@@ -604,7 +613,7 @@ namespace value_interpolation
 							break;
 						}
 						spos += ray_step;
-						l++;
+						l += sampling_step;
 					}
 					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
 				}
