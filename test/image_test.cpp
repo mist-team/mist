@@ -5,6 +5,7 @@
 #include <mist/io/jpeg.h>
 #include <mist/io/png.h>
 #include <mist/io/tiff.h>
+#include <mist/io/bmp.h>
 
 mist::array2< mist::rgb< unsigned char > > image_object( 100, 100 );
 
@@ -57,10 +58,10 @@ void write_tiff_test( const std::string &filename )
 
 void read_bmp_test( const std::string &filename )
 {
-//	mist::read_bmp( image_object, filename );
+	mist::read_bmp( image_object, filename );
 }
 
 void write_bmp_test( const std::string &filename )
 {
-//	mist::write_bmp( image_object, filename + "jpg" );
+	mist::write_bmp( image_object, filename, 8 );
 }

@@ -23,7 +23,7 @@ namespace __png_controller__
 		static bool read( array2< T, Allocator > &image, const std::string &filename )
 		{
 			array2< rgb< T >, Allocator > img;
-			bool ret = png_controller< rgb< T >, Allocator >::read_png( img, filename );
+			bool ret = png_controller< rgb< T >, Allocator >::read( img, filename );
 			if( !ret ) return( false );
 
 			typename array2< T, Allocator >::size_type i;
@@ -47,7 +47,7 @@ namespace __png_controller__
 				img[i].b = img[i].get_value( );
 			}
 
-			return( png_controller< rgb< T >, Allocator >::write_png( img, filename, compression_level ) );
+			return( png_controller< rgb< T >, Allocator >::write( img, filename, compression_level ) );
 		}
 	};
 

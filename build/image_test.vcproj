@@ -147,6 +147,9 @@
 			Name="MISTƒtƒ@ƒCƒ‹"
 			Filter="">
 			<File
+				RelativePath="..\mist\io\bmp.h">
+			</File>
+			<File
 				RelativePath="..\mist\draw.h">
 			</File>
 			<File

@@ -24,7 +24,7 @@ namespace __tiff_controller__
 		static bool read( array2< T, Allocator > &image, const std::string &filename )
 		{
 			array2< rgb< T >, Allocator > img;
-			bool ret = tiff_controller< rgb< T >, Allocator >::read_tiff( img, filename );
+			bool ret = tiff_controller< rgb< T >, Allocator >::read( img, filename );
 			if( !ret ) return( false );
 
 			typename array2< T, Allocator >::size_type i;
@@ -37,7 +37,7 @@ namespace __tiff_controller__
 			return( true );
 		}
 
-		static bool write( array2< T, Allocator > &image, const std::string &filename, int quality )
+		static bool write( array2< T, Allocator > &image, const std::string &filename )
 		{
 			array2< rgb< T >, Allocator > img( image.width( ), image.height( ) );
 			typename array2< T, Allocator >::size_type i;
@@ -48,7 +48,7 @@ namespace __tiff_controller__
 				img[i].b = img[i].get_value( );
 			}
 
-			return( tiff_controller< rgb< T >, Allocator >::write_tiff( img, filename, quality ) );
+			return( tiff_controller< rgb< T >, Allocator >::write( img, filename ) );
 		}
 	};
 
