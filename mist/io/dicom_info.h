@@ -14,6 +14,10 @@
 #include "../config/endian.h"
 #endif
 
+#ifndef __INCLUDE_MIST_SINGLETON__
+#include "../singleton.h"
+#endif
+
 #ifndef __INCLUDE_MIST_DICOM_TAG__
 #include "./dicom_tag.h"
 #endif
@@ -164,6 +168,56 @@ namespace dicom
 		}
 
 
+		/// @brief 他のDICOM要素を代入する
+		void modify( const std::string &data )
+		{
+			static char buff[ 128 ];
+			switch( vr )
+			{
+			case FL:
+				{
+					float val = ( float )atof( data.c_str( ) );
+					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( float ) );
+				}
+				break;
+			case FD:
+				{
+					double val = atof( data.c_str( ) );
+					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( double ) );
+				}
+				break;
+			case SL:
+				{
+					long val = atoi( data.c_str( ) );
+					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( long ) );
+				}
+				break;
+			case SS:
+				{
+					short val = ( short )atoi( data.c_str( ) );
+					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( short ) );
+				}
+				break;
+			case UL:
+				{
+					unsigned long val = atoi( data.c_str( ) );
+					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( unsigned long ) );
+				}
+				break;
+			case US:
+				{
+					unsigned short val = ( unsigned short )atoi( data.c_str( ) );
+					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( unsigned short ) );
+				}
+				break;
+
+			default:
+				*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< const unsigned char * >( data.c_str( ) ), data.size( ) );
+				break;
+			}
+		}
+
+
 		/// @brief double 型のデータに変換する（DICOMタグの内容が double 型をあらわしている必要がある）
 		double         to_double( ) const { return( ( vr == FD && num_bytes == 8 )? byte_array< double >( data ).get_value( )         : static_cast< double >        ( atof( to_string( ).c_str( ) ) ) ); }
 
@@ -285,7 +339,7 @@ namespace dicom
 
 		/// @brief group，element，データ d，データのバイト数 nbytes をを用いて初期化する
 		dicom_element( unsigned short group, unsigned short element, const unsigned char *d = NULL, size_type nbytes = 0 )
-						: base( construct_dicom_tag( group, element ), "", 1, "" ), data( NULL ), num_bytes( 0 )
+						: base( singleton< dicom_tag_table >::get_instance( ).get_tag( group, element ) ), data( NULL ), num_bytes( 0 )
 		{
 			create( nbytes );
 			memcpy( data, d, sizeof( unsigned char ) * num_bytes );

@@ -178,6 +178,19 @@ namespace dicom
 	}
 
 
+	/// @brief (group, element) のDICOMタグ識別子を作成する
+	inline unsigned short get_dicom_group( unsigned int group_element )
+	{
+		return( static_cast< unsigned short >( 0x0000ffff & ( group_element >> 16 ) ) );
+	}
+
+	/// @brief (group, element) のDICOMタグ識別子を作成する
+	inline unsigned short get_dicom_element( unsigned int group_element )
+	{
+		return( static_cast< unsigned short >( 0x0000ffff & group_element ) );
+	}
+
+
 	/// @brief 文字列からVRタグを作成する
 	inline dicom_vr get_dicom_vr( const std::string &vr )
 	{
@@ -565,17 +578,17 @@ namespace dicom
 		dicom_vr     vr;			///< @brief VRタグ
 		int          vm;			///< @brief VMタグ
 		std::string  comment;		///< @brief コメント
+		bool         enable;		///< @brief DICOMタグを保存するかどうか（個人情報に関するタグはデフォルトで false ）
+
 	public:
 		/// @brief タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを作成する
-		dicom_tag( unsigned int t = 0xffffffff, dicom_vr vvr = UNKNOWN, int vvm = 1, const std::string &text = "" ) : tag( t ), vr( vvr ), vm( vvm ), comment( text ) { }
-
+		dicom_tag( unsigned int t = 0xffffffff, dicom_vr vvr = UNKNOWN, int vvm = 1, const std::string &text = "", bool b = true ) : tag( t ), vr( vvr ), vm( vvm ), comment( text ), enable( b ) { }
 
 		/// @brief タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを作成する
-		dicom_tag( unsigned int t, const std::string &vvr, int vvm, const std::string &text ) : tag( t ), vr( get_dicom_vr( vvr ) ), vm( vvm ), comment( text ) { }
-
+		dicom_tag( unsigned int t, const std::string &vvr, int vvm, const std::string &text, bool b ) : tag( t ), vr( get_dicom_vr( vvr ) ), vm( vvm ), comment( text ), enable( b ) { }
 
 		/// @brief 他のDICOMタグで初期化する
-		dicom_tag( const dicom_tag &t ) : tag( t.tag ), vr( t.vr ), vm( t.vm ), comment( t.comment ) { }
+		dicom_tag( const dicom_tag &t ) : tag( t.tag ), vr( t.vr ), vm( t.vm ), comment( t.comment ), enable( t.enable ) { }
 
 
 		/// @brief 他のDICOMタグを代入する
@@ -587,6 +600,7 @@ namespace dicom
 				vr = t.vr;
 				vm = t.vm;
 				comment = t.comment;
+				enable = t.enable;
 			}
 			return( *this );
 		}
@@ -598,10 +612,10 @@ namespace dicom
 		}
 
 		/// @brief DICOMタグのグループIDを取得する
-		unsigned short get_group( ) const { return( static_cast< unsigned short >( 0x0000ffff & ( tag >> 16 ) ) ); }
+		unsigned short get_group( ) const { return( get_dicom_group( tag ) ); }
 
 		/// @brief DICOMタグのエレメントIDを取得する
-		unsigned short get_element( ) const { return( static_cast< unsigned short >( 0x0000ffff & tag ) ); }
+		unsigned short get_element( ) const { return( get_dicom_element( tag ) ); }
 	};
 
 
@@ -661,16 +675,16 @@ namespace dicom
 
 
 		/// @brief タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを挿入する
-		void insert_tag( unsigned short group, unsigned short element, const std::string &vr, int vm, const std::string &comment )
+		void insert_tag( unsigned short group, unsigned short element, const std::string &vr, int vm, const std::string &comment, bool b = true )
 		{
-			baseclass::insert( dicom_tag( construct_dicom_tag( group, element ), vr, vm, comment ) );
+			baseclass::insert( dicom_tag( construct_dicom_tag( group, element ), vr, vm, comment, b ) );
 		}
 
 
 		/// @brief タグID t，VRタグ vvr，VMタグ vvm，コメント text のDICOMタグを挿入する
-		void insert_tag( unsigned short group, unsigned short element, dicom_vr vr, int vm, const std::string &comment )
+		void insert_tag( unsigned short group, unsigned short element, dicom_vr vr, int vm, const std::string &comment, bool b = true )
 		{
-			baseclass::insert( dicom_tag( construct_dicom_tag( group, element ), vr, vm, comment ) );
+			baseclass::insert( dicom_tag( construct_dicom_tag( group, element ), vr, vm, comment, b ) );
 		}
 
 
@@ -716,6 +730,18 @@ namespace dicom
 				if( iite->vr == vr ) return( *iite );
 				iite++;
 			} while( iite != upper_ite );
+			return( *ite );
+		}
+
+		/// @brief (group, element) で一番最初に見つかったタグを取得する
+		dicom_tag get_tag( unsigned short group, unsigned short element ) const
+		{
+			dicom_tag tag( construct_dicom_tag( group, element ), UNKNOWN, 1, "" );
+			baseclass::const_iterator ite = baseclass::find( tag );
+			if( ite == baseclass::end( ) )
+			{
+				return( dicom_tag( 0xffffffff, UNKNOWN, 1, "no tag exists." ) );
+			}
 			return( *ite );
 		}
 

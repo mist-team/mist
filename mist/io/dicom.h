@@ -1157,7 +1157,10 @@ namespace dicom
 		dicom_tag_container::const_iterator ite = dicm.begin( );
 		for( ; ite != dicm.end( ) ; ++ite )
 		{
-			write_dicom_tag( ite->second, fp, to_little_endian );
+			if( ite->second.enable )
+			{
+				write_dicom_tag( ite->second, fp, to_little_endian );
+			}
 		}
 
 		fclose( fp );
