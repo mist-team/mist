@@ -44,7 +44,7 @@ namespace __euclidean_distance_transform__
 			{
 				if( in( 0, j, k ) != 0 )
 				{
-					nd = w < max ? static_cast< value_type >( w ) : max;
+					nd = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
 					in( 0, j, k ) = nd * nd;
 				}
 				else
@@ -68,7 +68,7 @@ namespace __euclidean_distance_transform__
 
 				if( in( w - 1, j, k ) != 0 )
 				{
-					nd = w < max ? static_cast< value_type >( w ) : max;
+					nd = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
 				}
 				else
 				{
