@@ -29,7 +29,7 @@ namespace __bmp_controller__
 	};
 
 	// 構造体内のアライメントを1バイトに設定し，パッディングを禁止する
-#ifdef __MIST_MSVC__
+#if defined( __MIST_MSVC__ )
 	#pragma pack( push, bmp_align, 1 )
 #endif
 		typedef _MIST_ALIGN( struct, 1 )
@@ -74,8 +74,8 @@ namespace __bmp_controller__
 			unsigned int	bfOffBits;
 		} _bitmapfileheader_;
 
-#ifdef __MIST_MSVC__
-	#pragma pack( pop, bmp_align, 1 )
+#if defined( __MIST_MSVC__ )
+	#pragma pack( pop, bmp_align )
 #endif
 	// 構造体内のアライメントを1バイトに設定し，パッディングを禁止する ～ ここまで ～
 
@@ -94,7 +94,7 @@ namespace __bmp_controller__
 			case 1:
 			case 4:
 			case 8:
-			case 16:
+//			case 16:
 			case 24:
 			case 32:
 				ret = true;
@@ -296,7 +296,7 @@ namespace __bmp_controller__
 				}
 			}
 
-			std::map< __PALETTE__, __PALETTE__ >::iterator ite = palette_table.begin( );
+			typename std::map< __PALETTE__, __PALETTE__ >::iterator ite = palette_table.begin( );
 			for( ; ite != palette_table.end( ) ; ++ite )
 			{
 				adaptive_palette.push_back( ite->second );
@@ -369,6 +369,7 @@ namespace __bmp_controller__
 			if( filehead.bfType != 'M' * 256 + 'B' && filehead.bfType != 'm' * 256 + 'b' )
 			{
 				// ビットマップではありません
+				std::cerr << "This is not a bitmap format!" << std::endl;
 				return( false );
 			}
 
@@ -376,20 +377,21 @@ namespace __bmp_controller__
 			size_type width    = infohead.biWidth;
 			size_type height   = infohead.biHeight;
 
-			size_type num_bytes = get_bmp_bytes( image, bmp_bits );
-			size_type color_num = get_bmp_palette_num( bmp_bits );
-
 			if( infohead.biCompression != 0 )
 			{
 				// 圧縮のかかったビットマップは未サポート
+				std::cerr << "Compressed bitmap format is not supported." << std::endl;
+				return( false );
+			}
+
+			if( !is_supported( bmp_bits ) )
+			{
+				// 未サポートのビットマップ
+				std::cerr << "This format is not supported currently!" << std::endl;
 				return( false );
 			}
 
 			image.resize( width, height );
-
-			std::cout << "_bitmapfileheader_: " << sizeof( _bitmapfileheader_ ) << std::endl;
-			std::cout << "_bitmapinfoheader_: " << sizeof( _bitmapinfoheader_ ) << std::endl;
-			std::cout << "_rgbquad_: " << sizeof( _rgbquad_ ) << std::endl;
 
 			size_type i, j, jj, line_bytes = get_bmp_line_strip( width, bmp_bits );
 			unsigned char *pixel = bmp + static_cast< size_type >( filehead.bfOffBits );
@@ -633,7 +635,11 @@ namespace __bmp_controller__
 		{
 			typedef typename array2< T, Allocator >::size_type size_type;
 
-			if( !is_supported( bmp_bits ) ) return( false );
+			if( !is_supported( bmp_bits ) )
+			{
+				std::cerr << "This format is not supported currently!" << std::endl;
+				return( false );
+			}
 
 			size_type size = get_bmp_bytes( image, bmp_bits );
 			unsigned char *buff = new unsigned char[ size + 1 ];
