@@ -104,19 +104,19 @@ public:
 
 
 template< class T, class Distance, class Pointer, class Reference >
-inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( const mist_iterator1< T, Distance, Pointer, Reference > &ite, Distance dist )
+inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( const mist_iterator1< T, Distance, Pointer, Reference > &ite, typename mist_iterator1< T, Distance, Pointer, Reference >::difference_type dist )
 {
 	return( mist_iterator1< T, Distance, Pointer, Reference >( ite ) += dist );
 }
 
 template< class T, class Distance, class Pointer, class Reference >
-inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( Distance dist, const mist_iterator1< T, Distance, Pointer, Reference > &ite )
+inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( typename mist_iterator1< T, Distance, Pointer, Reference >::difference_type dist, const mist_iterator1< T, Distance, Pointer, Reference > &ite )
 {
 	return( mist_iterator1< T, Distance, Pointer, Reference >( ite ) += dist );
 }
 
 template< class T, class Distance, class Pointer, class Reference >
-inline const mist_iterator1< T, Distance, Pointer, Reference > operator -( const mist_iterator1< T, Distance, Pointer, Reference > &ite, Distance dist )
+inline const mist_iterator1< T, Distance, Pointer, Reference > operator -( const mist_iterator1< T, Distance, Pointer, Reference > &ite, typename mist_iterator1< T, Distance, Pointer, Reference >::difference_type dist )
 {
 	return( mist_iterator1< T, Distance, Pointer, Reference >( ite ) -= dist );
 }
@@ -237,26 +237,19 @@ public:
 
 
 template< class T, class Distance, class Pointer, class Reference >
-inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( const mist_iterator2< T, Distance, Pointer, Reference > &ite1, const mist_iterator2< T, Distance, Pointer, Reference > ite2 )
-{
-	return( mist_iterator2< T, Distance, Pointer, Reference >( ite1 ) += ite2 );
-}
-
-template< class T, class Distance, class Pointer, class Reference >
-inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( const mist_iterator2< T, Distance, Pointer, Reference > &ite, Distance dist )
+inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( const mist_iterator2< T, Distance, Pointer, Reference > &ite, typename mist_iterator2< T, Distance, Pointer, Reference >::difference_type dist )
 {
 	return( mist_iterator2< T, Distance, Pointer, Reference >( ite ) += dist );
 }
 
 template< class T, class Distance, class Pointer, class Reference >
-inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( Distance dist, const mist_iterator2< T, Distance, Pointer, Reference > &ite )
+inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( typename mist_iterator2< T, Distance, Pointer, Reference >::difference_type dist, const mist_iterator2< T, Distance, Pointer, Reference > &ite )
 {
 	return( mist_iterator2< T, Distance, Pointer, Reference >( ite ) += dist );
 }
 
-
 template< class T, class Distance, class Pointer, class Reference >
-inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const mist_iterator2< T, Distance, Pointer, Reference > &ite, Distance dist )
+inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const mist_iterator2< T, Distance, Pointer, Reference > &ite, typename mist_iterator2< T, Distance, Pointer, Reference >::difference_type dist )
 {
 	return( mist_iterator2< T, Distance, Pointer, Reference >( ite ) -= dist );
 }
