@@ -1,7 +1,7 @@
 #ifndef __INCLUDE_CRC__
 #define __INCLUDE_CRC__
 
-//#include "mist/mist.h"
+#include "mist/mist.h"
 
 // mist–¼‘O‹óŠÔ‚Ìn‚Ü‚è
 _MIST_BEGIN
@@ -254,7 +254,7 @@ namespace __crc__
 
 	¶¬‘½€® x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x^1 + 1
 	*/
-	unsigned generate_crc_32(unsigned char* pdata, long len, unsigned gen_poly = 0x104C11DB7)
+	unsigned generate_crc_32(unsigned char* pdata, long len, unsigned gen_poly = 0x04C11DB7)
 	{
 		unsigned	crc = 0;
 		unsigned char	data;
@@ -299,7 +299,7 @@ namespace __crc__
 		return crc;
 	}
 
-	bool check_crc_32(unsigned char* pdata, long len, unsigned gen_poly = 0x104C11DB7)
+	bool check_crc_32(unsigned char* pdata, long len, unsigned gen_poly = 0x04C11DB7)
 	{
 		unsigned	crc = 0;
 		unsigned char	data;
