@@ -188,8 +188,7 @@ struct matrix_mul : public matrix_bind_operation< T1, T2, matrix_mul< T1, T2 > >
 		size_type size = left_.cols( );
 		for( size_type t = 0 ; t < size ; ++t )
 		{
-			v += right_( t, c ) * left_( r, t );
-//			v += left_( r, t ) * right_( t, c );
+			v += left_( r, t ) * right_( t, c );
 		}
 		return( v );
 	}
@@ -419,9 +418,9 @@ public: // ”z—ñ‚É‘Î‚·‚éŽZp‰‰ŽZ
 		matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
 		size_type r, c, t;
 
-		for( c = 0 ; c < mat.cols( ) ; c++ )
+		for( r = 0 ; r < mat.rows( ) ; r++ )
 		{
-			for( r = 0 ; r < mat.rows( ) ; r++ )
+			for( c = 0 ; c < mat.cols( ) ; c++ )
 			{
 				for( t = 0 ; t < m1.cols( ) ; t++ )
 				{
@@ -487,9 +486,9 @@ public: // ”z—ñ‚É‘Î‚·‚éŽZp‰‰ŽZ
 			return( m1 );
 		}
 #endif
-		for( size_type c = 0 ; c < m1.cols( ) ; c++ )
+		for( size_type r = 0 ; r < m1.rows( ) ; r++ )
 		{
-			for( size_type r = 0 ; r < m1.rows( ) ; r++ )
+			for( size_type c = 0 ; c < m1.cols( ) ; c++ )
 			{
 				m1( r, c ) += m2( r, c );
 			}
@@ -509,9 +508,9 @@ public: // ”z—ñ‚É‘Î‚·‚éŽZp‰‰ŽZ
 			return( m1 );
 		}
 #endif
-		for( size_type c = 0 ; c < m1.cols( ) ; c++ )
+		for( size_type r = 0 ; r < m1.rows( ) ; r++ )
 		{
-			for( size_type r = 0 ; r < m1.rows( ) ; r++ )
+			for( size_type c = 0 ; c < m1.cols( ) ; c++ )
 			{
 				m1( r, c ) -= m2( r, c );
 			}
@@ -534,9 +533,9 @@ public: // ”z—ñ‚É‘Î‚·‚éŽZp‰‰ŽZ
 
 		matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
 
-		for( size_type c = 0 ; c < mat.cols( ) ; c++ )
+		for( size_type r = 0 ; r < mat.rows( ) ; r++ )
 		{
-			for( size_type r = 0 ; r < mat.rows( ) ; r++ )
+			for( size_type c = 0 ; c < mat.cols( ) ; c++ )
 			{
 				for( size_type t = 0 ; t < m1.cols( ) ; t++ )
 				{
@@ -591,9 +590,9 @@ public:
 	const matrix& operator =( const matrix_expression< T, Allocator, Derive > &expression )
 	{
 		matrix m( expression.rows( ), expression.cols( ) );
-		for( size_type c = 0 ; c < m.cols( ) ; c++ )
+		for( size_type r = 0 ; r < m.rows( ) ; r++ )
 		{
-			for( size_type r = 0 ; r < m.rows( ) ; r++ )
+			for( size_type c = 0 ; c < m.cols( ) ; c++ )
 			{
 				m( r, c ) = expression( r, c );
 			}
@@ -679,9 +678,9 @@ public:
 	explicit matrix( const matrix_expression< T, Allocator, Derive > &expression ) : base( expression.rows( ) * expression.cols( ) ), size1_( expression.rows( ) ), size2_( expression.cols( ) )
 	{
 		matrix &m = *this;
-		for( size_type c = 0 ; c < m.cols( ) ; c++ )
+		for( size_type r = 0 ; r < m.rows( ) ; r++ )
 		{
-			for( size_type r = 0 ; r < m.rows( ) ; r++ )
+			for( size_type c = 0 ; c < m.cols( ) ; c++ )
 			{
 				m( r, c ) = expression( r, c );
 			}
@@ -1011,9 +1010,9 @@ inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m1, cons
 	matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
 	typename matrix< T, Allocator >::size_type r, c, t;
 
-	for( c = 0 ; c < mat.cols( ) ; c++ )
+	for( r = 0 ; r < mat.rows( ) ; r++ )
 	{
-		for( r = 0 ; r < mat.rows( ) ; r++ )
+		for( c = 0 ; c < mat.cols( ) ; c++ )
 		{
 			for( t = 0 ; t < m1.cols( ) ; t++ )
 			{
