@@ -495,7 +495,7 @@ public:
 	reference operator []( Distance dist )
 	{
 		size_type cpos = current_position_ + dist;
-		size_type j = diff_boundary_ == 0 ? 0 : cpos / diff_boundary_
+		size_type j = diff_boundary_ == 0 ? 0 : cpos / diff_boundary_;
 		size_type i = cpos - j * diff_boundary_;
 		return( data_[ i * diff_pointer1_ + j * diff_pointer2_ ] );
 	}
@@ -636,7 +636,7 @@ public:
 	reference operator []( Distance dist )
 	{
 		size_type cpos = current_position_ + dist;
-		size_type j = diff_boundary_ == 0 ? 0 : cpos / diff_boundary_
+		size_type j = diff_boundary_ == 0 ? 0 : cpos / diff_boundary_;
 		size_type i = cpos - j * diff_boundary_;
 		return( *( data_ - i * diff_pointer1_ + j * diff_pointer2_ ) );
 	}
