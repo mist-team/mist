@@ -311,6 +311,10 @@ namespace volumerender
 		double	specular;
 
 		boundingbox box[ 6 ];
+
+		parameter( ) : fovy( 80.0 ), ambient_ratio( 0.4 ), diffuse_ratio( 0.6 ), light_attenuation( 0.0 ), sampling_step( 1.0 ), termination( 0.01 ), specular( 1.0 )
+		{
+		}
 	};
 
 
@@ -337,8 +341,8 @@ namespace volumerender
 // 値補間タイプのボリュームレンダリング
 namespace value_interpolation
 {
-	template < class Array1, class Array2, class T >
-		bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter &p, const volumerender::attribute_table< T > &table,
+	template < class Array1, class Array2, class Array3, class T >
+		bool volumerendering( const Array1 &in, Array2 &out, const Array3 &mask, const volumerender::parameter &p, const volumerender::attribute_table< T > &table,
 		typename Array1::size_type thread_id, typename Array1::size_type thread_num )
 	{
 		typedef typename volumerender::parameter::vector_type vector_type;
@@ -391,10 +395,9 @@ namespace value_interpolation
 		}
 
 		// スライス座標系の実寸をワールドと考える
+		vector_type ray, yoko;
 		vector_type normal, n1, n2, n3, n4, n5, n6, n7, n8;
 		vector_type casting_start, casting_end;
-
-		double alpha, lAtten = 1.0, spec;
 
 		const double pai = 3.1415926535897932384626433832795;
 		double focal = ( static_cast< double >( image_height ) / 2.0 ) / std::tan( fovy * pai / 180.0 / 2.0 );
@@ -405,15 +408,17 @@ namespace value_interpolation
 		double ay = in.reso2( );
 		double az = in.reso3( );
 
-		vector_type yoko = ( dir * up ).unit( );
+		yoko = ( dir * up ).unit( );
 
 		if( out.reso1( ) < out.reso2( ) )
 		{
 			yoko *= out.reso1( ) / out.reso2( );
+			dir *= 1.0 / out.reso2( );
 		}
 		else
 		{
 			up *= out.reso2( ) / out.reso1( );
+			dir *= 1.0 / out.reso1( );
 		}
 
 		double max_distance = pos.length( ) + std::sqrt( static_cast< double >( w * w + h * h + d * d ) );
@@ -422,6 +427,12 @@ namespace value_interpolation
 		{
 			for( size_type i = 0 ; i < image_width ; i++ )
 			{
+				if( mask( i, j ) == 0 )
+				{
+					out( i, j ) = 0;
+					continue;
+				}
+
 				// 投影面上の点をカメラ座標系に変換
 				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
 
@@ -444,9 +455,6 @@ namespace value_interpolation
 				{
 					// ワールド座標系（左手）からスライス座標系（右手）に変換
 					// 以降は，全てスライス座標系で計算する
-					Pos.x = (  pos.x + offset.x ) / ax;
-					Pos.y = ( -pos.y + offset.y ) / ay;
-					Pos.z = (  pos.z + offset.z ) / az;
 					casting_start.x = (  casting_start.x + offset.x ) / ax;
 					casting_start.y = ( -casting_start.y + offset.y ) / ay;
 					casting_start.z = (  casting_start.z + offset.z ) / az;
@@ -480,14 +488,19 @@ namespace value_interpolation
 						{
 							if( l > 0 )
 							{
-								spos -= ray * ( accelerated_step - sampling_step );
+								double sstep = accelerated_step - sampling_step;
+								spos.x -= ray.x * sstep;
+								spos.y -= ray.y * sstep;
+								spos.z -= ray.z * sstep;
 								l -= accelerated_step - sampling_step;
 							}
 							break;
 						}
 
 						l += accelerated_step;
-						spos += ray_accelerated_step;
+						spos.x += ray_accelerated_step.x;
+						spos.y += ray_accelerated_step.y;
+						spos.z += ray_accelerated_step.z;
 					}
 
 
@@ -566,28 +579,22 @@ namespace value_interpolation
 						normal.y /= len;
 						normal.z /= len;
 
+						double lAtten = 1.0;
 						if( lightAtten > 0.0 )
 						{
 							double len = ( l + of ) * dlen;
-							lAtten = 1.0 / ( 1.0 + lightAtten * ( len * len ) );
-						}
-						else
-						{
-							lAtten = 1.0;
+							lAtten /= 1.0 + lightAtten * ( len * len );
 						}
 
 						double c = light.inner( normal );
 						c = c < 0.0 ? -c : c;
 
-						if( !bSpecular )
-						{
-							spec = 0.0;
-						}
-						else
+						double spec = 0.0;
+						if( bSpecular )
 						{
 							spec = 2.0 * c * c - 1.0;
 
-							if( spec < 0.0 )
+							if( spec <= 0.0 )
 							{
 								spec = 0;
 							}
@@ -600,13 +607,13 @@ namespace value_interpolation
 								spec *= spec; //^32
 								spec *= spec; //^64
 								//spec *= spec; //^128
+								spec *= specular * 255.0;
 							}
-							spec *= specular;
 						}
 
 						c = c * diffuse_ratio + ambient_ratio;
 
-						alpha = oc.alpha * sampling_step;
+						double alpha = oc.alpha * sampling_step;
 						alpha = alpha < 1.0 ? alpha : 1.0;
 						add_intensity += alpha * add_opacity * ( oc.pixel * c + spec ) * lAtten;
 						add_opacity *= ( 1 - alpha );
@@ -615,7 +622,9 @@ namespace value_interpolation
 						{
 							break;
 						}
-						spos += ray_step;
+						spos.x += ray_step.x;
+						spos.y += ray_step.y;
+						spos.z += ray_step.z;
 						l += sampling_step;
 					}
 					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
