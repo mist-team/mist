@@ -26,7 +26,7 @@
 
 typedef mist::rgb< unsigned char > color_type;
 
-typedef mist::rgb< double > element_type;
+typedef mist::rgb< unsigned char > element_type;
 typedef mist::array2< element_type > data_type;
 
 

@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_DIO__
-#define __INCLUDE_DIO__
+#ifndef __INCLUDE_MAIN_WINDOW__
+#define __INCLUDE_MAIN_WINDOW__
 
 #include "filter_graph.h"
 #include "data_view.h"
@@ -24,7 +24,7 @@ private:
 	FXStatusBar		*statusbar_;
 	FXProgressBar	*progressbar_;
 
-	// DIOのアプリケーションオブジェクトを取得する
+	// アプリケーションオブジェクトを取得する
 	mist_builder *getApp( ) const { return( reinterpret_cast< mist_builder * >( base::getApp( ) ) ); }
 	mist_builder &getAppInstance( ) const { return( *getApp( ) ); }
 
@@ -62,4 +62,4 @@ public:
 };
 
 
-#endif	// __INCLUDE_DIO__
+#endif	// __INCLUDE_MAIN_WINDOW__

@@ -17,7 +17,7 @@ public:
 	{
 		// データをファイルから読み込む
 //		FXString filename = FXFileDialog::getOpenFilename( getApp( ), "Open Image", "" );
-		FXString filename = "D:\\peacock\\SVN Projects\\mist\\mist.png";
+		FXString filename = "../mist.png";
 
 		if( filename != "" )
 		{
