@@ -135,7 +135,7 @@ namespace __euclidean_distance_transform__
 					if( wmin != 0.0 )
 					{
 						irange = static_cast< size_type >( sqrt( wmin ) / vy ) + 1;
-						irange = static_cast< size_type >( irange < max ? irange : max );
+						irange = static_cast< size_type >( static_cast< value_type >( irange ) < max ? irange : max );
 
 						irange1 = j < irange  ? j : irange;
 						irange2 = j + irange >= h ? h - 1 - j : irange;
@@ -196,7 +196,7 @@ namespace __euclidean_distance_transform__
 					if( wmin != 0.0 )
 					{
 						irange = static_cast< size_type >( sqrt( wmin ) / vz ) + 1;
-						irange = static_cast< size_type >( irange < max ? irange : max );
+						irange = static_cast< size_type >( static_cast< value_type >( irange ) < max ? irange : max );
 
 						irange1 = k < irange ? k : irange;
 						irange2 = k + irange >= d ? d - 1 - k : irange;

@@ -41,6 +41,8 @@ void euclidean_distance_transform_test( );
 
 void figure_decomposition_test( );
 
+void thresholding_test( );
+
 void labeling4_test( );
 void labeling8_test( );
 

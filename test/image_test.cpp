@@ -16,7 +16,7 @@
 #include <mist/filter/median.h>
 #include <mist/filter/morphology.h>
 #include <mist/interpolate.h>
-
+#include <mist/threshold.h>
 
 //typedef mist::array2< unsigned char > image_type;
 typedef mist::array2< mist::rgb< unsigned char > > image_type;
@@ -92,8 +92,8 @@ void write_dicom_test( const char *filename )
 
 void euclidean_distance_transform_test( )
 {
-	mist::array2< double > tmp1( image_object.width( ), image_object.width( ), image_object.reso1( ), image_object.reso2( ) );
-	mist::array2< double > tmp2( image_object.width( ), image_object.width( ), image_object.reso1( ), image_object.reso2( ) );
+	mist::array2< int > tmp1( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
+	mist::array2< int > tmp2( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
 	image_type::size_type i = 0;
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
@@ -126,7 +126,7 @@ void euclidean_distance_transform_test( )
 
 void figure_decomposition_test( )
 {
-	//mist::array2< unsigned char > label( image_object.width( ), image_object.width( ), image_object.reso1( ), image_object.reso2( ) );
+	//mist::array2< unsigned char > label( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
 
 	//image_type::size_type i;
 
@@ -146,6 +146,26 @@ void figure_decomposition_test( )
 	//{
 	//	image_object[ i ] = static_cast< unsigned char >( label[ i ] * 255.0 / static_cast< double >( label_num ) );
 	//}
+}
+
+void thresholding_test( )
+{
+	mist::array2< unsigned char > tmp( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
+
+	image_type::size_type i;
+
+	for( i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		tmp[ i ] = image_object[ i ].get_value( );
+	}
+
+	int threshold = mist::threshold( tmp );
+	std::cout << "threshold value: " << threshold << std::endl;
+
+	for( i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		image_object[ i ] = tmp[ i ] < threshold ? 0 : 255;
+	}
 }
 
 void labeling4_test( )

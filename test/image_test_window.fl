@@ -10,7 +10,7 @@ class image_test_window {open
   Function {image_test_window()} {open
   } {
     Fl_Window main_window {open
-      xywh {161 57 551 649} type Double hide
+      xywh {161 57 551 649} type Double visible
     } {
       Fl_Group {} {open
         xywh {5 40 540 530} box DOWN_BOX
@@ -92,7 +92,7 @@ if( filename == NULL ) return;
 read_bmp_test( filename );
 
 draw_area->redraw( );
-Fl::wait( 0 );} selected
+Fl::wait( 0 );}
         xywh {320 575 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
@@ -126,7 +126,7 @@ write_dicom_test( filename );}
         xywh {430 610 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
-      Fl_Menu_Bar {} {
+      Fl_Menu_Bar {} {open
         xywh {0 0 550 25} box FLAT_BOX
       } {
         submenu {} {
@@ -142,6 +142,11 @@ write_dicom_test( filename );}
             label {Figure Decomposition}
             callback {figure_decomposition_test( );}
             xywh {10 10 100 20}
+          }
+          menuitem {} {
+            label Thresholding
+            callback {thresholding_test( );} selected
+            xywh {20 20 100 20}
           }
           menuitem {} {
             label {Labeling 4}

@@ -56,8 +56,12 @@ namespace __png_controller__
 			image.resize( width, height );
 
 			png_read_image( png_ptr, png_buff );	// 画像データを読み込みます
-			if( color_type == PNG_COLOR_TYPE_GRAY )
+
+			bool ret = true;
+
+			switch( color_type )
 			{
+			case PNG_COLOR_TYPE_GRAY:
 				for( j = 0 ; j < (size_type)height ; j++ )
 				{
 					for( i = 0 ; i < (size_type )width ; i++ )
@@ -65,9 +69,9 @@ namespace __png_controller__
 						image( i, j ) = pixel_converter::convert_to_pixel( png_buff[j][i], png_buff[j][i], png_buff[j][i] );
 					}
 				}
-			}
-			else if( color_type == PNG_COLOR_TYPE_RGB )
-			{
+				break;
+
+			case PNG_COLOR_TYPE_RGB:
 				for( j = 0 ; j < (size_type)height ; j++ )
 				{
 					for( i = 0 ; i < (size_type )width ; i++ )
@@ -75,6 +79,42 @@ namespace __png_controller__
 						image( i, j ) = pixel_converter::convert_to_pixel( png_buff[j][ i * 3 + 0 ], png_buff[j][ i * 3 + 1 ], png_buff[j][ i * 3 + 2 ] );
 					}
 				}
+				break;
+
+			case PNG_COLOR_TYPE_RGBA:
+				for( j = 0 ; j < (size_type)height ; j++ )
+				{
+					for( i = 0 ; i < (size_type )width ; i++ )
+					{
+						image( i, j ) = pixel_converter::convert_to_pixel( png_buff[j][ i * 4 + 0 ], png_buff[j][ i * 4 + 1 ], png_buff[j][ i * 4 + 2 ] );
+					}
+				}
+				break;
+
+			case PNG_COLOR_TYPE_GA:
+				for( j = 0 ; j < (size_type)height ; j++ )
+				{
+					for( i = 0 ; i < (size_type )width ; i++ )
+					{
+						image( i, j ) = pixel_converter::convert_to_pixel( png_buff[j][ i * 2 ], png_buff[j][ i * 2 ], png_buff[j][ i * 2 ] );
+					}
+				}
+				break;
+
+			case PNG_COLOR_TYPE_PALETTE:
+				for( j = 0 ; j < (size_type)height ; j++ )
+				{
+					for( i = 0 ; i < (size_type )width ; i++ )
+					{
+						png_color &p = info_ptr->palette[ png_buff[j][ i ] ];
+						image( i, j ) = pixel_converter::convert_to_pixel( p.red, p.green, p.blue );
+					}
+				}
+				break;
+
+			default:
+				ret = false;
+				break;
 			}
 
 			for( i = 0 ; i < (size_type)height ; i++ ) free( png_buff[i] );            // 以下２行は２次元配列を解放します
@@ -83,7 +123,8 @@ namespace __png_controller__
 			// ２つの構造体のメモリを解放します
 			png_destroy_read_struct( &png_ptr, &info_ptr, (png_infopp)NULL );
 			fclose( fp );
-			return( true );
+
+			return( ret );
 		}
 
 		static bool write( array2< T, Allocator > &image, const std::string &filename, int compression_level )
