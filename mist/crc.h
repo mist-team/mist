@@ -14,12 +14,11 @@ namespace __crc__
 	pdata[0] から pdata[len - 2] の len - 1 bytesの CRC-8 を pdata[len - 1] に生成する．
 
 	生成多項式 x^8 + x^2 + x^1 + 1
-	100000111 = 107H
 	*/
-	void generate_crc_8(unsigned char* pdata, long len)
+	unsigned char generate_crc_8(unsigned char* pdata, long len, unsigned char gen_poly = 0x07)
 	{
 		unsigned char	crc = 0;
-		unsigned char	data = 0;
+		unsigned char	data;
 
 		// CRCのクリア
 		*(pdata + len - 1) = 0;
@@ -33,7 +32,7 @@ namespace __crc__
 				if((crc & 0x80) != 0)
 				{
 					crc <<= 1;
-					crc ^= 0x07;
+					crc ^= gen_poly;
 				}
 				else
 				{
@@ -51,12 +50,14 @@ namespace __crc__
 
 		// CRCのセット
 		*(pdata + len - 1) = crc;
+
+		return crc;
 	}
 
-	bool check_crc_8(unsigned char* pdata, long len)
+	bool check_crc_8(unsigned char* pdata, long len, unsigned char gen_poly = 0x07)
 	{
 		unsigned char	crc = 0;
-		unsigned char	data = 0;
+		unsigned char	data;
 
 		for(long n = 0; n < len; n ++)
 		{
@@ -67,7 +68,7 @@ namespace __crc__
 				if((crc & 0x80) != 0)
 				{
 					crc <<= 1;
-					crc ^= 0x07;
+					crc ^= gen_poly;
 				}
 				else
 				{
@@ -89,12 +90,11 @@ namespace __crc__
 	pdata[0] から pdata[len - 1] の len bytesの CRC-8 を 生成する．
 
 	生成多項式 x^8 + x^2 + x^1 + 1
-	100000111 = 107H
 	*/
-	unsigned char generate_crc_8ex(unsigned char* pdata, long len)
+	unsigned char generate_crc_8ex(unsigned char* pdata, long len, unsigned char gen_poly = 0x07)
 	{
 		unsigned char	crc = 0;
-		unsigned char	data = 0;
+		unsigned char	data;
 
 		// データ数+0回のループ
 		for(long n = 0; n < len + 1; n ++)
@@ -113,7 +113,7 @@ namespace __crc__
 				if((crc & 0x80) != 0)
 				{
 					crc <<= 1;
-					crc ^= 0x07;
+					crc ^= gen_poly;
 				}
 				else
 				{
@@ -132,10 +132,10 @@ namespace __crc__
 		return crc;
 	}
 
-	bool check_crc_8ex(unsigned char* pdata, long len, unsigned char _crc)
+	bool check_crc_8ex(unsigned char* pdata, long len, unsigned char _crc, unsigned char gen_poly = 0x07)
 	{
 		unsigned char	crc = 0;
-		unsigned char	data = 0;
+		unsigned char	data;
 
 		for(long n = 0; n < len + 1; n ++)
 		{
@@ -153,7 +153,7 @@ namespace __crc__
 				if((crc & 0x80) != 0)
 				{
 					crc <<= 1;
-					crc ^= 0x07;
+					crc ^= gen_poly;
 				}
 				else
 				{
@@ -169,6 +169,166 @@ namespace __crc__
 		}
 
 		return crc == _crc;
+	}
+
+	/*
+	pdata[0] から pdata[len - 3] の len - 2 bytesの CRC-16 を pdata[len - 2] と pdata[len - 1] に生成する．
+
+	生成多項式 x^16 + x^15 + x^2 + 1
+	*/
+	unsigned short generate_crc_16(unsigned char* pdata, long len, unsigned short gen_poly = 0x8005)
+	{
+		unsigned short	crc = 0;
+		unsigned char	data;
+
+		// CRCのクリア
+		*(pdata + len - 2) = 0;
+		*(pdata + len - 1) = 0;
+
+		for(long n = 0; n < len; n ++)
+		{
+			data = pdata[n];
+
+			for(int m = 0; m < 8; m ++)
+			{
+				if((crc & 0x8000) != 0)
+				{
+					crc <<= 1;
+					crc ^= gen_poly;
+				}
+				else
+				{
+					crc <<= 1;
+				}
+
+				if((data & 0x80) != 0)
+				{
+					crc ^= 0x0001;
+				}
+
+				data <<= 1;
+			}
+		}
+
+		// CRCのセット
+		*(pdata + len - 1) = crc & 0xff;
+		*(pdata + len - 2) = (crc >> 8) & 0xff;
+
+		return crc;
+	}
+
+	bool check_crc_16(unsigned char* pdata, long len, unsigned short gen_poly = 0x8005)
+	{
+		unsigned short	crc = 0;
+		unsigned char	data;
+
+		for(long n = 0; n < len; n ++)
+		{
+			data = pdata[n];
+
+			for(int m = 0; m < 8; m ++)
+			{
+				if((crc & 0x8000) != 0)
+				{
+					crc <<= 1;
+					crc ^= gen_poly;
+				}
+				else
+				{
+					crc <<= 1;
+				}
+
+				if((data & 0x80) != 0){
+					crc ^= 0x0001;
+				}
+
+				data <<= 1;
+			}
+		}
+
+		return crc == 0;
+	}
+
+	/*
+	pdata[0] から pdata[len - 3] の len - 2 bytesの CRC-16 を pdata[len - 2] と pdata[len - 1] に生成する．
+
+	生成多項式 x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x^1 + 1
+	*/
+	unsigned generate_crc_32(unsigned char* pdata, long len, unsigned gen_poly = 0x104C11DB7)
+	{
+		unsigned	crc = 0;
+		unsigned char	data;
+
+		// CRCのクリア
+		*(pdata + len - 4) = 0;
+		*(pdata + len - 3) = 0;
+		*(pdata + len - 2) = 0;
+		*(pdata + len - 1) = 0;
+
+		for(long n = 0; n < len; n ++)
+		{
+			data = pdata[n];
+
+			for(int m = 0; m < 8; m ++)
+			{
+				if((crc & 0x80000000) != 0)
+				{
+					crc <<= 1;
+					crc ^= gen_poly;
+				}
+				else
+				{
+					crc <<= 1;
+				}
+
+				if((data & 0x80) != 0)
+				{
+					crc ^= 0x0001;
+				}
+
+				data <<= 1;
+			}
+		}
+
+		// CRCのセット
+		*(pdata + len - 1) = crc & 0xff;
+		*(pdata + len - 2) = (crc >> 8) & 0xff;
+		*(pdata + len - 3) = (crc >> 16) & 0xff;
+		*(pdata + len - 4) = (crc >> 24) & 0xff;
+
+		return crc;
+	}
+
+	bool check_crc_32(unsigned char* pdata, long len, unsigned gen_poly = 0x104C11DB7)
+	{
+		unsigned	crc = 0;
+		unsigned char	data;
+
+		for(long n = 0; n < len; n ++)
+		{
+			data = pdata[n];
+
+			for(int m = 0; m < 8; m ++)
+			{
+				if((crc & 0x80000000) != 0)
+				{
+					crc <<= 1;
+					crc ^= gen_poly;
+				}
+				else
+				{
+					crc <<= 1;
+				}
+
+				if((data & 0x80) != 0){
+					crc ^= 0x0001;
+				}
+
+				data <<= 1;
+			}
+		}
+
+		return crc == 0;
 	}
 
 }
