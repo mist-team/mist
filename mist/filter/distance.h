@@ -30,13 +30,13 @@ namespace __euclidean_distance_transform__
 		typedef typename T::value_type value_type;
 
 		size_type i, j, k;
-		size_type nd, n;
+		value_type nd, n;
 
 		size_type w = in.width( );
 		size_type h = in.height( );
 		size_type d = in.depth( );
 
-		double max = max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length;
+		value_type max = static_cast< value_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		for( k = 0 ; k < d ; k++ )
 		{
@@ -44,8 +44,8 @@ namespace __euclidean_distance_transform__
 			{
 				if( in( 0, j, k ) != 0 )
 				{
-					nd = w < max ? w : max;
-					in( 0, j, k ) = static_cast< value_type >( nd * nd );
+					nd = w < max ? static_cast< value_type >( w ) : max;
+					in( 0, j, k ) = nd * nd;
 				}
 				else
 				{
@@ -63,12 +63,12 @@ namespace __euclidean_distance_transform__
 						nd = 0;
 					}
 
-					in( i, j, k ) = static_cast< value_type >( nd * nd );
+					in( i, j, k ) = nd * nd;
 				}
 
 				if( in( w - 1, j, k ) != 0 )
 				{
-					nd = w < max ? w : max;
+					nd = w < max ? static_cast< value_type >( w ) : max;
 				}
 				else
 				{
@@ -87,7 +87,7 @@ namespace __euclidean_distance_transform__
 					}
 
 					n = nd * nd;
-					in( i - 1, j, k ) = static_cast< value_type >( static_cast< size_type >( in( i - 1, j, k ) ) < n ? in( i - 1, j, k ) : n );
+					in( i - 1, j, k ) = in( i - 1, j, k ) < n ? in( i - 1, j, k ) : n;
 				}
 			}
 		}
@@ -112,7 +112,7 @@ namespace __euclidean_distance_transform__
 		size_type h = in.height( );
 		size_type d = in.depth( );
 
-		double max = max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length;
+		value_type max = static_cast< value_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		vy = in.reso2( ) / in.reso1( );
 		vyvy = vy * vy;
@@ -176,7 +176,7 @@ namespace __euclidean_distance_transform__
 		vzvz = vz * vz;
 		work = new double[ d ];
 
-		double max = max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length;
+		value_type max = static_cast< value_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		for( j = 0 ; j < h ; j++ )
 		{
@@ -299,12 +299,12 @@ namespace __distance_transform_controller__
 }
 
 
-template < class T, class Allocator >
-void euclidean_distance_transform( const array< T, Allocator > &in, array< T, Allocator > &out, double max_length = -1.0, typename array< T, Allocator >::size_type thread_num = 0 )
+template < class T1, class T2, class Allocator1, class Allocator2 >
+void euclidean_distance_transform( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, double max_length = -1.0, typename array< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	typedef typename array< T, Allocator >::size_type  size_type;
-	typedef typename array< T, Allocator >::value_type value_type;
-	typedef __distance_transform_controller__::euclidean_distance_transform_thread< array< T, Allocator > > euclidean_distance_transform_thread;
+	typedef typename array< T2, Allocator2 >::size_type  size_type;
+	typedef typename array< T2, Allocator2 >::value_type value_type;
+	typedef __distance_transform_controller__::euclidean_distance_transform_thread< array< T2, Allocator2 > > euclidean_distance_transform_thread;
 
 	if( thread_num == 0 )
 	{
@@ -348,12 +348,12 @@ void euclidean_distance_transform( const array< T, Allocator > &in, array< T, Al
 	delete [] thread;
 }
 
-template < class T, class Allocator >
-void euclidean_distance_transform( const array1< T, Allocator > &in, array1< T, Allocator > &out, double max_length = -1.0, typename array1< T, Allocator >::size_type thread_num = 0 )
+template < class T1, class T2, class Allocator1, class Allocator2 >
+void euclidean_distance_transform( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, double max_length = -1.0, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	typedef typename array1< T, Allocator >::size_type  size_type;
-	typedef typename array1< T, Allocator >::value_type value_type;
-	typedef __distance_transform_controller__::euclidean_distance_transform_thread< array1< T, Allocator > > euclidean_distance_transform_thread;
+	typedef typename array1< T2, Allocator2 >::size_type  size_type;
+	typedef typename array1< T2, Allocator2 >::value_type value_type;
+	typedef __distance_transform_controller__::euclidean_distance_transform_thread< array1< T2, Allocator2 > > euclidean_distance_transform_thread;
 
 	if( thread_num == 0 )
 	{
@@ -398,12 +398,12 @@ void euclidean_distance_transform( const array1< T, Allocator > &in, array1< T, 
 	delete [] thread;
 }
 
-template < class T, class Allocator >
-void euclidean_distance_transform( const array2< T, Allocator > &in, array2< T, Allocator > &out, double max_length = -1.0, typename array2< T, Allocator >::size_type thread_num = 0 )
+template < class T1, class T2, class Allocator1, class Allocator2 >
+void euclidean_distance_transform( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, double max_length = -1.0, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	typedef typename array2< T, Allocator >::size_type  size_type;
-	typedef typename array2< T, Allocator >::value_type value_type;
-	typedef __distance_transform_controller__::euclidean_distance_transform_thread< array2< T, Allocator > > euclidean_distance_transform_thread;
+	typedef typename array2< T2, Allocator2 >::size_type  size_type;
+	typedef typename array2< T2, Allocator2 >::value_type value_type;
+	typedef __distance_transform_controller__::euclidean_distance_transform_thread< array2< T2, Allocator2 > > euclidean_distance_transform_thread;
 
 	if( thread_num == 0 )
 	{
@@ -471,12 +471,12 @@ void euclidean_distance_transform( const array2< T, Allocator > &in, array2< T, 
 	delete [] thread;
 }
 
-template < class T, class Allocator >
-void euclidean_distance_transform( const array3< T, Allocator > &in, array3< T, Allocator > &out, double max_length = -1.0, typename array3< T, Allocator >::size_type thread_num = 0 )
+template < class T1, class T2, class Allocator1, class Allocator2 >
+void euclidean_distance_transform( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, double max_length = -1.0, typename array3< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	typedef typename array3< T, Allocator >::size_type  size_type;
-	typedef typename array3< T, Allocator >::value_type value_type;
-	typedef __distance_transform_controller__::euclidean_distance_transform_thread< array3< T, Allocator > > euclidean_distance_transform_thread;
+	typedef typename array3< T2, Allocator2 >::size_type  size_type;
+	typedef typename array3< T2, Allocator2 >::value_type value_type;
+	typedef __distance_transform_controller__::euclidean_distance_transform_thread< array3< T2, Allocator2 > > euclidean_distance_transform_thread;
 
 	if( thread_num == 0 )
 	{
