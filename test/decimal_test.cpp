@@ -8,7 +8,7 @@ int main( int argc, char *argv[] )
 
 //	mist::decimal< 100 > v1( "2.1" ), v2( "1.1" );
 //	mist::decimal< 10 > v1( "2.0" ), v2( "1.1" );
-	mist::decimal< 20 > v1( 0.25 ), v2( 1.1 );
+	mist::decimal< 20 > v1( 0.25 ), v2( 3.14159265358979323846264338327950288419716940 );
 
 
 	cout << " ( A, B ) = ( " << v1 << ", " << v2 << " )" << endl;

@@ -96,40 +96,8 @@ public:
 		memset( data_, 0, sizeof( value_type ) * NMPA1 );
 	}
 
-	//decimal( double a ) : sign_( true ), exp_( 0 ), zero_( true )
-	//{
-	//	memset( data_, 0, sizeof( value_type ) * NMPA1 );
-
-	//	if( a != 0.0 )
-	//	{
-	//		zero_ = false;
-	//		if( a < 0.0 )
-	//		{
-	//			sign_ = false;
-	//			a = - a;
-	//		}
-	//		while( a >= static_cast< double >( RADIX ) )
-	//		{
-	//			exp_++;
-	//			a /= static_cast< double >( RADIX );
-	//		}
-	//		while( a < 1.0 )
-	//		{
-	//			exp_--;
-	//			a *= static_cast< double >( RADIX );
-	//		}
-
-	//		size_type i = 0;
-	//		do
-	//		{
-	//			data_[ i ] = static_cast< unsigned int >( a );
-	//			a -= data_[ i ];
-	//			a *= RADIX;
-	//		} while( a != 0.0 && ++i <= NMPA );
-	//	}
-	//}
-
-	decimal( double a, difference_type keta = 3 ) : sign_( true ), exp_( 0 ), zero_( true )
+#if 0
+	decimal( const double &a ) : sign_( true ), exp_( 0 ), zero_( true )
 	{
 		memset( data_, 0, sizeof( value_type ) * NMPA1 );
 
@@ -141,26 +109,65 @@ public:
 				sign_ = false;
 				a = - a;
 			}
+			while( a >= static_cast< double >( RADIX ) )
+			{
+				exp_++;
+				a /= static_cast< double >( RADIX );
+			}
+			while( a < 1.0 )
+			{
+				exp_--;
+				a *= static_cast< double >( RADIX );
+			}
+
+			size_type i = 0;
+			do
+			{
+				data_[ i ] = static_cast< unsigned int >( a );
+				a -= data_[ i ];
+				a *= RADIX;
+			} while( a != 0.0 && ++i <= NMPA );
+		}
+	}
+#else
+	decimal( const double &v, difference_type keta = 16 ) : sign_( true ), exp_( 0 ), zero_( true )
+	{
+		memset( data_, 0, sizeof( value_type ) * NMPA1 );
+
+		if( v != 0.0 )
+		{
+			double a = v;
+			zero_ = false;
+			if( a < 0.0 )
+			{
+				sign_ = false;
+				a = - a;
+			}
 			decimal b( static_cast< difference_type >( a ) );
 			a -= static_cast< difference_type >( a );
-			double x = 10.0;
-			for( difference_type i = 0 ; i < keta ; i++ )
+			decimal x( 10 );
+			for( difference_type i = 0 ; i < keta && a != 0.0 ; i++ )
 			{
-				a *= x;
-				b += decimal( static_cast< difference_type >( a ) ) / x;
-				x *= 10.0;
+				a *= 10;
+				b *= 10;
+				b += static_cast< difference_type >( a );
+				a -= static_cast< difference_type >( a );
+				x *= 10;
 			}
+			b /= x;
 			b.sign_ = sign_;
 			operator =( b );
 		}
 	}
+#endif
 
-	decimal( difference_type n ) : sign_( true ), exp_( 0 ), zero_( true )
+	decimal( const difference_type &m ) : sign_( true ), exp_( 0 ), zero_( true )
 	{
 		memset( data_, 0, sizeof( value_type ) * NMPA1 );
 
-		if( n != 0 )
+		if( m != 0 )
 		{
+			difference_type n = m;
 			zero_ = false;
 			if( n < 0 )
 			{
