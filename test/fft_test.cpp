@@ -7,7 +7,7 @@
 #include <mist/fft/dst.h>
 #include <mist/io/raw.h>
 
-#define TEST_MODE	3
+#define TEST_MODE	1
 #define FFT_TEST	1
 #define DCT_TEST	2
 #define DST_TEST	3
@@ -36,7 +36,19 @@ int main( int argc, char *argv[ ] )
 	std::string mode = "fft";
 #endif
 
-	std::string fname = "//eagle/data4/ctlung/haigeta/haigeta212.512.gz";
+	std::string fname = "";
+	if( argc < 2 )
+	{
+#ifdef WIN32
+		fname = "//eagle/data4/CTLung/haigeta/haigeta212.512.gz";
+#else
+		fname = "/data4/CTLung/haigeta/haigeta212.512.gz";
+#endif
+	}
+	else
+	{
+		fname = argv[ 1 ];
+	}
 
 	mist::read_raw( in, fname, 512, 512, 128 );
 

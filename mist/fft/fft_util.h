@@ -85,60 +85,65 @@ namespace __fft_util__
 
 #endif
 
+	template < bool b >
+	struct convert_to_complex
+	{
+		template < class T >
+		static const std::complex< double > convert_to( const T &v )
+		{
+			return( std::complex< double >( v, 0.0 ) );
+		}
+	};
+
+	template < >
+	struct convert_to_complex< true >
+	{
+		template < class T >
+		static const std::complex< double > convert_to( const T &v )
+		{
+			return( std::complex< double >( static_cast< double >( v.real( ) ), static_cast< double >( v.imag( ) ) ) );
+		}
+	};
+
+	template < bool b >
+	struct convert_from_complex
+	{
+		template < class T >
+		static void convert_from( const std::complex< double > &v, T &out )
+		{
+			out = static_cast< T >( v.real( ) );
+		}
+
+		template < class T >
+		static void convert_from( const double r, const double i, T &out )
+		{
+			out = static_cast< T >( r );
+		}
+	};
+
+	template < >
+	struct convert_from_complex< true >
+	{
+		template < class T >
+		static void convert_from( const std::complex< double > &v, T &out )
+		{
+			typedef typename T::value_type value_type;
+			out = T( static_cast< value_type >( v.real( ) ), static_cast< value_type >( v.imag( ) ) );
+		}
+
+		template < class T >
+		static void convert_from( const double r, const double i, T &out )
+		{
+			typedef typename T::value_type value_type;
+			out = T( static_cast< value_type >( r ), static_cast< value_type >( i ) );
+		}
+	};
+
 	// àÍî ìIÇ»ÉfÅ[É^å^Ç©ÇÁï°ëfêîå^Ç…ïœä∑Ç∑ÇÈä÷êî
 	// ï°ëfêîå^Ç©ÇÁàÍî ìIÇ»ÉfÅ[É^å^Ç…ïœä∑Ç∑ÇÈä÷êî
 	template < class T >
 	struct convert_complex
 	{
-		template < bool b >
-		struct convert_to_complex
-		{
-			static const std::complex< double > convert_to( const T &v )
-			{
-				return( std::complex< double >( v, 0.0 ) );
-			}
-		};
-
-		template < >
-		struct convert_to_complex< true >
-		{
-			static const std::complex< double > convert_to( const T &v )
-			{
-				return( std::complex< double >( static_cast< double >( v.real( ) ), static_cast< double >( v.imag( ) ) ) );
-			}
-		};
-
-		template < bool b >
-		struct convert_from_complex
-		{
-			static const T convert_from( const std::complex< double > &v )
-			{
-				return( static_cast< T >( v.real( ) ) );
-			}
-
-			static const T convert_from( const double r, const double i )
-			{
-				return( static_cast< T >( r ) );
-			}
-		};
-
-		template < >
-		struct convert_from_complex< true >
-		{
-			static const T convert_from( const std::complex< double > &v )
-			{
-				typedef typename T::value_type value_type;
-				return( T( static_cast< value_type >( v.real( ) ), static_cast< value_type >( v.imag( ) ) ) );
-			}
-
-			static const T convert_from( const double r, const double i )
-			{
-				typedef typename T::value_type value_type;
-				return( T( static_cast< value_type >( r ), static_cast< value_type >( i ) ) );
-			}
-		};
-
-
 		static const std::complex< double > convert_to( const T &v )
 		{
 			return( convert_to_complex< is_complex< T >::value >::convert_to( v ) );
@@ -146,12 +151,16 @@ namespace __fft_util__
 
 		static const T convert_from( const std::complex< double > &v )
 		{
-			return( convert_from_complex< is_complex< T >::value >::convert_from( v ) );
+			T dmy;
+			convert_from_complex< is_complex< T >::value >::convert_from( v, dmy );
+			return( dmy );
 		}
 
 		static const T convert_from( double r, double i )
 		{
-			return( convert_from_complex< is_complex< T >::value >::convert_from( r, i ) );
+			T dmy;
+			convert_from_complex< is_complex< T >::value >::convert_from( r, i, dmy );
+			return( dmy );
 		}
 	};
 }
