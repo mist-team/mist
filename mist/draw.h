@@ -136,6 +136,12 @@ namespace pixel_data
 
 		return( 0 );
 	}
+
+	// 入力された v が2の指数乗であるかどうかをチェックする
+	inline bool is_floor_square( size_t v )
+	{
+		return( ( v & ( v - 1 ) ) == 0 );
+	}
 }
 
 template< class T, class Allocator >
@@ -161,7 +167,7 @@ bool draw_buffer( const array2< T, Allocator > &image,
 	typedef typename array2< T, Allocator >::size_type size_type;
 
 	// テクスチャのサイズが2の指数上になっているかどうかをチェック
-	if( image.width( ) != static_cast< size_type >( pow( 2.0, (int)( log10( (double)image.width( ) ) / log10( 2.0 ) + 0.1 ) ) ) ) return( false );
+	if( !pixel_data::is_floor_square( image.width( ) ) ) return( false );
 
 
 	if( image.empty( ) ) return( false );
@@ -268,7 +274,10 @@ bool draw_image( const array2< T, Allocator > &image,
 	{
 		static array2< T, Allocator > img;
 
-		img.resize( ttt, ttt );
+		if( ttt > img.width( ) )
+		{
+			img.resize( ttt, ttt );
+		}
 		img.reso1( image.reso1( ) );
 		img.reso2( image.reso2( ) );
 
