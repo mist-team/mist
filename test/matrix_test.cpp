@@ -51,7 +51,7 @@ private:
 }; // timer
 
 
-//*
+/*
 int main( )
 {
 	using namespace std;
@@ -150,7 +150,20 @@ int main( )
 
 
 	cout << "< In the case of Expression Template >" << endl;
-	mat = ( mat1 + mat2 * mat3 + mat4 ).t( );
+	mat = ( mat1 + 1 + ( mat2 * mat3 + mat4 ) ).t( );
+	cout << mat << endl << endl << endl;
+
+
+	cout << "< In the case of Expression Template >" << endl;
+	mat = ( mat1 + ( mat2 * mat3 + mat4 ) - 1 ).t( );
+	cout << mat << endl << endl << endl;
+
+	cout << "< In the case of Expression Template >" << endl;
+	mat = ( mat1 + ( mat2 * mat3 + mat4 ) * 2 ).t( );
+	cout << mat << endl << endl << endl;
+
+	cout << "< In the case of Expression Template >" << endl;
+	mat = ( mat1 + 2 ).t( );
 	cout << mat << endl << endl << endl;
 
 	return( 0 );
