@@ -14,7 +14,7 @@ class singleton
 public:
 	typedef T value_type;
 
-	static value_type &get_singleton( )
+	static value_type &get_instance( )
 	{
 		static value_type singleton_;
 		return( singleton_ );
