@@ -34,6 +34,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/wav_test.exe"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="../lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/wav_test.pdb"
 				SubSystem="1"
@@ -89,6 +90,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/wav_test.exe"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="../lib"
 				GenerateDebugInformation="FALSE"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -139,6 +141,9 @@
 			</File>
 			<File
 				RelativePath="..\mist\config\mist_conf.h">
+			</File>
+			<File
+				RelativePath="..\mist\config\stereo.h">
 			</File>
 			<File
 				RelativePath="..\mist\io\wav.h">

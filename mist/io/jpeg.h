@@ -79,7 +79,7 @@ namespace __jpeg_controller__
 				if( dinfo.output_scanline < dinfo.output_height ) jpeg_read_scanlines( &dinfo, bitmap, 1 );
 				for( i = 0 ; i < dinfo.output_width ; i++ )
 				{
-					image( i, j ) = pixel_converter::convert_to_pixel( buffer[ i * 3 + 0 ], buffer[ i * 3 + 1 ], buffer[ i * 3 + 2 ] );
+					image( i, j ) = pixel_converter::convert_to( buffer[ i * 3 + 0 ], buffer[ i * 3 + 1 ], buffer[ i * 3 + 2 ] );
 				}
 			}
 
@@ -126,7 +126,7 @@ namespace __jpeg_controller__
 			{
 				for( i = 0 ; i < w ; i++ )
 				{
-					color_type c = pixel_converter::convert_from_pixel( image( i, j ) );
+					color_type c = pixel_converter::convert_from( image( i, j ) );
 					*p++ = static_cast< JSAMPLE >( c.r );
 					*p++ = static_cast< JSAMPLE >( c.g );
 					*p++ = static_cast< JSAMPLE >( c.b );

@@ -288,7 +288,7 @@ namespace __bmp_controller__
 			// 使用されている色を全て列挙する
 			for( i = 0 ; i < width * height ; i++ )
 			{
-				color_type c = pixel_converter::convert_from_pixel( image[i] );
+				color_type c = pixel_converter::convert_from( image[i] );
 				r = static_cast< unsigned char >( c.r );
 				g = static_cast< unsigned char >( c.g );
 				b = static_cast< unsigned char >( c.b );
@@ -327,7 +327,7 @@ namespace __bmp_controller__
 		static size_type find_palette_index( const T &pixel, _rgbquad_ *palette, size_type palette_num )
 		{
 			unsigned char r, g, b, pr, pg, pb;
-			color_type c = pixel_converter::convert_from_pixel( pixel );
+			color_type c = pixel_converter::convert_from( pixel );
 			r = static_cast< unsigned char >( c.r );
 			g = static_cast< unsigned char >( c.g );
 			b = static_cast< unsigned char >( c.b );
@@ -420,7 +420,7 @@ namespace __bmp_controller__
 							for( k = 0 ; k < 8 ; k++ )
 							{
 								index = ( pix & 0x80 ) == 0 ? 0 : 1;
-								image( i * 8 + k, j ) = pixel_converter::convert_to_pixel( palette[ index ].rgbRed, palette[ index ].rgbGreen, palette[ index ].rgbBlue );
+								image( i * 8 + k, j ) = pixel_converter::convert_to( palette[ index ].rgbRed, palette[ index ].rgbGreen, palette[ index ].rgbBlue );
 								pix <<= 1;
 							}
 						}
@@ -430,7 +430,7 @@ namespace __bmp_controller__
 							for( i = 0 ; i < rest ; i++ )
 							{
 								index = ( pix & 0x80 ) == 0 ? 0 : 1;
-								image( w * 8 + i, j ) = pixel_converter::convert_to_pixel( palette[ index ].rgbRed, palette[ index ].rgbGreen, palette[ index ].rgbBlue );
+								image( w * 8 + i, j ) = pixel_converter::convert_to( palette[ index ].rgbRed, palette[ index ].rgbGreen, palette[ index ].rgbBlue );
 								pix <<= 1;
 							}
 						}
@@ -445,14 +445,14 @@ namespace __bmp_controller__
 						for( i = 0 ; i < w ; i++ )
 						{
 							index = ( pixel[ i ] >> 4 ) & 0x0f;
-							image( i * 2 + 0, j ) = pixel_converter::convert_to_pixel( palette[ index ].rgbRed, palette[ index ].rgbGreen, palette[ index ].rgbBlue );
+							image( i * 2 + 0, j ) = pixel_converter::convert_to( palette[ index ].rgbRed, palette[ index ].rgbGreen, palette[ index ].rgbBlue );
 							index = ( pixel[ i ]      ) & 0x0f;
-							image( i * 2 + 1, j ) = pixel_converter::convert_to_pixel( palette[ index ].rgbRed, palette[ index ].rgbGreen, palette[ index ].rgbBlue );
+							image( i * 2 + 1, j ) = pixel_converter::convert_to( palette[ index ].rgbRed, palette[ index ].rgbGreen, palette[ index ].rgbBlue );
 						}
 						if( rest == 1 )
 						{
 							index = ( pixel[ w ] >> 4 ) & 0x0f;
-							image( i * 2 + 0, j ) = pixel_converter::convert_to_pixel( palette[ index ].rgbRed, palette[ index ].rgbGreen, palette[ index ].rgbBlue );
+							image( i * 2 + 0, j ) = pixel_converter::convert_to( palette[ index ].rgbRed, palette[ index ].rgbGreen, palette[ index ].rgbBlue );
 						}
 					}
 					break;
@@ -460,7 +460,7 @@ namespace __bmp_controller__
 				case 8:
 					for( i = 0 ; i < width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to_pixel( palette[ pixel[ i ] ].rgbRed, palette[ pixel[ i ] ].rgbGreen, palette[ pixel[ i ] ].rgbBlue );
+						image( i, j ) = pixel_converter::convert_to( palette[ pixel[ i ] ].rgbRed, palette[ pixel[ i ] ].rgbGreen, palette[ pixel[ i ] ].rgbBlue );
 					}
 					break;
 
@@ -470,14 +470,14 @@ namespace __bmp_controller__
 				case 24:
 					for( i = 0 ; i < width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to_pixel( pixel[ i * 3 + 2 ], pixel[ i * 3 + 1 ], pixel[ i * 3 + 0 ] );
+						image( i, j ) = pixel_converter::convert_to( pixel[ i * 3 + 2 ], pixel[ i * 3 + 1 ], pixel[ i * 3 + 0 ] );
 					}
 					break;
 
 				case 32:
 					for( i = 0 ; i < width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to_pixel( pixel[ i * 4 + 2 ], pixel[ i * 4 + 1 ], pixel[ i * 4 + 0 ] );
+						image( i, j ) = pixel_converter::convert_to( pixel[ i * 4 + 2 ], pixel[ i * 4 + 1 ], pixel[ i * 4 + 0 ] );
 					}
 					break;
 
@@ -592,7 +592,7 @@ namespace __bmp_controller__
 				case 24:
 					for( i = 0 ; i < width ; i++ )
 					{
-						color_type c = pixel_converter::convert_from_pixel( image( i, j ) );
+						color_type c = pixel_converter::convert_from( image( i, j ) );
 						pixel[ i * 3 + 0 ] = c.b;
 						pixel[ i * 3 + 1 ] = c.g;
 						pixel[ i * 3 + 2 ] = c.r;
@@ -602,7 +602,7 @@ namespace __bmp_controller__
 				case 32:
 					for( i = 0 ; i < width ; i++ )
 					{
-						color_type c = pixel_converter::convert_from_pixel( image( i, j ) );
+						color_type c = pixel_converter::convert_from( image( i, j ) );
 						pixel[ i * 4 + 0 ] = c.b;
 						pixel[ i * 4 + 1 ] = c.g;
 						pixel[ i * 4 + 2 ] = c.r;
@@ -678,13 +678,15 @@ namespace __bmp_controller__
 
 			// ファイルへ書き出し
 			unsigned char *pointer = buff;
-			size_type write_size = 0;
+			size_type write_size = 0, writed_size = 0;
 			while( size > 0 )
 			{
-                write_size = fwrite( pointer, sizeof( unsigned char ), 1024, fp );
-				pointer += write_size;
-				size -= write_size;
-				if( write_size != 1024 )
+				write_size = size < 1024 ? size : 1024;
+
+				writed_size = fwrite( pointer, sizeof( unsigned char ), write_size, fp );
+				pointer += writed_size;
+				size -= writed_size;
+				if( write_size != writed_size )
 				{
 					fclose( fp );
 					delete [] buff;

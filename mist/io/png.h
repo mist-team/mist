@@ -66,7 +66,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < (size_type )width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to_pixel( png_buff[j][i], png_buff[j][i], png_buff[j][i] );
+						image( i, j ) = pixel_converter::convert_to( png_buff[j][i], png_buff[j][i], png_buff[j][i] );
 					}
 				}
 				break;
@@ -76,7 +76,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < (size_type )width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to_pixel( png_buff[j][ i * 3 + 0 ], png_buff[j][ i * 3 + 1 ], png_buff[j][ i * 3 + 2 ] );
+						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 3 + 0 ], png_buff[j][ i * 3 + 1 ], png_buff[j][ i * 3 + 2 ] );
 					}
 				}
 				break;
@@ -86,7 +86,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < (size_type )width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to_pixel( png_buff[j][ i * 4 + 0 ], png_buff[j][ i * 4 + 1 ], png_buff[j][ i * 4 + 2 ] );
+						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 4 + 0 ], png_buff[j][ i * 4 + 1 ], png_buff[j][ i * 4 + 2 ] );
 					}
 				}
 				break;
@@ -96,7 +96,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < (size_type )width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to_pixel( png_buff[j][ i * 2 ], png_buff[j][ i * 2 ], png_buff[j][ i * 2 ] );
+						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 2 ], png_buff[j][ i * 2 ], png_buff[j][ i * 2 ] );
 					}
 				}
 				break;
@@ -107,7 +107,7 @@ namespace __png_controller__
 					for( i = 0 ; i < (size_type )width ; i++ )
 					{
 						png_color &p = info_ptr->palette[ png_buff[j][ i ] ];
-						image( i, j ) = pixel_converter::convert_to_pixel( p.red, p.green, p.blue );
+						image( i, j ) = pixel_converter::convert_to( p.red, p.green, p.blue );
 					}
 				}
 				break;
@@ -210,7 +210,7 @@ namespace __png_controller__
 				png_buff[j] = new png_byte[width * 3];
 				for( i = 0 ; i < width ; i++ )
 				{
-					color_type c = pixel_converter::convert_from_pixel( image( i, j ) );
+					color_type c = pixel_converter::convert_from( image( i, j ) );
 					png_buff[j][ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
 					png_buff[j][ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
 					png_buff[j][ i * 3 + 2 ] = static_cast< unsigned char >( c.b );

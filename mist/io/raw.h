@@ -176,14 +176,16 @@ namespace __raw_controller__
 			}
 
 			// ファイルへ書き出し
-			unsigned char *pointer = tmparray;
-			size_type write_size = 0;
+			unsigned char *pointer = buff;
+			size_type write_size = 0, writed_size = 0;
 			while( size > 0 )
 			{
-				write_size = fwrite( pointer, sizeof( unsigned char ), 1024, fp );
-				pointer += write_size;
-				size -= write_size;
-				if( write_size != 1024 )
+				write_size = size < 1024 ? size : 1024;
+
+				writed_size = fwrite( pointer, sizeof( unsigned char ), write_size, fp );
+				pointer += writed_size;
+				size -= writed_size;
+				if( write_size != writed_size )
 				{
 					fclose( fp );
 					delete [] buff;

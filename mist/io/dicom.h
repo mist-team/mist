@@ -900,7 +900,7 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 			pix = pix > 255.0 ? 255.0 : pix;
 			pix = pix <   0.0 ?   0.0 : pix;
 			pixel = static_cast< unsigned char >( pix );
-			image[ i ] = pixel_converter::convert_to_pixel( pixel, pixel, pixel );
+			image[ i ] = pixel_converter::convert_to( pixel, pixel, pixel );
 		}
 	}
 	else

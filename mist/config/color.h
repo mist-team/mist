@@ -120,12 +120,12 @@ struct _pixel_converter_
 	typedef rgb< T > color_type;
 	enum{ color_num = 1 };
 
-	static value_type convert_to_pixel( value_type r, value_type g, value_type b )
+	static value_type convert_to( value_type r, value_type g, value_type b )
 	{
 		return( color_type( r, g, b ).get_value( ) );
 	}
 
-	static color_type convert_from_pixel( const value_type &pixel )
+	static color_type convert_from( const value_type &pixel )
 	{
 		return( color_type( pixel, pixel, pixel ) );
 	}
@@ -149,12 +149,12 @@ struct _pixel_converter_
 			typedef rgb< type > color_type;\
 			enum{ color_num = 3 };\
 			\
-			static color_type convert_to_pixel( value_type r, value_type g, value_type b )\
+			static color_type convert_to( value_type r, value_type g, value_type b )\
 			{\
 				return( color_type( r, g, b ) );\
 			}\
 			\
-			static color_type convert_from_pixel( const color_type &pixel )\
+			static color_type convert_from( const color_type &pixel )\
 			{\
 				return( pixel );\
 			}\
@@ -206,12 +206,12 @@ struct _pixel_converter_
 		typedef rgb< T > color_type;
 		enum{ color_num = 3 };
 
-		static color_type convert_to_pixel( value_type r, value_type g, value_type b )
+		static color_type convert_to( value_type r, value_type g, value_type b )
 		{
 			return( color_type( r, g, b ) );
 		}
 
-		static color_type convert_from_pixel( const color_type &pixel )
+		static color_type convert_from( const color_type &pixel )
 		{
 			return( pixel );
 		}

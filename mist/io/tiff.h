@@ -113,7 +113,7 @@ namespace __tiff_controller__
 						}
 						bitsleft -= bps;
 						sample = ( *inP >> bitsleft ) & maxval;
-						image( i, j ) = pixel_converter::convert_to_pixel( sample, sample, sample );
+						image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
 					}
 					break;
 
@@ -127,7 +127,7 @@ namespace __tiff_controller__
 						}
 						bitsleft -= bps;
 						sample = maxval - ( ( *inP >> bitsleft ) & maxval );
-						image( i, j ) = pixel_converter::convert_to_pixel( sample, sample, sample );
+						image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
 					}
 					break;
 
@@ -142,7 +142,7 @@ namespace __tiff_controller__
 						bitsleft -= bps;
 						sample = ( *inP >> bitsleft ) & maxval;
 
-						image( i, j ) = pixel_converter::convert_to_pixel( static_cast< unsigned char >( redcolormap[sample] ),
+						image( i, j ) = pixel_converter::convert_to( static_cast< unsigned char >( redcolormap[sample] ),
 																			static_cast< unsigned char >( greencolormap[sample] ),
 																			static_cast< unsigned char >( bluecolormap[sample] ) );
 					}
@@ -176,7 +176,7 @@ namespace __tiff_controller__
 						bitsleft -= bps;
 						b = static_cast< unsigned char >( (*inP >> bitsleft) & maxval );
 
-						image( i, j ) = pixel_converter::convert_to_pixel( r, g, b );
+						image( i, j ) = pixel_converter::convert_to( r, g, b );
 
 						if( spp == 4 )
 						{
@@ -235,7 +235,7 @@ namespace __tiff_controller__
 
 			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )
 			{
-				color_type c = pixel_converter::convert_from_pixel( image[i] );
+				color_type c = pixel_converter::convert_from( image[i] );
 				buf[ i * 3 + 0 ] = c.r;
 				buf[ i * 3 + 1 ] = c.g;
 				buf[ i * 3 + 2 ] = c.b;
