@@ -5,8 +5,8 @@
 
 int main( )
 {
-	//typedef mist::matrix< double > matrix;
-	typedef mist::matrix< std::complex<float> > matrix;
+	typedef mist::matrix< double > matrix;
+	//typedef mist::matrix< std::complex<float> > matrix;
 	//typedef mist::matrix< std::complex< double > > matrix;
 	matrix a = matrix::_33(	1.0,  3.0,  1.0,
 							3.0,  1.0, -2.0,
@@ -28,6 +28,12 @@ int main( )
 	std::cout << "Original Matrix" << std::endl;
 	std::cout << a << std::endl << std::endl;
 	std::cout << b << std::endl << std::endl;
+
+	{
+		matrix c;
+		mist::multiply( a, a, c, false, false );
+		std::cout << c << std::endl << std::endl;
+	}
 
 	std::cout << matrix::identity( 3, 3 ) * 3 + a * matrix::zero( 3, 3 ) << std::endl << std::endl;
 

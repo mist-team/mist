@@ -252,6 +252,23 @@ struct matrix_transpose : public matrix_single_operation< T >
 };
 
 
+// 値指定行列オペレータ
+template< class T, size_t ROWS, size_t COLS >
+struct matrix_fixed_matrix : public matrix_static_operation< T >
+{
+	typedef typename T::value_type		value_type;
+	typedef typename T::size_type		size_type;
+	typedef typename T::allocator_type	allocator_type;
+	typedef matrix_static_operation< T > base;
+
+	value_type mhs[ ROWS * COLS ];
+
+	explicit matrix_fixed_matrix( const value_type * ) : base( rows, cols ){ memcpy( mhs, m, sizeof( value_type ) * ROWS * COLS ); }
+	value_type operator()( size_type r, size_type c ) const { return( mhs[ r ][ c ] ); }
+	value_type operator[]( size_type indx ) const { return( 0 ); }
+};
+
+
 // 単位行列オペレータ
 template< class T >
 struct matrix_identity : public matrix_static_operation< T >
@@ -810,6 +827,19 @@ public:
 		return( o );
 	}
 
+	/// @brief 入力データを用いて4×1の行列を返す
+	static const matrix _41( const value_type &a0, const value_type &a1, const value_type &a2, const value_type &a3 )
+	{
+		matrix o( 4, 1 );
+
+		o[ 0 ] = a0;
+		o[ 1 ] = a1;
+		o[ 2 ] = a2;
+		o[ 3 ] = a3;
+
+		return( o );
+	}
+
 	/// @brief 入力データを用いて3×3の行列を返す
 	static const matrix _33(
 								const value_type &a00, const value_type &a01, const value_type &a02,
@@ -826,6 +856,18 @@ public:
 		return( o );
 	}
 
+	/// @brief 入力データを用いて3×1の行列を返す
+	static const matrix _31( const value_type &a0, const value_type &a1, const value_type &a2 )
+	{
+		matrix o( 3, 1 );
+
+		o[ 0 ] = a0;
+		o[ 1 ] = a1;
+		o[ 2 ] = a2;
+
+		return( o );
+	}
+
 	/// @brief 入力データを用いて2×2の行列を返す
 	static const matrix _22(
 								const value_type &a00, const value_type &a01,
@@ -836,6 +878,17 @@ public:
 
 		o( 0, 0 ) = a00; o( 0, 1 ) = a01;
 		o( 1, 0 ) = a10; o( 1, 1 ) = a11;
+
+		return( o );
+	}
+
+	/// @brief 入力データを用いて3×1の行列を返す
+	static const matrix _21( const value_type &a0, const value_type &a1 )
+	{
+		matrix o( 2, 1 );
+
+		o[ 0 ] = a0;
+		o[ 1 ] = a1;
 
 		return( o );
 	}

@@ -37,7 +37,7 @@ array_test : array_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 matrix_test : matrix_test.o
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LAPACKLIBS) $(LIBS) $(LDLIBS)
 
 matrix_util_test : matrix_util_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LAPACKLIBS) $(LIBS) $(LDLIBS)

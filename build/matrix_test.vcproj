@@ -32,6 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="lapack.lib blas.lib libF77.lib"
 				OutputFile="$(OutDir)/matrix_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -87,6 +88,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="lapack.lib blas.lib libF77.lib"
 				OutputFile="$(OutDir)/matrix_test.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="FALSE"
@@ -142,6 +144,9 @@
 			</File>
 			<File
 				RelativePath="..\mist\config\mist_conf.h">
+			</File>
+			<File
+				RelativePath="..\mist\numeric.h">
 			</File>
 			<File
 				RelativePath="..\mist\timer.h">

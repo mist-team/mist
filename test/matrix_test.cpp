@@ -4,6 +4,7 @@
 #include <mist/mist.h>
 
 #include <mist/matrix.h>
+#include <mist/numeric.h>
 #include <mist/timer.h>
 
 
@@ -31,6 +32,12 @@ void test_matrix_multiply1( )
 	{
 		mist::timer t;
 		l = m * n;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
+	}
+
+	{
+		mist::timer t;
+		mist::multiply( m, n, l );
 		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
 }
@@ -98,6 +105,17 @@ void test_matrix_operation1( )
 			mat = ( mat1 + mat2 * mat3 + mat4 ).t( );
 		}
 		cout << "< In the case of Expression Template >" << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
+	}
+
+	{
+		mist::timer t;
+		for( i = 0 ; i < loop ; i++ )
+		{
+			mist::multiply( mat2, mat3, dmy );
+			mat = ( mat1 + dmy + mat4 ).t( );
+		}
+		cout << "< In the case of BLAS Level 3 >" << endl;
 		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
 }

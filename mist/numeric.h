@@ -61,10 +61,13 @@ namespace __clapack__
 
 // インテルのMKLとの互換性を保つための，関数名の変換マクロ
 #if defined(_USE_INTEL_MATH_KERNEL_LIBRARY_) && _USE_INTEL_MATH_KERNEL_LIBRARY_ != 0
-	#define LPFNAME( name ) name
+	#define LPFNAME( name ) name	// LAPACK用
+	#define BLFNAME( name ) name	// BLAS用
 #else
-	#define LPFNAME( name ) name ## _
+	#define LPFNAME( name ) name ## _	// LAPACK用
+	#define BLFNAME( name ) f2c_ ## name	// BLAS用
 #endif
+
 
 	extern "C"
 	{
@@ -73,6 +76,18 @@ namespace __clapack__
 		typedef double doublereal;
 		typedef struct { real r, i; } complex;
 		typedef struct { doublereal r, i; } doublecomplex;
+
+		// 一般行列同士の掛け算を行う
+		int BLFNAME( sgemm ) ( char *transa, char *transb, integer *m, integer *n, integer *k, real *alpha, real *a, integer *lda, real *b, integer *ldb, real *beta, real *c__, integer *ldc );
+		int BLFNAME( dgemm ) ( char *transa, char *transb, integer *m, integer *n, integer *k, doublereal *alpha, doublereal *a, integer *lda, doublereal *b, integer *ldb, doublereal *beta, doublereal *c__, integer *ldc );
+		int BLFNAME( cgemm ) ( char *transa, char *transb, integer *m, integer *n, integer *k, complex *alpha, complex *a, integer *lda, complex *b, integer *ldb, complex *beta, complex *c__, integer *ldc );
+		int BLFNAME( zgemm ) ( char *transa, char *transb, integer *m, integer *n, integer *k, doublecomplex *alpha, doublecomplex *a, integer *lda, doublecomplex *b, integer *ldb, doublecomplex *beta, doublecomplex *c__, integer *ldc );
+
+		// 一般行列とベクトルの掛け算を行う
+		int BLFNAME( sgemv ) ( char *trans, integer *m, integer *n, real *alpha, real *a, integer *lda, real *x, integer *incx, real *beta, real *y, integer *incy );
+		int BLFNAME( dgemv ) ( char *trans, integer *m, integer *n, doublereal *alpha, doublereal *a, integer *lda, doublereal *x, integer *incx, doublereal *beta, doublereal *y, integer *incy );
+		int BLFNAME( cgemv ) ( char *trans, integer *m, integer *n, complex *alpha, complex *a, integer *lda, complex *x, integer *incx, complex *beta, complex *y, integer *incy );
+		int BLFNAME( zgemv ) ( char *trans, integer *m, integer *n, doublecomplex *alpha, doublecomplex *a, integer *lda, doublecomplex *x, integer *incx, doublecomplex *beta, doublecomplex *y, integer *incy );
 
 		// 一般正方行列の連立方程式を解く関数
 		int LPFNAME( sgesv ) ( integer *n, integer *nrhs, real *a, integer *lda, integer *ipiv, real *b, integer *ldb, integer *info );
@@ -230,6 +245,46 @@ namespace __clapack__
 	inline real       get_real( const std::complex< real > &r ){ return( r.real( ) ); }
 	inline doublereal get_real( const std::complex< doublereal > &r ){ return( r.real( ) ); }
 
+	// 以降，BLASルーチン
+
+	// 一般行列同士の掛け算を行う
+	inline int gemm( char *transa, char *transb, integer &m, integer &n, integer &k, real &alpha, real *a, integer &lda, real *b, integer &ldb, real &beta, real *c__, integer &ldc )
+	{
+		return( BLFNAME( sgemm ) ( transa, transb, &m, &n, &k, &alpha, a, &lda, b, &ldb, &beta, c__, &ldc ) );
+	}
+	inline int gemm( char *transa, char *transb, integer &m, integer &n, integer &k, doublereal &alpha, doublereal *a, integer &lda, doublereal *b, integer &ldb, doublereal &beta, doublereal *c__, integer &ldc )
+	{
+		return( BLFNAME( dgemm ) ( transa, transb, &m, &n, &k, &alpha, a, &lda, b, &ldb, &beta, c__, &ldc ) );
+	}
+	inline int gemm( char *transa, char *transb, integer &m, integer &n, integer &k, std::complex< real > &alpha, std::complex< real > *a, integer &lda, std::complex< real > *b, integer &ldb, std::complex< real > &beta, std::complex< real > *c__, integer &ldc )
+	{
+		return( BLFNAME( cgemm ) ( transa, transb, &m, &n, &k, reinterpret_cast< complex* >( &alpha ), reinterpret_cast< complex* >( a ), &lda, reinterpret_cast< complex* >( b ), &ldb, reinterpret_cast< complex* >( &beta ), reinterpret_cast< complex* >( c__ ), &ldc ) );
+	}
+	inline int gemm( char *transa, char *transb, integer &m, integer &n, integer &k, std::complex< doublereal > &alpha, std::complex< doublereal > *a, integer &lda, std::complex< doublereal > *b, integer &ldb, std::complex< doublereal > &beta, std::complex< doublereal > *c__, integer &ldc )
+	{
+		return( BLFNAME( zgemm ) ( transa, transb, &m, &n, &k, reinterpret_cast< doublecomplex* >( &alpha ), reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( b ), &ldb, reinterpret_cast< doublecomplex* >( &beta ), reinterpret_cast< doublecomplex* >( c__ ), &ldc ) );
+	}
+
+	// 一般行列とベクトルの掛け算を行う
+	inline int gemv( char *trans, integer &m, integer &n, real &alpha, real *a, integer &lda, real *x, integer &incx, real &beta, real *y, integer &incy )
+	{
+		return( BLFNAME( sgemv ) ( trans, &m, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy ) );
+	}
+	inline int gemv( char *trans, integer &m, integer &n, doublereal &alpha, doublereal *a, integer &lda, doublereal *x, integer &incx, doublereal &beta, doublereal *y, integer &incy )
+	{
+		return( BLFNAME( dgemv ) ( trans, &m, &n, &alpha, a, &lda, x, &incx, &beta, y, &incy ) );
+	}
+	inline int gemv( char *trans, integer &m, integer &n, std::complex< real > &alpha, std::complex< real > *a, integer &lda, std::complex< real > *x, integer &incx, std::complex< real > &beta, std::complex< real > *y, integer &incy )
+	{
+		return( BLFNAME( cgemv ) ( trans, &m, &n, reinterpret_cast< complex* >( &alpha ), reinterpret_cast< complex* >( a ), &lda, reinterpret_cast< complex* >( x ), &incx, reinterpret_cast< complex* >( &beta ), reinterpret_cast< complex* >( y ), &incy ) );
+	}
+	inline int gemv( char *trans, integer &m, integer &n, std::complex< doublereal > &alpha, std::complex< doublereal > *a, integer &lda, std::complex< doublereal > *x, integer &incx, std::complex< doublereal > &beta, std::complex< doublereal > *y, integer &incy )
+	{
+		return( BLFNAME( zgemv ) ( trans, &m, &n, reinterpret_cast< doublecomplex* >( &alpha ), reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( x ), &incx, reinterpret_cast< doublecomplex* >( &beta ), reinterpret_cast< doublecomplex* >( y ), &incy ) );
+	}
+
+
+	// 以降，LAPACKルーチン
 
 	// 一般正方行列の連立方程式を解く関数
 	inline int gesv( integer &n, integer &nrhs, real *a, integer &lda, integer *ipiv, real *b, integer &ldb, integer &info )
@@ -703,6 +758,7 @@ namespace __clapack__
 	// インテルのMKLとの互換性を保つための，関数名の変換マクロ
 	#undef LPFNAME
 }
+
 
 
 namespace __solve__
@@ -1980,6 +2036,80 @@ namespace __svd__
 
 //! @addtogroup numeric_group 行列演算
 //!  @{
+
+
+
+/// @brief 行列×行列の演算を行う
+//! 
+//! \f[
+//! 	\alpha \time {\bf A} \times {\bf B} + \beta {\bf C}
+//! \f]
+//! 
+//! @param[in]  a … 入力行列 f${\bf A}f$
+//! @param[in]  b … 入力行列 f${\bf B}f$
+//! @param[out] c … 計算結果を出力する行列 f${\bf C}f$
+//! @param[in]  a_is_transpose … 行列 f${\bf A}f$ を転置行列として掛け算する場合は true とする
+//! @param[in]  b_is_transpose … 行列 f${\bf B}f$ を転置行列として掛け算する場合は true とする
+//! @param[in]  alpha … 行列演算の和を計算するときの係数
+//! @param[in]  beta  … 行列演算の和を計算するときの係数
+//!
+//! @return \f$tr\left( {\bf A} \right)\f$
+//! 
+template < class T, class Allocator >
+inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocator > &b, matrix< T, Allocator > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T, Allocator >::value_type alpha, typename matrix< T, Allocator >::value_type beta )
+{
+	typedef __clapack__::integer integer;
+	typedef typename matrix< T, Allocator >::value_type value_type;
+
+	if( a.cols( ) != b.rows( ) || a.empty( ) || b.empty( ) )
+	{
+		// 行列のサイズが正しくないので例外をスローする
+		return( false );
+	}
+
+	c.resize( a.rows( ), b.cols( ) );
+
+	// LAPACK関数の引数
+	integer m     = static_cast< integer >( a.rows( ) );
+	integer n     = static_cast< integer >( b.cols( ) );
+	integer k     = static_cast< integer >( a.cols( ) );
+	integer lda   = a_is_transpose ? k : m;
+	integer ldb   = b_is_transpose ? n : k;
+	integer ldc   = m;
+	char *transa  = a_is_transpose ? "T" : "N";
+	char *transb  = b_is_transpose ? "T" : "N";
+
+	// BLASルーチンでは，入力行列AとBの内容は変化しないが，
+	// インターフェースは const 就職を受けていないのでキャストを行う
+	__clapack__::gemm( transa, transb, m, n, k, alpha, const_cast< value_type * >( &( a[ 0 ] ) ), lda, const_cast< value_type * >( &( b[ 0 ] ) ), ldb, beta, &( c[ 0 ] ), ldc );
+
+	return( true );
+}
+
+
+
+/// @brief 行列×行列の演算を行う
+//! 
+//! \f[
+//! 	\alpha \time {\bf A} \times {\bf B} + \beta {\bf C}
+//! \f]
+//! 
+//! @param[in]  a … 入力行列 f${\bf A}f$
+//! @param[in]  b … 入力行列 f${\bf B}f$
+//! @param[out] c … 計算結果を出力する行列 f${\bf C}f$
+//! @param[in]  a_is_transpose … 行列 f${\bf A}f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
+//! @param[in]  b_is_transpose … 行列 f${\bf B}f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
+//! @param[in]  alpha … 行列演算の和を計算するときの係数
+//! @param[in]  beta  … 行列演算の和を計算するときの係数
+//!
+//! @return \f$tr\left( {\bf A} \right)\f$
+//! 
+template < class T, class Allocator >
+inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocator > &b, matrix< T, Allocator > &c, bool a_is_transpose = false, bool b_is_transpose = false )
+{
+	return( multiply( a, b, c, a_is_transpose, b_is_transpose, 1, 0 ) );
+}
+
 
 
 /// @brief トレースの計算（対角成分の和）

@@ -113,7 +113,7 @@ public:
 
 	/// @brief ベクトル和
 	template < class TT >
-	const vector3 &operator +=( const vector3< TT > &v )
+	vector3 &operator +=( const vector3< TT > &v )
 	{
 		x = static_cast< value_type >( x + v.x );
 		y = static_cast< value_type >( y + v.y );
@@ -123,7 +123,7 @@ public:
 
 	/// @brief ベクトル差
 	template < class TT >
-	const vector3 &operator -=( const vector3< TT > &v )
+	vector3 &operator -=( const vector3< TT > &v )
 	{
 		x = static_cast< value_type >( x - v.x );
 		y = static_cast< value_type >( y - v.y );
@@ -133,7 +133,7 @@ public:
 
 	/// @brief ベクトルの外積
 	template < class TT >
-	const vector3 &operator *=( const vector3< TT > &v )
+	vector3 &operator *=( const vector3< TT > &v )
 	{
 		value_type xx = static_cast< value_type >( y * v.z - z * v.y );
 		value_type yy = static_cast< value_type >( z * v.x - x * v.z );
@@ -146,10 +146,10 @@ public:
 
 	/// @brief ベクトルの定数倍
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
-	const vector3 &operator *=( const double &a )
+	vector3 &operator *=( const double &a )
 #else
 	template < class TT >
-	const vector3 &operator *=( const TT &a )
+	vector3 &operator *=( const TT &a )
 #endif
 	{
 		x = static_cast< value_type >( x * a );
@@ -161,10 +161,10 @@ public:
 
 	/// @brief ベクトルを定数で割る
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
-	const vector3 &operator /=( const double &a )
+	vector3 &operator /=( const double &a )
 #else
 	template < class TT >
-	const vector3 &operator /=( const TT &a )
+	vector3 &operator /=( const TT &a )
 #endif
 	{
 		x = static_cast< value_type >( x / a );
@@ -457,19 +457,19 @@ public:
 
 	/// @brief ベクトル和
 	template < class TT >
-	const vector2 &operator +=( const vector2< TT > &v ){ x = static_cast< value_type >( x + v.x ); y = static_cast< value_type >( y + v.y ); return( *this ); }
+	vector2 &operator +=( const vector2< TT > &v ){ x = static_cast< value_type >( x + v.x ); y = static_cast< value_type >( y + v.y ); return( *this ); }
 
 	/// @brief ベクトル差
 	template < class TT >
-	const vector2 &operator -=( const vector2< TT > &v ){ x = static_cast< value_type >( x - v.x ); y = static_cast< value_type >( y - v.y ); return( *this ); }
+	vector2 &operator -=( const vector2< TT > &v ){ x = static_cast< value_type >( x - v.x ); y = static_cast< value_type >( y - v.y ); return( *this ); }
 
 
 	/// @brief ベクトルの定数倍
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
-	const vector2 &operator *=( const double &a )
+	vector2 &operator *=( const double &a )
 #else
 	template < class TT >
-	const vector2 &operator *=( const TT &a )
+	vector2 &operator *=( const TT &a )
 #endif
 	{
 		x = static_cast< value_type >( x * a );
@@ -480,10 +480,10 @@ public:
 
 	/// @brief ベクトルを定数で割る
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
-	const vector2 &operator /=( const double &a )
+	vector2 &operator /=( const double &a )
 #else
 	template < class TT >
-	const vector2 &operator /=( const TT &a )
+	vector2 &operator /=( const TT &a )
 #endif
 	{
 		x = static_cast< value_type >( x / a );
