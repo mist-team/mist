@@ -18,6 +18,8 @@ ALL = \
 	morphology_test \
 	fft_test \
 	singleton_test \
+	integer_test \
+	decimal_test \
 
 
 all: $(ALL)
@@ -68,6 +70,12 @@ fft_test : fft_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) $(IMGLIBS)
 
 singleton_test : singleton_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+integer_test : integer_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+decimal_test : decimal_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 

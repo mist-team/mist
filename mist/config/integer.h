@@ -19,7 +19,7 @@ _MIST_BEGIN
 
 
 template < unsigned int MAX_KETA >
-struct integer
+class integer
 {
 public:
 	typedef size_t size_type;
