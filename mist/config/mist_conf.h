@@ -82,6 +82,40 @@ _MIST_BEGIN
 
 #endif
 
+#if _CHECK_ACCESS_VIOLATION_
+
+	#define _CHECK_ACCESS_VIOLATION1_( index ) \
+		if( index < 0 || index >= size_ )\
+		{\
+			static value_type dmy;\
+			std::cout << "Access Violation at ( " << index << " )" << std::endl;\
+			return( dmy );\
+		}\
+
+	#define _CHECK_ACCESS_VIOLATION2_( index1, index2 ) \
+		if( index1 < 0 || index1 >= size1_ || index2 < 0 || index2 >= size2_ )\
+		{\
+			static value_type dmy;\
+			std::cout << "Access Violation at ( " << index1 << ", " << index2 << " )" << std::endl;\
+			return( dmy );\
+		}\
+
+	#define _CHECK_ACCESS_VIOLATION3_( index1, index2, index3 ) \
+		if( index1 < 0 || index1 >= size1_ || index2 < 0 || index2 >= size2_ || index3 < 0 || index3 >= size3_ )\
+		{\
+			static value_type dmy;\
+			std::cout << "Access Violation at ( " << index1 << ", " << index2 << ", " << index3 << " )" << std::endl;\
+			return( dmy );\
+		}\
+
+#else
+
+	#define _CHECK_ACCESS_VIOLATION1_( index ) 
+	#define _CHECK_ACCESS_VIOLATION2_( index1, index2 )
+	#define _CHECK_ACCESS_VIOLATION3_( index1, index2, index3 )
+
+#endif
+
 
 // mist–¼‘O‹óŠÔ‚ÌI‚í‚è
 _MIST_END

@@ -12,13 +12,6 @@
 _MIST_BEGIN
 
 
-// CONST
-template< class T >
-struct const_trait{ typedef const T const_type; };
-
-template< class T >
-struct const_trait< const T >{ typedef T const_type; };
-
 
 // mistコンテナで利用する1次元操作用ランダムアクセスイテレータ
 template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
@@ -34,7 +27,7 @@ public:
 	typedef Reference reference;
 	typedef size_t size_type;
 	typedef Distance difference_type;
-	typedef typename const_trait< reference >::const_type const_reference;
+	typedef Reference const_reference;
 
 private:
 	pointer data_;
@@ -56,6 +49,7 @@ public:
 	// 要素のアクセス
 	reference operator *(){ return( *data_ ); }
 	const_reference operator *() const { return( *data_ ); }
+
 	reference operator []( difference_type dist ){ return( data_[ dist * diff_pointer_ ] ); }
 	const_reference operator []( difference_type dist ) const { return( data_[ dist * diff_pointer_ ] ); }
 
@@ -101,7 +95,7 @@ public:
 
 	// 比較
 	bool operator ==( const mist_iterator1 &ite ) const { return( data_ == ite.data_ ); }
-	bool operator !=( const mist_iterator1 &ite ) const { return( data_ != ite.data_ ); }
+	bool operator !=( const mist_iterator1 &ite ) const { return( !( *this == ite )  ); }
 	bool operator < ( const mist_iterator1 &ite ) const { return( data_ <  ite.data_ ); }
 	bool operator <=( const mist_iterator1 &ite ) const { return( data_ <= ite.data_ ); }
 	bool operator > ( const mist_iterator1 &ite ) const { return( data_ >  ite.data_ ); }
@@ -143,41 +137,51 @@ public:
 	typedef size_t size_type;
 	typedef Reference reference;
 	typedef Distance difference_type;
-	typedef typename const_trait< reference >::const_type const_reference;
+	typedef Reference const_reference;
 
 private:
-	pointer sdata_;
 	pointer data_;
-	size_type diff_pointer1_;
-	size_type diff_pointer2_;
-	size_type diff_boundary_;
+	difference_type index_;
+	difference_type width_;
+	difference_type step_;
 
 public:
 	// コンストラクタ
-	mist_iterator2( pointer p = NULL, size_type diff1 = 1, size_type diff2 = 1, size_type bound = 1 )
-				: sdata_( p ), data_( p ), diff_pointer1_( diff1 ), diff_pointer2_( diff2 ), diff_boundary_( bound )
+	mist_iterator2( pointer p = NULL, difference_type index = 0, difference_type width = 1, difference_type step = 1 )
+												: data_( p ), index_( index ), width_( width ), step_( step )
 	{
 	}
 
-	mist_iterator2( const mist_iterator2 &ite ) : sdata_( ite.sdata_ ), data_( ite.data_ ),
-				diff_pointer1_( ite.diff_pointer1_ ), diff_pointer2_( ite.diff_pointer2_ ), diff_boundary_( ite.diff_boundary_ )
+	mist_iterator2( const mist_iterator2 &ite ) : data_( ite.data_ ), index_( ite.index_ ), width_( ite.width_ ), step_( ite.step_ )
 	{
 	}
 
 	// コピー演算子
 	const mist_iterator2& operator =( const mist_iterator2 &ite )
 	{
-		sdata_ = ite.sdata_;
-		data_ = ite.data_;
-		diff_pointer1_ = ite.diff_pointer1_;
-		diff_pointer2_ = ite.diff_pointer2_;
-		diff_boundary_ = ite.diff_boundary_;
+		if( &ite != this )
+		{
+			data_  = ite.data_;
+			index_ = ite.index_;
+			width_ = ite.width_;
+			step_  = ite.step_;
+		}
 		return( *this );
 	}
 
 	// 要素のアクセス
-	reference operator *(){ return( *data_ ); }
-	const_reference operator *() const { return( *data_ ); }
+	reference operator *()
+	{
+		difference_type step = index_ / width_;
+		difference_type rest = index_ - step * width_;
+		return( *( data_ + rest + step * step_ ) );
+	}
+	const_reference operator *() const
+	{
+		difference_type step = index_ / width_;
+		difference_type rest = index_ - step * width_;
+		return( *( data_ + rest + step * step_ ) );
+	}
 	reference operator []( difference_type dist ){ return( *( *this += dist ) ); }
 	const_reference operator []( difference_type dist ) const { return( *( *this += dist ) ); }
 
@@ -207,72 +211,27 @@ public:
 
 	const mist_iterator2& operator +=( difference_type dist )
 	{
-		if( diff_boundary_ != 0 )
-		{
-			difference_type diff0 = ( data_ - sdata_ ) / diff_pointer1_;
-			difference_type diff1 = diff0 + dist;
-			difference_type diff2, diff3;
-
-			if( diff1 < 0 )
-			{
-				diff2 = -( ( -diff1 ) / diff_boundary_ + 1 );
-			}
-			else
-			{
-				diff2 = diff1 / diff_boundary_;
-			}
-			diff3 = diff1 - diff2 * diff_boundary_;
-
-			sdata_ += diff2 * ( diff_boundary_ + diff_pointer2_ );
-			data_   = sdata_ + diff3 * diff_pointer1_;
-		}
-		else
-		{
-			data_ += dist * diff_pointer1_;
-		}
-
+		index_ += dist;
 		return( *this );
 	}
 	const mist_iterator2& operator -=( difference_type dist )
 	{
-		return( operator +=( -dist ) );
+		index_ -= dist;
+		return( *this );
 	}
 
 	const difference_type operator -( const mist_iterator2 &ite ) const
 	{
-		if( diff_pointer2_ == 0 )
-		{
-			return( ( data_ - ite.data_ ) / diff_pointer1_ );
-		}
-		else
-		{
-			difference_type diff  = sdata_ - ite.sdata_;
-			if( diff > 0 )
-			{
-				difference_type diff1 = diff / ( diff_boundary_ + diff_pointer2_ );
-				difference_type diff2 = ( data_ - sdata_ ) / diff_pointer1_;
-				difference_type diff3 = diff_boundary_ - ( ite.data_ - ite.sdata_ ) / diff_pointer1_;
-				diff = ( diff1 < 1 ? 0 : diff1 - 1 ) * diff_boundary_ + diff2 + diff3;
-			}
-			else if( diff < 0 )
-			{
-				return( -( ite - *this ) );
-			}
-			else
-			{
-				diff = ( data_ - ite.data_ ) / diff_pointer1_;
-			}
-			return( diff );
-		}
+		return( index_ - ite.index_ );
 	}
 
 	// 比較
-	bool operator ==( const mist_iterator2 &ite ) const { return( data_ == ite.data_ ); }
-	bool operator !=( const mist_iterator2 &ite ) const { return( data_ != ite.data_ ); }
-	bool operator < ( const mist_iterator2 &ite ) const { return( data_ <  ite.data_ ); }
-	bool operator <=( const mist_iterator2 &ite ) const { return( data_ <= ite.data_ ); }
-	bool operator > ( const mist_iterator2 &ite ) const { return( data_ >  ite.data_ ); }
-	bool operator >=( const mist_iterator2 &ite ) const { return( data_ >= ite.data_ ); }
+	bool operator ==( const mist_iterator2 &ite ) const { return( *this - ite == 0 ); }
+	bool operator !=( const mist_iterator2 &ite ) const { return( !( *this == ite ) ); }
+	bool operator < ( const mist_iterator2 &ite ) const { return( *this - ite < 0 ); }
+	bool operator <=( const mist_iterator2 &ite ) const { return( !( *this > ite ) ); }
+	bool operator > ( const mist_iterator2 &ite ) const { return( ite < *this ); }
+	bool operator >=( const mist_iterator2 &ite ) const { return( !( *this < ite ) ); }
 };
 
 
@@ -295,12 +254,6 @@ inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( Dista
 	return( mist_iterator2< T, Distance, Pointer, Reference >( ite ) += dist );
 }
 
-
-//template< class T, class Distance, class Pointer, class Reference >
-//inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const mist_iterator2< T, Distance, Pointer, Reference > &ite1, const mist_iterator2< T, Distance, Pointer, Reference > ite2 )
-//{
-//	return( mist_iterator2< T, Distance, Pointer, Reference >( ite1 ) -= ite2 );
-//}
 
 template< class T, class Distance, class Pointer, class Reference >
 inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const mist_iterator2< T, Distance, Pointer, Reference > &ite, Distance dist )
@@ -333,7 +286,7 @@ public:
  	typedef typename _Ite::difference_type difference_type;
 	typedef typename _Ite::pointer pointer;
 	typedef typename _Ite::reference reference;
-	typedef typename const_trait< reference >::const_type const_reference;
+	typedef typename _Ite::const_reference const_reference;
 
 protected:
 	_Ite current_iterator_;
@@ -413,7 +366,7 @@ public:
 
 	// 比較
 	bool operator ==( const mist_reverse_iterator &ite ) const { return( current_iterator_ == ite.current_iterator_ ); }
-	bool operator !=( const mist_reverse_iterator &ite ) const { return( current_iterator_ != ite.current_iterator_ ); }
+	bool operator !=( const mist_reverse_iterator &ite ) const { return( !( *this == ite ) ); }
 	bool operator < ( const mist_reverse_iterator &ite ) const { return( ite.current_iterator_ < current_iterator_  ); }
 	bool operator <=( const mist_reverse_iterator &ite ) const { return( !( *this > ite ) ); }
 	bool operator > ( const mist_reverse_iterator &ite ) const { return( ite < *this ); }

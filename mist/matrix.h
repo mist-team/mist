@@ -664,50 +664,30 @@ private:
 		return( data_ + r + c * size1_ );
 	}
 
-	reference access( size_type r, size_type c )
-	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( r < 0 || r >= rows( ) || c < 0 || c >= cols( ) )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << r << ", " << c << " )" << std::endl;
-			return( dmy );
-		}
-#endif
-		return( data_[ r + c * size1_ ] );
-	}
-	const_reference access( size_type r, size_type c ) const
-	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( r < 0 || r >= rows( ) || c < 0 || c >= cols( ) )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << r << ", " << c << " )" << std::endl;
-			return( dmy );
-		}
-#endif
-		return( data_[ r + c * size1_ ] );
-	}
 
 public:
 	reference at( size_type r, size_type c )
 	{
-		return( access( r, c ) );
+		_CHECK_ACCESS_VIOLATION2_( r, c )
+		return( data_[ r + c * size1_ ] );
 	}
 
 	const_reference at( size_type r, size_type c ) const
 	{
-		return( access( r, c ) );
+		_CHECK_ACCESS_VIOLATION2_( r, c )
+		return( data_[ r + c * size1_ ] );
 	}
 
 	reference operator ()( size_type r, size_type c )
 	{
-		return( access( r, c ) );
+		_CHECK_ACCESS_VIOLATION2_( r, c )
+		return( data_[ r + c * size1_ ] );
 	}
 
 	const_reference operator ()( size_type r, size_type c ) const
 	{
-		return( access( r, c ) );
+		_CHECK_ACCESS_VIOLATION2_( r, c )
+		return( data_[ r + c * size1_ ] );
 	}
 
 

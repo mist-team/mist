@@ -219,60 +219,41 @@ protected:
 		return( data_ + index );
 	}
 
-	reference access( size_type index )
-	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( index < 0 || index >= size_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << index << " )" << std::endl;
-			return( dmy );
-		}
-#endif
-		return( data_[index] );
-	}
-	const_reference access( size_type index ) const
-	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( index < 0 || index >= size_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << index << " )" << std::endl;
-			return( dmy );
-		}
-#endif
-		return( data_[index] );
-	}
-
 public:
 	reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
-		return( access( index ) );
+		_CHECK_ACCESS_VIOLATION1_( index )
+		return( data_[index] );
 	}
 
 	const_reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
-		return( access( index ) );
+		_CHECK_ACCESS_VIOLATION1_( index )
+		return( data_[index] );
 	}
 
 	reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
-		return( access( index ) );
+		_CHECK_ACCESS_VIOLATION1_( index )
+		return( data_[index] );
 	}
 
 	const_reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
-		return( access( index ) );
+		_CHECK_ACCESS_VIOLATION1_( index )
+		return( data_[index] );
 	}
 
 	reference operator []( size_type index )
 	{
-		return( access( index ) );
+		_CHECK_ACCESS_VIOLATION1_( index )
+		return( data_[index] );
 	}
 
 	const_reference operator []( size_type index ) const
 	{
-		return( access( index ) );
+		_CHECK_ACCESS_VIOLATION1_( index )
+		return( data_[index] );
 	}
 
 public:
@@ -416,7 +397,6 @@ public:
 	array1( size_type num, const Allocator &a ) : base( num, a ), reso1_( 1.0 ) {}
 	array1( size_type num, double r1, const Allocator &a ) : base( num, a ), reso1_( r1 ) {}
 
-	array1( size_type num, const value_type &val ) : base( num, val ), reso1_( 1.0 ) {}
 	array1( size_type num, double r1, const value_type &val ) : base( num, val ), reso1_( r1 ) {}
 	array1( size_type num, const value_type &val, const Allocator &a ) : base( num, val, a ), reso1_( 1.0 ) {}
 	array1( size_type num, double r1, const value_type &val, const Allocator &a ) : base( num, val, a ), reso1_( r1 ) {}
@@ -580,50 +560,29 @@ protected:
 		return( data_ + i + j * size1_ );
 	}
 
-	reference access( size_type i, size_type j )
-	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
-			return( dmy );
-		}
-#endif
-		return( data_[ i + j * size1_ ] );
-	}
-	const_reference access( size_type i, size_type j ) const
-	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
-			return( dmy );
-		}
-#endif
-		return( data_[ i + j * size1_ ] );
-	}
-
 public:
 	reference at( size_type i, size_type j, size_type dmy = 0 )
 	{
-		return( access( i, j ) );
+		_CHECK_ACCESS_VIOLATION2_( i, j )
+		return( data_[ i + j * size1_ ] );
 	}
 
 	const_reference at( size_type index, size_type j, size_type dmy = 0 ) const
 	{
-		return( access( i, j ) );
+		_CHECK_ACCESS_VIOLATION2_( i, j )
+		return( data_[ i + j * size1_ ] );
 	}
 
 	reference operator ()( size_type i, size_type j, size_type dmy = 0 )
 	{
-		return( access( i, j ) );
+		_CHECK_ACCESS_VIOLATION2_( i, j )
+		return( data_[ i + j * size1_ ] );
 	}
 
 	const_reference operator ()( size_type i, size_type j, size_type dmy = 0 ) const
 	{
-		return( access( i, j ) );
+		_CHECK_ACCESS_VIOLATION2_( i, j )
+		return( data_[ i + j * size1_ ] );
 	}
 
 
@@ -736,11 +695,11 @@ public:
 	double reso3( ) const { return( reso3_ ); }
 
 	// 順方向のランダムアクセスイテレータを返す
-	iterator begin( ){ return( iterator( paccess( 0, 0, 0 ), 1, 0, 0 ) ); }
-	const_iterator begin( ) const { return( const_iterator( paccess( 0, 0, 0 ), 1, 0, 0 ) ); }
+	iterator begin( ){ return( iterator( paccess( 0, 0, 0 ), 0, size( ), 0 ) ); }
+	const_iterator begin( ) const { return( const_iterator( paccess( 0, 0, 0 ), 0, size( ), 0 ) ); }
 
-	iterator end( ){ return( iterator( paccess( size( ) ), 1, 0, 0 ) ); }
-	const_iterator end( ) const { return( const_iterator( paccess( size( ) ), 1, 0, 0 ) ); }
+	iterator end( ){ return( iterator( paccess( 0, 0, 0 ), size( ), size( ), 0 ) ); }
+	const_iterator end( ) const { return( const_iterator( paccess( 0, 0, 0 ), size( ), size( ), 0 ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -756,11 +715,11 @@ public:
 **
 ************************************************************************************************************/
 	// 順方向のランダムアクセスイテレータを返す
-	iterator x_begin( size_type i ){ return( iterator( paccess( i, 0, 0 ), width( ), 0, 0 ) ); }
-	const_iterator x_begin( size_type i ) const { return( const_iterator( paccess( i, 0, 0 ), width( ), 0, 0 ) ); }
+	iterator x_begin( size_type i ){ return( iterator( paccess( i, 0, 0 ), 0, 1, width( ) ) ); }
+	const_iterator x_begin( size_type i ) const { return( const_iterator( paccess( i, 0, 0 ), 0, 1, width( ) ) ); }
 
-	iterator x_end( size_type i ){ return( iterator( paccess( i, 0, depth( ) ), width( ), 0, 0 ) ); }
-	const_iterator x_end( size_type i ) const { return( const_iterator( paccess( i, 0, depth( ) ), width( ), 0, 0 ) ); }
+	iterator x_end( size_type i ){ return( iterator( paccess( i, 0, 0 ), height( ) * depth( ), 1, width( ) ) ); }
+	const_iterator x_end( size_type i ) const { return( const_iterator( paccess( i, 0, 0 ), height( ) * depth( ), 1, width( ) ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -777,11 +736,11 @@ public:
 **
 ************************************************************************************************************/
 	// 順方向のランダムアクセスイテレータを返す
-	iterator y_begin( size_type j ){ return( iterator( paccess( 0, j, 0 ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
-	const_iterator y_begin( size_type j ) const { return( const_iterator( paccess( 0, j, 0 ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
+	iterator y_begin( size_type j ){ return( iterator( paccess( 0, j, 0 ), 0, height( ), width( ) * height( ) ) ); }
+	const_iterator y_begin( size_type j ) const { return( const_iterator( paccess( 0, j, 0 ), 0, height( ), width( ) * height( ) ) ); }
 
-	iterator y_end( size_type j ){ return( iterator( paccess( 0, j, depth( ) ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
-	const_iterator y_end( size_type j ) const { return( const_iterator( paccess( 0, j, depth( ) ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
+	iterator y_end( size_type j ){ return( iterator( paccess( 0, j, 0 ), width( ) * depth( ), height( ), width( ) * height( ) ) ); }
+	const_iterator y_end( size_type j ) const { return( const_iterator( paccess( 0, j, 0 ), width( ) * depth( ), height( ), width( ) * height( ) ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -798,11 +757,11 @@ public:
 **
 ************************************************************************************************************/
 	// 順方向のランダムアクセスイテレータを返す
-	iterator z_begin( size_type k ){ return( iterator( paccess( 0, 0, k ), 1, 0, 0 ) ); }
-	const_iterator z_begin( size_type k ) const { return( const_iterator( paccess( 0, 0, k ), 1, 0, 0 ) ); }
+	iterator z_begin( size_type k ){ return( iterator( paccess( 0, 0, k ), 0, 1, 1 ) ); }
+	const_iterator z_begin( size_type k ) const { return( const_iterator( paccess( 0, 0, k ), 0, 1, 1 ) ); }
 
-	iterator z_end( size_type k ){ return( iterator( paccess( 0, height( ), k ), 1, 0, 0 ) ); }
-	const_iterator z_end( size_type k ) const { return( const_iterator( paccess( 0, height( ), k ), 1, 0, 0 ) ); }
+	iterator z_end( size_type k ){ return( iterator( paccess( 0, 0, k ), width( ) * height( ), 1, 1 ) ); }
+	const_iterator z_end( size_type k ) const { return( const_iterator( paccess( 0, 0, k ), width( ) * height( ), 1, 1 ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -851,50 +810,29 @@ protected:
 		return( data_ + i + ( j + k * size2_ ) * size1_ );
 	}
 
-	reference access( size_type i, size_type j, size_type k )
-	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
-			return( dmy );
-		}
-#endif
-		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
-	}
-	const_reference access( size_type i, size_type j, size_type k ) const
-	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
-			return( dmy );
-		}
-#endif
-		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
-	}
-
 public:
 	reference at( size_type i, size_type j, size_type k )
 	{
-		return( access( i, j, k ) );
+		_CHECK_ACCESS_VIOLATION3_( i, j, k )
+		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
 	const_reference at( size_type index, size_type j, size_type k ) const
 	{
-		return( access( i, j, k ) );
+		_CHECK_ACCESS_VIOLATION3_( i, j, k )
+		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
 	reference operator ()( size_type i, size_type j, size_type k )
 	{
-		return( access( i, j, k ) );
+		_CHECK_ACCESS_VIOLATION3_( i, j, k )
+		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
 	const_reference operator ()( size_type i, size_type j, size_type k ) const
 	{
-		return( access( i, j, k ) );
+		_CHECK_ACCESS_VIOLATION3_( i, j, k )
+		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
 
