@@ -265,7 +265,8 @@ namespace gold
 			fq = f( q );
 		}
 
-		for( size_t ite = 1 ; std::abs( p - q ) > tolerance && ite <= max_iterations ; ite++ )
+		size_t ite = 1;
+		for( ite = 1 ; std::abs( p - q ) > tolerance && ite <= max_iterations ; ite++ )
 		{
 			if( fp > fq )
 			{
@@ -355,7 +356,6 @@ namespace brent
 		double u, v, w, xm, fa, fb, fu, fv, fw, fx;
 		double len, len1, len2;
 		const double gold = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
-		const double _1_gold = 1.0 - gold;
 		const double dust = type_limits< double >::minimum( );		// ƒ[ƒœZ‚ğ”ğ‚¯‚é‚½‚ß‚ÌƒSƒ~’l
 
 		x = b;
@@ -382,7 +382,8 @@ namespace brent
 
 		len1 = len2 = type_limits< double >::maximum( );
 
-		for( size_t ite = 1 ; ite <= max_iterations ; ite++ )
+		size_t ite;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
 		{
 			xm = ( a + b ) / 2.0;
 
@@ -534,13 +535,14 @@ namespace gradient
 		// ‘¼•Ï”ŠÖ”‚ğ‚P•Ï”ŠÖ”‚É•ÏŠ·‚·‚é
 		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor1 > functor( p, dir, f );
 
-		for( size_type ite = 1 ; ite <= max_iterations ; ite++ )
+		size_t ite;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
 		{
 			// Œù”z•ûŒü‚ğŒvZ‚·‚é
 			dir = g( p );
 
 			// Brent ‚Ì2Ÿû‘©ƒAƒ‹ƒSƒŠƒYƒ€‚ğ—p‚¢‚Ä dir •ûŒü‚Ö‚ÌÅ¬‰»‚ğs‚¤
-			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iteration );
+			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations );
 
 			std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
 
@@ -580,7 +582,7 @@ namespace gradient
 	//! @return ‹É¬‚ğ—^‚¦‚éÀ•W’l‚É‚¨‚¯‚é•]‰¿’l
 	//! 
 	template < class T, class Allocator, class Functor1, class Functor2 >
-	double minimization( matrix< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t max_iteration = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t max_iterations = 200 )
 	{
 		size_t itenum = 0;
 		return( minimization( p, f, g, tolerance, itenum, max_iterations ) );
@@ -608,13 +610,14 @@ namespace gradient
 		typedef matrix< T, Allocator > matrix_type;
 
 		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 );
-		double x, v1, v2, err, old_err = f( p );
+		double x, v1, v2, err = 1.0e100, old_err = f( p );
 		size_type i;
 
 		// ‘¼•Ï”ŠÖ”‚ğ‚P•Ï”ŠÖ”‚É•ÏŠ·‚·‚é
 		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, f );
 
-		for( size_type ite = 1 ; ite <= max_iterations ; ite++ )
+		size_t ite;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
 		{
 			// Œù”z•ûŒü‚ğŒvZ‚·‚é
 			double len = 0.0;
@@ -713,6 +716,7 @@ namespace powell
 	template < class T, class Allocator, class Functor >
 	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t &iterations, size_t max_iterations )
 	{
+		return( 0 );
 	}
 
 	/// @brief Powell –@‚É‚æ‚é‘½ŸŒ³•Ï”‚É‚æ‚é‹É¬’l‚Ì’Tõ‚ğs‚¤
