@@ -800,13 +800,13 @@ public:
 		{
 			// “àÏ‚ÌŒvZ‚ª‚Å‚«‚Ü‚¹‚ñ—áŠO
 			::std::cout << "can't calculate inner product of two vectors." << ::std::endl;
-			return( value_type( ) );
+			return( value_type( 0 ) );
 		}
 #endif
 
 		typedef typename vector< T, Allocator >::size_type size_type;
 		const vector &v1 = *this;
-		value_type v = value_type( );
+		value_type v = value_type( 0 );
 		for( size_type i = 0 ; i < base::size( ) ; i++ )
 		{
 			v += v1[ i ] * v2[ i ];

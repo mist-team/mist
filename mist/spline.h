@@ -349,7 +349,7 @@ public:
 		// 曲線を構築するのに必要な点数が存在しない場合
 		if( base::size( ) < 3 || p1_.size( ) < base::size( ) )
 		{
-			return( base::empty( ) ? value_type( ) : base::at( 0 ) );
+			return( base::empty( ) ? value_type( 0 ) : base::at( 0 ) );
 		}
 
 		if( t < 0.0 )

@@ -2589,7 +2589,7 @@ inline const typename matrix< T, Allocator >::value_type trace( const matrix< T,
 {
 	typedef typename matrix< T, Allocator >::size_type size_type;
 	typedef typename matrix< T, Allocator >::value_type value_type;
-	value_type v = value_type( );
+	value_type v = value_type( 0 );
 	size_type size = a.rows( ) < a.cols( ) ? a.rows( ) : a.cols( );
 	for( size_type i = 0 ; i < size ; ++i )
 	{
@@ -2618,7 +2618,7 @@ inline const typename matrix_expression< Expression >::value_type trace( const m
 	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
 	typedef matrix< value_type, allocator_type > matrix_type;
 
-	value_type v = value_type( );
+	value_type v = value_type( 0 );
 	size_type size = expression.rows( ) < expression.cols( ) ? expression.rows( ) : expression.cols( );
 	for( size_type i = 0 ; i < size ; ++i )
 	{
@@ -2670,7 +2670,7 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 
 	if( a.empty( ) || a.rows( ) != a.cols( ) )
 	{
-		return( value_type( ) );
+		return( value_type( 0 ) );
 	}
 
 	switch( a.rows( ) )
@@ -2746,7 +2746,7 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 
 	if( e.rows( ) * e.cols( ) == 0 || e.rows( ) != e.cols( ) )
 	{
-		return( value_type( ) );
+		return( value_type( 0 ) );
 	}
 
 	switch( e.rows( ) )

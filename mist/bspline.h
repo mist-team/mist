@@ -171,7 +171,7 @@ public:
 		}
 		else if( base::empty( ) )
 		{
-			return( value_type( ) );
+			return( value_type( 0 ) );
 		}
 
 		t *= static_cast< double >( m - 2 * K + 2 );

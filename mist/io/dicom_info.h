@@ -57,7 +57,7 @@ _MIST_BEGIN
 
 
 /// DICOMファイルを操作する関数・クラスを含む名前空間
-namespace dicom_controller
+namespace dicom
 {
 	/// @brief DICOMデータの圧縮タイプ
 	enum compress_type
@@ -137,39 +137,39 @@ namespace dicom_controller
 
 
 		/// @brief DICOMタグの大小関係を調べる
-		bool operator <( const dicom_element &dicom ) const { return( base::operator <( dicom ) ); }
+		bool operator <( const dicom_element &dicm ) const { return( base::operator <( dicm ) ); }
 
 
 		/// @brief 他のDICOM要素を代入する
-		const dicom_element &operator =( const dicom_element &dicom )
+		const dicom_element &operator =( const dicom_element &dicm )
 		{
-			if( &dicom != this )
+			if( &dicm != this )
 			{
-				base::operator =( dicom );
-				create( dicom.num_bytes );
-				memcpy( data, dicom.data, sizeof( unsigned char ) * num_bytes );
+				base::operator =( dicm );
+				create( dicm.num_bytes );
+				memcpy( data, dicm.data, sizeof( unsigned char ) * num_bytes );
 			}
 			return( *this );
 		}
 
 
 		/// @brief double 型のデータに変換する（DICOMタグの内容が double 型をあらわしている必要がある）
-		double         to_double( ) const { return( ( vr == FD && num_bytes == 8 )? byte_array< double >( data ).get_value( )        : static_cast< double >        ( atof( to_string( ).c_str( ) ) ) ); }
+		double         to_double( ) const { return( ( vr == FD && num_bytes == 8 )? byte_array< double >( data ).get_value( )         : static_cast< double >        ( atof( to_string( ).c_str( ) ) ) ); }
 
 		/// @brief float 型のデータに変換する（DICOMタグの内容が float 型をあらわしている必要がある）
-		float          to_float( )  const { return( ( vr == FL && num_bytes == 4 )? byte_array< float >( data ).get_value( )         : static_cast< float >         ( atof( to_string( ).c_str( ) ) ) ); }
+		float          to_float( )  const { return( ( vr == FL && num_bytes == 4 )? byte_array< float >( data ).get_value( )          : static_cast< float >         ( atof( to_string( ).c_str( ) ) ) ); }
 
 		/// @brief signed int 型のデータに変換する（DICOMタグの内容が signed int 型をあらわしている必要がある）
-		signed int     to_int( )    const { return( ( vr == SL && num_bytes == 4 )? byte_array< signed int >( data ).get_value( )    : static_cast< signed int >    ( atoi( to_string( ).c_str( ) ) ) ); }
+		signed int     to_int( )    const { return( ( vr == SL && num_bytes == 4 )? byte_array< signed int >( data ).get_value( )     : static_cast< signed int >    ( atoi( to_string( ).c_str( ) ) ) ); }
 
 		/// @brief unsigned int 型のデータに変換する（DICOMタグの内容が unsigned int 型をあらわしている必要がある）
-		unsigned int   to_uint( )   const { return( ( vr == UL && num_bytes == 4 )? byte_array< unsigned int >( data ).get_value( )  : static_cast< unsigned int >  ( atoi( to_string( ).c_str( ) ) ) ); }
+		unsigned int   to_uint( )   const { return( ( vr == UL && num_bytes == 4 )? byte_array< unsigned int >( data ).get_value( )   : static_cast< unsigned int >  ( atoi( to_string( ).c_str( ) ) ) ); }
 
 		/// @brief signed short 型のデータに変換する（DICOMタグの内容が signed short 型をあらわしている必要がある）
-		signed short   to_short( )  const { return( ( vr == SS && num_bytes == 2 )? byte_array< signed short >( data ).get_value( )  : static_cast< signed short >  ( atoi( to_string( ).c_str( ) ) ) ); }
+		signed short   to_short( )  const { return( ( vr == SS && num_bytes == 2 )? byte_array< signed short >( data ).get_value( )   : static_cast< signed short >  ( atoi( to_string( ).c_str( ) ) ) ); }
 
 		/// @brief unsigned short 型のデータに変換する（DICOMタグの内容が ushort 型をあらわしている必要がある）
-		unsigned short to_ushort( ) const { return( ( vr == US && num_bytes == 2 )? byte_array< unsigned short >( data ).get_value( ): static_cast< unsigned short >( atoi( to_string( ).c_str( ) ) ) ); }
+		unsigned short to_ushort( ) const { return( ( vr == US && num_bytes == 2 )? byte_array< unsigned short >( data ).get_value( ) : static_cast< unsigned short >( atoi( to_string( ).c_str( ) ) ) ); }
 
 		/// @brief string 型のデータに変換する（DICOMタグの内容が string 型をあらわしている必要がある）
 		std::string    to_string( ) const
@@ -259,10 +259,10 @@ namespace dicom_controller
 		}
 
 		/// @brief 他のDICOMタグを用いて初期化する
-		dicom_element( const dicom_element &dicom ) : base( dicom ), data( NULL ), num_bytes( 0 )
+		dicom_element( const dicom_element &dicm ) : base( dicm ), data( NULL ), num_bytes( 0 )
 		{
-			create( dicom.num_bytes );
-			memcpy( data, dicom.data, sizeof( unsigned char ) * num_bytes );
+			create( dicm.num_bytes );
+			memcpy( data, dicm.data, sizeof( unsigned char ) * num_bytes );
 		}
 
 		/// @brief group，element，データ d，データのバイト数 nbytes をを用いて初期化する
@@ -327,6 +327,12 @@ namespace dicom_controller
 			base::erase( element.tag );
 		}
 
+		/// @brief DICOMデータ element を削除する
+		void remove( const dicom_element &element )
+		{
+			base::erase( element.tag );
+		}
+
 
 		/// @brief (group, element) のタグを検索する
 		iterator find( unsigned short group, unsigned short element )
@@ -350,7 +356,7 @@ namespace dicom_controller
 		dicom_tag_container( )
 		{
 		}
-		dicom_tag_container( const dicom_tag_container &dicom ) : base( dicom )
+		dicom_tag_container( const dicom_tag_container &dicm ) : base( dicm )
 		{
 		}
 	};
@@ -396,13 +402,21 @@ namespace dicom_controller
 	class dicom_info : public dicom_image_info
 	{
 	public:
+		bool			little_endian_encoding;		///< @brief データがリトルエンディアン形式かどうか
 
 	public:
 		/// @brief デフォルトのコンストラクタ
-		dicom_info( ){ }
+		dicom_info( ) :
+			little_endian_encoding( true )
+		{
+		}
 
 		/// @brief 他のオブジェクトで初期化する
-		dicom_info( const dicom_info &info ) : dicom_image_info( info ) { }
+		dicom_info( const dicom_info &info ) :
+			dicom_image_info( info ),
+			little_endian_encoding( true )
+		{
+		}
 
 
 		/// @brief 他のオブジェクトを代入する
@@ -467,72 +481,74 @@ namespace dicom_controller
 	}
 
 
-	/// @brief dicomコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	double find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, double default_value )
+	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
+	double find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, double default_value )
 	{
-		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->second.to_double( ) );
+		dicom_tag_container::const_iterator cite = dicm.find( group, element );
+		return( cite == dicm.end( ) ? default_value : cite->second.to_double( ) );
 	}
 
-	/// @brief dicomコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	float find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, float default_value )
+	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
+	float find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, float default_value )
 	{
-		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->second.to_float( ) );
+		dicom_tag_container::const_iterator cite = dicm.find( group, element );
+		return( cite == dicm.end( ) ? default_value : cite->second.to_float( ) );
 	}
 
-	/// @brief dicomコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	signed int find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, signed int default_value )
+	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
+	signed int find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, signed int default_value )
 	{
-		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->second.to_int( ) );
+		dicom_tag_container::const_iterator cite = dicm.find( group, element );
+		return( cite == dicm.end( ) ? default_value : cite->second.to_int( ) );
 	}
 
-	/// @brief dicomコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	unsigned int find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, unsigned int default_value )
+	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
+	unsigned int find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, unsigned int default_value )
 	{
-		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->second.to_uint( ) );
+		dicom_tag_container::const_iterator cite = dicm.find( group, element );
+		return( cite == dicm.end( ) ? default_value : cite->second.to_uint( ) );
 	}
 
-	/// @brief dicomコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	signed short find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, signed short default_value )
+	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
+	signed short find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, signed short default_value )
 	{
-		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->second.to_short( ) );
+		dicom_tag_container::const_iterator cite = dicm.find( group, element );
+		return( cite == dicm.end( ) ? default_value : cite->second.to_short( ) );
 	}
 
-	/// @brief dicomコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	unsigned short find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, unsigned short default_value )
+	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
+	unsigned short find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, unsigned short default_value )
 	{
-		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->second.to_ushort( ) );
+		dicom_tag_container::const_iterator cite = dicm.find( group, element );
+		return( cite == dicm.end( ) ? default_value : cite->second.to_ushort( ) );
 	}
 
-	/// @brief dicomコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	std::string find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, const std::string &default_value )
+	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
+	std::string find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, const std::string &default_value )
 	{
-		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->second.to_string( ) );
+		dicom_tag_container::const_iterator cite = dicm.find( group, element );
+		return( cite == dicm.end( ) ? default_value : cite->second.to_string( ) );
 	}
 
-	/// @brief dicomコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	std::string find_tag( const dicom_tag_container &dicom, unsigned short group, unsigned short element, const char *default_value )
+	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
+	std::string find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, const char *default_value )
 	{
-		dicom_tag_container::const_iterator cite = dicom.find( group, element );
-		return( cite == dicom.end( ) ? default_value : cite->second.to_string( ) );
+		dicom_tag_container::const_iterator cite = dicm.find( group, element );
+		return( cite == dicm.end( ) ? default_value : cite->second.to_string( ) );
 	}
 
 	/// @brief DICOMコンテナからDICOMの情報を取得する
-	bool get_dicom_info( const dicom_tag_container &dicom, dicom_info &info )
+	bool get_dicom_info( const dicom_tag_container &dicm, dicom_info &info )
 	{
-		info.compression_type		= get_compress_type( find_tag( dicom, 0x0002, 0x0010, "" ) );
-		info.samples_per_pixel		= find_tag( dicom, 0x0028, 0x0002, info.samples_per_pixel );
-		info.number_of_frames		= find_tag( dicom, 0x0028, 0x0008, info.number_of_frames );
-		info.rows					= find_tag( dicom, 0x0028, 0x0010, info.rows );
-		info.cols					= find_tag( dicom, 0x0028, 0x0011, info.cols );
+		info.little_endian_encoding	= find_tag( dicm, 0x0002, 0x0010, "" ) != "1.2.840.10008.1.2.2";
 
-		std::string pixel_spacing	= find_tag( dicom, 0x0028, 0x0030, "" );
+		info.compression_type		= get_compress_type( find_tag( dicm, 0x0002, 0x0010, "" ) );
+		info.samples_per_pixel		= find_tag( dicm, 0x0028, 0x0002, info.samples_per_pixel );
+		info.number_of_frames		= find_tag( dicm, 0x0028, 0x0008, info.number_of_frames );
+		info.rows					= find_tag( dicm, 0x0028, 0x0010, info.rows );
+		info.cols					= find_tag( dicm, 0x0028, 0x0011, info.cols );
+
+		std::string pixel_spacing	= find_tag( dicm, 0x0028, 0x0030, "" );
 		if( pixel_spacing != "" )
 		{
 			double resoX = 1.0, resoY = 1.0;
@@ -541,12 +557,12 @@ namespace dicom_controller
 			info.pixel_spacing_y	= resoY;
 		}
 
-		info.bits_allocated			= find_tag( dicom, 0x0028, 0x0100, info.bits_allocated );
-		info.bits_stored			= find_tag( dicom, 0x0028, 0x0101, info.bits_stored );
-		info.high_bits				= find_tag( dicom, 0x0028, 0x0102, info.high_bits );
-		info.pixel_representation	= find_tag( dicom, 0x0028, 0x0103, info.pixel_representation );
-		info.window_center			= find_tag( dicom, 0x0028, 0x1050, info.window_center );
-		info.window_width			= find_tag( dicom, 0x0028, 0x1051, info.window_width );
+		info.bits_allocated			= find_tag( dicm, 0x0028, 0x0100, info.bits_allocated );
+		info.bits_stored			= find_tag( dicm, 0x0028, 0x0101, info.bits_stored );
+		info.high_bits				= find_tag( dicm, 0x0028, 0x0102, info.high_bits );
+		info.pixel_representation	= find_tag( dicm, 0x0028, 0x0103, info.pixel_representation );
+		info.window_center			= find_tag( dicm, 0x0028, 0x1050, info.window_center );
+		info.window_width			= find_tag( dicm, 0x0028, 0x1051, info.window_width );
 
 		return( true );
 	}
@@ -592,10 +608,11 @@ namespace dicom_controller
 	//! @param[in] psrc_end … 入力データの末尾ポインタ
 	//! @param[in] pdst     … 出力データの先頭ポインタ
 	//! @param[in] pdst_end … 出力データの末尾ポインタ
+	//! @param[in]  from_little_endian … 入力データがリトルエンディアンかどうか
 	//! 
 	//! @return 出力データ中のデコード終了位置
 	//! 
-	inline unsigned char *decode_RLE( unsigned char *psrc, unsigned char *psrc_end, unsigned char *pdst, unsigned char *pdst_end )
+	inline unsigned char *decode_RLE( unsigned char *psrc, unsigned char *psrc_end, unsigned char *pdst, unsigned char *pdst_end, bool from_little_endian = true )
 	{
 		if( psrc + 64 >= psrc_end )
 		{
@@ -606,21 +623,21 @@ namespace dicom_controller
 		// RLEのヘッダ情報を読み込む
 		size_type number_of_segments = to_current_endian( byte_array< unsigned int >( psrc ), true ).get_value( );
 		difference_type frame_offset[ 15 ] = {
-			to_current_endian( byte_array< unsigned int >( psrc +  4 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc +  8 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 12 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 16 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 20 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 24 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 28 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 32 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 36 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 40 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 44 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 48 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 52 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 56 ), true ).get_value( ),
-			to_current_endian( byte_array< unsigned int >( psrc + 60 ), true ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc +  4 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc +  8 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 12 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 16 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 20 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 24 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 28 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 32 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 36 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 40 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 44 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 48 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 52 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 56 ), from_little_endian ).get_value( ),
+			to_current_endian( byte_array< unsigned int >( psrc + 60 ), from_little_endian ).get_value( ),
 		};
 
 		if( frame_offset[ 0 ] != 64 )
@@ -805,7 +822,7 @@ namespace dicom_controller
 			return( false );
 		}
 		pointer += 4;
-		num_bytes = to_current_endian( byte_array< unsigned int >( pointer ), true ).get_value( );
+		num_bytes = to_current_endian( byte_array< unsigned int >( pointer ), info.little_endian_encoding ).get_value( );
 		pointer += 4;
 		if( num_bytes > 0 )
 		{
@@ -813,7 +830,7 @@ namespace dicom_controller
 			unsigned char *p = pointer;
 			while( p < pointer + num_bytes && number_of_fragments < 16 )
 			{
-				frame_offset[ number_of_fragments++ ] = to_current_endian( byte_array< unsigned int >( p ), true ).get_value( );
+				frame_offset[ number_of_fragments++ ] = to_current_endian( byte_array< unsigned int >( p ), info.little_endian_encoding ).get_value( );
 				p += 4;
 			}
 		}
@@ -847,13 +864,13 @@ namespace dicom_controller
 				return( false );
 			}
 			p += 4;
-			num_bytes = to_current_endian( byte_array< unsigned int >( p ), true ).get_value( );
+			num_bytes = to_current_endian( byte_array< unsigned int >( p ), info.little_endian_encoding ).get_value( );
 			p += 4;
 
 			switch( info.compression_type )
 			{
 			case RLE:
-				dst_pointer = decode_RLE( p, p + num_bytes, dst_pointer, buff + dstBytes );
+				dst_pointer = decode_RLE( p, p + num_bytes, dst_pointer, buff + dstBytes, info.little_endian_encoding );
 				if( dst_pointer == NULL )
 				{
 					ret = false;

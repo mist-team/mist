@@ -68,11 +68,11 @@ inline typename __utility__::__value_type__< T >::value_type average( const arra
 
 	if( a.empty( ) )
 	{
-		return( value_type( ) );
+		return( value_type( 0 ) );
 	}
 	else
 	{
-		value_type v = value_type( );
+		value_type v = value_type( 0 );
 		for( size_type i = 0 ; i < a.size( ) ; i++ )
 		{
 			v += a[ i ];
@@ -97,11 +97,11 @@ inline typename __utility__::__value_type__< T >::value_type deviation( const ar
 
 	if( a.empty( ) )
 	{
-		return( value_type( ) );
+		return( value_type( 0 ) );
 	}
 	else
 	{
-		value_type v = value_type( );
+		value_type v = value_type( 0 );
 		for( size_type i = 0 ; i < a.size( ) ; i++ )
 		{
 			value_type x = a[ i ] - ave;

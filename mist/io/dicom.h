@@ -1,4 +1,4 @@
-/// @file mist/io/dicom.h
+/// @file mist/io/dicm.h
 //!
 //! @brief DICOM画像を読み書きするためのライブラリ
 //!
@@ -50,7 +50,7 @@ _MIST_BEGIN
 
 
 /// DICOMファイルを操作する関数・クラスを含む名前空間
-namespace dicom_controller
+namespace dicom
 {
 	/// @brief 指定したメモリ領域がDICOM画像を現しているかどうかをチェックする
 	//! 
@@ -69,8 +69,8 @@ namespace dicom_controller
 		}
 
 
-		char *dicom = reinterpret_cast< char * >( p ) + 128;
-		if( dicom[ 0 ] == 'D' && dicom[ 1 ] == 'I' && dicom[ 2 ] == 'C' && dicom[ 3 ] == 'M' )
+		char *dicm = reinterpret_cast< char * >( p ) + 128;
+		if( dicm[ 0 ] == 'D' && dicm[ 1 ] == 'I' && dicm[ 2 ] == 'C' && dicm[ 3 ] == 'M' )
 		{
 			return( p + 128 + 4 );
 		}
@@ -91,10 +91,11 @@ namespace dicom_controller
 	//! @param[in]  e        … 末尾メモリ位置
 	//! @param[out] tag      … 取得されたDICOMのタグ
 	//! @param[out] numBytes … DICOMタグが使用しているメモリのバイト数
+	//! @param[in]  from_little_endian … 入力データがリトルエンディアンかどうか
 	//! 
 	//! @return タグが示すデータ内容を指す先頭ポインタ
 	//! 
-	inline unsigned char *read_dicom_tag( unsigned char *p, unsigned char *e, dicom_tag &tag, difference_type &numBytes )
+	inline unsigned char *read_dicom_tag( unsigned char *p, unsigned char *e, dicom_tag &tag, difference_type &numBytes, bool from_little_endian = true )
 	{
 		if( p == NULL || p + 8 >= e )
 		{
@@ -104,8 +105,8 @@ namespace dicom_controller
 
 		unsigned char *data = p;
 
-		unsigned short group   = to_current_endian( byte_array< unsigned short >( data ), true ).get_value( );
-		unsigned short element = to_current_endian( byte_array< unsigned short >( data + 2 ), true ).get_value( );
+		unsigned short group   = to_current_endian( byte_array< unsigned short >( data ), from_little_endian ).get_value( );
+		unsigned short element = to_current_endian( byte_array< unsigned short >( data + 2 ), from_little_endian ).get_value( );
 
 		data += 4;
 
@@ -128,12 +129,14 @@ namespace dicom_controller
 				case OW:
 				case UN:
 				case SQ:
+				case OF:
+				case UT:
 					data += 4;
-					num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
+					num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
 					break;
 
 				default:
-					num_bytes = to_current_endian( byte_array< unsigned short >( data + 2 ), true ).get_value( );
+					num_bytes = to_current_endian( byte_array< unsigned short >( data + 2 ), from_little_endian ).get_value( );
 					break;
 				}
 			}
@@ -147,12 +150,14 @@ namespace dicom_controller
 				case OW:
 				case UN:
 				case SQ:
+				case OF:
+				case UT:
 					data += 4;
-					num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
+					num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
 					break;
 
 				default:
-					num_bytes = to_current_endian( byte_array< unsigned short >( data + 2 ), true ).get_value( );
+					num_bytes = to_current_endian( byte_array< unsigned short >( data + 2 ), from_little_endian ).get_value( );
 				}
 			}
 			else
@@ -163,13 +168,15 @@ namespace dicom_controller
 				case OW:
 				case UN:
 				case SQ:
+				case OF:
+				case UT:
 					data += 4;
-					num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
+					num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
 					break;
 
 				default:
 					// 暗示的VR
-					num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
+					num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
 				}
 			}
 			numBytes = num_bytes;
@@ -201,9 +208,8 @@ namespace dicom_controller
 			case UI:
 			case UL:
 			case US:
-			case UT:
 				{
-					num_bytes = to_current_endian( byte_array< unsigned short >( data + 2 ), true ).get_value( );
+					num_bytes = to_current_endian( byte_array< unsigned short >( data + 2 ), from_little_endian ).get_value( );
 				}
 				break;
 
@@ -211,12 +217,14 @@ namespace dicom_controller
 			case OW:
 			case UN:
 			case SQ:
+			case OF:
+			case UT:
 				data += 4;
-				num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
+				num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
 				break;
 
 			default:
-				num_bytes = to_current_endian( byte_array< unsigned int >( data ), true ).get_value( );
+				num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
 				break;
 			}
 
@@ -243,10 +251,11 @@ namespace dicom_controller
 	//! @param[in]     tag       … 処理するDICOMタグ
 	//! @param[in,out] byte      … 処理されるバイト列
 	//! @param[in]     num_bytes … バイト列の長さ
+	//! @param[in]     from_little_endian … 入力データがリトルエンディアンかどうか
 	//! 
 	//! @return 登録されていないタグの場合は false をかえし，正しく処理された場合のみ true を返す
 	//! 
-	inline bool process_dicom_tag( const dicom_tag &tag, unsigned char *byte, difference_type num_bytes )
+	inline bool process_dicom_tag( const dicom_tag &tag, unsigned char *byte, difference_type num_bytes, bool from_little_endian = true )
 	{
 		switch( tag.vr )
 		{
@@ -348,7 +357,7 @@ namespace dicom_controller
 			}
 
 			{
-				byte_array< float > tmp = to_current_endian( byte_array< float >( byte ), true );
+				byte_array< float > tmp = to_current_endian( byte_array< float >( byte ), from_little_endian );
 				byte[ 0 ] = tmp[ 0 ];
 				byte[ 1 ] = tmp[ 1 ];
 				byte[ 2 ] = tmp[ 2 ];
@@ -365,7 +374,7 @@ namespace dicom_controller
 			}
 
 			{
-				byte_array< double > tmp = to_current_endian( byte_array< double >( byte ), true );
+				byte_array< double > tmp = to_current_endian( byte_array< double >( byte ), from_little_endian );
 				byte[ 0 ] = tmp[ 0 ];
 				byte[ 1 ] = tmp[ 1 ];
 				byte[ 2 ] = tmp[ 2 ];
@@ -510,7 +519,7 @@ namespace dicom_controller
 			}
 
 			{
-				byte_array< signed int > tmp = to_current_endian( byte_array< signed int >( byte ), true );
+				byte_array< signed int > tmp = to_current_endian( byte_array< signed int >( byte ), from_little_endian );
 				byte[ 0 ] = tmp[ 0 ];
 				byte[ 1 ] = tmp[ 1 ];
 				byte[ 2 ] = tmp[ 2 ];
@@ -533,7 +542,7 @@ namespace dicom_controller
 			}
 
 			{
-				byte_array< signed short > tmp = to_current_endian( byte_array< signed short >( byte ), true );
+				byte_array< signed short > tmp = to_current_endian( byte_array< signed short >( byte ), from_little_endian );
 				byte[ 0 ] = tmp[ 0 ];
 				byte[ 1 ] = tmp[ 1 ];
 			}
@@ -596,7 +605,7 @@ namespace dicom_controller
 			}
 
 			{
-				byte_array< unsigned int > tmp = to_current_endian( byte_array< unsigned int >( byte ), true );
+				byte_array< unsigned int > tmp = to_current_endian( byte_array< unsigned int >( byte ), from_little_endian );
 				byte[ 0 ] = tmp[ 0 ];
 				byte[ 1 ] = tmp[ 1 ];
 				byte[ 2 ] = tmp[ 2 ];
@@ -619,7 +628,7 @@ namespace dicom_controller
 			}
 
 			{
-				byte_array< unsigned short > tmp = to_current_endian( byte_array< unsigned short >( byte ), true );
+				byte_array< unsigned short > tmp = to_current_endian( byte_array< unsigned short >( byte ), from_little_endian );
 				byte[ 0 ] = tmp[ 0 ];
 				byte[ 1 ] = tmp[ 1 ];
 			}
@@ -698,13 +707,14 @@ namespace dicom_controller
 	//! 
 	//! シーケンスを表すDICOMタグが見つかった場合は，再帰的に本関数が適用される
 	//! 
-	//! @param[out] dicom       … DICOMデータの出力先
+	//! @param[out] dicm        … DICOMデータの出力先
 	//! @param[in]  pointer     … 先頭ポインタ
 	//! @param[in]  end_pointer … 末尾先頭ポインタ
+	//! @param[in]  from_little_endian … 入力データがリトルエンディアンかどうか
 	//! 
 	//! @return 次のタグを指すポインタ
 	//! 
-	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
+	inline unsigned char *process_dicom_tag( dicom_tag_container &dicm, unsigned char *pointer, unsigned char *end_pointer, bool from_little_endian = true )
 	{
 		difference_type numBytes = 0;
 		dicom_tag tag;
@@ -734,7 +744,7 @@ namespace dicom_controller
 					}
 
 					pointer += 4;
-					numBytes = to_current_endian( byte_array< unsigned int >( pointer ), true ).get_value( );
+					numBytes = to_current_endian( byte_array< unsigned int >( pointer ), from_little_endian ).get_value( );
 					pointer += 4;
 
 					unsigned char *epp = numBytes == -1 ? ep : pointer + numBytes;
@@ -752,7 +762,7 @@ namespace dicom_controller
 						}
 						else
 						{
-							pointer = process_dicom_tag( dicom, pointer, ep );
+							pointer = process_dicom_tag( dicm, pointer, ep );
 							if( pointer == NULL )
 							{
 								return( NULL );
@@ -790,7 +800,7 @@ namespace dicom_controller
 							}
 
 							p += 4;
-							numBytes = to_current_endian( byte_array< unsigned int >( p ), true ).get_value( );
+							numBytes = to_current_endian( byte_array< unsigned int >( p ), from_little_endian ).get_value( );
 							p += 4 + numBytes;
 
 							if( numBytes < 0 || p > end_pointer )
@@ -802,7 +812,7 @@ namespace dicom_controller
 					if( p <= end_pointer )
 					{
 						numBytes = p - pointer;
-						ite = dicom.append( dicom_element( tag, pointer, numBytes ) );
+						ite = dicm.append( dicom_element( tag, pointer, numBytes ) );
 						pointer += 8;
 					}
 					else
@@ -820,7 +830,7 @@ namespace dicom_controller
 			pointer += numBytes;
 
 #ifdef __SHOW_DICOM_TAG__
-			if( ite != dicom.end( ) )
+			if( ite != dicm.end( ) )
 			{
 				ite->second.show_tag( );
 			}
@@ -836,12 +846,12 @@ namespace dicom_controller
 			else
 			{
 				dicom_tag_container::iterator ite;
-				ite = dicom.append( dicom_element( tag, pointer, numBytes ) );
+				ite = dicm.append( dicom_element( tag, pointer, numBytes ) );
 
 				pointer += numBytes;
 
 #ifdef __SHOW_DICOM_TAG__
-				if( ite != dicom.end( ) )
+				if( ite != dicm.end( ) )
 				{
 					ite->second.show_tag( );
 				}
@@ -861,17 +871,22 @@ namespace dicom_controller
 
 	/// @brief DICOMファイルを読み込んで，全てのDICOMタグを処理しテーブルに登録する
 	//! 
-	//! @param[out] dicom    … DICOMタグ毎にデータを登録するテーブル
+	//! @param[out] dicm  … DICOMタグ毎にデータを登録するテーブル
 	//! @param[in]  filename … 入力DICOM]ファイル名
+	//! @param[in]  from_little_endian … 入力データがリトルエンディアンかどうか
 	//! 
 	//! @retval true  … DICOMファイルの処理に成功
 	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
 	//! 
-	inline bool read_dicom_tags( dicom_tag_container &dicom, const std::string &filename )
+	inline bool read_dicom_tags( dicom_tag_container &dicm, const std::string &filename, bool from_little_endian = true )
 	{
 		size_type filesize;
 		FILE *fp;
-		if( ( fp = fopen( filename.c_str( ), "rb" ) ) == NULL ) return( false );
+		if( ( fp = fopen( filename.c_str( ), "rb" ) ) == NULL )
+		{
+			return( false );
+		}
+
 		// ファイルサイズを取得
 		fseek( fp, 0, SEEK_END );
 		filesize = ftell( fp );
@@ -897,13 +912,13 @@ namespace dicom_controller
 		// DICOMデータの先頭までポインタを移動
 		pointer = check_dicom_file( pointer, end_pointer );
 
-		dicom.clear( );
+		dicm.clear( );
 
 		bool ret = true;
 
 		while( pointer < end_pointer )
 		{
-			pointer = process_dicom_tag( dicom, pointer, end_pointer );
+			pointer = process_dicom_tag( dicm, pointer, end_pointer, from_little_endian );
 			if( pointer == NULL )
 			{
 				ret = false;
@@ -920,6 +935,231 @@ namespace dicom_controller
 		return( ret );
 	}
 
+
+	/// @brief DICOMのタグ集合をファイルに書き出す
+	//! 
+	//! @param[in]  group     … グループID
+	//! @param[in]  element   … エレメントID
+	//! @param[in]  vr        … VRタグ
+	//! @param[in]  data      … データ
+	//! @param[in]  num_bytes … データのバイト数
+	//! @param[out] fp    … 出力ファイルストリーム
+	//! @param[in]  to_little_endian … 出力データの形式をリトルエンディアンにするかどうか
+	//! 
+	//! @retval true  … DICOMファイルの処理に成功
+	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
+	//! 
+	inline bool write_dicom_tag( unsigned short group, unsigned short element, dicom_vr vr, const unsigned char *data, size_t num_bytes, FILE *fp, bool to_little_endian = true )
+	{
+		unsigned char ZERO[] = { 0, 0, 0 };
+		switch( vr )
+		{
+		case OW:
+		case OF:
+			fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( get_dicom_vr( vr ).c_str( ), 1, 2, fp );
+			fwrite( ZERO, 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
+			if( _is_little_endian_( ) == to_little_endian )
+			{
+				fwrite( data, 1, num_bytes, fp );
+			}
+			else
+			{
+				switch( vr )
+				{
+				case OW:
+					if( num_bytes % 2 == 0 )
+					{
+						// データのバイト数がおかしい
+						for( size_t i = 0 ; i < num_bytes ; i += 2 )
+						{
+							fwrite( from_current_endian( byte_array< unsigned short >( data + i ), to_little_endian ).get_bytes( ), 1, 2, fp );
+						}
+					}
+					else
+					{
+						return( false );
+					}
+					break;
+
+				case OF:
+				default:
+					if( num_bytes % 4 == 0 )
+					{
+						// データのバイト数がおかしい
+						for( size_t i = 0 ; i < num_bytes ; i += 4 )
+						{
+							fwrite( from_current_endian( byte_array< unsigned int >( data + i ), to_little_endian ).get_bytes( ), 1, 4, fp );
+						}
+					}
+					else
+					{
+						return( false );
+					}
+					break;
+				}
+			}
+			break;
+
+		case US:
+		case SS:
+		case AT:
+		case UL:
+		case SL:
+		case FL:
+		case FD:
+			fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( get_dicom_vr( vr ).c_str( ), 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned short >( static_cast< unsigned short >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			if( _is_little_endian_( ) == to_little_endian )
+			{
+				fwrite( data, 1, num_bytes, fp );
+			}
+			else
+			{
+				switch( vr )
+				{
+				case US:
+				case SS:
+				case AT:
+					if( num_bytes % 2 == 0 )
+					{
+						// データのバイト数がおかしい
+						for( size_t i = 0 ; i < num_bytes ; i += 2 )
+						{
+							fwrite( from_current_endian( byte_array< unsigned short >( data + i ), to_little_endian ).get_bytes( ), 1, 2, fp );
+						}
+					}
+					else
+					{
+						return( false );
+					}
+					break;
+
+				case UL:
+				case SL:
+				case FL:
+					if( num_bytes % 4 == 0 )
+					{
+						// データのバイト数がおかしい
+						for( size_t i = 0 ; i < num_bytes ; i += 4 )
+						{
+							fwrite( from_current_endian( byte_array< unsigned int >( data + i ), to_little_endian ).get_bytes( ), 1, 4, fp );
+						}
+					}
+					else
+					{
+						return( false );
+					}
+					break;
+
+				case FD:
+				default:
+					if( num_bytes % 8 == 0 )
+					{
+						// データのバイト数がおかしい
+						for( size_t i = 0 ; i < num_bytes ; i += 8 )
+						{
+							fwrite( from_current_endian( byte_array< double >( data + i ), to_little_endian ).get_bytes( ), 1, 8, fp );
+						}
+					}
+					else
+					{
+						return( false );
+					}
+					break;
+				}
+			}
+			break;
+
+		case OB:
+		case UN:
+		case SQ:
+		case UT:
+			fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( get_dicom_vr( vr ).c_str( ), 1, 2, fp );
+			fwrite( ZERO, 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
+			fwrite( data, 1, num_bytes, fp );
+			break;
+
+		default:
+			fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( get_dicom_vr( vr ).c_str( ), 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned short >( static_cast< unsigned short >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( data, 1, num_bytes, fp );
+			break;
+		}
+
+		return( true );
+	}
+
+	/// @brief DICOMのタグ集合をファイルに書き出す
+	//! 
+	//! @param[in]  e     … ファイルに出力するDICOMタグ
+	//! @param[out] fp    … 出力ファイルストリーム
+	//! @param[in]  to_little_endian … 出力データの形式をリトルエンディアンにするかどうか
+	//! 
+	//! @retval true  … DICOMファイルの処理に成功
+	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
+	//! 
+	inline bool write_dicom_tag( const dicom_element &e, FILE *fp, bool to_little_endian = true )
+	{
+		return( write_dicom_tag( e.get_group( ), e.get_element( ), e.vr, e.data, e.num_bytes, fp, to_little_endian ) );
+	}
+
+
+	/// @brief DICOMのタグ集合をファイルに書き出す
+	//! 
+	//! @param[out] dicm     … DICOMタグ毎にデータを登録するテーブル
+	//! @param[in]  filename … 出力DICOMファイル名
+	//! @param[in]  to_little_endian … 出力データの形式をリトルエンディアンにするかどうか
+	//! 
+	//! @retval true  … DICOMファイルの処理に成功
+	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
+	//! 
+	inline bool write_dicom_tags( const dicom_tag_container &dicm, const std::string &filename, bool to_little_endian = true )
+	{
+		FILE *fp;
+		if( ( fp = fopen( filename.c_str( ), "wb" ) ) == NULL )
+		{
+			return( false );
+		}
+
+		// DICOMのヘッダ情報を書き込む
+		unsigned char ZERO[ 128 ];
+		unsigned char DICM[ 4 ];
+		memset( ZERO, 0, sizeof( unsigned char ) * 128 );
+		DICM[ 0 ] = 'D';
+		DICM[ 1 ] = 'I';
+		DICM[ 2 ] = 'C';
+		DICM[ 3 ] = 'M';
+		fwrite( ZERO, sizeof( unsigned char ), 128, fp );
+		fwrite( DICM, sizeof( unsigned char ), 4, fp );
+
+		// 明示的VRの指定がない場合は追加する
+		if( !to_little_endian || !dicm.contain( 0x0002, 0x0010 ) || find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2" )
+		{
+			std::string syntax = to_little_endian ? "1.2.840.10008.1.2.1" : "1.2.840.10008.1.2.2";
+			write_dicom_tag( 0x0002, 0x0010, UI, reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.size( ), fp, to_little_endian );
+		}
+
+		// すべて明示的VRで記述する
+		dicom_tag_container::const_iterator ite = dicm.begin( );
+		for( ; ite != dicm.end( ) ; ++ite )
+		{
+			write_dicom_tag( ite->second, fp, to_little_endian );
+		}
+
+		fclose( fp );
+
+		return( true );
+	}
 }
 
 
@@ -943,23 +1183,23 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 	typedef _pixel_converter_< T > pixel_converter;
 	typedef typename pixel_converter::color_type color_type;
 
-	dicom_controller::dicom_tag_container dicom;
-	dicom_controller::dicom_info info;
+	dicom::dicom_tag_container dicm;
+	dicom::dicom_info info;
 
-	if( !dicom_controller::read_dicom_tags( dicom, filename ) )
+	if( !dicom::read_dicom_tags( dicm, filename ) )
 	{
 		return( false );
 	}
 
-	dicom_controller::get_dicom_info( dicom, info );
+	dicom::get_dicom_info( dicm, info );
 
 	double window_level = info.window_center;
 	double window_width = info.window_width;
 
-	if( dicom.contain( 0x7fe0, 0x0010 ) )
+	if( dicm.contain( 0x7fe0, 0x0010 ) )
 	{
-		dicom_controller::dicom_element &element = dicom( 0x7fe0, 0x0010 );
-		if( !dicom_controller::decode( element, info ) )
+		dicom::dicom_element &element = dicm( 0x7fe0, 0x0010 );
+		if( !dicom::decode( element, info ) )
 		{
 			// 圧縮の解凍もしくはデータがおかしい
 			return( false );

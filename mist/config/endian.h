@@ -79,6 +79,9 @@ public:
 
 	/// @brief 値を設定する
 	value_type set_value( const value_type &v ) { return( value = v ); }
+
+	/// @brief バイト列を取得する
+	const unsigned char * get_bytes( ) const { return( byte ); }
 };
 
 
