@@ -108,54 +108,54 @@ void fft( array1< T1, Allocator1 > &in, array1< std::complex< T2 >, Allocator2 >
 #if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
 
 #define FFT1( type1, type2 ) \
-	template < >\
-	void fft( array1< std::complex< type1 > > &in, array1< std::complex< type2 > > &out )\
-	{\
-		int i;\
-		double *data;\
-		double *w;\
-		int *ip;\
-		if( !size_check( (unsigned int) in.size() ) )\
-		{\
-			return;\
-		}\
-		data = ( double *)malloc( sizeof( double ) * in.size() * 2 );\
-		ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( static_cast< double >(in.size()) ) + 3 ) );\
-		w = ( double * )malloc(sizeof( double ) * (int)( in.size() / 2 ) );\
-		for( i = 0 ; i < in.size() ; i++ )\
-		{\
-			data[i*2] = ( double )in[i].real();\
-			data[i*2+1] = ( double )in[i].imag();\
-		}\
-		ip[0] = 0;\
-		ooura_fft::cdft( static_cast< int >(in.size()*2), -1, data, ip, w );\
-		out.resize( in.size() );\
-		for( i = 0 ; i < out.size() ; i++ )\
-		{\
-			out[i] = std::complex< type2 >( (type2)data[2*i], (type2)data[2*i+1] );\
-		}\
-		free( w );\
-		free( ip );\
-		free( data );\
-	};\
+	template < >																								\
+	void fft( array1< std::complex< type1 > > &in, array1< std::complex< type2 > > &out )						\
+	{																											\
+		array1< std::complex< type1 > >::size_type i;															\
+		double *data;																							\
+		double *w;																								\
+		int *ip;																								\
+		if( !size_check( ( unsigned int ) in.size( ) ) )														\
+		{																										\
+			return;																								\
+		}																										\
+		data = ( double * )malloc( sizeof( double ) * in.size( ) * 2 );											\
+		ip = ( int * )malloc( sizeof( int ) * ( int )( sqrt( static_cast< double >( in.size( ) ) ) + 3 ) );		\
+		w = ( double * )malloc(sizeof( double ) * ( int )( in.size( ) / 2 ) );									\
+		for( i = 0 ; i < in.size( ) ; i++ )																		\
+		{																										\
+			data[ i * 2 ]     = ( double )in[ i].real( );														\
+			data[ i * 2 + 1 ] = ( double )in[ i ].imag( );														\
+		}																										\
+		ip[ 0 ] = 0;																							\
+		ooura_fft::cdft( static_cast< int >( in.size( ) * 2 ), -1, data, ip, w );								\
+		out.resize( in.size( ) );																				\
+		for( i = 0 ; i < out.size( ) ; i++ )																	\
+		{																										\
+			out[ i ] = std::complex< type2 >( ( type2 )data[ 2 * i ], ( type2 )data[ 2 * i + 1 ] );				\
+		}																										\
+		free( w );																								\
+		free( ip );																								\
+		free( data );																							\
+	}																											\
 
-	FFT1(	float,	float	)
-FFT1( float, double	)
-FFT1( float, int	)
-FFT1( float, short	)
-FFT1( float, char	)
-FFT1( float, unsigned int )
+FFT1( float, float          )
+FFT1( float, double         )
+FFT1( float, int            )
+FFT1( float, short          )
+FFT1( float, char           )
+FFT1( float, unsigned int   )
 FFT1( float, unsigned short )
-FFT1( float, unsigned char )
+FFT1( float, unsigned char  )
 
-FFT1( double, float	)
-FFT1( double, double	)
-FFT1( double, int	)
-FFT1( double, short	)
-FFT1( double, char	)
-FFT1( double, unsigned int )
+FFT1( double, float          )
+FFT1( double, double         )
+FFT1( double, int            )
+FFT1( double, short          )
+FFT1( double, char           )
+FFT1( double, unsigned int   )
 FFT1( double, unsigned short )
-FFT1( double, unsigned char )
+FFT1( double, unsigned char  )
 
 FFT1( int, float	)
 FFT1( int, double	)
@@ -209,7 +209,6 @@ FFT1( unsigned char, short	)
 FFT1( unsigned char, char	)
 FFT1( unsigned char, unsigned int )
 FFT1( unsigned char, unsigned short )
-FFT1( unsigned char, unsigned char )
 
 #undef FFT1
 
@@ -303,38 +302,38 @@ void fft_inverse( array1< std::complex< T1 >, Allocator1 > &in, array1< T2, Allo
 #if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
 
 #define fft_inverse1( type1, type2 ) \
-	template < >\
-	void fft_inverse( array1< std::complex< type1 > > &in, array1< std::complex< type2 > > &out )\
-	{\
-		int i;\
-		double *data;\
-		double *w;\
-		int *ip;\
-		if( !size_check( (unsigned int) in.size() ) )\
-		{\
-			return;\
-		}\
-		data = ( double *)malloc( sizeof( double ) * in.size() * 2 );\
-		ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( static_cast< double >(in.size() )) + 3 ) );\
-		w = ( double * )malloc(sizeof( double ) * (int)( in.size() / 2 ) );\
-		for( i = 0 ; i < in.size() ; i++ )\
-		{\
-			data[i*2] = ( double )in[i].real();\
-			data[i*2+1] = ( double )in[i].imag();\
-		}\
-		ip[0] = 0;\
-		ooura_fft::cdft( static_cast< int >(in.size() * 2), 1, data, ip, w );\
-		out.resize( in.size() );\
-		for( i = 0 ; i < out.size() ; i++ )\
-		{\
-			out[i] = std::complex< type2 >( (type2)(data[2*i]/in.size() ), (type2)(data[2*i+1]/in.size()) );\
-		}\
-		free( w );\
-		free( ip );\
-		free( data );\
+	template < >																														\
+	void fft_inverse( array1< std::complex< type1 > > &in, array1< std::complex< type2 > > &out )										\
+	{																																	\
+		array1< std::complex< type1 > >::size_type i;																					\
+		double *data;																													\
+		double *w;																														\
+		int *ip;																														\
+		if( !size_check( (unsigned int) in.size() ) )																					\
+		{																																\
+			return;																														\
+		}																																\
+		data = ( double * )malloc( sizeof( double ) * in.size( ) * 2 );																	\
+		ip = ( int * )malloc( sizeof( int ) * ( int )( sqrt( static_cast< double >( in.size( ) ) ) + 3 ) );								\
+		w = ( double * )malloc( sizeof( double ) * ( int )( in.size() / 2 ) );															\
+		for( i = 0 ; i < in.size() ; i++ )																								\
+		{																																\
+			data[ i * 2 ]     = ( double )in[ i ].real( );																				\
+			data[ i * 2 + 1 ] = ( double )in[ i ].imag( );																				\
+		}																																\
+		ip[ 0 ] = 0;																													\
+		ooura_fft::cdft( static_cast< int >( in.size( ) * 2 ), 1, data, ip, w );														\
+		out.resize( in.size( ) );																										\
+		for( i = 0 ; i < out.size( ) ; i++ )																							\
+		{																																\
+			out[ i ] = std::complex< type2 >( ( type2 )( data[ 2 * i ] / in.size( ) ), ( type2 )( data[ 2 * i + 1 ] / in.size( ) ) );	\
+		}																																\
+		free( w );																														\
+		free( ip );																														\
+		free( data );																													\
 	}\
 
-	fft_inverse1(	float,	float	)
+fft_inverse1( float, float	)
 fft_inverse1( float, double	)
 fft_inverse1( float, int	)
 fft_inverse1( float, short	)
@@ -404,7 +403,6 @@ fft_inverse1( unsigned char, short	)
 fft_inverse1( unsigned char, char	)
 fft_inverse1( unsigned char, unsigned int )
 fft_inverse1( unsigned char, unsigned short )
-fft_inverse1( unsigned char, unsigned char )
 
 #undef fft_inverse1
 #else
@@ -533,7 +531,7 @@ void fft( array2< T1, Allocator1 > &in, array2< std::complex< T2 >, Allocator2 >
 	template < >\
 	void fft( array2< std::complex< type1 > > &in, array2< std::complex< type2 > > &out )\
 	{\
-		int i,j;\
+		array2< std::complex< type1 > >::size_type i,j;\
 		double **data;\
 		double *t;\
 		double *w;\
@@ -587,7 +585,7 @@ void fft( array2< T1, Allocator1 > &in, array2< std::complex< T2 >, Allocator2 >
 	}\
 
 
-	FFT2(	float,	float	)
+FFT2( float, float	)
 FFT2( float, double	)
 FFT2( float, int	)
 FFT2( float, short	)
@@ -657,7 +655,6 @@ FFT2( unsigned char, short	)
 FFT2( unsigned char, char	)
 FFT2( unsigned char, unsigned int )
 FFT2( unsigned char, unsigned short )
-FFT2( unsigned char, unsigned char )
 
 #undef FFT2
 #else
@@ -815,7 +812,7 @@ void fft_inverse( array2< std::complex< T1 >, Allocator1 > &in, array2< T2, Allo
 #define fft_inverse2( type1, type2 ) \
 	void fft_inverse( array2< std::complex< type1 > > &in, array2< std::complex< type2 > > &out )\
 	{\
-		int i,j;\
+		array2< std::complex< type1 > >::size_type i,j;\
 		double **data;\
 		double *t;\
 		double *w;\
@@ -868,7 +865,7 @@ void fft_inverse( array2< std::complex< T1 >, Allocator1 > &in, array2< T2, Allo
 		free( data );\
 	}\
 
-	fft_inverse2(	float,	float	)
+fft_inverse2( float, float	)
 fft_inverse2( float, double	)
 fft_inverse2( float, int	)
 fft_inverse2( float, short	)
@@ -938,7 +935,6 @@ fft_inverse2( unsigned char, short	)
 fft_inverse2( unsigned char, char	)
 fft_inverse2( unsigned char, unsigned int )
 fft_inverse2( unsigned char, unsigned short )
-fft_inverse2( unsigned char, unsigned char )
 
 #undef fft_inverse2
 
@@ -1123,7 +1119,7 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 	template <>\
 	void fft( array3< std::complex< type1 > > &in, array3< std::complex< type2 > > &out )\
 	{\
-		int i,j,k;\
+		array3< std::complex< type1 > >::size_type i,j,k;\
 		double ***data;\
 		double *t;\
 		double *w;\
@@ -1199,7 +1195,7 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 		free( data );\
 	}\
 
-	FFT3(	float,	float	)
+FFT3( float, float	)
 FFT3( float, double	)
 FFT3( float, int	)
 FFT3( float, short	)
@@ -1269,7 +1265,6 @@ FFT3( unsigned char, short	)
 FFT3( unsigned char, char	)
 FFT3( unsigned char, unsigned int )
 FFT3( unsigned char, unsigned short )
-FFT3( unsigned char, unsigned char )
 
 #undef FFT3
 
@@ -1479,7 +1474,7 @@ void fft_inverse( array3< std::complex< T1 >, Allocator1 > &in, array3< T2 , All
 	template <>\
 	void fft_inverse( array3< std::complex< type1 > > &in, array3< std::complex< type2 > > &out )\
 	{\
-		int i,j,k;\
+		array3< std::complex< type1 > >::size_type i,j,k;\
 		double ***data;\
 		double *t;\
 		double *w;\
@@ -1555,7 +1550,7 @@ void fft_inverse( array3< std::complex< T1 >, Allocator1 > &in, array3< T2 , All
 		free( data );\
 	}\
 
-	fft_inverse3(	float,	float	)
+fft_inverse3( float, float	)
 fft_inverse3( float, double	)
 fft_inverse3( float, int	)
 fft_inverse3( float, short	)
@@ -1625,7 +1620,6 @@ fft_inverse3( unsigned char, short	)
 fft_inverse3( unsigned char, char	)
 fft_inverse3( unsigned char, unsigned int )
 fft_inverse3( unsigned char, unsigned short )
-fft_inverse3( unsigned char, unsigned char )
 
 #undef fft_inverse3
 

@@ -1,3 +1,5 @@
+#include <iostream.h>
+
 #include <mist/mist.h>
 #include <mist/fft/fft.h>
 #include <mist/fft/dct.h>
@@ -6,7 +8,7 @@
 #include <stdio.h>
 #include <time.h>
 
-void main()
+int main( int argc, char *argv[ ] )
 {
 	mist::array3< short >::size_type i;
 
@@ -167,4 +169,6 @@ void main()
 
 	a3df.clear();
 	work3d.clear();
+	
+	return( 0 );
 }

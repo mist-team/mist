@@ -65,7 +65,7 @@ morphology_test : morphology_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) $(IMGLIBS)
 
 fft_test : fft_test.o
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) $(IMGLIBS)
 
 singleton_test : singleton_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
