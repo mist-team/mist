@@ -12,29 +12,26 @@ _MIST_BEGIN
 template < class T > struct matrix_minus;
 template < class T > struct matrix_transpose;
 
-template< class T, class Allocator, class Derive >
+template< class T, class Derive >
 struct matrix_expression
 {
-	typedef T value_type;
-	typedef Allocator allocator_type;
-	typedef typename Allocator::size_type size_type;
+	typedef typename T::value_type value_type;
+	typedef typename T::allocator_type allocator_type;
+	typedef typename T::size_type size_type;
 
 	const Derive &get_ref( ) const { return( static_cast< const Derive & >( *this ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( get_ref( ).operator()( r, c ) ); }
 	size_type rows( ) const { return( get_ref( ).rows( ) ); };
 	size_type cols( ) const { return( get_ref( ).cols( ) ); };
 
-	matrix_minus< matrix_expression< T, Allocator, Derive > > operator -() const { return( matrix_minus< matrix_expression< T, Allocator, Derive > >( *this ) ); }
-	matrix_transpose< matrix_expression< T, Allocator, Derive > > t( ) const { return( matrix_transpose< matrix_expression< T, Allocator, Derive > >( *this ) ); }
+	matrix_minus< matrix_expression< T, Derive > > operator -() const { return( matrix_minus< matrix_expression< T, Derive > >( *this ) ); }
+	matrix_transpose< matrix_expression< T, Derive > > t( ) const { return( matrix_transpose< matrix_expression< T, Derive > >( *this ) ); }
 };
 
 // íPçÄââéZéq
 template< class T, class Derive >
-struct matrix_single_operation : public matrix_expression< typename T::value_type, typename T::allocator_type, Derive > 
+struct matrix_single_operation : public matrix_expression< T, Derive > 
 {
-	typedef typename T::value_type value_type;
-	typedef typename T::size_type size_type;
-
 	const T &middle_;
 
 	matrix_single_operation( const T &mhs ) : middle_( mhs ){}
@@ -42,11 +39,8 @@ struct matrix_single_operation : public matrix_expression< typename T::value_typ
 
 // ÇQçÄââéZéq
 template< class T1, class T2, class Derive >
-struct matrix_bind_operation : public matrix_expression< typename T1::value_type, typename T1::allocator_type, Derive > 
+struct matrix_bind_operation : public matrix_expression< T1, Derive > 
 {
-	typedef typename T1::value_type value_type;
-	typedef typename T1::size_type size_type;
-
 	const T1 &left_;
 	const T2 &right_;
 
@@ -58,9 +52,6 @@ struct matrix_bind_operation : public matrix_expression< typename T1::value_type
 template< class T >
 struct matrix_minus : public matrix_single_operation< T, matrix_minus< T > >
 {
-	typedef typename T::value_type value_type;
-	typedef typename T::size_type size_type;
-
 	matrix_minus( const T &mhs ) : matrix_single_operation< T, matrix_minus< T > >( mhs ){}
 	size_type rows( ) const { return( middle_.rows( ) ); }
 	size_type cols( ) const { return( middle_.cols( ) ); }
@@ -72,9 +63,6 @@ struct matrix_minus : public matrix_single_operation< T, matrix_minus< T > >
 template< class T >
 struct matrix_transpose : public matrix_single_operation< T, matrix_transpose< T > >
 {
-	typedef typename T::value_type value_type;
-	typedef typename T::size_type size_type;
-
 	matrix_transpose( const T &mhs ) : matrix_single_operation< T, matrix_transpose< T > >( mhs ){}
 	size_type rows( ) const { return( middle_.cols( ) ); }
 	size_type cols( ) const { return( middle_.rows( ) ); }
@@ -86,9 +74,6 @@ struct matrix_transpose : public matrix_single_operation< T, matrix_transpose< T
 template< class T1, class T2 >
 struct matrix_add : public matrix_bind_operation< T1, T2, matrix_add< T1, T2 > >
 {
-	typedef typename T1::value_type value_type;
-	typedef typename T1::size_type size_type;
-
 	matrix_add( const T1 &lhs, const T2 &rhs ) : matrix_bind_operation< T1, T2, matrix_add< T1, T2 > >( lhs, rhs )
 	{
 #ifdef _CHECK_MATRIX_OPERATION_
@@ -109,9 +94,6 @@ struct matrix_add : public matrix_bind_operation< T1, T2, matrix_add< T1, T2 > >
 template< class T1, class T2 >
 struct matrix_sub : public matrix_bind_operation< T1, T2, matrix_sub< T1, T2 > >
 {
-	typedef typename T1::value_type value_type;
-	typedef typename T1::size_type size_type;
-
 	matrix_sub( const T1 &lhs, const T2 &rhs ) : matrix_bind_operation< T1, T2, matrix_sub< T1, T2 > >( lhs, rhs )
 	{
 #ifdef _CHECK_MATRIX_OPERATION_
@@ -132,9 +114,6 @@ struct matrix_sub : public matrix_bind_operation< T1, T2, matrix_sub< T1, T2 > >
 template< class T1, class T2 >
 struct matrix_mul : public matrix_bind_operation< T1, T2, matrix_mul< T1, T2 > >
 {
-	typedef typename T1::value_type value_type;
-	typedef typename T1::size_type size_type;
-
 	matrix_mul( const T1 &lhs, const T2 &rhs ) : matrix_bind_operation< T1, T2, matrix_mul< T1, T2 > >( lhs, rhs )
 	{
 #ifdef _CHECK_MATRIX_OPERATION_
@@ -164,9 +143,6 @@ struct matrix_mul : public matrix_bind_operation< T1, T2, matrix_mul< T1, T2 > >
 template< class T1, class T2 >
 struct matrix_add_const : public matrix_bind_operation< T1, T2, matrix_add_const< T1, T2 > >
 {
-	typedef typename T1::value_type value_type;
-	typedef typename T1::size_type size_type;
-
 	matrix_add_const( const T1 &lhs, const T2 &rhs ) : matrix_bind_operation< T1, T2, matrix_add_const< T1, T2 > >( lhs, rhs ){}
 	size_type rows( ) const { return( left_.rows( ) ); }
 	size_type cols( ) const { return( left_.cols( ) ); }
@@ -177,9 +153,6 @@ struct matrix_add_const : public matrix_bind_operation< T1, T2, matrix_add_const
 template< class T1, class T2 >
 struct matrix_sub_const1 : public matrix_bind_operation< T1, T2, matrix_sub_const1< T1, T2 > >
 {
-	typedef typename T1::value_type value_type;
-	typedef typename T1::size_type size_type;
-
 	matrix_sub_const1( const T1 &lhs, const T2 &rhs ) : matrix_bind_operation< T1, T2, matrix_sub_const1< T1, T2 > >( lhs, rhs ){}
 	size_type rows( ) const { return( left_.rows( ) ); }
 	size_type cols( ) const { return( left_.cols( ) ); }
@@ -190,9 +163,6 @@ struct matrix_sub_const1 : public matrix_bind_operation< T1, T2, matrix_sub_cons
 template< class T1, class T2 >
 struct matrix_sub_const2 : public matrix_bind_operation< T1, T2, matrix_sub_const2< T1, T2 > >
 {
-	typedef typename T1::value_type value_type;
-	typedef typename T1::size_type size_type;
-
 	matrix_sub_const2( const T1 &lhs, const T2 &rhs ) : matrix_bind_operation< T1, T2, matrix_sub_const2< T1, T2 > >( lhs, rhs ){}
 	size_type rows( ) const { return( left_.rows( ) ); }
 	size_type cols( ) const { return( left_.cols( ) ); }
@@ -203,9 +173,6 @@ struct matrix_sub_const2 : public matrix_bind_operation< T1, T2, matrix_sub_cons
 template< class T1, class T2 >
 struct matrix_mul_const : public matrix_bind_operation< T1, T2, matrix_mul_const< T1, T2 > >
 {
-	typedef typename T1::value_type value_type;
-	typedef typename T1::size_type size_type;
-
 	matrix_mul_const( const T1 &lhs, const T2 &rhs ) : matrix_bind_operation< T1, T2, matrix_mul_const< T1, T2 > >( lhs, rhs ){}
 	size_type rows( ) const { return( left_.rows( ) ); }
 	size_type cols( ) const { return( left_.cols( ) ); }
@@ -216,9 +183,6 @@ struct matrix_mul_const : public matrix_bind_operation< T1, T2, matrix_mul_const
 template< class T1, class T2 >
 struct matrix_div_const : public matrix_bind_operation< T1, T2, matrix_div_const< T1, T2 > >
 {
-	typedef typename T1::value_type value_type;
-	typedef typename T1::size_type size_type;
-
 	matrix_div_const( const T1 &lhs, const T2 &rhs ) : matrix_bind_operation< T1, T2, matrix_div_const< T1, T2 > >( lhs, rhs )
 	{
 #ifdef _CHECK_MATRIX_OPERATION_
@@ -288,7 +252,7 @@ public: // îzóÒÇ…ëŒÇ∑ÇÈéZèpââéZ
 		return( matrix_transpose< matrix >( *this ) );
 	}
 
-	void operator *=( const matrix &m2 )
+	const matrix &operator *=( const matrix &m2 )
 	{
 		matrix &m1 = *this;
 #ifndef _CHECK_MATRIX_OPERATION_
@@ -319,8 +283,8 @@ public: // îzóÒÇ…ëŒÇ∑ÇÈéZèpââéZ
 		return( *this );
 	}
 
-	template < class Derive >
-	const matrix& operator *=( const matrix_expression< T, Allocator, Derive > &m2 )
+	template < class Expression, class Derive >
+	const matrix &operator *=( const matrix_expression< Expression, Derive > &m2 )
 	{
 		matrix &m1 = *this;
 #ifndef _CHECK_MATRIX_OPERATION_
@@ -350,8 +314,8 @@ public: // îzóÒÇ…ëŒÇ∑ÇÈéZèpââéZ
 		return( *this );
 	}
 
-	template < class Derive >
-	const matrix& operator +=( const matrix_expression< T, Allocator, Derive > &m2 )
+	template < class Expression, class Derive >
+	const matrix &operator +=( const matrix_expression< Expression, Derive > &m2 )
 	{
 		matrix &m1 = *this;
 #ifndef _CHECK_MATRIX_OPERATION_
@@ -372,8 +336,8 @@ public: // îzóÒÇ…ëŒÇ∑ÇÈéZèpââéZ
 		return( *this );
 	}
 
-	template < class Derive >
-	const matrix& operator -=( const matrix_expression< T, Allocator, Derive > &m2 )
+	template < class Expression, class Derive >
+	const matrix &operator -=( const matrix_expression< Expression, Derive > &m2 )
 	{
 		matrix &m1 = *this;
 #ifndef _CHECK_MATRIX_OPERATION_
@@ -430,19 +394,32 @@ public:
 		return( *this );
 	}
 
-	template < class Derive >
-	const matrix& operator =( const matrix_expression< T, Allocator, Derive > &expression )
+	template < class Expression, class Derive >
+	const matrix& operator =( const matrix_expression< Expression, Derive > &expression )
 	{
-		matrix m( expression.rows( ), expression.cols( ) );
-		for( size_type r = 0 ; r < m.rows( ) ; r++ )
+		if( rows( ) == expression.rows( ) && cols( ) == expression.cols( ) )
 		{
-			for( size_type c = 0 ; c < m.cols( ) ; c++ )
+			matrix &m = *this;
+			for( size_type r = 0 ; r < rows( ) ; r++ )
 			{
-				m( r, c ) = expression( r, c );
+				for( size_type c = 0 ; c < cols( ) ; c++ )
+				{
+					m( r, c ) = expression( r, c );
+				}
 			}
 		}
-		m.swap( *this );
-
+		else
+		{
+			matrix m( expression.rows( ), expression.cols( ) );
+			for( size_type r = 0 ; r < m.rows( ) ; r++ )
+			{
+				for( size_type c = 0 ; c < m.cols( ) ; c++ )
+				{
+					m( r, c ) = expression( r, c );
+				}
+			}
+			m.swap( *this );
+		}
 		return( *this );
 	}
 
@@ -495,8 +472,8 @@ public:
 
 	matrix( const matrix< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ){ }
 
-	template < class Derive >
-	explicit matrix( const matrix_expression< T, Allocator, Derive > &expression ) : base( expression.rows( ) * expression.cols( ) ), size1_( expression.rows( ) ), size2_( expression.cols( ) )
+	template < class Expression, class Derive >
+	explicit matrix( const matrix_expression< Expression, Derive > &expression ) : base( expression.rows( ) * expression.cols( ) ), size1_( expression.rows( ) ), size2_( expression.cols( ) )
 	{
 		matrix &m = *this;
 		for( size_type r = 0 ; r < m.rows( ) ; r++ )
@@ -529,11 +506,11 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const matrix< T, Alloca
 }
 
 
-template < class Middle, class Allocator, class Derive >
-inline ::std::ostream &operator <<( ::std::ostream &out,  const matrix_expression< Middle, Allocator, Derive > &m )
+template < class Expression, class Derive >
+inline ::std::ostream &operator <<( ::std::ostream &out,  const matrix_expression< Expression, Derive > &m )
 {
-	typedef typename matrix_expression< Middle, Allocator, Derive >::size_type size_type;
-	typedef typename matrix_expression< Middle, Allocator, Derive >::value_type value_type;
+	typedef typename matrix_expression< Expression, Derive >::size_type size_type;
+	typedef typename matrix_expression< Expression, Derive >::value_type value_type;
 	return( operator <<( out, matrix< value_type, Allocator >( m ) ) );
 }
 
@@ -562,21 +539,21 @@ inline matrix_add< matrix< T, A >, matrix< T, A > > operator +( const matrix< T,
 }
 
 template< class T, class A, class Left, class Derive >
-inline matrix_add< matrix_expression< Left, A, Derive >, matrix< T, A > > operator +( const matrix_expression< Left, A, Derive > &lhs, const matrix< T, A > &rhs )
+inline matrix_add< matrix_expression< Left, Derive >, matrix< T, A > > operator +( const matrix_expression< Left, Derive > &lhs, const matrix< T, A > &rhs )
 {
-	return( matrix_add< matrix_expression< Left, A, Derive >, matrix< T, A > >( lhs, rhs ) );
+	return( matrix_add< matrix_expression< Left, Derive >, matrix< T, A > >( lhs, rhs ) );
 }
 
 template< class T, class A, class Right, class Derive >
-inline matrix_add< matrix< T, A >, matrix_expression< Right, A, Derive > > operator +( const matrix< T, A > &lhs, const matrix_expression< Right, A, Derive > &rhs )
+inline matrix_add< matrix< T, A >, matrix_expression< Right, Derive > > operator +( const matrix< T, A > &lhs, const matrix_expression< Right, Derive > &rhs )
 {
-	return( matrix_add< matrix< T, A >, matrix_expression< Right, A, Derive > >( lhs, rhs ) );
+	return( matrix_add< matrix< T, A >, matrix_expression< Right, Derive > >( lhs, rhs ) );
 }
 
-template< class A, class Left, class Right, class Derive1, class Derive2 >
-inline matrix_add< matrix_expression< Left, A, Derive1 >, matrix_expression< Right, A, Derive2 > > operator +( const matrix_expression< Left, A, Derive1 > &lhs, const matrix_expression< Right, A, Derive2 > &rhs )
+template< class Left, class Right, class Derive1, class Derive2 >
+inline matrix_add< matrix_expression< Left, Derive1 >, matrix_expression< Right, Derive2 > > operator +( const matrix_expression< Left, Derive1 > &lhs, const matrix_expression< Right, Derive2 > &rhs )
 {
-	return( matrix_add< matrix_expression< Left, A, Derive1 >, matrix_expression< Right, A, Derive2 > >( lhs, rhs ) );
+	return( matrix_add< matrix_expression< Left, Derive1 >, matrix_expression< Right, Derive2 > >( lhs, rhs ) );
 }
 
 template< class T, class A >
@@ -603,21 +580,21 @@ inline matrix_sub< matrix< T, A >, matrix< T, A > > operator -( const matrix< T,
 }
 
 template< class T, class A, class Left, class Derive >
-inline matrix_sub< matrix_expression< Left, A, Derive >, matrix< T, A > > operator -( const matrix_expression< Left, A, Derive > &lhs, const matrix< T, A > &rhs )
+inline matrix_sub< matrix_expression< Left, Derive >, matrix< T, A > > operator -( const matrix_expression< Left, Derive > &lhs, const matrix< T, A > &rhs )
 {
-	return( matrix_sub< matrix_expression< Left, A, Derive >, matrix< T, A > >( lhs, rhs ) );
+	return( matrix_sub< matrix_expression< Left, Derive >, matrix< T, A > >( lhs, rhs ) );
 }
 
 template< class T, class A, class Right, class Derive >
-inline matrix_sub< matrix< T, A >, matrix_expression< Right, A, Derive > > operator -( const matrix< T, A > &lhs, const matrix_expression< Right, A, Derive > &rhs )
+inline matrix_sub< matrix< T, A >, matrix_expression< Right, Derive > > operator -( const matrix< T, A > &lhs, const matrix_expression< Right, Derive > &rhs )
 {
-	return( matrix_sub< matrix< T, A >, matrix_expression< Right, A, Derive > >( lhs, rhs ) );
+	return( matrix_sub< matrix< T, A >, matrix_expression< Right, Derive > >( lhs, rhs ) );
 }
 
-template< class A, class Left, class Right, class Derive1, class Derive2 >
-inline matrix_sub< matrix_expression< Left, A, Derive1 >, matrix_expression< Right, A, Derive2 > > operator -( const matrix_expression< Left, A, Derive1 > &lhs, const matrix_expression< Right, A, Derive2 > &rhs )
+template< class Left, class Right, class Derive1, class Derive2 >
+inline matrix_sub< matrix_expression< Left, Derive1 >, matrix_expression< Right, Derive2 > > operator -( const matrix_expression< Left, Derive1 > &lhs, const matrix_expression< Right, Derive2 > &rhs )
 {
-	return( matrix_sub< matrix_expression< Left, A, Derive1 >, matrix_expression< Right, A, Derive2 > >( lhs, rhs ) );
+	return( matrix_sub< matrix_expression< Left, Derive1 >, matrix_expression< Right, Derive2 > >( lhs, rhs ) );
 }
 
 template< class T, class A >
@@ -643,21 +620,21 @@ inline matrix_mul< matrix< T, A >, matrix< T, A > > operator *( const matrix< T,
 }
 
 template< class T, class A, class Left, class Derive >
-inline matrix_mul< matrix_expression< Left, A, Derive >, matrix< T, A > > operator *( const matrix_expression< Left, A, Derive > &lhs, const matrix< T, A > &rhs )
+inline matrix_mul< matrix_expression< Left, Derive >, matrix< T, A > > operator *( const matrix_expression< Left, Derive > &lhs, const matrix< T, A > &rhs )
 {
-	return( matrix_mul< matrix_expression< Left, A, Derive >, matrix< T, A > >( lhs, rhs ) );
+	return( matrix_mul< matrix_expression< Left, Derive >, matrix< T, A > >( lhs, rhs ) );
 }
 
 template< class T, class A, class Right, class Derive >
-inline matrix_mul< matrix< T, A >, matrix_expression< Right, A, Derive > > operator *( const matrix< T, A > &lhs, const matrix_expression< Right, A, Derive > &rhs )
+inline matrix_mul< matrix< T, A >, matrix_expression< Right, Derive > > operator *( const matrix< T, A > &lhs, const matrix_expression< Right, Derive > &rhs )
 {
-	return( matrix_mul< matrix< T, A >, matrix_expression< Right, A, Derive > >( lhs, rhs ) );
+	return( matrix_mul< matrix< T, A >, matrix_expression< Right, Derive > >( lhs, rhs ) );
 }
 
 template< class A, class Left, class Right, class Derive1, class Derive2 >
-inline matrix_mul< matrix_expression< Left, A, Derive1 >, matrix_expression< Right, A, Derive2 > > operator *( const matrix_expression< Left, A, Derive1 > &lhs, const matrix_expression< Right, A, Derive2 > &rhs )
+inline matrix_mul< matrix_expression< Left, Derive1 >, matrix_expression< Right, Derive2 > > operator *( const matrix_expression< Left, Derive1 > &lhs, const matrix_expression< Right, Derive2 > &rhs )
 {
-	return( matrix_mul< matrix_expression< Left, A, Derive1 >, matrix_expression< Right, A, Derive2 > >( lhs, rhs ) );
+	return( matrix_mul< matrix_expression< Left, Derive1 >, matrix_expression< Right, Derive2 > >( lhs, rhs ) );
 }
 
 template< class T, class A >
