@@ -5,8 +5,8 @@
 
 int main( )
 {
-	typedef mist::matrix< double > matrix;
-	//typedef mist::matrix< std::complex< double > > matrix;
+	//typedef mist::matrix< double > matrix;
+	typedef mist::matrix< std::complex< double > > matrix;
 	matrix a( 3, 3 ), b( 3, 1 );
 
 	a( 0, 0 ) = 1.0; a( 0, 1 ) =  1.0; a( 0, 2 ) =  1.0;
@@ -48,6 +48,16 @@ int main( )
 		std::cout << "QR factorization" << std::endl;
 
 		std::cout << qr_factorization( matrix( a ) ) << std::endl;
+	}
+
+	{
+		std::cout << "Eigen value and vectors" << std::endl;
+
+		matrix aa = a, eval, evec;
+		mist::eigen( aa, eval, evec );
+		std::cout << aa << std::endl;
+		std::cout << eval << std::endl;
+		std::cout << evec << std::endl;
 	}
 
 	return( 0 );
