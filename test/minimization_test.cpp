@@ -21,6 +21,7 @@ struct f1
 //		std::cout << count++ << "                                     \r";
 		double x = v[ 0 ];
 		double y = v[ 1 ];
+		count++;
 		return( 4.0 * ( x - 1.0 ) * ( x - 1.0 ) + ( y - 2.0 ) * ( y - 2.0 ) + 100 );
 	}
 };
@@ -38,21 +39,24 @@ int main( int argc, char *argv[] )
 	using namespace std;
 
 	typedef mist::matrix< double > matrix_type;
+	typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f1 > functor_reference;
 
 	{
 		matrix_type p( 2, 1 );
+		f1 func;
 		//p[ 0 ] = 0.1;
 		//p[ 1 ] = 0.2;
-		double err = mist::gradient::minimization( p, f1( ), 0.0 );
-		cout << "f( " << p.t( ) << " ) = " << err << endl;
+		double err = mist::gradient::minimization( p, functor_reference( func ), 0.0 );
+		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl;
 	}
 
 	{
 		matrix_type p( 2, 1 ), d = mist::matrix< double >::identity( 2, 2 );
+		f1 func;
 		//p[ 0 ] = 0.1;
 		//p[ 1 ] = 0.2;
-		double err = mist::powell::minimization( p, d, f1( ), 0.0 );
-		cout << "f( " << p.t( ) << " ) = " << err << endl;
+		double err = mist::powell::minimization( p, d, functor_reference( func ), 0.0 );
+		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl;
 	}
 
 	{

@@ -1264,11 +1264,25 @@ namespace powell
 			if( ite <= max_iterations )
 			{
 				// V‚µ‚¢•ûŒü‚ð‹‚ß‚é
+				double len = 0.0;
 				for( r = 0 ; r < p.size( ) ; r++ )
 				{
+					double l = p[ r ] - p0[ r ];
+					len += l;
+					dir[ r ] = l;
+
 					pn[ r ]  = 2.0 * p[ r ] - p0[ r ];
-					dir[ r ] = p[ r ] - p0[ r ];
 					p0[ r ]  = p[ r ];
+				}
+
+				// ŽŸ‚Ì’Tõ•ûŒü‚ð³‹K‰»‚·‚é
+				if( len > 0.0 )
+				{
+					len = std::sqrt( len );
+					for( r = 0 ; r < p.size( ) ; r++ )
+					{
+						dir[ r ] /= len;
+					}
 				}
 
 				double fe = f( pn );
@@ -1276,7 +1290,7 @@ namespace powell
 				if( fe < fp )
 				{
 					// Œ»Ý‚Ì•ûŒüW‡‚ðXV‚·‚é
-					double tmp = fp0 - fe - delta;
+					double tmp = fp0 - fp - delta;
 					double ttt = 2.0 * ( fp0 - 2.0 * fp + fe ) * tmp * tmp - delta * ( fp0 - fe ) * ( fp0 - fe );
 					if( ttt < 0 )
 					{
@@ -1391,11 +1405,25 @@ namespace powell
 			if( ite <= max_iterations )
 			{
 				// V‚µ‚¢•ûŒü‚ð‹‚ß‚é
+				double len = 0.0;
 				for( r = 0 ; r < p.size( ) ; r++ )
 				{
+					double l = p[ r ] - p0[ r ];
+					len += l;
+					dir[ r ] = l;
+
 					pn[ r ]  = 2.0 * p[ r ] - p0[ r ];
-					dir[ r ] = p[ r ] - p0[ r ];
 					p0[ r ]  = p[ r ];
+				}
+
+				// ŽŸ‚Ì’Tõ•ûŒü‚ð³‹K‰»‚·‚é
+				if( len > 0.0 )
+				{
+					len = std::sqrt( len );
+					for( r = 0 ; r < p.size( ) ; r++ )
+					{
+						dir[ r ] /= len;
+					}
 				}
 
 				double fe = f( pn );
@@ -1403,7 +1431,7 @@ namespace powell
 				if( fe < fp )
 				{
 					// Œ»Ý‚Ì•ûŒüW‡‚ðXV‚·‚é
-					double tmp = fp0 - fe - delta;
+					double tmp = fp0 - fp - delta;
 					double ttt = 2.0 * ( fp0 - 2.0 * fp + fe ) * tmp * tmp - delta * ( fp0 - fe ) * ( fp0 - fe );
 					if( ttt < 0 )
 					{
