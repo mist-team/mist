@@ -63,7 +63,7 @@ median_test : median_test.o
 morphology_test : morphology_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) $(IMGLIBS)
 
-fft_test : morphology_test.o
+fft_test : fft_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 
