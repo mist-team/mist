@@ -5,8 +5,8 @@
 
 int main( )
 {
-	//typedef mist::matrix< double > matrix;
-	typedef mist::matrix< std::complex< double > > matrix;
+	typedef mist::matrix< double > matrix;
+	//typedef mist::matrix< std::complex< double > > matrix;
 	matrix a( 3, 3 ), b( 3, 1 );
 
 	a( 0, 0 ) = 1.0; a( 0, 1 ) =  1.0; a( 0, 2 ) =  1.0;
@@ -60,6 +60,24 @@ int main( )
 		std::cout << evec << std::endl;
 	}
 
+	{
+		std::cout << "Singular value decomposition (SVD)s" << std::endl;
+
+		a.resize( 4, 4 );
+		a( 0, 0 ) = 5.0; a( 0, 1 ) = 6.0; a( 0, 2 ) = 8.0; a( 0, 3 ) = 4.0;
+		a( 1, 0 ) = 6.0; a( 1, 1 ) = 2.0; a( 1, 2 ) = 4.0; a( 1, 3 ) = 2.0;
+		a( 2, 0 ) = 8.0; a( 2, 1 ) = 2.0; a( 2, 2 ) = 3.0; a( 2, 3 ) = 5.0;
+		a( 3, 0 ) = 1.0; a( 3, 1 ) = 7.0; a( 3, 2 ) = 2.0; a( 3, 3 ) = 3.0;
+
+		matrix aa = a, u, s, vt;
+
+		mist::svd( aa, u, s, vt );
+		std::cout << a << std::endl;
+		std::cout << u << std::endl;
+		std::cout << s << std::endl;
+		std::cout << vt << std::endl;
+		std::cout << u * s * vt << std::endl;
+	}
 	return( 0 );
 }
 
