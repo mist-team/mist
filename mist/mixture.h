@@ -77,7 +77,6 @@ namespace mixture
 	}
 }
 
-
 /// @brief データ系列から正規分布の混合分布を推定する
 //! 
 //! @param[in]     rSamples      … 入力サンプル
@@ -159,7 +158,7 @@ bool estimate_mixture(
 			for( m = 0 ; m < nComponents ; m++ )
 			{
 				double myu = rSamples[ k ] - pdp[ m ].av;
-				double v = pdp[ m ].weight * ( 1.0 / ( _2pi * pdp[ m ].sd ) ) * std::exp( - myu * myu / ( 2.0 * pdp[ m ].sd * pdp[ m ].sd ) );
+				double v = pdp[ m ].weight * ( 1.0 / pdp[ m ].sd ) * std::exp( - myu * myu / ( 2.0 * pdp[ m ].sd * pdp[ m ].sd ) );
 				Weight( k, m ) = v;
 				tmp += v;
 			}
@@ -199,8 +198,7 @@ bool estimate_mixture(
 				for( k = 0 ; k < nSamples ; k++ )
 				{
 					// 分散の計算方法が間違ってる気がする
-//					variance += Weight( k, m ) * ( rSamples[ k ] - pdp[ m ].av ) * ( rSamples[ k ] - pdp[ m ].av );
-					variance += Weight( k, m ) * ( rSamples[ k ] * rSamples[ k ] - pdp[ m ].av * pdp[ m ].av );
+					variance += Weight( k, m ) * ( rSamples[ k ] - pdp[ m ].av ) * ( rSamples[ k ] - pdp[ m ].av );
 				}
 
 				variance /= weight_sum;
@@ -237,7 +235,7 @@ bool estimate_mixture(
 			for( m = 0 ; m < nComponents ; m++ )
 			{
 				double myu = rSamples[ k ] - pdp[ m ].av;
-				tmp += Weight( k, m ) * pdp[ m ].weight * ( 1.0 / ( _2pi * pdp[ m ].sd ) ) * std::exp( - myu * myu / ( 2.0 * pdp[ m ].sd * pdp[ m ].sd ) );
+				tmp += Weight( k, m ) * pdp[ m ].weight * ( 1.0 / pdp[ m ].sd ) * std::exp( - myu * myu / ( 2.0 * pdp[ m ].sd * pdp[ m ].sd ) );
 			}
 
 			if( tmp == 0.0 )
@@ -245,14 +243,14 @@ bool estimate_mixture(
 				return( false );
 			}
 
-			fLikelihood += std::log( tmp );
+			fLikelihood += std::log( tmp / _2pi );
 		}
 
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 		printf( "%d (%f %f %f) (%f %f %f) %f\n", n, pdp[ 0 ].av, pdp[ 0 ].sd, pdp[ 0 ].weight, pdp[ 1 ].av, pdp[ 1 ].sd, pdp[ 1 ].weight, fLikelihood );
 #endif
 
-		if( fLikelihood - fLastLikelihood < fEpsilon )
+		if( fLastLikelihood > fLikelihood || std::abs( fLastLikelihood - fLikelihood ) < fEpsilon )
 		{
 			break;
 		}
@@ -299,7 +297,6 @@ bool estimate_mixture(
 	//const double	pi = atan( 1.0f ) * 4.0f;
 	const double pi = 3.1415926535897932384626433832795;
 	const double _2pi = 2.0 * pi;
-//	const double _2pi = std::sqrt( 2.0 * pi );
 	double fLikelihood;
 	double fLastLikelihood = -1.0e30;
 	double tmp;
@@ -348,14 +345,14 @@ bool estimate_mixture(
 			for( m = 0 ; m < nComponents ; m++ )
 			{
 				double t = pdp[ m ].v[ 0 ] * pdp[ m ].v[ 3 ] - pdp[ m ].v[ 1 ] * pdp[ m ].v[ 2 ];
-				double a = pdp[ m ].v[ 3 ] / t;
-				double b = -pdp[ m ].v[ 1 ] / t;
-				double c = -pdp[ m ].v[ 2 ] / t;
-				double d = pdp[ m ].v[ 0 ] / t;
+				double a = pdp[ m ].v[ 3 ];
+				double b = -pdp[ m ].v[ 1 ];
+				double c = -pdp[ m ].v[ 2 ];
+				double d = pdp[ m ].v[ 0 ];
 				double x = rSamples[ k ].x - pdp[ m ].av.x;
 				double y = rSamples[ k ].y - pdp[ m ].av.y;
-				double vvv = ( a * x + b * y ) * x + ( c * x + d * y ) * y;
-				double v = pdp[ m ].weight * ( 1.0 / ( _2pi * sqrt( t ) ) ) * std::exp( - vvv / 2.0 );
+				double vvv = ( ( a * x + b * y ) * x + ( c * x + d * y ) * y ) / t;
+				double v = pdp[ m ].weight * ( 1.0 / sqrt( t ) ) * std::exp( - vvv / 2.0 );
 				Weight( k, m ) = v;
 				tmp += v;
 			}
@@ -395,14 +392,22 @@ bool estimate_mixture(
 
 				for( k = 0 ; k < nSamples ; k++ )
 				{
-					v1 += Weight( k, m ) * ( rSamples[ k ].x -pdp[ m ].av.x ) * ( rSamples[ k ].x -pdp[ m ].av.x );
-					v2 += Weight( k, m ) * ( rSamples[ k ].y -pdp[ m ].av.y ) * ( rSamples[ k ].y -pdp[ m ].av.y );
-					v3 += Weight( k, m ) * ( rSamples[ k ].x -pdp[ m ].av.x ) * ( rSamples[ k ].y -pdp[ m ].av.y );
+					double w  = Weight( k, m );
+					double xx = rSamples[ k ].x - pdp[ m ].av.x;
+					double yy = rSamples[ k ].y - pdp[ m ].av.y;
+					v1 += w * xx * xx;
+					v2 += w * yy * yy;
+					v3 += w * xx * yy;
 				}
 
 				v1 /= weight_sum;
 				v2 /= weight_sum;
 				v3 /= weight_sum;
+
+				if( v1 * v2 < v3 * v3 )
+				{
+					v3 = std::sqrt( v1 * v2 ) - 1.0e-10;
+				}
 			}
 			else
 			{
@@ -438,14 +443,14 @@ bool estimate_mixture(
 			for( m = 0 ; m < nComponents ; m++ )
 			{
 				double t = pdp[ m ].v[ 0 ] * pdp[ m ].v[ 3 ] - pdp[ m ].v[ 1 ] * pdp[ m ].v[ 2 ];
-				double a = pdp[ m ].v[ 3 ] / t;
-				double b = -pdp[ m ].v[ 1 ] / t;
-				double c = -pdp[ m ].v[ 2 ] / t;
-				double d = pdp[ m ].v[ 0 ] / t;
+				double a = pdp[ m ].v[ 3 ];
+				double b = -pdp[ m ].v[ 1 ];
+				double c = -pdp[ m ].v[ 2 ];
+				double d = pdp[ m ].v[ 0 ];
 				double x = rSamples[ k ].x - pdp[ m ].av.x;
 				double y = rSamples[ k ].y - pdp[ m ].av.y;
-				double vvv = ( a * x + b * y ) * x + ( c * x + d * y ) * y;
-				tmp += Weight( k, m ) * pdp[ m ].weight * ( 1.0 / ( _2pi * sqrt( t ) ) ) * std::exp( - vvv / 2.0 );
+				double vvv = ( ( a * x + b * y ) * x + ( c * x + d * y ) * y ) / t;
+				tmp += Weight( k, m ) * pdp[ m ].weight / sqrt( t ) * std::exp( - vvv / 2.0 );
 			}
 
 			if( tmp == 0.0 )
@@ -453,19 +458,22 @@ bool estimate_mixture(
 				return( false );
 			}
 
-			fLikelihood += std::log( tmp );
+			fLikelihood += std::log( tmp / _2pi );
 		}
 
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 		printf( "%d (%f %f %f) (%f %f %f) %f\n", n, pdp[ 0 ].av, pdp[ 0 ].sd, pdp[ 0 ].weight, pdp[ 1 ].av, pdp[ 1 ].sd, pdp[ 1 ].weight, fLikelihood );
 #endif
 
-		if( fLikelihood - fLastLikelihood < fEpsilon )
+		if( fLastLikelihood > fLikelihood || std::abs( fLastLikelihood - fLikelihood ) < fEpsilon )
 		{
 			break;
 		}
 
 		fLastLikelihood = fLikelihood;
+
+		//static int count = 0;
+		//std::cout << count++ << "                                           \r";
 	}
 
 	return( true );
@@ -613,6 +621,8 @@ bool estimate_mixture(
 	typename array< T, Allocator >::size_type nIteration = 0;
 	return( estimate_mixture( rSamples, pdp, nComponents, nMaxIteration, fEpsilon, nIteration ) );
 }
+
+
 
 /// @}
 //  EMアルゴリズムを用いた混合分布の推定グループの終わり

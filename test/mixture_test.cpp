@@ -12,15 +12,15 @@ int main( int argc, char *argv[] )
 
 
 	{
-		array< double > data( 20000 );
+		array< int > data( 20000 );
 
 		//gauss::random rnd1( std::clock( ), 100, 30.0 );
 		//gauss::random rnd2( std::clock( ), 50, 5.0 );
-		gauss::random rnd1( 1, 100, 30.0 );
-		gauss::random rnd2( 2, 50, 5.0 );
+		gauss::random rnd1( 1, 120, 30.0 );
+		gauss::random rnd2( 2, 60, 10.0 );
 
 		size_t i;
-		for( i = 0 ; i < data.size( ) / 2 ; i++ )
+		for( i = 0 ; i < data.size( ) / 3 ; i++ )
 		{
 			data[ i ] = rnd1.generate( );
 		}
@@ -37,11 +37,15 @@ int main( int argc, char *argv[] )
 		dp[ 1 ].av = 22.0;
 		dp[ 1 ].sd = 50.0;
 
-		estimate_mixture( data, dp, 2, 100, 0.0001 );
+		if( !estimate_mixture( data, dp, 2, 100, 0.0001 ) )
+		{
+			std::cout << "EMƒAƒ‹ƒSƒŠƒYƒ€‚Å‚Ì„’è‚É¸”s" << std::endl;
+		}
 
 		std::cout << dp[ 0 ] << std::endl;
 		std::cout << dp[ 1 ] << std::endl;
 	}
+
 
 	{
 		array< vector2< double > > data( 20000 );
@@ -53,7 +57,7 @@ int main( int argc, char *argv[] )
 		gauss::random rnd4( std::clock( ), 80, 13.0 );
 
 		size_t i;
-		for( i = 0 ; i < data.size( ) / 2 ; i++ )
+		for( i = 0 ; i < data.size( ) / 3 ; i++ )
 		{
 			data[ i ].x = rnd1.generate( );
 			data[ i ].y = rnd2.generate( );
@@ -67,16 +71,21 @@ int main( int argc, char *argv[] )
 
 		mixture::distribution2 dp[ 2 ];
 		dp[ 0 ].av.x = 135.0;
+//		dp[ 0 ].av.y = 125.0;
 		dp[ 0 ].av.y = 25.0;
 		dp[ 0 ].v[ 0 ] = 50.0;
-		dp[ 0 ].v[ 3 ] = 30.0;
+		dp[ 0 ].v[ 3 ] = 20.0;
 
 		dp[ 1 ].av.x = 22.0;
+//		dp[ 1 ].av.y = 18.0;
 		dp[ 1 ].av.y = 78.0;
 		dp[ 1 ].v[ 0 ] = 30.0;
-		dp[ 1 ].v[ 3 ] = 50.0;
+		dp[ 1 ].v[ 3 ] = 10.0;
 
-		estimate_mixture( data, dp, 2, 100, 0.0001 );
+		if( !estimate_mixture( data, dp, 2, 100, 0.0001 ) )
+		{
+			std::cout << "EMƒAƒ‹ƒSƒŠƒYƒ€‚Å‚Ì„’è‚É¸”s" << std::endl;
+		}
 
 		std::cout << dp[ 0 ] << std::endl;
 		std::cout << dp[ 1 ] << std::endl;
