@@ -191,7 +191,7 @@ ct_image_window::ct_image_window( ) {
       o->type(1);
       o->box(FL_PLASTIC_THIN_DOWN_BOX);
       o->minimum(-2000);
-      o->maximum(4000);
+      o->maximum(7000);
       o->step(1);
       o->value(40);
       o->callback((Fl_Callback*)cb_WL);
@@ -201,7 +201,7 @@ ct_image_window::ct_image_window( ) {
       o->type(1);
       o->box(FL_PLASTIC_THIN_DOWN_BOX);
       o->minimum(1);
-      o->maximum(1000);
+      o->maximum(4000);
       o->step(1);
       o->value(300);
       o->callback((Fl_Callback*)cb_WW);

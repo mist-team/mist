@@ -21,6 +21,13 @@ void ct_draw_area::draw_image( )
 		return;
 	}
 
+	if( draw_flag_ )
+	{
+		return;
+	}
+
+	draw_flag_ = true;
+
 	if( buff.width( ) != ct.width( ) || buff.height( ) != ct.height( ) )
 	{
 		buff.resize( ct.width( ), ct.height( ) );
@@ -40,6 +47,8 @@ void ct_draw_area::draw_image( )
 			buff( i, j ) = static_cast< unsigned char >( pixel );
 		}
 	}
+
+	draw_flag_ = false;
 }
 
 void ct_draw_area::read_image( ct_image_window *wnd )
@@ -131,7 +140,7 @@ void ct_draw_area::median_filter1D( ct_image_window *wnd )
 	a[ 6 ] = 0;
 
 	std::cout << a << std::endl;
-	mist::__median_filter__::median_filter( a, b, 3, 0, 6 );
+	mist::median_filter( a, b, 3 );
 	std::cout << b << std::endl;
 }
 
@@ -145,7 +154,7 @@ void ct_draw_area::median_filter2D( ct_image_window *wnd )
 	a( 4, 0 ) = 0; a( 4, 1 ) = 0; a( 4, 2 ) = 0; a( 4, 3 ) = 0; a( 4, 4 ) = 0;
 
 	std::cout << a << std::endl;
-	mist::__median_filter__::median_filter( a, b, 3, 3, 0, 6 );
+	mist::median_filter( a, b, 3, 3 );
 	std::cout << b << std::endl;
 }
 
@@ -154,7 +163,7 @@ void ct_draw_area::median_filter3D( ct_image_window *wnd )
 	if( ct.empty( ) ) return;
 
 	mist::array3< short > tmp = ct;
-	mist::__median_filter__::median_filter( tmp, ct, 3, 3, 3, -2000, 4000 );
+	mist::median_filter( tmp, ct, 3, 3, 3 );
 	redraw( );
 	Fl::wait( 0 );
 }

@@ -18,12 +18,14 @@ public:
 		index_ = 0;
 		window_level_ = 40;
 		window_width_ = 300;
+		draw_flag_ = false;
 	}
 	ct_draw_area( int x, int y, int w, int h ) : Fl_Gl_Window( x, y, w, h )
 	{
 		index_ = 0;
 		window_level_ = 40;
 		window_width_ = 300;
+		draw_flag_ = false;
 	}
 	virtual ~ct_draw_area(){ }
 
@@ -33,6 +35,7 @@ private:
 	size_type index_;
 	double window_level_;
 	double window_width_;
+	bool draw_flag_;
 
 public:
 	void draw( );

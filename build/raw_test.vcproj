@@ -147,6 +147,9 @@
 			Name="MISTƒtƒ@ƒCƒ‹"
 			Filter="">
 			<File
+				RelativePath="..\mist\draw.h">
+			</File>
+			<File
 				RelativePath="..\mist\filter\median_filter.h">
 			</File>
 			<File
@@ -160,6 +163,9 @@
 			</File>
 			<File
 				RelativePath="..\mist\io\raw.h">
+			</File>
+			<File
+				RelativePath="..\mist\thread.h">
 			</File>
 		</Filter>
 	</Files>

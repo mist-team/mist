@@ -129,12 +129,12 @@ class ct_image_window {open
       Fl_Value_Slider WL {
         label WL
         callback {ct_image->change_window_level( o->value( ) );}
-        xywh {40 470 375 20} type Horizontal box PLASTIC_THIN_DOWN_BOX align 4 minimum -2000 maximum 4000 step 1 value 40
+        xywh {40 470 375 20} type Horizontal box PLASTIC_THIN_DOWN_BOX align 4 minimum -2000 maximum 7000 step 1 value 40
       }
       Fl_Value_Slider WW {
         label WW
         callback {ct_image->change_window_width( o->value( ) );}
-        xywh {40 495 375 20} type Horizontal box PLASTIC_THIN_DOWN_BOX align 4 minimum 1 maximum 1000 step 1 value 300
+        xywh {40 495 375 20} type Horizontal box PLASTIC_THIN_DOWN_BOX align 4 minimum 1 maximum 4000 step 1 value 300
       }
       Fl_Value_Slider Indx {
         label Indx
