@@ -25,6 +25,7 @@ ALL = \
 	matrix_util_test2 \
 	vector_test \
 	set_test \
+	crc_test \
 
 
 all: $(ALL)
@@ -96,6 +97,9 @@ decimal_test : decimal_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 set_test : set_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+crc_test : set_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 

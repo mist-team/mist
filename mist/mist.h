@@ -51,9 +51,20 @@
 #ifndef __INCLUDE_MIST_H__
 #define __INCLUDE_MIST_H__
 
+
+#ifndef __INCLUDE_MIST_CONF_H__
 #include "config/mist_conf.h"
+#endif
+
+
+#ifndef __INCLUDE_MIST_ALLOC_H__
 #include "config/mist_alloc.h"
+#endif
+
+#ifndef __INCLUDE_MIST_ITERATOR_H__
 #include "config/iterator.h"
+#endif
+
 
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è

@@ -87,12 +87,20 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quaternion_test", "quaterni
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crc_test", "crc_test.vcproj", "{5B87E451-7196-400B-9898-D276C6418B72}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
 		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
+		{5B87E451-7196-400B-9898-D276C6418B72}.Debug.ActiveCfg = Debug|Win32
+		{5B87E451-7196-400B-9898-D276C6418B72}.Debug.Build.0 = Debug|Win32
+		{5B87E451-7196-400B-9898-D276C6418B72}.Release.ActiveCfg = Release|Win32
+		{5B87E451-7196-400B-9898-D276C6418B72}.Release.Build.0 = Release|Win32
 		{5B87E451-7196-400B-9898-D276C6418B72}.Debug.ActiveCfg = Debug|Win32
 		{5B87E451-7196-400B-9898-D276C6418B72}.Debug.Build.0 = Debug|Win32
 		{5B87E451-7196-400B-9898-D276C6418B72}.Release.ActiveCfg = Release|Win32
