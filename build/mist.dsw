@@ -111,6 +111,30 @@ Package=<4>
 
 ###############################################################################
 
+Project: "median_test"=".\median_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "morphology_test"=".\morphology_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "operators_test"=".\operators_test.dsp" - Package Owner=<4>
 
 Package=<5>
