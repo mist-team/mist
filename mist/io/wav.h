@@ -59,7 +59,7 @@ namespace __wav_controller__
 		{
 			enum{ bytes = 4 };
 			unsigned char	wav[4];				// WAV‚Ìê‡‚Í•K‚¸ 'WAVE'
-		} _MIST_ALIGN( 1 );
+		} _MIST_PACKED;
 
 		struct _fmtheader_
 		{
