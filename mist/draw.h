@@ -52,24 +52,15 @@ namespace pixel_data
 	template< class T, class Allocator >
 	void glTexImage2D( const array2< T, Allocator > &image )
 	{
-		T *pixel = new T[ image.width( ) * image.height( ) * 3 ];
-		for( typename array2< T, Allocator >::size_type i = 0 ; i < image.width( ) * image.height( ) ; i++ )
-		{
-			pixel[ i * 3 + 0 ] = image[ i ];
-			pixel[ i * 3 + 1 ] = image[ i ];
-			pixel[ i * 3 + 2 ] = image[ i ];
-		}
-
 		::glTexImage2D(
 						GL_TEXTURE_2D, 0, 3,
 						static_cast< GLsizei >( image.width( ) ),
 						static_cast< GLsizei >( image.height( ) ),
 						0,
-						GL_RGB,
+						GL_LUMINANCE,
 						gl_type_trait< T >::gl_type,
-						static_cast< const GLvoid* >( pixel )
+						static_cast< const GLvoid* >( &( image[0] ) )
 					  );
-		delete [] pixel;
 	}
 
 	template< class T, class Allocator >
