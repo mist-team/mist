@@ -81,7 +81,7 @@ public:
 			base::clear( );
 
 			key_compare compare;
-			while( site1 != eite1 && site1 != eite1 )
+			while( site1 != eite1 && site2 != eite2 )
 			{
 				if( compare( *site1, *site2 ) )
 				{
