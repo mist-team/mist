@@ -92,12 +92,10 @@ public:
 
 
 #ifdef WIN32
-	thread_object( const thread_object &t ) : thread_parameter_( t ), thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
-	thread_object( const thread_parameter &t ) : thread_parameter_( t ), hread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ){ }
+	thread_object( const thread_object &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
 	thread_object( ) : thread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ){ }
 #else
-	thread_object( const thread_object &t ) : thread_parameter_( t ), thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ){ }
-	thread_object( const thread_parameter &t ) : thread_parameter_( t ), thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ){ }
+	thread_object( const thread_object &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ){ }
 	thread_object(  ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ){ }
 #endif
 
