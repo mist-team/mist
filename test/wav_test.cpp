@@ -1,6 +1,5 @@
 #include <iostream>
 #include <mist/io/wav.h>
-#include <mist/io/mp3.h>
 
 int main( int argc, char *argv[] )
 {
