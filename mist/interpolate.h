@@ -25,108 +25,10 @@
 // mistñºëOãÛä‘ÇÃénÇ‹ÇË
 _MIST_BEGIN
 
-namespace __interpolte_util__
-{
-	template < bool b >
-	struct _assign_
-	{
-		template < class ValueType >
-		static void assign( ValueType &v, double r, const double g, const double b )
-		{
-			double min = type_limits< ValueType >::minimum( );
-			double max = type_limits< ValueType >::maximum( );
-			double pix = rgb< T >( r, g, b ).get_value( );
-			pix = pix > min ? pix : min;
-			pix = pix < max ? pix : max;
-			v = static_cast< ValueType >( pix );
-		}
-
-		template < class ValueType >
-		static void assign( ValueType &v, double pix )
-		{
-			double min = type_limits< ValueType >::minimum( );
-			double max = type_limits< ValueType >::maximum( );
-			pix = pix > min ? pix : min;
-			pix = pix < max ? pix : max;
-			v = static_cast< ValueType >( pix );
-		}
-	};
-
-	template < >
-	struct _assign_< true >
-	{
-		template < class ValueType >
-		static void assign( ValueType &v, double r, double g, double b )
-		{
-			typedef ValueType color;
-			typedef typename color::value_type value_type;
-
-			double min = type_limits< value_type >::minimum( );
-			double max = type_limits< value_type >::maximum( );
-			r = r > min ? r : min;
-			r = r < max ? r : max;
-			g = g > min ? g : min;
-			g = g < max ? g : max;
-			b = b > min ? b : min;
-			b = b < max ? b : max;
-			v.r = static_cast< value_type >( r );
-			v.g = static_cast< value_type >( g );
-			v.b = static_cast< value_type >( b );
-		}
-
-		template < class ValueType >
-		static void assign( ValueType &v, double pix )
-		{
-			typedef ValueType color;
-			typedef typename color::value_type value_type;
-
-			double min = type_limits< value_type >::minimum( );
-			double max = type_limits< value_type >::maximum( );
-			pix = pix > min ? pix : min;
-			pix = pix < max ? pix : max;
-			v.r = static_cast< value_type >( pix );
-			v.g = static_cast< value_type >( pix );
-			v.b = static_cast< value_type >( pix );
-		}
-	};
-
-	template < class ValueType, class T >
-	inline void assign( ValueType &v, const T &r, const T &g, const T &b )
-	{
-		_assign_< is_color< ValueType >::value >::assign( v, r, g, b );
-	}
-
-	template < class ValueType, class T >
-	inline void assign( ValueType &v, const T &pix )
-	{
-		_assign_< is_color< ValueType >::value >::assign( v, pix );
-	}
-}
-
 
 // ç≈ãﬂñTå^ï‚ä‘
 namespace __nearest__
 {
-	template < bool b >
-	struct _nearest_
-	{
-		template < class ValueType1, class ValueType2 >
-		static double nearest___( const ValueType1 &in, ValueType2 &out )
-		{
-			__interpolte_util__::assign( out, in );
-		}
-	};
-
-	template < >
-	struct _nearest_< true >
-	{
-		template < class ValueType1, class ValueType2 >
-		static double nearest___( const ValueType1 &in, ValueType2 &out )
-		{
-			__interpolte_util__::assign( out, in.r, in.g, in.b );
-		}
-	};
-
 	template < class Array1, class Array2 >
 	void interpolate( const Array1 &in, Array2 &out,
 						typename Array1::size_type thread_idx, typename Array1::size_type thread_numx,
@@ -162,7 +64,7 @@ namespace __nearest__
 				{
 					x = static_cast< size_type >( sx * i + 0.5 );
 					x = x < iw ? x : iw - 1;
-					_nearest_< is_color< value_type >::value >::nearest___( in( x, y, z ), out( i, j, k ) );
+					out( i, j, k ) = static_cast< out_value_type >( in( x, y, z ) );
 				}
 			}
 		}
@@ -176,8 +78,8 @@ namespace __mean__
 	template < bool b >
 	struct _mean_
 	{
-		template < class Array, class T >
-		static void mean___( const Array &in, T &out,
+		template < class Array >
+		static double mean___( const Array &in,
 									typename Array::size_type i1,
 									typename Array::size_type i2,
 									typename Array::size_type j1,
@@ -201,21 +103,23 @@ namespace __mean__
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			pix /= static_cast< double >( ( i2 - i1 ) * ( j2 - j1 ) * ( k2 - k1 ) );
-			__interpolte_util__::assign( out, pix );
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 	};
 
 	template < >
 	struct _mean_< true >
 	{
-		template < class Array, class T >
-		static void mean___( const Array &in, T &out,
-									typename Array::size_type i1,
-									typename Array::size_type i2,
-									typename Array::size_type j1,
-									typename Array::size_type j2,
-									typename Array::size_type k1,
-									typename Array::size_type k2 )
+		template < class Array >
+		static const rgb< double > mean___( const Array &in,
+												typename Array::size_type i1,
+												typename Array::size_type i2,
+												typename Array::size_type j1,
+												typename Array::size_type j2,
+												typename Array::size_type k1,
+												typename Array::size_type k2 )
 		{
 			typedef typename Array::value_type color;
 			typedef typename color::value_type value_type;
@@ -236,8 +140,19 @@ namespace __mean__
 					}
 				}
 			}
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double numPixels = static_cast< double >( ( i2 - i1 ) * ( j2 - j1 ) * ( k2 - k1 ) );
-			__interpolte_util__::assign( out, r / numPixels, g / numPixels, b / numPixels );
+			r /= numPixels;
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g /= numPixels;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b /= numPixels;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( rgb< double >( r, g, b ) );
 		}
 	};
 
@@ -249,6 +164,7 @@ namespace __mean__
 	{
 		typedef typename Array1::size_type  size_type;
 		typedef typename Array1::value_type value_type;
+		typedef typename Array2::value_type out_value_type;
 
 		size_type i, j, k, i1, i2, j1, j2, k1, k2;
 		size_type iw = in.width( );
@@ -277,7 +193,7 @@ namespace __mean__
 					i1 = static_cast< size_type >( sx * i );
 					i2 = static_cast< size_type >( i1 + sx );
 					i2 = i1 == i2 ? i1 + 1 : i2;
-					_mean_< is_color< value_type >::value >::mean___( in, out( i, j, k ), i1, i2, j1, j2, k1, k2 );
+					out( i, j, k ) = static_cast< out_value_type >( _mean_< is_color< value_type >::value >::mean___( in, i1, i2, j1, j2, k1, k2 ) );
 				}
 			}
 		}
@@ -290,8 +206,8 @@ namespace __linear__
 	template < bool b >
 	struct _linear_
 	{
-		template < class T, class Allocator, class ValueType >
-		static void linear___( const array< T, Allocator > &in, ValueType &out,
+		template < class T, class Allocator >
+		static double linear___( const array< T, Allocator > &in,
 									typename array< T, Allocator >::size_type i1,
 									typename array< T, Allocator >::size_type i2,
 									typename array< T, Allocator >::size_type j1,
@@ -300,11 +216,17 @@ namespace __linear__
 									typename array< T, Allocator >::size_type k2,
 									double x, double y, double z )
 		{
-			__interpolte_util__::assign( out, in[ i1 ] * ( 1.0 - x ) + in[ i2 ] * x );
+			typedef typename array< T, Allocator >::value_type value_type;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			double pix = in[ i1 ] * ( 1.0 - x ) + in[ i2 ] * x;
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 
-		template < class T, class Allocator, class ValueType >
-		static void linear___( const array2< T, Allocator > &in, ValueType &out,
+		template < class T, class Allocator >
+		static double linear___( const array2< T, Allocator > &in,
 									typename array2< T, Allocator >::size_type i1,
 									typename array2< T, Allocator >::size_type i2,
 									typename array2< T, Allocator >::size_type j1,
@@ -316,11 +238,14 @@ namespace __linear__
 			typedef typename array2< T, Allocator >::value_type value_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
-			__interpolte_util__::assign( out, ( in( i1, j1 ) * ( 1.0 - x ) + in( i2, j1 ) * x ) * ( 1.0 - y ) + ( in( i1, j2 ) * ( 1.0 - x ) + in( i2, j2 ) * x ) * y );
+			double pix = ( in( i1, j1 ) * ( 1.0 - x ) + in( i2, j1 ) * x ) * ( 1.0 - y ) + ( in( i1, j2 ) * ( 1.0 - x ) + in( i2, j2 ) * x ) * y;
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 
-		template < class T, class Allocator, class ValueType >
-		static void linear___( const array3< T, Allocator > &in, ValueType &out,
+		template < class T, class Allocator >
+		static double linear___( const array3< T, Allocator > &in,
 									typename array3< T, Allocator >::size_type i1,
 									typename array3< T, Allocator >::size_type i2,
 									typename array3< T, Allocator >::size_type j1,
@@ -334,22 +259,24 @@ namespace __linear__
 			double max = type_limits< value_type >::maximum( );
 			double pix = ( ( in( i1, j1, k1 ) * ( 1.0 - x ) + in( i2, j1, k1 ) * x ) * ( 1.0 - y ) + ( in( i1, j2, k1 ) * ( 1.0 - x ) + in( i2, j2, k1 ) * x ) * y ) * ( 1.0 - z )
 								+ ( ( in( i1, j1, k2 ) * ( 1.0 - x ) + in( i2, j1, k2 ) * x ) * ( 1.0 - y ) + ( in( i1, j2, k2 ) * ( 1.0 - x ) + in( i2, j2, k2 ) * x ) * y ) * z;
-			__interpolte_util__::assign( out, pix );
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 	};
 
 	template < >
 	struct _linear_< true >
 	{
-		template < class T, class Allocator, class ValueType >
-		static void linear___( const array< T, Allocator > &in, ValueType &out,
-									typename array< T, Allocator >::size_type i1,
-									typename array< T, Allocator >::size_type i2,
-									typename array< T, Allocator >::size_type j1,
-									typename array< T, Allocator >::size_type j2,
-									typename array< T, Allocator >::size_type k1,
-									typename array< T, Allocator >::size_type k2,
-									double x, double y, double z )
+		template < class T, class Allocator >
+		static const rgb< double > linear___( const array< T, Allocator > &in,
+												typename array< T, Allocator >::size_type i1,
+												typename array< T, Allocator >::size_type i2,
+												typename array< T, Allocator >::size_type j1,
+												typename array< T, Allocator >::size_type j2,
+												typename array< T, Allocator >::size_type k1,
+												typename array< T, Allocator >::size_type k2,
+												double x, double y, double z )
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -358,18 +285,24 @@ namespace __linear__
 			double r = in[ i1 ].r * ( 1.0 - x ) + in[ i2 ].r * x;
 			double g = in[ i1 ].g * ( 1.0 - x ) + in[ i2 ].g * x;
 			double b = in[ i1 ].b * ( 1.0 - x ) + in[ i2 ].b * x;
-			__interpolte_util__::assign( out, r, g, b );
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( rgb< double >( r, g, b ) );
 		}
 
-		template < class T, class Allocator, class ValueType >
-		static void linear___( const array2< T, Allocator > &in, ValueType &out,
-									typename array2< T, Allocator >::size_type i1,
-									typename array2< T, Allocator >::size_type i2,
-									typename array2< T, Allocator >::size_type j1,
-									typename array2< T, Allocator >::size_type j2,
-									typename array2< T, Allocator >::size_type k1,
-									typename array2< T, Allocator >::size_type k2,
-									double x, double y, double z )
+		template < class T, class Allocator >
+		static const rgb< double > linear___( const array2< T, Allocator > &in,
+												typename array2< T, Allocator >::size_type i1,
+												typename array2< T, Allocator >::size_type i2,
+												typename array2< T, Allocator >::size_type j1,
+												typename array2< T, Allocator >::size_type j2,
+												typename array2< T, Allocator >::size_type k1,
+												typename array2< T, Allocator >::size_type k2,
+												double x, double y, double z )
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -378,18 +311,24 @@ namespace __linear__
 			double r = ( in( i1, j1 ).r * ( 1.0 - x ) + in( i2, j1 ).r * x ) * ( 1.0 - y ) + ( in( i1, j2 ).r * ( 1.0 - x ) + in( i2, j2 ).r * x ) * y;
 			double g = ( in( i1, j1 ).g * ( 1.0 - x ) + in( i2, j1 ).g * x ) * ( 1.0 - y ) + ( in( i1, j2 ).g * ( 1.0 - x ) + in( i2, j2 ).g * x ) * y;
 			double b = ( in( i1, j1 ).b * ( 1.0 - x ) + in( i2, j1 ).b * x ) * ( 1.0 - y ) + ( in( i1, j2 ).b * ( 1.0 - x ) + in( i2, j2 ).b * x ) * y;
-			__interpolte_util__::assign( out, r, g, b );
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( rgb< double >( r, g, b ) );
 		}
 
-		template < class T, class Allocator, class ValueType >
-		static void linear___( const array3< T, Allocator > &in, ValueType &out,
-									typename array3< T, Allocator >::size_type i1,
-									typename array3< T, Allocator >::size_type i2,
-									typename array3< T, Allocator >::size_type j1,
-									typename array3< T, Allocator >::size_type j2,
-									typename array3< T, Allocator >::size_type k1,
-									typename array3< T, Allocator >::size_type k2,
-									double x, double y, double z )
+		template < class T, class Allocator >
+		static const rgb< double > linear___( const array3< T, Allocator > &in,
+												typename array3< T, Allocator >::size_type i1,
+												typename array3< T, Allocator >::size_type i2,
+												typename array3< T, Allocator >::size_type j1,
+												typename array3< T, Allocator >::size_type j2,
+												typename array3< T, Allocator >::size_type k1,
+												typename array3< T, Allocator >::size_type k2,
+												double x, double y, double z )
 		{
 			typedef typename array3< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -401,7 +340,13 @@ namespace __linear__
 								+ ( ( in( i1, j1, k2 ).g * ( 1.0 - x ) + in( i2, j1, k2 ).g * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ).g * ( 1.0 - x ) + in( i2, j2, k2 ).g * x ) * y ) * z;
 			double b = ( ( in( i1, j1, k1 ).b * ( 1.0 - x ) + in( i2, j1, k1 ).b * x ) * ( 1.0 - y ) + ( in( i1, j2, k1 ).b * ( 1.0 - x ) + in( i2, j2, k1 ).b * x ) * y ) * ( 1.0 - z )
 								+ ( ( in( i1, j1, k2 ).b * ( 1.0 - x ) + in( i2, j1, k2 ).b * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ).b * ( 1.0 - x ) + in( i2, j2, k2 ).b * x ) * y ) * z;
-			__interpolte_util__::assign( out, r, g, b );
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( rgb< double >( r, g, b ) );
 		}
 	};
 
@@ -446,7 +391,7 @@ namespace __linear__
 					i1 = static_cast< size_type >( x );
 					x -= i1;
 					i2 = i1 < iw - 1 ? i1 + 1 : i1;
-					_linear_< is_color< value_type >::value >::linear___( in, out( i, j, k ), i1, i2, j1, j2, k1, k2, x, y, z );
+					out( i, j, k ) = static_cast< out_value_type >( _linear_< is_color< value_type >::value >::linear___( in, i1, i2, j1, j2, k1, k2, x, y, z ) );
 				}
 			}
 		}
@@ -479,8 +424,8 @@ namespace __cubic__
 	template < bool b >
 	struct _cubic_
 	{
-		template < class T, class Allocator, class ValueType >
-		static void cubic___( const array< T, Allocator > &in, ValueType &out,
+		template < class T, class Allocator >
+		static double cubic___( const array< T, Allocator > &in,
 								typename array< T, Allocator >::size_type i[4],
 								typename array< T, Allocator >::size_type j[4],
 								typename array< T, Allocator >::size_type k[4],
@@ -493,11 +438,14 @@ namespace __cubic__
 			double u1 = sinc( x );
 			double u2 = sinc( 1 - x );
 			double u3 = sinc( 2 - x );
-			__interpolte_util__::assign( out, in[ i[ 0 ] ] * u0 + in[ i[ 1 ] ] * u1 + in[ i[ 2 ] ] * u2 + in[ i[ 3 ] ] * u3 );
+			double pix = in[ i[ 0 ] ] * u0 + in[ i[ 1 ] ] * u1 + in[ i[ 2 ] ] * u2 + in[ i[ 3 ] ] * u3;
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 
-		template < class T, class Allocator, class ValueType >
-		static void cubic___( const array2< T, Allocator > &in, ValueType &out,
+		template < class T, class Allocator >
+		static double cubic___( const array2< T, Allocator > &in,
 								typename array2< T, Allocator >::size_type i[4],
 								typename array2< T, Allocator >::size_type j[4],
 								typename array2< T, Allocator >::size_type k[4],
@@ -518,11 +466,13 @@ namespace __cubic__
 						+ ( in( i[ 0 ], j[ 1 ] ) * u0 + in( i[ 1 ], j[ 1 ] ) * u1 + in( i[ 2 ], j[ 1 ] ) * u2 + in( i[ 3 ], j[ 1 ] ) * u3 ) * v1
 						+ ( in( i[ 0 ], j[ 2 ] ) * u0 + in( i[ 1 ], j[ 2 ] ) * u1 + in( i[ 2 ], j[ 2 ] ) * u2 + in( i[ 3 ], j[ 2 ] ) * u3 ) * v2
 						+ ( in( i[ 0 ], j[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ] ) * u3 ) * v3;
-			__interpolte_util__::assign( out, pix );
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 
-		template < class T, class Allocator, class ValueType >
-		static void cubic___( const array3< T, Allocator > &in, ValueType &out,
+		template < class T, class Allocator >
+		static double cubic___( const array3< T, Allocator > &in,
 								typename array3< T, Allocator >::size_type i[4],
 								typename array3< T, Allocator >::size_type j[4],
 								typename array3< T, Allocator >::size_type k[4],
@@ -559,19 +509,22 @@ namespace __cubic__
 						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ) * u3 ) * v1
 						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ) * u3 ) * v2
 						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ) * u3 ) * v3 );
-			__interpolte_util__::assign( out, p0 * w0 + p1 * w1 + p2 * w2 + p3 * w3 );
+			double pix = p0 * w0 + p1 * w1 + p2 * w2 + p3 * w3;
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
 		}
 	};
 
 	template < >
 	struct _cubic_< true >
 	{
-		template < class T, class Allocator, class ValueType >
-		static void cubic___( const array< T, Allocator > &in, ValueType &out,
-								typename array< T, Allocator >::size_type i[4],
-								typename array< T, Allocator >::size_type j[4],
-								typename array< T, Allocator >::size_type k[4],
-								double x, double y, double z )
+		template < class T, class Allocator >
+		static const rgb< double >  cubic___( const array< T, Allocator > &in,
+												typename array< T, Allocator >::size_type i[4],
+												typename array< T, Allocator >::size_type j[4],
+												typename array< T, Allocator >::size_type k[4],
+												double x, double y, double z )
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -584,15 +537,21 @@ namespace __cubic__
 			double r = in[ i[ 0 ] ].r * u0 + in[ i[ 1 ] ].r * u1 + in[ i[ 2 ] ].r * u2 + in[ i[ 3 ] ].r * u3;
 			double g = in[ i[ 0 ] ].g * u0 + in[ i[ 1 ] ].g * u1 + in[ i[ 2 ] ].g * u2 + in[ i[ 3 ] ].g * u3;
 			double b = in[ i[ 0 ] ].b * u0 + in[ i[ 1 ] ].b * u1 + in[ i[ 2 ] ].b * u2 + in[ i[ 3 ] ].b * u3;
-			__interpolte_util__::assign( out, r, g, b );
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( rgb< double >( r, g, b ) );
 		}
 
-		template < class T, class Allocator, class ValueType >
-		static void cubic___( const array2< T, Allocator > &in, ValueType &out,
-								typename array2< T, Allocator >::size_type i[4],
-								typename array2< T, Allocator >::size_type j[4],
-								typename array2< T, Allocator >::size_type k[4],
-								double x, double y, double z )
+		template < class T, class Allocator >
+		static const rgb< double >  cubic___( const array2< T, Allocator > &in,
+												typename array2< T, Allocator >::size_type i[4],
+												typename array2< T, Allocator >::size_type j[4],
+												typename array2< T, Allocator >::size_type k[4],
+												double x, double y, double z )
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -618,15 +577,21 @@ namespace __cubic__
 						+ ( in( i[ 0 ], j[ 1 ] ).b * u0 + in( i[ 1 ], j[ 1 ] ).b * u1 + in( i[ 2 ], j[ 1 ] ).b * u2 + in( i[ 3 ], j[ 1 ] ).b * u3 ) * v1
 						+ ( in( i[ 0 ], j[ 2 ] ).b * u0 + in( i[ 1 ], j[ 2 ] ).b * u1 + in( i[ 2 ], j[ 2 ] ).b * u2 + in( i[ 3 ], j[ 2 ] ).b * u3 ) * v2
 						+ ( in( i[ 0 ], j[ 3 ] ).b * u0 + in( i[ 1 ], j[ 3 ] ).b * u1 + in( i[ 2 ], j[ 3 ] ).b * u2 + in( i[ 3 ], j[ 3 ] ).b * u3 ) * v3;
-			__interpolte_util__::assign( out, r, g, b );
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( rgb< double >( r, g, b ) );
 		}
 
-		template < class T, class Allocator, class ValueType >
-		static void cubic___( const array3< T, Allocator > &in, ValueType &out,
-								typename array3< T, Allocator >::size_type i[4],
-								typename array3< T, Allocator >::size_type j[4],
-								typename array3< T, Allocator >::size_type k[4],
-								double x, double y, double z )
+		template < class T, class Allocator >
+		static const rgb< double >  cubic___( const array3< T, Allocator > &in,
+												typename array3< T, Allocator >::size_type i[4],
+												typename array3< T, Allocator >::size_type j[4],
+												typename array3< T, Allocator >::size_type k[4],
+												double x, double y, double z )
 		{
 			typedef typename array3< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -695,7 +660,13 @@ namespace __cubic__
 			double r = r0 * w0 + r1 * w1 + r2 * w2 + r3 * w3;
 			double g = g0 * w0 + g1 * w1 + g2 * w2 + g3 * w3;
 			double b = b0 * w0 + b1 * w1 + b2 * w2 + b3 * w3;
-			__interpolte_util__::assign( out, r, g, b );
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( rgb< double >( r, g, b ) );
 		}
 	};
 
@@ -749,7 +720,7 @@ namespace __cubic__
 					ii[ 3 ] = ii[ 2 ] < iw - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
 					x -= ii[ 1 ];
 
-					_cubic_< is_color< value_type >::value >::cubic___( in, out( i, j, k ), ii, jj, kk, x, y, z );
+					out( i, j, k ) = static_cast< out_value_type >( _cubic_< is_color< value_type >::value >::cubic___( in, ii, jj, kk, x, y, z ) );
 				}
 			}
 		}
