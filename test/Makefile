@@ -3,6 +3,7 @@ include ../build/makeinclude
 
 ALL = \
 	matrix_test \
+	matrix_util_test \
 	limits_test \
 	operators_test \
 	binary_test \
