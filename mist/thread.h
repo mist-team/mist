@@ -222,7 +222,8 @@ public:
 #elif defined( WIN32 )
 		return( SuspendThread( thread_handle_ ) != static_cast< DWORD >( -1 ) );
 #else
-		return( pthread_suspend_np( thread_id_ ) == 0 );
+//		return( pthread_suspend_np( thread_id_ ) == 0 );
+		return( false );
 #endif
 	}
 
@@ -234,7 +235,8 @@ public:
 #elif defined( WIN32 )
 		return( ResumeThread( thread_handle_ ) == 1 );
 #else
-		return( pthread_resume_np( thread_id_ ) == 0 );
+//		return( pthread_resume_np( thread_id_ ) == 0 );
+		return( false );
 #endif
 	}
 
@@ -272,6 +274,10 @@ namespace __thread_controller__
 	template < class Param, class Functor >
 	class thread_object_functor : public thread< thread_object_functor< Param, Functor > >
 	{
+	public:
+		typedef thread< thread_object_functor< Param, Functor > > base;
+		typedef typename base::thread_exit_type thread_exit_type;
+
 	private:
 		const Param &param_;
 		Functor func_;
