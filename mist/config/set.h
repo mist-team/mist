@@ -16,12 +16,12 @@ _MIST_BEGIN
 
 // MISTで利用する基底のデータ型
 
-// set演算を行うためのもの
-template< class Key, class Comp = std::less< Key >, class Allocator = std::allocator< Key > >
-class set : public std::set< Key, Comp, Allocator >
+// set_base演算を行うためのもの
+template< class SetType >
+class set_base : public SetType
 {
 protected:
-	typedef std::set< Key, Comp, Allocator > base;
+	typedef SetType base;
 
 public:
 	typedef typename base::key_type key_type;
@@ -42,28 +42,28 @@ public:
 
 
 public:
-	set( ) : base( ){ }
+	set_base( ) : base( ){ }
 
-	explicit set( const key_compare &pred ) : base( pred ){ }
+	explicit set_base( const key_compare &pred ) : base( pred ){ }
 
-	explicit set( const key_type &key ) : base( ){ base::insert( key ); }
+	explicit set_base( const key_type &key ) : base( ){ base::insert( key ); }
 
-	set( const key_compare &pred, const allocator_type &alloc ) : base( pred, alloc ){ }
-
-	template< class Iterator >
-	set( Iterator first, Iterator last ) : base( first, last ){ }
+	set_base( const key_compare &pred, const allocator_type &alloc ) : base( pred, alloc ){ }
 
 	template< class Iterator >
-	set( Iterator first, Iterator last, const key_compare &pred ) : base( first, last, pred ){ }
+	set_base( Iterator first, Iterator last ) : base( first, last ){ }
 
 	template< class Iterator >
-	set( Iterator first, Iterator last, const key_compare &pred, const allocator_type &alloc ) : base( first, last, pred, alloc ){ }
+	set_base( Iterator first, Iterator last, const key_compare &pred ) : base( first, last, pred ){ }
+
+	template< class Iterator >
+	set_base( Iterator first, Iterator last, const key_compare &pred, const allocator_type &alloc ) : base( first, last, pred, alloc ){ }
 
 public:
-	const set &operator +=( const set &s ){ base::insert( s.begin( ), s.end( ) ); return( *this ); }
-	const set &operator +=( const key_type &s ){ base::insert( s ); return( *this ); }
+	const set_base &operator +=( const set_base &s ){ base::insert( s.begin( ), s.end( ) ); return( *this ); }
+	const set_base &operator +=( const key_type &s ){ base::insert( s ); return( *this ); }
 
-	const set &operator -=( const set &s )
+	const set_base &operator -=( const set_base &s )
 	{
 		if( &s == this )
 		{
@@ -71,7 +71,7 @@ public:
 		}
 		else
 		{
-			set a = *this;
+			set_base a = *this;
 			const_iterator site1 = a.begin( );
 			const_iterator eite1 = a.end( );
 			const_iterator site2 = s.begin( );
@@ -106,13 +106,13 @@ public:
 		}
 		return( *this );
 	}
-	const set &operator -=( const key_type &s ){ base::erase( s ); return( *this ); }
+	const set_base &operator -=( const key_type &s ){ base::erase( s ); return( *this ); }
 
-	const set &operator *=( const set &s )
+	const set_base &operator *=( const set_base &s )
 	{
 		if( &s != this )
 		{
-			set a = *this;
+			set_base a = *this;
 			const_iterator site1 = a.begin( );
 			const_iterator eite1 = a.end( );
 			const_iterator site2 = s.begin( );
@@ -143,7 +143,36 @@ public:
 		return( *this );
 	}
 
-	bool operator ==( const set &s ) const
+	const set_base &operator *=( const value_type &s )
+	{
+		set_base a = *this;
+		const_iterator site = a.begin( );
+		const_iterator eite = a.end( );
+
+		// 自分自身の内容を空っぽにする
+		base::clear( );
+
+		key_compare compare;
+		while( site != eite )
+		{
+			if( compare( *site, s ) )
+			{
+				++site;
+			}
+			else if ( compare( s, *site ) )
+			{
+				break;
+			}
+			else
+			{
+				base::insert( *site );
+				++site;
+			}
+		}
+		return( *this );
+	}
+
+	bool operator ==( const set_base &s ) const
 	{
 		if( base::size( ) != s.size( ) )
 		{
@@ -162,8 +191,8 @@ public:
 		}
 		return( true );
 	}
-	bool operator !=( const set &s ) const { return( !( *this == s ) ); }
-	bool operator < ( const set &s ) const
+	bool operator !=( const set_base &s ) const { return( !( *this == s ) ); }
+	bool operator < ( const set_base &s ) const
 	{
 		if( base::size( ) >= s.size( ) )
 		{
@@ -172,7 +201,7 @@ public:
 
 		return( std::includes( s.begin( ), s.end( ), base::begin( ), base::end( ), key_compare( ) ) );
 	}
-	bool operator <=( const set &s ) const
+	bool operator <=( const set_base &s ) const
 	{
 		if( base::size( ) > s.size( ) )
 		{
@@ -181,29 +210,31 @@ public:
 
 		return( std::includes( s.begin( ), s.end( ), base::begin( ), base::end( ), key_compare( ) ) );
 	}
-	bool operator > ( const set &s ) const { return( s < *this ); }
-	bool operator >=( const set &s ) const { return( s <= *this ); }
+	bool operator > ( const set_base &s ) const { return( s < *this ); }
+	bool operator >=( const set_base &s ) const { return( s <= *this ); }
 };
 
-template< class Key, class Comp, class Allocator > inline const set< Key, Comp, Allocator > operator +( const set< Key, Comp, Allocator > &s1, const set< Key, Comp, Allocator > &s2 ){ return( set< Key, Comp, Allocator >( s1 ) += s2 ); }
-template< class Key, class Comp, class Allocator > inline const set< Key, Comp, Allocator > operator -( const set< Key, Comp, Allocator > &s1, const set< Key, Comp, Allocator > &s2 ){ return( set< Key, Comp, Allocator >( s1 ) -= s2 ); }
-template< class Key, class Comp, class Allocator > inline const set< Key, Comp, Allocator > operator *( const set< Key, Comp, Allocator > &s1, const set< Key, Comp, Allocator > &s2 ){ return( set< Key, Comp, Allocator >( s1 ) *= s2 ); }
-//inline const set operator /( const set &s1, const set &s2 ){ return( set( s1 ) /= s2 ); }
-//inline const set operator %( const set &s1, const set &s2 ){ return( set( s1 ) %= s2 ); }
-//inline const set operator |( const set &s1, const set &s2 ){ return( set( s1 ) |= s2 ); }
-//inline const set operator &( const set &s1, const set &s2 ){ return( set( s1 ) &= s2 ); }
-//inline const set operator ^( const set &s1, const set &s2 ){ return( set( s1 ) ^= s2 ); }
+template< class SetType > inline const set_base< SetType > operator +( const set_base< SetType > &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) += s2 ); }
+template< class SetType > inline const set_base< SetType > operator -( const set_base< SetType > &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) -= s2 ); }
+template< class SetType > inline const set_base< SetType > operator *( const set_base< SetType > &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) *= s2 ); }
+//inline const set_base operator /( const set_base &s1, const set_base &s2 ){ return( set_base( s1 ) /= s2 ); }
+//inline const set_base operator %( const set_base &s1, const set_base &s2 ){ return( set_base( s1 ) %= s2 ); }
+//inline const set_base operator |( const set_base &s1, const set_base &s2 ){ return( set_base( s1 ) |= s2 ); }
+//inline const set_base operator &( const set_base &s1, const set_base &s2 ){ return( set_base( s1 ) &= s2 ); }
+//inline const set_base operator ^( const set_base &s1, const set_base &s2 ){ return( set_base( s1 ) ^= s2 ); }
 
-template< class Key, class Comp, class Allocator > inline const set< Key, Comp, Allocator > operator +( const set< Key, Comp, Allocator > &s1, const typename set< Key, Comp, Allocator >::key_type &s2 ){ return( set< Key, Comp, Allocator >( s1 ) += s2 ); }
-template< class Key, class Comp, class Allocator > inline const set< Key, Comp, Allocator > operator +( const typename set< Key, Comp, Allocator >::key_type &s1, const set< Key, Comp, Allocator > &s2 ){ return( set< Key, Comp, Allocator >( s2 ) += s1 ); }
-template< class Key, class Comp, class Allocator > inline const set< Key, Comp, Allocator > operator -( const set< Key, Comp, Allocator > &s1, const typename set< Key, Comp, Allocator >::key_type &s2 ){ return( set< Key, Comp, Allocator >( s1 ) -= s2 ); }
-template< class Key, class Comp, class Allocator > inline const set< Key, Comp, Allocator > operator -( const typename set< Key, Comp, Allocator >::key_type &s1, const set< Key, Comp, Allocator > &s2 ){ return( set< Key, Comp, Allocator >( s1 ) -= s2 ); }
+template< class SetType > inline const set_base< SetType > operator *( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s1 ) *= s2 ); }
+template< class SetType > inline const set_base< SetType > operator *( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) *= s2 ); }
+template< class SetType > inline const set_base< SetType > operator +( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s1 ) += s2 ); }
+template< class SetType > inline const set_base< SetType > operator +( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s2 ) += s1 ); }
+template< class SetType > inline const set_base< SetType > operator -( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s1 ) -= s2 ); }
+template< class SetType > inline const set_base< SetType > operator -( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) -= s2 ); }
 
 
-template< class Key, class Comp, class Allocator >
-inline std::ostream &operator <<( std::ostream &out, const set< Key, Comp, Allocator > &s )
+template< class SetType >
+inline std::ostream &operator <<( std::ostream &out, const set_base< SetType > &s )
 {
-	typename set< Key, Comp, Allocator >::const_iterator ite = s.begin( );
+	typename set_base< SetType >::const_iterator ite = s.begin( );
 	if( ite != s.end( ) )
 	{
 		out << *ite++;
@@ -216,6 +247,92 @@ inline std::ostream &operator <<( std::ostream &out, const set< Key, Comp, Alloc
 	return( out );
 }
 
+
+template< class Key, class Comp = std::less< Key >, class Allocator = std::allocator< Key > >
+class set : public set_base< std::set< Key, Comp, Allocator > >
+{
+protected:
+	typedef set_base< std::set< Key, Comp, Allocator > > base;
+
+public:
+	typedef typename base::key_type key_type;
+	typedef typename base::key_compare key_compare;
+	typedef typename base::value_compare value_compare;
+	typedef typename base::allocator_type allocator_type;
+	typedef typename base::size_type size_type;
+	typedef typename base::difference_type difference_type;
+	typedef typename base::pointer pointer;
+	typedef typename base::const_pointer const_pointer;
+	typedef typename base::reference reference;
+	typedef typename base::const_reference const_reference;
+	typedef typename base::iterator iterator;
+	typedef typename base::const_iterator const_iterator;
+	typedef typename base::reverse_iterator reverse_iterator;
+	typedef typename base::const_reverse_iterator const_reverse_iterator;
+	typedef typename base::value_type value_type;
+
+public:
+	set( ) : base( ){ }
+
+	explicit set( const key_compare &pred ) : base( pred ){ }
+
+	explicit set( const key_type &key ) : base( ){ base::insert( key ); }
+
+	set( const key_compare &pred, const allocator_type &alloc ) : base( pred, alloc ){ }
+
+	template< class Iterator >
+	set( Iterator first, Iterator last ) : base( first, last ){ }
+
+	template< class Iterator >
+	set( Iterator first, Iterator last, const key_compare &pred ) : base( first, last, pred ){ }
+
+	template< class Iterator >
+	set( Iterator first, Iterator last, const key_compare &pred, const allocator_type &alloc ) : base( first, last, pred, alloc ){ }
+};
+
+
+
+template< class Key, class Comp = std::less< Key >, class Allocator = std::allocator< Key > >
+class multiset : public set_base< std::multiset< Key, Comp, Allocator > >
+{
+protected:
+	typedef set_base< std::multiset< Key, Comp, Allocator > > base;
+
+public:
+	typedef typename base::key_type key_type;
+	typedef typename base::key_compare key_compare;
+	typedef typename base::value_compare value_compare;
+	typedef typename base::allocator_type allocator_type;
+	typedef typename base::size_type size_type;
+	typedef typename base::difference_type difference_type;
+	typedef typename base::pointer pointer;
+	typedef typename base::const_pointer const_pointer;
+	typedef typename base::reference reference;
+	typedef typename base::const_reference const_reference;
+	typedef typename base::iterator iterator;
+	typedef typename base::const_iterator const_iterator;
+	typedef typename base::reverse_iterator reverse_iterator;
+	typedef typename base::const_reverse_iterator const_reverse_iterator;
+	typedef typename base::value_type value_type;
+
+public:
+	multiset( ) : base( ){ }
+
+	explicit multiset( const key_compare &pred ) : base( pred ){ }
+
+	explicit multiset( const key_type &key ) : base( ){ base::insert( key ); }
+
+	multiset( const key_compare &pred, const allocator_type &alloc ) : base( pred, alloc ){ }
+
+	template< class Iterator >
+	multiset( Iterator first, Iterator last ) : base( first, last ){ }
+
+	template< class Iterator >
+	multiset( Iterator first, Iterator last, const key_compare &pred ) : base( first, last, pred ){ }
+
+	template< class Iterator >
+	multiset( Iterator first, Iterator last, const key_compare &pred, const allocator_type &alloc ) : base( first, last, pred, alloc ){ }
+};
 
 // mist名前空間の終わり
 _MIST_END
