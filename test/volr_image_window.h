@@ -38,6 +38,9 @@ public:
 #include "volumerender_test.h"
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Progress.H>
+#include <FL/Fl_Choice.H>
+#include <FL/Fl_Check_Button.H>
+#include <FL/Fl_Value_Slider.H>
 
 class volr_image_window {
 public:
@@ -52,6 +55,36 @@ private:
   static void cb_Save(Fl_Menu_*, void*);
 public:
   Fl_Progress *progress_bar;
+  Fl_Choice *high_reso;
+  static Fl_Menu_Item menu_high_reso[];
+private:
+  inline void cb_512x512_i(Fl_Menu_*, void*);
+  static void cb_512x512(Fl_Menu_*, void*);
+  inline void cb_256x256_i(Fl_Menu_*, void*);
+  static void cb_256x256(Fl_Menu_*, void*);
+  inline void cb_128x128_i(Fl_Menu_*, void*);
+  static void cb_128x128(Fl_Menu_*, void*);
+public:
+  Fl_Choice *low_reso;
+  static Fl_Menu_Item menu_low_reso[];
+private:
+  inline void cb_512x5121_i(Fl_Menu_*, void*);
+  static void cb_512x5121(Fl_Menu_*, void*);
+  inline void cb_256x2561_i(Fl_Menu_*, void*);
+  static void cb_256x2561(Fl_Menu_*, void*);
+  inline void cb_128x1281_i(Fl_Menu_*, void*);
+  static void cb_128x1281(Fl_Menu_*, void*);
+  inline void cb_Specular_i(Fl_Check_Button*, void*);
+  static void cb_Specular(Fl_Check_Button*, void*);
+  inline void cb_Termination_i(Fl_Value_Slider*, void*);
+  static void cb_Termination(Fl_Value_Slider*, void*);
+  inline void cb_Sampling_i(Fl_Value_Slider*, void*);
+  static void cb_Sampling(Fl_Value_Slider*, void*);
+  inline void cb_Light_i(Fl_Value_Slider*, void*);
+  static void cb_Light(Fl_Value_Slider*, void*);
+  inline void cb_Field_i(Fl_Value_Slider*, void*);
+  static void cb_Field(Fl_Value_Slider*, void*);
+public:
   void show();
 };
 #endif

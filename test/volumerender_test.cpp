@@ -3,6 +3,7 @@
 #include <iostream>
 #include "volr_image_window.h"
 #include <FL/Fl_File_Chooser.H>
+#include <FL/gl_draw.H>
 
 #ifdef WIN32
 #include <io.h>
@@ -83,7 +84,37 @@ void volr_draw_area::draw( )
 		draw_image( );
 	}
 
+	static bool is_first = true;
+	if( is_first )
+	{
+		is_first = false;
+		gl_font( FL_TIMES_BOLD, 18 );
+	}
+
 	mist::draw_image( image_, w( ), h( ) );
+
+	{
+		int width = ( int )w( ) / 2;
+		int height = ( int )h( ) / 2;
+		glMatrixMode( GL_PROJECTION );
+		glPushMatrix( );
+		glLoadIdentity( );
+		gluOrtho2D( -width, width, -height, height );
+
+		glMatrixMode( GL_MODELVIEW );
+		glPushMatrix( );
+		glLoadIdentity( );
+
+		// ç∂è„Çå¥ì_Ç∆Ç∑ÇÈâÊëúç¿ïWånÇê›íË
+		gluLookAt( width, height, -1, width, height, 0, 0, -1, 0 );
+
+		glColor3d( 1.0, 1.0, 1.0 );
+
+		char str[ 256 ];
+		sprintf( str, "FPS: %.1f", fps_ );
+		gl_draw( str, 5, ( int )h( ) - 5 );
+	}
+
 	glFlush( );
 }
 
@@ -99,6 +130,15 @@ void volr_draw_area::draw_image( )
 	volr_parameter_type p( volr_parameter );
 	volr_table_type &table = volr_table;
 
+	if( is_high_resolution_ )
+	{
+		image_.resize( high_reso_, high_reso_ );
+	}
+	else
+	{
+		image_.resize( low_reso_, low_reso_ );
+	}
+
 	image_.reso( w( ) / static_cast< double >( h( ) ), 1.0 );
 
 	p.pos.x	= camera_.pos.x - p.offset.x;
@@ -113,8 +153,6 @@ void volr_draw_area::draw_image( )
 		mist::volumerendering( ct, image_, p, table );
 		fps_ = 1.0 / t.elapse( );
 	}
-
-	std::cout << "FPS: " << fps_ << "                 \r";
 }
 
 void volr_draw_area::read_image( volr_image_window *wnd )
@@ -252,6 +290,13 @@ void volr_draw_area::onMouseDown( int x, int y )
 	drag_beg_y = y;
 
 	old_camera_ = camera_;
+
+	is_high_resolution_ = false;
+
+	draw_flag_ = true;
+
+	redraw( );
+	Fl::wait( 0 );
 }
 
 // The mouse has moved, draw a line
@@ -286,6 +331,13 @@ void volr_draw_area::onMouseDrag( int button, int x, int y )
 void volr_draw_area::onMouseUp( int x, int y )
 {
 	old_camera_ = camera_;
+
+	is_high_resolution_ = true;
+
+	draw_flag_ = true;
+
+	redraw( );
+	Fl::wait( 0 );
 }
 
 
@@ -308,3 +360,7 @@ int main( int argc, char *argv[] )
 
 	return( 0 );
 }
+
+
+
+

@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltkd.lib fltkgld.lib opengl32.lib zlib.lib wsock32.lib comctl32.lib"
+				AdditionalDependencies="fltkd.lib fltkgld.lib opengl32.lib glu32.lib zlib.lib wsock32.lib comctl32.lib"
 				OutputFile="$(OutDir)/volumerender_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -66,20 +66,20 @@
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			CharacterSet="2"
-			WholeProgramOptimization="FALSE">
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				GlobalOptimizations="FALSE"
+				GlobalOptimizations="TRUE"
 				EnableIntrinsicFunctions="FALSE"
-				FavorSizeOrSpeed="0"
+				FavorSizeOrSpeed="1"
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="FALSE"
-				OptimizeForProcessor="0"
-				OptimizeForWindowsApplication="FALSE"
+				OptimizeForProcessor="3"
+				OptimizeForWindowsApplication="TRUE"
 				AdditionalIncludeDirectories=".."
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
-				EnableEnhancedInstructionSet="0"
+				EnableEnhancedInstructionSet="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -88,11 +88,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltk.lib fltkgl.lib opengl32.lib zlib.lib wsock32.lib comctl32.lib"
+				AdditionalDependencies="fltk.lib fltkgl.lib opengl32.lib glu32.lib zlib.lib wsock32.lib comctl32.lib"
 				OutputFile="$(OutDir)/volumerender_test.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="FALSE"
-				SubSystem="1"
+				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"/>

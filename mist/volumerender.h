@@ -481,7 +481,7 @@ namespace value_interpolation
 					// 直方体画素の画像上では方向によってサンプリング間隔が変わってしまう問題に対応
 					double ray_sampling_step = sampling_step * masp / dlen;
 
-					double accelerated_step = 2.0;
+					const double accelerated_step = 2.0;
 					vector_type ray_accelerated_step = ray * accelerated_step;
 					vector_type ray_step = ray * ray_sampling_step;
 
@@ -518,7 +518,6 @@ namespace value_interpolation
 						spos.z += ray_accelerated_step.z;
 					}
 
-
 					while( l < n )
 					{
 						difference_type si = volumerender::to_integer( spos.x );
@@ -536,11 +535,10 @@ namespace value_interpolation
 						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
 
 						difference_type ct_ = volumerender::to_integer( ct );
-						const attribute_type &oc1 = table[ ct_ ];
-						const attribute_type &oc2 = table[ ct_ + 1 ];
+						const attribute_type &oc = table[ ct_ ];
 
 						// この位置における物体が透明の場合は次のステップへ移行する
-						if( !oc1.has_alpha && !oc2.has_alpha )
+						if( !oc.has_alpha )
 						{
 							spos += ray_step;
 							l += ray_sampling_step;
@@ -591,7 +589,7 @@ namespace value_interpolation
 						normal.x /= ax;
 						normal.y /= ay;
 						normal.z /= az;
-						double len = std::sqrt( normal.x * normal.x + normal.y * normal.y + normal.z * normal.z ) + 1.0e-10;
+						double len = std::sqrt( normal.x * normal.x + normal.y * normal.y + normal.z * normal.z ) + type_limits< double >::minimum( );
 						normal.x /= len;
 						normal.y /= len;
 						normal.z /= len;
@@ -617,30 +615,28 @@ namespace value_interpolation
 							}
 							else
 							{
-								spec *= spec; //^2
-								spec *= spec; //^4
-								spec *= spec; //^8
-								spec *= spec; //^16
-								spec *= spec; //^32
-								spec *= spec; //^64
-								//spec *= spec; //^128
+								spec *= spec;	//  2乗
+								spec *= spec;	//  4乗
+								spec *= spec;	//  8乗
+								spec *= spec;	// 16乗
+								spec *= spec;	// 32乗
+								spec *= spec;	// 64乗
+								//spec *= spec;	// 128乗
 								spec *= specular * 255.0;
 							}
 						}
 
 						c = c * diffuse_ratio + ambient_ratio;
 
-						double _ct_ = ct - ct_;
-
-						double alpha = ( oc1.alpha * ( 1.0 - _ct_ ) + oc2.alpha * _ct_ ) * sampling_step;
-						//alpha = alpha < 1.0 ? alpha : 1.0;
-						add_intensity += alpha * add_opacity * ( ( oc1.pixel * ( 1.0 - _ct_ ) + oc2.pixel * _ct_ ) * c + spec ) * lAtten;
+						double alpha = oc.alpha * sampling_step;
+						add_intensity += alpha * add_opacity * ( oc.pixel * c + spec ) * lAtten;
 						add_opacity *= ( 1.0 - alpha );
 
 						if( add_opacity < termination )
 						{
 							break;
 						}
+
 						spos.x += ray_step.x;
 						spos.y += ray_step.y;
 						spos.z += ray_step.z;

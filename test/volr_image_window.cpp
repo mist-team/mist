@@ -118,13 +118,105 @@ Fl_Menu_Item volr_image_window::menu_[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
+inline void volr_image_window::cb_512x512_i(Fl_Menu_*, void*) {
+  volr_image->high_reso( 512 );
+}
+void volr_image_window::cb_512x512(Fl_Menu_* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_512x512_i(o,v);
+}
+
+inline void volr_image_window::cb_256x256_i(Fl_Menu_*, void*) {
+  volr_image->high_reso( 256 );
+}
+void volr_image_window::cb_256x256(Fl_Menu_* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_256x256_i(o,v);
+}
+
+inline void volr_image_window::cb_128x128_i(Fl_Menu_*, void*) {
+  volr_image->high_reso( 128 );
+}
+void volr_image_window::cb_128x128(Fl_Menu_* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_128x128_i(o,v);
+}
+
+Fl_Menu_Item volr_image_window::menu_high_reso[] = {
+ {"512x512", 0,  (Fl_Callback*)volr_image_window::cb_512x512, 0, 0, 0, 0, 14, 56},
+ {"256x256", 0,  (Fl_Callback*)volr_image_window::cb_256x256, 0, 0, 0, 0, 14, 56},
+ {"128x128", 0,  (Fl_Callback*)volr_image_window::cb_128x128, 0, 0, 0, 0, 14, 56},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+inline void volr_image_window::cb_512x5121_i(Fl_Menu_*, void*) {
+  volr_image->low_reso( 512 );
+}
+void volr_image_window::cb_512x5121(Fl_Menu_* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_512x5121_i(o,v);
+}
+
+inline void volr_image_window::cb_256x2561_i(Fl_Menu_*, void*) {
+  volr_image->low_reso( 256 );
+}
+void volr_image_window::cb_256x2561(Fl_Menu_* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_256x2561_i(o,v);
+}
+
+inline void volr_image_window::cb_128x1281_i(Fl_Menu_*, void*) {
+  volr_image->low_reso( 128 );
+}
+void volr_image_window::cb_128x1281(Fl_Menu_* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_128x1281_i(o,v);
+}
+
+Fl_Menu_Item volr_image_window::menu_low_reso[] = {
+ {"512x512", 0,  (Fl_Callback*)volr_image_window::cb_512x5121, 0, 0, 0, 0, 14, 56},
+ {"256x256", 0,  (Fl_Callback*)volr_image_window::cb_256x2561, 0, 0, 0, 0, 14, 56},
+ {"128x128", 0,  (Fl_Callback*)volr_image_window::cb_128x1281, 0, 0, 0, 0, 14, 56},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+inline void volr_image_window::cb_Specular_i(Fl_Check_Button* o, void*) {
+  volr_image->specular( o->value( ) != 0 );
+}
+void volr_image_window::cb_Specular(Fl_Check_Button* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_Specular_i(o,v);
+}
+
+inline void volr_image_window::cb_Termination_i(Fl_Value_Slider* o, void*) {
+  volr_image->termination( o->value( ) );
+}
+void volr_image_window::cb_Termination(Fl_Value_Slider* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_Termination_i(o,v);
+}
+
+inline void volr_image_window::cb_Sampling_i(Fl_Value_Slider* o, void*) {
+  volr_image->sampling_step( o->value( ) );
+}
+void volr_image_window::cb_Sampling(Fl_Value_Slider* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_Sampling_i(o,v);
+}
+
+inline void volr_image_window::cb_Light_i(Fl_Value_Slider* o, void*) {
+  volr_image->light_attenuation( o->value( ) / 10000.0 );
+}
+void volr_image_window::cb_Light(Fl_Value_Slider* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_Light_i(o,v);
+}
+
+inline void volr_image_window::cb_Field_i(Fl_Value_Slider* o, void*) {
+  volr_image->fovy( o->value( ) );
+}
+void volr_image_window::cb_Field(Fl_Value_Slider* o, void* v) {
+  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_Field_i(o,v);
+}
+
 volr_image_window::volr_image_window( ) {
   Fl_Double_Window* w;
-  { Fl_Double_Window* o = image_window = new Fl_Double_Window(421, 446);
+  { Fl_Double_Window* o = image_window = new Fl_Double_Window(421, 562);
     w = o;
     o->user_data((void*)(this));
-    { Fl_Group* o = new Fl_Group(5, 30, 410, 410);
+    { Fl_Group* o = new Fl_Group(5, 30, 410, 410, "VolumeRendering");
       o->box(FL_PLASTIC_DOWN_FRAME);
+      o->labeltype(FL_NO_LABEL);
       { volr_draw_area* o = volr_image = new volr_draw_area(10, 35, 400, 400, "label");
         o->box(FL_FLAT_BOX);
         o->color(FL_DARK3);
@@ -135,6 +227,7 @@ volr_image_window::volr_image_window( ) {
         o->labelcolor(FL_BLACK);
         o->align(FL_ALIGN_CENTER);
         o->when(FL_WHEN_RELEASE);
+        Fl_Group::current()->resizable(o);
       }
       o->end();
       Fl_Group::current()->resizable(o);
@@ -148,8 +241,62 @@ volr_image_window::volr_image_window( ) {
       o->selection_color((Fl_Color)1);
       o->hide();
     }
+    { Fl_Group* o = new Fl_Group(5, 445, 410, 110);
+      { Fl_Choice* o = high_reso = new Fl_Choice(120, 445, 85, 25, "High:");
+        o->down_box(FL_BORDER_BOX);
+        o->menu(menu_high_reso);
+      }
+      { Fl_Choice* o = low_reso = new Fl_Choice(245, 445, 85, 25, "Low:");
+        o->down_box(FL_BORDER_BOX);
+        o->menu(menu_low_reso);
+      }
+      { Fl_Check_Button* o = new Fl_Check_Button(335, 445, 25, 25, "Specular");
+        o->down_box(FL_PLASTIC_DOWN_BOX);
+        o->value(1);
+        o->callback((Fl_Callback*)cb_Specular);
+      }
+      { Fl_Value_Slider* o = new Fl_Value_Slider(120, 475, 295, 20, "Termination:");
+        o->type(1);
+        o->box(FL_PLASTIC_DOWN_BOX);
+        o->minimum(0.01);
+        o->value(0.01);
+        o->callback((Fl_Callback*)cb_Termination);
+        o->align(FL_ALIGN_LEFT);
+      }
+      { Fl_Value_Slider* o = new Fl_Value_Slider(120, 495, 295, 20, "Sampling Step:");
+        o->type(1);
+        o->box(FL_PLASTIC_DOWN_BOX);
+        o->minimum(0.1);
+        o->value(1);
+        o->callback((Fl_Callback*)cb_Sampling);
+        o->align(FL_ALIGN_LEFT);
+      }
+      { Fl_Value_Slider* o = new Fl_Value_Slider(120, 515, 295, 20, "Light Attenuation:");
+        o->type(1);
+        o->box(FL_PLASTIC_DOWN_BOX);
+        o->maximum(100);
+        o->step(1);
+        o->callback((Fl_Callback*)cb_Light);
+        o->align(FL_ALIGN_LEFT);
+      }
+      { Fl_Value_Slider* o = new Fl_Value_Slider(120, 535, 295, 20, "Field of View Y:");
+        o->type(1);
+        o->box(FL_PLASTIC_DOWN_BOX);
+        o->minimum(10);
+        o->maximum(160);
+        o->step(1);
+        o->value(80);
+        o->callback((Fl_Callback*)cb_Field);
+        o->align(FL_ALIGN_LEFT);
+      }
+      o->end();
+    }
     o->end();
   }
+  high_reso->value( 1 );
+high_reso->do_callback( );
+  low_reso->value( 2 );
+low_reso->do_callback( );
 }
 
 void volr_image_window::show() {
