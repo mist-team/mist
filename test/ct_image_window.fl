@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0104 
+version 1.0106 
 header_name {.h} 
 code_name {.cpp}
 class parameter_window {} {
@@ -74,7 +74,7 @@ class ct_image_window {open
   Function {ct_image_window( )} {open
   } {
     Fl_Window image_window {open
-      xywh {175 326 421 528} type Double visible
+      xywh {495 473 421 528} type Double visible
     } {
       Fl_Group {} {open
         xywh {5 30 410 410} box PLASTIC_DOWN_FRAME
@@ -86,7 +86,7 @@ class ct_image_window {open
           class ct_draw_area
         }
       }
-      Fl_Menu_Bar {} {open
+      Fl_Menu_Bar {} {open selected
         xywh {0 0 100 25} box FLAT_BOX
       } {
         submenu {} {
@@ -122,6 +122,11 @@ class ct_image_window {open
             label {&Median Filter 3D}
             callback {ct_image->median_filter3D( this );}
             xywh {10 10 100 20}
+          }
+          menuitem {} {
+            label {&Normalization Filter 3D}
+            callback {ct_image->normalization_filter3D( this );}
+            xywh {20 20 100 20}
           }
           menuitem {} {
             label {&Euclidean Distance Transform}
@@ -175,7 +180,7 @@ class ct_image_window {open
         callback {ct_image->change_index( static_cast< int >( o->value( ) ) );}
         xywh {40 445 375 20} type Horizontal box PLASTIC_THIN_DOWN_BOX align 4 step 1
       }
-      Fl_Progress progress_bar {selected
+      Fl_Progress progress_bar {
         xywh {115 5 300 20} box PLASTIC_THIN_UP_BOX selection_color 1 hide
       }
     }

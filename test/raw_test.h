@@ -46,6 +46,7 @@ public:
 	void median_filter1D( ct_image_window *wnd );
 	void median_filter2D( ct_image_window *wnd );
 	void median_filter3D( ct_image_window *wnd );
+	void normalization_filter3D( ct_image_window *wnd );
 	void euclidean_distance_transform( ct_image_window *wnd );
 	void labeling6( ct_image_window *wnd );
 	void labeling26( ct_image_window *wnd );

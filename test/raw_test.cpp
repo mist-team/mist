@@ -9,6 +9,7 @@
 #include <mist/filter/distance.h>
 #include <mist/filter/labeling.h>
 #include <mist/filter/morphology.h>
+#include <mist/filter/linear.h>
 #include <mist/timer.h>
 
 
@@ -206,6 +207,20 @@ void ct_draw_area::median_filter3D( ct_image_window *wnd )
 	{
 		mist::timer t;
 		mist::median( tmp, ct, 3, 3, 3, progress_callback( wnd->progress_bar ), 0 );
+		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
+	}
+	redraw( );
+	Fl::wait( 0 );
+}
+
+void ct_draw_area::normalization_filter3D( ct_image_window *wnd )
+{
+	if( ct.empty( ) ) return;
+
+	mist::array3< short > tmp = ct;
+	{
+		mist::timer t;
+		mist::gaussian( tmp, ct );
 		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
 	}
 	redraw( );
