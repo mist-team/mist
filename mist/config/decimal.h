@@ -224,7 +224,7 @@ public:
 		return( operator +=( -a ) );
 	}
 
-	const decimal &operator *=( decimal a )
+	const decimal &operator *=( const decimal &a )
 	{
 		if( zero_ )
 		{
@@ -235,35 +235,34 @@ public:
 			return( operator =( decimal( ) ) );
 		}
 
-		difference_type i, j, u;
+		difference_type i, j, u, r, xp;
 		value_type x[ NMPA2 ];
-		value_type *p, *q, *r, *xp;
 		memset( x, 0, sizeof( value_type ) * NMPA2 );
 
-		for( i = NMPA, xp = x + NMPA2 - 1, p = a.data_ + i ; i >= 0 ; i--, xp--, p-- )
+		for( i = NMPA, xp = NMPA2 - 1 ; i >= 0 ; i--, xp-- )
 		{
-			if( *p )
+			if( a.data_[ i ] )
 			{
 				u = 0;
-				for( j = NMPA, q = data_ + j, r = xp ; j >= 0; j-- )
+				for( j = NMPA, r = xp ; j >= 0; j--, r-- )
 				{
-					u += static_cast< size_type >( *q-- ) * static_cast< size_type >( *p ) + *r;
-					*r-- = static_cast< value_type >( u ) & RADIX1;
+					u += static_cast< size_type >( data_[ j ] ) * static_cast< size_type >( a.data_[ i ] ) + x[ r ];
+					x[ r ] = static_cast< value_type >( u ) & RADIX1;
 					u >>= RADIXBITS;
 				}
 				while( u )
 				{
-					u += *r;
-					*r-- = static_cast< value_type >( u ) & RADIX1;
+					u += x[ r ];
+					x[ r-- ] = static_cast< value_type >( u ) & RADIX1;
 					u >>= RADIXBITS;
 				}
 			}
 		}
 		sign_ = sign_ == a.sign_;
-		exp_ += ++a.exp_;
-		for( i = 0, xp = x ; i < NMPA2 ; i++, xp++ )
+		exp_ += a.exp_ + 1;
+		for( i = 0, xp = 0 ; i < NMPA2 ; i++, xp++ )
 		{
-			if( *xp )
+			if( x[ xp ] )
 			{
 				break;
 			}
@@ -280,22 +279,22 @@ public:
 			::std::cout << "Error : Underflow!!" << ::std::endl;
 			return( operator =( decimal( ) ) );
 		}
-		for( j = 0, p = data_ ; ( j <= NMPA ) && ( i < NMPA2 ) ; i++, j++ )
+		for( j = 0 ; ( j <= NMPA ) && ( i < NMPA2 ) ; i++, j++, xp++ )
 		{
-            *p++ = *xp++;
+            data_[ j ] = x[ xp ];
 		}
 		if( j <= NMPA )
 		{
 			for( ; j <= NMPA ; j++ )
 			{
-				*p++ = 0;
+				data_[ j ] = 0;
 			}
 		}
-		else if( *xp >= RADIX_2 )
+		else if( x[ xp ] >= RADIX_2 )
 		{
-			for( i = NMPA, p = data_ + i ; ++*p & RADIX ; i-- )
+			for( i = NMPA ; ++( data_[ i ] ) & RADIX ; i-- )
 			{
-				*p-- &= RADIX1;
+				data_[ i ] &= RADIX1;
 			}
 		}
 		return( *this );
@@ -355,10 +354,6 @@ public:
 			// É[ÉçèúéZ
 			std::cerr << "zero_ division!!" << std::endl;
 			return( *this );
-		}
-		else if( acmp( *this, b ) == 0 )
-		{
-			return( operator =( decimal( sign_ == b.sign_ ? 1 : -1 ) ) );
 		}
 
 		decimal a = *this;
@@ -884,7 +879,7 @@ protected:
 		return( a.sign_ ? 1 : -1 );
 	}
 
-	static int acmp( decimal a, decimal b )
+	static int acmp( const decimal &a, const decimal &b )
 	{
 		if( a.zero_ )
 		{
@@ -895,31 +890,32 @@ protected:
 			return( 1 );
 		}
 
-		size_type i;
+		size_type ia, ib;
+		difference_type aexp = a.exp_;
+		difference_type bexp = b.exp_;
 
-		while( a.data_[ 0 ] == 0 && a.exp_ != MINEXP )
+		for( ia = 0 ; ia <= NMPA && aexp != MINEXP ; ia++ )
 		{
-			for( i = 0 ; i < NMPA ; i++ )
+			if( a.data_[ ia ] != 0 )
 			{
-				a.data_[ i ] = a.data_[ i + 1 ];
+				break;
 			}
-			a.data_[ i ] = 0;
-			a.exp_--;
+			aexp--;
 		}
-		while( b.data_[ 0 ] == 0 && b.exp_ != MINEXP )
+		for( ib = 0 ; ib <= NMPA && bexp != MINEXP ; ib++ )
 		{
-			for( i = 0 ; i < NMPA ; i++ )
+			if( b.data_[ ib ] != 0 )
 			{
-				b.data_[ i ] = b.data_[ i + 1 ];
+				break;
 			}
-			b.data_[ i ] = 0;
-			b.exp_--;
+			bexp--;
 		}
-		if( a.exp_ != b.exp_ )
+
+		if( aexp != bexp )
 		{
-			return( a.exp_ > b.exp_ ? 1: -1 );
+			return( aexp > bexp ? 1: -1 );
 		}
-		for( i = 0 ; i <= NMPA ; i++ )
+		for( size_type i = ia ; i <= NMPA ; i++ )
 		{
 			if( a.data_[ i ] != b.data_[ i ] )
 			{
@@ -928,6 +924,51 @@ protected:
 		}
 		return( 0 );
 	}
+
+	//static int acmp( decimal a, decimal b )
+	//{
+	//	if( a.zero_ )
+	//	{
+	//		return( b.zero_ ? 0 : -1 );
+	//	}
+	//	else if( b.zero_ )
+	//	{
+	//		return( 1 );
+	//	}
+
+	//	size_type i;
+
+	//	while( a.data_[ 0 ] == 0 && a.exp_ != MINEXP )
+	//	{
+	//		for( i = 0 ; i < NMPA ; i++ )
+	//		{
+	//			a.data_[ i ] = a.data_[ i + 1 ];
+	//		}
+	//		a.data_[ i ] = 0;
+	//		a.exp_--;
+	//	}
+	//	while( b.data_[ 0 ] == 0 && b.exp_ != MINEXP )
+	//	{
+	//		for( i = 0 ; i < NMPA ; i++ )
+	//		{
+	//			b.data_[ i ] = b.data_[ i + 1 ];
+	//		}
+	//		b.data_[ i ] = 0;
+	//		b.exp_--;
+	//	}
+	//	if( a.exp_ != b.exp_ )
+	//	{
+	//		return( a.exp_ > b.exp_ ? 1: -1 );
+	//	}
+	//	for( i = 0 ; i <= NMPA ; i++ )
+	//	{
+	//		if( a.data_[ i ] != b.data_[ i ] )
+	//		{
+	//			return( a.data_[ i ] > b.data_[ i ] ? 1 : -1 );
+	//		}
+	//	}
+	//	return( 0 );
+	//}
 
 	static difference_type aprs( const decimal &a, decimal &b )
 	{
