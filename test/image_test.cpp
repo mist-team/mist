@@ -99,105 +99,84 @@ void euclidean_distance_transform_test( )
 	{
 		tmp1[ i ] = image_object[ i ].get_value( );
 	}
+
 	mist::euclidean_distance_transform( tmp1, tmp2 );
+
+	double min = tmp2[ 0 ];
+	double max = tmp2[ 0 ];
+	for( i = 1 ; i < tmp2.size( ) ; i++ )
+	{
+		if( min > tmp2[ i ] )
+		{
+			min = tmp2[ i ];
+		}
+		else if( max < tmp2[ i ] )
+		{
+			max = tmp2[ i ];
+		}
+	}
+
+	double range = max == min ? 1 : max - min; 
+
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
-		image_object[ i ] = static_cast< unsigned char >( tmp2[ i ] );
+		image_object[ i ] = static_cast< unsigned char >( ( tmp2[ i ] - min ) / range * 255.0 );
 	}
 }
 
 void figure_decomposition_test( )
 {
-	//mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
+	//mist::array2< unsigned char > label( image_object.width( ), image_object.width( ), image_object.reso1( ), image_object.reso2( ) );
 
-	//for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	//image_type::size_type i;
+
+	//for( i = 0 ; i < image_object.size( ) ; i++ )
 	//{
-	//	switch( image_object[i] )
-	//	{
-	//	case 1:
-	//		image_object[i] = 50;
-	//		break;
+	//	label[ i ] = image_object[ i ].get_value( );
+	//}
 
-	//	case 2:
-	//		image_object[i] = 100;
-	//		break;
+	//size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
 
-	//	case 3:
-	//		image_object[i] = 150;
-	//		break;
+	//if( label_num == 0 )
+	//{
+	//	return;
+	//}
 
-	//	case 4:
-	//		image_object[i] = 200;
-	//		break;
-
-	//	case 5:
-	//		image_object[i] = 255;
-	//		break;
-	//	}
+	//for( i = 0 ; i < image_object.size( ) ; i++ )
+	//{
+	//	image_object[ i ] = static_cast< unsigned char >( label[ i ] * 255.0 / static_cast< double >( label_num ) );
 	//}
 }
 
 void labeling4_test( )
 {
 	mist::array2< unsigned char > label;
-	mist::labeling4( image_object, label, 255 );
+	size_t label_num = mist::labeling4( image_object, label, 255 );
 
-	for( image_type::size_type i = 0 ; i < label.size( ) ; i++ )
+	if( label_num == 0 )
 	{
-		switch( label[i] )
-		{
-		case 1:
-			image_object[i] = 50;
-			break;
+		return;
+	}
 
-		case 2:
-			image_object[i] = 100;
-			break;
-
-		case 3:
-			image_object[i] = 150;
-			break;
-
-		case 4:
-			image_object[i] = 200;
-			break;
-
-		case 5:
-			image_object[i] = 255;
-			break;
-		}
+	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		image_object[ i ] = static_cast< unsigned char >( label[ i ] * 255.0 / static_cast< double >( label_num ) );
 	}
 }
 
 void labeling8_test( )
 {
 	mist::array2< unsigned char > label;
-	mist::labeling8( image_object, label, 255 );
+	size_t label_num = mist::labeling8( image_object, label, 255 );
 
-	for( image_type::size_type i = 0 ; i < label.size( ) ; i++ )
+	if( label_num == 0 )
 	{
-		switch( label[i] )
-		{
-		case 1:
-			image_object[i] = 50;
-			break;
+		return;
+	}
 
-		case 2:
-			image_object[i] = 100;
-			break;
-
-		case 3:
-			image_object[i] = 150;
-			break;
-
-		case 4:
-			image_object[i] = 200;
-			break;
-
-		case 5:
-			image_object[i] = 255;
-			break;
-		}
+	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		image_object[ i ] = static_cast< unsigned char >( label[ i ] * 255.0 / static_cast< double >( label_num ) );
 	}
 }
 

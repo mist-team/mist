@@ -98,13 +98,14 @@ namespace __euclidean_distance_transform__
 	{
 		typedef typename T::size_type  size_type;
 		typedef typename T::value_type value_type;
+		typedef typename T::difference_type difference_type;
 
 		size_type i, j, k;
-		int n;
+		difference_type n;
 
 		double wmin, wtmp;
 		size_type irange;
-		int irange1, irange2;
+		difference_type irange1, irange2;
 		double *work;
 		double vy, vyvy;
 
@@ -112,7 +113,7 @@ namespace __euclidean_distance_transform__
 		size_type h = in.height( );
 		size_type d = in.depth( );
 
-		size_type max = static_cast< size_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
+		value_type max = static_cast< value_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		vy = in.reso2( ) / in.reso1( );
 		vyvy = vy * vy;
@@ -136,8 +137,8 @@ namespace __euclidean_distance_transform__
 						irange = static_cast< size_type >( sqrt( wmin ) / vy ) + 1;
 						irange = static_cast< size_type >( irange < max ? irange : max );
 
-						irange1 = static_cast< int >( j < irange  ? j : irange );
-						irange2 = static_cast< int >( j + irange >= h ? h - 1 - j : irange );
+						irange1 = j < irange  ? j : irange;
+						irange2 = j + irange >= h ? h - 1 - j : irange;
 						for( n = -irange1 ; n <= irange2 ; n++ )
 						{
 							wtmp = work[ j + n ] + static_cast< double >( n * n * vyvy );
@@ -159,12 +160,13 @@ namespace __euclidean_distance_transform__
 	{
 		typedef typename T::size_type  size_type;
 		typedef typename T::value_type value_type;
+		typedef typename T::difference_type difference_type;
 
 		size_type i, j, k;
-		int n;
+		difference_type n;
 		double wmin, wtmp;
 		size_type irange;
-		int irange1, irange2;
+		difference_type irange1, irange2;
 		double *work;
 		double vz, vzvz;
 
@@ -176,7 +178,7 @@ namespace __euclidean_distance_transform__
 		vzvz = vz * vz;
 		work = new double[ d ];
 
-		size_type max = static_cast< size_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
+		value_type max = static_cast< value_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		for( j = 0 ; j < h ; j++ )
 		{
@@ -196,8 +198,8 @@ namespace __euclidean_distance_transform__
 						irange = static_cast< size_type >( sqrt( wmin ) / vz ) + 1;
 						irange = static_cast< size_type >( irange < max ? irange : max );
 
-						irange1 = static_cast< int >( k < irange ? k : irange );
-						irange2 = static_cast< int >( k + irange >= d ? d - 1 - k : irange );
+						irange1 = k < irange ? k : irange;
+						irange2 = k + irange >= d ? d - 1 - k : irange;
 						for( n = -irange1 ; n <= irange2 ; n++ )
 						{
 							wtmp = work[ k + n ] + static_cast< double >( n * n * vzvz );
