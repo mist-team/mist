@@ -399,6 +399,7 @@ struct __mist_console_callback__
 * - @ref median_group						"メディアンフィルタ"
 * - @ref interpolate_group					"画像補間"
 *   - @ref mist::nearest					"最近傍型補間"
+*   - @ref mist::mean						"平均値型補間"
 *   - @ref mist::linear						"線形補間"
 *   - @ref mist::cubic						"3次補間"
 * - カラー画像に対する処理
