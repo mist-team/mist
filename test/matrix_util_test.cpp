@@ -57,8 +57,18 @@ int main( )
 		std::cout << "Eigen value and vectors" << std::endl;
 
 		matrix aa = a, eval, evec;
-		mist::eigen( aa, eval, evec );
+		mist::eigen( aa, eval, evec, mist::matrix_style::ge );
 		std::cout << aa << std::endl;
+		std::cout << eval << std::endl;
+		std::cout << evec << std::endl;
+	}
+
+	{
+		std::cout << "Eigen value and vectors symmetry" << std::endl;
+
+		matrix aa = a * a.t( ), eval, evec;
+		std::cout << aa << std::endl;
+		mist::eigen( aa, eval, evec, mist::matrix_style::sy );
 		std::cout << eval << std::endl;
 		std::cout << evec << std::endl;
 	}
