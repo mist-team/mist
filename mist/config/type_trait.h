@@ -26,6 +26,21 @@ template<> struct is_float< float >       { _MIST_CONST( bool, value, true  ); }
 template<> struct is_float< double >      { _MIST_CONST( bool, value, true  ); };
 template<> struct is_float< long double > { _MIST_CONST( bool, value, true  ); };
 
+// integer ”»’è
+// T ‚ª®”Œ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚éB”Ä®”Œ^‚ª‚±‚ê‚É‚ ‚½‚é
+template< class T > struct is_integer                  { _MIST_CONST( bool, value, false ); };
+template<>          struct is_integer< unsigned char > { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_integer< unsigned short >{ _MIST_CONST( bool, value, true  ); };
+template<>          struct is_integer< unsigned int >  { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_integer< unsigned long > { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_integer< signed char >   { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_integer< signed short >  { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_integer< signed int >    { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_integer< signed long >   { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_integer< bool >          { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_integer< char >          { _MIST_CONST( bool, value, true  ); };
+
+
 // arithmetic ”»’è
 // T ‚ªZpŒ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚éB”Ä®”Œ^‚©•‚“®¬”“_Œ^‚Ì‚¢‚¸‚ê‚©‚ª‚±‚ê‚É‚ ‚½‚é
 template< class T > struct is_arithmetic                  { _MIST_CONST( bool, value, false ); };
@@ -42,6 +57,7 @@ template<>          struct is_arithmetic< char >          { _MIST_CONST( bool, v
 template<>          struct is_arithmetic< float >         { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_arithmetic< double >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_arithmetic< long double >   { _MIST_CONST( bool, value, true  ); };
+
 
 // ƒf[ƒ^Œ^‚Ì‚ÉŠÖ‚·‚éî•ñ
 template< class T >

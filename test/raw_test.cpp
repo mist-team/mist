@@ -131,33 +131,45 @@ void ct_draw_area::change_window_width( double ww )
 
 void ct_draw_area::median_filter1D( ct_image_window *wnd )
 {
-	mist::array< int > a( 7 ), b( 7 );
-	a[ 0 ] = 0;
-	a[ 1 ] = 4;
-	a[ 2 ] = 2;
-	a[ 3 ] = 3;
-	a[ 4 ] = 2;
-	a[ 5 ] = 4;
-	a[ 6 ] = 0;
+	mist::array< double > a( 7 ), b( 7 );
+	a[ 0 ] = 0.2;
+	a[ 1 ] = 4.1;
+	a[ 2 ] = 2.5;
+	a[ 3 ] = 3.6;
+	a[ 4 ] = 2.2;
+	a[ 5 ] = 4.3;
+	a[ 6 ] = 0.1;
 
 	std::cout << a << std::endl;
 	mist::median( a, b, 3 );
 	std::cout << b << std::endl;
+
+	mist::array< int > aa( a ), bb( 7 );
+
+	std::cout << aa << std::endl;
+	mist::median( aa, bb, 3 );
+	std::cout << bb << std::endl;
 }
 
 void ct_draw_area::median_filter2D( ct_image_window *wnd )
 {
-	mist::array2< int > a( 5, 5 );
-	mist::array2< unsigned int > b( 5, 5 );
-	a( 0, 0 ) = 0; a( 0, 1 ) = 0; a( 0, 2 ) = 0; a( 0, 3 ) = 0; a( 0, 4 ) = 0;
-	a( 1, 0 ) = 0; a( 1, 1 ) = 4; a( 1, 2 ) = 5; a( 1, 3 ) = 4; a( 1, 4 ) = 0;
-	a( 2, 0 ) = 0; a( 2, 1 ) = 3; a( 2, 2 ) = 2; a( 2, 3 ) = 3; a( 2, 4 ) = 0;
-	a( 3, 0 ) = 0; a( 3, 1 ) = 4; a( 3, 2 ) = 5; a( 3, 3 ) = 4; a( 3, 4 ) = 0;
-	a( 4, 0 ) = 0; a( 4, 1 ) = 0; a( 4, 2 ) = 0; a( 4, 3 ) = 0; a( 4, 4 ) = 0;
+	mist::array2< double > a( 5, 5 ), b( 5, 5 );
+	a( 0, 0 ) = 0.1; a( 0, 1 ) = 0.2; a( 0, 2 ) = 0.1; a( 0, 3 ) = 0.6; a( 0, 4 ) = 0.4;
+	a( 1, 0 ) = 0.3; a( 1, 1 ) = 4.1; a( 1, 2 ) = 5.2; a( 1, 3 ) = 4.7; a( 1, 4 ) = 0.3;
+	a( 2, 0 ) = 0.2; a( 2, 1 ) = 3.5; a( 2, 2 ) = 2.8; a( 2, 3 ) = 3.9; a( 2, 4 ) = 0.8;
+	a( 3, 0 ) = 0.4; a( 3, 1 ) = 4.2; a( 3, 2 ) = 5.9; a( 3, 3 ) = 4.2; a( 3, 4 ) = 0.9;
+	a( 4, 0 ) = 0.2; a( 4, 1 ) = 0.3; a( 4, 2 ) = 0.1; a( 4, 3 ) = 0.1; a( 4, 4 ) = 0.4;
 
 	std::cout << a << std::endl;
 	mist::median( a, b, 3, 3 );
 	std::cout << b << std::endl;
+
+	mist::array2< int > aa( a );
+	mist::array2< unsigned int > bb;
+
+	std::cout << aa << std::endl;
+	mist::median( aa, bb, 3, 3 );
+	std::cout << bb << std::endl;
 }
 
 void ct_draw_area::median_filter3D( ct_image_window *wnd )

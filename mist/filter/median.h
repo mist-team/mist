@@ -6,6 +6,11 @@
 #include "../mist.h"
 #endif
 
+#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
+#include "../config/type_trait.h"
+#endif
+
+
 #ifndef __INCLUDE_MIST_THREAD__
 #include "../thread.h"
 #endif
@@ -18,7 +23,7 @@ _MIST_BEGIN
 
 
 // メディアンフィルタ
-namespace __median_filter__
+namespace __median_filter_with_histogram__
 {
 	// in  : 入力画像. 入力画像の画素値は min と max の間とする
 	// out : 出力画像. 出力画像のメモリはあらかじめ割り当てられているものとする
@@ -28,7 +33,8 @@ namespace __median_filter__
 	void median_filter( const Array1 &in, Array2 &out,
 						typename Array1::size_type fw, typename Array1::size_type fh, typename Array1::size_type fd,
 						typename Array1::value_type min, typename Array1::value_type max,
-						typename Array1::size_type thread_id = 0, typename Array1::size_type thread_num = 1 )
+						typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
+						typename Array1::size_type thread_idz, typename Array1::size_type thread_numz )
 	{
 		typedef typename Array1::size_type  size_type;
 		typedef typename Array1::value_type value_type;
@@ -52,9 +58,9 @@ namespace __median_filter__
 		value_type *sort = new value_type[ fw * fh * fd + 1 ];
 		hist_value *hist = new hist_value[range];
 
-		for( k = thread_id ; k < d ; k += thread_num )
+		for( k = thread_idz ; k < d ; k += thread_numz )
 		{
-			for( j = 0 ; j < h ; j++ )
+			for( j = thread_idy ; j < h ; j += thread_numy )
 			{
 				i = 0;
 
@@ -164,6 +170,270 @@ namespace __median_filter__
 }
 
 
+namespace __median_filter_divide_conquer__
+{
+	// DATA型の配列の中央値を高速に計算するアルゴリズム
+	// 配列の要素 数はnum個である。
+	// 配列内で第c番目に小さい値を検索する
+	// 入力されるDATA型の配列は中身を入れ替えない代わりに，ワーク配列を利用する
+	template < class T >
+	inline T nth_value( const T *a, size_t num, size_t c, T *work1, T *work2, T *work3 )
+	{
+		typedef T value_type;
+
+		size_t i;
+		size_t wi1, wi2, wi3;
+		value_type s;
+		value_type *w1 = work1;
+		value_type *w2 = work2;
+		value_type *src, *www;
+
+		wi1 = wi2 = wi3 = 0;
+		s = a[ c ];
+
+		for( i = 0 ; i < num ; i++ )
+		{
+			if( a[ i ] < s )
+			{
+				w1[ wi1++ ] = a[ i ];
+			}
+			else if( a[ i ] > s )
+			{
+				w2[ wi2++ ] = a[ i ];
+			}
+			else
+			{
+				wi3++;
+			}
+		}
+
+		if( wi1 > c )
+		{
+			src = w1;
+			w1 = work3;
+			num = wi1;
+		}
+		else if( wi1 + wi3 <= c )
+		{
+			src = w2;
+			w2 = work3;
+			c -= wi1 + wi3;
+			num = wi2;
+		}
+		else
+		{
+			return ( s );
+		}
+
+		while( true )
+		{
+			wi1 = wi2 = wi3 = 0;
+			s = src[ c ];
+
+			for( i = 0 ; i < num ; i++ )
+			{
+				if( src[ i ] < s )
+				{
+					w1[ wi1++ ] = src[ i ];
+				}
+				else if( src[ i ] > s )
+				{
+					w2[ wi2++ ] = src[ i ];
+				}
+				else
+				{
+					wi3++;
+				}
+			}
+
+			if( wi1 > c )
+			{
+				www = src;
+				src = w1;
+				w1 = www;
+				num = wi1;
+			}
+			else if( wi1 + wi3 <= c )
+			{
+				www = src;
+				src = w2;
+				w2 = www;
+				c -= wi1 + wi3;
+				num = wi2;
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		return ( s );
+	}
+
+
+	// in  : 入力画像. 入力画像の画素値は min と max の間とする
+	// out : 出力画像. 出力画像のメモリはあらかじめ割り当てられているものとする
+	// fw, fh, fd : フィルタサイズ
+	// min, max : 濃淡範囲
+	template < class Array1, class Array2 >
+	void median_filter( const Array1 &in, Array2 &out,
+						typename Array1::size_type fw, typename Array1::size_type fh, typename Array1::size_type fd,
+						typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
+						typename Array1::size_type thread_idz, typename Array1::size_type thread_numz )
+	{
+		typedef typename Array1::size_type  size_type;
+		typedef typename Array1::value_type value_type;
+		typedef typename Array2::value_type out_value_type;
+
+		size_type i, j, k, x, y, z, ri;
+		size_type pth, c, th, windex;
+
+		size_type w = in.width( );
+		size_type h = in.height( );
+		size_type d = in.depth( );
+
+		size_type bw = fw / 2;
+		size_type bh = fh / 2;
+		size_type bd = fd / 2;
+
+		size_type bbh, bbd;
+
+		size_type size = fw * fh * fd;
+
+		value_type *work  = new value_type[ size + 1 ];
+		value_type *work1 = new value_type[ size + 1 ];
+		value_type *work2 = new value_type[ size + 1 ];
+		value_type *work3 = new value_type[ size + 1 ];
+		value_type **sort = new value_type*[ fw ];
+
+		for( k = thread_idz ; k < d ; k += thread_numz )
+		{
+			if( k < bd )
+			{
+				bbd = k + bd + 1;
+			}
+			else if( k + bd >= d )
+			{
+				bbd = d - k + bd + 1;
+			}
+			else
+			{
+				bbd = fd;
+			}
+
+			for( j = thread_idy ; j < h ; j += thread_numy )
+			{
+				if( j < bh )
+				{
+					bbh = j + bh + 1;
+				}
+				else if( k + bd >= d )
+				{
+					bbh = h - j + bh + 1;
+				}
+				else
+				{
+					bbh = fh;
+				}
+
+				for( i = 0 ; i < fw ; i++ )
+				{
+					sort[ i ] = work + i * bbh * bbd;
+				}
+
+				i = 0;
+
+				windex = 0;
+
+				for( x = 0 ; x <= bw ; x++ )
+				{
+					windex = windex % fw;
+					c = 0;
+					for( z = k < bd ? 0 : k - bd ; z <= k + bd && z < d ; z++ )
+					{
+						for(y = j < bh ? 0 : j - bh ; y <= j + bh && y < h ; y++ )
+						{
+							sort[ windex ][ c++ ] = in( x, y, z );
+						}
+					}
+					windex++;
+				}
+
+				pth = ( bw + 1 ) * bbh * bbd;
+				th = ( pth % 2 ) == 0 ? pth / 2 - 1 : pth / 2;
+				out( i, j, k ) = static_cast< out_value_type >( nth_value( work, pth, th, work1, work2, work3 ) );
+
+				for( i = 1 ; i < bw ; i++ )
+				{
+					ri = i + bw;
+					pth = ( i + bw + 1 ) * bbh * bbd;
+					windex = windex % fw;
+
+					c = 0;
+					for( z = k < bd ? 0 : k - bd ; z <= k + bd && z < d ; z++ )
+					{
+						for( y = j < bh ? 0 : j - bh ; y <= j + bh && y < h ; y++ )
+						{
+							sort[ windex ][ c++ ] = in( i, y, z );
+						}
+					}
+
+					th = ( pth % 2 ) == 0 ? pth / 2 - 1 : pth / 2;
+
+					out( i, j, k ) = static_cast< out_value_type >( nth_value( work, pth, th, work1, work2, work3 ) );
+
+					windex++;
+				}
+
+				pth = fw * bbh * bbd;
+				th = ( pth % 2 ) == 0 ? pth / 2 - 1 : pth / 2;
+				for( ; i + bw < w ; i++ )
+				{
+					ri = i + bw;
+					windex = windex % fw;
+
+					c = 0;
+					for( z = k < bd ? 0 : k - bd ; z <= k + bd && z < d ; z++ )
+					{
+						for( y = j < bh ? 0 : j - bh ; y <= j + bh && y < h ; y++ )
+						{
+							sort[ windex ][ c++ ] = in( ri, y, z );
+						}
+					}
+
+					out( i, j, k ) = static_cast< out_value_type >( nth_value( work, pth, th, work1, work2, work3 ) );
+
+					windex++;
+				}
+
+				for( ; i < w ; i++ )
+				{
+					windex = windex % fw;
+
+					c = 0;
+					for( z = k < bd ? 0 : k - bd ; z <= k + bd && z < d ; z++ )
+					{
+						for( y = j < bh ? 0 : j - bh ; y <= j + bh && y < h ; y++ )
+						{
+							sort[ windex ][ c++ ] = 0;
+						}
+					}
+
+					out( i, j, k ) = static_cast< out_value_type >( nth_value( work, pth, th, work1, work2, work3 ) );
+
+					windex++;
+				}
+			}
+		}
+
+		delete [] work;
+		delete [] work1;
+		delete [] work2;
+		delete [] work3;
+		delete [] sort;
+	}
+}
+
 // メディアンフィルタのスレッド実装
 namespace __median_filter_controller__
 {
@@ -183,6 +453,77 @@ namespace __median_filter_controller__
 			}
 		}
 	}
+
+	template < bool b >
+	struct __median_filter__
+	{
+		template < class T1, class Allocator1, class T2, class Allocator2 >
+		static void median_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+							typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type fh, typename array< T1, Allocator1 >::size_type fd,
+							typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num )
+		{
+			typedef typename array< T1, Allocator1 >::value_type value_type;
+			value_type min = in[ 0 ];
+			value_type max = in[ 0 ];
+			get_min_max( in, min, max );
+			__median_filter_with_histogram__::median_filter( in, out, fw, fh, fd, min, max, 0, 1, thread_id, thread_num );
+		}
+
+		template < class T1, class Allocator1, class T2, class Allocator2 >
+		static void median_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+							typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh, typename array2< T1, Allocator1 >::size_type fd,
+							typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
+		{
+			typedef typename array2< T1, Allocator1 >::value_type value_type;
+			value_type min = in[ 0 ];
+			value_type max = in[ 0 ];
+			get_min_max( in, min, max );
+			__median_filter_with_histogram__::median_filter( in, out, fw, fh, fd, min, max, thread_id, thread_num, 0, 1 );
+		}
+
+		template < class T1, class Allocator1, class T2, class Allocator2 >
+		static void median_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+							typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
+							typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num )
+		{
+			typedef typename array3< T1, Allocator1 >::value_type value_type;
+			value_type min = in[ 0 ];
+			value_type max = in[ 0 ];
+			get_min_max( in, min, max );
+			__median_filter_with_histogram__::median_filter( in, out, fw, fh, fd, min, max, 0, 1, thread_id, thread_num );
+		}
+	};
+
+	// ヒストグラムを作成できない場合のメディアンフィルタ
+	// 浮動小数点など
+	template < >
+	struct __median_filter__< false >
+	{
+		template < class T1, class Allocator1, class T2, class Allocator2 >
+		static void median_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+							typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type fh, typename array< T1, Allocator1 >::size_type fd,
+							typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num )
+		{
+			__median_filter_divide_conquer__::median_filter( in, out, fw, fh, fd, 0, 1, thread_id, thread_num );
+		}
+
+		template < class T1, class Allocator1, class T2, class Allocator2 >
+		static void median_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+							typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh, typename array2< T1, Allocator1 >::size_type fd,
+							typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
+		{
+			__median_filter_divide_conquer__::median_filter( in, out, fw, fh, fd, thread_id, thread_num, 0, 1 );
+		}
+
+		template < class T1, class Allocator1, class T2, class Allocator2 >
+		static void median_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+							typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
+							typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num )
+		{
+			__median_filter_divide_conquer__::median_filter( in, out, fw, fh, fd, 0, 1, thread_id, thread_num );
+		}
+	};
+
 
 	template < class T1, class T2 >
 	class median_thread : public mist::thread_object< median_thread< T1, T2 > >
@@ -245,10 +586,7 @@ namespace __median_filter_controller__
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( const median_thread &p )
 		{
-			value_type min = (*in_)[ 0 ];
-			value_type max = (*in_)[ 0 ];
-			get_min_max( *in_, min, max );
-			__median_filter__::median_filter( *in_, *out_, fw_, fh_, fd_, min, max, thread_id_, thread_num_ );
+			__median_filter__< is_integer< T1 >::value >::median_filter( *in_, *out_, fw_, fh_, fd_, thread_id_, thread_num_ );
 			return( true );
 		}
 	};
@@ -258,80 +596,18 @@ namespace __median_filter_controller__
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	typedef typename array< T1, Allocator1 >::size_type  size_type;
-	typedef __median_filter_controller__::median_thread< array< T1, Allocator1 >, array< T2, Allocator2 > > median_thread;
+	out.resize( in.size( ) );
 
-	if( thread_num == 0 )
-	{
-		thread_num = static_cast< size_type >( get_cpu_num( ) );
-	}
-
-	out.resize( in.size1( ) );
-
-	median_thread *thread = new median_thread[ thread_num ];
-
-	size_type i;
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].setup_parameters( in, out, fw, 1, 1, i, thread_num );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].create_thread( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].wait_thread( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].close_thread( );
-	}
-
-	delete [] thread;
+	__median_filter_controller__::__median_filter__< is_integer< T1 >::value >::median_filter( in, out, fw, 1, 1, 0, 1 );
 }
 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	typedef typename array1< T1, Allocator1 >::size_type  size_type;
-	typedef __median_filter_controller__::median_thread< array1< T1, Allocator1 >, array1< T2, Allocator2 > > median_thread;
-
-	if( thread_num == 0 )
-	{
-		thread_num = static_cast< size_type >( get_cpu_num( ) );
-	}
-
-	out.resize( in.size1( ) );
+	out.resize( in.size( ) );
 	out.reso1( in.reso1( ) );
 
-	median_thread *thread = new median_thread[ thread_num ];
-
-	size_type i;
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].setup_parameters( in, out, fw, 1, 1, i, thread_num );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].create_thread( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].wait_thread( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].close_thread( );
-	}
-
-	delete [] thread;
+	__median_filter_controller__::__median_filter__< is_integer< T1 >::value >::median_filter( in, out, fw, 1, 1, 0, 1 );
 }
 
 template < class T1, class Allocator1, class T2, class Allocator2 >
