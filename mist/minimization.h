@@ -756,12 +756,12 @@ namespace gradient_with_vector
 		// ‘¼•Ï”ŠÖ”‚ğ‚P•Ï”ŠÖ”‚É•ÏŠ·‚·‚é
 		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor1 > functor( p, dir, tmp, f );
 
-		size_t ite;
+		size_t ite, i;
 		for( ite = 1 ; ite <= max_iterations ; ite++ )
 		{
 			// Œù”z•ûŒü‚ğŒvZ‚·‚é
 			double len = 0.0;
-			for( size_type i = 0 ; i < dir.size( ) ; i++ )
+			for( i = 0 ; i < dir.size( ) ; i++ )
 			{
 				// Œù”z•ûŒü‚ğŒvZ‚·‚é
 				dir[ i ] = g( p[ i ], i );
@@ -840,12 +840,12 @@ namespace gradient_with_vector
 		// ‘¼•Ï”ŠÖ”‚ğ‚P•Ï”ŠÖ”‚É•ÏŠ·‚·‚é
 		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor1 > functor( p, dir, tmp, f );
 
-		size_t ite;
+		size_t ite, i;
 		for( ite = 1 ; ite <= max_iterations ; ite++ )
 		{
 			// Œù”z•ûŒü‚ğŒvZ‚·‚é
 			double len = 0.0;
-			for( size_type i = 0 ; i < dir.size( ) ; i++ )
+			for( i = 0 ; i < dir.size( ) ; i++ )
 			{
 				// Œù”z•ûŒü‚ğŒvZ‚·‚é
 				dir[ i ] = g( p[ i ], i );

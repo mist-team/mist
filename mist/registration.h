@@ -797,49 +797,46 @@ namespace non_rigid
 		{
 			__non_rigid_registration_utility__::transformation( out, source, control_mesh );
 
-			if( draw_mesh )
+			difference_type w = control_mesh.width( );
+			difference_type h = control_mesh.height( );
+			difference_type d = control_mesh.depth( );
+			difference_type i, j;
+			for( j = 0 ; j < h - 1 ; j++ )
 			{
-				difference_type w = control_mesh.width( );
-				difference_type h = control_mesh.height( );
-				difference_type d = control_mesh.depth( );
-				rgb< unsigned char > color( 0, 0, 255 );
-				for( difference_type j = 0 ; j < h - 1 ; j++ )
-				{
-					for( difference_type i = 0 ; i < w - 1 ; i++ )
-					{
-						vector_type &vec0 = control_mesh( i    , j    , 0 );
-						vector_type &vec1 = control_mesh( i + 1, j    , 0 );
-						vector_type &vec2 = control_mesh( i    , j + 1, 0 );
-
-						size_type x0 = static_cast< size_type >( vec0.x );
-						size_type y0 = static_cast< size_type >( vec0.y );
-						size_type x1 = static_cast< size_type >( vec1.x );
-						size_type y1 = static_cast< size_type >( vec1.y );
-						size_type x2 = static_cast< size_type >( vec2.x );
-						size_type y2 = static_cast< size_type >( vec2.y );
-						draw_line( out, x0, y0, x1, y1, value );
-						draw_line( out, x0, y0, x2, y2, value );
-					}
-
-					vector_type &vec0 = control_mesh( i    , j    , 0 );
-					vector_type &vec2 = control_mesh( i    , j + 1, 0 );
-					size_type x0 = static_cast< size_type >( vec0.x );
-					size_type y0 = static_cast< size_type >( vec0.y );
-					size_type x2 = static_cast< size_type >( vec2.x );
-					size_type y2 = static_cast< size_type >( vec2.y );
-					draw_line( out, x0, y0, x2, y2, value );
-				}
-				for( difference_type i = 0 ; i < w - 1 ; i++ )
+				for( i = 0 ; i < w - 1 ; i++ )
 				{
 					vector_type &vec0 = control_mesh( i    , j    , 0 );
 					vector_type &vec1 = control_mesh( i + 1, j    , 0 );
+					vector_type &vec2 = control_mesh( i    , j + 1, 0 );
 
 					size_type x0 = static_cast< size_type >( vec0.x );
 					size_type y0 = static_cast< size_type >( vec0.y );
 					size_type x1 = static_cast< size_type >( vec1.x );
 					size_type y1 = static_cast< size_type >( vec1.y );
+					size_type x2 = static_cast< size_type >( vec2.x );
+					size_type y2 = static_cast< size_type >( vec2.y );
 					draw_line( out, x0, y0, x1, y1, value );
+					draw_line( out, x0, y0, x2, y2, value );
 				}
+
+				vector_type &vec0 = control_mesh( i    , j    , 0 );
+				vector_type &vec2 = control_mesh( i    , j + 1, 0 );
+				size_type x0 = static_cast< size_type >( vec0.x );
+				size_type y0 = static_cast< size_type >( vec0.y );
+				size_type x2 = static_cast< size_type >( vec2.x );
+				size_type y2 = static_cast< size_type >( vec2.y );
+				draw_line( out, x0, y0, x2, y2, value );
+			}
+			for( i = 0 ; i < w - 1 ; i++ )
+			{
+				vector_type &vec0 = control_mesh( i    , j    , 0 );
+				vector_type &vec1 = control_mesh( i + 1, j    , 0 );
+
+				size_type x0 = static_cast< size_type >( vec0.x );
+				size_type y0 = static_cast< size_type >( vec0.y );
+				size_type x1 = static_cast< size_type >( vec1.x );
+				size_type y1 = static_cast< size_type >( vec1.y );
+				draw_line( out, x0, y0, x1, y1, value );
 			}
 		}
 
@@ -859,49 +856,46 @@ namespace non_rigid
 		{
 			__non_rigid_registration_utility__::transformation( out, source, control_mesh );
 
-			if( draw_mesh )
+			difference_type w = control_mesh.width( );
+			difference_type h = control_mesh.height( );
+			difference_type d = control_mesh.depth( );
+			for( difference_type k = 0 ; k < d ; k++ )
 			{
-				difference_type w = control_mesh.width( );
-				difference_type h = control_mesh.height( );
-				difference_type d = control_mesh.depth( );
-				for( difference_type k = 0 ; k < d ; k++ )
+				for( difference_type j = 0 ; j < h ; j++ )
 				{
-					for( difference_type j = 0 ; j < h ; j++ )
+					for( difference_type i = 0 ; i < w ; i++ )
 					{
-						for( difference_type i = 0 ; i < w ; i++ )
+						const vector_type &vec0 = control_mesh( i, j, k );
+
+						size_type x0 = static_cast< size_type >( vec0.x );
+						size_type y0 = static_cast< size_type >( vec0.y );
+						size_type z0 = static_cast< size_type >( vec0.z );
+
+						if( i < w - 1 )
 						{
-							const vector_type &vec0 = control_mesh( i, j, k );
+							const vector_type &vec1 = control_mesh( i + 1, j, k );
+							size_type x1 = static_cast< size_type >( vec1.x );
+							size_type y1 = static_cast< size_type >( vec1.y );
+							size_type z1 = static_cast< size_type >( vec1.z );
+							draw_line( out, x0, y0, z0, x1, y1, z1, value );
+						}
 
-							size_type x0 = static_cast< size_type >( vec0.x );
-							size_type y0 = static_cast< size_type >( vec0.y );
-							size_type z0 = static_cast< size_type >( vec0.z );
+						if( j < h - 1 )
+						{
+							const vector_type &vec2 = control_mesh( i, j + 1, k );
+							size_type x2 = static_cast< size_type >( vec2.x );
+							size_type y2 = static_cast< size_type >( vec2.y );
+							size_type z2 = static_cast< size_type >( vec2.z );
+							draw_line( out, x0, y0, z0, x2, y2, z2, value );
+						}
 
-							if( i < w - 1 )
-							{
-								const vector_type &vec1 = control_mesh( i + 1, j, k );
-								size_type x1 = static_cast< size_type >( vec1.x );
-								size_type y1 = static_cast< size_type >( vec1.y );
-								size_type z1 = static_cast< size_type >( vec1.z );
-								draw_line( image, x0, y0, z0, x1, y1, z1, value );
-							}
-
-							if( j < h - 1 )
-							{
-								const vector_type &vec2 = control_mesh( i, j + 1, k );
-								size_type x2 = static_cast< size_type >( vec2.x );
-								size_type y2 = static_cast< size_type >( vec2.y );
-								size_type z2 = static_cast< size_type >( vec2.z );
-								draw_line( image, x0, y0, z0, x2, y2, z2, value );
-							}
-
-							if( k < d - 1 )
-							{
-								const vector_type &vec3 = control_mesh( i, j, k + 1 );
-								size_type x3 = static_cast< size_type >( vec3.x );
-								size_type y3 = static_cast< size_type >( vec3.y );
-								size_type z3 = static_cast< size_type >( vec3.z );
-								draw_line( image, x0, y0, z0, x3, y3, z3, value );
-							}
+						if( k < d - 1 )
+						{
+							const vector_type &vec3 = control_mesh( i, j, k + 1 );
+							size_type x3 = static_cast< size_type >( vec3.x );
+							size_type y3 = static_cast< size_type >( vec3.y );
+							size_type z3 = static_cast< size_type >( vec3.z );
+							draw_line( out, x0, y0, z0, x3, y3, z3, value );
 						}
 					}
 				}
