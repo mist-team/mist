@@ -691,7 +691,7 @@ public:
 	double reso3( double r3 ){ return( reso3_ = r3 ); }
 	double reso3( ) const { return( reso3_ ); }
 
-	void reso( double r1, double r2, double r3 ){ base::reso1_ = r1; base:reso2_ = r2; reso3_ = r3; }
+	void reso( double r1, double r2, double r3 ){ base::reso1_ = r1; base::reso2_ = r2; reso3_ = r3; }
 
 
 	// 順方向のランダムアクセスイテレータを返す

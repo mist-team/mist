@@ -6,14 +6,15 @@ int main( int argc, char *argv[] )
 	using namespace std;
 
 	typedef size_t size_type;
+	size_type i, j;
 
 	{
 		mist::array1< size_type > a( 2, 1.0 ), b( 1, 0.5 );
-		for( size_type i = 0 ; i < a.size( ) ; i++ )
+		for( i = 0 ; i < a.size( ) ; i++ )
 		{
 			a[ i ] = i;
 		}
-		for( size_type j = 0 ; j < b.size( ) ; j++, i++ )
+		for( j = 0 ; j < b.size( ) ; j++, i++ )
 		{
 			b[ j ] = i;
 		}
@@ -34,11 +35,11 @@ int main( int argc, char *argv[] )
 
 	{
 		mist::array2< size_type > a( 2, 2, 1.0, 1.0 ), b( 3, 3, 0.5, 0.5 );
-		for( size_type i = 0 ; i < a.size( ) ; i++ )
+		for( i = 0 ; i < a.size( ) ; i++ )
 		{
 			a[ i ] = i;
 		}
-		for( size_type j = 0 ; j < b.size( ) ; j++, i++ )
+		for( j = 0 ; j < b.size( ) ; j++, i++ )
 		{
 			b[ j ] = i;
 		}
@@ -59,11 +60,11 @@ int main( int argc, char *argv[] )
 
 	{
 		mist::array3< size_type > a( 2, 2, 2, 1.0, 1.0, 1.0 ), b( 3, 3, 3, 0.5, 0.5, 0.5 );
-		for( size_type i = 0 ; i < a.size( ) ; i++ )
+		for( i = 0 ; i < a.size( ) ; i++ )
 		{
 			a[ i ] = i;
 		}
-		for( size_type j = 0 ; j < b.size( ) ; j++, i++ )
+		for( j = 0 ; j < b.size( ) ; j++, i++ )
 		{
 			b[ j ] = i;
 		}
