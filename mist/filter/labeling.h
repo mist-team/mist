@@ -19,6 +19,8 @@
 #include "../limits.h"
 #endif
 
+
+
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN
 
@@ -66,7 +68,7 @@ namespace __labeling_controller__
 		_MIST_CONST( size_t, array_num, 13 );
 
 		template < class Array >
-		static inline void neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
+		static inline typename Array::size_type neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
 										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
 										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
@@ -85,6 +87,8 @@ namespace __labeling_controller__
 			L[ 10 ] = i + 1 < w && j     > 0 && k > 0 ? T[ static_cast< size_type >( in( i + 1, j - 1, k - 1 ) ) ] : 0;
 			L[ 11 ] = i     > 0 && j + 1 < h && k > 0 ? T[ static_cast< size_type >( in( i - 1, j + 1, k - 1 ) ) ] : 0;
 			L[ 12 ] = i + 1 < w && j + 1 < h && k > 0 ? T[ static_cast< size_type >( in( i + 1, j + 1, k - 1 ) ) ] : 0;
+
+			return( 0 );
 		}
 	};
 
@@ -94,7 +98,7 @@ namespace __labeling_controller__
 		_MIST_CONST( size_t, array_num, 9 );
 
 		template < class Array >
-		static inline void neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
+		static inline typename Array::size_type neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
 										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
 										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
@@ -109,6 +113,8 @@ namespace __labeling_controller__
 			L[  6 ] =              j + 1 < h && k > 0 ? T[ static_cast< size_type >( in( i    , j + 1, k - 1 ) ) ] : 0;
 			L[  7 ] = i     > 0 && j     > 0          ? T[ static_cast< size_type >( in( i - 1, j - 1, k     ) ) ] : 0;
 			L[  8 ] = i + 1 < w && j     > 0          ? T[ static_cast< size_type >( in( i + 1, j - 1, k     ) ) ] : 0;
+
+			return( 0 );
 		}
 	};
 
@@ -118,7 +124,7 @@ namespace __labeling_controller__
 		_MIST_CONST( size_t, array_num, 3 );
 
 		template < class Array >
-		static inline void neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
+		static inline typename Array::size_type neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
 										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
 										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
@@ -127,6 +133,8 @@ namespace __labeling_controller__
 			L[  0 ] =                           k > 0 ? T[ static_cast< size_type >( in( i    , j    , k - 1 ) ) ] : 0;
 			L[  1 ] =              j     > 0          ? T[ static_cast< size_type >( in( i    , j - 1, k     ) ) ] : 0;
 			L[  2 ] = i     > 0                       ? T[ static_cast< size_type >( in( i - 1, j    , k     ) ) ] : 0;
+
+			return( 0 );
 		}
 	};
 
@@ -136,7 +144,7 @@ namespace __labeling_controller__
 		_MIST_CONST( size_t, array_num, 4 );
 
 		template < class Array >
-		static inline void neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
+		static inline typename Array::size_type neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
 										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
 										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
@@ -146,6 +154,8 @@ namespace __labeling_controller__
 			L[ 1 ] =              j > 0 ? T[ static_cast< size_type >( in( i    , j - 1 ) ) ] : 0;
 			L[ 2 ] = i + 1 < w && j > 0 ? T[ static_cast< size_type >( in( i + 1, j - 1 ) ) ] : 0;
 			L[ 3 ] = i     > 0          ? T[ static_cast< size_type >( in( i - 1, j     ) ) ] : 0;
+
+			return( 0 );
 		}
 	};
 
@@ -155,7 +165,7 @@ namespace __labeling_controller__
 		_MIST_CONST( size_t, array_num, 2 );
 
 		template < class Array >
-		static inline void neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
+		static inline typename Array::size_type neighbor( Array &in, const typename Array::size_type *T, typename Array::size_type *L,
 										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
 										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
@@ -163,6 +173,8 @@ namespace __labeling_controller__
 
 			L[ 0 ] = j > 0 ? T[ static_cast< size_type >( in( i    , j - 1 ) ) ] : 0;
 			L[ 1 ] = i > 0 ? T[ static_cast< size_type >( in( i - 1, j     ) ) ] : 0;
+
+			return( 0 );
 		}
 	};
 
@@ -172,6 +184,8 @@ namespace __labeling_controller__
 	{
 		typedef typename Array::size_type  size_type;
 		typedef typename Array::value_type value_type;
+
+		typedef std::set< size_type > label_set;
 
 		size_type label_num = 0;
 		size_type i, j, k, l, count;
@@ -205,11 +219,14 @@ namespace __labeling_controller__
 					{
 						if( L[ l ] > 0 )
 						{
+							if( L1 != L[ l ] )
+							{
+								count++;
+							}
 							if( L1 > L[ l ] )
 							{
 								L1 = L[ l ];
 							}
-							count++;
 						}
 					}
 
