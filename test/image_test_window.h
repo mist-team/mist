@@ -47,6 +47,8 @@ private:
   static void cb_Labeling1(Fl_Menu_*, void*);
   inline void cb_Thinning_i(Fl_Menu_*, void*);
   static void cb_Thinning(Fl_Menu_*, void*);
+  inline void cb_Median_i(Fl_Menu_*, void*);
+  static void cb_Median(Fl_Menu_*, void*);
   inline void cb_Erosion_i(Fl_Menu_*, void*);
   static void cb_Erosion(Fl_Menu_*, void*);
   inline void cb_Dilation_i(Fl_Menu_*, void*);
@@ -55,6 +57,18 @@ private:
   static void cb_Opening(Fl_Menu_*, void*);
   inline void cb_Closing_i(Fl_Menu_*, void*);
   static void cb_Closing(Fl_Menu_*, void*);
+  inline void cb_Reso_i(Fl_Menu_*, void*);
+  static void cb_Reso(Fl_Menu_*, void*);
+  inline void cb_Reso1_i(Fl_Menu_*, void*);
+  static void cb_Reso1(Fl_Menu_*, void*);
+  inline void cb_Reso2_i(Fl_Menu_*, void*);
+  static void cb_Reso2(Fl_Menu_*, void*);
+  inline void cb_Reso3_i(Fl_Menu_*, void*);
+  static void cb_Reso3(Fl_Menu_*, void*);
+  inline void cb_Reso4_i(Fl_Menu_*, void*);
+  static void cb_Reso4(Fl_Menu_*, void*);
+  inline void cb_Reso5_i(Fl_Menu_*, void*);
+  static void cb_Reso5(Fl_Menu_*, void*);
 public:
   void show( );
 };

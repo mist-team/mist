@@ -46,9 +46,13 @@ void labeling8_test( );
 
 void thinning_test( );
 
+void median_test( );
+
 void erosion_test( );
 void dilation_test( );
 void opening_test( );
 void closing_test( );
+
+void interpolate_test( int mode, bool reso_up );
 
 #endif // __INCLUDE_IMAGE_TEST__

@@ -13,11 +13,14 @@
 //#include <mist/filter/figure_decomposition.h>
 #include <mist/filter/labeling.h>
 #include <mist/filter/thinning.h>
+#include <mist/filter/median.h>
 #include <mist/filter/morphology.h>
+#include <mist/interpolate.h>
 
 
-mist::array2< unsigned char > image_object( 100, 100 );
-//mist::array2< mist::rgb< unsigned char > > image_object( 100, 100 );
+typedef mist::array2< unsigned char > image_type;
+//typedef mist::array2< mist::rgb< unsigned char > > image_type;
+image_type image_object( 100, 100 );
 
 void image_draw_area::draw( )
 {
@@ -98,7 +101,7 @@ void figure_decomposition_test( )
 {
 	//mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
 
-	for( mist::array2< unsigned char >::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
 	{
 		switch( image_object[i] )
 		{
@@ -129,7 +132,7 @@ void labeling4_test( )
 {
 	mist::labeling4( image_object, image_object, 255 );
 
-	for( mist::array2< unsigned char >::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
 	{
 		switch( image_object[i] )
 		{
@@ -160,7 +163,7 @@ void labeling8_test( )
 {
 	mist::labeling8( image_object, image_object, 255 );
 
-	for( mist::array2< unsigned char >::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
 	{
 		switch( image_object[i] )
 		{
@@ -192,10 +195,16 @@ void thinning_test( )
 {
 	mist::thinning( image_object, image_object );
 
-	for( mist::array2< unsigned char >::size_type i = 0 ; i < image_object.size( ) ; i++ )
+	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
 	{
 		image_object[i] *= 255;
 	}
+}
+
+void median_test( )
+{
+	image_type tmp( image_object );
+	mist::median( tmp, image_object, 3 );
 }
 
 void erosion_test( )
@@ -217,3 +226,29 @@ void closing_test( )
 {
 	mist::closing( image_object, 3 );
 }
+
+void interpolate_test( int mode, bool reso_up )
+{
+	image_type tmp( image_object );
+	image_type::size_type w = reso_up ? tmp.width( ) * 2 : tmp.width( ) / 2;
+	image_type::size_type h = reso_up ? tmp.height( ) * 2 : tmp.height( ) / 2;
+
+	switch( mode )
+	{
+	case 0:
+		mist::nearest::interpolate( tmp, image_object, w, h );
+		break;
+
+	case 2:
+		mist::linear::interpolate( tmp, image_object, w, h );
+		break;
+
+	case 1:
+	default:
+		mist::cubic::interpolate( tmp, image_object, w, h );
+		break;
+	}
+}
+
+
+
