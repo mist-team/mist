@@ -1,8 +1,8 @@
 CC  = gcc
 CXX = g++
 
-INCLUDE = -I../ -I/usr/local/include -I/usr/X11R6/include
-LDLIBS = -L../lib -L/usr/local/lib -L/usr/X11R6/lib
+INCLUDE = -I../ -I/usr/local/include -I/usr/include -I/usr/X11R6/include
+LDLIBS = -L../lib -L/usr/local/lib -L/usr/lib -L/usr/X11R6/lib
 
 
 CFLAGS = -Wall -O2 
@@ -14,10 +14,8 @@ DEBUGFLAGS   = $(CXXFLAGS) -DDEBUG
 IMGLIBS = -ljpeg -lpng -ltiff
 LIBS = -lpthread
 
-LFLTK = -lfltk -lfltk_gl -lgl
-
 # Be quiet when building...
-.SILENT:
+#.SILENT:
 
 # Build commands and filename extensions...
 .SUFFIXES: .c .cpp .cxx .h .o
