@@ -533,21 +533,21 @@ namespace __interpolate_controller__
 {
 	// Å‹ß–TŒ^•âŠÔ
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void nearest( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+	void nearest__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
 					typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num )
 	{
 		__nearest__::interpolate( in, out, thread_id, thread_num, 0, 1, 0, 1 );
 	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void nearest( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+	void nearest__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 					typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
 	{
 		__nearest__::interpolate( in, out, 0, 1, thread_id, thread_num, 0, 1 );
 	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void nearest( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+	void nearest__( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num )
 	{
 		__nearest__::interpolate( in, out, 0, 1, 0, 1, thread_id, thread_num );
