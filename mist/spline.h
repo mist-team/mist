@@ -92,7 +92,7 @@ inline const vector2< T > div( const vector2< T > &v1, const typename vector2< T
 
 /// @brief 3次スプライン曲線を扱うためのクラス
 //!
-//! K次の3次スプライン曲線を描画可能．可変個数の制御点に対応し，任意のノットベクトルに対応する3次スプライン曲線を描画
+//! K次の3次スプライン曲線を描画可能．可変個数の制御点に対応し，開曲線と閉曲線の3次スプライン曲線を描画
 //! 
 //! @param T  … 各制御点・補間点を表すデータ構造を指定（double や vector3< double > など）
 //!
@@ -136,7 +136,7 @@ private:
 	typedef std::vector< value_type > point_list;
 
 public:
-	/// @brief ノットベクトルを手動で設定しない場合のデフォルトのモード
+	/// @brief 3次スプラインを描画する際のパラメータ
 	enum SplineMode
 	{
 		CLOSED,				///< @brief 閉曲線の設定
@@ -404,7 +404,7 @@ public:
 
 	/// @brief デフォルトのコンストラクタ
 	//!
-	//! デフォルト値を「最初と最後を通る曲線」に設定する
+	//! デフォルト値を「開曲線」に設定する
 	//!
 	spline( ) : mode_( OPEN ){ }
 };
