@@ -182,7 +182,7 @@ bool draw_buffer( const array2< T, Allocator > &image,
 
 	GLboolean isLighting = glIsEnabled( GL_LIGHTING );
 	glDisable( GL_LIGHTING );
-	glViewport(0, 0, static_cast< GLint >( window_width ), static_cast< GLint >( window_height ) );
+	glViewport( 0, 0, static_cast< GLint >( window_width ), static_cast< GLint >( window_height ) );
 
 	glPixelStorei( GL_UNPACK_ROW_LENGTH, static_cast< GLint >( image.width( ) ) );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );

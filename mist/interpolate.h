@@ -16,6 +16,8 @@
 #endif
 
 
+#include <cmath>
+
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN
 
@@ -266,7 +268,7 @@ namespace __cubic__
 	inline double sinc( double t )
 	{
 		double ret = 0.0;
-		t = fabs( t );
+		t = std::abs( t );
 
 		if( t < 1.0 )
 		{
