@@ -800,7 +800,7 @@ void maximum_region(
 	typedef typename array3< T1, Allocator1 >::size_type size_type;
 	typedef typename array3< T1, Allocator1 >::difference_type difference_type;
 
-	array3< int > tmp;
+	array3< size_type > tmp;
 	size_type i, j, k;
 
 	size_type label_num = mist::labeling26( in, tmp, max_label );

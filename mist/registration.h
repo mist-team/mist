@@ -332,7 +332,7 @@ namespace __non_rigid_registration_utility__
 		mist::array2< coefficients > coeff_xy;
 
 		template < class CONTROLMESHTYPE >
-		initialize( size_type width, size_type height, size_type depth, const CONTROLMESHTYPE &control_mesh )
+		void initialize( size_type width, size_type height, size_type depth, const CONTROLMESHTYPE &control_mesh )
 		{
 			coeff_z.resize( depth );
 			coeff_xy.resize( width, height );
@@ -854,6 +854,7 @@ namespace __non_rigid_registration_utility__
 		typedef typename TARGETTYPE::size_type size_type;
 		typedef typename TARGETTYPE::difference_type difference_type;
 		typedef typename CONTROLMESH::value_type vector_type;
+		typedef thread< registration_functor< TARGETTYPE, SOURCETYPE, CONTROLMESH > > base;
 		typedef matrix< double > matrix_type;							///< @brief 内部で利用する行列の型
 
 		array< unsigned int * > target;
@@ -1005,7 +1006,6 @@ namespace __non_rigid_registration_utility__
 			__no_data_is_associated__.fill( );
 			h.fill( );
 			hh.fill( );
-			difference_type upper = h.width( );
 			size_type count = 0;
 			double _1_bin = 1.0 / BIN;
 
@@ -1055,7 +1055,7 @@ namespace __non_rigid_registration_utility__
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual thread_exit_type thread_function( )
+		virtual typename base::thread_exit_type thread_function( )
 		{
 			typedef __minimization_utility__::__no_copy_constructor_functor__< registration_functor< TARGETTYPE, SOURCETYPE, CONTROLMESH > > no_constructor_functor_type;
 
