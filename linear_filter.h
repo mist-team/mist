@@ -102,8 +102,8 @@ public:
 
 	//オペレータ適用
 
-	template < class Tout, class Tin >
-	void apply( mist::array1< Tout >& output, const mist::array1< Tin >& input ) const
+	template < class Tin, class Tout >
+	void apply( const mist::array1< Tin >& input, mist::array1< Tout >& output ) const
 	{
 		output.resize( input.size1() );
 
@@ -119,8 +119,8 @@ public:
 		}
 	}
 
-	template < class Tout, class Tin >
-	void apply( mist::array2< Tout >& output, const mist::array2< Tin >& input ) const
+	template < class Tin, class Tout >
+	void apply( const mist::array2< Tin >& input, mist::array2< Tout >& output ) const
 	{
 		output.resize( input.size1( ), input.size2( ) );
 
@@ -143,8 +143,8 @@ public:
 		}
 	}
 
-	template < class Tout, class Tin >
-	void apply( mist::array3< Tout >& output, const mist::array3< Tin >& input ) const
+	template < class Tin, class Tout >
+	void apply( const mist::array3< Tin >& input, mist::array3< Tout >& output ) const
 	{
 		output.resize( input.size1( ), input.size2( ), input.size3( ) );
 
@@ -184,8 +184,8 @@ namespace linear_filter
 {
 	
 	//array1用ガウシアン
-	template < class Tout, class Tin >
-	void gaussian( mist::array1< Tout >& output, const mist::array1< Tin >& input )
+	template < class Tin, class Tout >
+	void gaussian( const mist::array1< Tin >& input, mist::array1< Tout >& output )
 	{
 		mist::array1< double > gaussian_array( 3 );
 
@@ -196,12 +196,12 @@ namespace linear_filter
 		linear_operator< double > l_operator( gaussian_array );
 		l_operator.normalize();
 
-		l_operator.apply( output, input );
+		l_operator.apply( input, output );
 	}
 
 	//array2用ガウシアン
-	template < class Tout, class Tin >
-	void gaussian( mist::array2< Tout >& output, const mist::array2< Tin >& input )
+	template < class Tin, class Tout >
+	void gaussian( const mist::array2< Tin >& input, mist::array2< Tout >& output )
 	{
 		mist::array2< double > gaussian_array( 3, 3 );
 
@@ -218,12 +218,12 @@ namespace linear_filter
 		linear_operator< double > l_operator( gaussian_array );
 		l_operator.normalize();
 
-		l_operator.apply( output, input );
+		l_operator.apply( input, output );
 	}
 
 	//array3用ガウシアン
-	template < class Tout, class Tin >
-	void gaussian( mist::array3< Tout >& output, const mist::array3< Tin >& input )
+	template < class Tin, class Tout >
+	void gaussian( const mist::array3< Tin >& input, mist::array3< Tout >& output )
 	{
 		mist::array3< double > gaussian_array( 3, 3, 3 );
 
@@ -260,12 +260,12 @@ namespace linear_filter
 		linear_operator< double > l_operator( gaussian_array );
 		l_operator.normalize();
 
-		l_operator.apply( output, input );
+		l_operator.apply( input, output );
 	}
 
 	//array1用ラプラシアン
-	template < class Tout, class Tin >
-	void laplacian( mist::array1< Tout >& output, const mist::array1< Tin >& input )
+	template < class Tin, class Tout >
+	void laplacian( const mist::array1< Tin >& input, mist::array1< Tout >& output )
 	{
 		mist::array1< double > laplacian_array( 3 );
 
@@ -275,12 +275,12 @@ namespace linear_filter
 
 		linear_operator< double > l_operator( laplacian_array );
 		
-		l_operator.apply( output, input );
+		l_operator.apply( input, output );
 	}
 
 	//array2用ラプラシアン
-	template < class Tout, class Tin >
-	void laplacian( mist::array2< Tout >& output, const mist::array2< Tin >& input )
+	template < class Tin, class Tout >
+	void laplacian( const mist::array2< Tin >& input, mist::array2< Tout >& output )
 	{
 		mist::array2< double > laplacian_array( 3, 3 );
 
@@ -296,12 +296,12 @@ namespace linear_filter
 
 		linear_operator< double > l_operator( laplacian_array );
 
-		l_operator.apply( output, input );
+		l_operator.apply( input, output );
 	}
 
 	//array3用ラプラシアン
-	template < class Tout, class Tin >
-	void laplacian( mist::array3< Tout >& output, const mist::array3< Tin >& input )
+	template < class Tin, class Tout >
+	void laplacian( const mist::array3< Tin >& input, mist::array3< Tout >& output )
 	{
 		mist::array3< double > laplacian_array( 3, 3, 3 );
 
@@ -337,7 +337,7 @@ namespace linear_filter
 
 		linear_operator< double > l_operator( laplacian_array );
 
-		l_operator.apply( output, input );
+		l_operator.apply( input, output );
 	}
 }
 	
