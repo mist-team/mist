@@ -23,6 +23,7 @@
 #include "drawing.h"
 #endif
 
+
 // mist名前空間の始まり
 _MIST_BEGIN
 
@@ -62,6 +63,10 @@ namespace __non_rigid_registration_utility__
 		double sx[ 4 ], sy[ 4 ];
 		double stepW = control_mesh.width( ) == 1 ? 1.0 : target.width( ) / static_cast< double >( control_mesh.width( ) - 1 );
 		double stepH = control_mesh.height( ) == 1 ? 1.0 : target.height( ) / static_cast< double >( control_mesh.height( ) - 1 );
+		double _1_stepW = 1.0 / stepW;
+		double _1_stepH = 1.0 / stepH;
+		double _1_ax = 1.0 / source.reso1( );
+		double _1_ay = 1.0 / source.reso2( );
 
 		//stepW *= target.reso1( );
 		//stepH *= target.reso2( );
@@ -105,7 +110,7 @@ namespace __non_rigid_registration_utility__
 
 		for( difference_type y = isy + thread_id ; y <= iey ; y += thread_num )
 		{
-			v = y / stepH;
+			v = y * _1_stepH;
 			j = static_cast< difference_type >( v );
 			v -= j;
 			j--;
@@ -114,7 +119,7 @@ namespace __non_rigid_registration_utility__
 
 			for( difference_type x = isx ; x <= iex ; x++ )
 			{
-				u = x / stepW;
+				u = x * _1_stepW;
 				i = static_cast< difference_type >( u );
 				u -= i;
 				i--;
@@ -133,8 +138,8 @@ namespace __non_rigid_registration_utility__
 					}
 				}
 
-				xx /= source.reso1( );
-				yy /= source.reso2( );
+				xx *= _1_ax;
+				yy *= _1_ay;
 
 				double ct = -2000.0;
 				if( xx < 0 || source.width( ) <= xx + 1 || yy < 0 || source.height( ) <= yy + 1 )
@@ -179,6 +184,12 @@ namespace __non_rigid_registration_utility__
 		double stepW = control_mesh.width( )  == 1 ? 1.0 : target.width( ) / static_cast< double >( control_mesh.width( ) - 1 );
 		double stepH = control_mesh.height( ) == 1 ? 1.0 : target.height( ) / static_cast< double >( control_mesh.height( ) - 1 );
 		double stepD = control_mesh.depth( )  == 1 ? 1.0 : target.depth( ) / static_cast< double >( control_mesh.depth( ) - 1 );
+		double _1_stepW = 1.0 / stepW;
+		double _1_stepH = 1.0 / stepH;
+		double _1_stepD = 1.0 / stepH;
+		double _1_ax = 1.0 / source.reso1( );
+		double _1_ay = 1.0 / source.reso2( );
+		double _1_az = 1.0 / source.reso2( );
 
 		//stepW *= target.reso1( );
 		//stepH *= target.reso2( );
@@ -236,7 +247,7 @@ namespace __non_rigid_registration_utility__
 
 		for( difference_type z = isz + thread_id ; z <= iez ; z += thread_num )
 		{
-			w = z / stepD;
+			w = z * _1_stepD;
 			k = static_cast< difference_type >( w );
 			w -= k;
 			k--;
@@ -245,7 +256,7 @@ namespace __non_rigid_registration_utility__
 
 			for( difference_type y = isy ; y <= iey ; y++ )
 			{
-				v = y / stepH;
+				v = y * _1_stepH;
 				j = static_cast< difference_type >( v );
 				v -= j;
 				j--;
@@ -254,7 +265,7 @@ namespace __non_rigid_registration_utility__
 
 				for( difference_type x = isx ; x <= iex ; x++ )
 				{
-					u = x / stepW;
+					u = x * _1_stepW;
 					i = static_cast< difference_type >( u );
 					u -= i;
 					i--;
@@ -278,9 +289,9 @@ namespace __non_rigid_registration_utility__
 						}
 					}
 
-					xx /= source.reso1( );
-					yy /= source.reso2( );
-					zz /= source.reso3( );
+					xx *= _1_ax;
+					yy *= _1_ay;
+					zz *= _1_az;
 
 					double ct = -2000.0;
 					if( xx < 0 || source.width( ) <= xx + 1 || yy < 0 || source.height( ) <= yy + 1 || zz < 0 || source.depth( ) <= zz + 1 )
@@ -417,7 +428,7 @@ namespace __non_rigid_registration_utility__
 		typedef typename TARGETTYPE::size_type size_type;
 		typedef typename TARGETTYPE::difference_type difference_type;
 
-		const target_image_type &target;
+		array< unsigned int * > target;
 		target_image_type &transformed_image;
 		const source_image_type &source;
 		const control_mesh_type &control_mesh;
@@ -476,7 +487,7 @@ namespace __non_rigid_registration_utility__
 		}
 
 		registration_functor( const target_image_type &tgt, target_image_type &tmp, const source_image_type &src, const control_mesh_type &cmesh, size_type bin )
-			: target( tgt ), transformed_image( tmp ), source( src ), control_mesh ( cmesh ), control_mesh_tmp( cmesh ), x( 0 ), y( 0 ), z( 0 ), BIN( bin )
+			: target( tgt.size( ) ), transformed_image( tmp ), source( src ), control_mesh ( cmesh ), control_mesh_tmp( cmesh ), x( 0 ), y( 0 ), z( 0 ), BIN( bin )
 		{
 			// 初期画像を作成する
 			transformation( transformed_image, source, control_mesh );
@@ -488,13 +499,15 @@ namespace __non_rigid_registration_utility__
 
 			size_type count = 0;
 			difference_type upper = h.width( );
-			for( size_t i = 0 ; i < target.size( ) ; i++ )
+			double _1_bin = 1.0 / BIN;
+			for( size_t i = 0 ; i < tgt.size( ) ; i++ )
 			{
-				difference_type v1 = static_cast< difference_type >( ( target[ i ] - minimum ) / BIN );
+				difference_type v1 = static_cast< difference_type >( ( tgt[ i ] - minimum ) * _1_bin );
 				if( v1 < 0 || upper <= v1 )
 				{
 					continue;
 				}
+				target[ i ] = &h( 0, v1 );
 				hh[ v1 ]++;
 				count++;
 			}
@@ -538,21 +551,16 @@ namespace __non_rigid_registration_utility__
 			hh.fill( );
 			difference_type upper = h.width( );
 			size_type count = 0;
+			double _1_bin = 1.0 / BIN;
 			for( size_t i = 0 ; i < target.size( ) ; i++ )
 			{
-				difference_type v1 = static_cast< difference_type >( ( target[ i ] - minimum ) / BIN );
-				if( v1 < 0 || upper <= v1 )
+				difference_type v2 = static_cast< difference_type >( ( transformed_image[ i ] - minimum ) * _1_bin );
+				if( v2 < 0 )
 				{
 					continue;
 				}
 
-				difference_type v2 = static_cast< difference_type >( ( transformed_image[ i ] - minimum ) / BIN );
-				if( v2 < 0 || upper <= v2 )
-				{
-					continue;
-				}
-
-				h( v1, v2 )++;
+				target[ i ][ v2 ]++;
 				hh[ v2 ]++;
 				count++;
 			}
@@ -563,23 +571,24 @@ namespace __non_rigid_registration_utility__
 				return ( 5.0 );
 			}
 
-			double H2 = 0.0, H12 = 0.0;
+			double H2 = 0.0, H12 = 0.0, _1_count = 1.0 / static_cast< double >( count );
 
 			for( size_type i = 0 ; i < hh.size( ) ; i++ )
 			{
 				if( hh[ i ] > 0 )
 				{
-					double v = hh[ i ] / static_cast< double >( count );
+					double v = hh[ i ] * _1_count;
 					H2 -= v * std::log( v );
-				}
-			}
 
-			for( size_type i = 0 ; i < h.size( ) ; i++ )
-			{
-				if( h[ i ] > 0 )
-				{
-					double v = h[ i ] / static_cast< double >( count );
-					H12 -= v * std::log( v );
+					array2< unsigned int >::const_pointer ph = &h( 0, i );
+					for( size_type j = 0 ; j < hh.size( ) ; j++ )
+					{
+						if( ph[ j ] > 0 )
+						{
+							double v = ph[ j ] * _1_count;
+							H12 -= v * std::log( v );
+						}
+					}
 				}
 			}
 
@@ -658,9 +667,10 @@ namespace non_rigid
 		//! 
 		//! @param[in] source    … 目標画像に向けて変形するソース画像
 		//! @param[in] tolerance … レジストレーションの終了判定に用いる許容相対誤差
+		//! @param[in] max_loop  … 最適化処理の最大反復回数
 		//! 
 		template < class SOURCETYPE >
-		void apply( const SOURCETYPE &source, double tolerance )
+		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop = 3 )
 		{
 			typedef __non_rigid_registration_utility__::registration_functor< TARGETTYPE, SOURCETYPE, control_mesh_type > non_rigid_registration_functor_type;
 			typedef __minimization_utility__::__no_copy_constructor_functor__< non_rigid_registration_functor_type > no_constructor_functor_type;
@@ -716,7 +726,6 @@ namespace non_rigid
 			double err = f( matrix_type::zero( 3, 1 ) );
 			double old_err = err;
 			size_type loop = 0;
-			size_type max_loop = 3;
 			while( loop++ < max_loop )
 			{
 				// 各制御点を順番に変形させながら最適化を行う
@@ -739,7 +748,8 @@ namespace non_rigid
 							bound( 2, 1 ) =  ( control_mesh( i    , j    , k + 1 ) - control_mesh( i, j, k ) ).length( ) * 0.5;
 
 	//						err = gradient::minimization( p, no_constructor_functor_type( f ), 0.1 );
-							err = gradient::minimization( p, bound, no_constructor_functor_type( f ), tolerance );
+							err = gradient::minimization( p, bound, no_constructor_functor_type( f ), 1.0 );
+//							err = gradient::minimization( p, bound, no_constructor_functor_type( f ), tolerance );
 	//						err = powell::minimization( p, dirs, bound, no_constructor_functor_type( f ), 0.1 );
 
 							// 結果を反映
@@ -748,7 +758,7 @@ namespace non_rigid
 							v.y += p[ 1 ];
 							v.z += p[ 2 ];
 
-							//std::cout << "( " << i << ", " << j << ", " << k << " ) = " << "( " << v << " )" << std::endl;
+							std::cout << "( " << i << ", " << j << ", " << k << " ) = " << "( " << v << " )" << std::endl;
 							__non_rigid_registration_utility__::transformation( transformed_source, source, control_mesh );
 						}
 					}
