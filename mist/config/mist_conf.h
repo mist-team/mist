@@ -82,6 +82,11 @@ _MIST_BEGIN
 
 #endif
 
+
+// 行列演算のオプション
+#define _USE_DIVIDE_AND_CONQUER_SVD_		1	// 分割統治法を用いた高速な特異値分解を利用する（若干メモリを大目に食う）
+
+
 #if _CHECK_ACCESS_VIOLATION_
 
 	#define _CHECK_ACCESS_VIOLATION1_( index ) \

@@ -5,8 +5,8 @@
 
 int main( )
 {
-	typedef mist::matrix< double > matrix;
-	//typedef mist::matrix< std::complex< double > > matrix;
+	//typedef mist::matrix< double > matrix;
+	typedef mist::matrix< std::complex< double > > matrix;
 	matrix a( 3, 3 ), b( 3, 1 );
 
 	a( 0, 0 ) = 1.0; a( 0, 1 ) =  1.0; a( 0, 2 ) =  1.0;
@@ -35,19 +35,22 @@ int main( )
 	{
 		std::cout << "Inverse Matrix Calculation" << std::endl;
 
-		std::cout << inverse( matrix( a ) ) * b << std::endl;
+		matrix aa = a;
+		std::cout << inverse( aa ) * b << std::endl;
 	}
 
 	{
 		std::cout << "LU factorization" << std::endl;
 
-		std::cout << lu_factorization( matrix( a ) ) << std::endl;
+		matrix aa = a;
+		std::cout << lu_factorization( aa ) << std::endl;
 	}
 
 	{
 		std::cout << "QR factorization" << std::endl;
 
-		std::cout << qr_factorization( matrix( a ) ) << std::endl;
+		matrix aa = a;
+		std::cout << qr_factorization( aa ) << std::endl;
 	}
 
 	{
@@ -71,8 +74,9 @@ int main( )
 
 		matrix aa = a, u, s, vt;
 
-		mist::svd( aa, u, s, vt );
 		std::cout << a << std::endl;
+
+		mist::svd( aa, u, s, vt );
 		std::cout << u << std::endl;
 		std::cout << s << std::endl;
 		std::cout << vt << std::endl;

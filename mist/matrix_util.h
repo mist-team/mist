@@ -490,6 +490,8 @@ matrix< T, Allocator >& eigen( matrix< T, Allocator > &a, matrix< T, Allocator >
 
 namespace __svd__
 {
+#if _USE_DIVIDE_AND_CONQUER_SVD_ == 0 // 分割統治法を用いないバージョンの特異値分解
+
 	// 一般行列の特異値分解を計算する
 	template < bool b >
 	struct __svd__
@@ -498,7 +500,7 @@ namespace __svd__
 		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt )
 		{
 			typedef __clapack__::integer integer;
-			typedef matrix< T, Allocator >::size_type size_type;
+			typedef typename matrix< T, Allocator >::size_type size_type;
 
 			// LAPACK関数の引数
 			integer m      = static_cast< integer >( a.rows( ) );
@@ -506,7 +508,7 @@ namespace __svd__
 			integer lda    = m;
 			integer ldu    = m;
 			typename matrix< T, Allocator >::value_type dmy;
-			integer ldvt   = 1;
+			integer ldvt   = n;
 			integer lwork  = -1;
 			integer info   = 0;
 			char *jobu = "A";
@@ -527,7 +529,7 @@ namespace __svd__
 				s.resize( m, n );
 				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
 				{
-					s( i, i ) = ss( i, i );
+					s( i, i ) = ss[ i ];
 				}
 			}
 
@@ -542,7 +544,7 @@ namespace __svd__
 		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt )
 		{
 			typedef __clapack__::integer integer;
-			typedef matrix< T1, Allocator1 >::size_type size_type;
+			typedef typename matrix< T1, Allocator1 >::size_type size_type;
 			typedef typename T1::value_type value_type;
 
 			// LAPACK関数の引数
@@ -573,7 +575,7 @@ namespace __svd__
 				s.resize( m, n );
 				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
 				{
-					s( i, i ) = ss( i, i );
+					s( i, i ) = ss[ i ];
 				}
 
 				delete [] rwork;
@@ -582,6 +584,108 @@ namespace __svd__
 			return( s );
 		}
 	};
+
+#else
+
+	template < bool b >
+	struct __svd__
+	{
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt )
+		{
+			typedef __clapack__::integer integer;
+			typedef matrix< T, Allocator >::size_type size_type;
+
+			// LAPACK関数の引数
+			integer m      = static_cast< integer >( a.rows( ) );
+			integer n      = static_cast< integer >( a.cols( ) );
+			integer lda    = m;
+			integer ldu    = m;
+			integer size   = m < n ? m : n;
+			typename matrix< T, Allocator >::value_type dmy;
+			integer ldvt   = n;
+			integer lwork  = -1;
+			integer info   = 0;
+			char *jobz = "A";
+
+			// まず最適な作業用配列のサイズを取得する
+			__clapack__::svd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
+			if( info == 0 )
+			{
+				u.resize( ldu, m );
+				matrix< T, Allocator > ss( size, 1 );
+				vt.resize( ldvt, n );
+				integer *iwork = new integer[ 8 * size ];
+
+				lwork = __clapack__::get_real( dmy );
+				matrix< T, Allocator > work( lwork, 1 );
+				__clapack__::svd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, iwork, info );
+
+				delete [] iwork;
+
+				s.resize( m, n );
+				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+				{
+					s( i, i ) = ss[ i ];
+				}
+			}
+
+			return( s );
+		}
+	};
+
+	template < >
+	struct __svd__< true >
+	{
+		template < class T1, class T2, class Allocator1, class Allocator2 >
+		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt )
+		{
+			typedef __clapack__::integer integer;
+			typedef matrix< T1, Allocator1 >::size_type size_type;
+			typedef typename T1::value_type value_type;
+
+			// LAPACK関数の引数
+			integer m      = static_cast< integer >( a.rows( ) );
+			integer n      = static_cast< integer >( a.cols( ) );
+			integer lda    = m;
+			integer ldu    = m;
+			integer size   = m < n ? m : n;
+			typename matrix< T1, Allocator1 >::value_type dmy;
+			integer ldvt   = n;
+			integer lwork  = -1;
+			integer info   = 0;
+			char *jobz = "A";
+
+			// まず最適な作業用配列のサイズを取得する
+			__clapack__::svd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, NULL, info );
+			if( info == 0 )
+			{
+				u.resize( ldu, m );
+				matrix< typename T1::value_type > ss( size, 1 );
+				vt.resize( ldvt, n );
+				value_type *rwork = new value_type[ 5 * size * size + 5 * size ];
+				integer *iwork = new integer[ 8 * size ];
+
+				lwork = __clapack__::get_real( dmy );
+				matrix< T1, Allocator1 > work( lwork, 1 );
+				__clapack__::svd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, iwork, info );
+
+				delete [] rwork;
+				delete [] iwork;
+
+				s.resize( m, n );
+				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+				{
+					s( i, i ) = ss[ i ];
+				}
+			}
+
+			return( s );
+		}
+	};
+
+#endif
+
 }
 
 // 一般行列の特異値分解を計算する
@@ -591,116 +695,6 @@ matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocato
 	return( __svd__::__svd__< __matrix_utility__::is_complex< T1 >::value >::svd( a, u, s, vt ) );
 }
 
-
-
-
-//namespace __svd__
-//{
-//	// 一般行列の特異値分解を計算する
-//	template < bool b >
-//	struct __svd__
-//	{
-//		template < class T, class Allocator >
-//		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt )
-//		{
-//			typedef __clapack__::integer integer;
-//			typedef matrix< T, Allocator >::size_type size_type;
-//
-//			// LAPACK関数の引数
-//			integer m      = static_cast< integer >( a.rows( ) );
-//			integer n      = static_cast< integer >( a.cols( ) );
-//			integer lda    = m;
-//			integer ldu    = m;
-//			integer size   = m < n ? m : n;
-//			typename matrix< T, Allocator >::value_type dmy;
-//			integer ldvt   = n;
-//			integer lwork  = -1;
-//			integer info   = 0;
-//			char *jobz = "A";
-//
-//			// まず最適な作業用配列のサイズを取得する
-//			__clapack__::svd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
-//			if( info == 0 )
-//			{
-//				u.resize( ldu, m );
-//				matrix< T, Allocator > ss( size, 1 );
-//				vt.resize( ldvt, n );
-//				integer *iwork = new integer[ 8 * size ];
-//
-//				lwork = __clapack__::get_real( dmy );
-//				matrix< T, Allocator > work( lwork, 1 );
-//				__clapack__::svd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, iwork, info );
-//
-//				delete [] iwork;
-//
-//				s.resize( m, n );
-//				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
-//				{
-//					s( i, i ) = ss( i, i );
-//				}
-//			}
-//
-//			return( s );
-//		}
-//	};
-//
-//	template < >
-//	struct __svd__< true >
-//	{
-//		template < class T1, class T2, class Allocator1, class Allocator2 >
-//		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt )
-//		{
-//			typedef __clapack__::integer integer;
-//			typedef matrix< T1, Allocator1 >::size_type size_type;
-//			typedef typename T1::value_type value_type;
-//
-//			// LAPACK関数の引数
-//			integer m      = static_cast< integer >( a.rows( ) );
-//			integer n      = static_cast< integer >( a.cols( ) );
-//			integer lda    = m;
-//			integer ldu    = m;
-//			integer size   = m < n ? m : n;
-//			typename matrix< T1, Allocator1 >::value_type dmy;
-//			integer ldvt   = n;
-//			integer lwork  = -1;
-//			integer info   = 0;
-//			char *jobz = "A";
-//
-//			// まず最適な作業用配列のサイズを取得する
-//			__clapack__::svd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, NULL, info );
-//			if( info == 0 )
-//			{
-//				u.resize( ldu, m );
-//				matrix< typename T1::value_type > ss( size, 1 );
-//				vt.resize( ldvt, n );
-//				value_type *rwork = new value_type[ 5 * size * size + 5 * size ];
-//				integer *iwork = new integer[ 8 * size ];
-//
-//				lwork = __clapack__::get_real( dmy );
-//				matrix< T1, Allocator1 > work( lwork, 1 );
-//				__clapack__::svd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, iwork, info );
-//
-//				delete [] rwork;
-//				delete [] iwork;
-//
-//				s.resize( m, n );
-//				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
-//				{
-//					s( i, i ) = ss( i, i );
-//				}
-//			}
-//
-//			return( s );
-//		}
-//	};
-//}
-//
-//// 一般行列の特異値分解を計算する
-//template < class T1, class T2, class Allocator1, class Allocator2 >
-//matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt )
-//{
-//	return( __svd__::__svd__< __matrix_utility__::is_complex< T1 >::value >::svd( a, u, s, vt ) );
-//}
 
 // mist名前空間の終わり
 _MIST_END
