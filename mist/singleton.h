@@ -6,7 +6,9 @@
 #define __INCLUDE_MIST_SINGLETON__
 
 
+#ifndef __INCLUDE_MIST_CONF_H__
 #include "config/mist_conf.h"
+#endif
 
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è

@@ -30,6 +30,7 @@ ALL = \
 	random_test \
 	minimization_test \
 	mixture_test \
+	environment_test \
 
 
 all: $(ALL)
@@ -116,6 +117,9 @@ minimization_test : minimization_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 mixture_test : mixture_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+environment_test : environment_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 
