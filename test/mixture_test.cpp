@@ -97,11 +97,11 @@ int main( int argc, char *argv[] )
 		array< int > data2( 200000 );
 		array2< int > hist;
 
-		gauss::random rnd1( std::clock( ), 100, 30.0 );
-		gauss::random rnd2( std::clock( ), 20, 5.0 );
+		gauss::random rnd1( clock( ), 100, 30.0 );
+		gauss::random rnd2( clock( ), 20, 5.0 );
 
-		gauss::random rnd3( std::clock( ), 20, 25.0 );
-		gauss::random rnd4( std::clock( ), 80, 13.0 );
+		gauss::random rnd3( clock( ), 20, 25.0 );
+		gauss::random rnd4( clock( ), 80, 13.0 );
 
 		int minimum = 0;
 		int maximum = 200;

@@ -308,7 +308,7 @@ namespace morphology
 			for( x = -rx ; x <= rx ; x++ )
 			{
 				xx = x * ax;
-				if( abs( xx ) <= radius && abs( yy ) <= radius )
+				if( std::abs( xx ) <= radius && std::abs( yy ) <= radius )
 				{
 					m( x + ox, y + oy ) = true;
 				}
@@ -394,7 +394,7 @@ namespace morphology
 				for( x = -rx ; x <= rx ; x++ )
 				{
 					xx = x * ax;
-					if( abs( xx ) <= radius && abs( yy ) <= radius && abs( zz ) <= radius )
+					if( std::abs( xx ) <= radius && std::abs( yy ) <= radius && std::abs( zz ) <= radius )
 					{
 						m( x + ox, y + oy, z + oz ) = true;
 					}

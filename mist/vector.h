@@ -304,7 +304,7 @@ public:
 	//! 
 	//! @return ベクトルの大きさ
 	//! 
-	value_type length( ) const { return ( value_type( sqrt( (double)( x * x + y * y + z * z ) ) ) ); }
+	value_type length( ) const { return ( value_type( std::sqrt( (double)( x * x + y * y + z * z ) ) ) ); }
 
 	/// @brief 任意軸周りのベクトルの回転
 	//! 
@@ -616,7 +616,7 @@ public:
 	//! 
 	//! @return ベクトルの大きさ
 	//! 
-	value_type length( ) const { return ( value_type( sqrt( (double)( x * x + y * y ) ) ) ); }
+	value_type length( ) const { return ( value_type( std::sqrt( (double)( x * x + y * y ) ) ) ); }
 
 	//// ベクトルの回転
 	//vector2 rotate( const vector2 &a, double theta ) const

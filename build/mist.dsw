@@ -3,7 +3,7 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "array_test"=".\array_test.dsp" - Package Owner=<4>
+Project: "array_test"=.\array_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -15,7 +15,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "binary_test"=".\binary_test.dsp" - Package Owner=<4>
+Project: "binary_test"=.\binary_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -27,7 +27,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "color_test"=".\color_test.dsp" - Package Owner=<4>
+Project: "color_test"=.\color_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -39,7 +39,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "decimal_test"=".\decimal_test.dsp" - Package Owner=<4>
+Project: "crc_test"=.\crc_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -51,7 +51,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "fft_test"=".\fft_test.dsp" - Package Owner=<4>
+Project: "decimal_test"=.\decimal_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -63,7 +63,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "image_test"=".\image_test.dsp" - Package Owner=<4>
+Project: "fft_test"=.\fft_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -75,7 +75,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "integer_test"=".\integer_test.dsp" - Package Owner=<4>
+Project: "image_test"=.\image_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -87,7 +87,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "iterator_test"=".\iterator_test.dsp" - Package Owner=<4>
+Project: "integer_test"=.\integer_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -99,7 +99,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "limits_test"=".\limits_test.dsp" - Package Owner=<4>
+Project: "iterator_test"=.\iterator_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -111,7 +111,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "margin_array_test"=".\margin_array_test.dsp" - Package Owner=<4>
+Project: "limits_test"=.\limits_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -123,7 +123,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "matrix_test"=".\matrix_test.dsp" - Package Owner=<4>
+Project: "margin_array_test"=.\margin_array_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -135,7 +135,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "matrix_util_test"=".\matrix_util_test.dsp" - Package Owner=<4>
+Project: "matrix_test"=.\matrix_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -147,7 +147,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "median_test"=".\median_test.dsp" - Package Owner=<4>
+Project: "matrix_util_test"=.\matrix_util_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -159,7 +159,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "morphology_test"=".\morphology_test.dsp" - Package Owner=<4>
+Project: "median_test"=.\median_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -171,7 +171,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "operators_test"=".\operators_test.dsp" - Package Owner=<4>
+Project: "minimization_test"=.\minimization_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -183,7 +183,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "quaternion_test"=".\quaternion_test.dsp" - Package Owner=<4>
+Project: "mixture_test"=.\mixture_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -195,7 +195,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "raw_test"=".\raw_test.dsp" - Package Owner=<4>
+Project: "morphology_test"=.\morphology_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -207,7 +207,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "set_test"=".\set_test.dsp" - Package Owner=<4>
+Project: "operators_test"=.\operators_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -219,7 +219,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "singleton_test"=".\singleton_test.dsp" - Package Owner=<4>
+Project: "quaternion_test"=.\quaternion_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -231,7 +231,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "thread_test"=".\thread_test.dsp" - Package Owner=<4>
+Project: "raw_test"=.\raw_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -243,7 +243,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "vector_test"=".\vector_test.dsp" - Package Owner=<4>
+Project: "set_test"=.\set_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -255,7 +255,43 @@ Package=<4>
 
 ###############################################################################
 
-Project: "wav_test"=".\wav_test.dsp" - Package Owner=<4>
+Project: "singleton_test"=.\singleton_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "thread_test"=.\thread_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "vector_test"=.\vector_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wav_test"=.\wav_test.dsp - Package Owner=<4>
 
 Package=<5>
 {{{

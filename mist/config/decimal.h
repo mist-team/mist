@@ -582,7 +582,7 @@ public:
 		difference_type nmpa = NMPA;
 		difference_type mmpa = MMPA - 1;
 
-		if( mmpa < ::std::abs( static_cast< int >( exp_ ) ) )
+		if( mmpa < std::abs( static_cast< int >( exp_ ) ) )
 		{
 			decimal tmp( *this );
 			tmp.exp_ = 0;
@@ -926,7 +926,7 @@ public:	// íËêî
 	static decimal pai( )
 	{
 		decimal a0( 1 );
-		decimal b0( sqrt( decimal( 2 ) ) / 2 );
+		decimal b0( decimal::sqrt( decimal( 2 ) ) / 2 );
 		decimal t0( "0.25" );
 		decimal a1, b1, t1;
 
@@ -934,7 +934,7 @@ public:	// íËêî
 		for( int n = 0 ; n < 10 ; n++ )
 		{
 			a1 = ( a0 + b0 ) / 2;
-			b1 = sqrt( a0 * b0 );
+			b1 = decimal::sqrt( a0 * b0 );
 			t1 = t0 - _2[ n ] * ( a0 - a1 ) * ( a0 - a1 );
 
 			a0 = a1;

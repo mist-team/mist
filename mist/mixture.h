@@ -990,7 +990,7 @@ namespace histogram
 						double x = pdp[ m ].av.x - ( i + 0.5 ) * bin;
 						double y = pdp[ m ].av.y - ( j + 0.5 ) * bin;
 						double vvv = ( ( a * x + b * y ) * x + ( c * x + d * y ) * y ) / t;
-						tmp += Weight( i, j, m ) * pdp[ m ].weight * std::exp( - vvv / 2.0 ) / sqrt( t );
+						tmp += Weight( i, j, m ) * pdp[ m ].weight * std::exp( - vvv / 2.0 ) / std::sqrt( t );
 					}
 
 					if( tmp == 0.0 )

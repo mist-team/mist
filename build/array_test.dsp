@@ -25,7 +25,7 @@ CFG=array_test - Win32 Debug
 # PROP AllowPerConfigDependencies 0
 # PROP Scc_ProjName ""
 # PROP Scc_LocalPath ""
-CPP=cl.exe
+CPP=icl.exe
 RSC=rc.exe
 
 !IF  "$(CFG)" == "array_test - Win32 Release"

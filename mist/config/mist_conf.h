@@ -70,6 +70,38 @@ _MIST_BEGIN
 #define _MIST_ALLOCATOR_MEMORY_TRIM_	0		///< すでに確保されているメモリ領域の切り詰めを行うアロケータをサポートする場合はオンにする
 
 
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
+
+
+// mist名前空間の終わり
+_MIST_END
+
+	#include <cmath>
+
+	// VC6では、STD名前空間にABS関数等が入っていない問題を修正
+	#define STD_CMATH_FUNC1( name, func, value ) inline value name ( value v ){ return( func( v ) ); }
+	#define STD_CMATH_FUNC2( name, func, value ) inline value name ( value v1, value v2 ){ return( func( v1, 2 ) ); }
+	namespace std
+	{
+		STD_CMATH_FUNC1(   abs,    abs, int )
+		STD_CMATH_FUNC1(   abs,   labs, long )
+		STD_CMATH_FUNC1(   abs,   fabs, double )
+		STD_CMATH_FUNC1(  sqrt,   sqrt, double )
+		STD_CMATH_FUNC1(   sin,    sin, double )
+		STD_CMATH_FUNC1(   cos,    cos, double )
+		STD_CMATH_FUNC1(   log,    log, double )
+		STD_CMATH_FUNC1( log10,  log10, double )
+		STD_CMATH_FUNC1(   exp,    exp, double )
+		STD_CMATH_FUNC2(   pow,    pow, double )
+	}
+	#undef STD_CMATH_FUNC1
+	#undef STD_CMATH_FUNC2
+
+// mist名前空間の始まり
+_MIST_BEGIN
+
+#endif
+
 
 //! @addtogroup config_group MIST全般で利用される設定
 //!

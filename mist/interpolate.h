@@ -407,7 +407,7 @@ namespace __cubic__
 	{
 		using namespace std;
 		double ret = 0.0;
-		t = abs( t );
+		t = std::abs( t );
 
 		if( t < 1.0 )
 		{

@@ -202,19 +202,20 @@ namespace __tga_controller__
 
 			bool ret = true;
 
+			difference_type i, j, k;
 			switch( header.image_type & 0x07 )
 			{
 			case 1:	// Color-mapped Image
-				for( difference_type j = 0 ; j < height ; j++ )
+				for( j = 0 ; j < height ; j++ )
 				{
 					unsigned char *pixel = pixels + line_skip * j + ( from_left ? 0 : pixel_bytes ) * ( width - 1 );
 
-					for( difference_type i = 0 ; i < width ; i++ )
+					for( i = 0 ; i < width ; i++ )
 					{
 						difference_type tmp = 0;
 						unsigned char *pix = pixel + pixel_skip * i;
 
-						for( difference_type k = pixel_bytes - 1 ; k >= 0 ; k-- )
+						for( k = pixel_bytes - 1 ; k >= 0 ; k-- )
 						{
 							tmp = ( tmp << 8 ) + pix[ k ];
 						}
@@ -262,14 +263,14 @@ namespace __tga_controller__
 				break;
 
 			case 2:	// True-color Image
-				for( difference_type j = 0 ; j < height ; j++ )
+				for( j = 0 ; j < height ; j++ )
 				{
 					unsigned char *pixel = pixels + line_skip * j + ( from_left ? 0 : pixel_bytes ) * ( width - 1 );
 
 					switch( header.pixel_depth )
 					{
 					case 16:
-						for( difference_type i = 0 ; i < width ; i++ )
+						for( i = 0 ; i < width ; i++ )
 						{
 							unsigned short pix = reinterpret_cast< unsigned short * >( pixel + pixel_skip * i )[ 0 ];
 							//unsigned char a = ( pix & 0x8000 ) >> 15;
@@ -281,7 +282,7 @@ namespace __tga_controller__
 						break;
 
 					case 24:
-						for( difference_type i = 0 ; i < width ; i++ )
+						for( i = 0 ; i < width ; i++ )
 						{
 							unsigned char *pix = pixel + pixel_skip * i;
 							image( i, j ) = pixel_converter::convert_to( pix[ 2 ], pix[ 1 ], pix[ 0 ] );
@@ -289,7 +290,7 @@ namespace __tga_controller__
 						break;
 
 					case 32:
-						for( difference_type i = 0 ; i < width ; i++ )
+						for( i = 0 ; i < width ; i++ )
 						{
 							unsigned char *pix = pixel + pixel_skip * i;
 							image( i, j ) = pixel_converter::convert_to( pix[ 2 ], pix[ 1 ], pix[ 0 ] );
@@ -359,14 +360,15 @@ namespace __tga_controller__
 			difference_type line_skip  = from_top  ? width * pixel_bytes : - width * pixel_bytes;
 			difference_type pixel_skip = from_left ? pixel_bytes : - pixel_bytes;
 
-			for( difference_type j = 0 ; j < height ; j++ )
+			difference_type i, j;
+			for( j = 0 ; j < height ; j++ )
 			{
 				unsigned char *pixel = pixels + line_skip * j + ( from_left ? 0 : pixel_bytes ) * ( width - 1 );
 
 				switch( header.pixel_depth )
 				{
 				case 16:
-					for( difference_type i = 0 ; i < width ; i++ )
+					for( i = 0 ; i < width ; i++ )
 					{
 						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
 						unsigned short &pix = reinterpret_cast< unsigned short * >( pixel + pixel_skip * i )[ 0 ];
@@ -379,7 +381,7 @@ namespace __tga_controller__
 					break;
 
 				case 24:
-					for( difference_type i = 0 ; i < width ; i++ )
+					for( i = 0 ; i < width ; i++ )
 					{
 						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
 						unsigned char *pix = pixel + pixel_skip * i;
@@ -390,7 +392,7 @@ namespace __tga_controller__
 					break;
 
 				case 32:
-					for( difference_type i = 0 ; i < width ; i++ )
+					for( i = 0 ; i < width ; i++ )
 					{
 						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
 						unsigned char *pix = pixel + pixel_skip * i;

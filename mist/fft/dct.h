@@ -70,7 +70,7 @@ bool dct( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 
 	if( !__fft_util__::allocate_memory( mem,
 									in.size( ),
-									static_cast< size_t >( sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ),
+									static_cast< size_t >( std::sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ),
 									in.size( ) * 5 / 4 ) )
 	{
 		__fft_util__::deallocate_memory( mem );
@@ -130,7 +130,7 @@ bool dct_inverse( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &
 
 	if( !__fft_util__::allocate_memory( mem,
 									in.size( ),
-									static_cast< size_t >( sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ),
+									static_cast< size_t >( std::sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ),
 									in.size( ) * 5 / 4 ) )
 	{
 		__fft_util__::deallocate_memory( mem );
@@ -193,7 +193,7 @@ bool dct( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 									in.width( ),
 									in.height( ),
 									4 * in.width( ) * FFT2D_MAX_THREADS,
-									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
+									static_cast< size_t >( std::sqrt( static_cast< double >( size / 2 ) ) + 3 ),
 									size * 3 / 2 ) )
 	{
 		__fft_util__::deallocate_memory( mem );
@@ -263,7 +263,7 @@ bool dct_inverse( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &
 									in.width( ),
 									in.height( ),
 									4 * in.width( ) * FFT2D_MAX_THREADS,
-									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
+									static_cast< size_t >( std::sqrt( static_cast< double >( size / 2 ) ) + 3 ),
 									size * 3 / 2 ) )
 	{
 		__fft_util__::deallocate_memory( mem );
@@ -348,7 +348,7 @@ bool dct( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 									in.height( ),
 									in.depth( ),
 									4 * size * FFT3D_MAX_THREADS,
-									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
+									static_cast< size_t >( std::sqrt( static_cast< double >( size / 2 ) ) + 3 ),
 									size * 3 / 2 ) )
 	{
 		__fft_util__::deallocate_memory( mem );
@@ -426,7 +426,7 @@ bool dct_inverse( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &
 									in.height( ),
 									in.depth( ),
 									4 * size * FFT3D_MAX_THREADS,
-									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
+									static_cast< size_t >( std::sqrt( static_cast< double >( size / 2 ) ) + 3 ),
 									size * 3 / 2 ) )
 	{
 		__fft_util__::deallocate_memory( mem );

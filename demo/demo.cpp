@@ -245,7 +245,7 @@ inline bool eye_template_matching( mist::array2< T1, Allocator1 > &in, const mis
 
 	const double MAXDME = 70.0;		// Šü‹p”»’è‚Ì‹——£è‡’l[pixel]
 	const double MINDME = 5.0;		// Šü‹p”»’è‚Ì‹——£è‡’l[pixel]
-	double d_re_le = sqrt( ( eye_left.cx - eye_right.cx ) * ( eye_left.cx - eye_right.cx ) + ( eye_left.cy - eye_right.cy ) * ( eye_left.cy - eye_right.cy ) );
+	double d_re_le = std::sqrt( ( eye_left.cx - eye_right.cx ) * ( eye_left.cx - eye_right.cx ) + ( eye_left.cy - eye_right.cy ) * ( eye_left.cy - eye_right.cy ) );
 
 	// —¼–Ú‚ª—£‚ê‚·‚¬‚Ä‚¢‚éê‡C‰E–Ú‚Æ¶–Ú‚ª“ü‚ê‘Ö‚í‚Á‚Ä‚¢‚éê‡C—¼–Ú‚Ì‹——£‚ª‹ß‚·‚¬‚éê‡‚ÍŠü‹p‚·‚é
 	if( d_re_le > MAXDME || eye_left.cx < eye_right.cx || eye_left.cx - eye_right.cx < MINDME )

@@ -119,11 +119,11 @@ namespace __distance_figure_dedomposition__
 
 			if( list.empty( ) ) break;
 
-			rx = static_cast< int >( ceil( sqrt( (double)rr ) ) );
-			ry = static_cast< int >( ceil( sqrt( (double)rr ) / aspect ) );
+			rx = static_cast< int >( ceil( std::sqrt( (double)rr ) ) );
+			ry = static_cast< int >( ceil( std::sqrt( (double)rr ) / aspect ) );
 
 			printf( "                                                                   \r" );
-			printf( "looping ... % 4d, label =% 4d, size =% 3d, radius =%.3f )\r", ++loop_count, label_count, list.size( ), sqrt( (double)rr ) );
+			printf( "looping ... % 4d, label =% 4d, size =% 3d, radius =%.3f )\r", ++loop_count, label_count, list.size( ), std::sqrt( (double)rr ) );
 
 			for( ite = list.begin( ) ; ite != list.end( ) ; ++ite )
 			{

@@ -407,7 +407,7 @@ public:	// その他の関数
 	//! 	\left\| \mbox{\boldmath p} \right\| = \sqrt{ p_w^2 + p_x^2 + p_y^2 + p_z^2 }
 	//! \f]
 	//! 
-	value_type length( ) const { return ( static_cast< value_type >( sqrt( (double)( w * w + x * x + y * y + z * z ) ) ) ); }
+	value_type length( ) const { return ( static_cast< value_type >( std::sqrt( (double)( w * w + x * x + y * y + z * z ) ) ) ); }
 
 
 	/// @brief クォータニオンを用いたベクトルの回転

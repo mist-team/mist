@@ -102,7 +102,7 @@ namespace __donotuse__
 		if(att >= 50)
 			alpha = 0.1102 * (att - 8.7);
 		else if(att > 21)
-			alpha = 0.5842 * pow(att - 21, 0.4) + 0.07886 * (att - 21);
+			alpha = 0.5842 * std::pow(att - 21, 0.4) + 0.07886 * (att - 21);
 		else
 			alpha = 0;
 
@@ -136,9 +136,9 @@ namespace __donotuse__
 		// カイザー窓の計算だよ。
 		for(n = 0; n < nOrder; n ++){
 			n_fix = n - (nOrder / 2);
-			double	root_val = 1 - pow((n_fix / (double)(nOrder / 2)), 2);
+			double	root_val = 1 - std::pow((n_fix / (double)(nOrder / 2)), 2);
 
-			pKaiserWnd[n] = ModZeroBessel(alpha * sqrt(root_val)) / ModZeroBessel(alpha);
+			pKaiserWnd[n] = ModZeroBessel(alpha * std::sqrt(root_val)) / ModZeroBessel(alpha);
 		}
 
 		const double	pi = 4.0 * atan(1.0);
@@ -178,7 +178,7 @@ namespace __donotuse__
 			if(n_fix == 0)
 				pCoefs[n] = 2.0 * wc / w_smp;
 			else
-				pCoefs[n] = sin((2.0 * n_fix * pi * wc) / w_smp) / (n_fix * pi);
+				pCoefs[n] = std::sin((2.0 * n_fix * pi * wc) / w_smp) / (n_fix * pi);
 
 			pCoefs[n] *= pKaiserWnd[n];
 		}
@@ -198,7 +198,7 @@ namespace __donotuse__
 			if(n_fix == 0)
 				pCoefs[n] = 2.0 * ((f_hc + f_lc) / 2.0) / f_smp;
 			else
-				pCoefs[n] = sin((2.0 * n_fix * pi * ((f_hc + f_lc) / 2.0)) / f_smp) / (n_fix * pi);
+				pCoefs[n] = std::sin((2.0 * n_fix * pi * ((f_hc + f_lc) / 2.0)) / f_smp) / (n_fix * pi);
 
 			pCoefs[n] *= pKaiserWnd[n];
 		}
@@ -220,7 +220,7 @@ namespace __donotuse__
 		case WazaFIR::FIR_BPF:
 			for(n = 0; n < nOrder; n ++){
 				n_fix = n - (nOrder / 2);
-				pCoefs[n] *= 2.0 * cos(n_fix * w0 / f_smp);
+				pCoefs[n] *= 2.0 * std::cos(n_fix * w0 / f_smp);
 			}
 			break;
 
@@ -229,9 +229,9 @@ namespace __donotuse__
 			for(n = 0; n < nOrder; n ++){
 				n_fix = n - (nOrder / 2);
 				if(n_fix == 0)
-					pCoefs[n] = 1.0 - 2.0 * pCoefs[n] * cos(n_fix * w0 / f_smp);
+					pCoefs[n] = 1.0 - 2.0 * pCoefs[n] * std::cos(n_fix * w0 / f_smp);
 				else
-					pCoefs[n] *= - 2.0 * cos(n_fix * w0 / f_smp);
+					pCoefs[n] *= - 2.0 * std::cos(n_fix * w0 / f_smp);
 			}
 			break;
 		}
@@ -256,7 +256,7 @@ namespace __donotuse__
 
 		for(int n = 0; n < nOrder; n ++){
 			int	n_fix = n - (nOrder / 2);
-			gain += pCoefs[n] * (cos(n_fix * ws * t) - sin(n_fix * ws * t));
+			gain += pCoefs[n] * (std::cos(n_fix * ws * t) - std::sin(n_fix * ws * t));
 		}
 
 		return gain;
