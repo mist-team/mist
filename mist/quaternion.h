@@ -68,6 +68,7 @@ public:
 	/// @brief クォータニオンを用いた任意軸周りの回転
 	//! 
 	//! @attention 右手系の場合は右ねじ回転，左手系の場合は左ねじ回転となるので注意！！
+	//! @attention 回転角度の単位は度を用いる（ラジアンではないので注意！！）
 	//! 
 	//! @param[in] axis  … 回転軸
 	//! @param[in] theta … 回転角度
@@ -485,6 +486,22 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 	out << q.z << " )";
 	return( out );
 }
+
+
+
+/// @brief 球面線形補間を行う
+//! 
+//! @param[in] p1 … 補間もとのクォータニオン
+//! @param[in] p2 … 補間もとのクォータニオン
+//! @param[in] t  … [0,1]の間の数値で，補間点
+//! 
+//! @return 球面線形補間されたクォータニオン
+//! 
+//template < class T1, class T2 >
+//const quaternion< promote_trait< T1, T2 >::value_type > interpolate( const quaternion< T1 > &p1, const quaternion< T2 > &p2, double t )
+//{
+//	typedef quaternion< promote_trait< T1, T2 >::value_type > quaternion_type;
+//}
 
 
 // クォータニオンから行列へ変換する

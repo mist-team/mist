@@ -239,7 +239,7 @@ namespace __linear_filter__
 	void apply( const array2< T_in, Allocator_in >& in, array2< T_out, Allocator_out >& out, const array2< T_kernel, Allocator_kernel >& kernel,
 					const typename array2< T_kernel, Allocator_kernel >::size_type kernel_center_i, const typename array2< T_kernel, Allocator_kernel >::size_type kernel_center_j ) 
 	{	
-std::cout << "apply2" << std::endl;
+		std::cout << "apply2" << std::endl;
 		out.resize( in.size1( ), in.size2( ) );
 		out.reso1( in.reso1( ) );
 		out.reso2( in.reso2( ) );
