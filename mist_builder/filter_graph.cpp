@@ -520,7 +520,7 @@ long filter_graph::onPaint( FXObject *obj, FXSelector sel, void *ptr )
 
 		memdc.setFont( font_ );
 
-		memdc.setForeground( RGB( 255, 255, 255 ) );
+		memdc.setForeground( FXRGB( 255, 255, 255 ) );
 		memdc.fillRectangle( 0, 0, mem_image_->getWidth( ), mem_image_->getHeight( ) );
 
 		for( size_type i = 0 ; i < filters_.size( ) ; i++ )

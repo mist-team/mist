@@ -2,9 +2,6 @@
 #define __INCLUDE_FILTER_GRAPH__
 
 
-#include "scroll_area.h"
-
-
 // Event Handler Object
 class filter_graph : public FXPacker
 {
