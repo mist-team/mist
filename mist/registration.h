@@ -68,9 +68,6 @@ namespace __non_rigid_registration_utility__
 		double _1_ax = 1.0 / source.reso1( );
 		double _1_ay = 1.0 / source.reso2( );
 
-		//stepW *= target.reso1( );
-		//stepH *= target.reso2( );
-
 		difference_type d0, d1, d2, d3;
 		{
 			difference_type cx = source.width( ) / 2;
@@ -190,10 +187,6 @@ namespace __non_rigid_registration_utility__
 		double _1_ax = 1.0 / source.reso1( );
 		double _1_ay = 1.0 / source.reso2( );
 		double _1_az = 1.0 / source.reso3( );
-
-		//stepW *= target.reso1( );
-		//stepH *= target.reso2( );
-		//stepD *= target.reso3( );
 
 		difference_type d0, d1, d2, d3, d4, d5, d6, d7;
 		{
@@ -429,7 +422,7 @@ namespace __non_rigid_registration_utility__
 		typedef typename TARGETTYPE::difference_type difference_type;
 
 		array< unsigned int * > target;
-		target_image_type &transformed_image;
+		target_image_type transformed_image;		///< @brief レジストレーション時に利用し，制御点情報を用いてソースを目標画像へ変換した一時画像
 		const source_image_type &source;
 		const control_mesh_type &control_mesh;
 		control_mesh_type control_mesh_tmp;
@@ -487,8 +480,8 @@ namespace __non_rigid_registration_utility__
 			return( v1 > v2 ? v1 : v2 );
 		}
 
-		registration_functor( const target_image_type &tgt, target_image_type &tmp, const source_image_type &src, const control_mesh_type &cmesh, size_type bin )
-			: target( tgt.size( ) ), transformed_image( tmp ), source( src ), control_mesh ( cmesh ), control_mesh_tmp( cmesh ), x( 0 ), y( 0 ), z( 0 ), BIN( bin )
+		registration_functor( const target_image_type &tgt, const source_image_type &src, const control_mesh_type &cmesh, size_type bin )
+			: target( tgt.size( ) ), transformed_image( tgt ), source( src ), control_mesh ( cmesh ), control_mesh_tmp( cmesh ), x( 0 ), y( 0 ), z( 0 ), BIN( bin )
 		{
 			// 初期画像を作成する
 			transformation( transformed_image, source, control_mesh );
@@ -539,6 +532,7 @@ namespace __non_rigid_registration_utility__
 			y = j;
 			z = k;
 			control_mesh_tmp = control_mesh;
+			__non_rigid_registration_utility__::transformation( transformed_image, source, control_mesh );
 		}
 
 		template < class PARAMETER >
@@ -598,14 +592,8 @@ namespace __non_rigid_registration_utility__
 				}
 			}
 
-			double nmi = ( H1 + H2 ) / H12;
-			//double nmi = H1 + H2 - H12;
-			//{
-			//	static int count = 0;
-			//	printf( "%d                        \r", count++ );
-			//}
-
-			return ( - nmi );
+			return( -( H1 + H2 ) / H12 );
+			//return( H1 + H2 - H12 );
 		}
 	};
 }
@@ -650,7 +638,6 @@ namespace non_rigid
 
 	protected:
 		const image_type &target;			///< @brief レジストレーションする目標画像
-		image_type transformed_source;		///< @brief レジストレーション時に利用し，制御点情報を用いてソースを目標画像へ変換した一時画像
 		control_mesh_type control_mesh;		///< @brief 制御点配列
 		size_type BIN;
 
@@ -664,7 +651,7 @@ namespace non_rigid
 		//! @param[in] bin  … NMIを計算する際のビン幅
 		//! 
 		registration( const image_type &tgt, size_type divW, size_type divH, size_type divD, size_type bin )
-			: target( tgt ), transformed_source( tgt ), control_mesh( divW + 1, divH + 1, divD + 1, 2 ), BIN( bin )
+			: target( tgt ), control_mesh( divW + 1, divH + 1, divD + 1, 2 ), BIN( bin )
 		{
 		}
 
@@ -677,6 +664,19 @@ namespace non_rigid
 		//! 
 		template < class SOURCETYPE >
 		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop = 3 )
+		{
+			apply( source, tolerance, max_loop, __mist_dmy_callback__( ) );
+		}
+
+		/// @brief 非剛体レジストレーションの実行
+		//! 
+		//! @param[in] source    … 目標画像に向けて変形するソース画像
+		//! @param[in] tolerance … レジストレーションの終了判定に用いる許容相対誤差
+		//! @param[in] max_loop  … 最適化処理の最大反復回数
+		//! @param[in] callback  … 現在の進行状況を表示するためのコールバック関数
+		//! 
+		template < class SOURCETYPE, class Functor >
+		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop, Functor callback )
 		{
 			typedef __non_rigid_registration_utility__::registration_functor< TARGETTYPE, SOURCETYPE, control_mesh_type > non_rigid_registration_functor_type;
 			typedef __minimization_utility__::__no_copy_constructor_functor__< non_rigid_registration_functor_type > no_constructor_functor_type;
@@ -726,12 +726,16 @@ namespace non_rigid
 				iez = isz = 0;
 			}
 
+			callback( 0.0 );
+
 			// ノンリジッドレジストレーションを行うファンクタ
-			non_rigid_registration_functor_type f( target, transformed_source, source, control_mesh, BIN );
+			non_rigid_registration_functor_type f( target, source, control_mesh, BIN );
 
 			double err = f( matrix_type::zero( 3, 1 ) );
 			double old_err = err;
 			size_type loop = 0;
+			double max_iteration_num = ( iex - isx + 1 ) * ( iey - isy + 1 ) * ( iez - isz + 1 ) * max_loop;
+			size_type count = 0;
 			while( loop++ < max_loop )
 			{
 				// 各制御点を順番に変形させながら最適化を行う
@@ -764,8 +768,8 @@ namespace non_rigid
 							v.y += p[ 1 ];
 							v.z += p[ 2 ];
 
-							std::cout << "( " << i << ", " << j << ", " << k << " ) = " << "( " << v << " )" << std::endl;
-							__non_rigid_registration_utility__::transformation( transformed_source, source, control_mesh );
+							//std::cout << "( " << i << ", " << j << ", " << k << " ) = " << "( " << v << " )" << std::endl;
+							callback( 100.0 / max_iteration_num * count++ );
 						}
 					}
 				}
@@ -775,6 +779,8 @@ namespace non_rigid
 					break;
 				}
 			}
+
+			callback( 100.1 );
 		}
 
 
