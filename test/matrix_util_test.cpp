@@ -94,6 +94,20 @@ int main( )
 	}
 
 	{
+		std::cout << "Determinant" << std::endl;
+
+		std::cout << mist::det( a ) << std::endl;
+		std::cout << mist::det( a * a.t( ) ) << std::endl;
+	}
+
+	{
+		std::cout << "Trace" << std::endl;
+
+		std::cout << mist::trace( a ) << std::endl;
+		std::cout << mist::trace( a * a.t( ) ) << std::endl;
+	}
+
+	{
 		std::cout << "Singular value decomposition (SVD)s" << std::endl;
 
 		a.resize( 4, 4 );

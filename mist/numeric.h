@@ -431,7 +431,9 @@ namespace __clapack__
 }
 
 
-// Trace
+
+// トレースの計算（対角成分の和）
+
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type trace( const matrix< T, Allocator > &a )
 {
@@ -451,14 +453,25 @@ inline const typename matrix< T, Allocator >::value_type trace( const matrix< T,
 template < class Expression >
 inline const typename matrix_expression< Expression >::value_type trace( const matrix_expression< Expression > &expression )
 {
-	typedef matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > matrix_type;
-	return( trace( matrix_type( expression ), b, style ) );
+	typedef typename matrix_expression< Expression >::value_type value_type;
+	typedef typename matrix_expression< Expression >::size_type size_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
+
+	value_type v = value_type( );
+	size_type size = expression.rows( ) < expression.cols( ) ? expression.rows( ) : expression.cols( );
+	for( size_type i = 0 ; i < size ; ++i )
+	{
+		v += expression( i, i );
+	}
+
+	return( v );
 }
 
 #endif
 
 
-// Determinant
+// 行列式の計算
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type det( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
@@ -470,9 +483,8 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 		return( value_type( ) );
 	}
 
-	matrix< T, Allocator > m( a );
 	matrix< __clapack__::integer > pivot;
-	lu_factorization( m, pivot, style );
+	matrix< T, Allocator > m = lu_factorization( a, pivot, style );
 
 	value_type v = m( 0, 0 );
 	size_type size = a.rows( ) < a.cols( ) ? a.rows( ) : a.cols( );
@@ -481,7 +493,7 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 	// LU分解時に行の入れ替えが行われた回数を計算する
 	for( i = 0 ; i < pivot.size( ) ; ++i )
 	{
-		count += pivot[ i ] != i + 1 ? 1 : 0;
+		count += static_cast< size_type >( pivot[ i ] ) != i + 1 ? 1 : 0;
 	}
 
 	// 対角成分の積を計算する
@@ -498,8 +510,36 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 template < class Expression >
 inline const typename matrix_expression< Expression >::value_type det( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
 {
-	typedef matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > matrix_type;
-	return( __solve__::__solve__< __numeric__::is_complex< T >::value >::solve( matrix_type( expression ), b, style ) );
+	typedef typename matrix_expression< Expression >::value_type value_type;
+	typedef typename matrix_expression< Expression >::size_type size_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
+
+	if( expression.rows( ) * expression.cols( ) == 0 )
+	{
+		return( value_type( ) );
+	}
+
+	matrix< __clapack__::integer > pivot;
+	matrix_type m = lu_factorization( expression, pivot, style );
+
+	value_type v = m( 0, 0 );
+	size_type size = m.rows( ) < m.cols( ) ? m.rows( ) : m.cols( );
+	size_type count = 0, i;
+
+	// LU分解時に行の入れ替えが行われた回数を計算する
+	for( i = 0 ; i < pivot.size( ) ; ++i )
+	{
+		count += static_cast< size_type >( pivot[ i ] ) != i + 1 ? 1 : 0;
+	}
+
+	// 対角成分の積を計算する
+	for( i = 1 ; i < size ; ++i )
+	{
+		v *= m( i, i );
+	}
+
+	return( v * ( count % 2 == 0 ? 1 : -1 ) );
 }
 
 #endif
@@ -572,12 +612,10 @@ namespace __solve__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a_, matrix< T, Allocator > &b, matrix_style::style style )
+		static matrix< T, Allocator >& solve( matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::value_type value_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -647,12 +685,10 @@ namespace __solve__
 	{
 		// 複素数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a_, matrix< T, Allocator > &b, matrix_style::style style )
+		static matrix< T, Allocator >& solve( matrix< T, Allocator > a, matrix< T, Allocator > &b, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -723,7 +759,8 @@ namespace __solve__
 template < class T, class Allocator >
 inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style = matrix_style::ge )
 {
-	return( __solve__::__solve__< __numeric__::is_complex< T >::value >::solve( a, b, style ) );
+	matrix< T, Allocator > a_( a );
+	return( __solve__::__solve__< __numeric__::is_complex< T >::value >::solve( a_, b, style ) );
 }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
@@ -733,7 +770,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 			solve( const matrix_expression< Expression > &expression, matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &b, matrix_style::style style = matrix_style::ge )
 {
 	typedef matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > matrix_type;
-	return( __solve__::__solve__< __numeric__::is_complex< T >::value >::solve( matrix_type( expression ), b, style ) );
+	matrix_type a_( expression );
+	return( __solve__::__solve__< __numeric__::is_complex< typename matrix_expression< Expression >::value_type >::value >::solve( a_, b, style ) );
 }
 
 #endif
@@ -750,12 +788,10 @@ namespace __lu__
 	{
 		// 実数バージョン
 		template < class T, class Allocator1, class Allocator2 >
-		static const matrix< T, Allocator1 >& lu_factorization( const matrix< T, Allocator1 > &a_, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style )
+		static matrix< T, Allocator1 >& lu_factorization( matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator1 >::value_type value_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -811,12 +847,10 @@ namespace __lu__
 	{
 		// 複素数バージョン
 		template < class T, class Allocator1, class Allocator2 >
-		static const matrix< T, Allocator1 >& lu_factorization( const matrix< T, Allocator1 > &a_, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style )
+		static matrix< T, Allocator1 >& lu_factorization( matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -870,36 +904,41 @@ namespace __lu__
 
 // 一般行列のLU分解を行う
 template < class T, class Allocator1, class Allocator2 >
-const matrix< T, Allocator1 >& lu_factorization( const matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
+const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
 {
-	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a, pivot, style ) );
+	matrix< T, Allocator1 > a_( a );
+	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
 }
 
 // 一般行列のLU分解を行う
 template < class T, class Allocator >
-const matrix< T, Allocator >& lu_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
+const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
 	typedef __clapack__::integer integer;
+	matrix< T, Allocator > a_( a );
 	matrix< __clapack__::integer > pivot( a.cols( ), 1 );
-	return( lu_factorization( a, pivot, style ) );
+	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
 }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
 template < class Expression, class Allocator2 >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
+inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
 			lu_factorization( const matrix_expression< Expression > &expression, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
 {
 	typedef matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > matrix_type;
-	return( lu_factorization( matrix_type( expression ), pivot, style ) );
+	matrix_type a_( expression );
+	return( __lu__::__lu__< __numeric__::is_complex< typename matrix_expression< Expression >::value_type >::value >::lu_factorization( a_, pivot, style ) );
 }
 
 template < class Expression >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
+inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
 						lu_factorization( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
 {
 	typedef matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > matrix_type;
-	return( lu_factorization( matrix_type( expression ), style ) );
+	matrix_type a_( expression );
+	matrix< __clapack__::integer > pivot( a_.cols( ), 1 );
+	return( __lu__::__lu__< __numeric__::is_complex< typename matrix_expression< Expression >::value_type >::value >::lu_factorization( a_, pivot, style ) );
 }
 
 #endif
@@ -914,11 +953,9 @@ namespace __qr__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& qr_factorization( const matrix< T, Allocator > &a_, matrix< T, Allocator > &tau, matrix_style::style style )
+		static matrix< T, Allocator >& qr_factorization( matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -957,12 +994,10 @@ namespace __qr__
 	{
 		// 複素数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& qr_factorization( const matrix< T, Allocator > &a_, matrix< T, Allocator > &tau, matrix_style::style style )
+		static matrix< T, Allocator >& qr_factorization( matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename T::vaqre_type vaqre_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -998,38 +1033,41 @@ namespace __qr__
 
 // 一般行列のQR分解を行う
 template < class T, class Allocator >
-const matrix< T, Allocator >& qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style = matrix_style::ge )
+const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style = matrix_style::ge )
 {
-	return( __qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a, tau, style ) );
+	matrix< T, Allocator > a_( a );
+	return( __qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a_, tau, style ) );
 }
 
 // 一般行列のQR分解を行う
 template < class T, class Allocator >
-const matrix< T, Allocator >& qr_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
+const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
 	typedef __clapack__::integer integer;
-	matrix< T, Allocator > tau( a.rows( ), a.cols( ) );
-	return( qr_factorization( a, tau, style ) );
+	matrix< T, Allocator > a_( a ), tau( a.rows( ), a.cols( ) );
+	return( __qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a_, tau, style ) );
 }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
 template < class Expression >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
+inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
 			qr_factorization( const matrix_expression< Expression > &expression,
 								matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &tau,
 								matrix_style::style style = matrix_style::ge )
 {
 	typedef matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > matrix_type;
-	return( qr_factorization( matrix_type( expression ), tau, style ) );
+	matrix_type a_( expression );
+	return( __qr__::__qr__< __numeric__::is_complex< typename matrix_expression< Expression >::value_type >::value >::qr_factorization( a_, tau, style ) );
 }
 
 template < class Expression >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
+inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
 						qr_factorization( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
 {
 	typedef matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > matrix_type;
-	return( qr_factorization( matrix_type( expression ), style ) );
+	matrix_type a_( expression ), tau( a_.rows( ), a_.cols( ) );
+	return( __qr__::__qr__< __numeric__::is_complex< typename matrix_expression< Expression >::value_type >::value >::qr_factorization( a_, tau, style ) );
 }
 
 #endif
@@ -1043,7 +1081,7 @@ namespace __inverse__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& inverse( matrix< T, Allocator > &a, matrix_style::style style )
+		static matrix< T, Allocator >& inverse( matrix< T, Allocator > &a, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 
@@ -1117,7 +1155,7 @@ namespace __inverse__
 	{
 		// 複素数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& inverse( matrix< T, Allocator > a, matrix_style::style style )
+		static matrix< T, Allocator >& inverse( matrix< T, Allocator > &a, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename T::vaqre_type vaqre_type;
@@ -1192,7 +1230,8 @@ namespace __inverse__
 template < class T, class Allocator >
 matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
-	return( __inverse__::__inverse__< __numeric__::is_complex< T >::value >::inverse( matrix< T, Allocator >( a ), style ) );
+	matrix< T, Allocator > a_( a );
+	return( __inverse__::__inverse__< __numeric__::is_complex< T >::value >::inverse( a_, style ) );
 }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
@@ -1202,7 +1241,8 @@ inline matrix< typename matrix_expression< Expression >::value_type, typename ma
 						inverse( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
 {
 	typedef matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > matrix_type;
-	return( inverse( matrix_type( expression ), style ) );
+	matrix_type a_( expression );
+	return( __inverse__::__inverse__< __numeric__::is_complex< typename matrix_expression< Expression >::value_type >::value >::inverse( a_, style ) );
 }
 
 #endif
@@ -1220,12 +1260,10 @@ namespace __eigen__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a_, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style )
+		static matrix< T, Allocator >& eigen( matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::value_type value_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -1310,12 +1348,10 @@ namespace __eigen__
 	{
 		// 複素数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a_, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style )
+		static matrix< T, Allocator >& eigen( matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -1373,11 +1409,9 @@ namespace __eigen__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a_, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style )
+		static matrix< T, Allocator >& eigen( matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -1446,12 +1480,10 @@ namespace __eigen__
 	{
 		// 複素数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a_, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style )
+		static matrix< T, Allocator >& eigen( matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -1500,7 +1532,8 @@ namespace __eigen__
 template < class T, class Allocator >
 const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style = matrix_style::ge )
 {
-	return( __eigen__::__eigen__< __numeric__::is_complex< T >::value >::eigen( a, eigen_value, eigen_vector, style ) );
+	matrix< T, Allocator > a_( a );
+	return( __eigen__::__eigen__< __numeric__::is_complex< T >::value >::eigen( a_, eigen_value, eigen_vector, style ) );
 }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
@@ -1508,12 +1541,13 @@ const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T,
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
 						eigen( const matrix_expression< Expression > &expression,
-						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &eiven_value,
+						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &eigen_value,
 						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &eigen_vector,
 						matrix_style::style style = matrix_style::ge )
 {
 	typedef matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > matrix_type;
-	return( eigen( matrix_type( expression ), eigen_value, eigen_vector, style ) );
+	matrix_type a_( expression );
+	return( __eigen__::__eigen__< __numeric__::is_complex< typename matrix_expression< Expression >::value_type >::value >::eigen( a_, eigen_value, eigen_vector, style ) );
 }
 
 #endif
@@ -1531,12 +1565,10 @@ namespace __svd__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& svd( const matrix< T, Allocator > &a_, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt, matrix_style::style style )
+		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::size_type size_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -1589,13 +1621,11 @@ namespace __svd__
 	{
 		// 複素数バージョン
 		template < class T1, class T2, class Allocator1, class Allocator2 >
-		static const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a_, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style )
+		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T1, Allocator1 >::size_type size_type;
 			typedef typename T1::value_type value_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -1652,12 +1682,10 @@ namespace __svd__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static const matrix< T, Allocator >& svd( const matrix< T, Allocator > &a_, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt, matrix_style::style style )
+		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::size_type size_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -1707,13 +1735,11 @@ namespace __svd__
 	{
 		// 複素数バージョン
 		template < class T1, class T2, class Allocator1, class Allocator2 >
-		static const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a_, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style )
+		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T1, Allocator1 >::size_type size_type;
 			typedef typename T1::value_type value_type;
-
-			matrix< T, Allocator > a( a_ );
 
 			switch( style )
 			{
@@ -1769,7 +1795,8 @@ namespace __svd__
 template < class T1, class T2, class Allocator1, class Allocator2 >
 const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
 {
-	return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( a, u, s, vt, style ) );
+	matrix< T1, Allocator1 > a_( a );
+	return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( a_, u, s, vt, style ) );
 }
 
 
@@ -1784,7 +1811,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 						matrix_style::style style = matrix_style::ge )
 {
 	typedef matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > matrix_type;
-	return( svd( matrix_type( expression ), u, s, vt, style ) );
+	matrix_type a_( expression );
+	return( __svd__::__svd__< __numeric__::is_complex< typename matrix_expression< Expression >::value_type >::value >::svd( a_, u, s, vt, style ) );
 }
 
 #endif
