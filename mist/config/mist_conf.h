@@ -118,9 +118,7 @@ _MIST_BEGIN
 
 #define _MIST_VECTOR_SUPPORT_				0	///< MISTのVECTORを有効にする．MATRIXとの掛け算等もサポートする．STLのvectorとクラス名がかぶるため，名前空間を正しくインポートする必要がある．
 
-#define _MIST_GIF_SUPPORT_					0	///< GIF画像の入出力をサポートするかどうか
-
-#define _LZW_COMPRESSION_SUPPORT_		false	///< TIFFとGIF画像の出力で，LZW圧縮を有効にするオプションをデフォルトにするかどうか
+#define _LZW_COMPRESSION_SUPPORT_		false	///< TIFFの出力で，LZW圧縮を有効にするオプションをデフォルトにするかどうか
 
 
 // 行列演算のオプション
@@ -429,7 +427,7 @@ struct __mist_console_callback__
 *   - @ref image_pnm_group					"PNMデータの読み込み・書き出し"
 *   - @ref image_jpeg_group					"JPEGデータの読み込み・書き出し"
 *   - @ref image_png_group					"PNGデータの読み込み・書き出し"
-*   - @ref image_gif_group					"GIFデータの読み込み・書き出し"
+*   - @ref image_gif_group					"GIFデータの読み込み"
 *   - @ref image_tiff_group					"TIFFデータの読み込み・書き出し"
 *   - @ref image_tga_group					"TGAデータの読み込み・書き出し"
 *   - @ref dicom_group						"DICOMデータの読み込み・書き出し"

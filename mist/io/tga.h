@@ -337,7 +337,7 @@ namespace __tga_controller__
 			header.y_origin = 0;
 			header.image_width = static_cast< unsigned short >( width );
 			header.image_height = static_cast< unsigned short >( height );
-			header.pixel_depth = tga_bits;
+			header.pixel_depth = static_cast< unsigned char >( tga_bits );
 			header.image_descriptor = ( is_encode_RLE ? 0x08 : 0 ) | ( from_top ? 0x20 : 0 ) | ( from_left ? 0 : 0x10 );
 
 			unsigned char *image_data		= tga + _tga_header_::bytes;

@@ -183,13 +183,13 @@ namespace __labeling_controller__
 	template < class Array, class neighbor, class Functor >
 	typename Array::size_type labeling( Array &in, typename Array::size_type label_max, const neighbor dmy, Functor f )
 	{
-		typedef typename Array::size_type  size_type;
+		typedef typename Array::size_type size_type;
 		typedef typename Array::value_type value_type;
 
 		size_type label_num = 0;
 		size_type i, j, k, l, count;
 
-		std::vector< size_type > T;
+		std::vector< const size_type > T;
 		size_type L[ neighbor::array_num ];
 		const size_type width = in.width( );
 		const size_type height = in.height( );

@@ -22,7 +22,7 @@
 #include "png.h"
 #endif
 
-#if defined( _MIST_GIF_SUPPORT_ ) && _MIST_GIF_SUPPORT_ != 0 && !defined( __INCLUDE_MIST_GIF__ )
+#ifndef __INCLUDE_MIST_GIF__
 #include "gif.h"
 #endif
 
@@ -126,12 +126,10 @@ inline bool read_image( mist::array2< T, Allocator > &image, const std::string &
 	{
 		ret = mist::read_tga( image, filename );
 	}
-#if defined( _MIST_GIF_SUPPORT_ ) && _MIST_GIF_SUPPORT_ != 0
 	else if( ext == ".gif" )
 	{
 		ret = mist::read_gif( image, filename );
 	}
-#endif
 	else
 	{
 		ret = false;
@@ -195,12 +193,6 @@ inline bool write_image( mist::array2< T, Allocator > &image, const std::string 
 	{
 		ret = mist::write_tga( image, filename );
 	}
-#if defined( _MIST_GIF_SUPPORT_ ) && _MIST_GIF_SUPPORT_ != 0
-	else if( ext == ".gif" )
-	{
-		ret = mist::write_gif( image, filename );
-	}
-#endif
 	else
 	{
 		ret = false;

@@ -1,9 +1,34 @@
 /// @file mist/io/gif.h
 //!
-//! @brief GIF画像を読み書きするためのライブラリ
+//! @brief GIF画像を読み込むためのライブラリ
 //!
-//! 本ライブラリは，http://sourceforge.net/projects/libungif/ で開発が行われている giflib もしくは libungif を利用している
-//! エンコードとデコードは本ライブラリのAPIを用いて実装されているため，別途ライブラリを用意する必要がある
+//! 本ライブラリは，GIFのデコードのみをサポートする．
+//! GIFのデコード部分で，LZWのデコードを行う decode_LZW に関しては，libtiff で提供されている gif2tiff.c 内のコードを利用している．
+//! その部分に関するコピーライトは以下のとおりである．
+//! 
+//! libtiff のコピーライト
+//!
+//! Copyright (c) 1988-1997 Sam Leffler
+//! Copyright (c) 1991-1997 Silicon Graphics, Inc.
+//! 
+//! Permission to use, copy, modify, distribute, and sell this software and 
+//! its documentation for any purpose is hereby granted without fee, provided
+//! that (i) the above copyright notices and this permission notice appear in
+//! all copies of the software and related documentation, and (ii) the names of
+//! Sam Leffler and Silicon Graphics may not be used in any advertising or
+//! publicity relating to the software without the specific, prior written
+//! permission of Sam Leffler and Silicon Graphics.
+//! 
+//! THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND, 
+//! EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY 
+//! WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  
+//! 
+//! IN NO EVENT SHALL SAM LEFFLER OR SILICON GRAPHICS BE LIABLE FOR
+//! ANY SPECIAL, INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND,
+//! OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+//! WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF 
+//! LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE 
+//! OF THIS SOFTWARE.
 //!
 
 #ifndef __INCLUDE_MIST_GIF__
@@ -25,6 +50,7 @@
 
 
 #include <string>
+#include <stack>
 
 
 // mist名前空間の始まり
@@ -33,268 +59,411 @@ _MIST_BEGIN
 
 namespace __gif_controller__
 {
-	extern "C"{
-		#include <gif_lib.h>
-	}
+	// 構造体内のアライメントを1バイトに設定し，パディングを禁止する
+#if defined( __MIST_MSVC__ )
+	#pragma pack( push, gif_align, 1 )
+#endif
+		typedef _MIST_ALIGN( struct, 1 )
+		{
+			enum{ bytes = 13 };
+
+			unsigned char signature[ 3 ];
+			unsigned char version[ 3 ];
+
+			unsigned short	image_width;
+			unsigned short	image_height;
+			unsigned char	image_flags;
+			unsigned char	background_color_index;
+			unsigned char	pixel_aspect_ratio;
+
+		} _gif_header_;
+
+		typedef _MIST_ALIGN( struct, 1 )
+		{
+			enum{ bytes = 10 };
+
+			unsigned char	code;
+			unsigned short	left;
+			unsigned short	top;
+			unsigned short	image_width;
+			unsigned short	image_height;
+			unsigned char	image_flags;
+
+		} _image_descriptor_;
+
+		typedef _MIST_ALIGN( struct, 1 )
+		{
+			enum{ bytes = 7 };
+
+			unsigned char	code;
+			unsigned char	label;
+			unsigned char	block_size;
+			unsigned char	flags;
+			unsigned short	delay_time;
+			unsigned char	transparent_color_index;
+
+		} _graphic_control_extension_;
+
+		typedef _MIST_ALIGN( struct, 1 )
+		{
+			enum{ bytes = 2 };
+
+			unsigned char	code;
+			unsigned char	label;
+
+		} _comment_extension_;
+
+		typedef _MIST_ALIGN( struct, 1 )
+		{
+			enum{ bytes = 15 };
+
+			unsigned char	code;
+			unsigned char	label;
+			unsigned char	block_size;
+			unsigned short	left;
+			unsigned short	top;
+			unsigned short	grid_width;
+			unsigned short	grid_height;
+			unsigned char	cell_width;
+			unsigned char	cell_height;
+			unsigned char	text_foreground_color_index;
+			unsigned char	text_background_color_index;
+
+		} _plain_text_extension_;
+
+		typedef _MIST_ALIGN( struct, 1 )
+		{
+			enum{ bytes = 14 };
+
+			unsigned char	code;
+			unsigned char	label;
+			unsigned char	block_size;
+			unsigned char	application_identifier[ 8 ];
+			unsigned char	authentication_code[ 3 ];
+
+		} _application_extension_;
+
+
+
+#if defined( __MIST_MSVC__ )
+	#pragma pack( pop, gif_align )
+#endif
+	// 構造体内のアライメントを1バイトに設定し，パディングを禁止する ～ ここまで ～
 
 	template < class T, class Allocator >
 	struct gif_controller
 	{
+		typedef typename array2< T, Allocator >::size_type size_type;
+		typedef typename array2< T, Allocator >::difference_type difference_type;
 		typedef _pixel_converter_< T > pixel_converter;
 		typedef typename pixel_converter::color_type color_type;
-		typedef typename array2< T, Allocator >::size_type size_type;
 
-		static bool read( array2< T, Allocator > &image, const std::string &filename )
+
+		static difference_type decode_LZW( const unsigned char *buff, unsigned char * &out, size_type num_bytes )
 		{
-			size_type i, j;
+			difference_type initial_code_size = buff[ 0 ];
+			difference_type clear_code = 1 << initial_code_size;
+			difference_type end_code = clear_code + 1;
 
-			// GIFファイルを読み込んで，ヘッダ情報を取得する
-			GifFileType *GifFile = DGifOpenFileName( filename.c_str( ) );
+			difference_type code_size = initial_code_size + 1;
+			difference_type code_mask = ( 1 << code_size ) - 1;
+			difference_type bits = 0, data = 0, available = 0;
 
-			if( GifFile == NULL )
+			if( code_size < 3 || 12 < code_size )
 			{
+				// 不適切なLZWの圧縮データである
+				return( -1 );
+			}
+
+			out = new unsigned char[ num_bytes ];
+			memset( out, 0, sizeof( unsigned char ) * num_bytes );
+
+			static difference_type prefix[ 4096 ];
+			static difference_type suffix[ 4096 ];
+			std::stack< difference_type > stack;
+
+			const unsigned char *pointer = buff + 1;
+
+			for( difference_type i = 0 ; i < clear_code ; i++ )
+			{
+				prefix[ i ] = 0;
+				suffix[ i ] = static_cast< unsigned char >( i );
+			}
+			
+			difference_type count = 0, code = 0, old_code = -1, first_character = 0;
+			while( pointer < buff + num_bytes )
+			{
+				difference_type num = pointer[ 0 ];
+				pointer++;
+
+				for( difference_type i = 0 ; i < num ; i++ )
+				{
+					difference_type ch = pointer[ i ];
+					data += ch << bits;
+					bits += 8;
+
+					while( bits >= code_size )
+					{
+						code = data & code_mask;
+						data >>= code_size;
+						bits -= code_size;
+
+						if( code == end_code )
+						{
+							// 終了コードが見つかったので，デコード処理を終了する
+							return( pointer - buff + i );
+						}
+
+						if( code == clear_code )
+						{
+							// クリアコードが見つかったので，辞書を初期化する
+							code_size = initial_code_size + 1;
+							code_mask = ( 1 << code_size ) - 1;
+							available = clear_code + 2;
+							old_code = -1;
+						}
+						else if ( old_code == -1 )
+						{
+							out[ count++ ] = static_cast< unsigned char >( suffix[ code ] );
+							first_character = old_code = code;
+						}
+						else if( code > available )
+						{
+							delete [] out;
+							out = NULL;
+							return( -1 );
+						}
+						else
+						{
+							difference_type incode = code;
+							if( code == available )
+							{
+								stack.push( first_character );
+								code = old_code;
+							}
+							while( code > clear_code )
+							{
+								stack.push( suffix[ code ] );
+								code = prefix[ code ];
+							}
+
+							stack.push( first_character = suffix[ code ] );
+							prefix[ available ] = old_code;
+							suffix[ available ] = first_character;
+							available++;
+
+							if( ( ( available & code_mask ) == 0) && ( available < 4096 ) )
+							{
+								code_size++;
+								code_mask += available;
+							}
+
+							old_code = incode;
+							while( !stack.empty( ) )
+							{
+								out[ count++ ] = static_cast< unsigned char >( stack.top( ) );
+								stack.pop( );
+							}
+						}
+					}
+				}
+
+				pointer += num;
+			}
+
+			return( pointer - buff );
+		}
+
+
+		static bool convert_from_gif_data( unsigned char *gif, size_type num_bytes, array2< T, Allocator > &image )
+		{
+			static difference_type _2[ ] = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096 };
+
+			// TGA用のヘッダの位置を指定する
+			_gif_header_	*pheader		= reinterpret_cast < _gif_header_ * >( gif );
+			_gif_header_	&header			= *pheader;
+
+			if( !( header.signature[ 0 ] == 'G' && header.signature[ 0 ] == 'I' && header.signature[ 0 ] == 'F' ) )
+			{
+				// GIFファイルではない
 				return( false );
 			}
 
-			size_type width  = static_cast< size_type >( GifFile->SWidth );
-			size_type height = static_cast< size_type >( GifFile->SHeight );
-			GifRowType *image_buffer = new GifRowType[ height ];
+			bool            global_color_table_flag		= ( header.image_flags & 0x80 ) != 0;
+			difference_type color_resolution			= ( header.image_flags & 0x70 ) >> 4;
+			bool            sort_flag					= ( header.image_flags & 0x08 ) != 0;
+			difference_type size_of_global_color_table	= ( header.image_flags & 0x07 );
+			difference_type global_color_table_bytes	= 3 * _2[ size_of_global_color_table + 1 ];
 
-			// 1行あたりのバイト数
-			size_type size = width * sizeof( GifPixelType );
+			difference_type width  = header.image_width;
+			difference_type height = header.image_height;
 
-			image_buffer[ 0 ] = new GifPixelType[ size ];
+			unsigned char *global_color_map_data	= gif + _gif_header_::bytes;
+			unsigned char *pointer					= global_color_map_data + ( global_color_table_flag ? global_color_table_bytes : 0 );
 
-			// 背景色を設定する
-			for( i = 0 ; i < width ; i++ )
+			bool ret = true;
+
+			image.resize( width, height );
+
+			bool decode_finished = false;
+			while( pointer < gif + num_bytes && !decode_finished )
 			{
-				image_buffer[ 0 ][ i ] = GifFile->SBackGroundColor;
-			}
-
-			for( i = 1 ; i < height ; i++ )
-			{
-				image_buffer[ i ] = new GifPixelType[ size ];
-				memcpy( image_buffer[ i ], image_buffer[ 0 ], size );
-			}
-
-			// GIFファイルの内容を読み込む
-			GifRecordType record_type;
-			do
-			{
-				if( DGifGetRecordType( GifFile, &record_type ) == GIF_ERROR )
+				switch( pointer[ 0 ] )
 				{
-					// エラーが発生！！
-					// 何らかのエラー処理をする
-					std::cout << "Error!!" << std::endl;
-				}
-
-				switch( record_type )
-				{
-				case IMAGE_DESC_RECORD_TYPE:
+				case 0x2c:
 					{
-						if( DGifGetImageDesc( GifFile ) == GIF_ERROR )
-						{
-							// エラーが発生！！
-							// 何らかのエラー処理をする
-							std::cout << "Error!!" << std::endl;
-						}
+						// 画像を記述している部分を発見
+						_image_descriptor_	*pimage_header	= reinterpret_cast < _image_descriptor_ * >( pointer );
+						_image_descriptor_	&image_header	= *pimage_header;
 
-						size_type x = GifFile->Image.Left;
-						size_type y = GifFile->Image.Top;
-						size_type w = GifFile->Image.Width;
-						size_type h = GifFile->Image.Height;
+						bool            local_color_table_flag		= ( image_header.image_flags & 0x80 ) != 0;
+						bool            interlace_flag				= ( image_header.image_flags & 0x40 ) != 0;
+						bool            sort_flag					= ( image_header.image_flags & 0x20 ) != 0;
+						difference_type reserved					= ( image_header.image_flags & 0x18 ) >> 3;
+						difference_type size_of_local_color_table	= ( image_header.image_flags & 0x07 );
+						difference_type local_color_table_bytes		= 3 * _2[ size_of_local_color_table + 1 ];
+
+						difference_type x = image_header.left;
+						difference_type y = image_header.top;
+						difference_type w = image_header.image_width;
+						difference_type h = image_header.image_height;
 
 						if( x + w > width || y + h > height )
 						{
-							// Image is not confined to screen dimension, aborted
-							// エラーが発生！！
+							// 画像サイズとあっていない！！
 							std::cout << "Error!!" << std::endl;
+							return( false );
 						}
 
-						if( GifFile->Image.Interlace )
+						unsigned char *local_color_map_data	= pointer + _image_descriptor_::bytes;
+						unsigned char *image_data			= local_color_map_data + ( local_color_table_flag ? local_color_table_bytes : 0 );
+
+						unsigned char *color_map = local_color_table_flag ? local_color_map_data : global_color_map_data;
+
+						unsigned char *buff = NULL;
+						difference_type num_bytes = decode_LZW( image_data, buff, w * h );
+						unsigned char *p = buff;
+
+						if( num_bytes > 0 )
 						{
-							// 画像に対して4パスの処理がいるらしい
-							static size_type InterlacedOffset[] = { 0, 4, 2, 1 };	// The way Interlaced image should.
-							static size_type InterlacedJumps[] = { 8, 8, 4, 2 };    // be read - offsets and jumps...
-							for( i = 0 ; i < 4 ; i++ )
+							if( interlace_flag )
 							{
-								for( j = y + InterlacedOffset[ i ] ; j < y + h ; j += InterlacedJumps[ i ] )
+								// 画像に対して4パスの処理がいるらしい
+								static difference_type interlace_offset[] = { 0, 4, 2, 1 };
+								static difference_type interlace_jump[] = { 8, 8, 4, 2 };
+								for( difference_type k = 0 ; k < 4 ; k++ )
 								{
-									if( DGifGetLine( GifFile, &image_buffer[ j ][ x ], static_cast< int >( w ) ) == GIF_ERROR )
+									for( difference_type j = y + interlace_offset[ k ] ; j < y + h ; j += interlace_jump[ k ] )
 									{
-										// エラーが発生！！
-										// 何らかのエラー処理をする
-										std::cout << "Error!!" << std::endl;
+										for( difference_type i = x ; i < x + w ; i++ )
+										{
+											difference_type index = *p++;
+											image( i, j ) = pixel_converter::convert_to( color_map[ index * 3 + 0 ], color_map[ index * 3 + 1 ], color_map[ index * 3 + 2 ] );
+										}
+									}
+								}
+							}
+							else
+							{
+								for( difference_type j = y ; j < y + h ; j++ )
+								{
+									for( difference_type i = x ; i < x + w ; i++ )
+									{
+										difference_type index = *p++;
+										image( i, j ) = pixel_converter::convert_to( color_map[ index * 3 + 0 ], color_map[ index * 3 + 1 ], color_map[ index * 3 + 2 ] );
 									}
 								}
 							}
 						}
-						else
-						{
-							for( i = 0 ; i < h ; i++ )
-							{
-								if( DGifGetLine( GifFile, &image_buffer[ y++ ][ x ], static_cast< int >( w ) ) == GIF_ERROR )
-								{
-									// エラーが発生！！
-									// 何らかのエラー処理をする
-									std::cout << "Error!!" << std::endl;
-								}
-							}
-						}
+
+						delete [] buff;
+
+						pointer += num_bytes;
 
 						if( x == 0 && y == 0 && w == width && h == height )
 						{
 							// 一番最初のフレームが見つかったので探索を終了する
-							record_type = TERMINATE_RECORD_TYPE;
+							decode_finished = true;
+							break;
 						}
 					}
 					break;
 
-				case EXTENSION_RECORD_TYPE:
+				case 0x21:
+					// エクステンションのコードを識別して，スキップ処理を行う
+					switch( pointer[ 1 ] )
 					{
-						// 全ての拡張ブロックをスキップする
-						GifByteType *extention;
-						int ext_code;
-						if( DGifGetExtension( GifFile, &ext_code, &extention ) == GIF_ERROR )
-						{
-							// エラーが発生！！
-							// 何らかのエラー処理をする
-							std::cout << "Error!!" << std::endl;
-						}
+					case 0xf9:
+						pointer += _graphic_control_extension_::bytes;
+						break;
 
-						while( extention != NULL )
-						{
-							if( DGifGetExtensionNext( GifFile, &extention ) == GIF_ERROR )
-							{
-								// エラーが発生！！
-								// 何らかのエラー処理をする
-								std::cout << "Error!!" << std::endl;
-							}
-						}
+					case 0xfe:
+						pointer += _comment_extension_::bytes;
+						break;
+
+					case 0x01:
+						pointer += _plain_text_extension_::bytes;
+						break;
+
+					case 0xff:
+						pointer += _application_extension_::bytes;
+						break;
+
+					default:
+						// 認識不能なエクステンションタグ
+						pointer += 2;
+						break;
 					}
+
+					// ターミネーションブロックの次までスキップする
+					while( *pointer != 0x00 )
+					{
+						pointer++;
+					}
+					pointer++;
 					break;
 
-				case TERMINATE_RECORD_TYPE:
-					break;
 
 				default:
-		 		    // 不明なレコードタイプ
+					// Data Sub-blocks
+					pointer += pointer[ 0 ] + 1;
 					break;
 				}
-			} while( record_type != TERMINATE_RECORD_TYPE );
-
-			ColorMapObject *color_map = GifFile->Image.ColorMap ? GifFile->Image.ColorMap : GifFile->SColorMap;
-
-			size_type color_map_size = static_cast< size_type >( color_map->ColorCount );
-
-			image.resize( width, height );
-
-			for( j = 0 ; j < height ; j++ )
-			{
-				for( i = 0 ; i < width ; i++ )
-				{
-					GifColorType *element = color_map->Colors + image_buffer[ j ][ i ];
-					image( i, j ) = pixel_converter::convert_to( element->Red, element->Green, element->Blue );
-				}
 			}
 
-			if( DGifCloseFile( GifFile ) == GIF_ERROR )
-			{
-				// エラーが発生！！
-				// 何らかのエラー処理をする
-				std::cout << "Error!!" << std::endl;
-			}
-
-			for( i = 0 ; i < height ; i++ )
-			{
-				delete [] image_buffer[ i ];
-			}
-			delete [] image_buffer;
-
-			return( true );
+			return( ret );
 		}
 
-		static bool write( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression )
+		static bool read( array2< T, Allocator > &image, const std::string &filename )
 		{
-			int color_map_size = 256;
-			ColorMapObject *color_map = MakeMapObject( color_map_size, NULL );
+			typedef typename array2< T, Allocator >::size_type size_type;
 
-			if( color_map == NULL )
+			size_type filesize;
+			FILE *fp;
+			if( ( fp = fopen( filename.c_str( ), "rb" ) ) == NULL ) return( false );
+
+			// ファイルサイズを取得
+			fseek( fp, 0, SEEK_END );
+			filesize = ftell( fp );
+			fseek( fp, 0, SEEK_SET );
+
+			unsigned char *buff = new unsigned char[ filesize + 1 ];
+			unsigned char *pointer = buff;
+			size_type read_size = 0;
+			while( feof( fp ) == 0 )
 			{
-				// エラーが発生！！
-				// 何らかのエラー処理をする
-				std::cout << "Error!!" << std::endl;
-			}
-
-			size_type width  = image.width( );
-			size_type height = image.height( );
-
-			GifByteType *buffer = new GifByteType[ width * height ];
-			GifByteType *red_buffer   = new GifByteType[ width * height ];
-			GifByteType *green_buffer = new GifByteType[ width * height ];
-			GifByteType *blue_buffer  = new GifByteType[ width * height ];
-
-			size_type i;
-			for( i = 0 ; i < width * height ; i++ )
-			{
-				color_type c = limits_0_255( pixel_converter::convert_from( image[ i ] ) );
-				red_buffer[ i ]   = c.r;
-				green_buffer[ i ] = c.g;
-				blue_buffer[ i ]  = c.b;
-			}
-
-			if( QuantizeBuffer( static_cast< unsigned int >( width ), static_cast< unsigned int >( height ), &color_map_size, red_buffer, green_buffer, blue_buffer, buffer, color_map->Colors ) == GIF_ERROR )
-			{
-				// エラーが発生！！
-				// 何らかのエラー処理をする
-				std::cout << "Error!!" << std::endl;
-			}
-
-			GifFileType *GifFile = EGifOpenFileName( filename.c_str( ), false );
-			if( GifFile == NULL )
-			{
-				// エラーが発生！！
-				// 何らかのエラー処理をする
-				std::cout << "Error!!" << std::endl;
-			}
-
-			EGifSetGifVersion( "89a" );
-
-			if( EGifPutScreenDesc( GifFile, static_cast< int >( width ), static_cast< int >( height ), 8, 0, color_map ) == GIF_ERROR ||
-					EGifPutImageDesc( GifFile, 0, 0, static_cast< int >( width ), static_cast< int >( height ), false, NULL ) == GIF_ERROR )
-			{
-				// エラーが発生！！
-				// 何らかのエラー処理をする
-				std::cout << "Error!!" << std::endl;
-			}
-
-			GifByteType *pointer = buffer;
-			for( i = 0 ; i < height ; i++ )
-			{
-				if( EGifPutLine( GifFile, pointer, static_cast< int >( width ) ) == GIF_ERROR )
+				read_size = fread( pointer, sizeof( unsigned char ), 1024, fp );
+				if( read_size < 1024 )
 				{
-					// エラーが発生！！
-					// 何らかのエラー処理をする
-					std::cout << "Error!!" << std::endl;
+					break;
 				}
-
-				pointer += width;
+				pointer += read_size;
 			}
+			fclose( fp );
 
-			if( EGifCloseFile( GifFile ) == GIF_ERROR )
-			{
-				// エラーが発生！！
-				// 何らかのエラー処理をする
-			}
-
-			FreeMapObject( color_map );
-
-			delete [] buffer;
-			delete [] red_buffer;
-			delete [] green_buffer;
-			delete [] blue_buffer;
-
-			return( true );
+			bool ret = convert_from_gif_data( buff, filesize, image );
+			delete [] buff;
+			return( ret );
 		}
 	};
 }
@@ -328,24 +497,6 @@ template < class T, class Allocator >
 bool read_gif( array2< T, Allocator > &image, const std::string &filename )
 {
 	return( __gif_controller__::gif_controller< T, Allocator >::read( image, filename ) );
-}
-
-
-/// @brief MISTコンテナの画像をGIF形式でファイルに出力する
-//! 
-//! @attention LZW圧縮のかかったGIF画像を出力する場合は，giflib ライブラリ側でLZW圧縮が有効になっている必要がある
-//! 
-//! @param[in] image    … 出力画像を保持するMISTコンテナ
-//! @param[in] filename … 出力ファイル名
-//! @param[in] use_lzw_compression … LZW圧縮されたGIF画像を出力するかどうか
-//!
-//! @retval true  … 画像の書き込みに成功
-//! @retval false … 画像の書き込みに失敗
-//!
-template < class T, class Allocator >
-bool write_gif( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression = _LZW_COMPRESSION_SUPPORT_ )
-{
-	return( __gif_controller__::gif_controller< T, Allocator >::write( image, filename, use_lzw_compression ) );
 }
 
 
