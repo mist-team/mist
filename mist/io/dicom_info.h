@@ -425,6 +425,7 @@ namespace dicom
 		double				image_position_x;			///< @brief X軸方向のイメージポジション
 		double				image_position_y;			///< @brief Y軸方向のイメージポジション
 		double				image_position_z;			///< @brief Z軸方向のイメージポジション
+		double				rescale_intercept;			///< @brief 画素値のオフセット
 		unsigned short		bits_allocated;				///< @brief 1画素あたりに割り当てられているビット数
 		unsigned short		bits_stored;				///< @brief 1画素あたりに使用しているビット数
 		unsigned short		high_bits;					///< @brief high bits
@@ -447,6 +448,7 @@ namespace dicom
 			image_position_x( 1.0 ),
 			image_position_y( 1.0 ),
 			image_position_z( 1.0 ),
+			rescale_intercept( 0 ),
 			bits_allocated( 8 ),
 			bits_stored( 8 ),
 			high_bits( 7 ),
@@ -693,6 +695,13 @@ namespace dicom
 		if( mA != "" )
 		{
 			info.mA = atoi( mA.c_str( ) );
+		}
+
+		// 画素に対するオフセットを取得
+		std::string rescale_intercept	= find_tag( dicm, 0x0028, 0x1052, "" );
+		if( rescale_intercept != "" )
+		{
+			info.rescale_intercept = atof( rescale_intercept.c_str( ) );
 		}
 
 		info.bits_allocated			= find_tag( dicm, 0x0028, 0x0100, info.bits_allocated );
