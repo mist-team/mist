@@ -2,7 +2,7 @@
 #define __INCLUDE_MIST_MATRIX__
 
 #include "mist.h"
-
+#include <cmath>
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN
@@ -257,18 +257,32 @@ private:
 	size_type size2_;
 
 public:
+	void resize( size_type num )
+	{
+		size1_ = num;
+		size2_ = 1;
+		base::resize( size1_ * size2_ );
+	}
+
+	void resize( size_type num, const T &val )
+	{
+		size1_ = num;
+		size2_ = 1;
+		base::resize( size1_ * size2_, val );
+	}
+
 	void resize( size_type num1, size_type num2 )
 	{
-		base::resize( num1 * num2 );
 		size1_ = num1;
 		size2_ = num2;
+		base::resize( size1_ * size2_ );
 	}
 
 	void resize( size_type num1, size_type num2, const T &val )
 	{
-		base::resize( num1 * num2, val );
 		size1_ = num1;
 		size2_ = num2;
+		base::resize( size1_ * size2_, val );
 	}
 
 	void clear( )

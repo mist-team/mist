@@ -2,6 +2,7 @@
 
 #include <mist/mist.h>
 #include <mist/matrix.h>
+#include <mist/numeric.h>
 
 #ifndef WIN32
 #include <ctime>
@@ -50,7 +51,7 @@ private:
 }; // timer
 
 
-//*
+/*
 int main( )
 {
 	using namespace std;
@@ -127,45 +128,49 @@ int main( )
 	mat1( 2, 1 ) = 8;
 	mat1( 2, 2 ) = 9;
 
-	mat2 = mat3 = mat4 = mat1;
-	long i, j, k;
-	double tmp;
+	//mat2 = mat3 = mat4 = mat1;
+	//long i, j, k;
+	//double tmp;
 
-	for( i = 0 ; i < mat.rows( ) ; i++ )
-	{
-		for( j = 0 ; j < mat.cols( ) ; j++ )
-		{
-			tmp = 0.0;
-			for( k = 0 ; k < mat3.rows( ) ; k++ )
-			{
-				tmp += mat2( i, k ) * mat3( k, j );
-			}
-			mat( j, i ) = mat1( i, j ) + tmp + mat4( i, j );
-		}
-	}
+	//for( i = 0 ; i < mat.rows( ) ; i++ )
+	//{
+	//	for( j = 0 ; j < mat.cols( ) ; j++ )
+	//	{
+	//		tmp = 0.0;
+	//		for( k = 0 ; k < mat3.rows( ) ; k++ )
+	//		{
+	//			tmp += mat2( i, k ) * mat3( k, j );
+	//		}
+	//		mat( j, i ) = mat1( i, j ) + tmp + mat4( i, j );
+	//	}
+	//}
 
-	cout << "< In the case of Non Expression Template >" << endl;
-	cout << mat << endl << endl;
-
-
-	cout << "< In the case of Expression Template >" << endl;
-	mat = ( mat1 + ( 1 + ( mat2 * mat3 + mat4 ) ) ).t( );
-	cout << mat << endl << endl << endl;
+	//cout << "< In the case of Non Expression Template >" << endl;
+	//cout << mat << endl << endl;
 
 
-	cout << "< In the case of Expression Template >" << endl;
-	mat = ( mat1 + ( mat2 * mat3 + mat4 ) - 1 ).t( );
-	cout << mat << endl << endl << endl;
+	//cout << "< In the case of Expression Template >" << endl;
+	//mat = ( mat1 + ( 1 + ( mat2 * mat3 + mat4 ) ) ).t( );
+	//cout << mat << endl << endl << endl;
 
-	cout << "< In the case of Expression Template >" << endl;
-	mat = ( mat1 + ( mat2 * mat3 + mat4 ) * 2 ).t( );
-	cout << mat << endl << endl << endl;
 
-	cout << "< In the case of Expression Template >" << endl;
-	mat = ( mat1 + 2 ).t( );
-	cout << mat << endl << endl << endl;
+	//cout << "< In the case of Expression Template >" << endl;
+	//mat = ( mat1 + ( mat2 * mat3 + mat4 ) - 1 ).t( );
+	//cout << mat << endl << endl << endl;
 
-	mat( 10, 10 ) = 100;
+	//cout << "< In the case of Expression Template >" << endl;
+	//mat = ( mat1 + ( mat2 * mat3 + mat4 ) * 2 ).t( );
+	//cout << mat << endl << endl << endl;
+
+	//cout << "< In the case of Expression Template >" << endl;
+	//mat = ( mat1 + 2 ).t( );
+	//cout << mat << endl << endl << endl;
+
+//	mist::lu_decomposition1( mat1, mat );
+
+	mat1 = mist::matrix< double >( 5, 1 );
+	cout << mat << endl;
+	cout << mat1 << endl;
 
 	return( 0 );
 }
