@@ -19,6 +19,28 @@
 #include <string>
 
 
+// 次のマクロを定義すると，JPEG圧縮されたDICOMのデコードが可能になる
+// ただし，外部のJPEGライブラリを必要とするので注意
+#define __DECODE_JPEG_COMPRESSION__
+
+#ifdef __DECODE_JPEG_COMPRESSION__
+
+#ifdef WIN32
+
+	#define XMD_H
+	#define HAVE_INT32			// JPEG用INT32型を持っている宣言
+	#define HAVE_BOOLEAN		// JPEG用boolean型を持っている宣言
+
+#endif
+
+extern "C"
+{
+	#include <jpeglib.h>
+}
+
+#endif
+
+
 // mist名前空間の始まり
 _MIST_BEGIN
 
@@ -31,6 +53,20 @@ namespace dicom_controller
 		JPEG,		// JPEG圧縮
 		RLE,		// ランレングス（RLE）圧縮
 	};
+
+
+	// DICOMのUIDを変換する
+	inline dicom_uid get_uid( const std::string &uid )
+	{
+		static dicom_uid_table uid_table;
+		return( uid_table.get_uid( uid ) );
+	}
+
+	// DICOMのUIDを変換する
+	inline dicom_uid get_uid( const unsigned char *str, difference_type numBytes )
+	{
+		return( get_uid( std::string( reinterpret_cast< const char * >( str ), str[ numBytes - 1 ] == 0 ? numBytes - 1 : numBytes ) ) );
+	}
 
 	class dicom_element : public dicom_tag
 	{
@@ -132,6 +168,12 @@ namespace dicom_controller
 			if( data == NULL || num_bytes == 0 )
 			{
 				printf( "( %04x, %04x, %s, % 8d, %s ) = undefined!!\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str() );
+			}
+			else if( vr == UI )
+			{
+				// DICOMのUIDを変換する
+				dicom_uid uid = get_uid( std::string( reinterpret_cast< char * >( data ) ) );
+				printf( "( %04x, %04x, %s, % 8d, %s ) = %s\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), uid.name.c_str( ) );
 			}
 			else
 			{
@@ -522,7 +564,89 @@ namespace dicom_controller
 		return( pdst );
 	}
 
-	// RLE圧縮ファイルのデコーダ
+#ifdef __DECODE_JPEG_COMPRESSION__
+	static void JpegInitSource( j_decompress_ptr dinfo )
+	{
+	}
+
+	static boolean JpegFillInputBuffer( j_decompress_ptr dinfo )
+	{
+		return TRUE;
+	}
+
+	static void JpegSkipInputData( j_decompress_ptr dinfo, long num_bytes )
+	{
+		jpeg_source_mgr &jpegSrcManager = *( dinfo->src );
+		jpegSrcManager.next_input_byte += (size_t) num_bytes;
+		jpegSrcManager.bytes_in_buffer -= (size_t) num_bytes;
+	}
+
+	static void JpegTermSource( j_decompress_ptr dinfo )
+	{
+		/* No work necessary here. */
+	}
+#endif
+
+	// JPEG圧縮ファイルのデコーダ
+	inline unsigned char *decode_JPEG( unsigned char *psrc, unsigned char *psrc_end, unsigned char *pdst, unsigned char *pdst_end )
+	{
+#ifdef __DECODE_JPEG_COMPRESSION__
+		difference_type compressedLen = psrc_end - psrc;
+		if( compressedLen <= 0 )
+		{
+			return( NULL );
+		}
+
+		JDIMENSION i, j, c;
+		JSAMPROW bitmap[1];				// ビットマップデータ配列へのポインター
+		jpeg_decompress_struct dinfo;	// JPEG解凍情報構造体
+		jpeg_error_mgr jerr;			// JPEGエラー処理用構造体
+		int scanlen;					// ビットマップ１行のバイト数
+
+		dinfo.err = jpeg_std_error( &jerr );
+		jpeg_create_decompress( &dinfo );
+
+		jpeg_source_mgr jpegSrcManager;
+		jpegSrcManager.init_source = JpegInitSource;
+		jpegSrcManager.fill_input_buffer = JpegFillInputBuffer;
+		jpegSrcManager.skip_input_data = JpegSkipInputData;
+		jpegSrcManager.resync_to_restart = jpeg_resync_to_restart;
+		jpegSrcManager.term_source = JpegTermSource;
+		jpegSrcManager.next_input_byte = psrc;
+		jpegSrcManager.bytes_in_buffer = compressedLen;
+		dinfo.src = &jpegSrcManager;
+
+		jpeg_read_header( &dinfo, TRUE );
+//		dinfo.out_color_space = JCS_RGB;
+
+		jpeg_start_decompress( &dinfo );
+
+		scanlen = dinfo.output_width * dinfo.output_components;
+
+		JSAMPLE *buffer = new JSAMPLE[ scanlen ];
+		for( j = 0 ; j < dinfo.output_height ; j++ )
+		{
+			bitmap[ 0 ] = &buffer[ 0 ];
+			if( dinfo.output_scanline < dinfo.output_height ) jpeg_read_scanlines( &dinfo, bitmap, 1 );
+			for( i = 0 ; i < dinfo.output_width ; i++ )
+			{
+				for( c = 0 ; c < dinfo.output_components ; c++ )
+				{
+					*pdst++ = buffer[ i * dinfo.output_components + c ];
+				}
+			}
+		}
+
+		jpeg_finish_decompress(&dinfo);
+		jpeg_destroy_decompress(&dinfo);
+
+		return( pdst );
+#else
+		return( NULL );
+#endif
+	}
+
+	// 圧縮ファイルのデコーダ
 	inline bool decode( dicom_element &element, const dicom_info &info )
 	{
 		switch( info.compression_type )
@@ -530,9 +654,11 @@ namespace dicom_controller
 		case RAW:
 			return( true );
 
+#ifndef __DECODE_JPEG_COMPRESSION__
 		case JPEG:
 			// 今のところ未サポート
 			return( false );
+#endif
 
 		default:
 			break;
@@ -605,6 +731,14 @@ namespace dicom_controller
 			{
 			case RLE:
 				dst_pointer = decode_RLE( p, p + num_bytes, dst_pointer, buff + dstBytes );
+				if( dst_pointer == NULL )
+				{
+					ret = false;
+				}
+				break;
+
+			case JPEG:
+				dst_pointer = decode_JPEG( p, p + num_bytes, dst_pointer, buff + dstBytes );
 				if( dst_pointer == NULL )
 				{
 					ret = false;

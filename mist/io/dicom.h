@@ -200,20 +200,6 @@ namespace dicom_controller
 	}
 
 
-	// DICOMのUIDを変換する
-	inline dicom_uid get_uid( const std::string &uid )
-	{
-		static dicom_uid_table uid_table;
-		return( uid_table.get_uid( uid ) );
-	}
-
-	// DICOMのUIDを変換する
-	inline dicom_uid get_uid( const unsigned char *str, difference_type numBytes )
-	{
-		return( get_uid( std::string( reinterpret_cast< const char * >( str ), str[ numBytes - 1 ] == 0 ? numBytes - 1 : numBytes ) ) );
-	}
-
-
 	// DICOMのタグに対し，各VRごとの処理を行う．
 	// 登録されていないタグの場合は false をかえし，正しく処理された場合のみ true を返す．
 	inline bool process_dicom_tag( const dicom_tag &tag, unsigned char *byte, difference_type num_bytes )
