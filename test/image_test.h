@@ -50,4 +50,12 @@ void interpolate_test( int mode, bool reso_up );
 
 void interlace_test( bool is_odd_line );
 
+void expand_test( );
+void shrink_test( );
+
+void erosion_triangle_test( );
+void dilation_triangle_test( );
+void opening_triangle_test( );
+void closing_triangle_test( );
+
 #endif // __INCLUDE_IMAGE_TEST__

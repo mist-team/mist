@@ -85,7 +85,18 @@ public:
 	}
 
 	/// @brief 他のクォータニオンオブジェクトを代入する
-	const quaternion &operator =( const quaternion &q )
+	template < class TT >
+	const quaternion &operator =( const quaternion< TT > &q )
+	{
+		w = static_cast< value_type >( q.w );
+		x = static_cast< value_type >( q.x );
+		y = static_cast< value_type >( q.y );
+		z = static_cast< value_type >( q.z );
+		return ( *this );
+	}
+
+	/// @brief 他のクォータニオンオブジェクトを代入する
+	const quaternion &operator =( const quaternion< T > &q )
 	{
 		if( &q != this )
 		{

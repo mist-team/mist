@@ -41,6 +41,8 @@ void test_vector1( )
 
 	cout << "22. Operator 2.5 * A + 3.8 * B = \t"; cout << ( 2.5 * v1 + 3.8 * v2 ) << endl;
 	cout << "23. Operator 2.5 * ( A + B ) = \t"; cout << ( 2.5 * ( v1 + v2 ) ) << endl;
+
+	v1 = 2.5 * ( v1 + v2 );
 }
 
 void test_vector2( )
@@ -71,6 +73,8 @@ void test_vector2( )
 
 	cout << "22. Operator 2.5 * A + 3.8 * B = \t"; cout << ( 2.5 * v1 + 3.8 * v2 ) << endl;
 	cout << "23. Operator 2.5 * ( A + B ) = \t"; cout << ( 2.5 * ( v1 + v2 ) ) << endl;
+
+	v1 = 2.5 * ( v1 + v2 );
 }
 
 void test_vector3( )

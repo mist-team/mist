@@ -22,11 +22,11 @@ public:
 			data_.gray_image_ = in.gray_image_;
 			if( properties_[ 0 ].integer == 0 )
 			{
-				mist::erosion( data_.gray_image_, mist::__morphology__::circle( properties_[ 1 ].integer, 1, 1 ) );
+				mist::erosion( data_.gray_image_, mist::morphology::circle( properties_[ 1 ].integer, 1, 1 ) );
 			}
 			else
 			{
-				mist::erosion( data_.gray_image_, mist::__morphology__::square( properties_[ 1 ].integer, 1, 1 ) );
+				mist::erosion( data_.gray_image_, mist::morphology::square( properties_[ 1 ].integer, 1, 1 ) );
 			}
 		}
 		else
@@ -68,11 +68,11 @@ public:
 			data_.gray_image_ = in.gray_image_;
 			if( properties_[ 0 ].integer == 0 )
 			{
-				mist::dilation( data_.gray_image_, mist::__morphology__::circle( properties_[ 1 ].integer, 1, 1 ) );
+				mist::dilation( data_.gray_image_, mist::morphology::circle( properties_[ 1 ].integer, 1, 1 ) );
 			}
 			else
 			{
-				mist::dilation( data_.gray_image_, mist::__morphology__::square( properties_[ 1 ].integer, 1, 1 ) );
+				mist::dilation( data_.gray_image_, mist::morphology::square( properties_[ 1 ].integer, 1, 1 ) );
 			}
 		}
 		else
@@ -115,11 +115,11 @@ public:
 			data_.gray_image_ = in.gray_image_;
 			if( properties_[ 0 ].integer == 0 )
 			{
-				mist::opening( data_.gray_image_, mist::__morphology__::circle( properties_[ 1 ].integer, 1, 1 ) );
+				mist::opening( data_.gray_image_, mist::morphology::circle( properties_[ 1 ].integer, 1, 1 ) );
 			}
 			else
 			{
-				mist::opening( data_.gray_image_, mist::__morphology__::square( properties_[ 1 ].integer, 1, 1 ) );
+				mist::opening( data_.gray_image_, mist::morphology::square( properties_[ 1 ].integer, 1, 1 ) );
 			}
 		}
 		else
@@ -162,11 +162,11 @@ public:
 			data_.gray_image_ = in.gray_image_;
 			if( properties_[ 0 ].integer == 0 )
 			{
-				mist::closing( data_.gray_image_, mist::__morphology__::circle( properties_[ 1 ].integer, 1, 1 ) );
+				mist::closing( data_.gray_image_, mist::morphology::circle( properties_[ 1 ].integer, 1, 1 ) );
 			}
 			else
 			{
-				mist::closing( data_.gray_image_, mist::__morphology__::square( properties_[ 1 ].integer, 1, 1 ) );
+				mist::closing( data_.gray_image_, mist::morphology::square( properties_[ 1 ].integer, 1, 1 ) );
 			}
 		}
 		else

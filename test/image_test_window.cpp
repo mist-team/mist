@@ -138,6 +138,34 @@ void image_test_window::cb_Closing(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Closing_i(o,v);
 }
 
+inline void image_test_window::cb_Erosion1_i(Fl_Menu_*, void*) {
+  erosion_triangle_test( );
+}
+void image_test_window::cb_Erosion1(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Erosion1_i(o,v);
+}
+
+inline void image_test_window::cb_Dilation1_i(Fl_Menu_*, void*) {
+  dilation_triangle_test( );
+}
+void image_test_window::cb_Dilation1(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Dilation1_i(o,v);
+}
+
+inline void image_test_window::cb_Opening1_i(Fl_Menu_*, void*) {
+  opening_triangle_test( );
+}
+void image_test_window::cb_Opening1(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Opening1_i(o,v);
+}
+
+inline void image_test_window::cb_Closing1_i(Fl_Menu_*, void*) {
+  closing_triangle_test( );
+}
+void image_test_window::cb_Closing1(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Closing1_i(o,v);
+}
+
 inline void image_test_window::cb_Reso_i(Fl_Menu_*, void*) {
   interpolate_test( 0, true );
 }
@@ -194,6 +222,20 @@ void image_test_window::cb_Interlace1(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Interlace1_i(o,v);
 }
 
+inline void image_test_window::cb_Expand_i(Fl_Menu_*, void*) {
+  expand_test( );
+}
+void image_test_window::cb_Expand(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Expand_i(o,v);
+}
+
+inline void image_test_window::cb_Shrink_i(Fl_Menu_*, void*) {
+  shrink_test( );
+}
+void image_test_window::cb_Shrink(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Shrink_i(o,v);
+}
+
 Fl_Menu_Item image_test_window::menu_[] = {
  {"&File", 0,  0, 0, 64, 0, 0, 14, 56},
  {"&Open", 0,  0, 0, 64, 0, 0, 14, 56},
@@ -214,18 +256,28 @@ Fl_Menu_Item image_test_window::menu_[] = {
  {"Labeling 8", 0,  (Fl_Callback*)image_test_window::cb_Labeling1, 0, 0, 0, 0, 14, 56},
  {"Thinning", 0,  (Fl_Callback*)image_test_window::cb_Thinning, 0, 0, 0, 0, 14, 56},
  {"Median", 0,  (Fl_Callback*)image_test_window::cb_Median, 0, 0, 0, 0, 14, 56},
- {"Erosion", 0,  (Fl_Callback*)image_test_window::cb_Erosion, 0, 0, 0, 0, 14, 56},
- {"Dilation", 0,  (Fl_Callback*)image_test_window::cb_Dilation, 0, 0, 0, 0, 14, 56},
- {"Opening", 0,  (Fl_Callback*)image_test_window::cb_Opening, 0, 0, 0, 0, 14, 56},
- {"Closing", 0,  (Fl_Callback*)image_test_window::cb_Closing, 0, 0, 0, 0, 14, 56},
+ {"Morphology", 0,  0, 0, 64, 0, 0, 14, 56},
+ {"Erosion Circle", 0,  (Fl_Callback*)image_test_window::cb_Erosion, 0, 0, 0, 0, 14, 56},
+ {"Dilation Circle", 0,  (Fl_Callback*)image_test_window::cb_Dilation, 0, 0, 0, 0, 14, 56},
+ {"Opening Circle", 0,  (Fl_Callback*)image_test_window::cb_Opening, 0, 0, 0, 0, 14, 56},
+ {"Closing Circle", 0,  (Fl_Callback*)image_test_window::cb_Closing, 0, 0, 0, 0, 14, 56},
+ {"Erosion Triangle", 0,  (Fl_Callback*)image_test_window::cb_Erosion1, 0, 0, 0, 0, 14, 56},
+ {"Dilation Triangle", 0,  (Fl_Callback*)image_test_window::cb_Dilation1, 0, 0, 0, 0, 14, 56},
+ {"Opening Triangle", 0,  (Fl_Callback*)image_test_window::cb_Opening1, 0, 0, 0, 0, 14, 56},
+ {"Closing Triangle", 0,  (Fl_Callback*)image_test_window::cb_Closing1, 0, 0, 0, 0, 14, 56},
+ {0},
+ {"Resolution", 0,  0, 0, 64, 0, 0, 14, 56},
  {"Reso up with nearest", 0,  (Fl_Callback*)image_test_window::cb_Reso, 0, 0, 0, 0, 14, 56},
  {"Reso up with linear", 0,  (Fl_Callback*)image_test_window::cb_Reso1, 0, 0, 0, 0, 14, 56},
  {"Reso up with cubic", 0,  (Fl_Callback*)image_test_window::cb_Reso2, 0, 0, 0, 0, 14, 56},
  {"Reso down with nearest", 0,  (Fl_Callback*)image_test_window::cb_Reso3, 0, 0, 0, 0, 14, 56},
  {"Reso down with linear", 0,  (Fl_Callback*)image_test_window::cb_Reso4, 0, 0, 0, 0, 14, 56},
  {"Reso down with cubic", 0,  (Fl_Callback*)image_test_window::cb_Reso5, 0, 0, 0, 0, 14, 56},
+ {0},
  {"Interlace Even", 0,  (Fl_Callback*)image_test_window::cb_Interlace, 0, 0, 0, 0, 14, 56},
  {"Interlace Odd", 0,  (Fl_Callback*)image_test_window::cb_Interlace1, 0, 0, 0, 0, 14, 56},
+ {"Expand", 0,  (Fl_Callback*)image_test_window::cb_Expand, 0, 0, 0, 0, 14, 56},
+ {"Shrink", 0,  (Fl_Callback*)image_test_window::cb_Shrink, 0, 0, 0, 0, 14, 56},
  {0},
  {0}
 };

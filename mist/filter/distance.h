@@ -327,217 +327,12 @@ namespace euclidean
 	//! @param[in]  max_length … 伝播させる距離の最大値
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
-	template < class T1, class T2, class Allocator1, class Allocator2 >
-	void distance_transform( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, double max_length = -1.0, typename array< T1, Allocator1 >::size_type thread_num = 0 )
+	template < class Array1, class Array2 >
+	void distance_transform( const Array1 &in, Array2 &out, double max_length = -1.0, typename Array1::size_type thread_num = 0 )
 	{
-		typedef typename array< T2, Allocator2 >::size_type  size_type;
-		typedef typename array< T2, Allocator2 >::value_type value_type;
-		typedef __distance_transform_controller__::euclidean_distance_transform_thread< array< T2, Allocator2 > > euclidean_distance_transform_thread;
-
-		if( thread_num == 0 )
-		{
-			thread_num = static_cast< size_type >( get_cpu_num( ) );
-		}
-
-		out.resize( in.size1( ) );
-
-		size_type i;
-
-		for( i = 0 ; i < in.size( ) ; i++ )
-		{
-			out[ i ] = in[ i ] != 0 ? 1 : 0;
-		}
-
-		euclidean_distance_transform_thread *thread = new euclidean_distance_transform_thread[ thread_num ];
-
-		{
-			// X軸方向の処理
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].setup_parameters( out, max_length, 0, i, thread_num );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].create( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].wait( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].close( );
-			}
-		}
-
-		delete [] thread;
-	}
-
-
-	/// @brief ユークリッド距離変換
-	//! 
-	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
-	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-	//! 
-	//! @param[in]  in         … 入力画像
-	//! @param[out] out        … 出力画像
-	//! @param[in]  max_length … 伝播させる距離の最大値
-	//! @param[in]  thread_num … 使用するスレッド数
-	//! 
-	template < class T1, class T2, class Allocator1, class Allocator2 >
-	void distance_transform( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, double max_length = -1.0, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
-	{
-		typedef typename array1< T2, Allocator2 >::size_type  size_type;
-		typedef typename array1< T2, Allocator2 >::value_type value_type;
-		typedef __distance_transform_controller__::euclidean_distance_transform_thread< array1< T2, Allocator2 > > euclidean_distance_transform_thread;
-
-		if( thread_num == 0 )
-		{
-			thread_num = static_cast< size_type >( get_cpu_num( ) );
-		}
-
-		out.resize( in.size1( ) );
-		out.reso1( in.reso1( ) );
-
-		size_type i;
-
-		for( i = 0 ; i < in.size( ) ; i++ )
-		{
-			out[ i ] = in[ i ] != 0 ? 1 : 0;
-		}
-
-		euclidean_distance_transform_thread *thread = new euclidean_distance_transform_thread[ thread_num ];
-
-		{
-			// X軸方向の処理
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].setup_parameters( out, max_length, 0, i, thread_num );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].create( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].wait( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].close( );
-			}
-		}
-
-		delete [] thread;
-	}
-
-
-	/// @brief ユークリッド距離変換
-	//! 
-	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
-	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-	//! 
-	//! @param[in]  in         … 入力画像
-	//! @param[out] out        … 出力画像
-	//! @param[in]  max_length … 伝播させる距離の最大値
-	//! @param[in]  thread_num … 使用するスレッド数
-	//! 
-	template < class T1, class T2, class Allocator1, class Allocator2 >
-	void distance_transform( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, double max_length = -1.0, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
-	{
-		typedef typename array2< T2, Allocator2 >::size_type  size_type;
-		typedef typename array2< T2, Allocator2 >::value_type value_type;
-		typedef __distance_transform_controller__::euclidean_distance_transform_thread< array2< T2, Allocator2 > > euclidean_distance_transform_thread;
-
-		if( thread_num == 0 )
-		{
-			thread_num = static_cast< size_type >( get_cpu_num( ) );
-		}
-
-		out.resize( in.size1( ), in.size2( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-
-		size_type i;
-
-		for( i = 0 ; i < in.size( ) ; i++ )
-		{
-			out[ i ] = in[ i ] != 0 ? 1 : 0;
-		}
-
-		euclidean_distance_transform_thread *thread = new euclidean_distance_transform_thread[ thread_num ];
-
-		{
-			// X軸方向の処理
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].setup_parameters( out, max_length, 0, i, thread_num );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].create( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].wait( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].close( );
-			}
-		}
-		{
-			// Y軸方向の処理
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].setup_parameters( out, max_length, 1, i, thread_num );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].create( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].wait( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].close( );
-			}
-		}
-
-		delete [] thread;
-	}
-
-
-	/// @brief ユークリッド距離変換
-	//! 
-	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
-	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-	//! 
-	//! @param[in]  in         … 入力画像
-	//! @param[out] out        … 出力画像
-	//! @param[in]  max_length … 伝播させる距離の最大値
-	//! @param[in]  thread_num … 使用するスレッド数
-	//! 
-	template < class T1, class T2, class Allocator1, class Allocator2 >
-	void distance_transform( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, double max_length = -1.0, typename array3< T1, Allocator1 >::size_type thread_num = 0 )
-	{
-		typedef typename array3< T2, Allocator2 >::size_type  size_type;
-		typedef typename array3< T2, Allocator2 >::value_type value_type;
-		typedef __distance_transform_controller__::euclidean_distance_transform_thread< array3< T2, Allocator2 > > euclidean_distance_transform_thread;
+		typedef typename Array2::size_type  size_type;
+		typedef typename Array2::value_type value_type;
+		typedef __distance_transform_controller__::euclidean_distance_transform_thread< Array2 > euclidean_distance_transform_thread;
 
 		if( thread_num == 0 )
 		{
@@ -558,6 +353,7 @@ namespace euclidean
 
 		euclidean_distance_transform_thread *thread = new euclidean_distance_transform_thread[ thread_num ];
 
+		if( in.width( ) > 1 )
 		{
 			// X軸方向の処理
 			for( i = 0 ; i < thread_num ; i++ )
@@ -565,21 +361,10 @@ namespace euclidean
 				thread[ i ].setup_parameters( out, max_length, 0, i, thread_num );
 			}
 
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].create( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].wait( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].close( );
-			}
+			do_threads( thread, thread_num );
 		}
+
+		if( in.height( ) > 1 )
 		{
 			// Y軸方向の処理
 			for( i = 0 ; i < thread_num ; i++ )
@@ -587,21 +372,10 @@ namespace euclidean
 				thread[ i ].setup_parameters( out, max_length, 1, i, thread_num );
 			}
 
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].create( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].wait( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].close( );
-			}
+			do_threads( thread, thread_num );
 		}
+
+		if( in.depth( ) > 1 )
 		{
 			// Y軸方向の処理
 			for( i = 0 ; i < thread_num ; i++ )
@@ -609,20 +383,7 @@ namespace euclidean
 				thread[ i ].setup_parameters( out, max_length, 2, i, thread_num );
 			}
 
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].create( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].wait( );
-			}
-
-			for( i = 0 ; i < thread_num ; i++ )
-			{
-				thread[ i ].close( );
-			}
+			do_threads( thread, thread_num );
 		}
 
 		delete [] thread;

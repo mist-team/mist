@@ -357,6 +357,52 @@ protected:
 
 
 
+/// @brief スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う
+//! 
+//! @param[in] threads        … スレッドオブジェクト
+//! @param[in] num_threads    … スレッド数
+//! @param[in] dwMilliseconds … タイムアウト時間（ミリ秒単位）
+//!
+//! @retval true  … 複数のスレッドの実行に成功
+//! @retval false … 複数のスレッドの実行に失敗
+//! 
+template < class Thread >
+inline bool do_threads( Thread *threads, size_t num_threads, unsigned long dwMilliseconds = INFINITE )
+{
+	bool ret = true;
+	size_t i = 0;
+
+	// スレッドの生成
+	for( i = 0 ; i < num_threads ; i++ )
+	{
+		if( !threads[ i ].create( ) )
+		{
+			ret = false;
+		}
+	}
+
+	// スレッドの終了待ち
+	for( i = 0 ; i < num_threads ; i++ )
+	{
+		if( !threads[ i ].wait( dwMilliseconds ) )
+		{
+			ret = false;
+		}
+	}
+
+	// リソースの開放
+	for( i = 0 ; i < num_threads ; i++ )
+	{
+		if( !threads[ i ].close( ) )
+		{
+			ret = false;
+		}
+	}
+
+	return( ret );
+}
+
+
 // スレッドを普通の関数形式の呼び出しで簡便に利用するための関数群
 namespace __thread_controller__
 {
@@ -488,6 +534,23 @@ inline thread_handle create_thread( Param &param, Functor f )
 	return( thread_ );
 }
 
+/// @brief 指定したスレッド関数を利用する，スレッドを複数作成する
+//! 
+//! @param[out]    handles     … スレッドオブジェクト
+//! @param[in,out] params      … スレッドの関数に渡すパラメータ
+//! @param[in]     num_threads … スレッド数
+//! @param[in]     f           … 実行されるスレッド関数
+//! 
+template < class Param, class Functor >
+inline void create_threads( thread_handle *handles, Param *param, size_t num_threads, Functor f )
+{
+	for( size_t i = 0 ; i < num_threads ; i++ )
+	{
+		handles[ i ] = thread_handle( new __thread_controller__::thread_object_functor< Param, Functor >( param, f ) );
+        handles[ i ].create( );
+	}
+}
+
 
 /// @brief スレッドが使用していたリソースを開放する
 //! 
@@ -500,6 +563,27 @@ inline thread_handle create_thread( Param &param, Functor f )
 //! 
 inline bool close_thread( thread_handle &thread_ ){ return( thread_.close( ) ); }
 
+/// @brief 複数のスレッドが使用していたリソースを開放する
+//! 
+//! @param[out]    handles     … スレッドオブジェクト
+//! @param[in]     num_threads … スレッド数
+//!
+//! @retval true  … 全てのリソースの開放に成功
+//! @retval false … 全てのリソースの開放に失敗
+//! 
+inline bool close_threads( thread_handle *handles, size_t num_threads )
+{
+	bool ret = true;
+	for( size_t i = 0 ; i < num_threads ; i++ )
+	{
+        if( !handles[ i ].close( ) )
+		{
+			ret = false;
+		}
+	}
+	return( ret );
+}
+
 
 /// @brief スレッドが終了するか，タイムアウトが発生するまで待機する
 //! 
@@ -508,10 +592,32 @@ inline bool close_thread( thread_handle &thread_ ){ return( thread_.close( ) ); 
 //! @param[in,out] thread_        … スレッドオブジェクト
 //! @param[in]     dwMilliseconds … タイムアウト時間（ミリ秒単位）
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … スレッドがタイムアンと時間内に正常終了した場合
+//! @retval false … スレッドがタイムアンと時間内に終了しなかった場合
 //! 
 inline bool wait_thread( thread_handle &thread_, unsigned long dwMilliseconds = INFINITE ){ return( thread_.wait( dwMilliseconds ) ); }
+
+/// @brief 複数のスレッドが使用していたリソースを開放する
+//! 
+//! @param[out]    handles        … スレッドオブジェクト
+//! @param[in]     num_threads    … スレッド数
+//! @param[in]     dwMilliseconds … タイムアウト時間（ミリ秒単位）
+//!
+//! @retval true  … 複数のスレッドがタイムアンと時間内に正常終了した場合
+//! @retval false … 複数のスレッドがタイムアンと時間内に終了しなかった場合
+//! 
+inline bool wait_threads( thread_handle *handles, size_t num_threads, unsigned long dwMilliseconds = INFINITE )
+{
+	bool ret = true;
+	for( size_t i = 0 ; i < num_threads ; i++ )
+	{
+        if( !handles[ i ].wait( dwMilliseconds ) )
+		{
+			ret = false;
+		}
+	}
+	return( ret );
+}
 
 
 /// @brief スレッドをサスペンドさせる
@@ -525,6 +631,27 @@ inline bool wait_thread( thread_handle &thread_, unsigned long dwMilliseconds = 
 //! 
 inline bool suspend_thread( thread_handle &thread_ ){ return( thread_.suspend( ) ); }
 
+/// @brief 複数のスレッドが使用していたリソースを開放する
+//! 
+//! @param[out]    handles     … スレッドオブジェクト
+//! @param[in]     num_threads … スレッド数
+//!
+//! @retval true  … 複数のスレッドのサスペンドに成功
+//! @retval false … 複数のスレッドのサスペンドに失敗
+//! 
+inline bool suspend_threads( thread_handle *handles, size_t num_threads )
+{
+	bool ret = true;
+	for( size_t i = 0 ; i < num_threads ; i++ )
+	{
+        if( !handles[ i ].suspend( ) )
+		{
+			ret = false;
+		}
+	}
+	return( ret );
+}
+
 
 /// @brief スレッドをリジュームする
 //! 
@@ -536,6 +663,94 @@ inline bool suspend_thread( thread_handle &thread_ ){ return( thread_.suspend( )
 //! @retval false … リジュームに失敗
 //! 
 inline bool resume_thread( thread_handle &thread_ ){ return( thread_.resume( ) ); }
+
+/// @brief 複数のスレッドが使用していたリソースを開放する
+//! 
+//! @param[out]    handles     … スレッドオブジェクト
+//! @param[in]     num_threads … スレッド数
+//!
+//! @retval true  … 複数のスレッドのリジュームに成功
+//! @retval false … 複数のスレッドのリジュームに失敗
+//! 
+inline bool resume_threads( thread_handle *handles, size_t num_threads )
+{
+	bool ret = true;
+	for( size_t i = 0 ; i < num_threads ; i++ )
+	{
+        if( !handles[ i ].resume( ) )
+		{
+			ret = false;
+		}
+	}
+	return( ret );
+}
+
+
+/// @brief スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う
+//! 
+//! @param[in,out] param          … スレッドの関数に渡すパラメータ
+//! @param[in]     f              … 実行されるスレッド関数
+//! @param[in]     dwMilliseconds … タイムアウト時間（ミリ秒単位）
+//!
+//! @retval true  … スレッドの実行に成功
+//! @retval false … スレッドの実行に失敗
+//! 
+template < class Param, class Functor >
+inline bool do_thread( Param &param, Functor f, unsigned long dwMilliseconds = INFINITE )
+{
+	bool ret = true;
+
+	// スレッドの生成
+	thread_handle thread_ = create_thread( param, f );
+
+	// スレッドの終了待ち
+	if( !wait_thread( thread_, dwMilliseconds ) )
+	{
+		ret = false;
+	}
+
+	// リソースの開放
+	if( !close_thread( thread_ ) )
+	{
+		ret = false;
+	}
+	return( ret );
+}
+
+
+/// @brief スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う
+//! 
+//! @param[in,out] params         … スレッドの関数に渡すパラメータ
+//! @param[in]     num_threads    … スレッド数
+//! @param[in]     f              … 実行されるスレッド関数
+//! @param[in]     dwMilliseconds … タイムアウト時間（ミリ秒単位）
+//!
+//! @retval true  … 複数のスレッドの実行に成功
+//! @retval false … 複数のスレッドの実行に失敗
+//! 
+template < class Param, class Functor >
+inline bool do_threads( Param *params, size_t num_threads, Functor f, unsigned long dwMilliseconds = INFINITE )
+{
+	bool ret = true;
+	thread_handle *threads_ = new thread_handle[ num_threads ];
+
+	// スレッドの生成
+	create_threads( threads_, params, num_threads, f );
+
+	// スレッドの終了待ち
+	if( !wait_threads( threads_, num_threads, dwMilliseconds ) )
+	{
+		ret = false;
+	}
+
+	// リソースの開放
+	if( !close_threads( threads_, num_threads ) )
+	{
+		ret = false;
+	}
+
+	return( ret );
+}
 
 
 

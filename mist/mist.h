@@ -110,7 +110,7 @@ public:
 	//! 
 	//! @param[in] num  … リサイズ後のコンテナ内の要素数
 	//! 
-	void resize( size_type num )
+	void resize( size_type num, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
 		if( size_ < num )
 		{
@@ -788,7 +788,7 @@ public:
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
 	//! 
-	void resize( size_type num1, size_type num2 )
+	void resize( size_type num1, size_type num2, size_type dmy1 = 0 )
 	{
 		base::resize( num1 * num2 );
 		size1_ = num1;

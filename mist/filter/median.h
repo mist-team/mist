@@ -1088,20 +1088,8 @@ bool median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 		thread[ i ].setup_parameters( in, out, fw, fh, 1, i, thread_num );
 	}
 
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].create( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].wait( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].close( );
-	}
+	// スレッドを実行して，終了まで待機する
+	do_threads( thread, thread_num );
 
 	delete [] thread;
 	
@@ -1188,20 +1176,8 @@ bool median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 		thread[ i ].setup_parameters( in, out, fw, fh, fd, i, thread_num );
 	}
 
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].create( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].wait( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].close( );
-	}
+	// スレッドを実行して，終了まで待機する
+	do_threads( thread, thread_num );
 
 	delete [] thread;
 	

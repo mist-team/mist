@@ -48,6 +48,14 @@ private:
   static void cb_Opening(Fl_Menu_*, void*);
   inline void cb_Closing_i(Fl_Menu_*, void*);
   static void cb_Closing(Fl_Menu_*, void*);
+  inline void cb_Erosion1_i(Fl_Menu_*, void*);
+  static void cb_Erosion1(Fl_Menu_*, void*);
+  inline void cb_Dilation1_i(Fl_Menu_*, void*);
+  static void cb_Dilation1(Fl_Menu_*, void*);
+  inline void cb_Opening1_i(Fl_Menu_*, void*);
+  static void cb_Opening1(Fl_Menu_*, void*);
+  inline void cb_Closing1_i(Fl_Menu_*, void*);
+  static void cb_Closing1(Fl_Menu_*, void*);
   inline void cb_Reso_i(Fl_Menu_*, void*);
   static void cb_Reso(Fl_Menu_*, void*);
   inline void cb_Reso1_i(Fl_Menu_*, void*);
@@ -64,6 +72,10 @@ private:
   static void cb_Interlace(Fl_Menu_*, void*);
   inline void cb_Interlace1_i(Fl_Menu_*, void*);
   static void cb_Interlace1(Fl_Menu_*, void*);
+  inline void cb_Expand_i(Fl_Menu_*, void*);
+  static void cb_Expand(Fl_Menu_*, void*);
+  inline void cb_Shrink_i(Fl_Menu_*, void*);
+  static void cb_Shrink(Fl_Menu_*, void*);
 public:
   void show( );
 };

@@ -194,7 +194,7 @@ int main( int argc, char *argv[] )
 
 	mist::read_image( a, argv[ 1 ] );
 
-	mist::array2< unsigned char >::size_type i, loop = 10;
+	mist::array2< unsigned char >::size_type i, loop = 3;
 
 	mist::array2< unsigned char > tmp1( a ), tmp2( a );
 

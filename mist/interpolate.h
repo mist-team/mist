@@ -811,20 +811,7 @@ namespace nearest
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Nearest, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -884,20 +871,7 @@ namespace nearest
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Nearest, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -960,20 +934,7 @@ namespace nearest
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Nearest, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -1040,20 +1001,7 @@ namespace nearest
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Nearest, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -1116,20 +1064,7 @@ namespace linear
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Linear, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -1189,20 +1124,7 @@ namespace linear
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Linear, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -1265,20 +1187,7 @@ namespace linear
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Linear, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -1345,20 +1254,7 @@ namespace linear
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Linear, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -1422,20 +1318,7 @@ namespace cubic
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Cubic, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -1494,20 +1377,7 @@ namespace cubic
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Cubic, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -1570,20 +1440,7 @@ namespace cubic
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Cubic, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 
@@ -1650,20 +1507,7 @@ namespace cubic
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Cubic, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		do_threads( thread, thread_num );
 
 		delete [] thread;
 

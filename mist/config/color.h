@@ -70,12 +70,9 @@ public:
 	template < class TT >
 	const rgb &operator =( const rgb< TT > &c )
 	{
-		if( &c != this )
-		{
-			r = static_cast< value_type >( c.r );
-			g = static_cast< value_type >( c.g );
-			b = static_cast< value_type >( c.b );
-		}
+		r = static_cast< value_type >( c.r );
+		g = static_cast< value_type >( c.g );
+		b = static_cast< value_type >( c.b );
 		return( *this );
 	}
 

@@ -70,11 +70,8 @@ public:
 	template < class TT >
 	const stereo &operator =( const stereo< TT > &s )
 	{
-		if( &s != this )
-		{
-			l = static_cast< value_type >( s.l );
-			r = static_cast< value_type >( s.r );
-		}
+		l = static_cast< value_type >( s.l );
+		r = static_cast< value_type >( s.r );
 		return( *this );
 	}
 

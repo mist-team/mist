@@ -2,6 +2,8 @@
 //!
 //! @brief 各次元の画像に対応し，任意の構造要素に対応したモルフォロジ演算を行うためのライブラリ
 //!
+//! @attention 構造要素の形は凸形状でなくてはならない
+//!
 
 #ifndef __INCLUDE_MIST_MORPHOLOGY__
 #define __INCLUDE_MIST_MORPHOLOGY__
@@ -29,74 +31,79 @@ _MIST_BEGIN
 
 
 
-/// @brief 関数・クラスの概要を書く
+//! @addtogroup morphology_group モルフォロジ演算フィルタ
+//!  @{
+
+
+/// @brief モルフォロジ演算に利用する構造要素関連
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! モルフォロジ演算に利用する構造要素を作成するための関数・構造要素を定義している
 //! 
-namespace __morphology__
+namespace morphology
 {
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief 構造要素の各要素の座標と生存期間を表す構造体
 	struct point
 	{
-		typedef ptrdiff_t value_type;	///< @brief 説明を書く
-		value_type x;					///< @brief 説明を書く
-		value_type y;					///< @brief 説明を書く
-		value_type z;					///< @brief 説明を書く
-		size_t life;					///< @brief 説明を書く
+		typedef ptrdiff_t difference_type;	///< @brief 符号付整数型
+		difference_type x;					///< @brief X軸方向の座標値
+		difference_type y;					///< @brief Y軸方向の座標値
+		difference_type z;					///< @brief Z軸方向の座標値
+		size_t life;						///< @brief この要素が構造体から抜けるまでの生存期間
 
-		/// @brief 関数・クラスの概要を書く
+		/// @brief コンストラクタ
 		//! 
-		//! 詳細な説明や関数の使用例を書く
+		//! @param[in] xx … X座標値
+		//! @param[in] yy … Y座標値
+		//! @param[in] zz … Z座標値
+		//! @param[in] l  … 生存期間
 		//! 
-		//! @param[in] xx  … 引数の説明
-		//! @param[in] yy … 引数の説明
-		//! @param[in] zz … 引数の説明
-		//! @param[in] l  … 引数の説明
-		//! 
-		point( value_type xx, value_type yy, value_type zz, size_t l ) : x( xx ), y( yy ), z( zz ), life( l )
+		point( difference_type xx, difference_type yy, difference_type zz, size_t l ) : x( xx ), y( yy ), z( zz ), life( l )
 		{
 		}
 	};
 
 
+	/// @brief 構造要素の各要素の座標と生存期間を表す構造体
+	//!
+	//! @attention MIST関数内部で利用
+	//!
 	struct pointer_diff
 	{
-		ptrdiff_t diff;
-		size_t    life;
+		ptrdiff_t diff;		///< @brief 中心要素からのポインタの差
+		size_t    life;		///< @brief 生存期間
 
+		/// @brief コンストラクタ
 		pointer_diff( ptrdiff_t d, size_t l ) : diff( d ), life( l )
 		{
 		}
 	};
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief モルフォロジ演算に利用する構造要素
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 本構造体を，Erosion，Dilation，Opening，Closingの関数に渡す．
+	//! 本データ構造によって，任意の凸形状の構造要素のモルフォロジ演算が実行可能．
 	//! 
 	struct morphology_structure
 	{
-		typedef std::vector< point > list_type;		///< @brief 説明を書く
-		list_type object;							///< @brief 説明を書く
-		list_type update;							///< @brief 説明を書く
-		size_t margin_x;							///< @brief 説明を書く
-		size_t margin_y;							///< @brief 説明を書く
-		size_t margin_z;							///< @brief 説明を書く
+		typedef std::vector< point > list_type;		///< @brief 構造要素内の座標値を格納するリスト型
+		list_type object;							///< @brief 構造要素内の全要素の座標値を格納するリスト
+		list_type update;							///< @brief 構造要素をX軸方向に1画素移動した時に，新規に構造要素に含まれる要素の座標値を格納するリスト
+		size_t margin_x;							///< @brief X軸方向で構造要素の中心から端までの距離で大きい側の距離
+		size_t margin_y;							///< @brief Y軸方向で構造要素の中心から端までの距離で大きい側の距離
+		size_t margin_z;							///< @brief Z軸方向で構造要素の中心から端までの距離で大きい側の距離
 	};
 
 
 	/// @brief モルフォロジ演算に用いる円構造要素
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! resoX，resoY の値を変えることで，楕円等を表現可能
 	//!
-	//! @param[in] radius … 引数の説明
-	//! @param[in] resoX … 引数の説明
-	//! @param[in] resoY … 引数の説明
+	//! @param[in] radius … 半径
+	//! @param[in] resoX  … X軸方向の解像度
+	//! @param[in] resoY  … Y軸方向の解像度
 	//!
-	//! @return 戻り値の説明
+	//! @return 円構造要素
 	//!
 	inline morphology_structure circle( double radius, double resoX, double resoY )
 	{
@@ -167,14 +174,14 @@ namespace __morphology__
 
 	/// @brief モルフォロジ演算に用いる球構造要素
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! resoX，resoY，resoZ の値を変えることで，楕円体等を表現可能
 	//!
-	//! @param[in] radius … 引数の説明
-	//! @param[in] resoX … 引数の説明
-	//! @param[in] resoY … 引数の説明
-	//! @param[in] resoZ … 引数の説明
+	//! @param[in] radius … 半径
+	//! @param[in] resoX  … X軸方向の解像度
+	//! @param[in] resoY  … Y軸方向の解像度
+	//! @param[in] resoZ  … Z軸方向の解像度
 	//!
-	//! @return 戻り値の説明
+	//! @return 球構造要素
 	//!
 	inline morphology_structure sphere( double radius, double resoX, double resoY, double resoZ )
 	{
@@ -257,13 +264,13 @@ namespace __morphology__
 
 	/// @brief モルフォロジ演算に用いる正方形構造要素
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! resoX，resoY，resoZ の値を変えることで，長方形等を表現可能
 	//!
 	//! @param[in] radius … 引数の説明
-	//! @param[in] resoX … 引数の説明
-	//! @param[in] resoY … 引数の説明
+	//! @param[in] resoX  … X軸方向の解像度
+	//! @param[in] resoY  … Y軸方向の解像度
 	//!
-	//! @return 戻り値の説明
+	//! @return 正方形構造要素
 	//!
 	inline morphology_structure square( double radius, double resoX, double resoY )
 	{
@@ -289,7 +296,7 @@ namespace __morphology__
 		morphology_structure s;
 		array2< bool > m( w, h );
 
-		// 球の構造要素を作成する
+		// 正方形の構造要素を作成する
 		for( y = -ry ; y <= ry ; y++ )
 		{
 			yy = y * ay;
@@ -303,7 +310,7 @@ namespace __morphology__
 			}
 		}
 
-		// 球の構造要素の各点に生存期間を設定する
+		// 正方形の構造要素の各点に生存期間を設定する
 		for( y = -ry ; y <= ry ; y++ )
 		{
 			size_t life = 0;
@@ -334,14 +341,14 @@ namespace __morphology__
 
 	/// @brief モルフォロジ演算に用いる立方体構造要素
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! resoX，resoY，resoZ の値を変えることで，直方体等を表現可能
 	//!
 	//! @param[in] radius … 引数の説明
-	//! @param[in] resoX … 引数の説明
-	//! @param[in] resoY … 引数の説明
-	//! @param[in] resoZ … 引数の説明
+	//! @param[in] resoX  … X軸方向の解像度
+	//! @param[in] resoY  … Y軸方向の解像度
+	//! @param[in] resoZ  … Z軸方向の解像度
 	//!
-	//! @return 戻り値の説明
+	//! @return 立方体構造要素
 	//!
 	inline morphology_structure cube( double radius, double resoX, double resoY, double resoZ )
 	{
@@ -372,7 +379,7 @@ namespace __morphology__
 		morphology_structure s;
 		array3< bool > m( w, h, d );
 
-		// 球の構造要素を作成する
+		// 立方体の構造要素を作成する
 		for( z = -rz ; z <= rz ; z++ )
 		{
 			zz = z * az;
@@ -390,7 +397,7 @@ namespace __morphology__
 			}
 		}
 
-		// 球の構造要素の各点に生存期間を設定する
+		// 立方体の構造要素の各点に生存期間を設定する
 		for( z = -rz ; z <= rz ; z++ )
 		{
 			for( y = -ry ; y <= ry ; y++ )
@@ -422,14 +429,82 @@ namespace __morphology__
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+
+	/// @brief 任意の画像から，モルフォロジ演算用の構造要素を作成する
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention resoX，resoY，resoZ の値は無視される
 	//!
-	//! @param[in] in   … 引数の説明
-	//! @param[in] list … 引数の説明
+	//! @param[in] in … 構造要素の画像
 	//!
-	//! @return 戻り値の説明
+	//! @return モルフォロジ演算用の構造要素
+	//!
+	template < class Array >
+	inline morphology_structure create_morphology_structure( const Array &in, typename Array::size_type cx, typename Array::size_type cy = 0, typename Array::size_type cz = 0 )
+	{
+		using namespace std;
+		typedef typename Array::size_type size_type;
+		typedef typename Array::difference_type difference_type;
+		difference_type x, y, z;
+
+		difference_type w = in.width( );
+		difference_type h = in.height( );
+		difference_type d = in.depth( );
+
+		morphology_structure s;
+		marray< Array > m( in, 1 );
+
+		// 構造要素の形を作成する
+		for( z = 0 ; z < d ; z++ )
+		{
+			for( y = 0 ; y < h ; y++ )
+			{
+				for( x = 0 ; x < w ; x++ )
+				{
+					m( x, y, z ) = in( x, y, z ) == 0 ? false : true;
+				}
+			}
+		}
+
+		// 構造要素の各点に生存期間を設定する
+		for( z = 0 ; z < d ; z++ )
+		{
+			for( y = 0 ; y < h ; y++ )
+			{
+				size_t life = 0;
+				for( x = 0 ; x < w ; x++ )
+				{
+					if( m( x, y, z ) )
+					{
+						s.object.push_back( point( x - cx, y - cy, z - cz, ++life ) );
+					}
+					else
+					{
+						life = 0;
+					}
+					if( m( x, y, z ) && !m( x + 1, y, z ) )
+					{
+						s.update.push_back( point( x - cx, y - cy, z - cz, life ) );
+					}
+				}
+			}
+		}
+
+		s.margin_x = cx > w - cx - 1 ? cx : w - cx;
+		s.margin_y = cy > h - cy - 1 ? cy : h - cy;
+		s.margin_z = cz > d - cz - 1 ? cz : d - cz;
+
+		return( s );
+	}
+
+
+	/// @brief 各画像において，構造要素の中心と各要素間のポインタの差を計算し，そのリストを作成する
+	//!
+	//! @attention MISTの内部関数として利用
+	//!
+	//! @param[in] in   … 入力画像
+	//! @param[in] list … 構造要素の座標リスト
+	//!
+	//! @return 構造要素の中心と各要素間のポインタの差のリスト
 	//!
 	template < class Array >
 	inline std::vector< pointer_diff > create_pointer_diff_list( const Array &in, const std::vector< point > &list )
@@ -454,11 +529,16 @@ namespace __morphology__
 	}
 }
 
+
+/// @}
+//  モルフォロジ演算グループの終わり
+
+
 namespace __erosion__
 {
 	template < class Array1, class Array2 >
 	void erosion( const Array1 &in, Array2 &out,
-						const std::vector< __morphology__::pointer_diff > &object, const std::vector< __morphology__::pointer_diff > &update,
+						const std::vector< morphology::pointer_diff > &object, const std::vector< morphology::pointer_diff > &update,
 						typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
 						typename Array1::size_type thread_idz, typename Array1::size_type thread_numz )
 	{
@@ -467,7 +547,7 @@ namespace __erosion__
 		typedef typename Array1::const_pointer   const_pointer;
 		typedef typename Array1::difference_type difference_type;
 		typedef typename Array2::value_type      out_value_type;
-		typedef __morphology__::pointer_diff     pointer_diff;
+		typedef morphology::pointer_diff         pointer_diff;
 		typedef std::vector< pointer_diff >      list_type;
 
 		list_type::const_iterator ite;
@@ -548,7 +628,7 @@ namespace __dilation__
 {
 	template < class Array1, class Array2 >
 	void dilation( const Array1 &in, Array2 &out,
-						const std::vector< __morphology__::pointer_diff > &object, const std::vector< __morphology__::pointer_diff > &update,
+						const std::vector< morphology::pointer_diff > &object, const std::vector< morphology::pointer_diff > &update,
 						typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
 						typename Array1::size_type thread_idz, typename Array1::size_type thread_numz )
 	{
@@ -557,7 +637,7 @@ namespace __dilation__
 		typedef typename Array1::const_pointer   const_pointer;
 		typedef typename Array1::difference_type difference_type;
 		typedef typename Array2::value_type      out_value_type;
-		typedef __morphology__::pointer_diff     pointer_diff;
+		typedef morphology::pointer_diff         pointer_diff;
 		typedef std::vector< pointer_diff >      list_type;
 
 		list_type::const_iterator ite;
@@ -640,7 +720,7 @@ namespace __morphology_controller__
 	// Erosion 演算
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void erosion( const marray< array< T1, Allocator1 > > &in, array< T2, Allocator2 > &out,
-						const std::vector< __morphology__::pointer_diff > &object, const std::vector< __morphology__::pointer_diff > &update,
+						const std::vector< morphology::pointer_diff > &object, const std::vector< morphology::pointer_diff > &update,
 						typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num )
 	{
 		__erosion__::erosion( in, out, object, update, 0, 1, thread_id, thread_num );
@@ -648,7 +728,7 @@ namespace __morphology_controller__
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void erosion( const marray< array1< T1, Allocator1 > > &in, array1< T2, Allocator2 > &out,
-						const std::vector< __morphology__::pointer_diff > &object, const std::vector< __morphology__::pointer_diff > &update,
+						const std::vector< morphology::pointer_diff > &object, const std::vector< morphology::pointer_diff > &update,
 						typename array1< T1, Allocator1 >::size_type thread_id, typename array1< T1, Allocator1 >::size_type thread_num )
 	{
 		__erosion__::erosion( in, out, object, update, 0, 1, thread_id, thread_num );
@@ -656,7 +736,7 @@ namespace __morphology_controller__
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void erosion( const marray< array2< T1, Allocator1 > > &in, array2< T2, Allocator2 > &out,
-						const std::vector< __morphology__::pointer_diff > &object, const std::vector< __morphology__::pointer_diff > &update,
+						const std::vector< morphology::pointer_diff > &object, const std::vector< morphology::pointer_diff > &update,
 						typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
 	{
 		__erosion__::erosion( in, out, object, update, thread_id, thread_num, 0, 1 );
@@ -664,7 +744,7 @@ namespace __morphology_controller__
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void erosion( const marray< array3< T1, Allocator1 > > &in, array3< T2, Allocator2 > &out,
-						const std::vector< __morphology__::pointer_diff > &object, const std::vector< __morphology__::pointer_diff > &update,
+						const std::vector< morphology::pointer_diff > &object, const std::vector< morphology::pointer_diff > &update,
 						typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num )
 	{
 		__erosion__::erosion( in, out, object, update, 0, 1, thread_id, thread_num );
@@ -674,7 +754,7 @@ namespace __morphology_controller__
 	// Dilation 演算
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void dilation( const marray< array< T1, Allocator1 > > &in, array< T2, Allocator2 > &out,
-						const std::vector< __morphology__::pointer_diff > &object, const std::vector< __morphology__::pointer_diff > &update,
+						const std::vector< morphology::pointer_diff > &object, const std::vector< morphology::pointer_diff > &update,
 						typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num )
 	{
 		__dilation__::dilation( in, out, object, update, 0, 1, thread_id, thread_num );
@@ -682,7 +762,7 @@ namespace __morphology_controller__
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void dilation( const marray< array1< T1, Allocator1 > > &in, array1< T2, Allocator2 > &out,
-						const std::vector< __morphology__::pointer_diff > &object, const std::vector< __morphology__::pointer_diff > &update,
+						const std::vector< morphology::pointer_diff > &object, const std::vector< morphology::pointer_diff > &update,
 						typename array1< T1, Allocator1 >::size_type thread_id, typename array1< T1, Allocator1 >::size_type thread_num )
 	{
 		__dilation__::dilation( in, out, object, update, 0, 1, thread_id, thread_num );
@@ -690,7 +770,7 @@ namespace __morphology_controller__
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void dilation( const marray< array2< T1, Allocator1 > > &in, array2< T2, Allocator2 > &out,
-						const std::vector< __morphology__::pointer_diff > &object, const std::vector< __morphology__::pointer_diff > &update,
+						const std::vector< morphology::pointer_diff > &object, const std::vector< morphology::pointer_diff > &update,
 						typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
 	{
 		__dilation__::dilation( in, out, object, update, thread_id, thread_num, 0, 1 );
@@ -698,7 +778,7 @@ namespace __morphology_controller__
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void dilation( const marray< array3< T1, Allocator1 > > &in, array3< T2, Allocator2 > &out,
-						const std::vector< __morphology__::pointer_diff > &object, const std::vector< __morphology__::pointer_diff > &update,
+						const std::vector< morphology::pointer_diff > &object, const std::vector< morphology::pointer_diff > &update,
 						typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num )
 	{
 		__dilation__::dilation( in, out, object, update, 0, 1, thread_id, thread_num );
@@ -713,7 +793,7 @@ namespace __morphology_controller__
 		typedef typename base::thread_exit_type thread_exit_type;
 		typedef typename T1::size_type size_type;
 		typedef typename T1::value_type value_type;
-		typedef __morphology__::pointer_diff pointer_diff;
+		typedef morphology::pointer_diff pointer_diff;
 		typedef std::vector< pointer_diff >  list_type;
 
 	private:
@@ -799,7 +879,7 @@ namespace __morphology_controller__
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T, class Allocator >
-bool erosion( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+bool erosion( array2< T, Allocator > &in, const morphology::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	if( in.empty( ) )
 	{
@@ -809,7 +889,7 @@ bool erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
-	typedef __morphology__::pointer_diff pointer_diff;
+	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
 	if( thread_num == 0 )
@@ -821,8 +901,8 @@ bool erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 
 	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, max );
 
-	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
-	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+	list_type object = morphology::create_pointer_diff_list( out, s.object );
+	list_type update = morphology::create_pointer_diff_list( out, s.update );
 
 	morphology_thread *thread = new morphology_thread[ thread_num ];
 
@@ -832,20 +912,9 @@ bool erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 		thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
 	}
 
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].create( );
-	}
 
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].wait( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].close( );
-	}
+	// スレッドを実行して，終了まで待機する
+	do_threads( thread, thread_num );
 
 	delete [] thread;
 
@@ -866,7 +935,7 @@ bool erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T, class Allocator >
-bool dilation( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+bool dilation( array2< T, Allocator > &in, const morphology::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	if( in.empty( ) )
 	{
@@ -876,7 +945,7 @@ bool dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
-	typedef __morphology__::pointer_diff pointer_diff;
+	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
 	if( thread_num == 0 )
@@ -888,8 +957,8 @@ bool dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 
 	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, min );
 
-	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
-	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+	list_type object = morphology::create_pointer_diff_list( out, s.object );
+	list_type update = morphology::create_pointer_diff_list( out, s.update );
 
 	morphology_thread *thread = new morphology_thread[ thread_num ];
 
@@ -899,20 +968,8 @@ bool dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 		thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
 	}
 
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].create( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].wait( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].close( );
-	}
+	// スレッドを実行して，終了まで待機する
+	do_threads( thread, thread_num );
 
 	delete [] thread;
 
@@ -933,7 +990,7 @@ bool dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T, class Allocator >
-bool opening( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+bool opening( array2< T, Allocator > &in, const morphology::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	if( in.empty( ) )
 	{
@@ -943,7 +1000,7 @@ bool opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
-	typedef __morphology__::pointer_diff pointer_diff;
+	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
 	if( thread_num == 0 )
@@ -956,8 +1013,8 @@ bool opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 
 	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, max );
 
-	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
-	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+	list_type object = morphology::create_pointer_diff_list( out, s.object );
+	list_type update = morphology::create_pointer_diff_list( out, s.update );
 
 	morphology_thread *thread = new morphology_thread[ thread_num ];
 
@@ -969,20 +1026,8 @@ bool opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 			thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		// スレッドを実行して，終了まで待機する
+		do_threads( thread, thread_num );
 	}
 
 	out = in;
@@ -995,20 +1040,8 @@ bool opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 			thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		// スレッドを実行して，終了まで待機する
+		do_threads( thread, thread_num );
 	}
 
 	delete [] thread;
@@ -1030,7 +1063,7 @@ bool opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T, class Allocator >
-bool closing( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+bool closing( array2< T, Allocator > &in, const morphology::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
 	if( in.empty( ) )
 	{
@@ -1040,7 +1073,7 @@ bool closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
-	typedef __morphology__::pointer_diff pointer_diff;
+	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
 	if( thread_num == 0 )
@@ -1053,8 +1086,8 @@ bool closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 
 	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, min );
 
-	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
-	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+	list_type object = morphology::create_pointer_diff_list( out, s.object );
+	list_type update = morphology::create_pointer_diff_list( out, s.update );
 
 	morphology_thread *thread = new morphology_thread[ thread_num ];
 
@@ -1066,20 +1099,8 @@ bool closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 			thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		// スレッドを実行して，終了まで待機する
+		do_threads( thread, thread_num );
 	}
 
 	out = in;
@@ -1092,20 +1113,8 @@ bool closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 			thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		// スレッドを実行して，終了まで待機する
+		do_threads( thread, thread_num );
 	}
 
 	delete [] thread;
@@ -1130,7 +1139,7 @@ bool closing( array2< T, Allocator > &in, const __morphology__::morphology_struc
 template < class T, class Allocator >
 inline bool erosion( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	return( erosion( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
+	return( erosion( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
 }
 
 
@@ -1149,7 +1158,7 @@ inline bool erosion( array2< T, Allocator > &in, double radius, typename array2<
 template < class T, class Allocator >
 inline bool dilation( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	return( dilation( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
+	return( dilation( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
 }
 
 
@@ -1168,7 +1177,7 @@ inline bool dilation( array2< T, Allocator > &in, double radius, typename array2
 template < class T, class Allocator >
 inline bool opening( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	return( opening( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
+	return( opening( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
 }
 
 
@@ -1187,7 +1196,7 @@ inline bool opening( array2< T, Allocator > &in, double radius, typename array2<
 template < class T, class Allocator >
 inline bool closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	return( closing( in, __morphology__::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
+	return( closing( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), thread_num ) );
 }
 
 
@@ -1207,7 +1216,7 @@ inline bool closing( array2< T, Allocator > &in, double radius, typename array2<
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T, class Allocator >
-bool erosion( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+bool erosion( array3< T, Allocator > &in, const morphology::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
 	if( in.empty( ) )
 	{
@@ -1217,7 +1226,7 @@ bool erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 	typedef typename array3< T, Allocator >::value_type value_type;
 	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
-	typedef __morphology__::pointer_diff pointer_diff;
+	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
 	if( thread_num == 0 )
@@ -1229,8 +1238,8 @@ bool erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 
 	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, max );
 
-	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
-	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+	list_type object = morphology::create_pointer_diff_list( out, s.object );
+	list_type update = morphology::create_pointer_diff_list( out, s.update );
 
 	morphology_thread *thread = new morphology_thread[ thread_num ];
 
@@ -1240,20 +1249,8 @@ bool erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 		thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
 	}
 
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].create( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].wait( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].close( );
-	}
+	// スレッドを実行して，終了まで待機する
+	do_threads( thread, thread_num );
 
 	delete [] thread;
 
@@ -1274,7 +1271,7 @@ bool erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T, class Allocator >
-bool dilation( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+bool dilation( array3< T, Allocator > &in, const morphology::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
 	if( in.empty( ) )
 	{
@@ -1284,7 +1281,7 @@ bool dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 	typedef typename array3< T, Allocator >::value_type value_type;
 	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
-	typedef __morphology__::pointer_diff pointer_diff;
+	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
 	if( thread_num == 0 )
@@ -1296,8 +1293,8 @@ bool dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 
 	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, min );
 
-	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
-	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+	list_type object = morphology::create_pointer_diff_list( out, s.object );
+	list_type update = morphology::create_pointer_diff_list( out, s.update );
 
 	morphology_thread *thread = new morphology_thread[ thread_num ];
 
@@ -1307,20 +1304,8 @@ bool dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 		thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
 	}
 
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].create( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].wait( );
-	}
-
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].close( );
-	}
+	// スレッドを実行して，終了まで待機する
+	do_threads( thread, thread_num );
 
 	delete [] thread;
 
@@ -1341,7 +1326,7 @@ bool dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T, class Allocator >
-bool opening( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+bool opening( array3< T, Allocator > &in, const morphology::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
 	if( in.empty( ) )
 	{
@@ -1351,7 +1336,7 @@ bool opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 	typedef typename array3< T, Allocator >::value_type value_type;
 	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
-	typedef __morphology__::pointer_diff pointer_diff;
+	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
 	if( thread_num == 0 )
@@ -1364,8 +1349,8 @@ bool opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 
 	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, max );
 
-	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
-	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+	list_type object = morphology::create_pointer_diff_list( out, s.object );
+	list_type update = morphology::create_pointer_diff_list( out, s.update );
 
 	morphology_thread *thread = new morphology_thread[ thread_num ];
 
@@ -1377,20 +1362,8 @@ bool opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 			thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		// スレッドを実行して，終了まで待機する
+		do_threads( thread, thread_num );
 	}
 
 	out = in;
@@ -1403,20 +1376,8 @@ bool opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 			thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		// スレッドを実行して，終了まで待機する
+		do_threads( thread, thread_num );
 	}
 
 	delete [] thread;
@@ -1439,7 +1400,7 @@ bool opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T, class Allocator >
-bool closing( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
+bool closing( array3< T, Allocator > &in, const morphology::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
 	if( in.empty( ) )
 	{
@@ -1449,7 +1410,7 @@ bool closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 	typedef typename array3< T, Allocator >::value_type value_type;
 	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
-	typedef __morphology__::pointer_diff pointer_diff;
+	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
 	if( thread_num == 0 )
@@ -1462,8 +1423,8 @@ bool closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 
 	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, min );
 
-	list_type object = __morphology__::create_pointer_diff_list( out, s.object );
-	list_type update = __morphology__::create_pointer_diff_list( out, s.update );
+	list_type object = morphology::create_pointer_diff_list( out, s.object );
+	list_type update = morphology::create_pointer_diff_list( out, s.update );
 
 	morphology_thread *thread = new morphology_thread[ thread_num ];
 
@@ -1475,20 +1436,8 @@ bool closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 			thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		// スレッドを実行して，終了まで待機する
+		do_threads( thread, thread_num );
 	}
 
 	out = in;
@@ -1501,20 +1450,8 @@ bool closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 			thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num );
 		}
 
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].create( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].wait( );
-		}
-
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].close( );
-		}
+		// スレッドを実行して，終了まで待機する
+		do_threads( thread, thread_num );
 	}
 
 	delete [] thread;
@@ -1539,7 +1476,7 @@ bool closing( array3< T, Allocator > &in, const __morphology__::morphology_struc
 template < class T, class Allocator >
 inline bool erosion( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	return( erosion( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
+	return( erosion( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
 }
 
 
@@ -1558,7 +1495,7 @@ inline bool erosion( array3< T, Allocator > &in, double radius, typename array3<
 template < class T, class Allocator >
 inline bool dilation( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	return( dilation( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
+	return( dilation( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
 }
 
 
@@ -1577,7 +1514,7 @@ inline bool dilation( array3< T, Allocator > &in, double radius, typename array3
 template < class T, class Allocator >
 inline bool opening( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	return( opening( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
+	return( opening( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
 }
 
 
@@ -1596,7 +1533,7 @@ inline bool opening( array3< T, Allocator > &in, double radius, typename array3<
 template < class T, class Allocator >
 inline bool closing( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	return( closing( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
+	return( closing( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num ) );
 }
 
 

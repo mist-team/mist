@@ -65,6 +65,23 @@ public:
 	vector3( const vector3< T > &v ) : x( v.x ), y( v.y ), z( v.z ){ }
 
 
+	/// @brief 他データ型の3次元ベクトルを代入する
+	//! 
+	//! コピー元であるベクトル v と全く同じベクトルを作成する．
+	//! 
+	//! @param[in] v … コピー元のベクトル
+	//! 
+	//! @return 自分自身
+	//! 
+	template < class TT >
+	const vector3 &operator =( const vector3< TT > &v )
+	{
+		x = static_cast< value_type >( v.x );
+		y = static_cast< value_type >( v.y );
+		z = static_cast< value_type >( v.z );
+		return ( *this );
+	}
+
 	/// @brief 他の3次元ベクトルを代入する
 	//! 
 	//! コピー元であるベクトル v と全く同じベクトルを作成する．
@@ -73,7 +90,7 @@ public:
 	//! 
 	//! @return 自分自身
 	//! 
-	const vector3 &operator =( const vector3 &v )
+	const vector3 &operator =( const vector3< T > &v )
 	{
 		if( &v != this )
 		{
@@ -351,6 +368,22 @@ public:
 	vector2( const vector2< T > &v ) : x( v.x ), y( v.y ){ }
 
 
+	/// @brief 他のデータ型の2次元ベクトルを代入する
+	//! 
+	//! コピー元であるベクトル v と全く同じベクトルを作成する．
+	//! 
+	//! @param[in] v … コピー元のベクトル
+	//! 
+	//! @return 自分自身
+	//! 
+	template < class TT >
+	const vector2 &operator =( const vector2< TT > &v )
+	{
+		x = static_cast< value_type >( v.x );
+		y = static_cast< value_type >( v.y );
+		return ( *this );
+	}
+
 	/// @brief 他の2次元ベクトルを代入する
 	//! 
 	//! コピー元であるベクトル v と全く同じベクトルを作成する．
@@ -359,7 +392,7 @@ public:
 	//! 
 	//! @return 自分自身
 	//! 
-	const vector2 &operator =( const vector2 &v )
+	const vector2 &operator =( const vector2< T > &v )
 	{
 		if( &v != this )
 		{

@@ -25,7 +25,7 @@ class image_test_window {open
         xywh {0 0 550 25} box FLAT_BOX
       } {
         submenu {} {
-          label {&File} open
+          label {&File}
           xywh {0 0 100 20}
         } {
           submenu {} {
@@ -68,7 +68,7 @@ if( filename == NULL ) return;
 write_image_test( filename );
 
 draw_area->redraw( );
-Fl::wait( 0 );} selected
+Fl::wait( 0 );}
               xywh {15 15 100 20}
             }
             menuitem {} {
@@ -90,7 +90,7 @@ Fl::wait( 0 );}
           }
         }
         submenu {} {
-          label {&Edit}
+          label {&Edit} open
           xywh {0 0 100 20}
         } {
           menuitem {} {
@@ -128,55 +128,85 @@ Fl::wait( 0 );}
             callback {median_test( );}
             xywh {90 90 100 20}
           }
-          menuitem {} {
-            label Erosion
-            callback {erosion_test( );}
-            xywh {50 50 100 20}
+          submenu {} {
+            label Morphology
+            xywh {0 0 100 20}
+          } {
+            menuitem {} {
+              label {Erosion Circle}
+              callback {erosion_test( );}
+              xywh {55 55 100 20}
+            }
+            menuitem {} {
+              label {Dilation Circle}
+              callback {dilation_test( );}
+              xywh {65 65 100 20}
+            }
+            menuitem {} {
+              label {Opening Circle}
+              callback {opening_test( );}
+              xywh {75 75 100 20}
+            }
+            menuitem {} {
+              label {Closing Circle}
+              callback {closing_test( );}
+              xywh {85 85 100 20}
+            }
+            menuitem {} {
+              label {Erosion Triangle}
+              callback {erosion_triangle_test( );}
+              xywh {65 65 100 20}
+            }
+            menuitem {} {
+              label {Dilation Triangle}
+              callback {dilation_triangle_test( );}
+              xywh {75 75 100 20}
+            }
+            menuitem {} {
+              label {Opening Triangle}
+              callback {opening_triangle_test( );}
+              xywh {85 85 100 20}
+            }
+            menuitem {} {
+              label {Closing Triangle}
+              callback {closing_triangle_test( );}
+              xywh {95 95 100 20}
+            }
           }
-          menuitem {} {
-            label Dilation
-            callback {dilation_test( );}
-            xywh {60 60 100 20}
-          }
-          menuitem {} {
-            label Opening
-            callback {opening_test( );}
-            xywh {70 70 100 20}
-          }
-          menuitem {} {
-            label Closing
-            callback {closing_test( );}
-            xywh {80 80 100 20}
-          }
-          menuitem {} {
-            label {Reso up with nearest}
-            callback {interpolate_test( 0, true );}
-            xywh {90 90 100 20}
-          }
-          menuitem {} {
-            label {Reso up with linear}
-            callback {interpolate_test( 1, true );}
-            xywh {100 100 100 20}
-          }
-          menuitem {} {
-            label {Reso up with cubic}
-            callback {interpolate_test( 2, true );}
-            xywh {110 110 100 20}
-          }
-          menuitem {} {
-            label {Reso down with nearest}
-            callback {interpolate_test( 0, false );}
-            xywh {100 100 100 20}
-          }
-          menuitem {} {
-            label {Reso down with linear}
-            callback {interpolate_test( 1, false );}
-            xywh {110 110 100 20}
-          }
-          menuitem {} {
-            label {Reso down with cubic}
-            callback {interpolate_test( 2, false );}
-            xywh {120 120 100 20}
+          submenu {} {
+            label Resolution selected
+            xywh {0 0 100 20}
+          } {
+            menuitem {} {
+              label {Reso up with nearest}
+              callback {interpolate_test( 0, true );}
+              xywh {95 95 100 20}
+            }
+            menuitem {} {
+              label {Reso up with linear}
+              callback {interpolate_test( 1, true );}
+              xywh {105 105 100 20}
+            }
+            menuitem {} {
+              label {Reso up with cubic}
+              callback {interpolate_test( 2, true );}
+              xywh {115 115 100 20}
+            }
+            menuitem {} {
+              label {Reso down with nearest}
+              callback {interpolate_test( 0, false );}
+              xywh {105 105 100 20}
+            }
+            menuitem {} {
+              label {Reso down with linear}
+              callback {interpolate_test( 1, false );}
+              xywh {115 115 100 20}
+            }
+            menuitem {} {
+              label {Reso down with cubic}
+              callback {interpolate_test( 2, false );}
+              xywh {125 125 100 20}
+            }
           }
           menuitem {} {
             label {Interlace Even}
@@ -187,6 +217,16 @@ Fl::wait( 0 );}
             label {Interlace Odd}
             callback {interlace_test( true );}
             xywh {40 40 100 20}
+          }
+          menuitem {} {
+            label Expand
+            callback {expand_test( );}
+            xywh {60 60 100 20}
+          }
+          menuitem {} {
+            label Shrink
+            callback {shrink_test( );}
+            xywh {70 70 100 20}
           }
         }
       }

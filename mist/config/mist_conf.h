@@ -368,6 +368,8 @@ struct __mist_console_callback__
 *     - @ref a								"8近傍型距離変換"
 *     - @ref a								"6近傍型距離変換"
 *     - @ref a								"26近傍型距離変換"
+*   - @ref fusion_group						"図形融合"
+*     - @ref fusion_mdt_group				"マンハッタン距離（\f$L_1\f$ ノルム，シティーブロック距離）"
 *
 *
 * @subsection audio 主に音声に対して適用される処理

@@ -20,6 +20,7 @@ image_draw_area *draw_area;
 #include <mist/filter/median.h>
 #include <mist/filter/morphology.h>
 #include <mist/filter/interlace.h>
+#include <mist/filter/fusion.h>
 #include <mist/interpolate.h>
 #include <mist/threshold.h>
 #include <mist/timer.h>
@@ -284,6 +285,54 @@ void closing_test( )
 	mist::closing( image_object, 3 );
 }
 
+void erosion_triangle_test( )
+{
+	mist::array2< unsigned char > element( 9, 5 );
+	element( 4, 0 ) = 1;
+	element( 3, 1 ) = 1; element( 4, 1 ) = 1; element( 5, 1 ) = 1;
+	element( 2, 2 ) = 1; element( 3, 2 ) = 1; element( 4, 2 ) = 1; element( 5, 2 ) = 1; element( 6, 2 ) = 1;
+	element( 1, 3 ) = 1; element( 2, 3 ) = 1; element( 3, 3 ) = 1; element( 4, 3 ) = 1; element( 5, 3 ) = 1; element( 6, 3 ) = 1; element( 7, 3 ) = 1;
+	element( 0, 4 ) = 1; element( 1, 4 ) = 1; element( 2, 4 ) = 1; element( 3, 4 ) = 1; element( 4, 4 ) = 1; element( 5, 4 ) = 1; element( 6, 4 ) = 1; element( 7, 4 ) = 1; element( 8, 4 ) = 1;
+
+	mist::erosion( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ) );
+}
+
+void dilation_triangle_test( )
+{
+	mist::array2< unsigned char > element( 9, 5 );
+	element( 4, 0 ) = 1;
+	element( 3, 1 ) = 1; element( 4, 1 ) = 1; element( 5, 1 ) = 1;
+	element( 2, 2 ) = 1; element( 3, 2 ) = 1; element( 4, 2 ) = 1; element( 5, 2 ) = 1; element( 6, 2 ) = 1;
+	element( 1, 3 ) = 1; element( 2, 3 ) = 1; element( 3, 3 ) = 1; element( 4, 3 ) = 1; element( 5, 3 ) = 1; element( 6, 3 ) = 1; element( 7, 3 ) = 1;
+	element( 0, 4 ) = 1; element( 1, 4 ) = 1; element( 2, 4 ) = 1; element( 3, 4 ) = 1; element( 4, 4 ) = 1; element( 5, 4 ) = 1; element( 6, 4 ) = 1; element( 7, 4 ) = 1; element( 8, 4 ) = 1;
+
+	mist::dilation( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ) );
+}
+
+void opening_triangle_test( )
+{
+	mist::array2< unsigned char > element( 9, 5 );
+	element( 4, 0 ) = 1;
+	element( 3, 1 ) = 1; element( 4, 1 ) = 1; element( 5, 1 ) = 1;
+	element( 2, 2 ) = 1; element( 3, 2 ) = 1; element( 4, 2 ) = 1; element( 5, 2 ) = 1; element( 6, 2 ) = 1;
+	element( 1, 3 ) = 1; element( 2, 3 ) = 1; element( 3, 3 ) = 1; element( 4, 3 ) = 1; element( 5, 3 ) = 1; element( 6, 3 ) = 1; element( 7, 3 ) = 1;
+	element( 0, 4 ) = 1; element( 1, 4 ) = 1; element( 2, 4 ) = 1; element( 3, 4 ) = 1; element( 4, 4 ) = 1; element( 5, 4 ) = 1; element( 6, 4 ) = 1; element( 7, 4 ) = 1; element( 8, 4 ) = 1;
+
+	mist::opening( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ) );
+}
+
+void closing_triangle_test( )
+{
+	mist::array2< unsigned char > element( 9, 5 );
+	element( 4, 0 ) = 1;
+	element( 3, 1 ) = 1; element( 4, 1 ) = 1; element( 5, 1 ) = 1;
+	element( 2, 2 ) = 1; element( 3, 2 ) = 1; element( 4, 2 ) = 1; element( 5, 2 ) = 1; element( 6, 2 ) = 1;
+	element( 1, 3 ) = 1; element( 2, 3 ) = 1; element( 3, 3 ) = 1; element( 4, 3 ) = 1; element( 5, 3 ) = 1; element( 6, 3 ) = 1; element( 7, 3 ) = 1;
+	element( 0, 4 ) = 1; element( 1, 4 ) = 1; element( 2, 4 ) = 1; element( 3, 4 ) = 1; element( 4, 4 ) = 1; element( 5, 4 ) = 1; element( 6, 4 ) = 1; element( 7, 4 ) = 1; element( 8, 4 ) = 1;
+
+	mist::closing( image_object, mist::morphology::create_morphology_structure( element, 4, 2 ) );
+}
+
 void interpolate_test( int mode, bool reso_up )
 {
 	image_type tmp( image_object );
@@ -314,3 +363,68 @@ void interlace_test( bool is_odd_line )
 }
 
 
+void expand_test( )
+{
+	mist::array2< unsigned char > original, figure, tmp;
+	image_type::size_type size = 5, i;
+
+	mist::convert( image_object, original );
+
+	figure = tmp = original;
+
+	mist::expand_mdt( figure, figure, size );
+
+	for( i = 0 ; i < size ; i++ )
+	{
+		mist::expand_mdt( tmp, tmp, 1 );
+	}
+
+	double err = 0;
+	for( i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		err = ( tmp[ i ] - figure[ i ] ) * ( tmp[ i ] - figure[ i ] );
+	}
+	std::cout << "Error: " << err << std::endl;
+
+	for( i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		if( figure[ i ] != 0 )
+		{
+			image_object[ i ] = original[ i ] != 0 ? 255 : 127;
+		}
+	}
+}
+
+
+void shrink_test( )
+{
+	mist::array2< unsigned char > original, figure, tmp;
+	image_type::size_type size = 5, i;
+
+	mist::convert( image_object, original );
+	mist::convert( image_object, figure );
+
+	figure = tmp = original;
+
+	mist::shrink_mdt( figure, figure, size );
+
+	for( i = 0 ; i < size ; i++ )
+	{
+		mist::shrink_mdt( tmp, tmp, 1 );
+	}
+
+	double err = 0;
+	for( i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		err = ( tmp[ i ] - figure[ i ] ) * ( tmp[ i ] - figure[ i ] );
+	}
+	std::cout << "Error: " << err << std::endl;
+
+	for( i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		if( original[ i ] != 0 )
+		{
+			image_object[ i ] = figure[ i ] == 0 ? 255 : 127;
+		}
+	}
+}
