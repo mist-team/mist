@@ -494,7 +494,7 @@ namespace dicom_controller
 					num = num + 1;
 					if( p + num <= e && pdst + num <= pdst_end )
 					{
-						for( size_type i = 0 ; i < num ; i++ )
+						for( difference_type i = 0 ; i < num ; i++ )
 						{
 							pdst[ i ] = p[ i ];
 						}
@@ -507,7 +507,7 @@ namespace dicom_controller
 					num = 1 - num;
 					if( p + 1 <= e && pdst + num <= pdst_end )
 					{
-						for( size_type i = 0 ; i < num ; i++ )
+						for( difference_type i = 0 ; i < num ; i++ )
 						{
 							pdst[ i ] = *p;
 						}
@@ -533,6 +533,9 @@ namespace dicom_controller
 		case JPEG:
 			// 今のところ未サポート
 			return( false );
+
+		default:
+			break;
 		}
 
 		if( element.num_bytes < 8 + 8 )
@@ -558,7 +561,6 @@ namespace dicom_controller
 		if( num_bytes > 0 )
 		{
 			// 各フレームへのポインタが発見されたので調査
-			size_type i = 0;
 			unsigned char *p = pointer;
 			while( p < pointer + num_bytes && number_of_fragments < 16 )
 			{
@@ -607,6 +609,9 @@ namespace dicom_controller
 				{
 					ret = false;
 				}
+				break;
+
+			default:
 				break;
 			}
 			i++;
