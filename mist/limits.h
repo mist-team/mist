@@ -72,7 +72,7 @@ _DEFINE_TYPE_LIMITS( long double,   false,  true,  LDBL_MIN,  LDBL_MAX, 0 )
 	struct type_limits< rgb< type > >\
 	{\
 		typedef rgb< type > value_type;\
-		typedef typename rgb< type >::value_type rgb_value_type;\
+		typedef rgb< type >::value_type rgb_value_type;\
 		\
 		enum{ is_integer = type_limits< rgb_value_type >::is_integer };\
 		enum{ is_signed  = type_limits< rgb_value_type >::is_signed };\
