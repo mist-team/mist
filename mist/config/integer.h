@@ -378,12 +378,12 @@ public:
 
 	const integer &operator %=( const integer &a )
 	{
-		return( operator =( *this - ( *this / a ) ) );
+		return( operator =( *this - ( *this / a ) * a ) );
 	}
 
 	const integer &operator %=( difference_type n )
 	{
-		return( operator =( *this - ( *this / n ) ) );
+		return( operator =( *this - ( *this / n ) * n ) );
 	}
 
 
