@@ -19,23 +19,23 @@ _MIST_BEGIN
 
 // 以下のコードは Tomy 氏が http://www5.airnet.ne.jp/tomy/cpro/csource.htm にて
 // 掲載しているソースを参考にして作成し，演算ミス等のバグを修正し，独自の拡張を施したものである．
-// 基底は65536であり，無駄なビットが発生しないようにしてある
-// integer< 4 > が表現できる数は，-65536^10 以上 65536^10 未満の整数となる
-// つまり，-18446744073709551616 <= x <= 18446744073709551616
-// 10進の桁数で約20桁程度表現可能となる
+// 基底は256であり，無駄なビットが発生しないようにしてある
+// integer< 10 > が表現できる数は，-256^10 以上 256^10 未満の整数となる
+// つまり，-1208925819614629174706176 <= x <= 1208925819614629174706176
+// 10進の桁数で約24桁程度表現可能となる
 
 
-template < size_t __65536_N__ >
+template < unsigned int __256_N__ >
 class integer
 {
 public:
 	typedef size_t size_type;
 	typedef ptrdiff_t difference_type;
-	typedef unsigned short value_type;
+	typedef unsigned char value_type;
 
 private:
-	_MIST_CONST( difference_type, BASE, 65536 );
-	_MIST_CONST( size_type, DATA_NUM, __65536_N__ );
+	_MIST_CONST( signed int, BASE, 256 );
+	_MIST_CONST( unsigned int, DATA_NUM, __256_N__ );
 
 protected:
 	size_t		length_;
