@@ -56,8 +56,19 @@ typedef ThreadExitCode( LPTHREADFUNC ) ( void *thread_param );
 // スレッドを操作する，識別する変数
 struct thread_dmy_class{ };
 
+// スレッドを操作する一番ベースとなるクラス
+struct thread_object
+{
+	virtual bool create( ) = 0;
+	virtual bool wait( unsigned long dwMilliseconds = INFINITE ) = 0;
+	virtual bool close( ) = 0;
+	virtual bool suspend( ) = 0;
+	virtual bool resume( ) = 0;
+};
+
+
 template < class thread_parameter = thread_dmy_class >
-class thread
+class thread : public thread_object
 {
 public:
 	typedef unsigned long thread_exit_type;
@@ -128,7 +139,7 @@ public:
 	virtual ~thread( ){ }
 
 
-	bool create( )
+	virtual bool create( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので直接関数を呼び出す
@@ -146,7 +157,7 @@ public:
 		return ( ret );
 	}
 
-	bool wait( unsigned long dwMilliseconds = INFINITE )
+	virtual bool wait( unsigned long dwMilliseconds = INFINITE )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので何もしない
@@ -186,7 +197,7 @@ public:
 #endif
 	}
 
-	bool close( )
+	virtual bool close( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので常に true を返す
@@ -202,7 +213,7 @@ public:
 #endif
 	}
 
-	bool suspend( )
+	virtual bool suspend( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので常に true を返す
@@ -214,7 +225,7 @@ public:
 #endif
 	}
 
-	bool resume( )
+	virtual bool resume( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので常に true を返す
@@ -254,7 +265,65 @@ protected:
 
 
 
+// スレッドを普通の関数形式の呼び出しで簡便に利用するための関数群
+namespace __thread_controller__
+{
+	template < class Param, class Functor >
+	class thread_object_functor : public thread< thread_object_functor< Param, Functor > >
+	{
+	private:
+		const Param &param_;
+		Functor func_;
 
+	public:
+		thread_object_functor( const Param &p, Functor f ) : param_( p ), func_( f ){ }
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( const thread_object_functor &p )
+		{
+			func_( param_ );
+			return( 0 );
+		}
+	};
+}
+
+template < class Param, class Functor >
+inline thread_object *create_thread( const Param &param, Functor f )
+{
+	thread_object *t = new __thread_controller__::thread_object_functor< Param, Functor >( param, f );
+	t->create( );
+	return( t );
+}
+
+inline bool close_thread( thread_object *t )
+{
+	if( t == NULL )
+	{
+		return( false );
+	}
+	bool b = t->close( );
+	delete t;
+	return( b );
+}
+
+inline bool wait_thread( thread_object *t, unsigned long dwMilliseconds = INFINITE )
+{
+	return( t == NULL ? false : t->wait( dwMilliseconds ) );
+}
+
+inline bool suspend_thread( thread_object *t )
+{
+	return( t == NULL ? false : t->suspend( ) );
+}
+
+inline bool resume_thread( thread_object *t )
+{
+	return( t == NULL ? false : t->resume( ) );
+}
+
+
+// スレッドの排他制御をサポートするクラス
 struct lock_object
 {
 protected:
@@ -367,6 +436,7 @@ protected:
 
 
 
+// スレッドの排他制御を簡便に記述するためのヘルパクラス
 class lock
 {
 protected:
