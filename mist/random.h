@@ -8,6 +8,7 @@
 // mist–¼‘O‹óŠÔ‚Ìn‚Ü‚è
 _MIST_BEGIN
 
+
 //MT(Mersenne Twister)–@‚É‚æ‚é—””­¶
 class random
 {
