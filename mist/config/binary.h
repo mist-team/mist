@@ -30,6 +30,7 @@ private:
 public:
 	binary( ) : value_( false ){ }
 	binary( const value_type &b ) : value_( b ){ }
+	binary( const binary &b ) : value_( b.value_ ){ }
 
 	const binary &operator  =( const binary &b ){ value_ = b.value_;  return( *this ); }
 	const binary &operator  =( const value_type &b ){ value_ = b;   return( *this ); }
@@ -43,6 +44,11 @@ public:
 	const binary &operator &=( const binary &b ){ value_ = value_ &&  b.value_; return( *this ); }
 	const binary &operator ^=( const binary &b ){ value_ = value_ !=  b.value_; return( *this ); }
 
+	const binary &operator +=( const value_type &b ){ return( operator +=( binary( b ) ) ); }
+	const binary &operator -=( const value_type &b ){ return( operator -=( binary( b ) ) ); }
+	const binary &operator *=( const value_type &b ){ return( operator *=( binary( b ) ) ); }
+	const binary &operator /=( const value_type &b ){ return( operator /=( binary( b ) ) ); }
+
 	bool operator ==( const binary &b ) const { return( value_ == b.value_ ); }
 	bool operator !=( const binary &b ) const { return( value_ != b.value_ ); }
 	bool operator < ( const binary &b ) const { return( value_ <  b.value_ ); }
@@ -53,7 +59,7 @@ public:
 	value_type get_value( ) const { return( value_ ); }
 
 	// boolへの自動キャスト演算子（危険のため一時停止）
-	operator bool( ) const { return( value_ ); }
+	//operator bool( ) const { return( value_ ); }
 };
 
 inline const binary operator +( const binary &b1, const binary &b2 ){ return( binary( b1 ) += b2 ); }
@@ -64,6 +70,15 @@ inline const binary operator %( const binary &b1, const binary &b2 ){ return( bi
 inline const binary operator |( const binary &b1, const binary &b2 ){ return( binary( b1 ) |= b2 ); }
 inline const binary operator &( const binary &b1, const binary &b2 ){ return( binary( b1 ) &= b2 ); }
 inline const binary operator ^( const binary &b1, const binary &b2 ){ return( binary( b1 ) ^= b2 ); }
+
+inline const binary operator *( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) *= b2 ); }
+inline const binary operator *( const binary::value_type &b1, const binary &b2 ){ return( binary( b2 ) *= b1 ); }
+inline const binary operator /( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) /= b2 ); }
+
+inline const binary operator +( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) += b2 ); }
+inline const binary operator +( const binary::value_type &b1, const binary &b2 ){ return( binary( b2 ) += b1 ); }
+inline const binary operator -( const binary &b1, const binary::value_type &b2 ){ return( binary( b1 ) -= b2 ); }
+inline const binary operator -( const binary::value_type &b1, const binary &b2 ){ return( binary( b1 ) -= b2 ); }
 
 inline std::ostream &operator <<( std::ostream &out, const binary &v )
 {

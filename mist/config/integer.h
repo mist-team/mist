@@ -13,6 +13,9 @@
 // mist–¼‘O‹óŠÔ‚Ìn‚Ü‚è
 _MIST_BEGIN
 
+// ˆÈ‰º‚ÌƒR[ƒh‚Í Tomy ‚ª http://www5.airnet.ne.jp/tomy/cpro/csource.htm ‚É‚Ä
+// ŒfÚ‚µ‚Ä‚¢‚éƒ\[ƒX‚ğŠî‚Éì¬‚µC‰‰Zƒ~ƒX“™‚ÌƒoƒO‚ğC³‚µC“Æ©‚ÌŠg’£‚ğ{‚µ‚½‚à‚Ì‚Å‚ ‚éD
+
 
 namespace __integer_util__
 {
@@ -52,7 +55,7 @@ public:
 		memset( data_, 0, sizeof( value_type ) * DATA_NUM );
 	}
 
-	integer( value_type v ) : length_( 0 ), sign_( true )
+	integer( difference_type v ) : length_( 0 ), sign_( true )
 	{
 		memset( data_, 0, sizeof( value_type ) * DATA_NUM );
 		if( v != 0 )
@@ -65,7 +68,7 @@ public:
 			length_ = 0;
 			do
 			{
-				data_[ length_++ ] = v % BASE;
+				data_[ length_++ ] = static_cast< value_type >( v % BASE );
 				v /= BASE;
 			} while( v > 0 );
 		}
@@ -179,16 +182,19 @@ public:
 		integer x( 0 );
 		x.sign_ = sign_ == a.sign_;
 
-		for( size_type j = 0 ; j < a.length_ ; j++ )
+		size_type i, j, imax;
+		value_type u, t;
+
+		for( j = 0 ; j < a.length_ ; j++ )
 		{
-			value_type u = a.data_[ j ];
+			u = a.data_[ j ];
 			if( u != 0 )
 			{
-				value_type t = 0;
-				size_type imax = length_ + j - 1;
-				for( size_type i = j ; i < imax ; i++ )
+				t = 0;
+				imax = length_ + j - 1;
+				for( i = j ; i <= imax ; i++ )
 				{
-					t += ( x.data_[ i ] + u * data_[ j ] );
+					t += ( x.data_[ i ] + u * data_[ i - j ] );
 					x.data_[ i ] = t % BASE;
 					t /= BASE;
 				}
@@ -207,18 +213,18 @@ public:
 		}
 		else
 		{
-			x.length_ = length_ + a.length_;
+			x.length_ = length_ + a.length_ - 1;
 		}
 		return( operator =( x ) );
 	}
 
-	const integer &operator *=( value_type n )
+	const integer &operator *=( difference_type n )
 	{
 		if( length_ == 0 || n == 0 )
 		{
 			return( operator =( integer( 0 ) ) );
 		}
-		else if( ::std::abs( n ) >= BASE )
+		else if( ::std::abs( static_cast< int >( n ) ) >= BASE )
 		{
 			return( operator *=( integer( n ) ) );
 		}
@@ -229,11 +235,11 @@ public:
 			n = - n;
 		}
 
-		value_type t = 0;
+		difference_type t = 0;
 		for( size_type i = 0 ; i < length_ ; i++ )
 		{
 			t += data_[ i ] * n;
-			data_[ i ] = t % BASE;
+			data_[ i ] = static_cast< value_type >( t % BASE );
 			t /= BASE;
 		}
 
@@ -247,17 +253,150 @@ public:
 				length_--;
 				return( *this );
 			}
-			data_[ length_ - 1 ] = t % BASE;
+			data_[ length_ - 1 ] = static_cast< value_type >( t % BASE );
 			t /= BASE;
 		}
 		return( *this );
 	}
 
+
+	const integer &operator /=( const integer &a )
+	{
+		if( length_ == 0 )
+		{
+			return( operator =( integer( 0 ) ) );
+		}
+		else if( a.length_ == 0 )
+		{
+			// ƒ[ƒœZ
+			std::cerr << "zero division!!" << std::endl;
+			return( *this );
+		}
+		if( a.length_ == 1 )
+		{
+			value_type t = a.sign_ ? a.data_[ 0 ] : -a.data_[ 0 ];
+			return( operator /=( t ) );
+		}
+
+		int c = acmp( *this, a );
+		if( c < 0 )
+		{
+			// Š„‚é”‚Ì‚Ù‚¤‚ªŠ„‚ç‚ê‚é”‚æ‚è‘å‚«‚¢‚½‚ß0‚É‚·‚é
+			return( operator =( integer( 0 ) ) );
+		}
+		else if( c == 0 )
+		{
+			// Š„‚é”‚ÆŠ„‚ç‚ê‚é”‚ª“™‚µ‚¢‚Ì‚Å1‚Æ‚µC•„†‚Ì‚İİ’è‚·‚é
+			return( operator =( integer( sign_ == a.sign_ ? 1 : -1 ) ) );
+		}
+
+		if( length_ == DATA_NUM )
+		{
+			// Š„‚ç‚ê‚é”‚ª‘å‚«‚·‚¬‚é‚½‚ßœZ‚Å‚«‚È‚¢
+			std::cerr << "too large to divide!!" << std::endl;
+			return( *this );
+		}
+
+		integer q, w;
+		integer aa( *this ), bb( a );
+		value_type d = BASE / ( a.data_[ a.length_ - 1 ] + 1 ), x;
+		q.sign_ = sign_ == a.sign_;
+
+		if( d != 1 )
+		{
+			aa *= d;
+			bb *= d;
+		}
+		q.length_ = aa.length_ - bb.length_ + 1;
+		if( ( x = aa.data_[ aa.length_ - 1 ] / bb.data_[ bb.length_ - 1 ]) == 0 )
+		{
+			q.length_--;
+			x = ( aa.data_[ aa.length_ - 1 ] * BASE + aa.data_[ aa.length_ - 2 ] ) / bb.data_[ bb.length_ - 1 ];
+		}
+		aa.sign_ = bb.sign_;
+		w.length_ = 0;
+
+		difference_type ql = q.length_;
+		for( ; ; )
+		{
+			for( ; ; )
+			{
+				w = bb * x;
+				shift_up( w, ql - 1 );
+				if( acmp( w, aa ) <= 0 )
+				{
+					break;
+				}
+				x--;
+			}
+			q.data_[ ql-- - 1 ] = x;
+			aa -= w;
+			if( aa.length_ == 0 || ql == 0 )
+			{
+				break;
+			}
+			x = ( aa.data_[ aa.length_ - 1 ] * BASE + aa.data_[ aa.length_ - 2 ] ) / bb.data_[ bb.length_ - 1 ];
+		}
+		if( q.data_[ q.length_ - 1 ] == 0 )
+		{
+			q.length_--;
+		}
+		return( operator =( q ) );
+	}
+
+	const integer &operator /=( difference_type n )
+	{
+		if( length_ == 0 )
+		{
+			return( *this );
+		}
+		else if( n == 0 )
+		{
+			// ƒ[ƒœZ
+			std::cerr << "zero division!!" << std::endl;
+			return( *this );
+		}
+		else if( ::std::abs( static_cast< int >( n ) ) >= BASE )
+		{
+			return( operator /=( integer( n ) ) );
+		}
+
+		if( n < 0 )
+		{
+			sign_ = !sign_;
+			n = - n;
+		}
+
+		value_type t = 0;
+		for( difference_type i = length_ - 1 ; i >= 0 ; i-- )
+		{
+			t = t * BASE + data_[ i ];
+			data_[ i ] = static_cast< value_type >( t / n );
+			t %= n;
+		}
+		if( data_[ length_ - 1 ] == 0 )
+		{
+			length_--;
+		}
+		return( *this );
+	}
+
+	const integer &operator %=( const integer &a )
+	{
+		return( operator =( *this - ( *this / a ) ) );
+	}
+
+	const integer &operator %=( value_type n )
+	{
+		return( operator =( *this - ( *this / n ) ) );
+	}
+
+
 	bool operator ==( const integer &a ) const { return( sign_ == a.sign_ && acmp( *this, a ) == 0 ); }
-	bool operator !=( const integer &a ) const { return( !( *this == c ) ); }
-	bool operator < ( const integer &a ) const { return( !( *this >= c ) ); }
-	bool operator <=( const integer &a ) const { return( c >= *this ); }
-	bool operator > ( const integer &a ) const { return( c < *this ); }
+	bool operator !=( const integer &a ) const { return( !( *this == a ) ); }
+	bool operator < ( const integer &a ) const { return( !( *this >= a ) ); }
+	bool operator <=( const integer &a ) const { return( a >= *this ); }
+	bool operator > ( const integer &a ) const { return( a < *this ); }
 	bool operator >=( const integer &a ) const
 	{
 		if( sign_ && !a.sign_ )
@@ -465,25 +604,81 @@ protected:
 
 		return( x );
 	}
+
+	static void shift_up( integer &a, difference_type n )
+	{
+		if( a.length_ == 0 || n == 0 )
+		{
+		}
+		else if( n < 0 )
+		{
+			shift_down( a, -n );
+		}
+		else
+		{
+			difference_type i;
+			for( i = a.length_ - 1 ; i >= 0 ; i-- )
+			{
+				a.data_[ i + n ] = a.data_[ i ];
+			}
+			for( i = n - 1 ; i >= 0 ; i-- )
+			{
+				a.data_[ i ] = 0;
+			}
+			a.length_ += n;
+		}
+	}
+
+	static void shift_down( integer &a, difference_type n )
+	{
+		difference_type len = a.length_;
+		if( a.length_ == 0 || n == 0 )
+		{
+		}
+		else if( n < 0 )
+		{
+			shift_up( a, -n );
+		}
+		else if( len <= n )
+		{
+			a = integer( 0 );
+		}
+		else
+		{
+			difference_type i;
+			for( i = 0 ; i < len - n ; i++ )
+			{
+				a.data_[ i ] = a.data_[ i + n ];
+			}
+			for( ; i < len ; i++ )
+			{
+				a.data_[ i ] = 0;
+			}
+			a.length_ -= n;
+		}
+	}
+
 };
 
 template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator +( const integer< MAX_KETA, T, BASE > &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) += v2 ); }
 template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator -( const integer< MAX_KETA, T, BASE > &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) -= v2 ); }
 template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator *( const integer< MAX_KETA, T, BASE > &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) *= v2 ); }
-//template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator /( const integer< MAX_KETA, T, BASE > &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) /= v2 ); }
-//template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator %( const integer< MAX_KETA, T, BASE > &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) %= v2 ); }
+template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator /( const integer< MAX_KETA, T, BASE > &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) /= v2 ); }
+template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator %( const integer< MAX_KETA, T, BASE > &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) %= v2 ); }
 //template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator |( const integer< MAX_KETA, T, BASE > &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) |= v2 ); }
 //template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator &( const integer< MAX_KETA, T, BASE > &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) &= v2 ); }
 //template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator ^( const integer< MAX_KETA, T, BASE > &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) ^= v2 ); }
-//
+
 template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator *( const integer< MAX_KETA, T, BASE > &v1, const typename integer< MAX_KETA, T, BASE >::value_type &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) *= v2 ); }
 template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator *( const typename integer< MAX_KETA, T, BASE >::value_type &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v2 ) *= v1 ); }
-//template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator /( const integer< MAX_KETA, T, BASE > &v1, const typename integer< MAX_KETA, T, BASE >::value_type &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) /= v2 ); }
-//
-//template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator +( const integer< MAX_KETA, T, BASE > &v1, const typename integer< MAX_KETA, T, BASE >::value_type &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) += v2 ); }
-//template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator +( const typename integer< MAX_KETA, T, BASE >::value_type &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v2 ) += v1 ); }
-//template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator -( const integer< MAX_KETA, T, BASE > &v1, const typename integer< MAX_KETA, T, BASE >::value_type &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) -= v2 ); }
-//template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator -( const typename integer< MAX_KETA, T, BASE >::value_type &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v2 ) -= v1 ); }
+template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator /( const integer< MAX_KETA, T, BASE > &v1, const typename integer< MAX_KETA, T, BASE >::value_type &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) /= v2 ); }
+
+template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator +( const integer< MAX_KETA, T, BASE > &v1, const typename integer< MAX_KETA, T, BASE >::value_type &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) += v2 ); }
+template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator +( const typename integer< MAX_KETA, T, BASE >::value_type &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v2 ) += v1 ); }
+template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator -( const integer< MAX_KETA, T, BASE > &v1, const typename integer< MAX_KETA, T, BASE >::value_type &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) -= v2 ); }
+template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator -( const typename integer< MAX_KETA, T, BASE >::value_type &v1, const integer< MAX_KETA, T, BASE > &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) -= v2 ); }
+
+template < unsigned int MAX_KETA, class T, unsigned int BASE > inline const integer< MAX_KETA, T, BASE > operator %( const integer< MAX_KETA, T, BASE > &v1, const typename integer< MAX_KETA, T, BASE >::value_type &v2 ){ return( integer< MAX_KETA, T, BASE >( v1 ) %= v2 ); }
 
 
 template < unsigned int MAX_KETA, class T, unsigned int BASE >
