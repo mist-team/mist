@@ -203,7 +203,8 @@ namespace __interlace_controller__
 //! @param[in]  in          … 引数の説明
 //! @param[out] out         … 引数の説明
 //! @param[in]  is_odd_line … 引数の説明
-//! @return                 … 戻り値の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool interlace( const array2< T, Allocator > &in, array2< T, Allocator > &out, bool is_odd_line = false )

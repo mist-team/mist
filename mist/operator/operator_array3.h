@@ -11,9 +11,10 @@
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1 … 引数の説明
+//! @param[in] a2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline const array3< T, Allocator >& operator +=( array3< T, Allocator > &a1, const array3< T, Allocator >  &a2 )
@@ -36,9 +37,10 @@ inline const array3< T, Allocator >& operator +=( array3< T, Allocator > &a1, co
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1 … 引数の説明
+//! @param[in] a2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline const array3< T, Allocator >& operator -=( array3< T, Allocator > &a1, const array3< T, Allocator >  &a2 )
@@ -61,9 +63,10 @@ inline const array3< T, Allocator >& operator -=( array3< T, Allocator > &a1, co
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1 … 引数の説明
+//! @param[in] a2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline const array3< T, Allocator >& operator *=( array3< T, Allocator > &a1, const array3< T, Allocator >  &a2 )
@@ -86,9 +89,10 @@ inline const array3< T, Allocator >& operator *=( array3< T, Allocator > &a1, co
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1 … 引数の説明
+//! @param[in] a2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline const array3< T, Allocator >& operator /=( array3< T, Allocator > &a1, const array3< T, Allocator >  &a2 )
@@ -111,9 +115,10 @@ inline const array3< T, Allocator >& operator /=( array3< T, Allocator > &a1, co
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1  … 引数の説明
+//! @param[in] val … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline const array3< T, Allocator >& operator +=( array3< T, Allocator > &a1, typename array3< T, Allocator >::value_type val )
@@ -128,9 +133,10 @@ inline const array3< T, Allocator >& operator +=( array3< T, Allocator > &a1, ty
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1  … 引数の説明
+//! @param[in] val … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline const array3< T, Allocator >& operator -=( array3< T, Allocator > &a1, typename array3< T, Allocator >::value_type val )
@@ -145,9 +151,10 @@ inline const array3< T, Allocator >& operator -=( array3< T, Allocator > &a1, ty
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1  … 引数の説明
+//! @param[in] val … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline const array3< T, Allocator >& operator *=( array3< T, Allocator > &a1, typename array3< T, Allocator >::value_type val )
@@ -162,9 +169,10 @@ inline const array3< T, Allocator >& operator *=( array3< T, Allocator > &a1, ty
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1  … 引数の説明
+//! @param[in] val … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline const array3< T, Allocator >& operator /=( array3< T, Allocator > &a1, typename array3< T, Allocator >::value_type val )
@@ -188,9 +196,9 @@ inline const array3< T, Allocator >& operator /=( array3< T, Allocator > &a1, ty
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator -( const array3< T, Allocator > &a )
@@ -207,9 +215,10 @@ inline array3< T, Allocator > operator -( const array3< T, Allocator > &a )
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1 … 引数の説明
+//! @param[in] a2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator +( const array3< T, Allocator > &a1, const array3< T, Allocator > &a2 )
@@ -223,9 +232,10 @@ inline array3< T, Allocator > operator +( const array3< T, Allocator > &a1, cons
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1 … 引数の説明
+//! @param[in] a2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator -( const array3< T, Allocator > &a1, const array3< T, Allocator > &a2 )
@@ -239,9 +249,10 @@ inline array3< T, Allocator > operator -( const array3< T, Allocator > &a1, cons
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1 … 引数の説明
+//! @param[in] a2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator *( const array3< T, Allocator > &a1, const array3< T, Allocator > &a2 )
@@ -255,9 +266,10 @@ inline array3< T, Allocator > operator *( const array3< T, Allocator > &a1, cons
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a1 … 引数の説明
+//! @param[in] a2 … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator /( const array3< T, Allocator > &a1, const array3< T, Allocator > &a2 )
@@ -271,9 +283,10 @@ inline array3< T, Allocator > operator /( const array3< T, Allocator > &a1, cons
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a   … 引数の説明
+//! @param[in] val … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator +( const array3< T, Allocator > &a, typename array3< T, Allocator >::value_type val )
@@ -286,9 +299,10 @@ inline array3< T, Allocator > operator +( const array3< T, Allocator > &a, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] val … 引数の説明
+//! @param[in] a   … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator +( typename array3< T, Allocator >::value_type val, const array3< T, Allocator > &a )
@@ -303,9 +317,10 @@ inline array3< T, Allocator > operator +( typename array3< T, Allocator >::value
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a   … 引数の説明
+//! @param[in] val … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator -( const array3< T, Allocator > &a, typename array3< T, Allocator >::value_type val )
@@ -318,9 +333,10 @@ inline array3< T, Allocator > operator -( const array3< T, Allocator > &a, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] val … 引数の説明
+//! @param[in] a   … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator -( typename array3< T, Allocator >::value_type val, const array3< T, Allocator > &a )
@@ -334,9 +350,10 @@ inline array3< T, Allocator > operator -( typename array3< T, Allocator >::value
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a   … 引数の説明
+//! @param[in] val … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator *( const array3< T, Allocator > &a, typename array3< T, Allocator >::value_type val )
@@ -349,9 +366,10 @@ inline array3< T, Allocator > operator *( const array3< T, Allocator > &a, typen
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] val … 引数の説明
+//! @param[in] a   … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator *( typename array3< T, Allocator >::value_type val, const array3< T, Allocator > &a )
@@ -365,9 +383,10 @@ inline array3< T, Allocator > operator *( typename array3< T, Allocator >::value
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] a   … 引数の説明
+//! @param[in] val … 引数の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
 inline array3< T, Allocator > operator /( const array3< T, Allocator > &a, typename array3< T, Allocator >::value_type val )

@@ -73,6 +73,7 @@ namespace __image_controller__
 //! 
 //! @param[out] image    … 引数の説明
 //! @param[in]  filename … 引数の説明
+//! 
 //! @retval true  … 戻り値の説明
 //! @retval false … 戻り値の説明
 //! 
@@ -122,6 +123,7 @@ inline bool read_image( mist::array2< T, Allocator > &image, const std::string &
 //! 
 //! @param[in] image    … 引数の説明
 //! @param[in] filename … 引数の説明
+//! 
 //! @retval true  … 戻り値の説明
 //! @retval false … 戻り値の説明
 //! 

@@ -26,9 +26,7 @@ _MIST_BEGIN
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param b … 引数の説明
 //! 
 template < bool b >
 struct mist_memory_operator
@@ -37,9 +35,10 @@ struct mist_memory_operator
 	//! 
 	//! 組み込み型のデータの場合は 0 で初期化する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] num       … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects1( Allocator &allocator, typename Allocator::size_type num )
@@ -58,9 +57,11 @@ struct mist_memory_operator
 	//! 
 	//! 組み込み型のデータの場合は値を代入して初期化する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] num       … 引数の説明
+	//! @param[in] obj       … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects2( Allocator &allocator, typename Allocator::size_type num, typename Allocator::const_reference obj )
@@ -78,9 +79,11 @@ struct mist_memory_operator
 	//! 
 	//! 組み込み型のデータの場合は値を代入して初期化する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] s         … 引数の説明
+	//! @param[in] e         … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects3( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e )
@@ -98,9 +101,9 @@ struct mist_memory_operator
 	//! 
 	//! 組み込み型の場合はデストラクタは呼び出さない
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] ptr       … 引数の説明
+	//! @param[in] num       … 引数の説明
 	//! 
 	template < class Allocator >
 	static void deallocate_objects( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
@@ -117,9 +120,12 @@ struct mist_memory_operator
 	//! 
 	//! 組み込み型の場合は memcpy を利用する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] s         … 引数の説明
+	//! @param[in] e         … 引数の説明
+	//! @param[in] x         … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class Allocator >
 	static typename Allocator::pointer copy_objects1( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x )
@@ -141,9 +147,12 @@ struct mist_memory_operator
 	//! 
 	//! 組み込み型の場合は memcpy を利用する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] ptr       … 引数の説明
+	//! @param[in] num       … 引数の説明
+	//! @param[in] to        … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class Allocator >
 	static typename Allocator::pointer copy_objects2( Allocator &allocator, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to )
@@ -160,9 +169,10 @@ struct mist_memory_operator
 	//! 
 	//! char 型の場合は memset を利用する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] ptr       … 引数の説明
+	//! @param[in] num       … 引数の説明
+	//! @param[in] obj       … 引数の説明
 	//! 
 	template < class Allocator >
 	static void fill_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
@@ -178,9 +188,9 @@ struct mist_memory_operator
 	//! 
 	//! 組み込み型の場合は memset を利用する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] ptr       … 引数の説明
+	//! @param[in] num       … 引数の説明
 	//! 
 	template < class Allocator >
 	static void fill_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
@@ -200,10 +210,6 @@ struct mist_memory_operator
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
-//! 
 template <>
 struct mist_memory_operator< true >
 {
@@ -211,9 +217,10 @@ struct mist_memory_operator< true >
 	//! 
 	//! 組み込み型のデータの場合は 0 で初期化する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] num       … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects1( Allocator &allocator, typename Allocator::size_type num )
@@ -231,9 +238,11 @@ struct mist_memory_operator< true >
 	//! 
 	//! 組み込み型のデータの場合は値を代入して初期化する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] num       … 引数の説明
+	//! @param[in] obj       … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects2( Allocator &allocator, typename Allocator::size_type num, typename Allocator::const_reference obj )
@@ -251,9 +260,11 @@ struct mist_memory_operator< true >
 	//! 
 	//! 組み込み型のデータの場合は値を代入して初期化する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] s         … 引数の説明
+	//! @param[in] e         … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class Allocator >
 	static typename Allocator::pointer allocate_objects3( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e )
@@ -271,9 +282,9 @@ struct mist_memory_operator< true >
 	//! 
 	//! 組み込み型の場合はデストラクタは呼び出さない
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] ptr       … 引数の説明
+	//! @param[in] num       … 引数の説明
 	//! 
 	template < class Allocator >
 	static void deallocate_objects( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
@@ -289,9 +300,12 @@ struct mist_memory_operator< true >
 	//! 
 	//! 組み込み型の場合は memcpy を利用する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] s         … 引数の説明
+	//! @param[in] e         … 引数の説明
+	//! @param[in] x         … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class Allocator >
 	static typename Allocator::pointer copy_objects1( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x )
@@ -308,9 +322,12 @@ struct mist_memory_operator< true >
 	//! 
 	//! 組み込み型の場合は memcpy を利用する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] ptr       … 引数の説明
+	//! @param[in] num       … 引数の説明
+	//! @param[in] to        … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	template < class Allocator >
 	static typename Allocator::pointer copy_objects2( Allocator &allocator, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to )
@@ -327,9 +344,10 @@ struct mist_memory_operator< true >
 	//! 
 	//! char 型の場合は memset を利用する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] ptr       … 引数の説明
+	//! @param[in] num       … 引数の説明
+	//! @param[in] obj       … 引数の説明
 	//! 
 	template < class Allocator >
 	static void fill_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
@@ -345,9 +363,9 @@ struct mist_memory_operator< true >
 	//! 
 	//! 組み込み型の場合は memset を利用する
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] allocator … 引数の説明
+	//! @param[in] ptr       … 引数の説明
+	//! @param[in] num       … 引数の説明
 	//! 
 	template < class Allocator >
 	static void fill_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
@@ -365,31 +383,30 @@ struct mist_memory_operator< true >
 //! 
 //! データの型によって，メモリコピー等を高速化してある
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T         … 引数の説明
+//! @param Allocator … 引数の説明
 //! 
 template < class T, class Allocator >
 class mist_allocator : public Allocator
 {
 public:
-	typedef Allocator base;
-	typedef typename Allocator::reference reference;
-	typedef typename Allocator::const_reference const_reference;
-	typedef typename Allocator::value_type value_type;
-	typedef typename Allocator::size_type size_type;
-	typedef typename Allocator::difference_type difference_type;
-	typedef typename Allocator::pointer pointer;
-	typedef typename Allocator::const_pointer const_pointer;
+	typedef Allocator base;											///< @brief MISTコンテナが利用するアロケータ型
+	typedef typename Allocator::reference reference;				///< @brief MISTのコンテナ内に格納するデータ型の参照．mist::array< data > の場合，data & となる
+	typedef typename Allocator::const_reference const_reference;	///< @brief MISTのコンテナ内に格納するデータ型の const 参照．mist::array< data > の場合，const data & となる
+	typedef typename Allocator::value_type value_type;				///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef typename Allocator::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename Allocator::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename Allocator::pointer pointer;					///< @brief MISTのコンテナ内に格納するデータ型のポインター型．mist::array< data > の場合，data * となる
+	typedef typename Allocator::const_pointer const_pointer;		///< @brief MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array< data > の場合，const data * となる
 
 public:
 	/// @brief num 個のオブジェクトのメモリを確保し初期化を行う（組み込み型かどうかで内部の実装を分岐）
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	pointer allocate_objects( size_type num )
 	{
@@ -401,9 +418,10 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num … 引数の説明
+	//! @param[in] obj … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	pointer allocate_objects( size_type num, const_reference obj )
 	{
@@ -415,9 +433,10 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] s … 引数の説明
+	//! @param[in] e … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	pointer allocate_objects( const_pointer s, const_pointer e )
 	{
@@ -429,9 +448,10 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] ptr … 引数の説明
+	//! @param[in] num … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	void deallocate_objects( pointer ptr, size_type num )
 	{
@@ -443,9 +463,11 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] s … 引数の説明
+	//! @param[in] e … 引数の説明
+	//! @param[in] x … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	pointer copy_objects( const_pointer s, const_pointer e, pointer x )
 	{
@@ -457,9 +479,11 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] ptr … 引数の説明
+	//! @param[in] num … 引数の説明
+	//! @param[in] to  … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	pointer copy_objects( const_pointer ptr, size_type num, pointer to )
 	{
@@ -471,9 +495,11 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] ptr … 引数の説明
+	//! @param[in] num … 引数の説明
+	//! @param[in] obj … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	void fill_objects( pointer ptr, size_type num, const_reference obj )
 	{
@@ -485,9 +511,10 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] ptr … 引数の説明
+	//! @param[in] num … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	void fill_objects( pointer ptr, size_type num )
 	{
@@ -499,9 +526,11 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] ptr      … 引数の説明
+	//! @param[in] num      … 引数の説明
+	//! @param[in] dest_num … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	pointer trim_objects( pointer ptr, size_type num, size_type dest_num )
 	{
@@ -523,9 +552,12 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] ptr      … 引数の説明
+	//! @param[in] num      … 引数の説明
+	//! @param[in] dest_num … 引数の説明
+	//! @param[in] obj      … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	pointer trim_objects( pointer ptr, size_type num, size_type dest_num, const_reference obj )
 	{
@@ -548,16 +580,30 @@ public:
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] alloc … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	const Allocator &operator=( const Allocator &alloc )
 	{
 		if( &alloc != this ) base::operator=( alloc );
 		return( *this );
 	}
+
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
 	mist_allocator( ) : base( ){}
+
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] alloc … 引数の説明
+	//! 
 	mist_allocator( const Allocator &alloc ) : base( alloc ){}
 };
 

@@ -422,6 +422,7 @@ namespace __pnm_controller__
 //! @param[out] image    … 引数の説明
 //! @param[in]  filename … 引数の説明
 //! @param[in]  level    … 引数の説明
+//! 
 //! @retval true  … 戻り値の説明
 //! @retval false … 戻り値の説明
 //! 
@@ -440,6 +441,7 @@ bool read_pnm( array2< T, Allocator > &image, const std::string &filename, typen
 //! @param[in] filename … 引数の説明
 //! @param[in] pnm_type … 引数の説明
 //! @param[in] level    … 引数の説明
+//! 
 //! @retval true  … 戻り値の説明
 //! @retval false … 戻り値の説明
 //! 

@@ -20,9 +20,7 @@ _MIST_BEGIN
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_add
@@ -40,9 +38,7 @@ struct implement_operator_add
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_sub
@@ -61,9 +57,7 @@ struct implement_operator_sub
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_mul
@@ -82,9 +76,7 @@ struct implement_operator_mul
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_div
@@ -103,9 +95,7 @@ struct implement_operator_div
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_ne
@@ -122,9 +112,7 @@ struct implement_operator_ne
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_gt
@@ -141,9 +129,7 @@ struct implement_operator_gt
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_le
@@ -160,9 +146,7 @@ struct implement_operator_le
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_ge
@@ -179,9 +163,7 @@ struct implement_operator_ge
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_modulo
@@ -200,9 +182,7 @@ struct implement_operator_modulo
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_bitor
@@ -221,9 +201,7 @@ struct implement_operator_bitor
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_bitand
@@ -242,9 +220,7 @@ struct implement_operator_bitand
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operator_exclusiveor
@@ -263,9 +239,7 @@ struct implement_operator_exclusiveor
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_arithmetic_operators : public
@@ -282,9 +256,7 @@ struct implement_arithmetic_operators : public
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_comparison_operators : public
@@ -302,9 +274,7 @@ struct implement_comparison_operators : public
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_bit_operators : public
@@ -320,9 +290,7 @@ struct implement_bit_operators : public
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template < class T >
 struct implement_operators : public

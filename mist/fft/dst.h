@@ -47,7 +47,8 @@ _MIST_BEGIN
 //! 
 //! @param[in]  in  … 引数の説明
 //! @param[out] out … 引数の説明
-//! @return         … 戻り値の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
@@ -107,7 +108,8 @@ bool dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 //! 
 //! @param[in]  in  … 引数の説明
 //! @param[out] out … 引数の説明
-//! @return         … 戻り値の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
@@ -168,7 +170,8 @@ bool dst_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 //! 
 //! @param[in]  in  … 引数の説明
 //! @param[out] out … 引数の説明
-//! @return         … 戻り値の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
@@ -235,7 +238,8 @@ bool dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 //! 
 //! @param[in]  in  … 引数の説明
 //! @param[out] out … 引数の説明
-//! @return         … 戻り値の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
@@ -312,7 +316,8 @@ bool dst_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 //! 
 //! @param[in]  in  … 引数の説明
 //! @param[out] out … 引数の説明
-//! @return         … 戻り値の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
@@ -388,7 +393,8 @@ bool dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 //! 
 //! @param[in]  in  … 引数の説明
 //! @param[out] out … 引数の説明
-//! @return         … 戻り値の説明
+//! 
+//! @return 戻り値の説明
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 bool dst_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )

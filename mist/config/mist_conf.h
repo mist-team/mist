@@ -111,6 +111,7 @@ struct __mist_dmy_callback__
 	/// MISTのアルゴリズムの進行状況を，0～100パーセントで受け取り，何もしない関数．
 	//!
 	//! @param percent [in] アルゴリズムの進行状況
+	//!
 	//! @return false ユーザー側からのキャンセルにより，アルゴリズムの実行を中止．
 	//! @return true  アルゴリズムの実行を継続
 	//!
@@ -129,6 +130,7 @@ struct __mist_console_callback__
 	/// MISTのアルゴリズムの進行状況を，0～100パーセントで受け取り，標準出力へ出力する．
 	//!
 	//! @param percent [in] アルゴリズムの進行状況
+	//!
 	//! @return false ユーザー側からのキャンセルにより，アルゴリズムの実行を中止．
 	//! @return true  アルゴリズムの実行を継続
 	//!

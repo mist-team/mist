@@ -44,19 +44,16 @@ _MIST_BEGIN
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
-//! 
 namespace dicom_controller
 {
 	/// @brief 関数・クラスの概要を書く
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] p … 引数の説明
+	//! @param[in] e … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	inline unsigned char *check_dicom_file( unsigned char *p, unsigned char *e )
 	{
@@ -84,9 +81,12 @@ namespace dicom_controller
 	//! そして，読み飛ばした場合は0を返し，テーブルに登録されている場合は次に存在するデータのバイト数を返す．
 	//! データを処理する先頭のポインタ 'p' と，データの最後＋1をさすポインタ 'e' を与える
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] p        … 引数の説明
+	//! @param[in] e        … 引数の説明
+	//! @param[in] tag      … 引数の説明
+	//! @param[in] numBytes … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	inline unsigned char *read_dicom_tag( unsigned char *p, unsigned char *e, dicom_tag &tag, difference_type &numBytes )
 	{
@@ -236,9 +236,11 @@ namespace dicom_controller
 	//! 
 	//! 登録されていないタグの場合は false をかえし，正しく処理された場合のみ true を返す．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] tag       … 引数の説明
+	//! @param[in] byte      … 引数の説明
+	//! @param[in] num_bytes … 引数の説明
+	//! 
+	//! @return 戻り値の説明
 	//! 
 	inline bool process_dicom_tag( const dicom_tag &tag, unsigned char *byte, difference_type num_bytes )
 	{
@@ -640,9 +642,11 @@ namespace dicom_controller
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] p … 引数の説明
+	//! @param[in] e … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
 	//! 
 	inline bool is_sequence_separate_tag( const unsigned char *p, const unsigned char *e )
 	{
@@ -657,9 +661,11 @@ namespace dicom_controller
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] p … 引数の説明
+	//! @param[in] e … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
 	//! 
 	inline bool is_sequence_element_end( const unsigned char *p, const unsigned char *e )
 	{
@@ -674,9 +680,11 @@ namespace dicom_controller
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] p … 引数の説明
+	//! @param[in] e … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
 	//! 
 	inline bool is_sequence_tag_end( const unsigned char *p, const unsigned char *e )
 	{
@@ -692,8 +700,10 @@ namespace dicom_controller
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
+	//! @param[in] dicom       … 引数の説明
+	//! @param[in] pointer     … 引数の説明
+	//! @param[in] end_pointer … 引数の説明
+	//! 
 	//! @return        … 戻り値の説明
 	//! 
 	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
@@ -855,9 +865,11 @@ namespace dicom_controller
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] dicom    … 引数の説明
+	//! @param[in] filename … 引数の説明
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
 	//! 
 	inline bool read_dicom_tags( dicom_tag_container &dicom, const std::string &filename )
 	{
@@ -921,9 +933,11 @@ namespace dicom_controller
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] image    … 引数の説明
+//! @param[in] filename … 引数の説明
+//! 
+//! @retval true  … 戻り値の説明
+//! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
 bool read_dicom( array2< T, Allocator > &image, const std::string &filename )

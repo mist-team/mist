@@ -22,9 +22,7 @@ _MIST_BEGIN
 //! 
 //! Tが１バイトの文字列型であれば真に評価する
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template< class T > struct is_char        { _MIST_CONST( bool, value, false ); };
 template<> struct is_char< unsigned char >{ _MIST_CONST( bool, value, true  ); };
@@ -36,9 +34,7 @@ template<> struct is_char< char >         { _MIST_CONST( bool, value, true  ); }
 //! 
 //! T が float か double 型であれば真に評価する
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template< class T > struct is_float       { _MIST_CONST( bool, value, false ); };
 template<> struct is_float< float >       { _MIST_CONST( bool, value, true  ); };
@@ -51,9 +47,7 @@ template<> struct is_float< long double > { _MIST_CONST( bool, value, true  ); }
 //! 
 //! T が整数型であれば真に評価する。汎整数型がこれにあたる
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template< class T > struct is_integer                  { _MIST_CONST( bool, value, false ); };
 template<>          struct is_integer< unsigned char > { _MIST_CONST( bool, value, true  ); };
@@ -73,9 +67,7 @@ template<>          struct is_integer< char >          { _MIST_CONST( bool, valu
 //! 
 //! T が算術型であれば真に評価する。汎整数型か浮動小数点型のいずれかがこれにあたる
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template< class T > struct is_arithmetic                  { _MIST_CONST( bool, value, false ); };
 template<>          struct is_arithmetic< unsigned char > { _MIST_CONST( bool, value, true  ); };
@@ -98,9 +90,7 @@ template<>          struct is_arithmetic< long double >   { _MIST_CONST( bool, v
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T  … 引数の説明
 //! 
 template< class T >
 struct type_trait{ typedef T value_type; };
@@ -111,9 +101,13 @@ struct type_trait{ typedef T value_type; };
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] b1 … 引数の説明
+//! @param[in] b2 … 引数の説明
+//! @param[in] b3 … 引数の説明
+//! @param[in] b4 … 引数の説明
+//! @param[in] b5 … 引数の説明
+//! @param[in] b6 … 引数の説明
+//! @param[in] b7 … 引数の説明
 //! 
 template < bool b1, bool b2, bool b3 = true, bool b4 = true, bool b5 = true, bool b6 = true, bool b7 = true >
 struct type_and
@@ -133,9 +127,13 @@ struct type_and< true, true, true, true, true, true, true >
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] b1 … 引数の説明
+//! @param[in] b2 … 引数の説明
+//! @param[in] b3 … 引数の説明
+//! @param[in] b4 … 引数の説明
+//! @param[in] b5 … 引数の説明
+//! @param[in] b6 … 引数の説明
+//! @param[in] b7 … 引数の説明
 //! 
 template < bool b1, bool b2, bool b3 = false, bool b4 = false, bool b5 = false, bool b6 = false, bool b7 = false >
 struct type_or
@@ -156,9 +154,7 @@ struct type_or< false, false, false, false, false, false, false >
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] b1 … 引数の説明
 //! 
 template < bool b1 >
 struct type_not
@@ -179,9 +175,8 @@ struct type_not< true >
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in] b1 … 引数の説明
+//! @param[in] b2 … 引数の説明
 //! 
 template < bool b1, bool b2 >
 struct type_equal
