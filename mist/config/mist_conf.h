@@ -220,7 +220,7 @@ struct __mist_dmy_callback__
 template < class Functor >
 struct __mist_convert_callback__
 {
-	Functor &f_;
+	Functor f_;
 	double lower_;
 	double upper_;
 
@@ -238,7 +238,7 @@ struct __mist_convert_callback__
 	}
 
 	__mist_convert_callback__( ) : lower_( 0.0 ), upper_( 100.0 ){ }
-	__mist_convert_callback__( Functor &f, double l = 0.0, double u = 100.0 ) : f_( f ), lower_( l ), upper_( u ){ }
+	__mist_convert_callback__( Functor f, double l = 0.0, double u = 100.0 ) : f_( f ), lower_( l ), upper_( u ){ }
 };
 
 
