@@ -153,25 +153,28 @@ namespace pixel_data
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 2次元画像をOpenGLを用いてウィンドウに描画する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] image         … 引数の説明
-//! @param[in] image_width   … 引数の説明
-//! @param[in] image_height  … 引数の説明
-//! @param[in] window_width  … 引数の説明
-//! @param[in] window_height … 引数の説明
-//! @param[in] zoom          … 引数の説明
-//! @param[in] xpos          … 引数の説明
-//! @param[in] ypos          … 引数の説明
-//! @param[in] back_r        … 引数の説明
-//! @param[in] back_g        … 引数の説明
-//! @param[in] back_b        … 引数の説明
-//! @param[in] interpolate   … 引数の説明
+//! OpenGLのテクスチャとして，2次元画像をウィンドウに描画する
+//! 描画される絵は，ウィンドウの縦と横の短いほうの辺に画像端が張り付くように描画される
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @attention 入力画像の一辺は，2の指数乗になっている必要がある
+//! 
+//! @param[in] image         … 入力画像
+//! @param[in] image_width   … 入力画像内で，画面に描画する幅
+//! @param[in] image_height  … 入力画像内で，画面に描画する高さ
+//! @param[in] window_width  … 出力ウィンドウの幅
+//! @param[in] window_height … 出力ウィンドウの高さ
+//! @param[in] zoom          … 拡大率（0より大きい値を指定．デフォルトは1.0）
+//! @param[in] xpos          … 画像をX軸方向にどれだけずらして描画するか（デフォルトは0）
+//! @param[in] ypos          … 画像をY軸方向にどれだけずらして描画するか（デフォルトは0）
+//! @param[in] back_r        … 塗りつぶす背景色の赤成分（デフォルトは0）
+//! @param[in] back_g        … 塗りつぶす背景色の緑成分（デフォルトは0）
+//! @param[in] back_b        … 塗りつぶす背景色の青成分（デフォルトは0）
+//! @param[in] interpolate   … 画素の間を補間し，スクリーン上で滑らかにする（デフォルトはtrue）
+//!
+//! @retval true  … 描画に成功
+//! @retval false … 不適切な入力画像の場合
 //! 
 template< class T, class Allocator >
 bool draw_buffer( const array2< T, Allocator > &image,
@@ -286,23 +289,26 @@ bool draw_buffer( const array2< T, Allocator > &image,
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 2次元画像をOpenGLを用いてウィンドウに描画する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] image         … 引数の説明
-//! @param[in] window_width  … 引数の説明
-//! @param[in] window_height … 引数の説明
-//! @param[in] zoom          … 引数の説明
-//! @param[in] xpos          … 引数の説明
-//! @param[in] ypos          … 引数の説明
-//! @param[in] back_r        … 引数の説明
-//! @param[in] back_g        … 引数の説明
-//! @param[in] back_b        … 引数の説明
-//! @param[in] interpolate   … 引数の説明
+//! OpenGLのテクスチャとして，2次元画像をウィンドウに描画する
+//! 描画される絵は，ウィンドウの縦と横の短いほうの辺に画像端が張り付くように描画される
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @attention 入力画像の一辺は，2の指数乗でなくても正しく描画される
+//! 
+//! @param[in] image         … 入力画像
+//! @param[in] window_width  … 出力ウィンドウの幅
+//! @param[in] window_height … 出力ウィンドウの高さ
+//! @param[in] zoom          … 拡大率（0より大きい値を指定．デフォルトは1.0）
+//! @param[in] xpos          … 画像をX軸方向にどれだけずらして描画するか（デフォルトは0）
+//! @param[in] ypos          … 画像をY軸方向にどれだけずらして描画するか（デフォルトは0）
+//! @param[in] back_r        … 塗りつぶす背景色の赤成分（デフォルトは0）
+//! @param[in] back_g        … 塗りつぶす背景色の緑成分（デフォルトは0）
+//! @param[in] back_b        … 塗りつぶす背景色の青成分（デフォルトは0）
+//! @param[in] interpolate   … 画素の間を補間し，スクリーン上で滑らかにする（デフォルトはtrue）
+//!
+//! @retval true  … 描画に成功
+//! @retval false … 不適切な入力画像の場合
 //! 
 template< class T, class Allocator >
 bool draw_image( const array2< T, Allocator > &image,
@@ -342,22 +348,21 @@ bool draw_image( const array2< T, Allocator > &image,
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief ウィンドウ座標系の点を画像座標系の点に変換する
 //! 
-//! ウィンドウ上の点から画像上の点の座標を計算する
-//! @attention aspectは sizeY / sizeX であり、各ピクセルのアスペクトである
+//! ウィンドウ上でクリックされた点等を，画像座標系での点に変換する
 //! 
-//! @param[in] pt     … 引数の説明
-//! @param[in] imgX   … 引数の説明
-//! @param[in] imgY   … 引数の説明
-//! @param[in] aspect … 引数の説明
-//! @param[in] winW   … 引数の説明
-//! @param[in] winH   … 引数の説明
-//! @param[in] zoom   … 引数の説明
-//! @param[in] posx   … 引数の説明
-//! @param[in] posy   … 引数の説明
+//! @param[in] pt     … ウィンドウ座標系における点
+//! @param[in] imgX   … 描画に用いている画像の幅
+//! @param[in] imgY   … 描画に用いている画像の高さ
+//! @param[in] aspect … アスペクト（Y軸方向の画素サイズ / X軸方向の画素サイズ）
+//! @param[in] winW   … 出力ウィンドウの幅
+//! @param[in] winH   … 出力ウィンドウの高さ
+//! @param[in] zoom   … 拡大率
+//! @param[in] posx   … 画像をX軸方向にどれだけずらして描画するか
+//! @param[in] posy   … 画像をY軸方向にどれだけずらして描画するか
 //!
-//! @return … 戻り値の説明
+//! @return 画像座標系における点の位置
 //! 
 inline vector2< double > screen2point( const vector2< double > &pt, double imgX, double imgY, double aspect,
 												double winW, double winH, double zoom, double posx, double posy )
@@ -385,22 +390,21 @@ inline vector2< double > screen2point( const vector2< double > &pt, double imgX,
 	return( vector2< double >( ( xx + 1.0 ) * imgX * 0.5, ( yy + 1.0 ) * imgY * 0.5 ) );
 }
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 画像座標系の点をウィンドウ座標系の点に変換する
 //! 
-//! 画像上の点からウィンドウ上の点の座標を計算する
-//! @attention aspectは sizeX / sizeY であり、各ピクセルのアスペクトである
+//! 画像上の特定の点をウィンドウ上に反映させたい時などに使用する
 //! 
-//! @param[in] pt     … 引数の説明
-//! @param[in] imgX   … 引数の説明
-//! @param[in] imgY   … 引数の説明
-//! @param[in] aspect … 引数の説明
-//! @param[in] winW   … 引数の説明
-//! @param[in] winH   … 引数の説明
-//! @param[in] zoom   … 引数の説明
-//! @param[in] posx   … 引数の説明
-//! @param[in] posy   … 引数の説明
+//! @param[in] pt     … 画像座標系における点
+//! @param[in] imgX   … 描画に用いている画像の幅
+//! @param[in] imgY   … 描画に用いている画像の高さ
+//! @param[in] aspect … アスペクト（Y軸方向の画素サイズ / X軸方向の画素サイズ）
+//! @param[in] winW   … 出力ウィンドウの幅
+//! @param[in] winH   … 出力ウィンドウの高さ
+//! @param[in] zoom   … 拡大率
+//! @param[in] posx   … 画像をX軸方向にどれだけずらして描画するか
+//! @param[in] posy   … 画像をY軸方向にどれだけずらして描画するか
 //!
-//! @return … 戻り値の説明
+//! @return ウィンドウ座標系における点の位置
 //! 
 inline vector2< double > point2screen( const vector2< double > &pt, double imgX, double imgY, double aspect,
 												double winW, double winH, double zoom, double posx, double posy )

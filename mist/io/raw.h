@@ -899,7 +899,6 @@ bool read_raw( array3< T, Allocator > &image, const std::string &filename,
 //! @param[in] filename         … 入力ファイル名
 //! @param[in] offset           … 画像から引き算するオフセット値
 //! @param[in] to_little_endian … 出力画像のデータ形式（リトルエンディアン … true，ビッグエンディアン … false）
-//! @param[in]  callback         … 進行状況を通知するコールバック関数
 //!
 //! @retval true  … 画像の読み込みに成功
 //! @retval false … 画像の読み込みに失敗

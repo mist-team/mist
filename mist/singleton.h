@@ -13,23 +13,23 @@
 _MIST_BEGIN
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief Singleton を扱うクラス
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention 実行時の初期化順序は正しく扱えないので注意が必要
+//! @attention そのため，大域的な変数を本Singletonクラスのインスタンスで初期化することはできない
+//! @attention 本クラスの実態を作成することはできない
 //! 
-//! @param T  … 引数の説明
+//! @param T  … Singletonを作成する型
 //! 
 template < class T >
 class singleton
 {
 public:
-	typedef T value_type;	///< @brief 型の説明を書く
+	typedef T value_type;	///< @brief Singletonを作成する型
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief Singletonの実態を返す関数
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
+	//! @return Singletonのインスタンス
 	//! 
 	static value_type &get_instance( )
 	{

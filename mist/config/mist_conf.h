@@ -106,11 +106,26 @@ _MIST_BEGIN
 
 
 // 行列演算のオプション
+#define _DESCENDING_ORDER_EIGEN_VALUE_		0	///< 固有値・固有ベクトルを計算した時に，降順に並べる時は 1，昇順に並べる時は 0 にする
 #define _USE_BALANCING_MATRIX_EIGEN_		1	///< 行列の対角化を行うことで計算精度を上げる（若干メモリを大目に食う）
 #define _USE_DIVIDE_AND_CONQUER_SVD_		1	///< 分割統治法を用いた高速な特異値分解を利用する（若干メモリを大目に食う）
 
 
-/// MISTのアルゴリズム全般で利用するダミーコールバックファンクタ
+/// @brief 入力された2つのオブジェクトが同じもの（メモリ上で同じ位置にある）かどうかを判定する
+//!
+//! @param[in] o1 … オブジェクト1
+//! @param[in] o2 … オブジェクト2
+//!
+//! @return true  … 入力された2つのオブジェクトは，メモリ上で同じ位置に存在している
+//! @return false … 入力された2つのオブジェクトは，別のメモリ上に存在している
+//!
+template < class Object1, class Object2 >
+inline bool is_same_object( const Object1 &o1, const Object2 &o2 )
+{
+	return( reinterpret_cast< const void * >( &o1 ) == reinterpret_cast< const void * >( &o2 ) );
+}
+
+/// @brief MISTのアルゴリズム全般で利用するダミーコールバックファンクタ
 //!
 //! MISTのアルゴリズムが提供するコールバックは0～100の間の数を返し，アルゴリズムが終了する際に100よりも大きい数値を返す
 //! また，コールバックファンクタの戻り値が false の場合はMISTのアルゴリズムは処理を中断できる場合は中断し，直ちに制御を返します．
@@ -118,18 +133,18 @@ _MIST_BEGIN
 //!
 struct __mist_dmy_callback__
 {
-	/// MISTのアルゴリズムの進行状況を，0～100パーセントで受け取り，何もしない関数．
+	/// @brief MISTのアルゴリズムの進行状況を，0～100パーセントで受け取り，何もしない関数．
 	//!
-	//! @param percent [in] アルゴリズムの進行状況
+	//! @param[in] percent … アルゴリズムの進行状況
 	//!
-	//! @return false ユーザー側からのキャンセルにより，アルゴリズムの実行を中止．
-	//! @return true  アルゴリズムの実行を継続
+	//! @return true  … アルゴリズムの実行を継続
+	//! @return false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止
 	//!
 	bool operator()( double percent ) const { return( true ); }
 };
 
 
-/// MISTのアルゴリズム全般で利用可能な，標準出力型ダミーコールバックファンクタ
+/// @brief MISTのアルゴリズム全般で利用可能な，標準出力型ダミーコールバックファンクタ
 //!
 //! MISTのアルゴリズムが提供するコールバックは0～100の間の数を返し，アルゴリズムが終了する際に100よりも大きい数値を返す
 //! また，コールバックファンクタの戻り値が false の場合はMISTのアルゴリズムは処理を中断できる場合は中断し，直ちに制御を返します．
@@ -137,12 +152,12 @@ struct __mist_dmy_callback__
 //!
 struct __mist_console_callback__
 {
-	/// MISTのアルゴリズムの進行状況を，0～100パーセントで受け取り，標準出力へ出力する．
+	/// @brief MISTのアルゴリズムの進行状況を，0～100パーセントで受け取り，標準出力へ出力する．
 	//!
-	//! @param percent [in] アルゴリズムの進行状況
+	//! @param[in] percent … アルゴリズムの進行状況
 	//!
-	//! @return false ユーザー側からのキャンセルにより，アルゴリズムの実行を中止．
-	//! @return true  アルゴリズムの実行を継続
+	//! @return true  … アルゴリズムの実行を継続
+	//! @return false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止
 	//!
 	bool operator()( double percent ) const
 	{
@@ -186,30 +201,30 @@ struct __mist_console_callback__
 
 #if _CHECK_ACCESS_VIOLATION_
 
-	/// DEBUGでMISTをビルドした際に，1次元アクセスでの範囲外アクセスをチェックし，エラーの際に呼ばれる関数．
+	/// @brief DEBUGでMISTをビルドした際に，1次元アクセスでの範囲外アクセスをチェックし，エラーの際に呼ばれる関数．
 	//!
-	//! @param index [in] MISTコンテナに対するアクセス要求位置
+	//! @param[in] index … MISTコンテナに対するアクセス要求位置
 	//!
 	inline void mist_debug_assertion( ptrdiff_t index )
 	{
 		::std::cout << "Access Violation at ( " << static_cast< int >( index ) << " )" << ::std::endl;
 	}
 
-	/// DEBUGでMISTをビルドした際に，2次元アクセスでの範囲外アクセスをチェックし，エラーの際に呼ばれる関数．
+	/// @brief DEBUGでMISTをビルドした際に，2次元アクセスでの範囲外アクセスをチェックし，エラーの際に呼ばれる関数．
 	//!
-	//! @param index1 [in] MISTコンテナに対するX軸でのアクセス要求位置
-	//! @param index2 [in] MISTコンテナに対するY軸でのアクセス要求位置
+	//! @param[in] index1 … MISTコンテナに対するX軸でのアクセス要求位置
+	//! @param[in] index2 … MISTコンテナに対するY軸でのアクセス要求位置
 	//!
 	inline void mist_debug_assertion( ptrdiff_t index1, ptrdiff_t index2 )
 	{
 		::std::cout << "Access Violation at ( " << static_cast< int >( index1 ) << ", " << static_cast< int >( index2 ) << " )" << ::std::endl;
 	}
 
-	/// DEBUGでMISTをビルドした際に，3次元アクセスでの範囲外アクセスをチェックし，エラーの際に呼ばれる関数．
+	/// @brief DEBUGでMISTをビルドした際に，3次元アクセスでの範囲外アクセスをチェックし，エラーの際に呼ばれる関数．
 	//!
-	//! @param index1 [in] MISTコンテナに対するX軸でのアクセス要求位置
-	//! @param index2 [in] MISTコンテナに対するY軸でのアクセス要求位置
-	//! @param index3 [in] MISTコンテナに対するZ軸でのアクセス要求位置
+	//! @param[in] index1 … MISTコンテナに対するX軸でのアクセス要求位置
+	//! @param[in] index2 … MISTコンテナに対するY軸でのアクセス要求位置
+	//! @param[in] index3 … MISTコンテナに対するZ軸でのアクセス要求位置
 	//!
 	inline void mist_debug_assertion( ptrdiff_t index1, ptrdiff_t index2, ptrdiff_t index3 )
 	{

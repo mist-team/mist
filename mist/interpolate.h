@@ -757,25 +757,33 @@ namespace __interpolate_controller__
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
+/// @brief 最近傍型補間
 namespace nearest
 {
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 1次元配列に対する最近傍型補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，最近傍に決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+	bool interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
 						typename array< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array< T1, Allocator1 >, array< T2, Allocator2 > > interpolate_thread;
 
@@ -819,22 +827,35 @@ namespace nearest
 		}
 
 		delete [] thread;
+
+		return( true );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 1次元配列に対する最近傍型補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，最近傍に決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
+	bool interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
 					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array1< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array1< T1, Allocator1 >, array1< T2, Allocator2 > > interpolate_thread;
 
@@ -879,24 +900,37 @@ namespace nearest
 		}
 
 		delete [] thread;
+
+		return( true );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2次元配列に対する最近傍型補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，最近傍に決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  height     … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのX軸方向のサイズ
+	//! @param[in]  height     … 出力データのY軸方向のサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+	bool interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 					typename array2< T1, Allocator1 >::size_type width, typename array2< T1, Allocator1 >::size_type height,
 					typename array2< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 || height == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array2< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 > > interpolate_thread;
 
@@ -942,27 +976,40 @@ namespace nearest
 		}
 
 		delete [] thread;
+
+		return( false );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 3次元配列に対する最近傍型補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，最近傍に決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  height     … 引数の説明
-	//! @param[in]  depth      … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのX軸方向のサイズ
+	//! @param[in]  height     … 出力データのY軸方向のサイズ
+	//! @param[in]  depth      … 出力データのZ軸方向のサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+	bool interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					typename array3< T1, Allocator1 >::size_type width,
 					typename array3< T1, Allocator1 >::size_type height,
 					typename array3< T1, Allocator1 >::size_type depth,
 					typename array3< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 || height == 0 || depth == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array3< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 > > interpolate_thread;
 
@@ -1009,29 +1056,39 @@ namespace nearest
 		}
 
 		delete [] thread;
+
+		return( true );
 	}
 }
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
+/// @brief 線形補間
 namespace linear
 {
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 1次元配列に対する線形補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，近傍の2点を用いて線形関数で決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+	bool interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
 						typename array< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array< T1, Allocator1 >, array< T2, Allocator2 > > interpolate_thread;
 
@@ -1075,22 +1132,35 @@ namespace linear
 		}
 
 		delete [] thread;
+
+		return( true );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 1次元配列に対する線形補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，近傍の2点を用いて線形関数で決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
+	bool interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
 					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array1< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array1< T1, Allocator1 >, array1< T2, Allocator2 > > interpolate_thread;
 
@@ -1135,24 +1205,37 @@ namespace linear
 		}
 
 		delete [] thread;
+
+		return( false );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2次元配列に対する線形補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，近傍の4点を用いて線形関数で決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  height     … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのX軸方向のサイズ
+	//! @param[in]  height     … 出力データのY軸方向のサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+	bool interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 					typename array2< T1, Allocator1 >::size_type width, typename array2< T1, Allocator1 >::size_type height,
 					typename array2< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 || height == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array2< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 > > interpolate_thread;
 
@@ -1198,27 +1281,40 @@ namespace linear
 		}
 
 		delete [] thread;
+
+		return( true );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 3次元配列に対する線形補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，近傍の8点を用いて線形関数で決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  height     … 引数の説明
-	//! @param[in]  depth      … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのX軸方向のサイズ
+	//! @param[in]  height     … 出力データのY軸方向のサイズ
+	//! @param[in]  depth      … 出力データのZ軸方向のサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+	bool interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					typename array3< T1, Allocator1 >::size_type width,
 					typename array3< T1, Allocator1 >::size_type height,
 					typename array3< T1, Allocator1 >::size_type depth,
 					typename array3< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 || height == 0 || depth == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array3< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 > > interpolate_thread;
 
@@ -1265,30 +1361,40 @@ namespace linear
 		}
 
 		delete [] thread;
+
+		return( true );
 	}
 }
 
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
+/// @brief 3次補間
 namespace cubic
 {
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 1次元配列に対する3次補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，近傍の4点を用いて3次間数で決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+	bool interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
 						typename array< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array< T1, Allocator1 >, array< T2, Allocator2 > > interpolate_thread;
 
@@ -1332,21 +1438,34 @@ namespace cubic
 		}
 
 		delete [] thread;
+
+		return( true );
 	}
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 1次元配列に対する3次補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，近傍の4点を用いて3次間数で決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
+	bool interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
 					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array1< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array1< T1, Allocator1 >, array1< T2, Allocator2 > > interpolate_thread;
 
@@ -1391,24 +1510,37 @@ namespace cubic
 		}
 
 		delete [] thread;
+
+		return( true );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2次元配列に対する3次補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，近傍の16点を用いて3次間数で決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  height     … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのX軸方向のサイズ
+	//! @param[in]  height     … 出力データのY軸方向のサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+	bool interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 					typename array2< T1, Allocator1 >::size_type width, typename array2< T1, Allocator1 >::size_type height,
 					typename array2< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 || height == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array2< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 > > interpolate_thread;
 
@@ -1454,27 +1586,40 @@ namespace cubic
 		}
 
 		delete [] thread;
+
+		return( true );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 3次元配列に対する3次補間
 	//!
-	//! 詳細な説明や関数の使用例を書く
+	//! 拡大縮小に伴う画素の内挿を，近傍の64点を用いて3次間数で決定する
 	//!
-	//! @param[in]  in         … 引数の説明
-	//! @param[out] out        … 引数の説明
-	//! @param[in]  width      … 引数の説明
-	//! @param[in]  height     … 引数の説明
-	//! @param[in]  depth      … 引数の説明
-	//! @param[in]  thread_num … 引数の説明
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのX軸方向のサイズ
+	//! @param[in]  height     … 出力データのY軸方向のサイズ
+	//! @param[in]  depth      … 出力データのZ軸方向のサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+	bool interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					typename array3< T1, Allocator1 >::size_type width,
 					typename array3< T1, Allocator1 >::size_type height,
 					typename array3< T1, Allocator1 >::size_type depth,
 					typename array3< T1, Allocator1 >::size_type thread_num = 0 )
 	{
+		if( is_same_object( in, out ) || width == 0 || height == 0 || depth == 0 )
+		{
+			return( false );
+		}
+
 		typedef typename array3< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 > > interpolate_thread;
 
@@ -1521,6 +1666,8 @@ namespace cubic
 		}
 
 		delete [] thread;
+
+		return( true );
 	}
 }
 

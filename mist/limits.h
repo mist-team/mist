@@ -41,11 +41,24 @@ _MIST_BEGIN
 	};\
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 入力された型の情報を取得する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 入力された型の以下の情報を調べる
+//! - 整数かどうか
+//! - 符号付かどうか
+//! - 最小値
+//! - 最大値
+//! - ゼロ
 //! 
-//! @param T  … 引数の説明
+//! @param T  … 情報を調べる型
+//! 
+//! @code 使用例
+//! std::cout << type_limits< int >::is_integer << std::endl;	// 整数なら1を出力する
+//! std::cout << type_limits< int >::is_signed  << std::endl;	// 符号付なら1を出力する
+//! std::cout << type_limits< int >::minimum( ) << std::endl;	// 最小値を出力する
+//! std::cout << type_limits< int >::maximum( ) << std::endl;	// 最大値を出力する
+//! std::cout << type_limits< int >::zero( )    << std::endl;	// ゼロを出力する
+//! @endcode
 //! 
 template < class T >
 struct type_limits
@@ -65,28 +78,13 @@ struct type_limits
 	};
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 型が表現できる最も最小の値を返す
 	static value_type minimum( ) { return( 0 ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 型が表現できる最も最大の値を返す
 	static value_type maximum( ) { return( 1 ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 型が表現できるゼロに対応する値を返す
 	static value_type zero( ){ return( 0 ); }
 };
 
@@ -210,13 +208,13 @@ namespace __limits_0_255__
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 入力されたデータを 0 から 255 の範囲に変換する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 0未満の値は全て0になり，255以上の値は全て255とする
 //! 
-//! @param[in] v … 引数の説明
+//! @param[in] v … 変換を行うデータ
 //! 
-//! @return 戻り値の説明
+//! @return 変換後のデータ
 //! 
 template < class T >
 inline const T limits_0_255( const T &v )

@@ -102,13 +102,13 @@ namespace __converter__
 //! @addtogroup image_converter_group 画像変換
 //!  @{
 
-/// @brief 関数・クラスの概要を書く
+/// @brief あるMISTコンテナから他のコンテナへの変換
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! コンテナ内の各要素を適切な変換操作を行って，他のコンテナへ変換する
+//! @note カラー画像からグレースケール画像へも適切に変換する
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return 戻り値の説明
+//! @param[in] in  … 入力画像
+//! @param[in] out … 出力画像
 //! 
 template < class Array1, class Array2 >
 inline void convert( const Array1 &in, Array2 &out )

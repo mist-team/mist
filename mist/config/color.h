@@ -20,11 +20,13 @@ _MIST_BEGIN
 // MISTで利用する基底のデータ型
 
 
-/// @brief カラー画像用
+/// @brief カラー画像用の画素
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @code カラー画像の作成例
+//! mist::array2< mist::rgb< unsigned char > > image;
+//! @endcode
 //! 
-//! @param T … 引数の説明
+//! @param T … 各色成分のデータ型
 //! 
 template< class T >
 struct rgb
@@ -39,53 +41,26 @@ public:
 	typedef const T* const_pointer;			///< @brief データ型の const ポインター型．data の場合，const data * となる
 
 public:
-	value_type r;		///< @brief 変数の説明を書く
-	value_type g;		///< @brief 変数の説明を書く
-	value_type b;		///< @brief 変数の説明を書く
+	value_type r;		///< @brief 赤色成分
+	value_type g;		///< @brief 緑色成分
+	value_type b;		///< @brief 青色成分
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
 	rgb( ) : r( 0 ), g( 0 ), b( 0 ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pix … 引数の説明
-	//! 
+	/// @brief 全ての成分を pix で初期化する
 	explicit rgb( const value_type &pix ) : r( pix ), g( pix ), b( pix ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] c … 引数の説明
-	//! 
+	/// @brief 他のカラー画素を用いて初期化する
 	rgb( const rgb &c ) : r( c.r ), g( c.g ), b( c.b ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] rr … 引数の説明
-	//! @param[in] gg … 引数の説明
-	//! @param[in] bb … 引数の説明
-	//! 
+	/// @brief 赤 rr，緑 gg，青 bb を用いて初期化する
 	rgb( const value_type &rr, const value_type &gg, const value_type &bb ) : r( rr ), g( gg ), b( bb ){ }
 
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] c … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
-	const rgb &operator  =( const rgb &c )
+	/// @brief 他のカラー画素を代入する
+	const rgb &operator =( const rgb &c )
 	{
 		if( &c != this )
 		{
@@ -96,15 +71,8 @@ public:
 		return( *this );
 	}
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pix … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
-	const rgb &operator  =( const value_type &pix )
+	/// @brief 全ての要素に，pix を代入する
+	const rgb &operator =( const value_type &pix )
 	{
 		r = pix;
 		g = pix;
@@ -113,210 +81,127 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief 全要素の符号反転
 	const rgb  operator -( ) const { return( rgb( -r, -g, -b ) ); }
 
-
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] c … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分の和
 	const rgb &operator +=( const rgb &c ){ r += c.r; g += c.g; b += c.b; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] c … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分の差
 	const rgb &operator -=( const rgb &c ){ r -= c.r; g -= c.g; b -= c.b; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] c … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分の積
 	const rgb &operator *=( const rgb &c ){ r *= c.r; g *= c.g; b *= c.b; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] c … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分の割り算
 	const rgb &operator /=( const rgb &c ){ r /= c.r; g /= c.g; b /= c.b; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] c … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分の剰余
 	const rgb &operator %=( const rgb &c ){ r %= c.r; g %= c.g; b %= c.b; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] c … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分の | 演算
 	const rgb &operator |=( const rgb &c ){ r |= c.r; g |= c.g; b |= c.b; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] c … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分の & 演算
 	const rgb &operator &=( const rgb &c ){ r &= c.r; g &= c.g; b &= c.b; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] c … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分の ^ 演算
 	const rgb &operator ^=( const rgb &c ){ r ^= c.r; g ^= c.g; b ^= c.b; return( *this ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pix … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分に pix 値を足す
 	const rgb &operator +=( const value_type &pix ){ r += pix; g += pix; b += pix; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pix … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分から pix 値を引く
 	const rgb &operator -=( const value_type &pix ){ r -= pix; g -= pix; b -= pix; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pix … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分に pix 値を掛ける
 	const rgb &operator *=( const value_type &pix ){ r *= pix; g *= pix; b *= pix; return( *this ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] pix … 引数の説明
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief RGB成分を pix 値で割る
 	const rgb &operator /=( const value_type &pix ){ r /= pix; g /= pix; b /= pix; return( *this ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b
+	//! \f]
 	//! 
-	//! @param[in] c … 引数の説明
+	//! @param[in] c … 右辺値
 	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
+	//! @retval true  … 2つのカラー画素が等しい場合
+	//! @retval false … 2つのカラー画素が異なる場合
 	//! 
 	bool operator ==( const rgb &c ) const { return( r == c.r && g == c.g && b == c.b ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのカラー画素が等しくない（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b }
+	//! \f]
 	//! 
-	//! @param[in] c … 引数の説明
+	//! @param[in] c … 右辺値
 	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
+	//! @retval true  … 2つのカラー画素が異なる場合
+	//! @retval false … 2つのカラー画素が等しい場合
 	//! 
 	bool operator !=( const rgb &c ) const { return( !( *this == c ) ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのカラー画素の < を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b }
+	//! \f]
 	//! 
-	//! @param[in] c … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
+	//! @retval true  … c1 <  c2 の場合
+	//! @retval false … c1 >= c2 の場合
 	//! 
 	bool operator < ( const rgb &c ) const { return( !( *this >= c ) ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのカラー画素の <= を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b
+	//! \f]
 	//! 
-	//! @param[in] c … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
+	//! @retval true  … c1 <= c2 の場合
+	//! @retval false … c1 >  c2 の場合
 	//! 
 	bool operator <=( const rgb &c ) const { return( c >= *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのカラー画素の > を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b }
+	//! \f]
 	//! 
-	//! @param[in] c … 引数の説明
+	//! @param[in] v … 右辺値
 	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
+	//! @retval true  … c1 >  c2 の場合
+	//! @retval false … c1 <= c2 の場合
 	//! 
 	bool operator > ( const rgb &c ) const { return( c < *this ); }
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 2つのカラー画素の >= を判定する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! \f[
+	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b
+	//! \f]
 	//! 
-	//! @param[in] c … 引数の説明
+	//! @param[in] c … 右辺値
 	//! 
-	//! @retval true  … 引数の説明
-	//! @retval false … 引数の説明
+	//! @retval true  … c1 >= c2 の場合
+	//! @retval false … c1 <  c2 の場合
 	//! 
 	bool operator >=( const rgb &c ) const { return( r >= c.r && g >= c.g && b >= c.b ); }
 
 
 	/// @brief NTSC系加重平均法により，グレースケールへ変換する
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
 	value_type get_value( ) const
 	{
 		return( static_cast< value_type >( r * 0.298912 + g * 0.586610 + b * 0.114478 ) );
@@ -327,183 +212,67 @@ public:
 };
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素の和
 template < class T > inline const rgb< T > operator +( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) += c2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素の差
 template < class T > inline const rgb< T > operator -( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) -= c2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素の積
 template < class T > inline const rgb< T > operator *( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) *= c2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素の割り算
 template < class T > inline const rgb< T > operator /( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) /= c2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素の剰余
 template < class T > inline const rgb< T > operator %( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) %= c2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素の | 演算
 template < class T > inline const rgb< T > operator |( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) |= c2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
+/// @brief カラー画素の & 演算
 //! 
 template < class T > inline const rgb< T > operator &( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) &= c2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素の ^ 演算
 template < class T > inline const rgb< T > operator ^( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) ^= c2 ); }
 
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素と定数の積
 template < class T > inline const rgb< T > operator *( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) *= c2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 定数とカラー画素の積
 template < class T > inline const rgb< T > operator *( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) *= c1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素を定数で割る
 template < class T > inline const rgb< T > operator /( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) /= c2 ); }
 
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素と定数の和
 template < class T > inline const rgb< T > operator +( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) += c2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 定数とカラー画素の和
 template < class T > inline const rgb< T > operator +( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) += c1 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief カラー画素と定数の差
 template < class T > inline const rgb< T > operator -( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) -= c2 ); }
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] c1 … 引数の説明
-//! @param[in] c2 … 引数の説明
-//! 
-//! @return 戻り値の説明
-//! 
+/// @brief 定数とカラー画素の差
 template < class T > inline const rgb< T > operator -( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) -= c2 ); }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     c   … 3次元ベクトル
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return 戻り値の説明
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! ( 1, 2, 3 )
+//! @endcode
 //! 
 template < class T > inline std::ostream &operator <<( std::ostream &out, const rgb< T > &c )
 {
@@ -515,14 +284,7 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 }
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return 戻り値の説明
-//! 
+/// @brief 入力された型がカラー画像かどうか調べる
 template < class T >
 struct is_color
 {

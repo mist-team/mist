@@ -42,13 +42,14 @@ _MIST_BEGIN
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 利用可能なCPU数を取得する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! Windowsの場合は GetSystemInfo 関数を利用してCPU数を取得する．
+//! Linux系の場合は，sysconf 関数を利用してCPU数を取得する．
 //! 
-//! @return 戻り値の説明
+//! @return 利用可能なCPU数
 //! 
-inline unsigned int get_cpu_num( )
+inline size_t get_cpu_num( )
 {
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしないのでCPU数は常に1
@@ -56,9 +57,9 @@ inline unsigned int get_cpu_num( )
 #elif defined( WIN32 )
 	SYSTEM_INFO sysInfo;
 	GetSystemInfo( &sysInfo );
-	return ( sysInfo.dwNumberOfProcessors );
+	return( static_cast< size_t >( sysInfo.dwNumberOfProcessors ) );
 #else
-	return ( ( unsigned int ) sysconf( _SC_NPROCESSORS_ONLN ) );
+	return( static_cast< size_t >( sysconf( _SC_NPROCESSORS_ONLN ) ) );
 #endif
 }
 
@@ -83,9 +84,11 @@ struct thread_object
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief template 型のデータを扱うことができるスレッドクラス
 //! 
 //! 詳細な説明や関数の使用例を書く
+//! 
+//! @attention _MIST_THREAD_SUPPORT_ が 1 の場合は，スレッドサポートは行わないため，シングルスレッド用に内部実装が変更される
 //! 
 //! @param thread_parameter … 引数の説明
 //! 
@@ -93,7 +96,7 @@ template < class thread_parameter = thread_dmy_class >
 class thread : public thread_object
 {
 public:
-	typedef unsigned long thread_exit_type;
+	typedef unsigned long thread_exit_type;		///< @brief スレッド終了時の戻り値の型
 
 private:
 
@@ -111,22 +114,17 @@ private:
 
 public:
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @return 戻り値の説明
-	//! 
+	/// @brief スレッドが終了した時に返した戻り値を取得する
 	thread_exit_type exit_code( ) const { return( thread_exit_code_ ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 他のスレッドオブジェクトと同じものを作成する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention 単なるコピーであり，別途スレッドが生成されるわけではない
 	//! 
-	//! @param[in] t … 引数の説明
+	//! @param[in] t … コピー元のスレッドオブジェクト
 	//!
-	//! @return  戻り値の説明
+	//! @return 自分自身
 	//! 
 	const thread &operator =( const thread &t )
 	{
@@ -144,13 +142,14 @@ public:
 	}
 
 
-	/// @brief threadの比較演算子
+	/// @brief 2つのスレッドオブジェクトが同じものかどうかを判定する
 	//! 
 	//! 詳細な説明や関数の使用例を書く
 	//! 
-	//! @param[in] t … 引数の説明
+	//! @param[in] t … 比較対象のスレッドオブジェクト
 	//!
-	//! @return  戻り値の説明
+	//! @retval true  … 同じスレッド
+	//! @retval false … 別のスレッド
 	//! 
 	bool operator ==( const thread &t ) const
 	{
@@ -185,12 +184,10 @@ public:
 	virtual ~thread( ){ }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief スレッドを生成する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … スレッドの作成に成功
+	//! @retval false … スレッドの作成に失敗
 	//! 
 	virtual bool create( )
 	{
@@ -211,14 +208,14 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief スレッドが終了するか，タイムアウトになるまで待機する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! タイムアウトを INFINITE に設定することで，スレッドが終了するまで待ち続ける
 	//! 
-	//! @param[in] dwMilliseconds … 引数の説明
+	//! @param[in] dwMilliseconds … タイムアウト時間（ミリ秒単位）
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … スレッドがタイムアウト前に終了した
+	//! @retval false … タイムアウトが発生したか，その他のエラーが発生
 	//! 
 	virtual bool wait( unsigned long dwMilliseconds = INFINITE )
 	{
@@ -261,12 +258,12 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief スレッドが使用していたリソースを開放する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! スレッドが使用したリソースを開放するために，必ず1つのスレッドに対し1度だけ呼ばれる必要がある
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … 正常にスレッドを終了
+	//! @retval false … スレッドの終了に失敗
 	//! 
 	virtual bool close( )
 	{
@@ -285,12 +282,12 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief スレッドをサスペンドさせる
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention Windows以外の環境では，pthread ライブラリ側でサポートされていないことがあるため，現在のところWindowsのみの機能
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … サスペンドに成功
+	//! @retval false … サスペンドに失敗
 	//! 
 	virtual bool suspend( )
 	{
@@ -306,12 +303,12 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief スレッドをリジュームする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! @attention Windows以外の環境では，pthread ライブラリ側でサポートされていないことがあるため，現在のところWindowsのみの機能
 	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … リジュームに成功
+	//! @retval false … リジュームに失敗
 	//! 
 	virtual bool resume( )
 	{
@@ -330,9 +327,10 @@ public:
 protected:
 	/// @brief 継承した先で必ず実装されるスレッド関数
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 本クラスを継承し，スレッドの機能を持たせる場合に必ず実装しなくてはならない関数．
+	//! スレッドの生成とともに本関数が呼ばれる．
 	//! 
-	//! @return 戻り値の説明
+	//! @return スレッド終了時の戻り値
 	//! 
 	virtual thread_exit_type thread_function( ) = 0;
 
@@ -388,46 +386,26 @@ namespace __thread_controller__
 
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
+/// @brief 生成したスレッドを管理するクラス
 class thread_handle
 {
 private:
-	thread_object *thread_;
+	thread_object *thread_;		///< @brief スレッドの実態
 
 public:
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
-	//! 
+	/// @brief スレッドを作成する
 	bool create( ){ return( thread_ == NULL ? false : thread_->create( ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief スレッドが終了するか，タイムアウトが発生するまで待機する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] dwMilliseconds … 引数の説明
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @param[in] dwMilliseconds … タイムアウト時間（ミリ秒単位）
 	//! 
 	bool wait( unsigned long dwMilliseconds = INFINITE ){ return( thread_ == NULL ? false : thread_->wait( INFINITE ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
-	//! 
+	/// @brief スレッドが使用していたリソースを開放する
 	bool close( )
 	{
 		if( thread_ == NULL )
@@ -441,38 +419,17 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
-	//! 
+	/// @brief スレッドをサスペンドする
 	bool suspend( ){ return( thread_ == NULL ? false : thread_->suspend( ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
-	//! 
+	/// @brief スレッドをリジュームする
 	bool resume( ){ return( thread_ == NULL ? false : thread_->resume( ) ); }
 
 public:
 	thread_handle( ) : thread_( NULL ){ }
 	thread_handle( thread_object *t ) : thread_( t ){ }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] t  … 引数の説明
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
-	//! 
 	const thread_handle &operator =( const thread_handle &t )
 	{
 		if( &t != this )
@@ -483,14 +440,45 @@ public:
 	}
 };
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 指定したスレッド関数を利用する，スレッドを作成する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in,out] param … 引数の説明
-//! @param[in]     f     … 引数の説明
+//! @param[in,out] param … スレッドの関数に渡すパラメータ
+//! @param[in]     f     … 実行されるスレッド関数
 //!
-//! @return 戻り値の説明
+//! @return スレッドを管理する thread_handle オブジェクト
+//! 
+//! @code 使用例
+//! struct parameter{ ... 何らかのパラメータ ... };   // スレッド関数に渡すパラメータ（特に構造体である必要は無い）
+//! 
+//! void thread_function( const parameter &p );       // スレッド関数（内部で何らかの処理をする）
+//! 
+//! // これ以降でスレッドを作成する
+//! parameter param[ 作成スレッド数 ];
+//! mist::thread_handle t[ 作成スレッド数 ];
+//! 
+//! for( i = 0 ; i < 作成スレッド数 ; i++ )
+//! {
+//!     パラメータに何らかの値を設定する
+//! }
+//! 
+//! for( i = 0 ; i < 作成スレッド数 ; i++ )
+//! {
+//!     // スレッドを作成する
+//!     t[ i ] = mist::create_thread( param[ i ], thread_function );
+//! }
+//! 
+//! for( i = 0 ; i < 作成スレッド数 ; i++ )
+//! {
+//!     // スレッドが終了するまで待ち続ける
+//!     mist::wait_thread( t[ i ] );
+//! }
+//! 
+//! for( i = 0 ; i < 作成スレッド数 ; i++ )
+//! {
+//!     // スレッドが使用していたリソースを開放する
+//!     mist::close_thread( t[ i ] );
+//! }
+//! @endcode
 //! 
 template < class Param, class Functor >
 inline thread_handle create_thread( Param &param, Functor f )
@@ -501,24 +489,24 @@ inline thread_handle create_thread( Param &param, Functor f )
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief スレッドが使用していたリソースを開放する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! スレッドを使用した後で，必ず呼び出す必要がある
 //! 
-//! @param[in,out] thread_        … 引数の説明
+//! @param[in,out] thread_ … スレッドオブジェクト
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … リソースの開放に成功
+//! @retval false … リソースの開放に失敗
 //! 
 inline bool close_thread( thread_handle &thread_ ){ return( thread_.close( ) ); }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief スレッドが終了するか，タイムアウトが発生するまで待機する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! タイムアウトを INFINITE に設定することで，スレッドが終了するまで待ち続ける
 //! 
-//! @param[in,out] thread_        … 引数の説明
-//! @param[in]     dwMilliseconds … 引数の説明
+//! @param[in,out] thread_        … スレッドオブジェクト
+//! @param[in]     dwMilliseconds … タイムアウト時間（ミリ秒単位）
 //!
 //! @retval true  … 戻り値の説明
 //! @retval false … 戻り値の説明
@@ -526,26 +514,26 @@ inline bool close_thread( thread_handle &thread_ ){ return( thread_.close( ) ); 
 inline bool wait_thread( thread_handle &thread_, unsigned long dwMilliseconds = INFINITE ){ return( thread_.wait( dwMilliseconds ) ); }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief スレッドをサスペンドさせる
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention Windows環境でのみサポート
 //! 
-//! @param[in,out] thread_ … 引数の説明
+//! @param[in,out] thread_ … スレッドオブジェクト
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … サスペンドに成功
+//! @retval false … サスペンドに失敗
 //! 
 inline bool suspend_thread( thread_handle &thread_ ){ return( thread_.suspend( ) ); }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief スレッドをリジュームする
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention Windows環境でのみサポート
 //! 
-//! @param[in,out] thread_ … 引数の説明
+//! @param[in,out] thread_ … スレッドオブジェクト
 //!
-//! @retval true  … 戻り値の説明
-//! @retval false … 戻り値の説明
+//! @retval true  … リジュームに成功
+//! @retval false … リジュームに失敗
 //! 
 inline bool resume_thread( thread_handle &thread_ ){ return( thread_.resume( ) ); }
 
@@ -555,7 +543,33 @@ inline bool resume_thread( thread_handle &thread_ ){ return( thread_.resume( ) )
 
 /// @brief スレッドの排他制御をサポートするクラス
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @attention ロックオブジェクトの生成時点では，ロックはされないことに注意
+//! 
+//! - Windows … クリティカルセクションを利用
+//! - Linux系 … ミューテックスを利用
+//! 
+//! @code 使用例
+//! lock_object l( "ロックオブジェクトの名前" );  // <- 名前を指定しないと，デフォルトのロックオブジェクトが使用される
+//! 
+//! ... 何らかの処理 ...
+//! 
+//! l.lock( );   // <- これ以降の処理1を排他制御する
+//! 
+//! ... 処理1 ...
+//! 
+//! l.unlock( ); // <- ここまでの処理1が排他制御される
+//! 
+//! 
+//! ... 何らかの処理 ...
+//! 
+//! 
+//! l.lock( );   // <- これ以降の処理2を排他制御する
+//! 
+//! ... 処理2 ...
+//! 
+//! l.unlock( ); // <- ここまでの処理2が排他制御される
+//! 
+//! @endcode
 //! 
 struct lock_object
 {
@@ -584,12 +598,10 @@ public:
 
 #else
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 排他制御用のオブジェクトをロックする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
+	//! @retval true  … ロックに成功
+	//! @retval false … ロックオブジェクトの生成に失敗
 	//! 
 	bool lock( )
 	{
@@ -620,9 +632,7 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
+	/// @brief 排他制御用のオブジェクトをロックを解除する
 	//! 
 	//! @retval true  … 戻り値の説明
 	//! @retval false … 戻り値の説明
@@ -647,11 +657,9 @@ public:
 
 
 protected:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ロックオブジェクトの初期化を行う
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in,out] l … 戻り値の説明
+	//! @param[in,out] l … ロックオブジェクト
 	//! 
 	static void initialize( lock_object_type &l )
 	{
@@ -665,11 +673,9 @@ protected:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ロックオブジェクトをロックする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in,out] l … 戻り値の説明
+	//! @param[in,out] l … ロックオブジェクト
 	//! 
 	static void lock( lock_object_type &l )
 	{
@@ -683,11 +689,9 @@ protected:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief ロックオブジェクトをロックを解除する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in,out] l … 戻り値の説明
+	//! @param[in,out] l … ロックオブジェクト
 	//! 
 	static void unlock( lock_object_type &l )
 	{
@@ -706,38 +710,39 @@ protected:
 
 /// @brief スレッドの排他制御を簡便に記述するためのヘルパクラス
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! @code 使用例
+//! ... 何らかの処理 ...
+//! {
+//!     // このブロック内を排他制御する
+//!     lock l( "ロックオブジェクトの名前" );  // <- 名前を指定しないと，デフォルトのロックオブジェクトが使用される
+//! 
+//!     ... 排他制御したい処理 ...
+//! 
+//!     // ここまでの処理が排他制御される
+//! }
+//! @endcode
 //! 
 class lock
 {
 protected:
-	lock_object lock_object_;	///< @brief 説明を書く
+	lock_object lock_object_;	///< @brief ロックオブジェクト
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief デフォルトの名前でロックオブジェクトを生成し，ロックオブジェクトをロックする
 	lock( ) : lock_object_( )
 	{
 		lock_object_.lock( );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief 指定した name の名前を持つロックオブジェクトを生成し，ロックオブジェクトをロックする
 	lock( const std::string &name ) : lock_object_( name )
 	{
 		lock_object_.lock( );
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
+	/// @brief 開放時に，ロックオブジェクトのロックを解除する
 	~lock( )
 	{
 		lock_object_.unlock( );

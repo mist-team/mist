@@ -982,7 +982,7 @@ namespace __median_filter_controller__
 template < class T1, class Allocator1, class T2, class Allocator2 >
 bool median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	if( reinterpret_cast< const void * >( &in ) == reinterpret_cast< const void * >( &out ) )
+	if( is_same_object( in, out ) )
 	{
 		return( false );
 	}
@@ -1011,7 +1011,7 @@ bool median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, ty
 template < class T1, class Allocator1, class T2, class Allocator2 >
 bool median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	if( reinterpret_cast< const void * >( &in ) == reinterpret_cast< const void * >( &out ) )
+	if( is_same_object( in, out ) )
 	{
 		return( false );
 	}
@@ -1045,7 +1045,7 @@ bool median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 				   typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh,
 				   typename array2< T1, Allocator1 >::size_type thread_num )
 {
-	if( reinterpret_cast< const void * >( &in ) == reinterpret_cast< const void * >( &out ) )
+	if( is_same_object( in, out ) )
 	{
 		return( false );
 	}
@@ -1134,7 +1134,7 @@ bool median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 				   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
 				   typename array3< T1, Allocator1 >::size_type thread_num )
 {
-	if( reinterpret_cast< const void * >( &in ) == reinterpret_cast< const void * >( &out ) )
+	if( is_same_object( in, out ) )
 	{
 		return( false );
 	}

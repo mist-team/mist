@@ -20,20 +20,17 @@ _MIST_BEGIN
 //!  @{
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
+/// @brief Pタイル法に基づくしきい値決定
 namespace ptile
 {
-	/// @brief p-tile法による閾値決定
+	/// @brief p-tile法によるしきい値決定
 	//!
 	//! ratio は 0 ～ 100％の範囲で指定する
 	//!
-	//! @param[in] in    … 引数の説明
-	//! @param[in] ratio … 引数の説明
+	//! @param[in] in    … 入力データ
+	//! @param[in] ratio … 濃度値の累積分布が全体に占める割合
 	//!
-	//! @return 戻り値の説明
+	//! @return p-tile法によって決定されたしきい値
 	//!
 	template < class T, class Allocator >
 	typename array< T, Allocator >::value_type threshold( const array< T, Allocator > &in, double ratio )
@@ -88,19 +85,14 @@ namespace ptile
 
 
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
+/// @brief 判別分析法に基づくしきい値決定
 namespace discriminant_analysis
 {
-	/// @brief 判別分析法による閾値決定
+	/// @brief 判別分析法によるしきい値決定
 	//!
-	//! ratio は 0 ～ 100％の範囲で指定する
+	//! @param[in] in … 入力データ
 	//!
-	//! @param[in] in … 引数の説明
-	//!
-	//! @return 戻り値の説明
+	//! @return 判別分析法によって決定したしきい値
 	//!
 	template < class T, class Allocator >
 	typename array< T, Allocator >::value_type threshold( const array< T, Allocator > &in )

@@ -32,15 +32,15 @@ struct matrix_style
 	/// @brief 行列計算をする際の入力となる行列の形式
 	enum style
 	{
-		ge,		///< 一般 
-		gb,		///< 一般帯 
-		gt,		///< 一般3重対角 
-		sy,		///< 対称 
-		sb,		///< 対称帯 
-		st,		///< 対称3重対角 
-		he,		///< エルミート 
-		hb,		///< エルミート帯 
-		ht,		///< エルミート3重対角 
+		ge,		///< 一般行列
+		gb,		///< 一般帯行列
+		gt,		///< 一般3重対角行列
+		sy,		///< 対称行列
+		sb,		///< 対称帯行列
+		st,		///< 対称3重対角行列
+		he,		///< エルミート行列
+		hb,		///< エルミート帯行列
+		ht,		///< エルミート3重対角行列
 	};
 };
 
@@ -454,6 +454,8 @@ namespace __solve__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::value_type value_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::sy:
@@ -467,7 +469,6 @@ namespace __solve__
 					integer ldb   = static_cast< integer >( b.rows( ) );
 					value_type dmy;
 					integer *ipiv = new integer[ n ];
-					integer info  = 0;
 					integer lwork  = -1;
 					char *uplo    = "U";
 
@@ -494,7 +495,6 @@ namespace __solve__
 					integer lda   = static_cast< integer >( a.rows( ) );
 					integer ldb   = static_cast< integer >( b.rows( ) );
 					integer *ipiv = new integer[ n ];
-					integer info  = 0;
 
 					// integer     n: マトリックス a の列数
 					// integer  nrhs: マトリックス b の列数
@@ -513,6 +513,12 @@ namespace __solve__
 				break;
 			}
 
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
 			return( b );
 		}
 	};
@@ -527,6 +533,8 @@ namespace __solve__
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::sy:
@@ -540,7 +548,6 @@ namespace __solve__
 					integer ldb   = static_cast< integer >( b.rows( ) );
 					value_type dmy;
 					integer *ipiv = new integer[ n ];
-					integer info  = 0;
 					integer lwork  = -1;
 					char *uplo    = "U";
 
@@ -567,7 +574,6 @@ namespace __solve__
 					integer lda   = static_cast< integer >( a.rows( ) );
 					integer ldb   = static_cast< integer >( b.rows( ) );
 					integer *ipiv = new integer[ n ];
-					integer info  = 0;
 
 					// integer     n: マトリックス a の列数
 					// integer  nrhs: マトリックス b の列数
@@ -584,6 +590,12 @@ namespace __solve__
 					delete [] ipiv;
 				}
 				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
 			}
 
 			return( b );
@@ -607,6 +619,8 @@ namespace __lu__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator1 >::value_type value_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::sy:
@@ -615,7 +629,6 @@ namespace __lu__
 					integer m      = static_cast< integer >( a.rows( ) );
 					integer n      = static_cast< integer >( a.cols( ) );
 					integer lda    = m;
-					integer info   = 0;
 					integer lwork  = -1;
 					value_type dmy;
 					char *uplo    = "U";
@@ -642,7 +655,6 @@ namespace __lu__
 					integer m      = static_cast< integer >( a.rows( ) );
 					integer n      = static_cast< integer >( a.cols( ) );
 					integer lda    = m;
-					integer info   = 0;
 
 					pivot.resize( n, 1 );
 
@@ -650,6 +662,12 @@ namespace __lu__
 					__clapack__::getrf( m, n, &( a[0] ), lda, &( pivot[0] ), info );
 				}
 				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
 			}
 
 			return( a );
@@ -666,6 +684,8 @@ namespace __lu__
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::sy:
@@ -674,7 +694,6 @@ namespace __lu__
 					integer m      = static_cast< integer >( a.rows( ) );
 					integer n      = static_cast< integer >( a.cols( ) );
 					integer lda    = m;
-					integer info   = 0;
 					integer lwork  = -1;
 					value_type dmy;
 					char *uplo    = "U";
@@ -701,7 +720,6 @@ namespace __lu__
 					integer m      = static_cast< integer >( a.rows( ) );
 					integer n      = static_cast< integer >( a.cols( ) );
 					integer lda    = m;
-					integer info   = 0;
 
 					pivot.resize( n, 1 );
 
@@ -709,6 +727,12 @@ namespace __lu__
 					__clapack__::getrf( m, n, &( a[0] ), lda, &( pivot[0] ), info );
 				}
 				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
 			}
 
 			return( a );
@@ -731,6 +755,8 @@ namespace __qr__
 		{
 			typedef __clapack__::integer integer;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::sy:
@@ -745,7 +771,6 @@ namespace __qr__
 					integer lda    = m;
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
-					integer info   = 0;
 
 					// QR分解を行う前に，必要な作業用配列のサイズを取得する
 					__clapack__::geqrf( m, n, NULL, lda, NULL, &dmy, lwork, info );
@@ -757,6 +782,12 @@ namespace __qr__
 					}
 				}
 				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
 			}
 
 			return( a );
@@ -773,6 +804,8 @@ namespace __qr__
 			typedef __clapack__::integer integer;
 			typedef typename T::vaqre_type vaqre_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::ge:
@@ -786,7 +819,6 @@ namespace __qr__
 					integer lda    = m;
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
-					integer info   = 0;
 
 					// QR分解を行う前に，必要な作業用配列のサイズを取得する
 					__clapack__::geqrf( m, n, NULL, lda, NULL, &dmy, lwork, info );
@@ -798,6 +830,12 @@ namespace __qr__
 					}
 				}
 				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
 			}
 
 			return( a );
@@ -819,6 +857,8 @@ namespace __inverse__
 		{
 			typedef __clapack__::integer integer;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::sy:
@@ -829,7 +869,6 @@ namespace __inverse__
 					integer *ipiv  = new integer[ n ];
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
-					integer info   = 0;
 					char *uplo    = "U";
 
 					// LU分解を行う
@@ -860,7 +899,6 @@ namespace __inverse__
 					integer *ipiv  = new integer[ n ];
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
-					integer info   = 0;
 
 					// LU分解を行う
 					__clapack__::getrf( lda, n, &( a[0] ), lda, ipiv, info );
@@ -880,6 +918,12 @@ namespace __inverse__
 				break;
 			}
 
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
 			return( a );
 		}
 	};
@@ -894,6 +938,8 @@ namespace __inverse__
 			typedef __clapack__::integer integer;
 			typedef typename T::vaqre_type vaqre_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::sy:
@@ -904,7 +950,6 @@ namespace __inverse__
 					integer *ipiv  = new integer[ n ];
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
-					integer info   = 0;
 					char *uplo    = "U";
 
 					// LU分解を行う
@@ -935,7 +980,6 @@ namespace __inverse__
 					integer *ipiv  = new integer[ n ];
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
-					integer info   = 0;
 
 					// LU分解を行う
 					__clapack__::getrf( lda, n, &( a[0] ), lda, ipiv, info );
@@ -953,6 +997,12 @@ namespace __inverse__
 					delete [] ipiv;
 				}
 				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
 			}
 
 			return( a );
@@ -977,6 +1027,8 @@ namespace __eigen__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::value_type value_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::sy:
@@ -988,7 +1040,6 @@ namespace __eigen__
 					integer ldz       = n;
 					value_type dmy    = 0;
 					integer lwork     = -1;
-					integer info      = 0;
 					value_type vl     = 0;
 					value_type vu     = 0;
 					integer il        = 0;
@@ -1025,7 +1076,6 @@ namespace __eigen__
 					integer ldvl   = 1;
 					integer ldvr   = n;
 					integer lwork  = -1;
-					integer info   = 0;
 					integer ilo    = 0;
 					integer ihi    = 0;
 					char *balanc = "B";
@@ -1051,6 +1101,12 @@ namespace __eigen__
 				break;
 			}
 
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
 			return( eigen_value );
 		}
 	};
@@ -1064,6 +1120,8 @@ namespace __eigen__
 		{
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
+
+			integer info = 0;
 
 			switch( style )
 			{
@@ -1079,7 +1137,6 @@ namespace __eigen__
 					integer ldvl   = 1;
 					integer ldvr   = n;
 					integer lwork  = -1;
-					integer info   = 0;
 					integer ilo    = 0;
 					integer ihi    = 0;
 					char *balanc = "B";
@@ -1108,6 +1165,12 @@ namespace __eigen__
 				break;
 			}
 
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
 			return( eigen_value );
 		}
 	};
@@ -1125,6 +1188,8 @@ namespace __eigen__
 		{
 			typedef __clapack__::integer integer;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::sy:
@@ -1134,7 +1199,6 @@ namespace __eigen__
 					integer lda    = static_cast< integer >( a.rows( ) );
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
-					integer info   = 0;
 					char *jobz = "V";
 					char *uplo = "U";
 
@@ -1162,7 +1226,6 @@ namespace __eigen__
 					integer ldvl   = 1;
 					integer ldvr   = n;
 					integer lwork  = -1;
-					integer info   = 0;
 					char *jobvl = "N";
 					char *jobvr = "V";
 
@@ -1183,6 +1246,12 @@ namespace __eigen__
 				break;
 			}
 
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
 			return( eigen_value );
 		}
 	};
@@ -1197,6 +1266,8 @@ namespace __eigen__
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::ge:
@@ -1209,7 +1280,6 @@ namespace __eigen__
 					integer ldvl   = 1;
 					integer ldvr   = n;
 					integer lwork  = -1;
-					integer info   = 0;
 					char *jobvl = "N";
 					char *jobvr = "V";
 
@@ -1230,6 +1300,12 @@ namespace __eigen__
 					}
 				}
 				break;
+			}
+
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
 			}
 
 			return( eigen_value );
@@ -1257,6 +1333,8 @@ namespace __svd__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::size_type size_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::ge:
@@ -1271,7 +1349,6 @@ namespace __svd__
 					typename matrix< T, Allocator >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					integer info   = 0;
 					char *jobz = "A";
 
 					// まず最適な作業用配列のサイズを取得する
@@ -1299,6 +1376,12 @@ namespace __svd__
 				break;
 			}
 
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
 			return( s );
 		}
 	};
@@ -1314,6 +1397,8 @@ namespace __svd__
 			typedef typename matrix< T1, Allocator1 >::size_type size_type;
 			typedef typename T1::value_type value_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::ge:
@@ -1328,7 +1413,6 @@ namespace __svd__
 					typename matrix< T1, Allocator1 >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					integer info   = 0;
 					char *jobz = "A";
 
 					// まず最適な作業用配列のサイズを取得する
@@ -1358,6 +1442,12 @@ namespace __svd__
 				break;
 			}
 
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
 			return( s );
 		}
 	};
@@ -1374,6 +1464,8 @@ namespace __svd__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::size_type size_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::ge:
@@ -1387,7 +1479,6 @@ namespace __svd__
 					typename matrix< T, Allocator >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					integer info   = 0;
 					char *jobu = "A";
 					char *jobvt = "A";
 
@@ -1413,6 +1504,12 @@ namespace __svd__
 				break;
 			}
 
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
 			return( s );
 		}
 	};
@@ -1428,6 +1525,8 @@ namespace __svd__
 			typedef typename matrix< T1, Allocator1 >::size_type size_type;
 			typedef typename T1::value_type value_type;
 
+			integer info = 0;
+
 			switch( style )
 			{
 			case matrix_style::ge:
@@ -1441,7 +1540,6 @@ namespace __svd__
 					typename matrix< T1, Allocator1 >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					integer info   = 0;
 					char *jobu = "A";
 					char *jobvt = "A";
 
@@ -1470,6 +1568,12 @@ namespace __svd__
 				break;
 			}
 
+			if( info != 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				throw;
+			}
+
 			return( s );
 		}
 	};
@@ -1489,9 +1593,9 @@ namespace __svd__
 //! 	tr\left( {\bf A} \right) = \sum^{n}_{i=1}{ a_{ii} }
 //! \f]
 //! 
-//! @param[in] a … 引数の説明
+//! @param[in] a … 入力行列
 //!
-//! @return 戻り値の説明
+//! @return トレースの値
 //! 
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type trace( const matrix< T, Allocator > &a )
@@ -1513,9 +1617,9 @@ inline const typename matrix< T, Allocator >::value_type trace( const matrix< T,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] expression … 引数の説明
+//! @param[in] expression … 複数の行列演算を表す式
 //!
-//! @return 戻り値の説明
+//! @return トレースの値
 //! 
 template < class Expression >
 inline const typename matrix_expression< Expression >::value_type trace( const matrix_expression< Expression > &expression )
@@ -1540,12 +1644,33 @@ inline const typename matrix_expression< Expression >::value_type trace( const m
 
 /// @brief 行列式の計算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! \f[
+//! 	\left| {\bf A} \right|
+//!     =
+//!     \left|
+//!          \begin{array}{ccccc}
+//!            a_{11} & \cdots & a_{1j} & \cdots & a_{1n} \\
+//!            a_{21} & \cdots & a_{2j} & \cdots & a_{2n} \\
+//!            \vdots & \cdots & \vdots & \cdots & \vdots \\
+//!            a_{n1} & \cdots & a_{nj} & \cdots & a_{nn} \\
+//!          \end{array}
+//!     \right|
+//!     =
+//!     \sum^{n}_{j=1}{
+//!       \left( -1 \right)^{j+1} a_{1j}
+//!       \left|
+//!            \begin{array}{ccccc}
+//!              a_{21} & \cdots & a_{2,j-1} & a_{2,j+1} & \cdots & a_{2n} \\
+//!              \vdots & \cdots & \vdots    & \vdots    & \cdots & \vdots \\
+//!              a_{n1} & \cdots & a_{n,j-1} & a_{n,j+1} & \cdots & a_{nn} \\
+//!            \end{array}
+//!       \right|
+//! \f]
 //! 
-//! @param[in] a     … 引数の説明
-//! @param[in] style … 引数の説明
+//! @param[in] a     … 入力行列
+//! @param[in] style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return 行列式の値
 //! 
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type det( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
@@ -1582,12 +1707,10 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 行列式の計算
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] expression … 引数の説明
-//! @param[in] style      … 引数の説明
+//! @param[in] expression … 複数の行列演算を表す式
+//! @param[in] style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
 //! @return 戻り値の説明
 //! 
@@ -1630,15 +1753,27 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 3×3 の diagonal 行列を計算する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 3つの入力成分の大きいものから順番に並べ替えて，diagonal 行列を作成する
 //! 
-//! @param[in] s1 … 引数の説明
-//! @param[in] s2 … 引数の説明
-//! @param[in] s3 … 引数の説明
+//! \f[
+//!     \left(
+//!          \begin{array}{ccc}
+//!            \sigma_1 &    0     &    0     \\
+//!               0     & \sigma_2 &    0     \\
+//!               0     &    0     & \sigma_3
+//!          \end{array}
+//!     \right)
+//! \f]
+//! ただし，
+//! \f[ \sigma_1 \ge \sigma_2 \ge \sigma_3 \f]
+//! 
+//! @param[in] s1 … 成分1
+//! @param[in] s2 … 成分2
+//! @param[in] s3 … 成分3
 //!
-//! @return 戻り値の説明
+//! @return diagonal 行列
 //! 
 template < class T >
 inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, const typename type_trait< T >::value_type &s2, const typename type_trait< T >::value_type &s3 )
@@ -1701,13 +1836,13 @@ inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, c
 
 /// @brief 行列の連立一次方程式を解く関数
 //!
-//! 詳細な説明や関数の使用例を書く
+//! \f[ {\bf A}\mbox{\boldmath x} = \mbox{\boldmath b} \f]
 //!
-//! @param[in]  a     … 引数の説明
-//! @param[out] b     … 引数の説明
-//! @param[in]  style … 引数の説明
+//! @param[in]  a     … 行列A
+//! @param[out] b     … ベクトルb
+//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return ベクトル x
 //!
 template < class T, class Allocator >
 inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style = matrix_style::ge )
@@ -1718,15 +1853,15 @@ inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, mat
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
-/// @brief 関数・クラスの概要を書く
-//! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in]  expression … 引数の説明
-//! @param[out] b          … 引数の説明
-//! @param[in]  style      … 引数の説明
+/// @brief 行列の連立一次方程式を解く関数
 //!
-//! @return 戻り値の説明
+//! \f[ {\bf A}\mbox{\boldmath x} = \mbox{\boldmath b} \f]
+//! 
+//! @param[in]  expression … 複数の行列演算を表す式A
+//! @param[out] b          … ベクトルb
+//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
+//!
+//! @return ベクトル x
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
@@ -1743,15 +1878,15 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 
 
 
-/// @brief 一般行列のLU分解を行う
+/// @brief 行列のLU分解を行う
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in]  a     … 引数の説明
-//! @param[out] pivot … 引数の説明
-//! @param[in]  style … 引数の説明
+//! @param[in]  a     … 入力行列
+//! @param[out] pivot … ピボット選択を行った結果を代入するベクトル
+//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return LU分解された結果
 //! 
 template < class T, class Allocator1, class Allocator2 >
 const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
@@ -1760,14 +1895,14 @@ const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a
 	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
 }
 
-/// @brief 一般行列のLU分解を行う
+/// @brief 行列のLU分解を行う
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in]  a     … 引数の説明
-//! @param[in]  style … 引数の説明
+//! @param[in]  a     … 入力行列
+//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return LU分解された結果
 //! 
 template < class T, class Allocator >
 const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
@@ -1780,15 +1915,13 @@ const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, 
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 行列のLU分解を行う
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in]  expression … 引数の説明
-//! @param[out] pivot      … 引数の説明
-//! @param[in]  style      … 引数の説明
+//! @param[in]  expression … 複数の行列演算を表す式
+//! @param[out] pivot      … ピボット選択を行った結果を代入するベクトル
+//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return LU分解された結果
 //! 
 template < class Expression, class Allocator2 >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -1802,14 +1935,12 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 }
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 行列のLU分解を行う
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in]  expression … 引数の説明
-//! @param[in]  style      … 引数の説明
+//! @param[in]  expression … 複数の行列演算を表す式
+//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return LU分解された結果
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -1826,16 +1957,16 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 #endif
 
 
-
-/// @brief 一般行列のQR分解を行う
+/// @brief 行列のQR分解を行う
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! \f[ {\bf Q} = {\bf H}_1 \; {\bf H}_2 \; \cdots \; {\bf H}_k \f]
+//! \f[ {\bf H}_i = {\bf I} - tau \mbox{\boldmath v} \mbox{\boldmath v}^T \f]
 //! 
-//! @param[in]  a     … 引数の説明
-//! @param[out] tau   … 引数の説明
-//! @param[in]  style … 引数の説明
+//! @param[in]  a     … 入力行列
+//! @param[out] tau   … 基本反射の係数ベクトル
+//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return QR分解された結果
 //! 
 template < class T, class Allocator >
 const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style = matrix_style::ge )
@@ -1844,14 +1975,12 @@ const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, 
 	return( __qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a_, tau, style ) );
 }
 
-/// @brief 一般行列のQR分解を行う
+/// @brief 行列のQR分解を行う
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in]  a     … 引数の説明
-//! @param[in]  style … 引数の説明
+//! @param[in]  a     … 入力行列
+//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return QR分解された結果
 //! 
 template < class T, class Allocator >
 const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
@@ -1863,15 +1992,13 @@ const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, 
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 行列のQR分解を行う
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in]  expression … 引数の説明
-//! @param[out] tau        … 引数の説明
-//! @param[in]  style      … 引数の説明
+//! @param[in]  expression … 複数の行列演算を表す式
+//! @param[out] tau        … 基本反射の係数ベクトル
+//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return QR分解された結果
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -1886,14 +2013,12 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 	return( __qr__::__qr__< __numeric__::is_complex< value_type >::value >::qr_factorization( a_, tau, style ) );
 }
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 行列のQR分解を行う
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in]  expression … 引数の説明
-//! @param[in]  style      … 引数の説明
+//! @param[in]  expression … 複数の行列演算を表す式
+//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return QR分解された結果
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -1912,14 +2037,14 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 
 
 
-/// @brief 一般行列の逆行列をLU分解を用いて計算する
+/// @brief 行列の逆行列をLU分解を用いて計算する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! \f[ {\bf A}^{-1} \f]
 //! 
-//! @param[in] a     … 引数の説明
-//! @param[in] style … 引数の説明
+//! @param[in] a     … 入力行列
+//! @param[in] style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return 逆行列
 //! 
 template < class T, class Allocator >
 matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
@@ -1930,14 +2055,12 @@ matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::s
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 行列の逆行列をLU分解を用いて計算する
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
-//! @param[in] expression … 引数の説明
-//! @param[in] style      … 引数の説明
+//! @param[in] expression … 複数の行列演算を表す式
+//! @param[in] style      … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return 逆行列
 //! 
 template < class Expression >
 inline matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
@@ -1956,36 +2079,69 @@ inline matrix< typename matrix_expression< Expression >::value_type, typename ma
 
 
 
-/// @brief 一般行列の固有値・固有ベクトルを計算する
+/// @brief 行列の固有値・固有ベクトルを計算する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 計算結果は，固有値の _DESCENDING_ORDER_EIGEN_VALUE_ でした方法で，昇順・降順のどちらかで並ぶように変換される
 //! 
-//! @param[in]  a            … 引数の説明
-//! @param[out] eigen_value  … 引数の説明
-//! @param[out] eigen_vector … 引数の説明
-//! @param[in]  style        … 引数の説明
+//! @param[in]  a            … 入力行列
+//! @param[out] eigen_value  … 固有値が昇順・降順のどちらかで入ったベクトル
+//! @param[out] eigen_vector … 固有値の昇順・降順のどちらかに対応し，左から固有ベクトルが並んだ行列
+//! @param[in]  style        … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return 固有値が並んだベクトル（eigen_valueと同じ）
 //! 
 template < class T, class Allocator >
 const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style = matrix_style::ge )
 {
 	matrix< T, Allocator > a_( a );
-	return( __eigen__::__eigen__< __numeric__::is_complex< T >::value >::eigen( a_, eigen_value, eigen_vector, style ) );
+	__eigen__::__eigen__< __numeric__::is_complex< T >::value >::eigen( a_, eigen_value, eigen_vector, style );
+
+#if defined( _DESCENDING_ORDER_EIGEN_VALUE_ ) && _DESCENDING_ORDER_EIGEN_VALUE_ == 1
+	// 固有値が大きい順に並んでいない場合は，並び替える
+	if( eigen_value[ 0 ] < eigen_value[ eigen_value.size( ) - 1 ] )
+#else
+	// 固有値が小さい順に並んでいない場合は，並び替える
+	if( eigen_value[ 0 ] > eigen_value[ eigen_value.size( ) - 1 ] )
+#endif
+	{
+		typedef typename matrix< T, Allocator >::difference_type difference_type;
+		typedef typename matrix< T, Allocator >::size_type size_type;
+		typedef typename matrix< T, Allocator >::value_type value_type;
+
+		difference_type i = 0, j = eigen_value.size( ) - 1;
+		value_type v;
+		while( i < j )
+		{
+			v = eigen_value[ i ];
+			eigen_value[ i ] = eigen_value[ j ];
+			eigen_value[ j ] = v;
+
+			for( size_type r = 0 ; r < eigen_vector.rows( ) ; r++ )
+			{
+				v = eigen_vector( r, i );
+				eigen_vector( r, i ) = eigen_vector( r, j );
+				eigen_vector( r, j ) = v;
+			}
+			i++;
+			j--;
+		}
+	}
+
+	return( eigen_value );
 }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 行列の固有値・固有ベクトルを計算する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 計算結果は，固有値の _DESCENDING_ORDER_EIGEN_VALUE_ でした方法で，昇順・降順のどちらかで並ぶように変換される
 //! 
-//! @param[in]  expression   … 引数の説明
-//! @param[out] eigen_value  … 引数の説明
-//! @param[out] eigen_vector … 引数の説明
-//! @param[in]  style        … 引数の説明
+//! @param[in]  expression   … 複数の行列演算を表す式
+//! @param[out] eigen_value  … 固有値が昇順・降順のどちらかで入ったベクトル
+//! @param[out] eigen_vector … 固有値の昇順・降順のどちらかに対応し，左から固有ベクトルが並んだ行列
+//! @param[in]  style        … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return 固有値が並んだベクトル（eigen_valueと同じ）
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
@@ -2004,18 +2160,19 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 #endif
 
 
-
-/// @brief 一般行列の特異値分解を計算する
+/// @brief 行列の特異値分解を計算する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! \f[ {\bf A} = {\bf U}{\bf \Sigma}{\bf V}^T \f]
 //! 
-//! @param[in]  a     … 引数の説明
-//! @param[out] u     … 引数の説明
-//! @param[out] s     … 引数の説明
-//! @param[out] vt    … 引数の説明
-//! @param[in]  style … 引数の説明
+//! @note 対角行列の成分は，左上から値の大きい順に並ぶ
+//! 
+//! @param[in]  a     … 入力行列
+//! @param[out] u     … 列直行行列U
+//! @param[out] s     … 対角行列Σ
+//! @param[out] vt    … 直行行列Vの転置
+//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return 対角行列Σ
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
@@ -2031,13 +2188,13 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in]  expression … 引数の説明
-//! @param[out] u          … 引数の説明
-//! @param[out] s          … 引数の説明
-//! @param[out] vt         … 引数の説明
-//! @param[in]  style      … 引数の説明
+//! @param[in]  expression … 複数の行列演算を表す式
+//! @param[out] u          … 列直行行列U
+//! @param[out] s          … 対角行列Σ
+//! @param[out] vt         … 直行行列Vの転置
+//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return 対角行列Σ
 //! 
 template < class Expression >
 inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
