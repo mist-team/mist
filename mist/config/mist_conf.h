@@ -400,7 +400,7 @@ public:
 
 		if( data_ > sdata_ )
 		{
-			if( data_ - sdata_ >= diff_boundary_ )
+			if( data_ >= diff_boundary_ + sdata_ )
 			{
 				sdata_ += diff_boundary_ + diff_pointer2_;
 				data_  += diff_pointer2_;
@@ -420,7 +420,7 @@ public:
 
 		if( data_ > sdata_ )
 		{
-			if( data_ - sdata_ >= diff_boundary_ )
+			if( data_ >= diff_boundary_ + sdata_ )
 			{
 				sdata_ += diff_boundary_ + diff_pointer2_;
 				data_  += diff_pointer2_;
