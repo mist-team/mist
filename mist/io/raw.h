@@ -114,7 +114,7 @@ namespace __raw_controller__
 
 			for( i = 0 ; i < w ; i++ )
 			{
-				data.set_value( image[ i ] - offset );
+				data.set_value( image[ i ] + offset );
 				data = from_current_endian( data, to_little_endian );
 				for( l = 0 ; l < byte ; l++ )
 				{
@@ -165,7 +165,7 @@ namespace __raw_controller__
 
 			for( i = 0 ; i < w ; i++ )
 			{
-				data.set_value( image[ i ] - offset );
+				data.set_value( image[ i ] + offset );
 				data = from_current_endian( data, to_little_endian );
 				for( l = 0 ; l < byte ; l++ )
 				{
@@ -298,7 +298,7 @@ namespace __raw_controller__
 			{
 				for( i = 0 ; i < w ; i++ )
 				{
-					data.set_value( image( i, j ) - offset );
+					data.set_value( image( i, j ) + offset );
 					data = from_current_endian( data, to_little_endian );
 					for( l = 0 ; l < byte ; l++ )
 					{
@@ -349,7 +349,7 @@ namespace __raw_controller__
 			{
 				for( i = 0 ; i < w ; i++ )
 				{
-					data.set_value( image( i, j ) - offset );
+					data.set_value( image( i, j ) + offset );
 					data = from_current_endian( data, to_little_endian );
 					for( l = 0 ; l < byte ; l++ )
 					{
@@ -409,7 +409,7 @@ namespace __raw_controller__
 					{
 						for( l = 0 ; l < byte ; l++ )
 						{
-							data[l] = tmparray[ ( i + j * w ) * byte + l ];
+							data[ l ] = tmparray[ ( i + j * w ) * byte + l ];
 						}
 						image( i, j, k ) = to_current_endian( data, from_little_endian ).get_value( ) + offset;
 					}
@@ -474,7 +474,7 @@ namespace __raw_controller__
 				{
 					for( i = 0 ; i < w ; i++ )
 					{
-						data.set_value( image( i, j, k ) - offset );
+						data.set_value( image( i, j, k ) + offset );
 						data = from_current_endian( data, to_little_endian );
 						for( l = 0 ; l < byte ; l++ )
 						{
@@ -531,7 +531,7 @@ namespace __raw_controller__
 				{
 					for( i = 0 ; i < w ; i++ )
 					{
-						data.set_value( image( i, j, k ) - offset );
+						data.set_value( image( i, j, k ) + offset );
 						data = from_current_endian( data, to_little_endian );
 						for( l = 0 ; l < byte ; l++ )
 						{
