@@ -610,6 +610,18 @@ namespace __non_rigid_registration_utility__
 /// @brief FFDを用いた非剛体レジストレーション
 namespace non_rigid
 {
+	/// @brief 非剛体レジストレーションエンジン
+	//! 
+	//! @param TARGETTYPE  … レジストレーションする目標画像の型
+	//! 
+	//! @code
+	//! mist::non_rigid::registration< 目標画像の型を入力 > r( 目標画像, X軸方向の制御点数, Y軸方向の制御点数, Z軸方向の制御点数, NMIを計算する際のビン幅 );
+	//! 
+	//! r.apply( ソース画像, レジストレーションの終了判定に用いる許容相対誤差 );
+	//! 
+	//! r.transform( ソース画像, 非剛体レジストレーションの結果を格納する画像 );
+	//! @endcode
+	//! 
 	template < class TARGETTYPE >
 	class registration
 	{

@@ -123,7 +123,7 @@ void draw_line( array3< T, Allocator > &image,
 			   typename array3< T, Allocator >::difference_type x2,
 			   typename array3< T, Allocator >::difference_type y2,
 			   typename array3< T, Allocator >::difference_type z2,
-			   typename array3< T, Allocator >::value_type value = typename array3< T, Allocator >::value_type( ) )
+			   typename array3< T, Allocator >::value_type color = typename array3< T, Allocator >::value_type( ) )
 {
 	typedef typename array3< T, Allocator >::difference_type difference_type;
 	difference_type dx, dy, dz;
@@ -149,7 +149,7 @@ void draw_line( array3< T, Allocator > &image,
 		{
 			if( x >= 0 && x < w && y >= 0 && y < h && z >= 0 && z < d )
 			{
-				image( x, y, z ) = value;
+				image( x, y, z ) = color;
 			}
 			x += sx;
 			e1 += 2 * dy;
@@ -175,7 +175,7 @@ void draw_line( array3< T, Allocator > &image,
 		{
 			if( x >= 0 && x < w && y >= 0 && y < h && z >= 0 && z < d )
 			{
-				image( x, y, z ) = value;
+				image( x, y, z ) = color;
 			}
 			y += sy;
 			e1 += 2 * dx;
@@ -201,7 +201,7 @@ void draw_line( array3< T, Allocator > &image,
 		{
 			if( x >= 0 && x < w && y >= 0 && y < h && z >= 0 && z < d )
 			{
-				image( x, y, z ) = value;
+				image( x, y, z ) = color;
 			}
 			z += sz;
 			e1 += 2 * dx;

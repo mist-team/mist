@@ -444,8 +444,12 @@ struct __mist_console_callback__
 *   - @ref mist::uniform::random			"一様乱数"
 *   - @ref mist::gauss::random				"正規乱数"
 * - @ref a									"グラフ描画(2次元)"
-* - @ref image_draw_group					"2次元画像描画"
+* - 画像や基本オブジェkの描画
+*   - @ref image_draw_group					"OpenGLを用いた2次元画像描画"
+*   - @ref image_drawing_group				"直線・円の描画"
 * - @ref minimization_group					"関数の最小化"
+* - @ref registration_group					"レジストレーション"
+*   - @ref mist::non_rigid					"非剛体レジストレーション"
 * - @ref visualization_group				"可視化"
 *   - @ref volumerendering_group			"ボリュームレンダリング"
 *   - @ref a								"等濃度面表示"
