@@ -94,12 +94,12 @@ namespace __distance_figure_dedomposition__
 			Position p = list.front( );
 			list.pop_front( );
 
-			for( j = -1 ; j <= 1 ; j++ )
+			for( j = -5 ; j <= 5 ; j++ )
 			{
 				py = j + p.y;
 				if( py < 0 || py >= out.height( ) ) continue;
 
-				for( i = -1 ; i <= 1 ; i++ )
+				for( i = -5 ; i <= 5 ; i++ )
 				{
 					px = i + p.x;
 					if( px < 0 || px >= out.width( ) ) continue;
@@ -217,21 +217,20 @@ namespace __distance_figure_dedomposition__
 					current_label = label_count;
 
 					// 近傍で同じ距離値に同じラベルを割り当てる
-					paint_surroundings( out, dist, pt.x, pt.y, current_label );
+					//paint_surroundings( out, dist, pt.x, pt.y, current_label );
 				}
 				else
 				{
 					current_label = out( pt.x, pt.y );
 				}
 
-
-				for( j = -1 ; j <= 1 ; j++ )
+				for( j = -ry ; j <= ry ; j++ )
 				{
 					jj = j * j * aspect * aspect;
 					py = j + pt.y;
 					if( py < 0 || py >= in.height( ) ) continue;
 
-					for( i = -1 ; i <= 1 ; i++ )
+					for( i = -rx ; i <= rx ; i++ )
 					{
 						ii = i * i;
 						px = i + pt.x;
@@ -240,9 +239,10 @@ namespace __distance_figure_dedomposition__
 						rrr = ii + jj;
 						if( rrr < rr )
 						{
-							if( out( px, py ) == 0 )
+							if( mask( px, py ) > rrr - 1 )
 							{
 								// 現在の復元における近い領域のほうにラベルを割り当てる
+								mask( px, py ) = rrr;
 								out( px, py ) = current_label;
 							}
 						}

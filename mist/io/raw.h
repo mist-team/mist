@@ -40,12 +40,12 @@ namespace __raw_controller__
 		value_type set_value( const value_type &v ) { return( value = v ); }
 	};
 
-	bool _is_little_endian_( )
+	inline bool _is_little_endian_( )
 	{
 		return( byte_array< unsigned short >( 1 )[ 0 ] == 1 );
 	}
 
-	bool _is_big_endian_( )
+	inline bool _is_big_endian_( )
 	{
 		return( byte_array< unsigned short >( 1 )[ 0 ] == 0 );
 	}

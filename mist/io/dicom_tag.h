@@ -106,7 +106,7 @@ namespace __dicom_controller__
 	}
 
 
-	dicom_vr get_dicom_vr( const std::string &vr )
+	inline dicom_vr get_dicom_vr( const std::string &vr )
 	{
 		dicom_vr ret = UNKNOWN;
 
@@ -392,7 +392,7 @@ namespace __dicom_controller__
 		return( ret );
 	}
 
-	std::string get_dicom_vr( const dicom_vr &vr )
+	inline std::string get_dicom_vr( const dicom_vr &vr )
 	{
 		std::string ret = "UNKNOWN";
 		switch( vr )
