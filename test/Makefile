@@ -26,6 +26,7 @@ ALL = \
 	vector_test \
 	set_test \
 	crc_test \
+	minimization_test \
 
 
 all: $(ALL)
@@ -99,7 +100,10 @@ decimal_test : decimal_test.o
 set_test : set_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
-crc_test : set_test.o
+crc_test : crc_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+minimization_test : minimization_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 
