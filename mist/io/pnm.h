@@ -300,7 +300,7 @@ namespace __pnm_controller__
 			case P5:
 			case P6:
 				{
-					color_type max = image[ 0 ];
+					typename array2< T, Allocator >::value_type max = image[ 0 ];
 					for( i = 1 ; i < image.size( ) ; i++ )
 					{
 						max = max > image[ i ] ? max : image[ i ];
