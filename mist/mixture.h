@@ -7,26 +7,26 @@
 #include "mist/mist.h"
 #include "mist/random.h"
 
-// mistÌ¾Á°¶õ´Ö¤Î»Ï¤Ş¤ê¤İ
+// mist–¼‘O‹óŠÔ‚Ìn‚Ü‚è‚Û‚Û‚Û
 _MIST_BEGIN
 
 
 namespace __mixture__
 {
 	typedef struct	tagNORMDIST_PARAM{
-		float	weight;	// º®¹ç½Å¤ß
-		float	av;		// Ê¿¶Ñ
-		float	sd;		// É¸½àÊĞº¹
+		float	weight;	// ¬‡d‚İ
+		float	av;		// •½‹Ï
+		float	sd;		// •W€•Î·
 	}NORMDIST_PARAM, *PNORMDIST_PARAM;
 
 	int EstimateMixture(
-		const mist::array<float>&		rSamples,		// [in]			ÆşÎÏ¥µ¥ó¥×¥ë	
-		mist::array<float>::size_type	nSamples,		// [in]			¥µ¥ó¥×¥ë¿ô
-		int								nComponents,	// [in]			º®¹çÊ¬ÉÛ¤ÎÊ¬ÉÛÍ×ÁÇ¿ô
-		int								nMaxIteration,	// [in]			ºÇÂç¥ë¡¼¥×²ó¿ô
-		float							fEpsilon,		// [in]			ÂĞ¿ôÌàÅÙ¤ÎÂÇ¤ÁÀÚ¤êÀºÅÙ
-		PNORMDIST_PARAM					pdp,			// [in, out]	Ê¬ÉÛ¥Ñ¥é¥á¡¼¥¿
-		float*							pfLikelihood	// [out]		ÂĞ¿ôÌàÅÙ
+		const mist::array<float>&		rSamples,		// [in]			“ü—ÍƒTƒ“ƒvƒ‹	
+		mist::array<float>::size_type	nSamples,		// [in]			ƒTƒ“ƒvƒ‹”
+		int								nComponents,	// [in]			¬‡•ª•z‚Ì•ª•z—v‘f”
+		int								nMaxIteration,	// [in]			Å‘åƒ‹[ƒv‰ñ”
+		float							fEpsilon,		// [in]			‘Î”–Ş“x‚Ì‘Å‚¿Ø‚è¸“x
+		PNORMDIST_PARAM					pdp,			// [in, out]	•ª•zƒpƒ‰ƒ[ƒ^
+		float*							pfLikelihood	// [out]		‘Î”–Ş“x
 		)
 	{
 		int	n;
@@ -55,7 +55,7 @@ namespace __mixture__
 				if(tmp == 0.0f){
 					return 0;
 
-					printf("ÊŞ¶!! ºŞÙ§!!\n");
+					printf("ÊŞ¶!! ºŞÙ§!!\n");
 
 					for(int m = 0; m < nComponents; m ++){
 						pWeight[k * nComponents + m] = 1.0f / nComponents;
@@ -89,7 +89,7 @@ namespace __mixture__
 				}else{
 					return 0;
 
-					printf("¤·¤ç¤Ü¡¼¤ó\n");
+					printf("‚µ‚å‚Ú[‚ñ\n");
 
 					pdp[m].weight = 0.0f;
 
@@ -113,7 +113,7 @@ namespace __mixture__
 				weight_sum += pdp[m].weight;
 			}
 			if(fabs(weight_sum - 1.0f) > 0.1f){
-				printf("Â­¤·¤Æ¤â1¤Ë¤Ê¤é¤Ê¤¤¤İ\n");
+				printf("‘«‚µ‚Ä‚à1‚É‚È‚ç‚È‚¢‚Û\n");
 				return 0;
 			}
 
@@ -164,7 +164,7 @@ namespace __mixture__
 }
 
 
-// mistÌ¾Á°¶õ´Ö¤Î½ª¤ï¤ê
+// mist–¼‘O‹óŠÔ‚ÌI‚í‚è
 _MIST_END
 
 
