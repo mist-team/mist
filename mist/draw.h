@@ -9,6 +9,9 @@
 #include "config/color.h"
 #endif
 
+#ifndef __INCLUDE_MIST_VECTOR__
+#include "vector.h"
+#endif
 
 
 #ifdef WIN32
@@ -283,6 +286,60 @@ bool draw_image( const array2< T, Allocator > &image,
 }
 
 
+// ウィンドウ上の点から画像上の点の座標を計算する
+// aspectは sizeY / sizeX であり、各ピクセルのアスペクトである
+inline vector2< double > screen2point( const vector2< double > &pt, double imgX, double imgY, double aspect,
+												double winW, double winH, double zoom, double posx, double posy )
+{
+	if( imgX == 0.0 || imgY == 0.0 || winW == 0.0 || winH == 0.0 )
+	{
+		return( vector2< double >( 0.0, 0.0 ) );
+	}
+
+	double xx = ( pt.x - winW / 2.0 ) / winW * 2.0;
+	double yy = ( winH / 2.0 - pt.y ) / winH * 2.0;
+	double win_aspect = winH / winW;
+	aspect = imgY * aspect / imgX;
+	if( win_aspect < aspect )
+	{
+		xx = xx / win_aspect * aspect / zoom + posx / imgX;
+		yy = -( yy / zoom - posy / imgY );
+	}
+	else
+	{
+		xx = xx / zoom + posx / imgX;
+		yy = -( yy * win_aspect / aspect / zoom - posy / imgY );
+	}
+
+	return( vector2< double >( ( xx + 1.0 ) * imgX * 0.5, ( yy + 1.0 ) * imgY * 0.5 ) );
+}
+
+// 画像上の点からウィンドウ上の点の座標を計算する
+// aspectは sizeX / sizeY であり、各ピクセルのアスペクトである
+inline vector2< double > point2screen( const vector2< double > &pt, double imgX, double imgY, double aspect,
+												double winW, double winH, double zoom, double posx, double posy )
+{
+	if( imgX == 0.0 || imgY == 0.0 || winW == 0.0 || winH == 0.0 )
+	{
+		return( vector2< double >( 0.0, 0.0 ) );
+	}
+
+	double xx = ( pt.x - imgX / 2.0 ) / imgX * 2.0;
+	double yy = ( imgY / 2.0 - pt.y ) / imgY * 2.0;
+	double win_aspect = winH / winW;
+	aspect = imgY * aspect / imgX;
+	if( win_aspect < aspect )
+	{
+		xx = ( xx - posx / imgX ) * zoom * win_aspect / aspect;
+		yy = ( yy + posy / imgY ) * zoom;
+	}
+	else
+	{
+		xx = ( xx - posx / imgX ) * zoom;
+		yy = ( yy + posy / imgY ) * zoom / win_aspect * aspect;
+	}
+	return( vector2< double >( ( xx + 1.0 ) * winW * 0.5, ( 1.0 - yy ) * winH * 0.5 ) );
+}
 
 // mist名前空間の終わり
 _MIST_END
