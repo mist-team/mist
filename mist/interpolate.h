@@ -100,8 +100,9 @@ namespace __linear__
 									typename array< T, Allocator >::size_type k2,
 									double x, double y, double z )
 		{
-			double min = type_limits< T >::minimum( );
-			double max = type_limits< T >::maximum( );
+			typedef typename array< T, Allocator >::value_type value_type;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double pix = in[ i1 ] * ( 1.0 - x ) + in[ i2 ] * x;
 			pix = pix > min ? pix : min;
 			pix = pix < max ? pix : max;
@@ -118,8 +119,9 @@ namespace __linear__
 									typename array2< T, Allocator >::size_type k2,
 									double x, double y, double z )
 		{
-			double min = type_limits< T >::minimum( );
-			double max = type_limits< T >::maximum( );
+			typedef typename array2< T, Allocator >::value_type value_type;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double pix = ( in( i1, j1 ) * ( 1.0 - x ) + in( i2, j1 ) * x ) * ( 1.0 - y ) + ( in( i1, j2 ) * ( 1.0 - x ) + in( i2, j2 ) * x ) * y;
 			pix = pix > min ? pix : min;
 			pix = pix < max ? pix : max;
@@ -136,8 +138,9 @@ namespace __linear__
 									typename array3< T, Allocator >::size_type k2,
 									double x, double y, double z )
 		{
-			double min = type_limits< T >::minimum( );
-			double max = type_limits< T >::maximum( );
+			typedef typename array3< T, Allocator >::value_type value_type;
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
 			double pix = ( ( in( i1, j1, k1 ) * ( 1.0 - x ) + in( i2, j1, k1 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k1 ) * ( 1.0 - x ) + in( i2, j2, k1 ) * x ) * y ) * ( 1.0 - z )
 								+ ( ( in( i1, j1, k2 ) * ( 1.0 - x ) + in( i2, j1, k2 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k2 ) * ( 1.0 - x ) + in( i2, j2, k2 ) * x ) * y ) * z;
 			pix = pix > min ? pix : min;
