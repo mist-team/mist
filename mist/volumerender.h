@@ -409,6 +409,7 @@ namespace value_interpolation
 
 		vector_type yoko = ( dir * up ).unit( );
 
+		focal *= out.reso2( );
 		if( out.reso1( ) < out.reso2( ) )
 		{
 			yoko *= out.reso1( ) / out.reso2( );
