@@ -57,10 +57,10 @@ margin_array_test : margin_array_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 median_test : median_test.o
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) $(IMGLIBS)
 
 morphology_test : morphology_test.o
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) $(IMGLIBS)
 
 
 clean:
