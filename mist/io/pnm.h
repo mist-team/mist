@@ -417,7 +417,7 @@ namespace __pnm_controller__
 
 /// @brief PNM画像をMISTコンテナに読み込む
 //! 
-//! P1～P6までの全てのPNM画像を読み込むことが可能
+//! P1～P6までの全てのPNM画像を読み込むことが可能です
 //! 
 //! @param[out] image    … 画像を読み込む先のMISTコンテナ
 //! @param[in]  filename … 入力ファイル名

@@ -252,7 +252,7 @@ namespace __png_controller__
 
 /// @brief PNG画像をMISTコンテナに読み込む
 //! 
-//! RGBやRGBAやカラーテーブルを使用した全てのPNG画像を読み込むことが可能
+//! RGBやRGBAやカラーテーブルを使用した全てのPNG画像を読み込むことが可能です
 //! 
 //! @param[out] image    … 画像を読み込む先のMISTコンテナ
 //! @param[in]  filename … 入力ファイル名

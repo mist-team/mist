@@ -184,7 +184,7 @@ namespace __jpeg_controller__
 
 /// @brief JPEG画像をMISTコンテナに読み込む
 //! 
-//! 全てのJPEG画像形式（ロスレスのJPEGを除く）を読み込むことが可能
+//! 全てのJPEG画像形式（ロスレスのJPEGを除く）を読み込むことが可能です
 //! 
 //! @param[out] image    … 画像を読み込む先のMISTコンテナ
 //! @param[in]  filename … 入力ファイル名
