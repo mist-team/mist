@@ -165,6 +165,9 @@
 				RelativePath="..\mist\config\mist_conf.h">
 			</File>
 			<File
+				RelativePath="..\mist\filter\morphology.h">
+			</File>
+			<File
 				RelativePath="..\mist\io\raw.h">
 			</File>
 			<File
