@@ -27,6 +27,8 @@ namespace uniform
 	//!
 	class random
 	{
+	protected:
+		const double pai_timed_by_2_;		///< @brief pai timed by two
 
 		// Period parameters
 		const unsigned long number_n_;		///< @brief number n
@@ -44,8 +46,6 @@ namespace uniform
 
 
 	public:
-
-		const double pai_timed_by_2_;		///< @brief pai timed by two
 
 		/// @brief コンストラクタ
 		//! 
