@@ -18,17 +18,25 @@ public:
 		if( is_input_pins_connected( ) )
 		{
 			// 全てのデータが接続されている場合のみ，フィルタリングを行う
-			data_type &in1 = get_input_data( 0 );
-			data_type &in2 = get_input_data( 1 );
-
-			data_.color_image_.resize( in1.color_image_.width( ), in1.color_image_.height( ) );
-			data_.color_image_.reso( in1.color_image_.reso1( ), in1.color_image_.reso2( ) );
+			data_type3 &in1 = get_input_data( 0 ).color_image_;
+			data_type3 &in2 = get_input_data( 1 ).color_image_;
+			data_type3 &out = data_.color_image_;
 
 			double a = properties_[ 0 ].real;
 			double ca = 1.0 - a;
-			for( size_type i = 0 ; i < in1.color_image_.size( ) ; i++ )
+
+			size_type w = in1.width( ) < in2.width( ) ? in1.width( ) : in2.width( );
+			size_type h = in1.height( ) < in2.height( ) ? in1.height( ) : in2.height( );
+
+			out.resize( w, h );
+			out.reso( in1.reso1( ), in1.reso2( ) );
+
+			for( size_type j = 0 ; j < h ; j++ )
 			{
-				data_.color_image_[ i ] = in1.color_image_[ i ] * a + in2.color_image_[ i ] * ca;
+				for( size_type i = 0 ; i < w ; i++ )
+				{
+					out( i, j ) = in1( i, j ) * a + in2( i, j ) * ca;
+				}
 			}
 		}
 		else
