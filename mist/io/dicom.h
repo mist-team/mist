@@ -341,7 +341,7 @@ namespace __dicom_controller__
 			// 例："19930822"は 1993 年 8 月 22 日を表す。
 			// 注：１．V 3.0 より前のこの規格の版との後方互換性のために，
 			// 実装は，このＶＲに対して形式yyyy.mm.dd の文字列を同様にサポートすることを推奨される。
-			if( tag.vm != -1 && ( num_bytes % 8 != 0 || (int)( num_bytes / 8 ) > tag.vm ) )
+			if( tag.vm != -1 && ( num_bytes % 8 != 0 || (int)( num_bytes / 8 ) > tag.vm ) && ( num_bytes % 10 != 0 || (int)( num_bytes / 10 ) > tag.vm ) )
 			{
 				return( false );
 			}
@@ -897,7 +897,6 @@ namespace __dicom_controller__
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0xdd && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
 	}
 
-	inline unsigned char *process_sequence_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer );
 	inline unsigned char *process_dicom_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
 	{
 		difference_type numBytes = 0;
@@ -905,7 +904,7 @@ namespace __dicom_controller__
 
 		pointer = read_dicom_tag( pointer, end_pointer, tag, numBytes );
 
-		if( tag.tag == 0x00400245 )
+		if( tag.tag == 0x00080018 )
 		{
 			printf( "debugging...\n" );
 		}
@@ -927,10 +926,36 @@ namespace __dicom_controller__
 				}
 				else
 				{
-					pointer = process_sequence_tag( dicom, pointer, ep );
-					if( pointer == NULL )
+					if( !is_sequence_separate_tag( pointer, ep ) )
 					{
 						return( NULL );
+					}
+
+					pointer += 4;
+					numBytes = to_current_endian( byte_array< unsigned int >( pointer ), true ).get_value( );
+					pointer += 4;
+
+					unsigned char *epp = numBytes == -1 ? ep : pointer + numBytes;
+					if( epp > ep )
+					{
+						return( NULL );
+					}
+
+					while( pointer + 8 < epp )
+					{
+						if( is_sequence_element_end( pointer, ep ) )
+						{
+							pointer += 8;
+							break;
+						}
+						else
+						{
+							pointer = process_dicom_tag( dicom, pointer, ep );
+							if( pointer == NULL )
+							{
+								return( NULL );
+							}
+						}
 					}
 				}
 			}
@@ -981,46 +1006,6 @@ namespace __dicom_controller__
 			dicom_element( tag, NULL, 0 ).show_tag( );
 		}
 #endif
-		return( pointer );
-	}
-
-	inline unsigned char *process_sequence_tag( dicom_tag_container &dicom, unsigned char *pointer, unsigned char *end_pointer )
-	{
-		difference_type numBytes = 0;
-		dicom_tag tag;
-
-		if( !is_sequence_separate_tag( pointer, end_pointer ) )
-		{
-			return( NULL );
-		}
-
-		pointer += 4;
-		difference_type num_bytes = to_current_endian( byte_array< unsigned int >( pointer ), true ).get_value( );
-		pointer += 4;
-
-		unsigned char *epp = num_bytes == -1 ? end_pointer : pointer + num_bytes;
-		if( epp > end_pointer )
-		{
-			return( NULL );
-		}
-
-		while( pointer + 8 < epp )
-		{
-			if( is_sequence_element_end( pointer, end_pointer ) )
-			{
-				pointer += 8;
-				break;
-			}
-			else
-			{
-				pointer = process_dicom_tag( dicom, pointer, end_pointer );
-				if( pointer == NULL )
-				{
-					return( NULL );
-				}
-			}
-		}
-
 		return( pointer );
 	}
 
@@ -1101,8 +1086,8 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 
 	size_type height = 0;
 	size_type width  = 0;
-	double window_level = -500.0;
-	double window_width = 1500.0;
+	double window_level = 128;
+	double window_width = 256;
 	double resoX = 0.625;
 	double resoY = 0.625;
 
