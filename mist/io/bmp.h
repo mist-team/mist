@@ -367,7 +367,7 @@ namespace __bmp_controller__
 			return( index );
 		}
 
-		static bool convert_from_bmp_data( unsigned char *bmp, array2< T, Allocator > &image )
+		static bool convert_from_bmp_data( unsigned char *bmp, size_type num_bytes, array2< T, Allocator > &image )
 		{
 			// ビットマップ用のヘッダの位置を指定する
 			_bitmapfileheader_	*pfilehead  = reinterpret_cast < _bitmapfileheader_ * >	( bmp );
@@ -406,6 +406,14 @@ namespace __bmp_controller__
 
 			size_type i, j, jj, line_bytes = get_bmp_line_strip( width, bmp_bits );
 			unsigned char *pixel = bmp + static_cast< size_type >( filehead.bfOffBits );
+
+			if( line_bytes * height > num_bytes - static_cast< size_type >( filehead.bfOffBits ) )
+			{
+				// 不正なビットマップヘッダ
+				// 規定のデータバイト分だけ存在していない
+				std::cerr << "This bitmap has incorrect BMP header." << std::endl;
+				return( false );
+			}
 
 			for( jj = 0 ; jj < height ; jj++ )
 			{
@@ -647,7 +655,7 @@ namespace __bmp_controller__
 			}
 			fclose( fp );
 
-			bool ret = convert_from_bmp_data( buff, image );
+			bool ret = convert_from_bmp_data( buff, filesize, image );
 			delete [] buff;
 			return( ret );
 		}

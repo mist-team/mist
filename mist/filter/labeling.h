@@ -10,8 +10,6 @@
 #ifndef __INCLUDE_MIST_LABELING__
 #define __INCLUDE_MIST_LABELING__
 
-#include <vector>
-
 #ifndef __INCLUDE_MIST_H__
 #include "../mist.h"
 #endif
@@ -19,6 +17,8 @@
 #ifndef __INCLUDE_MIST_LIMITS__
 #include "../limits.h"
 #endif
+
+#include <vector>
 
 
 
@@ -69,7 +69,7 @@ namespace __labeling_controller__
 		_MIST_CONST( size_t, array_num, 13 );
 
 		template < class Array, class Vector >
-		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Array::size_type *L,
+		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Vector::value_type *L,
 										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
 										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
@@ -99,7 +99,7 @@ namespace __labeling_controller__
 		_MIST_CONST( size_t, array_num, 9 );
 
 		template < class Array, class Vector >
-		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Array::size_type *L,
+		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Vector::value_type *L,
 										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
 										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
@@ -125,7 +125,7 @@ namespace __labeling_controller__
 		_MIST_CONST( size_t, array_num, 3 );
 
 		template < class Array, class Vector >
-		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Array::size_type *L,
+		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Vector::value_type *L,
 										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
 										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
@@ -145,7 +145,7 @@ namespace __labeling_controller__
 		_MIST_CONST( size_t, array_num, 4 );
 
 		template < class Array, class Vector >
-		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Array::size_type *L,
+		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Vector::value_type *L,
 										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
 										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
@@ -166,7 +166,7 @@ namespace __labeling_controller__
 		_MIST_CONST( size_t, array_num, 2 );
 
 		template < class Array, class Vector >
-		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Array::size_type *L,
+		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Vector::value_type *L,
 										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
 										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
 		{
@@ -184,13 +184,17 @@ namespace __labeling_controller__
 	typename Array::size_type labeling( Array &in, typename Array::size_type label_max, const neighbor dmy, Functor f )
 	{
 		typedef typename Array::size_type size_type;
+		typedef typename Array::difference_type difference_type;
 		typedef typename Array::value_type value_type;
+
+//		typedef difference_type label_value_type;
+		typedef unsigned int label_value_type;
 
 		size_type label_num = 0;
 		size_type i, j, k, l, count;
 
-		std::vector< size_type > T;
-		size_type L[ neighbor::array_num ];
+		std::vector< label_value_type > T;
+		label_value_type L[ neighbor::array_num ];
 		const size_type width = in.width( );
 		const size_type height = in.height( );
 		const size_type depth = in.depth( );
@@ -221,7 +225,7 @@ namespace __labeling_controller__
 					neighbor::neighbor( in, T, L, i, j, k, width, height, depth );
 
 					// 近傍で最小のラベル番号を持つものを取得し，ラベル番号が0で無い物の数を数え上げる
-					size_type L1 = label_max;
+					label_value_type L1 = static_cast< label_value_type >( label_max );
 					for( l = 0, count = 0 ; l < neighbor::array_num ; l++ )
 					{
 						if( L[ l ] > 0 )

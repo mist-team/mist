@@ -271,7 +271,7 @@ namespace __gif_controller__
 				pointer += num;
 			}
 
-			return( pointer - buff );
+			return( -1 );
 		}
 
 

@@ -228,11 +228,11 @@ namespace __pnm_controller__
 			{
 			case P1:
 			case P2:
-				while( p < e )
+				while( i < image.size( ) && p < e )
 				{
 					p = get_line( p, e, line );
 					split_string( line, ' ', elements );
-					for( size_type j = 0 ; j < elements.size( ) ; j++ )
+					for( size_type j = 0 ; i < image.size( ) && j < elements.size( ) ; j++ )
 					{
 						image[ i++ ] = static_cast< value_type >( atoi( elements[ j ].c_str( ) ) * scale );
 					}
@@ -240,11 +240,11 @@ namespace __pnm_controller__
 				break;
 
 			case P3:
-				while( p < e )
+				while( i < image.size( ) && p < e )
 				{
 					p = get_line( p, e, line );
 					split_string( line, ' ', elements );
-					for( size_type j = 0 ; j < elements.size( ) ; j += 3 )
+					for( size_type j = 0 ; i < image.size( ) && j < elements.size( ) ; j += 3 )
 					{
 						value_type r = static_cast< value_type >( atoi( elements[ j + 0 ].c_str( ) ) * scale );
 						value_type g = static_cast< value_type >( atoi( elements[ j + 1 ].c_str( ) ) * scale );
@@ -256,14 +256,14 @@ namespace __pnm_controller__
 
 			case P4:
 			case P5:
-				while( p < e )
+				while( i < image.size( ) && p < e )
 				{
 					image[ i++ ] = static_cast< value_type >( *p++ * scale );
 				}
 				break;
 
 			case P6:
-				while( p < e )
+				while( i < image.size( ) && p < e )
 				{
 					value_type r = static_cast< value_type >( p[ 0 ] * scale );
 					value_type g = static_cast< value_type >( p[ 1 ] * scale );
@@ -277,7 +277,7 @@ namespace __pnm_controller__
 				return( false );
 			}
 
-			return( true );
+			return( p == e );
 		}
 
 		static bool read( array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type level )

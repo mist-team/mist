@@ -10,7 +10,8 @@ class ct_image_window;
 class ct_draw_area : public Fl_Gl_Window
 {
 public:
-	typedef mist::array3< short >::size_type size_type;
+	typedef short ct_value_type;
+	typedef mist::array3< ct_value_type >::size_type size_type;
 
 public:
 	ct_draw_area( int x, int y, int w, int h, const char *l ) : Fl_Gl_Window( x, y, w, h, l )
@@ -30,7 +31,7 @@ public:
 	virtual ~ct_draw_area(){ }
 
 private:
-	mist::array3< short > ct;
+	mist::array3< ct_value_type > ct;
 	mist::array2< unsigned char > buff;
 	size_type index_;
 	double window_level_;

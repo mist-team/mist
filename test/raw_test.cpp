@@ -89,6 +89,7 @@ void ct_draw_area::read_image( ct_image_window *wnd )
 	double x = 0.625;
 	double y = 0.625;
 	double z = 1.0;
+	ct_value_type offset = 0;
 
 	parameter_window window;
 	window.width->value( w );
@@ -97,6 +98,7 @@ void ct_draw_area::read_image( ct_image_window *wnd )
 	window.sizeX->value( x );
 	window.sizeY->value( y );
 	window.sizeZ->value( z );
+	window.offset->value( offset );
 
 	if( window.show( ) )
 	{
@@ -106,8 +108,9 @@ void ct_draw_area::read_image( ct_image_window *wnd )
 		x = window.sizeX->value( );
 		y = window.sizeY->value( );
 		z = window.sizeZ->value( );
+		offset = static_cast< ct_value_type >( window.offset->value( ) );
 
-		if( mist::read_raw( ct, filename, w, h, d, x, y, z, 0, false, progress_callback( wnd->progress_bar ) ) )
+		if( mist::read_raw( ct, filename, w, h, d, x, y, z, offset, false, progress_callback( wnd->progress_bar ) ) )
 		{
 			wnd->Indx->range( 0, ct.depth( ) - 1 );
 		}
@@ -125,7 +128,7 @@ void ct_draw_area::write_image( ct_image_window *w )
 	const char *filename = fl_file_chooser( "Save", "*", "" );
 	if( filename == NULL ) return;
 
-	mist::write_raw_gz( ct, filename );
+	mist::write_raw_gz( ct, filename, 0, false, progress_callback( w->progress_bar ) );
 }
 
 void ct_draw_area::change_index( size_type index )

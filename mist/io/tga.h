@@ -102,12 +102,12 @@ namespace __tga_controller__
 			return( ret );
 		}
 
-		static unsigned char *decode_RLE( const unsigned char *pixel, size_type num_bytes, size_type pixel_bytes )
+		static bool decode_RLE( const unsigned char *pixel, unsigned char * &buff, size_type snum_bytes, size_type num_bytes, size_type pixel_bytes )
 		{
-			unsigned char *buff = new unsigned char[ num_bytes ];
+			buff = new unsigned char[ num_bytes ];
 			memset( buff, 0, sizeof( unsigned char ) * num_bytes );
 
-			for( size_type i = 0, j = 0 ; j < num_bytes ; )
+			for( size_type i = 0, j = 0 ; i < snum_bytes && j < num_bytes ; )
 			{
 				unsigned char byte = pixel[ i++ ];
 				if( ( byte & 0x80 ) != 0 )
@@ -141,7 +141,15 @@ namespace __tga_controller__
 				}
 			}
 
-			return( buff );
+			if( j != num_bytes )
+			{
+				// RLEのデコードに失敗
+				delete [] buff;
+				buff = NULL;
+				return( false );
+			}
+
+			return( true );
 		}
 
 
@@ -175,7 +183,10 @@ namespace __tga_controller__
 
 			if( is_RLE )
 			{
-				buff = decode_RLE( image_data, width * height * pixel_bytes, pixel_bytes );
+				if( !decode_RLE( image_data, buff, tga + num_bytes - image_data, width * height * pixel_bytes, pixel_bytes ) )
+				{
+					return( false );
+				}
 				pixels = buff + ( from_top ? 0 : width * ( height - 1 ) * pixel_bytes );
 			}
 			else
