@@ -27,6 +27,10 @@
 #include "./dicom_info.h"
 #endif
 
+#ifndef __INCLUDE_MIST_SINGLETON__
+#include "../singleton.h"
+#endif
+
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN
 
@@ -114,7 +118,7 @@ namespace dicom
 		dicom_vr vr = get_dicom_vr( VR );
 
 		difference_type num_bytes = 0;
-		static dicom_tag_table dicom_table;
+		const dicom_tag_table &dicom_table = singleton< dicom_tag_table >::get_instance( );
 		tag = dicom_table.get_tag( group, element, vr );
 
 		if( tag.tag != 0xffffffff )

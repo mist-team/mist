@@ -67,6 +67,17 @@ namespace dicom
 		RLE,		///< @brief ランレングス（RLE）圧縮
 	};
 
+	/// @brief DICOMデータの画素の表現タイプ
+	enum photometric_interpretation_type
+	{
+		UNKNOWNTYPE,
+		MONOCHROME1,		///< @brief 1バイトのグレースケール
+		MONOCHROME2,		///< @brief 2バイトのグレースケール
+		RGB,				///< @brief RGBの並び
+		PALETTE_COLOR,		///< @brief カラーテーブル
+		YBR_FULL_422,		///< @brief ？
+		YBR_FULL,			///< @brief ？
+	};
 
 	/// @brief DICOMのUIDに変換する
 	inline dicom_uid get_uid( const std::string &uid )
@@ -341,9 +352,33 @@ namespace dicom
 		}
 
 		/// @brief DICOMデータ element を削除する
+		void erase( const dicom_tag &tag )
+		{
+			base::erase( tag.tag );
+		}
+
+		/// @brief DICOMデータ element を削除する
+		void erase( unsigned short group, unsigned short element )
+		{
+			base::erase( construct_dicom_tag( group, element ) );
+		}
+
+		/// @brief DICOMデータ element を削除する
 		void remove( const dicom_element &element )
 		{
 			base::erase( element.tag );
+		}
+
+		/// @brief DICOMデータ element を削除する
+		void remove( const dicom_tag &tag )
+		{
+			base::erase( tag.tag );
+		}
+
+		/// @brief DICOMデータ element を削除する
+		void remove( unsigned short group, unsigned short element )
+		{
+			base::erase( construct_dicom_tag( group, element ) );
 		}
 
 
@@ -378,34 +413,48 @@ namespace dicom
 	class dicom_image_info
 	{
 	public:
-		compress_type	compression_type;			///< @brief DICOMデータの圧縮タイプ
-		unsigned short	samples_per_pixel;			///< @brief 1画素あたりのサンプル数
-		signed int		number_of_frames;			///< @brief DICOM画像内に含まれるフレーム数
-		unsigned short	rows;						///< @brief 画像の行数（画像の高さ）
-		unsigned short	cols;						///< @brief 画像の列数（画像の幅）
-		double			pixel_spacing_x;			///< @brief X軸方向の解像度
-		double			pixel_spacing_y;			///< @brief Y軸方向の解像度
-		unsigned short	bits_allocated;				///< @brief 1画素あたりに割り当てられているビット数
-		unsigned short	bits_stored;				///< @brief 1画素あたりに使用しているビット数
-		unsigned short	high_bits;					///< @brief high bits
-		unsigned short	pixel_representation;		///< @brief pixel representation
-		double			window_center;				///< @brief 描画に用いる Window Center
-		double			window_width;				///< @brief 描画に用いる Window Width
+		compress_type						compression_type;	///< @brief DICOMデータの圧縮タイプ
+		photometric_interpretation_type		photometric_type;	///< @brief 画素の表現方法
+
+		unsigned short		samples_per_pixel;			///< @brief 1画素あたりのサンプル数
+		signed int			number_of_frames;			///< @brief DICOM画像内に含まれるフレーム数
+		unsigned short		rows;						///< @brief 画像の行数（画像の高さ）
+		unsigned short		cols;						///< @brief 画像の列数（画像の幅）
+		double				pixel_spacing_x;			///< @brief X軸方向の解像度
+		double				pixel_spacing_y;			///< @brief Y軸方向の解像度
+		double				image_position_x;			///< @brief X軸方向のイメージポジション
+		double				image_position_y;			///< @brief Y軸方向のイメージポジション
+		double				image_position_z;			///< @brief Z軸方向のイメージポジション
+		unsigned short		bits_allocated;				///< @brief 1画素あたりに割り当てられているビット数
+		unsigned short		bits_stored;				///< @brief 1画素あたりに使用しているビット数
+		unsigned short		high_bits;					///< @brief high bits
+		unsigned short		pixel_representation;		///< @brief pixel representation
+		double				window_center;				///< @brief 描画に用いる Window Center
+		double				window_width;				///< @brief 描画に用いる Window Width
+
+		double				KVP;						///< @brief 管電圧
+		double				mA;						///< @brief 管電流
 
 		dicom_image_info( ) :
 			compression_type( RAW ),
+			photometric_type( UNKNOWNTYPE ),
 			samples_per_pixel( 1 ),
 			number_of_frames( 1 ),
 			rows( 0 ),
 			cols( 0 ),
 			pixel_spacing_x( 1.0 ),
 			pixel_spacing_y( 1.0 ),
+			image_position_x( 1.0 ),
+			image_position_y( 1.0 ),
+			image_position_z( 1.0 ),
 			bits_allocated( 8 ),
 			bits_stored( 8 ),
 			high_bits( 7 ),
 			pixel_representation( 0 ),
 			window_center( 128 ),
-			window_width( 256 )
+			window_width( 256 ),
+			KVP( 0 ),
+			mA( 0 )
 		{
 		}
 	};
@@ -550,6 +599,24 @@ namespace dicom
 		return( cite == dicm.end( ) ? default_value : cite->second.to_string( ) );
 	}
 
+	bool begin_with( const std::string &str1, const std::string &str2 )
+	{
+		if( str1.size( ) < str2.size( ) )
+		{
+			return( false );
+		}
+
+		for( size_t i = 0 ; i < str2.size( ) ; i++ )
+		{
+			if( str1[ i ] != str2[ i ] )
+			{
+				return( false );
+			}
+		}
+
+		return( true );
+	}
+
 	/// @brief DICOMコンテナからDICOMの情報を取得する
 	bool get_dicom_info( const dicom_tag_container &dicm, dicom_info &info )
 	{
@@ -558,9 +625,38 @@ namespace dicom
 		info.compression_type		= get_compress_type( find_tag( dicm, 0x0002, 0x0010, "" ) );
 		info.samples_per_pixel		= find_tag( dicm, 0x0028, 0x0002, info.samples_per_pixel );
 		info.number_of_frames		= find_tag( dicm, 0x0028, 0x0008, info.number_of_frames );
-		info.rows					= find_tag( dicm, 0x0028, 0x0010, info.rows );
-		info.cols					= find_tag( dicm, 0x0028, 0x0011, info.cols );
+		info.rows					= find_tag( dicm, 0x0028, 0x0010, info.rows );	// X軸方向の解像度
+		info.cols					= find_tag( dicm, 0x0028, 0x0011, info.cols );	// Y軸方向の解像度
 
+		// 画素の表現方法
+		std::string photometric_interpretation = find_tag( dicm, 0x0028, 0x0004, "" );
+		if( begin_with( photometric_interpretation, "MONOCHROME1" ) )
+		{
+			info.photometric_type = MONOCHROME1;
+		}
+		else if( begin_with( photometric_interpretation, "MONOCHROME2" ) )
+		{
+			info.photometric_type = MONOCHROME2;
+		}
+		else if( begin_with( photometric_interpretation, "RGB" ) )
+		{
+			info.photometric_type = RGB;
+		}
+		else if( begin_with( photometric_interpretation, "PALETTE COLOR" ) )
+		{
+			info.photometric_type = PALETTE_COLOR;
+		}
+		else if( begin_with( photometric_interpretation, "YBR FULL 422" ) )
+		{
+			info.photometric_type = YBR_FULL_422;
+		}
+		else if( begin_with( photometric_interpretation, "YBR FULL" ) )
+		{
+			info.photometric_type = YBR_FULL;
+		}
+
+
+		// 画像のXY方向の解像度
 		std::string pixel_spacing	= find_tag( dicm, 0x0028, 0x0030, "" );
 		if( pixel_spacing != "" )
 		{
@@ -568,6 +664,35 @@ namespace dicom
 			sscanf( pixel_spacing.c_str( ), "%lf\\%lf", &resoX, &resoY );
 			info.pixel_spacing_x	= resoX;
 			info.pixel_spacing_y	= resoY;
+		}
+
+		// イメージポジションを取得
+		std::string image_position	= find_tag( dicm, 0x0020, 0x0032, "" );
+		if( image_position != "" )
+		{
+			double posX = 0.0, posY = 0.0, posZ = 0.0;
+			sscanf( image_position.c_str( ), "%lf\\%lf\\%lf", &posX, &posY, &posZ );
+			info.image_position_x = posX;
+			info.image_position_y = posY;
+			info.image_position_z = posZ;
+		}
+		else
+		{
+			info.image_position_z = find_tag( dicm, 0x2020, 0x0010, ( short )0 );
+		}
+
+		// 管電圧を取得
+		std::string kvp				= find_tag( dicm, 0x0018, 0x0060, "" );
+		if( kvp != "" )
+		{
+			info.KVP = atof( kvp.c_str( ) );
+		}
+
+		// 管電流を取得
+		std::string mA				= find_tag( dicm, 0x0018, 0x1151, "" );
+		if( mA != "" )
+		{
+			info.mA = atoi( mA.c_str( ) );
 		}
 
 		info.bits_allocated			= find_tag( dicm, 0x0028, 0x0100, info.bits_allocated );
@@ -861,7 +986,7 @@ namespace dicom
 			return( false );
 		}
 
-		size_type dstBytes = info.rows * info.cols * info.number_of_frames * info.bits_allocated / 8;
+		size_type dstBytes = info.rows * info.cols * info.number_of_frames * info.samples_per_pixel * info.bits_allocated / 8;
 		unsigned char *buff = new unsigned char[ dstBytes + 1 ];
 		unsigned char *dst_pointer = buff;
 		unsigned char *p = pointer;

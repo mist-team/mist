@@ -687,30 +687,30 @@ namespace dicom
 
 	public:
 		/// @brief (group, element) のタグが含まれているかどうかを調べる
-		bool contain_tag( unsigned short group, unsigned short element )
+		bool contain_tag( unsigned short group, unsigned short element ) const
 		{
-			baseclass::iterator ite = baseclass::find( dicom_tag( construct_dicom_tag( group, element ), UNKNOWN, 1, "" ) );
+			baseclass::const_iterator ite = baseclass::find( dicom_tag( construct_dicom_tag( group, element ), UNKNOWN, 1, "" ) );
 			return( ite != baseclass::end( ) );
 		}
 
 		/// @brief (group, element, vr) のタグを取得する
-		dicom_tag get_tag( unsigned short group, unsigned short element, const std::string &vr )
+		dicom_tag get_tag( unsigned short group, unsigned short element, const std::string &vr ) const
 		{
 			return( get_tag( group, element, get_dicom_vr( vr ) ) );
 		}
 
 		/// @brief (group, element, vr) のタグを取得する
-		dicom_tag get_tag( unsigned short group, unsigned short element, dicom_vr vr )
+		dicom_tag get_tag( unsigned short group, unsigned short element, dicom_vr vr ) const
 		{
 			dicom_tag tag( construct_dicom_tag( group, element ), UNKNOWN, 1, "" );
-			baseclass::iterator ite = baseclass::find( tag );
+			baseclass::const_iterator ite = baseclass::find( tag );
 			if( ite == baseclass::end( ) )
 			{
 				return( dicom_tag( 0xffffffff, UNKNOWN, 1, "no tag exists." ) );
 			}
 
-			baseclass::iterator upper_ite = baseclass::upper_bound( tag );
-			baseclass::iterator iite = ite;
+			baseclass::const_iterator upper_ite = baseclass::upper_bound( tag );
+			baseclass::const_iterator iite = ite;
 			do
 			{
 				if( iite->vr == vr ) return( *iite );
