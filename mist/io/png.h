@@ -247,6 +247,11 @@ namespace __png_controller__
 //!  @{
 
 //! @addtogroup image_png_group PNG 画像入出力
+//!
+//! PNGファイルを読み込んで，MISTコンテナへ格納する．
+//! また，MISTコンテナからPNGファイルへの書き出しをサポート．
+//! 別途 http://libpng.org が提供するフリーのPNGライブラリが必要です．
+//!
 //!  @{
 
 

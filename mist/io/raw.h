@@ -569,6 +569,10 @@ namespace __raw_controller__
 //!  @{
 
 //! @addtogroup image_raw_group RAW 画像入出力
+//!
+//! RAWファイル（GZIP圧縮に対応）の読み込みと書き込みサポートをMISTに追加するものです．
+//! 別途 http://www.zlib.org が提供するフリーのZLIBライブラリが必要です．
+//!
 //!  @{
 
 

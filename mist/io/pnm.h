@@ -412,6 +412,11 @@ namespace __pnm_controller__
 //!  @{
 
 //! @addtogroup image_pnm_group PBM，PGM，PPM，PNM 画像入出力
+//!
+//! PNM（PBM，PGM，PPM）形式のファイルを読み込んで，MISTコンテナへ格納する．
+//! また，MISTコンテナからPNMファイルへの書き出しをサポート．
+//! P1，P2，P3，P4，P5，P6形式のPNMに対応．
+//!
 //!  @{
 
 

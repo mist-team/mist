@@ -179,6 +179,11 @@ namespace __jpeg_controller__
 //!  @{
 
 //! @addtogroup image_jpeg_group JPEG 画像入出力
+//!
+//! JPEGファイルを読み込んで，MISTコンテナへ格納する．
+//! また，MISTコンテナからJPEGファイルへの書き出しをサポート．
+//! 別途 Independent JPEG Group (http://www.ijg.org/) が提供するフリーのJPEGライブラリが必要です．
+//!
 //!  @{
 
 

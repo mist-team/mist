@@ -287,6 +287,11 @@ namespace __tiff_controller__
 //!  @{
 
 //! @addtogroup image_tiff_group TIFF画像入出力
+//!
+//! TIFFファイルを読み込んで，MISTコンテナへ格納する．
+//! また，MISTコンテナからTIFFファイルへの書き出しをサポート．
+//! 別途 http://libtiff.org が提供するフリーのTIFFライブラリが必要です．
+//!
 //!  @{
 
 
