@@ -70,30 +70,31 @@ protected:
 	}
 };
 
+#define CREATE_THREAD_NUM	5
 
 int main( int argc, char *argv[] )
 {
 	using namespace std;
 
-	thread_parameter< double > param[ 6 ];
+	thread_parameter< double > param[ CREATE_THREAD_NUM ];
 
 	int i;
-	for( i = 0 ; i < 6 ; i++ )
+	for( i = 0 ; i < CREATE_THREAD_NUM ; i++ )
 	{
-		param[i] = thread_parameter< double >( i + 1, 6 );
+		param[i] = thread_parameter< double >( i + 1, CREATE_THREAD_NUM );
 	}
 
-	for( i = 0 ; i < 6 ; i++ )
+	for( i = 0 ; i < CREATE_THREAD_NUM ; i++ )
 	{
 		param[i].create( );
 	}
 
-	for( i = 0 ; i < 6 ; i++ )
+	for( i = 0 ; i < CREATE_THREAD_NUM ; i++ )
 	{
 		param[i].wait( );
 	}
 
-	for( i = 0 ; i < 6 ; i++ )
+	for( i = 0 ; i < CREATE_THREAD_NUM ; i++ )
 	{
 		param[i].close( );
 	}
