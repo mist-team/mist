@@ -143,17 +143,17 @@ namespace __donotuse__
 
 		const double	pi = 4.0 * atan(1.0);
 		double	w_smp = 2.0 * pi * f_smp;
-		double	wl, wh, wc, w0;
+		double	wl, wh, wc, w0 = 1;
 
 		// é¸îgêîïœä∑
 		switch(mode){
-		case FILTER::FIR_LPF:
+		case WazaFIR::FIR_LPF:
 			wl = f_lc * 2.0 * pi;
 			wh = f_hc * 2.0 * pi;
 			wc = (wl + wh) / 2.0;
 			break;
 
-		case FILTER::FIR_HPF:
+		case WazaFIR::FIR_HPF:
 			f_lc = f_smp / 2.0 - f_lc;
 			f_hc = f_smp / 2.0 - f_hc;
 			wl = f_lc * 2.0 * pi;
@@ -161,8 +161,9 @@ namespace __donotuse__
 			wc = (wl + wh) / 2.0;
 			break;
 
-		case FILTER::FIR_BPF:
-		case FILTER::FIR_BRF:
+		case WazaFIR::FIR_BPF:
+		case WazaFIR::FIR_BRF:
+		default:
 			wl = f_lc * 2.0 * pi;
 			wh = f_hc * 2.0 * pi;
 			wc = (wh - wl) / 2.0;
@@ -205,10 +206,10 @@ namespace __donotuse__
 
 		// åWêîïœä∑
 		switch(mode){
-		case FILTER::FIR_LPF:
+		case WazaFIR::FIR_LPF:
 			break;
 
-		case FILTER::FIR_HPF:
+		case WazaFIR::FIR_HPF:
 			for(n = 0; n < nOrder; n ++){
 				n_fix = n - (nOrder / 2);
 				if(n_fix % 2 != 0)
@@ -216,14 +217,15 @@ namespace __donotuse__
 			}
 			break;
 
-		case FILTER::FIR_BPF:
+		case WazaFIR::FIR_BPF:
 			for(n = 0; n < nOrder; n ++){
 				n_fix = n - (nOrder / 2);
 				pCoefs[n] *= 2.0 * cos(n_fix * w0 / f_smp);
 			}
 			break;
 
-		case FILTER::FIR_BRF:
+		default:
+		case WazaFIR::FIR_BRF:
 			for(n = 0; n < nOrder; n ++){
 				n_fix = n - (nOrder / 2);
 				if(n_fix == 0)

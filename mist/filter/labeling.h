@@ -966,7 +966,7 @@ void maximum_region(
 		}
 	}
 
-	size_type max_label = 1;
+	max_label = 1;
 	for( i = 2 ; i <= label_num ; i++ )
 	{
 		max_label = menseki[ i ] > menseki[ max_label ] ? i : max_label;
@@ -1075,7 +1075,7 @@ void maximum_region(
 		}
 	}
 
-	size_type max_label = 1;
+	max_label = 1;
 	for( i = 2 ; i <= label_num ; i++ )
 	{
 		max_label = menseki[ i ] > menseki[ max_label ] ? i : max_label;
