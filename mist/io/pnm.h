@@ -123,7 +123,7 @@ namespace __pnm_controller__
 			return( elements.size( ) );
 		}
 
-		static bool convert_from_pnm_data( array2< T, Allocator > &image, const unsigned char *buff, size_type len )
+		static bool convert_from_pnm_data( array2< T, Allocator > &image, const unsigned char *buff, size_type len, typename array2< T, Allocator >::size_type level )
 		{
 			// PNM形式のヘッダ部分
 			const unsigned char *p = buff;
@@ -148,7 +148,7 @@ namespace __pnm_controller__
 			}
 
 			// 画像サイズを取得する
-			size_type w = 0, h = 0;
+			size_type w = 0, h = 0, gray_level;
 			split_string( line, ' ', elements );
 			if( elements.size( ) == 1 )
 			{
@@ -166,7 +166,7 @@ namespace __pnm_controller__
 					return( false );
 				}
 			}
-			else if( elements.size( ) != 2 )
+			else if( elements.size( ) == 2 )
 			{
 				w = atoi( elements[ 0 ].c_str( ) );
 				h = atoi( elements[ 1 ].c_str( ) );
@@ -195,6 +195,7 @@ namespace __pnm_controller__
 					std::cerr << "Image size is unknown!" << std::endl;
 					return( false );
 				}
+				gray_level = atoi( elements[ 0 ].c_str( ) );
 				break;
 
 			default:
@@ -203,6 +204,7 @@ namespace __pnm_controller__
 
 			// 画素データを取得する
 			size_type i = 0;
+			double scale = static_cast< double >( level ) / static_cast< double >( gray_level );
 			switch( pnm_type )
 			{
 			case P1:
@@ -213,7 +215,7 @@ namespace __pnm_controller__
 					split_string( line, ' ', elements );
 					for( size_type j = 0 ; j < elements.size( ) ; j++ )
 					{
-						image[ i++ ] = atoi( elements[ j ].c_str( ) );
+						image[ i++ ] = static_cast< value_type >( atoi( elements[ j ].c_str( ) ) * scale );
 					}
 				}
 				break;
@@ -225,9 +227,9 @@ namespace __pnm_controller__
 					split_string( line, ' ', elements );
 					for( size_type j = 0 ; j < elements.size( ) ; j += 3 )
 					{
-						value_type r = static_cast< value_type >( atoi( elements[ j + 0 ].c_str( ) ) );
-						value_type g = static_cast< value_type >( atoi( elements[ j + 1 ].c_str( ) ) );
-						value_type b = static_cast< value_type >( atoi( elements[ j + 2 ].c_str( ) ) );
+						value_type r = static_cast< value_type >( atoi( elements[ j + 0 ].c_str( ) ) * scale );
+						value_type g = static_cast< value_type >( atoi( elements[ j + 1 ].c_str( ) ) * scale );
+						value_type b = static_cast< value_type >( atoi( elements[ j + 2 ].c_str( ) ) * scale );
 						image[ i++ ] = pixel_converter::convert_to( r, g, b );
 					}
 				}
@@ -237,16 +239,16 @@ namespace __pnm_controller__
 			case P5:
 				while( p < e )
 				{
-					image[ i++ ] = *p++;
+					image[ i++ ] = static_cast< value_type >( *p++ * scale );
 				}
 				break;
 
 			case P6:
 				while( p < e )
 				{
-					value_type r = static_cast< value_type >( p[ 0 ] );
-					value_type g = static_cast< value_type >( p[ 1 ] );
-					value_type b = static_cast< value_type >( p[ 2 ] );
+					value_type r = static_cast< value_type >( p[ 0 ] * scale );
+					value_type g = static_cast< value_type >( p[ 1 ] * scale );
+					value_type b = static_cast< value_type >( p[ 2 ] * scale );
 					image[ i++ ] = pixel_converter::convert_to( r, g, b );
 					p += 3;
 				}
@@ -259,7 +261,7 @@ namespace __pnm_controller__
 			return( true );
 		}
 
-		static bool read( array2< T, Allocator > &image, const std::string &filename )
+		static bool read( array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type level )
 		{
 			typedef typename array2< T, Allocator >::size_type size_type;
 
@@ -285,12 +287,12 @@ namespace __pnm_controller__
 			}
 			fclose( fp );
 
-			bool ret = convert_from_pnm_data( image, buff, filesize );
+			bool ret = convert_from_pnm_data( image, buff, filesize, level );
 			delete [] buff;
 			return( ret );
 		}
 
-		static bool write( const array2< T, Allocator > &image, const std::string &filename, PNM_TYPE pnm_type )
+		static bool write( const array2< T, Allocator > &image, const std::string &filename, PNM_TYPE pnm_type, typename array2< T, Allocator >::size_type level )
 		{
 			typedef typename array2< T, Allocator >::size_type size_type;
 
@@ -325,7 +327,9 @@ namespace __pnm_controller__
 					{
 						max = max > image[ i ] ? max : image[ i ];
 					}
-					fprintf( fp, "%d\n", static_cast< int >( pixel_converter::convert_from( max ).get_value( ) ) );
+					int max_level = static_cast< int >( pixel_converter::convert_from( max ).get_value( ) );
+					max_level = max_level > static_cast< int >( level ) ? max_level : static_cast< int >( level );
+					fprintf( fp, "%d\n", max_level );
 				}
 				break;
 
@@ -401,20 +405,20 @@ namespace __pnm_controller__
 
 
 template < class T, class Allocator >
-bool read_pnm( array2< T, Allocator > &image, const std::string &filename )
+bool read_pnm( array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type level = 255 )
 {
-	return( __pnm_controller__::pnm_controller< T, Allocator >::read( image, filename ) );
+	return( __pnm_controller__::pnm_controller< T, Allocator >::read( image, filename, level ) );
 }
 
 template < class T, class Allocator >
-bool write_pnm( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type pnm_type = 6 )
+bool write_pnm( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type pnm_type = 6, typename array2< T, Allocator >::size_type level = 255 )
 {
 	if( pnm_type > 6 ) 
 	{
 		std::cerr << "This format is not supported currently!" << std::endl;
 		return( false );
 	}
-	return( __pnm_controller__::pnm_controller< T, Allocator >::write( image, filename, static_cast< __pnm_controller__::PNM_TYPE >( pnm_type ) ) );
+	return( __pnm_controller__::pnm_controller< T, Allocator >::write( image, filename, static_cast< __pnm_controller__::PNM_TYPE >( pnm_type ), level ) );
 }
 
 
