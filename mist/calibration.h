@@ -168,8 +168,8 @@ namespace Tsai
 				//std::cout << x << ", " << y << ", " << z << std::endl;
 
 				//err += std::sqrt( e1 * e1 );
-				err += std::sqrt( e2 * e2 );
-				//err += std::sqrt( e1 * e1 + e2 * e2 );
+				//err += std::sqrt( e2 * e2 );
+				err += std::sqrt( e1 * e1 + e2 * e2 );
 			}
 			return( err );
 		}
@@ -424,15 +424,15 @@ namespace Tsai
 		param.ka1 = ka1;	// キャリブレーションの結果得られる円形の歪成分
 
 		{
-			mist::matrix< double > ppp( 3, 1 );//, dirs = matrix_type::identity( 3, 3 );
+			mist::matrix< double > ppp( 3, 1 ), dirs = matrix_type::identity( 3, 3 );
 			ppp[ 0 ] = f;
 			ppp[ 1 ] = Tz;
 			ppp[ 2 ] = ka1;
 
 			//std::cout << "( f, Tz, ka1 ) = " << ppp.t( ) << std::endl;
 
-			//mist::powell::minimization( ppp, dirs, param, 0.0000001 );
-			mist::gradient::minimization( ppp, param, 0.00001, 0.01 );
+			mist::powell::minimization( ppp, dirs, param, 0.0000001 );
+			//mist::gradient::minimization( ppp, param, 0.0000001, 0.01 );
 
 			//std::cout << "( f, Tz, ka1 ) = " << ppp.t( ) << std::endl;
 
