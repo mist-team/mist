@@ -6,6 +6,7 @@ ALL = \
 	limits_test \
 	operators_test \
 	boolean_test \
+	iterator_test \
 
 
 all: $(ALL)
@@ -21,6 +22,9 @@ operators_test : operators_test.o
 
 boolean_test : boolean_test.o
 	$(CXX) $(CXXFLAGS) -o $@ boolean_test.o $(LIBS) $(LDLIBS)
+
+iterator_test : iterator_test.o
+	$(CXX) $(CXXFLAGS) -o $@ iterator_test.o $(LIBS) $(LDLIBS)
 
 
 

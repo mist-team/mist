@@ -331,6 +331,51 @@ public:
 	size_type rows( ) const { return( size1_ ); }
 	size_type cols( ) const { return( size2_ ); }
 
+
+
+/************************************************************************************************************
+**
+**      行に対する順方向・逆方向の反復子
+**
+************************************************************************************************************/
+	// 順方向のランダムアクセスイテレータを返す
+	iterator row_begin( size_type r ){ return( iterator( &access( r, 0 ), rows( ) ) ); }
+	const_iterator row_begin( size_type r ) const { return( const_iterator( &access( r, 0 ), rows( ) ) ); }
+
+	iterator row_end( size_type r ){ return( iterator( &access( r, cols( ) ), rows( ) ) ); }
+	const_iterator row_end( size_type r ) const { return( const_iterator( &access( r, cols( ) ), rows( ) ) ); }
+
+
+	// 逆方向のランダムアクセスイテレータを返す
+	reverse_iterator row_rbegin( size_type r ){ return( reverse_iterator( &access( r, cols( ) - 1 ), rows( ) ) ); }
+	const_reverse_iterator row_rbegin( size_type r ) const { return( const_reverse_iterator( &access( r, cols( ) - 1 ), rows( ) ) ); }
+
+	reverse_iterator row_rend( size_type r ){ return( reverse_iterator( &access( r, 0 ), rows( ) ) + 1 ); }
+	const_reverse_iterator row_rend( size_type r ) const { return( const_reverse_iterator( &access( r, 0 ), rows( ) ) + 1 ); }
+
+
+/************************************************************************************************************
+**
+**      列に対する順方向・逆方向の反復子
+**
+************************************************************************************************************/
+	// 順方向のランダムアクセスイテレータを返す
+	iterator col_begin( size_type c ){ return( iterator( &access( 0, c ), 1 ) ); }
+	const_iterator col_begin( size_type c ) const { return( const_iterator( &access( 0, c ), 1 ) ); }
+
+	iterator col_end( size_type c ){ return( iterator( &access( rows( ), c ), 1 ) ); }
+	const_iterator col_end( size_type c ) const { return( const_iterator( &access( rows( ), c ), 1 ) ); }
+
+
+	// 逆方向のランダムアクセスイテレータを返す
+	reverse_iterator col_rbegin( size_type c ){ return( reverse_iterator( &access( rows( ) - 1, c ), 1 ) ); }
+	const_reverse_iterator col_rbegin( size_type c ) const { return( const_reverse_iterator( &access( rows( ) - 1, c ), 1 ) ); }
+
+	reverse_iterator col_rend( size_type c ){ return( reverse_iterator( &access( 0, c ), 1 ) + 1 ); }
+	const_reverse_iterator col_rend( size_type c ) const { return( const_reverse_iterator( &access( 0, c ), 1 ) + 1 ); }
+
+
+
 public: // 配列に対する算術演算
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 	matrix_transpose< matrix > t( )
@@ -603,57 +648,68 @@ public:
 	}
 #endif
 
-public: // 要素へのアクセス
+// 要素へのアクセス
+private:
+	T &access( size_type r, size_type c )
+	{
+		return( data_[ r + c * size1_ ] );
+	}
+	const T &access( size_type r, size_type c ) const
+	{
+		return( data_[ r + c * size1_ ] );
+	}
+
+public:
 	T &at( size_type r, size_type c )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
-		if( r < 0 || r >= size1_ || c < 0 || c >= size2_ )
+		if( r < 0 || r >= rows( ) || c < 0 || c >= cols( ) )
 		{
 			static T dmy;
 			std::cout << "Access Violation at ( " << r << ", " << c << " )" << std::endl;
 			return( dmy );
 		}
 #endif
-		return( data_[ r + c * size1_ ] );
+		return( access( r, c ) );
 	}
 
 	const T &at( size_type r, size_type c ) const
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
-		if( r < 0 || r >= size1_ || c < 0 || c >= size2_ )
+		if( r < 0 || r >= rows( ) || c < 0 || c >= cols( ) )
 		{
 			static T dmy;
 			std::cout << "Access Violation at ( " << r << ", " << c << " )" << std::endl;
 			return( dmy );
 		}
 #endif
-		return( data_[ r + c * size1_ ] );
+		return( access( r, c ) );
 	}
 
 	T &operator ()( size_type r, size_type c )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
-		if( r < 0 || r >= size1_ || c < 0 || c >= size2_ )
+		if( r < 0 || r >= rows( ) || c < 0 || c >= cols( ) )
 		{
 			static T dmy;
 			std::cout << "Access Violation at ( " << r << ", " << c << " )" << std::endl;
 			return( dmy );
 		}
 #endif
-		return( data_[ r + c * size1_ ] );
+		return( access( r, c ) );
 	}
 
 	const T &operator ()( size_type r, size_type c ) const
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
-		if( r < 0 || r >= size1_ || c < 0 || c >= size2_ )
+		if( r < 0 || r >= rows( ) || c < 0 || c >= cols( ) )
 		{
 			static T dmy;
 			std::cout << "Access Violation at ( " << r << ", " << c << " )" << std::endl;
 			return( dmy );
 		}
 #endif
-		return( data_[ r + c * size1_ ] );
+		return( access( r, c ) );
 	}
 
 

@@ -53,8 +53,10 @@ public:
 	typedef typename Allocator::pointer pointer;
 	typedef typename Allocator::const_pointer const_pointer;
 
-	typedef T* iterator;
-	typedef const T* const_iterator;
+	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
+	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
+	typedef mist_reverse_iterator1< T, ptrdiff_t, pointer, reference > reverse_iterator;
+	typedef mist_reverse_iterator1< T, ptrdiff_t, pointer, const_reference > const_reverse_iterator;
 
 private:
 	mist_allocator< T, Allocator > allocator_;
@@ -130,11 +132,21 @@ public:
 
 	size_type byte( ) const { return( size_ * sizeof( value_type ) ); }
 
-	iterator begin( ){ return( &( data_[0] ) ); }
-	const_iterator begin( ) const { return( &( data_[0] ) ); }
+	// 順方向のランダムアクセスイテレータを返す
+	iterator begin( ){ return( iterator( &access( 0 ), 1 ) ); }
+	const_iterator begin( ) const { return( const_iterator( &access( 0 ), 1 ) ); }
 
-	iterator end( ){ return( &( data_[ size( ) ] ) ); }
-	const_iterator end( ) const { return( &( data_[ size( ) ] ) ); }
+	iterator end( ){ return( iterator( &access( size( ) ), 1 ) ); }
+	const_iterator end( ) const { return( const_iterator( &access( size( ) ), 1 ) ); }
+
+
+	// 逆方向のランダムアクセスイテレータを返す
+	reverse_iterator rbegin( ){ return( reverse_iterator( &access( size( ) - 1 ), 1 ) ); }
+	const_reverse_iterator rbegin( ) const { return( const_reverse_iterator( &access( size( ) - 1 ), 1 ) ); }
+
+	reverse_iterator rend( ){ return( reverse_iterator( &access( 0 ), 1 ) + 1 ); }
+	const_reverse_iterator rend( ) const { return( const_reverse_iterator(  &access( 0 ), 1 ) + 1 ); }
+
 
 	size_type max_size( ) const { return( allocator_.max_size( ) ); }
 
@@ -185,7 +197,18 @@ public:
 		return( *this );
 	}
 
-public: // 要素へのアクセス
+// 要素へのアクセス
+private:
+	T &access( size_type index )
+	{
+		return( data_[index] );
+	}
+	const T &access( size_type index ) const
+	{
+		return( data_[index] );
+	}
+
+public:
 	value_type &at( size_type index )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
@@ -196,7 +219,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[index] );
+		return( access( index ) );
 	}
 
 	const value_type &at( size_type index ) const
@@ -209,7 +232,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[index] );
+		return( access( index ) );
 	}
 
 	value_type &operator ()( size_type index )
@@ -222,7 +245,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[index] );
+		return( access( index ) );
 	}
 
 	const value_type &operator ()( size_type index ) const
@@ -235,7 +258,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[index] );
+		return( access( index ) );
 	}
 
 	value_type &operator []( size_type index )
@@ -248,7 +271,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[index] );
+		return( access( index ) );
 	}
 
 	const value_type &operator []( size_type index ) const
@@ -261,7 +284,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[index] );
+		return( access( index ) );
 	}
 
 public:
@@ -339,6 +362,27 @@ private:
 public:
 	double reso1( double r1 ){ return( reso1_ = r1 ); }
 	double reso1( ){ return( reso1_ ); }
+
+/************************************************************************************************************
+**
+**      X方向に対する順方向・逆方向の反復子
+**
+************************************************************************************************************/
+	// 順方向のランダムアクセスイテレータを返す
+	iterator x_begin( ){ return( begin( ) ); }
+	const_iterator x_begin( ) const { return( begin( ) ); }
+
+	iterator x_end( ){ return( end( ) ); }
+	const_iterator x_end( ) const { return( end( ) ); }
+
+
+	// 逆方向のランダムアクセスイテレータを返す
+	reverse_iterator x_rbegin( ){ return( rbegin( ) ); }
+	const_reverse_iterator x_rbegin( ) const { return( rbegin( ) ); }
+
+	reverse_iterator x_rend( ){ return( rend( ) ); }
+	const_reverse_iterator x_rend( ) const { return( rend( )  ); }
+
 
 public: // 配列に対する算術演算
 	void swap( array1 &a )
@@ -459,6 +503,49 @@ public:
 	double reso2( double r2 ){ return( reso2_ = r2 ); }
 	double reso2( ){ return( reso2_ ); }
 
+
+/************************************************************************************************************
+**
+**      X軸を固定した場合の順方向・逆方向の反復子
+**
+************************************************************************************************************/
+	// 順方向のランダムアクセスイテレータを返す
+	iterator x_begin( size_type i ){ return( iterator( &access( i, 0 ), 1 ) ); }
+	const_iterator x_begin( size_type i ) const { return( const_iterator( &access( i, 0 ), 1 ) ); }
+
+	iterator x_end( size_type i ){ return( iterator( &access( i, height( ) ), 1 ) ); }
+	const_iterator x_end( size_type i ) const { return( const_iterator( &access( i, height( ) ), 1 ) ); }
+
+
+	// 逆方向のランダムアクセスイテレータを返す
+	reverse_iterator x_rbegin( size_type i ){ return( reverse_iterator( &access( i, height( ) - 1 ), 1 ) ); }
+	const_reverse_iterator x_rbegin( size_type i ) const { return( const_reverse_iterator( &access( i, height( ) - 1 ), 1 ) ); }
+
+	reverse_iterator x_rend( size_type i ){ return( reverse_iterator( &access( i, 0 ), 1 ) + 1 ); }
+	const_reverse_iterator x_rend( size_type i ) const { return( const_reverse_iterator( &access( i, 0 ), 1 ) + 1 ); }
+
+
+/************************************************************************************************************
+**
+**      Y軸を固定した場合の順方向・逆方向の反復子
+**
+************************************************************************************************************/
+	// 順方向のランダムアクセスイテレータを返す
+	iterator y_begin( size_type j ){ return( iterator( &access( 0, j ), width( ) ) ); }
+	const_iterator y_begin( size_type j ) const { return( const_iterator( &access( 0, j ), width( ) ) ); }
+
+	iterator y_end( size_type j ){ return( iterator( &access( width( ), j ), width( ) ) ); }
+	const_iterator y_end( size_type j ) const { return( const_iterator( &access( width( ), j ), width( ) ) ); }
+
+
+	// 逆方向のランダムアクセスイテレータを返す
+	reverse_iterator y_rbegin( size_type j ){ return( reverse_iterator( &access( width( ) - 1, j ), width( ) ) ); }
+	const_reverse_iterator y_rbegin( size_type j ) const { return( const_reverse_iterator( &access( width( ) - 1, j ), width( ) ) ); }
+
+	reverse_iterator y_rend( size_type j ){ return( reverse_iterator( &access( 0, j ), width( ) ) + 1 ); }
+	const_reverse_iterator y_rend( size_type j ) const { return( const_reverse_iterator( &access( 0, j ), width( ) ) + 1 ); }
+
+
 public:
 	template < class TT, class AAlocator >
 	const array2& operator =( const array2< TT, AAlocator > &o )
@@ -483,7 +570,18 @@ public:
 		return( *this );
 	}
 
-public: // 要素へのアクセス
+// 要素へのアクセス
+private:
+	T &access( size_type i, size_type j )
+	{
+		return( data_[ i + j * size1_ ] );
+	}
+	const T &access( size_type i, size_type j ) const
+	{
+		return( data_[ i + j * size1_ ] );
+	}
+
+public:
 	value_type &at( size_type i, size_type j )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
@@ -494,7 +592,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[ i + j * size1_ ] );
+		return( access( i, j ) );
 	}
 
 	const value_type &at( size_type index, size_type j ) const
@@ -507,7 +605,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[ i + j * size1_ ] );
+		return( access( i, j ) );
 	}
 
 	value_type &operator ()( size_type i, size_type j )
@@ -520,7 +618,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[ i + j * size1_ ] );
+		return( access( i, j ) );
 	}
 
 	const value_type &operator ()( size_type i, size_type j ) const
@@ -533,7 +631,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[ i + j * size1_ ] );
+		return( access( i, j ) );
 	}
 
 
@@ -574,6 +672,11 @@ public:
 	typedef typename Allocator::difference_type difference_type;
 	typedef typename Allocator::pointer pointer;
 	typedef typename Allocator::const_pointer const_pointer;
+
+	typedef mist_iterator2< T, ptrdiff_t, pointer, reference > iterator;
+	typedef mist_iterator2< T, ptrdiff_t, pointer, const_reference > const_iterator;
+	typedef mist_reverse_iterator2< T, ptrdiff_t, pointer, reference > reverse_iterator;
+	typedef mist_reverse_iterator2< T, ptrdiff_t, pointer, const_reference > const_reverse_iterator;
 
 private:
 	typedef array2< T, Allocator > base;
@@ -640,6 +743,84 @@ public:
 	double reso3( double r3 ){ return( reso3_ = r3 ); }
 	double reso3( ){ return( reso3_ ); }
 
+	// 順方向のランダムアクセスイテレータを返す
+	iterator begin( ){ return( iterator( &( data_[0] ), 1, 0, 0 ) ); }
+	const_iterator begin( ) const { return( const_iterator( &( data_[0] ), 1, 0, 0 ) ); }
+
+	iterator end( ){ return( iterator( &( data_[ size( ) ] ), 1, 0, 0 ) ); }
+	const_iterator end( ) const { return( const_iterator( &( data_[ size( ) ] ), 1, 0, 0 ) ); }
+
+
+	// 逆方向のランダムアクセスイテレータを返す
+	reverse_iterator rbegin( ){ return( reverse_iterator( &( data_[ size( ) - 1 ] ), 1, 0, 0 ) ); }
+	const_reverse_iterator rbegin( ) const { return( const_reverse_iterator( &( data_[ size( ) - 1 ] ), 1, 0, 0 ) ); }
+
+	reverse_iterator rend( ){ return( reverse_iterator( &( data_[-1] ), 1, 0, 0 ) ); }
+	const_reverse_iterator rend( ) const { return( const_reverse_iterator( &( data_[-1] ), 1, 0, 0 ) ); }
+
+/************************************************************************************************************
+**
+**      X軸を固定した場合の順方向・逆方向の反復子
+**
+************************************************************************************************************/
+	// 順方向のランダムアクセスイテレータを返す
+	iterator x_begin( size_type i ){ return( iterator( &access( i, 0, 0 ), width( ), width( ) * height( ), height( ) ) ); }
+	const_iterator x_begin( size_type i ) const { return( const_iterator( &access( i, 0, 0 ), width( ), width( ) * height( ), height( ) ) ); }
+
+	iterator x_end( size_type i ){ return( iterator( &access( i, height( ) - 1, depth( ) - 1 ), width( ), width( ) * height( ), height( ) ) + 1 ); }
+	const_iterator x_end( size_type i ) const { return( const_iterator( &access( i, height( ) - 1, depth( ) - 1 ), width( ), width( ) * height( ), height( ) ) + 1 ); }
+
+
+	// 逆方向のランダムアクセスイテレータを返す
+	reverse_iterator x_rbegin( size_type i ){ return( reverse_iterator( &access( i, height( ) - 1, depth( ) - 1 ), width( ), width( ) * height( ), height( ) ) + 1 ); }
+	const_reverse_iterator x_rbegin( size_type i ) const { return( const_reverse_iterator( &access( i, height( ) - 1, depth( ) - 1 ), width( ), width( ) * height( ), height( ) ) + 1 ); }
+
+	reverse_iterator x_rend( size_type i ){ return( reverse_iterator( &access( i, 0, 0 ), width( ), width( ) * height( ), height( ) ) + 1 ); }
+	const_reverse_iterator x_rend( size_type i ) const { return( const_reverse_iterator( &access( i, 0, 0 ), width( ), width( ) * height( ), height( ) ) + 1 ); }
+
+
+/************************************************************************************************************
+**
+**      Y軸を固定した場合の順方向・逆方向の反復子
+**
+************************************************************************************************************/
+	// 順方向のランダムアクセスイテレータを返す
+	iterator y_begin( size_type j ){ return( iterator( &access( 0, j, 0 ), 1, width( ) * height( ), width( ) ) ); }
+	const_iterator y_begin( size_type j ) const { return( const_iterator( &access( 0, j, 0 ), 1, width( ) * height( ), width( ) ) ); }
+
+	iterator y_end( size_type j ){ return( iterator( &access( width( ) - 1, j, depth( ) - 1 ), 1, width( ) * height( ), width( ) ) + 1 ); }
+	const_iterator y_end( size_type j ) const { return( const_iterator( &access( width( ) - 1, j, depth( ) - 1 ), 1, width( ) * height( ), width( ) ) + 1 ); }
+
+
+	// 逆方向のランダムアクセスイテレータを返す
+	reverse_iterator y_rbegin( size_type j ){ return( reverse_iterator( &access( width( ) - 1, j, depth( ) - 1 ), 1, width( ) * height( ), width( ) ) + 1 ); }
+	const_reverse_iterator y_rbegin( size_type j ) const { return( const_reverse_iterator( &access( width( ) - 1, j, depth( ) - 1 ), 1, width( ) * height( ), width( ) ) + 1 ); }
+
+	reverse_iterator y_rend( size_type j ){ return( reverse_iterator( &access( 0, j, 0 ), 1, width( ) * height( ), width( ) ) + 1 ); }
+	const_reverse_iterator y_rend( size_type j ) const { return( const_reverse_iterator( &access( 0, j, 0 ), 1, width( ) * height( ), width( ) ) + 1 ); }
+
+
+/************************************************************************************************************
+**
+**      Z軸を固定した場合の順方向・逆方向の反復子
+**
+************************************************************************************************************/
+	// 順方向のランダムアクセスイテレータを返す
+	iterator z_begin( size_type k ){ return( iterator( &access( 0, 0, k ), 1, 0, 0 ) ); }
+	const_iterator z_begin( size_type k ) const { return( const_iterator( &access( 0, 0, k ), 1, 0, 0 ) ); }
+
+	iterator z_end( size_type k ){ return( iterator( &access( width( ) - 1, height( ) - 1, k ), 1, 0, 0 ) + 1 ); }
+	const_iterator z_end( size_type k ) const { return( const_iterator( &access( width( ) - 1, height( ) - 1, k ), 1, 0, 0 ) + 1 ); }
+
+
+	// 逆方向のランダムアクセスイテレータを返す
+	reverse_iterator z_rbegin( size_type k ){ return( reverse_iterator( &access( width( ) - 1, height( ) - 1, k ), 1, 0, 0 ) + 1 ); }
+	const_reverse_iterator z_rbegin( size_type k ) const { return( const_reverse_iterator( &access( width( ) - 1, height( ) - 1, k ), 1, 0, 0 ) + 1 ); }
+
+	reverse_iterator z_rend( size_type k ){ return( reverse_iterator( &access( 0, 0, k ), 1, 0, 0 ) + 1 ); }
+	const_reverse_iterator z_rend( size_type k ) const { return( const_reverse_iterator( &access( 0, 0, k ), 1, 0, 0 ) + 1 ); }
+
+
 public:
 	template < class TT, class AAlocator >
 	const array3& operator =( const array3< TT, AAlocator > &o )
@@ -666,7 +847,19 @@ public:
 		return( *this );
 	}
 
-public: // 要素へのアクセス
+
+// 要素へのアクセス
+private:
+	T &access( size_type i, size_type j, size_type k )
+	{
+		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
+	}
+	const T &access( size_type i, size_type j, size_type k ) const
+	{
+		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
+	}
+
+public:
 	value_type &at( size_type i, size_type j, size_type k )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
@@ -677,7 +870,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
+		return( access( i, j, k ) );
 	}
 
 	const value_type &at( size_type index, size_type j, size_type k ) const
@@ -690,7 +883,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
+		return( access( i, j, k ) );
 	}
 
 	value_type &operator ()( size_type i, size_type j, size_type k )
@@ -703,7 +896,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
+		return( access( i, j, k ) );
 	}
 
 	const value_type &operator ()( size_type i, size_type j, size_type k ) const
@@ -716,7 +909,7 @@ public: // 要素へのアクセス
 			return( dmy );
 		}
 #endif
-		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
+		return( access( i, j, k ) );
 	}
 
 
@@ -789,6 +982,28 @@ inline std::ostream &operator <<( std::ostream &out, const array2< T, Allocator 
 }
 
 
+
+template < class T, class Allocator >
+inline std::ostream &operator <<( std::ostream &out, const array3< T, Allocator > &a )
+{
+	typename array3< T, Allocator >::size_type i, j, k;
+	for( k = 0 ; k < a.size3( ) ; k++ )
+	{
+		for( j = 0 ; j < a.size2( ) ; j++ )
+		{
+			for( i = 0 ; i < a.size1( ) ; i++ )
+			{
+				out << a( i, j, k );
+				if( i != a.size1( ) - 1 ) out << ", ";
+			}
+			out << std::endl;
+		}
+		if( k != a.size3( ) - 1 ) out << "----- separator -----";
+		out << std::endl;
+	}
+
+	return( out );
+}
 
 
 // 画像間演算

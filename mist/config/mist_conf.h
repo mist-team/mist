@@ -2,6 +2,8 @@
 #define __INCLUDE_MIST_CONF_H__
 
 #include <iostream>
+#include <iterator>
+
 
 #ifndef _MIST_BEGIN
 #define _MIST_BEGIN		namespace mist{
@@ -214,6 +216,506 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 	return( out );
 }
 
+
+// mistコンテナで利用するランダムアクセスイテレータ
+template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
+class mist_iterator1 : public std::iterator< std::random_access_iterator_tag, T, Distance, Pointer, Reference >
+{
+// Distance, Pointer, Referenceはほとんどの場合省略可能
+public:
+	typedef T value_type;
+	typedef Pointer pointer;
+	typedef std::size_t size_type;
+	typedef Reference reference;
+
+private:
+	pointer data_;
+	size_type diff_pointer_;
+
+public:
+	// コンストラクタ
+	mist_iterator1( pointer p = NULL, size_type diff = 1 ) : data_( p ), diff_pointer_( diff ){ }
+	mist_iterator1( const mist_iterator1 &ite ) : data_( ite.data_ ), diff_pointer_( ite.diff_pointer_ ){ }
+
+	// コピー演算子
+	const mist_iterator1& operator =( const mist_iterator1 &ite )
+	{
+		data_ = ite.data_;
+		diff_pointer_ = ite.diff_pointer_;
+		return( *this );
+	}
+
+	// 要素のアクセス
+	reference operator *(){ return( *data_ ); }
+	reference operator []( Distance dist ){ return( data_[ dist * diff_pointer_ ] ); }
+
+	// 移動
+	mist_iterator1& operator ++( ) // 前置型
+	{
+		*this += 1;
+		return( *this );
+	}
+	const mist_iterator1 operator ++( int ) // 後置型
+	{
+		mist_iterator1 old_val( *this );
+		*this += 1;
+		return( old_val );
+	}
+	mist_iterator1& operator --( ) // 前置型
+	{
+		*this -= 1;
+		return( *this );
+	}
+	const mist_iterator1 operator --( int ) // 後置型
+	{
+		mist_iterator1 old_val( *this );
+		*this -= 1;
+		return( old_val );
+	}
+
+	const mist_iterator1& operator +=( Distance dist )
+	{
+		data_ += dist * diff_pointer_;
+		return( *this );
+	}
+	const mist_iterator1& operator -=( Distance dist )
+	{
+		data_ -= dist * diff_pointer_;
+		return( *this );
+	}
+
+	// 比較
+	bool operator ==( const mist_iterator1 &ite ) const { return( data_ == ite.data_ ); }
+	bool operator !=( const mist_iterator1 &ite ) const { return( data_ != ite.data_ ); }
+	bool operator < ( const mist_iterator1 &ite ) const { return( data_ <  ite.data_ ); }
+	bool operator <=( const mist_iterator1 &ite ) const { return( data_ <= ite.data_ ); }
+	bool operator > ( const mist_iterator1 &ite ) const { return( data_ >  ite.data_ ); }
+	bool operator >=( const mist_iterator1 &ite ) const { return( data_ >= ite.data_ ); }
+};
+
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( const mist_iterator1< T, Distance, Pointer, Reference > &ite1, const mist_iterator1< T, Distance, Pointer, Reference > ite2 )
+{
+	return( mist_iterator1< T, Distance, Pointer, Reference >( ite1 ) += ite2 );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( const mist_iterator1< T, Distance, Pointer, Reference > &ite, Distance dist )
+{
+	return( mist_iterator1< T, Distance, Pointer, Reference >( ite ) += dist );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( Distance dist, const mist_iterator1< T, Distance, Pointer, Reference > &ite )
+{
+	return( mist_iterator1< T, Distance, Pointer, Reference >( ite ) += dist );
+}
+
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_iterator1< T, Distance, Pointer, Reference > operator -( const mist_iterator1< T, Distance, Pointer, Reference > &ite1, const mist_iterator1< T, Distance, Pointer, Reference > ite2 )
+{
+	return( mist_iterator1< T, Distance, Pointer, Reference >( ite1 ) -= ite2 );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_iterator1< T, Distance, Pointer, Reference > operator -( const mist_iterator1< T, Distance, Pointer, Reference > &ite, Distance dist )
+{
+	return( mist_iterator1< T, Distance, Pointer, Reference >( ite ) -= dist );
+}
+
+
+
+
+// mistコンテナで利用する逆方向ランダムアクセスイテレータ
+template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
+class mist_reverse_iterator1 : public std::iterator< std::random_access_iterator_tag, T, Distance, Pointer, Reference >
+{
+public:
+	typedef T value_type;
+	typedef Pointer pointer;
+	typedef std::size_t size_type;
+	typedef Reference reference;
+
+private:
+	pointer data_;
+	size_type diff_pointer_;
+
+public:
+	// コンストラクタ
+	mist_reverse_iterator1( pointer p = NULL, size_type diff = 1 ) : data_( p ), diff_pointer_( diff ){ }
+	mist_reverse_iterator1( const mist_reverse_iterator1 &ite ) : data_( ite.data_ ), diff_pointer_( ite.diff_pointer_ ){ }
+
+	// コピー演算子
+	const mist_reverse_iterator1& operator =( const mist_reverse_iterator1 &ite )
+	{
+		data_ = ite.data_;
+		diff_pointer_ = ite.diff_pointer_;
+		return( *this );
+	}
+
+	// 要素のアクセス
+	reference operator *(){ return( *data_ ); }
+	reference operator []( Distance dist ){ return( *( data_ - dist * diff_pointer_ ) ); }
+
+	// 移動
+	mist_reverse_iterator1& operator ++( ) // 前置型
+	{
+		*this += 1;
+		return( *this );
+	}
+	const mist_reverse_iterator1 operator ++( int ) // 後置型
+	{
+		mist_reverse_iterator1 old_val( *this );
+		*this += 1;
+		return( old_val );
+	}
+	mist_reverse_iterator1& operator --( ) // 前置型
+	{
+		*this -= 1;
+		return( *this );
+	}
+	const mist_reverse_iterator1 operator --( int ) // 後置型
+	{
+		mist_reverse_iterator1 old_val( *this );
+		*this -= 1;
+		return( old_val );
+	}
+
+	const mist_reverse_iterator1& operator +=( Distance dist )
+	{
+		data_ -= dist * diff_pointer_;
+		return( *this );
+	}
+	const mist_reverse_iterator1& operator -=( Distance dist )
+	{
+		data_ += dist * diff_pointer_;
+		return( *this );
+	}
+
+	// 比較
+	bool operator ==( const mist_reverse_iterator1 &ite ) const { return( data_ == ite.data_ ); }
+	bool operator !=( const mist_reverse_iterator1 &ite ) const { return( data_ != ite.data_ ); }
+	bool operator < ( const mist_reverse_iterator1 &ite ) const { return( data_ >  ite.data_ ); }
+	bool operator <=( const mist_reverse_iterator1 &ite ) const { return( data_ >= ite.data_ ); }
+	bool operator > ( const mist_reverse_iterator1 &ite ) const { return( data_ <  ite.data_ ); }
+	bool operator >=( const mist_reverse_iterator1 &ite ) const { return( data_ <= ite.data_ ); }
+};
+
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_reverse_iterator1< T, Distance, Pointer, Reference > operator +( const mist_reverse_iterator1< T, Distance, Pointer, Reference > &ite1, const mist_reverse_iterator1< T, Distance, Pointer, Reference > ite2 )
+{
+	return( mist_reverse_iterator1< T, Distance, Pointer, Reference >( ite1 ) += ite2 );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_reverse_iterator1< T, Distance, Pointer, Reference > operator +( const mist_reverse_iterator1< T, Distance, Pointer, Reference > &ite, Distance dist )
+{
+	return( mist_reverse_iterator1< T, Distance, Pointer, Reference >( ite ) += dist );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_reverse_iterator1< T, Distance, Pointer, Reference > operator +( Distance dist, const mist_reverse_iterator1< T, Distance, Pointer, Reference > &ite )
+{
+	return( mist_reverse_iterator1< T, Distance, Pointer, Reference >( ite ) += dist );
+}
+
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_reverse_iterator1< T, Distance, Pointer, Reference > operator -( const mist_reverse_iterator1< T, Distance, Pointer, Reference > &ite1, const mist_reverse_iterator1< T, Distance, Pointer, Reference > ite2 )
+{
+	return( mist_reverse_iterator1< T, Distance, Pointer, Reference >( ite1 ) -= ite2 );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_reverse_iterator1< T, Distance, Pointer, Reference > operator -( const mist_reverse_iterator1< T, Distance, Pointer, Reference > &ite, Distance dist )
+{
+	return( mist_reverse_iterator1< T, Distance, Pointer, Reference >( ite ) -= dist );
+}
+
+
+
+// mistコンテナで利用するランダムアクセスイテレータ
+template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
+class mist_iterator2 : public std::iterator< std::random_access_iterator_tag, T, Distance, Pointer, Reference >
+{
+public:
+	typedef T value_type;
+	typedef Pointer pointer;
+	typedef std::size_t size_type;
+	typedef Reference reference;
+
+private:
+	pointer data_;
+	size_type current_position_;
+	size_type diff_pointer1_;
+	size_type diff_pointer2_;
+	size_type diff_boundary_;
+
+private:
+	const pointer address( ) const 
+	{
+		size_type j = diff_boundary_ == 0 ? 0 : current_position_ / diff_boundary_;
+		size_type i = current_position_ - j * diff_boundary_;
+		return( data_ + i * diff_pointer1_ + j * diff_pointer2_ );
+	}
+
+public:
+	// コンストラクタ
+	mist_iterator2( pointer p = NULL, size_type diff1 = 1, size_type diff2 = 1, size_type bound = 1 )
+				: data_( p ), current_position_( 0 ), diff_pointer1_( diff1 ), diff_pointer2_( diff2 ), diff_boundary_( bound )
+	{
+	}
+
+	mist_iterator2( const mist_iterator2 &ite ) : data_( ite.data_ ), current_position_( ite.current_position_ ),
+				diff_pointer1_( ite.diff_pointer1_ ), diff_pointer2_( ite.diff_pointer2_ ), diff_boundary_( ite.diff_boundary_ )
+	{
+	}
+
+	// コピー演算子
+	const mist_iterator2& operator =( const mist_iterator2 &ite )
+	{
+		data_ = ite.data_;
+		current_position_ = ite.current_position_;
+		diff_pointer1_ = ite.diff_pointer1_;
+		diff_pointer2_ = ite.diff_pointer2_;
+		diff_boundary_ = ite.diff_boundary_;
+		return( *this );
+	}
+
+	// 要素のアクセス
+	reference operator *()
+	{
+		size_type j = diff_boundary_ == 0 ? 0 : current_position_ / diff_boundary_;
+		size_type i = current_position_ - j * diff_boundary_;
+		return( data_[ i * diff_pointer1_ + j * diff_pointer2_ ] );
+	}
+	reference operator []( Distance dist )
+	{
+		size_type cpos = current_position_ + dist;
+		size_type j = diff_boundary_ == 0 ? 0 : cpos / diff_boundary_
+		size_type i = cpos - j * diff_boundary_;
+		return( data_[ i * diff_pointer1_ + j * diff_pointer2_ ] );
+	}
+
+	// 移動
+	mist_iterator2& operator ++( ) // 前置型
+	{
+		*this += 1;
+		return( *this );
+	}
+	const mist_iterator2 operator ++( int ) // 後置型
+	{
+		mist_iterator2 old_val( *this );
+		*this += 1;
+		return( old_val );
+	}
+	mist_iterator2& operator --( ) // 前置型
+	{
+		*this -= 1;
+		return( *this );
+	}
+	const mist_iterator2 operator --( int ) // 後置型
+	{
+		mist_iterator2 old_val( *this );
+		*this -= 1;
+		return( old_val );
+	}
+
+	const mist_iterator2& operator +=( Distance dist )
+	{
+		current_position_ += dist;
+		return( *this );
+	}
+	const mist_iterator2& operator -=( Distance dist )
+	{
+		current_position_ -= dist;
+		return( *this );
+	}
+
+	// 比較
+	bool operator ==( const mist_iterator2 &ite ) const { return( address( ) == ite.address( ) ); }
+	bool operator !=( const mist_iterator2 &ite ) const { return( address( ) != ite.address( ) ); }
+	bool operator < ( const mist_iterator2 &ite ) const { return( address( ) <  ite.address( ) ); }
+	bool operator <=( const mist_iterator2 &ite ) const { return( address( ) <= ite.address( ) ); }
+	bool operator > ( const mist_iterator2 &ite ) const { return( address( ) >  ite.address( ) ); }
+	bool operator >=( const mist_iterator2 &ite ) const { return( address( ) >= ite.address( ) ); }
+};
+
+
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( const mist_iterator2< T, Distance, Pointer, Reference > &ite1, const mist_iterator2< T, Distance, Pointer, Reference > ite2 )
+{
+	return( mist_iterator2< T, Distance, Pointer, Reference >( ite1 ) += ite2 );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( const mist_iterator2< T, Distance, Pointer, Reference > &ite, Distance dist )
+{
+	return( mist_iterator2< T, Distance, Pointer, Reference >( ite ) += dist );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( Distance dist, const mist_iterator2< T, Distance, Pointer, Reference > &ite )
+{
+	return( mist_iterator2< T, Distance, Pointer, Reference >( ite ) += dist );
+}
+
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const mist_iterator2< T, Distance, Pointer, Reference > &ite1, const mist_iterator2< T, Distance, Pointer, Reference > ite2 )
+{
+	return( mist_iterator2< T, Distance, Pointer, Reference >( ite1 ) -= ite2 );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const mist_iterator2< T, Distance, Pointer, Reference > &ite, Distance dist )
+{
+	return( mist_iterator2< T, Distance, Pointer, Reference >( ite ) -= dist );
+}
+
+
+// mistコンテナで利用するランダムアクセスイテレータ
+template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
+class mist_reverse_iterator2 : public std::iterator< std::random_access_iterator_tag, T, Distance, Pointer, Reference >
+{
+public:
+	typedef T value_type;
+	typedef Pointer pointer;
+	typedef std::size_t size_type;
+	typedef Reference reference;
+
+private:
+	pointer data_;
+	size_type current_position_;
+	size_type diff_pointer1_;
+	size_type diff_pointer2_;
+	size_type diff_boundary_;
+
+private:
+	const pointer address( ) const 
+	{
+		size_type j = diff_boundary_ == 0 ? 0 : current_position_ / diff_boundary_;
+		size_type i = current_position_ - j * diff_boundary_;
+		return( data_ + i * diff_pointer1_ + j * diff_pointer2_ );
+	}
+
+public:
+	// コンストラクタ
+	mist_reverse_iterator2( pointer p = NULL, size_type diff1 = 1, size_type diff2 = 1, size_type bound = 0 )
+				: data_( p ), current_position_( 0 ), diff_pointer1_( diff1 ), diff_pointer2_( diff2 ), diff_boundary_( bound )
+	{
+	}
+
+	mist_reverse_iterator2( const mist_reverse_iterator2 &ite ) : data_( ite.data_ ), current_position_( ite.current_position_ ),
+				diff_pointer1_( ite.diff_pointer1_ ), diff_pointer2_( ite.diff_pointer2_ ), diff_boundary_( ite.diff_boundary_ )
+	{
+	}
+
+	// コピー演算子
+	const mist_reverse_iterator2& operator =( const mist_reverse_iterator2 &ite )
+	{
+		data_ = ite.data_;
+		current_position_ = ite.current_position_;
+		diff_pointer1_ = ite.diff_pointer1_;
+		diff_pointer2_ = ite.diff_pointer2_;
+		diff_boundary_ = ite.diff_boundary_;
+		return( *this );
+	}
+
+	// 要素のアクセス
+	reference operator *()
+	{
+		size_type j = diff_boundary_ == 0 ? 0 : current_position_ / diff_boundary_;
+		size_type i = current_position_ - j * diff_boundary_;
+		return( data_[ i * diff_pointer1_ + j * diff_pointer2_ ] );
+	}
+	reference operator []( Distance dist )
+	{
+		size_type cpos = current_position_ + dist;
+		size_type j = diff_boundary_ == 0 ? 0 : cpos / diff_boundary_
+		size_type i = cpos - j * diff_boundary_;
+		return( *( data_ - i * diff_pointer1_ + j * diff_pointer2_ ) );
+	}
+
+	// 移動
+	mist_reverse_iterator2& operator ++( ) // 前置型
+	{
+		*this += 1;
+		return( *this );
+	}
+	const mist_reverse_iterator2 operator ++( int ) // 後置型
+	{
+		mist_reverse_iterator2 old_val( *this );
+		*this += 1;
+		return( old_val );
+	}
+	mist_reverse_iterator2& operator --( ) // 前置型
+	{
+		*this -= 1;
+		return( *this );
+	}
+	const mist_reverse_iterator2 operator --( int ) // 後置型
+	{
+		mist_reverse_iterator2 old_val( *this );
+		*this -= 1;
+		return( old_val );
+	}
+
+	const mist_reverse_iterator2& operator +=( Distance dist )
+	{
+		current_position_ += dist;
+		return( *this );
+	}
+	const mist_reverse_iterator2& operator -=( Distance dist )
+	{
+		current_position_ -= dist;
+		return( *this );
+	}
+
+	// 比較
+	bool operator ==( const mist_reverse_iterator2 &ite ) const { return( address( ) == ite.address( ) ); }
+	bool operator !=( const mist_reverse_iterator2 &ite ) const { return( address( ) != ite.address( ) ); }
+	bool operator < ( const mist_reverse_iterator2 &ite ) const { return( address( ) <  ite.address( ) ); }
+	bool operator <=( const mist_reverse_iterator2 &ite ) const { return( address( ) <= ite.address( ) ); }
+	bool operator > ( const mist_reverse_iterator2 &ite ) const { return( address( ) >  ite.address( ) ); }
+	bool operator >=( const mist_reverse_iterator2 &ite ) const { return( address( ) >= ite.address( ) ); }
+};
+
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_reverse_iterator2< T, Distance, Pointer, Reference > operator +( const mist_reverse_iterator2< T, Distance, Pointer, Reference > &ite1, const mist_reverse_iterator2< T, Distance, Pointer, Reference > ite2 )
+{
+	return( mist_reverse_iterator2< T, Distance, Pointer, Reference >( ite1 ) += ite2 );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_reverse_iterator2< T, Distance, Pointer, Reference > operator +( const mist_reverse_iterator2< T, Distance, Pointer, Reference > &ite, Distance dist )
+{
+	return( mist_reverse_iterator2< T, Distance, Pointer, Reference >( ite ) += dist );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_reverse_iterator2< T, Distance, Pointer, Reference > operator +( Distance dist, const mist_reverse_iterator2< T, Distance, Pointer, Reference > &ite )
+{
+	return( mist_reverse_iterator2< T, Distance, Pointer, Reference >( ite ) += dist );
+}
+
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_reverse_iterator2< T, Distance, Pointer, Reference > operator -( const mist_reverse_iterator2< T, Distance, Pointer, Reference > &ite1, const mist_reverse_iterator2< T, Distance, Pointer, Reference > ite2 )
+{
+	return( mist_reverse_iterator2< T, Distance, Pointer, Reference >( ite1 ) -= ite2 );
+}
+
+template< class T, class Distance, class Pointer, class Reference >
+inline const mist_reverse_iterator2< T, Distance, Pointer, Reference > operator -( const mist_reverse_iterator2< T, Distance, Pointer, Reference > &ite, Distance dist )
+{
+	return( mist_reverse_iterator2< T, Distance, Pointer, Reference >( ite ) -= dist );
+}
 
 // mist名前空間の終わり
 _MIST_END
