@@ -881,15 +881,9 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 
 	get_dicom_info( dicom, info );
 
-	size_type height = 0;
-	size_type width  = 0;
-	size_type bitsAllocated = 8;
 	double window_level = info.window_center;
 	double window_width = info.window_width;
-	double resoX = 0.625;
-	double resoY = 0.625;
 
-	dicom_controller::dicom_tag_container::iterator ite = dicom.find( 0x7fe0, 0x0010 );
 	if( dicom.contain( 0x7fe0, 0x0010 ) )
 	{
 		dicom_controller::dicom_element &element = dicom( 0x7fe0, 0x0010 );

@@ -205,7 +205,12 @@ namespace dicom_controller
 		typedef base::reference reference;
 
 	public:
-		mapped_type operator ()( unsigned short group, unsigned short element ){ return( base::operator []( construct_dicom_tag( group, element ) ) ); }
+		mapped_type &operator ()( unsigned short group, unsigned short element ){ return( base::operator []( construct_dicom_tag( group, element ) ) ); }
+		const mapped_type &operator ()( unsigned short group, unsigned short element ) const
+		{
+			const_iterator cite = find( group, element );
+			return( cite->second );
+		}
 
 	public:
 		bool add( const dicom_element &element )
