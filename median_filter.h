@@ -29,8 +29,8 @@ namespace __median_filter__
 							typename array< T, Allocator >::value_type min, typename array< T, Allocator >::value_type max,
 							typename array< T, Allocator >::size_type thread_id = 0, typename array< T, Allocator >::size_type thread_num = 1 )
 	{
-		typedef array< T, Allocator >::size_type  size_type;
-		typedef array< T, Allocator >::value_type value_type;
+		typedef typename array< T, Allocator >::size_type  size_type;
+		typedef typename array< T, Allocator >::value_type value_type;
 
 		size_type range = static_cast< size_type >( max - min + 1 );
 		size_type a = 0, i, x, ri;
@@ -161,8 +161,8 @@ namespace __median_filter__
 						typename array2< T, Allocator >::value_type min, typename array2< T, Allocator >::value_type max,
 						typename array2< T, Allocator >::size_type thread_id = 0, typename array2< T, Allocator >::size_type thread_num = 1 )
 	{
-		typedef array2< T, Allocator >::size_type  size_type;
-		typedef array2< T, Allocator >::value_type value_type;
+		typedef typename array2< T, Allocator >::size_type  size_type;
+		typedef typename array2< T, Allocator >::value_type value_type;
 
 		size_type range = static_cast< size_type >( max - min + 1 );
 		size_type a = 0, i, j, x, y, ri, leftnum;
@@ -291,8 +291,8 @@ namespace __median_filter__
 						typename array3< T, Allocator >::value_type min, typename array3< T, Allocator >::value_type max,
 						typename array3< T, Allocator >::size_type thread_id = 0, typename array3< T, Allocator >::size_type thread_num = 1 )
 	{
-		typedef array3< T, Allocator >::size_type  size_type;
-		typedef array3< T, Allocator >::value_type value_type;
+		typedef typename array3< T, Allocator >::size_type  size_type;
+		typedef typename array3< T, Allocator >::value_type value_type;
 
 		size_type range = static_cast< size_type >( max - min + 1 );
 		size_type a = 0, i, j, k, x, y, z, ri, leftnum;
@@ -427,10 +427,10 @@ namespace __median_filter__
 namespace __median_filter_controller__
 {
 	template < class T, class Allocator >
-	void get_min_max( const array< T, Allocator > &in, typename array3< T, Allocator >::value_type &min, typename array3< T, Allocator >::value_type &max )
+	void get_min_max( const array< T, Allocator > &in, typename array< T, Allocator >::value_type &min, typename array< T, Allocator >::value_type &max )
 	{
 		min = max = in[ 0 ];
-		for( typename array3< T, Allocator >::size_type i = 0 ; i < in.size( ) ; i++ )
+		for( typename array< T, Allocator >::size_type i = 0 ; i < in.size( ) ; i++ )
 		{
 			if( min > in[ i ] )
 			{
@@ -544,8 +544,8 @@ namespace __median_filter_controller__
 template < class T, class Allocator >
 void median_filter( const array< T, Allocator > &in, array< T, Allocator > &out, typename array< T, Allocator >::size_type fw, typename array< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array< T, Allocator >::size_type  size_type;
-	typedef array< T, Allocator >::value_type value_type;
+	typedef typename array< T, Allocator >::size_type  size_type;
+	typedef typename array< T, Allocator >::value_type value_type;
 	typedef __median_filter_controller__::median_thread< array< T, Allocator > > median_thread;
 
 	if( thread_num == 0 )
@@ -582,8 +582,8 @@ void median_filter( const array< T, Allocator > &in, array< T, Allocator > &out,
 template < class T, class Allocator >
 void median_filter( const array1< T, Allocator > &in, array1< T, Allocator > &out, typename array1< T, Allocator >::size_type fw, typename array1< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array1< T, Allocator >::size_type  size_type;
-	typedef array1< T, Allocator >::value_type value_type;
+	typedef typename array1< T, Allocator >::size_type  size_type;
+	typedef typename array1< T, Allocator >::value_type value_type;
 	typedef __median_filter_controller__::median_thread< array1< T, Allocator > > median_thread;
 
 	if( thread_num == 0 )
@@ -623,8 +623,8 @@ void median_filter( const array2< T, Allocator > &in, array2< T, Allocator > &ou
 				   typename array2< T, Allocator >::size_type fw, typename array2< T, Allocator >::size_type fh,
 				   typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array2< T, Allocator >::size_type  size_type;
-	typedef array2< T, Allocator >::value_type value_type;
+	typedef typename array2< T, Allocator >::size_type  size_type;
+	typedef typename array2< T, Allocator >::value_type value_type;
 	typedef __median_filter_controller__::median_thread< array2< T, Allocator > > median_thread;
 
 	if( thread_num == 0 )
@@ -665,8 +665,8 @@ void median_filter( const array3< T, Allocator > &in, array3< T, Allocator > &ou
 				   typename array3< T, Allocator >::size_type fw, typename array3< T, Allocator >::size_type fh, typename array3< T, Allocator >::size_type fd,
 				   typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array3< T, Allocator >::size_type  size_type;
-	typedef array3< T, Allocator >::value_type value_type;
+	typedef typename array3< T, Allocator >::size_type  size_type;
+	typedef typename array3< T, Allocator >::value_type value_type;
 	typedef __median_filter_controller__::median_thread< array3< T, Allocator > > median_thread;
 
 	if( thread_num == 0 )
