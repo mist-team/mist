@@ -4,6 +4,8 @@ CXX = g++
 INCLUDE  = -I../include -I../lib -I../ -I/usr/local/include -I/usr/include -I/usr/X11R6/include
 LDLIBS   = -L../lib -L/usr/local/lib -L/usr/lib -L/usr/X11R6/lib
 
+OTHERINCLUDE = 
+
 CFLAGS = -Wall -O2 
 CXXFLAGS = -Wall -O2 
 
@@ -24,15 +26,15 @@ ATLASLIBS = -L../lib_atlas -llapack -lcblaswr -lcblas -latlas -lF77
 
 .c.o:
 	echo Compiling $<...
-	$(CC) -I.. $(CFLAGS) -c $<
+	$(CC) -I.. $(CFLAGS) -c $< $(OTHERINCLUDE)
 
 .cxx.o:
 	echo Compiling $<...
-	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE)
+	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE) $(OTHERINCLUDE)
 
 .cpp.o:
 	echo Compiling $<...
-	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE)
+	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE) $(OTHERINCLUDE)
 
 # For FLTK compilation
 .cpp.obj:

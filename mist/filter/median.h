@@ -992,6 +992,7 @@ bool median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, ty
 
 	out.resize( in.size( ) );
 
+	typedef typename array< T1, Allocator1 >::size_type  size_type;
 	fw = static_cast< size_type >( fw / 2 ) * 2 + 1;
 
 	__median_filter_controller__::__median_filter__< is_integer< T1 >::value >::median_filter( in, out, fw, 1, 1, 0, 1 );
@@ -1027,6 +1028,7 @@ bool median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, 
 	out.resize( in.size( ) );
 	out.reso1( in.reso1( ) );
 
+	typedef typename array1< T1, Allocator1 >::size_type  size_type;
 	fw = static_cast< size_type >( fw / 2 ) * 2 + 1;
 
 	__median_filter_controller__::__median_filter__< is_integer< T1 >::value >::median_filter( in, out, fw, 1, 1, 0, 1 );

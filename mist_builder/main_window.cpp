@@ -107,7 +107,7 @@ main_window::main_window( FXApp *a ) : base( a, "main_window", NULL, NULL, DECOR
 					FXHorizontalFrame *hhh = new FXHorizontalFrame( g2, LAYOUT_FILL_X, 0, 0, 0, 0, 0, 0, 0, 0 );
 					{
 						filter_name_ = new FXLabel( hhh, "", NULL, JUSTIFY_LEFT | LAYOUT_FILL_X | LAYOUT_FILL_Y, 0, 0, 0, 0, 5, 5 );
-						filter_name_->setBackColor( RGB( 255, 255, 255 ) );
+						filter_name_->setBackColor( FXRGB( 255, 255, 255 ) );
 						new FXButton( hhh, "Recompute", 0, this, ID_RECOMPUTE_FILTER, BUTTON_NORMAL );
 					}
 					new FXHorizontalSeparator( g2 );

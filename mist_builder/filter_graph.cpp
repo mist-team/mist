@@ -6,14 +6,14 @@
 FXDEFMAP( filter_graph ) filter_graph_map[] =
 	{
 		//________Message_Type_____________________ID_______________Message_Handler_______
-		FXMAPFUNC ( SEL_PAINT,				0,			filter_graph::onPaint ),
-		FXMAPFUNC ( SEL_LEFTBUTTONPRESS,	0,			filter_graph::onMouseDown ),
-		FXMAPFUNC ( SEL_RIGHTBUTTONPRESS,	0,			filter_graph::onMouseDown ),
-		FXMAPFUNC ( SEL_LEFTBUTTONRELEASE,	0,			filter_graph::onMouseUp ),
-		FXMAPFUNC ( SEL_RIGHTBUTTONRELEASE,	0,			filter_graph::onMouseUp ),
-		FXMAPFUNC ( SEL_MOTION,				0,			filter_graph::onMouseMove ),
-		FXMAPFUNC ( SEL_KEYPRESS,			0,			filter_graph::onKeyDown ),
-		FXMAPFUNC ( SEL_KEYRELEASE,			0,			filter_graph::onKeyUp ),
+		FXMAPFUNC ( SEL_PAINT,					0,			filter_graph::onPaint ),
+		FXMAPFUNC ( SEL_LEFTBUTTONPRESS,		0,			filter_graph::onMouseDown ),
+		FXMAPFUNC ( SEL_RIGHTBUTTONPRESS,		0,			filter_graph::onMouseDown ),
+		FXMAPFUNC ( SEL_LEFTBUTTONRELEASE,		0,			filter_graph::onMouseUp ),
+		FXMAPFUNC ( SEL_RIGHTBUTTONRELEASE,		0,			filter_graph::onMouseUp ),
+		FXMAPFUNC ( SEL_MOTION,					0,			filter_graph::onMouseMove ),
+		FXMAPFUNC ( SEL_KEYPRESS,				0,			filter_graph::onKeyDown ),
+		FXMAPFUNC ( SEL_KEYRELEASE,				0,			filter_graph::onKeyUp ),
 	};
 
 
@@ -23,11 +23,11 @@ FXIMPLEMENT( filter_graph, filter_graph::base, filter_graph_map, ARRAYNUMBER( fi
 // Construct a filter_graph
 filter_graph::filter_graph( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts, FXint x, FXint y, FXint w, FXint h )
 				: base( p, opts | SCROLLERS_NORMAL | SCROLLERS_TRACK, x, y, 1024, 768 ),
-				current_filter_( NULL ), current_pin_( NULL ), damage_( true )
+				font_( NULL ), mem_image_( NULL ), damage_( true ), current_filter_( NULL ), current_pin_( NULL )
 {
 	// このウィンドウからメッセージを送る先の設定
-	setTarget( tgt );
-	setSelector( sel );
+//	setTarget( tgt );
+//	setSelector( sel );
 
 	font_ = new FXFont( getApp( ), "helvetica", 12 );
 	mem_image_ = new FXImage( getApp( ), NULL, IMAGE_OWNED, 1024, 768 );
@@ -56,6 +56,10 @@ void filter_graph::append_filter( const filter &f )
 	initialize_filter( *ff );
 	filters_.push_back( ff );
 
+	current_filter_ = ff;
+	// メインウィンドウへ，選択フィルタが変更されたことを通知する
+	SendUserMessage( MIST_FILTER_CHANGED, static_cast< void * >( current_filter_ ) );
+
 	// 全体を再描画する
 	damage_ = true;
 	update( );
@@ -67,6 +71,8 @@ void filter_graph::append_filter( const filter &f )
 long filter_graph::onMouseDown( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
+
+	std::cout << "clicked" << std::endl;
 
 	setFocus( );
 
@@ -467,7 +473,6 @@ void filter_graph::initialize_filter( filter &f )
 	FXint fw = font_->getTextWidth( text );
 	FXint fh = font_->getTextHeight( text );
 
-	const layout_parameter &p = f;
 	pin_list &input_pins = f.input_pins( );
 	pin_list &output_pins = f.output_pins( );
 	FXint ipins = static_cast< FXint >( input_pins.size( ) );
@@ -572,21 +577,16 @@ bool filter_graph::draw_filter( FXDC &dc, const filter &f )
 	FXint opins = static_cast< FXint >( output_pins.size( ) );
 
 	FXint margin = layout_parameter::margin;
-	FXint box_size = layout_parameter::box_size;
 
 	FXint x = p.x;
 	FXint y = p.y;
 
 	// フォントの高さを決定し，描画するボックスの最低の高さを決定する
 	FXString text( f.name( ).c_str( ) );
-	FXint fw = font_->getTextWidth( text );
 	FXint fh = font_->getTextHeight( text );
 
 	FXint w = p.width;
 	FXint h = p.height;
-
-	FXint pin_num = ipins > opins ? ipins : opins;
-	FXint hh = ( pin_num * 2 + 1 ) * box_size;
 
 	// フィルタのボックス描画する
 	draw_box( dc, x, y, w, h, p.active );

@@ -144,8 +144,8 @@ const unsigned char cross_icon[]={
 // Construct a data_view
 data_view::data_view( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts, FXint x, FXint y, FXint w, FXint h, FXint pl, FXint pr, FXint pt, FXint pb, FXint hs, FXint vs )
 				: base( p, opts, x, y, w, h, pl, pr, pt, pb, hs, vs ),
-				zoom_( 1.0 ),
 				interpolate_( true ),
+				zoom_( 1.0 ),
 				draw_cross_( false )
 {
 	cursors_.push_back( new FXCursor( getApp( ), CURSOR_ARROW ) );
@@ -266,7 +266,7 @@ long data_view::onMouseUp( FXObject *obj, FXSelector sel, void *ptr )
 // Paint the canvas
 long data_view::onPaint( FXObject *obj, FXSelector sel, void *ptr )
 {
-	FXEvent *ev = ( FXEvent * )ptr;
+	FXEvent &e = *( ( FXEvent * )ptr );
 
 	draw_image( );
 
