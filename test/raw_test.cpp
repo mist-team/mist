@@ -147,7 +147,8 @@ void ct_draw_area::median_filter1D( ct_image_window *wnd )
 
 void ct_draw_area::median_filter2D( ct_image_window *wnd )
 {
-	mist::array2< int > a( 5, 5 ), b( 5, 5 );
+	mist::array2< int > a( 5, 5 );
+	mist::array2< unsigned int > b( 5, 5 );
 	a( 0, 0 ) = 0; a( 0, 1 ) = 0; a( 0, 2 ) = 0; a( 0, 3 ) = 0; a( 0, 4 ) = 0;
 	a( 1, 0 ) = 0; a( 1, 1 ) = 4; a( 1, 2 ) = 5; a( 1, 3 ) = 4; a( 1, 4 ) = 0;
 	a( 2, 0 ) = 0; a( 2, 1 ) = 3; a( 2, 2 ) = 2; a( 2, 3 ) = 3; a( 2, 4 ) = 0;

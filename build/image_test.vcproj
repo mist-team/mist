@@ -177,6 +177,9 @@
 				RelativePath="..\mist\filter\labeling.h">
 			</File>
 			<File
+				RelativePath="..\mist\filter\median.h">
+			</File>
+			<File
 				RelativePath="..\mist\mist.h">
 			</File>
 			<File
