@@ -43,7 +43,7 @@ namespace __raw_controller__
 			{
 				return( false );
 			}
-			else if( image.size( ) < num_elements )
+			else if( image.size( ) == num_elements )
 			{
 				return( true );
 			}
@@ -69,7 +69,7 @@ namespace __raw_controller__
 			{
 				return( false );
 			}
-			else if( image.height( ) < num_lines )
+			else if( image.height( ) == num_lines )
 			{
 				return( true );
 			}
@@ -95,7 +95,7 @@ namespace __raw_controller__
 			{
 				return( false );
 			}
-			else if( image.depth( ) < num_slices )
+			else if( image.depth( ) == num_slices )
 			{
 				return( true );
 			}
