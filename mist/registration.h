@@ -138,11 +138,7 @@ namespace __non_rigid_registration_utility__
 				xx *= _1_ax;
 				yy *= _1_ay;
 
-				double ct = -2000.0;
-				if( xx < 0 || source.width( ) <= xx + 1 || yy < 0 || source.height( ) <= yy + 1 )
-				{
-				}
-				else
+				if( 0 <= xx && xx < source.width( ) - 1 && 0 <= yy && yy < source.height( ) - 1 )
 				{
 					difference_type ixx = static_cast< size_type >( xx );
 					difference_type iyy = static_cast< size_type >( yy );
@@ -150,9 +146,12 @@ namespace __non_rigid_registration_utility__
 					xx -= ixx;
 					yy -= iyy;
 
-					ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
+					target( x, y ) = static_cast< typename target_image_type::value_type >( ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy );
 				}
-				target( x, y ) = static_cast< typename target_image_type::value_type >( ct );
+				else
+				{
+					target( x, y ) = static_cast< typename target_image_type::value_type >( -2000 );
+				}
 			}
 		}
 	}
@@ -286,11 +285,7 @@ namespace __non_rigid_registration_utility__
 					yy *= _1_ay;
 					zz *= _1_az;
 
-					double ct = -2000.0;
-					if( xx < 0 || source.width( ) <= xx + 1 || yy < 0 || source.height( ) <= yy + 1 || zz < 0 || source.depth( ) <= zz + 1 )
-					{
-					}
-					else
+					if( 0 <= xx && xx < source.width( ) - 1 && 0 <= yy && yy < source.height( ) - 1 && 0 <= zz && zz < source.depth( ) - 1 )
 					{
 						difference_type ixx = static_cast< size_type >( xx );
 						difference_type iyy = static_cast< size_type >( yy );
@@ -300,10 +295,14 @@ namespace __non_rigid_registration_utility__
 						yy -= iyy;
 						zz -= izz;
 
-						ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
+						double ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
 						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
+						target( x, y, z ) = static_cast< typename target_image_type::value_type >( ct );
 					}
-					target( x, y, z ) = static_cast< typename target_image_type::value_type >( ct );
+					else
+					{
+						target( x, y, z ) = static_cast< typename target_image_type::value_type >( -2000 );
+					}
 				}
 			}
 		}
@@ -497,11 +496,7 @@ namespace __non_rigid_registration_utility__
 				xx *= _1_ax;
 				yy *= _1_ay;
 
-				double ct = -2000.0;
-				if( xx < 0 || source.width( ) <= xx + 1 || yy < 0 || source.height( ) <= yy + 1 )
-				{
-				}
-				else
+				if( 0 <= xx && xx < source.width( ) - 1 && 0 <= yy && yy < source.height( ) - 1 )
 				{
 					difference_type ixx = static_cast< size_type >( xx );
 					difference_type iyy = static_cast< size_type >( yy );
@@ -509,9 +504,12 @@ namespace __non_rigid_registration_utility__
 					xx -= ixx;
 					yy -= iyy;
 
-					ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
+					target( x, y ) = static_cast< typename target_image_type::value_type >( ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy );
 				}
-				target( x, y ) = static_cast< typename target_image_type::value_type >( ct );
+				else
+				{
+					target( x, y ) = static_cast< typename target_image_type::value_type >( -2000 );
+				}
 			}
 		}
 	}
@@ -656,11 +654,7 @@ namespace __non_rigid_registration_utility__
 					yy *= _1_ay;
 					zz *= _1_az;
 
-					double ct = -2000.0;
-					if( xx < 0 || source.width( ) <= xx + 1 || yy < 0 || source.height( ) <= yy + 1 || zz < 0 || source.depth( ) <= zz + 1 )
-					{
-					}
-					else
+					if( 0 <= xx && xx < source.width( ) - 1 && 0 <= yy && yy < source.height( ) - 1 && 0 <= zz && zz < source.depth( ) - 1 )
 					{
 						difference_type ixx = static_cast< size_type >( xx );
 						difference_type iyy = static_cast< size_type >( yy );
@@ -670,10 +664,14 @@ namespace __non_rigid_registration_utility__
 						yy -= iyy;
 						zz -= izz;
 
-						ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
+						double ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
 						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
+						target( x, y, z ) = static_cast< typename target_image_type::value_type >( ct );
 					}
-					target( x, y, z ) = static_cast< typename target_image_type::value_type >( ct );
+					else
+					{
+						target( x, y, z ) = static_cast< typename target_image_type::value_type >( -2000 );
+					}
 				}
 			}
 		}
@@ -1071,7 +1069,8 @@ namespace __non_rigid_registration_utility__
 			bound( 2, 0 ) = -( control_mesh( x    , y    , z - 1 ) - control_mesh( x, y, z ) ).length( ) * search_length;
 			bound( 2, 1 ) =  ( control_mesh( x    , y    , z + 1 ) - control_mesh( x, y, z ) ).length( ) * search_length;
 
-			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 1.0, 1.0, 1 );
+			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 1.0 );
+//			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 0.1, 1.0, 1 );
 
 			// Œ‹‰Ê‚ð”½‰f
 			vector_type &v = control_mesh_tmp( x, y, z );
