@@ -644,7 +644,7 @@ inline void xdft2d0_subth(int n1, int n2, int icr, int isgn, double **a,
 }
 
 
-inline  cdft2d_subth(int n1, int n2, int isgn, double **a, double *t, 
+inline void cdft2d_subth(int n1, int n2, int isgn, double **a, double *t, 
     int *ip, double *w)
 {
     fft2d_thread_t th[FFT2D_MAX_THREADS];

@@ -66,7 +66,9 @@ bool size_check( unsigned int t )
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 {
-	int i;
+	typedef typename Allocator1::size_type size_type;
+	typedef typename Allocator2::value_type value_type;
+	size_type i;
 	double *data;
 	double *w;
 	int *ip;
@@ -77,7 +79,7 @@ void dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 	}
 
 	data = ( double * ) malloc( sizeof( double ) * in.size( ) );
-	ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.size( ) / 2 ) + 3 ) );
+	ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ) );
 	w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.size( ) * 5 / 4 ) );
 
 	for( i = 0 ; i < in.size( ) ; i++ )
@@ -87,16 +89,16 @@ void dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 
 	ip[ 0 ] = 0;
 
-	ooura_fft::ddst( in.size( ), -1, data, ip, w );
+	ooura_fft::ddst( static_cast< int >( in.size( ) ), -1, data, ip, w );
 
 
 	out.resize( in.size( ) );
 
-	out[ 0 ] = data[ in.size( ) - 1 ];
+	out[ 0 ] = ( value_type )data[ in.size( ) - 1 ];
 
 	for( i = 1 ; i < out.size( ) ; i++ )
 	{
-		out[ i ] = ( T2 ) data[ i ];
+		out[ i ] = ( value_type ) data[ i ];
 	}
 
 	free( w );
@@ -106,9 +108,11 @@ void dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 
 //1éüå≥çÇë¨ÉTÉCÉìãtïœä∑
 template < class T1, class T2, class Allocator1, class Allocator2 >
-void inverse_dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
+void dst_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 {
-	int i;
+	typedef typename Allocator1::size_type size_type;
+	typedef typename Allocator2::value_type value_type;
+	size_type i;
 	double *data;
 	double *w;
 	int *ip;
@@ -119,7 +123,7 @@ void inverse_dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 	}
 
 	data = ( double * ) malloc( sizeof( double ) * in.size( ) );
-	ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.size( ) / 2 ) + 3 ) );
+	ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ) );
 	w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.size( ) * 5 / 4 ) );
 
 	data[ 0 ] = in[ in.size( ) - 1 ];
@@ -132,14 +136,14 @@ void inverse_dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 	ip[ 0 ] = 0;
 	data[ 0 ] *= 0.5;
 
-	ooura_fft::ddst( in.size( ), 1, data, ip, w );
+	ooura_fft::ddst( static_cast< int >( in.size( ) ), 1, data, ip, w );
 
 
 	out.resize( in.size( ) );
 
 	for( i = 0 ; i < out.size( ) ; i++ )
 	{
-		out[ i ] = ( T2 ) ( data[ i ] * 2.0 / out.size( ) );
+		out[ i ] = ( value_type ) ( data[ i ] * 2.0 / out.size( ) );
 	}
 
 	free( w );
@@ -151,7 +155,9 @@ void inverse_dst( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
-	int i, j;
+	typedef typename Allocator1::size_type size_type;
+	typedef typename Allocator2::value_type value_type;
+	size_type i,j;
 	double **data;
 	double *t;
 	double *w;
@@ -173,12 +179,12 @@ void dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 
 	if( in.width( ) > in.height( ) )
 	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.width( ) / 2 ) + 3 ) );
+		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt(  static_cast< double >( in.width( ) / 2 ) ) + 3 ) );
 		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.width( ) * 3 / 2 ) );
 	}
 	else
 	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.height( ) / 2 ) + 3 ) );
+		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.height( ) / 2 ) ) + 3 ) );
 		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.height( ) * 3 / 2 ) );
 
 	}
@@ -193,7 +199,7 @@ void dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 
 	ip[ 0 ] = 0;
 
-	ooura_fft::ddst2d( in.width( ), in.height( ), -1, data, t, ip, w );
+	ooura_fft::ddst2d( static_cast< int >( in.width( ) ), static_cast< int >( in.height( ) ), -1, data, t, ip, w );
 
 
 	out.resize( in.width( ), in.height( ) );
@@ -222,9 +228,11 @@ void dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 
 //2éüå≥ÉTÉCÉìãtïœä∑
 template < class T1, class T2, class Allocator1, class Allocator2 >
-void inverse_dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
+void dst_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
-	int i, j;
+	typedef typename Allocator1::size_type size_type;
+	typedef typename Allocator2::value_type value_type;
+	size_type i,j;
 	double **data;
 	double *t;
 	double *w;
@@ -246,12 +254,12 @@ void inverse_dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 
 	if( in.width( ) > in.height( ) )
 	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.width( ) / 2 ) + 3 ) );
+		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt(static_cast< double >( in.width( ) / 2 )) + 3 ) );
 		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.width( ) * 3 / 2 ) );
 	}
 	else
 	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.height( ) / 2 ) + 3 ) );
+		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.height( ) / 2 )) + 3 ) );
 		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.height( ) * 3 / 2 ) );
 
 	}
@@ -276,7 +284,7 @@ void inverse_dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 		data[ 0 ][ j ] *= 0.5;
 	}
 
-	ooura_fft::ddst2d( in.width( ), in.height( ), 1, data, t, ip, w );
+	ooura_fft::ddst2d( static_cast< int >( in.width( ) ), static_cast< int >( in.height( ) ), 1, data, t, ip, w );
 
 
 	out.resize( in.width( ), in.height( ) );
@@ -285,7 +293,7 @@ void inverse_dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 	{
 		for( j = 0 ; j < out.height( ) ; j++ )
 		{
-			out( i, j ) = ( T2 ) ( data[ i ][ j ] * 4.0 / in.size( ) );
+			out( i, j ) = ( value_type ) ( data[ i ][ j ] * 4.0 / in.size( ) );
 
 		}
 	}
@@ -307,7 +315,9 @@ void inverse_dst( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 template < class T1, class T2, class Allocator1, class Allocator2 >
 void dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 {
-	int i, j, k;
+	typedef typename Allocator1::size_type size_type;
+	typedef typename Allocator2::value_type value_type;
+	size_type i,j,k;
 	double ***data;
 	double *t;
 	double *w;
@@ -344,12 +354,12 @@ void dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 
 	if( in.width( ) > in.height( ) )
 	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.width( ) / 2 ) + 3 ) );
+		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.width( ) / 2 )) + 3 ) );
 		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.width( ) * 3 / 2 ) );
 	}
 	else
 	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.height( ) / 2 ) + 3 ) );
+		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt(static_cast< double >( in.height( ) / 2 ) ) + 3 ) );
 		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.height( ) * 3 / 2 ) );
 
 	}
@@ -367,7 +377,7 @@ void dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 
 	ip[ 0 ] = 0;
 
-	ooura_fft::ddst3d( in.width( ), in.height( ), in.depth( ), -1, data, t, ip, w );
+	ooura_fft::ddst3d(  static_cast< int >( in.width( ) ), static_cast< int >( in.height( ) ), static_cast< int >( in.depth( ) ), -1, data, t, ip, w );
 
 
 	out.resize( in.width( ), in.height( ), in.depth( ) );
@@ -378,7 +388,7 @@ void dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 		{
 			for( k = 0 ; k < out.depth( ) ; k++ )
 			{
-				out( i, j, k ) = ( T2 ) data[ i % in.width( ) ][ j % in.height( ) ][ k % in.depth( ) ];
+				out( i, j, k ) = ( value_type ) data[ i % in.width( ) ][ j % in.height( ) ][ k % in.depth( ) ];
 			}
 		}
 	}
@@ -403,9 +413,11 @@ void dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 
 //3éüå≥çÇë¨ÉTÉCÉìãtïœä∑
 template < class T1, class T2, class Allocator1, class Allocator2 >
-void inverse_dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
+void dst_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 {
-	int i, j, k;
+	typedef typename Allocator1::size_type size_type;
+	typedef typename Allocator2::value_type value_type;
+	size_type i,j,k;
 	double ***data;
 	double *t;
 	double *w;
@@ -442,12 +454,12 @@ void inverse_dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 
 	if( in.width( ) > in.height( ) )
 	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.width( ) / 2 ) + 3 ) );
+		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt(static_cast< double >( in.width( ) / 2 ) ) + 3 ) );
 		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.width( ) * 3 / 2 ) );
 	}
 	else
 	{
-		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.height( ) / 2 ) + 3 ) );
+		ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.height( ) / 2 ) ) + 3 ) );
 		w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.height( ) * 3 / 2 ) );
 
 	}
@@ -488,7 +500,7 @@ void inverse_dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 	}
 
 
-	ooura_fft::ddst3d( in.width( ), in.height( ), in.depth( ), 1, data, t, ip, w );
+	ooura_fft::ddst3d( static_cast< int >( in.width( ) ), static_cast< int >( in.height( ) ), static_cast< int >( in.depth( ) ), 1, data, t, ip, w );
 
 
 	out.resize( in.width( ), in.height( ), in.depth( ) );
@@ -499,7 +511,7 @@ void inverse_dst( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 		{
 			for( k = 0 ; k < out.depth( ) ; k++ )
 			{
-				out( i, j, k ) = ( T2 ) ( data[ i ][ j ][ k ] * 8.0 / in.size( ) );
+				out( i, j, k ) = (value_type ) ( data[ i ][ j ][ k ] * 8.0 / in.size( ) );
 			}
 		}
 	}
