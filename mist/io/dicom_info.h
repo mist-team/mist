@@ -171,7 +171,6 @@ namespace dicom
 		/// @brief ‘¼‚ÌDICOM—v‘f‚ð‘ã“ü‚·‚é
 		void modify( const std::string &data )
 		{
-			static char buff[ 128 ];
 			switch( vr )
 			{
 			case FL:
