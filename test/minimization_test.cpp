@@ -27,7 +27,10 @@ struct f1
 
 double f2( double x )
 {
-	return( std::sin( x ) + x / 5.0 );
+	const double pai = 3.1415926535897932384626433832795;
+	return( ( x - 100 ) * ( x - 100 ) );
+//	return( std::sin( x * pai / 180.0 ) );
+//	return( std::sin( x ) + x / 5.0 );
 }
 
 int main( int argc, char *argv[] )
@@ -52,12 +55,12 @@ int main( int argc, char *argv[] )
 
 	{
 		double x;
-		double err = mist::gold::minimization( -1, 1, x, f2, 0.00001, 200, false );
+		double err = mist::gold::minimization( -80, 20, x, f2, 0.00001, 100, true );
 		cout << "f( " << x << " ) = " << err << endl;
 	}
 	{
 		double x;
-		double err = mist::brent::minimization( -1, 1, x, f2, 0.00001, 200, false );
+		double err = mist::brent::minimization( -10, 20, x, f2, 0.00001, 100, false );
 		cout << "f( " << x << " ) = " << err << endl;
 	}
 

@@ -4,6 +4,7 @@
 //!
 //! @section 関数の最小化
 //! -# W. H. Press, S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery, ``Numerical Recipes in C, The Art of Scientific Computing Second Edition,'' Cambridge University Press, pp. 321--336, 1999.
+//! -# Richard P. Brent, "Algorithms for Minimization Without Derivatives", DOVER PUBLICATIONS, Mineola, New York.
 //!
 
 #ifndef __INCLUDE_MIST_MINIMIZATION__
@@ -263,8 +264,12 @@ void enclose( double &a, double &b, double &c, double &fa, double &fb, double &f
 namespace gold
 {
 	/// @brief 黄金分割を利用して，f(x)の極小値の一次元探索を行う（1次収束）
-	//! 
+	//!
 	//! 初期の極小を含むと思われる区間 [a, b] を適切に設定することで，収束を早めることができる
+	//!
+	//! @note 指定された区間 [a, b] 内での極小値を探索する
+	//! @note 区間内に極小が存在しない場合は，区間内で最小となる位置を出力する
+	//! @note use_enclose を真に指定した場合は，最初に区間を拡張して極小を探索する（本ヘッダ内の enclose 関数を利用する）
 	//! 
 	//! @param[in]  a              … 区間の左端
 	//! @param[in]  b              … 区間の右端
@@ -278,14 +283,39 @@ namespace gold
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 200, bool use_enclose = true )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t &iterations, size_t max_iterations, bool use_enclose = true )
 	{
-		double c, p, q, fa, fb, fc, fp, fq;
+		double p, q, fp, fq;
 		const double gold = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
 
 		if( use_enclose )
 		{
-			enclose( a, b, c, fa, fb, fc, f );
+			p = b;
+			double fa, fb;
+			enclose( a, p, b, fa, fp, fb, f );
+
+			// a <= b <= c となるように区間を変更する
+			if( a > b )
+			{
+				double tmp = a;
+				a = b;
+				b = tmp;
+				tmp = fa;
+				fa = fb;
+				fb = tmp;
+			}
+
+			// 区間の長いほうを決め，黄金分割によりもう一つの点を決定する
+			if( std::abs( p - a ) > std::abs( p - b ) )
+			{
+				q = ( p + a ) * 0.5;
+				fq = f( p );
+			}
+			else
+			{
+				q = ( p + b ) * 0.5;
+				fq = f( p );
+			}
 		}
 		else
 		{
@@ -295,73 +325,36 @@ namespace gold
 				a = b;
 				b = tmp;
 			}
-			c = b;
-			b = a + gold * ( c - a );
-			fa = f( a );
-			fb = f( b );
-			fc = f( c );
-		}
-
-		// a <= b <= c となるように区間を変更する
-		if( a > c )
-		{
-			double tmp = a;
-			a = c;
-			c = tmp;
-			tmp = fa;
-			fa = fc;
-			fc = tmp;
-		}
-
-		// 区間の長いほうを決め，黄金分割によりもう一つの点を決定する
-		if( std::abs( b - a ) > std::abs( c - b ) )
-		{
 			p = a + gold * ( b - a );
-			q = b;
+			q = b - gold * ( b - a );
+
 			fp = f( p );
-			fq = fb;
-		}
-		else
-		{
-			p = b;
-			q = c - gold * ( c - b );
-			fp = fb;
 			fq = f( q );
 		}
 
 		size_t ite = 0;
-		for( ; std::abs( a - c ) > tolerance * ( std::abs( p ) + std::abs( q ) ) && ite < max_iterations ; ite++ )
+		for( ; std::abs( a - b ) > tolerance * ( std::abs( p ) + std::abs( q ) ) && ite < max_iterations ; ite++ )
 		{
 			if( fp > fq )
 			{
 				// 区間 p < f( x ) < c の間に最小値が存在する
 				a = p;
 				p = q;
-				q = c - gold * ( c - a );
+				q = p + gold * ( b - p );
 				fp = fq;
 				fq = f( q );
 			}
 			else
 			{
 				// 区間 a < f( x ) < q の間に最小値が存在する
-				c = q;
+				b = q;
 				q = p;
-				p = a + gold * ( c - a );
+				p = q - gold * ( q - a );
 				fq = fp;
 				fp = f( p );
 			}
-			if( p > q )
-			{
-				double tmp = p;
-				p = q;
-				q = tmp;
-				tmp = fp;
-				fp = fq;
-				fq = tmp;
-			}
 		}
 
-		//std::cout << ite << std::endl;
 		iterations = ite;
 
 		if( fp < fq )
@@ -401,12 +394,18 @@ namespace gold
 }
 
 
+
 /// @brief Brent の放物線補間を用いた極小値の1次元探索（2次収束）
 namespace brent
 {
-	/// @brief Brent の放物線補間を用いて，f(x)の極小値の一次元探索を行う（2次収束）
+	/// @brief Brent の放物線補間を用いて，指定された区間内の f(x) の極小値の一次元探索を行う（2次収束）
 	//! 
-	//! 初期の極小を含むと思われる区間 [a, b] を適切に設定することで，収束を早めることができる
+	//! - 参考文献
+	//!   - Richard P. Brent, "Algorithms for Minimization Without Derivatives", DOVER PUBLICATIONS, Mineola, New York
+	//! 
+	//! @note 指定された区間 [a, b] 内での極小値を探索する
+	//! @note 区間内に極小が存在しない場合は，区間内で最小となる位置を出力する
+	//! @note use_enclose を真に指定した場合は，最初に区間を拡張して極小を探索する（本ヘッダ内の enclose 関数を利用する）
 	//! 
 	//! @param[in]  a              … 区間の左端
 	//! @param[in]  b              … 区間の右端
@@ -421,107 +420,109 @@ namespace brent
 	template < class Functor >
 	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t &iterations, size_t max_iterations, bool use_enclose = true )
 	{
-		double u, v, w, xm, fa, fb, fu, fv, fw, fx;
-		double len, len1, len2;
-		const double gold = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
+		double u, v, w, fu, fv, fw, fx, e = 0.0, d = 0.0;
+		const double c = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
 		const double dust = type_limits< double >::minimum( );		// ゼロ除算を避けるためのゴミ値
-
 
 		if( use_enclose )
 		{
+			double fa, fb;
 			x = b;
 			enclose( a, x, b, fa, fx, fb, f );
+
+			// a <= x <= b で極小を囲う区間に変更する
+			if( a > b )
+			{
+				double tmp = a;
+				a = b;
+				b = tmp;
+				tmp = fa;
+				fa = fb;
+				fb = tmp;
+			}
+
+			v = a;
+			w = b;
+			u = x;
+			fv = fa;
+			fw = fb;
+			fu = fx;
 		}
 		else
 		{
+			// a <= x <= b で極小を囲う区間に変更する
 			if( a > b )
 			{
 				double tmp = a;
 				a = b;
 				b = tmp;
 			}
-			x = b;
-			b = a + gold * ( x - a );
-			fa = f( a );
-			fb = f( b );
-			fx = f( x );
+
+			v = w = x = a + c * ( b - a );
+			fv = fw = fx = f( x );
 		}
-
-
-		// a <= x <= b で極小を囲う区間に変更する
-		if( a > b )
-		{
-			double tmp = a;
-			a = b;
-			b = tmp;
-			tmp = fa;
-			fa = fb;
-			fb = tmp;
-		}
-
-		v = a;
-		w = b;
-		u = x;
-		fv = fa;
-		fw = fb;
-		fu = fx;
-
-		len1 = len2 = type_limits< double >::maximum( );
 
 		size_t ite;
 		for( ite = 1 ; ite <= max_iterations ; ite++ )
 		{
-			xm = ( a + b ) / 2.0;
+			double m = ( a + b ) * 0.5;
+			double tol = 1.0e-12 * std::abs( x ) + tolerance;
+			double t2 = 2.0 * tol;
 
 			// 最後に判定した最小値候補点と，区間 [a, b] の中間との差が許容誤差内になったら終了する
-			if( std::abs( xm - x ) <= 2.0 * ( tolerance * std::abs( x ) + 1.0e-10 ) - 0.5 * ( b - a ) )
+			if( std::abs( x - m ) <= t2 - 0.5 * ( b - a ) )
 			{
 				break;
 			}
 
-			// 放物線補間を行う
-			double xv = x - v;
-			double wx = w - x;
-			double fwx = fw - fx;
-			double fxv = fx - fv;
-			double l1 = 2.0 * ( wx * fxv - xv * fwx );
-			double l2 = std::abs( l1 );
+			double p = 0.0, q = 0.0, r = 0.0;
 
-			// ゼロ除算を防ぐために，ごみ値を足して，放物線補間を行う
-			len = l1 / l2 * ( l2 + dust );
-			len = ( xv * xv * fwx + wx * wx * fxv ) / len;
-			u = x + len;
-
-			// 区間[a, b] 内に入り，
-			len = std::abs( len );
-			if( ( b - u ) * ( u - a ) > 0.0 && len < len2 / 2.0 )
+			if( std::abs( e ) > tol )
 			{
-				// 放物線補間が適切に行われた
+				// 放物線補間を行う
+				r = ( x - w ) * ( fx - fv );
+				q = ( x - v ) * ( fx - fw );
+				p = ( x - v ) * q - ( x - w ) * r;
+				q = 2.0 * ( q - r );
+
+				if( q > 0 )
+				{
+					p = -p;
+				}
+				else
+				{
+					q = -q;
+				}
+
+				r = e;
+				e = d;
+			}
+
+			if( std::abs( p ) < std::abs( 0.5 * q * r ) && p < q * ( a - x ) && p < q * ( b - x ) )
+			{
+				// 放物線補間が適切に行われたので区間を更新する
+				d = p / q;
+				u = x + d;
+
+				if( u - a < t2 || b - u < t2 )
+				{
+					d = x < m ? tol : -tol;
+				}
 			}
 			else
 			{
 				// 放物線補間は不適切なので黄金分割する
 				// 区間の大きいほうを黄金分割する
-				if( xm < x )
-				{
-					// 区間 [a, x] を分割する
-					u = a + gold * ( x - a );
-				}
-				else
-				{
-					// 区間 [x, b] を分割する
-					u = x + gold * ( b - x );
-				}
+				e = ( x < m ? b : a ) - x;
+				d = c * e;
 			}
 
+			u = x + ( std::abs( d ) >= tol ? d : ( d > 0 ? tol : -tol ) );
 			fu = f( u );
+
 			if( fu <= fx )
 			{
 				// より小さい値が見つかったので a, b, v, w を更新する
-				v = w;
-				w = x;
-				fv = fw;
-				fw = fx;
 				if( u < x )
 				{
 					// 区間 a < u < x に極小値がある
@@ -532,11 +533,12 @@ namespace brent
 					// 区間 x < u < b に極小値がある
 					a = x;
 				}
-				x = u;
+				v  = w;
+				w  = x;
+				fv = fw;
+				fw = fx;
+				x  = u;
 				fx = fu;
-
-				len2 = len1;
-				len1 = len;
 			}
 			else
 			{
@@ -560,7 +562,7 @@ namespace brent
 					fv = fw;
 					fw = fu;
 				}
-				else if( fu <= fv || w == x || v == w )
+				else if( fu <= fv || v == x || v == w )
 				{
 					v = u;
 					fv = fu;
@@ -570,10 +572,9 @@ namespace brent
 
 		iterations = ite;
 
-//		std::cout << ite << std::endl;
-
 		return( fx );
 	}
+
 
 	/// @brief Brent の放物線補間を用いて，f(x)の極小値の一次元探索を行う（2次収束）
 	//! 
@@ -636,7 +637,7 @@ namespace gradient
 			dir = g( p );
 
 			// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations );
+			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations, true );
 
 			std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
 
@@ -747,7 +748,7 @@ namespace gradient
 			}
 
 			// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations );
+			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations, true );
 
 			//std::cout << err << ", " << p.t( ) << ", " << dir.t( ) << std::endl;
 
@@ -845,7 +846,7 @@ namespace powell
 				double old_fp = fp;
 
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-				fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations );
+				fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations, true );
 
 				for( size_type r = 0 ; r < p.size( ) ; r++ )
 				{
