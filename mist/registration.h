@@ -729,6 +729,7 @@ namespace __non_rigid_registration_utility__
 		}
 	};
 
+
 	// 制御点情報を用いて，ソース画像をターゲット画像に変形する
 	template < class TARGETTYPE, class SOURCETYPE, class CONTROLMESH >
 	static bool transformation( TARGETTYPE &target, const SOURCETYPE &source, const CONTROLMESH &control_mesh,
@@ -814,13 +815,15 @@ namespace __non_rigid_registration_utility__
 
 
 	template < class TARGETTYPE, class SOURCETYPE, class CONTROLMESH >
-	struct registration_functor
+	struct registration_functor : public thread< registration_functor< TARGETTYPE, SOURCETYPE, CONTROLMESH > >
 	{
 		typedef TARGETTYPE  target_image_type;
 		typedef SOURCETYPE  source_image_type;
 		typedef CONTROLMESH control_mesh_type;
 		typedef typename TARGETTYPE::size_type size_type;
 		typedef typename TARGETTYPE::difference_type difference_type;
+		typedef typename CONTROLMESH::value_type vector_type;
+		typedef matrix< double > matrix_type;							///< @brief 内部で利用する行列の型
 
 		array< unsigned int * > target;
 		target_image_type transformed_image;		///< @brief レジストレーション時に利用し，制御点情報を用いてソースを目標画像へ変換した一時画像
@@ -940,14 +943,32 @@ namespace __non_rigid_registration_utility__
 			__non_rigid_registration_utility__::transformation( transformed_image, source, control_mesh, ffd_coeff );
 		}
 
+		void apply_control_point_to_mesh( control_mesh_type &cmesh ) const
+		{
+			cmesh( x, y, z ) = control_mesh_tmp( x, y, z );
+		}
+
 		template < class PARAMETER >
 		double operator ()( const PARAMETER &p )
+		{
+			return( evaluate_error( p, false ) );
+		}
+
+		template < class PARAMETER >
+		double evaluate_error( const PARAMETER &p, bool use_thread = true )
 		{
 			control_mesh_tmp( x, y, z ).x = control_mesh( x, y, z ).x + p[ 0 ];
 			control_mesh_tmp( x, y, z ).y = control_mesh( x, y, z ).y + p[ 1 ];
 			control_mesh_tmp( x, y, z ).z = control_mesh( x, y, z ).z + p[ 2 ];
 
-			__non_rigid_registration_utility__::transformation( transformed_image, source, control_mesh_tmp, ffd_coeff, x, y, z );
+			if( use_thread )
+			{
+				non_rigid_transformation_( transformed_image, source, control_mesh_tmp, ffd_coeff, x, y, z );
+			}
+			else
+			{
+				transformation( transformed_image, source, control_mesh_tmp, ffd_coeff, x, y, z );
+			}
 
 			// データを初期化する
 			__no_data_is_associated__.fill( );
@@ -999,6 +1020,33 @@ namespace __non_rigid_registration_utility__
 
 			return( -( H1 + H2 ) / H12 );
 			//return( H1 + H2 - H12 );
+		}
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( )
+		{
+			typedef __minimization_utility__::__no_copy_constructor_functor__< registration_functor< TARGETTYPE, SOURCETYPE, CONTROLMESH > > no_constructor_functor_type;
+
+			// 最小化を開始
+			matrix_type p( 3, 1 ), dirs = matrix_type::identity( 3, 3 ), bound( 3, 2 );
+			bound( 0, 0 ) = -( control_mesh( x - 1, y    , z     ) - control_mesh( x, y, z ) ).length( ) * 0.5;
+			bound( 0, 1 ) =  ( control_mesh( x + 1, y    , z     ) - control_mesh( x, y, z ) ).length( ) * 0.5;
+			bound( 1, 0 ) = -( control_mesh( x    , y - 1, z     ) - control_mesh( x, y, z ) ).length( ) * 0.5;
+			bound( 1, 1 ) =  ( control_mesh( x    , y + 1, z     ) - control_mesh( x, y, z ) ).length( ) * 0.5;
+			bound( 2, 0 ) = -( control_mesh( x    , y    , z - 1 ) - control_mesh( x, y, z ) ).length( ) * 0.5;
+			bound( 2, 1 ) =  ( control_mesh( x    , y    , z + 1 ) - control_mesh( x, y, z ) ).length( ) * 0.5;
+
+			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 1.0 );
+
+			// 結果を反映
+			vector_type &v = control_mesh_tmp( x, y, z );
+			v = control_mesh( x, y, z );
+			v.x += p[ 0 ];
+			v.y += p[ 1 ];
+			v.z += p[ 2 ];
+
+			return( true );
 		}
 	};
 }
@@ -1068,9 +1116,9 @@ namespace non_rigid
 		//! @param[in] max_loop  … 最適化処理の最大反復回数
 		//! 
 		template < class SOURCETYPE >
-		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop = 3 )
+		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop = 3, size_type thread_num = 0 )
 		{
-			apply( source, tolerance, max_loop, __mist_dmy_callback__( ) );
+			apply( source, tolerance, max_loop, thread_num, __mist_dmy_callback__( ) );
 		}
 
 		/// @brief 非剛体レジストレーションの実行
@@ -1081,7 +1129,7 @@ namespace non_rigid
 		//! @param[in] callback  … 現在の進行状況を表示するためのコールバック関数
 		//! 
 		template < class SOURCETYPE, class Functor >
-		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop, Functor callback )
+		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop, size_type thread_num, Functor callback )
 		{
 			typedef __non_rigid_registration_utility__::registration_functor< TARGETTYPE, SOURCETYPE, control_mesh_type > non_rigid_registration_functor_type;
 			typedef __minimization_utility__::__no_copy_constructor_functor__< non_rigid_registration_functor_type > no_constructor_functor_type;
@@ -1111,79 +1159,106 @@ namespace non_rigid
 				}
 			}
 
-			difference_type isx = 0;
-			difference_type iex = w - 1;
-			difference_type isy = 0;
-			difference_type iey = h - 1;
-			difference_type isz = 0;
-			difference_type iez = d - 1;
-
-			if( iex < isx )
-			{
-				iex = isx = 0;
-			}
-			if( iey < isy )
-			{
-				iey = isy = 0;
-			}
-			if( iez < isz )
-			{
-				iez = isz = 0;
-			}
-
 			callback( 0.0 );
 
-			// ノンリジッドレジストレーションを行うファンクタ
-			non_rigid_registration_functor_type f( target, source, control_mesh, BIN );
-
-			double err = f( matrix_type::zero( 3, 1 ) );
-			double old_err = err;
-			size_type loop = 0;
-			double max_iteration_num = ( iex - isx + 1 ) * ( iey - isy + 1 ) * ( iez - isz + 1 ) * max_loop;
-			size_type count = 0;
-			while( loop++ < max_loop )
+			if( thread_num == 0 )
 			{
-				// 各制御点を順番に変形させながら最適化を行う
-				for( difference_type k = isz ; k <= iez ; k++ )
+				thread_num = static_cast< size_type >( get_cpu_num( ) );
+			}
+
+			// ノンリジッドレジストレーションを行うファンクタ
+			non_rigid_registration_functor_type **f = new non_rigid_registration_functor_type*[ thread_num ];
+
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				f[ i ] = new non_rigid_registration_functor_type( target, source, control_mesh, BIN );
+			}
+
+			// 一番初期時点での評価値を計算しておく
+			double err = f[ 0 ]->evaluate_error( matrix_type::zero( 3, 1 ) );
+			double old_err = err;
+
+			typedef mist::vector3< size_type > control_point_index_type;
+			std::vector< control_point_index_type > control_point_list;
+
+			size_type X[] = { 0, 1, 0, 1, 0, 1, 0, 1 };
+			size_type Y[] = { 0, 0, 1, 1, 0, 0, 1, 1 };
+			size_type Z[] = { 0, 0, 0, 0, 1, 1, 1, 1 };
+
+			// 1階の探索で，互いに影響しあわない制御点のリストを作成する
+			for( size_type s = 0 ; s < 8 ; s++ )
+			{
+				for( difference_type k = Z[ s ] ; k < d ; k += 2 )
 				{
-					for( difference_type j = isy ; j <= iey ; j++ )
+					for( difference_type j = Y[ s ] ; j < h ; j += 2 )
 					{
-						for( difference_type i = isx ; i <= iex ; i++ )
+						for( difference_type i = X[ s ] ; i < w ; i += 2 )
 						{
-							// 移動させる制御点を指定
-							f.initialize( i, j, k );
-
-							// 最小化を開始
-							matrix_type p( 3, 1 ), dirs = matrix_type::identity( 3, 3 ), bound( 3, 2 );
-							bound( 0, 0 ) = -( control_mesh( i - 1, j    , k     ) - control_mesh( i, j, k ) ).length( ) * 0.5;
-							bound( 0, 1 ) =  ( control_mesh( i + 1, j    , k     ) - control_mesh( i, j, k ) ).length( ) * 0.5;
-							bound( 1, 0 ) = -( control_mesh( i    , j - 1, k     ) - control_mesh( i, j, k ) ).length( ) * 0.5;
-							bound( 1, 1 ) =  ( control_mesh( i    , j + 1, k     ) - control_mesh( i, j, k ) ).length( ) * 0.5;
-							bound( 2, 0 ) = -( control_mesh( i    , j    , k - 1 ) - control_mesh( i, j, k ) ).length( ) * 0.5;
-							bound( 2, 1 ) =  ( control_mesh( i    , j    , k + 1 ) - control_mesh( i, j, k ) ).length( ) * 0.5;
-
-	//						err = gradient::minimization( p, no_constructor_functor_type( f ), 0.1 );
-							err = gradient::minimization( p, bound, no_constructor_functor_type( f ), 1.0 );
-//							err = gradient::minimization( p, bound, no_constructor_functor_type( f ), tolerance );
-	//						err = powell::minimization( p, dirs, bound, no_constructor_functor_type( f ), 0.1 );
-
-							// 結果を反映
-							vector_type &v = control_mesh( i, j, k );
-							v.x += p[ 0 ];
-							v.y += p[ 1 ];
-							v.z += p[ 2 ];
-
-							//std::cout << "( " << i << ", " << j << ", " << k << " ) = " << "( " << v << " )" << std::endl;
-							callback( 100.0 / max_iteration_num * count++ );
+							control_point_list.push_back( mist::vector3< size_type >( i, j, k ) );
 						}
 					}
 				}
+			}
+
+			//std::cout << "制御点数1: " << control_point_list.size( ) << std::endl;
+			//std::cout << "制御点数2: " << w * h * d << std::endl;
+
+
+			size_type loop = 0, numthreads, t;
+			double max_iteration_num = control_point_list.size( ) * max_loop / static_cast< double >( thread_num );
+			size_type count = 0;
+			while( loop++ < max_loop )
+			{
+				for( size_type i = 0 ; i < control_point_list.size( ) ; )
+				{
+					for( numthreads = 0 ; numthreads < thread_num && i < control_point_list.size( ) ; numthreads++, i++ )
+					{
+						control_point_index_type &v = control_point_list[ i ];
+						f[ numthreads ]->initialize( v.x, v.y, v.z );
+					}
+
+					// スレッドの生成
+					for( t = 0 ; t < numthreads ; t++ )
+					{
+						f[ t ]->create( );
+					}
+
+					// スレッドの終了待ち
+					for( t = 0 ; t < numthreads ; t++ )
+					{
+						f[ t ]->wait( INFINITE );
+					}
+
+					// リソースの開放
+					for( t = 0 ; t < numthreads ; t++ )
+					{
+						f[ t ]->close( );
+					}
+
+					// 探索の結果を，各制御点に反映する
+					for( t = 0 ; t < numthreads ; t++ )
+					{
+						f[ t ]->apply_control_point_to_mesh( control_mesh );
+					}
+
+					callback( 100.0 / max_iteration_num * count++ );
+				}
+
+				err = f[ 0 ]->evaluate_error( matrix_type::zero( 3, 1 ) );
 
 				if( 2.0 * std::abs( old_err - err ) < tolerance * ( std::abs( old_err ) + std::abs( err ) ) )
 				{
 					break;
 				}
+
+				old_err = err;
 			}
+
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				delete f[ i ];
+			}
+			delete [] f;
 
 			callback( 100.1 );
 		}
