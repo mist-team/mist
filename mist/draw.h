@@ -68,7 +68,7 @@ namespace pixel_data
 		static void glTexImage2D( const array2< T, Allocator > &image )
 		{
 			::glTexImage2D(
-				GL_TEXTURE_2D, 0, 3,
+				GL_TEXTURE_2D, 0, GL_RGBA,
 				static_cast< GLsizei >( image.width( ) ),
 				static_cast< GLsizei >( image.height( ) ),
 				0,
@@ -111,11 +111,62 @@ namespace pixel_data
 		}
 	};
 
+	template < bool color >
+	struct __glDrawPixels__
+	{
+		template < class T, class Allocator >
+		static void glDrawPixels( const array2< T, Allocator > &image, typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h )
+		{
+			::glDrawPixels(
+					static_cast< GLsizei >( w ),
+					static_cast< GLsizei >( h ),
+					GL_LUMINANCE,
+					gl_type_trait< T >::gl_type,
+					static_cast< const GLvoid* >( &( image[0] ) )
+				);
+		}
+	};
+
+	template < >
+	struct __glDrawPixels__< true >
+	{
+		template < class T, class Allocator >
+		static void glDrawPixels( const array2< rgb< T >, Allocator > &image, typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h )
+		{
+			::glDrawPixels(
+					static_cast< GLsizei >( w ),
+					static_cast< GLsizei >( h ),
+					GL_RGB,
+					gl_type_trait< T >::gl_type,
+					static_cast< const GLvoid* >( &( image[0] ) )
+				);
+		}
+
+		template < class T, class Allocator >
+		static void glDrawPixels( const array2< rgba< T >, Allocator > &image, typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h )
+		{
+			::glDrawPixels(
+					static_cast< GLsizei >( w ),
+					static_cast< GLsizei >( h ),
+					GL_RGBA,
+					gl_type_trait< T >::gl_type,
+					static_cast< const GLvoid* >( &( image[0] ) )
+				);
+		}
+	};
+
 	template< class T, class Allocator >
 	void glTexImage2D( const array2< T, Allocator > &image )
 	{
 		__glTexImage2D__< is_color< T >::value >::glTexImage2D( image );
 	}
+
+	template< class T, class Allocator >
+	void glDrawPixels( const array2< T, Allocator > &image, typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h )
+	{
+		__glDrawPixels__< is_color< T >::value >::glDrawPixels( image, w, h );
+	}
+
 
 	inline size_t floor_square_index( size_t v )
 	{
@@ -391,6 +442,106 @@ bool draw_image( const array2< T, Allocator > &image,
 		
 		return( draw_buffer( img, image.width( ), image.height( ), window_width, window_height, zoom, xpos, ypos, interpolate ) );
 	}
+}
+
+
+/// @brief 2次元画像をOpenGLを用いてウィンドウに描画する
+//! 
+//! OpenGLの glDrawPixels 関数を用いて，ウィンドウ上に画像を描画する
+//! 描画される絵は，ウィンドウの１画素と画像の１画素が対応するように描画される
+//!
+//! @attention 入力画像の一辺は，2の指数乗でなくても正しく描画される
+//! 
+//! @param[in] image         … 入力画像
+//! @param[in] window_width  … 出力ウィンドウの幅
+//! @param[in] window_height … 出力ウィンドウの高さ
+//! @param[in] xpos          … 画像をX軸方向に何画素ずらして描画するか（デフォルトは0）
+//! @param[in] ypos          … 画像をY軸方向に何画素ずらして描画するか（デフォルトは0）
+//! @param[in] blend         … すでに描画されている物とブレンドするかどうか（デフォルトはfalse）
+//!
+//! @retval true  … 描画に成功
+//! @retval false … 不適切な入力画像の場合
+//! 
+//! @code 使用例
+//! #include <mist/draw.h>
+//! 
+//! mist::array2< mist::rgb< unsigned char > > image; ←画像読み込みルーチンなどで，画像を読み込んでおく．
+//! 
+//! mist::draw_image( image,         // 入力画像
+//!                   window_width,  // 出力するウィンドウの幅
+//!                   window_height, // 出力するウィンドウの高さ
+//!                   zoom,          // ズームの割合（デフォルトは1倍）
+//!                   xpos,          // 中心からX軸方向にずらす割合（デフォルトは0）
+//!                   ypos,          // 中心からY軸方向にずらす割合（デフォルトは0）
+//!                   blend          // すでに描画されている物とブレンドするかどうか（デフォルトはfalse）
+//!                 );
+//! @endcode
+//!
+template< class T, class Allocator >
+bool draw_pixels( const array2< T, Allocator > &image, typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
+					typename array2< T, Allocator >::difference_type xpos = 0, typename array2< T, Allocator >::difference_type ypos = 0, bool blend = false )
+{
+	typedef typename array2< T, Allocator >::size_type size_type;
+	typedef typename array2< T, Allocator >::value_type value_type;
+	typedef pixel_data::pixel< is_float< value_type >::value > pixel;
+
+	if( image.empty( ) ) return( false );
+
+	double ttt = static_cast< double >( image.width( ) );
+
+	if( !blend )
+	{
+		glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	}
+
+	GLsizei w = static_cast< GLsizei >( window_width / 2 );
+	GLsizei h = static_cast< GLsizei >( window_height / 2 );
+	GLsizei rw = static_cast< GLsizei >( window_width ) - w - 1;
+	GLsizei rh = static_cast< GLsizei >( window_height ) - h - 1;
+
+	glMatrixMode( GL_PROJECTION );
+	glPushMatrix( );
+	glLoadIdentity( );
+	gluOrtho2D( -w, rw, -h, rh );
+
+	glMatrixMode( GL_MODELVIEW );
+	glPushMatrix( );
+	glLoadIdentity( );
+
+	// 左上を原点とする画像座標系を設定
+	gluLookAt( w, h, -1, w, h, 0, 0, -1, 0 );
+
+	GLboolean isLighting = glIsEnabled( GL_LIGHTING );
+	glDisable( GL_LIGHTING );
+	glEnable( GL_BLEND );
+
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+	size_type ww = image.width( );
+	size_type hh = image.height( );
+
+	glPixelStorei( GL_UNPACK_ROW_LENGTH, static_cast< GLint >( image.width( ) ) );
+	if( xpos < 0 )
+	{
+		glPixelStorei( GL_UNPACK_SKIP_PIXELS, static_cast< GLint >( -xpos ) );
+		ww = ww + xpos;
+		xpos = 0;
+	}
+	if( ypos < 0 )
+	{
+		glPixelStorei( GL_UNPACK_SKIP_ROWS, static_cast< GLint >( -ypos ) );
+		hh = hh + ypos;
+		ypos = 0;
+	}
+
+	glRasterPos2i( static_cast< GLsizei >( xpos ), static_cast< GLsizei >( ypos ) );
+	glPixelZoom( 1.0f, -1.0f );
+	pixel_data::glDrawPixels( image, ww, hh );
+
+	if( isLighting == GL_TRUE ) glEnable( GL_LIGHTING );
+
+	return( true );
 }
 
 
