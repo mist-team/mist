@@ -164,10 +164,9 @@ void evaluate_matrix_operation1( )
 	mist::matrix< double > A( 100, 100 );
 	mist::matrix< double > B( 100, 100 );
 
-	size_type r, c;
-	for( r = 0 ; r < mat1.rows( ) ; r++ )
+	for( size_type r = 0 ; r < mat1.rows( ) ; r++ )
 	{
-		for( c = 0 ; c < mat1.cols( ) ; c++ )
+		for( size_type c = 0 ; c < mat1.cols( ) ; c++ )
 		{
 			mat1( r, c ) = rand( ) / 3.0 * 10000.0;
 			mat2( r, c ) = rand( ) / 3.0 * 10000.0;
@@ -185,7 +184,6 @@ void evaluate_matrix_operation1( )
 	{
 		mist::timer t;
 		double tmp;
-		double error = 0.0;
 		for( j = 0 ; j < A.rows( ) ; j++ )
 		{
 			for( i = 0 ; i < A.cols( ) ; i++ )
@@ -195,17 +193,11 @@ void evaluate_matrix_operation1( )
 				{
 					tmp += mat2( i, k ) * mat3( k, j );
 				}
-				double tt = mat1( i, j ) + tmp + mat4( i, j );
-				double ttt = mat1( i, j ) + tmp;
-				ttt = ttt + mat4( i, j );
-				A( j, i ) = mat1( i, j ) + tmp;
-				A( j, i ) = A( j, i ) + mat4( i, j );
-//				A( j, i ) = mat1( i, j ) + tmp + mat4( i, j );
-				error += ( tt - ttt ) * ( tt - ttt );
+				A( j, i ) = mat1( i, j ) + tmp + mat4( i, j );
 			}
 		}
 		cout << "< In the case of Non Expression Template >" << endl;
-		cout << "Calculation Time: " << t << " (sec)" << error << endl;
+		cout << "Calculation Time: " << t << " (sec)" << endl;
 	}
 
 	{
@@ -218,12 +210,9 @@ void evaluate_matrix_operation1( )
 	}
 
 	double err = 0.0;
-	for( r = 0 ; r < mat1.rows( ) ; r++ )
+	for( l = 0 ; l < A.size( ) ; l++ )
 	{
-		for( c = 0 ; c < mat1.cols( ) ; c++ )
-		{
-			err += ( A( r, c ) - B( r, c ) ) * ( A( r, c ) - B( r, c ) );
-		}
+		err += ( A[ l ] - B[ l ] ) * ( A[ l ] - B[ l ] );
 	}
 
 	cout << "Estimate Error: " << err << endl;
