@@ -2,6 +2,9 @@
 //!
 //! @brief PNG画像を読み書きするためのライブラリ
 //!
+//! 本ライブラリは，http://www.libpng.org/pub/png/ , http://www.libpng.org/ で開発が行われている libpng を利用している
+//! エンコードとデコードは本ライブラリのAPIを用いて実装されているため，別途ライブラリを用意する必要がある
+//!
 #ifndef __INCLUDE_MIST_PNG__
 #define __INCLUDE_MIST_PNG__
 

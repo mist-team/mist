@@ -2,6 +2,9 @@
 //!
 //! @brief JPEG画像を読み書きするためのライブラリ
 //!
+//! 本ライブラリは，http://www.libpng.org/pub/png/ で開発が行われている libjpeg を利用している
+//! エンコードとデコードは本ライブラリのAPIを用いて実装されているため，別途ライブラリを用意する必要がある
+//!
 #ifndef __INCLUDE_MIST_JPEG__
 #define __INCLUDE_MIST_JPEG__
 

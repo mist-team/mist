@@ -150,9 +150,6 @@
 				RelativePath="..\mist\config\binary.h">
 			</File>
 			<File
-				RelativePath="..\mist\io\bmp.h">
-			</File>
-			<File
 				RelativePath="..\mist\config\color.h">
 			</File>
 			<File
@@ -177,19 +174,10 @@
 				RelativePath="..\mist\filter\figure_decomposition.h">
 			</File>
 			<File
-				RelativePath="..\mist\io\gif.h">
-			</File>
-			<File
-				RelativePath="..\mist\io\image.h">
-			</File>
-			<File
 				RelativePath="..\mist\filter\interlace.h">
 			</File>
 			<File
 				RelativePath="..\mist\interpolate.h">
-			</File>
-			<File
-				RelativePath="..\mist\io\jpeg.h">
 			</File>
 			<File
 				RelativePath="..\mist\filter\labeling.h">
@@ -210,16 +198,32 @@
 				RelativePath="..\mist\filter\morphology.h">
 			</File>
 			<File
-				RelativePath="..\mist\io\png.h">
-			</File>
-			<File
-				RelativePath="..\mist\io\pnm.h">
-			</File>
-			<File
 				RelativePath="..\mist\filter\thinning.h">
 			</File>
 			<File
 				RelativePath="..\mist\threshold.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="MISTファイル入出力"
+			Filter="">
+			<File
+				RelativePath="..\mist\io\bmp.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\gif.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\image.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\jpeg.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\png.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\pnm.h">
 			</File>
 			<File
 				RelativePath="..\mist\io\tiff.h">

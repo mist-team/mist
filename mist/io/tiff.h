@@ -2,6 +2,9 @@
 //!
 //! @brief TIFF画像を読み書きするためのライブラリ
 //!
+//! 本ライブラリは，http://www.libtiff.org/ で開発が行われている libtiff を利用している
+//! エンコードとデコードは本ライブラリのAPIを用いて実装されているため，別途ライブラリを用意する必要がある
+//!
 #ifndef __INCLUDE_MIST_TIFF__
 #define __INCLUDE_MIST_TIFF__
 
@@ -210,25 +213,30 @@ namespace __tiff_controller__
 			return( true );
 		}
 
-		static bool write( const array2< T, Allocator > &image, const std::string &filename )
+		static bool write( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression )
 		{
 			TIFF *tif;
 			size_type tiffW, tiffH;
 			size_type rowsPerStrip;
 
 			tif = TIFFOpen( filename.c_str( ), "w" );
-			if( tif == NULL ) return(false);
+			if( tif == NULL )
+			{
+				return(false);
+			}
 
 			tiffW = image.width( );
 			tiffH = image.height( );
 
 			rowsPerStrip = ( 8 * 1024 ) / ( 3 * tiffW );
-			if( rowsPerStrip == 0 ) rowsPerStrip = 1;
+			if( rowsPerStrip == 0 )
+			{
+				rowsPerStrip = 1;
+			}
 
 			TIFFSetField( tif, TIFFTAG_IMAGEWIDTH, tiffW );
 			TIFFSetField( tif, TIFFTAG_IMAGELENGTH, tiffH );
 			TIFFSetField( tif, TIFFTAG_BITSPERSAMPLE, 8 );
-//			TIFFSetField(tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW );
 			TIFFSetField( tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB );
 			TIFFSetField( tif, TIFFTAG_FILLORDER, FILLORDER_MSB2LSB );
 			TIFFSetField( tif, TIFFTAG_DOCUMENTNAME, "mist project team" );
@@ -236,6 +244,11 @@ namespace __tiff_controller__
 			TIFFSetField( tif, TIFFTAG_SAMPLESPERPIXEL, 3 );
 			TIFFSetField( tif, TIFFTAG_ROWSPERSTRIP, rowsPerStrip );
 			TIFFSetField( tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG );
+			if( use_lzw_compression )
+			{
+				// LZW圧縮を利用するかどうか
+				TIFFSetField( tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW );
+			}
 
 			size_type size = image.width( ) * image.height( ) * 3;
 			size_type lsize = image.width( ) * 3;
@@ -300,14 +313,15 @@ bool read_tiff( array2< T, Allocator > &image, const std::string &filename )
 //! 
 //! @param[in] image    … 引数の説明
 //! @param[in] filename … 引数の説明
+//! @param[in] use_lzw_compression … 引数の説明
 //!
 //! @retval true  … 戻り値の説明
 //! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
-bool write_tiff( const array2< T, Allocator > &image, const std::string &filename )
+bool write_tiff( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression = _LZW_COMPRESSION_SUPPORT_ )
 {
-	return( __tiff_controller__::tiff_controller< T, Allocator >::write( image, filename ) );
+	return( __tiff_controller__::tiff_controller< T, Allocator >::write( image, filename, use_lzw_compression ) );
 }
 
 

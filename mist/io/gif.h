@@ -2,6 +2,10 @@
 //!
 //! @brief GIF画像を読み書きするためのライブラリ
 //!
+//! 本ライブラリは，http://sourceforge.net/projects/libungif/ で開発が行われている giflib もしくは libungif を利用している
+//! エンコードとデコードは本ライブラリのAPIを用いて実装されているため，別途ライブラリを用意する必要がある
+//!
+
 #ifndef __INCLUDE_MIST_GIF__
 #define __INCLUDE_MIST_GIF__
 
@@ -44,6 +48,7 @@ namespace __gif_controller__
 		{
 			size_type i, j;
 
+			// GIFファイルを読み込んで，ヘッダ情報を取得する
 			GifFileType *GifFile = DGifOpenFileName( filename.c_str( ) );
 
 			if( GifFile == NULL )
@@ -136,7 +141,12 @@ namespace __gif_controller__
 								}
 							}
 						}
-						record_type = TERMINATE_RECORD_TYPE;
+
+						if( x == 0 && y == 0 && w == width && h == height )
+						{
+							// 一番最初のフレームが見つかったので探索を終了する
+							record_type = TERMINATE_RECORD_TYPE;
+						}
 					}
 					break;
 
@@ -171,10 +181,7 @@ namespace __gif_controller__
 		 		    // 不明なレコードタイプ
 					break;
 				}
-			}
-			while( record_type != TERMINATE_RECORD_TYPE );
-
-			int background = GifFile->SBackGroundColor;
+			} while( record_type != TERMINATE_RECORD_TYPE );
 
 			ColorMapObject *color_map = GifFile->Image.ColorMap ? GifFile->Image.ColorMap : GifFile->SColorMap;
 
@@ -207,7 +214,7 @@ namespace __gif_controller__
 			return( true );
 		}
 
-		static bool write( const array2< T, Allocator > &image, const std::string &filename, int compression_level )
+		static bool write( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression )
 		{
 			int color_map_size = 256;
 			ColorMapObject *color_map = MakeMapObject( color_map_size, NULL );
@@ -321,17 +328,17 @@ bool read_gif( array2< T, Allocator > &image, const std::string &filename )
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] image             … 引数の説明
-//! @param[in] filename          … 引数の説明
-//! @param[in] compression_level … 引数の説明
+//! @param[in] image               … 引数の説明
+//! @param[in] filename            … 引数の説明
+//! @param[in] use_lzw_compression … 引数の説明
 //! 
 //! @retval true  … 戻り値の説明
 //! @retval false … 戻り値の説明
 //! 
 template < class T, class Allocator >
-bool write_gif( const array2< T, Allocator > &image, const std::string &filename, int compression_level = -1 )
+bool write_gif( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression = _LZW_COMPRESSION_SUPPORT_ )
 {
-	return( __gif_controller__::gif_controller< T, Allocator >::write( image, filename, compression_level ) );
+	return( __gif_controller__::gif_controller< T, Allocator >::write( image, filename, use_lzw_compression ) );
 }
 
 

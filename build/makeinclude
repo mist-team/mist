@@ -10,7 +10,7 @@ CXXFLAGS = -Wall -O2
 RELEASEFLAGS = $(CXXFLAGS) -DNDEBUG
 DEBUGFLAGS   = $(CXXFLAGS) -DDEBUG
 
-IMGLIBS = -ljpeg -lpng -ltiff
+IMGLIBS = -ljpeg -lpng -ltiff -lgif
 LIBS = -lpthread -lz -lm /usr/local/lib/gcc/i686-pc-linux-gnu/3.4.0/libstdc++.so
 LAPACKLIBS = -L../lib_lapack -llapack -lblas -lF77
 ATLASLIBS = -L../lib_atlas -llapack -lcblaswr -lcblas -latlas -lF77
