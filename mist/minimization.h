@@ -782,7 +782,10 @@ namespace powell
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
 				fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations );
 
-				p += dir * x;
+				for( size_type r = 0 ; r < p.size( ) ; r++ )
+				{
+					p[ r ] += dir[ r ] * x;
+				}
 
 				double d = std::abs( fp - old_fp );
 				if( d > delta )
@@ -804,9 +807,12 @@ namespace powell
 			if( ite <= max_iterations )
 			{
 				// 新しい方向を求める
-				pn = 2.0 * p - p0;
-				dir = p - p0;
-				p0 = p;
+				for( size_type r = 0 ; r < p.size( ) ; r++ )
+				{
+					pn[ r ]  = 2.0 * p[ r ] - p0[ r ];
+					dir[ r ] = p[ r ] - p0[ r ];
+					p0[ r ]  = p[ r ];
+				}
 
 				double fe = f( pn );
 
@@ -824,7 +830,7 @@ namespace powell
 						// 方向集合の一番最後に，新しい方向を追加する
 						if( index < dirs.rows( ) - 1 )
 						{
-							for( size_type r = 0 ; r < dirs.rows ( ) ; r++ )
+							for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
 							{
 								dirs( r, index ) = dirs( r, dirs.rows( ) - 1 );
 								dirs( r, dirs.rows( ) - 1 ) = dir[ r ];
@@ -832,7 +838,7 @@ namespace powell
 						}
 						else
 						{
-							for( size_type r = 0 ; r < dirs.rows ( ) ; r++ )
+							for( size_type r = 0 ; r < dirs.rows( ) ; r++ )
 							{
 								dirs( r, index ) = dir[ r ];
 							}

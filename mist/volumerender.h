@@ -182,7 +182,7 @@ namespace volumerender
 
 		attribute_table( difference_type si, difference_type ei ) : base( ei - si + 1 ), sindex_( si ), eindex_( ei ), zero_index_( NULL )
 		{
-			zero_pointer_ = &at( 0 ) - si;
+			zero_index_ = - si;
 		}
 
 		attribute_table( const attribute_table &a ) : base( a ), sindex_( a.sindex_ ), eindex_( a.eindex_ ), zero_index_( a.zero_index_ )
@@ -370,7 +370,7 @@ namespace value_interpolation
 				// レイ方向をカメラ座標系からワールド座標系に変換
 				ray = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
 
-				pixel_type add_intensity;
+				pixel_type add_intensity( 0 );
 				double add_opacity = 1;
 				double old_opacity = 0;
 
@@ -385,18 +385,27 @@ namespace value_interpolation
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
 				{
+					//vector_type vec = ( casting_end - casting_start ).unit( );
+					//if( ray.inner( vec ) < 0.9999999 )
+					//{
+					//	std::cout << "方向が一致していません: " << ray << " , " << vec << " = " << ray.inner( vec ) << std::endl;
+					//	getchar( );
+					//}
+
 					// ワールド座標系（左手）からスライス座標系（右手）に変換
 					// 以降は，全てスライス座標系で計算する
-					casting_start.x = ( casting_start.x + offset.x ) / ax;
+					casting_start.x = (  casting_start.x + offset.x ) / ax;
 					casting_start.y = ( -casting_start.y + offset.y ) / ay;
-					casting_start.z = ( casting_start.z + offset.z ) / az;
-					casting_end.x   = ( casting_end.x   + offset.x ) / ax;
+					casting_start.z = (  casting_start.z + offset.z ) / az;
+					casting_end.x   = (  casting_end.x   + offset.x ) / ax;
 					casting_end.y   = ( -casting_end.y   + offset.y ) / ay;
-					casting_end.z   = ( casting_end.z   + offset.z ) / az;
+					casting_end.z   = (  casting_end.z   + offset.z ) / az;
 
 					spos = casting_start;
 					ray = ( casting_end - casting_start ).unit( );
 					vector_type ray_step = ray * sampling_step;
+
+					double dlen = vector_type( ray_step.x * ax, ray_step.y * ay, ray_step.z * az ).length( );
 
 					difference_type n = static_cast< difference_type  >( ( casting_end - casting_start ).length( ) / sampling_step );
 					difference_type l = 0;
@@ -496,7 +505,15 @@ namespace value_interpolation
 						normal.y /=  len;
 						normal.z /=  len;
 
-						lAtten = lightAtten > 0.0 ? 1.0 / ( 1.0 + lightAtten * ( ( ray - pos ).inner( ray - pos ) ) ) : 1.0;
+						if( lightAtten > 0.0 )
+						{
+							double len = l * dlen;
+							lAtten = 1.0 / ( 1.0 + lightAtten * ( len * len ) );
+						}
+						else
+						{
+							lAtten = 1.0;
+						}
 
 						double c = ray.inner( normal );
 						c = c < 0.0 ? -c : c;
@@ -538,7 +555,7 @@ namespace value_interpolation
 						spos += ray_step;
 						l++;
 					}
-					out( i, j ) = mist::limits_0_255( add_intensity );
+					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
 				}
 				else
 				{
