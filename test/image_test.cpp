@@ -8,8 +8,8 @@
 #include <mist/io/tiff.h>
 #include <mist/io/bmp.h>
 
-mist::array2< unsigned char > image_object( 100, 100 );
-//mist::array2< mist::rgb< unsigned char > > image_object( 100, 100 );
+//mist::array2< unsigned char > image_object( 100, 100 );
+mist::array2< mist::rgb< unsigned char > > image_object( 100, 100 );
 
 void image_draw_area::draw( )
 {

@@ -104,7 +104,7 @@ struct _pixel_converter_
 	}
 };
 
-#ifndef defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+#if __MIST_MSVC__ == 6
 
 	#define IS_COLOR( type ) \
 		template < >\
@@ -126,9 +126,9 @@ struct _pixel_converter_
 				return( color_type( r, g, b ) );\
 			}\
 			\
-			static color_type convert_from_pixel( const value_type &pixel )\
+			static color_type convert_from_pixel( const color_type &pixel )\
 			{\
-				return( color_type( pixel, pixel, pixel ) );\
+				return( pixel ) );\
 			}\
 		};\
 
@@ -183,9 +183,9 @@ struct _pixel_converter_
 			return( color_type( r, g, b ) );
 		}
 
-		static color_type convert_from_pixel( const value_type &pixel )
+		static color_type convert_from_pixel( const color_type &pixel )
 		{
-			return( color_type( pixel, pixel, pixel ) );
+			return( pixel );
 		}
 	};
 
