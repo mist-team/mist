@@ -21,7 +21,7 @@
 
 // 次のマクロを定義すると，JPEG圧縮されたDICOMのデコードが可能になる
 // ただし，外部のJPEGライブラリを必要とするので注意
-#define __DECODE_JPEG_COMPRESSION__
+//#define __DECODE_JPEG_COMPRESSION__
 
 #ifdef __DECODE_JPEG_COMPRESSION__
 
@@ -597,11 +597,11 @@ namespace dicom_controller
 			return( NULL );
 		}
 
-		JDIMENSION i, j, c;
+		JDIMENSION i, j;
 		JSAMPROW bitmap[1];				// ビットマップデータ配列へのポインター
 		jpeg_decompress_struct dinfo;	// JPEG解凍情報構造体
 		jpeg_error_mgr jerr;			// JPEGエラー処理用構造体
-		int scanlen;					// ビットマップ１行のバイト数
+		int scanlen, c;					// ビットマップ１行のバイト数
 
 		dinfo.err = jpeg_std_error( &jerr );
 		jpeg_create_decompress( &dinfo );
