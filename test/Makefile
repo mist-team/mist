@@ -22,6 +22,7 @@ ALL = \
 	matrix_test \
 	matrix_util_test \
 	matrix_util_test2 \
+	set_test \
 
 
 all: $(ALL)
@@ -84,6 +85,9 @@ integer_test : integer_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 decimal_test : decimal_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+set_test : set_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 
