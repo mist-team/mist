@@ -186,10 +186,10 @@ namespace __non_rigid_registration_utility__
 		double stepD = control_mesh.depth( )  == 1 ? 1.0 : target.depth( ) / static_cast< double >( control_mesh.depth( ) - 1 );
 		double _1_stepW = 1.0 / stepW;
 		double _1_stepH = 1.0 / stepH;
-		double _1_stepD = 1.0 / stepH;
+		double _1_stepD = 1.0 / stepD;
 		double _1_ax = 1.0 / source.reso1( );
 		double _1_ay = 1.0 / source.reso2( );
-		double _1_az = 1.0 / source.reso2( );
+		double _1_az = 1.0 / source.reso3( );
 
 		//stepW *= target.reso1( );
 		//stepH *= target.reso2( );
