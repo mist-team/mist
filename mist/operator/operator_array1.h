@@ -1,3 +1,7 @@
+/// @file mist/operator/operator_array1.h
+//!
+//! @brief 1次元画像用のオペレータ定義
+//!
 #ifndef __INCLUDE_MIST_OPERATOR_ARRAY1__
 #define __INCLUDE_MIST_OPERATOR_ARRAY1__
 

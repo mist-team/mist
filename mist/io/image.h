@@ -1,3 +1,7 @@
+/// @file mist/io/image.h
+//!
+//! @brief BMP，PNG，PNM，TIFF，JPEGの画像を読み書きするためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_IMAGE__
 #define __INCLUDE_MIST_IMAGE__
 
@@ -56,6 +60,10 @@ namespace __image_controller__
 		return( str.substr( index ) );
 	}
 }
+
+
+//! @addtogroup image_group 画像入出力
+//!  @{
 
 
 
@@ -161,6 +169,10 @@ inline bool write_image( mist::array2< T, Allocator > &image, const std::string 
 	}
 	return( ret );
 }
+
+
+/// @}
+//  画像入出力グループの終わり
 
 
 // mist名前空間の終わり

@@ -1,3 +1,7 @@
+/// @file mist/quaternion.h
+//!
+//! @brief クォータニオン（四元数）を扱うためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_QUATERNION__
 #define __INCLUDE_MIST_QUATERNION__
 

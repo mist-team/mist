@@ -1,3 +1,8 @@
+/// @file mist/config/stereo.h
+//!
+//! @brief ステレオ音声を扱うためのクラス
+//!
+
 #ifndef __INCLUDE_MIST_STEREO__
 #define __INCLUDE_MIST_STEREO__
 

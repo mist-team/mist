@@ -1,3 +1,7 @@
+/// @file mist/io/raw.h
+//!
+//! @brief バイナリ画像を読み書きするためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_RAW__
 #define __INCLUDE_MIST_RAW__
 
@@ -561,6 +565,12 @@ namespace __raw_controller__
 }
 
 
+//! @addtogroup image_group 画像入出力
+//!  @{
+
+//! @addtogroup image_raw_group RAW 画像入出力
+//!  @{
+
 
 
 /// @brief 関数・クラスの概要を書く
@@ -845,6 +855,13 @@ bool write_raw_gz( const array3< T, Allocator > &image, const std::string &filen
 {
 	return( write_raw_gz( image, filename, offset, to_little_endian, __mist_dmy_callback__( ) ) );
 }
+
+
+/// @}
+//  RAW画像入出力グループの終わり
+
+/// @}
+//  画像入出力グループの終わり
 
 
 // mist名前空間の終わり

@@ -1,8 +1,10 @@
-/// Bスプライン曲線を描画するためのライブラリ
+/// @file mist/bspline.h
 //!
-//! @defgroup bsplinegroup Bスプライン曲線
+//! @brief Bスプライン曲線を描画するためのライブラリ
+//!
+
+//! @defgroup bspline_group Bスプライン曲線
 //!  @{
-//!
 
 #ifndef __INCLUDE_BSPLINE__
 #define __INCLUDE_BSPLINE__

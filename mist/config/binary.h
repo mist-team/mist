@@ -1,3 +1,8 @@
+/// @file mist/config/binary.h
+//!
+//! @brief バイナリ演算を行うためのクラス
+//!
+
 #ifndef __INCLUDE_MIST_BINARY_H__
 #define __INCLUDE_MIST_BINARY_H__
 

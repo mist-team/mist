@@ -1,3 +1,8 @@
+/// @file mist/fft/fft.h
+//!
+//! @brief 高速フーリエ変換のアルゴリズム
+//!
+
 #ifndef __INCLUDE_FFT_H__
 #define __INCLUDE_FFT_H__
 
@@ -27,6 +32,13 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
+
+
+//! @addtogroup fourier_group フーリエ変換
+//!  @{
+
+//! @addtogroup fft_group 高速フーリエ変換
+//!  @{
 
 
 
@@ -435,6 +447,13 @@ bool fft_inverse( array3< T1, Allocator1 > &in, array3< T2 , Allocator2 > &out )
 
 	return( true );
 }
+
+
+/// @}
+//  FFT グループの終わり
+
+/// @}
+//  Fourier グループの終わり
 
 
 _MIST_END

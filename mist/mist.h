@@ -26,6 +26,10 @@
 
 
 
+/// @file mist/mist.h
+//!
+//! @brief MISTの基本となる音声・画像を扱うコンテナ
+//!
 #ifndef __INCLUDE_MIST_H__
 #define __INCLUDE_MIST_H__
 
@@ -39,10 +43,14 @@ _MIST_BEGIN
 
 
 
-/// MISTのアルゴリズム全般で利用する1次元配列
-//!
-//! 詳細な記述をここに書く
-//!
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator = std::allocator< T > >
 class array
 {
@@ -69,6 +77,14 @@ protected:
 	T* data_;
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num )
 	{
 		if( size_ < num )
@@ -84,6 +100,15 @@ public:
 		}
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num, const value_type &val )
 	{
 		if( size_ < num )
@@ -99,6 +124,15 @@ public:
 		}
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void swap( array &a )
 	{
 		size_type _dmy_size = size_;
@@ -110,6 +144,15 @@ public:
 		a.data_ = dmy_data_;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void clear( )
 	{
 		allocator_.deallocate_objects( data_, size_ );
@@ -117,18 +160,54 @@ public:
 		data_ = NULL;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void fill( )
 	{
 		allocator_.fill_objects( data_, size_ );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void fill( const value_type &val )
 	{
 		allocator_.fill_objects( data_, size_, val );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	bool empty( ) const { return( size_ == 0 ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	size_type size( ) const { return( size_ ); }
 	size_type size1( ) const { return( size_ ); }
 	size_type size2( ) const { return( 1 ); }
@@ -137,6 +216,15 @@ public:
 	size_type height( ) const { return( 1 ); }
 	size_type depth( ) const { return( 1 ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	double reso1( double r1 ){ return( 1.0 ); }
 	double reso1( ) const { return( 1.0 ); }
 	double reso2( double r2 ){ return( 1.0 ); }
@@ -144,24 +232,112 @@ public:
 	double reso3( double r3 ){ return( 1.0 ); }
 	double reso3( ) const { return( 1.0 ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	size_type byte( ) const { return( size_ * sizeof( value_type ) ); }
 
-	// 順方向のランダムアクセスイテレータを返す
+
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator begin( ){ return( iterator( paccess( 0 ), 1 ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_iterator begin( ) const { return( const_iterator( paccess( 0 ), 1 ) ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator end( ){ return( iterator( paccess( size( ) ), 1 ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_iterator end( ) const { return( const_iterator( paccess( size( ) ), 1 ) ); }
 
 
-	// 逆方向のランダムアクセスイテレータを返す
+
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator rbegin( ){ return( reverse_iterator( end( ) ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reverse_iterator rbegin( ) const { return( const_reverse_iterator( end( ) ) ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator rend( ){ return( reverse_iterator( begin( ) ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reverse_iterator rend( ) const { return( const_reverse_iterator( begin( ) ) ); }
 
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	size_type max_size( ) const { return( allocator_.max_size( ) ); }
 
 
@@ -173,6 +349,14 @@ private: // サポートしないＳＴＬの関数（実装・使用しちゃだめ）
 	void insert( iterator i, size_type num, const value_type &val );
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class TT, class AAlocator >
 	const array& operator =( const array< TT, AAlocator >  &o )
 	{
@@ -191,6 +375,15 @@ public:
 
 		return( *this );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const array& operator =( const array  &o )
 	{
 		if( this == &o ) return( *this );
@@ -223,36 +416,89 @@ protected:
 	}
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
 		return( data_[index] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
 		return( data_[index] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
 		return( data_[index] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
 		return( data_[index] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator []( size_type index )
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
 		return( data_[index] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator []( size_type index ) const
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
@@ -313,10 +559,14 @@ public:
 
 
 
-/// MISTのアルゴリズム全般で利用する1次元配列（解像度付き）
-//!
-//! 詳細な記述をここに書く
-//!
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator = std::allocator< T > >
 class array1 : public array< T, Allocator >
 {
@@ -340,9 +590,35 @@ protected:
 	double reso1_;
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	double reso1( double r1 ){ return( reso1_ = r1 ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	double reso1( ) const { return( reso1_ ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void reso( double r1 ){ reso1_ = r1; }
 
 
@@ -351,23 +627,102 @@ public:
 **      X方向に対する順方向・逆方向の反復子
 **
 ************************************************************************************************************/
-	// 順方向のランダムアクセスイテレータを返す
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator x_begin( ){ return( base::begin( ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_iterator x_begin( ) const { return( base::begin( ) ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator x_end( ){ return( base::end( ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_iterator x_end( ) const { return( base::end( ) ); }
 
 
-	// 逆方向のランダムアクセスイテレータを返す
+
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator x_rbegin( ){ return( base::rbegin( ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reverse_iterator x_rbegin( ) const { return( base::rbegin( ) ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator x_rend( ){ return( base::rend( ) ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reverse_iterator x_rend( ) const { return( base::rend( )  ); }
 
 
 public: // 配列に対する算術演算
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void swap( array1 &a )
 	{
 		base::swap( a );
@@ -377,6 +732,14 @@ public: // 配列に対する算術演算
 	}
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class TT, class AAlocator >
 	const array1& operator =( const array1< TT, AAlocator > &o )
 	{
@@ -386,6 +749,15 @@ public:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const array1& operator =( const array1 &o )
 	{
 		if( this == &o ) return( *this );
@@ -418,10 +790,14 @@ public:
 
 
 
-/// MISTのアルゴリズム全般で利用する2次元配列（解像度付き）
-//!
-//! 詳細な記述をここに書く
-//!
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator = std::allocator< T > >
 class array2 : public array1< T, Allocator >
 {
@@ -447,6 +823,14 @@ protected:
 	double reso2_;
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2 )
 	{
 		base::resize( num1 * num2 );
@@ -454,6 +838,15 @@ public:
 		size2_ = num2;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2, const value_type &val )
 	{
 		base::resize( num1 * num2, val );
@@ -461,6 +854,15 @@ public:
 		size2_ = num2;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void swap( array2 &a )
 	{
 		base::swap( a );
@@ -477,20 +879,56 @@ public:
 		a.size2_ = _dmy_size2;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void clear( )
 	{
 		base::clear( );
 		size1_ = size2_ = 0;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	size_type size1( )  const { return( size1_ ); }
 	size_type size2( )  const { return( size2_ ); }
 	size_type width( )  const { return( size1_ ); }
 	size_type height( ) const { return( size2_ ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	double reso2( double r2 ){ return( reso2_ = r2 ); }
 	double reso2( ) const { return( reso2_ ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void reso( double r1, double r2 ){ base::reso1_ = r1; reso2_ = r2; }
 
 
@@ -501,18 +939,48 @@ public:
 **
 ************************************************************************************************************/
 
-	// 順方向のランダムアクセスイテレータを返す
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator x_begin( size_type i ){ return( iterator( paccess( i, 0 ), width( ) ) ); }
 	const_iterator x_begin( size_type i ) const { return( const_iterator( paccess( i, 0 ), width( ) ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator x_end( size_type i ){ return( iterator( paccess( i, height( ) ), width( ) ) ); }
 	const_iterator x_end( size_type i ) const { return( const_iterator( paccess( i, height( ) ), width( ) ) ); }
 
 
-	// 逆方向のランダムアクセスイテレータを返す
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator x_rbegin( size_type i ){ return( reverse_iterator( x_end( i ) ) ); }
 	const_reverse_iterator x_rbegin( size_type i ) const { return( const_reverse_iterator( x_end( i ) ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator x_rend( size_type i ){ return( reverse_iterator( x_begin( i ) ) ); }
 	const_reverse_iterator x_rend( size_type i ) const { return( const_reverse_iterator( x_begin( i ) ) ); }
 
@@ -522,23 +990,61 @@ public:
 **
 ************************************************************************************************************/
 
-	// 順方向のランダムアクセスイテレータを返す
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator y_begin( size_type j ){ return( iterator( paccess( 0, j ), 1 ) ); }
 	const_iterator y_begin( size_type j ) const { return( const_iterator( paccess( 0, j ), 1 ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator y_end( size_type j ){ return( iterator( paccess( width( ), j ), 1 ) ); }
 	const_iterator y_end( size_type j ) const { return( const_iterator( paccess( width( ), j ), 1 ) ); }
 
 
-	// 逆方向のランダムアクセスイテレータを返す
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator y_rbegin( size_type j ){ return( reverse_iterator( y_end( j ) ) ); }
 	const_reverse_iterator y_rbegin( size_type j ) const { return( const_reverse_iterator( y_end( j ) ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator y_rend( size_type j ){ return( reverse_iterator( y_begin( j ) ) ); }
 	const_reverse_iterator y_rend( size_type j ) const { return( const_reverse_iterator( y_begin( j ) ) ); }
 
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class TT, class AAlocator >
 	const array2& operator =( const array2< TT, AAlocator > &o )
 	{
@@ -550,6 +1056,15 @@ public:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const array2& operator =( const array2 &o )
 	{
 		if( this == &o ) return( *this );
@@ -574,24 +1089,59 @@ protected:
 	}
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference at( size_type i, size_type j, size_type dmy = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
 		return( base::data_[ i + j * size1_ ] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference at( size_type i, size_type j, size_type dmy = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
 		return( base::data_[ i + j * size1_ ] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator ()( size_type i, size_type j, size_type dmy = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
 		return( base::data_[ i + j * size1_ ] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator ()( size_type i, size_type j, size_type dmy = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
@@ -624,10 +1174,14 @@ public:
 
 
 
-/// MISTのアルゴリズム全般で利用する3次元配列（解像度付き）
-//!
-//! 詳細な記述をここに書く
-//!
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator = std::allocator< T > >
 class array3 : public array2< T, Allocator >
 {
@@ -654,6 +1208,14 @@ protected:
 	double reso3_;
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2, size_type num3 )
 	{
 		base::resize( num1 * num2, num3 );
@@ -662,6 +1224,15 @@ public:
 		size3_ = num3;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
 	{
 		base::resize( num1 * num2, num3, val );
@@ -670,6 +1241,15 @@ public:
 		size3_ = num3;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void swap( array3 &a )
 	{
 		base::swap( a );
@@ -689,12 +1269,30 @@ public:
 		a.size3_ = _dmy_size3;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void clear( )
 	{
 		base::clear( );
 		size1_ = size2_ = size3_ = 0;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	size_type size1( ) const { return( size1_ ); }
 	size_type size2( ) const { return( size2_ ); }
 	size_type size3( ) const { return( size3_ ); }
@@ -702,24 +1300,73 @@ public:
 	size_type height( ) const { return( size2_ ); }
 	size_type depth( ) const { return( size3_ ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	double reso3( double r3 ){ return( reso3_ = r3 ); }
 	double reso3( ) const { return( reso3_ ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void reso( double r1, double r2, double r3 ){ base::reso1_ = r1; base::reso2_ = r2; reso3_ = r3; }
 
 
-	// 順方向のランダムアクセスイテレータを返す
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator begin( ){ return( iterator( paccess( 0, 0, 0 ), 0, base::size( ), 0 ) ); }
 	const_iterator begin( ) const { return( const_iterator( paccess( 0, 0, 0 ), 0, base::size( ), 0 ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator end( ){ return( iterator( paccess( 0, 0, 0 ), base::size( ), base::size( ), 0 ) ); }
 	const_iterator end( ) const { return( const_iterator( paccess( 0, 0, 0 ), base::size( ), base::size( ), 0 ) ); }
 
 
-	// 逆方向のランダムアクセスイテレータを返す
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator rbegin( ){ return( reverse_iterator( end( ) ) ); }
 	const_reverse_iterator rbegin( ) const { return( const_reverse_iterator( end( ) ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator rend( ){ return( reverse_iterator( begin( ) ) ); }
 	const_reverse_iterator rend( ) const { return( const_reverse_iterator( begin( ) ) ); }
 
@@ -728,18 +1375,50 @@ public:
 **      X軸を固定した場合の順方向・逆方向の反復子
 **
 ************************************************************************************************************/
-	// 順方向のランダムアクセスイテレータを返す
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator x_begin( size_type i ){ return( iterator( paccess( i, 0, 0 ), 0, 1, width( ) ) ); }
 	const_iterator x_begin( size_type i ) const { return( const_iterator( paccess( i, 0, 0 ), 0, 1, width( ) ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator x_end( size_type i ){ return( iterator( paccess( i, 0, 0 ), height( ) * depth( ), 1, width( ) ) ); }
 	const_iterator x_end( size_type i ) const { return( const_iterator( paccess( i, 0, 0 ), height( ) * depth( ), 1, width( ) ) ); }
 
 
-	// 逆方向のランダムアクセスイテレータを返す
+
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator x_rbegin( size_type i ){ return( reverse_iterator( x_end( i ) ) ); }
 	const_reverse_iterator x_rbegin( size_type i ) const { return( const_reverse_iterator( x_end( i ) ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator x_rend( size_type i ){ return( reverse_iterator( x_begin( i ) ) ); }
 	const_reverse_iterator x_rend( size_type i ) const { return( const_reverse_iterator( x_begin( i ) ) ); }
 
@@ -749,18 +1428,49 @@ public:
 **      Y軸を固定した場合の順方向・逆方向の反復子
 **
 ************************************************************************************************************/
-	// 順方向のランダムアクセスイテレータを返す
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator y_begin( size_type j ){ return( iterator( paccess( 0, j, 0 ), 0, height( ), width( ) * height( ) ) ); }
 	const_iterator y_begin( size_type j ) const { return( const_iterator( paccess( 0, j, 0 ), 0, height( ), width( ) * height( ) ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator y_end( size_type j ){ return( iterator( paccess( 0, j, 0 ), width( ) * depth( ), height( ), width( ) * height( ) ) ); }
 	const_iterator y_end( size_type j ) const { return( const_iterator( paccess( 0, j, 0 ), width( ) * depth( ), height( ), width( ) * height( ) ) ); }
 
 
-	// 逆方向のランダムアクセスイテレータを返す
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator y_rbegin( size_type j ){ return( reverse_iterator( y_end( j ) ) ); }
 	const_reverse_iterator y_rbegin( size_type j ) const { return( const_reverse_iterator( y_end( j ) ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator y_rend( size_type j ){ return( reverse_iterator( y_begin( j ) ) ); }
 	const_reverse_iterator y_rend( size_type j ) const { return( const_reverse_iterator( y_begin( j ) ) ); }
 
@@ -770,23 +1480,62 @@ public:
 **      Z軸を固定した場合の順方向・逆方向の反復子
 **
 ************************************************************************************************************/
-	// 順方向のランダムアクセスイテレータを返す
+
+	/// @brief 順方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator z_begin( size_type k ){ return( iterator( paccess( 0, 0, k ), 0, 1, 1 ) ); }
 	const_iterator z_begin( size_type k ) const { return( const_iterator( paccess( 0, 0, k ), 0, 1, 1 ) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	iterator z_end( size_type k ){ return( iterator( paccess( 0, 0, k ), width( ) * height( ), 1, 1 ) ); }
 	const_iterator z_end( size_type k ) const { return( const_iterator( paccess( 0, 0, k ), width( ) * height( ), 1, 1 ) ); }
 
 
-	// 逆方向のランダムアクセスイテレータを返す
+	/// @brief 逆方向のランダムアクセスイテレータを返す
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator z_rbegin( size_type k ){ return( reverse_iterator( z_end( k ) ) ); }
 	const_reverse_iterator z_rbegin( size_type k ) const { return( const_reverse_iterator( z_end( k )) ); }
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reverse_iterator z_rend( size_type k ){ return( reverse_iterator( z_begin( k ) ) ); }
 	const_reverse_iterator z_rend( size_type k ) const { return( const_reverse_iterator( z_begin( k ) ) ); }
 
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class TT, class AAlocator >
 	const array3& operator =( const array3< TT, AAlocator > &o )
 	{
@@ -799,6 +1548,15 @@ public:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const array3& operator =( const array3 &o )
 	{
 		if( this == &o ) return( *this );
@@ -825,24 +1583,59 @@ protected:
 	}
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference at( size_type i, size_type j, size_type k )
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
 		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference at( size_type i, size_type j, size_type k ) const
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
 		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator ()( size_type i, size_type j, size_type k )
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
 		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator ()( size_type i, size_type j, size_type k ) const
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
@@ -874,7 +1667,14 @@ public:
 
 
 
-// マージンを持った配列
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Array >
 class marray : public Array
 {
@@ -900,36 +1700,98 @@ protected:
 	size_type margin3_;
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1 )
 	{
 		base::resize( num1 + margin1_ * 2 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2 )
 	{
 		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2, size_type num3 )
 	{
 		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, num3 + margin3_ * 2 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, const value_type &val )
 	{
 		base::resize( num1 + margin1_ * 2, val );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2, const value_type &val )
 	{
 		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, val );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
 	{
 		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, num3 + margin3_ * 2, val );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void swap( marray &a )
 	{
 		base::swap( a );
@@ -947,12 +1809,30 @@ public:
 		a.margin3_ = tmp;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void clear( )
 	{
 		base::clear( );
 		margin1_ = margin2_ = margin3_ = 0;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void fill_margin( const value_type &val = value_type( ) )
 	{
 		base &o = *this;
@@ -1022,6 +1902,15 @@ public:
 		}
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	size_type size1( ) const { return( base::size1( ) - 2 * margin1_ ); }
 	size_type size2( ) const { return( base::size2( ) - 2 * margin2_ ); }
 	size_type size3( ) const { return( base::size3( ) - 2 * margin3_ ); }
@@ -1029,11 +1918,28 @@ public:
 	size_type height( ) const { return( size2( ) ); }
 	size_type depth( ) const { return( size3( ) ); }
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	size_type margin1( ) const { return( margin1_ ); }
 	size_type margin2( ) const { return( margin2_ ); }
 	size_type margin3( ) const { return( margin3_ ); }
 
 private:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const marray& copy( const array< T, Allocator > &o )
 	{
@@ -1045,6 +1951,15 @@ private:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const marray& copy( const array1< T, Allocator > &o )
 	{
@@ -1056,6 +1971,15 @@ private:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const marray& copy( const array2< T, Allocator > &o )
 	{
@@ -1071,6 +1995,15 @@ private:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const marray& copy( const array3< T, Allocator > &o )
 	{
@@ -1091,6 +2024,14 @@ private:
 	}
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const marray& operator =( const marray &o )
 	{
 		if( this == &o ) return( *this );
@@ -1103,6 +2044,15 @@ public:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const marray& operator =( const array< T, Allocator > &o )
 	{
@@ -1110,6 +2060,15 @@ public:
 		return( copy( o ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const marray& operator =( const array1< T, Allocator > &o )
 	{
@@ -1118,6 +2077,15 @@ public:
 		return( copy( o ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const marray& operator =( const array2< T, Allocator > &o )
 	{
@@ -1127,6 +2095,15 @@ public:
 		return( copy( o ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const marray& operator =( const array3< T, Allocator > &o )
 	{
@@ -1139,53 +2116,160 @@ public:
 
 // 要素へのアクセス
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference at( difference_type i )
 	{
 		return( base::at( i + margin1_ ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference at( difference_type i, difference_type j )
 	{
 		return( base::at( i + margin1_, j + margin2_ ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference at( difference_type i, difference_type j, difference_type k )
 	{
 		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference at( difference_type i ) const
 	{
 		return( base::at( i + margin1_ ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference at( difference_type i, difference_type j ) const
 	{
 		return( base::at( i + margin1_, j + margin2_ ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference at( difference_type i, difference_type j, difference_type k ) const
 	{
 		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator ()( difference_type i )
 	{
 		return( base::at( i + margin1_ ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator ()( difference_type i, difference_type j )
 	{
 		return( base::at( i + margin1_, j + margin2_ ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	reference operator ()( difference_type i, difference_type j, difference_type k )
 	{
 		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator ()( difference_type i ) const
 	{
 		return( base::at( i + margin1_ ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator ()( difference_type i, difference_type j ) const
 	{
 		return( base::at( i + margin1_, j + margin2_ ) );
 	}
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const_reference operator ()( difference_type i, difference_type j, difference_type k ) const
 	{
 		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
@@ -1237,7 +2321,14 @@ public:
 
 
 
-// １辺が2の指数乗のバッファを持った画像を作成する
+/// @brief １辺が2の指数乗のバッファを持った画像を作成する
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class Array >
 class buffered_array : public Array
 {
@@ -1262,6 +2353,14 @@ protected:
 	size_type size2_;
 	size_type size3_;
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline size_t floor_square_index( size_t v )
 	{
 		if( v == 0 )
@@ -1281,6 +2380,14 @@ protected:
 		return( 0 );
 	}
 
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	inline size_t floor_square( size_t v )
 	{
 		if( v == 0 )
@@ -1301,12 +2408,29 @@ protected:
 	}
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1 )
 	{
 		size1_ = num1;
 		base::resize( floor_square( size1_ ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2 )
 	{
 		size_type s1 = floor_square( num1 );
@@ -1317,6 +2441,15 @@ public:
 		base::resize( s1, s1 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2, size_type num3 )
 	{
 		size_type s1 = floor_square( num1 );
@@ -1330,12 +2463,30 @@ public:
 		base::resize( s1, s1, s1 );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, const value_type &val )
 	{
 		size1_ = num1;
 		base::resize( floor_square( size1_ ), val );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2, const value_type &val )
 	{
 		size_type s1 = floor_square( num1 );
@@ -1346,6 +2497,15 @@ public:
 		base::resize( s1, s1, val );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void resize( size_type num1, size_type num2, size_type num3, const value_type &val )
 	{
 		size_type s1 = floor_square( num1 );
@@ -1359,6 +2519,15 @@ public:
 		base::resize( s1, s1, s1, val );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void swap( buffered_array &a )
 	{
 		base::swap( a );
@@ -1376,6 +2545,15 @@ public:
 		a.size3_ = tmp;
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void clear( )
 	{
 		base::clear( );
@@ -1391,6 +2569,14 @@ public:
 
 
 private:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const buffered_array& copy( const array< T, Allocator > &o )
 	{
@@ -1402,6 +2588,15 @@ private:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const buffered_array& copy( const array1< T, Allocator > &o )
 	{
@@ -1413,6 +2608,15 @@ private:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const buffered_array& copy( const array2< T, Allocator > &o )
 	{
@@ -1428,6 +2632,15 @@ private:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const buffered_array& copy( const array3< T, Allocator > &o )
 	{
@@ -1449,6 +2662,14 @@ private:
 
 
 public:
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const buffered_array& operator =( const buffered_array &o )
 	{
 		if( this == &o ) return( *this );
@@ -1461,6 +2682,15 @@ public:
 		return( *this );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const buffered_array& operator =( const array< T, Allocator > &o )
 	{
@@ -1468,6 +2698,15 @@ public:
 		return( copy( o ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const buffered_array& operator =( const array1< T, Allocator > &o )
 	{
@@ -1476,6 +2715,15 @@ public:
 		return( copy( o ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const buffered_array& operator =( const array2< T, Allocator > &o )
 	{
@@ -1485,6 +2733,15 @@ public:
 		return( copy( o ) );
 	}
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	template < class T, class Allocator >
 	const buffered_array& operator =( const array3< T, Allocator > &o )
 	{
@@ -1532,6 +2789,14 @@ public:
 };
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline std::ostream &operator <<( std::ostream &out, const array< T, Allocator > &a )
 {
@@ -1546,6 +2811,15 @@ inline std::ostream &operator <<( std::ostream &out, const array< T, Allocator >
 	return( out );
 }
 
+
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline std::ostream &operator <<( std::ostream &out, const array1< T, Allocator > &a )
 {
@@ -1561,6 +2835,14 @@ inline std::ostream &operator <<( std::ostream &out, const array1< T, Allocator 
 }
 
 
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline std::ostream &operator <<( std::ostream &out, const array2< T, Allocator > &a )
 {
@@ -1579,7 +2861,14 @@ inline std::ostream &operator <<( std::ostream &out, const array2< T, Allocator 
 }
 
 
-
+/// @brief 関数・クラスの概要を書く
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 template < class T, class Allocator >
 inline std::ostream &operator <<( std::ostream &out, const array3< T, Allocator > &a )
 {

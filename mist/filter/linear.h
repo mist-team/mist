@@ -1,3 +1,8 @@
+/// @file mist/filter/linear.h
+//!
+//! @brief 各次元の画像に対応した線形フィルタを計算するためのライブラリ
+//!
+
 #ifndef __INCLUDE_FILTER_LINEAR_FILTER_H__
 #define __INCLUDE_FILTER_LINEAR_FILTER_H__
 
@@ -495,6 +500,11 @@ namespace __linear_filter__
 	}
 }
 
+
+//! @addtogroup linear_group 線形フィルタ
+//!  @{
+
+
 /// @brief kernelを渡す場合
 //! 
 //! 詳細な説明や関数の使用例を書く
@@ -797,6 +807,10 @@ void laplacian( const mist::array3< T_in, Allocator_in >& in, mist::array3< T_ou
 
 	__linear_filter__::apply( in, out, kernel );
 }	
+
+/// @}
+//  線形グループの終わり
+
 
 // mist名前空間の終わり
 _MIST_END

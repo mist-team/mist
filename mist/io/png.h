@@ -1,3 +1,7 @@
+/// @file mist/io/png.h
+//!
+//! @brief PNG画像を読み書きするためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_PNG__
 #define __INCLUDE_MIST_PNG__
 
@@ -236,6 +240,12 @@ namespace __png_controller__
 }
 
 
+//! @addtogroup image_group 画像入出力
+//!  @{
+
+//! @addtogroup image_png_group PNG 画像入出力
+//!  @{
+
 
 /// @brief 関数・クラスの概要を書く
 //! 
@@ -265,6 +275,13 @@ bool write_png( const array2< T, Allocator > &image, const std::string &filename
 {
 	return( __png_controller__::png_controller< T, Allocator >::write( image, filename, compression_level ) );
 }
+
+
+/// @}
+//  PNG 画像入出力グループの終わり
+
+/// @}
+//  画像入出力グループの終わり
 
 
 // mist名前空間の終わり

@@ -1,3 +1,8 @@
+/// @file mist/io/bmp.h
+//!
+//! @brief ビットマップ画像を読み書きするためのライブラリ
+//!
+
 #ifndef __INCLUDE_MIST_BMP__
 #define __INCLUDE_MIST_BMP__
 
@@ -700,6 +705,12 @@ namespace __bmp_controller__
 	};
 }
 
+//! @addtogroup image_group 画像入出力
+//!  @{
+
+//! @addtogroup image_bmp_group BMP 画像入出力
+//!  @{
+
 
 /// @brief 関数・クラスの概要を書く
 //! 
@@ -729,6 +740,12 @@ bool write_bmp( const array2< T, Allocator > &image, const std::string &filename
 {
 	return( __bmp_controller__::bmp_controller< T, Allocator >::write( image, filename, bmp_bits ) );
 }
+
+/// @}
+//  BMP 画像入出力グループの終わり
+
+/// @}
+//  画像入出力グループの終わり
 
 
 // mist名前空間の終わり

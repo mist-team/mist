@@ -1,3 +1,8 @@
+/// @file mist/filter/interlace.h
+//!
+//! @brief インターレスの解除を行うためのライブラリ
+//!
+
 #ifndef __INCLUDE_MIST_INTERLACE__
 #define __INCLUDE_MIST_INTERLACE__
 
@@ -187,6 +192,10 @@ namespace __interlace_controller__
 }
 
 
+//! @addtogroup interlace_group インターレス除去
+//!  @{
+
+
 /// @brief 関数・クラスの概要を書く
 //! 
 //! 詳細な説明や関数の使用例を書く
@@ -207,6 +216,11 @@ bool interlace( const array2< T, Allocator > &in, array2< T, Allocator > &out, b
 		return( __interlace_controller__::interlace_controller< is_color< T >::value >::interlace_even( in, out ) );
 	}
 }
+
+
+
+/// @}
+//  インターレス除去グループの終わり
 
 
 // mist名前空間の終わり

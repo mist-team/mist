@@ -1,3 +1,8 @@
+/// @file mist/fft/dst.h
+//!
+//! @brief 離散サイン変換のアルゴリズム
+//!
+
 #ifndef __INCLUDE_DST_H__
 #define __INCLUDE_DST_H__
 
@@ -28,6 +33,12 @@
 _MIST_BEGIN
 
 
+
+//! @addtogroup fourier_group フーリエ変換
+//!  @{
+
+//! @addtogroup dst_group 離散サイン変換
+//!  @{
 
 
 /// @brief 1次元高速サイン変換
@@ -465,6 +476,16 @@ bool dst_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 
 	return( true );
 }
+
+
+/// @}
+//  DST グループの終わり
+
+/// @}
+//  Fourier グループの終わり
+
+
+
 
 _MIST_END
 

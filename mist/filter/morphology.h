@@ -1,3 +1,8 @@
+/// @file mist/filter/morphology.h
+//!
+//! @brief 各次元の画像に対応し，任意の構造要素に対応したモルフォロジ演算を行うためのライブラリ
+//!
+
 #ifndef __INCLUDE_MIST_MORPHOLOGY__
 #define __INCLUDE_MIST_MORPHOLOGY__
 
@@ -768,6 +773,8 @@ namespace __morphology_controller__
 }
 
 
+//! @addtogroup morphology_group モルフォロジ演算フィルタ
+//!  @{
 
 
 /// @brief 任意の構造要素に対応したモルフォロジ演算
@@ -1453,8 +1460,8 @@ inline void opening( array3< T, Allocator > &in, double radius, typename array3<
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
+//! @param[in/out] in  … 引数の説明
+//! @param[in] num … 引数の説明
 //! @return        … 戻り値の説明
 //! 
 template < class T, class Allocator >
@@ -1462,6 +1469,10 @@ inline void closing( array3< T, Allocator > &in, double radius, typename array3<
 {
 	closing( in, __morphology__::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), thread_num );
 }
+
+
+/// @}
+//  モルフォロジ演算グループの終わり
 
 
 // mist名前空間の終わり

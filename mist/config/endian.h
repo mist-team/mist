@@ -1,3 +1,8 @@
+/// @file mist/config/endian.h
+//!
+//! @brief 計算機のエンディアンを取得し，自動的に変換するライブラリ
+//!
+
 #ifndef __INCLUDE_MIST_ENDIAN__
 #define __INCLUDE_MIST_ENDIAN__
 

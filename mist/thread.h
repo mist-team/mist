@@ -1,3 +1,7 @@
+/// @file mist/thread.h
+//!
+//! @brief 簡便にスレッドを利用可能にするためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_THREAD__
 #define __INCLUDE_MIST_THREAD__
 
@@ -31,6 +35,11 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
+
+
+
+//! @addtogroup thread_group スレッド
+//!  @{
 
 
 /// @brief 関数・クラスの概要を書く
@@ -714,6 +723,10 @@ public:
 		lock_object_.unlock( );
 	}
 };
+
+
+/// @}
+//  スレッドグループの終わり
 
 
 // mist名前空間の終わり

@@ -1,3 +1,8 @@
+/// @file mist/config/color.h
+//!
+//! @brief カラーデータを扱うためのクラス群
+//!
+
 #ifndef __INCLUDE_MIST_COLOR_H__
 #define __INCLUDE_MIST_COLOR_H__
 

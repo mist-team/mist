@@ -1,3 +1,8 @@
+/// @file mist/config/type_trait.h
+//!
+//! @brief Œ^‚Ìî•ñ‚ğæ“¾E”»’è‚·‚é‚½‚ß‚Ìƒ‰ƒCƒuƒ‰ƒŠ
+//!
+
 #ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
 #define __INCLUDE_MIST_TYPE_TRAIT_H__
 

@@ -1,3 +1,8 @@
+/// @file mist/filter/distance.h
+//!
+//! @brief 各次元の画像に対応した，各種距離変換・逆距離変換アルゴリズム
+//!
+
 #ifndef __INCLUDE_MIST_DISTANCE_TRANSFORM__
 #define __INCLUDE_MIST_DISTANCE_TRANSFORM__
 
@@ -299,6 +304,11 @@ namespace __distance_transform_controller__
 		}
 	};
 }
+
+
+
+//! @addtogroup distance_group 距離変換
+//!  @{
 
 
 
@@ -605,6 +615,8 @@ void euclidean_distance_transform( const array3< T1, Allocator1 > &in, array3< T
 	delete [] thread;
 }
 
+/// @}
+//  距離変換グループの終わり
 
 
 // mist名前空間の終わり

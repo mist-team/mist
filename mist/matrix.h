@@ -33,6 +33,10 @@
 
 
 
+/// @file mist/matrix.h
+//!
+//! @brief 一般行列を扱うためのクラス
+//!
 #ifndef __INCLUDE_MIST_MATRIX__
 #define __INCLUDE_MIST_MATRIX__
 
@@ -41,6 +45,8 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
+
+
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
@@ -1521,7 +1527,6 @@ inline matrix< T, Allocator > operator /( const matrix< T, Allocator > &m, typen
 }
 
 #endif
-
 
 
 // mist名前空間の終わり

@@ -1,3 +1,7 @@
+/// @file mist/interpolate.h
+//!
+//! @brief 各次元の画像に対応した，画像補間ライブラリ
+//!
 #ifndef __INCLUDE_MIST_INTERPOLATE__
 #define __INCLUDE_MIST_INTERPOLATE__
 
@@ -746,6 +750,11 @@ namespace __interpolate_controller__
 		}
 	};
 }
+
+
+
+//! @addtogroup interpolate_group 画像補間
+//!  @{
 
 
 /// @brief 関数・クラスの概要を書く
@@ -1505,6 +1514,10 @@ namespace cubic
 		delete [] thread;
 	}
 }
+
+
+/// @}
+//  画像補間グループの終わり
 
 
 // mist名前空間の終わり

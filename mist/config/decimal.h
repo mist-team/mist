@@ -1,3 +1,7 @@
+/// @file mist/config/decimal.h
+//!
+//! @brief ‘½”{’·•s“®­”‚ğˆµ‚¤‚½‚ß‚ÌƒNƒ‰ƒX
+//!
 #ifndef __INCLUDE_MIST_DECIMAL_H__
 #define __INCLUDE_MIST_DECIMAL_H__
 

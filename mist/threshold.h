@@ -1,3 +1,7 @@
+/// @file mist/threshold.h
+//!
+//! @brief 任意の画像から自動的にしきい値を決定するライブラリ
+//!
 #ifndef __INCLUDE_MIST_THRESHOLD__
 #define __INCLUDE_MIST_THRESHOLD__
 
@@ -10,6 +14,10 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
+
+
+//! @addtogroup threshold_group しきい値
+//!  @{
 
 
 /// @brief 関数・クラスの概要を書く
@@ -171,6 +179,9 @@ namespace discriminant_analysis
 		return( static_cast< value_type >( max_k + min ) );
 	}
 }
+
+/// @}
+//  しきい値グループの終わり
 
 
 // mist名前空間の終わり

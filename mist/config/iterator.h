@@ -1,3 +1,8 @@
+/// @file mist/config/iterator.h
+//!
+//! @brief MISTコンテナを操作するためのイテレータ
+//!
+
 #ifndef __INCLUDE_MIST_ITERATOR_H__
 #define __INCLUDE_MIST_ITERATOR_H__
 

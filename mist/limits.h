@@ -1,3 +1,7 @@
+/// @file mist/limits.h
+//!
+//! @brief 各型に対する情報を取得するためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_LIMITS__
 #define __INCLUDE_MIST_LIMITS__
 
@@ -48,13 +52,49 @@ _MIST_BEGIN
 template < class T >
 struct type_limits
 {
-	typedef T value_type;
+	typedef T value_type;	///< @typedef 情報を調べる対象となる型
 
+	/// @enum 指定された型が整数かどうか
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
 	enum{ is_integer = false };
+
+	/// @enum 指定された型が符号付かどうか
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
 	enum{ is_signed  = false };
 
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	static value_type minimum( ) { return( 0 ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	static value_type maximum( ) { return( 1 ); }
+
+	/// @brief 関数・クラスの概要を書く
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	static value_type zero( ){ return( 0 ); }
 };
 

@@ -1,3 +1,8 @@
+/// @file mist/filter/thinning.h
+//!
+//! @brief 各次元の画像に対応した，細線化アルゴリズム
+//!
+
 #ifndef __INCLUDE_MIST_THINNING__
 #define __INCLUDE_MIST_THINNING__
 
@@ -144,6 +149,10 @@ namespace __thinning_controller__
 }
 
 
+//! @addtogroup thinning_group 細線化
+//!  @{
+
+
 /// @brief 関数・クラスの概要を書く
 //! 
 //! 詳細な説明や関数の使用例を書く
@@ -216,6 +225,10 @@ void thinning( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out
 //	}
 //	return( __thinning_controller__::thinning( out, max_label, __thinning_controller__::neighbors< 26 >( ) ) );
 //}
+
+/// @}
+//  細線化グループの終わり
+
 
 // mist名前空間の終わり
 _MIST_END

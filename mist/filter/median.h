@@ -1,3 +1,8 @@
+/// @file mist/filter/median.h
+//!
+//! @brief 各次元の画像に対応したメディアン（中央値）を計算するためのライブラリ
+//!
+
 #ifndef __INCLUDE_MIST_MEDIAN_FILTER__
 #define __INCLUDE_MIST_MEDIAN_FILTER__
 
@@ -20,7 +25,6 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
-
 
 // メディアンフィルタ
 namespace __median_filter_with_histogram__
@@ -958,14 +962,19 @@ namespace __median_filter_controller__
 }
 
 
+//! @addtogroup median_group メディアン（中央値）フィルタ
+//!  @{
+
 
 /// @brief 関数・クラスの概要を書く
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
+//! @param[in]  fw  … 引数の説明
+//! @param[in]  num … 引数の説明
+//! @return         … 戻り値の説明
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type thread_num = 0 )
@@ -980,9 +989,11 @@ void median( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, ty
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
+//! @param[in]  fw  … 引数の説明
+//! @param[in]  num … 引数の説明
+//! @return         … 戻り値の説明
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
@@ -999,9 +1010,12 @@ void median( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, 
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
+//! @param[in]  fw  … 引数の説明
+//! @param[in]  fh  … 引数の説明
+//! @param[in]  num … 引数の説明
+//! @return         … 戻り値の説明
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
@@ -1051,9 +1065,11 @@ void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
+//! @param[in]  fw  … 引数の説明
+//! @param[in]  num … 引数の説明
+//! @return         … 戻り値の説明
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 inline void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
@@ -1069,9 +1085,13 @@ inline void median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 >
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
+//! @param[in]  fw  … 引数の説明
+//! @param[in]  fh  … 引数の説明
+//! @param[in]  fd  … 引数の説明
+//! @param[in]  num … 引数の説明
+//! @return         … 戻り値の説明
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
@@ -1122,9 +1142,11 @@ void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 //! 
 //! 詳細な説明や関数の使用例を書く
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param[in]  in  … 引数の説明
+//! @param[out] out … 引数の説明
+//! @param[in]  fw  … 引数の説明
+//! @param[in]  num … 引数の説明
+//! @return         … 戻り値の説明
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
 inline void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
@@ -1133,6 +1155,11 @@ inline void median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 >
 {
 	median( in, out, fw, fw, fw, thread_num );
 }
+
+
+/// @}
+//  メディアングループの終わり
+
 
 // mist名前空間の終わり
 _MIST_END

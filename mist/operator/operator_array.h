@@ -1,3 +1,7 @@
+/// @file mist/operator/operator_array.h
+//!
+//! @brief 1次元配列用のオペレータ定義
+//!
 #ifndef __INCLUDE_MIST_OPERATOR_ARRAY__
 #define __INCLUDE_MIST_OPERATOR_ARRAY__
 

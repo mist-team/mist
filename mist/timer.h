@@ -1,3 +1,7 @@
+/// @file mist/timer.h
+//!
+//! @brief 経過時間を計算するクラス
+//!
 #ifndef __INCLUDE_MIST_TIMER__
 #define __INCLUDE_MIST_TIMER__
 

@@ -1,3 +1,7 @@
+/// @file mist/converter.h
+//!
+//! @brief 各画像の要素間を正しく変換するためのライブラリ
+//!
 #ifndef __INCLUDE_CONVERTER__
 #define __INCLUDE_CONVERTER__
 
@@ -94,6 +98,10 @@ namespace __converter__
 	}
 }
 
+
+//! @addtogroup image_converter_group 画像変換
+//!  @{
+
 /// @brief 関数・クラスの概要を書く
 //! 
 //! 詳細な説明や関数の使用例を書く
@@ -118,6 +126,8 @@ inline void convert( const Array1 &in, Array2 &out )
 	}
 }
 
+/// @}
+//  画像変換グループの終わり
 
 
 // mist名前空間の終わり

@@ -1,3 +1,7 @@
+/// @file mist/operator/operators.h
+//!
+//! @brief 演算子の実装を補助するためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_OPERATORS__
 #define __INCLUDE_MIST_OPERATORS__
 
@@ -6,6 +10,10 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
+
+//! @addtogroup operator_group 演算子の実装補助
+//!  @{
+
 
 
 /// @brief 足し算
@@ -324,6 +332,10 @@ struct implement_operators : public
 	implement_bit_operators< T >
 {
 };
+
+
+/// @}
+//  演算子の実装補助グループの終わり
 
 
 // mist名前空間の終わり

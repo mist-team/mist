@@ -1,3 +1,7 @@
+/// @file mist/io/tiff.h
+//!
+//! @brief TIFF画像を読み書きするためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_TIFF__
 #define __INCLUDE_MIST_TIFF__
 
@@ -266,6 +270,12 @@ namespace __tiff_controller__
 	};
 }
 
+//! @addtogroup image_group 画像入出力
+//!  @{
+
+//! @addtogroup image_bmp_group BMP画像入出力
+//!  @{
+
 
 /// @brief 関数・クラスの概要を書く
 //! 
@@ -295,6 +305,13 @@ bool write_tiff( const array2< T, Allocator > &image, const std::string &filenam
 {
 	return( __tiff_controller__::tiff_controller< T, Allocator >::write( image, filename ) );
 }
+
+
+/// @}
+//  BMP画像入出力グループの終わり
+
+/// @}
+//  画像入出力グループの終わり
 
 
 // mist名前空間の終わり

@@ -1,3 +1,7 @@
+/// @file mist/io/jpeg.h
+//!
+//! @brief JPEG画像を読み書きするためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_JPEG__
 #define __INCLUDE_MIST_JPEG__
 
@@ -168,6 +172,12 @@ namespace __jpeg_controller__
 }
 
 
+//! @addtogroup image_group 画像入出力
+//!  @{
+
+//! @addtogroup image_jpeg_group JPEG 画像入出力
+//!  @{
+
 
 /// @brief 関数・クラスの概要を書く
 //! 
@@ -197,6 +207,13 @@ bool write_jpeg( const array2< T, Allocator > &image, const std::string &filenam
 {
 	return( __jpeg_controller__::jpeg_controller< T, Allocator >::write( image, filename, quality ) );
 }
+
+
+/// @}
+//  JPEG 画像入出力グループの終わり
+
+/// @}
+//  画像入出力グループの終わり
 
 
 // mist名前空間の終わり

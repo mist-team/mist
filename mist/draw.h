@@ -1,3 +1,7 @@
+/// @file mist/draw.h
+//!
+//! @brief ２次元画像をOpenGLを用いて描画するライブラリ
+//!
 #ifndef __INCLUDE_MIST_DRAW__
 #define __INCLUDE_MIST_DRAW__
 
@@ -143,6 +147,10 @@ namespace pixel_data
 		return( ( v & ( v - 1 ) ) == 0 );
 	}
 }
+
+
+//! @addtogroup image_draw_group 画像描画
+//!  @{
 
 
 /// @brief 関数・クラスの概要を書く
@@ -380,6 +388,10 @@ inline vector2< double > point2screen( const vector2< double > &pt, double imgX,
 	}
 	return( vector2< double >( ( xx + 1.0 ) * winW * 0.5, ( 1.0 - yy ) * winH * 0.5 ) );
 }
+
+/// @}
+//  画像描画グループの終わり
+
 
 // mist名前空間の終わり
 _MIST_END

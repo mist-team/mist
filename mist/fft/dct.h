@@ -1,3 +1,8 @@
+/// @file mist/fft/dct.h
+//!
+//! @brief 離散コサイン変換のアルゴリズム
+//!
+
 #ifndef __INCLUDE_DCT_H__
 #define __INCLUDE_DCT_H__
 
@@ -29,7 +34,11 @@
 _MIST_BEGIN
 
 
+//! @addtogroup fourier_group フーリエ変換
+//!  @{
 
+//! @addtogroup dct_group 離散コサイン変換
+//!  @{
 
 
 /// @brief 1次元高速コサイン変換
@@ -467,6 +476,13 @@ bool dct_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 
 	return( true );
 }
+
+/// @}
+//  DCT グループの終わり
+
+/// @}
+//  Fourier グループの終わり
+
 
 _MIST_END
 

@@ -1,3 +1,7 @@
+/// @file mist/random.h
+//!
+//! @brief MT(Mersenne Twister)法による乱数発生を扱うためのライブラリ
+//!
 #ifndef __INCLUDE_RANDOM__
 #define __INCLUDE_RANDOM__
 
@@ -9,8 +13,16 @@
 _MIST_BEGIN
 
 
-//MT(Mersenne Twister)法による乱数発生
 
+
+/// @brief MT(Mersenne Twister)法による乱数発生
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] in  … 引数の説明
+//! @param[in] out … 引数の説明
+//! @return        … 戻り値の説明
+//! 
 class random
 {
 
@@ -31,8 +43,14 @@ class random
 
 
 public:
-
-	//コンストラクタ
+	/// @brief コンストラクタ
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	random( ) :
 		pai_timed_by_2_( 6.283185307179586 ),
 		number_n_( 624 ),
@@ -45,7 +63,15 @@ public:
 	{
 	}
 
-	//コンストラクタ(seedで初期化)
+
+	/// @brief コンストラクタ(seedで初期化)
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	random( const unsigned long seed ) :
 		pai_timed_by_2_( 6.283185307179586 ),
 		number_n_( 624 ),
@@ -59,7 +85,15 @@ public:
 		init( seed );
 	}
 
-	//コンストラクタ(init_keyで初期化)
+
+	/// @brief コンストラクタ(init_keyで初期化)
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	random( const array< unsigned long > seed_array ) :
 		pai_timed_by_2_( 6.283185307179586 ),
 		number_n_( 624 ),
@@ -73,8 +107,15 @@ public:
 		init( seed_array );
 	}
 
-	//seedで初期化
-	/* initializes mt_[number_n_] with a seed */
+
+	/// @brief seedで初期化
+	//! 
+	//! initializes mt_[number_n_] with a seed
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void init( const unsigned long seed )
 	{
 		mt_[ 0 ] = seed & 0xffffffffUL;
@@ -91,10 +132,17 @@ public:
 		}
 	}
 
-	//init_keyで初期化
-	/* initialize by an array with array-length */
-	/* init_key is the array for initializing keys */
-	/* key_length is its length */
+	//
+	/// @brief init_keyで初期化
+	//! 
+	//! initialize by an array with array-length
+	//! init_key is the array for initializing keys
+	//! key_length is its length
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	void init( const array< unsigned long > seed_array )
 	{
 		unsigned long i, j, k;
@@ -137,8 +185,15 @@ public:
 		mt_[ 0 ] = 0x80000000UL;  /* MSB is 1; assuring non-zero initial array */
 	}
 
-	//32bit符号無し整数乱数の発生
-	/* generates a random number on [0,0xffffffff]-interval */
+
+	/// @brief 32bit符号無し整数乱数の発生
+	//! 
+	//! generates a random number on [0,0xffffffff]-interval
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const unsigned long int32( )
 	{
 		unsigned long y;
@@ -182,39 +237,74 @@ public:
 		return y;
 	}
 
-	//31bit符号無し整数乱数の発生
-	/* generates a random number on [0,0x7fffffff]-interval */
+
+	/// @brief 31bit符号無し整数乱数の発生
+	//! 
+	//! generates a random number on [0,0x7fffffff]-interval
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const long int31( )
 	{
 		return ( int32( ) >> 1 );
 	}
 
-	//[0,1]区間浮動小数点乱数の発生
-	/* generates a random number on [0,1]-real-interval */
+
+	/// @brief [0,1]区間浮動小数点乱数の発生
+	//! 
+	//! generates a random number on [0,1]-real-interval
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const double real1( )
 	{
 		return ( int32( ) * ( 1.0 / 4294967295.0 ) );
 		/* divided by 2^32-1 */
 	}
 
-	//[0,1)区間浮動小数点乱数の発生
-	/* generates a random number on [0,1)-real-interval */
+
+	/// @brief [0,1)区間浮動小数点乱数の発生
+	//! 
+	//! generates a random number on [0,1)-real-interval
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const double real2( )
 	{
 		return ( int32( ) * ( 1.0 / 4294967296.0 ) );
 		/* divided by 2^32 */
 	}
 
-	//(0,1)区間浮動小数点乱数の発生
-	/* generates a random number on (0,1)-real-interval */
+
+	/// @brief (0,1)区間浮動小数点乱数の発生
+	//! 
+	//! generates a random number on (0,1)-real-interval
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const double real3( )
 	{
 		return ( ( ( double ) int32( ) ) + 0.5 ) * ( 1.0 / 4294967296.0 );
 		/* divided by 2^32 */
 	}
 
-	//[0,1)区間浮動小数点乱数の発生(53bit分解能)
-	/* generates a random number on [0,1) with 53-bit resolution*/
+
+	/// @brief [0,1)区間浮動小数点乱数の発生(53bit分解能)
+	//! 
+	//! generates a random number on [0,1) with 53-bit resolution
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const double res53( )
 	{
 		const unsigned long a = int32( ) >> 5;
@@ -222,17 +312,30 @@ public:
 
 		return ( ( a * 67108864.0 + b ) * ( 1.0 / 9007199254740992.0 ) );
 	}
-	/* These real versions are due to Isaku Wada, 2002/01/09 added */
 
-	//[min,max)区間浮動小数点乱数の発生
+
+	/// @brief [min,max)区間浮動小数点乱数の発生
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const double generate( const double min, const double max )
 	{
 		return ( min + (max - min) * real2());
 	}
 
-	//正規乱数発生(Box-Muller法)
 
-	//2つの一様乱数から1つの正規乱数を生成
+	/// @brief 正規乱数発生(Box-Muller法)
+	//! 
+	//! 2つの一様乱数から1つの正規乱数を生成
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const double gauss( const double av = 0.0 , const double st = 1.0 )
 	{
 		const double r1 = real2( );
@@ -241,7 +344,15 @@ public:
 		return ( st * sqrt( -2.0 * log( r1 ) ) * cos( pai_timed_by_2_ * r2 ) + av );
 	}
 
-	//2つの一様乱数から2つの正規乱数を生成
+
+	/// @brief 2つの一様乱数から2つの正規乱数を生成
+	//! 
+	//! 詳細な説明や関数の使用例を書く
+	//! 
+	//! @param[in] in  … 引数の説明
+	//! @param[in] out … 引数の説明
+	//! @return        … 戻り値の説明
+	//! 
 	const std::pair< double, double > gauss_pair( const double av = 0.0 , const double st = 1.0 )
 	{
 		const double r1 = real2( );

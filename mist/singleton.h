@@ -1,3 +1,7 @@
+/// @file mist/singleton.h
+//!
+//! @brief Singleton ‚ðˆµ‚¤‚½‚ß‚Ìƒ‰ƒCƒuƒ‰ƒŠ
+//!
 #ifndef __INCLUDE_MIST_SINGLETON__
 #define __INCLUDE_MIST_SINGLETON__
 

@@ -1,3 +1,8 @@
+/// @file mist/config/set.h
+//!
+//! @brief W‡‰‰Z‚ğˆµ‚¤‚½‚ß‚Ìƒ‰ƒCƒuƒ‰ƒŠ
+//!
+
 #ifndef __INCLUDE_MIST_SET_H__
 #define __INCLUDE_MIST_SET_H__
 

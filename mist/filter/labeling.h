@@ -1,3 +1,8 @@
+/// @file mist/filter/labeling.h
+//!
+//! @brief 各次元の画像に対応した，ラベリングアルゴリズム
+//!
+
 #ifndef __INCLUDE_MIST_LABELING__
 #define __INCLUDE_MIST_LABELING__
 
@@ -14,7 +19,6 @@
 _MIST_BEGIN
 
 
-// メディアンフィルタ
 
 namespace __labeling_controller__
 {
@@ -354,6 +358,9 @@ namespace __labeling_controller__
 }
 
 
+//! @addtogroup median_group ラベリング
+//!  @{
+
 
 /// @brief 関数・クラスの概要を書く
 //! 
@@ -479,6 +486,10 @@ typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Alloc
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 26 >( ) ) );
 }
+
+/// @}
+//  ラベリンググループの終わり
+
 
 // mist名前空間の終わり
 _MIST_END

@@ -1,3 +1,7 @@
+/// @file mist/vector.h
+//!
+//! @brief 各次元に対応したベクトル演算を行うためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_VECTOR__
 #define __INCLUDE_MIST_VECTOR__
 
@@ -10,6 +14,10 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
+
+//! @addtogroup vector_group ベクトルライブラリ
+//!  @{
+
 
 
 /// @brief 関数・クラスの概要を書く
@@ -741,6 +749,8 @@ inline vector< T, Allocator > operator *( const vector< T, Allocator > &v1, cons
 
 #endif // _MIST_VECTOR_SUPPORT_
 
+/// @}
+//  ベクトルライブラリグループの終わり
 
 
 // mist名前空間の終わり

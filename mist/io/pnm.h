@@ -1,3 +1,7 @@
+/// @file mist/io/pnm.h
+//!
+//! @brief PBM，PGM，PPM，PNM画像を読み書きするためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_PNM__
 #define __INCLUDE_MIST_PNM__
 
@@ -404,6 +408,12 @@ namespace __pnm_controller__
 }
 
 
+//! @addtogroup image_group 画像入出力
+//!  @{
+
+//! @addtogroup image_pnm_group PBM，PGM，PPM，PNM 画像入出力
+//!  @{
+
 
 /// @brief 関数・クラスの概要を書く
 //! 
@@ -438,6 +448,13 @@ bool write_pnm( const array2< T, Allocator > &image, const std::string &filename
 	}
 	return( __pnm_controller__::pnm_controller< T, Allocator >::write( image, filename, static_cast< __pnm_controller__::PNM_TYPE >( pnm_type ), level ) );
 }
+
+
+/// @}
+//  PNM画像入出力グループの終わり
+
+/// @}
+//  画像入出力グループの終わり
 
 
 // mist名前空間の終わり

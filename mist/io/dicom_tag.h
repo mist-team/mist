@@ -1,3 +1,7 @@
+/// @file mist/io/dicom_tag.h
+//!
+//! @brief DICOM画像を読み書きするためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_DICOM_TAG__
 #define __INCLUDE_MIST_DICOM_TAG__
 
@@ -13,6 +17,10 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
+
+//! @addtogroup dicom_group DICOM画像入出力
+//!  @{
+
 
 
 namespace dicom_controller
@@ -1208,6 +1216,10 @@ namespace dicom_controller
 		}
 	};
 }
+
+
+/// @}
+//  DICOM画像入出力グループの終わり
 
 
 // mist名前空間の終わり

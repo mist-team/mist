@@ -1,3 +1,7 @@
+/// @file mist/config/integer.h
+//!
+//! @brief ‘½”{’·®”‚ğˆµ‚¤‚½‚ß‚ÌƒNƒ‰ƒX
+//!
 #ifndef __INCLUDE_MIST_INTEGER_H__
 #define __INCLUDE_MIST_INTEGER_H__
 

@@ -1,3 +1,7 @@
+/// @file mist/io/dicom.h
+//!
+//! @brief DICOM画像を読み書きするためのライブラリ
+//!
 #ifndef __INCLUDE_MIST_DICOM__
 #define __INCLUDE_MIST_DICOM__
 
@@ -25,6 +29,10 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
+
+
+//! @addtogroup dicom_group DICOM画像入出力
+//!  @{
 
 
 // 次のマクロを定義すると，コンソール上に読み込んだタグ情報を表示する
@@ -990,6 +998,9 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 	return( true );
 }
 
+
+/// @}
+//  DICOM画像入出力グループの終わり
 
 
 // mist名前空間の終わり

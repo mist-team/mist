@@ -1,3 +1,8 @@
+/// @file mist/config/mist_alloc.h
+//!
+//! @brief MISTコンテナで利用するアロケータ
+//!
+
 #ifndef __INCLUDE_MIST_ALLOC_H__
 #define __INCLUDE_MIST_ALLOC_H__
 
