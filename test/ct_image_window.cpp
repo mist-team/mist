@@ -101,9 +101,19 @@ void ct_image_window::cb_Open(Fl_Menu_* o, void* v) {
   ((ct_image_window*)(o->parent()->user_data()))->cb_Open_i(o,v);
 }
 
+inline void ct_image_window::cb_Median_i(Fl_Menu_*, void*) {
+  ct_image->median_filter( this );
+}
+void ct_image_window::cb_Median(Fl_Menu_* o, void* v) {
+  ((ct_image_window*)(o->parent()->user_data()))->cb_Median_i(o,v);
+}
+
 Fl_Menu_Item ct_image_window::menu_[] = {
  {"&File", 0,  0, 0, 64, 0, 0, 14, 56},
  {"&Open", 0,  (Fl_Callback*)ct_image_window::cb_Open, 0, 0, 0, 0, 14, 56},
+ {0},
+ {"&Edit", 0,  0, 0, 64, 0, 0, 14, 56},
+ {"&Median Filter", 0,  (Fl_Callback*)ct_image_window::cb_Median, 0, 0, 0, 0, 14, 56},
  {0},
  {0}
 };

@@ -4,6 +4,11 @@
 #include "ct_image_window.h"
 #include <FL/Fl_File_Chooser.H>
 
+
+#include <mist/filter/median_filter.h>
+
+
+
 void ct_draw_area::draw( )
 {
 	mist::draw_image( buff, w( ), h( ) );
@@ -106,6 +111,16 @@ void ct_draw_area::change_window_width( double ww )
 {
 	window_width_ = ww;
 	draw_image( );
+	redraw( );
+	Fl::wait( 0 );
+}
+
+void ct_draw_area::median_filter( ct_image_window *wnd )
+{
+	if( ct.empty( ) ) return;
+
+	mist::array3< short > tmp = ct;
+	mist::__median_filter__::median_filter( tmp, ct, 3, 3, 3, 0, 2000 );
 	redraw( );
 	Fl::wait( 0 );
 }

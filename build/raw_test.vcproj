@@ -147,6 +147,9 @@
 			Name="MISTƒtƒ@ƒCƒ‹"
 			Filter="">
 			<File
+				RelativePath="..\mist\filter\median_filter.h">
+			</File>
+			<File
 				RelativePath="..\mist\mist.h">
 			</File>
 			<File

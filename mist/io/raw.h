@@ -113,7 +113,7 @@ namespace __raw_controller__
 			for( k = 0 ; k < d ; k++ )
 			{
 				if( gzeof( fp ) ) break;
-				ret = gzread(fp, (void*)tmparray, size);
+				ret = gzread( fp, (void*)tmparray, size );
 				if( ret != size ) break;
 
 				for( j = 0 ; j < h ; j++ )
