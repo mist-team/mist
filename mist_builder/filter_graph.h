@@ -2,17 +2,20 @@
 #define __INCLUDE_FILTER_GRAPH__
 
 
+#include "scroll_area.h"
+
 
 // Event Handler Object
-class filter_graph : public FXScrollArea
+class filter_graph : public FXPacker
 {
 	// Macro for class hierarchy declarations
 	FXDECLARE( filter_graph )
 
 public:
-	typedef FXScrollArea base;
+	typedef FXPacker base;
 
 protected:
+	FXCanvas		*canvas_;
 	FXFont			*font_;
 	FXImage			*mem_image_;
 
@@ -21,6 +24,8 @@ protected:
 	pin				*current_pin_;
 	filter_list		filters_;
 
+	FXint			posX_;
+	FXint			posY_;
 
 	// アプリケーションオブジェクトを取得する
 	mist_builder *getApp( ) const { return( reinterpret_cast< mist_builder * >( base::getApp( ) ) ); }
@@ -47,6 +52,10 @@ public:
 	FXint getContentHeight( ){ return( mem_image_ ? mem_image_->getHeight( ) : 1 ); }
 
 	virtual FXbool canFocus( ) const { return( true ); }
+	void set_cursors( bool is_drag );
+
+	FXint getXPosition( ) const { return( posX_ ); }
+	FXint getYPosition( ) const { return( posY_ ); }
 
 public:
 	void append_filter( const filter &f );
@@ -73,13 +82,11 @@ public:
 	virtual void create( );
 
 public:
-	//enum
-	//{
-	//	ID_CANVAS = base::ID_LAST,
-	//	ID_HSCROLLBAR,
-	//	ID_VSCROLLBAR,
-	//	ID_LAST
-	//};
+	enum
+	{
+		ID_CANVAS = base::ID_LAST,
+		ID_LAST
+	};
 
 public:
 	filter_graph( FXComposite *p, FXObject *tgt = NULL, FXSelector sel = 0, FXuint opts = 0,

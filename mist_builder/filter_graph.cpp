@@ -5,15 +5,15 @@
 
 FXDEFMAP( filter_graph ) filter_graph_map[] =
 	{
-		//________Message_Type_____________________ID_______________Message_Handler_______
-		FXMAPFUNC ( SEL_PAINT,					0,			filter_graph::onPaint ),
-		FXMAPFUNC ( SEL_LEFTBUTTONPRESS,		0,			filter_graph::onMouseDown ),
-		FXMAPFUNC ( SEL_RIGHTBUTTONPRESS,		0,			filter_graph::onMouseDown ),
-		FXMAPFUNC ( SEL_LEFTBUTTONRELEASE,		0,			filter_graph::onMouseUp ),
-		FXMAPFUNC ( SEL_RIGHTBUTTONRELEASE,		0,			filter_graph::onMouseUp ),
-		FXMAPFUNC ( SEL_MOTION,					0,			filter_graph::onMouseMove ),
-		FXMAPFUNC ( SEL_KEYPRESS,				0,			filter_graph::onKeyDown ),
-		FXMAPFUNC ( SEL_KEYRELEASE,				0,			filter_graph::onKeyUp ),
+		//________Message_Type_____________________ID_________________________________Message_Handler_______
+		FXMAPFUNC ( SEL_PAINT,					filter_graph::ID_CANVAS,			filter_graph::onPaint ),
+		FXMAPFUNC ( SEL_LEFTBUTTONPRESS,		filter_graph::ID_CANVAS,			filter_graph::onMouseDown ),
+		FXMAPFUNC ( SEL_RIGHTBUTTONPRESS,		filter_graph::ID_CANVAS,			filter_graph::onMouseDown ),
+		FXMAPFUNC ( SEL_LEFTBUTTONRELEASE,		filter_graph::ID_CANVAS,			filter_graph::onMouseUp ),
+		FXMAPFUNC ( SEL_RIGHTBUTTONRELEASE,		filter_graph::ID_CANVAS,			filter_graph::onMouseUp ),
+		FXMAPFUNC ( SEL_MOTION,					filter_graph::ID_CANVAS,			filter_graph::onMouseMove ),
+		FXMAPFUNC ( SEL_KEYPRESS,				filter_graph::ID_CANVAS,			filter_graph::onKeyDown ),
+		FXMAPFUNC ( SEL_KEYRELEASE,				filter_graph::ID_CANVAS,			filter_graph::onKeyUp ),
 	};
 
 
@@ -22,12 +22,15 @@ FXIMPLEMENT( filter_graph, filter_graph::base, filter_graph_map, ARRAYNUMBER( fi
 
 // Construct a filter_graph
 filter_graph::filter_graph( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts, FXint x, FXint y, FXint w, FXint h )
-				: base( p, opts | SCROLLERS_NORMAL | SCROLLERS_TRACK, x, y, 1024, 768 ),
-				font_( NULL ), mem_image_( NULL ), damage_( true ), current_filter_( NULL ), current_pin_( NULL )
+				: base( p, opts | SCROLLERS_NORMAL | SCROLLERS_TRACK, x, y, w, h, 0, 0, 0, 0, 0, 0 ),
+				font_( NULL ), mem_image_( NULL ), damage_( true ), current_filter_( NULL ), current_pin_( NULL ),
+				posX_( 0 ), posY_( 0 )
 {
 	// このウィンドウからメッセージを送る先の設定
 	setTarget( tgt );
 	setSelector( sel );
+
+	canvas_ = new FXCanvas( this, this, ID_CANVAS, LAYOUT_FILL_X | LAYOUT_FILL_Y );
 
 	font_ = new FXFont( getApp( ), "helvetica", 12 );
 	mem_image_ = new FXImage( getApp( ), NULL, IMAGE_OWNED, 1024, 768 );
@@ -50,6 +53,21 @@ void filter_graph::create( )
 	base::create( );
 }
 
+void filter_graph::set_cursors( bool is_drag )
+{
+	std::vector< FXCursor * > &cursors = getAppInstance( ).cursors;
+	if( is_drag )
+	{
+		canvas_->setDefaultCursor( cursors[ 1 ] );
+		canvas_->setDragCursor( cursors[ 2 ] );
+	}
+	else
+	{
+		canvas_->setDefaultCursor( cursors[ 0 ] );
+		canvas_->setDragCursor( cursors[ 0 ] );
+	}
+}
+
 void filter_graph::append_filter( const filter &f )
 {
 	filter *ff = f.clone( );
@@ -67,12 +85,10 @@ void filter_graph::append_filter( const filter &f )
 	// メインウィンドウへ，選択フィルタが変更されたことを通知する
 	SendUserMessage( MIST_FILTER_CHANGED, static_cast< void * >( current_filter_ ) );
 
-	setFocus( );
-
 	// 全体を再描画する
 	damage_ = true;
-	update( );
-	repaint( );
+	canvas_->update( );
+	canvas_->repaint( );
 }
 
 
@@ -81,9 +97,9 @@ long filter_graph::onMouseDown( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
 
-	std::cout << "clicked" << std::endl;
+	set_cursors( e.state & ALTMASK && e.state & LEFTBUTTONMASK );
 
-	setFocus( );
+	//canvas_->setFocus( );
 
 	filter *old_filter = current_filter_;
 
@@ -165,8 +181,8 @@ long filter_graph::onMouseDown( FXObject *obj, FXSelector sel, void *ptr )
 	}
 
 	damage_ = true;
-	update( );
-	repaint( );
+	canvas_->update( );
+	canvas_->repaint( );
 
 	return( 1 );
 }
@@ -176,18 +192,28 @@ long filter_graph::onMouseMove( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
 
-	if( current_filter_ != NULL && current_pin_ == NULL && e.state & LEFTBUTTONMASK )
+	set_cursors( e.state & ALTMASK && e.state & LEFTBUTTONMASK );
+
+	if( e.state & ALTMASK && e.state & LEFTBUTTONMASK )
+	{
+		set_cursors( true );
+		posX_ += e.win_x - e.last_x;
+		posY_ += e.win_y - e.last_y;
+		canvas_->update( );
+		canvas_->repaint( );
+	}
+	else if( current_filter_ != NULL && current_pin_ == NULL && e.state & LEFTBUTTONMASK )
 	{
 		current_filter_->move( e.win_x - e.last_x, e.win_y - e.last_y );
 
 		damage_ = true;
-		update( );
-		repaint( );
+		canvas_->update( );
+		canvas_->repaint( );
 	}
 	else if( current_pin_ != NULL )
 	{
-		update( );
-		repaint( );
+		canvas_->update( );
+		canvas_->repaint( );
 	}
 
 	return( 1 );
@@ -197,6 +223,8 @@ long filter_graph::onMouseMove( FXObject *obj, FXSelector sel, void *ptr )
 long filter_graph::onMouseUp( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
+
+	set_cursors( e.state & ALTMASK && e.state & LEFTBUTTONMASK );
 
 	if( current_filter_ != NULL && current_pin_ != NULL )
 	{
@@ -294,8 +322,8 @@ long filter_graph::onMouseUp( FXObject *obj, FXSelector sel, void *ptr )
 				apply_filters( *current_filter_ );
 			}
 		}
-		update( );
-		repaint( );
+		canvas_->update( );
+		canvas_->repaint( );
 	}
 
 	return( 1 );
@@ -305,6 +333,8 @@ long filter_graph::onMouseUp( FXObject *obj, FXSelector sel, void *ptr )
 long filter_graph::onKeyDown( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
+
+	set_cursors( e.state & ALTMASK );
 
 	if( e.code == KEY_Delete && current_filter_ != NULL )
 	{
@@ -352,10 +382,13 @@ long filter_graph::onKeyDown( FXObject *obj, FXSelector sel, void *ptr )
 
 		// フィルタの接続が解除されたので，フィルタ全体の再計算を行う
 
+		// メインウィンドウへ，選択フィルタが解除されたことを通知する
+		SendUserMessage( MIST_FILTER_CHANGED, NULL );
+
 		// 変更されたフィルタを再描画する
 		damage_ = true;
-		update( );
-		repaint( );
+		canvas_->update( );
+		canvas_->repaint( );
 	}
 
 	return( 1 );
@@ -365,6 +398,8 @@ long filter_graph::onKeyDown( FXObject *obj, FXSelector sel, void *ptr )
 long filter_graph::onKeyUp( FXObject *obj, FXSelector sel, void *ptr )
 {
 	FXEvent &e = *( ( FXEvent * )ptr );
+
+	set_cursors( e.state & ALTMASK );
 
 	return( 1 );
 }
@@ -381,7 +416,7 @@ long filter_graph::onPaint( FXObject *obj, FXSelector sel, void *ptr )
 
 		memdc.setFont( font_ );
 
-		memdc.setForeground( getBackColor( ) );
+		memdc.setForeground( RGB( 255, 255, 255 ) );
 		memdc.fillRectangle( 0, 0, mem_image_->getWidth( ), mem_image_->getHeight( ) );
 
 		for( size_type i = 0 ; i < filters_.size( ) ; i++ )
@@ -453,13 +488,26 @@ long filter_graph::onPaint( FXObject *obj, FXSelector sel, void *ptr )
 		damage_ = false;
 	}
 
-	FXDCWindow dc( this, &e );
+	FXDCWindow dc( canvas_, &e );
 	dc.drawImage( mem_image_, getXPosition( ), getYPosition( ) );
+
+	FXint w = getWidth( );
+	FXint h = getHeight( );
+	FXint l = getXPosition( );
+	FXint r = getXPosition( ) + mem_image_->getWidth( );
+	FXint t = getYPosition( );
+	FXint b = getYPosition( ) + mem_image_->getHeight( );
 
 	// キャンバスの範囲外にある領域を塗りつぶす
 	dc.setForeground( FXRGB( 128, 128, 128 ) );
-	dc.fillRectangle( mem_image_->getWidth( ), 0, getWidth( ) - mem_image_->getWidth( ), getHeight( ) );
-	dc.fillRectangle( 0, mem_image_->getHeight( ), getWidth( ), getHeight( ) - mem_image_->getHeight( ) );
+	// 左端
+	dc.fillRectangle( 0, 0, l, h );
+	// 右端
+	dc.fillRectangle( r, 0, w - r, h );
+	// 上端
+	dc.fillRectangle( l, 0, r - l, t );
+	// 下端
+	dc.fillRectangle( l, b, r - l, h - b );
 
 	// 接続先のピンを探している時は，マウスの位置までの矢印を描画する
 	if( current_pin_ != NULL )
@@ -497,8 +545,8 @@ void filter_graph::initialize_filter( filter &f )
 	FXint pin_num = ipins > opins ? ipins : opins;
 	FXint hh = ( pin_num * 2 + 1 ) * box_size;
 
-	f.x      = getWidth( ) / 2 - getXPosition( );
-	f.y      = getHeight( ) / 2 - getYPosition( );
+	f.x      = canvas_->getWidth( ) / 2 - getXPosition( );
+	f.y      = canvas_->getHeight( ) / 2 - getYPosition( );
 	f.width  = w;
 	f.height = h > hh ? h : hh;
 

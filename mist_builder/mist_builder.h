@@ -15,10 +15,13 @@ public:
 	// アプリケーションで扱うフィルタ群
 	filter_list filters;
 
-	// 画像等を描画する際に必要となるグローバルな描画パラメータ
+	std::vector< FXCursor * > cursors;
+
+	virtual void create( );
 
 public:
 	mist_builder( const FXString &name = "Application", const FXString &vendor = "FoxDefault" );
+	virtual ~mist_builder( );
 
 };
 

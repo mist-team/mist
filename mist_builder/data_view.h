@@ -85,7 +85,6 @@ protected:
 	FXGLCanvas		*canvas_;
 	invert_slider	*zoom_slider_;
 
-	std::vector< FXCursor * >	cursors_;
 	std::vector< FXIcon * >		icons_;
 
 	color_image buffer_;
