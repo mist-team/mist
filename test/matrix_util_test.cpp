@@ -40,6 +40,25 @@ int main( )
 	}
 
 	{
+		std::cout << "Inverse Matrix Calculation Symmetry" << std::endl;
+
+		matrix aa( 2, 2 );
+		aa( 0, 0 ) = 1.0; aa( 0, 1 ) = 2.0;
+		aa( 1, 0 ) = 2.0; aa( 1, 1 ) = 3.0;
+
+		std::cout << aa * mist::inverse( matrix( aa ), mist::matrix_style::sy ) << std::endl;
+	}
+
+	{
+		std::cout << "Inverse Matrix Calculation Symmetry" << std::endl;
+
+		matrix aa( 2, 2 );
+		aa( 0, 0 ) = 1.0; aa( 0, 1 ) = 2.0;
+		aa( 1, 0 ) = 2.0; aa( 1, 1 ) = 3.0;
+		std::cout << aa * mist::inverse( matrix( aa ), mist::matrix_style::ge ) << std::endl;
+	}
+
+	{
 		std::cout << "LU factorization" << std::endl;
 
 		matrix aa = a;

@@ -92,12 +92,24 @@ namespace __clapack__
 		int dgesv_( integer *n, integer *nrhs, doublereal *a, integer *lda, integer *ipiv, doublereal *b, integer *ldb, integer *info );
 		int cgesv_( integer *n, integer *nrhs, complex *a, integer *lda, integer *ipiv, complex *b, integer *ldb, integer *info );
 		int zgesv_( integer *n, integer *nrhs, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *b, integer *ldb, integer *info );
+		// 対称正方行列の連立方程式を解く関数
+		int ssysv_( char *uplo, integer *n, integer *nrhs, real *a, integer *lda, integer *ipiv, real *b, integer *ldb, real *work, integer *lwork, integer *info );
+		int dsysv_( char *uplo, integer *n, integer *nrhs, doublereal *a, integer *lda, integer *ipiv, doublereal *b, integer *ldb, doublereal *work, integer *lwork, integer *info );
+		int csysv_( char *uplo, integer *n, integer *nrhs, complex *a, integer *lda, integer *ipiv, complex *b, integer *ldb, complex *work, integer *lwork, integer *info );
+		int zsysv_( char *uplo, integer *n, integer *nrhs, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *b, integer *ldb, doublecomplex *work, integer *lwork, integer *info );
 
-		// LU分解
+
+		// 一般行列のLU分解
 		int sgetrf_( integer *m, integer *n, real *a, integer *lda, integer *ipiv, integer *info );
 		int dgetrf_( integer *m, integer *n, doublereal *a, integer *lda, integer *ipiv, integer *info );
 		int cgetrf_( integer *m, integer *n, complex *a, integer *lda, integer *ipiv, integer *info );
 		int zgetrf_( integer *m, integer *n, doublecomplex *a, integer *lda, integer *ipiv, integer *info );
+		// 対称行列のLU分解
+		int ssytrf_( char *uplo, integer *n, real *a, integer *lda, integer *ipiv, real *work, integer *lwork, integer *info );
+		int dsytrf_( char *uplo, integer *n, doublereal *a, integer *lda, integer *ipiv, doublereal *work, integer *lwork, integer *info );
+		int csytrf_( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *lwork, integer *info );
+		int zsytrf_( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *lwork, integer *info );
+
 
 		// QR分解
 		int sgeqrf_( integer *m, integer *n, real *a, integer *lda, real *tau, real *work, integer *lwork, integer *info );
@@ -105,18 +117,24 @@ namespace __clapack__
 		int cgeqrf_( integer *m, integer *n, complex *a, integer *lda, complex *tau, complex *work, integer *lwork, integer *info );
 		int zgeqrf_( integer *m, integer *n, doublecomplex *a, integer *lda, doublecomplex *tau, doublecomplex *work, integer *lwork, integer *info );
 
-		// LU分解の結果を用いた逆行列の計算
+
+		// LU分解の結果を用いた一般行列の逆行列の計算
 		int sgetri_( integer *n, real *a, integer *lda, integer *ipiv, real *work, integer *lwork, integer *info );
 		int dgetri_( integer *n, doublereal *a, integer *lda, integer *ipiv, doublereal *work, integer *lwork, integer *info );
 		int cgetri_( integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *lwork, integer *info );
 		int zgetri_( integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *lwork, integer *info );
+		// LU分解の結果を用いた対称行列の逆行列の計算
+		int ssytri_( char *uplo, integer *n, real *a, integer *lda, integer *ipiv, real *work, integer *info );
+		int dsytri_( char *uplo, integer *n, doublereal *a, integer *lda, integer *ipiv, doublereal *work, integer *info );
+		int csytri_( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *info );
+		int zsytri_( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *info );
+
 
 		// 一般行列に対する固有値・固有ベクトルを計算
 		int sgeev_( char *jobvl, char *jobvr, integer *n, real *a, integer *lda, real *wr, real *wi, real *vl, integer *ldvl, real *vr, integer *ldvr, real *work, integer *lwork, integer *info );
 		int dgeev_( char *jobvl, char *jobvr, integer *n, doublereal *a, integer *lda, doublereal *wr, doublereal *wi, doublereal *vl, integer *ldvl, doublereal *vr, integer *ldvr, doublereal *work, integer *lwork, integer *info );
 		int cgeev_( char *jobvl, char *jobvr, integer *n, complex *a, integer *lda, complex *w, complex *vl, integer *ldvl, complex *vr, integer *ldvr, complex *work, integer *lwork, real *rwork, integer *info );
 		int zgeev_( char *jobvl, char *jobvr, integer *n, doublecomplex *a, integer *lda, doublecomplex *w, doublecomplex *vl, integer *ldvl, doublecomplex *vr, integer *ldvr, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
-
 		// 対称行列に対する固有値・固有ベクトルを計算
 		int ssyev_( char *jobz, char *uplo, integer *n, real *a, integer *lda, real *w, real *work, integer *lwork, integer *info );
 		int dsyev_( char *jobz, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *w, doublereal *work, integer *lwork, integer *info );
@@ -127,7 +145,6 @@ namespace __clapack__
 		int dgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, doublereal *a, integer *lda, doublereal *wr, doublereal *wi, doublereal *vl, integer *ldvl, doublereal *vr, integer *ldvr, integer *ilo, integer *ihi, doublereal *scale, doublereal *abnrm, doublereal *rconde, doublereal *rcondv, doublereal *work, integer *lwork, integer *iwork, integer *info );
 		int cgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, complex *a, integer *lda, complex *w, complex *vl, integer *ldvl, complex *vr, integer *ldvr, integer *ilo, integer *ihi, real *scale, real *abnrm, real *rconde, real *rcondv, complex *work, integer *lwork, real *rwork, integer *info );
 		int zgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, doublecomplex *a, integer *lda, doublecomplex *w, doublecomplex *vl, integer *ldvl, doublecomplex *vr, integer *ldvr, integer *ilo, integer *ihi, doublereal *scale, doublereal *abnrm, doublereal *rconde, doublereal *rcondv, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
-
 		// 対称行列に対する固有値・固有ベクトルを計算
 		int ssyevx_( char *jobz, char *range, char *uplo, integer *n, real *a, integer *lda, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, real *z__, integer *ldz, real *work, integer *lwork, integer *iwork, integer *ifail, integer *info );
 		int dsyevx_( char *jobz, char *range, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *lwork, integer *iwork, integer *ifail, integer *info );
@@ -138,6 +155,7 @@ namespace __clapack__
 		int dgesvd_( char *jobu, char *jobvt, integer *m, integer *n, doublereal *a, integer *lda, doublereal *s, doublereal *u, integer *ldu, doublereal *vt, integer *ldvt, doublereal *work, integer *lwork, integer *info );
 		int cgesvd_( char *jobu, char *jobvt, integer *m, integer *n, complex *a, integer *lda, real *s, complex *u, integer *ldu, complex *vt, integer *ldvt, complex *work, integer *lwork, real *rwork, integer *info );
 		int zgesvd_( char *jobu, char *jobvt, integer *m, integer *n, doublecomplex *a, integer *lda, doublereal *s, doublecomplex *u, integer *ldu, doublecomplex *vt, integer *ldvt, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
+
 
 		// 一般行列に対する特異値分解を計算．分割統治法を用いた高速化バージョン
 		int sgesdd_( char *jobz, integer *m, integer *n, real *a, integer *lda, real *s, real *u, integer *ldu, real *vt, integer *ldvt, real *work, integer *lwork, integer *iwork, integer *info );
@@ -171,9 +189,26 @@ namespace __clapack__
 	{
 		return( zgesv_( &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
 	}
+	// 対称正方行列の連立方程式を解く関数
+	inline int sysv( char *uplo, integer &n, integer &nrhs, real *a, integer &lda, integer *ipiv, real *b, integer &ldb, real *work, integer &lwork, integer &info )
+	{
+		return( ssysv_( uplo, &n, &nrhs, a, &lda, ipiv, b, &ldb, work, &lwork, &info ) );
+	}
+	inline int sysv( char *uplo, integer &n, integer &nrhs, doublereal *a, integer &lda, integer *ipiv, doublereal *b, integer &ldb, doublereal *work, integer &lwork, integer &info )
+	{
+		return( dsysv_( uplo, &n, &nrhs, a, &lda, ipiv, b, &ldb, work, &lwork, &info ) );
+	}
+	inline int sysv( char *uplo, integer &n, integer &nrhs, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *b, integer &ldb, std::complex< real > *work, integer &lwork, integer &info )
+	{
+		return( csysv_( uplo, &n, &nrhs, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( b ), &ldb, reinterpret_cast< complex* >( work ), &lwork, &info ) );
+	}
+	inline int sysv( char *uplo, integer &n, integer &nrhs, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *b, integer &ldb, std::complex< doublereal > *work, integer &lwork, integer &info )
+	{
+		return( zsysv_( uplo, &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+	}
 
 
-	// LU分解
+	// 一般行列のLU分解
 	inline int getrf( integer &m, integer &n, real *a, integer &lda, integer *ipiv, integer &info )
 	{
 		return( sgetrf_( &m, &n, a, &lda, ipiv, &info ) );
@@ -189,6 +224,23 @@ namespace __clapack__
 	inline int getrf( integer &m, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, integer &info )
 	{
 		return( zgetrf_( &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, &info ) );
+	}
+	// 対称行列のLU分解
+	inline int sytrf( char *uplo, integer &n, real *a, integer &lda, integer *ipiv, real *work, integer &lwork, integer &info )
+	{
+		return( ssytrf_( uplo, &n, a, &lda, ipiv, work, &lwork, &info ) );
+	}
+	inline int sytrf( char *uplo, integer &n, doublereal *a, integer &lda, integer *ipiv, doublereal *work, integer &lwork, integer &info )
+	{
+		return( dsytrf_( uplo, &n, a, &lda, ipiv, work, &lwork, &info ) );
+	}
+	inline int sytrf( char *uplo, integer &n, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *work, integer &lwork, integer &info )
+	{
+		return( csytrf_( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &lwork, &info ) );
+	}
+	inline int sytrf( char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &lwork, integer &info )
+	{
+		return( zsytrf_( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
 
 
@@ -211,7 +263,7 @@ namespace __clapack__
 	}
 
 
-	// LU分解の結果を用いた逆行列の計算
+	// LU分解の結果を用いた一般行列の逆行列の計算
 	inline int getri( integer &n, real *a, integer &lda, integer *ipiv, real *work, integer &lwork, integer &info )
 	{
 		return( sgetri_( &n, a, &lda, ipiv, work, &lwork, &info ) );
@@ -227,6 +279,23 @@ namespace __clapack__
 	inline int getri( integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &lwork, integer &info )
 	{
 		return( zgetri_( &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+	}
+	// LU分解の結果を用いた対称行列の逆行列の計算
+	inline int sytri( char *uplo, integer &n, real *a, integer &lda, integer *ipiv, real *work, integer &info )
+	{
+		return( ssytri_( uplo, &n, a, &lda, ipiv, work, &info ) );
+	}
+	inline int sytri( char *uplo, integer &n, doublereal *a, integer &lda, integer *ipiv, doublereal *work, integer &info )
+	{
+		return( dsytri_( uplo, &n, a, &lda, ipiv, work, &info ) );
+	}
+	inline int sytri( char *uplo, integer &n, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *work, integer &info )
+	{
+		return( csytri_( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &info ) );
+	}
+	inline int sytri( char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &info )
+	{
+		return( zsytri_( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &info ) );
 	}
 
 
@@ -369,10 +438,37 @@ namespace __solve__
 		static matrix< T, Allocator >& solve( matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
+			typedef typename matrix< T, Allocator >::value_type value_type;
 
 			switch( style )
 			{
 			case matrix_style::sy:
+				{
+					b.resize( a.rows( ), 1 );
+
+					// LAPACK関数の引数
+					integer n     = static_cast< integer >( a.cols( ) );
+					integer nrhs  = 1;
+					integer lda   = static_cast< integer >( a.rows( ) );
+					integer ldb   = static_cast< integer >( b.rows( ) );
+					value_type dmy;
+					integer *ipiv = new integer[ n ];
+					integer info  = 0;
+					integer lwork  = -1;
+					char *uplo    = "U";
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::sysv( uplo, n, nrhs, NULL, lda, NULL, NULL, ldb, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						lwork = __clapack__::get_real( dmy );
+						matrix< T, Allocator > work( lwork, 1 );
+						__clapack__::sysv( uplo, n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, &( work[0] ), lwork, info );
+					}
+					delete [] ipiv;
+				}
+				break;
+
 			case matrix_style::ge:
 			default:
 				{
@@ -419,6 +515,33 @@ namespace __solve__
 
 			switch( style )
 			{
+			case matrix_style::sy:
+				{
+					b.resize( a.rows( ), 1 );
+
+					// LAPACK関数の引数
+					integer n     = static_cast< integer >( a.cols( ) );
+					integer nrhs  = 1;
+					integer lda   = static_cast< integer >( a.rows( ) );
+					integer ldb   = static_cast< integer >( b.rows( ) );
+					value_type dmy;
+					integer *ipiv = new integer[ n ];
+					integer info  = 0;
+					integer lwork  = -1;
+					char *uplo    = "U";
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::sysv( uplo, n, nrhs, NULL, lda, NULL, NULL, ldb, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						lwork = __clapack__::get_real( dmy );
+						matrix< T, Allocator > work( lwork, 1 );
+						__clapack__::sysv( uplo, n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, &( work[0] ), lwork, info );
+					}
+					delete [] ipiv;
+				}
+				break;
+
 			case matrix_style::ge:
 			default:
 				{
@@ -476,10 +599,36 @@ namespace __lu__
 		static matrix< T, Allocator1 >& lu_factorization( matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
+			typedef typename matrix< T, Allocator1 >::value_type value_type;
 
 			switch( style )
 			{
 			case matrix_style::sy:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer info   = 0;
+					integer lwork  = -1;
+					value_type dmy;
+					char *uplo    = "U";
+
+					pivot.resize( n, 1 );
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::sytrf( uplo, n, NULL, lda, NULL, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						lwork = __clapack__::get_real( dmy );
+						matrix< T, Allocator1 > work( lwork, 1 );
+
+						// LU分解を行う
+						__clapack__::sytrf( uplo, n, &( a[0] ), lda, &( pivot[0] ), &( work[0] ), lwork, info );
+					}
+				}
+				break;
+
 			case matrix_style::ge:
 			default:
 				{
@@ -513,6 +662,32 @@ namespace __lu__
 
 			switch( style )
 			{
+			case matrix_style::sy:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer info   = 0;
+					integer lwork  = -1;
+					value_type dmy;
+					char *uplo    = "U";
+
+					pivot.resize( n, 1 );
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::sytrf( uplo, n, NULL, lda, NULL, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						lwork = __clapack__::get_real( dmy );
+						matrix< T, Allocator > work( lwork, 1 );
+
+						// LU分解を行う
+						__clapack__::sytrf( uplo, n, &( a[0] ), lda, &( pivot[0] ), &( work[0] ), lwork, info );
+					}
+				}
+				break;
+
 			case matrix_style::ge:
 			default:
 				{
@@ -674,6 +849,35 @@ namespace __inverse__
 			switch( style )
 			{
 			case matrix_style::sy:
+				{
+					// LAPACK関数の引数
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = static_cast< integer >( a.rows( ) );
+					integer *ipiv  = new integer[ n ];
+					typename matrix< T, Allocator >::value_type dmy;
+					integer lwork  = -1;
+					integer info   = 0;
+					char *uplo    = "U";
+
+					// LU分解を行う
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::sytrf( uplo, n, NULL, lda, ipiv, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						lwork = __clapack__::get_real( dmy );
+						matrix< T, Allocator > work( lwork, 1 );
+						__clapack__::sytrf( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
+
+						if( info == 0 )
+						{
+							work.resize( 2 * n, 1 );
+							__clapack__::sytri( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), info );
+						}
+					}
+					delete [] ipiv;
+				}
+				break;
+
 			case matrix_style::ge:
 			default:
 				{
@@ -719,6 +923,36 @@ namespace __inverse__
 
 			switch( style )
 			{
+			case matrix_style::sy:
+				{
+					// LAPACK関数の引数
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = static_cast< integer >( a.rows( ) );
+					integer *ipiv  = new integer[ n ];
+					typename matrix< T, Allocator >::value_type dmy;
+					integer lwork  = -1;
+					integer info   = 0;
+					char *uplo    = "U";
+
+					// LU分解を行う
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::sytrf( uplo, n, NULL, lda, ipiv, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						lwork = __clapack__::get_real( dmy );
+						matrix< T, Allocator > work( lwork, 1 );
+						__clapack__::sytrf( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
+
+						if( info == 0 )
+						{
+							work.resize( 2 * n, 1 );
+							__clapack__::sytri( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), info );
+						}
+					}
+					delete [] ipiv;
+				}
+				break;
+
 			case matrix_style::ge:
 			default:
 				{
