@@ -11,6 +11,10 @@
 #include "mist_conf.h"
 #endif
 
+#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
+#include "type_trait.h"
+#endif
+
 #include <iostream>
 
 // mist–¼‘O‹óŠÔ‚Ìn‚Ü‚è
@@ -54,6 +58,10 @@ public:
 	/// @brief ‘¼‚ÌƒJƒ‰[‰æ‘f‚ğ—p‚¢‚Ä‰Šú‰»‚·‚é
 	rgb( const rgb &c ) : r( c.r ), g( c.g ), b( c.b ){ }
 
+	/// @brief ‘¼‚ÌƒJƒ‰[‰æ‘f‚ğ—p‚¢‚Ä‰Šú‰»‚·‚é
+	template < class TT >
+	rgb( const rgb< TT > &c ) : r( static_cast< value_type >( c.r ) ), g( static_cast< value_type >( c.g ) ), b( static_cast< value_type >( c.b ) ){ }
+
 	/// @brief Ô rrC—Î ggCÂ bb ‚ğ—p‚¢‚Ä‰Šú‰»‚·‚é
 	rgb( const value_type &rr, const value_type &gg, const value_type &bb ) : r( rr ), g( gg ), b( bb ){ }
 
@@ -85,59 +93,53 @@ public:
 	const rgb  operator -( ) const { return( rgb( -r, -g, -b ) ); }
 
 	/// @brief RGB¬•ª‚Ì˜a
-	const rgb &operator +=( const rgb &c ){ r += c.r; g += c.g; b += c.b; return( *this ); }
+	template < class TT >
+	const rgb &operator +=( const rgb< TT > &c ){ r = static_cast< value_type >( r + c.r ); g = static_cast< value_type >( g + c.g ); b = static_cast< value_type >( b + c.b ); return( *this ); }
 
 	/// @brief RGB¬•ª‚Ì·
-	const rgb &operator -=( const rgb &c ){ r -= c.r; g -= c.g; b -= c.b; return( *this ); }
+	template < class TT >
+	const rgb &operator -=( const rgb< TT > &c ){ r = static_cast< value_type >( r - c.r ); g = static_cast< value_type >( g - c.g ); b = static_cast< value_type >( b - c.b ); return( *this ); }
 
 	/// @brief RGB¬•ª‚ÌÏ
-	const rgb &operator *=( const rgb &c ){ r *= c.r; g *= c.g; b *= c.b; return( *this ); }
+	template < class TT >
+	const rgb &operator *=( const rgb< TT > &c ){ r = static_cast< value_type >( r * c.r ); g = static_cast< value_type >( g * c.g ); b = static_cast< value_type >( b * c.b ); return( *this ); }
 
 	/// @brief RGB¬•ª‚ÌŠ„‚èZ
-	const rgb &operator /=( const rgb &c ){ r /= c.r; g /= c.g; b /= c.b; return( *this ); }
+	template < class TT >
+	const rgb &operator /=( const rgb< TT > &c ){ r = static_cast< value_type >( r / c.r ); g = static_cast< value_type >( g / c.g ); b = static_cast< value_type >( b / c.b ); return( *this ); }
 
-	/// @brief RGB¬•ª‚Ìè—]
-	const rgb &operator %=( const rgb &c ){ r %= c.r; g %= c.g; b %= c.b; return( *this ); }
+	///// @brief RGB¬•ª‚Ìè—]
+	//template < class TT >
+	//const rgb &operator %=( const rgb< TT > &c ){ r = static_cast< value_type >( r % c.r ); g = static_cast< value_type >( g % c.g ); b = static_cast< value_type >( b % c.b ); return( *this ); }
 
-	/// @brief RGB¬•ª‚Ì | ‰‰Z
-	const rgb &operator |=( const rgb &c ){ r |= c.r; g |= c.g; b |= c.b; return( *this ); }
+	///// @brief RGB¬•ª‚Ì | ‰‰Z
+	//template < class TT >
+	//const rgb &operator |=( const rgb< TT > &c ){ r = static_cast< value_type >( r | c.r ); g = static_cast< value_type >( g | c.g ); b = static_cast< value_type >( b | c.b ); return( *this ); }
 
-	/// @brief RGB¬•ª‚Ì & ‰‰Z
-	const rgb &operator &=( const rgb &c ){ r &= c.r; g &= c.g; b &= c.b; return( *this ); }
+	///// @brief RGB¬•ª‚Ì & ‰‰Z
+	//template < class TT >
+	//const rgb &operator &=( const rgb< TT > &c ){ r = static_cast< value_type >( r & c.r ); g = static_cast< value_type >( g & c.g ); b = static_cast< value_type >( b & c.b ); return( *this ); }
 
-	/// @brief RGB¬•ª‚Ì ^ ‰‰Z
-	const rgb &operator ^=( const rgb &c ){ r ^= c.r; g ^= c.g; b ^= c.b; return( *this ); }
+	///// @brief RGB¬•ª‚Ì ^ ‰‰Z
+	//template < class TT >
+	//const rgb &operator ^=( const rgb< TT > &c ){ r = static_cast< value_type >( r ^ c.r ); g = static_cast< value_type >( g ^ c.g ); b = static_cast< value_type >( b ^ c.b ); return( *this ); }
 
 
 	/// @brief RGB¬•ª‚É pix ’l‚ğ‘«‚·
-	const rgb &operator +=( const value_type &pix ){ r += pix; g += pix; b += pix; return( *this ); }
+	template < class TT >
+	const rgb &operator +=( const TT &pix ){ r = static_cast< value_type >( r + pix ); g = static_cast< value_type >( g + pix ); b = static_cast< value_type >( b + pix ); return( *this ); }
 
 	/// @brief RGB¬•ª‚©‚ç pix ’l‚ğˆø‚­
-	const rgb &operator -=( const value_type &pix ){ r -= pix; g -= pix; b -= pix; return( *this ); }
+	template < class TT >
+	const rgb &operator -=( const TT &pix ){ r = static_cast< value_type >( r - pix ); g = static_cast< value_type >( g - pix ); b = static_cast< value_type >( b - pix ); return( *this ); }
 
 	/// @brief RGB¬•ª‚É pix ’l‚ğŠ|‚¯‚é
-	const rgb &operator *=( const value_type &pix ){ r *= pix; g *= pix; b *= pix; return( *this ); }
-
-	/// @brief RGB¬•ª‚É pix ’l‚ğŠ|‚¯‚é
-	const rgb &operator *=( const double &pix )
-	{
-		r = static_cast< value_type >( r * pix );
-		g = static_cast< value_type >( g * pix );
-		b = static_cast< value_type >( b * pix );
-		return( *this );
-	}
+	template < class TT >
+	const rgb &operator *=( const TT &pix ){ r = static_cast< value_type >( r * pix ); g = static_cast< value_type >( g * pix ); b = static_cast< value_type >( b * pix ); return( *this ); }
 
 	/// @brief RGB¬•ª‚ğ pix ’l‚ÅŠ„‚é
-	const rgb &operator /=( const value_type &pix ){ r /= pix; g /= pix; b /= pix; return( *this ); }
-
-	/// @brief RGB¬•ª‚ğ pix ’l‚ÅŠ„‚é
-	const rgb &operator /=( const double &pix )
-	{
-		r = static_cast< value_type >( r / pix );
-		g = static_cast< value_type >( g / pix );
-		b = static_cast< value_type >( b / pix );
-		return( *this );
-	}
+	template < class TT >
+	const rgb &operator /=( const TT &pix ){ r = static_cast< value_type >( r / pix ); g = static_cast< value_type >( g / pix ); b = static_cast< value_type >( b / pix ); return( *this ); }
 
 
 	/// @brief 2‚Â‚ÌƒJƒ‰[‰æ‘f‚ª“™‚µ‚¢i‘S—v‘f‚ª“¯‚¶’l‚ğ‚Âj‚©‚Ç‚¤‚©‚ğ”»’è‚·‚é
@@ -231,64 +233,96 @@ public:
 
 
 /// @brief ƒJƒ‰[‰æ‘f‚Ì˜a
-template < class T > inline const rgb< T > operator +( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) += c2 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator +( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) += c2 ); }
 
 /// @brief ƒJƒ‰[‰æ‘f‚Ì·
-template < class T > inline const rgb< T > operator -( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) -= c2 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator -( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) -= c2 ); }
 
 /// @brief ƒJƒ‰[‰æ‘f‚ÌÏ
-template < class T > inline const rgb< T > operator *( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) *= c2 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator *( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) *= c2 ); }
 
 /// @brief ƒJƒ‰[‰æ‘f‚ÌŠ„‚èZ
-template < class T > inline const rgb< T > operator /( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) /= c2 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator /( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) /= c2 ); }
 
-/// @brief ƒJƒ‰[‰æ‘f‚Ìè—]
-template < class T > inline const rgb< T > operator %( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) %= c2 ); }
-
-/// @brief ƒJƒ‰[‰æ‘f‚Ì | ‰‰Z
-template < class T > inline const rgb< T > operator |( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) |= c2 ); }
-
-/// @brief ƒJƒ‰[‰æ‘f‚Ì & ‰‰Z
-template < class T > inline const rgb< T > operator &( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) &= c2 ); }
-
-/// @brief ƒJƒ‰[‰æ‘f‚Ì ^ ‰‰Z
-template < class T > inline const rgb< T > operator ^( const rgb< T > &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) ^= c2 ); }
-
-
-
-/// @brief ƒJƒ‰[‰æ‘f‚Æ’è”‚ÌÏ
-template < class T > inline const rgb< T > operator *( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) *= c2 ); }
-
-/// @brief ’è”‚ÆƒJƒ‰[‰æ‘f‚ÌÏ
-template < class T > inline const rgb< T > operator *( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) *= c1 ); }
-
-/// @brief ƒJƒ‰[‰æ‘f‚ğ’è”‚ÅŠ„‚é
-template < class T > inline const rgb< T > operator /( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) /= c2 ); }
+///// @brief ƒJƒ‰[‰æ‘f‚Ìè—]
+//template < class T1, class T2 >
+//inline const rgb< typename promote_trait< T1, T2 >::value_type > operator %( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) %= c2 ); }
+//
+///// @brief ƒJƒ‰[‰æ‘f‚Ì | ‰‰Z
+//template < class T1, class T2 >
+//inline const rgb< typename promote_trait< T1, T2 >::value_type > operator |( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) |= c2 ); }
+//
+///// @brief ƒJƒ‰[‰æ‘f‚Ì & ‰‰Z
+//template < class T1, class T2 >
+//inline const rgb< typename promote_trait< T1, T2 >::value_type > operator &( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) &= c2 ); }
+//
+///// @brief ƒJƒ‰[‰æ‘f‚Ì ^ ‰‰Z
+//template < class T1, class T2 >
+//inline const rgb< typename promote_trait< T1, T2 >::value_type > operator ^( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) ^= c2 ); }
 
 
 
 /// @brief ƒJƒ‰[‰æ‘f‚Æ’è”‚ÌÏ
-template < class T > inline const rgb< T > operator *( const rgb< T > &c1, const double &c2 ){ return( rgb< T >( c1 ) *= c2 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator *( const rgb< T1 > &c1, const T2 &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) *= c2 ); }
 
 /// @brief ’è”‚ÆƒJƒ‰[‰æ‘f‚ÌÏ
-template < class T > inline const rgb< T > operator *( const double &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) *= c1 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator *( const T1 &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c2 ) *= c1 ); }
 
 /// @brief ƒJƒ‰[‰æ‘f‚ğ’è”‚ÅŠ„‚é
-template < class T > inline const rgb< T > operator /( const rgb< T > &c1, const double &c2 ){ return( rgb< T >( c1 ) /= c2 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator /( const rgb< T1 > &c1, const T2 &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) /= c2 ); }
 
 
 
 /// @brief ƒJƒ‰[‰æ‘f‚Æ’è”‚Ì˜a
-template < class T > inline const rgb< T > operator +( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) += c2 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator +( const rgb< T1 > &c1, const T2 &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) += c2 ); }
 
 /// @brief ’è”‚ÆƒJƒ‰[‰æ‘f‚Ì˜a
-template < class T > inline const rgb< T > operator +( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c2 ) += c1 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator +( const T1 &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c2 ) += c1 ); }
 
 /// @brief ƒJƒ‰[‰æ‘f‚Æ’è”‚Ì·
-template < class T > inline const rgb< T > operator -( const rgb< T > &c1, const typename rgb< T >::value_type &c2 ){ return( rgb< T >( c1 ) -= c2 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator -( const rgb< T1 > &c1, const T2 &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) -= c2 ); }
 
 /// @brief ’è”‚ÆƒJƒ‰[‰æ‘f‚Ì·
-template < class T > inline const rgb< T > operator -( const typename rgb< T >::value_type &c1, const rgb< T > &c2 ){ return( rgb< T >( c1 ) -= c2 ); }
+template < class T1, class T2 >
+inline const rgb< typename promote_trait< T1, T2 >::value_type > operator -( const T1 &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c2 ) -= c1 ); }
+
+
+
+
+/// @brief ”äŠr‰‰Zq ==
+template < class T1, class T2 >
+inline bool operator ==( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) == rgb< typename promote_trait< T1, T2 >::value_type >( c2 ) ); }
+
+/// @brief ”äŠr‰‰Zq !=
+template < class T1, class T2 >
+inline bool operator !=( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) != rgb< typename promote_trait< T1, T2 >::value_type >( c2 ) ); }
+
+/// @brief ”äŠr‰‰Zq <
+template < class T1, class T2 >
+inline bool operator < ( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) <  rgb< typename promote_trait< T1, T2 >::value_type >( c2 ) ); }
+
+/// @brief ”äŠr‰‰Zq <=
+template < class T1, class T2 >
+inline bool operator <=( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) <= rgb< typename promote_trait< T1, T2 >::value_type >( c2 ) ); }
+
+/// @brief ”äŠr‰‰Zq >
+template < class T1, class T2 >
+inline bool operator > ( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) >  rgb< typename promote_trait< T1, T2 >::value_type >( c2 ) ); }
+
+/// @brief ”äŠr‰‰Zq >=
+template < class T1, class T2 >
+inline bool operator >=( const rgb< T1 > &c1, const rgb< T2 > &c2 ){ return( rgb< typename promote_trait< T1, T2 >::value_type >( c1 ) >= rgb< typename promote_trait< T1, T2 >::value_type >( c2 ) ); }
+
 
 
 /// @brief w’è‚³‚ê‚½ƒXƒgƒŠ[ƒ€‚ÉCƒRƒ“ƒeƒi“à‚Ì—v‘f‚ğ®Œ`‚µ‚Äo—Í‚·‚é

@@ -5,7 +5,8 @@ int main( int argc, char *argv[] )
 {
 	using namespace std;
 
-	mist::rgb< signed int > v1( 1, 2, 3 ), v2( 1, 2, 4 );
+	mist::rgb< signed int > v1( 1, 2, 3 );
+	mist::rgb< float > v2( 1, 2, 4 );
 
 	cout << " ( A, B ) = ( " << v1 << ", " << v2 << " )" << endl;
 	cout << " 1. Operator A + B = \t"; cout << ( v1 + v2 ) << endl;
@@ -33,9 +34,8 @@ int main( int argc, char *argv[] )
 	cout << "21. Operator A >= B = \t"; cout << ( v1 >= v2 ) << endl;
 
 
-	//cout << "15. Size of bool = \t"; cout << sizeof( value< bool > ) << endl;
-	//cout << "16. Size of int  = \t"; cout << sizeof( value< int > ) << endl;
-	//cout << "17. Size of char = \t"; cout << sizeof( value< char > ) << endl;
+	cout << "22. Operator 2.5 * A + 3.8 * B = \t"; cout << ( 2.5 * v1 + 3.8 * v2 ) << endl;
+	cout << "23. Operator 2.5 * ( A + B ) = \t"; cout << ( 2.5 * ( v1 + v2 ) ) << endl;
 
 	return( 0 );
 }
