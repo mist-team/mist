@@ -118,6 +118,13 @@ namespace __tga_controller__
 					// 例： 83 0A -> 0A 0A 0A 0A
 
 					size_type num = ( byte & 0x7f ) + 1;
+
+					// 範囲外アクセスのチェック
+					if( i + pixel_bytes > snum_bytes || j + num * pixel_bytes > num_bytes )
+					{
+						break;
+					}
+
 					for( size_type l = 0 ; l < num ; l++ )
 					{
 						for( size_type m = 0 ; m < pixel_bytes ; m++ )
@@ -135,6 +142,13 @@ namespace __tga_controller__
 					// byte+1 個のデータ（ピクセルのバイト数を単位として）をコピーする。
 					// 例： 04 0A 0B 0C 0D 0E ->  0A 0B 0C 0D 0E
 					size_type num = byte + 1;
+
+					// 範囲外アクセスのチェック
+					if( i + num * pixel_bytes > snum_bytes || j + num * pixel_bytes > num_bytes )
+					{
+						break;
+					}
+
 					memcpy( buff + j, pixel + i, sizeof( unsigned char ) * num * pixel_bytes );
 
 					i += num * pixel_bytes;
@@ -151,6 +165,179 @@ namespace __tga_controller__
 			}
 
 			return( true );
+		}
+
+		inline static bool is_equal( const unsigned char *pix1, const unsigned char *pix2, size_type pixel_bytes )
+		{
+			for( size_type i = 0 ; i < pixel_bytes ; i++ )
+			{
+				if( pix1[ i ] != pix2[ i ] )
+				{
+					return( false );
+				}
+			}
+			return( true );
+		}
+
+		inline static size_type count_run_length( const unsigned char *pixel, size_type num_bytes, size_type pixel_bytes )
+		{
+			if( num_bytes < 2 )
+			{
+				return( 0 );
+			}
+
+			size_type i, l;
+			for( i = 0 ; i < num_bytes ; i++ )
+			{
+				for( l = 0 ; l < pixel_bytes ; l++ )
+				{
+					if( pixel[ l ] != pixel[ i * pixel_bytes + l ] )
+					{
+						break;
+					}
+				}
+
+				if( l != pixel_bytes )
+				{
+					return( i );
+				}
+			}
+			return( i );
+		}
+
+		static size_type encode_RLE( unsigned char *pixel, size_type num_bytes, size_type pixel_bytes )
+		{
+			unsigned char *buff = new unsigned char[ num_bytes * 2 ];
+			unsigned char temp[ 20 ];
+
+			// ランレングスのリストを作成する
+			size_type num = num_bytes / pixel_bytes, count = 0, k;
+			unsigned char *pbuff = buff;
+			const unsigned char *pix = pixel;
+			const unsigned char *epix = pixel + num_bytes;
+			for( size_type i = 0 ; i < num ; i++ )
+			{
+				size_type len = count_run_length( pix, epix - pix, pixel_bytes );
+
+				if( len > 2 )
+				{
+					size_type nrun = len / 128;
+					size_type rest = len % 128;
+
+					temp[ 0 ] = 0xff;
+
+					for( k = 0 ; k < pixel_bytes ; k++ )
+					{
+						temp[ k + 1 ] = pix[ k ];
+					}
+
+					for( k = 0 ; k < nrun ; k++ )
+					{
+						for( size_type l = 0 ; l <= pixel_bytes ; l++ )
+						{
+							pbuff[ l ] = temp[ l ];
+						}
+						pbuff += pixel_bytes + 1;
+					}
+
+					pix += 128 * nrun * pixel_bytes;
+
+					if( rest > 2 )
+					{
+						temp[ 0 ] = 0x80 + static_cast< unsigned char >( rest - 1 );
+						for( size_type l = 0 ; l <= pixel_bytes ; l++ )
+						{
+							pbuff[ l ] = temp[ l ];
+						}
+						pbuff += pixel_bytes + 1;
+						pix   += pixel_bytes * rest;
+
+						count = 0;
+					}
+					else if( rest > 0 )
+					{
+						pbuff[ 0 ] = static_cast< unsigned char >( rest - 1 );
+
+						for( k = 0 ; k < pixel_bytes * rest ; k++ )
+						{
+							pbuff[ k + 1 ] = pix[ k ];
+						}
+						pbuff += pixel_bytes * rest + 1;
+						pix   += pixel_bytes * rest;
+
+						count = rest;
+					}
+				}
+				else if( len > 0 )
+				{
+					if( count > 0 )
+					{
+						size_type total = count + len;
+						size_type nnum, rest;
+
+						if( total > 128 )
+						{
+							size_type rest  = total % 128;
+							size_type nnum  = total - rest;
+						}
+						else
+						{
+							nnum = total;
+							rest = 0;
+						}
+
+						pbuff[ 0 ] = static_cast< unsigned char >( nnum - 1 );
+
+						for( k = 0 ; k < pixel_bytes * nnum ; k++ )
+						{
+							pbuff[ k + 1 ] = pix[ k ];
+						}
+						pbuff += pixel_bytes * nnum + 1;
+						pix   += pixel_bytes * nnum;
+
+						if( rest > 0 )
+						{
+							pbuff[ 0 ] = static_cast< unsigned char >( rest - 1 );
+
+							for( k = 0 ; k < pixel_bytes * rest ; k++ )
+							{
+								pbuff[ k + 1 ] = pix[ k ];
+							}
+							pbuff += pixel_bytes * rest + 1;
+							pix   += pixel_bytes * rest;
+
+							count = rest;
+						}
+					}
+					else
+					{
+						pbuff[ 0 ] = static_cast< unsigned char >( len - 1 );
+
+						for( k = 0 ; k < pixel_bytes * len ; k++ )
+						{
+							pbuff[ k + 1 ] = pix[ k ];
+						}
+						pbuff += pixel_bytes * len + 1;
+						pix   += pixel_bytes * len;
+
+						count = len;
+					}
+				}
+			}
+
+			if( num_bytes <= static_cast< size_type >( pbuff - buff ) )
+			{
+				// RLEのデコードに失敗
+				delete [] buff;
+				return( num_bytes );
+			}
+			else
+			{
+				num_bytes = pbuff - buff;
+				memcpy( pixel, buff, num_bytes );
+				delete [] buff;
+				return( num_bytes );
+			}
 		}
 
 
@@ -316,7 +503,7 @@ namespace __tga_controller__
 
 		static difference_type convert_to_tga_data( const array2< T, Allocator > &image, unsigned char * &tga, size_type tga_bits, bool is_encode_RLE, bool from_top, bool from_left )
 		{
-			if( image.empty( ) || is_encode_RLE )
+			if( image.empty( ) )
 			{
 				return( -1 );
 			}
@@ -410,8 +597,16 @@ namespace __tga_controller__
 
 			if( is_encode_RLE )
 			{
+				size_type nbytes = encode_RLE( image_data, width * height * pixel_bytes, pixel_bytes );
+
+				if( nbytes == width * height * pixel_bytes )
+				{
+					header.image_type = 2;
+					header.image_descriptor = ( from_top ? 0x20 : 0 ) | ( from_left ? 0 : 0x10 );
+				}
+
 				// 今後サポート予定
-				return( _tga_header_::bytes + width * height * pixel_bytes );
+				return( _tga_header_::bytes + nbytes );
 			}
 			else
 			{
@@ -539,9 +734,10 @@ bool read_tga( array2< T, Allocator > &image, const std::string &filename )
 
 /// @brief MISTコンテナの画像をTGA形式でファイルに出力する
 //! 
-//! @param[in] image    … 出力画像を保持するMISTコンテナ
-//! @param[in] filename … 出力ファイル名
-//! @param[in] tga_bits … 以下のビットマップのビット数のいずれか
+//! @param[in] image         … 出力画像を保持するMISTコンテナ
+//! @param[in] filename      … 出力ファイル名
+//! @param[in] tga_bits      … 以下のビットマップのビット数のいずれか
+//! @param[in] is_encode_RLE … RLE圧縮をかけるかどうか（デフォルトはTrue）
 //!
 //! -# 16ビット … 各色 5 ビットのビットマップ
 //! -# 24ビット … フルカラービットマップ
@@ -551,9 +747,9 @@ bool read_tga( array2< T, Allocator > &image, const std::string &filename )
 //! @retval false … 画像の書き込みに失敗
 //! 
 template < class T, class Allocator >
-bool write_tga( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type tga_bits = 32 )
+bool write_tga( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type tga_bits = 32, bool is_encode_RLE = true )
 {
-	return( __tga_controller__::tga_controller< T, Allocator >::write( image, filename, tga_bits, false ) );
+	return( __tga_controller__::tga_controller< T, Allocator >::write( image, filename, tga_bits, is_encode_RLE ) );
 }
 
 /// @}
