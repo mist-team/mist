@@ -7,12 +7,19 @@
 class image_draw_area : public Fl_Gl_Window
 {
 public:
-	image_draw_area( int x, int y, int w, int h, const char *l ) : Fl_Gl_Window( x, y, w, h, l){ }
-	image_draw_area( int x, int y, int w, int h ) : Fl_Gl_Window( x, y, w, h ){ }
+	image_draw_area( int x, int y, int w, int h, const char *l ) : Fl_Gl_Window( x, y, w, h, l), interpolate_( false ){ }
+	image_draw_area( int x, int y, int w, int h ) : Fl_Gl_Window( x, y, w, h ), interpolate_( false ){ }
 	virtual ~image_draw_area(){ }
+
+private:
+	bool interpolate_;
 
 public:
 	void draw();
+	bool interpolate( bool b )
+	{
+		return( interpolate_ = b );
+	}
 };
 
 void read_jpeg_test( const char *filename );

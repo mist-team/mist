@@ -18,7 +18,7 @@ mist::array2< unsigned char > image_object( 100, 100 );
 
 void image_draw_area::draw( )
 {
-	mist::draw_image( image_object, w( ), h( ) );
+	mist::draw_image( image_object, w( ), h( ), 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, interpolate_ );
 }
 
 
@@ -110,6 +110,10 @@ void figure_decomposition_test( )
 
 		case 4:
 			image_object[i] = 200;
+			break;
+
+		case 5:
+			image_object[i] = 255;
 			break;
 		}
 	}

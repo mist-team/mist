@@ -58,8 +58,8 @@ _DEFINE_TYPE_LIMITS( signed   long,  true,  true,  LONG_MIN,  LONG_MAX, 0 )
 _DEFINE_TYPE_LIMITS( unsigned long,  true, false,         0, ULONG_MAX, 0 )
 
 _DEFINE_TYPE_LIMITS(       float,   false,  true,   FLT_MIN,   FLT_MAX, 0.0f )
-_DEFINE_TYPE_LIMITS(      double,   false, false,   DBL_MIN,   DBL_MAX, 0 )
-_DEFINE_TYPE_LIMITS( long double,   false, false,  LDBL_MIN,  LDBL_MAX, 0 )
+_DEFINE_TYPE_LIMITS(      double,   false,  true,   DBL_MIN,   DBL_MAX, 0 )
+_DEFINE_TYPE_LIMITS( long double,   false,  true,  LDBL_MIN,  LDBL_MAX, 0 )
 
 #undef _DEFINE_TYPE_LIMITS
 
