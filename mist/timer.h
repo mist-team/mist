@@ -13,7 +13,8 @@
 
 #else
 
-#include <ctime>
+//#include <time.h>
+#include <sys/time.h>
 
 #endif
 
@@ -30,7 +31,7 @@ public:
 #ifdef WIN32
 		_start_time = timeGetTime( );
 #else
-		_start_time = std::clock( );
+		gettimeofday( &_start_time, NULL );
 #endif
 	} // postcondition: elapsed()==0
 
@@ -39,16 +40,18 @@ public:
 #ifdef WIN32
 		_start_time = timeGetTime( );
 #else
-		_start_time = std::clock( );
+		gettimeofday( &_start_time, NULL );
 #endif
 	}
 
 	double elapse( ) const
 	{
 #ifdef WIN32
-		return( double( timeGetTime( ) - _start_time ) / 1000.0 );
+		return( static_cast< double >( timeGetTime( ) - _start_time ) / 1000.0 );
 #else
-		return( double( std::clock( ) - _start_time ) / double( CLOCKS_PER_SEC ) );
+		timeval  _end_time;
+		gettimeofday( &_end_time, NULL );
+		return( static_cast< double >( _end_time.tv_sec - _start_time.tv_sec ) + static_cast< double >( _end_time.tv_usec - _start_time.tv_usec ) / 1000000.0 );
 #endif
 	}
 
@@ -56,7 +59,7 @@ private:
 #ifdef WIN32
 	DWORD _start_time;
 #else
-	std::clock_t _start_time;
+	timeval  _start_time;
 #endif
 
 };
