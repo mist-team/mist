@@ -1,20 +1,20 @@
-0x3002,0x0002,SH,1,"RT Image Label",//
-0x3002,0x0003,LO,1,"RT Image Name",//
-0x3002,0x0004,ST,1,"RT Image Description",//
-0x3002,0x000A,CS,1,"Reported Values Origin",//
-0x3002,0x000C,CS,1,"RT Image Plane",//
-0x3002,0x000D,DS,3,"X-Ray Image Receptor Translation",//
-0x3002,0x000E,DS,1,"X-Ray Image Receptor Angle",//
-0x3002,0x0010,DS,6,"RT Image Orientation",//
-0x3002,0x0011,DS,2,"Image Plane Pixel Spacing",//
-0x3002,0x0012,DS,2,"RT Image Position",//
-0x3002,0x0020,SH,1,"Radiation Machine Name",//
-0x3002,0x0022,DS,1,"Radiation Machine SAD",//
-0x3002,0x0024,DS,1,"Radiation Machine SSD",//
-0x3002,0x0026,DS,1,"RT Image SID",//
-0x3002,0x0028,DS,1,"Source to Reference Object Distance",//
-0x3002,0x0029,IS,1,"Fraction Number",//
-0x3002,0x0030,SQ,1,"Exposure Sequence",//
-0x3002,0x0032,DS,1,"Meterset Exposure",//
-0x3002,0x0034,DS,4,"Diaphragm Position",//
-0x0000,0x0000,UNKNOWN,0,"Data End",//
+{0,0x3002,0x0002,SH,1,"""RT Image Label""",},//
+{0,0x3002,0x0003,LO,1,"""RT Image Name""",},//
+{0,0x3002,0x0004,ST,1,"""RT Image Description""",},//
+{0,0x3002,0x000A,CS,1,"""Reported Values Origin""",},//
+{0,0x3002,0x000C,CS,1,"""RT Image Plane""",},//
+{0,0x3002,0x000D,DS,3,"""X-Ray Image Receptor Translation""",},//
+{0,0x3002,0x000E,DS,1,"""X-Ray Image Receptor Angle""",},//
+{0,0x3002,0x0010,DS,6,"""RT Image Orientation""",},//
+{0,0x3002,0x0011,DS,2,"""Image Plane Pixel Spacing""",},//
+{0,0x3002,0x0012,DS,2,"""RT Image Position""",},//
+{0,0x3002,0x0020,SH,1,"""Radiation Machine Name""",},//
+{0,0x3002,0x0022,DS,1,"""Radiation Machine SAD""",},//
+{0,0x3002,0x0024,DS,1,"""Radiation Machine SSD""",},//
+{0,0x3002,0x0026,DS,1,"""RT Image SID""",},//
+{0,0x3002,0x0028,DS,1,"""Source to Reference Object Distance""",},//
+{0,0x3002,0x0029,IS,1,"""Fraction Number""",},//
+{0,0x3002,0x0030,SQ,1,"""Exposure Sequence""",},//
+{0,0x3002,0x0032,DS,1,"""Meterset Exposure""",},//
+{0,0x3002,0x0034,DS,4,"""Diaphragm Position""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

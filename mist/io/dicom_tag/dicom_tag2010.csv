@@ -1,28 +1,28 @@
-//0x2010,0x0000,UL,1,"Group 2010 Length",//
-0x2010,0x0010,ST,1,"Image Display Format",//
-0x2010,0x0030,CS,1,"Annotation Display Format ID",//
-0x2010,0x0040,CS,1,"Film Orientation",//
-0x2010,0x0050,CS,1,"Film Size ID",//
-0x2010,0x0052,CS,1,"Printer Resolution ID",//
-0x2010,0x0054,CS,1,"Default Printer Resolution ID",//
-0x2010,0x0060,CS,1,"Magnification Type",//
-0x2010,0x0080,CS,1,"Smoothing Type",//
-0x2010,0x00A6,CS,1,"Default Magnification Type",//
-0x2010,0x00A7,CS,-1,"Other Magnification Types Available",//
-0x2010,0x00A8,CS,1,"Default Smoothing Type",//
-0x2010,0x00A9,CS,-1,"Other Smoothing Types Available",//
-0x2010,0x0100,CS,1,"Border Density",//
-0x2010,0x0110,CS,1,"Empty Image Density",//
-0x2010,0x0120,US,1,"Min Density",//
-0x2010,0x0130,US,1,"Max Density",//
-0x2010,0x0140,CS,1,"Trim",//
-0x2010,0x0150,ST,1,"Configuration Information",//
-0x2010,0x0152,LT,1,"Configuration Information Description",//
-0x2010,0x0154,IS,1,"Maximum Collated Films",//
-0x2010,0x015E,US,1,"Illumination",//
-0x2010,0x0160,US,1,"Reflected Ambient Light",//
-0x2010,0x0376,DS,2,"Printer Pixel Spacing",//
-0x2010,0x0500,SQ,1,"Referenced Film Session Sequence",//
-0x2010,0x0510,SQ,1,"Referenced Basic Image Box Sequence",//
-0x2010,0x0520,SQ,1,"Referenced Basic Annotation Box Sequence",//
-0x0000,0x0000,UNKNOWN,0,"Data End",//
+//{0,0x2010,0x0000,UL,1,"""Group 2010 Length""",},//
+{0,0x2010,0x0010,ST,1,"""Image Display Format""",},//
+{0,0x2010,0x0030,CS,1,"""Annotation Display Format ID""",},//
+{0,0x2010,0x0040,CS,1,"""Film Orientation""",},//
+{0,0x2010,0x0050,CS,1,"""Film Size ID""",},//
+{0,0x2010,0x0052,CS,1,"""Printer Resolution ID""",},//
+{0,0x2010,0x0054,CS,1,"""Default Printer Resolution ID""",},//
+{0,0x2010,0x0060,CS,1,"""Magnification Type""",},//
+{0,0x2010,0x0080,CS,1,"""Smoothing Type""",},//
+{0,0x2010,0x00A6,CS,1,"""Default Magnification Type""",},//
+{0,0x2010,0x00A7,CS,-1,"""Other Magnification Types Available""",},//
+{0,0x2010,0x00A8,CS,1,"""Default Smoothing Type""",},//
+{0,0x2010,0x00A9,CS,-1,"""Other Smoothing Types Available""",},//
+{0,0x2010,0x0100,CS,1,"""Border Density""",},//
+{0,0x2010,0x0110,CS,1,"""Empty Image Density""",},//
+{0,0x2010,0x0120,US,1,"""Min Density""",},//
+{0,0x2010,0x0130,US,1,"""Max Density""",},//
+{0,0x2010,0x0140,CS,1,"""Trim""",},//
+{0,0x2010,0x0150,ST,1,"""Configuration Information""",},//
+{0,0x2010,0x0152,LT,1,"""Configuration Information Description""",},//
+{0,0x2010,0x0154,IS,1,"""Maximum Collated Films""",},//
+{0,0x2010,0x015E,US,1,"""Illumination""",},//
+{0,0x2010,0x0160,US,1,"""Reflected Ambient Light""",},//
+{0,0x2010,0x0376,DS,2,"""Printer Pixel Spacing""",},//
+{0,0x2010,0x0500,SQ,1,"""Referenced Film Session Sequence""",},//
+{0,0x2010,0x0510,SQ,1,"""Referenced Basic Image Box Sequence""",},//
+{0,0x2010,0x0520,SQ,1,"""Referenced Basic Annotation Box Sequence""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -35,7 +35,7 @@ namespace __dicom_controller__
 		byte_array( const byte_array &v ) : value( v.value ){ }
 		byte_array( const char *b )
 		{
-			for( int i = 0 ; i < sizeof( value_type ) ; i++ )
+			for( size_t i = 0 ; i < sizeof( value_type ) ; i++ )
 			{
 				byte[ i ] = b[ i ];
 			}
@@ -731,7 +731,8 @@ namespace __dicom_controller__
 		long ret = 0;
 
 		// DICOMデータの先頭までポインタを移動
-		bool is_dicom_file = check_dicom_file( fp );
+		check_dicom_file( fp );
+//		bool is_dicom_file = check_dicom_file( fp );
 
 		dicom.clear( );
 

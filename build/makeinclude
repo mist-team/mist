@@ -17,7 +17,7 @@ IMGLIBS = -ljpeg -lpng -ltiff -lz
 LIBS = -lpthread
 
 # Be quiet when building...
-#.SILENT:
+.SILENT:
 
 # Build commands and filename extensions...
 .SUFFIXES: .c .cpp .cxx .h .o .obj

@@ -1,10 +1,10 @@
-0x0060,0x3000,SQ,1,"Histogram Sequence",//
-0x0060,0x3002,US,1,"Histogram Number of Bins",//
-0x0060,0x3004,US,1,"Histogram First Bin Value",//
-0x0060,0x3004,SS,1,"Histogram First Bin Value",//
-0x0060,0x3006,US,1,"Histogram Last Bin Value",//
-0x0060,0x3006,SS,1,"Histogram Last Bin Value",//
-0x0060,0x3008,US,1,"Histogram Bin Width",//
-0x0060,0x3010,LO,1,"Histogram Explanation",//
-0x0060,0x3020,UL,-1,"Histogram Data",//
-0x0000,0x0000,UNKNOWN,0,"Data End",//
+{0,0x0060,0x3000,SQ,1,"""Histogram Sequence""",},//
+{0,0x0060,0x3002,US,1,"""Histogram Number of Bins""",},//
+{0,0x0060,0x3004,US,1,"""Histogram First Bin Value""",},//
+{0,0x0060,0x3004,SS,1,"""Histogram First Bin Value""",},//
+{0,0x0060,0x3006,US,1,"""Histogram Last Bin Value""",},//
+{0,0x0060,0x3006,SS,1,"""Histogram Last Bin Value""",},//
+{0,0x0060,0x3008,US,1,"""Histogram Bin Width""",},//
+{0,0x0060,0x3010,LO,1,"""Histogram Explanation""",},//
+{0,0x0060,0x3020,UL,-1,"""Histogram Data""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

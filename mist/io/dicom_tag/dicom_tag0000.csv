@@ -1,35 +1,35 @@
-0x0000,0x0000,UL,1,"Group 0000 Length",//
-0x0000,0x0001,UL,1,"Group 0000 Length to End (RET)",//
-0x0000,0x0002,UI,1,"Affected SOP Class UID",//
-0x0000,0x0003,UI,1,"Requested SOP Class UID",//
-0x0000,0x0010,SH,1,"Recognition Code (RET)",//
-0x0000,0x0100,US,1,"Command Field",//
-0x0000,0x0110,US,1,"Message ID",//
-0x0000,0x0120,US,1,"Message Id being Responded to",//
-0x0000,0x0200,AE,1,"Initiator (RET)",//
-0x0000,0x0300,AE,1,"Receiver (RET)",//
-0x0000,0x0400,AE,1,"Find Location (RET)",//
-0x0000,0x0600,AE,1,"Move Destination",//
-0x0000,0x0700,US,1,"Priority",//
-0x0000,0x0800,US,1,"Data Set Type",//
-0x0000,0x0850,US,1,"Number of Matches (RET)",//
-0x0000,0x0860,US,1,"Response Sequence Number (RET)",//
-0x0000,0x0900,US,1,"Status",//
-0x0000,0x0901,AT,1,"Offending Element",//
-0x0000,0x0902,LO,1,"Error Comment",//
-0x0000,0x0903,US,1,"Error ID",//
-0x0000,0x1000,UI,1,"Affected SOP Instance UID",//
-0x0000,0x1001,UI,1,"Requested SOP Instance UID",//
-0x0000,0x1002,US,1,"Event Type ID",//
-0x0000,0x1005,AT,1,"Attribute Identifier List",//
-0x0000,0x1008,US,1,"Action Type ID",//
-0x0000,0x1012,UI,1,"Requested SOP Instance UID List",//
-0x0000,0x1020,US,1,"Number of Remaining Sub-operations",//
-0x0000,0x1021,US,1,"Number of Completed Sub-operations",//
-0x0000,0x1022,US,1,"Number of Failed Sub-operations",//
-0x0000,0x1023,US,1,"Number of Warning Sub-operations",//
-0x0000,0x1030,AE,1,"Move Originator Application Entity Title",//
-0x0000,0x1031,US,1,"Move Originator Message ID",//
-0x0000,0x5010,LO,1,"Message Set ID (RET)",//
-0x0000,0x5020,LO,1,"End Message Set ID (RET)",//
-0x0000,0x0000,UNKNOWN,0,"Data End",//
+{0,0x0000,0x0000,UL,1,"""Group 0000 Length""",},//
+{0,0x0000,0x0001,UL,1,"""Group 0000 Length to End (RET)""",},//
+{0,0x0000,0x0002,UI,1,"""Affected SOP Class UID""",},//
+{0,0x0000,0x0003,UI,1,"""Requested SOP Class UID""",},//
+{0,0x0000,0x0010,SH,1,"""Recognition Code (RET)""",},//
+{0,0x0000,0x0100,US,1,"""Command Field""",},//
+{0,0x0000,0x0110,US,1,"""Message ID""",},//
+{0,0x0000,0x0120,US,1,"""Message Id being Responded to""",},//
+{0,0x0000,0x0200,AE,1,"""Initiator (RET)""",},//
+{0,0x0000,0x0300,AE,1,"""Receiver (RET)""",},//
+{0,0x0000,0x0400,AE,1,"""Find Location (RET)""",},//
+{0,0x0000,0x0600,AE,1,"""Move Destination""",},//
+{0,0x0000,0x0700,US,1,"""Priority""",},//
+{0,0x0000,0x0800,US,1,"""Data Set Type""",},//
+{0,0x0000,0x0850,US,1,"""Number of Matches (RET)""",},//
+{0,0x0000,0x0860,US,1,"""Response Sequence Number (RET)""",},//
+{0,0x0000,0x0900,US,1,"""Status""",},//
+{0,0x0000,0x0901,AT,1,"""Offending Element""",},//
+{0,0x0000,0x0902,LO,1,"""Error Comment""",},//
+{0,0x0000,0x0903,US,1,"""Error ID""",},//
+{0,0x0000,0x1000,UI,1,"""Affected SOP Instance UID""",},//
+{0,0x0000,0x1001,UI,1,"""Requested SOP Instance UID""",},//
+{0,0x0000,0x1002,US,1,"""Event Type ID""",},//
+{0,0x0000,0x1005,AT,1,"""Attribute Identifier List""",},//
+{0,0x0000,0x1008,US,1,"""Action Type ID""",},//
+{0,0x0000,0x1012,UI,1,"""Requested SOP Instance UID List""",},//
+{0,0x0000,0x1020,US,1,"""Number of Remaining Sub-operations""",},//
+{0,0x0000,0x1021,US,1,"""Number of Completed Sub-operations""",},//
+{0,0x0000,0x1022,US,1,"""Number of Failed Sub-operations""",},//
+{0,0x0000,0x1023,US,1,"""Number of Warning Sub-operations""",},//
+{0,0x0000,0x1030,AE,1,"""Move Originator Application Entity Title""",},//
+{0,0x0000,0x1031,US,1,"""Move Originator Message ID""",},//
+{0,0x0000,0x5010,LO,1,"""Message Set ID (RET)""",},//
+{0,0x0000,0x5020,LO,1,"""End Message Set ID (RET)""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -1,78 +1,78 @@
-0x3008,0x0010,SQ,1,"Measured Dose Reference Sequence",//
-0x3008,0x0012,ST,1,"Measured Dose Description",//
-0x3008,0x0014,CS,1,"Measured Dose Type",//
-0x3008,0x0016,DS,1,"Measured Dose Value",//
-0x3008,0x0020,SQ,1,"Treatment Session Beam Sequence",//
-0x3008,0x0022,IS,1,"Current Fraction Number",//
-0x3008,0x0024,DA,1,"Treatment Control Point Date",//
-0x3008,0x0025,TM,1,"Treatment Control Point Time",//
-0x3008,0x002A,CS,1,"Treatment Termination Status",//
-0x3008,0x002B,SH,1,"Treatment Termination Code",//
-0x3008,0x002C,CS,1,"Treatment Verification Status",//
-0x3008,0x0030,SQ,1,"Referenced Treatment Record Sequence",//
-0x3008,0x0032,DS,1,"Specified Primary Meterset",//
-0x3008,0x0033,DS,1,"Specified Secondary Meterset",//
-0x3008,0x0036,DS,1,"Delivered Primary Meterset",//
-0x3008,0x0037,DS,1,"Delivered Secondary Meterset",//
-0x3008,0x003A,DS,1,"Specified Treatment Time",//
-0x3008,0x003B,DS,1,"Delivered Treatment Time",//
-0x3008,0x0040,SQ,1,"Control Point Delivery Sequence",//
-0x3008,0x0042,DS,1,"Specified Meterset",//
-0x3008,0x0044,DS,1,"Delivered Meterset",//
-0x3008,0x0048,DS,1,"Dose Rate Delivered",//
-0x3008,0x0050,SQ,1,"Treatment Summary Calculated Dose Reference Sequence",//
-0x3008,0x0052,DS,1,"Cumulative Dose to Dose Reference",//
-0x3008,0x0054,DA,1,"First Treatment Date",//
-0x3008,0x0056,DA,1,"Most Recent Treatment Date",//
-0x3008,0x005A,IS,1,"Number of Fractions Delivered",//
-0x3008,0x0060,SQ,1,"Override Sequence",//
-0x3008,0x0062,AT,1,"Override Parameter Pointer",//
-0x3008,0x0064,IS,1,"Measured Dose Reference Number",//
-0x3008,0x0066,ST,1,"Override Reason",//
-0x3008,0x0070,SQ,1,"Calculated Dose Reference Sequence",//
-0x3008,0x0072,IS,1,"Calculated Dose Reference Number",//
-0x3008,0x0074,ST,1,"Calculated Dose Reference Description",//
-0x3008,0x0076,DS,1,"Calculated Dose Reference Dose Value",//
-0x3008,0x0078,DS,1,"Start Meterset",//
-0x3008,0x007A,DS,1,"End Meterset",//
-0x3008,0x0080,SQ,1,"Referenced Measured Dose Reference Sequence",//
-0x3008,0x0082,IS,1,"Referenced Measured Dose Reference Number",//
-0x3008,0x0090,SQ,1,"Referenced Calculated Dose Reference Sequence",//
-0x3008,0x0092,IS,1,"Referenced Calculated Dose Reference Number",//
-0x3008,0x00A0,SQ,1,"Beam Limiting Device Leaf Pairs Sequence",//
-0x3008,0x00B0,SQ,1,"Recorded Wedge Sequence",//
-0x3008,0x00C0,SQ,1,"Recorded Compensator Sequence",//
-0x3008,0x00D0,SQ,1,"Recorded Block Sequence",//
-0x3008,0x00E0,SQ,1,"Treatment Summary Measured Dose Reference Sequence",//
-0x3008,0x0100,SQ,1,"Recorded Source Sequence",//
-0x3008,0x0105,LO,1,"Source Serial Number",//
-0x3008,0x0110,SQ,1,"Treatment Session Application Setup Sequence",//
-0x3008,0x0116,CS,1,"Application Setup Check",//
-0x3008,0x0120,SQ,1,"Recorded Brachy Accessory Device Sequence",//
-0x3008,0x0122,IS,1,"Referenced Brachy Accessory Device Number",//
-0x3008,0x0130,SQ,1,"Recorded Channel Sequence",//
-0x3008,0x0132,DS,1,"Specified Channel Total Time",//
-0x3008,0x0134,DS,1,"Delivered Channel Total Time",//
-0x3008,0x0136,IS,1,"Specified Number of Pulses",//
-0x3008,0x0138,IS,1,"Delivered Number of Pulses",//
-0x3008,0x013A,DS,1,"Specified Pulse Repetition Interval",//
-0x3008,0x013C,DS,1,"Delivered Pulse Repetition Interval",//
-0x3008,0x0140,SQ,1,"Recorded Source Applicator Sequence",//
-0x3008,0x0142,IS,1,"Referenced Source Applicator Number",//
-0x3008,0x0150,SQ,1,"Recorded Channel Shield Sequence",//
-0x3008,0x0152,IS,1,"Referenced Channel Shield Number",//
-0x3008,0x0160,SQ,1,"Brachy Control Point Delivered Sequence",//
-0x3008,0x0162,DA,1,"Safe Position Exit Date",//
-0x3008,0x0164,TM,1,"Safe Position Exit Time",//
-0x3008,0x0166,DA,1,"Safe Position Return Date",//
-0x3008,0x0168,TM,1,"Safe Position Return Time",//
-0x3008,0x0200,CS,1,"Current Treatment Status",//
-0x3008,0x0202,ST,1,"Treatment Status Comment",//
-0x3008,0x0220,SQ,1,"Fraction Group Summary Sequence",//
-0x3008,0x0223,IS,1,"Referenced Fraction Number",//
-0x3008,0x0224,CS,1,"Fraction Group Type",//
-0x3008,0x0230,CS,1,"Beam Stopper Position",//
-0x3008,0x0240,SQ,1,"Fraction Status Summary Sequence",//
-0x3008,0x0250,DA,1,"Treatment Date",//
-0x3008,0x0251,TM,1,"Treatment Time",//
-0x0000,0x0000,UNKNOWN,0,"Data End",//
+{0,0x3008,0x0010,SQ,1,"""Measured Dose Reference Sequence""",},//
+{0,0x3008,0x0012,ST,1,"""Measured Dose Description""",},//
+{0,0x3008,0x0014,CS,1,"""Measured Dose Type""",},//
+{0,0x3008,0x0016,DS,1,"""Measured Dose Value""",},//
+{0,0x3008,0x0020,SQ,1,"""Treatment Session Beam Sequence""",},//
+{0,0x3008,0x0022,IS,1,"""Current Fraction Number""",},//
+{0,0x3008,0x0024,DA,1,"""Treatment Control Point Date""",},//
+{0,0x3008,0x0025,TM,1,"""Treatment Control Point Time""",},//
+{0,0x3008,0x002A,CS,1,"""Treatment Termination Status""",},//
+{0,0x3008,0x002B,SH,1,"""Treatment Termination Code""",},//
+{0,0x3008,0x002C,CS,1,"""Treatment Verification Status""",},//
+{0,0x3008,0x0030,SQ,1,"""Referenced Treatment Record Sequence""",},//
+{0,0x3008,0x0032,DS,1,"""Specified Primary Meterset""",},//
+{0,0x3008,0x0033,DS,1,"""Specified Secondary Meterset""",},//
+{0,0x3008,0x0036,DS,1,"""Delivered Primary Meterset""",},//
+{0,0x3008,0x0037,DS,1,"""Delivered Secondary Meterset""",},//
+{0,0x3008,0x003A,DS,1,"""Specified Treatment Time""",},//
+{0,0x3008,0x003B,DS,1,"""Delivered Treatment Time""",},//
+{0,0x3008,0x0040,SQ,1,"""Control Point Delivery Sequence""",},//
+{0,0x3008,0x0042,DS,1,"""Specified Meterset""",},//
+{0,0x3008,0x0044,DS,1,"""Delivered Meterset""",},//
+{0,0x3008,0x0048,DS,1,"""Dose Rate Delivered""",},//
+{0,0x3008,0x0050,SQ,1,"""Treatment Summary Calculated Dose Reference Sequence""",},//
+{0,0x3008,0x0052,DS,1,"""Cumulative Dose to Dose Reference""",},//
+{0,0x3008,0x0054,DA,1,"""First Treatment Date""",},//
+{0,0x3008,0x0056,DA,1,"""Most Recent Treatment Date""",},//
+{0,0x3008,0x005A,IS,1,"""Number of Fractions Delivered""",},//
+{0,0x3008,0x0060,SQ,1,"""Override Sequence""",},//
+{0,0x3008,0x0062,AT,1,"""Override Parameter Pointer""",},//
+{0,0x3008,0x0064,IS,1,"""Measured Dose Reference Number""",},//
+{0,0x3008,0x0066,ST,1,"""Override Reason""",},//
+{0,0x3008,0x0070,SQ,1,"""Calculated Dose Reference Sequence""",},//
+{0,0x3008,0x0072,IS,1,"""Calculated Dose Reference Number""",},//
+{0,0x3008,0x0074,ST,1,"""Calculated Dose Reference Description""",},//
+{0,0x3008,0x0076,DS,1,"""Calculated Dose Reference Dose Value""",},//
+{0,0x3008,0x0078,DS,1,"""Start Meterset""",},//
+{0,0x3008,0x007A,DS,1,"""End Meterset""",},//
+{0,0x3008,0x0080,SQ,1,"""Referenced Measured Dose Reference Sequence""",},//
+{0,0x3008,0x0082,IS,1,"""Referenced Measured Dose Reference Number""",},//
+{0,0x3008,0x0090,SQ,1,"""Referenced Calculated Dose Reference Sequence""",},//
+{0,0x3008,0x0092,IS,1,"""Referenced Calculated Dose Reference Number""",},//
+{0,0x3008,0x00A0,SQ,1,"""Beam Limiting Device Leaf Pairs Sequence""",},//
+{0,0x3008,0x00B0,SQ,1,"""Recorded Wedge Sequence""",},//
+{0,0x3008,0x00C0,SQ,1,"""Recorded Compensator Sequence""",},//
+{0,0x3008,0x00D0,SQ,1,"""Recorded Block Sequence""",},//
+{0,0x3008,0x00E0,SQ,1,"""Treatment Summary Measured Dose Reference Sequence""",},//
+{0,0x3008,0x0100,SQ,1,"""Recorded Source Sequence""",},//
+{0,0x3008,0x0105,LO,1,"""Source Serial Number""",},//
+{0,0x3008,0x0110,SQ,1,"""Treatment Session Application Setup Sequence""",},//
+{0,0x3008,0x0116,CS,1,"""Application Setup Check""",},//
+{0,0x3008,0x0120,SQ,1,"""Recorded Brachy Accessory Device Sequence""",},//
+{0,0x3008,0x0122,IS,1,"""Referenced Brachy Accessory Device Number""",},//
+{0,0x3008,0x0130,SQ,1,"""Recorded Channel Sequence""",},//
+{0,0x3008,0x0132,DS,1,"""Specified Channel Total Time""",},//
+{0,0x3008,0x0134,DS,1,"""Delivered Channel Total Time""",},//
+{0,0x3008,0x0136,IS,1,"""Specified Number of Pulses""",},//
+{0,0x3008,0x0138,IS,1,"""Delivered Number of Pulses""",},//
+{0,0x3008,0x013A,DS,1,"""Specified Pulse Repetition Interval""",},//
+{0,0x3008,0x013C,DS,1,"""Delivered Pulse Repetition Interval""",},//
+{0,0x3008,0x0140,SQ,1,"""Recorded Source Applicator Sequence""",},//
+{0,0x3008,0x0142,IS,1,"""Referenced Source Applicator Number""",},//
+{0,0x3008,0x0150,SQ,1,"""Recorded Channel Shield Sequence""",},//
+{0,0x3008,0x0152,IS,1,"""Referenced Channel Shield Number""",},//
+{0,0x3008,0x0160,SQ,1,"""Brachy Control Point Delivered Sequence""",},//
+{0,0x3008,0x0162,DA,1,"""Safe Position Exit Date""",},//
+{0,0x3008,0x0164,TM,1,"""Safe Position Exit Time""",},//
+{0,0x3008,0x0166,DA,1,"""Safe Position Return Date""",},//
+{0,0x3008,0x0168,TM,1,"""Safe Position Return Time""",},//
+{0,0x3008,0x0200,CS,1,"""Current Treatment Status""",},//
+{0,0x3008,0x0202,ST,1,"""Treatment Status Comment""",},//
+{0,0x3008,0x0220,SQ,1,"""Fraction Group Summary Sequence""",},//
+{0,0x3008,0x0223,IS,1,"""Referenced Fraction Number""",},//
+{0,0x3008,0x0224,CS,1,"""Fraction Group Type""",},//
+{0,0x3008,0x0230,CS,1,"""Beam Stopper Position""",},//
+{0,0x3008,0x0240,SQ,1,"""Fraction Status Summary Sequence""",},//
+{0,0x3008,0x0250,DA,1,"""Treatment Date""",},//
+{0,0x3008,0x0251,TM,1,"""Treatment Time""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -540,6 +540,7 @@ namespace __dicom_controller__
 		typedef std::multiset< dicom_tag > baseclass;
 		typedef struct
 		{
+			unsigned char  dmy;
 			unsigned short group;
 			unsigned short element;
 			dicom_vr       vr;

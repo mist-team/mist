@@ -1,79 +1,79 @@
-//0x0020,0x0000,UL,1,"Group 0020 Length",//
-0x0020,0x000D,UI,1,"Study Instance UID",//
-0x0020,0x000E,UI,1,"Series Instance UID",//
-0x0020,0x0010,SH,1,"Study ID",//
-0x0020,0x0011,IS,1,"Series Number",//
-0x0020,0x0012,IS,1,"Acquisition Number",//
-0x0020,0x0013,IS,1,"Image Number",//
-0x0020,0x0014,IS,1,"Isotope Number(RET)",//
-0x0020,0x0015,IS,1,"Phase Number(RET)",//
-0x0020,0x0016,IS,1,"Interval Number(RET)",//
-0x0020,0x0017,IS,1,"Time Slot Number(RET)",//
-0x0020,0x0018,IS,1,"Angle Number(RET)",//
-0x0020,0x0019,IS,1,"Item Number",//
-0x0020,0x0020,CS,2,"Patient Orientation",//
-0x0020,0x0022,IS,1,"Overlay Number",//
-0x0020,0x0024,IS,1,"Curve Number",//
-0x0020,0x0026,IS,1,"Lookup Table Number",//
-0x0020,0x0030,DS,1,"Image Position (RET)",//
-0x0020,0x0032,DS,3,"Image Position (Patient)",//
-0x0020,0x0035,DS,1,"Image Orientation (RET)",//
-0x0020,0x0037,DS,6,"Image Orientation (Patient)",//
-0x0020,0x0050,DS,1,"Location (RET)",//
-0x0020,0x0052,UI,1,"Frame of Reference UID",//
-0x0020,0x0060,CS,1,"Laterality",//
-0x0020,0x0062,CS,1,"Image Laterality",//
-0x0020,0x0070,SH,1,"Image Geometry Type (RET)",//
-0x0020,0x0080,UI,1,"Masking Image UID",//
-0x0020,0x0100,IS,1,"Temporal Position Identifier",//
-0x0020,0x0105,IS,1,"Number of Temporal Positions",//
-0x0020,0x0110,DS,1,"Temporal Resolution",//
-0x0020,0x0200,UI,1,"Synchronization Frame of Reference UID",//
-0x0020,0x1000,IS,1,"Series in Study",//
-0x0020,0x1001,IS,1,"Acquisitions in Series (RET)",//
-0x0020,0x1002,IS,1,"Images in Acquisition",//
-0x0020,0x1004,IS,1,"Acquisition in Study",//
-0x0020,0x1020,SH,1,"Reference (RET)",//
-0x0020,0x1040,LO,1,"Position Reference Indicator",//
-0x0020,0x1041,DS,1,"Slice Location",//
-0x0020,0x1070,IS,-1,"Other Study Numbers",//
-0x0020,0x1200,IS,1,"Number of Patient Related Studies",//
-0x0020,0x1202,IS,1,"Number of Patient Related Series",//
-0x0020,0x1204,IS,1,"Number of Patient Related Images",//
-0x0020,0x1206,IS,1,"Number of Study Related Series",//
-0x0020,0x1208,IS,1,"Number of Study Related Images",//
-0x0020,0x1209,IS,1,"Number of Series Related Instances",//
-0x0020,0x3100,SH,1,"Source Image ID (RET)s",//
-0x0020,0x3401,SH,1,"Modifying Device ID (RET)",//
-0x0020,0x3402,SH,1,"Modified Image ID (RET)",//
-0x0020,0x3403,SH,1,"Modified Image Date (RET)",//
-0x0020,0x3404,SH,1,"Modifying Device Manufacturer (RET)",//
-0x0020,0x3405,SH,1,"Modified Image Time (RET)",//
-0x0020,0x3406,SH,1,"Modified Image Description (RET)",//
-0x0020,0x4000,LT,1,"Image Comments",//
-0x0020,0x5000,US,1,"Original Image Identification (RET)",//
-0x0020,0x5002,SH,1,"Original Image Identification Nomenclature (RET)",//
-0x0020,0x9056,SH,1,"Stack ID",//
-0x0020,0x9057,UL,1,"In-Stack Position Number",//
-0x0020,0x9071,SQ,1,"Frame Anatomy Sequence",//
-0x0020,0x9072,CS,1,"Frame Laterality",//
-0x0020,0x9111,SQ,1,"Frame Content Sequence",//
-0x0020,0x9113,SQ,1,"Plane Position Sequence",//
-0x0020,0x9116,SQ,1,"Plane Orientation Sequence",//
-0x0020,0x9128,UL,1,"Temporal Position Index",//
-0x0020,0x9153,FD,1,"Trigger Delay Time",//
-0x0020,0x9156,US,1,"Frame Acquisition Number",//
-0x0020,0x9157,UL,-1,"Dimension Index Values",//
-0x0020,0x9158,LT,1,"Frame Comments",//
-0x0020,0x9161,UI,1,"Concatenation UID",//
-0x0020,0x9162,US,1,"In-concatenation Number",//
-0x0020,0x9163,US,1,"In-concatenation Total Number",//
-0x0020,0x9164,UI,1,"Dimension Organization UID",//
-0x0020,0x9165,AT,1,"Dimension Index Pointer",//
-0x0020,0x9167,AT,1,"Functional Group Pointer",//
-0x0020,0x9213,LO,1,"Dimension Index Private Creator",//
-0x0020,0x9221,SQ,1,"Dimension Organization Sequence",//
-0x0020,0x9222,SQ,1,"Dimension Index Sequence",//
-0x0020,0x9228,UL,1,"Concatenation Frame Offset Number",//
-0x0020,0x9238,LO,1,"Functional Group Private Creator",//
-0x0000,0x0000,UNKNOWN,0,"Data End",//
+//{0,0x0020,0x0000,UL,1,"""Group 0020 Length""",},//
+{0,0x0020,0x000D,UI,1,"""Study Instance UID""",},//
+{0,0x0020,0x000E,UI,1,"""Series Instance UID""",},//
+{0,0x0020,0x0010,SH,1,"""Study ID""",},//
+{0,0x0020,0x0011,IS,1,"""Series Number""",},//
+{0,0x0020,0x0012,IS,1,"""Acquisition Number""",},//
+{0,0x0020,0x0013,IS,1,"""Image Number""",},//
+{0,0x0020,0x0014,IS,1,"""Isotope Number(RET)""",},//
+{0,0x0020,0x0015,IS,1,"""Phase Number(RET)""",},//
+{0,0x0020,0x0016,IS,1,"""Interval Number(RET)""",},//
+{0,0x0020,0x0017,IS,1,"""Time Slot Number(RET)""",},//
+{0,0x0020,0x0018,IS,1,"""Angle Number(RET)""",},//
+{0,0x0020,0x0019,IS,1,"""Item Number""",},//
+{0,0x0020,0x0020,CS,2,"""Patient Orientation""",},//
+{0,0x0020,0x0022,IS,1,"""Overlay Number""",},//
+{0,0x0020,0x0024,IS,1,"""Curve Number""",},//
+{0,0x0020,0x0026,IS,1,"""Lookup Table Number""",},//
+{0,0x0020,0x0030,DS,1,"""Image Position (RET)""",},//
+{0,0x0020,0x0032,DS,3,"""Image Position (Patient)""",},//
+{0,0x0020,0x0035,DS,1,"""Image Orientation (RET)""",},//
+{0,0x0020,0x0037,DS,6,"""Image Orientation (Patient)""",},//
+{0,0x0020,0x0050,DS,1,"""Location (RET)""",},//
+{0,0x0020,0x0052,UI,1,"""Frame of Reference UID""",},//
+{0,0x0020,0x0060,CS,1,"""Laterality""",},//
+{0,0x0020,0x0062,CS,1,"""Image Laterality""",},//
+{0,0x0020,0x0070,SH,1,"""Image Geometry Type (RET)""",},//
+{0,0x0020,0x0080,UI,1,"""Masking Image UID""",},//
+{0,0x0020,0x0100,IS,1,"""Temporal Position Identifier""",},//
+{0,0x0020,0x0105,IS,1,"""Number of Temporal Positions""",},//
+{0,0x0020,0x0110,DS,1,"""Temporal Resolution""",},//
+{0,0x0020,0x0200,UI,1,"""Synchronization Frame of Reference UID""",},//
+{0,0x0020,0x1000,IS,1,"""Series in Study""",},//
+{0,0x0020,0x1001,IS,1,"""Acquisitions in Series (RET)""",},//
+{0,0x0020,0x1002,IS,1,"""Images in Acquisition""",},//
+{0,0x0020,0x1004,IS,1,"""Acquisition in Study""",},//
+{0,0x0020,0x1020,SH,1,"""Reference (RET)""",},//
+{0,0x0020,0x1040,LO,1,"""Position Reference Indicator""",},//
+{0,0x0020,0x1041,DS,1,"""Slice Location""",},//
+{0,0x0020,0x1070,IS,-1,"""Other Study Numbers""",},//
+{0,0x0020,0x1200,IS,1,"""Number of Patient Related Studies""",},//
+{0,0x0020,0x1202,IS,1,"""Number of Patient Related Series""",},//
+{0,0x0020,0x1204,IS,1,"""Number of Patient Related Images""",},//
+{0,0x0020,0x1206,IS,1,"""Number of Study Related Series""",},//
+{0,0x0020,0x1208,IS,1,"""Number of Study Related Images""",},//
+{0,0x0020,0x1209,IS,1,"""Number of Series Related Instances""",},//
+{0,0x0020,0x3100,SH,1,"""Source Image ID (RET)s""",},//
+{0,0x0020,0x3401,SH,1,"""Modifying Device ID (RET)""",},//
+{0,0x0020,0x3402,SH,1,"""Modified Image ID (RET)""",},//
+{0,0x0020,0x3403,SH,1,"""Modified Image Date (RET)""",},//
+{0,0x0020,0x3404,SH,1,"""Modifying Device Manufacturer (RET)""",},//
+{0,0x0020,0x3405,SH,1,"""Modified Image Time (RET)""",},//
+{0,0x0020,0x3406,SH,1,"""Modified Image Description (RET)""",},//
+{0,0x0020,0x4000,LT,1,"""Image Comments""",},//
+{0,0x0020,0x5000,US,1,"""Original Image Identification (RET)""",},//
+{0,0x0020,0x5002,SH,1,"""Original Image Identification Nomenclature (RET)""",},//
+{0,0x0020,0x9056,SH,1,"""Stack ID""",},//
+{0,0x0020,0x9057,UL,1,"""In-Stack Position Number""",},//
+{0,0x0020,0x9071,SQ,1,"""Frame Anatomy Sequence""",},//
+{0,0x0020,0x9072,CS,1,"""Frame Laterality""",},//
+{0,0x0020,0x9111,SQ,1,"""Frame Content Sequence""",},//
+{0,0x0020,0x9113,SQ,1,"""Plane Position Sequence""",},//
+{0,0x0020,0x9116,SQ,1,"""Plane Orientation Sequence""",},//
+{0,0x0020,0x9128,UL,1,"""Temporal Position Index""",},//
+{0,0x0020,0x9153,FD,1,"""Trigger Delay Time""",},//
+{0,0x0020,0x9156,US,1,"""Frame Acquisition Number""",},//
+{0,0x0020,0x9157,UL,-1,"""Dimension Index Values""",},//
+{0,0x0020,0x9158,LT,1,"""Frame Comments""",},//
+{0,0x0020,0x9161,UI,1,"""Concatenation UID""",},//
+{0,0x0020,0x9162,US,1,"""In-concatenation Number""",},//
+{0,0x0020,0x9163,US,1,"""In-concatenation Total Number""",},//
+{0,0x0020,0x9164,UI,1,"""Dimension Organization UID""",},//
+{0,0x0020,0x9165,AT,1,"""Dimension Index Pointer""",},//
+{0,0x0020,0x9167,AT,1,"""Functional Group Pointer""",},//
+{0,0x0020,0x9213,LO,1,"""Dimension Index Private Creator""",},//
+{0,0x0020,0x9221,SQ,1,"""Dimension Organization Sequence""",},//
+{0,0x0020,0x9222,SQ,1,"""Dimension Index Sequence""",},//
+{0,0x0020,0x9228,UL,1,"""Concatenation Frame Offset Number""",},//
+{0,0x0020,0x9238,LO,1,"""Functional Group Private Creator""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

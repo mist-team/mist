@@ -1,23 +1,23 @@
-//0x2000,0x0000,UL,1,"Group 2000 Length",//
-0x2000,0x0010,IS,1,"Number of Copies",//
-0x2000,0x001E,SQ,1,"Printer Configuration Sequence",//
-0x2000,0x0020,CS,1,"Print Priority",//
-0x2000,0x0030,CS,1,"Medium Type",//
-0x2000,0x0040,CS,1,"Film Destination",//
-0x2000,0x0050,LO,1,"Film Session Label",//
-0x2000,0x0060,IS,1,"Memory Allocation",//
-0x2000,0x0061,IS,1,"Maximum Memory Allocation",//
-0x2000,0x0062,CS,1,"Color Image Printing Flag",//
-0x2000,0x0063,CS,1,"Collation Flag",//
-0x2000,0x0065,CS,1,"Annotation Flag",//
-0x2000,0x0067,CS,1,"Image Overlay Flag",//
-0x2000,0x0069,CS,1,"Presentation LUT Flag",//
-0x2000,0x006A,CS,1,"Image Box Presentation LUT Flag",//
-0x2000,0x00A0,US,1,"Memory Bit Depth",//
-0x2000,0x00A1,US,1,"Printing Bit Depth",//
-0x2000,0x00A2,SQ,1,"Media Installed Sequence",//
-0x2000,0x00A4,SQ,1,"Other Media Available Sequence",//
-0x2000,0x00A8,SQ,1,"Supported Image Display Formats Sequence",//
-0x2000,0x0500,SQ,1,"Referenced Film Box Sequence",//
-0x2000,0x0510,SQ,1,"Referenced Stored Print Sequence",//
-0x0000,0x0000,UNKNOWN,0,"Data End",//
+//{0,0x2000,0x0000,UL,1,"""Group 2000 Length""",},//
+{0,0x2000,0x0010,IS,1,"""Number of Copies""",},//
+{0,0x2000,0x001E,SQ,1,"""Printer Configuration Sequence""",},//
+{0,0x2000,0x0020,CS,1,"""Print Priority""",},//
+{0,0x2000,0x0030,CS,1,"""Medium Type""",},//
+{0,0x2000,0x0040,CS,1,"""Film Destination""",},//
+{0,0x2000,0x0050,LO,1,"""Film Session Label""",},//
+{0,0x2000,0x0060,IS,1,"""Memory Allocation""",},//
+{0,0x2000,0x0061,IS,1,"""Maximum Memory Allocation""",},//
+{0,0x2000,0x0062,CS,1,"""Color Image Printing Flag""",},//
+{0,0x2000,0x0063,CS,1,"""Collation Flag""",},//
+{0,0x2000,0x0065,CS,1,"""Annotation Flag""",},//
+{0,0x2000,0x0067,CS,1,"""Image Overlay Flag""",},//
+{0,0x2000,0x0069,CS,1,"""Presentation LUT Flag""",},//
+{0,0x2000,0x006A,CS,1,"""Image Box Presentation LUT Flag""",},//
+{0,0x2000,0x00A0,US,1,"""Memory Bit Depth""",},//
+{0,0x2000,0x00A1,US,1,"""Printing Bit Depth""",},//
+{0,0x2000,0x00A2,SQ,1,"""Media Installed Sequence""",},//
+{0,0x2000,0x00A4,SQ,1,"""Other Media Available Sequence""",},//
+{0,0x2000,0x00A8,SQ,1,"""Supported Image Display Formats Sequence""",},//
+{0,0x2000,0x0500,SQ,1,"""Referenced Film Box Sequence""",},//
+{0,0x2000,0x0510,SQ,1,"""Referenced Stored Print Sequence""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//
