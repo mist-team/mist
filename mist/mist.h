@@ -421,7 +421,8 @@ public:
 /// MISTのアルゴリズム全般で利用する2次元配列（解像度付き）
 //!
 //! 詳細な記述をここに書く
-//!template < class T, class Allocator = std::allocator< T > >
+//!
+template < class T, class Allocator = std::allocator< T > >
 class array2 : public array1< T, Allocator >
 {
 public:
@@ -626,7 +627,8 @@ public:
 /// MISTのアルゴリズム全般で利用する3次元配列（解像度付き）
 //!
 //! 詳細な記述をここに書く
-//!template < class T, class Allocator = std::allocator< T > >
+//!
+template < class T, class Allocator = std::allocator< T > >
 class array3 : public array2< T, Allocator >
 {
 public:
