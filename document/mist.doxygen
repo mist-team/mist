@@ -907,7 +907,7 @@ ENABLE_PREPROCESSING   = YES
 # compilation will be performed. Macro expansion can be done in a controlled 
 # way by setting EXPAND_ONLY_PREDEF to YES.
 
-MACRO_EXPANSION        = YES
+MACRO_EXPANSION        = NO
 
 # If the EXPAND_ONLY_PREDEF and MACRO_EXPANSION tags are both set to YES 
 # then the macro expansion is limited to the macros specified with the 
@@ -939,7 +939,9 @@ INCLUDE_FILE_PATTERNS  = mist_conf.h
 # or name=definition (no spaces). If the definition and the = are 
 # omitted =1 is assumed.
 
-PREDEFINED             = "_MIST_VECTOR_SUPPORT_=1"
+PREDEFINED             = _MIST_VECTOR_SUPPORT_=1 \
+_MIST_BEGIN=namespace mist{ \
+_MIST_END=}
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 
 # this tag can be used to specify a list of macro names that should be expanded. 

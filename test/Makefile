@@ -22,6 +22,7 @@ ALL = \
 	matrix_test \
 	matrix_util_test \
 	matrix_util_test2 \
+	vector_test \
 	set_test \
 
 
@@ -37,6 +38,9 @@ matrix_util_test : matrix_util_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LAPACKLIBS) $(LIBS) $(LDLIBS)
 
 matrix_util_test2 : matrix_util_test2.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LAPACKLIBS) $(LIBS) $(LDLIBS)
+
+vector_test : vector_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LAPACKLIBS) $(LIBS) $(LDLIBS)
 
 limits_test : limits_test.o
