@@ -81,7 +81,7 @@ public:
 
 
 	// ì‡êœ
-	value_type operator ^( const vector3 &v ) const { return ( inner( v ) ); }
+	value_type operator ^( const vector3 &v ) const { return( inner( v ) ); }
 
 
 	// î‰ärä÷êî
@@ -200,7 +200,7 @@ public:
 
 
 	// ì‡êœ
-	value_type operator ^( const vector2 &v ) const { return ( inner( v ) ); }
+	value_type operator ^( const vector2 &v ) const { return( inner( v ) ); }
 
 
 	// î‰ärä÷êî
@@ -313,20 +313,20 @@ public:
 	template < class TT, class AAlocator >
 	const vector& operator *=( const vector< TT, AAlocator > &v2 )
 	{
-		vector &v1 = *this;
-		typedef typename vector< T, Allocator >::size_type size_type;
 #ifdef _CHECK_MATRIX_OPERATION_
-		if( base::size( ) != v2.size( ) )
+		if( base::size( ) != v2.size( ) || base::size( ) < 3 )
 		{
 			// äOêœÇÃåvéZÇ™Ç≈Ç´Ç‹ÇπÇÒó·äO
 			::std::cout << "can't calculate outer product of two vectors." << ::std::endl;
-			return( v1 );
+			return( *this );
 		}
 #endif
 
+		typedef typename vector< T, Allocator >::size_type size_type;
+		vector &v1 = *this;
 		vector v( v1.size( ) );
 
-		for( size_type i = 0 ; i < ret.dim-2 ; ++i )
+		for( size_type i = 0 ; i < v.size( ) - 2 ; i++ )
 		{
 			v[ i ] = v1[ i + 1 ] * v2[ i + 2 ] - v1[ i + 2 ] * v2[ i + 1 ];
 		}
@@ -339,17 +339,35 @@ public:
 		return( *this );
 	}
 
-	//const vector& operator *=( typename type_trait< T >::value_type val )
-	//{
-	//	base::operator *=( val );
-	//	return( *this );
-	//}
+	// ì‡êœ
+	value_type operator ^( const vector &v ) const { return( inner( v ) ); }
 
-	//const vector& operator /=( typename type_trait< T >::value_type val )
-	//{
-	//	base::operator /=( val );
-	//	return( *this );
-	//}
+	value_type inner( const vector &v2 ) const
+	{
+#ifdef _CHECK_MATRIX_OPERATION_
+		if( base::size( ) != v2.size( ) )
+		{
+			// ì‡êœÇÃåvéZÇ™Ç≈Ç´Ç‹ÇπÇÒó·äO
+			::std::cout << "can't calculate inner product of two vectors." << ::std::endl;
+			return( value_type( ) );
+		}
+#endif
+
+		typedef typename vector< T, Allocator >::size_type size_type;
+		const vector &v1 = *this;
+		value_type v = value_type( );
+		for( size_type i = 0 ; i < base::size( ) ; i++ )
+		{
+			v += v1[ i ] * v2[ i ];
+		}
+
+		return( v );
+	}
+
+	vector outer( const vector &v ) const
+	{
+		return( vector( *this ) *= v );
+	}
 
 
 public:
@@ -389,7 +407,7 @@ public:
 **
 ************************************************************************************************************/
 template < class T, class Allocator >
-inline ::std::ostream &operator <<( ::std::ostream &out, const vector< T, Allocator > &m )
+inline ::std::ostream &operator <<( ::std::ostream &out, const vector< T, Allocator > &v )
 {
 	typename vector< T, Allocator >::size_type indx;
 	for( indx = 0 ; indx < v.size( ) ; indx++ )
@@ -402,18 +420,19 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const vector< T, Alloca
 	return( out );
 }
 
+#if 0
+#else
 
-//#if _USE_EXPRESSION_TEMPLATE_ != 0
-//
-//template < class T >
-//inline ::std::ostream &operator <<( ::std::ostream &out,  const matrix_expression< T > &m )
-//{
-//	typedef typename matrix_expression< T >::allocator_type	allocator_type;
-//	typedef typename matrix_expression< T >::value_type		value_type;
-//	return( operator <<( out, vector< value_type, allocator_type >( m ) ) );
-//}
-//
-//#endif
+// ä|ÇØéZ
+template < class T, class Allocator >
+inline vector< T, Allocator > operator *( const vector< T, Allocator > &v1, const vector< T, Allocator > &v2 )
+{
+	return( vector< T, Allocator >( v1 ) *= v2 );
+}
+
+#endif
+
+
 
 #endif // _MIST_VECTOR_SUPPORT_
 

@@ -30,8 +30,12 @@ public:
 	typedef typename base::allocator_type allocator_type;
 	typedef typename base::size_type size_type;
 	typedef typename base::difference_type difference_type;
-//	typedef typename base::pointer pointer;
-//	typedef typename base::const_pointer const_pointer;
+
+#if __MIST_MSVC__ != 6
+	typedef typename base::pointer pointer;
+	typedef typename base::const_pointer const_pointer;
+#endif
+
 	typedef typename base::reference reference;
 	typedef typename base::const_reference const_reference;
 	typedef typename base::iterator iterator;
@@ -327,8 +331,12 @@ public:
 	typedef typename base::allocator_type allocator_type;
 	typedef typename base::size_type size_type;
 	typedef typename base::difference_type difference_type;
-//	typedef typename base::pointer pointer;
-//	typedef typename base::const_pointer const_pointer;
+
+#if __MIST_MSVC__ != 6
+	typedef typename base::pointer pointer;
+	typedef typename base::const_pointer const_pointer;
+#endif
+
 	typedef typename base::reference reference;
 	typedef typename base::const_reference const_reference;
 	typedef typename base::iterator iterator;
@@ -356,13 +364,6 @@ public:
 	set( Iterator first, Iterator last, const key_compare &pred, const allocator_type &alloc ) : base( first, last, pred, alloc ){ }
 };
 
-//template< class Key, class Comp, class Allocator >
-//inline set< Key, Comp, Allocator > &operator <<( set< Key, Comp, Allocator > &out, const typename set< Key, Comp, Allocator >::key_type &s )
-//{
-//	out <<= s;
-//	return( out );
-//}
-
 
 
 template< class Key, class Comp = std::less< Key >, class Allocator = std::allocator< Key > >
@@ -378,8 +379,12 @@ public:
 	typedef typename base::allocator_type allocator_type;
 	typedef typename base::size_type size_type;
 	typedef typename base::difference_type difference_type;
-//	typedef typename base::pointer pointer;
-//	typedef typename base::const_pointer const_pointer;
+
+#if __MIST_MSVC__ != 6
+	typedef typename base::pointer pointer;
+	typedef typename base::const_pointer const_pointer;
+#endif
+
 	typedef typename base::reference reference;
 	typedef typename base::const_reference const_reference;
 	typedef typename base::iterator iterator;
