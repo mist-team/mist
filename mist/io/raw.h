@@ -139,7 +139,6 @@ namespace __raw_controller__
 			image.resize( w, h, d );
 
 			size_type byte = sizeof( ValueType );
-			size_type size = w * h * byte; // スライス1枚分のメモリを確保
 			unsigned char tmparray[ sizeof( ValueType ) * 4096 ];
 			byte_array< ValueType > data;
 
@@ -270,9 +269,6 @@ namespace __raw_controller__
 				return( false );
 			}
 
-			size_type w = image.width( );
-			size_type h = image.height( );
-			size_type d = image.depth( );
 			unsigned char tmparray[ sizeof( ValueType ) * 4096 ];
 			byte_array< ValueType > data;
 

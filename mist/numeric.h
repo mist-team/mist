@@ -2076,8 +2076,13 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 	integer lda   = a_is_transpose ? k : m;
 	integer ldb   = b_is_transpose ? n : k;
 	integer ldc   = m;
-	char *transa  = a_is_transpose ? "T" : "N";
-	char *transb  = b_is_transpose ? "T" : "N";
+	char transa[ 2 ];
+	char transb[ 2 ];
+
+	transa[ 0 ] = a_is_transpose ? 'T' : 'N';
+	transa[ 1 ] = '\0';
+	transb[ 0 ] = b_is_transpose ? 'T' : 'N';
+	transb[ 1 ] = '\0';
 
 	// BLASルーチンでは，入力行列AとBの内容は変化しないが，
 	// インターフェースは const 就職を受けていないのでキャストを行う

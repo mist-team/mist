@@ -15,7 +15,7 @@ DEBUGFLAGS   = $(CXXFLAGS) -DDEBUG
 IMGLIBS = -ljpeg -lpng -ltiff
 #IMGLIBS = -ljpeg -lpng -ltiff -lgif
 LIBS = -lpthread -lz -lm
-LAPACKLIBS = -L../lib -llapack -lblas -lF77 -lI77
+LAPACKLIBS = -L../lib -llapack -lblas -lI77 -lF77
 ATLASLIBS = -L../lib -llapack -lcblaswr -lcblas -latlas -lF77
 MKLASLIBS = -L../lib -lmkl_lapack
 

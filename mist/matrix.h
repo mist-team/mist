@@ -263,7 +263,7 @@ struct matrix_fixed_matrix : public matrix_static_operation< T >
 
 	value_type mhs[ ROWS * COLS ];
 
-	explicit matrix_fixed_matrix( const value_type * ) : base( rows, cols ){ memcpy( mhs, m, sizeof( value_type ) * ROWS * COLS ); }
+	explicit matrix_fixed_matrix( const value_type *m ) : base( ROWS, COLS ){ memcpy( mhs, m, sizeof( value_type ) * ROWS * COLS ); }
 	value_type operator()( size_type r, size_type c ) const { return( mhs[ r ][ c ] ); }
 	value_type operator[]( size_type indx ) const { return( 0 ); }
 };

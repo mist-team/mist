@@ -107,7 +107,8 @@ namespace __tga_controller__
 			buff = new unsigned char[ num_bytes ];
 			memset( buff, 0, sizeof( unsigned char ) * num_bytes );
 
-			for( size_type i = 0, j = 0 ; i < snum_bytes && j < num_bytes ; )
+			size_type i = 0, j = 0;
+			for( ; i < snum_bytes && j < num_bytes ; )
 			{
 				unsigned char byte = pixel[ i++ ];
 				if( ( byte & 0x80 ) != 0 )
