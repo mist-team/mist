@@ -20,7 +20,7 @@ void lu_decomposition( matrix< T1, Allocator1 > &a, matrix< T2, Allocator2 > &pi
 	typedef typename matrix< T1, Allocator1 >::value_type value_type;
 	typedef typename matrix< T2, Allocator2 >::value_type pivot_value;
 
-	size_type i, imax, j, k, n = a.rows( );
+	size_type i, imax = 0, j, k, n = a.rows( );
 	value_type big, dum, sum, temp;
 
 	matrix< T1, Allocator1 > v( n, 1 );
