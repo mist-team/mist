@@ -154,13 +154,8 @@ namespace volumerender
 			}
 		}
 
-	public:
+	protected:
 		value_type &operator []( difference_type index )
-		{
-			return( base::operator []( zero_index_ + index ) );
-		}
-
-		const value_type &operator []( difference_type index ) const
 		{
 			return( base::operator []( zero_index_ + index ) );
 		}
@@ -168,6 +163,12 @@ namespace volumerender
 		value_type &at( difference_type index )
 		{
 			return( base::at( zero_index_ + index ) );
+		}
+
+	public:
+		const value_type &operator []( difference_type index ) const
+		{
+			return( base::operator []( zero_index_ + index ) );
 		}
 
 		const value_type &at( difference_type index ) const
@@ -327,6 +328,15 @@ namespace volumerender
 		//val += 68719476736.0 * 1.5;
 		//return( ( ( long * )&val )[ 0 ] >> 16 );
 	}
+
+	template < class T >
+	inline void normalize_vector( vector3< T > &v )
+	{
+		double len = std::sqrt( v.x * v.x + v.y * v.y + v.z * v.z ) + 1.0e-10;
+		v.x /= len;
+		v.y /= len;
+		v.z /= len;
+	}
 }
 
 
@@ -395,7 +405,7 @@ namespace value_interpolation
 		}
 
 		// スライス座標系の実寸をワールドと考える
-		vector_type normal, n1, n2, n3, n4, n5, n6, n7, n8;
+		vector_type normal, n0, n1, n2, n3, n4, n5, n6, n7;
 		vector_type casting_start, casting_end;
 
 		const double pai = 3.1415926535897932384626433832795;
@@ -406,6 +416,9 @@ namespace value_interpolation
 		double ax = in.reso1( );
 		double ay = in.reso2( );
 		double az = in.reso3( );
+
+		double masp = ax < ay ? ax : ay;
+		masp = masp < az ? masp : az;
 
 		vector_type yoko = ( dir * up ).unit( );
 
@@ -462,11 +475,16 @@ namespace value_interpolation
 					vector_type spos = casting_start;
 					vector_type ray = ( casting_end - casting_start ).unit( );
 
+					// 光の減衰の距離を実測に直すためのパラメータ
+					double dlen = vector_type( ray.x * ax, ray.y * ay, ray.z * az ).length( );
+
+					// 直方体画素の画像上では方向によってサンプリング間隔が変わってしまう問題に対応
+					double ray_sampling_step = sampling_step * masp / dlen;
+
 					double accelerated_step = 2.0;
 					vector_type ray_accelerated_step = ray * accelerated_step;
-					vector_type ray_step = ray * sampling_step;
+					vector_type ray_step = ray * ray_sampling_step;
 
-					double dlen = vector_type( ray.x * ax, ray.y * ay, ray.z * az ).length( );
 					double n = ( casting_end - casting_start ).length( );
 					double l = 0, of = ( Pos - casting_start ).length( );
 
@@ -478,18 +496,18 @@ namespace value_interpolation
 
 						const_pointer p = &in( si, sj, sk );
 
-						// 画素値に対応する色と不透明度を取得
+						// この位置における物体が不透明の場合は次のステップへ移行する
 						if( table.has_alpha( p[ d0 ] ) || table.has_alpha( p[ d1 ] ) || table.has_alpha( p[ d2 ] ) ||
 							table.has_alpha( p[ d3 ] ) || table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
 							table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) )
 						{
 							if( l > 0 )
 							{
-								double sstep = accelerated_step - sampling_step;
+								double sstep = accelerated_step - ray_sampling_step;
 								spos.x -= ray.x * sstep;
 								spos.y -= ray.y * sstep;
 								spos.z -= ray.z * sstep;
-								l -= accelerated_step - sampling_step;
+								l -= sstep;
 							}
 							break;
 						}
@@ -517,56 +535,58 @@ namespace value_interpolation
 						double ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
 						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
 
-						const attribute_type &oc = table[ volumerender::to_integer( ct ) ];
+						difference_type ct_ = volumerender::to_integer( ct );
+						const attribute_type &oc1 = table[ ct_ ];
+						const attribute_type &oc2 = table[ ct_ + 1 ];
 
 						// この位置における物体が透明の場合は次のステップへ移行する
-						if( !oc.has_alpha )
+						if( !oc1.has_alpha && !oc2.has_alpha )
 						{
 							spos += ray_step;
-							l += sampling_step;
+							l += ray_sampling_step;
 							continue;
 						}
 
-						const_pointer p1 = p;
-						const_pointer p2 = p1 + d1;
-						const_pointer p3 = p1 + d2;
-						const_pointer p4 = p1 + d3;
-						const_pointer p5 = p1 + d4;
-						const_pointer p6 = p1 + d5;
-						const_pointer p7 = p1 + d6;
-						const_pointer p8 = p1 + d7;
+						const_pointer p0 = p;
+						const_pointer p1 = p0 + d1;
+						const_pointer p2 = p0 + d2;
+						const_pointer p3 = p0 + d3;
+						const_pointer p4 = p0 + d4;
+						const_pointer p5 = p0 + d5;
+						const_pointer p6 = p0 + d6;
+						const_pointer p7 = p0 + d7;
 
-						n1.x = p4[  0  ] - p1[ -_1 ];
-						n1.y = p1[ -_2 ] - p2[  0  ];
+						n0.x = p3[  0  ] - p0[ -_1 ];
+						n0.y = p0[ -_2 ] - p1[  0  ];
+						n0.z = p4[  0  ] - p0[ -_3 ];
+						n1.x = p2[  0  ] - p1[ -_1 ];
+						n1.y = p0[  0  ] - p1[  _2 ];
 						n1.z = p5[  0  ] - p1[ -_3 ];
-						n2.x = p3[  0  ] - p2[ -_1 ];
-						n2.y = p1[  0  ] - p2[  _2 ];
+						n2.x = p2[  _1 ] - p1[  0  ];
+						n2.y = p3[  0  ] - p2[  _2 ];
 						n2.z = p6[  0  ] - p2[ -_3 ];
-						n3.x = p3[  _1 ] - p2[  0  ];
-						n3.y = p4[  0  ] - p3[  _2 ];
+						n3.x = p3[  _1 ] - p0[  0  ];
+						n3.y = p3[ -_2 ] - p2[  0  ];
 						n3.z = p7[  0  ] - p3[ -_3 ];
-						n4.x = p4[  _1 ] - p1[  0  ];
-						n4.y = p4[ -_2 ] - p3[  0  ];
-						n4.z = p8[  0  ] - p4[ -_3 ];
-						n5.x = p8[  0  ] - p5[ -_1 ];
-						n5.y = p5[ -_2 ] - p6[  0  ];
+						n4.x = p7[  0  ] - p4[ -_1 ];
+						n4.y = p4[ -_2 ] - p5[  0  ];
+						n4.z = p4[  _3 ] - p0[  0  ];
+						n5.x = p6[  0  ] - p5[ -_1 ];
+						n5.y = p4[  0  ] - p5[  _2 ];
 						n5.z = p5[  _3 ] - p1[  0  ];
-						n6.x = p7[  0  ] - p6[ -_1 ];
-						n6.y = p5[  0  ] - p6[  _2 ];
+						n6.x = p6[  _1 ] - p5[  0  ];
+						n6.y = p7[  0  ] - p6[  _2 ];
 						n6.z = p6[  _3 ] - p2[  0  ];
-						n7.x = p7[  _1 ] - p6[  0  ];
-						n7.y = p8[  0  ] - p7[  _2 ];
+						n7.x = p7[  _1 ] - p4[  0  ];
+						n7.y = p7[ -_2 ] - p6[  0  ];
 						n7.z = p7[  _3 ] - p3[  0  ];
-						n8.x = p8[  _1 ] - p5[  0  ];
-						n8.y = p8[ -_2 ] - p7[  0  ];
-						n8.z = p8[  _3 ] - p4[  0  ];
 
-						normal.x = ( n1.x + ( n4.x - n1.x ) * xx ) + ( n2.x - n1.x + ( n1.x - n2.x + n3.x - n4.x ) * xx ) * yy;
-						normal.x += ( ( n5.x + ( n8.x - n5.x ) * xx ) + ( n6.x - n5.x + ( n5.x - n6.x + n7.x - n8.x ) * xx ) * yy - normal.x ) * zz;
-						normal.y = ( n1.y + ( n4.y - n1.y ) * xx ) + ( n2.y - n1.y + ( n1.y - n2.y + n3.y - n4.y ) * xx ) * yy;
-						normal.y += ( ( n5.y + ( n8.y - n5.y ) * xx ) + ( n6.y - n5.y + ( n5.y - n6.y + n7.y - n8.y ) * xx ) * yy - normal.y ) * zz;
-						normal.z = ( n1.z + ( n4.z - n1.z ) * xx ) + ( n2.z - n1.z + ( n1.z - n2.z + n3.z - n4.z ) * xx ) * yy;
-						normal.z += ( ( n5.z + ( n8.z - n5.z ) * xx ) + ( n6.z - n5.z + ( n5.z - n6.z + n7.z - n8.z ) * xx ) * yy - normal.z ) * zz;
+						normal.x  = ( n0.x + ( n3.x - n0.x ) * xx ) + ( n1.x - n0.x + ( n0.x - n1.x + n2.x - n3.x ) * xx ) * yy;
+						normal.x += ( ( n4.x + ( n7.x - n4.x ) * xx ) + ( n5.x - n4.x + ( n4.x - n5.x + n6.x - n7.x ) * xx ) * yy - normal.x ) * zz;
+						normal.y  = ( n0.y + ( n3.y - n0.y ) * xx ) + ( n1.y - n0.y + ( n0.y - n1.y + n2.y - n3.y ) * xx ) * yy;
+						normal.y += ( ( n4.y + ( n7.y - n4.y ) * xx ) + ( n5.y - n4.y + ( n4.y - n5.y + n6.y - n7.y ) * xx ) * yy - normal.y ) * zz;
+						normal.z  = ( n0.z + ( n3.z - n0.z ) * xx ) + ( n1.z - n0.z + ( n0.z - n1.z + n2.z - n3.z ) * xx ) * yy;
+						normal.z += ( ( n4.z + ( n7.z - n4.z ) * xx ) + ( n5.z - n4.z + ( n4.z - n5.z + n6.z - n7.z ) * xx ) * yy - normal.z ) * zz;
 
 						normal.x /= ax;
 						normal.y /= ay;
@@ -610,10 +630,12 @@ namespace value_interpolation
 
 						c = c * diffuse_ratio + ambient_ratio;
 
-						double alpha = oc.alpha * sampling_step;
-						alpha = alpha < 1.0 ? alpha : 1.0;
-						add_intensity += alpha * add_opacity * ( oc.pixel * c + spec ) * lAtten;
-						add_opacity *= ( 1 - alpha );
+						double _ct_ = ct - ct_;
+
+						double alpha = ( oc1.alpha * ( 1.0 - _ct_ ) + oc2.alpha * _ct_ ) * sampling_step;
+						//alpha = alpha < 1.0 ? alpha : 1.0;
+						add_intensity += alpha * add_opacity * ( ( oc1.pixel * ( 1.0 - _ct_ ) + oc2.pixel * _ct_ ) * c + spec ) * lAtten;
+						add_opacity *= ( 1.0 - alpha );
 
 						if( add_opacity < termination )
 						{
@@ -622,7 +644,7 @@ namespace value_interpolation
 						spos.x += ray_step.x;
 						spos.y += ray_step.y;
 						spos.z += ray_step.z;
-						l += sampling_step;
+						l += ray_sampling_step;
 					}
 					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
 				}
