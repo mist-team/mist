@@ -149,7 +149,7 @@ int main( )
 
 
 	cout << "< In the case of Expression Template >" << endl;
-	mat = ( mat1 + 1 + ( mat2 * mat3 + mat4 ) ).t( );
+	mat = ( mat1 + ( 1 + ( mat2 * mat3 + mat4 ) ) ).t( );
 	cout << mat << endl << endl << endl;
 
 

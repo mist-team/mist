@@ -791,10 +791,10 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const array2< T, Alloca
 
 
 // ‰æ‘œŠÔ‰‰Z
-#include "operator/operator_array.h"
-#include "operator/operator_array1.h"
-#include "operator/operator_array2.h"
-#include "operator/operator_array3.h"
+//#include "operator/operator_array.h"
+//#include "operator/operator_array1.h"
+//#include "operator/operator_array2.h"
+//#include "operator/operator_array3.h"
 
 // mist–¼‘O‹óŠÔ‚ÌI‚í‚è
 _MIST_END

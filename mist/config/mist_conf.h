@@ -72,6 +72,12 @@ template<> struct is_arithmetic< long double >{ static const bool value = true; 
 #endif
 
 
+// ƒf[ƒ^Œ^‚Ì‚ÉŠÖ‚·‚éî•ñ
+template< class T >
+struct type_trait{ typedef T value_type; };
+
+
+
 #define _MIST_ALLOCATE_TEST_			0
 
 #ifndef NDEBUG

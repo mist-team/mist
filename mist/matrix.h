@@ -304,6 +304,204 @@ public: // ”z—ñ‚É‘Î‚·‚éZp‰‰Z
 	}
 #endif
 
+
+/************************************************************************************************************
+**
+**      s—ñ‚É‘Î‚·‚é‰‰Zq
+**        += s—ñ
+**        += ’è”
+**
+**        -= s—ñ
+**        -= ’è”
+**
+**        *= s—ñ
+**        *= ’è”
+**
+**        /= ’è”
+**
+************************************************************************************************************/
+	template < class TT, class AAlocator >
+	const matrix& operator +=( const matrix< TT, AAlocator > &m2 )
+	{
+		matrix &m1 = *this;
+#if _CHECK_ARRAY_OPERATION_ != 0
+		if( m1.size( ) != m2.size( ) )
+		{
+			// ‘«‚µZ‚Å‚«‚Ü‚¹‚ñ—áŠO
+			::std::cout << "can't add arrays." << ::std::endl;
+			return( *this );
+		}
+#endif
+		for( size_type i = 0 ; i < m1.size( ) ; i++ ) m1[i] += static_cast< T >( m2[i] );
+		return( m1 );
+	}
+
+	template < class TT, class AAlocator >
+	const matrix& operator -=( const matrix< TT, AAlocator > &m2 )
+	{
+		matrix &m1 = *this;
+#ifdef _CHECK_ARRAY_OPERATION_
+		if( m1.size( ) != m2.size( ) )
+		{
+			// ˆø‚«Z‚Å‚«‚Ü‚¹‚ñ—áŠO
+			::std::cout << "can't subtract matrixs." << ::std::endl;
+			return( m1 );
+		}
+#endif
+		for( size_type i = 0 ; i < m1.size( ) ; i++ ) m1[i] -= static_cast< T >( m2[i] );
+		return( m1 );
+	}
+
+	template < class TT, class AAlocator >
+	const matrix& operator *=( const matrix< TT, AAlocator > &m2 )
+	{
+		matrix &m1 = *this;
+		typedef typename matrix< T, Allocator >::size_type size_type;
+#ifdef _CHECK_MATRIX_OPERATION_
+		if( m1.cols( ) != m2.rows( ) )
+		{
+			// Š|‚¯Z‚Å‚«‚Ü‚¹‚ñ—áŠO
+			::std::cout << "can't multiply matrices." << ::std::endl;
+			return( m1 );
+		}
+#endif
+
+		matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
+		size_type r, c, t;
+
+		for( r = 0 ; r < mat.rows( ) ; r++ )
+		{
+			for( c = 0 ; c < mat.cols( ) ; c++ )
+			{
+				for( t = 0 ; t < m1.cols( ) ; t++ )
+				{
+					mat( r, c ) += m1( r, t ) * static_cast< T >( m2( t, c ) );
+				}
+			}
+		}
+
+		m1.swap( mat );
+
+		return( m1 );
+	}
+
+	const matrix& operator +=( typename type_trait< T >::value_type val )
+	{
+		matrix &m = *this;
+		size_type i, size = m.rows( ) < m.cols( ) ? m.rows( ) : m.cols( );
+		for( i = 0 ; i < size ; i++ ) m( i, i ) += val;
+		return( m );
+	}
+
+	const matrix& operator -=( typename type_trait< T >::value_type val )
+	{
+		matrix &m = *this;
+		size_type i, size = m.rows( ) < m.cols( ) ? m.rows( ) : m.cols( );
+		for( i = 0 ; i < size ; i++ ) m( i, i ) -= val;
+		return( m );
+	}
+
+	const matrix& operator *=( typename type_trait< T >::value_type val )
+	{
+		matrix &m = *this;
+		for( size_type i = 0 ; i < m.size( ) ; i++ ) m[i] *= val;
+		return( m );
+	}
+
+	const matrix& operator /=( typename type_trait< T >::value_type val )
+	{
+		matrix &m = *this;
+#ifdef _CHECK_ARRAY_OPERATION_
+		if( val == 0 )
+		{
+			// ƒ[ƒœZ”­¶
+			::std::cout << "zero division occured." << ::std::endl;
+			return;
+		}
+#endif
+		for( size_type i = 0 ; i < m.size( ) ; i++ ) m[i] /= val;
+		return( m );
+	}
+
+#if _USE_EXPRESSION_TEMPLATE_ != 0
+
+	template < class Derive >
+	matrix& operator +=( const matrix_expression< T, Allocator, Derive > &m2 )
+	{
+		matrix &m1 = *this;
+#ifndef _CHECK_MATRIX_OPERATION_
+		if( m1.cols( ) != m2.cols( ) || m1.rows( ) != m2.rows( ) )
+		{
+			// ‘«‚µZ‚Å‚«‚Ü‚¹‚ñ—áŠO
+			::std::cout << "can't add matrices." << ::std::endl;
+			return( m1 );
+		}
+#endif
+		for( size_type r = 0 ; r < m1.rows( ) ; r++ )
+		{
+			for( size_type c = 0 ; c < m1.cols( ) ; c++ )
+			{
+				m1( r, c ) += m2( r, c );
+			}
+		}
+		return( m1 );
+	}
+
+	template < class Derive >
+	matrix& operator -=( const matrix_expression< T, Allocator, Derive > &m2 )
+	{
+		matrix &m1 = *this;
+#ifndef _CHECK_MATRIX_OPERATION_
+		if( m1.cols( ) != m2.cols( ) || m1.rows( ) != m2.rows( ) )
+		{
+			// ˆø‚«Z‚Å‚«‚Ü‚¹‚ñ—áŠO
+			::std::cout << "can't subtract matrices." << ::std::endl;
+			return( m1 );
+		}
+#endif
+		for( size_type r = 0 ; r < m1.rows( ) ; r++ )
+		{
+			for( size_type c = 0 ; c < m1.cols( ) ; c++ )
+			{
+				m1( r, c ) -= m2( r, c );
+			}
+		}
+		return( m1 );
+	}
+
+	template < class Derive >
+	matrix& operator *=( const matrix_expression< T, Allocator, Derive > &m2 )
+	{
+		matrix &m1 = *this;
+#ifndef _CHECK_MATRIX_OPERATION_
+		if( m1.cols( ) != m2.rows( ) )
+		{
+			// Š|‚¯Z‚Å‚«‚Ü‚¹‚ñ—áŠO
+			::std::cout << "can't multiply matrices." << ::std::endl;
+			return( m1 );
+		}
+#endif
+
+		matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
+
+		for( size_type r = 0 ; r < mat.rows( ) ; r++ )
+		{
+			for( size_type c = 0 ; c < mat.cols( ) ; c++ )
+			{
+				for( size_type t = 0 ; t < m1.cols( ) ; t++ )
+				{
+					mat( r, c ) += m1( r, t ) * m2( t, c );
+				}
+			}
+		}
+
+		m1.swap( mat );
+
+		return( m1 );
+	}
+
+#endif
+
 public:
 	void swap( matrix &m )
 	{
@@ -510,7 +708,7 @@ template < class T, class A >
 inline matrix< T, A > operator -( const matrix< T, A > &m )
 {
 	typedef typename matrix< T, A >::size_type size_type;
-	matrix< T, Allocator > o( m );
+	matrix< T, A > o( m );
 	for( size_type i = 0 ; i < o.size( ) ; i++ ) o[i] = -o[i];
 	return( o );
 }
@@ -521,206 +719,6 @@ template< class T, class A >
 inline matrix< T, A > transpose( const matrix< T, A > &mhs )
 {
 	return( mhs.t( ) );
-}
-
-#endif
-
-
-
-/************************************************************************************************************
-**
-**      s—ñ‚É‘Î‚·‚é‰‰Zq
-**        += s—ñ
-**        += ’è”
-**
-**        -= s—ñ
-**        -= ’è”
-**
-**        *= s—ñ
-**        *= ’è”
-**
-**        /= ’è”
-**
-************************************************************************************************************/
-template < class T, class Allocator >
-inline const matrix< T, Allocator >& operator +=( matrix< T, Allocator > &m1, const matrix< T, Allocator >  &m2 )
-{
-	typedef typename matrix< T, Allocator >::size_type size_type;
-#ifdef _CHECK_ARRAY_OPERATION_
-	if( m1.size( ) != m2.size( ) )
-	{
-		// ‘«‚µZ‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't add matrixs." << ::std::endl;
-		return( m1 );
-	}
-#endif
-	for( size_type i = 0 ; i < m1.size( ) ; i++ ) m1[i] += static_cast< T >( m2[i] );
-	return( m1 );
-}
-
-template < class T, class Allocator >
-inline const matrix< T, Allocator >& operator -=( matrix< T, Allocator > &m1, const matrix< T, Allocator >  &m2 )
-{
-	typedef typename matrix< T, Allocator >::size_type size_type;
-#ifdef _CHECK_ARRAY_OPERATION_
-	if( m1.size( ) != m2.size( ) )
-	{
-		// ˆø‚«Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't subtract matrixs." << ::std::endl;
-		return( m1 );
-	}
-#endif
-	for( size_type i = 0 ; i < m1.size( ) ; i++ ) m1[i] -= static_cast< T >( m2[i] );
-	return( m1 );
-}
-
-template < class T, class Allocator >
-inline const matrix< T, Allocator >& operator *=( matrix< T, Allocator > &m1, const matrix< T, Allocator >  &m2 )
-{
-	typedef typename matrix< T, Allocator >::size_type size_type;
-#ifdef _CHECK_MATRIX_OPERATION_
-	if( m1.cols( ) != m2.rows( ) )
-	{
-		// Š|‚¯Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't multiply matrices." << ::std::endl;
-		return( m1 );
-	}
-#endif
-
-	matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
-	size_type r, c, t;
-
-	for( r = 0 ; r < mat.rows( ) ; r++ )
-	{
-		for( c = 0 ; c < mat.cols( ) ; c++ )
-		{
-			for( t = 0 ; t < m1.cols( ) ; t++ )
-			{
-				mat( r, c ) += m1( r, t ) * static_cast< T >( m2( t, c ) );
-			}
-		}
-	}
-
-	m1.swap( mat );
-
-	return( m1 );
-}
-
-template < class T, class Allocator >
-inline const matrix< T, Allocator >& operator +=( matrix< T, Allocator > &m, typename array< T, Allocator >::value_type val )
-{
-	typename matrix< T, Allocator >::size_type i, size = m.rows( ) < m.cols( ) ? m.rows( ) : m.cols( );
-	for( i = 0 ; i < size ; i++ ) m( i, i ) += val;
-	return( m );
-}
-
-template < class T, class Allocator >
-inline const matrix< T, Allocator >& operator -=( matrix< T, Allocator > &m, typename array< T, Allocator >::value_type val )
-{
-	typename matrix< T, Allocator >::size_type i, size = m.rows( ) < m.cols( ) ? m.rows( ) : m.cols( );
-	for( i = 0 ; i < size ; i++ ) m( i, i ) -= val;
-	return( m );
-}
-
-template < class T, class Allocator >
-inline const matrix< T, Allocator >& operator *=( matrix< T, Allocator > &m, typename array< T, Allocator >::value_type val )
-{
-	typedef typename matrix< T, Allocator >::size_type size_type;
-	for( size_type i = 0 ; i < m.size( ) ; i++ ) m[i] *= val;
-	return( m );
-}
-
-template < class T, class Allocator >
-inline const matrix< T, Allocator >& operator /=( matrix< T, Allocator > &m, typename array< T, Allocator >::value_type val )
-{
-	typedef typename matrix< T, Allocator >::size_type size_type;
-#ifdef _CHECK_ARRAY_OPERATION_
-	if( val == 0 )
-	{
-		// ƒ[ƒœZ”­¶
-		::std::cout << "zero division occured." << ::std::endl;
-		return;
-	}
-#endif
-	for( size_type i = 0 ; i < m.size( ) ; i++ ) m[i] /= val;
-	return( m );
-}
-
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-template < class T, class Allocator, class Derive >
-const matrix< T, Allocator >& operator +=( matrix< T, Allocator > &m1, const matrix_expression< T, Allocator, Derive > &m2 )
-{
-	typedef typename matrix< T, Allocator >::size_type size_type;
-#ifndef _CHECK_MATRIX_OPERATION_
-	if( m1.cols( ) != m2.cols( ) || m1.rows( ) != m2.rows( ) )
-	{
-		// ‘«‚µZ‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't add matrices." << ::std::endl;
-		return( m1 );
-	}
-#endif
-	for( size_type r = 0 ; r < m1.rows( ) ; r++ )
-	{
-		for( size_type c = 0 ; c < m1.cols( ) ; c++ )
-		{
-			m1( r, c ) += m2( r, c );
-		}
-	}
-	return( m1 );
-}
-
-template < class T, class Allocator, class Derive >
-const matrix< T, Allocator >& operator -=( matrix< T, Allocator > &m1, const matrix_expression< T, Allocator, Derive > &m2 )
-{
-	typedef typename matrix< T, Allocator >::size_type size_type;
-#ifndef _CHECK_MATRIX_OPERATION_
-	if( m1.cols( ) != m2.cols( ) || m1.rows( ) != m2.rows( ) )
-	{
-		// ˆø‚«Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't subtract matrices." << ::std::endl;
-		return( m1 );
-	}
-#endif
-	for( size_type r = 0 ; r < m1.rows( ) ; r++ )
-	{
-		for( size_type c = 0 ; c < m1.cols( ) ; c++ )
-		{
-			m1( r, c ) -= m2( r, c );
-		}
-	}
-	return( m1 );
-}
-
-template < class T, class Allocator, class Derive >
-const matrix< T, Allocator >& operator *=( matrix< T, Allocator > &m1, const matrix_expression< T, Allocator, Derive > &m2 )
-{
-	typedef typename matrix< T, Allocator >::size_type size_type;
-#ifndef _CHECK_MATRIX_OPERATION_
-	if( m1.cols( ) != m2.rows( ) )
-	{
-		// Š|‚¯Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't multiply matrices." << ::std::endl;
-		return( m1 );
-	}
-#endif
-
-	matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
-
-	for( size_type r = 0 ; r < mat.rows( ) ; r++ )
-	{
-		for( size_type c = 0 ; c < mat.cols( ) ; c++ )
-		{
-			for( size_type t = 0 ; t < m1.cols( ) ; t++ )
-			{
-				mat( r, c ) += m1( r, t ) * m2( t, c );
-			}
-		}
-	}
-
-	m1.swap( mat );
-
-	return( m1 );
 }
 
 #endif
@@ -775,7 +773,7 @@ inline matrix_add< matrix_expression< Left, A, Derive1 >, matrix_expression< Rig
 }
 
 template< class T, class A >
-inline matrix_add_const< matrix< T, A >, typename matrix< T, A >::value_type > operator +( const matrix< T, A > &lhs, const typename matrix< T, A >::value_type &rhs )
+inline matrix_add_const< matrix< T, A >, typename matrix< T, A >::value_type > operator +( const matrix< T, A > &lhs, const typename type_trait< T >::value_type &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
 	return( matrix_add_const< matrix< T, A >, value_type >( lhs, rhs ) );
@@ -829,7 +827,7 @@ inline matrix_sub< matrix_expression< Left, A, Derive1 >, matrix_expression< Rig
 }
 
 template< class T, class A >
-inline matrix_sub_const1< matrix< T, A >, typename matrix< T, A >::value_type > operator -( const matrix< T, A > &lhs, const typename matrix< T, A >::value_type &rhs )
+inline matrix_sub_const1< matrix< T, A >, typename matrix< T, A >::value_type > operator -( const matrix< T, A > &lhs, const typename type_trait< T >::value_type &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
 	return( matrix_sub_const1< matrix< T, A >, value_type >( lhs, rhs ) );
@@ -883,7 +881,7 @@ inline matrix_mul< matrix_expression< Left, A, Derive1 >, matrix_expression< Rig
 }
 
 template< class T, class A >
-inline matrix_mul_const< matrix< T, A >, typename matrix< T, A >::value_type > operator *( const matrix< T, A > &lhs, const typename matrix< T, A >::value_type &rhs )
+inline matrix_mul_const< matrix< T, A >, typename matrix< T, A >::value_type > operator *( const matrix< T, A > &lhs, const typename type_trait< T >::value_type &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
 	return( matrix_mul_const< matrix< T, A >, value_type >( lhs, rhs ) );
@@ -913,7 +911,7 @@ inline matrix_mul_const< matrix_expression< Right, A, Derive >, typename matrix_
 
 // Š„‚èZ
 template< class T, class A >
-inline matrix_div_const< matrix< T, A >, typename matrix< T, A >::value_type > operator /( const matrix< T, A > &lhs, const typename matrix< T, A >::value_type &rhs )
+inline matrix_div_const< matrix< T, A >, typename matrix< T, A >::value_type > operator /( const matrix< T, A > &lhs, const typename type_trait< T >::value_type &rhs )
 {
 	typedef typename matrix< T, A >::value_type value_type;
 	return( matrix_div_const< matrix< T, A >, value_type >( lhs, rhs ) );
@@ -979,7 +977,7 @@ inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m1, cons
 
 // ’è”‚Æ‚Ì‘«‚µZ
 template < class T, class Allocator >
-inline matrix< T, Allocator > operator +( const matrix< T, Allocator > &m, typename matrix< T, Allocator >::value_type val )
+inline matrix< T, Allocator > operator +( const matrix< T, Allocator > &m, typename type_trait< T >::value_type val )
 {
 	return( matrix< T, Allocator >( m ) += val );
 }
@@ -994,7 +992,7 @@ inline matrix< T, Allocator > operator +( typename matrix< T, Allocator >::value
 
 // ’è”‚Æ‚Ìˆø‚«
 template < class T, class Allocator >
-inline matrix< T, Allocator > operator -( const matrix< T, Allocator > &m, typename matrix< T, Allocator >::value_type val )
+inline matrix< T, Allocator > operator -( const matrix< T, Allocator > &m, typename type_trait< T >::value_type val )
 {
 	return( matrix< T, Allocator >( m ) -= val );
 }
@@ -1008,7 +1006,7 @@ inline matrix< T, Allocator > operator -( typename matrix< T, Allocator >::value
 
 // ’è”‚Æ‚ÌŠ|‚¯Z
 template < class T, class Allocator >
-inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m, typename matrix< T, Allocator >::value_type val )
+inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m, typename type_trait< T >::value_type val )
 {
 	return( matrix< T, Allocator >( m ) *= val );
 }
@@ -1022,12 +1020,14 @@ inline matrix< T, Allocator > operator *( typename matrix< T, Allocator >::value
 
 // ’è”‚Æ‚ÌŠ„‚èZ
 template < class T, class Allocator >
-inline matrix< T, Allocator > operator /( const matrix< T, Allocator > &m, typename matrix< T, Allocator >::value_type val )
+inline matrix< T, Allocator > operator /( const matrix< T, Allocator > &m, typename type_trait< T >::value_type val )
 {
 	return( matrix< T, Allocator >( m ) /= val );
 }
 
 #endif
+
+
 
 // mist–¼‘O‹óŠÔ‚ÌI‚í‚è
 _MIST_END
