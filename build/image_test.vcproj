@@ -177,6 +177,9 @@
 				RelativePath="..\mist\filter\figure_decomposition.h">
 			</File>
 			<File
+				RelativePath="..\mist\filter\interlace.h">
+			</File>
+			<File
 				RelativePath="..\mist\interpolate.h">
 			</File>
 			<File

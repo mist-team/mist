@@ -8,9 +8,9 @@ image_draw_area *draw_area;
 #include <mist/draw.h>
 #include <mist/io/image.h>
 
-#define __INCLUDE_DICOM_TAG_ALL__	// 全てのDICOMタグをインポートする
+//#define __INCLUDE_DICOM_TAG_ALL__	// 全てのDICOMタグをインポートする
 #define __SHOW_DICOM_TAG__			// コンソールにインクルードしたタグを表示する
-#define __SHOW_DICOM_UNKNOWN_TAG__	// コンソールに認識出来なかったタグを表示する
+//#define __SHOW_DICOM_UNKNOWN_TAG__	// コンソールに認識出来なかったタグを表示する
 #include <mist/io/dicom.h>
 
 #include <mist/filter/distance.h>
@@ -19,11 +19,15 @@ image_draw_area *draw_area;
 #include <mist/filter/thinning.h>
 #include <mist/filter/median.h>
 #include <mist/filter/morphology.h>
+#include <mist/filter/interlace.h>
 #include <mist/interpolate.h>
 #include <mist/threshold.h>
 #include <mist/timer.h>
 
-#define USE_COLOR_IMAGE		0
+#include <mist/converter.h>
+
+
+#define USE_COLOR_IMAGE		1
 
 #if USE_COLOR_IMAGE == 1
 typedef mist::array2< mist::rgb< unsigned char > > image_type;
@@ -87,14 +91,8 @@ void euclidean_distance_transform_test( )
 	mist::array2< int > tmp1( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
 	mist::array2< int > tmp2( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
 	image_type::size_type i = 0;
-	for( i = 0 ; i < image_object.size( ) ; i++ )
-	{
-#if USE_COLOR_IMAGE == 1
-		tmp1[ i ] = image_object[ i ].get_value( );
-#else
-		tmp1[ i ] = image_object[ i ];
-#endif
-	}
+
+	mist::convert( image_object, tmp1 );
 
 	mist::euclidean_distance_transform( tmp1, tmp2 );
 
@@ -126,17 +124,10 @@ void figure_decomposition_test( )
 
 	image_type::size_type i;
 
-	for( i = 0 ; i < image_object.size( ) ; i++ )
-	{
-#if USE_COLOR_IMAGE == 1
-		label[ i ] = image_object[ i ].get_value( );
-#else
-		label[ i ] = image_object[ i ];
-#endif
-	}
+	mist::convert( image_object, label );
 
-	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
-//	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
+//	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
+	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
 
 	if( label_num == 0 )
 	{
@@ -155,14 +146,7 @@ void thresholding_test( )
 
 	image_type::size_type i;
 
-	for( i = 0 ; i < image_object.size( ) ; i++ )
-	{
-#if USE_COLOR_IMAGE == 1
-		tmp[ i ] = image_object[ i ].get_value( );
-#else
-		tmp[ i ] = image_object[ i ];
-#endif
-	}
+	mist::convert( image_object, tmp );
 
 	int threshold = mist::discriminant_analysis::threshold( tmp );
 	std::cout << "threshold value: " << threshold << std::endl;
@@ -176,7 +160,10 @@ void thresholding_test( )
 void labeling4_test( )
 {
 	mist::array2< unsigned char > label;
-	size_t label_num = mist::labeling4( image_object, label, 255 );
+
+	mist::convert( image_object, label );
+
+	size_t label_num = mist::labeling4( label, label, 255 );
 
 	if( label_num == 0 )
 	{
@@ -192,7 +179,10 @@ void labeling4_test( )
 void labeling8_test( )
 {
 	mist::array2< unsigned char > label;
-	size_t label_num = mist::labeling8( image_object, label, 255 );
+
+	mist::convert( image_object, label );
+
+	size_t label_num = mist::labeling8( label, label, 255 );
 
 	if( label_num == 0 )
 	{
@@ -208,11 +198,15 @@ void labeling8_test( )
 
 void thinning_test( )
 {
-	mist::thinning( image_object, image_object );
+	mist::array2< unsigned char > label;
+
+	mist::convert( image_object, label );
+
+	mist::thinning( label, label );
 
 	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
 	{
-		image_object[i] *= 255;
+		image_object[ i ] = label[ i ] * 255;
 	}
 }
 
@@ -269,5 +263,10 @@ void interpolate_test( int mode, bool reso_up )
 	}
 }
 
+void interlace_test( bool is_odd_line )
+{
+	image_type tmp( image_object );
+	mist::interlace( tmp, image_object, is_odd_line );
+}
 
 

@@ -48,4 +48,6 @@ void closing_test( );
 
 void interpolate_test( int mode, bool reso_up );
 
+void interlace_test( bool is_odd_line );
+
 #endif // __INCLUDE_IMAGE_TEST__

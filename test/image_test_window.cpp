@@ -164,6 +164,20 @@ void image_test_window::cb_Reso5(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Reso5_i(o,v);
 }
 
+inline void image_test_window::cb_Interlace_i(Fl_Menu_*, void*) {
+  interlace_test( false );
+}
+void image_test_window::cb_Interlace(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Interlace_i(o,v);
+}
+
+inline void image_test_window::cb_Interlace1_i(Fl_Menu_*, void*) {
+  interlace_test( true );
+}
+void image_test_window::cb_Interlace1(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Interlace1_i(o,v);
+}
+
 Fl_Menu_Item image_test_window::menu_[] = {
  {"&File", 0,  0, 0, 64, 0, 0, 14, 56},
  {"&Open", 0,  0, 0, 64, 0, 0, 14, 56},
@@ -194,6 +208,8 @@ Fl_Menu_Item image_test_window::menu_[] = {
  {"Reso down with nearest", 0,  (Fl_Callback*)image_test_window::cb_Reso3, 0, 0, 0, 0, 14, 56},
  {"Reso down with linear", 0,  (Fl_Callback*)image_test_window::cb_Reso4, 0, 0, 0, 0, 14, 56},
  {"Reso down with cubic", 0,  (Fl_Callback*)image_test_window::cb_Reso5, 0, 0, 0, 0, 14, 56},
+ {"Interlace Even", 0,  (Fl_Callback*)image_test_window::cb_Interlace, 0, 0, 0, 0, 14, 56},
+ {"Interlace Odd", 0,  (Fl_Callback*)image_test_window::cb_Interlace1, 0, 0, 0, 0, 14, 56},
  {0},
  {0}
 };

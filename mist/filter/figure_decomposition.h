@@ -25,12 +25,12 @@ _MIST_BEGIN
 // ユークリッド型距離変換
 namespace __distance_figure_dedomposition__
 {
-	typedef struct
+	struct Position
 	{
-		short x;
-		short y;
-		short label;
-	} Position;
+		ptrdiff_t	x;
+		ptrdiff_t	y;
+		size_t		count;
+	};
 
 	template < class T, class Allocator1, class Allocator2 >
 	double search_max( const array2< T, Allocator1 > &ia, const array2< binary, Allocator2 > &mask, std::deque< Position > &list )
@@ -65,7 +65,7 @@ namespace __distance_figure_dedomposition__
 					Position pt;
 					pt.x = i;
 					pt.y = j;
-					pt.label = 0;
+					pt.count = 0;
 					list.push_back( pt );
 				}
 			}
@@ -85,7 +85,7 @@ namespace __distance_figure_dedomposition__
 		int i, j;
 		double ii, jj;
 		int rx, ry;
-		double rr, rrr;
+		double rr, rrr, minimum_length;
 		size_type px, py;
 		double aspect = in.reso2( ) / in.reso1( );
 
@@ -100,18 +100,16 @@ namespace __distance_figure_dedomposition__
 		//out = dist;
 		//return(0);
 
-		std::deque< Position > list;
+		typedef Position position_type;
+		std::deque< position_type > list;
 		size_type label_count = 0;
 		size_type loop_count = 0;
 		value_type current_label = 0;
-		Position pt;
+		std::deque< position_type >::iterator ite;
 
-		array2< float >   mask( in.width( ), in.height( ), in.reso1( ), in.reso2( ) );
 		array2< binary >  mmmm( in.width( ), in.height( ), in.reso1( ), in.reso2( ), false );
-		array2< binary >  mtmp( in.width( ), in.height( ), in.reso1( ), in.reso2( ), false );
 
 		out.fill( );
-		mask.fill( 512.0f * 512.0f );
 
 		printf( "looping start\n" );
 		while( true )
@@ -127,40 +125,12 @@ namespace __distance_figure_dedomposition__
 			printf( "                                                                   \r" );
 			printf( "looping ... % 4d, label =% 4d, size =% 3d, radius =%.3f )\r", ++loop_count, label_count, list.size( ), sqrt( (double)rr ) );
 
-			while( !list.empty( ) )
+			for( ite = list.begin( ) ; ite != list.end( ) ; ++ite )
 			{
-				std::deque< Position >::iterator ite = list.begin( );
-				for( ; ite != list.end( ) ; ++ite )
-				{
-					Position &ppt = *ite;
-					if( out( ppt.x, ppt.y ) == 0 ) break;
-				}
-				if( ite == list.end( ) )
-				{
-					// すでにラベルが割り振られているものが見つからなかった場合
-					pt = list.front( );
-					list.pop_front( );
-				}
-				else
-				{
-					pt = *ite;
-					list.erase( ite );
-				}
+				position_type &pt = *ite;
 
-				// 他の領域から塗られていないので，新しいラベルとする
-				if( out( pt.x, pt.y ) == 0 )
-				{
-					label_count++;
-					if( label_count > label_max ) label_count = label_max + 1;
-					unsigned char ll[] = { 50, 100, 150, 200, 250 };
-					current_label = ll[ label_count ];
-//					current_label = label_count;
-				}
-				else
-				{
-					current_label = out( pt.x, pt.y );
-				}
-
+				current_label = 0;
+				minimum_length = 1.0e30;
 				for( j = -ry ; j <= ry ; j++ )
 				{
 					jj = j * j * aspect * aspect;
@@ -174,24 +144,84 @@ namespace __distance_figure_dedomposition__
 						if( px < 0 || px >= in.width( ) ) continue;
 
 						rrr = ii + jj;
-						if( rrr < rr )
+						if( rrr <= rr )
 						{
-							if( mask( px, py ) > rrr )
+							if( out( px, py ) != 0 )
 							{
-								mask( px, py ) = static_cast< float >( rrr );
-								// 現在の復元における近い領域のほうにラベルを割り当てる
-								out( px, py ) = current_label;
+								if( out( px, py ) != current_label )
+								{
+									pt.count++;
+								}
+								if( minimum_length > rrr )
+								{
+									minimum_length = rrr;
+									current_label = out( px, py );
+								}
 							}
 						}
 					}
 				}
 
+				// 他の領域から塗られていないので，新しいラベルとする
+				if( current_label == 0 )
+				{
+					label_count++;
+					if( label_count > label_max ) label_count = label_max + 1;
+					unsigned char ll[] = { 0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250 };
+					out( pt.x, pt.y ) = ll[ label_count ];
+				}
+				else
+				{
+					out( pt.x, pt.y ) = current_label;
+				}
+
 				// 次回の最大値検索から外れるようにする
 				mmmm( pt.x, pt.y ) = true;
-
-				draw_area->redraw( );
-				Fl::wait( .1 );
 			}
+
+			//for( ite = list.begin( ) ; ite != list.end( ) ; ++ite )
+			//{
+			//	position_type &pt = *ite;
+			//	if( pt.count == 1 ) continue;
+
+			//	value_type start_label = out( pt.x, pt.y );
+			//	current_label = 0;
+			//	minimum_length = 1.0e30;
+			//	for( j = -ry ; j <= ry ; j++ )
+			//	{
+			//		jj = j * j * aspect * aspect;
+			//		py = j + pt.y;
+			//		if( py < 0 || py >= in.height( ) ) continue;
+
+			//		for( i = -rx ; i <= rx ; i++ )
+			//		{
+			//			ii = i * i;
+			//			px = i + pt.x;
+			//			if( px < 0 || px >= in.width( ) ) continue;
+
+			//			rrr = ii + jj;
+			//			if( rrr <= rr )
+			//			{
+			//				if( out( px, py ) != 0 )
+			//				{
+			//					if( minimum_length > rrr )
+			//					{
+			//						minimum_length = rrr;
+			//						current_label = out( px, py );
+			//					}
+			//					else if( minimum_length == rrr && out( px, py ) != start_label )
+			//					{
+			//						current_label = out( px, py );
+			//					}
+			//				}
+			//			}
+			//		}
+			//	}
+			//	out( pt.x, pt.y ) = current_label;
+			//}
+
+			draw_area->redraw( );
+			Fl::wait( 0 );
 		}
 
 		// MAXラベル数を超えたものを除去
