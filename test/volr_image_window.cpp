@@ -209,9 +209,16 @@ void volr_image_window::cb_Field(Fl_Value_Slider* o, void* v) {
   ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_Field_i(o,v);
 }
 
+inline void volr_image_window::cb_Barrel_i(Fl_Value_Slider* o, void*) {
+  volr_image->barrel_distortion( o->value( ) );
+}
+void volr_image_window::cb_Barrel(Fl_Value_Slider* o, void* v) {
+  ((volr_image_window*)(o->parent()->user_data()))->cb_Barrel_i(o,v);
+}
+
 volr_image_window::volr_image_window( ) {
   Fl_Double_Window* w;
-  { Fl_Double_Window* o = image_window = new Fl_Double_Window(421, 562);
+  { Fl_Double_Window* o = image_window = new Fl_Double_Window(421, 582);
     w = o;
     o->user_data((void*)(this));
     { Fl_Group* o = new Fl_Group(5, 30, 410, 410, "VolumeRendering");
@@ -290,6 +297,14 @@ volr_image_window::volr_image_window( ) {
         o->align(FL_ALIGN_LEFT);
       }
       o->end();
+    }
+    { Fl_Value_Slider* o = new Fl_Value_Slider(120, 555, 295, 20, "Barrel Distortion:");
+      o->type(1);
+      o->box(FL_PLASTIC_DOWN_BOX);
+      o->minimum(-3);
+      o->maximum(3);
+      o->callback((Fl_Callback*)cb_Barrel);
+      o->align(FL_ALIGN_LEFT);
     }
     o->end();
   }

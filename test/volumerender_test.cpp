@@ -141,16 +141,17 @@ void volr_draw_area::draw_image( )
 
 	image_.reso( w( ) / static_cast< double >( h( ) ), 1.0 );
 
+	barrel_distortion_.resize( image_.width( ), image_.height( ) );
+
 	p.pos.x	= camera_.pos.x - p.offset.x;
 	p.pos.y	= p.offset.y - camera_.pos.y;
 	p.pos.z	= camera_.pos.z - p.offset.z;
 	p.dir	= camera_.dir;
 	p.up	= camera_.up;
 
-
 	{
 		mist::timer t;
-		mist::volumerendering( ct, image_, p, table );
+		mist::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), barrel_distortion_, p, table );
 		fps_ = 1.0 / t.elapse( );
 	}
 }
@@ -226,10 +227,12 @@ void volr_draw_area::initialize( )
 	volr_table.append( mist::rgb< double >( 255.0, 128.0, 102.0 ), -400 + offset,  150 + offset, 0.8, 0.8 );
 	volr_table.append( mist::rgb< double >( 255.0, 255.0, 255.0 ),  150 + offset, 1000 + offset, 1.0, 1.0 );
 
+	// ‹——£ƒ}ƒbƒv‚ğì¬‚·‚é
+	mist::generate_depth_map( ct, depth_map, volr_table );
 
 	volr_parameter.fovy					= 80.0;
-	volr_parameter.ambient_ratio		= 0.4;
-	volr_parameter.diffuse_ratio		= 0.6;
+	volr_parameter.ambient_ratio		= 0.3;
+	volr_parameter.diffuse_ratio		= 0.7;
 	volr_parameter.light_attenuation	= 0.0;
 	volr_parameter.sampling_step		= 1.0;
 	volr_parameter.termination			= 0.01;

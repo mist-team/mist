@@ -27,6 +27,10 @@
 #include "thread.h"
 #endif
 
+#ifndef __INCLUDE_MIST_DISTANCE_TRANSFORM__
+#include "filter/distance.h"
+#endif
+
 
 #include <vector>
 
@@ -337,6 +341,145 @@ namespace volumerender
 		v.y /= len;
 		v.z /= len;
 	}
+
+
+	struct no_depth_map
+	{
+		typedef ptrdiff_t difference_type;
+		double operator()( difference_type i, difference_type j, difference_type k ) const
+		{
+			return( 2.0 );
+		}
+	};
+
+	template < class DepthMap >
+	struct depth_map
+	{
+		typedef DepthMap depth_map_type;
+		typedef typename depth_map_type::difference_type difference_type;
+
+		const depth_map_type &depth_map_;
+
+		depth_map( const depth_map_type &dmap ) : depth_map_( dmap )
+		{
+		}
+
+		double operator()( difference_type i, difference_type j, difference_type k ) const
+		{
+			double l = depth_map_( i >> 1, j >> 1, k >> 1 );
+			return( l < 1.0 ? 2.0 : l * 2.0 );
+		}
+	};
+
+	struct no_distortion
+	{
+		template < class T >
+		void operator()( size_t x, size_t y, vector3< T > &pos ) const
+		{
+		}
+	};
+
+	struct barrel_distortion
+	{
+		array2< double > distortion_matrix_;
+		double kappa;
+
+		barrel_distortion( ) : kappa( 0.0 )
+		{
+		}
+
+		barrel_distortion( size_t width, size_t height, double ka ) : kappa( ka )
+		{
+			resize( width, height );
+		}
+
+		void resize( size_t width, size_t height )
+		{
+			if( distortion_matrix_.width( ) != width || distortion_matrix_.height( ) != height )
+			{
+				distortion_matrix_.resize( width, height );
+				update( );
+			}
+		}
+
+		void update( )
+		{
+			if( kappa == 0.0 )
+			{
+				distortion_matrix_.fill( 1.0 );
+			}
+			else
+			{
+				size_t width = distortion_matrix_.width( );
+				size_t height = distortion_matrix_.height( );
+				double cx = width / 2.0;
+				double cy = height / 2.0;
+				double ka1 = kappa >= 0.0 ? kappa : -kappa;
+				double ka2 = ka1 * ka1;
+				double ka3 = ka2 * ka1;
+
+				for( size_t j = 0 ; j < height ; j++ )
+				{
+					double y  = j / cy - 1.0;
+					double yy = y * y;
+					for( size_t i = 0 ; i < width ; i++ )
+					{
+						double x  = i / cx - 1.0;
+						double xx = x * x;
+						double ll = xx + yy;
+
+						if( ll == 0.0 )
+						{
+							distortion_matrix_( i, j ) = 1.0;
+						}
+						else
+						{
+							double l   = std::sqrt( ll );
+							double bac = ll / ( 4.0 * ka2 ) + 1.0 / ( 27.0 * ka3 );
+							if( bac < 0.0 )
+							{
+								distortion_matrix_( i, j ) = 1.0;
+							}
+							else
+							{
+								double v2  = std::sqrt( ll / ( 4.0 * ka2 ) + 1.0 / ( 27.0 * ka3 ) );
+								double v1  = l / ( 2.0 * ka1 );
+								double w   = v1 + v2;
+								if( w < 0.0 )
+								{
+									w = - std::pow( -w, 1.0 / 3.0 );
+								}
+								else
+								{
+									w = std::pow( w, 1.0 / 3.0 );
+								}
+								double ld  = w - 1.0 / ( 3.0 * ka1 * w );
+
+								if( kappa < 0.0 )
+								{
+									distortion_matrix_( i, j ) = l / ld;
+								}
+								else
+								{
+									distortion_matrix_( i, j ) = ld / l;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		template < class T >
+		void operator()( size_t x, size_t y, vector3< T > &pos ) const
+		{
+			double r = distortion_matrix_( x, y );
+
+			pos.x *= r;
+			pos.y *= r;
+		}
+	};
+
 }
 
 
@@ -351,9 +494,9 @@ namespace volumerender
 // 値補間タイプのボリュームレンダリング
 namespace value_interpolation
 {
-	template < class Array1, class Array2, class T >
-	bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter &p, const volumerender::attribute_table< T > &table,
-																							typename Array1::size_type thread_id, typename Array1::size_type thread_num )
+	template < class Array1, class Array2, class DepthMap, class Distortion, class T >
+	bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &depth_map, const Distortion &distortion,
+							const volumerender::parameter &p, const volumerender::attribute_table< T > &table, typename Array1::size_type thread_id, typename Array1::size_type thread_num )
 	{
 		typedef typename volumerender::parameter::vector_type vector_type;
 		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
@@ -441,6 +584,9 @@ namespace value_interpolation
 				// 投影面上の点をカメラ座標系に変換
 				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
 
+				// 歪関数を適用する
+				distortion( i, j, Pos );
+
 				// レイ方向をカメラ座標系からワールド座標系に変換
 				vector_type light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
 
@@ -481,8 +627,6 @@ namespace value_interpolation
 					// 直方体画素の画像上では方向によってサンプリング間隔が変わってしまう問題に対応
 					double ray_sampling_step = sampling_step * masp / dlen;
 
-					const double accelerated_step = 2.0;
-					vector_type ray_accelerated_step = ray * accelerated_step;
 					vector_type ray_step = ray * ray_sampling_step;
 
 					double n = ( casting_end - casting_start ).length( );
@@ -503,19 +647,19 @@ namespace value_interpolation
 						{
 							if( l > 0 )
 							{
-								double sstep = accelerated_step - ray_sampling_step;
-								spos.x -= ray.x * sstep;
-								spos.y -= ray.y * sstep;
-								spos.z -= ray.z * sstep;
-								l -= sstep;
+								spos.x -= ray.x;
+								spos.y -= ray.y;
+								spos.z -= ray.z;
+								l -= 1.0;
 							}
 							break;
 						}
 
-						l += accelerated_step;
-						spos.x += ray_accelerated_step.x;
-						spos.y += ray_accelerated_step.y;
-						spos.z += ray_accelerated_step.z;
+						double current_step = depth_map( si, sj, sk );
+						l += current_step;
+						spos.x += ray.x * current_step;
+						spos.y += ray.y * current_step;
+						spos.z += ray.z * current_step;
 					}
 
 					while( l < n )
@@ -534,8 +678,7 @@ namespace value_interpolation
 						double ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
 						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
 
-						difference_type ct_ = volumerender::to_integer( ct );
-						const attribute_type &oc = table[ ct_ ];
+						const attribute_type &oc = table[ volumerender::to_integer( ct ) ];
 
 						// この位置における物体が透明の場合は次のステップへ移行する
 						if( !oc.has_alpha )
@@ -632,6 +775,7 @@ namespace value_interpolation
 						add_intensity += alpha * add_opacity * ( oc.pixel * c + spec ) * lAtten;
 						add_opacity *= ( 1.0 - alpha );
 
+						// 画素がレンダリング結果に与える影響がしきい値以下になった場合は終了
 						if( add_opacity < termination )
 						{
 							break;
@@ -658,11 +802,11 @@ namespace value_interpolation
 // ボリュームレンダリングのスレッド実装
 namespace __volumerendering_controller__
 {
-	template < class Array1, class Array2, class T >
-	class volumerendering_thread : public mist::thread< volumerendering_thread< Array1, Array2, T > >
+	template < class Array1, class Array2, class DepthMap, class Distortion, class T >
+	class volumerendering_thread : public mist::thread< volumerendering_thread< Array1, Array2, DepthMap, Distortion, T > >
 	{
 	public:
-		typedef mist::thread< volumerendering_thread< Array1, Array2, T > > base;
+		typedef mist::thread< volumerendering_thread< Array1, Array2, DepthMap, Distortion, T > > base;
 		typedef typename base::thread_exit_type thread_exit_type;
 		typedef typename Array1::size_type size_type;
 		typedef typename Array1::value_type value_type;
@@ -674,14 +818,18 @@ namespace __volumerendering_controller__
 		// 入出力用の画像へのポインタ
 		const Array1 *in_;
 		Array2 *out_;
+		const DepthMap *depth_map_;
+		const Distortion *distortion_;
 		const volumerender::parameter *param_;
 		const volumerender::attribute_table< T > *table_;
 
 	public:
-		void setup_parameters( const Array1 &in, Array2 &out, const volumerender::parameter &p, const volumerender::attribute_table< T > &t, size_type thread_id, size_type thread_num )
+		void setup_parameters( const Array1 &in, Array2 &out, const DepthMap &depth_map, const Distortion &distortion, const volumerender::parameter &p, const volumerender::attribute_table< T > &t, size_type thread_id, size_type thread_num )
 		{
 			in_  = &in;
 			out_ = &out;
+			depth_map_ = &depth_map;
+			distortion_ = &distortion;
 			param_ = &p;
 			table_ = &t;
 			thread_id_ = thread_id;
@@ -689,11 +837,12 @@ namespace __volumerendering_controller__
 		}
 
 		volumerendering_thread( size_type id = 0, size_type num = 1 ) : thread_id_( id ), thread_num_( num ),
-													in_( NULL ), out_( NULL ), param_( NULL ), table_( NULL )
+													in_( NULL ), out_( NULL ), depth_map_( NULL ), distortion_( NULL ), param_( NULL ), table_( NULL )
 		{
 		}
 		volumerendering_thread( const volumerendering_thread &p ) : base( p ), thread_id_( p.thread_id_ ), thread_num_( p.thread_num_ ),
-																		in_( p.in_ ), out_( p.out_ ), param_( p.param_ ), table_( p.table_ )
+																		in_( p.in_ ), out_( p.out_ ), depth_map_( p.depth_map_ ), distortion_( p.distortion_ ),
+																		param_( p.param_ ), table_( p.table_ )
 		{
 		}
 
@@ -701,7 +850,7 @@ namespace __volumerendering_controller__
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( )
 		{
-			value_interpolation::volumerendering( *in_, *out_, *param_, *table_, thread_id_, thread_num_ );
+			value_interpolation::volumerendering( *in_, *out_, *depth_map_, *distortion_, *param_, *table_, thread_id_, thread_num_ );
 			return( true );
 		}
 	};
@@ -719,6 +868,75 @@ namespace __volumerendering_controller__
 //! @{
 
 
+/// @brief ボリュームレンダリング
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  dmap       … レンダリングを高速化するための距離画像
+//! @param[in]  distortion … 歪に関する変換関数
+//! @param[in]  param      … ボリュームレンダリングのパラメータ
+//! @param[in]  table      … ボリュームレンダリングの色－値テーブル
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … ボリュームレンダリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class Array1, class Array2, class DepthMap, class Distortion, class ATTRIBUTETYPE >
+bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &dmap, const Distortion &distortion, const volumerender::parameter &param, const volumerender::attribute_table< ATTRIBUTETYPE > &table, typename Array1::size_type thread_num = 0 )
+{
+	if( is_same_object( in, out ) || in.empty( ) )
+	{
+		return( false );
+	}
+
+	typedef typename Array1::size_type size_type;
+	typedef __volumerendering_controller__::volumerendering_thread< Array1, Array2, DepthMap, Distortion, ATTRIBUTETYPE > volumerendering_thread;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	volumerendering_thread *thread = new volumerendering_thread[ thread_num ];
+
+	size_type i;
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].setup_parameters( in, out, dmap, distortion, param, table, i, thread_num );
+	}
+
+	// スレッドを実行して，終了まで待機する
+	do_threads_( thread, thread_num );
+
+	delete [] thread;
+	
+	return( true );
+}
+
+
+///// @brief ボリュームレンダリング
+////! 
+////! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+////! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+////!
+////! @param[in]  in         … 入力画像
+////! @param[out] out        … 出力画像
+////! @param[in]  distortion … 歪に関する変換関数
+////! @param[in]  param      … ボリュームレンダリングのパラメータ
+////! @param[in]  table      … ボリュームレンダリングの色－値テーブル
+////! @param[in]  thread_num … 使用するスレッド数
+////! 
+////! @retval true  … ボリュームレンダリングに成功
+////! @retval false … 入力と出力が同じオブジェクトを指定した場合
+////! 
+//template < class Array1, class Array2, class Distortion, class ATTRIBUTETYPE >
+//bool volumerendering( const Array1 &in, Array2 &out, const Distortion &distortion, const volumerender::parameter &param, const volumerender::attribute_table< ATTRIBUTETYPE > &table, typename Array1::size_type thread_num = 0 )
+//{
+//	return( volumerendering( in, out, volumerender::no_depth_map( ), distortion, param, table, thread_num ) );
+//}
 
 /// @brief ボリュームレンダリング
 //! 
@@ -737,31 +955,95 @@ namespace __volumerendering_controller__
 template < class Array1, class Array2, class ATTRIBUTETYPE >
 bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter &param, const volumerender::attribute_table< ATTRIBUTETYPE > &table, typename Array1::size_type thread_num = 0 )
 {
-	if( is_same_object( in, out ) || in.empty( ) )
+	return( volumerendering( in, out, volumerender::no_depth_map( ), volumerender::no_distortion( ), param, table, thread_num ) );
+}
+
+
+/// @brief ボリュームレンダリング
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  depth_map  … レンダリングを高速化するための距離画像（3次元画像）
+//! @param[in]  param      … ボリュームレンダリングのパラメータ
+//! @param[in]  table      … ボリュームレンダリングの色－値テーブル
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … ボリュームレンダリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class Array1, class Array2, class Array3, class ATTRIBUTETYPE >
+bool volumerendering( const Array1 &in, Array2 &out, const Array3 &depth_map, const volumerender::parameter &param, const volumerender::attribute_table< ATTRIBUTETYPE > &table, typename Array1::size_type thread_num = 0 )
+{
+	return( volumerendering( in, out, volumerender::depth_map< Array3 >( depth_map ), volumerender::no_distortion( ), param, table, thread_num ) );
+}
+
+
+/// @brief ボリュームレンダリング
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  param      … ボリュームレンダリングのパラメータ
+//! @param[in]  table      … ボリュームレンダリングの色－値テーブル
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … ボリュームレンダリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class Array, class DepthMap, class ATTRIBUTETYPE >
+bool generate_depth_map( const Array &in, DepthMap &dmap, const volumerender::attribute_table< ATTRIBUTETYPE > &table, typename Array::size_type thread_num = 0 )
+{
+	if( is_same_object( in, dmap ) || in.empty( ) )
 	{
 		return( false );
 	}
 
-	typedef typename Array1::size_type size_type;
-	typedef __volumerendering_controller__::volumerendering_thread< Array1, Array2, ATTRIBUTETYPE > volumerendering_thread;
+	typedef typename Array::size_type size_type;
 
-	if( thread_num == 0 )
+	dmap.resize( in.width( ) / 2, in.height( ) / 2, in.depth( ) / 2 );
+	dmap.reso( 1.0, 1.0, 1.0 );
+
+	for( size_type k = 0 ; k < dmap.depth( ) ; k++ )
 	{
-		thread_num = static_cast< size_type >( get_cpu_num( ) );
+		size_type _3 = k * 2;
+		for( size_type j = 0 ; j < dmap.height( ) ; j++ )
+		{
+			size_type _2 = j * 2;
+			for( size_type i = 0 ; i < dmap.width( ) ; i++ )
+			{
+				size_type _1 = i * 2;
+				bool b1 = table.has_alpha( in( _1    , _2    , _3     ) );
+				bool b2 = table.has_alpha( in( _1 + 1, _2    , _3     ) );
+				bool b3 = table.has_alpha( in( _1    , _2 + 1, _3     ) );
+				bool b4 = table.has_alpha( in( _1 + 1, _2 + 1, _3     ) );
+				bool b5 = table.has_alpha( in( _1    , _2    , _3 + 1 ) );
+				bool b6 = table.has_alpha( in( _1 + 1, _2    , _3 + 1 ) );
+				bool b7 = table.has_alpha( in( _1    , _2 + 1, _3 + 1 ) );
+				bool b8 = table.has_alpha( in( _1 + 1, _2 + 1, _3 + 1 ) );
+
+				if( b1 || b2 || b3 || b4 || b5 || b6 || b7 || b8 )
+				{
+					dmap( i, j, k ) = 0;
+				}
+				else
+				{
+					dmap( i, j, k ) = 1;
+				}
+			}
+		}
 	}
 
-	volumerendering_thread *thread = new volumerendering_thread[ thread_num ];
+	calvin::distance_transform( dmap, dmap, thread_num );
 
-	size_type i;
-	for( i = 0 ; i < thread_num ; i++ )
+	for( size_type i = 0 ; i < dmap.size( ) ; i++ )
 	{
-		thread[ i ].setup_parameters( in, out, param, table, i, thread_num );
+		dmap[ i ] = std::sqrt( dmap[ i ] );
 	}
-
-	// スレッドを実行して，終了まで待機する
-	do_threads_( thread, thread_num );
-
-	delete [] thread;
 	
 	return( true );
 }

@@ -51,6 +51,7 @@ public:
 
 private:
 	mist::array3< ct_value_type > ct;
+	mist::array3< double > depth_map;
 	mist::array2< mist::rgb< unsigned char > > image_;
 
 	bool is_high_resolution_;
@@ -68,6 +69,7 @@ private:
 
 	volr_table_type volr_table;
 	volr_parameter_type volr_parameter;
+	mist::volumerender::barrel_distortion barrel_distortion_;
 
 public:
 	int handle( int event );
@@ -139,6 +141,16 @@ public:
 	void fovy( double ffovy )
 	{
 		volr_parameter.fovy = ffovy;
+		draw_flag_ = true;
+		redraw( );
+		Fl::wait( 0 );
+	}
+
+	void barrel_distortion( double bdistortion )
+	{
+		barrel_distortion_.kappa = bdistortion;
+		barrel_distortion_.update( );
+
 		draw_flag_ = true;
 		redraw( );
 		Fl::wait( 0 );
