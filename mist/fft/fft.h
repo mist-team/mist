@@ -75,6 +75,7 @@ void fft( array1< T1, Allocator1 > &in, array1< std::complex< T2 >, Allocator2 >
 	for( i = 0 ; i < in.size() ; i++ )
 	{
 		data[i*2] = ( double )in[i];
+		data[i*2 + 1 ] = 0.0 ;
 	}
 
 	ip[0] = 0;
@@ -89,9 +90,9 @@ void fft( array1< T1, Allocator1 > &in, array1< std::complex< T2 >, Allocator2 >
 		out[i] = std::complex< T2 >( (T2)data[2*i], (T2)data[2*i+1] );
 	}
 
-	delete w;
-	delete ip;
-	delete data;
+	free( w );
+	free( ip );
+	free( data );
 }
 
 #if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
@@ -124,9 +125,9 @@ void fft( array1< T1, Allocator1 > &in, array1< std::complex< T2 >, Allocator2 >
 		{\
 			out[i] = std::complex< type2 >( (type2)data[2*i], (type2)data[2*i+1] );\
 		}\
-		delete w;\
-		delete ip;\
-		delete data;\
+		free( w );\
+		free( ip );\
+		free( data );\
 	};\
 
 	FFT1(	float,	float	)
@@ -250,9 +251,9 @@ void fft( array1< T1, Allocator1 > &in, array1< std::complex< T2 >, Allocator2 >
 			out[i] = std::complex< T2 >( (T2)data[2*i], (T2)data[2*i+1] );
 		}
 		
-		delete w;
-		delete ip;
-		delete data;
+		free( w );
+		free( ip );
+		free( data );
 	}
 	
 #endif
@@ -299,9 +300,9 @@ void inverse_fft( array1< std::complex< T1 >, Allocator1 > &in, array1< T2, Allo
 		out[i] = (T2)data[2*i];
 	}
 
-	delete w;
-	delete ip;
-	delete data;
+	free( w );
+	free( ip );
+	free( data );
 }
 
 #if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
@@ -338,9 +339,9 @@ void inverse_fft( array1< std::complex< T1 >, Allocator1 > &in, array1< T2, Allo
 		{\
 			out[i] = std::complex< type2 >( (type2)data[2*i], (type2)data[2*i+1] );\
 		}\
-		delete w;\
-		delete ip;\
-		delete data;\
+		free( w );\
+		free( ip );\
+		free( data );\
 	}\
 
 	INVERSE_FFT1(	float,	float	)
@@ -459,9 +460,9 @@ void inverse_fft( array1< std::complex< T1 >, Allocator1 > &in, array1< T2, Allo
 			out[i] = std::complex< T2 >( (T2)data[2*i], (T2)data[2*i+1] );
 		}
 
-		delete w;
-		delete ip;
-		delete data;
+		free( w );
+		free( ip );
+		free( data );
 	}
 	
 #endif
@@ -529,15 +530,15 @@ void fft( array2< T1, Allocator1 > &in, array2< std::complex< T2 >, Allocator2 >
 		}
 	}
 
-	delete t;
-	delete w;
-	delete ip;
+	free( t );
+	free( w );
+	free( ip );
 
 	for( i = 0 ; i < in.width() ; i++ )
 	{
-		 delete data[i];
+		 free( data[i] );
 	}
-	delete data;
+	free( data );
 }
 
 
@@ -591,14 +592,14 @@ void fft( array2< T1, Allocator1 > &in, array2< std::complex< T2 >, Allocator2 >
 				out( i, j ) = std::complex< type2 >( (type2)data[i][2*j], (type2)data[i][2*j+1] );\
 			}\
 		}\
-		delete t;\
-		delete w;\
-		delete ip;\
+		free( t );\
+		free( w );\
+		free( ip );\
 		for( i = 0 ; i < in.width() ; i++ )\
 		{\
-			 delete data[i];\
+			 free( data[i] );\
 		}\
-		delete data;\
+		free( data );\
 	}\
 	
 
@@ -738,15 +739,15 @@ void fft( array2< T1, Allocator1 > &in, array2< std::complex< T2 >, Allocator2 >
 			}
 		}
 
-		delete t;
-		delete w;
-		delete ip;
+		free( t );
+		free( w );
+		free( ip );
 
 		for( i = 0 ; i < in.width() ; i++ )
 		{
-			 delete data[i];
+			 free( data[i] );
 		}
-		delete data;
+		free( data );
 	}
 	
 #endif
@@ -820,15 +821,15 @@ void inverse_fft( array2< std::complex< T1 >, Allocator1 > &in, array2< T2, Allo
 		}
 	}
 
-	delete t;
-	delete w;
-	delete ip;
+	free( t );
+	free( w );
+	free( ip );
 
 	for( i = 0 ; i < in.width() ; i++ )
 	{
-		 delete data[i];
+		 free( data[i] );
 	}
-	delete data;
+	free( data );
 }
 
 
@@ -888,14 +889,14 @@ void inverse_fft( array2< std::complex< T1 >, Allocator1 > &in, array2< T2, Allo
 				out( i, j ) =  std::complex< type2> ( (type2)data[i][2*j], (type2)data[i][2*j+1] );\
 			}\
 		}\
-		delete t;\
-		delete w;\
-		delete ip;\
+		free( t );\
+		free( w );\
+		free( ip );\
 		for( i = 0 ; i < in.width() ; i++ )\
 		{\
-			 delete data[i];\
+			 free( data[i] );\
 		}\
-		delete data;\
+		free( data );\
 	}\
 	
 	INVERSE_FFT2(	float,	float	)
@@ -1041,15 +1042,15 @@ void inverse_fft( array2< std::complex< T1 >, Allocator1 > &in, array2< T2, Allo
 			}
 		}
 
-		delete t;
-		delete w;
-		delete ip;
+		free( t );
+		free( w );
+		free( ip );
 
 		for( i = 0 ; i < in.width() ; i++ )
 		{
-			 delete data[i];
+			 free( data[i] );
 		}
-		delete data;
+		free( data );
 	}
 	
 #endif
@@ -1067,7 +1068,7 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 
 	if( !size_check( (unsigned int) in.width() ) ||
 		!size_check( (unsigned int) in.height() ) ||
-		!size_check( (unsigned int) in.height() ) )
+		!size_check( (unsigned int) in.depth() ) )
 	{
 		printf(" data size is not 2^n\n" );
 		return;
@@ -1080,7 +1081,7 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 		data[i] = ( double ** )malloc( sizeof( double *) * in.height() );
 		for( j = 0 ; j < in.height() ; j++ )
 		{
-			data[i][j] = ( double * )malloc( sizeof( double ) * in.height() *2 );
+			data[i][j] = ( double * )malloc( sizeof( double ) * in.depth() *2 );
 		}
 	}
 
@@ -1096,12 +1097,12 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 
 	if( in.width() > in.height() )
 	{
-		ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) ) );
+		ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) + 3 ) );
 		w = ( double * )malloc( sizeof( double ) * (int)( in.width() / 2 ) );
 	}
 	else
 	{
-		ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) ) );
+		ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) + 3 ) );
 		w = ( double * )malloc( sizeof( double ) * (int)( in.height() / 2 ) );
 
 	}
@@ -1136,19 +1137,19 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 		}
 	}
 
-	delete t;
-	delete w;
-	delete ip;
+	free( t );
+	free( w );
+	free( ip );
 
 	for( i = 0 ; i < in.width() ; i++ )
 	{
 		for( j = 0 ; j < in.height() ; j++ )
 		{
-			delete data[i][j];
+			free( data[i][j] );
 		}
-		 delete data[i];
+		 free( data[i] );
 	}
-	delete data;
+	free( data );
 }
 
 #if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
@@ -1164,7 +1165,7 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 		int *ip;\
 		if( !size_check( (unsigned int) in.width() ) ||\
 			!size_check( (unsigned int) in.height() ) ||\
-			!size_check( (unsigned int) in.height() ) )\
+			!size_check( (unsigned int) in.depth() ) )\
 		{\
 			printf(" data size is not 2^n\n" );\
 			return;\
@@ -1175,7 +1176,7 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 			data[i] = ( double ** )malloc( sizeof( double *) * in.height() );\
 			for( j = 0 ; j < in.height() ; j++ )\
 			{\
-				data[i][j] = ( double * )malloc( sizeof( double ) * in.height() *2 );\
+				data[i][j] = ( double * )malloc( sizeof( double ) * in.depth() *2 );\
 			}\
 		}\
 		if( in.width() > in.height() )\
@@ -1188,12 +1189,12 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 		}\
 		if( in.width() > in.height() )\
 		{\
-			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) ) );\
+			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) + 3 ) );\
 			w = ( double * )malloc( sizeof( double ) * (int)( in.width() / 2 ) );\
 		}\
 		else\
 		{\
-			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) ) );\
+			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) + 3 ) );\
 			w = ( double * )malloc( sizeof( double ) * (int)( in.height() / 2 ) );\
 		}\
 		for( i = 0 ; i < in.width() ; i++ )\
@@ -1220,18 +1221,18 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 				}\
 			}\
 		}\
-		delete t;\
-		delete w;\
-		delete ip;\
+		free( t );\
+		free( w );\
+		free( ip );\
 		for( i = 0 ; i < in.width() ; i++ )\
 		{\
 			for( j = 0 ; j < in.height() ; j++ )\
 			{\
-				delete data[i][j];\
+				free( data[i][j] );\
 			}\
-			 delete data[i];\
+			 free( data[i] );\
 		}\
-		delete data;\
+		free( data );\
 	}\
 
 	FFT3(	float,	float	)
@@ -1321,7 +1322,7 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 
 		if( !size_check( (unsigned int) in.width() ) ||
 			!size_check( (unsigned int) in.height() ) ||
-			!size_check( (unsigned int) in.height() ) )
+			!size_check( (unsigned int) in.depth() ) )
 		{
 			printf(" data size is not 2^n\n" );
 			return;
@@ -1334,7 +1335,7 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 			data[i] = ( double ** )malloc( sizeof( double *) * in.height() );
 			for( j = 0 ; j < in.height() ; j++ )
 			{
-				data[i][j] = ( double * )malloc( sizeof( double ) * in.height() *2 );
+				data[i][j] = ( double * )malloc( sizeof( double ) * in.depth() *2 );
 			}
 		}
 
@@ -1350,12 +1351,12 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 
 		if( in.width() > in.height() )
 		{
-			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) ) );
+			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) + 3 ) );
 			w = ( double * )malloc( sizeof( double ) * (int)( in.width() / 2 ) );
 		}
 		else
 		{
-			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) ) );
+			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) + 3 ) );
 			w = ( double * )malloc( sizeof( double ) * (int)( in.height() / 2 ) );
 
 		}
@@ -1390,25 +1391,25 @@ void fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 >
 			}
 		}
 
-		delete t;
-		delete w;
-		delete ip;
+		free( t );
+		free( w );
+		free( ip );
 
 		for( i = 0 ; i < in.width() ; i++ )
 		{
 			for( j = 0 ; j < in.height() ; j++ )
 			{
-				delete data[i][j];
+				free( data[i][j] );
 			}
-			 delete data[i];
+			 free( data[i] );
 		}
-		delete data;
+		free( data );
 	}
 #endif
 
 //3ŽŸŒ³‚‘¬ƒt[ƒŠƒG‹t•ÏŠ·
 template < class T1, class T2, class Allocator1, class Allocator2 >
-void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allocator2 > &out )
+void inverse_fft( array3< std::complex< T1 >, Allocator1 > &in, array3< T2 , Allocator2 > &out )
 {
 	int i,j,k;
 	double ***data;
@@ -1418,7 +1419,7 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 
 	if( !size_check( (unsigned int) in.width() ) ||
 		!size_check( (unsigned int) in.height() ) ||
-		!size_check( (unsigned int) in.height() ) )
+		!size_check( (unsigned int) in.depth() ) )
 	{
 		printf(" data size is not 2^n\n" );
 		return;
@@ -1431,7 +1432,7 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 		data[i] = ( double ** )malloc( sizeof( double *) * in.height() );
 		for( j = 0 ; j < in.height() ; j++ )
 		{
-			data[i][j] = ( double * )malloc( sizeof( double ) * in.height() *2 );
+			data[i][j] = ( double * )malloc( sizeof( double ) * in.depth() *2 );
 		}
 	}
 
@@ -1447,12 +1448,12 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 
 	if( in.width() > in.height() )
 	{
-		ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) ) );
+		ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) + 3 ) );
 		w = ( double * )malloc( sizeof( double ) * (int)( in.width() / 2 ) );
 	}
 	else
 	{
-		ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) ) );
+		ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) + 3 ) );
 		w = ( double * )malloc( sizeof( double ) * (int)( in.height() / 2 ) );
 
 	}
@@ -1463,8 +1464,8 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 		{
 			for( k = 0 ; k < in.depth() ; k++ )
 			{
-				data[i][j][2*k] = ( double )in( i, j, k );
-				data[i][j][2*k+1] = 0.0;
+				data[i][j][2*k] = ( double )in( i, j, k ).real();
+				data[i][j][2*k+1] = ( double )in( i, j, k ).imag();
 			}
 		}
 	}
@@ -1493,24 +1494,24 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 		{
 			for( k = 0 ; k < out.depth() ; k++ )
 			{
-				out( i, j, k ) = std::complex< T2 >( (T2)data[i][j][2*k], (T2)data[i][j][2*k+1] );
+				out( i, j, k ) = (T2)data[i][j][2*k];
 			}
 		}
 	}
 
-	delete t;
-	delete w;
-	delete ip;
+	free( t );
+	free( w );
+	free( ip );
 
 	for( i = 0 ; i < in.width() ; i++ )
 	{
 		for( j = 0 ; j < in.height() ; j++ )
 		{
-			delete data[i][j];
+			free( data[i][j] );
 		}
-		 delete data[i];
+		 free( data[i] );
 	}
-	delete data;
+	free( data );
 }
 
 #if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
@@ -1526,7 +1527,7 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 		int *ip;\
 		if( !size_check( (unsigned int) in.width() ) ||\
 			!size_check( (unsigned int) in.height() ) ||\
-			!size_check( (unsigned int) in.height() ) )\
+			!size_check( (unsigned int) in.depth() ) )\
 		{\
 			printf(" data size is not 2^n\n" );\
 			return;\
@@ -1537,7 +1538,7 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 			data[i] = ( double ** )malloc( sizeof( double *) * in.height() );\
 			for( j = 0 ; j < in.height() ; j++ )\
 			{\
-				data[i][j] = ( double * )malloc( sizeof( double ) * in.height() *2 );\
+				data[i][j] = ( double * )malloc( sizeof( double ) * in.depth() *2 );\
 			}\
 		}\
 		if( in.width() > in.height() )\
@@ -1550,12 +1551,12 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 		}\
 		if( in.width() > in.height() )\
 		{\
-			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) ) );\
+			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) + 3 ) );\
 			w = ( double * )malloc( sizeof( double ) * (int)( in.width() / 2 ) );\
 		}\
 		else\
 		{\
-			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) ) );\
+			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) + 3 ) );\
 			w = ( double * )malloc( sizeof( double ) * (int)( in.height() / 2 ) );\
 		}\
 		for( i = 0 ; i < in.width() ; i++ )\
@@ -1592,18 +1593,18 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 				}\
 			}\
 		}\
-		delete t;\
-		delete w;\
-		delete ip;\
+		free( t );\
+		free( w );\
+		free( ip );\
 		for( i = 0 ; i < in.width() ; i++ )\
 		{\
 			for( j = 0 ; j < in.height() ; j++ )\
 			{\
-				delete data[i][j];\
+				free( data[i][j] );\
 			}\
-			 delete data[i];\
+			 free( data[i] );\
 		}\
-		delete data;\
+		free( data );\
 	}\
 
 	INVERSE_FFT3(	float,	float	)
@@ -1693,7 +1694,7 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 
 		if( !size_check( (unsigned int) in.width() ) ||
 			!size_check( (unsigned int) in.height() ) ||
-			!size_check( (unsigned int) in.height() ) )
+			!size_check( (unsigned int) in.depth() ) )
 		{
 			printf(" data size is not 2^n\n" );
 			return;
@@ -1706,7 +1707,7 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 			data[i] = ( double ** )malloc( sizeof( double *) * in.height() );
 			for( j = 0 ; j < in.height() ; j++ )
 			{
-				data[i][j] = ( double * )malloc( sizeof( double ) * in.height() *2 );
+				data[i][j] = ( double * )malloc( sizeof( double ) * in.depth() *2 );
 			}
 		}
 
@@ -1722,12 +1723,12 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 
 		if( in.width() > in.height() )
 		{
-			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) ) );
+			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.width() ) + 3 ) );
 			w = ( double * )malloc( sizeof( double ) * (int)( in.width() / 2 ) );
 		}
 		else
 		{
-			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) ) );
+			ip = ( int * )malloc( sizeof( int ) * (int)( sqrt( in.height() ) + 3 ) );
 			w = ( double * )malloc( sizeof( double ) * (int)( in.height() / 2 ) );
 
 		}
@@ -1772,19 +1773,19 @@ void inverse_fft( array3< T1, Allocator1 > &in, array3< std::complex< T2 >, Allo
 			}
 		}
 
-		delete t;
-		delete w;
-		delete ip;
+		free( t );
+		free( w );
+		free( ip );
 
 		for( i = 0 ; i < in.width() ; i++ )
 		{
 			for( j = 0 ; j < in.height() ; j++ )
 			{
-				delete data[i][j];
+				free( data[i][j] );
 			}
-			 delete data[i];
+			 free( data[i] );
 		}
-		delete data;
+		free( data );
 	}
 #endif
 
