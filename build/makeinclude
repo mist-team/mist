@@ -1,8 +1,8 @@
 CC  = gcc
 CXX = g++
 
-INCLUDE = -I../ -I/usr/local/include -I/usr/include -I/usr/X11R6/include
-LDLIBS = -L../lib -L/usr/local/lib -L/usr/lib -L/usr/X11R6/lib
+INCLUDE = -I../ -I/usr/local/include -I/usr/include -I/usr/X11R6/include -I../include -I../lib
+LDLIBS = -L../lib -L/usr/local/lib -L/usr/lib -L/usr/X11R6/lib -L../lib
 
 OSTYPE = "$(shell uname | cut -d _ -f 1 | tr [:upper:] [:lower:])"
 #OS_TYPE = $(shell echo '$OSTYPE')
