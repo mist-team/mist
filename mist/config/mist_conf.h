@@ -27,7 +27,7 @@ _MIST_BEGIN
 
 
 // Microsoft Visual C++ のバージョンをチェック
-#if _MSC_VER <= 1200
+#if defined( _MSC_VER ) && _MSC_VER <= 1200
 	// Visual C++6.0
 	#define __MIST_MSVC__		6
 #elif _MSC_VER > 1200

@@ -886,7 +886,7 @@ public:
 		{
 			return( true );
 		}
-		for( size_type i = 0 ; i <= NMPA ; i++ )
+		for( difference_type i = 0 ; i <= NMPA ; i++ )
 		{
 			if( data_[ i ] )
 			{
@@ -910,7 +910,7 @@ public:	// ’è”
 		{
 			max.sign_ = true;
 			max.exp_  = MAXEXP;
-			for( size_type i = 0 ; i <= NMPA1 ; i++ )
+			for( difference_type i = 0 ; i <= NMPA1 ; i++ )
 			{
 				max.data_[ i ] = RADIX1;
 			}
@@ -1006,7 +1006,7 @@ protected:
 			return( 1 );
 		}
 
-		size_type ia, ib;
+		difference_type ia, ib;
 		difference_type aexp = a.exp_;
 		difference_type bexp = b.exp_;
 
@@ -1031,7 +1031,7 @@ protected:
 		{
 			return( aexp > bexp ? 1: -1 );
 		}
-		for( size_type i = ia ; i <= NMPA ; i++ )
+		for( difference_type i = ia ; i <= NMPA ; i++ )
 		{
 			if( a.data_[ i ] != b.data_[ i ] )
 			{

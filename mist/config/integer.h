@@ -34,7 +34,7 @@ public:
 	typedef unsigned char value_type;
 
 private:
-	_MIST_CONST( unsigned int, BASE, 256 );
+	_MIST_CONST( signed int, BASE, 256 );
 	_MIST_CONST( unsigned int, DATA_NUM, __256_N__ );
 
 protected:
