@@ -332,7 +332,7 @@ namespace __non_rigid_registration_utility__
 		mist::array2< coefficients > coeff_xy;
 
 		template < class CONTROLMESHTYPE >
-		void initialize( size_type width, size_type height, size_type depth, const CONTROLMESHTYPE &control_mesh )
+		initialize( size_type width, size_type height, size_type depth, const CONTROLMESHTYPE &control_mesh )
 		{
 			coeff_z.resize( depth );
 			coeff_xy.resize( width, height );
@@ -854,7 +854,6 @@ namespace __non_rigid_registration_utility__
 		typedef typename TARGETTYPE::size_type size_type;
 		typedef typename TARGETTYPE::difference_type difference_type;
 		typedef typename CONTROLMESH::value_type vector_type;
-		typedef thread< registration_functor< TARGETTYPE, SOURCETYPE, CONTROLMESH > > base;
 		typedef matrix< double > matrix_type;							///< @brief 内部で利用する行列の型
 
 		array< unsigned int * > target;
@@ -862,7 +861,7 @@ namespace __non_rigid_registration_utility__
 		const source_image_type &source;
 		const control_mesh_type &control_mesh;
 		control_mesh_type control_mesh_tmp;
-		size_type x, y, z;
+		difference_type x, y, z;
 
 		array2< unsigned int > h;
 		array< unsigned int > hh;
@@ -966,7 +965,12 @@ namespace __non_rigid_registration_utility__
 			}
 		}
 
-		void initialize( size_t i, size_t j, size_t k )
+		void force_initialize( )
+		{
+			ffd_coeff.initialize( transformed_image.width( ), transformed_image.height( ), transformed_image.depth( ), control_mesh );
+		}
+
+		void initialize( difference_type i, difference_type j, difference_type k )
 		{
 			x = i;
 			y = j;
@@ -993,7 +997,7 @@ namespace __non_rigid_registration_utility__
 			control_mesh_tmp( x, y, z ).y = control_mesh( x, y, z ).y + p[ 1 ];
 			control_mesh_tmp( x, y, z ).z = control_mesh( x, y, z ).z + p[ 2 ];
 
-			if( use_thread )
+			if( !use_thread )
 			{
 				non_rigid_transformation_( transformed_image, source, control_mesh_tmp, ffd_coeff, x, y, z );
 			}
@@ -1006,6 +1010,7 @@ namespace __non_rigid_registration_utility__
 			__no_data_is_associated__.fill( );
 			h.fill( );
 			hh.fill( );
+			difference_type upper = h.width( );
 			size_type count = 0;
 			double _1_bin = 1.0 / BIN;
 
@@ -1055,7 +1060,7 @@ namespace __non_rigid_registration_utility__
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual typename base::thread_exit_type thread_function( )
+		virtual thread_exit_type thread_function( )
 		{
 			typedef __minimization_utility__::__no_copy_constructor_functor__< registration_functor< TARGETTYPE, SOURCETYPE, CONTROLMESH > > no_constructor_functor_type;
 
@@ -1069,7 +1074,58 @@ namespace __non_rigid_registration_utility__
 			bound( 2, 0 ) = -( control_mesh( x    , y    , z - 1 ) - control_mesh( x, y, z ) ).length( ) * search_length;
 			bound( 2, 1 ) =  ( control_mesh( x    , y    , z + 1 ) - control_mesh( x, y, z ) ).length( ) * search_length;
 
-			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 1.0 );
+			matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 );
+			double v1, v2;
+			size_type i;
+
+			// 他変数関数を１変数関数に変換する
+			no_constructor_functor_type f = no_constructor_functor_type( *this );
+			__minimization_utility__::__convert_to_vector_functor__< typename matrix_type::value_type, typename matrix_type::allocator_type, no_constructor_functor_type > functor( p, dir, tmp, f );
+
+			// 勾配方向を計算する
+			double len = 0.0, distance = 1.0;
+			for( i = 0 ; i < dir.size( ) ; i++ )
+			{
+				tmp[ i ] = p[ i ] + distance;
+				v1 = f( tmp );
+
+				tmp[ i ] = p[ i ] - distance;
+				v2 = f( tmp );
+
+				tmp[ i ] = p[ i ];
+
+				dir[ i ] = v2 - v1;
+				len += dir[ i ] * dir[ i ];
+			}
+
+			if( len > 0 )
+			{
+				// 勾配方向ベクトルの正規化
+				len = std::sqrt( len );
+				for( i = 0 ; i < dir.size( ) ; i++ )
+				{
+					dir[ i ] /= len;
+				}
+			}
+			else
+			{
+				// 勾配の計算ができなくなったので終了する
+				return( false );
+			}
+
+			double l1, l2, xx = 0.0;
+			if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
+			{
+				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
+				mist::brent::minimization( l1, l2, xx, functor, 0.1, 100, false );
+				p = dir * xx;
+			}
+			else
+			{
+				return( false );
+			}
+
+//			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 1.0 );
 //			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 0.1, 1.0, 1 );
 
 			// 結果を反映
@@ -1144,25 +1200,29 @@ namespace non_rigid
 
 		/// @brief 非剛体レジストレーションの実行
 		//! 
-		//! @param[in] source    … 目標画像に向けて変形するソース画像
-		//! @param[in] tolerance … レジストレーションの終了判定に用いる許容相対誤差
-		//! @param[in] max_loop  … 最適化処理の最大反復回数
+		//! @param[in] source              … 目標画像に向けて変形するソース画像
+		//! @param[in] tolerance           … レジストレーションの終了判定に用いる許容相対誤差
+		//! @param[in] max_loop            … 最適化処理の最大反復回数
+		//! @param[in] coarse_to_fine_step … 何段階のメッシュ再分割処理を行うか
+		//! @param[in] thread_num          … 使用するスレッド数
 		//! 
 		template < class SOURCETYPE >
-		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop = 3, size_type thread_num = 0 )
+		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop = 3, size_type coarse_to_fine_step = 1, size_type thread_num = 0 )
 		{
-			apply( source, tolerance, max_loop, thread_num, __mist_dmy_callback__( ) );
+			apply( source, tolerance, max_loop, coarse_to_fine_step, thread_num, __mist_dmy_callback__( ) );
 		}
 
 		/// @brief 非剛体レジストレーションの実行
 		//! 
-		//! @param[in] source    … 目標画像に向けて変形するソース画像
-		//! @param[in] tolerance … レジストレーションの終了判定に用いる許容相対誤差
-		//! @param[in] max_loop  … 最適化処理の最大反復回数
-		//! @param[in] callback  … 現在の進行状況を表示するためのコールバック関数
+		//! @param[in] source              … 目標画像に向けて変形するソース画像
+		//! @param[in] tolerance           … レジストレーションの終了判定に用いる許容相対誤差
+		//! @param[in] max_loop            … 最適化処理の最大反復回数
+		//! @param[in] coarse_to_fine_step … 何段階のメッシュ再分割処理を行うか
+		//! @param[in] thread_num          … 使用するスレッド数
+		//! @param[in] callback            … 現在の進行状況を表示するためのコールバック関数
 		//! 
 		template < class SOURCETYPE, class Functor >
-		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop, size_type thread_num, Functor callback )
+		void apply( const SOURCETYPE &source, double tolerance, size_type max_loop, size_type coarse_to_fine_step, size_type thread_num, Functor callback )
 		{
 			typedef __non_rigid_registration_utility__::registration_functor< TARGETTYPE, SOURCETYPE, control_mesh_type > non_rigid_registration_functor_type;
 			typedef __minimization_utility__::__no_copy_constructor_functor__< non_rigid_registration_functor_type > no_constructor_functor_type;
@@ -1221,6 +1281,7 @@ namespace non_rigid
 			// 1階の探索で，互いに影響しあわない制御点のリストを作成する
 			for( size_type s = 0 ; s < 27 ; s++ )
 			{
+//				for( difference_type k = d - Z[ s ] - 1 ; k >= 0 ; k -= 3 )
 				for( difference_type k = Z[ s ] ; k < d ; k += 3 )
 				{
 					for( difference_type j = Y[ s ] ; j < h ; j += 3 )
@@ -1237,54 +1298,240 @@ namespace non_rigid
 			//std::cout << "制御点数2: " << w * h * d << std::endl;
 
 
-			size_type loop = 0, numthreads, t;
-			double max_iteration_num = control_point_list.size( ) * max_loop / static_cast< double >( thread_num );
-			size_type count = 0;
-			while( loop++ < max_loop )
+			size_type fine_step_loop = 0;
+			while( fine_step_loop++ < coarse_to_fine_step )
 			{
-				for( size_type i = 0 ; i < control_point_list.size( ) ; )
+				size_type loop = 0, numthreads, t;
+				double max_iteration_num = control_point_list.size( ) * max_loop / static_cast< double >( thread_num );
+				size_type count = 0;
+				while( loop++ < max_loop )
 				{
-					for( numthreads = 0 ; numthreads < thread_num && i < control_point_list.size( ) ; numthreads++, i++ )
+					for( size_type innerloop = 0 ; innerloop < 2 ; innerloop++ )
 					{
-						control_point_index_type &v = control_point_list[ i ];
-						f[ numthreads ]->initialize( v.x, v.y, v.z );
+						for( size_type i = 0 ; i < control_point_list.size( ) ; )
+						{
+							for( numthreads = 0 ; numthreads < thread_num && i < control_point_list.size( ) ; numthreads++, i++ )
+							{
+								control_point_index_type &v = control_point_list[ i ];
+								f[ numthreads ]->initialize( v.x, v.y, v.z );
+							}
+
+							// スレッドの生成
+							for( t = 0 ; t < numthreads ; t++ )
+							{
+								f[ t ]->create( );
+							}
+
+							// スレッドの終了待ち
+							for( t = 0 ; t < numthreads ; t++ )
+							{
+								f[ t ]->wait( INFINITE );
+							}
+
+							// リソースの開放
+							for( t = 0 ; t < numthreads ; t++ )
+							{
+								f[ t ]->close( );
+							}
+
+							// 探索の結果を，各制御点に反映する
+							for( t = 0 ; t < numthreads ; t++ )
+							{
+								f[ t ]->apply_control_point_to_mesh( control_mesh );
+							}
+
+							callback( 100.0 / max_iteration_num * count++ );
+						}
 					}
 
-					// スレッドの生成
-					for( t = 0 ; t < numthreads ; t++ )
+					err = f[ 0 ]->evaluate_error( matrix_type::zero( 3, 1 ) );
+
+					if( 2.0 * std::abs( old_err - err ) < tolerance * ( std::abs( old_err ) + std::abs( err ) ) )
 					{
-						f[ t ]->create( );
+						break;
 					}
 
-					// スレッドの終了待ち
-					for( t = 0 ; t < numthreads ; t++ )
-					{
-						f[ t ]->wait( INFINITE );
-					}
-
-					// リソースの開放
-					for( t = 0 ; t < numthreads ; t++ )
-					{
-						f[ t ]->close( );
-					}
-
-					// 探索の結果を，各制御点に反映する
-					for( t = 0 ; t < numthreads ; t++ )
-					{
-						f[ t ]->apply_control_point_to_mesh( control_mesh );
-					}
-
-					callback( 100.0 / max_iteration_num * count++ );
+					old_err = err;
 				}
 
-				err = f[ 0 ]->evaluate_error( matrix_type::zero( 3, 1 ) );
 
-				if( 2.0 * std::abs( old_err - err ) < tolerance * ( std::abs( old_err ) + std::abs( err ) ) )
+				if( fine_step_loop < coarse_to_fine_step )
 				{
-					break;
-				}
+					// メッシュの再分割を行う
+					control_mesh_type cmesh = control_mesh;
+					difference_type w = control_mesh.width( ) * 2 - 1;
+					difference_type h = control_mesh.height( ) * 2 - 1;
+					difference_type d = control_mesh.depth( ) * 2 - 1;
+					w = w <= 0 ? 1 : w;
+					h = h <= 0 ? 1 : h;
+					d = d <= 0 ? 1 : d;
+					control_mesh.resize( w, h, d );
 
-				old_err = err;
+					double stepW = w == 1 ? 0 : source.width( ) / static_cast< double >( w - 1 );
+					double stepH = h == 1 ? 0 : source.height( ) / static_cast< double >( h - 1 );
+					double stepD = d == 1 ? 0 : source.depth( ) / static_cast< double >( d - 1 );
+					for( difference_type k = -2 ; k <= d + 1 ; k++ )
+					{
+						for( difference_type j = -2 ; j <= h + 1 ; j++ )
+						{
+							for( difference_type i = -2 ; i <= w + 1 ; i++ )
+							{
+								vector_type &v = control_mesh( i, j, k );
+								v.x = i * stepW * source.reso1( );
+								v.y = j * stepH * source.reso2( );
+								v.z = k * stepD * source.reso3( );
+							}
+						}
+					}
+
+					for( difference_type k = 0 ; k < d ; k++ )
+					{
+						bool k_is_odd = ( k % 2 ) == 1;
+						difference_type kk = k / 2;
+
+						for( difference_type j = 0 ; j < h ; j++ )
+						{
+							bool j_is_odd = ( j % 2 ) == 1;
+							difference_type jj = j / 2;
+
+							for( difference_type i = 0 ; i < w ; i++ )
+							{
+								bool i_is_odd = ( i % 2 ) == 1;
+								difference_type ii = i / 2;
+
+								if( i_is_odd && j_is_odd && k_is_odd )
+								{
+									control_mesh( i, j, k ) = ( cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
+																cmesh( ii    , jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 ) +
+																cmesh( ii + 1, jj    , kk     ) + cmesh( ii + 1, jj    , kk + 1 ) +
+																cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk + 1 ) ) / 8.0;
+								}
+								else if( !i_is_odd && j_is_odd && k_is_odd )
+								{
+									control_mesh( i, j, k ) = (
+																	cmesh( ii - 1, jj    , kk     ) + cmesh( ii - 1, jj    , kk + 1 ) +
+																	cmesh( ii - 1, jj + 1, kk     ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
+																	cmesh( ii + 1, jj    , kk     ) + cmesh( ii + 1, jj    , kk + 1 ) +
+																	cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk + 1 ) + 
+																	6.0 * (
+																		cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
+																		cmesh( ii    , jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 )
+																	)
+															  ) / 32.0;
+								}
+								else if( i_is_odd && !j_is_odd && k_is_odd )
+								{
+									control_mesh( i, j, k ) = (
+																	cmesh( ii    , jj - 1, kk     ) + cmesh( ii    , jj - 1, kk + 1 ) +
+																	cmesh( ii + 1, jj - 1, kk     ) + cmesh( ii + 1, jj - 1, kk + 1 ) +
+																	cmesh( ii    , jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 ) +
+																	cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk + 1 ) + 
+																	6.0 * (
+																		cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
+																		cmesh( ii + 1, jj    , kk     ) + cmesh( ii + 1, jj    , kk + 1 )
+																	)
+															  ) / 32.0;
+								}
+								else if( i_is_odd && j_is_odd && !k_is_odd )
+								{
+									control_mesh( i, j, k ) = (
+																	cmesh( ii    , jj    , kk - 1 ) + cmesh( ii + 1, jj    , kk - 1 ) +
+																	cmesh( ii    , jj + 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk - 1 ) +
+																	cmesh( ii    , jj    , kk + 1 ) + cmesh( ii + 1, jj    , kk + 1 ) +
+																	cmesh( ii    , jj + 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) + 
+																	6.0 * (
+																		cmesh( ii    , jj    , kk     ) + cmesh( ii + 1, jj    , kk     ) +
+																		cmesh( ii    , jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk     )
+																	)
+															  ) / 32.0;
+								}
+								else if( !i_is_odd && !j_is_odd && k_is_odd )
+								{
+									control_mesh( i, j, k ) = (
+																	cmesh( ii - 1, jj - 1, kk     ) + cmesh( ii - 1, jj + 1, kk     ) +
+																	cmesh( ii + 1, jj - 1, kk     ) + cmesh( ii + 1, jj + 1, kk     ) +
+																	cmesh( ii - 1, jj - 1, kk + 1 ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
+																	cmesh( ii + 1, jj - 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
+																	6.0 * (
+																		cmesh( ii - 1, jj    , kk     ) + cmesh( ii    , jj - 1, kk     ) +
+																		cmesh( ii + 1, jj    , kk     ) + cmesh( ii    , jj + 1, kk     ) +
+																		cmesh( ii - 1, jj    , kk + 1 ) + cmesh( ii    , jj - 1, kk + 1 ) +
+																		cmesh( ii + 1, jj    , kk + 1 ) + cmesh( ii    , jj + 1, kk + 1 )
+																	) + 
+																	36.0 * (
+																		cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 )
+																	)
+																) / 128.0;
+								}
+								else if( !i_is_odd && j_is_odd && !k_is_odd )
+								{
+									control_mesh( i, j, k ) = (
+																	cmesh( ii - 1, jj    , kk - 1 ) + cmesh( ii - 1, jj    , kk + 1 ) +
+																	cmesh( ii + 1, jj    , kk - 1 ) + cmesh( ii + 1, jj    , kk + 1 ) +
+																	cmesh( ii - 1, jj + 1, kk - 1 ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
+																	cmesh( ii + 1, jj + 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
+																	6.0 * (
+																		cmesh( ii - 1, jj    , kk     ) + cmesh( ii    , jj    , kk - 1 ) +
+																		cmesh( ii + 1, jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
+																		cmesh( ii - 1, jj + 1, kk     ) + cmesh( ii    , jj + 1, kk - 1 ) +
+																		cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 )
+																	) + 
+																	36.0 * (
+																		cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj + 1, kk     )
+																	)
+																) / 128.0;
+								}
+								else if( i_is_odd && !j_is_odd && !k_is_odd )
+								{
+									control_mesh( i, j, k ) = (
+																	cmesh( ii    , jj - 1, kk - 1 ) + cmesh( ii    , jj + 1, kk - 1 ) +
+																	cmesh( ii    , jj - 1, kk + 1 ) + cmesh( ii    , jj + 1, kk + 1 ) +
+																	cmesh( ii + 1, jj - 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk - 1 ) +
+																	cmesh( ii + 1, jj - 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
+																	6.0 * (
+																		cmesh( ii    , jj    , kk - 1 ) + cmesh( ii    , jj - 1, kk     ) +
+																		cmesh( ii    , jj    , kk + 1 ) + cmesh( ii    , jj + 1, kk     ) +
+																		cmesh( ii + 1, jj    , kk - 1 ) + cmesh( ii + 1, jj - 1, kk     ) +
+																		cmesh( ii + 1, jj    , kk + 1 ) + cmesh( ii + 1, jj + 1, kk     )
+																	) + 
+																	36.0 * (
+																		cmesh( ii    , jj    , kk     ) + cmesh( ii + 1, jj    , kk     )
+																	)
+																) / 128.0;
+								}
+								else
+								{
+									control_mesh( i, j, k ) = (
+																	cmesh( ii - 1, jj - 1, kk - 1 ) + cmesh( ii - 1, jj + 1, kk - 1 ) +
+																	cmesh( ii + 1, jj - 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk - 1 ) +
+																	cmesh( ii - 1, jj - 1, kk + 1 ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
+																	cmesh( ii + 1, jj - 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
+																	6.0 * (
+																		cmesh( ii - 1, jj - 1, kk     ) + cmesh( ii - 1, jj + 1, kk     ) +
+																		cmesh( ii + 1, jj - 1, kk     ) + cmesh( ii + 1, jj + 1, kk     ) +
+																		cmesh( ii - 1, jj    , kk - 1 ) + cmesh( ii    , jj - 1, kk - 1 ) +
+																		cmesh( ii + 1, jj    , kk - 1 ) + cmesh( ii    , jj + 1, kk - 1 ) +
+																		cmesh( ii - 1, jj    , kk + 1 ) + cmesh( ii    , jj - 1, kk + 1 ) +
+																		cmesh( ii + 1, jj    , kk + 1 ) + cmesh( ii    , jj + 1, kk + 1 )
+																	) + 
+																	36.0 * (
+																		cmesh( ii    , jj    , kk - 1 ) + cmesh( ii    , jj    , kk + 1 ) +
+																		cmesh( ii - 1, jj    , kk     ) + cmesh( ii    , jj - 1, kk     ) +
+																		cmesh( ii + 1, jj    , kk     ) + cmesh( ii    , jj + 1, kk     )
+																	) +
+																	cmesh( ii    , jj    , kk     ) * 216.0
+																) / 512.0;
+								}
+							}
+						}
+					}
+
+					// メッシュの再分割を行ったので，FFDの係数の再設定を行う
+					for( numthreads = 0 ; numthreads < thread_num ; numthreads++, i++ )
+					{
+						f[ numthreads ]->force_initialize( );
+					}
+				}
 			}
 
 			for( size_type i = 0 ; i < thread_num ; i++ )
@@ -1348,6 +1595,9 @@ namespace non_rigid
 			difference_type h = control_mesh.height( );
 			difference_type d = control_mesh.depth( );
 			difference_type i, j;
+			double ax = out.reso1( );
+			double ay = out.reso2( );
+
 			for( j = 0 ; j < h - 1 ; j++ )
 			{
 				for( i = 0 ; i < w - 1 ; i++ )
@@ -1356,22 +1606,22 @@ namespace non_rigid
 					vector_type &vec1 = control_mesh( i + 1, j    , 0 );
 					vector_type &vec2 = control_mesh( i    , j + 1, 0 );
 
-					size_type x0 = static_cast< size_type >( vec0.x );
-					size_type y0 = static_cast< size_type >( vec0.y );
-					size_type x1 = static_cast< size_type >( vec1.x );
-					size_type y1 = static_cast< size_type >( vec1.y );
-					size_type x2 = static_cast< size_type >( vec2.x );
-					size_type y2 = static_cast< size_type >( vec2.y );
+					size_type x0 = static_cast< size_type >( vec0.x / ax );
+					size_type y0 = static_cast< size_type >( vec0.y / ay );
+					size_type x1 = static_cast< size_type >( vec1.x / ax );
+					size_type y1 = static_cast< size_type >( vec1.y / ay );
+					size_type x2 = static_cast< size_type >( vec2.x / ax );
+					size_type y2 = static_cast< size_type >( vec2.y / ay );
 					draw_line( out, x0, y0, x1, y1, value );
 					draw_line( out, x0, y0, x2, y2, value );
 				}
 
 				vector_type &vec0 = control_mesh( i    , j    , 0 );
 				vector_type &vec2 = control_mesh( i    , j + 1, 0 );
-				size_type x0 = static_cast< size_type >( vec0.x );
-				size_type y0 = static_cast< size_type >( vec0.y );
-				size_type x2 = static_cast< size_type >( vec2.x );
-				size_type y2 = static_cast< size_type >( vec2.y );
+				size_type x0 = static_cast< size_type >( vec0.x / ax );
+				size_type y0 = static_cast< size_type >( vec0.y / ay );
+				size_type x2 = static_cast< size_type >( vec2.x / ax );
+				size_type y2 = static_cast< size_type >( vec2.y / ay );
 				draw_line( out, x0, y0, x2, y2, value );
 			}
 			for( i = 0 ; i < w - 1 ; i++ )
@@ -1379,10 +1629,10 @@ namespace non_rigid
 				vector_type &vec0 = control_mesh( i    , j    , 0 );
 				vector_type &vec1 = control_mesh( i + 1, j    , 0 );
 
-				size_type x0 = static_cast< size_type >( vec0.x );
-				size_type y0 = static_cast< size_type >( vec0.y );
-				size_type x1 = static_cast< size_type >( vec1.x );
-				size_type y1 = static_cast< size_type >( vec1.y );
+				size_type x0 = static_cast< size_type >( vec0.x / ax );
+				size_type y0 = static_cast< size_type >( vec0.y / ay );
+				size_type x1 = static_cast< size_type >( vec1.x / ax );
+				size_type y1 = static_cast< size_type >( vec1.y / ay );
 				draw_line( out, x0, y0, x1, y1, value );
 			}
 		}
@@ -1406,6 +1656,10 @@ namespace non_rigid
 			difference_type w = control_mesh.width( );
 			difference_type h = control_mesh.height( );
 			difference_type d = control_mesh.depth( );
+			double ax = out.reso1( );
+			double ay = out.reso2( );
+			double az = out.reso3( );
+
 			for( difference_type k = 0 ; k < d ; k++ )
 			{
 				for( difference_type j = 0 ; j < h ; j++ )
@@ -1414,34 +1668,34 @@ namespace non_rigid
 					{
 						const vector_type &vec0 = control_mesh( i, j, k );
 
-						size_type x0 = static_cast< size_type >( vec0.x );
-						size_type y0 = static_cast< size_type >( vec0.y );
-						size_type z0 = static_cast< size_type >( vec0.z );
+						size_type x0 = static_cast< size_type >( vec0.x / ax );
+						size_type y0 = static_cast< size_type >( vec0.y / ay );
+						size_type z0 = static_cast< size_type >( vec0.z / az );
 
 						if( i < w - 1 )
 						{
 							const vector_type &vec1 = control_mesh( i + 1, j, k );
-							size_type x1 = static_cast< size_type >( vec1.x );
-							size_type y1 = static_cast< size_type >( vec1.y );
-							size_type z1 = static_cast< size_type >( vec1.z );
+							size_type x1 = static_cast< size_type >( vec1.x / ax );
+							size_type y1 = static_cast< size_type >( vec1.y / ay );
+							size_type z1 = static_cast< size_type >( vec1.z / az );
 							draw_line( out, x0, y0, z0, x1, y1, z1, value );
 						}
 
 						if( j < h - 1 )
 						{
 							const vector_type &vec2 = control_mesh( i, j + 1, k );
-							size_type x2 = static_cast< size_type >( vec2.x );
-							size_type y2 = static_cast< size_type >( vec2.y );
-							size_type z2 = static_cast< size_type >( vec2.z );
+							size_type x2 = static_cast< size_type >( vec2.x / ax );
+							size_type y2 = static_cast< size_type >( vec2.y / ay );
+							size_type z2 = static_cast< size_type >( vec2.z / az );
 							draw_line( out, x0, y0, z0, x2, y2, z2, value );
 						}
 
 						if( k < d - 1 )
 						{
 							const vector_type &vec3 = control_mesh( i, j, k + 1 );
-							size_type x3 = static_cast< size_type >( vec3.x );
-							size_type y3 = static_cast< size_type >( vec3.y );
-							size_type z3 = static_cast< size_type >( vec3.z );
+							size_type x3 = static_cast< size_type >( vec3.x / ax );
+							size_type y3 = static_cast< size_type >( vec3.y / ay );
+							size_type z3 = static_cast< size_type >( vec3.z / az );
 							draw_line( out, x0, y0, z0, x3, y3, z3, value );
 						}
 					}

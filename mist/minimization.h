@@ -784,7 +784,7 @@ namespace gradient_with_vector
 			}
 
 			// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations, true );
+			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
 
 			//std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
 
@@ -871,7 +871,7 @@ namespace gradient_with_vector
 			if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
 			{
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-				err = brent::minimization( l1, l2, x, functor, tolerance, max_iterations, false );
+				err = brent::minimization( l1, l2, x, functor, tolerance, 200, false );
 			}
 
 			//std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
@@ -979,7 +979,7 @@ namespace gradient
 		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );
 
 		size_t ite;
-		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		for( ite = 1 ; ite <= max_iterations ;  )
 		{
 			// 勾配方向を計算する
 			double len = 0.0;
@@ -991,6 +991,7 @@ namespace gradient
 				tmp[ i ] = p[ i ] - distance;
 				v2 = f( tmp );
 
+				// 元に戻す
 				tmp[ i ] = p[ i ];
 
 				dir[ i ] = v2 - v1;
@@ -1013,11 +1014,13 @@ namespace gradient
 			}
 
 			// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations, true );
+			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
 
 			//std::cout << err << ", " << p.t( ) << ", " << dir.t( ) << std::endl;
 
-			if( 2.0 * std::abs( old_err - err ) < tolerance * ( std::abs( old_err ) + std::abs( err ) ) )
+			ite++;
+
+			if( ite > max_iterations || 2.0 * std::abs( old_err - err ) < tolerance * ( std::abs( old_err ) + std::abs( err ) ) )
 			{
 				// 前回の最小化の結果からの変化量が、許容誤差内であったので終了する
 				if( err < old_err )
@@ -1070,7 +1073,7 @@ namespace gradient
 		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );
 
 		size_t ite;
-		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		for( ite = 1 ; ite <= max_iterations ; )
 		{
 			// 勾配方向を計算する
 			double len = 0.0;
@@ -1082,6 +1085,7 @@ namespace gradient
 				tmp[ i ] = p[ i ] - distance;
 				v2 = f( tmp );
 
+				// 元に戻す
 				tmp[ i ] = p[ i ];
 
 				dir[ i ] = v2 - v1;
@@ -1107,12 +1111,14 @@ namespace gradient
 			if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
 			{
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-				err = brent::minimization( l1, l2, x, functor, tolerance, max_iterations, false );
+				err = brent::minimization( l1, l2, x, functor, tolerance, 200, false );
 			}
 
 			//std::cout << err << ", " << p.t( ) << ", " << dir.t( ) << std::endl;
 
-			if( 2.0 * std::abs( old_err - err ) < tolerance * ( std::abs( old_err ) + std::abs( err ) ) )
+			ite++;
+
+			if( ite > max_iterations || 2.0 * std::abs( old_err - err ) < tolerance * ( std::abs( old_err ) + std::abs( err ) ) )
 			{
 				// 前回の最小化の結果からの変化量が、許容誤差内であったので終了する
 				if( err < old_err )
@@ -1229,7 +1235,7 @@ namespace powell
 				double old_fp = fp;
 
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-				fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations, true );
+				fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
 
 				for( size_type r = 0 ; r < p.size( ) ; r++ )
 				{
@@ -1273,7 +1279,7 @@ namespace powell
 					if( ttt < 0 )
 					{
 						// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
-						fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations, true );
+						fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
 						p += dir * x;
 
 						// 方向集合の一番最後に，新しい方向を追加する
@@ -1354,7 +1360,7 @@ namespace powell
 				if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
 				{
 					// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-					fp = brent::minimization( l1, l2, x, functor, tolerance, max_iterations, false );
+					fp = brent::minimization( l1, l2, x, functor, tolerance, 200, false );
 
 					for( size_type r = 0 ; r < p.size( ) ; r++ )
 					{
@@ -1401,7 +1407,7 @@ namespace powell
 						if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
 						{
 							// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
-							fp = brent::minimization( l1, l2, x, functor, tolerance, max_iterations, false );
+							fp = brent::minimization( l1, l2, x, functor, tolerance, 200, false );
 							p += dir * x;
 						}
 
