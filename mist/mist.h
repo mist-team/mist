@@ -197,93 +197,61 @@ public:
 		return( *this );
 	}
 
-// 要素へのアクセス
+// コンテナ内の要素へのアクセス演算子
 private:
-	T &access( size_type index )
+	reference access( size_type index )
 	{
+#if _CHECK_ACCESS_VIOLATION_ != 0
+		if( index < 0 || index >= size_ )
+		{
+			static value_type dmy;
+			std::cout << "Access Violation at ( " << index << " )" << std::endl;
+			return( dmy );
+		}
+#endif
 		return( data_[index] );
 	}
-	const T &access( size_type index ) const
+	const_reference access( size_type index ) const
 	{
+#if _CHECK_ACCESS_VIOLATION_ != 0
+		if( index < 0 || index >= size_ )
+		{
+			static value_type dmy;
+			std::cout << "Access Violation at ( " << index << " )" << std::endl;
+			return( dmy );
+		}
+#endif
 		return( data_[index] );
 	}
 
 public:
-	value_type &at( size_type index )
+	reference at( size_type index )
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( index < 0 || index >= size_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << index << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( index ) );
 	}
 
-	const value_type &at( size_type index ) const
+	const_reference at( size_type index ) const
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( index < 0 || index >= size_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << index << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( index ) );
 	}
 
-	value_type &operator ()( size_type index )
+	reference operator ()( size_type index )
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( index < 0 || index >= size_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << index << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( index ) );
 	}
 
-	const value_type &operator ()( size_type index ) const
+	const_reference operator ()( size_type index ) const
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( index < 0 || index >= size_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << index << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( index ) );
 	}
 
-	value_type &operator []( size_type index )
+	reference operator []( size_type index )
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( index < 0 || index >= size_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << index << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( index ) );
 	}
 
-	const value_type &operator []( size_type index ) const
+	const_reference operator []( size_type index ) const
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( index < 0 || index >= size_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << index << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( index ) );
 	}
 
@@ -582,65 +550,49 @@ public:
 
 // 要素へのアクセス
 private:
-	T &access( size_type i, size_type j )
+	reference access( size_type i, size_type j )
 	{
+#if _CHECK_ACCESS_VIOLATION_ != 0
+		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
+		{
+			static value_type dmy;
+			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
+			return( dmy );
+		}
+#endif
 		return( data_[ i + j * size1_ ] );
 	}
-	const T &access( size_type i, size_type j ) const
+	const_reference access( size_type i, size_type j ) const
 	{
+#if _CHECK_ACCESS_VIOLATION_ != 0
+		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
+		{
+			static value_type dmy;
+			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
+			return( dmy );
+		}
+#endif
 		return( data_[ i + j * size1_ ] );
 	}
 
 public:
-	value_type &at( size_type i, size_type j )
+	reference at( size_type i, size_type j )
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( i, j ) );
 	}
 
-	const value_type &at( size_type index, size_type j ) const
+	const_reference at( size_type index, size_type j ) const
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( i, j ) );
 	}
 
-	value_type &operator ()( size_type i, size_type j )
+	reference operator ()( size_type i, size_type j )
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( i, j ) );
 	}
 
-	const value_type &operator ()( size_type i, size_type j ) const
+	const_reference operator ()( size_type i, size_type j ) const
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( i, j ) );
 	}
 
@@ -860,65 +812,49 @@ public:
 
 // 要素へのアクセス
 private:
-	T &access( size_type i, size_type j, size_type k )
+	reference access( size_type i, size_type j, size_type k )
 	{
+#if _CHECK_ACCESS_VIOLATION_ != 0
+		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
+		{
+			static value_type dmy;
+			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
+			return( dmy );
+		}
+#endif
 		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
-	const T &access( size_type i, size_type j, size_type k ) const
+	const_reference access( size_type i, size_type j, size_type k ) const
 	{
+#if _CHECK_ACCESS_VIOLATION_ != 0
+		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
+		{
+			static value_type dmy;
+			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
+			return( dmy );
+		}
+#endif
 		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
 public:
-	value_type &at( size_type i, size_type j, size_type k )
+	reference at( size_type i, size_type j, size_type k )
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( i, j, k ) );
 	}
 
-	const value_type &at( size_type index, size_type j, size_type k ) const
+	const_reference at( size_type index, size_type j, size_type k ) const
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( i, j, k ) );
 	}
 
-	value_type &operator ()( size_type i, size_type j, size_type k )
+	reference operator ()( size_type i, size_type j, size_type k )
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( i, j, k ) );
 	}
 
-	const value_type &operator ()( size_type i, size_type j, size_type k ) const
+	const_reference operator ()( size_type i, size_type j, size_type k ) const
 	{
-#if _CHECK_ACCESS_VIOLATION_ != 0
-		if( i < 0 || i >= size1_ || j < 0 || j >= size2_ || k < 0 || k >= size3_ )
-		{
-			static value_type dmy;
-			std::cout << "Access Violation at ( " << i << ", " << j << ", " << k << " )" << std::endl;
-			return( dmy );
-		}
-#endif
 		return( access( i, j, k ) );
 	}
 
