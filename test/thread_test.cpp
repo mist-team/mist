@@ -34,6 +34,8 @@ public:
 	{
 	}
 
+	virtual ~thread_parameter( ){ }
+
 protected:
 	// 継承した先で必ず実装されるスレッド関数
 	virtual thread_exit_type thread_function( const thread_parameter &p )

@@ -82,6 +82,9 @@ _MIST_BEGIN
 
 #endif
 
+#define _MIST_THREAD_SUPPORT_				0	// MISTの各アルゴリズムでのスレッドサポートをするかどうか
+												// サポートする場合は，LINUX系の場合は pthread ライブラリが必要
+
 
 // 行列演算のオプション
 #define _USE_BALANCING_MATRIX_EIGEN_		1	// 行列の対角化を行うことで計算精度を上げる（若干メモリを大目に食う）

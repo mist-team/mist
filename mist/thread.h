@@ -4,11 +4,13 @@
 
 // スレッド用ライブラリのインクルード
 // UNIX系とWindows用を使い分ける
-#ifdef WIN32
-#include <windows.h>
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+	// スレッドサポートはしないので特に必要なインクルードファイルは無し
+#elif defined( WIN32 )
+	#include <windows.h>
 #else
-#include <pthread.h>
-#include <unistd.h>
+	#include <pthread.h>
+	#include <unistd.h>
 #endif
 
 #ifndef INFINITE
@@ -27,7 +29,10 @@ _MIST_BEGIN
 
 inline unsigned int get_cpu_num( )
 {
-#ifdef WIN32
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+	// スレッドサポートはしないのでCPU数は常に1
+	return( 1 );
+#elif defined( WIN32 )
 	SYSTEM_INFO sysInfo;
 	GetSystemInfo( &sysInfo );
 	return ( sysInfo.dwNumberOfProcessors );
@@ -53,7 +58,9 @@ public:
 
 private:
 
-#ifdef WIN32
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+	// スレッドサポートはしないので特に必要な変数は無し
+#elif defined( WIN32 )
 	HANDLE    thread_handle_;			// Windows用のスレッドを識別するハンドル
 	DWORD     thread_id_;				// Windows用のスレッドを識別するID
 #else
@@ -68,12 +75,15 @@ public:
 
 	const thread_object &operator =( const thread_object &t )
 	{
-#ifdef WIN32
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしない
+#elif defined( WIN32 )
 		thread_handle_ = t.thread_handle_;
+		thread_id_ = t.thread_id_;
 #else
 		thread_finished_ = t.thread_finished_;
-#endif
 		thread_id_ = t.thread_id_;
+#endif
 		thread_exit_code_ = t.thread_exit_code_;
 		return( *this );
 	}
@@ -81,10 +91,13 @@ public:
 	// thread_objectの比較演算子
 	bool operator ==( const thread_object &t ) const
 	{
-#ifdef WIN32
-		return ( thread_id_ == t.thread_id_ );
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしない
+		return( this == &t );
+#elif defined( WIN32 )
+		return( thread_id_ == t.thread_id_ );
 #else
-		return ( pthread_equal( thread_id_, t.thread_id_ ) != 0 );
+		return( pthread_equal( thread_id_, t.thread_id_ ) != 0 );
 #endif
 	}
 
@@ -94,19 +107,28 @@ public:
 	}
 
 
-#ifdef WIN32
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+	// スレッドサポートはしない
+	thread_object( const thread_object &t ) :thread_exit_code_( t.thread_exit_code_ ){ }
+	thread_object( ) : thread_exit_code_( 0 ){ }
+#elif defined( WIN32 )
 	thread_object( const thread_object &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
 	thread_object( ) : thread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ){ }
 #else
 	thread_object( const thread_object &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ){ }
 	thread_object(  ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ){ }
 #endif
+
 	virtual ~thread_object( ){ }
 
 
 	bool create_thread( )
 	{
-#ifdef WIN32
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので直接関数を呼び出す
+		bool ret = true;
+		thread_exit_code_ = thread_function( static_cast< const thread_parameter & >( *this ) );
+#elif defined( WIN32 )
 		if( thread_handle_ != NULL ) return( false );
 		thread_handle_ = CreateThread( NULL, 0, map_thread_function, ( void * )this, 0, &( thread_id_ ) );
 		bool ret = thread_handle_ != NULL ? true : false;
@@ -120,7 +142,11 @@ public:
 
 	bool wait_thread( unsigned long dwMilliseconds = INFINITE )
 	{
-#ifdef WIN32
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので何もしない
+		// スレッドかされないため，dwMilliseconds は常に INFINITE 扱いとなる
+		return( true );
+#elif defined( WIN32 )
 		DWORD ret = WaitForSingleObject( thread_handle_, dwMilliseconds );
 		return ( SUCCEEDED( ret ) );
 #else
@@ -156,7 +182,10 @@ public:
 
 	bool close_thread( )
 	{
-#ifdef WIN32
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので常に true を返す
+		return( true );
+#elif defined( WIN32 )
 		BOOL ret = CloseHandle( thread_handle_ );
 		thread_handle_ = NULL;
 		return ( ret != 0 );
@@ -173,7 +202,9 @@ protected:
 	virtual thread_exit_type thread_function( const thread_parameter &p ) = 0;
 
 
-#ifdef WIN32
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+	// スレッドサポートはしないので何もしない
+#elif defined( WIN32 )
 	static DWORD WINAPI map_thread_function( void *p )
 	{
 		thread_object *obj = (thread_object *)p;
