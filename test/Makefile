@@ -16,6 +16,7 @@ ALL = \
 	margin_array_test\
 	median_test\
 	morphology_test\
+	fft_test\
 
 
 all: $(ALL)
@@ -61,6 +62,9 @@ median_test : median_test.o
 
 morphology_test : morphology_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) $(IMGLIBS)
+
+fft_test : morphology_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 
 clean:

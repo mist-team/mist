@@ -1,8 +1,12 @@
 #ifndef __INCLUDE_DCT_H__
 #define __INCLUDE_DCT_H__
 
-#include <mist.h>
-#include <math.h>
+
+#ifndef __INCLUDE_MIST_H__
+#include "../mist.h"
+#endif
+
+#include <cmath>
 #include <complex>
 
 

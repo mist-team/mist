@@ -1,8 +1,12 @@
 #ifndef __INCLUDE_FFT_H__
 #define __INCLUDE_FFT_H__
 
-#include <mist.h>
-#include <math.h>
+
+#ifndef __INCLUDE_MIST_H__
+#include "../mist.h"
+#endif
+
+#include <cmath>
 #include <complex>
 
 
@@ -74,7 +78,7 @@ void fft( array1< T1, Allocator1 > &in, array1< std::complex< T2 >, Allocator2 >
 	}
 
 	data = ( double * ) malloc( sizeof( double ) * in.size( ) * 2 );
-	ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( in.size( ) ) + 3 ) );
+	ip = ( int * ) malloc( sizeof( int ) * ( int ) ( sqrt( static_cast< double >( in.size( ) ) ) + 3 ) );
 	w = ( double * ) malloc( sizeof( double ) * ( int ) ( in.size( ) / 2 ) );
 
 	for( i = 0 ; i < in.size( ) ; i++ )

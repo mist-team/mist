@@ -290,7 +290,7 @@ namespace ooura_fft{
 /* -------- initializing routines -------- */
 
 
-#include <math.h>
+#include <cmath>
 
 inline void makeipt(int nw, int *ip)
 {

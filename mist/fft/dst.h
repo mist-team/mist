@@ -1,8 +1,12 @@
 #ifndef __INCLUDE_DST_H__
 #define __INCLUDE_DST_H__
 
-#include <mist.h>
-#include <math.h>
+
+#ifndef __INCLUDE_MIST_H__
+#include "../mist.h"
+#endif
+
+#include <cmath>
 #include <complex>
 
 
