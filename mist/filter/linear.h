@@ -80,12 +80,12 @@ namespace __linear_filter__
 		typedef typename array< T_in, Allocator_in >::size_type			size_type;
 		typedef typename array< T_in, Allocator_in >::difference_type	difference_type;
 		typedef typename array< T_out, Allocator_out >::value_type		out_type;
-		typedef typename Calc_type										calc_type;
+		typedef Calc_type												calc_type;
 
 		const  size_type s_i = kernel_center;
 		const  size_type e_i = in.size( ) - ( kernel.size( ) - kernel_center ) + 1;  
 
-		typedef array< T_in, Allocator_in >::const_pointer const_pointer;
+		typedef typename array< T_in, Allocator_in >::const_pointer const_pointer;
 		difference_type *pindex = new difference_type[ kernel.size( ) ];
 
 		size_type		i, count = 0;
@@ -126,12 +126,12 @@ namespace __linear_filter__
 		typedef typename array1< T_in, Allocator_in >::size_type		size_type;
 		typedef typename array1< T_in, Allocator_in >::difference_type	difference_type;
 		typedef typename array1< T_out, Allocator_out >::value_type		out_type;
-		typedef typename Calc_type										calc_type;
+		typedef Calc_type												calc_type;
 
 		const size_type  s_i = kernel_center_i;
 		const size_type  e_i = in.size1( ) - ( kernel.size1( ) - kernel_center_i ) + 1;
 
-		typedef array1< T_in, Allocator_in >::const_pointer const_pointer;
+		typedef typename array1< T_in, Allocator_in >::const_pointer const_pointer;
 		difference_type *pindex = new difference_type[ kernel.size( ) ];
 
 		size_type		i, count = 0;
@@ -174,14 +174,14 @@ namespace __linear_filter__
 		typedef typename array2< T_in, Allocator_in >::size_type			size_type;
 		typedef typename array2< T_in, Allocator_in >::difference_type		difference_type;
 		typedef typename array2< T_out, Allocator_out >::value_type			out_type;
-		typedef typename Calc_type											calc_type;
+		typedef Calc_type													calc_type;
 
 		const size_type  s_i = kernel_center_i;
 		const size_type  e_i = in.size1( ) - ( kernel.size1( ) - kernel_center_i ) + 1;
 		const size_type  s_j = kernel_center_j;
 		const size_type  e_j = in.size2( ) - ( kernel.size2( ) - kernel_center_j ) + 1;
 
-		typedef array2< T_in, Allocator_in >::const_pointer const_pointer;
+		typedef typename array2< T_in, Allocator_in >::const_pointer const_pointer;
 		difference_type *pindex = new difference_type[ kernel.size( ) ];
 
 		size_type	   i, j, count = 0;
@@ -251,7 +251,7 @@ namespace __linear_filter__
 		typedef typename array3< T_in, Allocator_in >::size_type		size_type;
 		typedef typename array3< T_in, Allocator_in >::difference_type	difference_type;
 		typedef typename array3< T_out, Allocator_out >::value_type		out_type;
-		typedef typename Calc_type										calc_type;
+		typedef Calc_type												calc_type;
 		
 		const size_type  s_i = kernel_center_i;
 		const size_type  e_i = in.size1( ) - ( kernel.size1( ) - kernel_center_i ) + 1;
@@ -260,7 +260,7 @@ namespace __linear_filter__
 		const size_type  s_k = kernel_center_k;
 		const size_type  e_k = in.size3( ) - ( kernel.size3( ) - kernel_center_k ) + 1;
 
-		typedef array3< T_in, Allocator_in >::const_pointer const_pointer;
+		typedef typename array3< T_in, Allocator_in >::const_pointer const_pointer;
 		difference_type *pindex = new difference_type[ kernel.size( ) ];
 
 		size_type		i, j, k, count = 0;
@@ -373,8 +373,12 @@ namespace __linear_filter__
 	////// デフォルト後処理関数オブジェクトを生成
 	//////
 	template < class Calc_type, class Out_type >
-	struct default_func : public std::unary_function< Calc_type, Out_type > 
+	struct default_func : public std::unary_function< Calc_type, Out_type >
 	{
+		typedef std::unary_function< Calc_type, Out_type > base;
+		typedef typename base::result_type result_type;
+		typedef typename base::argument_type argument_type;
+
 		result_type  operator( )( argument_type  v )
 		{
 			return ( static_cast< result_type >( v ) );
@@ -390,7 +394,11 @@ namespace __linear_filter__
 	template < class Calc_type, class Out_type, class Unary_func >
 	struct post_func1 : public std::unary_function< Calc_type, Out_type >
 	{
-		typedef typename Unary_func					unary_func;
+		typedef std::unary_function< Calc_type, Out_type > base;
+		typedef typename base::result_type result_type;
+		typedef typename base::argument_type argument_type;
+
+		typedef Unary_func							unary_func;
 		typedef typename unary_func::argument_type	unary_arg;
 		
 		unary_func  u_func_;
@@ -409,8 +417,12 @@ namespace __linear_filter__
 	template < class Calc_type, class Out_type, class Unary_arg, class Unary_res >
 	struct post_func2 : public std::unary_function< Calc_type, Out_type >
 	{
-		typedef typename Unary_res	unary_func( Unary_arg );
-		typedef typename Unary_arg	unary_arg;
+		typedef std::unary_function< Calc_type, Out_type > base;
+		typedef typename base::result_type result_type;
+		typedef typename base::argument_type argument_type;
+
+		typedef Unary_res	unary_func( Unary_arg );
+		typedef Unary_arg	unary_arg;
 		
 		unary_func  *u_func_;
 
@@ -823,10 +835,10 @@ inline void  linear_filter(
 							Unary_res									u_func( Unary_arg ),
 							const array< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_arg																							unary_arg;
-	typedef typename Unary_res																							unary_res;
+	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_arg																											unary_arg;
+	typedef Unary_res																											unary_res;
  
 	const unsigned int	kernel_center = kernel.size( ) / 2;
 
@@ -841,9 +853,9 @@ inline void  linear_filter(
 							Unary_func									u_func,
 							const array< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_func																							unary_func;
+	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_func																											unary_func;
  
 	const unsigned int	kernel_center = kernel.size( ) / 2;
 
@@ -857,8 +869,8 @@ inline void  linear_filter(
 							array< T_out, Allocator_out >				&out, 
 							const array< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
  
 	const unsigned int	kernel_center = kernel.size( ) / 2;
 
@@ -883,10 +895,10 @@ inline void  linear_filter(
 							Unary_res									u_func( Unary_arg ),
 							const array1< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array1< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_arg																							unary_arg;
-	typedef typename Unary_res																							unary_res;
+	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_arg																											unary_arg;
+	typedef Unary_res																											unary_res;
  
 	const unsigned int	kernel_center_i = kernel.width( ) / 2;
 
@@ -900,9 +912,9 @@ inline void  linear_filter(
 							Unary_func									u_func,
 							const array1< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array1< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_func																							unary_func;
+	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_func																											unary_func;
 
 	const unsigned int	kernel_center_i = kernel.width( ) / 2;
 
@@ -915,8 +927,8 @@ inline void  linear_filter(
 							array1< T_out, Allocator_out >				&out, 
 							const array1< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array1< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
  
 	const unsigned int	kernel_center_i = kernel.width( ) / 2;
 
@@ -941,10 +953,10 @@ inline void  linear_filter(
 							Unary_res									u_func( Unary_arg ),
 							const array2< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_arg																							unary_arg;
-	typedef typename Unary_res																							unary_res;
+	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_arg																											unary_arg;
+	typedef Unary_res																											unary_res;
 
 	const unsigned int	kernel_center_i = kernel.width( ) / 2;
 	const unsigned int	kernel_center_j = kernel.height( ) / 2;
@@ -959,9 +971,9 @@ inline void  linear_filter(
 							Unary_func									u_func,
 							const array2< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_func																							unary_func;
+	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_func																											unary_func;
 
 	const unsigned int	kernel_center_i = kernel.width( ) / 2;
 	const unsigned int	kernel_center_j = kernel.height( ) / 2;
@@ -975,8 +987,8 @@ inline void  linear_filter(
 							array2< T_out, Allocator_out >				&out, 
 							const array2< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
 
 	const unsigned int	kernel_center_i = kernel.width( ) / 2;
 	const unsigned int	kernel_center_j = kernel.height( ) / 2;
@@ -1002,10 +1014,10 @@ inline void  linear_filter(
 							Unary_res									u_func( Unary_arg ),
 							const array3< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array3< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_arg																							unary_arg;
-	typedef typename Unary_res																							unary_res;
+	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_arg																											unary_arg;
+	typedef Unary_res																											unary_res;
  
 	const unsigned int	kernel_center_i = kernel.width( ) / 2;
 	const unsigned int	kernel_center_j = kernel.height( ) / 2;
@@ -1021,9 +1033,9 @@ inline void  linear_filter(
 							Unary_func									u_func,
 							const array3< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array3< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_func																							unary_func;
+	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_func																											unary_func;
  
 	const unsigned int	kernel_center_i = kernel.width( ) / 2;
 	const unsigned int	kernel_center_j = kernel.height( ) / 2;
@@ -1038,8 +1050,8 @@ inline void  linear_filter(
 							array3< T_out, Allocator_out >				&out, 
 							const array3< T_kernel, Allocator_kernel >	&kernel )
 {
-	typedef typename array3< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
  
 	const unsigned int	kernel_center_i = kernel.width( ) / 2;
 	const unsigned int	kernel_center_j = kernel.height( ) / 2;
@@ -1066,10 +1078,10 @@ inline void  linear_filter(
 							const array< T_kernel, Allocator_kernel >	&kernel, 
 							unsigned int								kernel_center )
 {
-	typedef typename array< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_arg																							unary_arg;
-	typedef typename Unary_res																							unary_res;
+	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_arg																											unary_arg;
+	typedef Unary_res																											unary_res;
  
 	kernel_center = ( kernel_center < kernel.size( ) ) ? kernel_center : ( kernel.size( ) - 1 );
 
@@ -1085,9 +1097,9 @@ inline void  linear_filter(
 							const array< T_kernel, Allocator_kernel >	&kernel, 
 							unsigned int								kernel_center )
 {
-	typedef typename array< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_func																							unary_func;
+	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_func																											unary_func;
  
 	kernel_center = ( kernel_center < kernel.size( ) ) ? kernel_center : ( kernel.size( ) - 1 );
 
@@ -1102,8 +1114,8 @@ inline void  linear_filter(
 							const array< T_kernel, Allocator_kernel >	&kernel, 
 							unsigned int								kernel_center )
 {
-	typedef typename array< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
  
 	kernel_center = ( kernel_center < kernel.size( ) ) ? kernel_center : ( kernel.size( ) - 1 );
 
@@ -1127,10 +1139,10 @@ inline void  linear_filter(
 							const array1< T_kernel, Allocator_kernel >	&kernel, 
 							unsigned int								kernel_center_i )
 {
-	typedef typename array1< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_arg																							unary_arg;
-	typedef typename Unary_res																							unary_res;
+	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_arg																											unary_arg;
+	typedef Unary_res																											unary_res;
  
 	kernel_center_i = ( kernel_center_i < kernel.width( ) ) ? kernel_center_i : ( kernel.width( ) - 1 );
 
@@ -1145,9 +1157,9 @@ inline void  linear_filter(
 							const array1< T_kernel, Allocator_kernel >	&kernel, 
 							unsigned int								kernel_center_i )
 {
-	typedef typename array1< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_func																						unary_func;
+	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_func																											unary_func;
  
 	kernel_center_i = ( kernel_center_i < kernel.width( ) ) ? kernel_center_i : ( kernel.width( ) - 1 );
 
@@ -1161,8 +1173,8 @@ inline void  linear_filter(
 							const array1< T_kernel, Allocator_kernel >	&kernel, 
 							unsigned int								kernel_center_i )
 {
-	typedef typename array1< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
  
 	kernel_center_i = ( kernel_center_i < kernel.width( ) ) ? kernel_center_i : ( kernel.width( ) - 1 );
 
@@ -1188,10 +1200,10 @@ inline void  linear_filter(
 							unsigned int								kernel_center_i,
 							unsigned int								kernel_center_j )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_arg																							unary_arg;
-	typedef typename Unary_res																							unary_res;
+	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_arg																											unary_arg;
+	typedef Unary_res																											unary_res;
 
 	kernel_center_i = ( kernel_center_i < kernel.width( )  ) ? kernel_center_i : ( kernel.width( )  - 1 );
 	kernel_center_j = ( kernel_center_j < kernel.height( ) ) ? kernel_center_j : ( kernel.height( ) - 1 );
@@ -1208,9 +1220,9 @@ inline void  linear_filter(
 							unsigned int								kernel_center_i,
 							unsigned int								kernel_center_j )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_func																							unary_func;
+	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_func																											unary_func;
 
 	kernel_center_i = ( kernel_center_i < kernel.width( )  ) ? kernel_center_i : ( kernel.width( )  - 1 );
 	kernel_center_j = ( kernel_center_j < kernel.height( ) ) ? kernel_center_j : ( kernel.height( ) - 1 );
@@ -1226,8 +1238,8 @@ inline void  linear_filter(
 							unsigned int								kernel_center_i,
 							unsigned int								kernel_center_j )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
 
 	kernel_center_i = ( kernel_center_i < kernel.width( )  ) ? kernel_center_i : ( kernel.width( )  - 1 );
 	kernel_center_j = ( kernel_center_j < kernel.height( ) ) ? kernel_center_j : ( kernel.height( ) - 1 );
@@ -1256,10 +1268,10 @@ inline void  linear_filter(
 							unsigned int							kernel_center_j, 
 							unsigned int							kernel_center_k )
 {
-	typedef typename array3< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_arg																							unary_arg;
-	typedef typename Unary_res																							unary_res;
+	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_arg																											unary_arg;
+	typedef Unary_res																											unary_res;
 
 	kernel_center_i = ( kernel_center_i < kernel.width( )  ) ? kernel_center_i : ( kernel.width( )  - 1 );
 	kernel_center_j = ( kernel_center_j < kernel.height( ) ) ? kernel_center_j : ( kernel.height( ) - 1 );
@@ -1278,9 +1290,9 @@ inline void  linear_filter(
 							unsigned int							kernel_center_j, 
 							unsigned int							kernel_center_k )
 {
-	typedef typename array3< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_func																							unary_func;
+	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_func																											unary_func;
  
 	kernel_center_i = ( kernel_center_i < kernel.width( )  ) ? kernel_center_i : ( kernel.width( )  - 1 );
 	kernel_center_j = ( kernel_center_j < kernel.height( ) ) ? kernel_center_j : ( kernel.height( ) - 1 );
@@ -1298,8 +1310,8 @@ inline void  linear_filter(
 							unsigned int								kernel_center_j,
 							unsigned int								kernel_center_k )
 {
-	typedef typename array3< T_out, Allocator_out >::value_type															out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
  
 	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, kernel_center_k, __linear_filter__::default_func< calc_type, out_type >( ) );
 }
@@ -1320,11 +1332,11 @@ inline void  gaussian(
 						Array_out									&out,
 						Unary_res									u_func( Unary_arg ) )
 {
-	typedef typename __linear_filter__::filter_style																	filter_style;
-	typedef typename Array_out::value_type																				out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_arg																							unary_arg;
-	typedef typename Unary_res																							unary_res;
+	typedef __linear_filter__::filter_style																						filter_style;
+	typedef typename Array_out::value_type																						out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_arg																											unary_arg;
+	typedef Unary_res																											unary_res;
  
 	__linear_filter__::apply_pre_defined_kernel< filter_style::gaus, calc_type >( in, out, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
 }
@@ -1336,10 +1348,10 @@ inline void  gaussian(
 						Array_out									&out,
 						Unary_func									u_func )
 {
-	typedef typename __linear_filter__::filter_style																	filter_style;
-	typedef typename Array_out::value_type																				out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_func																							unary_func;
+	typedef __linear_filter__::filter_style																						filter_style;
+	typedef typename Array_out::value_type																						out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_func																											unary_func;
  
 	__linear_filter__::apply_pre_defined_kernel< filter_style::gaus, calc_type >( in, out, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
 }
@@ -1350,9 +1362,9 @@ inline void  gaussian(
 							const Array_in		&in,
 							Array_out			&out )
 {
-	typedef typename __linear_filter__::filter_style																	filter_style;
-	typedef typename Array_out::value_type																				out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef __linear_filter__::filter_style																						filter_style;
+	typedef typename Array_out::value_type																						out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
  
 	__linear_filter__::apply_pre_defined_kernel< filter_style::gaus, calc_type >( in, out, __linear_filter__::default_func< calc_type, out_type >( ) );
 }
@@ -1363,10 +1375,10 @@ inline void  gaussian(
 							array< T_out, Allocator_out >				&out, 
 							double										sigma )
 {
-	typedef typename array< T_out, Allocator_out >::value_type															out_type;
-	typedef typename array< T_out, Allocator_out >::size_type															size_type;
-	typedef typename array< T_out, Allocator_out >::difference_type														difference_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename array< T_out, Allocator_out >::size_type																	size_type;
+	typedef typename array< T_out, Allocator_out >::difference_type																difference_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
 
 	double _2sigma = 2.0 * sigma * sigma;
 
@@ -1383,7 +1395,7 @@ inline void  gaussian(
 		sum += e;
 	}
 
-	for( slze_type l = 0 ; l < kernel.slze( ) ; l++ )
+	for( size_type l = 0 ; l < kernel.size( ) ; l++ )
 	{
 		kernel[ l ] /= sum;
 	}
@@ -1397,10 +1409,10 @@ inline void  gaussian(
 							array2< T_out, Allocator_out >				&out, 
 							double										sigma )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type															out_type;
-	typedef typename array2< T_out, Allocator_out >::size_type															size_type;
-	typedef typename array2< T_out, Allocator_out >::difference_type													difference_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename array2< T_out, Allocator_out >::size_type																	size_type;
+	typedef typename array2< T_out, Allocator_out >::difference_type															difference_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
 
 	difference_type r = sigma - static_cast< int >( sigma ) == 0.0 ? static_cast< int >( sigma ) : static_cast< int >( sigma ) + 1;
 	array2< double > kernel( 2 * r + 1, 2 * r + 1 );
@@ -1432,10 +1444,10 @@ inline void  gaussian(
 							array3< T_out, Allocator_out >				&out, 
 							double										sigma )
 {
-	typedef typename array3< T_out, Allocator_out >::value_type															out_type;
-	typedef typename array3< T_out, Allocator_out >::size_type															size_type;
-	typedef typename array3< T_out, Allocator_out >::difference_type													difference_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
+	typedef typename array3< T_out, Allocator_out >::size_type																	size_type;
+	typedef typename array3< T_out, Allocator_out >::difference_type															difference_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
 
 	difference_type r = sigma - static_cast< int >( sigma ) == 0.0 ? static_cast< int >( sigma ) : static_cast< int >( sigma ) + 1;
 	array3< double > kernel( 2 * r + 1, 2 * r + 1, 2 * r + 1 );
@@ -1484,11 +1496,11 @@ inline void  laplacian(
 						Array_out			&out,
 						Unary_res			u_func( Unary_arg ) )
 {
-	typedef typename __linear_filter__::filter_style																	filter_style;
-	typedef typename Array_out::value_type																				out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_arg																							unary_arg;
-	typedef typename Unary_res																							unary_res;
+	typedef __linear_filter__::filter_style																						filter_style;
+	typedef typename Array_out::value_type																						out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_arg																											unary_arg;
+	typedef Unary_res																											unary_res;
 
 	__linear_filter__::apply_pre_defined_kernel< filter_style::lapl, calc_type >( in, out, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
 }
@@ -1500,10 +1512,10 @@ inline void  laplacian(
 						Array_out			&out,
 						Unary_func			u_func )
 {
-	typedef typename __linear_filter__::filter_style																	filter_style;
-	typedef typename Array_out::value_type																				out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
-	typedef typename Unary_func																							unary_func;
+	typedef __linear_filter__::filter_style																						filter_style;
+	typedef typename Array_out::value_type																						out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
+	typedef Unary_func																											unary_func;
 
 	__linear_filter__::apply_pre_defined_kernel< filter_style::lapl, calc_type >( in, out, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
 }
@@ -1514,9 +1526,9 @@ inline void  laplacian(
 							const Array_in		&in,
 							Array_out			&out )
 {
-	typedef typename __linear_filter__::filter_style																	filter_style;
-	typedef typename Array_out::value_type																				out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::_type< out_type >::calc_type	calc_type;
+	typedef __linear_filter__::filter_style																						filter_style;
+	typedef typename Array_out::value_type																						out_type;
+	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
 
 	__linear_filter__::apply_pre_defined_kernel< filter_style::lapl, calc_type >( in, out, __linear_filter__::default_func< calc_type, out_type >( ) );
 }
