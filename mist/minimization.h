@@ -1262,7 +1262,6 @@ namespace powell
 			if( ite <= max_iterations )
 			{
 				// V‚µ‚¢•ûŒü‚ð‹‚ß‚é
-				double len = 0.0;
 				for( r = 0 ; r < p.size( ) ; r++ )
 				{
 					dir[ r ] = p[ r ] - p0[ r ];
@@ -1585,7 +1584,6 @@ namespace lucidi
 					dir[ r ] = dirs( r, c );
 				}
 
-				bool flag = false;
 				if( alpha > 0.0 && functor( alpha ) <= fp0 - gamma * alpha * alpha )
 				{
 					a[ c ] = alpha = expantion_step( alpha, infinity, delta, gamma, fp0, functor );

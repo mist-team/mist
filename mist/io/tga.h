@@ -277,8 +277,8 @@ namespace __tga_controller__
 
 						if( total > 128 )
 						{
-							size_type rest  = total % 128;
-							size_type nnum  = total - rest;
+							rest  = total % 128;
+							nnum  = total - rest;
 						}
 						else
 						{
@@ -305,9 +305,9 @@ namespace __tga_controller__
 							}
 							pbuff += pixel_bytes * rest + 1;
 							pix   += pixel_bytes * rest;
-
-							count = rest;
 						}
+
+						count = rest;
 					}
 					else
 					{
@@ -597,7 +597,7 @@ namespace __tga_controller__
 
 			if( is_encode_RLE )
 			{
-				size_type nbytes = encode_RLE( image_data, width * height * pixel_bytes, pixel_bytes );
+				difference_type nbytes = encode_RLE( image_data, width * height * pixel_bytes, pixel_bytes );
 
 				if( nbytes == width * height * pixel_bytes )
 				{
