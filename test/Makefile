@@ -3,9 +3,6 @@ include ../build/makeinclude
 
 ALL = \
 	array_test \
-	matrix_test \
-	matrix_util_test \
-	matrix_util_test2 \
 	limits_test \
 	operators_test \
 	binary_test \
@@ -22,6 +19,9 @@ ALL = \
 	singleton_test \
 	integer_test \
 	decimal_test \
+	matrix_test \
+	matrix_util_test \
+	matrix_util_test2 \
 
 
 all: $(ALL)
