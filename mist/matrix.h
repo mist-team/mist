@@ -173,7 +173,7 @@ struct matrix_identity : public matrix_static_operation< T >
 	typedef matrix_static_operation< T > base;
 
 	explicit matrix_identity( const size_type rows, const size_type cols ) : base( rows, cols ){}
-	value_type operator()( size_type r, size_type c ) const { return( r == c ? 1 : 0 ); }
+	value_type operator()( size_type r, size_type c ) const { return( r == c ? value_type( 1 ) : 0 ); }
 	value_type operator[]( size_type indx ) const { return( 0 ); }
 };
 

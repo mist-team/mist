@@ -360,7 +360,7 @@ namespace euclidean
 
 		for( i = 0 ; i < in.size( ) ; i++ )
 		{
-			out[ i ] = in[ i ] != 0 ? 1 : 0;
+			out[ i ] = static_cast< value_type >( in[ i ] != 0 ? 1 : 0 );
 		}
 
 		euclidean_distance_transform_thread *thread = new euclidean_distance_transform_thread[ thread_num ];
@@ -373,7 +373,7 @@ namespace euclidean
 				thread[ i ].setup_parameters( out, max_length, 0, i, thread_num );
 			}
 
-			do_threads( thread, thread_num );
+			do_threads_( thread, thread_num );
 		}
 
 		if( in.height( ) > 1 )
@@ -384,7 +384,7 @@ namespace euclidean
 				thread[ i ].setup_parameters( out, max_length, 1, i, thread_num );
 			}
 
-			do_threads( thread, thread_num );
+			do_threads_( thread, thread_num );
 		}
 
 		if( in.depth( ) > 1 )
@@ -395,7 +395,7 @@ namespace euclidean
 				thread[ i ].setup_parameters( out, max_length, 2, i, thread_num );
 			}
 
-			do_threads( thread, thread_num );
+			do_threads_( thread, thread_num );
 		}
 
 		delete [] thread;
@@ -404,8 +404,7 @@ namespace euclidean
 
 
 
-/// @brief Calvinによるユークリッド距離変換
-namespace calvin
+namespace __calvin__
 {
 	inline bool remove_edt( const double uR, const double vR, const double wR, const double ud, const double vd, const double wd )
 	{
@@ -508,9 +507,12 @@ namespace calvin
 			double *g = new double[ _1 + 1 ];
 			double *h = new double[ _1 + 1 ];
 
-			for( i3 = 0 ; i3 < _3 ; i3++ )
+			for( i3 = thread_id ; i3 < _3 ; i3 += thread_num )
 			{
-				for( i2 = thread_id ; i2 < _2 ; i2 += thread_num )
+				for( i2 = 0 ; i2 < _2 ; i2++ )
+				//for( i3 = 0 ; i3 < _3 ; i3++ )
+				//{
+				//	for( i2 = thread_id ; i2 < _2 ; i2 += thread_num )
 				{
 					difference_type l = 0;
 
@@ -555,10 +557,13 @@ namespace calvin
 					{
 						double n = i1 + 1;
 						double nd = n * as;
-						double len = g[ l ] + ( h[ l ] - nd ) * ( h[ l ] - nd ), len_;
+						double len = h[ l ] - nd;
+						
+						len = g[ l ] + len * len;
 						for( ; l < ns ; l++ )
 						{
-							len_ = g[ l + 1 ] + ( h[ l + 1 ] - nd ) * ( h[ l + 1 ] - nd );
+							double len_ = h[ l + 1 ] - nd;
+							len_ = g[ l + 1 ] + len_ * len_;
 							if( len > len_ )
 							{
 								len = len_;
@@ -655,6 +660,87 @@ namespace calvin
 	};
 
 
+	template < class T >
+	class calvin_distance_transform_thread : public mist::thread< calvin_distance_transform_thread< T > >
+	{
+	public:
+		typedef mist::thread< calvin_distance_transform_thread< T > > base;
+		typedef typename base::thread_exit_type thread_exit_type;
+		typedef typename T::size_type size_type;
+		typedef typename T::value_type value_type;
+
+	private:
+		size_t thread_id_;
+		size_t thread_num_;
+
+		// 入出力用の画像へのポインタ
+		T *in_;
+		size_type axis_;
+
+	public:
+		void setup_parameters( T &in, size_type axis, size_type thread_id, size_type thread_num )
+		{
+			in_  = &in;
+			axis_ = axis;
+			thread_id_ = thread_id;
+			thread_num_ = thread_num;
+		}
+
+		void setup_axis( size_type axis )
+		{
+			axis_ = axis;
+		}
+
+		const calvin_distance_transform_thread& operator =( const calvin_distance_transform_thread &p )
+		{
+			if( &p != this )
+			{
+				base::operator =( p );
+				thread_id_ = p.thread_id_;
+				thread_num_ = p.thread_num_;
+				in_ = p.in_;
+				axis_ = p.axis_;
+			}
+			return( *this );
+		}
+
+		calvin_distance_transform_thread( size_type id = 0, size_type num = 1 )
+			: thread_id_( id ), thread_num_( num ), in_( NULL ), axis_( 0 )
+		{
+		}
+		calvin_distance_transform_thread( const calvin_distance_transform_thread &p )
+			: base( p ), thread_id_( p.thread_id_ ), thread_num_( p.thread_num_ ), in_( NULL ), axis_( p.axis_ )
+		{
+		}
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( )
+		{
+			switch( axis_ )
+			{
+			case 0:
+				__distance_transform__< 1 >::distance_transform( *in_, thread_id_, thread_num_ );
+				break;
+
+			case 1:
+				__distance_transform__< 2 >::distance_transform( *in_, thread_id_, thread_num_ );
+				break;
+
+			case 2:
+			default:
+				__distance_transform__< 3 >::distance_transform( *in_, thread_id_, thread_num_ );
+				break;
+			}
+			return( true );
+		}
+	};
+}
+
+
+/// @brief Calvinによるユークリッド距離変換
+namespace calvin
+{
 	/// @brief ユークリッド距離変換
 	//! 
 	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
@@ -667,52 +753,12 @@ namespace calvin
 	//! @param[out] out        … 出力画像
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
-	template < class T1, class T2, class Allocator1, class Allocator2 >
-	void distance_transform( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
+	template < class Array1, class Array2 >
+	void distance_transform( const Array1 &in, Array2 &out, typename Array1::size_type thread_num = 0 )
 	{
-		typedef typename array2< T2, Allocator2 >::size_type  size_type;
-		typedef typename array2< T2, Allocator2 >::value_type value_type;
-		typedef __distance_transform_controller__::euclidean_distance_transform_thread< array2< T2, Allocator2 > > euclidean_distance_transform_thread;
-
-		if( thread_num == 0 )
-		{
-			thread_num = static_cast< size_type >( get_cpu_num( ) );
-		}
-
-		out.resize( in.size1( ), in.size2( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-
-		size_type i;
-
-		value_type infinity = type_limits< value_type >::maximum( );
-		for( i = 0 ; i < in.size( ) ; i++ )
-		{
-			out[ i ] = in[ i ] != 0 ? infinity : 0;
-		}
-
-		__distance_transform__< 1 >::distance_transform( out, 0, 1 );
-		__distance_transform__< 2 >::distance_transform( out, 0, 1 );
-	}
-
-	/// @brief ユークリッド距離変換
-	//! 
-	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
-	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-	//! 
-	//! @section 参考文献
-	//! - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
-	//! 
-	//! @param[in]  in         … 入力画像
-	//! @param[out] out        … 出力画像
-	//! @param[in]  thread_num … 使用するスレッド数
-	//! 
-	template < class T1, class T2, class Allocator1, class Allocator2 >
-	void distance_transform( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T1, Allocator1 >::size_type thread_num = 0 )
-	{
-		typedef typename array3< T2, Allocator2 >::size_type  size_type;
-		typedef typename array3< T2, Allocator2 >::value_type value_type;
-		typedef __distance_transform_controller__::euclidean_distance_transform_thread< array3< T2, Allocator2 > > euclidean_distance_transform_thread;
+		typedef typename Array2::size_type  size_type;
+		typedef typename Array2::value_type value_type;
+		typedef __calvin__::calvin_distance_transform_thread< Array2 > calvin_distance_transform_thread;
 
 		if( thread_num == 0 )
 		{
@@ -726,15 +772,47 @@ namespace calvin
 
 		size_type i;
 
-		value_type infinity = type_limits< value_type >::maximum( );
 		for( i = 0 ; i < in.size( ) ; i++ )
 		{
-			out[ i ] = in[ i ] != 0 ? infinity : 0;
+			out[ i ] = static_cast< value_type >( in[ i ] != 0 ? 1 : 0 );
 		}
 
-		__distance_transform__< 1 >::distance_transform( out, 0, 1 );
-		__distance_transform__< 2 >::distance_transform( out, 0, 1 );
-		__distance_transform__< 3 >::distance_transform( out, 0, 1 );
+		calvin_distance_transform_thread *thread = new calvin_distance_transform_thread[ thread_num ];
+
+		if( in.width( ) > 1 )
+		{
+			// X軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( out, 0, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		if( in.height( ) > 1 )
+		{
+			// Y軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( out, 1, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		if( in.depth( ) > 1 )
+		{
+			// Y軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( out, 2, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		delete [] thread;
 	}
 }
 

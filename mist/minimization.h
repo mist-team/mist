@@ -45,7 +45,7 @@ namespace __minimization_utility__
 
 		__convert_to_vector_functor__( const matrix< T, Allocator > &ori, const matrix< T, Allocator > &dir, matrix< T, Allocator > &tmp, Functor f ) : ori_( ori ), dir_( dir ), tmp_( tmp ), f_( f ){ }
 
-		double operator ()( double x ) const
+		double operator ()( double x )
 		{
 			for( size_type i = 0 ; i < ori_.size( ) ; i++ )
 			{
@@ -790,6 +790,8 @@ namespace powell
 					index = c;
 					delta = d;
 				}
+
+				//std::cout << fp << p.t( ) << std::endl;
 			}
 
 			// ‘Š‘ÎŒë·‚ð—p‚¢‚½Žû‘©”»’è

@@ -134,7 +134,7 @@ void euclidean_distance_transform_test( )
 	}
 	{
 		mist::timer t;
-		mist::euclidean::distance_transform( tmp1, tmp3, -1, 1 );
+		mist::euclidean::distance_transform( tmp1, tmp3 );
 		std::cout << "Computation time for Saito: " << t << " sec" << std::endl;
 	}
 
