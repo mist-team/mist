@@ -47,7 +47,33 @@ A.qindexHL:hover {
 	padding: 2px 6px;
 }
 A.qindexHL:visited { text-decoration: none; background-color: #6666cc; color: #ffffff }
-A.el { text-decoration: none; font-weight: bold }
+A.el {
+	text-decoration: none;
+	font-weight: bold;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+}
+A.el:link {
+	text-decoration: none;
+	font-weight: bold;
+}
+A.el:visited {
+	text-decoration: none;
+	font-weight: bold;
+}
+A.el:active {
+	text-decoration: none;
+	font-weight: bold;
+}
+A.el:hover {
+	text-decoration: none;
+	font-weight: bold;
+}
+UL LI {
+	padding-bottom: 0px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
 A.elRef { font-weight: bold }
 A.code { text-decoration: none; font-weight: normal; color: #1A419D}
 A.codeRef { font-weight: normal; color: #1A419D}
