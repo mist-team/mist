@@ -663,6 +663,77 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 }
 
 
+namespace __color_utility__
+{
+	template < class T > inline T maximum( const T &v1, const T &v2 )
+	{
+		return( v1 > v2 ? v1 : v2 );
+	}
+
+	template < class T > inline T minimum( const T &v1, const T &v2 )
+	{
+		return( v1 < v2 ? v1 : v2 );
+	}
+}
+
+
+/// @brief RGBF‹óŠÔ‚ğHSVF‹óŠÔ‚É•ÏŠ·‚·‚é
+//! 
+//! @param[in]  r c RGBF‹óŠÔ‚ÌR(Ô)¬•ªi‚O`‚Q‚T‚Tj
+//! @param[in]  g c RGBF‹óŠÔ‚ÌG(—Î)¬•ªi‚O`‚Q‚T‚Tj
+//! @param[in]  b c RGBF‹óŠÔ‚ÌB(Â)¬•ªi‚O`‚Q‚T‚Tj
+//! @param[out] h c HSVF‹óŠÔ‚ÌH(F‘Š)¬•ªi‚O`‚R‚U‚Oj
+//! @param[out] s c HSVF‹óŠÔ‚ÌS(Ê“x)¬•ªi‚O`‚Pj
+//! @param[out] v c HSVF‹óŠÔ‚ÌV(–¾“xÂ)¬•ªi‚O`‚Pj
+//! 
+inline void rgb2hsv( double r, double g, double b, double &h, double &s, double &v )
+{
+	double max = __color_utility__::maximum( r, __color_utility__::maximum( g, b ) );
+	double min = __color_utility__::minimum( r, __color_utility__::minimum( g, b ) );
+
+	double d = max - min;
+	v = max / 255.0;
+
+	if( d != 0.0 )
+	{
+		s = d / max;
+	}
+	else
+	{
+		s = 0.0;
+	}
+
+	if( s == 0.0 )
+	{
+		h = 0.0;
+	}
+	else
+	{
+		double rt = max - r * 60.0 / d;
+		double gt = max - g * 60.0 / d;
+		double bt = max - b * 60.0 / d;
+
+		if( r == max )
+		{
+			h = bt - gt;
+		}
+		else if( g == max )
+		{
+			h = 120 + rt - bt;
+		}
+		else
+		{
+			h = 240 + gt - rt;
+		}
+
+		if( h < 0.0 )
+		{
+			h += 360.0;
+		}
+	}
+}
+
+
 /// @brief “ü—Í‚³‚ê‚½Œ^‚ªƒJƒ‰[‰æ‘œ‚©‚Ç‚¤‚©’²‚×‚é
 template < class T >
 struct is_color
@@ -823,6 +894,7 @@ struct _pixel_converter_
 	};
 
 #endif
+
 
 // mist–¼‘O‹óŠÔ‚ÌI‚í‚è
 _MIST_END
