@@ -112,7 +112,7 @@ namespace __euclidean_distance_transform__
 		size_type h = in.height( );
 		size_type d = in.depth( );
 
-		value_type max = static_cast< value_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
+		size_type max = static_cast< size_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		vy = in.reso2( ) / in.reso1( );
 		vyvy = vy * vy;
@@ -176,7 +176,7 @@ namespace __euclidean_distance_transform__
 		vzvz = vz * vz;
 		work = new double[ d ];
 
-		value_type max = static_cast< value_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
+		size_type max = static_cast< size_type >( max_length <= 0 ? sqrt( static_cast< double >( type_limits< value_type >::maximum( ) ) ) : max_length );
 
 		for( j = 0 ; j < h ; j++ )
 		{
