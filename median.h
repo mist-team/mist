@@ -542,7 +542,7 @@ namespace __median_filter_controller__
 
 
 template < class T, class Allocator >
-void median_filter( const array< T, Allocator > &in, array< T, Allocator > &out, typename array< T, Allocator >::size_type fw, typename array< T, Allocator >::size_type thread_num = 0 )
+void median( const array< T, Allocator > &in, array< T, Allocator > &out, typename array< T, Allocator >::size_type fw, typename array< T, Allocator >::size_type thread_num = 0 )
 {
 	typedef typename array< T, Allocator >::size_type  size_type;
 	typedef typename array< T, Allocator >::value_type value_type;
@@ -582,7 +582,7 @@ void median_filter( const array< T, Allocator > &in, array< T, Allocator > &out,
 }
 
 template < class T, class Allocator >
-void median_filter( const array1< T, Allocator > &in, array1< T, Allocator > &out, typename array1< T, Allocator >::size_type fw, typename array1< T, Allocator >::size_type thread_num = 0 )
+void median( const array1< T, Allocator > &in, array1< T, Allocator > &out, typename array1< T, Allocator >::size_type fw, typename array1< T, Allocator >::size_type thread_num = 0 )
 {
 	typedef typename array1< T, Allocator >::size_type  size_type;
 	typedef typename array1< T, Allocator >::value_type value_type;
@@ -623,7 +623,7 @@ void median_filter( const array1< T, Allocator > &in, array1< T, Allocator > &ou
 }
 
 template < class T, class Allocator >
-void median_filter( const array2< T, Allocator > &in, array2< T, Allocator > &out,
+void median( const array2< T, Allocator > &in, array2< T, Allocator > &out,
 				   typename array2< T, Allocator >::size_type fw, typename array2< T, Allocator >::size_type fh,
 				   typename array2< T, Allocator >::size_type thread_num = 0 )
 {
@@ -667,7 +667,7 @@ void median_filter( const array2< T, Allocator > &in, array2< T, Allocator > &ou
 }
 
 template < class T, class Allocator >
-void median_filter( const array3< T, Allocator > &in, array3< T, Allocator > &out,
+void median( const array3< T, Allocator > &in, array3< T, Allocator > &out,
 				   typename array3< T, Allocator >::size_type fw, typename array3< T, Allocator >::size_type fh, typename array3< T, Allocator >::size_type fd,
 				   typename array3< T, Allocator >::size_type thread_num = 0 )
 {
