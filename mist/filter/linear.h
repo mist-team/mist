@@ -14,26 +14,31 @@ _MIST_BEGIN
 namespace linear_filter
 {
 
+	//double型から任意の型への変換
 	template< class T >
 	struct type_limits_2 : public mist::type_limits < T >
 	{
 		static T cast( const double& arg )
 		{
-			if( arg > maximum( ) )
+			if( ( arg >= minimum( ) ) && ( arg <= maximum( ) ) )
 			{
-				return( maximum( ) );
+				if( arg >= 0 )
+				{
+					return( static_cast< T >( arg + 0.5 ) );
+				}
+				else
+				{
+					return( static_cast< T >( arg - 0.5 ) );
+				}
 			}
+			else
 			if( arg < minimum( ) )
 			{
 				return( minimum( ) );
 			}
-			if( arg >= 0 )
+			else //if( arg > maximum( ) )
 			{
-				return( static_cast< T >( arg + 0.5 ) );
-			}
-			else
-			{
-				return( static_cast< T >( arg - 0.5 ) );
+				return( maximum( ) );
 			}
 		}
 	};
@@ -43,15 +48,18 @@ namespace linear_filter
 	{
 		static float cast( const float& arg )
 		{
-			if( arg > maximum( ) )
+			if( ( arg >= minimum( ) ) && ( arg <= maximum( ) ) )
 			{
-				return( maximum( ) );
+				return( arg );
 			}
 			if( arg < -maximum( ) )
 			{
 				return( -maximum( ) );
 			}
-			return( arg );
+			if( arg > maximum( ) )
+			{
+				return( maximum( ) );
+			}
 		}
 	};
 
@@ -73,57 +81,100 @@ namespace linear_filter
 		}
 	};
 
-	template < class T_in, class T_kernel >
-	double get_value( const mist::array1< T_in >& in, const mist::array1< T_kernel >& kernel, const int& i )
+	//画面端の処理
+	template < class T_in >
+	inline double margin( const mist::array1< T_in >& in, const int& i )
 	{
-		int		ii;
-		double	val = 0;
-		for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
-		{
-			val += in( i - kernel.size1( ) / 2 + ii ) * kernel( ii );
-		}
-		return( val );
+		return( in( i ) );
 	}
 
-	template < class T_in, class T_kernel >
-	double get_value( const mist::array2< T_in >& in, const mist::array2< T_kernel >& kernel, const int& i, const int& j )
+	template < class T_in >
+	inline double margin( const mist::array2< T_in >& in, const int& i, const int& j )
 	{
-		int		ii, jj;
-		double	val = 0;
-		for( jj = 0 ; jj < kernel.size2( ) ; jj++ )
+		return( in( i, j ) );
+	}
+
+	template < class T_in >
+	inline double margin( const mist::array3< T_in >& in, const int& i, const int& j, const int& k )
+	{
+		return( in( i, j, k ) );
+	}
+
+	//各要素に対する演算を画面端とそれ以外に場合分け
+	template < class T_in, class T_kernel >
+	inline double get_value( const mist::array1< T_in >& in, const mist::array1< T_kernel >& kernel, const int& i )
+	{
+		if( ( i >= (kernel.size1( ) / 2) ) && (i < (in.size1() - kernel.size1( ) / 2) ) )
 		{
+			int		ii;
+			double	val = 0;
 			for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
 			{
-				val += in( i - kernel.size1( ) / 2 + ii, j - kernel.size2( ) / 2 + jj ) * kernel( ii, jj );
+				val += in( i - kernel.size1( ) / 2 + ii ) * kernel( ii );
 			}
+			return( val );
 		}
-		return( val );
+		else
+		{
+			return( margin( in, i ) );
+		}
 	}
 
 	template < class T_in, class T_kernel >
-	double get_value( const mist::array3< T_in >& in, const mist::array3< T_kernel >& kernel, const int& i, const int& j, const int& k )
+	inline double get_value( const mist::array2< T_in >& in, const mist::array2< T_kernel >& kernel, const int& i, const int& j )
 	{
-		int		ii, jj, kk;
-		double	val = 0;
-		for( kk = 0 ; kk < kernel.size3( ) ; kk++ )
+		if( ( j >= (kernel.size2( ) / 2) ) && (j < (in.size2() - kernel.size2( ) / 2) ) && ( i >= (kernel.size1( ) / 2) ) && (i < (in.size1() - kernel.size1( ) / 2) ) )
 		{
+			int		ii, jj;
+			double	val = 0;
 			for( jj = 0 ; jj < kernel.size2( ) ; jj++ )
 			{
 				for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
 				{
-					val += in( i - kernel.size1( ) / 2 + ii, j - kernel.size2( ) / 2 + jj, k - kernel.size3( ) / 2 + kk ) * kernel( ii, jj, kk );
+					val += in( i - kernel.size1( ) / 2 + ii, j - kernel.size2( ) / 2 + jj ) * kernel( ii, jj );
 				}
 			}
+			return( val );
 		}
-		return( val );
+		else
+		{
+			return( margin( in, i, j ) );
+		}
 	}
 
+	template < class T_in, class T_kernel >
+	inline double get_value( const mist::array3< T_in >& in, const mist::array3< T_kernel >& kernel, const int& i, const int& j, const int& k )
+	{
+		if( ( k >= (kernel.size3( ) / 2) ) && (k < (in.size3() - kernel.size3( ) / 2) ) && ( j >= (kernel.size2( ) / 2) ) && (j < (in.size2() - kernel.size2( ) / 2) ) && ( i >= (kernel.size1( ) / 2) ) && (i < (in.size1() - kernel.size1( ) / 2) ) )
+		{
+			int		ii, jj, kk;
+			double	val = 0;
+			for( kk = 0 ; kk < kernel.size3( ) ; kk++ )
+			{
+				for( jj = 0 ; jj < kernel.size2( ) ; jj++ )
+				{
+					for( ii = 0 ; ii < kernel.size1( ) ; ii++ )
+					{
+						val += in( i - kernel.size1( ) / 2 + ii, j - kernel.size2( ) / 2 + jj, k - kernel.size3( ) / 2 + kk ) * kernel( ii, jj, kk );
+					}
+				}
+			}
+			return( val );
+		}
+		else
+		{
+			return( margin( in, i, j, k ) );
+		}
+	}
+
+	//カーネル適用
 	template < class T_in, class T_out, class T_kernel >
 	void apply( const mist::array1< T_in >& in, mist::array1< T_out >& out, const mist::array1< T_kernel >& kernel )
 	{
 		out.resize( in.size1( ) );
+		out.reso1( in.reso1( ) );
 		int		i;
-		for( i = (kernel.size1( ) / 2) ; i < (in.size1() - kernel.size1( ) / 2) ; i++ )
+		for( i = 0 ; i < in.size1() ; i++ )
 		{
 			 out( i ) = type_limits_2< T_out >::cast( get_value( in, kernel, i ) );	
 		}
@@ -133,10 +184,12 @@ namespace linear_filter
 	void apply( const mist::array2< T_in >& in, mist::array2< T_out >& out, const mist::array2< T_kernel >& kernel )
 	{
 		out.resize( in.size1( ), in.size2( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
 		int		i, j;
-		for( j = (kernel.size2( ) / 2) ; j < (in.size2() - kernel.size2( ) / 2) ; j++ )
+		for( j = 0 ; j < in.size2() ; j++ )
 		{
-			for( i = (kernel.size1( ) / 2) ; i < (in.size1() - kernel.size1( ) / 2) ; i++ )
+			for( i = 0 ; i < in.size1() ; i++ )
 			{
 				out( i, j ) = type_limits_2< T_out >::cast( get_value( in, kernel, i, j ) );
 			}
@@ -147,12 +200,15 @@ namespace linear_filter
 	void apply( const mist::array3< T_in >& in, mist::array3< T_out >& out, const mist::array3< T_kernel >& kernel )
 	{
 		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+		out.reso3( in.reso3( ) );
 		int		i, j, k;
-		for( k = (kernel.size3( ) / 2) ; k < (in.size3( ) - kernel.size3( ) / 2) ; k++ )
+		for( k = 0 ; k < in.size3( ) ; k++ )
 		{
-			for( j = (kernel.size2( ) / 2) ; j < (in.size2() - kernel.size2( ) / 2) ; j++ )
+			for( j = 0 ; j < in.size2( ) ; j++ )
 			{
-				for( i = (kernel.size1( ) / 2) ; i < (in.size1() - kernel.size1( ) / 2) ; i++ )
+				for( i = 0 ; i < in.size1( ) ; i++ )
 				{
 					out( i, j, k ) = type_limits_2< T_out >::cast( get_value( in, kernel, i, j, k ) );
 				}
@@ -160,6 +216,7 @@ namespace linear_filter
 		}
 	}
 
+	//カーネルの正規化
 	template < class T_in, class T_out >
 	void normalize( const mist::array1< T_in >& in, mist::array1< T_out >& out)
 	{
@@ -171,7 +228,7 @@ namespace linear_filter
 			norm += in( i );
 		}
 		out.resize( in.size1( ) );
-		for( i = 0 ; i < out.size1() ; i++ )
+		for( i = 0 ; i < out.size1( ) ; i++ )
 		{
 			out( i ) =  in( i ) / norm;
 		}
@@ -191,7 +248,7 @@ namespace linear_filter
 			}
 		}
 		out.resize( in.size1( ), in.size2( ) );
-		for( i = 0 ; i < out.size1() ; i++ )
+		for( i = 0 ; i < out.size1( ) ; i++ )
 		{
 			for( j = 0 ; j < out.size2() ; j++ )
 			{
