@@ -85,7 +85,10 @@ void write_dicom_test( const char *filename )
 
 void euclidean_distance_transform_test( )
 {
-	mist::euclidean_distance_transform( image_object, image_object );
+	{
+		mist::array2< double > tmp( image_object );
+		mist::euclidean_distance_transform( tmp, image_object );
+	}
 }
 
 void figure_decomposition_test( )
