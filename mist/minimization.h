@@ -74,6 +74,18 @@ namespace __minimization_utility__
 		{
 			return( f_( x ) );
 		}
+
+		template < class PARAMETER >
+		double operator ()( const PARAMETER &x, size_t index )
+		{
+			return( f_( x, index ) );
+		}
+
+		template < class PARAMETER >
+		double operator ()( const PARAMETER &x, size_t index ) const
+		{
+			return( f_( x, index ) );
+		}
 	};
 
 
@@ -748,12 +760,33 @@ namespace gradient_with_vector
 		for( ite = 1 ; ite <= max_iterations ; ite++ )
 		{
 			// 勾配方向を計算する
-			dir = g( p );
+			double len = 0.0;
+			for( size_type i = 0 ; i < dir.size( ) ; i++ )
+			{
+				// 勾配方向を計算する
+				dir[ i ] = g( p[ i ], i );
+				len += dir[ i ] * dir[ i ];
+			}
+
+			if( len > 0 )
+			{
+				// 勾配方向ベクトルの正規化
+				len = std::sqrt( len );
+				for( i = 0 ; i < dir.size( ) ; i++ )
+				{
+					dir[ i ] /= len;
+				}
+			}
+			else
+			{
+				// 勾配の計算ができなくなったので終了する
+				break;
+			}
 
 			// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
 			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, max_iterations, true );
 
-			std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
+			//std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
 
 			if( old_err - err < tolerance )
 			{
@@ -811,7 +844,28 @@ namespace gradient_with_vector
 		for( ite = 1 ; ite <= max_iterations ; ite++ )
 		{
 			// 勾配方向を計算する
-			dir = g( p );
+			double len = 0.0;
+			for( size_type i = 0 ; i < dir.size( ) ; i++ )
+			{
+				// 勾配方向を計算する
+				dir[ i ] = g( p[ i ], i );
+				len += dir[ i ] * dir[ i ];
+			}
+
+			if( len > 0 )
+			{
+				// 勾配方向ベクトルの正規化
+				len = std::sqrt( len );
+				for( i = 0 ; i < dir.size( ) ; i++ )
+				{
+					dir[ i ] /= len;
+				}
+			}
+			else
+			{
+				// 勾配の計算ができなくなったので終了する
+				break;
+			}
 
 			double l1, l2;
 			if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
@@ -820,7 +874,7 @@ namespace gradient_with_vector
 				err = brent::minimization( l1, l2, x, functor, tolerance, max_iterations, false );
 			}
 
-			std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
+			//std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
 
 			if( old_err - err < tolerance )
 			{
