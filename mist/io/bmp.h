@@ -634,8 +634,8 @@ namespace __bmp_controller__
 			size_type read_size = 0;
 			while( feof( fp ) == 0 )
 			{
-                read_size = fread( pointer, sizeof( unsigned char ), 4096, fp );
-				if( read_size < 4096 )
+				read_size = fread( pointer, sizeof( unsigned char ), 1024, fp );
+				if( read_size < 1024 )
 				{
 					break;
 				}
@@ -681,10 +681,10 @@ namespace __bmp_controller__
 			size_type write_size = 0;
 			while( size > 0 )
 			{
-                write_size = fwrite( pointer, sizeof( unsigned char ), 4096, fp );
+                write_size = fwrite( pointer, sizeof( unsigned char ), 1024, fp );
 				pointer += write_size;
 				size -= write_size;
-				if( write_size != 4096 )
+				if( write_size != 1024 )
 				{
 					fclose( fp );
 					delete [] buff;
