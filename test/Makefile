@@ -4,6 +4,7 @@ include ../build/makeinclude
 ALL = \
 	matrix_test \
 	limits_test \
+	operators_test \
 
 
 all: $(ALL)
@@ -13,6 +14,9 @@ matrix_test : matrix_test.o
 
 limits_test : limits_test.o
 	$(CXX) $(CXXFLAGS) -o $@ limits_test.o $(LIBS) $(LDLIBS)
+
+operators_test : operators_test.o
+	$(CXX) $(CXXFLAGS) -o $@ operators_test.o $(LIBS) $(LDLIBS)
 
 clean:
 	for binary in $(ALL); do\
