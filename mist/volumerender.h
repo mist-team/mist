@@ -1,6 +1,6 @@
 /// @file mist/volumerender.h
 //!
-//! @brief 経過時間を計算するクラス
+//! @brief ３次元画像のボリュームレンダリングエンジン
 //!
 #ifndef __INCLUDE_MIST_VOLUMERENDER__
 #define __INCLUDE_MIST_VOLUMERENDER__
@@ -444,6 +444,9 @@ namespace value_interpolation
 				{
 					// ワールド座標系（左手）からスライス座標系（右手）に変換
 					// 以降は，全てスライス座標系で計算する
+					Pos.x = (  pos.x + offset.x ) / ax;
+					Pos.y = ( -pos.y + offset.y ) / ay;
+					Pos.z = (  pos.z + offset.z ) / az;
 					casting_start.x = (  casting_start.x + offset.x ) / ax;
 					casting_start.y = ( -casting_start.y + offset.y ) / ay;
 					casting_start.z = (  casting_start.z + offset.z ) / az;
@@ -458,9 +461,9 @@ namespace value_interpolation
 					vector_type ray_accelerated_step = ray * accelerated_step;
 					vector_type ray_step = ray * sampling_step;
 
-					double dlen = vector_type( ray_step.x * ax, ray_step.y * ay, ray_step.z * az ).length( );
+					double dlen = vector_type( ray.x * ax, ray.y * ay, ray.z * az ).length( );
 					double n = ( casting_end - casting_start ).length( );
-					double l = 0;
+					double l = 0, of = ( Pos - casting_start ).length( );
 
 					while( l < n )
 					{
@@ -565,7 +568,7 @@ namespace value_interpolation
 
 						if( lightAtten > 0.0 )
 						{
-							double len = l * dlen;
+							double len = ( l + of ) * dlen;
 							lAtten = 1.0 / ( 1.0 + lightAtten * ( len * len ) );
 						}
 						else
