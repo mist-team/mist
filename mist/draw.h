@@ -106,7 +106,7 @@ namespace pixel_data
 			return( 0 );
 		}
 
-		for( size_t i = 1, _2 = 2 ; i < 1000000000 ; i++ )
+		for( size_t i = 1, _2 = 2 ; i < 64 ; i++ )
 		{
 			if( v <= _2 )
 			{
@@ -125,7 +125,7 @@ namespace pixel_data
 			return( 0 );
 		}
 
-		for( size_t i = 1, _2 = 2 ; i < 1000000000 ; i++ )
+		for( size_t i = 1, _2 = 2 ; i < 64 ; i++ )
 		{
 			if( v <= _2 )
 			{
