@@ -17,7 +17,7 @@ _MIST_BEGIN
 // MISTで利用する基底のデータ型
 
 // set演算を行うためのもの
-template< class Key, class Comp = less< Key >, class Allocator = std::allocator< Key > >
+template< class Key, class Comp = std::less< Key >, class Allocator = std::allocator< Key > >
 class set : public std::set< Key, Comp, Allocator >
 {
 protected:
