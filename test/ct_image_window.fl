@@ -99,14 +99,29 @@ class ct_image_window {open
             callback {ct_image->read_image( this );}
             xywh {0 0 100 20}
           }
+          menuitem {} {
+            label {&Save}
+            callback {ct_image->write_image( this );} selected
+            xywh {10 10 100 20}
+          }
         }
         submenu {} {
           label {&Edit} open
           xywh {0 0 100 20}
         } {
           menuitem {} {
-            label {&Median Filter}
-            callback {ct_image->median_filter( this );} selected
+            label {&Median Filter 1D}
+            callback {ct_image->median_filter1D( this );}
+            xywh {30 30 100 20}
+          }
+          menuitem {} {
+            label {&Median Filter 2D}
+            callback {ct_image->median_filter2D( this );}
+            xywh {20 20 100 20}
+          }
+          menuitem {} {
+            label {&Median Filter 3D}
+            callback {ct_image->median_filter3D( this );}
             xywh {10 10 100 20}
           }
         }

@@ -39,7 +39,9 @@ public:
 	void draw_image( );
 
 public:
-	void median_filter( ct_image_window *wnd );
+	void median_filter1D( ct_image_window *wnd );
+	void median_filter2D( ct_image_window *wnd );
+	void median_filter3D( ct_image_window *wnd );
 
 public:
 	void read_image( ct_image_window *wnd );

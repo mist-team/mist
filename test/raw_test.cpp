@@ -86,6 +86,10 @@ void ct_draw_area::read_image( ct_image_window *wnd )
 
 void ct_draw_area::write_image( ct_image_window *w )
 {
+	const char *filename = fl_file_chooser( "Save", "*", "" );
+	if( filename == NULL ) return;
+
+	mist::write_raw_gz( ct, filename );
 }
 
 void ct_draw_area::change_index( size_type index )
@@ -115,12 +119,42 @@ void ct_draw_area::change_window_width( double ww )
 	Fl::wait( 0 );
 }
 
-void ct_draw_area::median_filter( ct_image_window *wnd )
+void ct_draw_area::median_filter1D( ct_image_window *wnd )
+{
+	mist::array< int > a( 7 ), b( 7 );
+	a[ 0 ] = 0;
+	a[ 1 ] = 4;
+	a[ 2 ] = 2;
+	a[ 3 ] = 3;
+	a[ 4 ] = 2;
+	a[ 5 ] = 4;
+	a[ 6 ] = 0;
+
+	std::cout << a << std::endl;
+	mist::__median_filter__::median_filter( a, b, 3, 0, 6 );
+	std::cout << b << std::endl;
+}
+
+void ct_draw_area::median_filter2D( ct_image_window *wnd )
+{
+	mist::array2< int > a( 5, 5 ), b( 5, 5 );
+	a( 0, 0 ) = 0; a( 0, 1 ) = 0; a( 0, 2 ) = 0; a( 0, 3 ) = 0; a( 0, 4 ) = 0;
+	a( 1, 0 ) = 0; a( 1, 1 ) = 4; a( 1, 2 ) = 5; a( 1, 3 ) = 4; a( 1, 4 ) = 0;
+	a( 2, 0 ) = 0; a( 2, 1 ) = 3; a( 2, 2 ) = 2; a( 2, 3 ) = 3; a( 2, 4 ) = 0;
+	a( 3, 0 ) = 0; a( 3, 1 ) = 4; a( 3, 2 ) = 5; a( 3, 3 ) = 4; a( 3, 4 ) = 0;
+	a( 4, 0 ) = 0; a( 4, 1 ) = 0; a( 4, 2 ) = 0; a( 4, 3 ) = 0; a( 4, 4 ) = 0;
+
+	std::cout << a << std::endl;
+	mist::__median_filter__::median_filter( a, b, 3, 3, 0, 6 );
+	std::cout << b << std::endl;
+}
+
+void ct_draw_area::median_filter3D( ct_image_window *wnd )
 {
 	if( ct.empty( ) ) return;
 
 	mist::array3< short > tmp = ct;
-	mist::__median_filter__::median_filter( tmp, ct, 3, 3, 3, 0, 2000 );
+	mist::__median_filter__::median_filter( tmp, ct, 3, 3, 3, -2000, 4000 );
 	redraw( );
 	Fl::wait( 0 );
 }

@@ -101,19 +101,43 @@ void ct_image_window::cb_Open(Fl_Menu_* o, void* v) {
   ((ct_image_window*)(o->parent()->user_data()))->cb_Open_i(o,v);
 }
 
+inline void ct_image_window::cb_Save_i(Fl_Menu_*, void*) {
+  ct_image->write_image( this );
+}
+void ct_image_window::cb_Save(Fl_Menu_* o, void* v) {
+  ((ct_image_window*)(o->parent()->user_data()))->cb_Save_i(o,v);
+}
+
 inline void ct_image_window::cb_Median_i(Fl_Menu_*, void*) {
-  ct_image->median_filter( this );
+  ct_image->median_filter1D( this );
 }
 void ct_image_window::cb_Median(Fl_Menu_* o, void* v) {
   ((ct_image_window*)(o->parent()->user_data()))->cb_Median_i(o,v);
 }
 
+inline void ct_image_window::cb_Median1_i(Fl_Menu_*, void*) {
+  ct_image->median_filter2D( this );
+}
+void ct_image_window::cb_Median1(Fl_Menu_* o, void* v) {
+  ((ct_image_window*)(o->parent()->user_data()))->cb_Median1_i(o,v);
+}
+
+inline void ct_image_window::cb_Median2_i(Fl_Menu_*, void*) {
+  ct_image->median_filter3D( this );
+}
+void ct_image_window::cb_Median2(Fl_Menu_* o, void* v) {
+  ((ct_image_window*)(o->parent()->user_data()))->cb_Median2_i(o,v);
+}
+
 Fl_Menu_Item ct_image_window::menu_[] = {
  {"&File", 0,  0, 0, 64, 0, 0, 14, 56},
  {"&Open", 0,  (Fl_Callback*)ct_image_window::cb_Open, 0, 0, 0, 0, 14, 56},
+ {"&Save", 0,  (Fl_Callback*)ct_image_window::cb_Save, 0, 0, 0, 0, 14, 56},
  {0},
  {"&Edit", 0,  0, 0, 64, 0, 0, 14, 56},
- {"&Median Filter", 0,  (Fl_Callback*)ct_image_window::cb_Median, 0, 0, 0, 0, 14, 56},
+ {"&Median Filter 1D", 0,  (Fl_Callback*)ct_image_window::cb_Median, 0, 0, 0, 0, 14, 56},
+ {"&Median Filter 2D", 0,  (Fl_Callback*)ct_image_window::cb_Median1, 0, 0, 0, 0, 14, 56},
+ {"&Median Filter 3D", 0,  (Fl_Callback*)ct_image_window::cb_Median2, 0, 0, 0, 0, 14, 56},
  {0},
  {0}
 };

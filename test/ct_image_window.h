@@ -48,8 +48,14 @@ public:
 private:
   inline void cb_Open_i(Fl_Menu_*, void*);
   static void cb_Open(Fl_Menu_*, void*);
+  inline void cb_Save_i(Fl_Menu_*, void*);
+  static void cb_Save(Fl_Menu_*, void*);
   inline void cb_Median_i(Fl_Menu_*, void*);
   static void cb_Median(Fl_Menu_*, void*);
+  inline void cb_Median1_i(Fl_Menu_*, void*);
+  static void cb_Median1(Fl_Menu_*, void*);
+  inline void cb_Median2_i(Fl_Menu_*, void*);
+  static void cb_Median2(Fl_Menu_*, void*);
 public:
   Fl_Value_Slider *WL;
 private:
