@@ -156,8 +156,8 @@ namespace __pnm_controller__
 				return( false );
 			}
 
-			size_type w = std::atoi( elements[ 0 ].c_str( ) );
-			size_type h = std::atoi( elements[ 1 ].c_str( ) );
+			size_type w = atoi( elements[ 0 ].c_str( ) );
+			size_type h = atoi( elements[ 1 ].c_str( ) );
 			image.resize( w, h );
 
 			// ”Z’W‚ÌƒŒƒxƒ‹”‚ğæ“¾‚·‚é
@@ -193,7 +193,7 @@ namespace __pnm_controller__
 					split_string( line, ' ', elements );
 					for( size_type j = 0 ; j < elements.size( ) ; j++ )
 					{
-						image[ i++ ] = std::atoi( elements[ j ].c_str( ) );
+						image[ i++ ] = atoi( elements[ j ].c_str( ) );
 					}
 				}
 				break;
@@ -205,9 +205,9 @@ namespace __pnm_controller__
 					split_string( line, ' ', elements );
 					for( size_type j = 0 ; j < elements.size( ) ; j += 3 )
 					{
-						value_type r = static_cast< value_type >( std::atoi( elements[ j + 0 ].c_str( ) ) );
-						value_type g = static_cast< value_type >( std::atoi( elements[ j + 1 ].c_str( ) ) );
-						value_type b = static_cast< value_type >( std::atoi( elements[ j + 2 ].c_str( ) ) );
+						value_type r = static_cast< value_type >( atoi( elements[ j + 0 ].c_str( ) ) );
+						value_type g = static_cast< value_type >( atoi( elements[ j + 1 ].c_str( ) ) );
+						value_type b = static_cast< value_type >( atoi( elements[ j + 2 ].c_str( ) ) );
 						image[ i++ ] = pixel_converter::convert_to( r, g, b );
 					}
 				}

@@ -188,11 +188,12 @@ namespace __wav_controller__
 
 			unsigned char lin, rin;
 			value_type lout, rout;
+			size_type i;
 
 			switch( channel_num )
 			{
 			case 1:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					lin = wav[ i ];
 					sampling_bits_convert( lin, lout );
@@ -201,7 +202,7 @@ namespace __wav_controller__
 				break;
 
 			case 2:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					lin = wav[ i * 2 + 0 ];
 					rin = wav[ i * 2 + 1 ];
@@ -226,11 +227,12 @@ namespace __wav_controller__
 
 			signed short lin, rin;
 			value_type lout, rout;
+			size_type i;
 
 			switch( channel_num )
 			{
 			case 1:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					lin = wave[ i ];
 					sampling_bits_convert( lin, lout );
@@ -239,7 +241,7 @@ namespace __wav_controller__
 				break;
 
 			case 2:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					lin = wave[ i * 2 + 0 ];
 					rin = wave[ i * 2 + 1 ];
@@ -263,11 +265,12 @@ namespace __wav_controller__
 
 			signed int lin, rin;
 			value_type lout, rout;
+			size_type i;
 
 			switch( channel_num )
 			{
 			case 1:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					lin = ( wav[ i * 3 + 0 ] << 16 ) | ( wav[ i * 3 + 1 ] << 8 ) | wav[ i * 3 + 2 ];
 					sampling_bits_convert( lin, lout );
@@ -276,7 +279,7 @@ namespace __wav_controller__
 				break;
 
 			case 2:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					lin = ( wav[ i * 3 * 2 + 0 ] << 16 ) | ( wav[ i * 3 * 2 + 1 ] << 8 ) | wav[ i * 3 * 2 + 2 ];
 					rin = ( wav[ i * 3 * 2 + 3 ] << 16 ) | ( wav[ i * 3 * 2 + 4 ] << 8 ) | wav[ i * 3 * 2 + 5 ];
@@ -301,11 +304,12 @@ namespace __wav_controller__
 
 			signed short lin, rin;
 			value_type lout, rout;
+			size_type i;
 
 			switch( channel_num )
 			{
 			case 1:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					lin = wave[ i ];
 					sampling_bits_convert( lin, lout );
@@ -314,7 +318,7 @@ namespace __wav_controller__
 				break;
 
 			case 2:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					lin = wave[ i * 2 + 0 ];
 					rin = wave[ i * 2 + 1 ];
@@ -336,11 +340,12 @@ namespace __wav_controller__
 			typedef typename sampling_bits_typedef< value_type >::value_type compose_type;
 			compose_type lin, rin;
 			unsigned char lout, rout;
+			size_type i;
 
 			switch( channel_num )
 			{
 			case 1:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					sampling_bits_convert( stereo_converter::convert_from( sound[ i ] ).l, lin );
 					sampling_bits_convert( lin, lout );
@@ -349,7 +354,7 @@ namespace __wav_controller__
 				break;
 
 			case 2:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					stereo_type s( sound[ i ] );
 					sampling_bits_convert( s.l, lin );
@@ -374,11 +379,12 @@ namespace __wav_controller__
 			typedef typename sampling_bits_typedef< value_type >::value_type compose_type;
 			compose_type lin, rin;
 			signed short lout, rout;
+			size_type i;
 
 			switch( channel_num )
 			{
 			case 1:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					sampling_bits_convert( stereo_converter::convert_from( sound[ i ] ).l, lin );
 					sampling_bits_convert( lin, lout );
@@ -387,7 +393,7 @@ namespace __wav_controller__
 				break;
 
 			case 2:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					stereo_type s( sound[ i ] );
 					sampling_bits_convert( s.l, lin );
@@ -411,11 +417,12 @@ namespace __wav_controller__
 			typedef typename sampling_bits_typedef< value_type >::value_type compose_type;
 			compose_type lin, rin;
 			signed int lout, rout;
+			size_type i;
 
 			switch( channel_num )
 			{
 			case 1:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					sampling_bits_convert( stereo_converter::convert_from( sound[ i ] ).l, lin );
 					sampling_bits_convert( lin, lout );
@@ -426,7 +433,7 @@ namespace __wav_controller__
 				break;
 
 			case 2:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					stereo_type s( sound[ i ] );
 					sampling_bits_convert( s.l, lin );
@@ -455,11 +462,12 @@ namespace __wav_controller__
 			typedef typename sampling_bits_typedef< value_type >::value_type compose_type;
 			compose_type lin, rin;
 			signed int lout, rout;
+			size_type i;
 
 			switch( channel_num )
 			{
 			case 1:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					sampling_bits_convert( stereo_converter::convert_from( sound[ i ] ).l, lin );
 					sampling_bits_convert( lin, lout );
@@ -468,7 +476,7 @@ namespace __wav_controller__
 				break;
 
 			case 2:
-				for( size_type i = 0 ; i < sound.size( ) ; i++ )
+				for( i = 0 ; i < sound.size( ) ; i++ )
 				{
 					stereo_type s( sound[ i ] );
 					sampling_bits_convert( s.l, lin );

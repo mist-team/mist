@@ -867,7 +867,7 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 		return( false );
 	}
 
-	get_dicom_info( dicom, info );
+	dicom_controller::get_dicom_info( dicom, info );
 
 	double window_level = info.window_center;
 	double window_width = info.window_width;

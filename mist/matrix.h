@@ -2,7 +2,7 @@
 **
 **         MIST ( Media Integration Standard Toolkit )
 **
-**         matrix template class implementation using teqnique of an expression template.
+**         matrix template class implementation using expression template teqnique.
 **
 **
 **           All matrix operations are described in row order.
@@ -15,7 +15,7 @@
 **                   3  6  9
 **
 **
-**         use atrix( row, col ) accesses operation. 
+**         use matrix( row, col ) accesses operation. 
 **
 **
 **
