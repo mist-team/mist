@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <string>
+#include <cmath>
 
 
 // mist名前空間の始まり
@@ -19,7 +20,11 @@ _MIST_BEGIN
 
 // 以下のコードは Tomy 氏が http://www5.airnet.ne.jp/tomy/cpro/csource.htm にて
 // 掲載しているソースを基に作成し，演算ミス等のバグを修正し，独自の拡張を施したものである．
-// 基底は256であり，無駄なビットが発生しないようにしてある
+
+
+// 表現可能なデータの有効桁数は，MAX_KETA × log10（32768) となる
+// 有効桁数を増やすほどメモリを多く使用するので注意が必要！！
+
 
 
 namespace __decimal_util__
@@ -121,10 +126,6 @@ public:
 				a -= data_[ i ];
 				a *= RADIX;
 			} while( a != 0.0 && ++i <= NMPA );
-			for( i++ ; i <= NMPA ; i++ )
-			{
-				data_[ i - 1 ] = 0;
-			}
 		}
 	}
 
@@ -544,11 +545,14 @@ public:
 		difference_type nmpa = NMPA;
 		difference_type mmpa = MMPA - 1;
 
-		//if( mmpa < ::std::abs( exp_ ) )
-		//{
-		//	//m_printe(s, a, _short);
-		//	return( "0" );
-		//}
+		if( mmpa < ::std::abs( static_cast< int >( exp_ ) ) )
+		{
+			decimal tmp( *this );
+			tmp.exp_ = 0;
+			char str[ 10 ];
+			sprintf( str, "E%+d", exp_ );
+			return( tmp.to_string( ) + str );
+		}
 
 		if( zero_ )
 		{
@@ -882,6 +886,26 @@ public:	// 定数
 		return( decimal( ) );
 	}
 
+	static decimal pai( )
+	{
+		decimal a0( 1 );
+		decimal b0( ::std::sqrt( decimal( 2 ) ) / 2 );
+		decimal t0( "0.25" );
+		decimal a1, b1, t1;
+
+		for( int n = 0 ; n < 10 ; n++ )
+		{
+			a1 = ( a0 + b0 ) / 2;
+			b1 = ::std::sqrt( a0 * b0 );
+			t1 = t0 - ::std::pow( 2, n ) * ( a0 - a1 ) * ( a0 - a1 );
+
+			a0 = a1;
+			b0 = b1;
+			t0 = t1;
+		}
+		return( ( a0 + b0 ) * ( a0 + b0 ) / ( t0 * 4 ) );
+	}
+
 protected:
 	static int cmp( const decimal &a, const decimal &b )
 	{
@@ -1139,6 +1163,7 @@ protected:
 			else if( *p == 'E' || *p == 'e' )
 			{
 				p++;
+//				a *= atoi( ::std::string( p, str.end( ) ).c_str( ) );
 				exp -= atoi( ::std::string( p, str.end( ) ).c_str( ) );
 				break;
 			}
@@ -1230,12 +1255,23 @@ template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator /( 
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator *( const decimal< MAX_KETA > &v1, const typename decimal< MAX_KETA >::difference_type &v2 ){ return( decimal< MAX_KETA >( v1 ) *= v2 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator *( const typename decimal< MAX_KETA >::difference_type &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v2 ) *= v1 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator /( const decimal< MAX_KETA > &v1, const typename decimal< MAX_KETA >::difference_type &v2 ){ return( decimal< MAX_KETA >( v1 ) /= v2 ); }
+template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator /( const typename decimal< MAX_KETA >::difference_type &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) /= v2 ); }
 
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator +( const decimal< MAX_KETA > &v1, const typename decimal< MAX_KETA >::difference_type &v2 ){ return( decimal< MAX_KETA >( v1 ) += v2 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator +( const typename decimal< MAX_KETA >::difference_type &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v2 ) += v1 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator -( const decimal< MAX_KETA > &v1, const typename decimal< MAX_KETA >::difference_type &v2 ){ return( decimal< MAX_KETA >( v1 ) -= v2 ); }
 template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator -( const typename decimal< MAX_KETA >::difference_type &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) -= v2 ); }
 
+
+template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator *( const decimal< MAX_KETA > &v1, const double &v2 ){ return( decimal< MAX_KETA >( v2 ) *= v1 ); }
+template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator *( const double &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) *= v2 ); }
+template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator /( const decimal< MAX_KETA > &v1, const double &v2 ){ return( decimal< MAX_KETA >( v1 ) /= decimal< MAX_KETA >( v2 ) ); }
+template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator /( const double &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) /= v2 ); }
+
+template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator +( const decimal< MAX_KETA > &v1, const double &v2 ){ return( decimal< MAX_KETA >( v2 ) += v1 ); }
+template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator +( const double &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) += v2 ); }
+template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator -( const decimal< MAX_KETA > &v1, const double &v2 ){ return( decimal< MAX_KETA >( v1 ) -= decimal< MAX_KETA >( v2 ) ); }
+template < unsigned int MAX_KETA > inline const decimal< MAX_KETA > operator -( const double &v1, const decimal< MAX_KETA > &v2 ){ return( decimal< MAX_KETA >( v1 ) -= v2 ); }
 
 
 template < unsigned int MAX_KETA >
