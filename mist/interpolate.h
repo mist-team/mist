@@ -24,21 +24,21 @@ _MIST_BEGIN
 namespace __nearest__
 {
 	template < class T, class Allocator >
-	inline typename array< T, Allocator >::value_type nearest( const array< T, Allocator > &in, double x, double y, double z )
+	inline typename array< T, Allocator >::value_type nearest___( const array< T, Allocator > &in, double x, double y, double z )
 	{
 		typedef typename array< T, Allocator >::size_type size_type;
 		return( in[ static_cast< size_type >( x + 0.5 ) ] );
 	}
 
 	template < class T, class Allocator >
-	inline typename array2< T, Allocator >::value_type nearest( const array2< T, Allocator > &in, double x, double y, double z )
+	inline typename array2< T, Allocator >::value_type nearest___( const array2< T, Allocator > &in, double x, double y, double z )
 	{
 		typedef typename array2< T, Allocator >::size_type size_type;
 		return( in( static_cast< size_type >( x + 0.5 ), static_cast< size_type >( y + 0.5 ) ) );
 	}
 
 	template < class T, class Allocator >
-	inline typename array3< T, Allocator >::value_type nearest( const array3< T, Allocator > &in, double x, double y, double z )
+	inline typename array3< T, Allocator >::value_type nearest___( const array3< T, Allocator > &in, double x, double y, double z )
 	{
 		typedef typename array2< T, Allocator >::size_type size_type;
 		return( in( static_cast< size_type >( x + 0.5 ), static_cast< size_type >( y + 0.5 ), static_cast< size_type >( z + 0.5 ) ) );
@@ -76,7 +76,7 @@ namespace __nearest__
 				for( i = thread_idx ; i < ow ; i += thread_numx )
 				{
 					x = sx * i;
-					out( i, j, k ) = static_cast< out_value_type >( nearest( in, x, y, z ) );
+					out( i, j, k ) = static_cast< out_value_type >( nearest___( in, x, y, z ) );
 				}
 			}
 		}
@@ -91,7 +91,7 @@ namespace __linear__
 	struct _linear_
 	{
 		template < class T, class Allocator >
-		static double linear( const array< T, Allocator > &in,
+		static double linear___( const array< T, Allocator > &in,
 									typename array< T, Allocator >::size_type i1,
 									typename array< T, Allocator >::size_type i2,
 									typename array< T, Allocator >::size_type j1,
@@ -104,7 +104,7 @@ namespace __linear__
 		}
 
 		template < class T, class Allocator >
-		static double linear( const array2< T, Allocator > &in,
+		static double linear___( const array2< T, Allocator > &in,
 									typename array2< T, Allocator >::size_type i1,
 									typename array2< T, Allocator >::size_type i2,
 									typename array2< T, Allocator >::size_type j1,
@@ -117,7 +117,7 @@ namespace __linear__
 		}
 
 		template < class T, class Allocator >
-		static double linear( const array3< T, Allocator > &in,
+		static double linear___( const array3< T, Allocator > &in,
 									typename array3< T, Allocator >::size_type i1,
 									typename array3< T, Allocator >::size_type i2,
 									typename array3< T, Allocator >::size_type j1,
@@ -135,7 +135,7 @@ namespace __linear__
 	struct _linear_< true >
 	{
 		template < class T, class Allocator >
-		static typename array< T, Allocator >::value_type linear( const array< T, Allocator > &in,
+		static typename array< T, Allocator >::value_type linear___( const array< T, Allocator > &in,
 																	typename array< T, Allocator >::size_type i1,
 																	typename array< T, Allocator >::size_type i2,
 																	typename array< T, Allocator >::size_type j1,
@@ -153,7 +153,7 @@ namespace __linear__
 		}
 
 		template < class T, class Allocator >
-		static typename array2< T, Allocator >::value_type linear( const array2< T, Allocator > &in,
+		static typename array2< T, Allocator >::value_type linear___( const array2< T, Allocator > &in,
 																	typename array2< T, Allocator >::size_type i1,
 																	typename array2< T, Allocator >::size_type i2,
 																	typename array2< T, Allocator >::size_type j1,
@@ -171,7 +171,7 @@ namespace __linear__
 		}
 
 		template < class T, class Allocator >
-		static typename array3< T, Allocator >::value_type linear( const array3< T, Allocator > &in,
+		static typename array3< T, Allocator >::value_type linear___( const array3< T, Allocator > &in,
 																	typename array3< T, Allocator >::size_type i1,
 																	typename array3< T, Allocator >::size_type i2,
 																	typename array3< T, Allocator >::size_type j1,
@@ -233,7 +233,7 @@ namespace __linear__
 					i1 = static_cast< size_type >( x );
 					x -= i1;
 					i2 = i1 < iw - 1 ? i1 + 1 : i1;
-					out( i, j, k ) = static_cast< out_value_type >( _linear_< is_color< value_type >::value >::linear( in, i1, i2, j1, j2, k1, k2, x, y, z ) );
+					out( i, j, k ) = static_cast< out_value_type >( _linear_< is_color< value_type >::value >::linear___( in, i1, i2, j1, j2, k1, k2, x, y, z ) );
 				}
 			}
 		}
@@ -266,7 +266,7 @@ namespace __cubic__
 	struct _cubic_
 	{
 		template < class T, class Allocator >
-		static double cubic( const array< T, Allocator > &in,
+		static double cubic___( const array< T, Allocator > &in,
 								typename array< T, Allocator >::size_type i[4],
 								typename array< T, Allocator >::size_type j[4],
 								typename array< T, Allocator >::size_type k[4],
@@ -280,7 +280,7 @@ namespace __cubic__
 		}
 
 		template < class T, class Allocator >
-		static double cubic( const array2< T, Allocator > &in,
+		static double cubic___( const array2< T, Allocator > &in,
 								typename array2< T, Allocator >::size_type i[4],
 								typename array2< T, Allocator >::size_type j[4],
 								typename array2< T, Allocator >::size_type k[4],
@@ -301,7 +301,7 @@ namespace __cubic__
 		}
 
 		template < class T, class Allocator >
-		static double cubic( const array3< T, Allocator > &in,
+		static double cubic___( const array3< T, Allocator > &in,
 								typename array3< T, Allocator >::size_type i[4],
 								typename array3< T, Allocator >::size_type j[4],
 								typename array3< T, Allocator >::size_type k[4],
@@ -343,7 +343,7 @@ namespace __cubic__
 	struct _cubic_< true >
 	{
 		template < class T, class Allocator >
-		static typename array< T, Allocator >::value_type cubic( const array< T, Allocator > &in,
+		static typename array< T, Allocator >::value_type cubic___( const array< T, Allocator > &in,
 																	typename array< T, Allocator >::size_type i[4],
 																	typename array< T, Allocator >::size_type j[4],
 																	typename array< T, Allocator >::size_type k[4],
@@ -362,7 +362,7 @@ namespace __cubic__
 		}
 
 		template < class T, class Allocator >
-		static typename array2< T, Allocator >::value_type cubic( const array2< T, Allocator > &in,
+		static typename array2< T, Allocator >::value_type cubic___( const array2< T, Allocator > &in,
 																	typename array2< T, Allocator >::size_type i[4],
 																	typename array2< T, Allocator >::size_type j[4],
 																	typename array2< T, Allocator >::size_type k[4],
@@ -394,7 +394,7 @@ namespace __cubic__
 		}
 
 		template < class T, class Allocator >
-		static typename array3< T, Allocator >::value_type cubic( const array3< T, Allocator > &in,
+		static typename array3< T, Allocator >::value_type cubic___( const array3< T, Allocator > &in,
 																	typename array3< T, Allocator >::size_type i[4],
 																	typename array3< T, Allocator >::size_type j[4],
 																	typename array3< T, Allocator >::size_type k[4],
@@ -518,7 +518,7 @@ namespace __cubic__
 					ii[ 3 ] = ii[ 2 ] < iw - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
 					x -= ii[ 1 ];
 
-					out( i, j, k ) = static_cast< out_value_type >( _cubic_< is_color< value_type >::value >::cubic( in, ii, jj, kk, x, y, z ) );
+					out( i, j, k ) = static_cast< out_value_type >( _cubic_< is_color< value_type >::value >::cubic___( in, ii, jj, kk, x, y, z ) );
 				}
 			}
 		}
@@ -556,21 +556,21 @@ namespace __interpolate_controller__
 
 	// ê¸å`ï‚ä‘
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void linear( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+	void linear__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
 					typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num )
 	{
 		__linear__::interpolate( in, out, thread_id, thread_num, 0, 1, 0, 1 );
 	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void linear( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+	void linear__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 					typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
 	{
 		__linear__::interpolate( in, out, 0, 1, thread_id, thread_num, 0, 1 );
 	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void linear( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+	void linear__( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num )
 	{
 		__linear__::interpolate( in, out, 0, 1, 0, 1, thread_id, thread_num );
@@ -579,21 +579,21 @@ namespace __interpolate_controller__
 
 	// 3éüï‚ä‘
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void cubic( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+	void cubic__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
 					typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num )
 	{
 		__cubic__::interpolate( in, out, thread_id, thread_num, 0, 1, 0, 1 );
 	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void cubic( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+	void cubic__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 					typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
 	{
 		__cubic__::interpolate( in, out, 0, 1, thread_id, thread_num, 0, 1 );
 	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
-	void cubic( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+	void cubic__( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num )
 	{
 		__cubic__::interpolate( in, out, 0, 1, 0, 1, thread_id, thread_num );
@@ -665,16 +665,16 @@ namespace __interpolate_controller__
 			switch( interpolate_ )
 			{
 			case Nearest:
-				nearest( *in_, *out_, thread_id_, thread_num_ );
+				nearest__( *in_, *out_, thread_id_, thread_num_ );
 				break;
 
 			case Cubic:
-				cubic( *in_, *out_, thread_id_, thread_num_ );
+				cubic__( *in_, *out_, thread_id_, thread_num_ );
 				break;
 
 			case Linear:
 			default:
-				linear( *in_, *out_, thread_id_, thread_num_ );
+				linear__( *in_, *out_, thread_id_, thread_num_ );
 				break;
 			}
 
