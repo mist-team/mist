@@ -2,6 +2,7 @@
 #include <mist/mist.h>
 #include <mist/matrix.h>
 
+#include <algorithm>
 
 int main( int argc, char *argv[] )
 {
@@ -11,57 +12,73 @@ int main( int argc, char *argv[] )
 		{
 			cout << "Forward Iterator Test row axis" << endl;
 
-			mist::matrix< double > mat( 3, 3 );
-			mist::matrix< double >::iterator ite = mat.row_begin( 1 );
+			mist::matrix< double > a( 3, 3 );
+			mist::matrix< double >::iterator ite = a.row_begin( 1 );
 
-			for( int i = 1 ; ite != mat.row_end( 1 ) ; ite++, i++ )
+			for( int i = 1 ; ite != a.row_end( 1 ) ; ite++, i++ )
 			{
 				*ite = i;
 			}
 
-			cout << mat << endl;
+			cout << a << endl;
+
+			sort( a.row_rbegin( 1 ), a.row_rend( 1 ) );
+
+			cout << "sorted result" << endl << a << endl;
 		}
 
 		{
 			cout << "Reverse Iterator Test row axis" << endl;
 
-			mist::matrix< double > mat( 3, 3 );
-			mist::matrix< double >::reverse_iterator ite = mat.row_rbegin( 1 );
+			mist::matrix< double > a( 3, 3 );
+			mist::matrix< double >::reverse_iterator ite = a.row_rbegin( 1 );
 
-			for( int i = 1 ; ite != mat.row_rend( 1 ) ; ite++, i++ )
+			for( int i = 1 ; ite != a.row_rend( 1 ) ; ite++, i++ )
 			{
 				*ite = i;
 			}
 
-			cout << mat << endl;
+			cout << a << endl;
+
+			sort( a.row_begin( 1 ), a.row_end( 1 ) );
+
+			cout << "sorted result" << endl << a << endl;
 		}
 
 		{
 			cout << "Forward Iterator Test col axis" << endl;
 
-			mist::matrix< double > mat( 3, 3 );
-			mist::matrix< double >::iterator ite = mat.col_begin( 1 );
+			mist::matrix< double > a( 3, 3 );
+			mist::matrix< double >::iterator ite = a.col_begin( 1 );
 
-			for( int i = 1 ; ite != mat.col_end( 1 ) ; ite++, i++ )
+			for( int i = 1 ; ite != a.col_end( 1 ) ; ite++, i++ )
 			{
 				*ite = i;
 			}
 
-			cout << mat << endl;
+			cout << a << endl;
+
+			sort( a.col_rbegin( 1 ), a.col_rend( 1 ) );
+
+			cout << "sorted result" << endl << a << endl;
 		}
 
 		{
 			cout << "Reverse Iterator Test col axis" << endl;
 
-			mist::matrix< double > mat( 3, 3 );
-			mist::matrix< double >::reverse_iterator ite = mat.col_rbegin( 1 );
+			mist::matrix< double > a( 3, 3 );
+			mist::matrix< double >::reverse_iterator ite = a.col_rbegin( 1 );
 
-			for( int i = 1 ; ite != mat.col_rend( 1 ) ; ite++, i++ )
+			for( int i = 1 ; ite != a.col_rend( 1 ) ; ite++, i++ )
 			{
 				*ite = i;
 			}
 
-			cout << mat << endl;
+			cout << a << endl;
+
+			sort( a.col_begin( 1 ), a.col_end( 1 ) );
+
+			cout << "sorted result" << endl << a << endl;
 		}
 	}
 
@@ -79,6 +96,10 @@ int main( int argc, char *argv[] )
 			}
 
 			cout << a << endl;
+
+			sort( a.rbegin( ), a.rend( ) );
+
+			cout << "sorted result" << endl << a << endl;
 		}
 
 		{
@@ -93,6 +114,10 @@ int main( int argc, char *argv[] )
 			}
 
 			cout << a << endl;
+
+			sort( a.begin( ), a.end( ) );
+
+			cout << "sorted result" << endl << a << endl;
 		}
 	}
 
@@ -108,6 +133,10 @@ int main( int argc, char *argv[] )
 		}
 
 		cout << a << endl;
+
+		sort( a.x_rbegin( 1 ), a.x_rend( 1 ) );
+
+		cout << "sorted result" << endl << a << endl;
 	}
 
 	{
@@ -122,6 +151,10 @@ int main( int argc, char *argv[] )
 		}
 
 		cout << a << endl;
+
+		sort( a.y_rbegin( 1 ), a.y_rend( 1 ) );
+
+		cout << "sorted result" << endl << a << endl;
 	}
 
 	{
@@ -136,6 +169,10 @@ int main( int argc, char *argv[] )
 		}
 
 		cout << a << endl;
+
+		sort( a.x_begin( 1 ), a.x_end( 1 ) );
+
+		cout << "sorted result" << endl << a << endl;
 	}
 
 	{
@@ -150,6 +187,10 @@ int main( int argc, char *argv[] )
 		}
 
 		cout << a << endl;
+
+		sort( a.y_begin( 1 ), a.y_end( 1 ) );
+
+		cout << "sorted result" << endl << a << endl;
 	}
 
 	{
@@ -164,6 +205,10 @@ int main( int argc, char *argv[] )
 		}
 
 		cout << a << endl;
+
+		sort( a.x_rbegin( 1 ), a.x_rend( 1 ) );
+
+		cout << "sorted result" << endl << a << endl;
 	}
 
 	{
@@ -178,6 +223,10 @@ int main( int argc, char *argv[] )
 		}
 
 		cout << a << endl;
+
+		sort( a.y_rbegin( 1 ), a.y_rend( 1 ) );
+
+		cout << "sorted result" << endl << a << endl;
 	}
 
 	{
@@ -192,6 +241,10 @@ int main( int argc, char *argv[] )
 		}
 
 		cout << a << endl;
+
+		sort( a.z_rbegin( 1 ), a.z_rend( 1 ) );
+
+		cout << "sorted result" << endl << a << endl;
 	}
 
 	{
@@ -206,6 +259,10 @@ int main( int argc, char *argv[] )
 		}
 
 		cout << a << endl;
+
+		sort( a.x_begin( 1 ), a.x_end( 1 ) );
+
+		cout << "sorted result" << endl << a << endl;
 	}
 
 	{
@@ -220,6 +277,10 @@ int main( int argc, char *argv[] )
 		}
 
 		cout << a << endl;
+
+		sort( a.y_begin( 1 ), a.y_end( 1 ) );
+
+		cout << "sorted result" << endl << a << endl;
 	}
 
 	{
@@ -234,5 +295,9 @@ int main( int argc, char *argv[] )
 		}
 
 		cout << a << endl;
+
+		sort( a.z_begin( 1 ), a.z_end( 1 ) );
+
+		cout << "sorted result" << endl << a << endl;
 	}
 }

@@ -128,16 +128,27 @@ public:
 
 	size_type size( ) const { return( size_ ); }
 	size_type size1( ) const { return( size_ ); }
+	size_type size2( ) const { return( 1 ); }
+	size_type size3( ) const { return( 1 ); }
 	size_type width( ) const { return( size_ ); }
+	size_type height( ) const { return( 1 ); }
+	size_type depth( ) const { return( 1 ); }
+
+	double reso1( double r1 ){ return( 1.0 ); }
+	double reso1( ) const { return( 1.0 ); }
+	double reso2( double r2 ){ return( 1.0 ); }
+	double reso2( ) const { return( 1.0 ); }
+	double reso3( double r3 ){ return( 1.0 ); }
+	double reso3( ) const { return( 1.0 ); }
 
 	size_type byte( ) const { return( size_ * sizeof( value_type ) ); }
 
 	// 順方向のランダムアクセスイテレータを返す
-	iterator begin( ){ return( iterator( &access( 0 ), 1 ) ); }
-	const_iterator begin( ) const { return( const_iterator( &access( 0 ), 1 ) ); }
+	iterator begin( ){ return( iterator( paccess( 0 ), 1 ) ); }
+	const_iterator begin( ) const { return( const_iterator( paccess( 0 ), 1 ) ); }
 
-	iterator end( ){ return( iterator( &access( size( ) ), 1 ) ); }
-	const_iterator end( ) const { return( const_iterator( &access( size( ) ), 1 ) ); }
+	iterator end( ){ return( iterator( paccess( size( ) ), 1 ) ); }
+	const_iterator end( ) const { return( const_iterator( paccess( size( ) ), 1 ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -198,7 +209,16 @@ public:
 	}
 
 // コンテナ内の要素へのアクセス演算子
-private:
+protected:
+	pointer paccess( size_type index )
+	{
+		return( data_ + index );
+	}
+	const_pointer paccess( size_type index ) const
+	{
+		return( data_ + index );
+	}
+
 	reference access( size_type index )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
@@ -225,22 +245,22 @@ private:
 	}
 
 public:
-	reference at( size_type index )
+	reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
 		return( access( index ) );
 	}
 
-	const_reference at( size_type index ) const
+	const_reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
 		return( access( index ) );
 	}
 
-	reference operator ()( size_type index )
+	reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
 		return( access( index ) );
 	}
 
-	const_reference operator ()( size_type index ) const
+	const_reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
 		return( access( index ) );
 	}
@@ -473,9 +493,9 @@ public:
 		size1_ = size2_ = 0;
 	}
 
-	size_type size1( ) const { return( size1_ ); }
-	size_type size2( ) const { return( size2_ ); }
-	size_type width( ) const { return( size1_ ); }
+	size_type size1( )  const { return( size1_ ); }
+	size_type size2( )  const { return( size2_ ); }
+	size_type width( )  const { return( size1_ ); }
 	size_type height( ) const { return( size2_ ); }
 
 	double reso2( double r2 ){ return( reso2_ = r2 ); }
@@ -489,11 +509,11 @@ public:
 ************************************************************************************************************/
 
 	// 順方向のランダムアクセスイテレータを返す
-	iterator x_begin( size_type i ){ return( iterator( &access( i, 0 ), width( ) ) ); }
-	const_iterator x_begin( size_type i ) const { return( const_iterator( &access( i, 0 ), width( ) ) ); }
+	iterator x_begin( size_type i ){ return( iterator( paccess( i, 0 ), width( ) ) ); }
+	const_iterator x_begin( size_type i ) const { return( const_iterator( paccess( i, 0 ), width( ) ) ); }
 
-	iterator x_end( size_type i ){ return( iterator( &access( i, height( ) ), width( ) ) ); }
-	const_iterator x_end( size_type i ) const { return( const_iterator( &access( i, height( ) ), width( ) ) ); }
+	iterator x_end( size_type i ){ return( iterator( paccess( i, height( ) ), width( ) ) ); }
+	const_iterator x_end( size_type i ) const { return( const_iterator( paccess( i, height( ) ), width( ) ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -510,11 +530,11 @@ public:
 ************************************************************************************************************/
 
 	// 順方向のランダムアクセスイテレータを返す
-	iterator y_begin( size_type j ){ return( iterator( &access( 0, j ), 1 ) ); }
-	const_iterator y_begin( size_type j ) const { return( const_iterator( &access( 0, j ), 1 ) ); }
+	iterator y_begin( size_type j ){ return( iterator( paccess( 0, j ), 1 ) ); }
+	const_iterator y_begin( size_type j ) const { return( const_iterator( paccess( 0, j ), 1 ) ); }
 
-	iterator y_end( size_type j ){ return( iterator( &access( width( ), j ), 1 ) ); }
-	const_iterator y_end( size_type j ) const { return( const_iterator( &access( width( ), j ), 1 ) ); }
+	iterator y_end( size_type j ){ return( iterator( paccess( width( ), j ), 1 ) ); }
+	const_iterator y_end( size_type j ) const { return( const_iterator( paccess( width( ), j ), 1 ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -550,7 +570,16 @@ public:
 	}
 
 // 要素へのアクセス
-private:
+protected:
+	pointer paccess( size_type i, size_type j )
+	{
+		return( data_ + i + j * size1_ );
+	}
+	const_pointer paccess( size_type i, size_type j ) const
+	{
+		return( data_ + i + j * size1_ );
+	}
+
 	reference access( size_type i, size_type j )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
@@ -577,22 +606,22 @@ private:
 	}
 
 public:
-	reference at( size_type i, size_type j )
+	reference at( size_type i, size_type j, size_type dmy = 0 )
 	{
 		return( access( i, j ) );
 	}
 
-	const_reference at( size_type index, size_type j ) const
+	const_reference at( size_type index, size_type j, size_type dmy = 0 ) const
 	{
 		return( access( i, j ) );
 	}
 
-	reference operator ()( size_type i, size_type j )
+	reference operator ()( size_type i, size_type j, size_type dmy = 0 )
 	{
 		return( access( i, j ) );
 	}
 
-	const_reference operator ()( size_type i, size_type j ) const
+	const_reference operator ()( size_type i, size_type j, size_type dmy = 0 ) const
 	{
 		return( access( i, j ) );
 	}
@@ -707,11 +736,11 @@ public:
 	double reso3( ) const { return( reso3_ ); }
 
 	// 順方向のランダムアクセスイテレータを返す
-	iterator begin( ){ return( iterator( &( data_[0] ), 1, 0, 0 ) ); }
-	const_iterator begin( ) const { return( const_iterator( &( data_[0] ), 1, 0, 0 ) ); }
+	iterator begin( ){ return( iterator( paccess( 0, 0, 0 ), 1, 0, 0 ) ); }
+	const_iterator begin( ) const { return( const_iterator( paccess( 0, 0, 0 ), 1, 0, 0 ) ); }
 
-	iterator end( ){ return( iterator( &( data_[ size( ) ] ), 1, 0, 0 ) ); }
-	const_iterator end( ) const { return( const_iterator( &( data_[ size( ) ] ), 1, 0, 0 ) ); }
+	iterator end( ){ return( iterator( paccess( size( ) ), 1, 0, 0 ) ); }
+	const_iterator end( ) const { return( const_iterator( paccess( size( ) ), 1, 0, 0 ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -727,11 +756,11 @@ public:
 **
 ************************************************************************************************************/
 	// 順方向のランダムアクセスイテレータを返す
-	iterator x_begin( size_type i ){ return( iterator( &access( i, 0, 0 ), width( ), 0, 0 ) ); }
-	const_iterator x_begin( size_type i ) const { return( const_iterator( &access( i, 0, 0 ), width( ), 0, 0 ) ); }
+	iterator x_begin( size_type i ){ return( iterator( paccess( i, 0, 0 ), width( ), 0, 0 ) ); }
+	const_iterator x_begin( size_type i ) const { return( const_iterator( paccess( i, 0, 0 ), width( ), 0, 0 ) ); }
 
-	iterator x_end( size_type i ){ return( iterator( &access( i, 0, depth( ) ), width( ), 0, 0 ) ); }
-	const_iterator x_end( size_type i ) const { return( const_iterator( &access( i, 0, depth( ) ), width( ), 0, 0 ) ); }
+	iterator x_end( size_type i ){ return( iterator( paccess( i, 0, depth( ) ), width( ), 0, 0 ) ); }
+	const_iterator x_end( size_type i ) const { return( const_iterator( paccess( i, 0, depth( ) ), width( ), 0, 0 ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -748,11 +777,11 @@ public:
 **
 ************************************************************************************************************/
 	// 順方向のランダムアクセスイテレータを返す
-	iterator y_begin( size_type j ){ return( iterator( &access( 0, j, 0 ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
-	const_iterator y_begin( size_type j ) const { return( const_iterator( &access( 0, j, 0 ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
+	iterator y_begin( size_type j ){ return( iterator( paccess( 0, j, 0 ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
+	const_iterator y_begin( size_type j ) const { return( const_iterator( paccess( 0, j, 0 ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
 
-	iterator y_end( size_type j ){ return( iterator( &access( 0, j, depth( ) ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
-	const_iterator y_end( size_type j ) const { return( const_iterator( &access( 0, j, depth( ) ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
+	iterator y_end( size_type j ){ return( iterator( paccess( 0, j, depth( ) ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
+	const_iterator y_end( size_type j ) const { return( const_iterator( paccess( 0, j, depth( ) ), 1, width( ) * ( height( ) - 1 ), width( ) ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -769,11 +798,11 @@ public:
 **
 ************************************************************************************************************/
 	// 順方向のランダムアクセスイテレータを返す
-	iterator z_begin( size_type k ){ return( iterator( &access( 0, 0, k ), 1, 0, 0 ) ); }
-	const_iterator z_begin( size_type k ) const { return( const_iterator( &access( 0, 0, k ), 1, 0, 0 ) ); }
+	iterator z_begin( size_type k ){ return( iterator( paccess( 0, 0, k ), 1, 0, 0 ) ); }
+	const_iterator z_begin( size_type k ) const { return( const_iterator( paccess( 0, 0, k ), 1, 0, 0 ) ); }
 
-	iterator z_end( size_type k ){ return( iterator( &access( 0, height( ), k ), 1, 0, 0 ) ); }
-	const_iterator z_end( size_type k ) const { return( const_iterator( &access( 0, height( ), k ), 1, 0, 0 ) ); }
+	iterator z_end( size_type k ){ return( iterator( paccess( 0, height( ), k ), 1, 0, 0 ) ); }
+	const_iterator z_end( size_type k ) const { return( const_iterator( paccess( 0, height( ), k ), 1, 0, 0 ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -812,7 +841,16 @@ public:
 
 
 // 要素へのアクセス
-private:
+protected:
+	pointer paccess( size_type i, size_type j, size_type k )
+	{
+		return( data_ + i + ( j + k * size2_ ) * size1_ );
+	}
+	const_pointer paccess( size_type i, size_type j, size_type k ) const
+	{
+		return( data_ + i + ( j + k * size2_ ) * size1_ );
+	}
+
 	reference access( size_type i, size_type j, size_type k )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
@@ -954,6 +992,7 @@ inline std::ostream &operator <<( std::ostream &out, const array3< T, Allocator 
 
 	return( out );
 }
+
 
 
 // 画像間演算

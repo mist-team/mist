@@ -47,7 +47,9 @@ public:
 
 	// —v‘f‚ÌƒAƒNƒZƒX
 	reference operator *(){ return( *data_ ); }
+	const reference operator *() const { return( *data_ ); }
 	reference operator []( difference_type dist ){ return( data_[ dist * diff_pointer_ ] ); }
+	const reference operator []( difference_type dist ) const { return( data_[ dist * diff_pointer_ ] ); }
 
 	// ˆÚ“®
 	mist_iterator1& operator ++( ) // ‘O’uŒ^
@@ -84,6 +86,11 @@ public:
 		return( *this );
 	}
 
+	const difference_type operator -( const mist_iterator1 &ite ) const
+	{
+		return( ( data_ - ite.data_ ) / diff_pointer_ );
+	}
+
 	// ”äŠr
 	bool operator ==( const mist_iterator1 &ite ) const { return( data_ == ite.data_ ); }
 	bool operator !=( const mist_iterator1 &ite ) const { return( data_ != ite.data_ ); }
@@ -95,12 +102,6 @@ public:
 
 
 template< class T, class Distance, class Pointer, class Reference >
-inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( const mist_iterator1< T, Distance, Pointer, Reference > &ite1, const mist_iterator1< T, Distance, Pointer, Reference > ite2 )
-{
-	return( mist_iterator1< T, Distance, Pointer, Reference >( ite1 ) += ite2 );
-}
-
-template< class T, class Distance, class Pointer, class Reference >
 inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( const mist_iterator1< T, Distance, Pointer, Reference > &ite, Distance dist )
 {
 	return( mist_iterator1< T, Distance, Pointer, Reference >( ite ) += dist );
@@ -110,13 +111,6 @@ template< class T, class Distance, class Pointer, class Reference >
 inline const mist_iterator1< T, Distance, Pointer, Reference > operator +( Distance dist, const mist_iterator1< T, Distance, Pointer, Reference > &ite )
 {
 	return( mist_iterator1< T, Distance, Pointer, Reference >( ite ) += dist );
-}
-
-
-template< class T, class Distance, class Pointer, class Reference >
-inline const mist_iterator1< T, Distance, Pointer, Reference > operator -( const mist_iterator1< T, Distance, Pointer, Reference > &ite1, const mist_iterator1< T, Distance, Pointer, Reference > ite2 )
-{
-	return( mist_iterator1< T, Distance, Pointer, Reference >( ite1 ) -= ite2 );
 }
 
 template< class T, class Distance, class Pointer, class Reference >
@@ -174,7 +168,9 @@ public:
 
 	// —v‘f‚ÌƒAƒNƒZƒX
 	reference operator *(){ return( *data_ ); }
-	reference operator []( difference_type dist ){ return( data_[ dist * diff_pointer_ ] ); }
+	const reference operator *() const { return( *data_ ); }
+	reference operator []( difference_type dist ){ return( *( *this += dist ) ); }
+	const reference operator []( difference_type dist ) const { return( *( *this += dist ) ); }
 
 	// ˆÚ“®
 	mist_iterator2& operator ++( ) // ‘O’uŒ^
@@ -241,6 +237,37 @@ public:
 		return( *this );
 	}
 
+	const difference_type operator -( const mist_iterator2 &ite ) const
+	{
+		if( diff_pointer2_ == 0 )
+		{
+			return( ( data_ - ite.data_ ) / diff_pointer1_ );
+		}
+		else
+		{
+			difference_type diff  = sdata_ - ite.sdata_;
+			if( diff > 0 )
+			{
+				difference_type diff1 = diff / ( diff_boundary_ + diff_pointer2_ );
+				difference_type diff2 = ( data_ - sdata_ ) / diff_pointer1_;
+				difference_type diff3 = diff_boundary_ - ( ite.data_ - ite.sdata_ ) / diff_pointer1_;
+				diff = ( diff1 < 1 ? 0 : diff1 - 1 ) * diff_boundary_ + diff2 + diff3;
+			}
+			//else if( diff < 0 )
+			//{
+			//	diff = -diff;
+			//	difference_type diff1 = diff / ( diff_boundary_ + diff_pointer2_ );
+			//	difference_type diff2 = ( diff - diff1 * ( diff_boundary_ + diff_pointer2_ ) ) / diff_pointer1_;
+			//	diff = -( diff1 * diff_boundary_ + diff2 + ( ( data_ - sdata_ ) - ( ite.data_ - ite.sdata_ ) ) / diff_pointer1_ );
+			//}
+			else
+			{
+				diff = ( data_ - ite.data_ ) / diff_pointer1_;
+			}
+			return( diff );
+		}
+	}
+
 	// ”äŠr
 	bool operator ==( const mist_iterator2 &ite ) const { return( data_ == ite.data_ ); }
 	bool operator !=( const mist_iterator2 &ite ) const { return( data_ != ite.data_ ); }
@@ -271,11 +298,11 @@ inline const mist_iterator2< T, Distance, Pointer, Reference > operator +( Dista
 }
 
 
-template< class T, class Distance, class Pointer, class Reference >
-inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const mist_iterator2< T, Distance, Pointer, Reference > &ite1, const mist_iterator2< T, Distance, Pointer, Reference > ite2 )
-{
-	return( mist_iterator2< T, Distance, Pointer, Reference >( ite1 ) -= ite2 );
-}
+//template< class T, class Distance, class Pointer, class Reference >
+//inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const mist_iterator2< T, Distance, Pointer, Reference > &ite1, const mist_iterator2< T, Distance, Pointer, Reference > ite2 )
+//{
+//	return( mist_iterator2< T, Distance, Pointer, Reference >( ite1 ) -= ite2 );
+//}
 
 template< class T, class Distance, class Pointer, class Reference >
 inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const mist_iterator2< T, Distance, Pointer, Reference > &ite, Distance dist )
@@ -336,7 +363,13 @@ public:
 		_Ite _tmp = current_iterator_;
 		return( *( --_tmp ) );
 	}
+	const reference operator *() const
+	{
+		_Ite _tmp = current_iterator_;
+		return( *( --_tmp ) );
+	}
 	reference operator []( difference_type dist ){ return( *( *this + dist ) ); }
+	const reference operator []( difference_type dist ) const { return( *( *this + dist ) ); }
 
 	// ˆÚ“®
 	mist_reverse_iterator& operator ++( ) // ‘O’uŒ^
@@ -373,14 +406,19 @@ public:
 		return( *this );
 	}
 
+	const difference_type operator -( const mist_reverse_iterator &ite ) const
+	{
+		return( ite.current_iterator_ - current_iterator_ );
+	}
+
 
 	// ”äŠr
 	bool operator ==( const mist_reverse_iterator &ite ) const { return( current_iterator_ == ite.current_iterator_ ); }
 	bool operator !=( const mist_reverse_iterator &ite ) const { return( current_iterator_ != ite.current_iterator_ ); }
-	bool operator < ( const mist_reverse_iterator &ite ) const { return( current_iterator_ <  ite.current_iterator_ ); }
-	bool operator <=( const mist_reverse_iterator &ite ) const { return( current_iterator_ <= ite.current_iterator_ ); }
-	bool operator > ( const mist_reverse_iterator &ite ) const { return( current_iterator_ >  ite.current_iterator_ ); }
-	bool operator >=( const mist_reverse_iterator &ite ) const { return( current_iterator_ >= ite.current_iterator_ ); }
+	bool operator < ( const mist_reverse_iterator &ite ) const { return( ite.current_iterator_ < current_iterator_  ); }
+	bool operator <=( const mist_reverse_iterator &ite ) const { return( !( *this > ite ) ); }
+	bool operator > ( const mist_reverse_iterator &ite ) const { return( ite < *this ) ); }
+	bool operator >=( const mist_reverse_iterator &ite ) const { return( !( *this < ite ) ); }
 };
 
 
@@ -403,11 +441,11 @@ inline const mist_reverse_iterator< _Ite > operator +( typename _Ite::difference
 }
 
 
-template< class _Ite >
-inline const mist_reverse_iterator< _Ite > operator -( const mist_reverse_iterator< _Ite > &ite1, const mist_reverse_iterator< _Ite > ite2 )
-{
-	return( mist_reverse_iterator< _Ite >( ite1 ) -= ite2 );
-}
+//template< class _Ite >
+//inline const typename mist_reverse_iterator< _Ite >::difference_type operator -( const mist_reverse_iterator< _Ite > &ite1, const mist_reverse_iterator< _Ite > ite2 )
+//{
+//	return( ite1 - ite2 );
+//}
 
 template< class _Ite >
 inline const mist_reverse_iterator< _Ite > operator -( const mist_reverse_iterator< _Ite > &ite, typename _Ite::difference_type dist )

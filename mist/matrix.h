@@ -344,11 +344,11 @@ public:
 **
 ************************************************************************************************************/
 	// 順方向のランダムアクセスイテレータを返す
-	iterator row_begin( size_type r ){ return( iterator( &access( r, 0 ), rows( ) ) ); }
-	const_iterator row_begin( size_type r ) const { return( const_iterator( &access( r, 0 ), rows( ) ) ); }
+	iterator row_begin( size_type r ){ return( iterator( paccess( r, 0 ), rows( ) ) ); }
+	const_iterator row_begin( size_type r ) const { return( const_iterator( paccess( r, 0 ), rows( ) ) ); }
 
-	iterator row_end( size_type r ){ return( iterator( &access( r, cols( ) ), rows( ) ) ); }
-	const_iterator row_end( size_type r ) const { return( const_iterator( &access( r, cols( ) ), rows( ) ) ); }
+	iterator row_end( size_type r ){ return( iterator( paccess( r, cols( ) ), rows( ) ) ); }
+	const_iterator row_end( size_type r ) const { return( const_iterator( paccess( r, cols( ) ), rows( ) ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -365,11 +365,11 @@ public:
 **
 ************************************************************************************************************/
 	// 順方向のランダムアクセスイテレータを返す
-	iterator col_begin( size_type c ){ return( iterator( &access( 0, c ), 1 ) ); }
-	const_iterator col_begin( size_type c ) const { return( const_iterator( &access( 0, c ), 1 ) ); }
+	iterator col_begin( size_type c ){ return( iterator( paccess( 0, c ), 1 ) ); }
+	const_iterator col_begin( size_type c ) const { return( const_iterator( paccess( 0, c ), 1 ) ); }
 
-	iterator col_end( size_type c ){ return( iterator( &access( rows( ), c ), 1 ) ); }
-	const_iterator col_end( size_type c ) const { return( const_iterator( &access( rows( ), c ), 1 ) ); }
+	iterator col_end( size_type c ){ return( iterator( paccess( rows( ), c ), 1 ) ); }
+	const_iterator col_end( size_type c ) const { return( const_iterator( paccess( rows( ), c ), 1 ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -655,6 +655,15 @@ public:
 
 // 要素へのアクセス
 private:
+	pointer paccess( size_type r, size_type c )
+	{
+		return( data_ + r + c * size1_ );
+	}
+	const_pointer paccess( size_type r, size_type c ) const
+	{
+		return( data_ + r + c * size1_ );
+	}
+
 	reference access( size_type r, size_type c )
 	{
 #if _CHECK_ACCESS_VIOLATION_ != 0
