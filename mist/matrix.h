@@ -188,7 +188,8 @@ struct matrix_mul : public matrix_bind_operation< T1, T2, matrix_mul< T1, T2 > >
 		size_type size = left_.cols( );
 		for( size_type t = 0 ; t < size ; ++t )
 		{
-			v += left_( r, t ) * right_( t, c );
+			v += right_( t, c ) * left_( r, t );
+//			v += left_( r, t ) * right_( t, c );
 		}
 		return( v );
 	}
