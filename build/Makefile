@@ -1,7 +1,7 @@
 include ./makeinclude
 
 
-DIRS = ../test
+DIRS = ../test ../demo
 
 all: release
 

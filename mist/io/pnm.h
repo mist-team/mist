@@ -288,7 +288,7 @@ namespace __pnm_controller__
 
 			// ƒwƒbƒ_î•ñ‚ğ‘‚«‚Ş
 			fprintf( fp, "P%1d\n", pnm_type );
-			fprintf( fp, "# Created by MIST\n", pnm_type );
+			fprintf( fp, "# Created by MIST\n" );
 			fprintf( fp, "%d %d\n", static_cast< int >( image.width( ) ), static_cast< int >( image.height( ) ) );
 
 			color_type max = image[ 0 ];
