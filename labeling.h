@@ -128,7 +128,7 @@ namespace __labeling_controller__
 					if( in( i, j, k ) != 0 )
 					{
 						// 近傍の半分の取り出し
-						neighbor::neighbor3( in, l, i, j, k, w, h );
+						neighbor::neighbor( in, l, i, j, k, w, h );
 
 						// 近傍値の最大・最小を求める
 						min = max = l[ 0 ];
@@ -549,7 +549,7 @@ typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Alloca
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		out[ i ] = in[ i ];
+		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbor2< 4 >( ) ) );
 }
@@ -571,7 +571,7 @@ typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Alloca
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		out[ i ] = in[ i ];
+		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbor2< 8 >( ) ) );
 }
@@ -594,7 +594,7 @@ typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Alloca
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		out[ i ] = in[ i ];
+		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbor3< 6 >( ) ) );
 }
@@ -618,7 +618,7 @@ typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Alloc
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		out[ i ] = in[ i ];
+		out[ i ] = in[ i ] > 0 ? 1 : 0;
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbor3< 26 >( ) ) );
 }
