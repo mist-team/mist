@@ -594,7 +594,7 @@ HTML_FOOTER            = "./footer.html"
 # the style sheet file to the HTML output directory, so don't put your own 
 # stylesheet in the HTML output directory as well, or it will be erased!
 
-HTML_STYLESHEET        = "./stylesheet.css"
+HTML_STYLESHEET        = "./mist.css"
 
 # If the HTML_ALIGN_MEMBERS tag is set to YES, the members of classes, 
 # files or namespaces will be aligned in HTML using tables. If set to 
@@ -777,7 +777,7 @@ RTF_HYPERLINKS         = NO
 # config file, i.e. a series of assignments. You only have to provide 
 # replacements, missing definitions are set to their default value.
 
-RTF_STYLESHEET_FILE    = 
+RTF_STYLESHEET_FILE    = "mist.css"
 
 # Set optional variables used in the generation of an rtf document. 
 # Syntax is similar to doxygen's config file.
