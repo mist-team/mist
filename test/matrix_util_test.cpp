@@ -36,21 +36,21 @@ int main( )
 		std::cout << "Inverse Matrix Calculation" << std::endl;
 
 		matrix aa = a;
-		std::cout << inverse( aa ) * b << std::endl;
+		std::cout << mist::inverse( aa ) * b << std::endl;
 	}
 
 	{
 		std::cout << "LU factorization" << std::endl;
 
 		matrix aa = a;
-		std::cout << lu_factorization( aa ) << std::endl;
+		std::cout << mist::lu_factorization( aa ) << std::endl;
 	}
 
 	{
 		std::cout << "QR factorization" << std::endl;
 
 		matrix aa = a;
-		std::cout << qr_factorization( aa ) << std::endl;
+		std::cout << mist::qr_factorization( aa ) << std::endl;
 	}
 
 	{

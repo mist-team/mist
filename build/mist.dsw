@@ -75,6 +75,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "matrix_util_test"=".\matrix_util_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "operators_test"=".\operators_test.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -87,7 +99,31 @@ Package=<4>
 
 ###############################################################################
 
+Project: "raw_test"=".\raw_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "thread_test"=".\thread_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wav_test"=".\wav_test.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

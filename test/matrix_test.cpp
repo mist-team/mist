@@ -3,7 +3,6 @@
 #include <cmath>
 #include <mist/mist.h>
 #include <mist/matrix.h>
-#include <mist/numeric.h>
 #include <mist/timer.h>
 
 
@@ -85,84 +84,13 @@ void test_matrix_operation( )
 }
 
 
-void test_matrix_inverse1( )
-{
-	using namespace std;
-
-	cout << "transpose( mat1 + mat2 * mat3 + mat4 )" << endl << endl;
-
-	mist::matrix< double > a( 3, 3 );
-	mist::matrix< double > b( 3, 1 );
-	mist::matrix< double > a1( 3, 3 );
-	mist::matrix< double > a2( 3, 3 );
-	mist::matrix< double > b1( 3, 3, 1.0 );
-	mist::matrix< double > b2( 3, 3, 1.0 );
-	mist::matrix< double > p1, p2;
-
-	a( 0, 0 ) = 1; a( 0, 1 ) =  1; a( 0, 2 ) =  1;
-	a( 1, 0 ) = 3; a( 1, 1 ) =  2; a( 1, 2 ) = -2;
-	a( 2, 0 ) = 2; a( 2, 1 ) = -1; a( 2, 2 ) =  3;
-
-	b[0] = 6;
-	b[1] = 1;
-	b[2] = 9;
-
-	a1 = a2 = a;
-	b1 = b2 = b;
-
-	mist::inverse( a1 );
-	cout << a * a1 << endl << endl;
-	mist::inverse1( a2 );
-	cout << a * a2 << endl << endl;
-}
-
-
-void test_matrix_inverse2( )
-{
-	using namespace std;
-	mist::matrix< double > mat1( 100, 100 );
-	mist::matrix< double > mat2( 100, 100 );
-	mist::matrix< double > mat( 100, 100 );
-	mist::matrix< double >::size_type i, loop = 100;
-
-	for( i = 0 ; i < mat.size( ) ; i++ )
-	{
-		mat[i] = (double)rand( ) / (double)RAND_MAX;
-	}
-
-	// transpose( mat1 + mat2 * mat3 + mat4 )
-	{
-		mist::timer t;
-		for( i = 0 ; i < loop ; i++ )
-		{
-			mat1 = mat;
-			mist::inverse( mat1 );
-		}
-		cout << "< In the case of Expression Template >" << endl;
-		cout << "Calculation Time: " << t << " (sec)" << endl;
-	}
-
-	{
-		mist::timer t;
-		for( i = 0 ; i < loop ; i++ )
-		{
-			mat1 = mat;
-			mist::inverse1( mat2 );
-		}
-		cout << "< In the case of Expression Template >" << endl;
-		cout << "Calculation Time: " << t << " (sec)" << endl;
-	}
-}
-
 int main( )
 {
 	using namespace std;
 
 	cout << "Examination of matrix operation" << endl << endl;
 	cout << "1) Check the calculation time of matrix operation." << endl;
-	cout << "2) Compute the inverse matrix." << endl;
-	cout << "3) Check the calculation time of inverse matrix." << endl;
-	cout << "4) Check the calculation time of matrix multiply." << endl;
+	cout << "2) Check the calculation time of matrix multiply." << endl;
 
 	int number = -1;
 
@@ -175,14 +103,6 @@ int main( )
 		break;
 
 	case 2:
-		test_matrix_inverse1( );
-		break;
-
-	case 3:
-		test_matrix_inverse2( );
-		break;
-
-	case 4:
 		test_matrix_multiply( );
 		break;
 

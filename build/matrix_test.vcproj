@@ -147,13 +147,6 @@
 				RelativePath="..\mist\timer.h">
 			</File>
 		</Filter>
-		<Filter
-			Name="numeric"
-			Filter="">
-			<File
-				RelativePath="..\mist\numeric\lu_decomposition.h">
-			</File>
-		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
