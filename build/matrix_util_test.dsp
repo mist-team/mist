@@ -25,7 +25,7 @@ CFG=matrix_util_test - Win32 Debug
 # PROP AllowPerConfigDependencies 0
 # PROP Scc_ProjName ""
 # PROP Scc_LocalPath ""
-CPP=cl.exe
+CPP=icl.exe
 RSC=rc.exe
 
 !IF  "$(CFG)" == "matrix_util_test - Win32 Release"
@@ -96,7 +96,7 @@ SOURCE=..\test\matrix_util_test.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=\mist\mist\matrix.h
+SOURCE="\SVN Projects\mist\mist\mist\matrix.h"
 # End Source File
 # Begin Source File
 

@@ -49,7 +49,7 @@ bool dct( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 									static_cast< size_t >( sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ),
 									in.size( ) * 5 / 4 ) )
 	{
-		deallocate_memory( mem );
+		__fft_util__::deallocate_memory( mem );
 		return( false );
 	}
 
@@ -75,7 +75,7 @@ bool dct( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 		out[ i ] = __fft_util__::convert_complex< T2 >::convert_from( data[ i ], 0.0 );
 	}
 
-	deallocate_memory( mem );
+	__fft_util__::deallocate_memory( mem );
 
 	return( true );
 }
@@ -98,7 +98,7 @@ bool dct_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 									static_cast< size_t >( sqrt( static_cast< double >( in.size( ) / 2 ) ) + 3 ),
 									in.size( ) * 5 / 4 ) )
 	{
-		deallocate_memory( mem );
+		__fft_util__::deallocate_memory( mem );
 		return( false );
 	}
 
@@ -125,7 +125,7 @@ bool dct_inverse( array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 		out[ i ] = __fft_util__::convert_complex< T2 >::convert_from( data[ i ] * 2.0 / out.size( ), 0.0 );
 	}
 
-	deallocate_memory( mem );
+	__fft_util__::deallocate_memory( mem );
 
 	return( true );
 }
@@ -150,7 +150,7 @@ bool dct( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
 									size * 3 / 2 ) )
 	{
-		deallocate_memory( mem );
+		__fft_util__::deallocate_memory( mem );
 		return( false );
 	}
 
@@ -183,7 +183,7 @@ bool dct( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 		}
 	}
 
-	deallocate_memory( mem );
+	__fft_util__::deallocate_memory( mem );
 
 	return( true );
 }
@@ -209,7 +209,7 @@ bool dct_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
 									size * 3 / 2 ) )
 	{
-		deallocate_memory( mem );
+		__fft_util__::deallocate_memory( mem );
 		return( false );
 	}
 
@@ -254,7 +254,7 @@ bool dct_inverse( array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 		}
 	}
 
-	deallocate_memory( mem );
+	__fft_util__::deallocate_memory( mem );
 
 	return( true );
 }
@@ -283,7 +283,7 @@ bool dct( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
 									size * 3 / 2 ) )
 	{
-		deallocate_memory( mem );
+		__fft_util__::deallocate_memory( mem );
 		return( false );
 	}
 
@@ -322,7 +322,7 @@ bool dct( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 		}
 	}
 
-	deallocate_memory( mem );
+	__fft_util__::deallocate_memory( mem );
 
 	return( true );
 }
@@ -351,7 +351,7 @@ bool dct_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 									static_cast< size_t >( sqrt( static_cast< double >( size / 2 ) ) + 3 ),
 									size * 3 / 2 ) )
 	{
-		deallocate_memory( mem );
+		__fft_util__::deallocate_memory( mem );
 		return( false );
 	}
 
@@ -411,7 +411,7 @@ bool dct_inverse( array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 		}
 	}
 
-	deallocate_memory( mem );
+	__fft_util__::deallocate_memory( mem );
 
 	return( true );
 }
