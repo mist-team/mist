@@ -100,7 +100,7 @@ namespace __linear__
 									typename array< T, Allocator >::size_type k2,
 									double x, double y, double z )
 		{
-			typedef typename array< T, Allocator >::value_type color;
+			typedef typename array< T, Allocator >::value_type value_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double pix = in[ i1 ] * ( 1.0 - x ) + in[ i2 ] * x;
@@ -119,7 +119,7 @@ namespace __linear__
 									typename array2< T, Allocator >::size_type k2,
 									double x, double y, double z )
 		{
-			typedef typename array2< T, Allocator >::value_type color;
+			typedef typename array2< T, Allocator >::value_type value_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double pix = ( in( i1, j1 ) * ( 1.0 - x ) + in( i2, j1 ) * x ) * ( 1.0 - y ) + ( in( i1, j2 ) * ( 1.0 - x ) + in( i2, j2 ) * x ) * y;
@@ -138,7 +138,7 @@ namespace __linear__
 									typename array3< T, Allocator >::size_type k2,
 									double x, double y, double z )
 		{
-			typedef typename array3< T, Allocator >::value_type color;
+			typedef typename array3< T, Allocator >::value_type value_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double pix = ( ( in( i1, j1, k1 ) * ( 1.0 - x ) + in( i2, j1, k1 ) * x ) * ( 1.0 - y )	+ ( in( i1, j2, k1 ) * ( 1.0 - x ) + in( i2, j2, k1 ) * x ) * y ) * ( 1.0 - z )
@@ -308,7 +308,7 @@ namespace __cubic__
 								typename array< T, Allocator >::size_type k[4],
 								double x, double y, double z )
 		{
-			typedef typename array< T, Allocator >::value_type color;
+			typedef typename array< T, Allocator >::value_type value_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
@@ -328,7 +328,8 @@ namespace __cubic__
 								typename array2< T, Allocator >::size_type k[4],
 								double x, double y, double z )
 		{
-			typedef typename array2< T, Allocator >::value_type color;
+			typedef typename array2< T, Allocator >::value_type value_type;
+			typedef typename color::value_type value_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
@@ -355,7 +356,8 @@ namespace __cubic__
 								typename array3< T, Allocator >::size_type k[4],
 								double x, double y, double z )
 		{
-			typedef typename array3< T, Allocator >::value_type color;
+			typedef typename array3< T, Allocator >::value_type value_type;
+			typedef typename color::value_type value_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
