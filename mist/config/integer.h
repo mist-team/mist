@@ -178,6 +178,7 @@ public:
 		integer x( 0 );
 		x.sign_ = sign_ == a.sign_;
 
+		size_type i;
 		for( size_type j = 0 ; j < a.length_ ; j++ )
 		{
 			difference_type u = a.data_[ j ];
@@ -185,7 +186,7 @@ public:
 			{
 				difference_type t = 0;
 				size_type imax = length_ + j - 1;
-				for( size_type i = j ; i <= imax ; i++ )
+				for( i = j ; i <= imax ; i++ )
 				{
 					t += ( x.data_[ i ] + u * data_[ i - j ] );
 					x.data_[ i ] = static_cast< value_type >( t % BASE );
