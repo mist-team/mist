@@ -35,9 +35,6 @@ namespace uniform
 	//!
 	class random
 	{
-	protected:
-		const double pai_timed_by_2_;		///< @brief pai timed by two
-
 		// Period parameters
 		const unsigned long number_n_;		///< @brief number n
 		const unsigned long number_m_;		///< @brief number m
@@ -54,6 +51,8 @@ namespace uniform
 
 
 	public:
+
+		const double pai_timed_by_2_;		///< @brief pai timed by two
 
 		/// @brief コンストラクタ
 		//! 
@@ -311,25 +310,35 @@ namespace gauss
 
 	/// @brief 正規乱数のジェネレータ
 	//! 
-	//! 平均値と標準偏差を指定し，正規乱数を発生させるクラス．
+	//! 平均値と標準偏差を指定し，一様乱数生成器を用いて正規乱数を発生させるクラス．
 	//! 
-	class random : protected uniform::random 
+	class random 
 	{
-		typedef uniform::random base;
+		mist::uniform::random u_rand_;	///< @brief 一様乱数生成器 >
 
 		double mean_;					///< @brief 生成する正規乱数の平均値
 		double standard_deviation_;		///< @brief 生成する正規乱数の標準偏差
 
 	public:
 
+		/// @brief デフォルトコンストラクタ
+		//! 
+		//! 
+		random( ) :
+			u_rand_( ),
+			mean_( 0.0 ), 
+			standard_deviation_( 1.0 )
+		{
+		}
+
 		/// @brief コンストラクタ
 		//! 
-		//! @param[in] seed … 乱数のseed(これを用いてseed配列を作る)
+		//! @param[in] seed … u_rand_のseed(これを用いてseed配列を作る)
 		//! @param[in] mean … 正規乱数の平均
 		//! @param[in] standard_deviation … 正規乱数の標準偏差
 		//! 
-		random( const unsigned long& seed = 0, const double& mean = 0.0, const double& standard_deviation = 1.0 ) :
-			base( seed ),
+		random( const unsigned long& seed, const double& mean = 0.0, const double& standard_deviation = 1.0 ) :
+			u_rand_( seed ),
 			mean_( mean ), 
 			standard_deviation_( standard_deviation )
 		{
@@ -337,15 +346,51 @@ namespace gauss
 		
 		/// @brief コンストラクタ
 		//! 
-		//! @param[in] seed_array … 乱数のseed配列
+		//! @param[in] seed_array … u_rand_のseed配列
 		//! @param[in] mean … 正規乱数の平均
 		//! @param[in] standard_deviation … 正規乱数の標準偏差
 		//! 
 		random( const array< unsigned long >& seed_array, const double& mean = 0.0, const double& standard_deviation = 1.0 ) :
-			base( seed_array ),
+			u_rand_( seed_array ),
 			mean_( mean ), 
 			standard_deviation_( standard_deviation )
 		{
+		}
+
+		/// @brief seedで初期化
+		//! 
+		//! initializes mt_[number_n_] with a seed
+		//! 
+		//! @param[in] seed … u_rand_のseed(これを用いてseed配列を作る)
+		//! 
+		void init( const unsigned long& seed )
+		{
+			u_rand_.init( seed );
+		}
+
+		//
+		/// @brief seed_arrayで初期化
+		//! 
+		//! initialize by an array with array-length
+		//! seed_array is the array for initializing seeds
+		//! array_length is its length
+		//! 
+		//! @param[in] seed_array … u_rand_のseed配列
+		//! 
+		void init( const array< unsigned long >& seed_array )
+		{
+			u_rand_.init( seed_array );
+		}
+		
+		/// @brief 32bit符号無し整数一様乱数の発生
+		//! 
+		//! generates a random number on [0,0xffffffff]-interval
+		//! 
+		//! @return 32bit符号無し整数一様乱数
+		//! 
+		const unsigned long int32( )
+		{
+			return( u_rand_.int32( ) );
 		}
 
 		/// @brief 正規乱数のパラメータ指定
@@ -365,13 +410,12 @@ namespace gauss
 		//! 
 		const double generate( )
 		{
-			return( standard_deviation_ * std::sqrt( -2.0 * std::log( 1.0 - real2( ) ) ) * std::cos( pai_timed_by_2_ * ( 1.0 - real2( ) ) ) + mean_ );
+			return( standard_deviation_ * std::sqrt( -2.0 * std::log( 1.0 - u_rand_.real2( ) ) ) * std::cos( u_rand_.pai_timed_by_2_ * ( 1.0 - u_rand_.real2( ) ) ) + mean_ );
 		}
 
 	};
 
 } // gauss
-
 
 /// @}
 //  擬似乱数の生成の終わり
