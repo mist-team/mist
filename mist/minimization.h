@@ -422,7 +422,6 @@ namespace brent
 	{
 		double u, v, w, fu, fv, fw, fx, e = 0.0, d = 0.0;
 		const double c = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
-		const double dust = type_limits< double >::minimum( );		// ƒ[ƒœZ‚ğ”ğ‚¯‚é‚½‚ß‚ÌƒSƒ~’l
 
 		if( use_enclose )
 		{
