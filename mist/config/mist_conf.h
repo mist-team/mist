@@ -122,6 +122,7 @@ _MIST_BEGIN
 
 
 // 行列演算のオプション
+#define _USE_INTEL_MATH_KERNEL_LIBRARY_		0	///< インテルが提供している Math Kernel Library を利用する場合は 1 にする
 #define _DESCENDING_ORDER_EIGEN_VALUE_		0	///< 固有値・固有ベクトルを計算した時に，降順に並べる時は 1，昇順に並べる時は 0 にする
 #define _USE_BALANCING_MATRIX_EIGEN_		1	///< 行列の対角化を行うことで計算精度を上げる（若干メモリを大目に食う）
 #define _USE_DIVIDE_AND_CONQUER_SVD_		1	///< 分割統治法を用いた高速な特異値分解を利用する（若干メモリを大目に食う）

@@ -104,6 +104,14 @@ namespace __numeric__
 
 namespace __clapack__
 {
+
+// インテルのMKLとの互換性を保つための，関数名の変換マクロ
+#if defined(_USE_INTEL_MATH_KERNEL_LIBRARY_) && _USE_INTEL_MATH_KERNEL_LIBRARY_ != 0
+	#define LPFNAME( name ) name
+#else
+	#define LPFNAME( name ) name ## _
+#endif
+
 	extern "C"
 	{
 		typedef long int integer;
@@ -113,152 +121,152 @@ namespace __clapack__
 		typedef struct { doublereal r, i; } doublecomplex;
 
 		// 一般正方行列の連立方程式を解く関数
-		int sgesv_( integer *n, integer *nrhs, real *a, integer *lda, integer *ipiv, real *b, integer *ldb, integer *info );
-		int dgesv_( integer *n, integer *nrhs, doublereal *a, integer *lda, integer *ipiv, doublereal *b, integer *ldb, integer *info );
-		int cgesv_( integer *n, integer *nrhs, complex *a, integer *lda, integer *ipiv, complex *b, integer *ldb, integer *info );
-		int zgesv_( integer *n, integer *nrhs, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *b, integer *ldb, integer *info );
+		int LPFNAME( sgesv ) ( integer *n, integer *nrhs, real *a, integer *lda, integer *ipiv, real *b, integer *ldb, integer *info );
+		int LPFNAME( dgesv ) ( integer *n, integer *nrhs, doublereal *a, integer *lda, integer *ipiv, doublereal *b, integer *ldb, integer *info );
+		int LPFNAME( cgesv ) ( integer *n, integer *nrhs, complex *a, integer *lda, integer *ipiv, complex *b, integer *ldb, integer *info );
+		int LPFNAME( zgesv ) ( integer *n, integer *nrhs, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *b, integer *ldb, integer *info );
 		// 一般帯行列の連立方程式を解く関数
-		int sgbsv_( integer *n, integer *kl, integer *ku, integer *nrhs, real *ab, integer *ldab, integer *ipiv, real *b, integer *ldb, integer *info );
-		int dgbsv_( integer *n, integer *kl, integer *ku, integer *nrhs, doublereal *ab, integer *ldab, integer *ipiv, doublereal *b, integer *ldb, integer *info );
-		int cgbsv_( integer *n, integer *kl, integer *ku, integer *nrhs, complex *ab, integer *ldab, integer *ipiv, complex *b, integer *ldb, integer *info );
-		int zgbsv_( integer *n, integer *kl, integer *ku, integer *nrhs, doublecomplex *ab, integer *ldab, integer *ipiv, doublecomplex *b, integer *ldb, integer *info );
+		int LPFNAME( sgbsv ) ( integer *n, integer *kl, integer *ku, integer *nrhs, real *ab, integer *ldab, integer *ipiv, real *b, integer *ldb, integer *info );
+		int LPFNAME( dgbsv ) ( integer *n, integer *kl, integer *ku, integer *nrhs, doublereal *ab, integer *ldab, integer *ipiv, doublereal *b, integer *ldb, integer *info );
+		int LPFNAME( cgbsv ) ( integer *n, integer *kl, integer *ku, integer *nrhs, complex *ab, integer *ldab, integer *ipiv, complex *b, integer *ldb, integer *info );
+		int LPFNAME( zgbsv ) ( integer *n, integer *kl, integer *ku, integer *nrhs, doublecomplex *ab, integer *ldab, integer *ipiv, doublecomplex *b, integer *ldb, integer *info );
 		// 一般三重対角行列の連立方程式を解く関数
-		int sgtsv_( integer *n, integer *nrhs, real *dl, real *d__, real *du, real *b, integer *ldb, integer *info );
-		int dgtsv_( integer *n, integer *nrhs, doublereal *dl, doublereal *d__, doublereal *du, doublereal *b, integer *ldb, integer *info );
-		int cgtsv_( integer *n, integer *nrhs, complex *dl, complex *d__, complex *du, complex *b, integer *ldb, integer *info );
-		int zgtsv_( integer *n, integer *nrhs, doublecomplex *dl, doublecomplex *d__, doublecomplex *du, doublecomplex *b, integer *ldb, integer *info );
+		int LPFNAME( sgtsv ) ( integer *n, integer *nrhs, real *dl, real *d__, real *du, real *b, integer *ldb, integer *info );
+		int LPFNAME( dgtsv ) ( integer *n, integer *nrhs, doublereal *dl, doublereal *d__, doublereal *du, doublereal *b, integer *ldb, integer *info );
+		int LPFNAME( cgtsv ) ( integer *n, integer *nrhs, complex *dl, complex *d__, complex *du, complex *b, integer *ldb, integer *info );
+		int LPFNAME( zgtsv ) ( integer *n, integer *nrhs, doublecomplex *dl, doublecomplex *d__, doublecomplex *du, doublecomplex *b, integer *ldb, integer *info );
 		// 対称正方行列の連立方程式を解く関数
-		int ssysv_( char *uplo, integer *n, integer *nrhs, real *a, integer *lda, integer *ipiv, real *b, integer *ldb, real *work, integer *lwork, integer *info );
-		int dsysv_( char *uplo, integer *n, integer *nrhs, doublereal *a, integer *lda, integer *ipiv, doublereal *b, integer *ldb, doublereal *work, integer *lwork, integer *info );
-		int csysv_( char *uplo, integer *n, integer *nrhs, complex *a, integer *lda, integer *ipiv, complex *b, integer *ldb, complex *work, integer *lwork, integer *info );
-		int zsysv_( char *uplo, integer *n, integer *nrhs, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *b, integer *ldb, doublecomplex *work, integer *lwork, integer *info );
+		int LPFNAME( ssysv ) ( char *uplo, integer *n, integer *nrhs, real *a, integer *lda, integer *ipiv, real *b, integer *ldb, real *work, integer *lwork, integer *info );
+		int LPFNAME( dsysv ) ( char *uplo, integer *n, integer *nrhs, doublereal *a, integer *lda, integer *ipiv, doublereal *b, integer *ldb, doublereal *work, integer *lwork, integer *info );
+		int LPFNAME( csysv ) ( char *uplo, integer *n, integer *nrhs, complex *a, integer *lda, integer *ipiv, complex *b, integer *ldb, complex *work, integer *lwork, integer *info );
+		int LPFNAME( zsysv ) ( char *uplo, integer *n, integer *nrhs, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *b, integer *ldb, doublecomplex *work, integer *lwork, integer *info );
 		// エルミート行列の連立方程式を解く関数
-		int chesv_( char *uplo, integer *n, integer *nrhs, complex *a, integer *lda, integer *ipiv, complex *b, integer *ldb, complex *work, integer *lwork, integer *info );
-		int zhesv_( char *uplo, integer *n, integer *nrhs, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *b, integer *ldb, doublecomplex *work, integer *lwork, integer *info );
+		int LPFNAME( chesv ) ( char *uplo, integer *n, integer *nrhs, complex *a, integer *lda, integer *ipiv, complex *b, integer *ldb, complex *work, integer *lwork, integer *info );
+		int LPFNAME( zhesv ) ( char *uplo, integer *n, integer *nrhs, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *b, integer *ldb, doublecomplex *work, integer *lwork, integer *info );
 
 
 		// 一般行列のLU分解
-		int sgetrf_( integer *m, integer *n, real *a, integer *lda, integer *ipiv, integer *info );
-		int dgetrf_( integer *m, integer *n, doublereal *a, integer *lda, integer *ipiv, integer *info );
-		int cgetrf_( integer *m, integer *n, complex *a, integer *lda, integer *ipiv, integer *info );
-		int zgetrf_( integer *m, integer *n, doublecomplex *a, integer *lda, integer *ipiv, integer *info );
+		int LPFNAME( sgetrf ) ( integer *m, integer *n, real *a, integer *lda, integer *ipiv, integer *info );
+		int LPFNAME( dgetrf ) ( integer *m, integer *n, doublereal *a, integer *lda, integer *ipiv, integer *info );
+		int LPFNAME( cgetrf ) ( integer *m, integer *n, complex *a, integer *lda, integer *ipiv, integer *info );
+		int LPFNAME( zgetrf ) ( integer *m, integer *n, doublecomplex *a, integer *lda, integer *ipiv, integer *info );
 		// 一般帯行列の連立方程式を解く関数
-		int sgbtrf_( integer *m, integer *n, integer *kl, integer *ku, real *ab, integer *ldab, integer *ipiv, integer *info );
-		int dgbtrf_( integer *m, integer *n, integer *kl, integer *ku, doublereal *ab, integer *ldab, integer *ipiv, integer *info );
-		int cgbtrf_( integer *m, integer *n, integer *kl, integer *ku, complex *ab, integer *ldab, integer *ipiv, integer *info );
-		int zgbtrf_( integer *m, integer *n, integer *kl, integer *ku, doublecomplex *ab, integer *ldab, integer *ipiv, integer *info );
+		int LPFNAME( sgbtrf ) ( integer *m, integer *n, integer *kl, integer *ku, real *ab, integer *ldab, integer *ipiv, integer *info );
+		int LPFNAME( dgbtrf ) ( integer *m, integer *n, integer *kl, integer *ku, doublereal *ab, integer *ldab, integer *ipiv, integer *info );
+		int LPFNAME( cgbtrf ) ( integer *m, integer *n, integer *kl, integer *ku, complex *ab, integer *ldab, integer *ipiv, integer *info );
+		int LPFNAME( zgbtrf ) ( integer *m, integer *n, integer *kl, integer *ku, doublecomplex *ab, integer *ldab, integer *ipiv, integer *info );
 		// 一般三重対角行列の連立方程式を解く関数
-		int sgttrf_( integer *n, real *dl, real *d__, real *du, real *du2, integer *ipiv, integer *info );
-		int dgttrf_( integer *n, doublereal *dl, doublereal *d__, doublereal *du, doublereal *du2, integer *ipiv, integer *info );
-		int cgttrf_( integer *n, complex *dl, complex *d__, complex *du, complex *du2, integer *ipiv, integer *info );
-		int zgttrf_( integer *n, doublecomplex *dl, doublecomplex *d__, doublecomplex *du, doublecomplex *du2, integer *ipiv, integer *info );
+		int LPFNAME( sgttrf ) ( integer *n, real *dl, real *d__, real *du, real *du2, integer *ipiv, integer *info );
+		int LPFNAME( dgttrf ) ( integer *n, doublereal *dl, doublereal *d__, doublereal *du, doublereal *du2, integer *ipiv, integer *info );
+		int LPFNAME( cgttrf ) ( integer *n, complex *dl, complex *d__, complex *du, complex *du2, integer *ipiv, integer *info );
+		int LPFNAME( zgttrf ) ( integer *n, doublecomplex *dl, doublecomplex *d__, doublecomplex *du, doublecomplex *du2, integer *ipiv, integer *info );
 		// 対称行列のLU分解
-		int ssytrf_( char *uplo, integer *n, real *a, integer *lda, integer *ipiv, real *work, integer *lwork, integer *info );
-		int dsytrf_( char *uplo, integer *n, doublereal *a, integer *lda, integer *ipiv, doublereal *work, integer *lwork, integer *info );
-		int csytrf_( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *lwork, integer *info );
-		int zsytrf_( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *lwork, integer *info );
+		int LPFNAME( ssytrf ) ( char *uplo, integer *n, real *a, integer *lda, integer *ipiv, real *work, integer *lwork, integer *info );
+		int LPFNAME( dsytrf ) ( char *uplo, integer *n, doublereal *a, integer *lda, integer *ipiv, doublereal *work, integer *lwork, integer *info );
+		int LPFNAME( csytrf ) ( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *lwork, integer *info );
+		int LPFNAME( zsytrf ) ( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *lwork, integer *info );
 		// エルミート行列のLU分解
-		int chetrf_( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *lwork, integer *info );
-		int zhetrf_( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *lwork, integer *info );
+		int LPFNAME( chetrf ) ( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *lwork, integer *info );
+		int LPFNAME( zhetrf ) ( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *lwork, integer *info );
 
 
 		// 一般行列のQR分解
-		int sgeqrf_( integer *m, integer *n, real *a, integer *lda, real *tau, real *work, integer *lwork, integer *info );
-		int dgeqrf_( integer *m, integer *n, doublereal *a, integer *lda, doublereal *tau, doublereal *work, integer *lwork, integer *info );
-		int cgeqrf_( integer *m, integer *n, complex *a, integer *lda, complex *tau, complex *work, integer *lwork, integer *info );
-		int zgeqrf_( integer *m, integer *n, doublecomplex *a, integer *lda, doublecomplex *tau, doublecomplex *work, integer *lwork, integer *info );
+		int LPFNAME( sgeqrf ) ( integer *m, integer *n, real *a, integer *lda, real *tau, real *work, integer *lwork, integer *info );
+		int LPFNAME( dgeqrf ) ( integer *m, integer *n, doublereal *a, integer *lda, doublereal *tau, doublereal *work, integer *lwork, integer *info );
+		int LPFNAME( cgeqrf ) ( integer *m, integer *n, complex *a, integer *lda, complex *tau, complex *work, integer *lwork, integer *info );
+		int LPFNAME( zgeqrf ) ( integer *m, integer *n, doublecomplex *a, integer *lda, doublecomplex *tau, doublecomplex *work, integer *lwork, integer *info );
 
 
 		// LU分解の結果を用いた一般行列の逆行列の計算
-		int sgetri_( integer *n, real *a, integer *lda, integer *ipiv, real *work, integer *lwork, integer *info );
-		int dgetri_( integer *n, doublereal *a, integer *lda, integer *ipiv, doublereal *work, integer *lwork, integer *info );
-		int cgetri_( integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *lwork, integer *info );
-		int zgetri_( integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *lwork, integer *info );
+		int LPFNAME( sgetri ) ( integer *n, real *a, integer *lda, integer *ipiv, real *work, integer *lwork, integer *info );
+		int LPFNAME( dgetri ) ( integer *n, doublereal *a, integer *lda, integer *ipiv, doublereal *work, integer *lwork, integer *info );
+		int LPFNAME( cgetri ) ( integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *lwork, integer *info );
+		int LPFNAME( zgetri ) ( integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *lwork, integer *info );
 		// LU分解の結果を用いた対称行列の逆行列の計算
-		int ssytri_( char *uplo, integer *n, real *a, integer *lda, integer *ipiv, real *work, integer *info );
-		int dsytri_( char *uplo, integer *n, doublereal *a, integer *lda, integer *ipiv, doublereal *work, integer *info );
-		int csytri_( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *info );
-		int zsytri_( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *info );
+		int LPFNAME( ssytri ) ( char *uplo, integer *n, real *a, integer *lda, integer *ipiv, real *work, integer *info );
+		int LPFNAME( dsytri ) ( char *uplo, integer *n, doublereal *a, integer *lda, integer *ipiv, doublereal *work, integer *info );
+		int LPFNAME( csytri ) ( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *info );
+		int LPFNAME( zsytri ) ( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *info );
 		// LU分解の結果を用いたエルミート行列の逆行列の計算
-		int chetri_( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *info );
-		int zhetri_( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *info );
+		int LPFNAME( chetri ) ( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *info );
+		int LPFNAME( zhetri ) ( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *info );
 
 
 		// 一般行列に対する固有値・固有ベクトルを計算
-		int sgeev_( char *jobvl, char *jobvr, integer *n, real *a, integer *lda, real *wr, real *wi, real *vl, integer *ldvl, real *vr, integer *ldvr, real *work, integer *lwork, integer *info );
-		int dgeev_( char *jobvl, char *jobvr, integer *n, doublereal *a, integer *lda, doublereal *wr, doublereal *wi, doublereal *vl, integer *ldvl, doublereal *vr, integer *ldvr, doublereal *work, integer *lwork, integer *info );
-		int cgeev_( char *jobvl, char *jobvr, integer *n, complex *a, integer *lda, complex *w, complex *vl, integer *ldvl, complex *vr, integer *ldvr, complex *work, integer *lwork, real *rwork, integer *info );
-		int zgeev_( char *jobvl, char *jobvr, integer *n, doublecomplex *a, integer *lda, doublecomplex *w, doublecomplex *vl, integer *ldvl, doublecomplex *vr, integer *ldvr, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
+		int LPFNAME( sgeev ) ( char *jobvl, char *jobvr, integer *n, real *a, integer *lda, real *wr, real *wi, real *vl, integer *ldvl, real *vr, integer *ldvr, real *work, integer *lwork, integer *info );
+		int LPFNAME( dgeev ) ( char *jobvl, char *jobvr, integer *n, doublereal *a, integer *lda, doublereal *wr, doublereal *wi, doublereal *vl, integer *ldvl, doublereal *vr, integer *ldvr, doublereal *work, integer *lwork, integer *info );
+		int LPFNAME( cgeev ) ( char *jobvl, char *jobvr, integer *n, complex *a, integer *lda, complex *w, complex *vl, integer *ldvl, complex *vr, integer *ldvr, complex *work, integer *lwork, real *rwork, integer *info );
+		int LPFNAME( zgeev ) ( char *jobvl, char *jobvr, integer *n, doublecomplex *a, integer *lda, doublecomplex *w, doublecomplex *vl, integer *ldvl, doublecomplex *vr, integer *ldvr, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
 		// 対称行列に対する固有値・固有ベクトルを計算
-		int ssyev_( char *jobz, char *uplo, integer *n, real *a, integer *lda, real *w, real *work, integer *lwork, integer *info );
-		int dsyev_( char *jobz, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *w, doublereal *work, integer *lwork, integer *info );
+		int LPFNAME( ssyev ) ( char *jobz, char *uplo, integer *n, real *a, integer *lda, real *w, real *work, integer *lwork, integer *info );
+		int LPFNAME( dsyev ) ( char *jobz, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *w, doublereal *work, integer *lwork, integer *info );
 		// 対称帯行列に対する固有値・固有ベクトルを計算
-		int ssbev_( char *jobz, char *uplo, integer *n, integer *kd, real *ab, integer *ldab, real *w, real *z__, integer *ldz, real *work, integer *info );
-		int dsbev_( char *jobz, char *uplo, integer *n, integer *kd, doublereal *ab, integer *ldab, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *info );
+		int LPFNAME( ssbev ) ( char *jobz, char *uplo, integer *n, integer *kd, real *ab, integer *ldab, real *w, real *z__, integer *ldz, real *work, integer *info );
+		int LPFNAME( dsbev ) ( char *jobz, char *uplo, integer *n, integer *kd, doublereal *ab, integer *ldab, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *info );
 		// 対称3重対角行列に対する固有値・固有ベクトルを計算
-		int sstev_( char *jobz, integer *n, real *d__, real *e, real *z__, integer *ldz, real *work, integer *info );
-		int dstev_( char *jobz, integer *n, doublereal *d__, doublereal *e, doublereal *z__, integer *ldz, doublereal *work, integer *info );
+		int LPFNAME( sstev ) ( char *jobz, integer *n, real *d__, real *e, real *z__, integer *ldz, real *work, integer *info );
+		int LPFNAME( dstev ) ( char *jobz, integer *n, doublereal *d__, doublereal *e, doublereal *z__, integer *ldz, doublereal *work, integer *info );
 		// エルミート行列に対する固有値・固有ベクトルを計算
-		int cheev_( char *jobz, char *uplo, integer *n, complex *a, integer *lda, real *w, complex *work, integer *lwork, real *rwork, integer *info );
-		int zheev_( char *jobz, char *uplo, integer *n, doublecomplex *a, integer *lda, doublereal *w, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
+		int LPFNAME( cheev ) ( char *jobz, char *uplo, integer *n, complex *a, integer *lda, real *w, complex *work, integer *lwork, real *rwork, integer *info );
+		int LPFNAME( zheev ) ( char *jobz, char *uplo, integer *n, doublecomplex *a, integer *lda, doublereal *w, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
 		// エルミート帯行列に対する固有値・固有ベクトルを計算
-		int chbev_( char *jobz, char *uplo, integer *n, integer *kd, complex *ab, integer *ldab, real *w, complex *z__, integer *ldz, complex *work, real *rwork, integer *info );
-		int zhbev_( char *jobz, char *uplo, integer *n, integer *kd, doublecomplex *ab, integer *ldab, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, doublereal *rwork, integer *info );
+		int LPFNAME( chbev ) ( char *jobz, char *uplo, integer *n, integer *kd, complex *ab, integer *ldab, real *w, complex *z__, integer *ldz, complex *work, real *rwork, integer *info );
+		int LPFNAME( zhbev ) ( char *jobz, char *uplo, integer *n, integer *kd, doublecomplex *ab, integer *ldab, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, doublereal *rwork, integer *info );
 
 
 		// 一般行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
-		int sgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, real *a, integer *lda, real *wr, real *wi, real *vl, integer *ldvl, real *vr, integer *ldvr, integer *ilo, integer *ihi, real *scale, real *abnrm, real *rconde, real *rcondv, real *work, integer *lwork, integer *iwork, integer *info );
-		int dgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, doublereal *a, integer *lda, doublereal *wr, doublereal *wi, doublereal *vl, integer *ldvl, doublereal *vr, integer *ldvr, integer *ilo, integer *ihi, doublereal *scale, doublereal *abnrm, doublereal *rconde, doublereal *rcondv, doublereal *work, integer *lwork, integer *iwork, integer *info );
-		int cgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, complex *a, integer *lda, complex *w, complex *vl, integer *ldvl, complex *vr, integer *ldvr, integer *ilo, integer *ihi, real *scale, real *abnrm, real *rconde, real *rcondv, complex *work, integer *lwork, real *rwork, integer *info );
-		int zgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, doublecomplex *a, integer *lda, doublecomplex *w, doublecomplex *vl, integer *ldvl, doublecomplex *vr, integer *ldvr, integer *ilo, integer *ihi, doublereal *scale, doublereal *abnrm, doublereal *rconde, doublereal *rcondv, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
+		int LPFNAME( sgeevx ) ( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, real *a, integer *lda, real *wr, real *wi, real *vl, integer *ldvl, real *vr, integer *ldvr, integer *ilo, integer *ihi, real *scale, real *abnrm, real *rconde, real *rcondv, real *work, integer *lwork, integer *iwork, integer *info );
+		int LPFNAME( dgeevx ) ( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, doublereal *a, integer *lda, doublereal *wr, doublereal *wi, doublereal *vl, integer *ldvl, doublereal *vr, integer *ldvr, integer *ilo, integer *ihi, doublereal *scale, doublereal *abnrm, doublereal *rconde, doublereal *rcondv, doublereal *work, integer *lwork, integer *iwork, integer *info );
+		int LPFNAME( cgeevx ) ( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, complex *a, integer *lda, complex *w, complex *vl, integer *ldvl, complex *vr, integer *ldvr, integer *ilo, integer *ihi, real *scale, real *abnrm, real *rconde, real *rcondv, complex *work, integer *lwork, real *rwork, integer *info );
+		int LPFNAME( zgeevx ) ( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, doublecomplex *a, integer *lda, doublecomplex *w, doublecomplex *vl, integer *ldvl, doublecomplex *vr, integer *ldvr, integer *ilo, integer *ihi, doublereal *scale, doublereal *abnrm, doublereal *rconde, doublereal *rcondv, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
 		// 対称行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
-		int ssyevx_( char *jobz, char *range, char *uplo, integer *n, real *a, integer *lda, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, real *z__, integer *ldz, real *work, integer *lwork, integer *iwork, integer *ifail, integer *info );
-		int dsyevx_( char *jobz, char *range, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *lwork, integer *iwork, integer *ifail, integer *info );
+		int LPFNAME( ssyevx ) ( char *jobz, char *range, char *uplo, integer *n, real *a, integer *lda, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, real *z__, integer *ldz, real *work, integer *lwork, integer *iwork, integer *ifail, integer *info );
+		int LPFNAME( dsyevx ) ( char *jobz, char *range, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *lwork, integer *iwork, integer *ifail, integer *info );
 		// 対称帯行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
-		int ssbevx_( char *jobz, char *range, char *uplo, integer *n, integer *kd, real *ab, integer *ldab, real *q, integer *ldq, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, real *z__, integer *ldz, real *work, integer *iwork, integer *ifail, integer *info );
-		int dsbevx_( char *jobz, char *range, char *uplo, integer *n, integer *kd, doublereal *ab, integer *ldab, doublereal *q, integer *ldq, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *iwork, integer *ifail, integer *info );
+		int LPFNAME( ssbevx ) ( char *jobz, char *range, char *uplo, integer *n, integer *kd, real *ab, integer *ldab, real *q, integer *ldq, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, real *z__, integer *ldz, real *work, integer *iwork, integer *ifail, integer *info );
+		int LPFNAME( dsbevx ) ( char *jobz, char *range, char *uplo, integer *n, integer *kd, doublereal *ab, integer *ldab, doublereal *q, integer *ldq, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *iwork, integer *ifail, integer *info );
 		// 対称3重対角行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
-		int sstevx_( char *jobz, char *range, integer *n, real *d__, real *e, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, real *z__, integer *ldz, real *work, integer *iwork, integer *ifail, integer *info );
-		int dstevx_( char *jobz, char *range, integer *n, doublereal *d__, doublereal *e, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *iwork, integer *ifail, integer *info );
+		int LPFNAME( sstevx ) ( char *jobz, char *range, integer *n, real *d__, real *e, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, real *z__, integer *ldz, real *work, integer *iwork, integer *ifail, integer *info );
+		int LPFNAME( dstevx ) ( char *jobz, char *range, integer *n, doublereal *d__, doublereal *e, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *iwork, integer *ifail, integer *info );
 		// エルミート行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
-		int cheevx_( char *jobz, char *range, char *uplo, integer *n, complex *a, integer *lda, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, complex *z__, integer *ldz, complex *work, integer *lwork, real *rwork, integer *iwork, integer *ifail, integer *info );
-		int zheevx_( char *jobz, char *range, char *uplo, integer *n, doublecomplex *a, integer *lda, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, integer *lwork, doublereal *rwork, integer *iwork, integer *ifail, integer *info );
+		int LPFNAME( cheevx ) ( char *jobz, char *range, char *uplo, integer *n, complex *a, integer *lda, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, complex *z__, integer *ldz, complex *work, integer *lwork, real *rwork, integer *iwork, integer *ifail, integer *info );
+		int LPFNAME( zheevx ) ( char *jobz, char *range, char *uplo, integer *n, doublecomplex *a, integer *lda, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, integer *lwork, doublereal *rwork, integer *iwork, integer *ifail, integer *info );
 		// エルミート帯行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
-		int chbevx_( char *jobz, char *range, char *uplo, integer *n, integer *kd, complex *ab, integer *ldab, complex *q, integer *ldq, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, complex *z__, integer *ldz, complex *work, real *rwork, integer *iwork, integer *ifail, integer *info );
-		int zhbevx_( char *jobz, char *range, char *uplo, integer *n, integer *kd, doublecomplex *ab, integer *ldab, doublecomplex *q, integer *ldq, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, doublereal *rwork, integer *iwork, integer *ifail, integer *info );
+		int LPFNAME( chbevx ) ( char *jobz, char *range, char *uplo, integer *n, integer *kd, complex *ab, integer *ldab, complex *q, integer *ldq, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, complex *z__, integer *ldz, complex *work, real *rwork, integer *iwork, integer *ifail, integer *info );
+		int LPFNAME( zhbevx ) ( char *jobz, char *range, char *uplo, integer *n, integer *kd, doublecomplex *ab, integer *ldab, doublecomplex *q, integer *ldq, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, doublereal *rwork, integer *iwork, integer *ifail, integer *info );
 		// エルミート3重対角行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
 
 
 		// 一般行列に対する特異値分解を計算
-		int sgesvd_( char *jobu, char *jobvt, integer *m, integer *n, real *a, integer *lda, real *s, real *u, integer *ldu, real *vt, integer *ldvt, real *work, integer *lwork, integer *info );
-		int dgesvd_( char *jobu, char *jobvt, integer *m, integer *n, doublereal *a, integer *lda, doublereal *s, doublereal *u, integer *ldu, doublereal *vt, integer *ldvt, doublereal *work, integer *lwork, integer *info );
-		int cgesvd_( char *jobu, char *jobvt, integer *m, integer *n, complex *a, integer *lda, real *s, complex *u, integer *ldu, complex *vt, integer *ldvt, complex *work, integer *lwork, real *rwork, integer *info );
-		int zgesvd_( char *jobu, char *jobvt, integer *m, integer *n, doublecomplex *a, integer *lda, doublereal *s, doublecomplex *u, integer *ldu, doublecomplex *vt, integer *ldvt, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
+		int LPFNAME( sgesvd ) ( char *jobu, char *jobvt, integer *m, integer *n, real *a, integer *lda, real *s, real *u, integer *ldu, real *vt, integer *ldvt, real *work, integer *lwork, integer *info );
+		int LPFNAME( dgesvd ) ( char *jobu, char *jobvt, integer *m, integer *n, doublereal *a, integer *lda, doublereal *s, doublereal *u, integer *ldu, doublereal *vt, integer *ldvt, doublereal *work, integer *lwork, integer *info );
+		int LPFNAME( cgesvd ) ( char *jobu, char *jobvt, integer *m, integer *n, complex *a, integer *lda, real *s, complex *u, integer *ldu, complex *vt, integer *ldvt, complex *work, integer *lwork, real *rwork, integer *info );
+		int LPFNAME( zgesvd ) ( char *jobu, char *jobvt, integer *m, integer *n, doublecomplex *a, integer *lda, doublereal *s, doublecomplex *u, integer *ldu, doublecomplex *vt, integer *ldvt, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
 
 
 		// 一般行列に対する特異値分解を計算．分割統治法を用いた高速化バージョン
-		int sgesdd_( char *jobz, integer *m, integer *n, real *a, integer *lda, real *s, real *u, integer *ldu, real *vt, integer *ldvt, real *work, integer *lwork, integer *iwork, integer *info );
-		int dgesdd_( char *jobz, integer *m, integer *n, doublereal *a, integer *lda, doublereal *s, doublereal *u, integer *ldu, doublereal *vt, integer *ldvt, doublereal *work, integer *lwork, integer *iwork, integer *info );
-		int cgesdd_( char *jobz, integer *m, integer *n, complex *a, integer *lda, real *s, complex *u, integer *ldu, complex *vt, integer *ldvt, complex *work, integer *lwork, real *rwork, integer *iwork, integer *info );
-		int zgesdd_( char *jobz, integer *m, integer *n, doublecomplex *a, integer *lda, doublereal *s, doublecomplex *u, integer *ldu, doublecomplex *vt, integer *ldvt, doublecomplex *work, integer *lwork, doublereal *rwork, integer *iwork, integer *info );
+		int LPFNAME( sgesdd ) ( char *jobz, integer *m, integer *n, real *a, integer *lda, real *s, real *u, integer *ldu, real *vt, integer *ldvt, real *work, integer *lwork, integer *iwork, integer *info );
+		int LPFNAME( dgesdd ) ( char *jobz, integer *m, integer *n, doublereal *a, integer *lda, doublereal *s, doublereal *u, integer *ldu, doublereal *vt, integer *ldvt, doublereal *work, integer *lwork, integer *iwork, integer *info );
+		int LPFNAME( cgesdd ) ( char *jobz, integer *m, integer *n, complex *a, integer *lda, real *s, complex *u, integer *ldu, complex *vt, integer *ldvt, complex *work, integer *lwork, real *rwork, integer *iwork, integer *info );
+		int LPFNAME( zgesdd ) ( char *jobz, integer *m, integer *n, doublecomplex *a, integer *lda, doublereal *s, doublecomplex *u, integer *ldu, doublecomplex *vt, integer *ldvt, doublecomplex *work, integer *lwork, doublereal *rwork, integer *iwork, integer *info );
 
 
 
 		// 対称行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
-		int ssyevd_( char *jobz, char *uplo, integer *n, real *a, integer *lda, real *w, real *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
-		int dsyevd_( char *jobz, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *w, doublereal *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		int LPFNAME( ssyevd ) ( char *jobz, char *uplo, integer *n, real *a, integer *lda, real *w, real *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		int LPFNAME( dsyevd ) ( char *jobz, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *w, doublereal *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
 		// 対称帯行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
-		int ssbevd_( char *jobz, char *uplo, integer *n, integer *kd, real *ab, integer *ldab, real *w, real *z__, integer *ldz, real *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
-		int dsbevd_( char *jobz, char *uplo, integer *n, integer *kd, doublereal *ab, integer *ldab, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		int LPFNAME( ssbevd ) ( char *jobz, char *uplo, integer *n, integer *kd, real *ab, integer *ldab, real *w, real *z__, integer *ldz, real *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		int LPFNAME( dsbevd ) ( char *jobz, char *uplo, integer *n, integer *kd, doublereal *ab, integer *ldab, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
 		// 対称3重対角行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
-		int sstevd_( char *jobz, integer *n, real *d__, real *e, real *z__, integer *ldz, real *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
-		int dstevd_( char *jobz, integer *n, doublereal *d__, doublereal *e, doublereal *z__, integer *ldz, doublereal *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		int LPFNAME( sstevd ) ( char *jobz, integer *n, real *d__, real *e, real *z__, integer *ldz, real *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		int LPFNAME( dstevd ) ( char *jobz, integer *n, doublereal *d__, doublereal *e, doublereal *z__, integer *ldz, doublereal *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
 		// エルミート行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
-		int cheevd_( char *jobz, char *uplo, integer *n, complex *a, integer *lda, real *w, complex *work, integer *lwork, real *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
-		int zheevd_( char *jobz, char *uplo, integer *n, doublecomplex *a, integer *lda, doublereal *w, doublecomplex *work, integer *lwork, doublereal *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
+		int LPFNAME( cheevd ) ( char *jobz, char *uplo, integer *n, complex *a, integer *lda, real *w, complex *work, integer *lwork, real *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
+		int LPFNAME( zheevd ) ( char *jobz, char *uplo, integer *n, doublecomplex *a, integer *lda, doublereal *w, doublecomplex *work, integer *lwork, doublereal *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
 		// エルミート帯行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
-		int chbevd_( char *jobz, char *uplo, integer *n, integer *kd, complex *ab, integer *ldab, real *w, complex *z__, integer *ldz, complex *work, integer *lwork, real *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
-		int zhbevd_( char *jobz, char *uplo, integer *n, integer *kd, doublecomplex *ab, integer *ldab, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, integer *lwork, doublereal *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
+		int LPFNAME( chbevd ) ( char *jobz, char *uplo, integer *n, integer *kd, complex *ab, integer *ldab, real *w, complex *z__, integer *ldz, complex *work, integer *lwork, real *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
+		int LPFNAME( zhbevd ) ( char *jobz, char *uplo, integer *n, integer *kd, doublecomplex *ab, integer *ldab, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, integer *lwork, doublereal *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
 	}
 
 
@@ -272,222 +280,222 @@ namespace __clapack__
 	// 一般正方行列の連立方程式を解く関数
 	inline int gesv( integer &n, integer &nrhs, real *a, integer &lda, integer *ipiv, real *b, integer &ldb, integer &info )
 	{
-		return( sgesv_( &n, &nrhs, a, &lda, ipiv, b, &ldb, &info ) );
+		return( LPFNAME( sgesv ) ( &n, &nrhs, a, &lda, ipiv, b, &ldb, &info ) );
 	}
 	inline int gesv( integer &n, integer &nrhs, doublereal *a, integer &lda, integer *ipiv, doublereal *b, integer &ldb, integer &info )
 	{
-		return( dgesv_( &n, &nrhs, a, &lda, ipiv, b, &ldb, &info ) );
+		return( LPFNAME( dgesv ) ( &n, &nrhs, a, &lda, ipiv, b, &ldb, &info ) );
 	}
 	inline int gesv( integer &n, integer &nrhs, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *b, integer &ldb, integer &info )
 	{
-		return( cgesv_( &n, &nrhs, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( b ), &ldb, &info ) );
+		return( LPFNAME( cgesv ) ( &n, &nrhs, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( b ), &ldb, &info ) );
 	}
 	inline int gesv( integer &n, integer &nrhs, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *b, integer &ldb, integer &info )
 	{
-		return( zgesv_( &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
+		return( LPFNAME( zgesv ) ( &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
 	}
 	// 一般帯行列の連立方程式を解く関数
 	inline int gbsv( integer &n, integer &kl, integer &ku, integer &nrhs, real *ab, integer &ldab, integer *ipiv, real *b, integer &ldb, integer &info )
 	{
-		return( sgbsv_( &n, &kl, &ku, &nrhs, ab, &ldab, ipiv, b, &ldb, &info ) );
+		return( LPFNAME( sgbsv ) ( &n, &kl, &ku, &nrhs, ab, &ldab, ipiv, b, &ldb, &info ) );
 	}
 	inline int gbsv( integer &n, integer &kl, integer &ku, integer &nrhs, doublereal *ab, integer &ldab, integer *ipiv, doublereal *b, integer &ldb, integer &info )
 	{
-		return( dgbsv_( &n, &kl, &ku, &nrhs, ab, &ldab, ipiv, b, &ldb, &info ) );
+		return( LPFNAME( dgbsv ) ( &n, &kl, &ku, &nrhs, ab, &ldab, ipiv, b, &ldb, &info ) );
 	}
 	inline int gbsv( integer &n, integer &kl, integer &ku, integer &nrhs, complex *ab, integer &ldab, integer *ipiv, complex *b, integer &ldb, integer &info )
 	{
-		return( cgbsv_( &n, &kl, &ku, &nrhs, reinterpret_cast< complex* >( ab ), &ldab, ipiv, reinterpret_cast< complex* >( b ), &ldb, &info ) );
+		return( LPFNAME( cgbsv ) ( &n, &kl, &ku, &nrhs, reinterpret_cast< complex* >( ab ), &ldab, ipiv, reinterpret_cast< complex* >( b ), &ldb, &info ) );
 	}
 	inline int gbsv( integer &n, integer &kl, integer &ku, integer &nrhs, doublecomplex *ab, integer &ldab, integer *ipiv, doublecomplex *b, integer &ldb, integer &info )
 	{
-		return( zgbsv_( &n, &kl, &ku, &nrhs, reinterpret_cast< doublecomplex* >( ab ), &ldab, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
+		return( LPFNAME( zgbsv ) ( &n, &kl, &ku, &nrhs, reinterpret_cast< doublecomplex* >( ab ), &ldab, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
 	}
 	// 一般三重対角行列の連立方程式を解く関数
 	inline int gtsv( integer &n, integer &nrhs, real *dl, real *d__, real *du, real *b, integer &ldb, integer &info )
 	{
-		return( sgtsv_( &n, &nrhs, dl, d__, du, b, &ldb, &info ) );
+		return( LPFNAME( sgtsv ) ( &n, &nrhs, dl, d__, du, b, &ldb, &info ) );
 	}
 	inline int gtsv( integer &n, integer &nrhs, doublereal *dl, doublereal *d__, doublereal *du, doublereal *b, integer &ldb, integer &info )
 	{
-		return( dgtsv_( &n, &nrhs, dl, d__, du, b, &ldb, &info ) );
+		return( LPFNAME( dgtsv ) ( &n, &nrhs, dl, d__, du, b, &ldb, &info ) );
 	}
 	inline int gtsv( integer &n, integer &nrhs, complex *dl, complex *d__, complex *du, complex *b, integer &ldb, integer &info )
 	{
-		return( cgtsv_( &n, &nrhs, reinterpret_cast< complex* >( dl ), reinterpret_cast< complex* >( d__ ), reinterpret_cast< complex* >( du ), reinterpret_cast< complex* >( b ), &ldb, &info ) );
+		return( LPFNAME( cgtsv ) ( &n, &nrhs, reinterpret_cast< complex* >( dl ), reinterpret_cast< complex* >( d__ ), reinterpret_cast< complex* >( du ), reinterpret_cast< complex* >( b ), &ldb, &info ) );
 	}
 	inline int gtsv( integer &n, integer &nrhs, doublecomplex *dl, doublecomplex *d__, doublecomplex *du, doublecomplex *b, integer &ldb, integer &info )
 	{
-		return( zgtsv_( &n, &nrhs, reinterpret_cast< doublecomplex* >( dl ), reinterpret_cast< doublecomplex* >( d__ ), reinterpret_cast< doublecomplex* >( du ), reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
+		return( LPFNAME( zgtsv ) ( &n, &nrhs, reinterpret_cast< doublecomplex* >( dl ), reinterpret_cast< doublecomplex* >( d__ ), reinterpret_cast< doublecomplex* >( du ), reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
 	}
 	// 対称正方行列の連立方程式を解く関数
 	inline int sysv( char *uplo, integer &n, integer &nrhs, real *a, integer &lda, integer *ipiv, real *b, integer &ldb, real *work, integer &lwork, integer &info )
 	{
-		return( ssysv_( uplo, &n, &nrhs, a, &lda, ipiv, b, &ldb, work, &lwork, &info ) );
+		return( LPFNAME( ssysv ) ( uplo, &n, &nrhs, a, &lda, ipiv, b, &ldb, work, &lwork, &info ) );
 	}
 	inline int sysv( char *uplo, integer &n, integer &nrhs, doublereal *a, integer &lda, integer *ipiv, doublereal *b, integer &ldb, doublereal *work, integer &lwork, integer &info )
 	{
-		return( dsysv_( uplo, &n, &nrhs, a, &lda, ipiv, b, &ldb, work, &lwork, &info ) );
+		return( LPFNAME( dsysv ) ( uplo, &n, &nrhs, a, &lda, ipiv, b, &ldb, work, &lwork, &info ) );
 	}
 	inline int sysv( char *uplo, integer &n, integer &nrhs, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *b, integer &ldb, std::complex< real > *work, integer &lwork, integer &info )
 	{
-		return( csysv_( uplo, &n, &nrhs, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( b ), &ldb, reinterpret_cast< complex* >( work ), &lwork, &info ) );
+		return( LPFNAME( csysv ) ( uplo, &n, &nrhs, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( b ), &ldb, reinterpret_cast< complex* >( work ), &lwork, &info ) );
 	}
 	inline int sysv( char *uplo, integer &n, integer &nrhs, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *b, integer &ldb, std::complex< doublereal > *work, integer &lwork, integer &info )
 	{
-		return( zsysv_( uplo, &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+		return( LPFNAME( zsysv ) ( uplo, &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
 	// エルミート行列の連立方程式を解く関数
 	inline int hesv( char *uplo, integer &n, integer &nrhs, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *b, integer &ldb, std::complex< real > *work, integer &lwork, integer&info )
 	{
-		return( chesv_( uplo, &n, &nrhs, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( b ), &ldb, reinterpret_cast< complex* >( work ), &lwork, &info ) );
+		return( LPFNAME( chesv ) ( uplo, &n, &nrhs, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( b ), &ldb, reinterpret_cast< complex* >( work ), &lwork, &info ) );
 	}
 	inline int hesv( char *uplo, integer &n, integer &nrhs, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *b, integer &ldb, std::complex< doublereal > *work, integer &lwork, integer &info )
 	{
-		return( zsysv_( uplo, &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+		return( LPFNAME( zsysv ) ( uplo, &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
 
 
 	// 一般行列のLU分解
 	inline int getrf( integer &m, integer &n, real *a, integer &lda, integer *ipiv, integer &info )
 	{
-		return( sgetrf_( &m, &n, a, &lda, ipiv, &info ) );
+		return( LPFNAME( sgetrf ) ( &m, &n, a, &lda, ipiv, &info ) );
 	}
 	inline int getrf( integer &m, integer &n, doublereal *a, integer &lda, integer *ipiv, integer &info )
 	{
-		return( dgetrf_( &m, &n, a, &lda, ipiv, &info ) );
+		return( LPFNAME( dgetrf ) ( &m, &n, a, &lda, ipiv, &info ) );
 	}
 	inline int getrf( integer &m, integer &n, std::complex< real > *a, integer &lda, integer *ipiv, integer &info )
 	{
-		return( cgetrf_( &m, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, &info ) );
+		return( LPFNAME( cgetrf ) ( &m, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, &info ) );
 	}
 	inline int getrf( integer &m, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, integer &info )
 	{
-		return( zgetrf_( &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, &info ) );
+		return( LPFNAME( zgetrf ) ( &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, &info ) );
 	}
 	// 一般帯行列の連立方程式を解く関数
 	inline int gbtrf( integer &m, integer &n, integer &kl, integer &ku, real *ab, integer &ldab, integer *ipiv, integer &info )
 	{
-		return( sgbtrf_( &m, &n, &kl, &ku, ab, &ldab, ipiv, &info ) );
+		return( LPFNAME( sgbtrf ) ( &m, &n, &kl, &ku, ab, &ldab, ipiv, &info ) );
 	}
 	inline int gbtrf( integer &m, integer &n, integer &kl, integer &ku, doublereal *ab, integer &ldab, integer *ipiv, integer &info )
 	{
-		return( dgbtrf_( &m, &n, &kl, &ku, ab, &ldab, ipiv, &info ) );
+		return( LPFNAME( dgbtrf ) ( &m, &n, &kl, &ku, ab, &ldab, ipiv, &info ) );
 	}
 	inline int gbtrf( integer &m, integer &n, integer &kl, integer &ku, std::complex< real > *ab, integer &ldab, integer *ipiv, integer &info )
 	{
-		return( cgbtrf_( &m, &n, &kl, &ku, reinterpret_cast< complex* >( ab ), &ldab, ipiv, &info ) );
+		return( LPFNAME( cgbtrf ) ( &m, &n, &kl, &ku, reinterpret_cast< complex* >( ab ), &ldab, ipiv, &info ) );
 	}
 	inline int gbtrf( integer &m, integer &n, integer &kl, integer &ku, std::complex< doublereal > *ab, integer &ldab, integer *ipiv, integer &info )
 	{
-		return( zgbtrf_( &m, &n, &kl, &ku, reinterpret_cast< doublecomplex* >( ab ), &ldab, ipiv, &info ) );
+		return( LPFNAME( zgbtrf ) ( &m, &n, &kl, &ku, reinterpret_cast< doublecomplex* >( ab ), &ldab, ipiv, &info ) );
 	}
 	// 一般三重対角行列の連立方程式を解く関数
 	inline int gttrf( integer &n, real *dl, real *d__, real *du, real *du2, integer *ipiv, integer &info )
 	{
-		return( sgttrf_( &n, dl, d__, du, du2, ipiv, &info ) );
+		return( LPFNAME( sgttrf ) ( &n, dl, d__, du, du2, ipiv, &info ) );
 	}
 	inline int gttrf( integer &n, doublereal *dl, doublereal *d__, doublereal *du, doublereal *du2, integer *ipiv, integer &info )
 	{
-		return( dgttrf_( &n, dl, d__, du, du2, ipiv, &info ) );
+		return( LPFNAME( dgttrf ) ( &n, dl, d__, du, du2, ipiv, &info ) );
 	}
 	inline int gttrf( integer &n, std::complex< real > *dl, std::complex< real > *d__, std::complex< real > *du, std::complex< real > *du2, integer *ipiv, integer &info )
 	{
-		return( cgttrf_( &n, reinterpret_cast< complex* >( dl ), reinterpret_cast< complex* >( d__ ), reinterpret_cast< complex* >( du ), reinterpret_cast< complex* >( du2 ), ipiv, &info ) );
+		return( LPFNAME( cgttrf ) ( &n, reinterpret_cast< complex* >( dl ), reinterpret_cast< complex* >( d__ ), reinterpret_cast< complex* >( du ), reinterpret_cast< complex* >( du2 ), ipiv, &info ) );
 	}
 	inline int gttrf( integer &n, std::complex< doublereal > *dl, std::complex< doublereal > *d__, std::complex< doublereal > *du, std::complex< doublereal > *du2, integer *ipiv, integer &info )
 	{
-		return( zgttrf_( &n, reinterpret_cast< doublecomplex* >( dl ), reinterpret_cast< doublecomplex* >( d__ ), reinterpret_cast< doublecomplex* >( du ), reinterpret_cast< doublecomplex* >( du2 ), ipiv, &info ) );
+		return( LPFNAME( zgttrf ) ( &n, reinterpret_cast< doublecomplex* >( dl ), reinterpret_cast< doublecomplex* >( d__ ), reinterpret_cast< doublecomplex* >( du ), reinterpret_cast< doublecomplex* >( du2 ), ipiv, &info ) );
 	}
 	// 対称行列のLU分解
 	inline int sytrf( char *uplo, integer &n, real *a, integer &lda, integer *ipiv, real *work, integer &lwork, integer &info )
 	{
-		return( ssytrf_( uplo, &n, a, &lda, ipiv, work, &lwork, &info ) );
+		return( LPFNAME( ssytrf ) ( uplo, &n, a, &lda, ipiv, work, &lwork, &info ) );
 	}
 	inline int sytrf( char *uplo, integer &n, doublereal *a, integer &lda, integer *ipiv, doublereal *work, integer &lwork, integer &info )
 	{
-		return( dsytrf_( uplo, &n, a, &lda, ipiv, work, &lwork, &info ) );
+		return( LPFNAME( dsytrf ) ( uplo, &n, a, &lda, ipiv, work, &lwork, &info ) );
 	}
 	inline int sytrf( char *uplo, integer &n, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *work, integer &lwork, integer &info )
 	{
-		return( csytrf_( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &lwork, &info ) );
+		return( LPFNAME( csytrf ) ( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &lwork, &info ) );
 	}
 	inline int sytrf( char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &lwork, integer &info )
 	{
-		return( zsytrf_( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+		return( LPFNAME( zsytrf ) ( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
 	// エルミート行列のLU分解
 	inline int hetrf( char *uplo, integer &n, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *work, integer &lwork, integer &info )
 	{
-		return( chetrf_( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &lwork, &info ) );
+		return( LPFNAME( chetrf ) ( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &lwork, &info ) );
 	}
 	inline int hetrf( char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &lwork, integer &info )
 	{
-		return( zhetrf_( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+		return( LPFNAME( zhetrf ) ( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
 
 
 	// QR分解
 	inline int geqrf( integer &m, integer &n, real *a, integer &lda, real *tau, real *work, integer &lwork, integer &info )
 	{
-		return( sgeqrf_( &m, &n, a, &lda, tau, work, &lwork, &info ) );
+		return( LPFNAME( sgeqrf ) ( &m, &n, a, &lda, tau, work, &lwork, &info ) );
 	}
 	inline int geqrf( integer &m, integer &n, doublereal *a, integer &lda, doublereal *tau, doublereal *work, integer &lwork, integer &info )
 	{
-		return( dgeqrf_( &m, &n, a, &lda, tau, work, &lwork, &info ) );
+		return( LPFNAME( dgeqrf ) ( &m, &n, a, &lda, tau, work, &lwork, &info ) );
 	}
 	inline int geqrf( integer &m, integer &n, std::complex< real > *a, integer &lda, std::complex< real > *tau, std::complex< real > *work, integer &lwork, integer &info )
 	{
-		return( cgeqrf_( &m, &n, reinterpret_cast< complex* >( a ), &lda, reinterpret_cast< complex* >( tau ), reinterpret_cast< complex* >( work ), &lwork, &info ) );
+		return( LPFNAME( cgeqrf ) ( &m, &n, reinterpret_cast< complex* >( a ), &lda, reinterpret_cast< complex* >( tau ), reinterpret_cast< complex* >( work ), &lwork, &info ) );
 	}
 	inline int geqrf( integer &m, integer &n, std::complex< doublereal > *a, integer &lda, std::complex< doublereal > *tau, std::complex< doublereal > *work, integer &lwork, integer &info )
 	{
-		return( zgeqrf_( &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( tau ), reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+		return( LPFNAME( zgeqrf ) ( &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( tau ), reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
 
 
 	// LU分解の結果を用いた一般行列の逆行列の計算
 	inline int getri( integer &n, real *a, integer &lda, integer *ipiv, real *work, integer &lwork, integer &info )
 	{
-		return( sgetri_( &n, a, &lda, ipiv, work, &lwork, &info ) );
+		return( LPFNAME( sgetri ) ( &n, a, &lda, ipiv, work, &lwork, &info ) );
 	}
 	inline int getri( integer &n, doublereal *a, integer &lda, integer *ipiv, doublereal *work, integer &lwork, integer &info )
 	{
-		return( dgetri_( &n, a, &lda, ipiv, work, &lwork, &info ) );
+		return( LPFNAME( dgetri ) ( &n, a, &lda, ipiv, work, &lwork, &info ) );
 	}
 	inline int getri( integer &n, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *work, integer &lwork, integer &info )
 	{
-		return( cgetri_( &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &lwork, &info ) );
+		return( LPFNAME( cgetri ) ( &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &lwork, &info ) );
 	}
 	inline int getri( integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &lwork, integer &info )
 	{
-		return( zgetri_( &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+		return( LPFNAME( zgetri ) ( &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
 	// LU分解の結果を用いた対称行列の逆行列の計算
 	inline int sytri( char *uplo, integer &n, real *a, integer &lda, integer *ipiv, real *work, integer &info )
 	{
-		return( ssytri_( uplo, &n, a, &lda, ipiv, work, &info ) );
+		return( LPFNAME( ssytri ) ( uplo, &n, a, &lda, ipiv, work, &info ) );
 	}
 	inline int sytri( char *uplo, integer &n, doublereal *a, integer &lda, integer *ipiv, doublereal *work, integer &info )
 	{
-		return( dsytri_( uplo, &n, a, &lda, ipiv, work, &info ) );
+		return( LPFNAME( dsytri ) ( uplo, &n, a, &lda, ipiv, work, &info ) );
 	}
 	inline int sytri( char *uplo, integer &n, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *work, integer &info )
 	{
-		return( csytri_( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &info ) );
+		return( LPFNAME( csytri ) ( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &info ) );
 	}
 	inline int sytri( char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &info )
 	{
-		return( zsytri_( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &info ) );
+		return( LPFNAME( zsytri ) ( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &info ) );
 	}
 	// LU分解の結果を用いたエルミート行列の逆行列の計算
 	inline int hetri( char *uplo, integer &n, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *work, integer &info )
 	{
-		return( chetri_( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &info ) );
+		return( LPFNAME( chetri ) ( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &info ) );
 	}
 	inline int hetri( char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &info )
 	{
-		return( zhetri_( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &info ) );
+		return( LPFNAME( zhetri ) ( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &info ) );
 	}
 
 
@@ -495,69 +503,69 @@ namespace __clapack__
 	inline int geev( char *jobvl, char *jobvr, integer &n, real *a, integer &lda, real *wr, real *wi,
 							real *vl, integer &ldvl, real *vr, integer &ldvr, real *work, integer &lwork, integer &info )
 	{
-		return( sgeev_( jobvl, jobvr, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, work, &lwork, &info ) );
+		return( LPFNAME( sgeev ) ( jobvl, jobvr, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, work, &lwork, &info ) );
 	}
 	inline int geev( char *jobvl, char *jobvr, integer &n, doublereal *a, integer &lda, doublereal *wr, doublereal *wi,
 							doublereal *vl, integer &ldvl, doublereal *vr, integer &ldvr, doublereal *work, integer &lwork, integer &info )
 	{
-		return( dgeev_( jobvl, jobvr, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, work, &lwork, &info ) );
+		return( LPFNAME( dgeev ) ( jobvl, jobvr, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, work, &lwork, &info ) );
 	}
 	inline int geev( char *jobvl, char *jobvr, integer &n, std::complex< real > *a, integer &lda, std::complex< real > *w, std::complex< real > *vl, integer &ldvl,
 										std::complex< real > *vr, integer &ldvr, std::complex< real > *work, integer &lwork, real *rwork, integer &info )
 	{
-		return( cgeev_( jobvl, jobvr, &n, reinterpret_cast< complex* >( a ), &lda, reinterpret_cast< complex* >( w ), reinterpret_cast< complex* >( vl ), &ldvl,
+		return( LPFNAME( cgeev ) ( jobvl, jobvr, &n, reinterpret_cast< complex* >( a ), &lda, reinterpret_cast< complex* >( w ), reinterpret_cast< complex* >( vl ), &ldvl,
 							reinterpret_cast< complex* >( vr ), &ldvr, reinterpret_cast< complex* >( work ), &lwork, rwork, &info ) );
 	}
 	inline int geev( char *jobvl, char *jobvr, integer &n, std::complex< doublereal > *a, integer &lda, std::complex< doublereal > *w, std::complex< doublereal > *vl, integer &ldvl,
 										std::complex< doublereal > *vr, integer &ldvr, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &info )
 	{
-		return( zgeev_( jobvl, jobvr, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( w ), reinterpret_cast< doublecomplex* >( vl ), &ldvl,
+		return( LPFNAME( zgeev ) ( jobvl, jobvr, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( w ), reinterpret_cast< doublecomplex* >( vl ), &ldvl,
 							reinterpret_cast< doublecomplex* >( vr ), &ldvr, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
 	}
 	// 対称行列に対する固有値・固有ベクトルを計算
 	inline int syev( char *jobz, char *uplo, integer &n, real *a, integer &lda, real *w, real *work, integer &lwork, integer &info )
 	{
-		return( ssyev_( jobz, uplo, &n, a, &lda, w, work, &lwork, &info ) );
+		return( LPFNAME( ssyev ) ( jobz, uplo, &n, a, &lda, w, work, &lwork, &info ) );
 	}
 	inline int syev( char *jobz, char *uplo, integer &n, doublereal *a, integer &lda, doublereal *w, doublereal *work, integer &lwork, integer &info )
 	{
-		return( dsyev_( jobz, uplo, &n, a, &lda, w, work, &lwork, &info ) );
+		return( LPFNAME( dsyev ) ( jobz, uplo, &n, a, &lda, w, work, &lwork, &info ) );
 	}
 	// 対称帯行列に対する固有値・固有ベクトルを計算
 	inline int sbev( char *jobz, char *uplo, integer &n, integer &kd, real *ab, integer &ldab, real *w, real *z__, integer &ldz, real *work, integer &info )
 	{
-		return( ssbev_( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &info ) );
+		return( LPFNAME( ssbev ) ( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &info ) );
 	}
 	inline int sbev( char *jobz, char *uplo, integer &n, integer &kd, doublereal *ab, integer &ldab, doublereal *w, doublereal *z__, integer &ldz, doublereal *work, integer &info )
 	{
-		return( dsbev_( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &info ) );
+		return( LPFNAME( dsbev ) ( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &info ) );
 	}
 	// 対称3重対角行列に対する固有値・固有ベクトルを計算
 	inline int stev( char *jobz, integer &n, real *d__, real *e, real *z__, integer &ldz, real *work, integer &info )
 	{
-		return( sstev_( jobz, &n, d__, e, z__, &ldz, work, &info ) );
+		return( LPFNAME( sstev ) ( jobz, &n, d__, e, z__, &ldz, work, &info ) );
 	}
 	inline int stev( char *jobz, integer &n, doublereal *d__, doublereal *e, doublereal *z__, integer &ldz, doublereal *work, integer &info )
 	{
-		return( dstev_( jobz, &n, d__, e, z__, &ldz, work, &info ) );
+		return( LPFNAME( dstev ) ( jobz, &n, d__, e, z__, &ldz, work, &info ) );
 	}
 	// エルミート行列に対する固有値・固有ベクトルを計算
 	inline int heev( char *jobz, char *uplo, integer &n, std::complex< real > *a, integer &lda, real *w, std::complex< real > *work, integer &lwork, real *rwork, integer &info )
 	{
-		return( cheev_( jobz, uplo, &n, reinterpret_cast< complex* >( a ), &lda, w, reinterpret_cast< complex* >( work ), &lwork, rwork, &info ) );
+		return( LPFNAME( cheev ) ( jobz, uplo, &n, reinterpret_cast< complex* >( a ), &lda, w, reinterpret_cast< complex* >( work ), &lwork, rwork, &info ) );
 	}
 	inline int heev( char *jobz, char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, doublereal *w, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &info )
 	{
-		return( zheev_( jobz, uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, w, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
+		return( LPFNAME( zheev ) ( jobz, uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, w, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
 	}
 	// エルミート帯行列に対する固有値・固有ベクトルを計算
 	inline int hbev( char *jobz, char *uplo, integer &n, integer &kd, std::complex< real > *ab, integer &ldab, real *w, std::complex< real > *z__, integer &ldz, std::complex< real > *work, real *rwork, integer &info )
 	{
-		return( chbev_( jobz, uplo, &n, &kd, reinterpret_cast< complex* >( ab ), &ldab, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), rwork, &info ) );
+		return( LPFNAME( chbev ) ( jobz, uplo, &n, &kd, reinterpret_cast< complex* >( ab ), &ldab, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), rwork, &info ) );
 	}
 	inline int hbev( char *jobz, char *uplo, integer &n, integer &kd, std::complex< doublereal > *ab, integer &ldab, doublereal *w, std::complex< doublereal > *z__, integer &ldz, std::complex< doublereal > *work, doublereal *rwork, integer &info )
 	{
-		return( zhbev_( jobz, uplo, &n, &kd, reinterpret_cast< doublecomplex* >( ab ), &ldab, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), rwork, &info ) );
+		return( LPFNAME( zhbev ) ( jobz, uplo, &n, &kd, reinterpret_cast< doublecomplex* >( ab ), &ldab, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), rwork, &info ) );
 	}
 
 
@@ -567,26 +575,26 @@ namespace __clapack__
 										real *vl, integer &ldvl, real *vr, integer &ldvr, integer &ilo, integer &ihi, real *scale,
 										real &abnrm, real *rconde, real *rcondv, real *work, integer &lwork, integer *iwork, integer &info )
 	{
-		return( sgeevx_( balanc, jobvl, jobvr, sense, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, work, &lwork, iwork, &info ) );
+		return( LPFNAME( sgeevx ) ( balanc, jobvl, jobvr, sense, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, work, &lwork, iwork, &info ) );
 	}
 	inline int geevx( char *balanc, char *jobvl, char *jobvr, char *sense, integer &n, doublereal *a, integer &lda, doublereal *wr, doublereal *wi,
 										doublereal *vl, integer &ldvl, doublereal *vr, integer &ldvr, integer &ilo, integer &ihi, doublereal *scale,
 										doublereal &abnrm, doublereal *rconde, doublereal *rcondv, doublereal *work, integer &lwork, integer *iwork, integer &info )
 	{
-		return( dgeevx_( balanc, jobvl, jobvr, sense, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, work, &lwork, iwork, &info ) );
+		return( LPFNAME( dgeevx ) ( balanc, jobvl, jobvr, sense, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, work, &lwork, iwork, &info ) );
 	}
 	inline int geevx( char *balanc, char *jobvl, char *jobvr, char *sense, integer &n, std::complex< real > *a, integer &lda, std::complex< real > *w,
 										std::complex< real > *vl, integer &ldvl, std::complex< real > *vr, integer &ldvr, integer &ilo, integer &ihi, real *scale,
 										real &abnrm, real *rconde, real *rcondv, std::complex< real > *work, integer &lwork, real *rwork, integer &info )
 	{
-		return( cgeevx_( balanc, jobvl, jobvr, sense, &n, reinterpret_cast< complex* >( a ), &lda, reinterpret_cast< complex* >( w ), reinterpret_cast< complex* >( vl ), &ldvl,
+		return( LPFNAME( cgeevx ) ( balanc, jobvl, jobvr, sense, &n, reinterpret_cast< complex* >( a ), &lda, reinterpret_cast< complex* >( w ), reinterpret_cast< complex* >( vl ), &ldvl,
 								reinterpret_cast< complex* >( vr ), &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, reinterpret_cast< complex* >( work ), &lwork, rwork, &info ) );
 	}
 	inline int geevx( char *balanc, char *jobvl, char *jobvr, char *sense, integer &n, std::complex< doublereal > *a, integer &lda, std::complex< doublereal > *w,
 										std::complex< doublereal > *vl, integer &ldvl, std::complex< doublereal > *vr, integer &ldvr, integer &ilo, integer &ihi, doublereal *scale,
 										doublereal &abnrm, doublereal *rconde, doublereal *rcondv, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &info )
 	{
-		return( zgeevx_( balanc, jobvl, jobvr, sense, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( w ), reinterpret_cast< doublecomplex* >( vl ), &ldvl,
+		return( LPFNAME( zgeevx ) ( balanc, jobvl, jobvr, sense, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( w ), reinterpret_cast< doublecomplex* >( vl ), &ldvl,
 								reinterpret_cast< doublecomplex* >( vr ), &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
 	}
 	// 対称行列に対する固有値・固有ベクトルを計算
@@ -594,49 +602,49 @@ namespace __clapack__
 						real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, real *z__,
 						integer &ldz, real *work, integer &lwork, integer *iwork, integer *ifail, integer &info )
 	{
-		return( ssyevx_( jobz, range, uplo, &n, a, &lda, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, &lwork, iwork, ifail, &info ) );
+		return( LPFNAME( ssyevx ) ( jobz, range, uplo, &n, a, &lda, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, &lwork, iwork, ifail, &info ) );
 	}
 	inline int geevx( char *jobz, char *range, char *uplo, integer &n, doublereal *a, integer &lda,
 						doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, doublereal *z__,
 						integer &ldz, doublereal *work, integer &lwork, integer *iwork, integer *ifail, integer &info )
 	{
-		return( dsyevx_( jobz, range, uplo, &n, a, &lda, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, &lwork, iwork, ifail, &info ) );
+		return( LPFNAME( dsyevx ) ( jobz, range, uplo, &n, a, &lda, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, &lwork, iwork, ifail, &info ) );
 	}
 	// 対称帯行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
 	inline int sbevx( char *jobz, char *range, char *uplo, integer &n, integer &kd, real *ab, integer &ldab, real *q, integer &ldq, real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, real *z__, integer &ldz, real *work, integer *iwork, integer *ifail, integer &info )
 	{
-		return( ssbevx_( jobz, range, uplo, &n, &kd, ab, &ldab, q, &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
+		return( LPFNAME( ssbevx ) ( jobz, range, uplo, &n, &kd, ab, &ldab, q, &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
 	}
-	inline int dsbevx_( char *jobz, char *range, char *uplo, integer &n, integer &kd, doublereal *ab, integer &ldab, doublereal *q, integer &ldq, doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, doublereal *z__, integer &ldz, doublereal *work, integer *iwork, integer *ifail, integer &info )
+	inline int dsbevx( char *jobz, char *range, char *uplo, integer &n, integer &kd, doublereal *ab, integer &ldab, doublereal *q, integer &ldq, doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, doublereal *z__, integer &ldz, doublereal *work, integer *iwork, integer *ifail, integer &info )
 	{
-		return( dsbevx_( jobz, range, uplo, &n, &kd, ab, &ldab, q, &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
+		return( LPFNAME( dsbevx ) ( jobz, range, uplo, &n, &kd, ab, &ldab, q, &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
 	}
 	// 対称3重対角行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
 	inline int stevx( char *jobz, char *range, integer &n, real *d__, real *e, real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, real *z__, integer &ldz, real *work, integer *iwork, integer *ifail, integer &info )
 	{
-		return( sstevx_( jobz, range, &n, d__, e, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
+		return( LPFNAME( sstevx ) ( jobz, range, &n, d__, e, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
 	}
 	inline int stevx( char *jobz, char *range, integer &n, doublereal *d__, doublereal *e, doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, doublereal *z__, integer &ldz, doublereal *work, integer *iwork, integer *ifail, integer &info )
 	{
-		return( dstevx_( jobz, range, &n, d__, e, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
+		return( LPFNAME( dstevx ) ( jobz, range, &n, d__, e, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
 	}
 	// エルミート行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
 	inline int heevx( char *jobz, char *range, char *uplo, integer &n, std::complex< real > *a, integer &lda, real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, std::complex< real > *z__, integer &ldz, std::complex< real > *work, integer &lwork, real *rwork, integer *iwork, integer *ifail, integer &info )
 	{
-		return( cheevx_( jobz, range, uplo, &n, reinterpret_cast< complex* >( a ), &lda, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), &lwork, rwork, iwork, ifail, &info ) );
+		return( LPFNAME( cheevx ) ( jobz, range, uplo, &n, reinterpret_cast< complex* >( a ), &lda, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), &lwork, rwork, iwork, ifail, &info ) );
 	}
 	inline int heevx( char *jobz, char *range, char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, std::complex< doublereal > *z__, integer &ldz, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer *iwork, integer *ifail, integer &info )
 	{
-		return( zheevx_( jobz, range, uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, iwork, ifail, &info ) );
+		return( LPFNAME( zheevx ) ( jobz, range, uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, iwork, ifail, &info ) );
 	}
 	// エルミート帯行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
 	inline int hbevx( char *jobz, char *range, char *uplo, integer &n, integer &kd, complex *ab, integer &ldab, complex *q, integer &ldq, real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, complex *z__, integer &ldz, complex *work, real *rwork, integer *iwork, integer *ifail, integer &info )
 	{
-		return( chbevx_( jobz, range, uplo, &n, &kd, reinterpret_cast< complex* >( ab ), &ldab, reinterpret_cast< complex* >( q ), &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), rwork, iwork, ifail, &info ) );
+		return( LPFNAME( chbevx ) ( jobz, range, uplo, &n, &kd, reinterpret_cast< complex* >( ab ), &ldab, reinterpret_cast< complex* >( q ), &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), rwork, iwork, ifail, &info ) );
 	}
 	inline int hbevx( char *jobz, char *range, char *uplo, integer &n, integer &kd, complex *ab, integer &ldab, complex *q, integer &ldq, doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, complex *z__, integer &ldz, complex *work, doublereal *rwork, integer *iwork, integer *ifail, integer &info )
 	{
-		return( zhbevx_( jobz, range, uplo, &n, &kd, reinterpret_cast< doublecomplex* >( ab ), &ldab, reinterpret_cast< doublecomplex* >( q ), &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), rwork, iwork, ifail, &info ) );
+		return( LPFNAME( zhbevx ) ( jobz, range, uplo, &n, &kd, reinterpret_cast< doublecomplex* >( ab ), &ldab, reinterpret_cast< doublecomplex* >( q ), &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), rwork, iwork, ifail, &info ) );
 	}
 
 
@@ -646,23 +654,23 @@ namespace __clapack__
 	inline int gesvd( char *jobu, char *jobvt, integer &m, integer &n, real *a, integer &lda, real *s, real *u,
 								integer &ldu, real *vt, integer &ldvt, real *work, integer &lwork, integer &info )
 	{
-		return( sgesvd_( jobu, jobvt, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, &info ) );
+		return( LPFNAME( sgesvd ) ( jobu, jobvt, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, &info ) );
 	}
 	inline int gesvd( char *jobu, char *jobvt, integer &m, integer &n, doublereal *a, integer &lda, doublereal *s, doublereal *u,
 								integer &ldu, doublereal *vt, integer &ldvt, doublereal *work, integer &lwork, integer &info )
 	{
-		return( dgesvd_( jobu, jobvt, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, &info ) );
+		return( LPFNAME( dgesvd ) ( jobu, jobvt, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, &info ) );
 	}
 	inline int gesvd( char *jobu, char *jobvt, integer &m, integer &n, std::complex< real > *a, integer &lda, real *s, std::complex< real > *u,
 								integer &ldu, std::complex< real > *vt, integer &ldvt, std::complex< real > *work, integer &lwork, real *rwork, integer &info )
 	{
-		return( cgesvd_( jobu, jobvt, &m, &n, reinterpret_cast< complex* >( a ), &lda, s, reinterpret_cast< complex* >( u ),
+		return( LPFNAME( cgesvd ) ( jobu, jobvt, &m, &n, reinterpret_cast< complex* >( a ), &lda, s, reinterpret_cast< complex* >( u ),
 								&ldu, reinterpret_cast< complex* >( vt ), &ldvt, reinterpret_cast< complex* >( work ), &lwork, rwork, &info ) );
 	}
 	inline int gesvd( char *jobu, char *jobvt, integer &m, integer &n, std::complex< doublereal > *a, integer &lda, doublereal *s, std::complex< doublereal > *u,
 								integer &ldu, std::complex< doublereal > *vt, integer &ldvt, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &info )
 	{
-		return( zgesvd_( jobu, jobvt, &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, s, reinterpret_cast< doublecomplex* >( u ),
+		return( LPFNAME( zgesvd ) ( jobu, jobvt, &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, s, reinterpret_cast< doublecomplex* >( u ),
 								&ldu, reinterpret_cast< doublecomplex* >( vt ), &ldvt, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
 	}
 
@@ -670,23 +678,23 @@ namespace __clapack__
 	inline int gesdd( char *jobz, integer &m, integer &n, real *a, integer &lda, real *s, real *u, integer &ldu,
 								real *vt, integer &ldvt, real *work, integer &lwork, integer *iwork, integer &info )
 	{
-		return( sgesdd_( jobz, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, iwork, &info ) );
+		return( LPFNAME( sgesdd ) ( jobz, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, iwork, &info ) );
 	}
 	inline int gesdd( char *jobz, integer &m, integer &n, doublereal *a, integer &lda, doublereal *s, doublereal *u, integer &ldu,
 								doublereal *vt, integer &ldvt, doublereal *work, integer &lwork, integer *iwork, integer &info )
 	{
-		return( dgesdd_( jobz, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, iwork, &info ) );
+		return( LPFNAME( dgesdd ) ( jobz, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, iwork, &info ) );
 	}
 	inline int gesdd( char *jobz, integer &m, integer &n, std::complex< real > *a, integer &lda, real *s, std::complex< real > *u, integer &ldu,
 								std::complex< real > *vt, integer &ldvt, std::complex< real > *work, integer &lwork, real *rwork, integer *iwork, integer &info )
 	{
-		return( cgesdd_( jobz, &m, &n, reinterpret_cast< complex* >( a ), &lda, s, reinterpret_cast< complex* >( u ), &ldu,
+		return( LPFNAME( cgesdd ) ( jobz, &m, &n, reinterpret_cast< complex* >( a ), &lda, s, reinterpret_cast< complex* >( u ), &ldu,
 							reinterpret_cast< complex* >( vt ), &ldvt, reinterpret_cast< complex* >( work ), &lwork, rwork, iwork, &info ) );
 	}
 	inline int gesdd( char *jobz, integer &m, integer &n, std::complex< doublereal > *a, integer &lda, doublereal *s, std::complex< doublereal > *u, integer &ldu,
 								std::complex< doublereal > *vt, integer &ldvt, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer *iwork, integer &info )
 	{
-		return( zgesdd_( jobz, &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, s, reinterpret_cast< doublecomplex* >( u ), &ldu,
+		return( LPFNAME( zgesdd ) ( jobz, &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, s, reinterpret_cast< doublecomplex* >( u ), &ldu,
 							reinterpret_cast< doublecomplex* >( vt ), &ldvt, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, iwork, &info ) );
 	}
 
@@ -694,48 +702,52 @@ namespace __clapack__
 	// 対称行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
 	inline int syevd( char *jobz, char *uplo, integer &n, real *a, integer &lda, real *w, real *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
 	{
-		return( ssyevd_( jobz, uplo, &n, a, &lda, w, work, &lwork, iwork, &liwork, &info ) );
+		return( LPFNAME( ssyevd ) ( jobz, uplo, &n, a, &lda, w, work, &lwork, iwork, &liwork, &info ) );
 	}
 	inline int syevd( char *jobz, char *uplo, integer &n, doublereal *a, integer &lda, doublereal *w, doublereal *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
 	{
-		return( dsyevd_( jobz, uplo, &n, a, &lda, w, work, &lwork, iwork, &liwork, &info ) );
+		return( LPFNAME( dsyevd ) ( jobz, uplo, &n, a, &lda, w, work, &lwork, iwork, &liwork, &info ) );
 	}
 	// 対称帯行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
 	inline int sbevd( char *jobz, char *uplo, integer &n, integer &kd, real *ab, integer &ldab, real *w, real *z__, integer &ldz, real *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
 	{
-		return( ssbevd_( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
+		return( LPFNAME( ssbevd ) ( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
 	}
 	inline int sbevd( char *jobz, char *uplo, integer &n, integer &kd, doublereal *ab, integer &ldab, doublereal *w, doublereal *z__, integer &ldz, doublereal *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
 	{
-		return( dsbevd_( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
+		return( LPFNAME( dsbevd ) ( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
 	}
 	// 対称3重対角行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
 	inline int stevd( char *jobz, integer &n, real *d__, real *e, real *z__, integer &ldz, real *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
 	{
-		return( sstevd_( jobz, &n, d__, e, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
+		return( LPFNAME( sstevd ) ( jobz, &n, d__, e, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
 	}
 	inline int stevd( char *jobz, integer &n, doublereal *d__, doublereal *e, doublereal *z__, integer &ldz, doublereal *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
 	{
-		return( dstevd_( jobz, &n, d__, e, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
+		return( LPFNAME( dstevd ) ( jobz, &n, d__, e, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
 	}
 	// エルミート行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
 	inline int heevd( char *jobz, char *uplo, integer &n, std::complex< real > *a, integer &lda, real *w, std::complex< real > *work, integer &lwork, real *rwork, integer &lrwork, integer *iwork, integer &liwork, integer &info )
 	{
-		return( cheevd_( jobz, uplo, &n, reinterpret_cast< complex* >( a ), &lda, w, reinterpret_cast< complex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
+		return( LPFNAME( cheevd ) ( jobz, uplo, &n, reinterpret_cast< complex* >( a ), &lda, w, reinterpret_cast< complex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
 	}
 	inline int heevd( char *jobz, char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, doublereal *w, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &lrwork, integer *iwork, integer &liwork, integer &info )
 	{
-		return( zheevd_( jobz, uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, w, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
+		return( LPFNAME( zheevd ) ( jobz, uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, w, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
 	}
 	// エルミート帯行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
 	inline int hbevd( char *jobz, char *uplo, integer &n, integer &kd, std::complex< real > *ab, integer &ldab, real *w, std::complex< real > *z__, integer &ldz, std::complex< real > *work, integer &lwork, real *rwork, integer &lrwork, integer *iwork, integer &liwork, integer &info )
 	{
-		return( chbevd_( jobz, uplo, &n, &kd, reinterpret_cast< complex* >( ab ), &ldab, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
+		return( LPFNAME( chbevd ) ( jobz, uplo, &n, &kd, reinterpret_cast< complex* >( ab ), &ldab, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
 	}
 	inline int hbevd( char *jobz, char *uplo, integer &n, integer &kd, std::complex< doublereal > *ab, integer &ldab, doublereal *w, std::complex< doublereal > *z__, integer &ldz, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &lrwork, integer *iwork, integer &liwork, integer &info )
 	{
-		return( zhbevd_( jobz, uplo, &n, &kd, reinterpret_cast< doublecomplex* >( ab ), &ldab, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
+		return( LPFNAME( zhbevd ) ( jobz, uplo, &n, &kd, reinterpret_cast< doublecomplex* >( ab ), &ldab, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
 	}
+
+
+	// インテルのMKLとの互換性を保つための，関数名の変換マクロ
+	#undef LPFNAME
 }
 
 

@@ -16,7 +16,8 @@ IMGLIBS = -ljpeg -lpng -ltiff
 #IMGLIBS = -ljpeg -lpng -ltiff -lgif
 LIBS = -lpthread -lz -lm
 LAPACKLIBS = -L../lib -llapack -lblas -lF77 -lI77
-ATLASLIBS = -L../lib_atlas -llapack -lcblaswr -lcblas -latlas -lF77
+ATLASLIBS = -L../lib -llapack -lcblaswr -lcblas -latlas -lF77
+MKLASLIBS = -L../lib -lmkl_lapack
 
 # Be quiet when building...
 .SILENT:
