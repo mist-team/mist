@@ -40,6 +40,7 @@ protected:
 	// 継承した先で必ず実装されるスレッド関数
 	virtual thread_exit_type thread_function( const thread_parameter &p )
 	{
+		mist::lock l( "hoge" );
 		for( int i = 0 ; i < 10 ; i++ )
 		{
 			std::cout << thread_id_;

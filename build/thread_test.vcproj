@@ -141,6 +141,9 @@
 				RelativePath="..\mist\config\mist_conf.h">
 			</File>
 			<File
+				RelativePath="..\mist\singleton.h">
+			</File>
+			<File
 				RelativePath="..\mist\thread.h">
 			</File>
 		</Filter>

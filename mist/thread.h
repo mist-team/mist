@@ -17,9 +17,15 @@
 #define INFINITE	( ( unsigned long ) -1 )
 #endif
 
+#include <map>
+#include <string>
 
 #ifndef __INCLUDE_MIST_CONF_H__
 #include "config/mist_conf.h"
+#endif
+
+#ifndef __INCLUDE_MIST_SINGLETON__
+#include "singleton.h"
 #endif
 
 
@@ -222,6 +228,135 @@ protected:
 #endif
 };
 
+
+
+
+struct lock_object
+{
+private:
+
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+	// スレッドサポートはしないので特に必要な変数は無し
+#elif defined( WIN32 )
+	typedef CRITICAL_SECTION lock_object_type;		// Windows用のロックオブジェクト(CRITIFCALSECTIONを利用)
+#else
+	typedef pthread_mutexattr_t lock_object_type;	// pthreadライブラリでのロックオブジェクト
+#endif
+
+	typedef ::std::map< ::std::string, lock_object_type > lock_table;
+
+public:
+	static bool lock( const ::std::string &lock_name )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#else
+		lock_table &table = singleton< lock_table >::get_instance( );
+		lock_table::iterator ite = table.begin( );
+		if( ite == table.end( ) )
+		{
+			// まだロックオブジェクトを初期化していないので初期化する
+			::std::pair< lock_table::iterator, bool > p = table.insert( lock_table::value_type( lock_name, lock_object_type( ) ) );
+			if( p.second )
+			{
+				lock_object_type &obj = p.first->second;
+				initialize( obj );
+				try_lock( obj );
+			}
+			else
+			{
+				// ロックオブジェクトをテーブルに追加することができませんでした・・・
+				return( false );
+			}
+		}
+		else
+		{
+			// すでに同名のロックオブジェクトが存在するのでそちらをロックする
+			try_lock( ite->second );
+		}
+#endif
+		return( true );
+	}
+
+	static bool unlock( const ::std::string &lock_name )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#else
+		lock_table &table = singleton< lock_table >::get_instance( );
+		lock_table::iterator ite = table.begin( );
+		if( ite == table.end( ) )
+		{
+			// 指定されたロックオブジェクトが見つからなかったので何もしない
+			return( false );
+		}
+		else
+		{
+			try_unlock( ite->second );
+		}
+#endif
+		return( true );
+	}
+
+protected:
+	static void initialize( lock_object_type &l )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( WIN32 )
+		InitializeCriticalSection( &l );	// クリティカルセクションオブジェクトを初期化
+#else
+		pthread_mutex_init( &l, NULL );		// pthread用のMutexオブジェクトを初期化
+#endif
+	}
+
+	static void try_lock( lock_object_type &l )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( WIN32 )
+		EnterCriticalSection( &l );		// クリティカルセクションオブジェクトをロック
+#else
+		pthread_mutex_lock( &l );		// pthread用のMutexオブジェクトをロック
+#endif
+	}
+
+	static void try_unlock( lock_object_type &l )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( WIN32 )
+		LeaveCriticalSection( &l );		// クリティカルセクションオブジェクトをアンロック
+#else
+		pthread_mutex_unlock( &l );		// pthread用のMutexオブジェクトをアンロック
+#endif
+	}
+};
+
+
+
+
+class lock
+{
+protected:
+	std::string lock_object_name_;
+
+public:
+	lock( ) : lock_object_name_( "mist default lock object!!" )
+	{
+		lock_object::lock( lock_object_name_ );
+	}
+
+	lock( const std::string &name ) : lock_object_name_( name )
+	{
+		lock_object::lock( lock_object_name_ );
+	}
+
+	~lock( )
+	{
+		lock_object::unlock( lock_object_name_ );
+	}
+};
 
 
 // mist名前空間の終わり
