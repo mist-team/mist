@@ -456,7 +456,7 @@ inline const typename matrix_expression< Expression >::value_type trace( const m
 	typedef typename matrix_expression< Expression >::value_type value_type;
 	typedef typename matrix_expression< Expression >::size_type size_type;
 	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef typename matrix_expression< Expression >::matrix_type matrix_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
 
 	value_type v = value_type( );
 	size_type size = expression.rows( ) < expression.cols( ) ? expression.rows( ) : expression.cols( );
@@ -483,7 +483,7 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 		return( value_type( ) );
 	}
 
-	matrix< __clapack__::integer > pivot;
+	matrix< __clapack__::integer, typename Allocator::template rebind< __clapack__::integer >::other > pivot;
 	matrix< T, Allocator > m = lu_factorization( a, pivot, style );
 
 	value_type v = m( 0, 0 );
@@ -513,14 +513,14 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 	typedef typename matrix_expression< Expression >::value_type value_type;
 	typedef typename matrix_expression< Expression >::size_type size_type;
 	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef typename matrix_expression< Expression >::matrix_type matrix_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
 
 	if( expression.rows( ) * expression.cols( ) == 0 )
 	{
 		return( value_type( ) );
 	}
 
-	matrix< __clapack__::integer > pivot;
+	matrix< __clapack__::integer, typename allocator_type::template rebind< __clapack__::integer >::other > pivot;
 	matrix_type m = lu_factorization( expression, pivot, style );
 
 	value_type v = m( 0, 0 );
@@ -770,7 +770,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 			solve( const matrix_expression< Expression > &expression, matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &b, matrix_style::style style = matrix_style::ge )
 {
 	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::matrix_type matrix_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression );
 	return( __solve__::__solve__< __numeric__::is_complex< value_type >::value >::solve( a_, b, style ) );
 }
@@ -917,7 +918,7 @@ const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, 
 {
 	typedef __clapack__::integer integer;
 	matrix< T, Allocator > a_( a );
-	matrix< __clapack__::integer > pivot( a.cols( ), 1 );
+	matrix< __clapack__::integer, typename Allocator::template rebind< __clapack__::integer >::other > pivot( a.cols( ), 1 );
 	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
 }
 
@@ -928,7 +929,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 			lu_factorization( const matrix_expression< Expression > &expression, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
 {
 	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::matrix_type matrix_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression );
 	return( __lu__::__lu__< __numeric__::is_complex< value_type >::value >::lu_factorization( a_, pivot, style ) );
 }
@@ -938,9 +940,10 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 						lu_factorization( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
 {
 	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::matrix_type matrix_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression );
-	matrix< __clapack__::integer > pivot( a_.cols( ), 1 );
+	matrix< __clapack__::integer, typename allocator_type::template rebind< __clapack__::integer >::other > pivot( a_.cols( ), 1 );
 	return( __lu__::__lu__< __numeric__::is_complex< value_type >::value >::lu_factorization( a_, pivot, style ) );
 }
 
@@ -1060,7 +1063,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 								matrix_style::style style = matrix_style::ge )
 {
 	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::matrix_type matrix_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression );
 	return( __qr__::__qr__< __numeric__::is_complex< value_type >::value >::qr_factorization( a_, tau, style ) );
 }
@@ -1070,7 +1074,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 						qr_factorization( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
 {
 	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::matrix_type matrix_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression ), tau( a_.rows( ), a_.cols( ) );
 	return( __qr__::__qr__< __numeric__::is_complex< value_type >::value >::qr_factorization( a_, tau, style ) );
 }
@@ -1246,7 +1251,8 @@ inline matrix< typename matrix_expression< Expression >::value_type, typename ma
 						inverse( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
 {
 	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::matrix_type matrix_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression );
 	return( __inverse__::__inverse__< __numeric__::is_complex< value_type >::value >::inverse( a_, style ) );
 }
@@ -1552,7 +1558,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 						matrix_style::style style = matrix_style::ge )
 {
 	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::matrix_type matrix_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression );
 	return( __eigen__::__eigen__< __numeric__::is_complex< value_type >::value >::eigen( a_, eigen_value, eigen_vector, style ) );
 }
@@ -1818,7 +1825,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 						matrix_style::style style = matrix_style::ge )
 {
 	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::matrix_type matrix_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression );
 	return( __svd__::__svd__< __numeric__::is_complex< value_type >::value >::svd( a_, u, s, vt, style ) );
 }

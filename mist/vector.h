@@ -326,7 +326,8 @@ public:
 		vector &v1 = *this;
 		vector v( v1.size( ) );
 
-		for( size_type i = 0 ; i < v.size( ) - 2 ; i++ )
+		size_type i;
+		for( i = 0 ; i < v.size( ) - 2 ; i++ )
 		{
 			v[ i ] = v1[ i + 1 ] * v2[ i + 2 ] - v1[ i + 2 ] * v2[ i + 1 ];
 		}
@@ -372,8 +373,8 @@ public:
 
 public:
 	// \’z
-	vector( ) : base( ), size1_( 0 ), size2_( 0 ) {}
-	explicit vector( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ) {}
+	vector( ) : base( ) {}
+	explicit vector( const Allocator &a ) : base( a ) {}
 
 	vector( size_type num ) : base( num, 1 ) {}
 	vector( size_type num, const Allocator &a ) : base( num, 1, a ) {}
@@ -412,8 +413,8 @@ inline ::std::ostream &operator <<( ::std::ostream &out, const vector< T, Alloca
 	typename vector< T, Allocator >::size_type indx;
 	for( indx = 0 ; indx < v.size( ) ; indx++ )
 	{
-		out << m[ indx ];
-		if( indx != m.size( ) - 1 ) out << ", ";
+		out << v[ indx ];
+		if( indx != v.size( ) - 1 ) out << ", ";
 	}
 	out << ::std::endl;
 

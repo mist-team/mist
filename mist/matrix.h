@@ -54,7 +54,6 @@ struct matrix_expression
 	typedef typename T::value_type		value_type;
 	typedef typename T::size_type		size_type;
 	typedef typename T::allocator_type	allocator_type;
-	typedef typename matrix< value_type, allocator_type > matrix_type;
 
 	T expression;
 
