@@ -72,11 +72,32 @@ namespace volumerender
 	};
 
 	template < class T >
+	struct attribute_element
+	{
+		typedef T value_type;
+		typedef ptrdiff_t difference_type;
+
+		value_type pixel;
+		difference_type value_lower;
+		difference_type value_upper;
+		double alpha_lower;
+		double alpha_upper;
+
+		attribute_element( ) : pixel( ), value_lower( 0 ), value_upper( 0 ), alpha_lower( 0 ), alpha_upper( 0 ){ }
+		attribute_element( const value_type &pixel, difference_type vs, difference_type ve, double as, double ae )
+			: pixel( pixel ), value_lower( vs ), value_upper( ve ), alpha_lower( as ), alpha_upper( ae ){ }
+
+		attribute_element( const attribute_element &a ) : pixel( a.pixel ), value_lower( a.value_lower ), value_upper( a.value_upper ), alpha_lower( a.alpha_lower ), alpha_upper( a.alpha_upper ){ }
+	
+	};
+
+	template < class T >
 	class attribute_table : protected std::vector< attribute< T > >
 	{
 	public:
 		typedef std::vector< attribute< T > > base;
 		typedef attribute< T > attribute_type;
+		typedef attribute_element< T > attribute_element_type;
 		typedef typename base::allocator_type allocator_type;	///< @brief MISTコンテナが利用するアロケータ型
 		typedef typename base::reference reference;				///< @brief MISTのコンテナ内に格納するデータ型の参照．mist::array< data > の場合，data & となる
 		typedef typename base::const_reference const_reference;	///< @brief MISTのコンテナ内に格納するデータ型の const 参照．mist::array< data > の場合，const data & となる
@@ -87,11 +108,14 @@ namespace volumerender
 		typedef typename base::const_pointer const_pointer;		///< @brief MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array< data > の場合，const data * となる
 
 		typedef T pixel_type;
+		typedef std::vector< attribute_element_type > attribute_element_list;
 
 	protected:
 		difference_type sindex_;
 		difference_type eindex_;
 		difference_type zero_index_;
+
+		attribute_element_list attribute_element_table;
 
 	public:
 		void append( const pixel_type &pixel, difference_type vs, difference_type ve, double as, double ae )
@@ -110,6 +134,15 @@ namespace volumerender
 			vs = vs > eindex_ ? eindex_: vs;
 			ve = ve < sindex_ ? sindex_: ve;
 			ve = ve > eindex_ ? eindex_: ve;
+
+			if( as > ae )
+			{
+				double tmp = as;
+				as = ae;
+				ae = tmp;
+			}
+
+			attribute_element_table.push_back( attribute_element_type( pixel, vs, ve, as, ae ) );
 
 			double step = ( ae - as ) / static_cast< double >( ve - vs + 1 );
 			for( difference_type i = vs ; i <= ve ; i++ )
@@ -155,9 +188,12 @@ namespace volumerender
 				sindex_ = a.sindex_;
 				eindex_ = a.eindex_;
 				zero_index_ = a.zero_index_;
+				attribute_element_table = a.attribute_element_table;
 			}
 			return( *this );
 		}
+
+		const attribute_element_list &attribute_elements( ) const { return( attribute_element_table ); }
 
 
 	public:
@@ -168,6 +204,9 @@ namespace volumerender
 
 			base::resize( ei - si + 1 );
 			zero_index_ = - si;
+
+			fill( );
+			attribute_element_table.clear( );
 		}
 
 		void clear( )
@@ -176,6 +215,16 @@ namespace volumerender
 			sindex_ = 0;
 			eindex_ = -1;
 			zero_index_ = 0;
+			attribute_element_table.clear( );
+		}
+
+		void fill( )
+		{
+			for( size_type i = 0 ; i < base::size( ) ; i++ )
+			{
+				base::operator []( i ) = attribute_type( );
+			}
+			attribute_element_table.clear( );
 		}
 
 		attribute_table( ) : sindex_( 0 ), eindex_( -1 ), zero_index_( NULL ){ }
@@ -185,7 +234,7 @@ namespace volumerender
 			zero_index_ = - si;
 		}
 
-		attribute_table( const attribute_table &a ) : base( a ), sindex_( a.sindex_ ), eindex_( a.eindex_ ), zero_index_( a.zero_index_ )
+		attribute_table( const attribute_table &a ) : base( a ), sindex_( a.sindex_ ), eindex_( a.eindex_ ), zero_index_( a.zero_index_ ), attribute_element_table( a.attribute_element_table )
 		{
 		}
 	};
