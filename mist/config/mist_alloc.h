@@ -94,7 +94,7 @@ struct mist_memory_operator
 	// ポインタ ptr から num 個のデータにobjを代入する
 	// char 型の場合は memset を利用する
 	template < class Allocator >
-	static void clean_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
+	static void fill_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Clean Function" << ::std::endl;
@@ -105,7 +105,7 @@ struct mist_memory_operator
 	// ポインタ ptr から num 個のデータに初期値を代入する
 	// 組み込み型の場合は memset を利用する
 	template < class Allocator >
-	static void clean_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
+	static void fill_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Clean Function" << ::std::endl;
@@ -198,7 +198,7 @@ struct mist_memory_operator< true >
 	// ポインタ ptr から num 個のデータにobjを代入する
 	// char 型の場合は memset を利用する
 	template < class Allocator >
-	static void clean_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
+	static void fill_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Memcpy Clean Function" << ::std::endl;
@@ -209,7 +209,7 @@ struct mist_memory_operator< true >
 	// ポインタ ptr から num 個のデータに初期値を代入する
 	// 組み込み型の場合は memset を利用する
 	template < class Allocator >
-	static void clean_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
+	static void fill_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Memcpy Clean Function" << ::std::endl;
@@ -279,17 +279,17 @@ public:
 	}
 
 	// ポインタ ptr から num 個のデータにobjを代入する
-	void clean_objects( pointer ptr, size_type num, const_reference obj )
+	void fill_objects( pointer ptr, size_type num, const_reference obj )
 	{
 		if( num <= 0 ) return;
-		mist_memory_operator< is_char< T >::value >::clean_objects1( *this, ptr, num, obj );
+		mist_memory_operator< is_char< T >::value >::fill_objects1( *this, ptr, num, obj );
 	}
 
 	// ポインタ ptr から num 個のデータに初期値を代入する
-	void clean_objects( pointer ptr, size_type num )
+	void fill_objects( pointer ptr, size_type num )
 	{
 		if( num <= 0 ) return;
-		mist_memory_operator< is_arithmetic< T >::value >::clean_objects2( *this, ptr, num );
+		mist_memory_operator< is_arithmetic< T >::value >::fill_objects2( *this, ptr, num );
 	}
 
 	// ptr から始まり num 個存在するオブジェクトを dest_num 個まで縮める

@@ -114,14 +114,14 @@ public:
 		data_ = NULL;
 	}
 
-	void clean( )
+	void fill( )
 	{
-		allocator_.clean_objects( data_, size_ );
+		allocator_.fill_objects( data_, size_ );
 	}
 
-	void clean( const value_type &val )
+	void fill( const value_type &val )
 	{
-		allocator_.clean_objects( data_, size_, val );
+		allocator_.fill_objects( data_, size_, val );
 	}
 
 	bool empty( ) const { return( size_ == 0 ); }
