@@ -925,6 +925,7 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 				image[ i ] = pixel_converter::convert_to( pixel, pixel, pixel );
 			}
 		}
+		ite->release( );
 	}
 	else
 	{

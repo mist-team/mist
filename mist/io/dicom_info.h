@@ -410,8 +410,12 @@ namespace dicom_controller
 	}
 
 	// RLE圧縮ファイルのデコーダ
-	inline bool decode_RLE( unsigned char *pointer, unsigned char *end_pointer, dicom_element &element )
+	inline bool decode( dicom_element &element, const dicom_info &info )
 	{
+		if( info.compression_type == RAW )
+		{
+			return( true );
+		}
 		return( false );
 	}
 
