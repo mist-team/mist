@@ -939,7 +939,7 @@ public:
 		margin1_ = margin2_ = margin3_ = 0;
 	}
 
-	void fill_margin( const value_type &val = 0 )
+	void fill_margin( const value_type &val = value_type( ) )
 	{
 		base &o = *this;
 
@@ -1187,7 +1187,7 @@ public:
 	marray( const marray &o ) : base( o ), margin1_( o.margin1( ) ), margin2_( o.margin2( ) ), margin3_( o.margin3( ) ) {}
 
 	template < class T, class Allocator >
-	marray( const array< T, Allocator > &o, size_type margin1, const value_type &val = 0 )
+	marray( const array< T, Allocator > &o, size_type margin1, const value_type &val = value_type( 0 ) )
 		: base( o.size( ) + margin1 * 2 ), margin1_( margin1 ), margin2_( 0 ), margin3_( 0 )
 	{
 		fill_margin( val );
@@ -1195,7 +1195,7 @@ public:
 	}
 
 	template < class T, class Allocator >
-	marray( const array1< T, Allocator > &o, size_type margin1, const value_type &val = 0 )
+	marray( const array1< T, Allocator > &o, size_type margin1, const value_type &val = value_type( ) )
 		: base( o.size( ) + margin1 * 2, o.reso1( ) ), margin1_( margin1 ), margin2_( 0 ), margin3_( 0 )
 	{
 		fill_margin( val );
@@ -1203,7 +1203,7 @@ public:
 	}
 
 	template < class T, class Allocator >
-	marray( const array2< T, Allocator > &o, size_type margin1, size_type margin2, const value_type &val = 0 )
+	marray( const array2< T, Allocator > &o, size_type margin1, size_type margin2, const value_type &val = value_type( ) )
 		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin2 * 2, o.reso1( ), o.reso2( ) ), margin1_( margin1 ), margin2_( margin2 ), margin3_( 0 )
 	{
 		fill_margin( val );
@@ -1211,7 +1211,7 @@ public:
 	}
 
 	template < class T, class Allocator >
-	marray( const array3< T, Allocator > &o, size_type margin1, size_type margin2, size_type margin3, const value_type &val = 0 )
+	marray( const array3< T, Allocator > &o, size_type margin1, size_type margin2, size_type margin3, const value_type &val = value_type( ) )
 		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin2 * 2, o.size3( ) + margin3 * 2, o.reso1( ), o.reso2( ), o.reso3( ) ), margin1_( margin1 ), margin2_( margin2 ), margin3_( margin3 )
 	{
 		fill_margin( val );

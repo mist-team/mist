@@ -30,8 +30,8 @@ public:
 	typedef typename base::allocator_type allocator_type;
 	typedef typename base::size_type size_type;
 	typedef typename base::difference_type difference_type;
-	typedef typename base::pointer pointer;
-	typedef typename base::const_pointer const_pointer;
+//	typedef typename base::pointer pointer;
+//	typedef typename base::const_pointer const_pointer;
 	typedef typename base::reference reference;
 	typedef typename base::const_reference const_reference;
 	typedef typename base::iterator iterator;
@@ -60,7 +60,21 @@ public:
 	set_base( Iterator first, Iterator last, const key_compare &pred, const allocator_type &alloc ) : base( first, last, pred, alloc ){ }
 
 public:
-	set_base &operator +=( const set_base &s ){ base::insert( s.begin( ), s.end( ) ); return( *this ); }
+	set_base &operator +=( const set_base &s )
+	{
+#if __MIST_MSVC__ != 6
+		base::insert( s.begin( ), s.end( ) );
+#else
+		// MSVC6 付属のSTLのSETではイテレータの実装が異なる
+		const_iterator site = s.begin( );
+		const_iterator eite = s.end( );
+		for( ; site != eite ; ++site )
+		{
+			base::insert( *site );
+		}
+#endif
+		return( *this );
+	}
 	set_base &operator +=( const key_type &s ){ base::insert( s ); return( *this ); }
 
 	set_base &operator -=( const set_base &s )
@@ -101,7 +115,15 @@ public:
 
 			if( site1 != eite1 )
 			{
+#if __MIST_MSVC__ != 6
 				base::insert( site1, eite1 );
+#else
+				// MSVC6 付属のSTLのSETではイテレータの実装が異なる
+				for( ; site1 != eite1 ; ++site1 )
+				{
+					base::insert( *site1 );
+				}
+#endif
 			}
 		}
 		return( *this );
@@ -305,8 +327,8 @@ public:
 	typedef typename base::allocator_type allocator_type;
 	typedef typename base::size_type size_type;
 	typedef typename base::difference_type difference_type;
-	typedef typename base::pointer pointer;
-	typedef typename base::const_pointer const_pointer;
+//	typedef typename base::pointer pointer;
+//	typedef typename base::const_pointer const_pointer;
 	typedef typename base::reference reference;
 	typedef typename base::const_reference const_reference;
 	typedef typename base::iterator iterator;
@@ -356,8 +378,8 @@ public:
 	typedef typename base::allocator_type allocator_type;
 	typedef typename base::size_type size_type;
 	typedef typename base::difference_type difference_type;
-	typedef typename base::pointer pointer;
-	typedef typename base::const_pointer const_pointer;
+//	typedef typename base::pointer pointer;
+//	typedef typename base::const_pointer const_pointer;
 	typedef typename base::reference reference;
 	typedef typename base::const_reference const_reference;
 	typedef typename base::iterator iterator;

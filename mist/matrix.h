@@ -46,6 +46,7 @@ _MIST_BEGIN
 
 template < class T > struct matrix_minus;
 template < class T > struct matrix_transpose;
+template < class T, class Allocator > class matrix;
 
 template< class T >
 struct matrix_expression
@@ -53,10 +54,13 @@ struct matrix_expression
 	typedef typename T::value_type		value_type;
 	typedef typename T::size_type		size_type;
 	typedef typename T::allocator_type	allocator_type;
+	typedef typename matrix< value_type, allocator_type > matrix_type;
 
 	T expression;
 
 	value_type operator()( size_type r, size_type c ) const { return( expression( r, c ) ); }
+	value_type operator[]( size_type indx ) const { return( expression[ indx ] ); }
+	size_type size( ) const { return( expression.size( ) ); };
 	size_type rows( ) const { return( expression.rows( ) ); };
 	size_type cols( ) const { return( expression.cols( ) ); };
 
@@ -110,9 +114,11 @@ struct matrix_minus : public matrix_single_operation< T >
 	typedef matrix_single_operation< T > base;
 
 	explicit matrix_minus( const T &mhs ) : base( mhs ){}
+	size_type size( ) const { return( base::middle_.size( ) ); };
 	size_type rows( ) const { return( base::middle_.rows( ) ); }
 	size_type cols( ) const { return( base::middle_.cols( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( - base::middle_( r, c ) ); }
+	value_type operator[]( size_type indx ) const { return( - base::middle_[ indx ] ); }
 };
 
 
@@ -126,9 +132,11 @@ struct matrix_transpose : public matrix_single_operation< T >
 	typedef matrix_single_operation< T > base;
 
 	explicit matrix_transpose( const T &mhs ) : base( mhs ){}
+	size_type size( ) const { return( base::middle_.size( ) ); };
 	size_type rows( ) const { return( base::middle_.cols( ) ); }
 	size_type cols( ) const { return( base::middle_.rows( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( base::middle_( c, r ) ); }
+	value_type operator[]( size_type indx ) const { return( base::middle_[ indx ] ); }
 };
 
 
@@ -151,9 +159,11 @@ struct matrix_add : public matrix_bind_operation< T1, T2 >
 		}
 #endif
 	}
+	size_type size( ) const { return( base::left_.size( ) ); };
 	size_type rows( ) const { return( base::left_.rows( ) ); }
 	size_type cols( ) const { return( base::left_.cols( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( base::left_( r, c ) + base::right_( r, c ) ); }
+	value_type operator[]( size_type indx ) const { return( base::left_[ indx ] + base::right_[ indx ] ); }
 };
 
 
@@ -176,9 +186,11 @@ struct matrix_sub : public matrix_bind_operation< T1, T2 >
 		}
 #endif
 	}
+	size_type size( ) const { return( base::left_.size( ) ); };
 	size_type rows( ) const { return( base::left_.rows( ) ); }
 	size_type cols( ) const { return( base::left_.cols( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( base::left_( r, c ) - base::right_( r, c ) ); }
+	value_type operator[]( size_type indx ) const { return( base::left_[ indx ] - base::right_[ indx ] ); }
 };
 
 
@@ -201,6 +213,7 @@ struct matrix_mul : public matrix_bind_operation< T1, T2 >
 		}
 #endif
 	}
+	size_type size( ) const { return( base::left_.size( ) ); };
 	size_type rows( ) const { return( base::left_.rows( ) ); }
 	size_type cols( ) const { return( base::right_.cols( ) ); }
 	value_type operator()( size_type r, size_type c ) const
@@ -213,6 +226,7 @@ struct matrix_mul : public matrix_bind_operation< T1, T2 >
 		}
 		return( v );
 	}
+	value_type operator[]( size_type indx ) const { return( base::left_[ indx ] * base::right_[ indx ] ); }
 };
 
 
@@ -226,9 +240,11 @@ struct matrix_add_const : public matrix_bind_operation< T1, T2 >
 	typedef matrix_bind_operation< T1, T2 > base;
 
 	matrix_add_const( const T1 &lhs, const T2 &rhs ) : base( lhs, rhs ){}
+	size_type size( ) const { return( base::left_.size( ) ); };
 	size_type rows( ) const { return( base::left_.rows( ) ); }
 	size_type cols( ) const { return( base::left_.cols( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( base::left_( r, c ) + ( r == c ? base::right_ : 0 ) ); }
+	value_type operator[]( size_type indx ) const { return( base::left_[ indx ] + base::right_ ); }
 };
 
 // 定数の足し算オペレータ（右側が定数）
@@ -241,9 +257,11 @@ struct matrix_sub_const1 : public matrix_bind_operation< T1, T2 >
 	typedef matrix_bind_operation< T1, T2 > base;
 
 	matrix_sub_const1( const T1 &lhs, const T2 &rhs ) : base( lhs, rhs ){}
+	size_type size( ) const { return( base::left_.size( ) ); };
 	size_type rows( ) const { return( base::left_.rows( ) ); }
 	size_type cols( ) const { return( base::left_.cols( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( base::left_( r, c ) - ( r == c ? base::right_ : 0 ) ); }
+	value_type operator[]( size_type indx ) const { return( base::left_[ indx ] - base::right_ ); }
 };
 
 // 定数の足し算オペレータ（左側が定数）
@@ -256,9 +274,11 @@ struct matrix_sub_const2 : public matrix_bind_operation< T1, T2 >
 	typedef matrix_bind_operation< T1, T2 > base;
 
 	matrix_sub_const2( const T1 &lhs, const T2 &rhs ) : base( lhs, rhs ){}
+	size_type size( ) const { return( base::left_.size( ) ); };
 	size_type rows( ) const { return( base::left_.rows( ) ); }
 	size_type cols( ) const { return( base::left_.cols( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( ( r == c ? base::right_ : 0 ) - base::left_( r, c ) ); }
+	value_type operator[]( size_type indx ) const { return( base::right_[ indx ] - base::left_ ); }
 };
 
 // 定数の掛け算オペレータ
@@ -271,9 +291,11 @@ struct matrix_mul_const : public matrix_bind_operation< T1, T2 >
 	typedef matrix_bind_operation< T1, T2 > base;
 
 	matrix_mul_const( const T1 &lhs, const T2 &rhs ) : base( lhs, rhs ){}
+	size_type size( ) const { return( base::left_.size( ) ); };
 	size_type rows( ) const { return( base::left_.rows( ) ); }
 	size_type cols( ) const { return( base::left_.cols( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( base::left_( r, c ) * base::right_ ); }
+	value_type operator[]( size_type indx ) const { return( base::left_[ indx ] * base::right_ ); }
 };
 
 // 定数の割り算オペレータ
@@ -295,9 +317,11 @@ struct matrix_div_const : public matrix_bind_operation< T1, T2 >
 		}
 #endif
 	}
+	size_type size( ) const { return( base::left_.size( ) ); };
 	size_type rows( ) const { return( base::left_.rows( ) ); }
 	size_type cols( ) const { return( base::left_.cols( ) ); }
 	value_type operator()( size_type r, size_type c ) const { return( base::left_( r, c ) / base::right_ ); }
+	value_type operator[]( size_type indx ) const { return( base::left_[ indx ] / base::right_ ); }
 };
 
 #endif
@@ -451,7 +475,7 @@ public: // 配列に対する算術演算
 	}
 
 	// 転置行列
-	matrix t() const
+	matrix t( ) const
 	{
 		const matrix &m = *this;
 		matrix o( size2_, size1_ );

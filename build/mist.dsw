@@ -183,7 +183,43 @@ Package=<4>
 
 ###############################################################################
 
+Project: "set_test"=".\set_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "singleton_test"=".\singleton_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "thread_test"=".\thread_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "vector_test"=".\vector_test.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

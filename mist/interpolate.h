@@ -267,8 +267,9 @@ namespace __cubic__
 {
 	inline double sinc( double t )
 	{
+		using namespace std;
 		double ret = 0.0;
-		t = std::abs( t );
+		t = abs( t );
 
 		if( t < 1.0 )
 		{

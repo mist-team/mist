@@ -205,6 +205,7 @@ namespace __morphology__
 	// モルフォロジ演算に用いる正方形構造要素
 	inline morphology_structure square( double radius, double resoX, double resoY )
 	{
+		using namespace std;
 		typedef array2< bool >::size_type size_type;
 		typedef array2< bool >::difference_type difference_type;
 
@@ -233,7 +234,7 @@ namespace __morphology__
 			for( x = -rx ; x <= rx ; x++ )
 			{
 				xx = x * ax;
-				if( std::abs( xx ) <= radius && std::abs( yy ) <= radius )
+				if( abs( xx ) <= radius && abs( yy ) <= radius )
 				{
 					m( x + ox, y + oy ) = true;
 				}
@@ -271,6 +272,7 @@ namespace __morphology__
 	// モルフォロジ演算に用いる立方体構造要素
 	inline morphology_structure cube( double radius, double resoX, double resoY, double resoZ )
 	{
+		using namespace std;
 		typedef array3< bool >::size_type size_type;
 		typedef array3< bool >::difference_type difference_type;
 
@@ -307,7 +309,7 @@ namespace __morphology__
 				for( x = -rx ; x <= rx ; x++ )
 				{
 					xx = x * ax;
-					if( std::abs( xx ) <= radius && std::abs( yy ) <= radius && std::abs( zz ) <= radius )
+					if( abs( xx ) <= radius && abs( yy ) <= radius && abs( zz ) <= radius )
 					{
 						m( x + ox, y + oy, z + oz ) = true;
 					}

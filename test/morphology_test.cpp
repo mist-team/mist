@@ -225,7 +225,7 @@ int main( int argc, char *argv[] )
 		double err = 0.0;
 		for( i = 0 ; i < tmp1.size( ) ; i++ )
 		{
-			err += std::abs( static_cast< double >( tmp1[ i ] - tmp2[ i ] ) );
+			err += abs( static_cast< double >( tmp1[ i ] - tmp2[ i ] ) );
 		}
 		cout << "Difference: " << err << endl;
 	}
