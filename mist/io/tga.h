@@ -536,7 +536,7 @@ bool read_tga( array2< T, Allocator > &image, const std::string &filename )
 //! @retval false c ‰æ‘œ‚Ì‘‚«‚İ‚É¸”s
 //! 
 template < class T, class Allocator >
-bool write_tga( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type tga_bits = 16 )
+bool write_tga( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type tga_bits = 24 )
 {
 	return( __tga_controller__::tga_controller< T, Allocator >::write( image, filename, tga_bits, false ) );
 }
