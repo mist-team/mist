@@ -32,7 +32,7 @@ struct progress_callback
 		return( true );
 	}
 
-	progress_callback( Fl_Progress *f ) : f_( f ){ }
+	progress_callback( Fl_Progress *f = NULL ) : f_( f ){ }
 };
 
 
@@ -202,7 +202,7 @@ void ct_draw_area::median_filter3D( ct_image_window *wnd )
 	mist::array3< short > tmp = ct;
 	{
 		mist::timer t;
-		mist::median( tmp, ct, 3, 3, 3, 0, progress_callback( wnd->progress_bar ) );
+		mist::median( tmp, ct, 3, 3, 3, progress_callback( wnd->progress_bar ), 0 );
 		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
 	}
 	redraw( );

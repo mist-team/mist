@@ -1696,7 +1696,7 @@ bool closing( array3< T, Allocator > &in, const morphology::morphology_structure
 
 	typedef typename array3< T, Allocator >::value_type value_type;
 	typedef typename array3< T, Allocator >::size_type  size_type;
-	typedef __mist_console_callback__< Functor > CallBack;
+	typedef __mist_convert_callback__< Functor > CallBack;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator >, CallBack > morphology_thread;
 	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
