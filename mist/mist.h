@@ -275,13 +275,13 @@ class array1 : public array< T, Allocator >
 {
 public:
 	typedef Allocator allocator_type;
-	typedef typename array< T, Allocator >::reference reference;
-	typedef typename array< T, Allocator >::const_reference const_reference;
-	typedef typename array< T, Allocator >::value_type value_type;
-	typedef typename array< T, Allocator >::size_type size_type;
-	typedef typename array< T, Allocator >::difference_type difference_type;
-	typedef typename array< T, Allocator >::pointer pointer;
-	typedef typename array< T, Allocator >::const_pointer const_pointer;
+	typedef typename Allocator::reference reference;
+	typedef typename Allocator::const_reference const_reference;
+	typedef typename Allocator::value_type value_type;
+	typedef typename Allocator::size_type size_type;
+	typedef typename Allocator::difference_type difference_type;
+	typedef typename Allocator::pointer pointer;
+	typedef typename Allocator::const_pointer const_pointer;
 
 private:
 	typedef array< T, Allocator > base;
@@ -380,13 +380,13 @@ class array2 : public array1< T, Allocator >
 {
 public:
 	typedef Allocator allocator_type;
-	typedef typename array1< T, Allocator >::reference reference;
-	typedef typename array1< T, Allocator >::const_reference const_reference;
-	typedef typename array1< T, Allocator >::value_type value_type;
-	typedef typename array1< T, Allocator >::size_type size_type;
-	typedef typename array1< T, Allocator >::difference_type difference_type;
-	typedef typename array1< T, Allocator >::pointer pointer;
-	typedef typename array1< T, Allocator >::const_pointer const_pointer;
+	typedef typename Allocator::reference reference;
+	typedef typename Allocator::const_reference const_reference;
+	typedef typename Allocator::value_type value_type;
+	typedef typename Allocator::size_type size_type;
+	typedef typename Allocator::difference_type difference_type;
+	typedef typename Allocator::pointer pointer;
+	typedef typename Allocator::const_pointer const_pointer;
 
 private:
 	typedef array1< T, Allocator > base;
@@ -528,13 +528,13 @@ class array3 : public array2< T, Allocator >
 {
 public:
 	typedef Allocator allocator_type;
-	typedef typename array2< T, Allocator >::reference reference;
-	typedef typename array2< T, Allocator >::const_reference const_reference;
-	typedef typename array2< T, Allocator >::value_type value_type;
-	typedef typename array2< T, Allocator >::size_type size_type;
-	typedef typename array2< T, Allocator >::difference_type difference_type;
-	typedef typename array2< T, Allocator >::pointer pointer;
-	typedef typename array2< T, Allocator >::const_pointer const_pointer;
+	typedef typename Allocator::reference reference;
+	typedef typename Allocator::const_reference const_reference;
+	typedef typename Allocator::value_type value_type;
+	typedef typename Allocator::size_type size_type;
+	typedef typename Allocator::difference_type difference_type;
+	typedef typename Allocator::pointer pointer;
+	typedef typename Allocator::const_pointer const_pointer;
 
 private:
 	typedef array2< T, Allocator > base;

@@ -7,9 +7,6 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
-namespace et
-{
-
 //#define _CHECK_MATRIX_OPERATION_
 
 template < class T > struct matrix_minus;
@@ -246,13 +243,13 @@ class matrix : public array< T, Allocator >
 {
 public:
 	typedef Allocator allocator_type;
-	typedef typename array< T, Allocator >::reference reference;
-	typedef typename array< T, Allocator >::const_reference const_reference;
-	typedef typename array< T, Allocator >::value_type value_type;
-	typedef typename array< T, Allocator >::size_type size_type;
-	typedef typename array< T, Allocator >::difference_type difference_type;
-	typedef typename array< T, Allocator >::pointer pointer;
-	typedef typename array< T, Allocator >::const_pointer const_pointer;
+	typedef typename Allocator::reference reference;
+	typedef typename Allocator::const_reference const_reference;
+	typedef typename Allocator::value_type value_type;
+	typedef typename Allocator::size_type size_type;
+	typedef typename Allocator::difference_type difference_type;
+	typedef typename Allocator::pointer pointer;
+	typedef typename Allocator::const_pointer const_pointer;
 
 private:
 	typedef array< T, Allocator > base;
@@ -686,7 +683,6 @@ inline matrix_div_const< matrix< T, A >, typename matrix< T, A >::value_type > o
 	return( matrix_div_const< matrix< T, A >, value_type >( lhs, rhs ) );
 }
 
-}
 
 // mist名前空間の終わり
 _MIST_END
