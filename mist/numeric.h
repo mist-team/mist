@@ -181,6 +181,18 @@ namespace __clapack__
 		// 対称行列に対する固有値・固有ベクトルを計算
 		int ssyev_( char *jobz, char *uplo, integer *n, real *a, integer *lda, real *w, real *work, integer *lwork, integer *info );
 		int dsyev_( char *jobz, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *w, doublereal *work, integer *lwork, integer *info );
+		// 対称帯行列に対する固有値・固有ベクトルを計算
+		int ssbev_( char *jobz, char *uplo, integer *n, integer *kd, real *ab, integer *ldab, real *w, real *z__, integer *ldz, real *work, integer *info );
+		int dsbev_( char *jobz, char *uplo, integer *n, integer *kd, doublereal *ab, integer *ldab, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *info );
+		// 対称3重対角行列に対する固有値・固有ベクトルを計算
+		int sstev_( char *jobz, integer *n, real *d__, real *e, real *z__, integer *ldz, real *work, integer *info );
+		int dstev_( char *jobz, integer *n, doublereal *d__, doublereal *e, doublereal *z__, integer *ldz, doublereal *work, integer *info );
+		// エルミート行列に対する固有値・固有ベクトルを計算
+		int cheev_( char *jobz, char *uplo, integer *n, complex *a, integer *lda, real *w, complex *work, integer *lwork, real *rwork, integer *info );
+		int zheev_( char *jobz, char *uplo, integer *n, doublecomplex *a, integer *lda, doublereal *w, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
+		// エルミート帯行列に対する固有値・固有ベクトルを計算
+		int chbev_( char *jobz, char *uplo, integer *n, integer *kd, complex *ab, integer *ldab, real *w, complex *z__, integer *ldz, complex *work, real *rwork, integer *info );
+		int zhbev_( char *jobz, char *uplo, integer *n, integer *kd, doublecomplex *ab, integer *ldab, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, doublereal *rwork, integer *info );
 
 
 		// 一般行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
@@ -188,12 +200,22 @@ namespace __clapack__
 		int dgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, doublereal *a, integer *lda, doublereal *wr, doublereal *wi, doublereal *vl, integer *ldvl, doublereal *vr, integer *ldvr, integer *ilo, integer *ihi, doublereal *scale, doublereal *abnrm, doublereal *rconde, doublereal *rcondv, doublereal *work, integer *lwork, integer *iwork, integer *info );
 		int cgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, complex *a, integer *lda, complex *w, complex *vl, integer *ldvl, complex *vr, integer *ldvr, integer *ilo, integer *ihi, real *scale, real *abnrm, real *rconde, real *rcondv, complex *work, integer *lwork, real *rwork, integer *info );
 		int zgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, doublecomplex *a, integer *lda, doublecomplex *w, doublecomplex *vl, integer *ldvl, doublecomplex *vr, integer *ldvr, integer *ilo, integer *ihi, doublereal *scale, doublereal *abnrm, doublereal *rconde, doublereal *rcondv, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
-		// 対称行列に対する固有値・固有ベクトルを計算
+		// 対称行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
 		int ssyevx_( char *jobz, char *range, char *uplo, integer *n, real *a, integer *lda, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, real *z__, integer *ldz, real *work, integer *lwork, integer *iwork, integer *ifail, integer *info );
 		int dsyevx_( char *jobz, char *range, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *lwork, integer *iwork, integer *ifail, integer *info );
-		// エルミート行列に対する固有値・固有ベクトルを計算
-		int cheev_( char *jobz, char *uplo, integer *n, complex *a, integer *lda, real *w, complex *work, integer *lwork, real *rwork, integer *info );
-		int zheev_( char *jobz, char *uplo, integer *n, doublecomplex *a, integer *lda, doublereal *w, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
+		// 対称帯行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
+		int ssbevx_( char *jobz, char *range, char *uplo, integer *n, integer *kd, real *ab, integer *ldab, real *q, integer *ldq, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, real *z__, integer *ldz, real *work, integer *iwork, integer *ifail, integer *info );
+		int dsbevx_( char *jobz, char *range, char *uplo, integer *n, integer *kd, doublereal *ab, integer *ldab, doublereal *q, integer *ldq, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *iwork, integer *ifail, integer *info );
+		// 対称3重対角行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
+		int sstevx_( char *jobz, char *range, integer *n, real *d__, real *e, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, real *z__, integer *ldz, real *work, integer *iwork, integer *ifail, integer *info );
+		int dstevx_( char *jobz, char *range, integer *n, doublereal *d__, doublereal *e, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *iwork, integer *ifail, integer *info );
+		// エルミート行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
+		int cheevx_( char *jobz, char *range, char *uplo, integer *n, complex *a, integer *lda, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, complex *z__, integer *ldz, complex *work, integer *lwork, real *rwork, integer *iwork, integer *ifail, integer *info );
+		int zheevx_( char *jobz, char *range, char *uplo, integer *n, doublecomplex *a, integer *lda, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, integer *lwork, doublereal *rwork, integer *iwork, integer *ifail, integer *info );
+		// エルミート帯行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
+		int chbevx_( char *jobz, char *range, char *uplo, integer *n, integer *kd, complex *ab, integer *ldab, complex *q, integer *ldq, real *vl, real *vu, integer *il, integer *iu, real *abstol, integer *m, real *w, complex *z__, integer *ldz, complex *work, real *rwork, integer *iwork, integer *ifail, integer *info );
+		int zhbevx_( char *jobz, char *range, char *uplo, integer *n, integer *kd, doublecomplex *ab, integer *ldab, doublecomplex *q, integer *ldq, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, doublereal *rwork, integer *iwork, integer *ifail, integer *info );
+		// エルミート3重対角行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
 
 
 		// 一般行列に対する特異値分解を計算
@@ -208,14 +230,36 @@ namespace __clapack__
 		int dgesdd_( char *jobz, integer *m, integer *n, doublereal *a, integer *lda, doublereal *s, doublereal *u, integer *ldu, doublereal *vt, integer *ldvt, doublereal *work, integer *lwork, integer *iwork, integer *info );
 		int cgesdd_( char *jobz, integer *m, integer *n, complex *a, integer *lda, real *s, complex *u, integer *ldu, complex *vt, integer *ldvt, complex *work, integer *lwork, real *rwork, integer *iwork, integer *info );
 		int zgesdd_( char *jobz, integer *m, integer *n, doublecomplex *a, integer *lda, doublereal *s, doublecomplex *u, integer *ldu, doublecomplex *vt, integer *ldvt, doublecomplex *work, integer *lwork, doublereal *rwork, integer *iwork, integer *info );
+
+
+
+		// 対称行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
+		int ssyevd_( char *jobz, char *uplo, integer *n, real *a, integer *lda, real *w, real *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		int dsyevd_( char *jobz, char *uplo, integer *n, doublereal *a, integer *lda, doublereal *w, doublereal *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		// 対称帯行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
+		int ssbevd_( char *jobz, char *uplo, integer *n, integer *kd, real *ab, integer *ldab, real *w, real *z__, integer *ldz, real *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		int dsbevd_( char *jobz, char *uplo, integer *n, integer *kd, doublereal *ab, integer *ldab, doublereal *w, doublereal *z__, integer *ldz, doublereal *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		// 対称3重対角行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
+		int sstevd_( char *jobz, integer *n, real *d__, real *e, real *z__, integer *ldz, real *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		int dstevd_( char *jobz, integer *n, doublereal *d__, doublereal *e, doublereal *z__, integer *ldz, doublereal *work, integer *lwork, integer *iwork, integer *liwork, integer *info );
+		// エルミート行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
+		int cheevd_( char *jobz, char *uplo, integer *n, complex *a, integer *lda, real *w, complex *work, integer *lwork, real *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
+		int zheevd_( char *jobz, char *uplo, integer *n, doublecomplex *a, integer *lda, doublereal *w, doublecomplex *work, integer *lwork, doublereal *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
+		// エルミート帯行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
+		int chbevd_( char *jobz, char *uplo, integer *n, integer *kd, complex *ab, integer *ldab, real *w, complex *z__, integer *ldz, complex *work, integer *lwork, real *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
+		int zhbevd_( char *jobz, char *uplo, integer *n, integer *kd, doublecomplex *ab, integer *ldab, doublereal *w, doublecomplex *z__, integer *ldz, doublecomplex *work, integer *lwork, doublereal *rwork, integer *lrwork, integer *iwork, integer *liwork, integer *info );
 	}
 
 
 	// 複素数及び実数の両方を区別することなく，実数部の値を取り出す関数
-	inline integer get_real( const real &r ){ return( static_cast< integer >( r ) ); }
-	inline integer get_real( const doublereal &r ){ return( static_cast< integer >( r ) ); }
-	inline integer get_real( const std::complex< real > &r ){ return( static_cast< integer >( r.real( ) ) ); }
-	inline integer get_real( const std::complex< doublereal > &r ){ return( static_cast< integer >( r.real( ) ) ); }
+	inline real       get_real( const real &r ){ return( r ); }
+	inline doublereal get_real( const doublereal &r ){ return( r ); }
+	inline real       get_real( const std::complex< real > &r ){ return( r.real( ) ); }
+	inline doublereal get_real( const std::complex< doublereal > &r ){ return( r.real( ) ); }
+	//inline integer get_real( const real &r ){ return( static_cast< integer >( r ) ); }
+	//inline integer get_real( const doublereal &r ){ return( static_cast< integer >( r ) ); }
+	//inline integer get_real( const std::complex< real > &r ){ return( static_cast< integer >( r.real( ) ) ); }
+	//inline integer get_real( const std::complex< doublereal > &r ){ return( static_cast< integer >( r.real( ) ) ); }
 
 
 	// 一般正方行列の連立方程式を解く関数
@@ -235,6 +279,40 @@ namespace __clapack__
 	{
 		return( zgesv_( &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
 	}
+	// 一般帯行列の連立方程式を解く関数
+	inline int gbsv( integer &n, integer &kl, integer &ku, integer &nrhs, real *ab, integer &ldab, integer *ipiv, real *b, integer &ldb, integer &info )
+	{
+		return( sgbsv_( &n, &kl, &ku, &nrhs, ab, &ldab, ipiv, b, &ldb, &info ) );
+	}
+	inline int gbsv( integer &n, integer &kl, integer &ku, integer &nrhs, doublereal *ab, integer &ldab, integer *ipiv, doublereal *b, integer &ldb, integer &info )
+	{
+		return( dgbsv_( &n, &kl, &ku, &nrhs, ab, &ldab, ipiv, b, &ldb, &info ) );
+	}
+	inline int gbsv( integer &n, integer &kl, integer &ku, integer &nrhs, complex *ab, integer &ldab, integer *ipiv, complex *b, integer &ldb, integer &info )
+	{
+		return( cgbsv_( &n, &kl, &ku, &nrhs, reinterpret_cast< complex* >( ab ), &ldab, ipiv, reinterpret_cast< complex* >( b ), &ldb, &info ) );
+	}
+	inline int gbsv( integer &n, integer &kl, integer &ku, integer &nrhs, doublecomplex *ab, integer &ldab, integer *ipiv, doublecomplex *b, integer &ldb, integer &info )
+	{
+		return( zgbsv_( &n, &kl, &ku, &nrhs, reinterpret_cast< doublecomplex* >( ab ), &ldab, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
+	}
+	// 一般三重対角行列の連立方程式を解く関数
+	inline int gtsv( integer &n, integer &nrhs, real *dl, real *d__, real *du, real *b, integer &ldb, integer &info )
+	{
+		return( sgtsv_( &n, &nrhs, dl, d__, du, b, &ldb, &info ) );
+	}
+	inline int gtsv( integer &n, integer &nrhs, doublereal *dl, doublereal *d__, doublereal *du, doublereal *b, integer &ldb, integer &info )
+	{
+		return( dgtsv_( &n, &nrhs, dl, d__, du, b, &ldb, &info ) );
+	}
+	inline int gtsv( integer &n, integer &nrhs, complex *dl, complex *d__, complex *du, complex *b, integer &ldb, integer &info )
+	{
+		return( cgtsv_( &n, &nrhs, reinterpret_cast< complex* >( dl ), reinterpret_cast< complex* >( d__ ), reinterpret_cast< complex* >( du ), reinterpret_cast< complex* >( b ), &ldb, &info ) );
+	}
+	inline int gtsv( integer &n, integer &nrhs, doublecomplex *dl, doublecomplex *d__, doublecomplex *du, doublecomplex *b, integer &ldb, integer &info )
+	{
+		return( zgtsv_( &n, &nrhs, reinterpret_cast< doublecomplex* >( dl ), reinterpret_cast< doublecomplex* >( d__ ), reinterpret_cast< doublecomplex* >( du ), reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
+	}
 	// 対称正方行列の連立方程式を解く関数
 	inline int sysv( char *uplo, integer &n, integer &nrhs, real *a, integer &lda, integer *ipiv, real *b, integer &ldb, real *work, integer &lwork, integer &info )
 	{
@@ -249,6 +327,15 @@ namespace __clapack__
 		return( csysv_( uplo, &n, &nrhs, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( b ), &ldb, reinterpret_cast< complex* >( work ), &lwork, &info ) );
 	}
 	inline int sysv( char *uplo, integer &n, integer &nrhs, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *b, integer &ldb, std::complex< doublereal > *work, integer &lwork, integer &info )
+	{
+		return( zsysv_( uplo, &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+	}
+	// エルミート行列の連立方程式を解く関数
+	inline int hesv( char *uplo, integer &n, integer &nrhs, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *b, integer &ldb, std::complex< real > *work, integer &lwork, integer&info )
+	{
+		return( chesv_( uplo, &n, &nrhs, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( b ), &ldb, reinterpret_cast< complex* >( work ), &lwork, &info ) );
+	}
+	inline int hesv( char *uplo, integer &n, integer &nrhs, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *b, integer &ldb, std::complex< doublereal > *work, integer &lwork, integer &info )
 	{
 		return( zsysv_( uplo, &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
@@ -271,6 +358,40 @@ namespace __clapack__
 	{
 		return( zgetrf_( &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, &info ) );
 	}
+	// 一般帯行列の連立方程式を解く関数
+	inline int gbtrf( integer &m, integer &n, integer &kl, integer &ku, real *ab, integer &ldab, integer *ipiv, integer &info )
+	{
+		return( sgbtrf_( &m, &n, &kl, &ku, ab, &ldab, ipiv, &info ) );
+	}
+	inline int gbtrf( integer &m, integer &n, integer &kl, integer &ku, doublereal *ab, integer &ldab, integer *ipiv, integer &info )
+	{
+		return( dgbtrf_( &m, &n, &kl, &ku, ab, &ldab, ipiv, &info ) );
+	}
+	inline int gbtrf( integer &m, integer &n, integer &kl, integer &ku, std::complex< real > *ab, integer &ldab, integer *ipiv, integer &info )
+	{
+		return( cgbtrf_( &m, &n, &kl, &ku, reinterpret_cast< complex* >( ab ), &ldab, ipiv, &info ) );
+	}
+	inline int gbtrf( integer &m, integer &n, integer &kl, integer &ku, std::complex< doublereal > *ab, integer &ldab, integer *ipiv, integer &info )
+	{
+		return( zgbtrf_( &m, &n, &kl, &ku, reinterpret_cast< doublecomplex* >( ab ), &ldab, ipiv, &info ) );
+	}
+	// 一般三重対角行列の連立方程式を解く関数
+	inline int gttrf( integer &n, real *dl, real *d__, real *du, real *du2, integer *ipiv, integer &info )
+	{
+		return( sgttrf_( &n, dl, d__, du, du2, ipiv, &info ) );
+	}
+	inline int gttrf( integer &n, doublereal *dl, doublereal *d__, doublereal *du, doublereal *du2, integer *ipiv, integer &info )
+	{
+		return( dgttrf_( &n, dl, d__, du, du2, ipiv, &info ) );
+	}
+	inline int gttrf( integer &n, std::complex< real > *dl, std::complex< real > *d__, std::complex< real > *du, std::complex< real > *du2, integer *ipiv, integer &info )
+	{
+		return( cgttrf_( &n, reinterpret_cast< complex* >( dl ), reinterpret_cast< complex* >( d__ ), reinterpret_cast< complex* >( du ), reinterpret_cast< complex* >( du2 ), ipiv, &info ) );
+	}
+	inline int gttrf( integer &n, std::complex< doublereal > *dl, std::complex< doublereal > *d__, std::complex< doublereal > *du, std::complex< doublereal > *du2, integer *ipiv, integer &info )
+	{
+		return( zgttrf_( &n, reinterpret_cast< doublecomplex* >( dl ), reinterpret_cast< doublecomplex* >( d__ ), reinterpret_cast< doublecomplex* >( du ), reinterpret_cast< doublecomplex* >( du2 ), ipiv, &info ) );
+	}
 	// 対称行列のLU分解
 	inline int sytrf( char *uplo, integer &n, real *a, integer &lda, integer *ipiv, real *work, integer &lwork, integer &info )
 	{
@@ -287,6 +408,15 @@ namespace __clapack__
 	inline int sytrf( char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &lwork, integer &info )
 	{
 		return( zsytrf_( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+	}
+	// エルミート行列のLU分解
+	inline int hetrf( char *uplo, integer &n, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *work, integer &lwork, integer &info )
+	{
+		return( chetrf_( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &lwork, &info ) );
+	}
+	inline int hetrf( char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &lwork, integer &info )
+	{
+		return( zhetrf_( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
 
 
@@ -343,6 +473,15 @@ namespace __clapack__
 	{
 		return( zsytri_( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &info ) );
 	}
+	// LU分解の結果を用いたエルミート行列の逆行列の計算
+	inline int hetri( char *uplo, integer &n, std::complex< real > *a, integer &lda, integer *ipiv, std::complex< real > *work, integer &info )
+	{
+		return( chetri_( uplo, &n, reinterpret_cast< complex* >( a ), &lda, ipiv, reinterpret_cast< complex* >( work ), &info ) );
+	}
+	inline int hetri( char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, integer *ipiv, std::complex< doublereal > *work, integer &info )
+	{
+		return( zhetri_( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &info ) );
+	}
 
 
 	// 一般行列に対する固有値・固有ベクトルを計算
@@ -368,7 +507,6 @@ namespace __clapack__
 		return( zgeev_( jobvl, jobvr, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( w ), reinterpret_cast< doublecomplex* >( vl ), &ldvl,
 							reinterpret_cast< doublecomplex* >( vr ), &ldvr, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
 	}
-
 	// 対称行列に対する固有値・固有ベクトルを計算
 	inline int syev( char *jobz, char *uplo, integer &n, real *a, integer &lda, real *w, real *work, integer &lwork, integer &info )
 	{
@@ -378,6 +516,43 @@ namespace __clapack__
 	{
 		return( dsyev_( jobz, uplo, &n, a, &lda, w, work, &lwork, &info ) );
 	}
+	// 対称帯行列に対する固有値・固有ベクトルを計算
+	inline int sbev( char *jobz, char *uplo, integer &n, integer &kd, real *ab, integer &ldab, real *w, real *z__, integer &ldz, real *work, integer &info )
+	{
+		return( ssbev_( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &info ) );
+	}
+	inline int sbev( char *jobz, char *uplo, integer &n, integer &kd, doublereal *ab, integer &ldab, doublereal *w, doublereal *z__, integer &ldz, doublereal *work, integer &info )
+	{
+		return( dsbev_( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &info ) );
+	}
+	// 対称3重対角行列に対する固有値・固有ベクトルを計算
+	inline int stev( char *jobz, integer &n, real *d__, real *e, real *z__, integer &ldz, real *work, integer &info )
+	{
+		return( sstev_( jobz, &n, d__, e, z__, &ldz, work, &info ) );
+	}
+	inline int stev( char *jobz, integer &n, doublereal *d__, doublereal *e, doublereal *z__, integer &ldz, doublereal *work, integer &info )
+	{
+		return( dstev_( jobz, &n, d__, e, z__, &ldz, work, &info ) );
+	}
+	// エルミート行列に対する固有値・固有ベクトルを計算
+	inline int heev( char *jobz, char *uplo, integer &n, std::complex< real > *a, integer &lda, real *w, std::complex< real > *work, integer &lwork, real *rwork, integer &info )
+	{
+		return( cheev_( jobz, uplo, &n, reinterpret_cast< complex* >( a ), &lda, w, reinterpret_cast< complex* >( work ), &lwork, rwork, &info ) );
+	}
+	inline int heev( char *jobz, char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, doublereal *w, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &info )
+	{
+		return( zheev_( jobz, uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, w, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
+	}
+	// エルミート帯行列に対する固有値・固有ベクトルを計算
+	inline int hbev( char *jobz, char *uplo, integer &n, integer &kd, std::complex< real > *ab, integer &ldab, real *w, std::complex< real > *z__, integer &ldz, std::complex< real > *work, real *rwork, integer &info )
+	{
+		return( chbev_( jobz, uplo, &n, &kd, reinterpret_cast< complex* >( ab ), &ldab, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), rwork, &info ) );
+	}
+	inline int hbev( char *jobz, char *uplo, integer &n, integer &kd, std::complex< doublereal > *ab, integer &ldab, doublereal *w, std::complex< doublereal > *z__, integer &ldz, std::complex< doublereal > *work, doublereal *rwork, integer &info )
+	{
+		return( zhbev_( jobz, uplo, &n, &kd, reinterpret_cast< doublecomplex* >( ab ), &ldab, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), rwork, &info ) );
+	}
+
 
 
 	// 一般行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
@@ -407,8 +582,6 @@ namespace __clapack__
 		return( zgeevx_( balanc, jobvl, jobvr, sense, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( w ), reinterpret_cast< doublecomplex* >( vl ), &ldvl,
 								reinterpret_cast< doublecomplex* >( vr ), &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
 	}
-
-
 	// 対称行列に対する固有値・固有ベクトルを計算
 	inline int geevx( char *jobz, char *range, char *uplo, integer &n, real *a, integer &lda,
 						real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, real *z__,
@@ -422,6 +595,44 @@ namespace __clapack__
 	{
 		return( dsyevx_( jobz, range, uplo, &n, a, &lda, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, &lwork, iwork, ifail, &info ) );
 	}
+	// 対称帯行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
+	inline int sbevx( char *jobz, char *range, char *uplo, integer &n, integer &kd, real *ab, integer &ldab, real *q, integer &ldq, real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, real *z__, integer &ldz, real *work, integer *iwork, integer *ifail, integer &info )
+	{
+		return( ssbevx_( jobz, range, uplo, &n, &kd, ab, &ldab, q, &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
+	}
+	inline int dsbevx_( char *jobz, char *range, char *uplo, integer &n, integer &kd, doublereal *ab, integer &ldab, doublereal *q, integer &ldq, doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, doublereal *z__, integer &ldz, doublereal *work, integer *iwork, integer *ifail, integer &info )
+	{
+		return( dsbevx_( jobz, range, uplo, &n, &kd, ab, &ldab, q, &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
+	}
+	// 対称3重対角行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
+	inline int stevx( char *jobz, char *range, integer &n, real *d__, real *e, real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, real *z__, integer &ldz, real *work, integer *iwork, integer *ifail, integer &info )
+	{
+		return( sstevx_( jobz, range, &n, d__, e, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
+	}
+	inline int stevx( char *jobz, char *range, integer &n, doublereal *d__, doublereal *e, doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, doublereal *z__, integer &ldz, doublereal *work, integer *iwork, integer *ifail, integer &info )
+	{
+		return( dstevx_( jobz, range, &n, d__, e, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, iwork, ifail, &info ) );
+	}
+	// エルミート行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
+	inline int heevx( char *jobz, char *range, char *uplo, integer &n, std::complex< real > *a, integer &lda, real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, std::complex< real > *z__, integer &ldz, std::complex< real > *work, integer &lwork, real *rwork, integer *iwork, integer *ifail, integer &info )
+	{
+		return( cheevx_( jobz, range, uplo, &n, reinterpret_cast< complex* >( a ), &lda, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), &lwork, rwork, iwork, ifail, &info ) );
+	}
+	inline int heevx( char *jobz, char *range, char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, std::complex< doublereal > *z__, integer &ldz, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer *iwork, integer *ifail, integer &info )
+	{
+		return( zheevx_( jobz, range, uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, iwork, ifail, &info ) );
+	}
+	// エルミート帯行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
+	inline int hbevx( char *jobz, char *range, char *uplo, integer &n, integer &kd, complex *ab, integer &ldab, complex *q, integer &ldq, real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, complex *z__, integer &ldz, complex *work, real *rwork, integer *iwork, integer *ifail, integer &info )
+	{
+		return( chbevx_( jobz, range, uplo, &n, &kd, reinterpret_cast< complex* >( ab ), &ldab, reinterpret_cast< complex* >( q ), &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), rwork, iwork, ifail, &info ) );
+	}
+	inline int hbevx( char *jobz, char *range, char *uplo, integer &n, integer &kd, complex *ab, integer &ldab, complex *q, integer &ldq, doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, complex *z__, integer &ldz, complex *work, doublereal *rwork, integer *iwork, integer *ifail, integer &info )
+	{
+		return( zhbevx_( jobz, range, uplo, &n, &kd, reinterpret_cast< doublecomplex* >( ab ), &ldab, reinterpret_cast< doublecomplex* >( q ), &ldq, &vl, &vu, &il, &iu, &abstol, &m, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), rwork, iwork, ifail, &info ) );
+	}
+
+
 
 
 	// 一般行列に対する特異値分解を計算
@@ -448,6 +659,7 @@ namespace __clapack__
 								&ldu, reinterpret_cast< doublecomplex* >( vt ), &ldvt, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
 	}
 
+	// 一般行列に対する特異値分解を計算．分割統治法を用いた高速バージョン
 	inline int gesdd( char *jobz, integer &m, integer &n, real *a, integer &lda, real *s, real *u, integer &ldu,
 								real *vt, integer &ldvt, real *work, integer &lwork, integer *iwork, integer &info )
 	{
@@ -469,6 +681,53 @@ namespace __clapack__
 	{
 		return( zgesdd_( jobz, &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, s, reinterpret_cast< doublecomplex* >( u ), &ldu,
 							reinterpret_cast< doublecomplex* >( vt ), &ldvt, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, iwork, &info ) );
+	}
+
+
+	// 対称行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
+	inline int syevd( char *jobz, char *uplo, integer &n, real *a, integer &lda, real *w, real *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
+	{
+		return( ssyevd_( jobz, uplo, &n, a, &lda, w, work, &lwork, iwork, &liwork, &info ) );
+	}
+	inline int syevd( char *jobz, char *uplo, integer &n, doublereal *a, integer &lda, doublereal *w, doublereal *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
+	{
+		return( dsyevd_( jobz, uplo, &n, a, &lda, w, work, &lwork, iwork, &liwork, &info ) );
+	}
+	// 対称帯行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
+	inline int sbevd( char *jobz, char *uplo, integer &n, integer &kd, real *ab, integer &ldab, real *w, real *z__, integer &ldz, real *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
+	{
+		return( ssbevd_( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
+	}
+	inline int sbevd( char *jobz, char *uplo, integer &n, integer &kd, doublereal *ab, integer &ldab, doublereal *w, doublereal *z__, integer &ldz, doublereal *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
+	{
+		return( dsbevd_( jobz, uplo, &n, &kd, ab, &ldab, w, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
+	}
+	// 対称3重対角行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
+	inline int stevd( char *jobz, integer &n, real *d__, real *e, real *z__, integer &ldz, real *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
+	{
+		return( sstevd_( jobz, &n, d__, e, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
+	}
+	inline int stevd( char *jobz, integer &n, doublereal *d__, doublereal *e, doublereal *z__, integer &ldz, doublereal *work, integer &lwork, integer *iwork, integer &liwork, integer &info )
+	{
+		return( dstevd_( jobz, &n, d__, e, z__, &ldz, work, &lwork, iwork, &liwork, &info ) );
+	}
+	// エルミート行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
+	inline int heevd( char *jobz, char *uplo, integer &n, std::complex< real > *a, integer &lda, real *w, std::complex< real > *work, integer &lwork, real *rwork, integer &lrwork, integer *iwork, integer &liwork, integer &info )
+	{
+		return( cheevd_( jobz, uplo, &n, reinterpret_cast< complex* >( a ), &lda, w, reinterpret_cast< complex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
+	}
+	inline int heevd( char *jobz, char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, doublereal *w, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &lrwork, integer *iwork, integer &liwork, integer &info )
+	{
+		return( zheevd_( jobz, uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, w, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
+	}
+	// エルミート帯行列に対する固有値・固有ベクトルを計算を計算．分割統治法を用いた高速バージョン
+	inline int hbevd( char *jobz, char *uplo, integer &n, integer &kd, std::complex< real > *ab, integer &ldab, real *w, std::complex< real > *z__, integer &ldz, std::complex< real > *work, integer &lwork, real *rwork, integer &lrwork, integer *iwork, integer &liwork, integer &info )
+	{
+		return( chbevd_( jobz, uplo, &n, &kd, reinterpret_cast< complex* >( ab ), &ldab, w, reinterpret_cast< complex* >( z__ ), &ldz, reinterpret_cast< complex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
+	}
+	inline int hbevd( char *jobz, char *uplo, integer &n, integer &kd, std::complex< doublereal > *ab, integer &ldab, doublereal *w, std::complex< doublereal > *z__, integer &ldz, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &lrwork, integer *iwork, integer &liwork, integer &info )
+	{
+		return( zhbevd_( jobz, uplo, &n, &kd, reinterpret_cast< doublecomplex* >( ab ), &ldab, w, reinterpret_cast< doublecomplex* >( z__ ), &ldz, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &lrwork, iwork, &liwork, &info ) );
 	}
 }
 
@@ -508,7 +767,7 @@ namespace __solve__
 					__clapack__::sysv( uplo, n, nrhs, NULL, lda, NULL, NULL, ldb, &dmy, lwork, info );
 					if( info == 0 )
 					{
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::sysv( uplo, n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, &( work[0] ), lwork, info );
 					}
@@ -587,7 +846,7 @@ namespace __solve__
 					__clapack__::sysv( uplo, n, nrhs, NULL, lda, NULL, NULL, ldb, &dmy, lwork, info );
 					if( info == 0 )
 					{
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::sysv( uplo, n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, &( work[0] ), lwork, info );
 					}
@@ -671,7 +930,7 @@ namespace __lu__
 					__clapack__::sytrf( uplo, n, NULL, lda, NULL, &dmy, lwork, info );
 					if( info == 0 )
 					{
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator1 > work( lwork, 1 );
 
 						// LU分解を行う
@@ -736,7 +995,7 @@ namespace __lu__
 					__clapack__::sytrf( uplo, n, NULL, lda, NULL, &dmy, lwork, info );
 					if( info == 0 )
 					{
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator1 > work( lwork, 1 );
 
 						// LU分解を行う
@@ -808,7 +1067,7 @@ namespace __qr__
 					__clapack__::geqrf( m, n, NULL, lda, NULL, &dmy, lwork, info );
 					if( info == 0 )
 					{
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::geqrf( m, n, &( a[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
 					}
@@ -856,7 +1115,7 @@ namespace __qr__
 					__clapack__::geqrf( m, n, NULL, lda, NULL, &dmy, lwork, info );
 					if( info == 0 )
 					{
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::geqrf( m, n, &( a[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
 					}
@@ -908,7 +1167,7 @@ namespace __inverse__
 					__clapack__::sytrf( uplo, n, NULL, lda, ipiv, &dmy, lwork, info );
 					if( info == 0 )
 					{
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::sytrf( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
 
@@ -953,7 +1212,7 @@ namespace __inverse__
 						__clapack__::getri( n, NULL, lda, NULL, &dmy, lwork, info );
 						if( info == 0 )
 						{
-							lwork = __clapack__::get_real( dmy );
+							lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 							matrix< T, Allocator > work( lwork, 1 );
 							__clapack__::getri( n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
 						}
@@ -1002,7 +1261,7 @@ namespace __inverse__
 					__clapack__::sytrf( uplo, n, NULL, lda, ipiv, &dmy, lwork, info );
 					if( info == 0 )
 					{
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::sytrf( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
 
@@ -1047,7 +1306,7 @@ namespace __inverse__
 						__clapack__::getri( n, NULL, lda, NULL, &dmy, lwork, info );
 						if( info == 0 )
 						{
-							lwork = __clapack__::get_real( dmy );
+							lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 							matrix< T, Allocator > work( lwork, 1 );
 							__clapack__::getri( n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
 						}
@@ -1116,7 +1375,7 @@ namespace __eigen__
 						matrix< integer > ifail( n, 1 );
 						eigen_vector.resize( n, n );
 
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::geevx( jobz, range, uplo, n, &( a[0] ), lda, vl, vu, il, iu, abstol, m,
 										&( eigen_value[0] ), &( eigen_vector[0] ), ldz, &( work[0] ), lwork, &( iwork[ 0 ] ), &( ifail[ 0 ] ), info );
@@ -1150,7 +1409,7 @@ namespace __eigen__
 						matrix< T, Allocator > scale( n, 1 );
 						eigen_vector.resize( n, n );
 
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::geevx( balanc, jobvl, jobvr, sense, n, &( a[0] ), lda, &( eigen_value[0] ), &( tmp[0] ),
 							NULL, ldvl, &( eigen_vector[0] ), ldvr, ilo, ihi, &( scale[0] ), abnrm, NULL, NULL, &( work[0] ), lwork, NULL, info );
@@ -1211,7 +1470,7 @@ namespace __eigen__
 						value_type *scale = new value_type[ n ];
 						value_type *rwork = new value_type[ 2 * n ];
 
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::geevx( balanc, jobvl, jobvr, sense, n, &( a[0] ), lda, &( eigen_value[0] ),
 							NULL, ldvl, &( eigen_vector[0] ), ldvr, ilo, ihi, scale, abnrm, NULL, NULL, &( work[0] ), lwork, rwork, info );
@@ -1267,7 +1526,7 @@ namespace __eigen__
 						eigen_value.resize( n, 1 );
 						eigen_vector = a;
 
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::syev( jobz, uplo, n, &( eigen_vector[0] ), lda, &( eigen_value[0] ), &( work[0] ), lwork, info );
 					}
@@ -1295,7 +1554,7 @@ namespace __eigen__
 						matrix< T, Allocator > tmp( n, 1 );
 						eigen_vector.resize( n, n );
 
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::geev( jobvl, jobvr, n, &( a[0] ), lda, &( eigen_value[0] ), &( tmp[0] ),
 							NULL, ldvl, &( eigen_vector[0] ), ldvr, &( work[0] ), lwork, info );
@@ -1349,7 +1608,7 @@ namespace __eigen__
 						eigen_vector.resize( n, n );
 						value_type *rwork = new value_type[ 2 * n ];
 
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::geev( jobvl, jobvr, n, &( a[0] ), lda, &( eigen_value[0] ),
 							NULL, ldvl, &( eigen_vector[0] ), ldvr, &( work[0] ), lwork, rwork, info );
@@ -1418,7 +1677,7 @@ namespace __svd__
 						vt.resize( ldvt, n );
 						integer *iwork = new integer[ 8 * size ];
 
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::gesdd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, iwork, info );
 
@@ -1483,7 +1742,7 @@ namespace __svd__
 						value_type *rwork = new value_type[ 5 * size * size + 5 * size ];
 						integer *iwork = new integer[ 8 * size ];
 
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T1, Allocator1 > work( lwork, 1 );
 						__clapack__::gesdd( jobz, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, iwork, info );
 
@@ -1548,7 +1807,7 @@ namespace __svd__
 						matrix< T, Allocator > ss( m < n ? m : n, 1 );
 						vt.resize( ldvt, n );
 
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, info );
 
@@ -1610,7 +1869,7 @@ namespace __svd__
 						vt.resize( ldvt, n );
 						value_type *rwork = new value_type[ 5 * ( m < n ? m : n ) ];
 
-						lwork = __clapack__::get_real( dmy );
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T1, Allocator1 > work( lwork, 1 );
 						__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, info );
 
@@ -1673,7 +1932,9 @@ inline const typename matrix< T, Allocator >::value_type trace( const matrix< T,
 
 /// @brief トレースの計算（対角成分の和）
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! \f[
+//! 	tr\left( {\bf A} \right) = \sum^{n}_{i=1}{ a_{ii} }
+//! \f]
 //! 
 //! @param[in] expression … 複数の行列演算を表す式
 //!
@@ -1894,49 +2155,52 @@ template < class T >
 inline const matrix< typename type_trait< T >::value_type > diag( const T &s1, const typename type_trait< T >::value_type &s2, const typename type_trait< T >::value_type &s3 )
 {
 	matrix< typename type_trait< T >::value_type > d( 3, 3 );
-	if( s1 < s2 )
+	double ss1 = static_cast< double >( __clapack__::get_real( s1 ) );
+	double ss2 = static_cast< double >( __clapack__::get_real( s2 ) );
+	double ss3 = static_cast< double >( __clapack__::get_real( s3 ) );
+	if( ss1 < ss2 )
 	{
-		// s1 < s2
-		if( s1 < s3 )
+		// ss1 < ss2
+		if( ss1 < ss3 )
 		{
-			if( s2 < s3 )
+			if( ss2 < ss3 )
 			{
 				d( 0, 0 ) = s3;
 				d( 1, 1 ) = s2;
 				d( 2, 2 ) = s1;
 			}
-			else
+			elsse
 			{
 				d( 0, 0 ) = s2;
 				d( 1, 1 ) = s3;
 				d( 2, 2 ) = s1;
 			}
 		}
-		else
+		elsse
 		{
 			d( 0, 0 ) = s2;
 			d( 1, 1 ) = s1;
 			d( 2, 2 ) = s3;
 		}
 	}
-	else
+	elsse
 	{
-		// s2 < s1
-		if( s1 < s3 )
+		// ss2 < ss1
+		if( ss1 < ss3 )
 		{
 			d( 0, 0 ) = s3;
 			d( 1, 1 ) = s1;
 			d( 2, 2 ) = s2;
 		}
-		else
+		elsse
 		{
-			if( s2 < s3 )
+			if( ss2 < ss3 )
 			{
 				d( 0, 0 ) = s1;
 				d( 1, 1 ) = s3;
 				d( 2, 2 ) = s2;
 			}
-			else
+			elsse
 			{
 				d( 0, 0 ) = s1;
 				d( 1, 1 ) = s2;
@@ -1995,8 +2259,6 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 
 /// @brief 行列のLU分解を行う
 //! 
-//! 詳細な説明や関数の使用例を書く
-//! 
 //! @param[in]  a     … 入力行列
 //! @param[out] pivot … ピボット選択を行った結果を代入するベクトル
 //! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
@@ -2011,8 +2273,6 @@ const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a
 }
 
 /// @brief 行列のLU分解を行う
-//! 
-//! 詳細な説明や関数の使用例を書く
 //! 
 //! @param[in]  a     … 入力行列
 //! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
@@ -2208,7 +2468,7 @@ inline matrix< typename matrix_expression< Expression >::value_type, typename ma
 //! 
 //! \f[ {\bf A}\mbox{\boldmath x} = \lambda\mbox{\boldmath x} \f]
 //! 
-//! 計算結果は，固有値の _DESCENDING_ORDER_EIGEN_VALUE_ でした方法で，昇順・降順のどちらかで並ぶように変換される
+//! 計算結果は，_DESCENDING_ORDER_EIGEN_VALUE_ の値によって，固有値が昇順・降順のどちらかで並ぶように変換される
 //! 
 //! @param[in]  a            … 入力行列 \f${\bf A}\f$
 //! @param[out] eigen_value  … 固有値が昇順・降順のどちらかで入ったベクトル \f$\lambda\f$
@@ -2263,7 +2523,7 @@ const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T,
 //! 
 //! \f[ {\bf A}\mbox{\boldmath x} = \lambda\mbox{\boldmath x} \f]
 //! 
-//! 計算結果は，固有値の _DESCENDING_ORDER_EIGEN_VALUE_ でした方法で，昇順・降順のどちらかで並ぶように変換される
+//! 計算結果は，_DESCENDING_ORDER_EIGEN_VALUE_ の値によって，固有値が昇順・降順のどちらかで並ぶように変換される
 //! 
 //! @param[in]  expression   … 複数の行列演算を表す式 \f${\bf A}\f$
 //! @param[out] eigen_value  … 固有値が昇順・降順のどちらかで入ったベクトル \f$\lambda\f$
@@ -2315,7 +2575,9 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 
 /// @brief 関数・クラスの概要を書く
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! \f[ {\bf A} = {\bf U}{\bf \Sigma}{\bf V}^T \f]
+//! 
+//! @note 対角行列の成分は，左上から値の大きい順に並ぶ
 //! 
 //! @param[in]  expression … 複数の行列演算を表す式 \f$ {\bf A} \f$
 //! @param[out] u          … 列直行行列 \f$ {\bf U} \f$

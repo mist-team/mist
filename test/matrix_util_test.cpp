@@ -88,14 +88,14 @@ int main( )
 	{
 		std::cout << "Determinant" << std::endl;
 
-		std::cout << mist::det( a ) << std::endl << std::endl;
-		std::cout << mist::det( a * a.t( ) ) << std::endl << std::endl;
+		std::cout << mist::det( a * a.t( ), mist::matrix_style::ge ) << std::endl << std::endl;
+		std::cout << mist::det( a * a.t( ), mist::matrix_style::sy ) << std::endl << std::endl;
 	}
 
 	{
 		std::cout << "Trace" << std::endl;
 
-		std::cout << mist::trace( a ) << std::endl << std::endl;
+		std::cout << mist::trace( a * a.t( ) ) << std::endl << std::endl;
 		std::cout << mist::trace( a * a.t( ) ) << std::endl << std::endl;
 	}
 
