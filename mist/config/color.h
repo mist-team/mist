@@ -55,6 +55,7 @@ public:
 		return( *this );
 	}
 
+	const rgb  operator -( ) const { return( rgb( -r, -g, -b ) ); }
 	const rgb &operator +=( const rgb &c ){ r += c.r; g += c.g; b += c.b; return( *this ); }
 	const rgb &operator -=( const rgb &c ){ r -= c.r; g -= c.g; b -= c.b; return( *this ); }
 	const rgb &operator *=( const rgb &c ){ r *= c.r; g *= c.g; b *= c.b; return( *this ); }
