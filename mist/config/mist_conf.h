@@ -16,7 +16,20 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
+
+
 #if _MSC_VER <= 1200
+
+#define __MIST_MSVC6__
+
+#elif _MSC_VER > 1200
+
+#define __MIST_MSVC7__
+
+#endif
+
+
+#ifdef __MIST_MSVC6__
 
 #define _MIST_CONST( type, name, value ) enum{ name = value }
 
@@ -219,13 +232,18 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 
 // mistコンテナで利用する1次元操作用ランダムアクセスイテレータ
 template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
+#ifdef __MIST_MSVC6__
+class mist_iterator1 : public std::iterator< std::random_access_iterator_tag, T, Distance >
+#else
 class mist_iterator1 : public std::iterator< std::random_access_iterator_tag, T, Distance, Pointer, Reference >
+#endif
 {
 public:
 	typedef T value_type;
 	typedef Pointer pointer;
-	typedef std::size_t size_type;
 	typedef Reference reference;
+	typedef size_t size_type;
+	typedef Distance difference_type;
 
 private:
 	pointer data_;
@@ -246,7 +264,7 @@ public:
 
 	// 要素のアクセス
 	reference operator *(){ return( *data_ ); }
-	reference operator []( Distance dist ){ return( data_[ dist * diff_pointer_ ] ); }
+	reference operator []( difference_type dist ){ return( data_[ dist * diff_pointer_ ] ); }
 
 	// 移動
 	mist_iterator1& operator ++( ) // 前置型
@@ -272,12 +290,12 @@ public:
 		return( old_val );
 	}
 
-	const mist_iterator1& operator +=( Distance dist )
+	const mist_iterator1& operator +=( difference_type dist )
 	{
 		data_ += dist * diff_pointer_;
 		return( *this );
 	}
-	const mist_iterator1& operator -=( Distance dist )
+	const mist_iterator1& operator -=( difference_type dist )
 	{
 		data_ -= dist * diff_pointer_;
 		return( *this );
@@ -328,13 +346,18 @@ inline const mist_iterator1< T, Distance, Pointer, Reference > operator -( const
 
 // mistコンテナで利用する2次元操作用ランダムアクセスイテレータ
 template< class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
+#ifdef __MIST_MSVC6__
+class mist_iterator2 : public std::iterator< std::random_access_iterator_tag, T, Distance >
+#else
 class mist_iterator2 : public std::iterator< std::random_access_iterator_tag, T, Distance, Pointer, Reference >
+#endif
 {
 public:
 	typedef T value_type;
 	typedef Pointer pointer;
-	typedef std::size_t size_type;
+	typedef size_t size_type;
 	typedef Reference reference;
+	typedef Distance difference_type;
 
 private:
 	pointer sdata_;
@@ -368,7 +391,7 @@ public:
 
 	// 要素のアクセス
 	reference operator *(){ return( *data_ ); }
-	reference operator []( Distance dist ){ return( data_[ dist * diff_pointer_ ] ); }
+	reference operator []( difference_type dist ){ return( data_[ dist * diff_pointer_ ] ); }
 
 	// 移動
 	mist_iterator2& operator ++( ) // 前置型
@@ -394,7 +417,7 @@ public:
 		return( old_val );
 	}
 
-	const mist_iterator2& operator +=( Distance dist )
+	const mist_iterator2& operator +=( difference_type dist )
 	{
 		data_ += dist * diff_pointer1_;
 
@@ -414,7 +437,7 @@ public:
 
 		return( *this );
 	}
-	const mist_iterator2& operator -=( Distance dist )
+	const mist_iterator2& operator -=( difference_type dist )
 	{
 		data_ -= dist * diff_pointer1_;
 
@@ -477,6 +500,137 @@ inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const
 	return( mist_iterator2< T, Distance, Pointer, Reference >( ite ) -= dist );
 }
 
+
+
+// mistで用いる
+template< class _Ite >
+class mist_reverse_iterator :
+#ifdef __MIST_MSVC6__
+	public std::iterator<
+		typename _Ite::iterator_category,
+		typename _Ite::value_type,
+		typename _Ite::difference_type
+	>
+#else
+	public std::iterator<
+		typename _Ite::iterator_category,
+		typename _Ite::value_type,
+		typename _Ite::difference_type,
+		typename _Ite::pointer,
+		typename _Ite::reference
+	>
+#endif
+{
+public:
+ 	typedef typename _Ite::difference_type difference_type;
+	typedef typename _Ite::pointer pointer;
+	typedef typename _Ite::reference reference;
+
+protected:
+	_Ite current_iterator_;
+
+public:
+	// コンストラクタ
+	mist_reverse_iterator( ){ }
+	mist_reverse_iterator( const _Ite &ite ) : current_iterator_( ite ){ }
+	mist_reverse_iterator( const mist_reverse_iterator &ite ) : current_iterator_( ite.current_iterator_ ){ }
+
+	// コピー演算子
+	const mist_reverse_iterator& operator =( const _Ite &ite )
+	{
+		current_iterator_ = ite;
+		return( *this );
+	}
+	const mist_reverse_iterator& operator =( const mist_reverse_iterator &ite )
+	{
+		current_iterator_ = ite.current_iterator_;
+		return( *this );
+	}
+
+	// 要素のアクセス
+	reference operator *()
+	{
+		_Ite _tmp = current_iterator_;
+		return( *( --_tmp ) );
+	}
+	reference operator []( difference_type dist ){ return( *( *this + dist ) ); }
+
+	// 移動
+	mist_reverse_iterator& operator ++( ) // 前置型
+	{
+		--current_iterator_;
+		return( *this );
+	}
+	const mist_reverse_iterator operator ++( int ) // 後置型
+	{
+		mist_reverse_iterator old_val( *this );
+		current_iterator_--;
+		return( old_val );
+	}
+	mist_reverse_iterator& operator --( ) // 前置型
+	{
+		++current_iterator_;
+		return( *this );
+	}
+	const mist_reverse_iterator operator --( int ) // 後置型
+	{
+		mist_reverse_iterator old_val( *this );
+		current_iterator_++;
+		return( old_val );
+	}
+
+	const mist_reverse_iterator& operator +=( difference_type dist )
+	{
+		current_iterator_ -= dist;
+		return( *this );
+	}
+	const mist_reverse_iterator& operator -=( difference_type dist )
+	{
+		current_iterator_ += dist;
+		return( *this );
+	}
+
+
+	// 比較
+	bool operator ==( const mist_reverse_iterator &ite ) const { return( current_iterator_ == ite.current_iterator_ ); }
+	bool operator !=( const mist_reverse_iterator &ite ) const { return( current_iterator_ != ite.current_iterator_ ); }
+	bool operator < ( const mist_reverse_iterator &ite ) const { return( current_iterator_ <  ite.current_iterator_ ); }
+	bool operator <=( const mist_reverse_iterator &ite ) const { return( current_iterator_ <= ite.current_iterator_ ); }
+	bool operator > ( const mist_reverse_iterator &ite ) const { return( current_iterator_ >  ite.current_iterator_ ); }
+	bool operator >=( const mist_reverse_iterator &ite ) const { return( current_iterator_ >= ite.current_iterator_ ); }
+};
+
+
+template< class _Ite >
+inline const mist_reverse_iterator< _Ite > operator +( const mist_reverse_iterator< _Ite > &ite1, const mist_reverse_iterator< _Ite > ite2 )
+{
+	return( mist_reverse_iterator< _Ite >( ite1 ) += ite2 );
+}
+
+template< class _Ite >
+inline const mist_reverse_iterator< _Ite > operator +( const mist_reverse_iterator< _Ite > &ite, typename _Ite::difference_type dist )
+{
+	return( mist_reverse_iterator< _Ite >( ite ) += dist );
+}
+
+template< class _Ite >
+inline const mist_reverse_iterator< _Ite > operator +( typename _Ite::difference_type dist, const mist_reverse_iterator< _Ite > &ite )
+{
+	return( mist_reverse_iterator< _Ite >( ite ) += dist );
+}
+
+
+template< class _Ite >
+inline const mist_reverse_iterator< _Ite > operator -( const mist_reverse_iterator< _Ite > &ite1, const mist_reverse_iterator< _Ite > ite2 )
+{
+	return( mist_reverse_iterator< _Ite >( ite1 ) -= ite2 );
+}
+
+template< class _Ite >
+inline const mist_reverse_iterator< _Ite > operator -( const mist_reverse_iterator< _Ite > &ite, typename _Ite::difference_type dist )
+{
+	return( mist_reverse_iterator< _Ite >( ite ) -= dist );
+}
 
 // mist名前空間の終わり
 _MIST_END

@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="matrix_test" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="iterator_test" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** 編集しないでください **
 
 # TARGTYPE "Win32 (x86) Console Application" 0x0103
 
-CFG=matrix_test - Win32 Debug
+CFG=iterator_test - Win32 Debug
 !MESSAGE これは有効なﾒｲｸﾌｧｲﾙではありません。 このﾌﾟﾛｼﾞｪｸﾄをﾋﾞﾙﾄﾞするためには NMAKE を使用してください。
 !MESSAGE [ﾒｲｸﾌｧｲﾙのｴｸｽﾎﾟｰﾄ] ｺﾏﾝﾄﾞを使用して実行してください
 !MESSAGE 
-!MESSAGE NMAKE /f "matrix_test.mak".
+!MESSAGE NMAKE /f "iterator_test.mak".
 !MESSAGE 
 !MESSAGE NMAKE の実行時に構成を指定できます
 !MESSAGE ｺﾏﾝﾄﾞ ﾗｲﾝ上でﾏｸﾛの設定を定義します。例:
 !MESSAGE 
-!MESSAGE NMAKE /f "matrix_test.mak" CFG="matrix_test - Win32 Debug"
+!MESSAGE NMAKE /f "iterator_test.mak" CFG="iterator_test - Win32 Debug"
 !MESSAGE 
 !MESSAGE 選択可能なﾋﾞﾙﾄﾞ ﾓｰﾄﾞ:
 !MESSAGE 
-!MESSAGE "matrix_test - Win32 Release" ("Win32 (x86) Console Application" 用)
-!MESSAGE "matrix_test - Win32 Debug" ("Win32 (x86) Console Application" 用)
+!MESSAGE "iterator_test - Win32 Release" ("Win32 (x86) Console Application" 用)
+!MESSAGE "iterator_test - Win32 Debug" ("Win32 (x86) Console Application" 用)
 !MESSAGE 
 
 # Begin Project
@@ -28,7 +28,7 @@ CFG=matrix_test - Win32 Debug
 CPP=cl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "matrix_test - Win32 Release"
+!IF  "$(CFG)" == "iterator_test - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -52,12 +52,12 @@ LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
 
-!ELSEIF  "$(CFG)" == "matrix_test - Win32 Debug"
+!ELSEIF  "$(CFG)" == "iterator_test - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir "matrix_test___Win32_Debug"
-# PROP BASE Intermediate_Dir "matrix_test___Win32_Debug"
+# PROP BASE Output_Dir "iterator_test___Win32_Debug"
+# PROP BASE Intermediate_Dir "iterator_test___Win32_Debug"
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
@@ -80,14 +80,14 @@ LINK32=link.exe
 
 # Begin Target
 
-# Name "matrix_test - Win32 Release"
-# Name "matrix_test - Win32 Debug"
+# Name "iterator_test - Win32 Release"
+# Name "iterator_test - Win32 Debug"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=..\test\matrix_test.cpp
+SOURCE=..\test\iterator_test.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"

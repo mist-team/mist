@@ -55,8 +55,8 @@ public:
 
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
 	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
-	typedef std::reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
-	typedef std::reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
 private:
 	mist_allocator< T, Allocator > allocator_;
@@ -357,8 +357,8 @@ public:
 
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
 	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
-	typedef std::reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
-	typedef std::reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
 private:
 	typedef array< T, Allocator > base;
@@ -456,8 +456,8 @@ public:
 
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
 	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
-	typedef std::reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
-	typedef std::reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
 private:
 	typedef array1< T, Allocator > base;
@@ -685,8 +685,8 @@ public:
 
 	typedef mist_iterator2< T, ptrdiff_t, pointer, reference > iterator;
 	typedef mist_iterator2< T, ptrdiff_t, pointer, const_reference > const_iterator;
-	typedef std::reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, reference > > reverse_iterator;
-	typedef std::reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, reference > > reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
 private:
 	typedef array2< T, Allocator > base;

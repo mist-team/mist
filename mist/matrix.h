@@ -288,8 +288,8 @@ public:
 
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
 	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
-	typedef std::reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
-	typedef std::reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
 private:
 	typedef array< T, Allocator > base;
