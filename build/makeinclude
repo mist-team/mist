@@ -1,0 +1,29 @@
+CC  = gcc
+CXX = g++
+
+INCLUDE = -I../ -I/usr/local/include -I/usr/X11R6/include
+LDLIBS = -L../lib -L/usr/local/lib -L/usr/X11R6/lib
+
+CFLGS = -Wall -O2
+CXXFLGS = -Wall -O2
+IMGLIBS = -ljpeg -lpng -ltiff
+LIBS = -lpthread -lz -lXext -lX11 -lm -lGL
+
+
+# Be quiet when building...
+.SILENT:
+
+# Build commands and filename extensions...
+.SUFFIXES:	.c .cpp .cxx .h .o
+
+.c.o:
+	echo Compiling $<...
+	$(CC) -I.. $(CFLAGS) -c $<
+
+.cxx.o:
+	echo Compiling $<...
+	$(CXX) $(CFLAGS) -c $< $(INCLUDE)
+
+.cpp.o:
+	echo Compiling $<...
+	$(CXX) $(CFLAGS) -c $< $(INCLUDE)
