@@ -227,7 +227,7 @@ namespace volumerender
 			attribute_element_table.clear( );
 		}
 
-		attribute_table( ) : sindex_( 0 ), eindex_( -1 ), zero_index_( NULL ){ }
+		attribute_table( ) : sindex_( 0 ), eindex_( -1 ), zero_index_( 0 ){ }
 
 		attribute_table( difference_type si, difference_type ei ) : base( ei - si + 1 ), sindex_( si ), eindex_( ei ), zero_index_( 0 )
 		{

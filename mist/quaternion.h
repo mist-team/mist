@@ -562,8 +562,7 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 //! @return 回転を表すクォータニオン
 //! 
 template < class T >
-const quaternion< T > track_ball( const vector2< T > &p1, const vector2< T > &p2, const vector3< T > &axisX, const vector3< T > axisY, const vector3< T > axisZ,
-									const typename vector3< T >::value_type &trackball_size = vector3< T >::value_type( 0.8 ) )
+const quaternion< T > track_ball( const vector2< T > &p1, const vector2< T > &p2, const vector3< T > &axisX, const vector3< T > axisY, const vector3< T > axisZ, const typename vector3< T >::value_type &trackball_size )
 {
 	typedef typename quaternion< T >::value_type value_type;
 
@@ -614,6 +613,39 @@ const quaternion< T > track_ball( const vector2< T > &p1, const vector2< T > &p2
 	return( quaternion< T >( std::cos( phi ), std::sin( phi ) * axis ) );
 }
 
+/// @brief 仮想トラックボールの実装(左手座標系)
+//! 
+//! @note 以下のソースコードを参考にした
+//! 
+//! Trackball code:
+//! 
+//! Implementation of a virtual trackball.
+//! Implemented by Gavin Bell, lots of ideas from Thant Tessman and
+//!   the August '88 issue of Siggraph's "Computer Graphics," pp. 121-129.
+//! 
+//! Vector manip code:
+//! 
+//! Original code from:
+//! David M. Ciemiewicz, Mark Grossman, Henry Moreton, and Paul Haeberli
+//! 
+//! Much mucking with by:
+//! Gavin Bell
+//! 
+//! @param[in] p1             … 回転前の点
+//! @param[in] p2             … 回転後の点
+//! @param[in] axisX          … トラックボールのX軸
+//! @param[in] axisY          … トラックボールのY軸
+//! @param[in] axisZ          … トラックボールのZ軸
+//! @param[in] trackball_size … トラックボールの半径（デフォルトは0.8）
+//! 
+//! @return 回転を表すクォータニオン
+//! 
+template < class T >
+inline const quaternion< T > track_ball( const vector2< T > &p1, const vector2< T > &p2, const vector3< T > &axisX, const vector3< T > axisY, const vector3< T > axisZ )
+{
+	return( track_ball( p1, p2, axisX, axisY, axisZ, 0.8 ) );
+}
+
 
 /// @brief 仮想トラックボールの実装(左手座標系)
 //! 
@@ -632,9 +664,32 @@ const quaternion< T > track_ball( const vector2< T > &p1, const vector2< T > &p2
 //! 
 template < class T >
 const quaternion< T > track_ball( const typename vector3< T >::value_type &x1, const typename vector3< T >::value_type &y1, const typename vector3< T >::value_type &x2, const typename vector3< T >::value_type &y2,
-									const vector3< T > &axisX, const vector3< T > &axisY, const vector3< T > &axisZ, const typename vector3< T >::value_type &trackball_size = typename vector3< T >::value_type( 0.8 ) )
+												const vector3< T > &axisX, const vector3< T > &axisY, const vector3< T > &axisZ, const typename vector3< T >::value_type &trackball_size )
 {
 	return( track_ball( vector2< T >( x1, y1 ), vector2< T >( x2, y2 ), axisX, axisY, axisZ, trackball_size ) );
+}
+
+
+/// @brief 仮想トラックボールの実装(左手座標系)
+//! 
+//! トラックボールを用いて，任意ベクトルの回転を行う
+//! 
+//! @param[in] x1             … 回転前のX座標
+//! @param[in] y1             … 回転前のY座標
+//! @param[in] x2             … 回転後のX座標
+//! @param[in] y2             … 回転後のY座標
+//! @param[in] axisX          … トラックボールのX軸
+//! @param[in] axisY          … トラックボールのY軸
+//! @param[in] axisZ          … トラックボールのZ軸
+//! @param[in] trackball_size … トラックボールの半径（デフォルトは0.8）
+//! 
+//! @return 回転を表すクォータニオン
+//! 
+template < class T >
+const quaternion< T > track_ball( const typename vector3< T >::value_type &x1, const typename vector3< T >::value_type &y1, const typename vector3< T >::value_type &x2,
+											const typename vector3< T >::value_type &y2, const vector3< T > &axisX, const vector3< T > &axisY, const vector3< T > &axisZ )
+{
+	return( track_ball( vector2< T >( x1, y1 ), vector2< T >( x2, y2 ), axisX, axisY, axisZ, 0.8 ) );
 }
 
 
