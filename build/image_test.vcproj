@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltkd.lib fltkgld.lib wsock32.lib"
+				AdditionalDependencies="fltkd.lib fltkgld.lib wsock32.lib libjpegd.lib libtiffd.lib libpngd.lib zlibd.lib"
 				OutputFile="$(OutDir)/image_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -88,10 +88,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltk.lib fltkgl.lib wsock32.lib"
+				AdditionalDependencies="fltk.lib fltkgl.lib wsock32.lib libjpeg.lib libtiff.lib libpng.lib zlib.lib"
 				OutputFile="$(OutDir)/image_test.exe"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="FALSE"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -142,15 +142,15 @@
 			<File
 				RelativePath="..\test\image_test_window.h">
 			</File>
-			<File
-				RelativePath="..\mist\io\jpeg.h">
-			</File>
 		</Filter>
 		<Filter
 			Name="MISTƒtƒ@ƒCƒ‹"
 			Filter="">
 			<File
 				RelativePath="..\mist\draw.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\jpeg.h">
 			</File>
 			<File
 				RelativePath="..\mist\mist.h">
@@ -160,6 +160,12 @@
 			</File>
 			<File
 				RelativePath="..\mist\config\mist_conf.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\png.h">
+			</File>
+			<File
+				RelativePath="..\mist\io\tiff.h">
 			</File>
 		</Filter>
 	</Files>

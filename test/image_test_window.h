@@ -17,6 +17,20 @@ public:
 private:
   inline void cb_Read_i(Fl_Button*, void*);
   static void cb_Read(Fl_Button*, void*);
+  inline void cb_Read1_i(Fl_Button*, void*);
+  static void cb_Read1(Fl_Button*, void*);
+  inline void cb_Write_i(Fl_Button*, void*);
+  static void cb_Write(Fl_Button*, void*);
+  inline void cb_Write1_i(Fl_Button*, void*);
+  static void cb_Write1(Fl_Button*, void*);
+  inline void cb_Read2_i(Fl_Button*, void*);
+  static void cb_Read2(Fl_Button*, void*);
+  inline void cb_Write2_i(Fl_Button*, void*);
+  static void cb_Write2(Fl_Button*, void*);
+  inline void cb_Read3_i(Fl_Button*, void*);
+  static void cb_Read3(Fl_Button*, void*);
+  inline void cb_Write3_i(Fl_Button*, void*);
+  static void cb_Write3(Fl_Button*, void*);
 public:
   void show( );
 };

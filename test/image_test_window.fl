@@ -10,7 +10,7 @@ class image_test_window {open
   Function {image_test_window()} {open
   } {
     Fl_Window main_window {open
-      xywh {102 315 551 586} type Double visible
+      xywh {102 315 551 625} type Double visible
     } {
       Fl_Group {} {open
         xywh {5 5 540 530} box DOWN_BOX
@@ -29,8 +29,80 @@ if( filename == NULL ) return;
 read_jpeg_test( filename );
 
 draw_area->redraw( );
-Fl::wait( 0 );} selected
-        xywh {5 545 135 30}
+Fl::wait( 0 );}
+        xywh {5 545 100 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Button {} {
+        label {Read PNG}
+        callback {const char *filename = fl_file_chooser( "Open PNG", "PNG File (*.png)", "" );
+if( filename == NULL ) return;
+
+read_png_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );}
+        xywh {110 545 100 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Button {} {
+        label {Write JPEG}
+        callback {const char *filename = fl_file_chooser( "Save JPEG", "JPEG File (*.{jpg,jpeg})", "" );
+if( filename == NULL ) return;
+
+write_jpeg_test( filename );}
+        xywh {5 580 100 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Button {} {
+        label {Write PNG}
+        callback {const char *filename = fl_file_chooser( "Save PNG", "PNG File (*.png)", "" );
+if( filename == NULL ) return;
+
+write_png_test( filename );}
+        xywh {110 580 100 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Button {} {
+        label {Read TIFF}
+        callback {const char *filename = fl_file_chooser( "Open TIFF", "TIFF File (*.{tif,tiff})", "" );
+if( filename == NULL ) return;
+
+read_tiff_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );}
+        xywh {215 545 100 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Button {} {
+        label {Write TIFF}
+        callback {const char *filename = fl_file_chooser( "Save TIFF", "TIFF File (*.{tif,tiff})", "" );
+if( filename == NULL ) return;
+
+write_tiff_test( filename );} selected
+        xywh {215 580 100 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Button {} {
+        label {Read BMP}
+        callback {const char *filename = fl_file_chooser( "Open BMP", "BMP File (*.bmp)", "" );
+if( filename == NULL ) return;
+
+read_bmp_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );}
+        xywh {320 545 100 30}
+        code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Button {} {
+        label {Write BMP}
+        callback {const char *filename = fl_file_chooser( "Save BMP", "BMP File (*.bmp)", "" );
+if( filename == NULL ) return;
+
+write_bmp_test( filename );}
+        xywh {320 580 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
     }

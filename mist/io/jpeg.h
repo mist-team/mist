@@ -24,13 +24,6 @@ extern "C"
 #include <jerror.h>
 }
 
-#ifdef WIN32
-	#ifdef _DEBUG
-		#pragma comment(lib, "libjpegd.lib")
-	#else
-		#pragma comment(lib, "libjpeg.lib")
-	#endif
-#endif
 
 
 // mist名前空間の始まり
@@ -42,7 +35,7 @@ namespace __jpeg_controller__
 	template < class T, class Allocator >
 	struct jpeg_controller
 	{
-		static bool read_jpeg( array2< T, Allocator > &image, const std::string &filename )
+		static bool read( array2< T, Allocator > &image, const std::string &filename )
 		{
 			array2< rgb< T >, Allocator > img;
 			bool ret = jpeg_controller< rgb< T >, Allocator >::read_jpeg( img, filename );
@@ -58,7 +51,7 @@ namespace __jpeg_controller__
 			return( true );
 		}
 
-		static bool write_jpeg( array2< T, Allocator > &image, const std::string &filename, int quality = 100 )
+		static bool write( array2< T, Allocator > &image, const std::string &filename, int quality )
 		{
 			array2< rgb< T >, Allocator > img( image.width( ), image.height( ) );
 			typename array2< T, Allocator >::size_type i;
@@ -76,7 +69,7 @@ namespace __jpeg_controller__
 	template < class T, class Allocator >
 	struct jpeg_controller< rgb< T >, Allocator >
 	{
-		static bool read_jpeg( array2< rgb< T >, Allocator > &image, const std::string &filename )
+		static bool read( array2< rgb< T >, Allocator > &image, const std::string &filename )
 		{
 			FILE *fin;				// 読み書き用ファイルポインター
 			fin = fopen( filename.c_str( ), "rb" );
@@ -129,13 +122,14 @@ namespace __jpeg_controller__
 			return( true );
 		}
 
-		static bool write_jpeg( array2< rgb< T >, Allocator > &image, const std::string &filename, int quality = 100 )
+		static bool write( array2< rgb< T >, Allocator > &image, const std::string &filename, int quality )
 		{
 			FILE *fout;						// 読み書き用ファイルポインター
 			fout = fopen( filename.c_str( ), "wb" );
 			if( fout == NULL ) return( false );
 
-			JDIMENSION i, j, w = image.width( ), h = image.height( );
+			JDIMENSION i, j;
+			JDIMENSION w = static_cast< JDIMENSION >( image.width( ) ), h = static_cast< JDIMENSION >( image.height( ) );
 			JSAMPROW bitmap[1];				/* pointer to JSAMPLE row[s] */
 			jpeg_compress_struct cinfo;		// JPEG解凍情報構造体
 			jpeg_error_mgr jerr;			// JPEGエラー処理用構造体
@@ -189,13 +183,13 @@ namespace __jpeg_controller__
 template < class T, class Allocator >
 bool read_jpeg( array2< T, Allocator > &image, const std::string &filename )
 {
-	return( __jpeg_controller__::jpeg_controller< T, Allocator >::read_jpeg( image, filename ) );
+	return( __jpeg_controller__::jpeg_controller< T, Allocator >::read( image, filename ) );
 }
 
 template < class T, class Allocator >
 bool write_jpeg( array2< T, Allocator > &image, const std::string &filename, int quality = 100 )
 {
-	return( __jpeg_controller__::jpeg_controller< T, Allocator >::write_jpeg( image, filename, quality ) );
+	return( __jpeg_controller__::jpeg_controller< T, Allocator >::write( image, filename, quality ) );
 }
 
 

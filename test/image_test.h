@@ -19,5 +19,14 @@ public:
 void read_jpeg_test( const std::string &filename );
 void write_jpeg_test( const std::string &filename );
 
+void read_png_test( const std::string &filename );
+void write_png_test( const std::string &filename );
+
+void read_tiff_test( const std::string &filename );
+void write_tiff_test( const std::string &filename );
+
+void read_bmp_test( const std::string &filename );
+void write_bmp_test( const std::string &filename );
+
 
 #endif // __INCLUDE_IMAGE_TEST__

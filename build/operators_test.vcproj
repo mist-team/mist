@@ -89,7 +89,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/operators_test.exe"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="FALSE"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
