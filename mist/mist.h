@@ -30,6 +30,24 @@
 //!
 //! @brief MISTの基本となる音声・画像を扱うコンテナ
 //!
+//! MISTで提供する全てのアルゴリズム等で利用するコンテナ（STL風）の集まりです．
+//! 基本的には，STL（Standard Template Library）で提供されているコンテナとほぼ互換性を持っています．
+//! 特徴としては，コンテナ内のデータはメモリ空間上で連続となるように実装されています．
+//! そして，STLのアルゴリズム等で用いるイテレータの内，ランダムアクセスイテレータを実装してあります．
+//! イテレータの詳細に関しては，STLの解説本に譲ります．
+//! また，MISTのコンテナでは組み込み型とユーザー定義型で，利用するメモリ操作を区別しています．
+//! そうすることで，コンテナの代入等で若干高速な実行が可能となっています．
+//!
+//! MISTプロジェクトで提供するコンテナは，以下の合計6つのコンテナで構成されています．
+//!
+//! - 基底1次元配列（STL風の1次元配列用コンテナ）
+//! - 解像度付1次元配列（各要素の解像度のデータを保持，例えば1mmなど）
+//! - 解像度付2次元配列
+//! - 解像度付3次元配列
+//! - 行列
+//! - ベクトル
+//!
+
 #ifndef __INCLUDE_MIST_H__
 #define __INCLUDE_MIST_H__
 
@@ -43,47 +61,54 @@ _MIST_BEGIN
 
 
 
-/// @brief 関数・クラスの概要を書く
+/// @brief 要素数が可変の1次元配列
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 全てのMISTコンテナの基本となるクラス
 //! 
-//! @param[in] in  … 引数の説明
-//! @param[in] out … 引数の説明
-//! @return        … 戻り値の説明
+//! @param T         … MISTのコンテナ内に格納するデータ型
+//! @param Allocator … MISTコンテナが利用するアロケータ型．省略した場合は，STLのデフォルトアロケータを使用する
 //! 
 template < class T, class Allocator = std::allocator< T > >
 class array
 {
 public:
-	typedef Allocator allocator_type;
-	typedef typename Allocator::reference reference;
-	typedef typename Allocator::const_reference const_reference;
-	typedef typename Allocator::value_type value_type;
-	typedef typename Allocator::size_type size_type;
-	typedef typename Allocator::difference_type difference_type;
-	typedef typename Allocator::pointer pointer;
-	typedef typename Allocator::const_pointer const_pointer;
+	typedef Allocator allocator_type;								///< @brief MISTコンテナが利用するアロケータ型
+	typedef typename Allocator::reference reference;				///< @brief MISTのコンテナ内に格納するデータ型の参照．mist::array< data > の場合，data & となる
+	typedef typename Allocator::const_reference const_reference;	///< @brief MISTのコンテナ内に格納するデータ型の const 参照．mist::array< data > の場合，const data & となる
+	typedef typename Allocator::value_type value_type;				///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef typename Allocator::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename Allocator::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename Allocator::pointer pointer;					///< @brief MISTのコンテナ内に格納するデータ型のポインター型．mist::array< data > の場合，data * となる
+	typedef typename Allocator::const_pointer const_pointer;		///< @brief MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array< data > の場合，const data * となる
 
+	/// @brief MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
+
+	/// @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
 	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
+
+	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
+
+	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
 private:
-	mist_allocator< T, Allocator > allocator_;
-	size_type size_;
+	mist_allocator< T, Allocator > allocator_;		///< @brief 各コンテナで利用するアロケータオブジェクト
+	size_type size_;								///< @brief コンテナに格納されている要素数
 
 protected:
-	T* data_;
+	T* data_;	///< @brief コンテナで扱うデータの先頭を表すポインタ
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コンテナのサイズを num 個に変更する．
+	//! 元のコンテナサイズと異なる場合は，自動的にサイズを調整する．
+	//! 全ての要素の値はデフォルトコンストラクタで初期化される．
+	//! また，組み込み型（int や double など）の場合は，全ての要素を0で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num  … リサイズ後のコンテナ内の要素数
 	//! 
 	void resize( size_type num )
 	{
@@ -101,13 +126,12 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の要素数を変更する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 要素数を num 個に変更し，全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] num … リサイズ後のコンテナ内の要素数
+	//! @param[in] val … リサイズ後に各要素を初期化する値
 	//! 
 	void resize( size_type num, const value_type &val )
 	{
@@ -125,13 +149,11 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] a  … 内容を入れ替える対象
 	//! 
 	void swap( array &a )
 	{
@@ -145,13 +167,9 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナの要素を空にする
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! コンテナに格納されているデータを全て削除し，コンテナを空（要素数0）にする
 	//! 
 	void clear( )
 	{
@@ -161,13 +179,10 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内のデータ要素をデフォルト値で初期化する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! デフォルトコンストラクタの値で初期化する．
+	//! 組み込み型（int や double など）の場合は，全ての要素を0で初期化する．
 	//! 
 	void fill( )
 	{
@@ -175,13 +190,11 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナ内のデータ要素を指定された値で初期化する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! 全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] val … 要素を初期化する値
 	//! 
 	void fill( const value_type &val )
 	{
@@ -189,155 +202,86 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief コンテナが空かどうかを判定
 	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @retval true  … コンテナの要素数が空（0）の場合
+	//! @retval false … コンテナの要素数が空（0）でない場合
 	//! 
 	bool empty( ) const { return( size_ == 0 ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	size_type size( ) const { return( size_ ); }
-	size_type size1( ) const { return( size_ ); }
-	size_type size2( ) const { return( 1 ); }
-	size_type size3( ) const { return( 1 ); }
-	size_type width( ) const { return( size_ ); }
-	size_type height( ) const { return( 1 ); }
-	size_type depth( ) const { return( 1 ); }
+	size_type size( ) const { return( size_ ); }	///< @brief コンテナに格納されているデータ数を返す
+	size_type size1( ) const { return( size_ ); }	///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type size2( ) const { return( 1 ); }		//< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type size3( ) const { return( 1 ); }		//< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type width( ) const { return( size_ ); }	///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type height( ) const { return( 1 ); }		//< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type depth( ) const { return( 1 ); }		//< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+
+	double reso1( double r1 ){ return( 1.0 ); }		//< @brief X軸方向の解像度を返す
+	double reso1( ) const { return( 1.0 ); }		//< @brief X軸方向の解像度を設定する
+	double reso2( double r2 ){ return( 1.0 ); }		//< @brief Y軸方向の解像度を返す
+	double reso2( ) const { return( 1.0 ); }		//< @brief Y軸方向の解像度を設定する
+	double reso3( double r3 ){ return( 1.0 ); }		//< @brief Z軸方向の解像度を返す
+	double reso3( ) const { return( 1.0 ); }		//< @brief Z軸方向の解像度を設定する）
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
-	double reso1( double r1 ){ return( 1.0 ); }
-	double reso1( ) const { return( 1.0 ); }
-	double reso2( double r2 ){ return( 1.0 ); }
-	double reso2( ) const { return( 1.0 ); }
-	double reso3( double r3 ){ return( 1.0 ); }
-	double reso3( ) const { return( 1.0 ); }
-
-
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナ内の要素が占めるデータ量をバイト単位で返す
 	size_type byte( ) const { return( size_ * sizeof( value_type ) ); }
 
 
-
-	/// @brief 順方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの先頭を指すランダムアクセスイテレータを返す
+	//!
+	//! @code 順方向ランダムアクセスイテレータの使用例
+	//! std::cout << "順方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::iterator ite1 = a.begin( );
+	//! for( ; ite1 != a.end( ) ; ite1++ )
+	//! {
+	//! 	std::cout << *ite1 << " ";
+	//! }
+	//! std::cout << std::endl << std::endl;
+	//! @endcode
+	//!
 	iterator begin( ){ return( iterator( paccess( 0 ), 1 ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの先頭を指すコンスト型のコンテナを操作するランダムアクセスイテレータを返す
 	const_iterator begin( ) const { return( const_iterator( paccess( 0 ), 1 ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの末尾を指すランダムアクセスイテレータを返す
 	iterator end( ){ return( iterator( paccess( size( ) ), 1 ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの末尾を指すコンスト型のコンテナを操作するランダムアクセスイテレータを返す
 	const_iterator end( ) const { return( const_iterator( paccess( size( ) ), 1 ) ); }
 
 
 
-	/// @brief 逆方向のランダムアクセスイテレータを返す
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの末尾を指す逆方向ランダムアクセスイテレータを返す
+	//!
+	//! @code 逆方向ランダムアクセスイテレータの使用例
+	//! std::cout << "逆方向ランダムアクセスイテレータ" << std::endl;
+	//! mist::array< int >::reverse_iterator ite2 = a.rbegin( );
+	//! for( ; ite2 != a.rend( ) ; ite2++ )
+	//! {
+	//! 	std::cout << *ite2 << " ";
+	//! }
+	//! std::cout << std::endl;
+	//! @endcode
+	//!
 	reverse_iterator rbegin( ){ return( reverse_iterator( end( ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの末尾を指すコンスト型のコンテナを操作する逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator rbegin( ) const { return( const_reverse_iterator( end( ) ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの先頭を指す逆方向ランダムアクセスイテレータを返す
 	reverse_iterator rend( ){ return( reverse_iterator( begin( ) ) ); }
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief コンテナの先頭を指すコンスト型のコンテナを操作する逆方向ランダムアクセスイテレータを返す
 	const_reverse_iterator rend( ) const { return( const_reverse_iterator( begin( ) ) ); }
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief 使用しているアロケータが確保可能なメモリの最大値を返す
 	size_type max_size( ) const { return( allocator_.max_size( ) ); }
 
 
@@ -349,13 +293,14 @@ private: // サポートしないＳＴＬの関数（実装・使用しちゃだめ）
 	void insert( iterator i, size_type num, const value_type &val );
 
 public:
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なるコンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
+	//! コピー元とコピー先でデータ型（array< data > の data）が異なる場合の代入を行う．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元のコンテナ
+	//! @return       … 自分自身
 	//! 
 	template < class TT, class AAlocator >
 	const array& operator =( const array< TT, AAlocator >  &o )
@@ -376,13 +321,13 @@ public:
 		return( *this );
 	}
 
-	/// @brief 関数・クラスの概要を書く
+	/// @brief 要素の型が異なるコンテナを代入する
 	//! 
-	//! 詳細な説明や関数の使用例を書く
+	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
+	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
+	//! @param[in] o  … コピー元のコンテナ
+	//! @return       … 自分自身
 	//! 
 	const array& operator =( const array  &o )
 	{
@@ -406,24 +351,31 @@ public:
 
 // コンテナ内の要素へのアクセス演算子
 protected:
+	/// @brief index で示される位置の要素のポインタを返す
+	//! @param[in] index  … コンテナ内の要素位置
+	//! @return           … 指定された要素を示すポインタ
 	pointer paccess( size_type index )
 	{
 		return( data_ + index );
 	}
+	/// @brief index で示される位置の要素の const ポインタを返す
+	//! @param[in] index  … コンテナ内の要素位置
+	//! @return           … 指定された要素を示す const ポインタ
 	const_pointer paccess( size_type index ) const
 	{
 		return( data_ + index );
 	}
 
 public:
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief index で示される位置の要素の参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された index が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] index … コンテナ内の要素位置
+	/// @param[in] dmy1  … 使用しない
+	/// @param[in] dmy2  … 使用しない
+	/// @return          … 指定された要素を示す参照
+	//!
 	reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
@@ -431,14 +383,15 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief index で示される位置の要素の const 参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された index が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] index … コンテナ内の要素位置
+	/// @param[in] dmy1  … 使用しない
+	/// @param[in] dmy2  … 使用しない
+	/// @return          … 指定された要素を示す const 参照
+	//!
 	const_reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
@@ -446,14 +399,15 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief index で示される位置の要素の参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された index が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] index … コンテナ内の要素位置
+	/// @param[in] dmy1  … 使用しない
+	/// @param[in] dmy2  … 使用しない
+	/// @return          … 指定された要素を示す参照
+	//!
 	reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
@@ -461,14 +415,15 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief index で示される位置の要素の const 参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された index が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] index … コンテナ内の要素位置
+	/// @param[in] dmy1  … 使用しない
+	/// @param[in] dmy2  … 使用しない
+	/// @return          … 指定された要素を示す const 参照
+	//!
 	const_reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
@@ -476,14 +431,15 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief index で示される位置の要素の参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された index が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] index … コンテナ内の要素位置
+	/// @param[in] dmy1  … 使用しない
+	/// @param[in] dmy2  … 使用しない
+	/// @return          … 指定された要素を示す参照
+	//!
 	reference operator []( size_type index )
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
@@ -491,14 +447,15 @@ public:
 	}
 
 
-	/// @brief 関数・クラスの概要を書く
-	//! 
-	//! 詳細な説明や関数の使用例を書く
-	//! 
-	//! @param[in] in  … 引数の説明
-	//! @param[in] out … 引数の説明
-	//! @return        … 戻り値の説明
-	//! 
+	/// @brief index で示される位置の要素の const 参照を返す
+	//!
+	//! DEBUG マクロを有効にした（NDEBUGマクロを定義しない）場合は，指定された index が有効な範囲内にあるかをチェックする
+	//!
+	/// @param[in] index … コンテナ内の要素位置
+	/// @param[in] dmy1  … 使用しない
+	/// @param[in] dmy2  … 使用しない
+	/// @return          … 指定された要素を示す const 参照
+	//!
 	const_reference operator []( size_type index ) const
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
@@ -506,37 +463,49 @@ public:
 	}
 
 public:
-	// 構築
+	/// @brief ディフォルトコンストラクタ．要素数 0 のコンテナを作成する
 	array( ) : allocator_( ), size_( 0 ), data_( NULL ){}
+
 	explicit array( const Allocator &a ) : allocator_( a ), size_( 0 ), data_( NULL ){}
 
+
+	/// @brief 要素数 num 個のコンテナを作成し，デフォルト値で要素を初期化する
 	explicit array( size_type num ) : allocator_( ), size_( num ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_ );
 	}
+	/// @brief 要素数 num 個のコンテナを作成し，アロケータ a のコピーを利用する
 	array( size_type num, const Allocator &a ) : allocator_( a ), size_( num ), data_( allocator_.allocate_objects( size_ ) )
 	{
 		data_ = allocator_.allocate_objects( size_ );
 	}
 
+	/// @brief 要素数 num 個のコンテナを作成し，値 val で初期化する
 	array( size_type num, const value_type &val ) : allocator_( ), size_( num ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_, val );
 	}
+	/// @brief 要素数 num 個のコンテナを作成し，値 val で初期化し，アロケータ a のコピーを利用する
 	array( size_type num, const value_type &val, const Allocator &a ) : allocator_( a ), size_( num ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_, val );
 	}
 
+	/// @brief イテレータ s と e の範囲の値を用いて，配列を初期化する
 	array( const_iterator s, const_iterator e ) : allocator_( ), size_( e - s ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( s, e );
 	}
+	/// @brief イテレータ s と e の範囲の値を用いて，配列を初期化し，アロケータ a のコピーを利用する
 	array( const_iterator s, const_iterator e, const Allocator &a ) : allocator_( a ), size_( e - s ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( s, e );
 	}
 
+	/// @brief 他の array 配列で要素の型が異なるものから同じ要素数の配列を作成する
+	//!
+	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
+	//!
 	template < class TT, class AAlocator >
 	array( const array< TT, AAlocator > &o ) : allocator_( ), size_( o.size( ) ), data_( NULL )
 	{
@@ -544,13 +513,14 @@ public:
 		for( size_type i = 0 ; i < size_ ; i++ ) data_[i] = static_cast< value_type >( o[i] );
 	}
 
+	/// @brief 他の array 配列で同じ要素型のものを用いて初期化する
 	array( const array< T, Allocator > &o ) : allocator_( o.allocator_ ), size_( o.size_ ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_ );
 		allocator_.copy_objects( o.data_, size_, data_ );
 	}
 
-	// 消滅
+	/// @brief コンテナが利用しているリソースを全て開放する
 	~array( )
 	{
 		clear( );
@@ -571,19 +541,27 @@ template < class T, class Allocator = std::allocator< T > >
 class array1 : public array< T, Allocator >
 {
 public:
-	typedef Allocator allocator_type;
-	typedef typename Allocator::reference reference;
-	typedef typename Allocator::const_reference const_reference;
-	typedef typename Allocator::value_type value_type;
-	typedef typename Allocator::size_type size_type;
-	typedef typename Allocator::difference_type difference_type;
-	typedef typename Allocator::pointer pointer;
-	typedef typename Allocator::const_pointer const_pointer;
+	typedef Allocator allocator_type;								///< @brief MISTコンテナが利用するアロケータ型
+	typedef typename Allocator::reference reference;				///< @brief MISTのコンテナ内に格納するデータ型の参照．mist::array< data > の場合，data & となる
+	typedef typename Allocator::const_reference const_reference;	///< @brief MISTのコンテナ内に格納するデータ型の const 参照．mist::array< data > の場合，const data & となる
+	typedef typename Allocator::value_type value_type;				///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef typename Allocator::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename Allocator::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename Allocator::pointer pointer;					///< @brief MISTのコンテナ内に格納するデータ型のポインター型．mist::array< data > の場合，data * となる
+	typedef typename Allocator::const_pointer const_pointer;		///< @brief MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array< data > の場合，const data * となる
 
+	/// @brief MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
+
+	/// @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
 	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
+
+	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
+
+	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+
 
 protected:
 	typedef array< T, Allocator > base;
@@ -802,19 +780,27 @@ template < class T, class Allocator = std::allocator< T > >
 class array2 : public array1< T, Allocator >
 {
 public:
-	typedef Allocator allocator_type;
-	typedef typename Allocator::reference reference;
-	typedef typename Allocator::const_reference const_reference;
-	typedef typename Allocator::value_type value_type;
-	typedef typename Allocator::size_type size_type;
-	typedef typename Allocator::difference_type difference_type;
-	typedef typename Allocator::pointer pointer;
-	typedef typename Allocator::const_pointer const_pointer;
+	typedef Allocator allocator_type;								///< @brief MISTコンテナが利用するアロケータ型
+	typedef typename Allocator::reference reference;				///< @brief MISTのコンテナ内に格納するデータ型の参照．mist::array< data > の場合，data & となる
+	typedef typename Allocator::const_reference const_reference;	///< @brief MISTのコンテナ内に格納するデータ型の const 参照．mist::array< data > の場合，const data & となる
+	typedef typename Allocator::value_type value_type;				///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef typename Allocator::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename Allocator::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename Allocator::pointer pointer;					///< @brief MISTのコンテナ内に格納するデータ型のポインター型．mist::array< data > の場合，data * となる
+	typedef typename Allocator::const_pointer const_pointer;		///< @brief MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array< data > の場合，const data * となる
 
+	/// @brief MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
+
+	/// @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
 	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
+
+	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
+
+	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+
 
 protected:
 	typedef array1< T, Allocator > base;
@@ -1186,19 +1172,27 @@ template < class T, class Allocator = std::allocator< T > >
 class array3 : public array2< T, Allocator >
 {
 public:
-	typedef Allocator allocator_type;
-	typedef typename Allocator::reference reference;
-	typedef typename Allocator::const_reference const_reference;
-	typedef typename Allocator::value_type value_type;
-	typedef typename Allocator::size_type size_type;
-	typedef typename Allocator::difference_type difference_type;
-	typedef typename Allocator::pointer pointer;
-	typedef typename Allocator::const_pointer const_pointer;
+	typedef Allocator allocator_type;								///< @brief MISTコンテナが利用するアロケータ型
+	typedef typename Allocator::reference reference;				///< @brief MISTのコンテナ内に格納するデータ型の参照．mist::array< data > の場合，data & となる
+	typedef typename Allocator::const_reference const_reference;	///< @brief MISTのコンテナ内に格納するデータ型の const 参照．mist::array< data > の場合，const data & となる
+	typedef typename Allocator::value_type value_type;				///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef typename Allocator::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename Allocator::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename Allocator::pointer pointer;					///< @brief MISTのコンテナ内に格納するデータ型のポインター型．mist::array< data > の場合，data * となる
+	typedef typename Allocator::const_pointer const_pointer;		///< @brief MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array< data > の場合，const data * となる
 
+	/// @brief MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ
 	typedef mist_iterator2< T, ptrdiff_t, pointer, reference > iterator;
+
+	/// @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
 	typedef mist_iterator2< T, ptrdiff_t, pointer, const_reference > const_iterator;
+
+	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
 	typedef mist_reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, reference > > reverse_iterator;
+
+	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 	typedef mist_reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+
 
 protected:
 	typedef array2< T, Allocator > base;
@@ -1679,19 +1673,20 @@ template < class Array >
 class marray : public Array
 {
 public:
-	typedef typename Array::allocator_type allocator_type;
-	typedef typename Array::reference reference;
-	typedef typename Array::const_reference const_reference;
-	typedef typename Array::value_type value_type;
-	typedef typename Array::size_type size_type;
-	typedef typename Array::difference_type difference_type;
-	typedef typename Array::pointer pointer;
-	typedef typename Array::const_pointer const_pointer;
+	typedef typename Array::allocator_type allocator_type;		///< @brief MISTコンテナが利用するアロケータ型
+	typedef typename Array::reference reference;				///< @brief MISTのコンテナ内に格納するデータ型の参照．mist::array< data > の場合，data & となる
+	typedef typename Array::const_reference const_reference;	///< @brief MISTのコンテナ内に格納するデータ型の const 参照．mist::array< data > の場合，const data & となる
+	typedef typename Array::value_type value_type;				///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef typename Array::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename Array::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename Array::pointer pointer;					///< @brief MISTのコンテナ内に格納するデータ型のポインター型．mist::array< data > の場合，data * となる
+	typedef typename Array::const_pointer const_pointer;		///< @brief MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array< data > の場合，const data * となる
 
-	typedef typename Array::iterator iterator;
-	typedef typename Array::const_iterator const_iterator;
-	typedef typename Array::reverse_iterator reverse_iterator;
-	typedef typename Array::const_reverse_iterator const_reverse_iterator;
+	typedef typename Array::iterator iterator;								///< @brief MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ
+	typedef typename Array::const_iterator const_iterator;					///< @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
+	typedef typename Array::reverse_iterator reverse_iterator;				///< @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
+	typedef typename Array::const_reverse_iterator const_reverse_iterator;	///< @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
+
 
 protected:
 	typedef Array base;
@@ -2333,19 +2328,19 @@ template < class Array >
 class buffered_array : public Array
 {
 public:
-	typedef typename Array::allocator_type allocator_type;
-	typedef typename Array::reference reference;
-	typedef typename Array::const_reference const_reference;
-	typedef typename Array::value_type value_type;
-	typedef typename Array::size_type size_type;
-	typedef typename Array::difference_type difference_type;
-	typedef typename Array::pointer pointer;
-	typedef typename Array::const_pointer const_pointer;
+	typedef typename Array::allocator_type allocator_type;		///< @brief MISTコンテナが利用するアロケータ型
+	typedef typename Array::reference reference;				///< @brief MISTのコンテナ内に格納するデータ型の参照．mist::array< data > の場合，data & となる
+	typedef typename Array::const_reference const_reference;	///< @brief MISTのコンテナ内に格納するデータ型の const 参照．mist::array< data > の場合，const data & となる
+	typedef typename Array::value_type value_type;				///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef typename Array::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename Array::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename Array::pointer pointer;					///< @brief MISTのコンテナ内に格納するデータ型のポインター型．mist::array< data > の場合，data * となる
+	typedef typename Array::const_pointer const_pointer;		///< @brief MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array< data > の場合，const data * となる
 
-	typedef typename Array::iterator iterator;
-	typedef typename Array::const_iterator const_iterator;
-	typedef typename Array::reverse_iterator reverse_iterator;
-	typedef typename Array::const_reverse_iterator const_reverse_iterator;
+	typedef typename Array::iterator iterator;								///< @brief MISTのコンテナ内を操作する，STLで言う順方向のランダムアクセスイテレータ
+	typedef typename Array::const_iterator const_iterator;					///< @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
+	typedef typename Array::reverse_iterator reverse_iterator;				///< @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
+	typedef typename Array::const_reverse_iterator const_reverse_iterator;	///< @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 
 protected:
 	typedef Array base;

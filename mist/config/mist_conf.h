@@ -265,18 +265,18 @@ struct __mist_console_callback__
 *
 * @subsection numeric ベクトル・行列演算
 * - @ref numeric_group "行列演算"
-*   - @ref mist::inverse						"逆行列を計算"
+*   - @ref mist::inverse					"逆行列を計算"
 *   - @ref mist::solve						"連立方程式を解く"
-*   - @ref mist::qr_factorization				"QR 分解"
-*   - @ref mist::lu_factorization				"LU 分解"
+*   - @ref mist::qr_factorization			"QR 分解"
+*   - @ref mist::lu_factorization			"LU 分解"
 *   - @ref mist::eigen						"固有値・固有ベクトル"
-*   - @ref mist::svd							"特異値分解"
+*   - @ref mist::svd						"特異値分解"
 *
 * @subsection common 共通の処理
 * - @ref fourier_group						"フーリエ変換"
-*   - @ref fft_group							"高速フーリエ変換 (FFT)"
-*   - @ref dct_group							"離散コサイン変換(DCT)"
-*   - @ref dst_group							"離散サイン変換 (DST) "
+*   - @ref fft_group						"高速フーリエ変換 (FFT)"
+*   - @ref dct_group						"離散コサイン変換(DCT)"
+*   - @ref dst_group						"離散サイン変換 (DST) "
 * - @ref a									"ウェーブレット変換"
 * - @ref a									"統計処理"
 * - @ref a									"ヒストグラム制御"
@@ -294,26 +294,26 @@ struct __mist_console_callback__
 *   - @ref image_jpeg_group					"JPEGデータの読み込み・書き出し"
 *   - @ref image_png_group					"PNGデータの読み込み・書き出し"
 *   - @ref image_tiff_group					"TIFFデータの読み込み・書き出し"
-*   - @ref image_dicom_group					"DICOMデータの読み込み・書き出し"
+*   - @ref image_dicom_group				"DICOMデータの読み込み・書き出し"
 *
 * @subsubsection image-filter フィルタ系
-* - @ref linear_group					"線形フィルタ"
-* - @ref median_group					"メディアンフィルタ"
-* - @ref interpolate_group				"画像補間"
-* - @ref a								"カラー画像に対する処理"
-* - @ref threshold_group				"閾値選択"
-* - @ref a								"2値画像に対する処理"
-* - @ref morphology_group				"モルフォロジー演算"
+* - @ref linear_group						"線形フィルタ"
+* - @ref median_group						"メディアンフィルタ"
+* - @ref interpolate_group					"画像補間"
+* - @ref a									"カラー画像に対する処理"
+* - @ref threshold_group					"閾値選択"
+* - @ref a									"2値画像に対する処理"
+* - @ref morphology_group					"モルフォロジー演算"
 *
 * @subsection audio 主に音声に対して適用される処理
 *
 * @subsubsection audio-io 入出力系
-* - @ref audio_group					"音声データの読み込み・書き出し"
-*   - @ref audio_wav_group				"WAVデータの読み込み・書き出し"
+* - @ref audio_group						"音声データの読み込み・書き出し"
+*   - @ref audio_wav_group					"WAVデータの読み込み・書き出し"
 *
 * @subsubsection audio-filter フィルタ系
-* - @ref a								"サンプリングレート変更"
-* - @ref a								"再生"
+* - @ref a									"サンプリングレート変更"
+* - @ref a									"再生"
 *
 ****************************************************************************************************************************/
 
