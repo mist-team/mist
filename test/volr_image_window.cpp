@@ -303,6 +303,7 @@ volr_image_window::volr_image_window( ) {
       o->box(FL_PLASTIC_DOWN_BOX);
       o->minimum(-3);
       o->maximum(3);
+      o->step(0.001);
       o->callback((Fl_Callback*)cb_Barrel);
       o->align(FL_ALIGN_LEFT);
     }

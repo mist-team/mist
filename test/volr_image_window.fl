@@ -185,7 +185,7 @@ class volr_image_window {open
       Fl_Value_Slider {} {
         label {Barrel Distortion:}
         callback {volr_image->barrel_distortion( o->value( ) );} selected
-        xywh {120 555 295 20} type Horizontal box PLASTIC_DOWN_BOX align 4 minimum -3 maximum 3
+        xywh {120 555 295 20} type Horizontal box PLASTIC_DOWN_BOX align 4 minimum -3 maximum 3 step 0.001
       }
     }
     code {high_reso->value( 1 );

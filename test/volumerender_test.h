@@ -69,7 +69,6 @@ private:
 
 	volr_table_type volr_table;
 	volr_parameter_type volr_parameter;
-	mist::volumerender::barrel_distortion barrel_distortion_;
 
 public:
 	int handle( int event );
@@ -148,8 +147,7 @@ public:
 
 	void barrel_distortion( double bdistortion )
 	{
-		barrel_distortion_.kappa = bdistortion;
-		barrel_distortion_.update( );
+		volr_parameter.distortion = bdistortion;
 
 		draw_flag_ = true;
 		redraw( );

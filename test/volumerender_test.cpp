@@ -141,8 +141,6 @@ void volr_draw_area::draw_image( )
 
 	image_.reso( w( ) / static_cast< double >( h( ) ), 1.0 );
 
-	barrel_distortion_.resize( image_.width( ), image_.height( ) );
-
 	p.pos.x	= camera_.pos.x - p.offset.x;
 	p.pos.y	= p.offset.y - camera_.pos.y;
 	p.pos.z	= camera_.pos.z - p.offset.z;
@@ -151,7 +149,8 @@ void volr_draw_area::draw_image( )
 
 	{
 		mist::timer t;
-		mist::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), barrel_distortion_, p, table );
+//		mist::volumerendering( ct, image_, mist::volumerender::no_depth_map( ), barrel_distortion_, p, table );
+		mist::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table );
 		fps_ = 1.0 / t.elapse( );
 	}
 }
@@ -237,6 +236,7 @@ void volr_draw_area::initialize( )
 	volr_parameter.sampling_step		= 1.0;
 	volr_parameter.termination			= 0.01;
 	volr_parameter.specular				= 0.8;
+	volr_parameter.distortion			= 0.0;
 	
 	//	image_.resize( 512, 512 );
 	image_.resize( 256, 256 );
