@@ -2211,6 +2211,18 @@ public:
 	//! 
 	/// @return 指定された要素を示す参照
 	//!
+	reference operator []( difference_type index )
+	{
+		return( base::at( index + margin1_ ) );
+	}
+
+
+	/// @brief index で示される位置の要素の参照を返す
+	//!
+	/// @param[in] index … コンテナ内の要素位置
+	//! 
+	/// @return 指定された要素を示す参照
+	//!
 	reference operator ()( difference_type index )
 	{
 		return( base::at( index + margin1_ ) );
@@ -2284,10 +2296,23 @@ public:
 	marray( ) : base( ), margin1_( 0 ), margin2_( 0 ), margin3_( 0 ) {}
 
 	/// @brief マージン margin のコンテナを作成する
-	marray( size_type margin ) : base( ), margin1_( margin ), margin2_( 0 ), margin3_( 0 ) {}
+	marray( size_type margin ) : base( ), margin1_( margin ), margin2_( margin ), margin3_( margin ) {}
 
 	/// @brief コピーコンストラクタ
 	marray( const marray &o ) : base( o ), margin1_( o.margin1( ) ), margin2_( o.margin2( ) ), margin3_( o.margin3( ) ) {}
+
+
+
+	/// @brief マージン margin のコンテナを作成する
+	marray( size_type w, size_type margin ) : base( w + margin * 2 ), margin1_( margin ), margin2_( 0 ), margin3_( 0 ) {}
+
+	/// @brief マージン margin のコンテナを作成する
+	marray( size_type w, size_type h, size_type margin ) : base( w + margin * 2, h + margin * 2 ), margin1_( margin ), margin2_( margin ), margin3_( 0 ) {}
+
+	/// @brief マージン margin のコンテナを作成する
+	marray( size_type w, size_type h, size_type d, size_type margin ) : base( w + margin * 2, h + margin * 2, d + margin * 2 ), margin1_( margin ), margin2_( margin ), margin3_( margin ) {}
+
+
 
 
 	/// @brief array 配列 o の配列の大きさと，X軸方向のマージン margin1 を用いて初期化し，全要素を val で初期化する

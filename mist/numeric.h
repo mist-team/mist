@@ -256,10 +256,6 @@ namespace __clapack__
 	inline doublereal get_real( const doublereal &r ){ return( r ); }
 	inline real       get_real( const std::complex< real > &r ){ return( r.real( ) ); }
 	inline doublereal get_real( const std::complex< doublereal > &r ){ return( r.real( ) ); }
-	//inline integer get_real( const real &r ){ return( static_cast< integer >( r ) ); }
-	//inline integer get_real( const doublereal &r ){ return( static_cast< integer >( r ) ); }
-	//inline integer get_real( const std::complex< real > &r ){ return( static_cast< integer >( r.real( ) ) ); }
-	//inline integer get_real( const std::complex< doublereal > &r ){ return( static_cast< integer >( r.real( ) ) ); }
 
 
 	// 一般正方行列の連立方程式を解く関数
@@ -745,17 +741,21 @@ namespace __solve__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::value_type value_type;
 
+			if( a.rows( ) != b.rows( ) || a.empty( ) || b.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
 			integer info = 0;
 
 			switch( style )
 			{
 			case matrix_style::sy:
 				{
-					b.resize( a.rows( ), 1 );
-
 					// LAPACK関数の引数
 					integer n     = static_cast< integer >( a.cols( ) );
-					integer nrhs  = 1;
+					integer nrhs  = static_cast< integer >( b.cols( ) );
 					integer lda   = static_cast< integer >( a.rows( ) );
 					integer ldb   = static_cast< integer >( b.rows( ) );
 					value_type dmy;
@@ -778,11 +778,9 @@ namespace __solve__
 			case matrix_style::ge:
 			default:
 				{
-					b.resize( a.rows( ), 1 );
-
 					// LAPACK関数の引数
 					integer n     = static_cast< integer >( a.cols( ) );
-					integer nrhs  = 1;
+					integer nrhs  = static_cast< integer >( b.cols( ) );
 					integer lda   = static_cast< integer >( a.rows( ) );
 					integer ldb   = static_cast< integer >( b.rows( ) );
 					integer *ipiv = new integer[ n ];
@@ -824,17 +822,21 @@ namespace __solve__
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
 
+			if( a.rows( ) != b.rows( ) || a.empty( ) || b.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
 			integer info = 0;
 
 			switch( style )
 			{
 			case matrix_style::sy:
 				{
-					b.resize( a.rows( ), 1 );
-
 					// LAPACK関数の引数
 					integer n     = static_cast< integer >( a.cols( ) );
-					integer nrhs  = 1;
+					integer nrhs  = static_cast< integer >( b.cols( ) );
 					integer lda   = static_cast< integer >( a.rows( ) );
 					integer ldb   = static_cast< integer >( b.rows( ) );
 					value_type dmy;
@@ -857,11 +859,9 @@ namespace __solve__
 			case matrix_style::ge:
 			default:
 				{
-					b.resize( a.rows( ), 1 );
-
 					// LAPACK関数の引数
 					integer n     = static_cast< integer >( a.cols( ) );
-					integer nrhs  = 1;
+					integer nrhs  = static_cast< integer >( b.cols( ) );
 					integer lda   = static_cast< integer >( a.rows( ) );
 					integer ldb   = static_cast< integer >( b.rows( ) );
 					integer *ipiv = new integer[ n ];
@@ -909,6 +909,12 @@ namespace __lu__
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator1 >::value_type value_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
 
 			integer info = 0;
 
@@ -974,6 +980,12 @@ namespace __lu__
 		{
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
 
 			integer info = 0;
 
@@ -1046,6 +1058,12 @@ namespace __qr__
 		{
 			typedef __clapack__::integer integer;
 
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
 			integer info = 0;
 
 			switch( style )
@@ -1094,6 +1112,12 @@ namespace __qr__
 		{
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
 
 			integer info = 0;
 
@@ -1147,6 +1171,12 @@ namespace __inverse__
 		static matrix< T, Allocator >& inverse( matrix< T, Allocator > &a, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
 
 			integer info = 0;
 
@@ -1242,6 +1272,12 @@ namespace __inverse__
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
 
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
 			integer info = 0;
 
 			switch( style )
@@ -1333,7 +1369,7 @@ namespace __eigen__
 	// 一般行列の固有値・固有ベクトルを計算する
 #if defined(_USE_BALANCING_MATRIX_EIGEN_) && _USE_BALANCING_MATRIX_EIGEN_ != 0
 
-	// 行列の対角化を行わうバージョン
+	// 行列の対角化を行うバージョン
 	template < bool b >
 	struct __eigen__
 	{
@@ -1343,6 +1379,12 @@ namespace __eigen__
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::value_type value_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
 
 			integer info = 0;
 
@@ -1438,6 +1480,12 @@ namespace __eigen__
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
 
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
 			integer info = 0;
 
 			switch( style )
@@ -1504,6 +1552,12 @@ namespace __eigen__
 		static matrix< T, Allocator >& eigen( matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
 
 			integer info = 0;
 
@@ -1583,6 +1637,12 @@ namespace __eigen__
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
 
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
 			integer info = 0;
 
 			switch( style )
@@ -1650,6 +1710,12 @@ namespace __svd__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::size_type size_type;
 
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
 			integer info = 0;
 
 			switch( style )
@@ -1713,6 +1779,12 @@ namespace __svd__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T1, Allocator1 >::size_type size_type;
 			typedef typename T1::value_type value_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
 
 			integer info = 0;
 
@@ -1781,6 +1853,12 @@ namespace __svd__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::size_type size_type;
 
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
+
 			integer info = 0;
 
 			switch( style )
@@ -1841,6 +1919,12 @@ namespace __svd__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T1, Allocator1 >::size_type size_type;
 			typedef typename T1::value_type value_type;
+
+			if( a.empty( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw;
+			}
 
 			integer info = 0;
 
