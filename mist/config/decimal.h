@@ -922,7 +922,7 @@ public:	// ’è”
 	static decimal pai( )
 	{
 		decimal a0( 1 );
-		decimal b0( ::std::sqrt( decimal( 2 ) ) / 2 );
+		decimal b0( sqrt( decimal( 2 ) ) / 2 );
 		decimal t0( "0.25" );
 		decimal a1, b1, t1;
 
@@ -930,7 +930,7 @@ public:	// ’è”
 		for( int n = 0 ; n < 10 ; n++ )
 		{
 			a1 = ( a0 + b0 ) / 2;
-			b1 = ::std::sqrt( a0 * b0 );
+			b1 = sqrt( a0 * b0 );
 			t1 = t0 - _2[ n ] * ( a0 - a1 ) * ( a0 - a1 );
 
 			a0 = a1;
@@ -938,6 +938,34 @@ public:	// ’è”
 			t0 = t1;
 		}
 		return( ( a0 + b0 ) * ( a0 + b0 ) / ( t0 * 4 ) );
+	}
+
+	static decimal sqrt( const decimal &a )
+	{
+		if( a.is_zero( ) )
+		{
+			return mist::decimal< MAX_KETA >( );
+		}
+		else if( !a.is_plus( ) )
+		{
+			::std::cerr << "Error : Illegal parameter!!" << ::std::endl;
+			return( a );
+		}
+
+		mist::decimal< MAX_KETA > s( 1 );
+		mist::decimal< MAX_KETA > b = a;
+		while( s < b )
+		{
+			s *= 2;
+			b /= 2;
+		}
+
+		do
+		{
+			b = s;
+			s = ( ( a / s ) + s ) / 2;
+		} while( s < b );
+		return( b );
 	}
 
 protected:
@@ -1324,30 +1352,7 @@ namespace std
 	template < unsigned int MAX_KETA >
 	inline mist::decimal< MAX_KETA > sqrt( const mist::decimal< MAX_KETA > &a )
 	{
-		if( a.is_zero( ) )
-		{
-			return mist::decimal< MAX_KETA >( );
-		}
-		else if( !a.is_plus( ) )
-		{
-			::std::cerr << "Error : Illegal parameter!!" << ::std::endl;
-			return( a );
-		}
-
-		mist::decimal< MAX_KETA > s( 1 );
-		mist::decimal< MAX_KETA > b = a;
-		while( s < b )
-		{
-			s *= 2;
-			b /= 2;
-		}
-
-		do
-		{
-			b = s;
-			s = ( ( a / s ) + s ) / 2;
-		} while( s < b );
-		return( b );
+		return( mist::decimal< MAX_KETA >::sqrt( a ) );
 	}
 }
 
