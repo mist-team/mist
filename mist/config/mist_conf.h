@@ -260,52 +260,56 @@ struct __mist_console_callback__
 * @subsection implement	実装補助
 * - @ref mist::type_limits					"型に対する情報"
 * - @ref mist::timer						"時間計測"
-* - @ref a									"演算子の実装補助"
-* - @ref mist::thread						"multi threading"
+* - @ref operator_group						"演算子の実装補助"
+* - @ref thread_group						"スレッド"
 *
 * @subsection numeric ベクトル・行列演算
-* - @ref mist::inverse						"逆行列を計算"
-* - @ref mist::solve						"連立方程式を解く"
-* - @ref mist::qr_factorization				"QR 分解"
-* - @ref mist::lu_factorization				"LU 分解"
-* - @ref mist::eigen						"固有値・固有ベクトル"
-* - @ref mist::svd							"特異値分解"
+* - @ref numeric_group "行列演算"
+*   - @ref mist::inverse						"逆行列を計算"
+*   - @ref mist::solve						"連立方程式を解く"
+*   - @ref mist::qr_factorization				"QR 分解"
+*   - @ref mist::lu_factorization				"LU 分解"
+*   - @ref mist::eigen						"固有値・固有ベクトル"
+*   - @ref mist::svd							"特異値分解"
 *
 * @subsection common 共通の処理
-* - @ref mist::fft							"フーリエ変換 (FFT)"
-* - @ref mist::dct							"離散コサイン変換(DCT)"
-* - @ref mist::dst							"離散サイン変換 (DST) "
+* - @ref fourier_group						"フーリエ変換"
+*   - @ref fft_group							"高速フーリエ変換 (FFT)"
+*   - @ref dct_group							"離散コサイン変換(DCT)"
+*   - @ref dst_group							"離散サイン変換 (DST) "
 * - @ref a									"ウェーブレット変換"
 * - @ref a									"統計処理"
 * - @ref a									"ヒストグラム制御"
-* - @ref a									"擬似乱数生成"
+* - @ref mist::random						"擬似乱数生成"
 * - @ref a									"グラフ描画(2次元)"
-* - @ref mist::draw_image					"2次元画像描画"
+* - @ref draw_group							"2次元画像描画"
 *
 * @subsection image 主に画像に対して適用される処理
 *
 * @subsubsection image-io 入出力系
-* - @ref mist::read_raw					"RAWデータの読み込み・書き出し"
-* - @ref mist::read_bmp					"BMPデータの読み込み・書き出し"
-* - @ref mist::read_pnm					"PNMデータの読み込み・書き出し"
-* - @ref mist::read_jpeg				"JPEGデータの読み込み・書き出し"
-* - @ref mist::read_png					"PNGデータの読み込み・書き出し"
-* - @ref mist::read_tiff				"TIFFデータの読み込み・書き出し"
-* - @ref mist::read_dicom				"DICOMデータの読み込み・書き出し"
+* - @ref image_group						"任意の画像データの読み込み・書き出し"
+*   - @ref image_raw_group					"RAWデータの読み込み・書き出し"
+*   - @ref image_bmp_group					"BMPデータの読み込み・書き出し"
+*   - @ref image_pnm_group					"PNMデータの読み込み・書き出し"
+*   - @ref image_jpeg_group					"JPEGデータの読み込み・書き出し"
+*   - @ref image_png_group					"PNGデータの読み込み・書き出し"
+*   - @ref image_tiff_group					"TIFFデータの読み込み・書き出し"
+*   - @ref image_dicom_group					"DICOMデータの読み込み・書き出し"
 *
 * @subsubsection image-filter フィルタ系
-* - @ref mist::linear					"線形フィルタ"
+* - @ref linear_group					"線形フィルタ"
 * - @ref median_group					"メディアンフィルタ"
-* - @ref mist::interpolate				"画像補間"
+* - @ref interpolate_group				"画像補間"
 * - @ref a								"カラー画像に対する処理"
-* - @ref mist::threshold				"閾値選択"
+* - @ref threshold_group				"閾値選択"
 * - @ref a								"2値画像に対する処理"
 * - @ref morphology_group				"モルフォロジー演算"
 *
 * @subsection audio 主に音声に対して適用される処理
 *
 * @subsubsection audio-io 入出力系
-* - @ref mist::read_wav					"WAVデータの読み込み・書き出し"
+* - @ref audio_group					"音声データの読み込み・書き出し"
+*   - @ref audio_wav_group				"WAVデータの読み込み・書き出し"
 *
 * @subsubsection audio-filter フィルタ系
 * - @ref a								"サンプリングレート変更"

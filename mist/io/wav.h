@@ -721,8 +721,13 @@ namespace __wav_controller__
 	};
 }
 
+
 //! @addtogroup audio_group 音声入出力
 //!  @{
+
+//! @addtogroup audio_wav_group WAV 音声入出力
+//!  @{
+
 
 /// @brief 関数・クラスの概要を書く
 //! 
@@ -770,6 +775,9 @@ bool write_wav( const array< T, Allocator > &sound, const std::string &filename,
 	return( __wav_controller__::wav_controller< T, Allocator >::write( sound, filename, wav_bits, sampling_rate ) );
 }
 
+
+/// @}
+//  WAV 音声入出力グループの終わり
 
 /// @}
 //  音声入出力グループの終わり
