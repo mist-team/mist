@@ -27,7 +27,7 @@ image_draw_area *draw_area;
 #include <mist/converter.h>
 
 
-#define USE_COLOR_IMAGE		0
+#define USE_COLOR_IMAGE		1
 
 #if USE_COLOR_IMAGE == 1
 typedef mist::array2< mist::rgb< unsigned char > > image_type;
@@ -133,8 +133,8 @@ void figure_decomposition_test( )
 
 	mist::convert( image_object, label );
 
-	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
-//	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
+//	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
+	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
 
 	if( label_num == 0 )
 	{

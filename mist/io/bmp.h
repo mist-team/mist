@@ -587,9 +587,15 @@ namespace __bmp_controller__
 					for( i = 0 ; i < width ; i++ )
 					{
 						color_type c = pixel_converter::convert_from( image( i, j ) );
-						pixel[ i * 3 + 0 ] = c.b;
-						pixel[ i * 3 + 1 ] = c.g;
-						pixel[ i * 3 + 2 ] = c.r;
+						c.r = c.r < 0   ?   0 : c.r;
+						c.r = c.r > 255 ? 255 : c.r;
+						c.g = c.g < 0   ?   0 : c.g;
+						c.g = c.g > 255 ? 255 : c.g;
+						c.b = c.b < 0   ?   0 : c.b;
+						c.b = c.b > 255 ? 255 : c.b;
+						pixel[ i * 3 + 0 ] = static_cast< unsigned char >( c.b );
+						pixel[ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
+						pixel[ i * 3 + 2 ] = static_cast< unsigned char >( c.r );
 					}
 					break;
 
@@ -597,9 +603,15 @@ namespace __bmp_controller__
 					for( i = 0 ; i < width ; i++ )
 					{
 						color_type c = pixel_converter::convert_from( image( i, j ) );
-						pixel[ i * 4 + 0 ] = c.b;
-						pixel[ i * 4 + 1 ] = c.g;
-						pixel[ i * 4 + 2 ] = c.r;
+						c.r = c.r < 0   ?   0 : c.r;
+						c.r = c.r > 255 ? 255 : c.r;
+						c.g = c.g < 0   ?   0 : c.g;
+						c.g = c.g > 255 ? 255 : c.g;
+						c.b = c.b < 0   ?   0 : c.b;
+						c.b = c.b > 255 ? 255 : c.b;
+						pixel[ i * 4 + 0 ] = static_cast< unsigned char >( c.b );
+						pixel[ i * 4 + 1 ] = static_cast< unsigned char >( c.g );
+						pixel[ i * 4 + 2 ] = static_cast< unsigned char >( c.r );
 					}
 					break;
 
