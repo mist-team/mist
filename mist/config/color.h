@@ -110,24 +110,65 @@ struct _pixel_converter_
 	}
 };
 
-template < class T >
-struct _pixel_converter_< rgb< T > >
-{
-	typedef T value_type;
-	typedef rgb< T > color_type;
-	enum{ color_num = 3 };
+#ifndef defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
 
-	static color_type convert_to_pixel( value_type r, value_type g, value_type b )
+	#define __PIXEL_CONVERTER__( type ) \
+		template < >\
+		struct _pixel_converter_< rgb< type > >\
+		{\
+			typedef type value_type;\
+			typedef rgb< type > color_type;\
+			enum{ color_num = 3 };\
+			\
+			static color_type convert_to_pixel( value_type r, value_type g, value_type b )\
+			{\
+				return( color_type( r, g, b ) );\
+			}\
+			\
+			static color_type convert_from_pixel( const value_type &pixel )\
+			{\
+				return( color_type( pixel, pixel, pixel ) );\
+			}\
+		};\
+
+		// äeå^Ç…ëŒÇ∑ÇÈì¡éÍâª
+		__PIXEL_CONVERTER__(unsigned char)
+		__PIXEL_CONVERTER__(unsigned short)
+		__PIXEL_CONVERTER__(unsigned int)
+		__PIXEL_CONVERTER__(unsigned long)
+		__PIXEL_CONVERTER__(signed char)
+		__PIXEL_CONVERTER__(signed short)
+		__PIXEL_CONVERTER__(signed int)
+		__PIXEL_CONVERTER__(signed long)
+		__PIXEL_CONVERTER__(bool)
+		__PIXEL_CONVERTER__(char)
+		__PIXEL_CONVERTER__(float)
+		__PIXEL_CONVERTER__(double)
+		__PIXEL_CONVERTER__(long double)
+
+		#undef __PIXEL_CONVERTER__
+
+#else
+
+	template < class T >
+	struct _pixel_converter_< rgb< T > >
 	{
-		return( color_type( r, g, b ) );
-	}
+		typedef T value_type;
+		typedef rgb< T > color_type;
+		enum{ color_num = 3 };
 
-	static color_type convert_from_pixel( const value_type &pixel )
-	{
-		return( color_type( pixel, pixel, pixel ) );
-	}
-};
+		static color_type convert_to_pixel( value_type r, value_type g, value_type b )
+		{
+			return( color_type( r, g, b ) );
+		}
 
+		static color_type convert_from_pixel( const value_type &pixel )
+		{
+			return( color_type( pixel, pixel, pixel ) );
+		}
+	};
+
+#endif
 
 // mistñºëOãÛä‘ÇÃèIÇÌÇË
 _MIST_END
