@@ -163,6 +163,51 @@ _DEFINE_TYPE_LIMITS( long double,   false,  true,  LDBL_MIN,  LDBL_MAX, 0 )
 #undef _DEFINE_TYPE_LIMITS
 
 
+namespace __limits_min_max__
+{
+	template < class T >
+	inline const T limits_min_max__( const T &v, const T &min, const T &max )
+	{
+		return( v < min ? min : ( v > max ? max : v ) );
+	};
+
+	template < bool _ISCOLOR_ >
+	struct limits_min_max
+	{
+		template < class T >
+		static const T limits( const T &v, const T &min, const T &max )
+		{
+			return( limits_min_max__( v, min, max ) );
+		}
+	};
+
+	template < >
+	struct limits_min_max< true >
+	{
+		template < class T >
+		static const rgb< T > limits( const rgb< T > &v, const rgb< T > &min, const rgb< T > &max )
+		{
+			return( rgb< T >( limits_min_max__( v.r, min.r, max.r ), limits_min_max__( v.g, min.g, max.g ), limits_min_max__( v.b, min.b, max.b ) ) );
+		}
+	};
+}
+
+
+/// @brief 入力されたデータを min から max の範囲に変換する
+//! 
+//! min 未満の値は全て min になり，max 以上の値は全て max とする
+//! 
+//! @param[in] v … 変換を行うデータ
+//! 
+//! @return 変換後のデータ
+//! 
+template < class T >
+inline const T limits_min_max( const T &v, const T &min, const T &max )
+{
+	return( __limits_min_max__::limits_min_max< is_color< T >::value >::limits( v ) );
+}
+
+
 namespace __limits_0_255__
 {
 	template < bool _ISCHAR_ >

@@ -1409,7 +1409,7 @@ inline bool opening( array2< T, Allocator > &in, double radius, typename array2<
 template < class T, class Allocator >
 inline bool closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	return( closing( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), thread_num, __mist_dmy_callback__( ) ) );
+	return( closing( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), __mist_dmy_callback__( ), thread_num ) );
 }
 
 

@@ -362,10 +362,9 @@ DEFINE_PROMOTE_BIND_OPERATOR2( vector3, / )
 //!
 template < class T > inline std::ostream &operator <<( std::ostream &out, const vector3< T > &v )
 {
-	out << "( ";
 	out << v.x << ", ";
 	out << v.y << ", ";
-	out << v.z << " )";
+	out << v.z;
 	return( out );
 }
 
@@ -672,9 +671,8 @@ DEFINE_PROMOTE_BIND_OPERATOR2( vector2, / )
 //!
 template < class T > inline std::ostream &operator <<( std::ostream &out, const vector2< T > &v )
 {
-	out << "( ";
 	out << v.x << ", ";
-	out << v.y << " )";
+	out << v.y;
 	return( out );
 }
 
