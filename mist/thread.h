@@ -145,7 +145,7 @@ public:
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので直接関数を呼び出す
 		bool ret = true;
-		thread_exit_code_ = thread_function( static_cast< const thread_parameter & >( *this ) );
+		thread_exit_code_ = thread_function( static_cast< thread_parameter & >( *this ) );
 #elif defined( WIN32 )
 		if( thread_handle_ != NULL ) return( false );
 		thread_handle_ = CreateThread( NULL, 0, map_thread_function, ( void * )this, 0, &( thread_id_ ) );
@@ -243,7 +243,7 @@ public:
 
 protected:
 	// 継承した先で必ず実装されるスレッド関数
-	virtual thread_exit_type thread_function( const thread_parameter &p ) = 0;
+	virtual thread_exit_type thread_function( thread_parameter &p ) = 0;
 
 
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -279,15 +279,15 @@ namespace __thread_controller__
 		typedef typename base::thread_exit_type thread_exit_type;
 
 	private:
-		const Param &param_;
+		Param &param_;
 		Functor func_;
 
 	public:
-		thread_object_functor( const Param &p, Functor f ) : param_( p ), func_( f ){ }
+		thread_object_functor( Param &p, Functor f ) : param_( p ), func_( f ){ }
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual thread_exit_type thread_function( const thread_object_functor &p )
+		virtual thread_exit_type thread_function( thread_object_functor &p )
 		{
 			func_( param_ );
 			return( 0 );
@@ -332,7 +332,7 @@ public:
 };
 
 template < class Param, class Functor >
-inline thread_handle create_thread( const Param &param, Functor f )
+inline thread_handle create_thread( Param &param, Functor f )
 {
 	thread_handle thread_( new __thread_controller__::thread_object_functor< Param, Functor >( param, f ) );
 	thread_.create( );
