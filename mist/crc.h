@@ -14,6 +14,11 @@ _MIST_BEGIN
 
 
 //! @defgroup crc_group CRC
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/crc.h>
+//! @endcode
+//!
 //!  @{
 
 namespace crc_generator_polynominal
@@ -24,6 +29,8 @@ namespace crc_generator_polynominal
 	template < > struct crc_default< 32 >{ _MIST_CONST( size_t, gen_poly, 0x04c11db7 ); };
 }
 
+
+/// @brief CRC を生成・検証を行うクラス
 template < int BIT >
 struct crc
 {

@@ -20,6 +20,11 @@
 _MIST_BEGIN
 
 //! @addtogroup vector_group ベクトルライブラリ
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/vector.h>
+//! @endcode
+//!
 //!  @{
 
 

@@ -148,6 +148,11 @@ namespace __thinning_controller__
 
 
 //! @addtogroup thinning_group 細線化
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/thinning.h>
+//! @endcode
+//!
 //!  @{
 
 

@@ -32,6 +32,11 @@ _MIST_BEGIN
 
 
 //! @addtogroup morphology_group モルフォロジ演算フィルタ
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/morphology.h>
+//! @endcode
+//!
 //!  @{
 
 

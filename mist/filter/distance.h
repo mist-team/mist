@@ -310,10 +310,20 @@ namespace __distance_transform_controller__
 
 
 //! @addtogroup distance_group 距離変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/distance.h>
+//! @endcode
+//!
 //!  @{
 
 
 //! @addtogroup euclidean_distance_group ユークリッド距離変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/distance.h>
+//! @endcode
+//!
 //!  @{
 
 /// @brief 斉藤先生によるユークリッド距離変換

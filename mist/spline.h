@@ -17,12 +17,17 @@
 _MIST_BEGIN
 
 
-//! @defgroup free_form_group 自由曲線・曲面
+//! @addtogroup free_form_group 自由曲線・曲面
 //!  @{
 
 
 
-//! @defgroup spline_group 3次スプライン曲線
+//! @addtogroup spline_group 3次スプライン曲線
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/spline.h>
+//! @endcode
+//!
 //!  @{
 
 

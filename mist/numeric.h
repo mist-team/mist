@@ -23,6 +23,15 @@ _MIST_BEGIN
 
 
 
+//! @addtogroup numeric_group 行列演算
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/numeric.h>
+//! @endcode
+//!
+//!  @{
+
+
 /// @brief 行列計算をする際の入力となる行列の形式
 //! 
 //! @attention この形式に従って，内部で呼び出す関数が変更される
@@ -44,6 +53,8 @@ struct matrix_style
 	};
 };
 
+/// @}
+//  行列演算グループの終わり
 
 
 namespace __numeric__

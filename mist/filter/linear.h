@@ -502,6 +502,11 @@ namespace __linear_filter__
 
 
 //! @addtogroup linear_group 線形フィルタ
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/linear.h>
+//! @endcode
+//!
 //!  @{
 
 

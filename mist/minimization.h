@@ -105,6 +105,11 @@ namespace __minimization_utility__
 
 
 //! @addtogroup minimization_group 関数の最小化
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/minimization.h>
+//! @endcode
+//!
 //!  @{
 
 

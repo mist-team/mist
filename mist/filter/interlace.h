@@ -193,6 +193,11 @@ namespace __interlace_controller__
 
 
 //! @addtogroup interlace_group インターレス除去
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/interlace.h>
+//! @endcode
+//!
 //!  @{
 
 

@@ -38,6 +38,11 @@ _MIST_BEGIN
 //!  @{
 
 //! @addtogroup dct_group 離散コサイン変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/fft/dct.h>
+//! @endcode
+//!
 //!  @{
 
 

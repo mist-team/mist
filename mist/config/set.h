@@ -21,6 +21,11 @@ _MIST_BEGIN
 
 
 //! @addtogroup set_group 集合演算
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/config/set.h>
+//! @endcode
+//!
 //!  @{
 
 

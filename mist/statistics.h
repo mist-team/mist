@@ -45,6 +45,11 @@ namespace __utility__
 }
 
 //! @defgroup statistics_group 統計処理
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/statistics.h>
+//! @endcode
+//!
 //!  @{
 
 

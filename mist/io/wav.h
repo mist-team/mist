@@ -726,6 +726,11 @@ namespace __wav_controller__
 //!  @{
 
 //! @addtogroup audio_wav_group WAV 音声入出力
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/io/wav.h>
+//! @endcode
+//!
 //!  @{
 
 

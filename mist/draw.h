@@ -150,6 +150,11 @@ namespace pixel_data
 
 
 //! @addtogroup image_draw_group 画像描画
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/draw.h>
+//! @endcode
+//!
 //!  @{
 
 

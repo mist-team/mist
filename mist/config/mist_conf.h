@@ -337,7 +337,7 @@ struct __mist_console_callback__
 *
 *
 * @subsection implement	実装補助
-* - @ref mist::type_limits					"型に対する情報"
+* - @ref limits_group						"型に対する情報"
 * - @ref mist::timer						"時間計測"
 * - @ref operator_group						"演算子の実装補助"
 * - @ref thread_group						"マルチスレッド"

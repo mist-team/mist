@@ -573,6 +573,10 @@ namespace __raw_controller__
 //! RAWファイル（GZIP圧縮に対応）の読み込みと書き込みサポートをMISTに追加するものです．
 //! 別途 http://www.zlib.org が提供するフリーのZLIBライブラリが必要です．
 //!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/io/raw.h>
+//! @endcode
+//!
 //!  @{
 
 

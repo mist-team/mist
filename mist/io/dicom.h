@@ -32,6 +32,11 @@ _MIST_BEGIN
 
 
 //! @addtogroup dicom_group DICOM画像入出力
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/io/dicom.h>
+//! @endcode
+//!
 //!  @{
 
 

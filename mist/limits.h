@@ -41,6 +41,15 @@ _MIST_BEGIN
 	};\
 
 
+//! @addtogroup limits_group 型に関する情報の取得
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/limits.h>
+//! @endcode
+//!
+//! @{
+
+
 /// @brief 入力された型の情報を取得する
 //! 
 //! 入力された型の以下の情報を調べる
@@ -268,6 +277,10 @@ inline const T limits_0_255( const T &v )
 {
 	return( __limits_0_255__::limits_0_255< is_color< T >::value >::limits( v ) );
 }
+
+
+/// @}
+//  型に関する情報の取得グループの終わり
 
 
 // mist名前空間の終わり

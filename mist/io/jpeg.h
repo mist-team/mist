@@ -184,6 +184,10 @@ namespace __jpeg_controller__
 //! また，MISTコンテナからJPEGファイルへの書き出しをサポート．
 //! 別途 Independent JPEG Group (http://www.ijg.org/) が提供するフリーのJPEGライブラリが必要です．
 //!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/io/jpeg.h>
+//! @endcode
+//!
 //!  @{
 
 

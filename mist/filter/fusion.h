@@ -346,6 +346,11 @@ namespace __fusion_controller__
 
 
 //! @addtogroup fusion_group 図形融合グループ
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/fusion.h>
+//! @endcode
+//!
 //!  @{
 
 
@@ -433,6 +438,11 @@ bool fusion( const Array1 &in, Array2 &out, typename Array1::size_type length, t
 
 
 //! @addtogroup fusion_mdt_group マンハッタン距離グループ
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/fusion.h>
+//! @endcode
+//!
 //!  @{
 
 

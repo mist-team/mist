@@ -40,6 +40,11 @@ _MIST_BEGIN
 
 
 //! @addtogroup thread_group スレッド
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/thread.h>
+//! @endcode
+//!
 //!  @{
 
 

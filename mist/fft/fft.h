@@ -38,6 +38,11 @@ _MIST_BEGIN
 //!  @{
 
 //! @addtogroup fft_group 高速フーリエ変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/fft/fft.h>
+//! @endcode
+//!
 //!  @{
 
 

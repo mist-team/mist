@@ -304,6 +304,11 @@ namespace __gif_controller__
 //!  @{
 
 //! @addtogroup image_gif_group GIF 画像入出力
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/io/gif.h>
+//! @endcode
+//!
 //!  @{
 
 

@@ -17,6 +17,12 @@ _MIST_BEGIN
 
 
 //! @addtogroup threshold_group しきい値
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/threshold.h>
+//! @endcode
+//!
+
 //!  @{
 
 

@@ -1008,6 +1008,11 @@ namespace __median_filter_controller__
 
 
 //! @addtogroup median_group メディアン（中央値）フィルタ
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/median.h>
+//! @endcode
+//!
 //! @{
 
 

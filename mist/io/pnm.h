@@ -432,6 +432,11 @@ namespace __pnm_controller__
 //! また，MISTコンテナからPNMファイルへの書き出しをサポート．
 //! P1，P2，P3，P4，P5，P6形式のPNMに対応．
 //!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/io/pnm.h>
+//! @endcode
+//!
+//!
 //!  @{
 
 

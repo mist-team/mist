@@ -15,6 +15,16 @@
 _MIST_BEGIN
 
 
+//! @addtogroup endian_group エンディアンに関する情報の取得及び変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/config/endian.h>
+//! @endcode
+//!
+//! @{
+
+
+
 
 /// @brief バイト配列と値のペアを表現するクラス
 //! 
@@ -166,6 +176,11 @@ inline byte_array< T > from_current_endian( const byte_array< T > &bytes, bool t
 		return( bytes );
 	}
 }
+
+
+
+/// @}
+//  エンディアンに関する情報の取得及び変換グループの終わり
 
 
 // mist名前空間の終わり

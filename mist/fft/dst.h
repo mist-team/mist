@@ -38,6 +38,11 @@ _MIST_BEGIN
 //!  @{
 
 //! @addtogroup dst_group 離散サイン変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/fft/dst.h>
+//! @endcode
+//!
 //!  @{
 
 

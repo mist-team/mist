@@ -252,6 +252,10 @@ namespace __png_controller__
 //! また，MISTコンテナからPNGファイルへの書き出しをサポート．
 //! 別途 http://libpng.org が提供するフリーのPNGライブラリが必要です．
 //!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/io/png.h>
+//! @endcode
+//!
 //!  @{
 
 

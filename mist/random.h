@@ -13,6 +13,11 @@ _MIST_BEGIN
 
 
 //! @defgroup random_group 擬似乱数の生成
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/random.h>
+//! @endcode
+//!
 //!  @{
 
 

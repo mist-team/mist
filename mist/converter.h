@@ -100,6 +100,11 @@ namespace __converter__
 
 
 //! @addtogroup image_converter_group 画像変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/converter.h>
+//! @endcode
+//!
 //!  @{
 
 /// @brief あるMISTコンテナから他のコンテナへの変換

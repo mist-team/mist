@@ -67,6 +67,11 @@ namespace __image_controller__
 
 
 //! @addtogroup image_group 画像入出力
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/io/image.h>
+//! @endcode
+//!
 //!  @{
 
 

@@ -333,6 +333,11 @@ namespace __labeling_controller__
 
 
 //! @addtogroup labeling_group ラベリング
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/labeling.h>
+//! @endcode
+//!
 //!  @{
 
 

@@ -12,6 +12,11 @@
 _MIST_BEGIN
 
 //! @addtogroup operator_group 演算子の実装補助
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/operator/operators.h>
+//! @endcode
+//!
 //!  @{
 
 

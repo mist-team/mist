@@ -292,6 +292,10 @@ namespace __tiff_controller__
 //! また，MISTコンテナからTIFFファイルへの書き出しをサポート．
 //! 別途 http://libtiff.org が提供するフリーのTIFFライブラリが必要です．
 //!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/io/tiff.h>
+//! @endcode
+//!
 //!  @{
 
 

@@ -754,6 +754,11 @@ namespace __interpolate_controller__
 
 
 //! @addtogroup interpolate_group 画像補間
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/interpolate.h>
+//! @endcode
+//!
 //!  @{
 
 
