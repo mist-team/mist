@@ -32,7 +32,7 @@ thread_test : thread_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 image_test : image_test.cpp image_test_window.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(INCLUDE) $(LIBS) $(LDLIBS) `fltk-config --use-gl --ldflags` $(IMGLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(INCLUDE) $(LIBS) $(LDLIBS) `fltk-config --use-gl --cxxflags --ldflags` $(IMGLIBS)
 
 
 
