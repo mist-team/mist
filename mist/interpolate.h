@@ -6,7 +6,7 @@
 #include "mist.h"
 #endif
 
-#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
+#ifndef __INCLUDE_MIST_LIMITS__
 #include "limits.h"
 #endif
 
