@@ -329,7 +329,6 @@ namespace __cubic__
 								double x, double y, double z )
 		{
 			typedef typename array2< T, Allocator >::value_type value_type;
-			typedef typename color::value_type value_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
@@ -357,7 +356,6 @@ namespace __cubic__
 								double x, double y, double z )
 		{
 			typedef typename array3< T, Allocator >::value_type value_type;
-			typedef typename color::value_type value_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double u0 = sinc( 1 + x );
