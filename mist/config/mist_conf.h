@@ -84,6 +84,7 @@ _MIST_BEGIN
 
 
 // 行列演算のオプション
+#define _USE_BALANCING_MATRIX_EIGEN_		1	// 行列の対角化を行うことで計算精度を上げる（若干メモリを大目に食う）
 #define _USE_DIVIDE_AND_CONQUER_SVD_		1	// 分割統治法を用いた高速な特異値分解を利用する（若干メモリを大目に食う）
 
 

@@ -99,6 +99,13 @@ namespace __clapack__
 		int cgeev_( char *jobvl, char *jobvr, integer *n, complex *a, integer *lda, complex *w, complex *vl, integer *ldvl, complex *vr, integer *ldvr, complex *work, integer *lwork, real *rwork, integer *info );
 		int zgeev_( char *jobvl, char *jobvr, integer *n, doublecomplex *a, integer *lda, doublecomplex *w, doublecomplex *vl, integer *ldvl, doublecomplex *vr, integer *ldvr, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
 
+		// 一般行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
+		int sgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, real *a, integer *lda, real *wr, real *wi, real *vl, integer *ldvl, real *vr, integer *ldvr, integer *ilo, integer *ihi, real *scale, real *abnrm, real *rconde, real *rcondv, real *work, integer *lwork, integer *iwork, integer *info );
+		int dgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, doublereal *a, integer *lda, doublereal *wr, doublereal *wi, doublereal *vl, integer *ldvl, doublereal *vr, integer *ldvr, integer *ilo, integer *ihi, doublereal *scale, doublereal *abnrm, doublereal *rconde, doublereal *rcondv, doublereal *work, integer *lwork, integer *iwork, integer *info );
+		int cgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, complex *a, integer *lda, complex *w, complex *vl, integer *ldvl, complex *vr, integer *ldvr, integer *ilo, integer *ihi, real *scale, real *abnrm, real *rconde, real *rcondv, complex *work, integer *lwork, real *rwork, integer *info );
+		int zgeevx_( char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, doublecomplex *a, integer *lda, doublecomplex *w, doublecomplex *vl, integer *ldvl, doublecomplex *vr, integer *ldvr, integer *ilo, integer *ihi, doublereal *scale, doublereal *abnrm, doublereal *rconde, doublereal *rcondv, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
+
+
 		// 一般行列に対する特異値分解を計算
 		int sgesvd_( char *jobu, char *jobvt, integer *m, integer *n, real *a, integer *lda, real *s, real *u, integer *ldu, real *vt, integer *ldvt, real *work, integer *lwork, integer *info );
 		int dgesvd_( char *jobu, char *jobvt, integer *m, integer *n, doublereal *a, integer *lda, doublereal *s, doublereal *u, integer *ldu, doublereal *vt, integer *ldvt, doublereal *work, integer *lwork, integer *info );
@@ -218,6 +225,34 @@ namespace __clapack__
 	{
 		return( zgeev_( jobvl, jobvr, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( w ), reinterpret_cast< doublecomplex* >( vl ), &ldvl,
 							reinterpret_cast< doublecomplex* >( vr ), &ldvr, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
+	}
+
+	// 一般行列に対する固有値・固有ベクトルを計算．行列を対角化して精度を上げるバージョン
+	inline int eigen( char *balanc, char *jobvl, char *jobvr, char *sense, integer &n, real *a, integer &lda, real *wr, real *wi,
+										real *vl, integer &ldvl, real *vr, integer &ldvr, integer &ilo, integer &ihi, real *scale,
+										real &abnrm, real *rconde, real *rcondv, real *work, integer &lwork, integer *iwork, integer &info )
+	{
+		return( sgeevx_( balanc, jobvl, jobvr, sense, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, work, &lwork, iwork, &info ) );
+	}
+	inline int eigen( char *balanc, char *jobvl, char *jobvr, char *sense, integer &n, doublereal *a, integer &lda, doublereal *wr, doublereal *wi,
+										doublereal *vl, integer &ldvl, doublereal *vr, integer &ldvr, integer &ilo, integer &ihi, doublereal *scale,
+										doublereal &abnrm, doublereal *rconde, doublereal *rcondv, doublereal *work, integer &lwork, integer *iwork, integer &info )
+	{
+		return( dgeevx_( balanc, jobvl, jobvr, sense, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, work, &lwork, iwork, &info ) );
+	}
+	inline int eigen( char *balanc, char *jobvl, char *jobvr, char *sense, integer &n, std::complex< real > *a, integer &lda, std::complex< real > *w,
+										std::complex< real > *vl, integer &ldvl, std::complex< real > *vr, integer &ldvr, integer &ilo, integer &ihi, real *scale,
+										real &abnrm, real *rconde, real *rcondv, std::complex< real > *work, integer &lwork, real *rwork, integer &info )
+	{
+		return( cgeevx_( balanc, jobvl, jobvr, sense, &n, reinterpret_cast< complex* >( a ), &lda, reinterpret_cast< complex* >( w ), reinterpret_cast< complex* >( vl ), &ldvl,
+								reinterpret_cast< complex* >( vr ), &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, reinterpret_cast< complex* >( work ), &lwork, rwork, &info ) );
+	}
+	inline int eigen( char *balanc, char *jobvl, char *jobvr, char *sense, integer &n, std::complex< doublereal > *a, integer &lda, std::complex< doublereal > *w,
+										std::complex< doublereal > *vl, integer &ldvl, std::complex< doublereal > *vr, integer &ldvr, integer &ilo, integer &ihi, doublereal *scale,
+										doublereal &abnrm, doublereal *rconde, doublereal *rcondv, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &info )
+	{
+		return( zgeevx_( balanc, jobvl, jobvr, sense, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( w ), reinterpret_cast< doublecomplex* >( vl ), &ldvl,
+								reinterpret_cast< doublecomplex* >( vr ), &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
 	}
 
 
@@ -406,6 +441,102 @@ matrix< T, Allocator >& inverse( matrix< T, Allocator > &a )
 namespace __eigen__
 {
 	// 一般行列の固有値・固有ベクトルを計算する
+#if defined(_USE_BALANCING_MATRIX_EIGEN_) && _USE_BALANCING_MATRIX_EIGEN_ != 0
+
+	// 行列の対角化を行わうバージョン
+	template < bool b >
+	struct __eigen__
+	{
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& eigen( matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector )
+		{
+			typedef __clapack__::integer integer;
+
+			// LAPACK関数の引数
+			integer n      = static_cast< integer >( a.cols( ) );
+			integer lda    = static_cast< integer >( a.rows( ) );
+			typename matrix< T, Allocator >::value_type dmy, abnrm;
+			integer ldvl   = 1;
+			integer ldvr   = n;
+			integer lwork  = -1;
+			integer info   = 0;
+			integer ilo    = 0;
+			integer ihi    = 0;
+			char *balanc = "B";
+			char *jobvl  = "N";
+			char *jobvr  = "V";
+			char *sense  = "N";
+
+			// まず最適な作業用配列のサイズを取得する
+			__clapack__::eigen( balanc, jobvl, jobvr, sense, n, NULL, lda, NULL, NULL, NULL, ldvl, NULL, ldvr, ilo, ihi, NULL, abnrm, NULL, NULL, &dmy, lwork, NULL, info );
+			if( info == 0 )
+			{
+				eigen_value.resize( n, 1 );
+				matrix< T, Allocator > tmp( n, 1 );
+				matrix< T, Allocator > scale( n, 1 );
+				eigen_vector.resize( n, n );
+
+				lwork = __clapack__::get_real( dmy );
+				matrix< T, Allocator > work( lwork, 1 );
+				__clapack__::eigen( balanc, jobvl, jobvr, sense, n, &( a[0] ), lda, &( eigen_value[0] ), &( tmp[0] ),
+					NULL, ldvl, &( eigen_vector[0] ), ldvr, ilo, ihi, &( scale[0] ), abnrm, NULL, NULL, &( work[0] ), lwork, NULL, info );
+			}
+
+			return( eigen_value );
+		}
+	};
+
+	template < >
+	struct __eigen__< true >
+	{
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& eigen( matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename T::value_type value_type;
+
+			// LAPACK関数の引数
+			integer n      = static_cast< integer >( a.cols( ) );
+			integer lda    = static_cast< integer >( a.rows( ) );
+			typename matrix< T, Allocator >::value_type dmy;
+			value_type abnrm;
+			integer ldvl   = 1;
+			integer ldvr   = n;
+			integer lwork  = -1;
+			integer info   = 0;
+			integer ilo    = 0;
+			integer ihi    = 0;
+			char *balanc = "B";
+			char *jobvl  = "N";
+			char *jobvr  = "V";
+			char *sense  = "N";
+
+			// まず最適な作業用配列のサイズを取得する
+			__clapack__::eigen( balanc, jobvl, jobvr, sense, n, NULL, lda, NULL, NULL, ldvl, NULL, ldvr, ilo, ihi, NULL, abnrm, NULL, NULL, &dmy, lwork, NULL, info );
+			if( info == 0 )
+			{
+				eigen_value.resize( n, 1 );
+				eigen_vector.resize( n, n );
+				value_type *scale = new value_type[ n ];
+				value_type *rwork = new value_type[ 2 * n ];
+
+				lwork = __clapack__::get_real( dmy );
+				matrix< T, Allocator > work( lwork, 1 );
+				__clapack__::eigen( balanc, jobvl, jobvr, sense, n, &( a[0] ), lda, &( eigen_value[0] ),
+										NULL, ldvl, &( eigen_vector[0] ), ldvr, ilo, ihi, scale, abnrm, NULL, NULL, &( work[0] ), lwork, rwork, info );
+
+				delete [] scale;
+				delete [] rwork;
+			}
+
+			return( eigen_value );
+		}
+	};
+
+
+#else
+
+	// 行列の対角化を行わないバージョン
 	template < bool b >
 	struct __eigen__
 	{
@@ -482,6 +613,8 @@ namespace __eigen__
 			return( eigen_value );
 		}
 	};
+
+#endif
 }
 
 
@@ -495,103 +628,10 @@ matrix< T, Allocator >& eigen( matrix< T, Allocator > &a, matrix< T, Allocator >
 
 namespace __svd__
 {
-#if _USE_DIVIDE_AND_CONQUER_SVD_ == 0 // 分割統治法を用いないバージョンの特異値分解
-
 	// 一般行列の特異値分解を計算する
-	template < bool b >
-	struct __svd__
-	{
-		template < class T, class Allocator >
-		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt )
-		{
-			typedef __clapack__::integer integer;
-			typedef typename matrix< T, Allocator >::size_type size_type;
+#if defined(_USE_DIVIDE_AND_CONQUER_SVD_) && _USE_DIVIDE_AND_CONQUER_SVD_ != 0
 
-			// LAPACK関数の引数
-			integer m      = static_cast< integer >( a.rows( ) );
-			integer n      = static_cast< integer >( a.cols( ) );
-			integer lda    = m;
-			integer ldu    = m;
-			typename matrix< T, Allocator >::value_type dmy;
-			integer ldvt   = n;
-			integer lwork  = -1;
-			integer info   = 0;
-			char *jobu = "A";
-			char *jobvt = "A";
-
-			// まず最適な作業用配列のサイズを取得する
-			__clapack__::svd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, info );
-			if( info == 0 )
-			{
-				u.resize( ldu, m );
-				matrix< T, Allocator > ss( m < n ? m : n, 1 );
-				vt.resize( ldvt, n );
-
-				lwork = __clapack__::get_real( dmy );
-				matrix< T, Allocator > work( lwork, 1 );
-				__clapack__::svd( jobu, jobvt, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, info );
-
-				s.resize( m, n );
-				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
-				{
-					s( i, i ) = ss[ i ];
-				}
-			}
-
-			return( s );
-		}
-	};
-
-	template < >
-	struct __svd__< true >
-	{
-		template < class T1, class T2, class Allocator1, class Allocator2 >
-		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt )
-		{
-			typedef __clapack__::integer integer;
-			typedef typename matrix< T1, Allocator1 >::size_type size_type;
-			typedef typename T1::value_type value_type;
-
-			// LAPACK関数の引数
-			integer m      = static_cast< integer >( a.rows( ) );
-			integer n      = static_cast< integer >( a.cols( ) );
-			integer lda    = m;
-			integer ldu    = m;
-			typename matrix< T1, Allocator1 >::value_type dmy;
-			integer ldvt   = n;
-			integer lwork  = -1;
-			integer info   = 0;
-			char *jobu = "A";
-			char *jobvt = "A";
-
-			// まず最適な作業用配列のサイズを取得する
-			__clapack__::svd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
-			if( info == 0 )
-			{
-				u.resize( ldu, m );
-				matrix< typename T1::value_type > ss( m < n ? m : n, 1 );
-				vt.resize( ldvt, n );
-				value_type *rwork = new value_type[ 5 * ( m < n ? m : n ) ];
-
-				lwork = __clapack__::get_real( dmy );
-				matrix< T1, Allocator1 > work( lwork, 1 );
-				__clapack__::svd( jobu, jobvt, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, info );
-
-				s.resize( m, n );
-				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
-				{
-					s( i, i ) = ss[ i ];
-				}
-
-				delete [] rwork;
-			}
-
-			return( s );
-		}
-	};
-
-#else
-
+	// 分割統治法を用いるバージョンの特異値分解
 	template < bool b >
 	struct __svd__
 	{
@@ -683,6 +723,100 @@ namespace __svd__
 				{
 					s( i, i ) = ss[ i ];
 				}
+			}
+
+			return( s );
+		}
+	};
+
+#else
+
+	template < bool b >
+	struct __svd__
+	{
+		template < class T, class Allocator >
+		static matrix< T, Allocator >& svd( matrix< T, Allocator > &a, matrix< T, Allocator > &u, matrix< T, Allocator > &s, matrix< T, Allocator > &vt )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename matrix< T, Allocator >::size_type size_type;
+
+			// LAPACK関数の引数
+			integer m      = static_cast< integer >( a.rows( ) );
+			integer n      = static_cast< integer >( a.cols( ) );
+			integer lda    = m;
+			integer ldu    = m;
+			typename matrix< T, Allocator >::value_type dmy;
+			integer ldvt   = n;
+			integer lwork  = -1;
+			integer info   = 0;
+			char *jobu = "A";
+			char *jobvt = "A";
+
+			// まず最適な作業用配列のサイズを取得する
+			__clapack__::svd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, info );
+			if( info == 0 )
+			{
+				u.resize( ldu, m );
+				matrix< T, Allocator > ss( m < n ? m : n, 1 );
+				vt.resize( ldvt, n );
+
+				lwork = __clapack__::get_real( dmy );
+				matrix< T, Allocator > work( lwork, 1 );
+				__clapack__::svd( jobu, jobvt, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, info );
+
+				s.resize( m, n );
+				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+				{
+					s( i, i ) = ss[ i ];
+				}
+			}
+
+			return( s );
+		}
+	};
+
+	template < >
+	struct __svd__< true >
+	{
+		template < class T1, class T2, class Allocator1, class Allocator2 >
+		static matrix< T2, Allocator2 >& svd( matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt )
+		{
+			typedef __clapack__::integer integer;
+			typedef typename matrix< T1, Allocator1 >::size_type size_type;
+			typedef typename T1::value_type value_type;
+
+			// LAPACK関数の引数
+			integer m      = static_cast< integer >( a.rows( ) );
+			integer n      = static_cast< integer >( a.cols( ) );
+			integer lda    = m;
+			integer ldu    = m;
+			typename matrix< T1, Allocator1 >::value_type dmy;
+			integer ldvt   = n;
+			integer lwork  = -1;
+			integer info   = 0;
+			char *jobu = "A";
+			char *jobvt = "A";
+
+			// まず最適な作業用配列のサイズを取得する
+			__clapack__::svd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
+			if( info == 0 )
+			{
+				u.resize( ldu, m );
+				matrix< typename T1::value_type > ss( m < n ? m : n, 1 );
+				vt.resize( ldvt, n );
+				value_type *rwork = new value_type[ 5 * ( m < n ? m : n ) ];
+
+				lwork = __clapack__::get_real( dmy );
+				matrix< T1, Allocator1 > work( lwork, 1 );
+				__clapack__::svd( jobu, jobvt, m, n, &( a[0] ), lda, &( ss[0] ), &( u[0] ), ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, rwork, info );
+
+				s.resize( m, n );
+				for( size_type i = 0 ; i < ss.rows( ) ; i++ )
+				{
+					s( i, i ) = ss[ i ];
+				}
+
+				delete [] rwork;
 			}
 
 			return( s );

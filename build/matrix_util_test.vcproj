@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="clapackd.lib blasd.lib libF77d.lib"
+				AdditionalDependencies="clapack.lib blas.lib libF77.lib"
 				OutputFile="$(OutDir)/matrix_util_test.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../lib"
