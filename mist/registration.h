@@ -23,6 +23,10 @@
 #include "drawing.h"
 #endif
 
+#ifndef __INCLUDE_MIST_LIMITS__
+#include "limits.h"
+#endif
+
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -57,6 +61,8 @@ namespace __non_rigid_registration_utility__
 
 		typedef typename target_image_type::size_type size_type;
 		typedef typename target_image_type::difference_type difference_type;
+		typedef typename target_image_type::value_type value_type;
+		value_type minimum = type_limits< value_type >::minimum( );
 
 		difference_type i, j;
 		double u, v;
@@ -67,6 +73,7 @@ namespace __non_rigid_registration_utility__
 		double _1_stepH = 1.0 / stepH;
 		double _1_ax = 1.0 / source.reso1( );
 		double _1_ay = 1.0 / source.reso2( );
+
 
 		difference_type d0, d1, d2, d3;
 		{
@@ -150,7 +157,7 @@ namespace __non_rigid_registration_utility__
 				}
 				else
 				{
-					target( x, y ) = static_cast< typename target_image_type::value_type >( -2000 );
+					target( x, y ) = static_cast< typename target_image_type::value_type >( minimum );
 				}
 			}
 		}
@@ -173,6 +180,9 @@ namespace __non_rigid_registration_utility__
 
 		typedef typename target_image_type::size_type size_type;
 		typedef typename target_image_type::difference_type difference_type;
+
+		typedef typename target_image_type::value_type value_type;
+		value_type minimum = type_limits< value_type >::minimum( );
 
 		difference_type i, j, k;
 		double u, v, w;
@@ -301,7 +311,7 @@ namespace __non_rigid_registration_utility__
 					}
 					else
 					{
-						target( x, y, z ) = static_cast< typename target_image_type::value_type >( -2000 );
+						target( x, y, z ) = static_cast< typename target_image_type::value_type >( minimum );
 					}
 				}
 			}
@@ -407,6 +417,8 @@ namespace __non_rigid_registration_utility__
 
 		typedef typename target_image_type::size_type size_type;
 		typedef typename target_image_type::difference_type difference_type;
+		typedef typename target_image_type::value_type value_type;
+		value_type minimum = type_limits< value_type >::minimum( );
 
 		difference_type i, j;
 		double stepW = control_mesh.width( ) == 1 ? 1.0 : target.width( ) / static_cast< double >( control_mesh.width( ) - 1 );
@@ -508,7 +520,7 @@ namespace __non_rigid_registration_utility__
 				}
 				else
 				{
-					target( x, y ) = static_cast< typename target_image_type::value_type >( -2000 );
+					target( x, y ) = static_cast< typename target_image_type::value_type >( minimum );
 				}
 			}
 		}
@@ -533,6 +545,8 @@ namespace __non_rigid_registration_utility__
 
 		typedef typename target_image_type::size_type size_type;
 		typedef typename target_image_type::difference_type difference_type;
+		typedef typename target_image_type::value_type value_type;
+		value_type minimum = type_limits< value_type >::minimum( );
 
 		difference_type i, j, k;
 		double sz[ 4 ];
@@ -670,7 +684,7 @@ namespace __non_rigid_registration_utility__
 					}
 					else
 					{
-						target( x, y, z ) = static_cast< typename target_image_type::value_type >( -2000 );
+						target( x, y, z ) = static_cast< typename target_image_type::value_type >( minimum );
 					}
 				}
 			}
@@ -1060,20 +1074,104 @@ namespace __non_rigid_registration_utility__
 		}
 
 	protected:
+		// 最小のバウンディングボックス用の距離を計算する
+		double min_range( const double &v1, const double &v2, const double &v3 ) const
+		{
+			double v = v1 < v2 ? v1 : v2;
+			v = v < v3 ? v : v3;
+			return( v );
+		}
+
+		double max_range( const double &v1, const double &v2, const double &v3 ) const
+		{
+			double v = v1 > v2 ? v1 : v2;
+			v = v > v3 ? v : v3;
+			return( v );
+		}
+
+		double min_range( const double &v1, const double &v2, const double &v3,
+							const double &v4, const double &v5, const double &v6,
+							const double &v7, const double &v8, const double &v9 ) const
+		{
+			double vv1 = min_range( v1, v2, v3 );
+			double vv2 = min_range( v4, v5, v6 );
+			double vv3 = min_range( v7, v8, v9 );
+			return( min_range( vv1, vv2, vv3 ) );
+		}
+
+		double max_range( const double &v1, const double &v2, const double &v3,
+							const double &v4, const double &v5, const double &v6,
+							const double &v7, const double &v8, const double &v9 ) const
+		{
+			double vv1 = max_range( v1, v2, v3 );
+			double vv2 = max_range( v4, v5, v6 );
+			double vv3 = max_range( v7, v8, v9 );
+			return( max_range( vv1, vv2, vv3 ) );
+		}
+
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( )
 		{
 			typedef __minimization_utility__::__no_copy_constructor_functor__< registration_functor< TARGETTYPE, SOURCETYPE, CONTROLMESH > > no_constructor_functor_type;
 
 			// 最小化を開始
-			double search_length = 0.5;
+			double search_length = 0.95;
 			matrix_type p( 3, 1 ), dirs = matrix_type::identity( 3, 3 ), bound( 3, 2 );
-			bound( 0, 0 ) = -( control_mesh( x - 1, y    , z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
-			bound( 0, 1 ) =  ( control_mesh( x + 1, y    , z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
-			bound( 1, 0 ) = -( control_mesh( x    , y - 1, z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
-			bound( 1, 1 ) =  ( control_mesh( x    , y + 1, z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
-			bound( 2, 0 ) = -( control_mesh( x    , y    , z - 1 ) - control_mesh( x, y, z ) ).length( ) * search_length;
-			bound( 2, 1 ) =  ( control_mesh( x    , y    , z + 1 ) - control_mesh( x, y, z ) ).length( ) * search_length;
+
+			//const vector_type &p01 = control_mesh( x - 1, y - 1, z - 1 );
+			//const vector_type &p02 = control_mesh( x    , y - 1, z - 1 );
+			//const vector_type &p03 = control_mesh( x + 1, y - 1, z - 1 );
+			//const vector_type &p04 = control_mesh( x - 1, y    , z - 1 );
+			//const vector_type &p05 = control_mesh( x    , y    , z - 1 );
+			//const vector_type &p06 = control_mesh( x + 1, y    , z - 1 );
+			//const vector_type &p07 = control_mesh( x - 1, y + 1, z - 1 );
+			//const vector_type &p08 = control_mesh( x    , y + 1, z - 1 );
+			//const vector_type &p09 = control_mesh( x + 1, y + 1, z - 1 );
+			//const vector_type &p11 = control_mesh( x - 1, y - 1, z     );
+			//const vector_type &p12 = control_mesh( x    , y - 1, z     );
+			//const vector_type &p13 = control_mesh( x + 1, y - 1, z     );
+			//const vector_type &p14 = control_mesh( x - 1, y    , z     );
+			//const vector_type &p15 = control_mesh( x    , y    , z     );
+			//const vector_type &p16 = control_mesh( x + 1, y    , z     );
+			//const vector_type &p17 = control_mesh( x - 1, y + 1, z     );
+			//const vector_type &p18 = control_mesh( x    , y + 1, z     );
+			//const vector_type &p19 = control_mesh( x + 1, y + 1, z     );
+			//const vector_type &p21 = control_mesh( x - 1, y - 1, z + 1 );
+			//const vector_type &p22 = control_mesh( x    , y - 1, z + 1 );
+			//const vector_type &p23 = control_mesh( x + 1, y - 1, z + 1 );
+			//const vector_type &p24 = control_mesh( x - 1, y    , z + 1 );
+			//const vector_type &p25 = control_mesh( x    , y    , z + 1 );
+			//const vector_type &p26 = control_mesh( x + 1, y    , z + 1 );
+			//const vector_type &p27 = control_mesh( x - 1, y + 1, z + 1 );
+			//const vector_type &p28 = control_mesh( x    , y + 1, z + 1 );
+			//const vector_type &p29 = control_mesh( x + 1, y + 1, z + 1 );
+
+			//double lower_x = max_range( p01.x, p04.x, p07.x, p11.x, p14.x, p17.x, p21.x, p24.x, p27.x );
+			//double lower_y = max_range( p01.y, p02.y, p03.y, p11.y, p12.y, p13.y, p21.y, p22.y, p23.y );
+			//double lower_z = max_range( p01.z, p02.z, p03.z, p04.z, p05.z, p06.z, p07.z, p08.z, p09.z );
+			//double upper_x = min_range( p03.x, p06.x, p09.x, p13.x, p16.x, p19.x, p23.x, p26.x, p29.x );
+			//double upper_y = min_range( p07.y, p08.y, p09.y, p17.y, p18.y, p19.y, p27.y, p28.y, p29.y );
+			//double upper_z = min_range( p21.z, p22.z, p23.z, p24.z, p25.z, p26.z, p27.z, p28.z, p29.z );
+
+
+			//bound( 0, 0 ) = ( lower_x - p15.x ) * search_length;
+			//bound( 0, 1 ) = ( upper_x - p15.x ) * search_length;
+			//bound( 1, 0 ) = ( lower_y - p15.y ) * search_length;
+			//bound( 1, 1 ) = ( upper_y - p15.y ) * search_length;
+			//bound( 2, 0 ) = ( lower_z - p15.z ) * search_length;
+			//bound( 2, 1 ) = ( upper_z - p15.z ) * search_length;
+			bound( 0, 0 ) = ( control_mesh( x - 1, y    , z     ).x - control_mesh( x, y, z ).x ) * search_length;
+			bound( 0, 1 ) = ( control_mesh( x + 1, y    , z     ).x - control_mesh( x, y, z ).x ) * search_length;
+			bound( 1, 0 ) = ( control_mesh( x    , y - 1, z     ).y - control_mesh( x, y, z ).y ) * search_length;
+			bound( 1, 1 ) = ( control_mesh( x    , y + 1, z     ).y - control_mesh( x, y, z ).y ) * search_length;
+			bound( 2, 0 ) = ( control_mesh( x    , y    , z - 1 ).z - control_mesh( x, y, z ).z ) * search_length;
+			bound( 2, 1 ) = ( control_mesh( x    , y    , z + 1 ).z - control_mesh( x, y, z ).z ) * search_length;
+			//bound( 0, 0 ) = -( control_mesh( x - 1, y    , z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
+			//bound( 0, 1 ) =  ( control_mesh( x + 1, y    , z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
+			//bound( 1, 0 ) = -( control_mesh( x    , y - 1, z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
+			//bound( 1, 1 ) =  ( control_mesh( x    , y + 1, z     ) - control_mesh( x, y, z ) ).length( ) * search_length;
+			//bound( 2, 0 ) = -( control_mesh( x    , y    , z - 1 ) - control_mesh( x, y, z ) ).length( ) * search_length;
+			//bound( 2, 1 ) =  ( control_mesh( x    , y    , z + 1 ) - control_mesh( x, y, z ) ).length( ) * search_length;
 
 			matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 );
 			double v1, v2;
@@ -1275,26 +1373,6 @@ namespace non_rigid
 			typedef mist::vector3< size_type > control_point_index_type;
 			std::vector< control_point_index_type > control_point_list;
 
-			size_type X[] = { 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2 };
-			size_type Y[] = { 0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2 };
-			size_type Z[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
-
-			// 1階の探索で，互いに影響しあわない制御点のリストを作成する
-			for( size_type s = 0 ; s < 27 ; s++ )
-			{
-//				for( difference_type k = d - Z[ s ] - 1 ; k >= 0 ; k -= 3 )
-				for( difference_type k = Z[ s ] ; k < d ; k += 3 )
-				{
-					for( difference_type j = Y[ s ] ; j < h ; j += 3 )
-					{
-						for( difference_type i = X[ s ] ; i < w ; i += 3 )
-						{
-							control_point_list.push_back( mist::vector3< size_type >( i, j, k ) );
-						}
-					}
-				}
-			}
-
 			//std::cout << "制御点数1: " << control_point_list.size( ) << std::endl;
 			//std::cout << "制御点数2: " << w * h * d << std::endl;
 
@@ -1302,47 +1380,72 @@ namespace non_rigid
 			size_type fine_step_loop = 0;
 			while( fine_step_loop++ < coarse_to_fine_step )
 			{
-				size_type loop = 0, numthreads, t;
+				{
+					// 1階の探索で，互いに影響しあわない制御点のリストを作成する
+					difference_type w = control_mesh.width( );
+					difference_type h = control_mesh.height( );
+					difference_type d = control_mesh.depth( );
+					size_type X[] = { 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2 };
+					size_type Y[] = { 0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2 };
+					size_type Z[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
+
+					control_point_list.clear( );
+
+					for( size_type s = 0 ; s < 27 ; s++ )
+					{
+						for( difference_type k = Z[ s ] ; k < d ; k += 3 )
+						{
+							for( difference_type j = Y[ s ] ; j < h ; j += 3 )
+							{
+								for( difference_type i = X[ s ] ; i < w ; i += 3 )
+								{
+									control_point_list.push_back( mist::vector3< size_type >( i, j, k ) );
+								}
+							}
+						}
+					}
+				}
+
+				__mist_convert_callback__< Functor > callback_( callback, ( fine_step_loop - 1 ) * 100.0 / coarse_to_fine_step, fine_step_loop * 100.0 / coarse_to_fine_step );
+
+				size_type loop = 0, count = 0;
 				double max_iteration_num = control_point_list.size( ) * max_loop / static_cast< double >( thread_num );
-				size_type count = 0;
 				while( loop++ < max_loop )
 				{
-					for( size_type innerloop = 0 ; innerloop < 2 ; innerloop++ )
+					for( size_type i = 0 ; i < control_point_list.size( ) ; )
 					{
-						for( size_type i = 0 ; i < control_point_list.size( ) ; )
+						size_type numthreads;
+						for( numthreads = 0 ; numthreads < thread_num && i < control_point_list.size( ) ; numthreads++, i++ )
 						{
-							for( numthreads = 0 ; numthreads < thread_num && i < control_point_list.size( ) ; numthreads++, i++ )
-							{
-								control_point_index_type &v = control_point_list[ i ];
-								f[ numthreads ]->initialize( v.x, v.y, v.z );
-							}
-
-							// スレッドの生成
-							for( t = 0 ; t < numthreads ; t++ )
-							{
-								f[ t ]->create( );
-							}
-
-							// スレッドの終了待ち
-							for( t = 0 ; t < numthreads ; t++ )
-							{
-								f[ t ]->wait( INFINITE );
-							}
-
-							// リソースの開放
-							for( t = 0 ; t < numthreads ; t++ )
-							{
-								f[ t ]->close( );
-							}
-
-							// 探索の結果を，各制御点に反映する
-							for( t = 0 ; t < numthreads ; t++ )
-							{
-								f[ t ]->apply_control_point_to_mesh( control_mesh );
-							}
-
-							callback( 100.0 / max_iteration_num * count++ );
+							control_point_index_type &v = control_point_list[ i ];
+							f[ numthreads ]->initialize( v.x, v.y, v.z );
 						}
+
+						// スレッドの生成
+						for( size_type t = 0 ; t < numthreads ; t++ )
+						{
+							f[ t ]->create( );
+						}
+
+						// スレッドの終了待ち
+						for( size_type t = 0 ; t < numthreads ; t++ )
+						{
+							f[ t ]->wait( INFINITE );
+						}
+
+						// リソースの開放
+						for( size_type t = 0 ; t < numthreads ; t++ )
+						{
+							f[ t ]->close( );
+						}
+
+						// 探索の結果を，各制御点に反映する
+						for( size_type t = 0 ; t < numthreads ; t++ )
+						{
+							f[ t ]->apply_control_point_to_mesh( control_mesh );
+						}
+
+						callback_( 100.0 / max_iteration_num * count++ );
 					}
 
 					err = f[ 0 ]->evaluate_error( matrix_type::zero( 3, 1 ) );
@@ -1528,9 +1631,9 @@ namespace non_rigid
 					}
 
 					// メッシュの再分割を行ったので，FFDの係数の再設定を行う
-					for( numthreads = 0 ; numthreads < thread_num ; numthreads++ )
+					for( size_type t = 0 ; t < thread_num ; t++ )
 					{
-						f[ numthreads ]->force_initialize( );
+						f[ t ]->force_initialize( );
 					}
 				}
 			}
