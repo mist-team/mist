@@ -946,7 +946,6 @@ namespace __volumerendering_controller__
 //! @param[in]  in         … 入力画像
 //! @param[out] out        … 出力画像
 //! @param[in]  dmap       … レンダリングを高速化するための距離画像
-//! @param[in]  distortion … 歪に関する変換関数
 //! @param[in]  param      … ボリュームレンダリングのパラメータ
 //! @param[in]  table      … ボリュームレンダリングの色－値テーブル
 //! @param[in]  thread_num … 使用するスレッド数
@@ -987,27 +986,6 @@ bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &dmap, const
 }
 
 
-///// @brief ボリュームレンダリング
-////! 
-////! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
-////! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-////!
-////! @param[in]  in         … 入力画像
-////! @param[out] out        … 出力画像
-////! @param[in]  distortion … 歪に関する変換関数
-////! @param[in]  param      … ボリュームレンダリングのパラメータ
-////! @param[in]  table      … ボリュームレンダリングの色－値テーブル
-////! @param[in]  thread_num … 使用するスレッド数
-////! 
-////! @retval true  … ボリュームレンダリングに成功
-////! @retval false … 入力と出力が同じオブジェクトを指定した場合
-////! 
-//template < class Array1, class Array2, class Distortion, class ATTRIBUTETYPE >
-//bool volumerendering( const Array1 &in, Array2 &out, const Distortion &distortion, const volumerender::parameter &param, const volumerender::attribute_table< ATTRIBUTETYPE > &table, typename Array1::size_type thread_num = 0 )
-//{
-//	return( volumerendering( in, out, volumerender::no_depth_map( ), distortion, param, table, thread_num ) );
-//}
-
 /// @brief ボリュームレンダリング
 //! 
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
@@ -1025,7 +1003,7 @@ bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &dmap, const
 template < class Array1, class Array2, class ATTRIBUTETYPE >
 bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter &param, const volumerender::attribute_table< ATTRIBUTETYPE > &table, typename Array1::size_type thread_num = 0 )
 {
-	return( volumerendering( in, out, volumerender::no_depth_map( ), volumerender::no_distortion( ), param, table, thread_num ) );
+	return( volumerendering( in, out, volumerender::no_depth_map( ), param, table, thread_num ) );
 }
 
 
