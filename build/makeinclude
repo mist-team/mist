@@ -16,10 +16,10 @@ LIBS =
 
 
 # Be quiet when building...
-#.SILENT:
+.SILENT:
 
 # Build commands and filename extensions...
-.SUFFIXES:	.c .cpp .cxx .h .o
+.SUFFIXES: .c .cpp .cxx .h .o
 
 .c.o:
 	echo Compiling $<...
