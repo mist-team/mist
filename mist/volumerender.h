@@ -341,9 +341,9 @@ namespace volumerender
 // 値補間タイプのボリュームレンダリング
 namespace value_interpolation
 {
-	template < class Array1, class Array2, class Array3, class T >
-		bool volumerendering( const Array1 &in, Array2 &out, const Array3 &mask, const volumerender::parameter &p, const volumerender::attribute_table< T > &table,
-		typename Array1::size_type thread_id, typename Array1::size_type thread_num )
+	template < class Array1, class Array2, class T >
+	bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter &p, const volumerender::attribute_table< T > &table,
+																							typename Array1::size_type thread_id, typename Array1::size_type thread_num )
 	{
 		typedef typename volumerender::parameter::vector_type vector_type;
 		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
@@ -395,7 +395,6 @@ namespace value_interpolation
 		}
 
 		// スライス座標系の実寸をワールドと考える
-		vector_type ray, yoko;
 		vector_type normal, n1, n2, n3, n4, n5, n6, n7, n8;
 		vector_type casting_start, casting_end;
 
@@ -408,7 +407,7 @@ namespace value_interpolation
 		double ay = in.reso2( );
 		double az = in.reso3( );
 
-		yoko = ( dir * up ).unit( );
+		vector_type yoko = ( dir * up ).unit( );
 
 		if( out.reso1( ) < out.reso2( ) )
 		{
@@ -427,12 +426,6 @@ namespace value_interpolation
 		{
 			for( size_type i = 0 ; i < image_width ; i++ )
 			{
-				if( mask( i, j ) == 0 )
-				{
-					out( i, j ) = 0;
-					continue;
-				}
-
 				// 投影面上の点をカメラ座標系に変換
 				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
 
@@ -453,6 +446,11 @@ namespace value_interpolation
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
 				{
+					// 光の減衰を実現するために，カメラからの距離を測る
+					Pos.x = (  pos.x + offset.x ) / ax;
+					Pos.y = ( -pos.y + offset.y ) / ay;
+					Pos.z = (  pos.z + offset.z ) / az;
+
 					// ワールド座標系（左手）からスライス座標系（右手）に変換
 					// 以降は，全てスライス座標系で計算する
 					casting_start.x = (  casting_start.x + offset.x ) / ax;
