@@ -109,14 +109,14 @@ class bspline : public std::vector< T, Allocator >
 {
 private:
 	typedef std::vector< T, Allocator > base;
-	typedef typename base::allocator_type allocator_type;
-	typedef typename base::reference reference;
-	typedef typename base::const_reference const_reference;
-	typedef typename base::value_type value_type;
-	typedef typename base::size_type size_type;
-	typedef typename base::difference_type difference_type;
-	typedef typename base::pointer pointer;
-	typedef typename base::const_pointer const_pointer;
+	typedef typename base::allocator_type allocator_type;		///< @brief STLコンテナが利用するアロケータ型
+	typedef typename base::reference reference;					///< @brief STLのコンテナ内に格納するデータ型の参照
+	typedef typename base::const_reference const_reference;		///< @brief STLのコンテナ内に格納するデータ型の const 参照
+	typedef typename base::value_type value_type;				///< @brief STLのコンテナ内に格納するデータ型
+	typedef typename base::size_type size_type;					///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename base::difference_type difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename base::pointer pointer;						///< @brief STLのコンテナ内に格納するデータ型のポインター型
+	typedef typename base::const_pointer const_pointer;			///< @brief STLのコンテナ内に格納するデータ型の const ポインター型
 
 	typedef std::vector< double > knot_list;
 
@@ -124,20 +124,24 @@ public:
 	/// @enum ノットベクトルを手動で設定しない場合のデフォルトのモード
 	enum BSplineMode
 	{
-		ROUND,					///< 閉曲線の設定
-		THROUGH,				///< 最初と最後の制御点を通る場合の設定
+		ROUND,					///< @brief 閉曲線の設定
+		THROUGH,				///< @brief 最初と最後の制御点を通る場合の設定
 	};
 
 protected:
-	knot_list knot_;			// ノットベクトル
-	BSplineMode mode_;			// デフォルトのノットベクトル設定
+	knot_list knot_;			///< @brief ノットベクトル
+	BSplineMode mode_;			///< @brief デフォルトのノットベクトル設定
 
 
 public:
 	/// @brief 指定された位置（区間０～１）に対応する，Bスプライン補間結果を返す
+	//!
 	//! @attention 次数＋１の制御点数が入力されている必要あり．足りない場合は，デフォルトのノットベクトルで最初期化される．
+	//!
 	//! @param[in] t  … 全体の曲線を区間０～１とした時に，補間される点の位置
+	//!
 	//! @return 指定された点の位置に対応するBスプライン曲線の補間結果
+	//!
 	value_type operator( )( double t )
 	{
 		size_type n = base::size( ) - 1;	// n + 1 は制御点の数
@@ -161,16 +165,20 @@ public:
 	}
 
 	/// @brief 任意のノットベクトルを設定する
+	//!
 	//! @attention 次数 K で制御点数 N とした時に，ノットベクトルの数は N + K + 1 必要である
 	//! @param[in] kknot  … ノットベクトル
+	//!
 	void knot( const knot_list &kknot )
 	{
 		knot_ = kknot;
 	}
 
 	/// @brief デフォルトのモードでノットベクトルを設定する
+	//!
 	//! 本クラス内で定義されている列挙型 BSplineMode のうちの一つを利用する
 	//! @param[in] mode  … 曲線のタイプ
+	//!
 	void knot( BSplineMode mode )
 	{
 		size_type n = base::size( ) - 1;	// n + 1 は制御点の数
@@ -208,7 +216,7 @@ public:
 		knot( kknot );
 	}
 
-	/// 代入演算子
+	/// @brief 代入演算子
 	const bspline &operator =( const bspline &b )
 	{
 		if( this != &b )
@@ -220,12 +228,15 @@ public:
 		return( *this );
 	}
 
-	/// コピーコンストラクタ
+	/// @brief コピーコンストラクタ
 	bspline( const bspline &b ) : base( b ), knot_( b.knot_ ), mode_( b.mode_ )
 	{
 	}
 
-	/// デフォルトのコンストラクタ．ノットベクトルのデフォルト値を「最初と最後を通る曲線」に設定する
+	/// @brief デフォルトのコンストラクタ
+	//!
+	//! ノットベクトルのデフォルト値を「最初と最後を通る曲線」に設定する
+	//!
 	bspline( ) : mode_( THROUGH )
 	{
 	}
