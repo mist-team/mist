@@ -141,7 +141,7 @@ inline typename __utility__::__value_type__< T >::value_type deviation( const ar
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空
 //! 
 template < class Array1, class Array2 >
-bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_type min, typename Array1::value_type max, typename Array1::value_type bin = typename Array1::value_type( 1 ) )
+bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_type min, typename Array1::value_type max, typename Array1::value_type bin )
 {
 	if( is_same_object( in, out ) || in.empty( ) )
 	{
@@ -186,6 +186,25 @@ bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_t
 }
 
 
+/// データの範囲を指定してビン幅 1 のヒストグラムを作成する
+//!
+//! @attention 入力・出力となるデータの配列として，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．
+//!
+//! @param[in] in  … ヒストグラムを作成するための元となるデータ配列（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
+//! @param[in] out … 作成されたヒストグラム（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
+//! @param[in] min … ヒストグラムを作成するデータの最小値
+//! @param[in] max … ヒストグラムを作成するデータの最大値
+//! 
+//! @retval true  … ヒストグラムの作成に成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空
+//! 
+template < class Array1, class Array2 >
+bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_type min, typename Array1::value_type max )
+{
+	return( generate_histogram( in, out, min, max, 1 ) );
+}
+
+
 /// データ全体からヒストグラムを作成する
 //!
 //! @attention 入力・出力となるデータの配列として，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．
@@ -198,7 +217,7 @@ bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_t
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空
 //! 
 template < class Array1, class Array2 >
-bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_type bin = typename Array1::value_type( 1 ) )
+bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_type bin )
 {
 	typedef typename Array1::size_type size_type;
 	typedef typename Array1::difference_type difference_type;
@@ -226,6 +245,21 @@ bool generate_histogram( const Array1 &in, Array2 &out, typename Array1::value_t
 	return( generate_histogram( in, out, min, max, bin ) );
 }
 
+/// データ全体からビン幅 1 のヒストグラムを作成する
+//!
+//! @attention 入力・出力となるデータの配列として，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．
+//!
+//! @param[in] in  … ヒストグラムを作成するための元となるデータ配列（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
+//! @param[in] out … 作成されたヒストグラム（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
+//! 
+//! @retval true  … ヒストグラムの作成に成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空
+//! 
+template < class Array1, class Array2 >
+bool generate_histogram( const Array1 &in, Array2 &out )
+{
+	return( generate_histogram( in, out, 1 ) );
+}
 
 
 
@@ -251,7 +285,7 @@ bool generate_histogram(
 							const Array1 &in1, const Array2 &in2, array2< T, Allocator > &out,
 							typename Array1::value_type min1, typename Array1::value_type max1,
 							typename Array1::value_type min2, typename Array1::value_type max2,
-							typename Array1::value_type bin = typename Array1::value_type( 1 )
+							typename Array1::value_type bin
 						)
 {
 	if( is_same_object( in1, out ) || is_same_object( in2, out ) || in1.empty( ) || in2.empty( ) || in1.size( ) != in2.size( ) )
@@ -301,6 +335,32 @@ bool generate_histogram(
 }
 
 
+/// データの範囲を指定してビン幅 1 の2次元ヒストグラムを作成する
+//!
+//! @attention 入力・出力となるデータの配列として，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．
+//!
+//! @param[in] in1  … ヒストグラムを作成するための元となるデータ配列1（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
+//! @param[in] in2  … ヒストグラムを作成するための元となるデータ配列2（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
+//! @param[in] out  … 作成されたヒストグラム（MISTで提供する2次元コンテナ array2 のみ）
+//! @param[in] min1 … ヒストグラム1のデータの最小値
+//! @param[in] max1 … ヒストグラム1のデータの最大値
+//! @param[in] min2 … ヒストグラム2のデータの最小値
+//! @param[in] max2 … ヒストグラム2のデータの最大値
+//! 
+//! @retval true  … ヒストグラムの作成に成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空，入力となる2つのデータ数が異なる
+//! 
+template < class Array1, class Array2, class T, class Allocator >
+bool generate_histogram(
+							const Array1 &in1, const Array2 &in2, array2< T, Allocator > &out,
+							typename Array1::value_type min1, typename Array1::value_type max1,
+							typename Array1::value_type min2, typename Array1::value_type max2
+						)
+{
+	return( generate_histogram( in1, in2, out, min1, max1, min2, max2, 1 ) );
+}
+
+
 /// データ全体からヒストグラムを作成する
 //!
 //! @attention 入力・出力となるデータの配列として，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．
@@ -314,7 +374,7 @@ bool generate_histogram(
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空，入力となる2つのデータ数が異なる
 //! 
 template < class Array1, class Array2, class T, class Allocator >
-bool generate_histogram( const Array1 &in1, const Array2 &in2, array2< T, Allocator > &out, typename Array1::value_type bin = typename Array1::value_type( 1 ) )
+bool generate_histogram( const Array1 &in1, const Array2 &in2, array2< T, Allocator > &out, typename Array1::value_type bin )
 {
 	typedef typename Array1::size_type size_type;
 	typedef typename Array1::difference_type difference_type;
@@ -354,6 +414,24 @@ bool generate_histogram( const Array1 &in1, const Array2 &in2, array2< T, Alloca
 	}
 
 	return( generate_histogram( in1, in2, out, min1, max1, min2, max2, bin ) );
+}
+
+
+/// データ全体からビン幅 1 のヒストグラムを作成する
+//!
+//! @attention 入力・出力となるデータの配列として，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．
+//!
+//! @param[in] in1  … ヒストグラムを作成するための元となるデータ配列1（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
+//! @param[in] in2  … ヒストグラムを作成するための元となるデータ配列2（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
+//! @param[in] out  … 作成されたヒストグラム（MISTで提供する2次元コンテナ array2 のみ）
+//! 
+//! @retval true  … ヒストグラムの作成に成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空，入力となる2つのデータ数が異なる
+//! 
+template < class Array1, class Array2, class T, class Allocator >
+bool generate_histogram( const Array1 &in1, const Array2 &in2, array2< T, Allocator > &out )
+{
+	return( generate_histogram( in1, in2, out, 1 ) );
 }
 
 
