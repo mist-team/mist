@@ -50,6 +50,20 @@ void set_test( )
 	cout << "20. Operator A >  B = \t"; cout << ( s1 >  s2 ) << endl;
 	cout << "21. Operator A >= B = \t"; cout << ( s1 >= s2 ) << endl;
 
+	cout << "22. Operator A == 3 = \t"; cout << ( s1 == 3  ) << endl;
+	cout << "23. Operator 3 == A = \t"; cout << ( 3  == s1 ) << endl;
+	cout << "24. Operator A != 3 = \t"; cout << ( s1 != 3  ) << endl;
+	cout << "25. Operator 3 != A = \t"; cout << ( 3  != s1 ) << endl;
+	cout << "26. Operator A <  3 = \t"; cout << ( s1 <  3  ) << endl;
+	cout << "27. Operator 3 <  A = \t"; cout << ( 3  <  s1 ) << endl;
+	cout << "28. Operator A <= 3 = \t"; cout << ( s1 <= 3  ) << endl;
+	cout << "29. Operator 3 <= A = \t"; cout << ( 3  <= s1 ) << endl;
+	cout << "30. Operator A >  3 = \t"; cout << ( s1 >  3  ) << endl;
+	cout << "31. Operator 3 >  A = \t"; cout << ( 3  >  s1 ) << endl;
+	cout << "32. Operator A >= 3 = \t"; cout << ( s1 >= 3  ) << endl;
+	cout << "33. Operator 3 >= A = \t"; cout << ( 3  >= s1 ) << endl;
+
+
 	//cout << "15. Size of bool = \t"; cout << sizeof( value< bool > ) << endl;
 	//cout << "16. Size of int  = \t"; cout << sizeof( value< int > ) << endl;
 	//cout << "17. Size of char = \t"; cout << sizeof( value< char > ) << endl;
@@ -99,6 +113,19 @@ void multiset_test( )
 	cout << "19. Operator A <= B = \t"; cout << ( s1 <= s2 ) << endl;
 	cout << "20. Operator A >  B = \t"; cout << ( s1 >  s2 ) << endl;
 	cout << "21. Operator A >= B = \t"; cout << ( s1 >= s2 ) << endl;
+
+	cout << "22. Operator A == 3 = \t"; cout << ( s1 == 3  ) << endl;
+	cout << "23. Operator 3 == A = \t"; cout << ( 3  == s1 ) << endl;
+	cout << "24. Operator A != 3 = \t"; cout << ( s1 != 3  ) << endl;
+	cout << "25. Operator 3 != A = \t"; cout << ( 3  != s1 ) << endl;
+	cout << "26. Operator A <  3 = \t"; cout << ( s1 <  3  ) << endl;
+	cout << "27. Operator 3 <  A = \t"; cout << ( 3  <  s1 ) << endl;
+	cout << "28. Operator A <= 3 = \t"; cout << ( s1 <= 3  ) << endl;
+	cout << "29. Operator 3 <= A = \t"; cout << ( 3  <= s1 ) << endl;
+	cout << "30. Operator A >  3 = \t"; cout << ( s1 >  3  ) << endl;
+	cout << "31. Operator 3 >  A = \t"; cout << ( 3  >  s1 ) << endl;
+	cout << "32. Operator A >= 3 = \t"; cout << ( s1 >= 3  ) << endl;
+	cout << "33. Operator 3 >= A = \t"; cout << ( 3  >= s1 ) << endl;
 
 	//cout << "15. Size of bool = \t"; cout << sizeof( value< bool > ) << endl;
 	//cout << "16. Size of int  = \t"; cout << sizeof( value< int > ) << endl;

@@ -143,7 +143,7 @@ public:
 		return( *this );
 	}
 
-	const set_base &operator *=( const value_type &s )
+	const set_base &operator *=( const key_type &s )
 	{
 		set_base a = *this;
 		const_iterator site = a.begin( );
@@ -181,8 +181,9 @@ public:
 
 		key_compare compare;
 		const_iterator ite1 = base::begin( );
+		const_iterator eite1 = base::end( );
 		const_iterator ite2 = s.begin( );
-		for( ; ite1 != base::end( ) ; ++ite1, ++ite2 )
+		for( ; ite1 != eite1 ; ++ite1, ++ite2 )
 		{
 			if( compare( *ite1, *ite2 ) || compare( *ite2, *ite1 ) )
 			{
@@ -191,7 +192,30 @@ public:
 		}
 		return( true );
 	}
+
+	bool operator ==( const key_type &s ) const
+	{
+		if( base::size( ) != 1 )
+		{
+			return( false );
+		}
+
+		key_compare compare;
+		const_iterator ite = base::begin( );
+		const_iterator eite = base::end( );
+		for( ; ite != eite ; ++ite )
+		{
+			if( compare( *ite, s ) || compare( s, *ite ) )
+			{
+				return( false );
+			}
+		}
+		return( true );
+	}
+
 	bool operator !=( const set_base &s ) const { return( !( *this == s ) ); }
+	bool operator !=( const key_type &s ) const { return( !( *this == s ) ); }
+
 	bool operator < ( const set_base &s ) const
 	{
 		if( base::size( ) >= s.size( ) )
@@ -201,6 +225,7 @@ public:
 
 		return( std::includes( s.begin( ), s.end( ), base::begin( ), base::end( ), key_compare( ) ) );
 	}
+
 	bool operator <=( const set_base &s ) const
 	{
 		if( base::size( ) > s.size( ) )
@@ -210,6 +235,7 @@ public:
 
 		return( std::includes( s.begin( ), s.end( ), base::begin( ), base::end( ), key_compare( ) ) );
 	}
+
 	bool operator > ( const set_base &s ) const { return( s < *this ); }
 	bool operator >=( const set_base &s ) const { return( s <= *this ); }
 };
@@ -229,6 +255,19 @@ template< class SetType > inline const set_base< SetType > operator +( const set
 template< class SetType > inline const set_base< SetType > operator +( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s2 ) += s1 ); }
 template< class SetType > inline const set_base< SetType > operator -( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s1 ) -= s2 ); }
 template< class SetType > inline const set_base< SetType > operator -( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) -= s2 ); }
+
+template< class SetType > bool operator ==( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s2 ) == s1 ); }
+template< class SetType > bool operator ==( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) == s2 ); }
+template< class SetType > bool operator !=( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s2 ) != s1 ); }
+template< class SetType > bool operator !=( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) != s2 ); }
+template< class SetType > bool operator < ( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s2 ) <  s1 ); }
+template< class SetType > bool operator < ( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) <  s2 ); }
+template< class SetType > bool operator <=( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s2 ) <= s1 ); }
+template< class SetType > bool operator <=( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) <= s2 ); }
+template< class SetType > bool operator > ( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s2 ) >  s1 ); }
+template< class SetType > bool operator > ( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) >  s2 ); }
+template< class SetType > bool operator >=( const set_base< SetType > &s1, const typename set_base< SetType >::key_type &s2 ){ return( set_base< SetType >( s2 ) >= s1 ); }
+template< class SetType > bool operator >=( const typename set_base< SetType >::key_type &s1, const set_base< SetType > &s2 ){ return( set_base< SetType >( s1 ) >= s2 ); }
 
 
 template< class SetType >
