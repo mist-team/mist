@@ -168,10 +168,10 @@ void evaluate_matrix_operation1( )
 	{
 		for( size_type c = 0 ; c < mat1.cols( ) ; c++ )
 		{
-			mat1( r, c ) = rand( ) / 3.0 * 100.0;
-			mat2( r, c ) = rand( ) / 3.0 * 100.0;
-			mat3( r, c ) = rand( ) / 3.0 * 100.0;
-			mat4( r, c ) = rand( ) / 3.0 * 100.0;
+			mat1( r, c ) = rand( ) / 3.0 * 10000.0;
+			mat2( r, c ) = rand( ) / 3.0 * 10000.0;
+			mat3( r, c ) = rand( ) / 3.0 * 10000.0;
+			mat4( r, c ) = rand( ) / 3.0 * 10000.0;
 			//mat1( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
 			//mat2( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
 			//mat3( r, c ) = rand( ) / static_cast< double >( RAND_MAX );
@@ -180,7 +180,7 @@ void evaluate_matrix_operation1( )
 	}
 
 	// transpose( mat1 + mat2 * mat3 + mat4 )
-	size_type i, j, k, l, loop = 1000;
+	size_type i, j, k, l;
 	{
 		mist::timer t;
 		double tmp;
@@ -241,7 +241,7 @@ void evaluate_matrix_operation2( )
 	mat1 = mat2 = mat3 = mat4 = a;
 
 	// transpose( mat1 + mat2 * mat3 + mat4 )
-	size_type i, j, k, l, loop = 1000;
+	size_type i, j, k, l;
 	{
 		mist::timer t;
 		double tmp;
