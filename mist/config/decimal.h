@@ -96,7 +96,40 @@ public:
 		memset( data_, 0, sizeof( value_type ) * NMPA1 );
 	}
 
-	decimal( double a ) : sign_( true ), exp_( 0 ), zero_( true )
+	//decimal( double a ) : sign_( true ), exp_( 0 ), zero_( true )
+	//{
+	//	memset( data_, 0, sizeof( value_type ) * NMPA1 );
+
+	//	if( a != 0.0 )
+	//	{
+	//		zero_ = false;
+	//		if( a < 0.0 )
+	//		{
+	//			sign_ = false;
+	//			a = - a;
+	//		}
+	//		while( a >= static_cast< double >( RADIX ) )
+	//		{
+	//			exp_++;
+	//			a /= static_cast< double >( RADIX );
+	//		}
+	//		while( a < 1.0 )
+	//		{
+	//			exp_--;
+	//			a *= static_cast< double >( RADIX );
+	//		}
+
+	//		size_type i = 0;
+	//		do
+	//		{
+	//			data_[ i ] = static_cast< unsigned int >( a );
+	//			a -= data_[ i ];
+	//			a *= RADIX;
+	//		} while( a != 0.0 && ++i <= NMPA );
+	//	}
+	//}
+
+	decimal( double a, difference_type keta = 3 ) : sign_( true ), exp_( 0 ), zero_( true )
 	{
 		memset( data_, 0, sizeof( value_type ) * NMPA1 );
 
@@ -108,24 +141,17 @@ public:
 				sign_ = false;
 				a = - a;
 			}
-			while( a >= static_cast< double >( RADIX ) )
+			decimal b( static_cast< difference_type >( a ) );
+			a -= static_cast< difference_type >( a );
+			double x = 10.0;
+			for( difference_type i = 0 ; i < keta ; i++ )
 			{
-				exp_++;
-				a /= static_cast< double >( RADIX );
+				a *= x;
+				b += decimal( static_cast< difference_type >( a ) ) / x;
+				x *= 10.0;
 			}
-			while( a < 1.0 )
-			{
-				exp_--;
-				a *= static_cast< double >( RADIX );
-			}
-
-			size_type i = 0;
-			do
-			{
-				data_[ i ] = static_cast< unsigned int >( a );
-				a -= data_[ i ];
-				a *= RADIX;
-			} while( a != 0.0 && ++i <= NMPA );
+			b.sign_ = sign_;
+			operator =( b );
 		}
 	}
 
@@ -883,7 +909,7 @@ public:	// ’è”
 
 	static decimal zero( )
 	{
-		return( decimal( ) );
+		return decimal( );
 	}
 
 	static decimal pai( )
@@ -893,11 +919,12 @@ public:	// ’è”
 		decimal t0( "0.25" );
 		decimal a1, b1, t1;
 
+		difference_type _2[] = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096 };
 		for( int n = 0 ; n < 10 ; n++ )
 		{
 			a1 = ( a0 + b0 ) / 2;
 			b1 = ::std::sqrt( a0 * b0 );
-			t1 = t0 - ::std::pow( 2, n ) * ( a0 - a1 ) * ( a0 - a1 );
+			t1 = t0 - _2[ n ] * ( a0 - a1 ) * ( a0 - a1 );
 
 			a0 = a1;
 			b0 = b1;

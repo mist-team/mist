@@ -48,7 +48,7 @@ namespace __distance_figure_dedomposition__
 		size_type i, j;
 		for( i = 1 ; i < ia.size( ) ; i++ )
 		{
-			if( !mask[i] )
+			if( mask[i] == false )
 			{
 				max = max > ia[i] ? max : ia[i];
 			}
