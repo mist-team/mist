@@ -92,7 +92,7 @@ struct bspline_base< 1 >
 //! // ・閉曲線の設定
 //! b.knot( mist::bspline< double >::ROUND );
 //! // ・最初と最後の制御点を通る場合の設定
-//! b.knot( mist::bspline< double >::THROUTH );
+//! b.knot( mist::bspline< double >::THROUGH );
 //! // ・任意のノットベクトルを設定
 //! b.knot( STLのベクトルタイプのノットのリスト );
 //! 
@@ -125,7 +125,7 @@ public:
 	enum BSplineMode
 	{
 		ROUND,					///< 閉曲線の設定
-		THROUTH,				///< 最初と最後の制御点を通る場合の設定
+		THROUGH,				///< 最初と最後の制御点を通る場合の設定
 	};
 
 protected:
@@ -188,7 +188,7 @@ public:
 			}
 			break;
 
-		case THROUTH:
+		case THROUGH:
 			// 最初と最後を通る曲線の場合
 			for( i = 0 ; i < K ; i++ )
 			{
@@ -226,7 +226,7 @@ public:
 	}
 
 	/// デフォルトのコンストラクタ．ノットベクトルのデフォルト値を「最初と最後を通る曲線」に設定する
-	bspline( ) : mode_( THROUTH )
+	bspline( ) : mode_( THROUGH )
 	{
 	}
 };
