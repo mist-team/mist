@@ -148,7 +148,7 @@ namespace __pnm_controller__
 			}
 
 			// ‰æ‘œƒTƒCƒY‚ðŽæ“¾‚·‚é
-			size_type w = 0, h = 0, gray_level;
+			size_type w = 0, h = 0, gray_level = level;
 			split_string( line, ' ', elements );
 			if( elements.size( ) == 1 )
 			{
