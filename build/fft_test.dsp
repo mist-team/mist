@@ -95,7 +95,27 @@ SOURCE=..\test\fft_test.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=\mist\mist\matrix.h
+SOURCE="\SVN Projects\mist\mist\fft\dct.h"
+# End Source File
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\mist\fft\dst.h"
+# End Source File
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\mist\fft\fft.h"
+# End Source File
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\mist\fft\fftsg.h"
+# End Source File
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\mist\fft\fftsg2d.h"
+# End Source File
+# Begin Source File
+
+SOURCE="\SVN Projects\mist\mist\fft\fftsg3d.h"
 # End Source File
 # Begin Source File
 
