@@ -162,14 +162,14 @@ void ct_draw_area::median_filter2D( ct_image_window *wnd )
 	a( 4, 0 ) = 0.2; a( 4, 1 ) = 0.3; a( 4, 2 ) = 0.1; a( 4, 3 ) = 0.1; a( 4, 4 ) = 0.4;
 
 	std::cout << a << std::endl;
-	mist::median( a, b, 3, 3 );
+	mist::median( a, b, 3, 1 );
 	std::cout << b << std::endl;
 
 	mist::array2< int > aa( a );
 	mist::array2< unsigned int > bb;
 
 	std::cout << aa << std::endl;
-	mist::median( aa, bb, 3, 3 );
+	mist::median( aa, bb, 3, 1 );
 	std::cout << bb << std::endl;
 }
 

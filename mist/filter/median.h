@@ -508,6 +508,74 @@ namespace __median_filter_specialized_version__
 	}
 
 	template < class T >
+	inline void sort3x3( const T &v0, const T &v1, const T &v2, T w0[ 3 ], T w1[ 3 ], T w2[ 3 ], T *v[ 3 ] )
+	{
+		if( v0 > v1 )
+		{
+			if( v1 > v2 )
+			{
+				v[ 0 ] = w0;
+				v[ 1 ] = w1;
+				v[ 2 ] = w2;
+			}
+			else
+			{
+				if( v0 > v2 )
+				{
+					v[ 0 ] = w0;
+					v[ 1 ] = w2;
+					v[ 2 ] = w1;
+				}
+				else
+				{
+					v[ 0 ] = w2;
+					v[ 1 ] = w0;
+					v[ 2 ] = w1;
+				}
+			}
+		}
+		else
+		{
+			if( v0 > v2 )
+			{
+				v[ 0 ] = w1;
+				v[ 1 ] = w0;
+				v[ 2 ] = w2;
+			}
+			else
+			{
+				if( v1 > v2 )
+				{
+					v[ 0 ] = w1;
+					v[ 1 ] = w2;
+					v[ 2 ] = w0;
+				}
+				else
+				{
+					v[ 0 ] = w2;
+					v[ 1 ] = w1;
+					v[ 2 ] = w0;
+				}
+			}
+		}
+	}
+
+	template < class T >
+	inline void sort2x2( const T &v0, const T &v1, T w0[ 3 ], T w1[ 3 ], T *v[ 3 ] )
+	{
+		if( v0 > v1 )
+		{
+			v[ 0 ] = w0;
+			v[ 1 ] = w1;
+		}
+		else
+		{
+			v[ 0 ] = w1;
+			v[ 1 ] = w0;
+		}
+	}
+
+	template < class T >
 	inline const T &minimum( const T &v0, const T &v1 )
 	{
 		return( v0 < v1 ? v0 : v1 );
@@ -567,17 +635,17 @@ namespace __median_filter_specialized_version__
 		// àÍî‘è„ÇÃïîï™
 		for( j = thread_id ; j < 1 ; j += thread_num )
 		{
-			sort2x2( in( 0, 0 ), in( 0, 1 ), work[ 0 ] );
-			sort2x2( in( 1, 0 ), in( 1, 1 ), work[ 1 ] );
+			sort2x2( in( 0, 0 ), in( 0, 1 ), work0 );
+			sort2x2( in( 1, 0 ), in( 1, 1 ), work1 );
 
-			sort2x2( work[ 0 ], work[ 1 ], sort );
+			sort2x2( work0[ 1 ], work1[ 1 ], work0, work1, sort );
 			out( 0, 0 ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
 
 			for( i = 1 ; i < w - 1 ; i++ )
 			{
 				wi = ( i + 1 ) % 3;
 				sort2x2( in( i + 1, 0 ), in( i + 1, 0 + 1 ), work[ wi ] );
-				sort3x3( work[ 0 ], work[ 1 ], work[ 2 ], sort );
+				sort3x3( work0[ 1 ], work1[ 1 ], work2[ 1 ], work0, work1, work2, sort );
 
 				value_type &x = sort[ 1 ][ 1 ];
 				value_type &y = sort[ 0 ][ 1 ];
@@ -594,24 +662,24 @@ namespace __median_filter_specialized_version__
 				}
 			}
 
-			sort2x2( work[ ( i - 1 ) % 3 ], work[ i % 3 ], sort );
-			out( i, 0 ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
+			sort2x2( work[ ( w - 2 ) % 3 ][ 1 ], work[ ( w - 1 ) % 3 ][ 1 ], work[ ( w - 2 ) % 3 ], work[ ( w - 1 ) % 3 ], sort );
+			out( w - 1, 0 ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
 		}
 
 		// ê^ÇÒíÜïîï™
 		for( ; j < h - 1 ; j += thread_num )
 		{
-			sort3x3( in( 0, j - 1 ), in( 0, j ), in( 0, j + 1 ), work[ 0 ] );
-			sort3x3( in( 1, j - 1 ), in( 1, j ), in( 1, j + 1 ), work[ 1 ] );
+			sort3x3( in( 0, j - 1 ), in( 0, j ), in( 0, j + 1 ), work0 );
+			sort3x3( in( 1, j - 1 ), in( 1, j ), in( 1, j + 1 ), work1 );
 
-			sort2x2( work[ 0 ], work[ 1 ], sort );
+			sort2x2( work0[ 1 ], work1[ 1 ], work0, work1, sort );
 			out( 0, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 2 ], sort[ 1 ][ 0 ], sort[ 1 ][ 1 ] ) );
 
 			for( i = 1 ; i < w - 1 ; i++ )
 			{
 				wi = ( i + 1 ) % 3;
 				sort3x3( in( i + 1, j - 1 ), in( i + 1, j ), in( i + 1, j + 1 ), work[ wi ] );
-				sort3x3( work[ 0 ], work[ 1 ], work[ 2 ], sort );
+				sort3x3( work0[ 1 ], work1[ 1 ], work2[ 1 ], work0, work1, work2, sort );
 
 				value_type &x = sort[ 1 ][ 1 ];
 				value_type &y = sort[ 0 ][ 2 ];
@@ -633,25 +701,25 @@ namespace __median_filter_specialized_version__
 				}
 			}
 
-			sort2x2( work[ ( i - 1 ) % 3 ], work[ i % 3 ], sort );
-			out( i, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 2 ], sort[ 1 ][ 0 ], sort[ 1 ][ 1 ] ) );
+			sort2x2( work[ ( w - 2 ) % 3 ][ 1 ], work[ ( w - 1 ) % 3 ][ 1 ], work[ ( w - 2 ) % 3 ], work[ ( w - 1 ) % 3 ], sort );
+			out( w - 1, j ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 2 ], sort[ 1 ][ 0 ], sort[ 1 ][ 1 ] ) );
 		}
 
 
 		// àÍî‘â∫ÇÃïîï™
 		for( ; j < h ; j += thread_num )
 		{
-			sort2x2( in( 0, h - 2 ), in( 0, h - 1 ), work[ 0 ] );
-			sort2x2( in( 1, h - 2 ), in( 1, h - 1 ), work[ 1 ] );
+			sort2x2( in( 0, h - 2 ), in( 0, h - 1 ), work0 );
+			sort2x2( in( 1, h - 2 ), in( 1, h - 1 ), work1 );
 
-			sort2x2( work[ 0 ], work[ 1 ], sort );
+			sort2x2( work0[ 1 ], work1[ 1 ], work0, work1, sort );
 			out( 0, h - 1 ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
 
 			for( i = 1 ; i < w - 1 ; i++ )
 			{
 				wi = ( i + 1 ) % 3;
 				sort2x2( in( i + 1, h - 2 ), in( i + 1, h - 1 ), work[ wi ] );
-				sort3x3( work[ 0 ], work[ 1 ], work[ 2 ], sort );
+				sort3x3( work0[ 1 ], work1[ 1 ], work2[ 1 ], work0, work1, work2, sort );
 
 				value_type &x = sort[ 1 ][ 1 ];
 				value_type &y = sort[ 0 ][ 1 ];
@@ -668,8 +736,8 @@ namespace __median_filter_specialized_version__
 				}
 			}
 
-			sort2x2( work[ ( i - 1 ) % 3 ], work[ i % 3 ], sort );
-			out( i, h - 1 ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
+			sort2x2( work[ ( w - 2 ) % 3 ][ 1 ], work[ ( w - 1 ) % 3 ][ 1 ], work[ ( w - 2 ) % 3 ], work[ ( w - 1 ) % 3 ], sort );
+			out( w - 1, h - 1 ) = static_cast< out_value_type >( minimum( sort[ 0 ][ 1 ], sort[ 1 ][ 0 ] ) );
 		}
 	}
 }
