@@ -1292,7 +1292,7 @@ namespace powell
 					// 現在の方向集合を更新する
 					double tmp = fp0 - fp - delta;
 					double ttt = 2.0 * ( fp0 - 2.0 * fp + fe ) * tmp * tmp - delta * ( fp0 - fe ) * ( fp0 - fe );
-					if( ttt < 0 )
+					if( ttt >= 0 )
 					{
 						// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
 						fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
@@ -1433,7 +1433,7 @@ namespace powell
 					// 現在の方向集合を更新する
 					double tmp = fp0 - fp - delta;
 					double ttt = 2.0 * ( fp0 - 2.0 * fp + fe ) * tmp * tmp - delta * ( fp0 - fe ) * ( fp0 - fe );
-					if( ttt < 0 )
+					if( ttt >= 0 )
 					{
 						if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
 						{
