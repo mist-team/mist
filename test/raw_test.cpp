@@ -7,7 +7,7 @@
 
 #include <mist/filter/median_filter.h>
 #include <mist/filter/distance.h>
-
+#include <mist/timer.h>
 
 void ct_draw_area::draw( )
 {
@@ -163,7 +163,11 @@ void ct_draw_area::median_filter3D( ct_image_window *wnd )
 	if( ct.empty( ) ) return;
 
 	mist::array3< short > tmp = ct;
-	mist::median_filter( tmp, ct, 3, 3, 3 );
+	{
+		mist::timer t;
+		mist::median_filter( tmp, ct, 3, 3, 3 );
+		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
+	}
 	redraw( );
 	Fl::wait( 0 );
 }
