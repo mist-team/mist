@@ -57,7 +57,7 @@ namespace __raw_controller__
 			size_type read_size = 0;
 			while( gzeof( fp ) == 0 )
 			{
-				read_size = gzread( fp, pointer, 1024, fp );
+				read_size = gzread( pointer, 1024, fp );
 				if( read_size < 1024 )
 				{
 					break;
@@ -119,7 +119,7 @@ namespace __raw_controller__
 			}
 
 			// ファイルへ書き出し
-			unsigned char *pointer = buff;
+			unsigned char *pointer = tmparray;
 			size_type write_size = 0, writed_size = 0;
 			while( size > 0 )
 			{
@@ -131,7 +131,7 @@ namespace __raw_controller__
 				if( write_size != writed_size )
 				{
 					fclose( fp );
-					delete [] buff;
+					delete [] tmparray;
 					return( false );
 				}
 			}
@@ -180,7 +180,7 @@ namespace __raw_controller__
 				if( write_size != 1024 )
 				{
 					fclose( fp );
-					delete [] buff;
+					delete [] tmparray;
 					return( false );
 				}
 			}
@@ -617,13 +617,13 @@ bool read_raw( array2< T, Allocator > &image, const std::string &filename,
 template < class T, class Allocator, class Functor >
 bool write_raw( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
 {
-	return( __raw_controller__::raw_controller2< T, Allocator, Functor >::write( image, filename, offset, raw_is_little_endian, callback ) );
+	return( __raw_controller__::raw_controller2< T, Allocator, Functor >::write( image, filename, offset, to_little_endian, callback ) );
 }
 
 template < class T, class Allocator, class Functor >
 bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
 {
-	return( __raw_controller__::raw_controller2< T, Allocator, Functor >::write_gz( image, filename, offset, raw_is_little_endian, callback ) );
+	return( __raw_controller__::raw_controller2< T, Allocator, Functor >::write_gz( image, filename, offset, to_little_endian, callback ) );
 }
 
 template < class T, class Allocator >
@@ -637,13 +637,13 @@ bool read_raw( array2< T, Allocator > &image, const std::string &filename,
 template < class T, class Allocator >
 bool write_raw( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
 {
-	return( write_raw( image, filename, offset, raw_is_little_endian, __mist_dmy_callback__( ) ) );
+	return( write_raw( image, filename, offset, to_little_endian, __mist_dmy_callback__( ) ) );
 }
 
 template < class T, class Allocator >
 bool write_raw_gz( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
 {
-	return( write_raw_gz( image, filename, offset, raw_is_little_endian, __mist_dmy_callback__( ) ) );
+	return( write_raw_gz( image, filename, offset, to_little_endian, __mist_dmy_callback__( ) ) );
 }
 
 

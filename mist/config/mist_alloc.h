@@ -54,7 +54,7 @@ struct mist_memory_operator
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Normal Allocator" << ::std::endl;
 #endif
-		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
+		typename Allocator::pointer ptr = allocator.allocate( e - s, 0 );
 		for( typename Allocator::pointer p = ptr ; s != e ; p++, s++ ) allocator.construct( p, *s );
 		return( ptr );
 	}
@@ -164,7 +164,7 @@ struct mist_memory_operator< true >
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cout << "Memcpy Allocator" << ::std::endl;
 #endif
-		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
+		typename Allocator::pointer ptr = allocator.allocate( e - s, 0 );
 		memcpy( ptr, s, ( e - s ) * sizeof( typename Allocator::value_type ) );
 		return( ptr );
 	}

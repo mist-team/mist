@@ -798,7 +798,7 @@ namespace nearest
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
-					typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
 		typedef typename array1< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array1< T1, Allocator1 >, array1< T2, Allocator2 > > interpolate_thread;
@@ -1008,7 +1008,7 @@ namespace linear
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
-					typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
 		typedef typename array1< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array1< T1, Allocator1 >, array1< T2, Allocator2 > > interpolate_thread;
@@ -1123,6 +1123,7 @@ namespace linear
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width, height, depth );
 		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
 		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
@@ -1139,7 +1140,6 @@ namespace linear
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Linear, i, thread_num );
@@ -1219,7 +1219,7 @@ namespace cubic
 
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
-					typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
 		typedef typename array1< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array1< T1, Allocator1 >, array1< T2, Allocator2 > > interpolate_thread;

@@ -104,7 +104,7 @@ public:
 	value_type length( ) const { return ( value_type( sqrt( (double)( x * x + y * y + z * z ) ) ) ); }
 
 	// ƒxƒNƒgƒ‹‚Ì‰ñ“]
-	vector3 rotate( const vector3 &a, double theta ) const
+	vector3 rotate( const vector3 &v, double theta ) const
 	{
 		theta *= 3.1415926535897932384626433832795 / 180.0;
 		double cs = std::cos( theta ), sn = std::sin( theta );

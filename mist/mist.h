@@ -329,7 +329,7 @@ public:
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
-private:
+protected:
 	typedef array< T, Allocator > base;
 	double reso1_;
 
@@ -343,19 +343,19 @@ public:
 **
 ************************************************************************************************************/
 	// 順方向のランダムアクセスイテレータを返す
-	iterator x_begin( ){ return( begin( ) ); }
-	const_iterator x_begin( ) const { return( begin( ) ); }
+	iterator x_begin( ){ return( base::begin( ) ); }
+	const_iterator x_begin( ) const { return( base::begin( ) ); }
 
-	iterator x_end( ){ return( end( ) ); }
-	const_iterator x_end( ) const { return( end( ) ); }
+	iterator x_end( ){ return( base::end( ) ); }
+	const_iterator x_end( ) const { return( base::end( ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
-	reverse_iterator x_rbegin( ){ return( rbegin( ) ); }
-	const_reverse_iterator x_rbegin( ) const { return( rbegin( ) ); }
+	reverse_iterator x_rbegin( ){ return( base::rbegin( ) ); }
+	const_reverse_iterator x_rbegin( ) const { return( base::rbegin( ) ); }
 
-	reverse_iterator x_rend( ){ return( rend( ) ); }
-	const_reverse_iterator x_rend( ) const { return( rend( )  ); }
+	reverse_iterator x_rend( ){ return( base::rend( ) ); }
+	const_reverse_iterator x_rend( ) const { return( base::rend( )  ); }
 
 
 public: // 配列に対する算術演算
@@ -427,7 +427,7 @@ public:
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
-private:
+protected:
 	typedef array1< T, Allocator > base;
 	size_type size1_;
 	size_type size2_;
@@ -452,19 +452,16 @@ public:
 	{
 		base::swap( a );
 
-		double dmy_reso1_ = reso1_;
 		double dmy_reso2_ = reso2_;
-		reso1_ = a.reso1_;
 		reso2_ = a.reso2_;
-		a.reso1_ = dmy_reso1_;
 		a.reso2_ = dmy_reso2_;
 
 		size_type _dmy_size1 = size1_;
 		size_type _dmy_size2 = size2_;
-		size1_ = m.size1_;
-		size2_ = m.size2_;
-		m.size1_ = _dmy_size1;
-		m.size2_ = _dmy_size2;
+		size1_ = a.size1_;
+		size2_ = a.size2_;
+		a.size1_ = _dmy_size1;
+		a.size2_ = _dmy_size2;
 	}
 
 	void clear( )
@@ -553,36 +550,36 @@ public:
 protected:
 	pointer paccess( size_type i, size_type j )
 	{
-		return( data_ + i + j * size1_ );
+		return( base::data_ + i + j * size1_ );
 	}
 	const_pointer paccess( size_type i, size_type j ) const
 	{
-		return( data_ + i + j * size1_ );
+		return( base::data_ + i + j * size1_ );
 	}
 
 public:
 	reference at( size_type i, size_type j, size_type dmy = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
-		return( data_[ i + j * size1_ ] );
+		return( base::data_[ i + j * size1_ ] );
 	}
 
 	const_reference at( size_type i, size_type j, size_type dmy = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
-		return( data_[ i + j * size1_ ] );
+		return( base::data_[ i + j * size1_ ] );
 	}
 
 	reference operator ()( size_type i, size_type j, size_type dmy = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
-		return( data_[ i + j * size1_ ] );
+		return( base::data_[ i + j * size1_ ] );
 	}
 
 	const_reference operator ()( size_type i, size_type j, size_type dmy = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION2_( i, j )
-		return( data_[ i + j * size1_ ] );
+		return( base::data_[ i + j * size1_ ] );
 	}
 
 
@@ -629,7 +626,7 @@ public:
 	typedef mist_reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, reference > > reverse_iterator;
 	typedef mist_reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
-private:
+protected:
 	typedef array2< T, Allocator > base;
 	size_type size1_;
 	size_type size2_;
@@ -657,25 +654,19 @@ public:
 	{
 		base::swap( a );
 
-		double dmy_reso1_ = reso1_;
-		double dmy_reso2_ = reso2_;
 		double dmy_reso3_ = reso3_;
-		reso1_ = a.reso1_;
-		reso2_ = a.reso2_;
 		reso3_ = a.reso3_;
-		a.reso1_ = dmy_reso1_;
-		a.reso2_ = dmy_reso2_;
 		a.reso3_ = dmy_reso3_;
 
 		size_type _dmy_size1 = size1_;
 		size_type _dmy_size2 = size2_;
 		size_type _dmy_size3 = size3_;
-		size1_ = m.size1_;
-		size2_ = m.size2_;
-		size3_ = m.size3_;
-		m.size1_ = _dmy_size1;
-		m.size2_ = _dmy_size2;
-		m.size3_ = _dmy_size3;
+		size1_ = a.size1_;
+		size2_ = a.size2_;
+		size3_ = a.size3_;
+		a.size1_ = _dmy_size1;
+		a.size2_ = _dmy_size2;
+		a.size3_ = _dmy_size3;
 	}
 
 	void clear( )
@@ -695,11 +686,11 @@ public:
 	double reso3( ) const { return( reso3_ ); }
 
 	// 順方向のランダムアクセスイテレータを返す
-	iterator begin( ){ return( iterator( paccess( 0, 0, 0 ), 0, size( ), 0 ) ); }
-	const_iterator begin( ) const { return( const_iterator( paccess( 0, 0, 0 ), 0, size( ), 0 ) ); }
+	iterator begin( ){ return( iterator( paccess( 0, 0, 0 ), 0, base::size( ), 0 ) ); }
+	const_iterator begin( ) const { return( const_iterator( paccess( 0, 0, 0 ), 0, base::size( ), 0 ) ); }
 
-	iterator end( ){ return( iterator( paccess( 0, 0, 0 ), size( ), size( ), 0 ) ); }
-	const_iterator end( ) const { return( const_iterator( paccess( 0, 0, 0 ), size( ), size( ), 0 ) ); }
+	iterator end( ){ return( iterator( paccess( 0, 0, 0 ), base::size( ), base::size( ), 0 ) ); }
+	const_iterator end( ) const { return( const_iterator( paccess( 0, 0, 0 ), base::size( ), base::size( ), 0 ) ); }
 
 
 	// 逆方向のランダムアクセスイテレータを返す
@@ -803,36 +794,36 @@ public:
 protected:
 	pointer paccess( size_type i, size_type j, size_type k )
 	{
-		return( data_ + i + ( j + k * size2_ ) * size1_ );
+		return( base::data_ + i + ( j + k * size2_ ) * size1_ );
 	}
 	const_pointer paccess( size_type i, size_type j, size_type k ) const
 	{
-		return( data_ + i + ( j + k * size2_ ) * size1_ );
+		return( base::data_ + i + ( j + k * size2_ ) * size1_ );
 	}
 
 public:
 	reference at( size_type i, size_type j, size_type k )
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
-		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
+		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
 	const_reference at( size_type i, size_type j, size_type k ) const
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
-		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
+		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
 	reference operator ()( size_type i, size_type j, size_type k )
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
-		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
+		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
 	const_reference operator ()( size_type i, size_type j, size_type k ) const
 	{
 		_CHECK_ACCESS_VIOLATION3_( i, j, k )
-		return( data_[ i + ( j + k * size2_ ) * size1_ ] );
+		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
 
@@ -879,7 +870,7 @@ public:
 	typedef typename Array::reverse_iterator reverse_iterator;
 	typedef typename Array::const_reverse_iterator const_reverse_iterator;
 
-private:
+protected:
 	typedef Array base;
 	size_type margin1_;
 	size_type margin2_;
@@ -1023,7 +1014,7 @@ private:
 	template < class T, class Allocator >
 	const marray& copy( const array< T, Allocator > &o )
 	{
-		size_type length = size( ) < o.size( ) ? size( ) : o.size( );
+		size_type length = base::size( ) < o.size( ) ? base::size( ) : o.size( );
 		for( size_type i = 0 ; i < length ; i++ )
 		{
 			( *this )[ i ] = static_cast< value_type >( o[ i ] );
@@ -1034,7 +1025,7 @@ private:
 	template < class T, class Allocator >
 	const marray& copy( const array1< T, Allocator > &o )
 	{
-		size_type length = size( ) < o.size( ) ? size( ) : o.size( );
+		size_type length = base::size( ) < o.size( ) ? base::size( ) : o.size( );
 		for( size_type i = 0 ; i < length ; i++ )
 		{
 			( *this )[ i ] = static_cast< value_type >( o[ i ] );
@@ -1045,7 +1036,7 @@ private:
 	template < class T, class Allocator >
 	const marray& copy( const array2< T, Allocator > &o )
 	{
-		size_type w = width( ) < o.width( ) ? width( ) : o.width( );
+		size_type w = width( )  < o.width( )  ? width( )  : o.width( );
 		size_type h = height( ) < o.height( ) ? height( ) : o.height( );
 		for( size_type j = 0 ; j < h ; j++ )
 		{
@@ -1060,9 +1051,9 @@ private:
 	template < class T, class Allocator >
 	const marray& copy( const array3< T, Allocator > &o )
 	{
-		size_type w = width( ) < o.width( ) ? width( ) : o.width( );
+		size_type w = width( )  < o.width( )  ? width( )  : o.width( );
 		size_type h = height( ) < o.height( ) ? height( ) : o.height( );
-		size_type d = depth( ) < o.depth( ) ? depth( ) : o.depth( );
+		size_type d = depth( )  < o.depth( )  ? depth( )  : o.depth( );
 		for( size_type k = 0 ; k < d ; k++ )
 		{
 			for( size_type j = 0 ; j < h ; j++ )
@@ -1242,7 +1233,7 @@ public:
 	typedef typename Array::reverse_iterator reverse_iterator;
 	typedef typename Array::const_reverse_iterator const_reverse_iterator;
 
-private:
+protected:
 	typedef Array base;
 	size_type size1_;
 	size_type size2_;
@@ -1380,7 +1371,7 @@ private:
 	template < class T, class Allocator >
 	const buffered_array& copy( const array< T, Allocator > &o )
 	{
-		size_type length = size( ) < o.size( ) ? size( ) : o.size( );
+		size_type length = base::size( ) < o.size( ) ? base::size( ) : o.size( );
 		for( size_type i = 0 ; i < length ; i++ )
 		{
 			( *this )[ i ] = static_cast< value_type >( o[ i ] );
@@ -1391,7 +1382,7 @@ private:
 	template < class T, class Allocator >
 	const buffered_array& copy( const array1< T, Allocator > &o )
 	{
-		size_type length = size( ) < o.size( ) ? size( ) : o.size( );
+		size_type length = base::size( ) < o.size( ) ? base::size( ) : o.size( );
 		for( size_type i = 0 ; i < length ; i++ )
 		{
 			( *this )[ i ] = static_cast< value_type >( o[ i ] );
@@ -1402,7 +1393,7 @@ private:
 	template < class T, class Allocator >
 	const buffered_array& copy( const array2< T, Allocator > &o )
 	{
-		size_type w = width( ) < o.width( ) ? width( ) : o.width( );
+		size_type w = width( )  < o.width( )  ? width( )  : o.width( );
 		size_type h = height( ) < o.height( ) ? height( ) : o.height( );
 		for( size_type j = 0 ; j < h ; j++ )
 		{
@@ -1417,9 +1408,9 @@ private:
 	template < class T, class Allocator >
 	const buffered_array& copy( const array3< T, Allocator > &o )
 	{
-		size_type w = width( ) < o.width( ) ? width( ) : o.width( );
+		size_type w = width( )  < o.width( )  ? width( )  : o.width( );
 		size_type h = height( ) < o.height( ) ? height( ) : o.height( );
-		size_type d = depth( ) < o.depth( ) ? depth( ) : o.depth( );
+		size_type d = depth( )  < o.depth( )  ? depth( )  : o.depth( );
 		for( size_type k = 0 ; k < d ; k++ )
 		{
 			for( size_type j = 0 ; j < h ; j++ )
