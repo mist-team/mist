@@ -8,6 +8,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_File_Chooser.H>
+#include <FL/Fl_Menu_Bar.H>
 
 class image_test_window {
 public:
@@ -35,6 +36,9 @@ private:
   static void cb_Read4(Fl_Button*, void*);
   inline void cb_Write4_i(Fl_Button*, void*);
   static void cb_Write4(Fl_Button*, void*);
+  static Fl_Menu_Item menu_[];
+  inline void cb_Euclidean_i(Fl_Menu_*, void*);
+  static void cb_Euclidean(Fl_Menu_*, void*);
 public:
   void show( );
 };

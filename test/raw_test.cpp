@@ -6,7 +6,7 @@
 
 
 #include <mist/filter/median_filter.h>
-
+#include <mist/filter/distance.h>
 
 
 void ct_draw_area::draw( )
@@ -164,6 +164,16 @@ void ct_draw_area::median_filter3D( ct_image_window *wnd )
 
 	mist::array3< short > tmp = ct;
 	mist::median_filter( tmp, ct, 3, 3, 3 );
+	redraw( );
+	Fl::wait( 0 );
+}
+
+void ct_draw_area::euclidean_distance_transform( ct_image_window *wnd )
+{
+	if( ct.empty( ) ) return;
+
+	mist::array3< short > tmp = ct;
+	mist::euclidean_distance_transform( tmp, ct );
 	redraw( );
 	Fl::wait( 0 );
 }

@@ -56,6 +56,8 @@ private:
   static void cb_Median1(Fl_Menu_*, void*);
   inline void cb_Median2_i(Fl_Menu_*, void*);
   static void cb_Median2(Fl_Menu_*, void*);
+  inline void cb_Euclidean_i(Fl_Menu_*, void*);
+  static void cb_Euclidean(Fl_Menu_*, void*);
 public:
   Fl_Value_Slider *WL;
 private:

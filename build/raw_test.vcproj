@@ -147,6 +147,9 @@
 			Name="MISTƒtƒ@ƒCƒ‹"
 			Filter="">
 			<File
+				RelativePath="..\mist\filter\distance.h">
+			</File>
+			<File
 				RelativePath="..\mist\draw.h">
 			</File>
 			<File

@@ -10,14 +10,14 @@ class image_test_window {open
   Function {image_test_window()} {open
   } {
     Fl_Window main_window {open
-      xywh {102 315 551 625} type Double visible
+      xywh {102 315 551 649} type Double visible
     } {
       Fl_Group {} {open
-        xywh {5 5 540 530} box DOWN_BOX
+        xywh {5 40 540 530} box DOWN_BOX
       } {
         Fl_Box draw_area {
           label label
-          xywh {10 10 530 520} box FLAT_BOX color 40
+          xywh {10 45 530 520} box FLAT_BOX color 40
           class image_draw_area
         }
       }
@@ -30,7 +30,7 @@ read_jpeg_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {5 545 100 30}
+        xywh {5 575 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -42,7 +42,7 @@ read_png_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {110 545 100 30}
+        xywh {110 575 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -51,7 +51,7 @@ Fl::wait( 0 );}
 if( filename == NULL ) return;
 
 write_jpeg_test( filename );}
-        xywh {5 580 100 30}
+        xywh {5 610 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -60,7 +60,7 @@ write_jpeg_test( filename );}
 if( filename == NULL ) return;
 
 write_png_test( filename );}
-        xywh {110 580 100 30}
+        xywh {110 610 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -72,7 +72,7 @@ read_tiff_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {215 545 100 30}
+        xywh {215 575 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -81,7 +81,7 @@ Fl::wait( 0 );}
 if( filename == NULL ) return;
 
 write_tiff_test( filename );}
-        xywh {215 580 100 30}
+        xywh {215 610 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -93,7 +93,7 @@ read_bmp_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {320 545 100 30}
+        xywh {320 575 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -102,7 +102,7 @@ Fl::wait( 0 );}
 if( filename == NULL ) return;
 
 write_bmp_test( filename );}
-        xywh {320 580 100 30}
+        xywh {320 610 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -114,7 +114,7 @@ read_dicom_test( filename );
 
 draw_area->redraw( );
 Fl::wait( 0 );}
-        xywh {430 545 100 30}
+        xywh {430 575 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
       }
       Fl_Button {} {
@@ -122,9 +122,23 @@ Fl::wait( 0 );}
         callback {const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*.*)", "" );
 if( filename == NULL ) return;
 
-write_dicom_test( filename );} selected
-        xywh {430 580 100 30}
+write_dicom_test( filename );}
+        xywh {430 610 100 30}
         code0 {\#include <FL/Fl_File_Chooser.H>}
+      }
+      Fl_Menu_Bar {} {open
+        xywh {0 0 550 25} box FLAT_BOX
+      } {
+        submenu {} {
+          label {&Edit} open
+          xywh {0 0 100 20}
+        } {
+          menuitem {} {
+            label {Euclidean Distance Transform}
+            callback {euclidean_distance_transform_test( );} selected
+            xywh {0 0 100 20}
+          }
+        }
       }
     }
   }

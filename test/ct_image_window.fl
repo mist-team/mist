@@ -101,7 +101,7 @@ class ct_image_window {open
           }
           menuitem {} {
             label {&Save}
-            callback {ct_image->write_image( this );} selected
+            callback {ct_image->write_image( this );}
             xywh {10 10 100 20}
           }
         }
@@ -123,6 +123,11 @@ class ct_image_window {open
             label {&Median Filter 3D}
             callback {ct_image->median_filter3D( this );}
             xywh {10 10 100 20}
+          }
+          menuitem {} {
+            label {&Euclidean Distance Transform}
+            callback {ct_image->euclidean_distance_transform( this );} selected
+            xywh {20 20 100 20}
           }
         }
       }

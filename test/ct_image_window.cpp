@@ -129,6 +129,13 @@ void ct_image_window::cb_Median2(Fl_Menu_* o, void* v) {
   ((ct_image_window*)(o->parent()->user_data()))->cb_Median2_i(o,v);
 }
 
+inline void ct_image_window::cb_Euclidean_i(Fl_Menu_*, void*) {
+  ct_image->euclidean_distance_transform( this );
+}
+void ct_image_window::cb_Euclidean(Fl_Menu_* o, void* v) {
+  ((ct_image_window*)(o->parent()->user_data()))->cb_Euclidean_i(o,v);
+}
+
 Fl_Menu_Item ct_image_window::menu_[] = {
  {"&File", 0,  0, 0, 64, 0, 0, 14, 56},
  {"&Open", 0,  (Fl_Callback*)ct_image_window::cb_Open, 0, 0, 0, 0, 14, 56},
@@ -138,6 +145,7 @@ Fl_Menu_Item ct_image_window::menu_[] = {
  {"&Median Filter 1D", 0,  (Fl_Callback*)ct_image_window::cb_Median, 0, 0, 0, 0, 14, 56},
  {"&Median Filter 2D", 0,  (Fl_Callback*)ct_image_window::cb_Median1, 0, 0, 0, 0, 14, 56},
  {"&Median Filter 3D", 0,  (Fl_Callback*)ct_image_window::cb_Median2, 0, 0, 0, 0, 14, 56},
+ {"&Euclidean Distance Transform", 0,  (Fl_Callback*)ct_image_window::cb_Euclidean, 0, 0, 0, 0, 14, 56},
  {0},
  {0}
 };
