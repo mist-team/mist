@@ -50,15 +50,15 @@ namespace pixel_data
 	template <>          struct gl_type_trait< unsigned char > { _MIST_CONST( GLenum, gl_type, GL_UNSIGNED_BYTE ); };
 	template <>          struct gl_type_trait< unsigned short >{ _MIST_CONST( GLenum, gl_type, GL_UNSIGNED_SHORT ); };
 	template <>          struct gl_type_trait< unsigned int >  { _MIST_CONST( GLenum, gl_type, GL_UNSIGNED_INT ); };
-//	template <>          struct gl_type_trait< unsigned long > { _MIST_CONST( GLenum, gl_type, true  ); };
+	template <>          struct gl_type_trait< unsigned long > { _MIST_CONST( GLenum, gl_type, GL_UNSIGNED_INT  ); };
 	template <>          struct gl_type_trait< signed char >   { _MIST_CONST( GLenum, gl_type, GL_BYTE ); };
 	template <>          struct gl_type_trait< signed short >  { _MIST_CONST( GLenum, gl_type, GL_SHORT ); };
 	template <>          struct gl_type_trait< signed int >    { _MIST_CONST( GLenum, gl_type, GL_INT ); };
-//	template <>          struct gl_type_trait< signed long >   { _MIST_CONST( GLenum, gl_type, true  ); };
+	template <>          struct gl_type_trait< signed long >   { _MIST_CONST( GLenum, gl_type, GL_INT  ); };
 	template <>          struct gl_type_trait< bool >          { _MIST_CONST( GLenum, gl_type, GL_UNSIGNED_BYTE ); };
 	template <>          struct gl_type_trait< char >          { _MIST_CONST( GLenum, gl_type, GL_BYTE ); };
 	template <>          struct gl_type_trait< float >         { _MIST_CONST( GLenum, gl_type, GL_FLOAT ); };
-//	template <>          struct gl_type_trait< double >        { _MIST_CONST( GLenum, gl_type, true  ); };
+	template <>          struct gl_type_trait< double >        { _MIST_CONST( GLenum, gl_type, GL_DOUBLE  ); };
 //	template <>          struct gl_type_trait< long double >   { _MIST_CONST( GLenum, gl_type, true  ); };
 
 	template < bool color >
@@ -621,6 +621,7 @@ inline vector2< double > point2screen( const vector2< double > &pt, double imgX,
 	}
 	return( vector2< double >( ( xx + 1.0 ) * winW * 0.5, ( 1.0 - yy ) * winH * 0.5 ) );
 }
+
 
 /// @}
 //  画像描画グループの終わり
