@@ -108,19 +108,34 @@ public:
 
 	/// @brief ベクトル和
 	template < class TT >
-	const vector3 &operator +=( const vector3< TT > &v ){ x = static_cast< value_type >( x + v.x ); y = static_cast< value_type >( y + v.y ); z = static_cast< value_type >( z + v.z ); return( *this ); }
+	const vector3 &operator +=( const vector3< TT > &v )
+	{
+		x = static_cast< value_type >( x + v.x );
+		y = static_cast< value_type >( y + v.y );
+		z = static_cast< value_type >( z + v.z );
+		return( *this );
+	}
 
 	/// @brief ベクトル差
 	template < class TT >
-	const vector3 &operator -=( const vector3< TT > &v ){ x = static_cast< value_type >( x - v.x ); y = static_cast< value_type >( y - v.y ); z = static_cast< value_type >( z - v.z ); return( *this ); }
+	const vector3 &operator -=( const vector3< TT > &v )
+	{
+		x = static_cast< value_type >( x - v.x );
+		y = static_cast< value_type >( y - v.y );
+		z = static_cast< value_type >( z - v.z );
+		return( *this );
+	}
 
 	/// @brief ベクトルの外積
 	template < class TT >
 	const vector3 &operator *=( const vector3< TT > &v )
 	{
-		x = static_cast< value_type >( y * v.z - z * v.y );
-		y = static_cast< value_type >( z * v.x - x * v.z );
-		z = static_cast< value_type >( x * v.y - y * v.x );
+		value_type xx = static_cast< value_type >( y * v.z - z * v.y );
+		value_type yy = static_cast< value_type >( z * v.x - x * v.z );
+		value_type zz = static_cast< value_type >( x * v.y - y * v.x );
+		x = xx;
+		y = yy;
+		z = zz;
 		return( *this );
 	}
 
