@@ -3,6 +3,7 @@
 #include <mist/vector.h>
 #include <mist/converter.h>
 #include <mist/threshold.h>
+#include <mist/interpolate.h>
 #include <mist/filter/morphology.h>
 #include <mist/filter/labeling.h>
 
@@ -325,7 +326,12 @@ inline bool eye_masking( mist::array2< T, Allocator > &in )
 
 
 	// カラー画像からグレースケールに変換
-	mist::convert( in, image1 );
+	mist::convert( in, image2 );
+
+	// 画像を320×240に線形補間する
+	mist::nearest::interpolate( image2, image1, 320, 240 );
+	double ax = image1.width( ) / static_cast< double >( in.width( ) );
+	double ay = image1.height( ) / static_cast< double >( in.height( ) );
 
 	// 最小値フィルタ
 	mist::erosion( image1, mist::__morphology__::square( 1.0, image1.reso1( ), image1.reso2( ) ) );
@@ -355,6 +361,14 @@ inline bool eye_masking( mist::array2< T, Allocator > &in )
 	}
 	else
 	{
+		list[ 0 ].left   = static_cast< size_type >( list[ 0 ].left   / ax );
+		list[ 0 ].right  = static_cast< size_type >( list[ 0 ].right  / ax );
+		list[ 0 ].top    = static_cast< size_type >( list[ 0 ].top    / ay );
+		list[ 0 ].bottom = static_cast< size_type >( list[ 0 ].bottom / ay );
+		list[ 1 ].left   = static_cast< size_type >( list[ 0 ].left   / ax );
+		list[ 1 ].right  = static_cast< size_type >( list[ 0 ].right  / ax );
+		list[ 1 ].top    = static_cast< size_type >( list[ 0 ].top    / ay );
+		list[ 1 ].bottom = static_cast< size_type >( list[ 0 ].bottom / ay );
 		// 目領域にマッチする部分が存在しないので棄却
 		eye_masking( in, list[ 0 ], list[ 1 ] );
 		return( true );

@@ -777,11 +777,20 @@ namespace nearest
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width );
+
+		if( in.width( ) == width )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Nearest, i, thread_num );
@@ -817,12 +826,21 @@ namespace nearest
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width );
 		out.reso1( in.reso1( ) * static_cast< double >( in.size( ) ) / static_cast< double >( width ) );
 
+		if( in.width( ) == width )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array1< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
+
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Nearest, i, thread_num );
@@ -859,13 +877,22 @@ namespace nearest
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width, height );
 		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
 		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
 
+		if( in.width( ) == width && in.height( ) == height )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array2< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
+
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Nearest, i, thread_num );
@@ -904,14 +931,23 @@ namespace nearest
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width, height );
 		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
 		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
 		out.reso3( in.reso3( ) * static_cast< double >( in.depth( ) ) / static_cast< double >( depth ) );
 
+		if( in.width( ) == width && in.height( ) == height && in.depth( ) == depth )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array3< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
+
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Nearest, i, thread_num );
@@ -951,11 +987,20 @@ namespace linear
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width );
+
+		if( in.width( ) == width )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Linear, i, thread_num );
@@ -991,12 +1036,21 @@ namespace linear
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width );
 		out.reso1( in.reso1( ) * static_cast< double >( in.size( ) ) / static_cast< double >( width ) );
 
+		if( in.width( ) == width )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array1< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
+
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Linear, i, thread_num );
@@ -1033,13 +1087,22 @@ namespace linear
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width, height );
 		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
 		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
 
+		if( in.width( ) == width && in.height( ) == height )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array2< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
+
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Linear, i, thread_num );
@@ -1082,6 +1145,15 @@ namespace linear
 		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
 		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
 		out.reso3( in.reso3( ) * static_cast< double >( in.depth( ) ) / static_cast< double >( depth ) );
+
+		if( in.width( ) == width && in.height( ) == height && in.depth( ) == depth )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array3< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
@@ -1126,11 +1198,20 @@ namespace cubic
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width );
+
+		if( in.width( ) == width )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
 
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Cubic, i, thread_num );
@@ -1166,12 +1247,21 @@ namespace cubic
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width );
 		out.reso1( in.reso1( ) * static_cast< double >( in.size( ) ) / static_cast< double >( width ) );
 
+		if( in.width( ) == width )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array1< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
+
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Cubic, i, thread_num );
@@ -1208,13 +1298,22 @@ namespace cubic
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width, height );
 		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
 		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
 
+		if( in.width( ) == width && in.height( ) == height )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array2< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
+
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Cubic, i, thread_num );
@@ -1253,14 +1352,23 @@ namespace cubic
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
+		size_type i;
 		out.resize( width, height );
 		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
 		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
 		out.reso3( in.reso3( ) * static_cast< double >( in.depth( ) ) / static_cast< double >( depth ) );
 
+		if( in.width( ) == width && in.height( ) == height && in.depth( ) == depth )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array3< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return;
+		}
+
 		interpolate_thread *thread = new interpolate_thread[ thread_num ];
 
-		size_type i;
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, interpolate_thread::Cubic, i, thread_num );
