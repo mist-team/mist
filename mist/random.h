@@ -112,19 +112,6 @@ namespace uniform
 			init( seed_array );
 		}
 
-		const random& operator=( const random& r )
-		{
-			if( this == &r )
-			{
-				return( *this );
-		
-			}
-
-			mt_ = r.mt_;
-			mti_ = r.mti_;
-
-			return ( *this );
-		}
 
 		/// @brief seedで初期化
 		//! 
@@ -314,6 +301,18 @@ namespace uniform
 			return ( ( a * 67108864.0 + b ) * ( 1.0 / 9007199254740992.0 ) );
 		}
 
+
+		/// @brief 0, 1, ... N-1 の符号無し整数乱数発生
+		//! 
+		//! @param[in] n … N の値
+		//! 
+		//! @return 0, 1, ... N-1 の符号無し整数乱数発生
+		//! 
+		const unsigned long  operator( )( const unsigned int n )
+		{
+			return ( static_cast< unsigned long >( real2( ) * n ) );
+		}
+
 	};
 
 } // uniform
@@ -407,6 +406,17 @@ namespace gauss
 		const unsigned long int32( )
 		{
 			return( u_rand_.int32( ) );
+		}
+
+		/// @brief 0, 1, ... N-1 の符号無し整数乱数発生
+		//! 
+		//! @param[in] n … N の値
+		//! 
+		//! @return 0, 1, ... N-1 の符号無し整数乱数発生
+		//!
+		const unsigned long  operator( )( const unsigned int n )
+		{
+			return ( u_rand_.operator( )( n ) );
 		}
 
 		/// @brief 正規乱数のパラメータ指定
