@@ -125,13 +125,33 @@ public:
 	}
 
 	/// @brief ベクトルの定数倍
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const vector3 &operator *=( const double &a )
+#else
 	template < class TT >
-	const vector3 &operator *=( const TT &a ){ x = static_cast< value_type >( x * a ); y = static_cast< value_type >( y * a ); z = static_cast< value_type >( z * a ); return( *this ); }
+	const vector3 &operator *=( const TT &a )
+#endif
+	{
+		x = static_cast< value_type >( x * a );
+		y = static_cast< value_type >( y * a );
+		z = static_cast< value_type >( z * a );
+		return( *this );
+	}
 
 
 	/// @brief ベクトルを定数で割る
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const vector3 &operator /=( const double &a )
+#else
 	template < class TT >
-	const vector3 &operator /=( const TT &a ){ x = static_cast< value_type >( x / a ); y = static_cast< value_type >( y / a ); z = static_cast< value_type >( z / a ); return( *this ); }
+	const vector3 &operator /=( const TT &a )
+#endif
+	{
+		x = static_cast< value_type >( x / a );
+		y = static_cast< value_type >( y / a );
+		z = static_cast< value_type >( z / a );
+		return( *this );
+	}
 
 
 	/// @brief 2つのベクトルが等しい（全要素が同じ値を持つ）かどうかを判定する
@@ -282,6 +302,17 @@ public:
 		value_type zz = static_cast< value_type >( ( v.x * v.z * ( 1.0 - cs ) - v.y * sn ) * x + ( v.y * v.z * ( 1.0 - cs ) + v.x * sn ) * y + ( v.z * v.z * ( 1.0 - cs ) + cs ) * z );
 		return ( vector3( xx, yy, zz ) );
 	}
+
+
+	// 型の昇格を行う演算の定義
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( vector3, + )			///< @brief ベクトルの和
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( vector3, - )			///< @brief ベクトルの差
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( vector3, * )			///< @brief ベクトルの積
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( vector3, * )			///< @brief ベクトルと定数の積
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( vector3, / )			///< @brief ベクトルを定数で割る
 };
 
 
@@ -292,16 +323,7 @@ typename promote_trait< T1, T2 >::value_type operator ^( const vector3< T1 > &v1
 	return( vector3< typename promote_trait< T1, T2 >::value_type >( v1 ).inner( v2 ) );
 }
 
-
-DEFINE_PROMOTE_BIND_OPERATOR1( vector3, + )			///< @brief ベクトルの和
-
-DEFINE_PROMOTE_BIND_OPERATOR1( vector3, - )			///< @brief ベクトルの差
-
-DEFINE_PROMOTE_BIND_OPERATOR1( vector3, * )			///< @brief ベクトルの外積
-DEFINE_PROMOTE_BIND_OPERATOR2( vector3, * )			///< @brief ベクトルと定数の積
-DEFINE_PROMOTE_BIND_OPERATOR3( vector3, * )			///< @brief 定数とベクトルの積
-
-DEFINE_PROMOTE_BIND_OPERATOR2( vector3, / )			///< @brief ベクトルを定数で割る
+DEFINE_PROMOTE_BIND_OPERATOR1( vector3, * )			///< @brief 定数とベクトルの積
 
 
 
@@ -415,14 +437,33 @@ public:
 	template < class TT >
 	const vector2 &operator -=( const vector2< TT > &v ){ x = static_cast< value_type >( x - v.x ); y = static_cast< value_type >( y - v.y ); return( *this ); }
 
+
 	/// @brief ベクトルの定数倍
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const vector2 &operator *=( const double &a )
+#else
 	template < class TT >
-	const vector2 &operator *=( const TT &a ){ x = static_cast< value_type >( x * a ); y = static_cast< value_type >( y * a ); return( *this ); }
+	const vector2 &operator *=( const TT &a )
+#endif
+	{
+		x = static_cast< value_type >( x * a );
+		y = static_cast< value_type >( y * a );
+		return( *this );
+	}
 
 
 	/// @brief ベクトルを定数で割る
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const vector2 &operator /=( const double &a )
+#else
 	template < class TT >
-	const vector2 &operator /=( const TT &a ){ x = static_cast< value_type >( x / a ); y = static_cast< value_type >( y / a ); return( *this ); }
+	const vector2 &operator /=( const TT &a )
+#endif
+	{
+		x = static_cast< value_type >( x / a );
+		y = static_cast< value_type >( y / a );
+		return( *this );
+	}
 
 
 	/// @brief 2つのベクトルが等しい（全要素が同じ値を持つ）かどうかを判定する
@@ -561,6 +602,17 @@ public:
 	//	value_type zz = static_cast< value_type >( ( v.x * v.z * ( 1.0 - cs ) - v.y * sn ) * x + ( v.y * v.z * ( 1.0 - cs ) + v.x * sn ) * y + ( v.z * v.z * ( 1.0 - cs ) + cs ) * z );
 	//	return ( vector2( xx, yy, zz ) );
 	//}
+
+
+
+	// 型の昇格を行う演算の定義
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( vector2, + )			///< @brief ベクトルの和
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( vector2, - )			///< @brief ベクトルの差
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( vector2, * )			///< @brief ベクトルと定数の積
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( vector2, / )			///< @brief ベクトルを定数で割る
 };
 
 
@@ -578,15 +630,7 @@ typename promote_trait< T1, T2 >::value_type operator *( const vector2< T1 > &v1
 	return( vector2< typename promote_trait< T1, T2 >::value_type >( v1 ).outer( v2 ) );
 }
 
-
-DEFINE_PROMOTE_BIND_OPERATOR1( vector2, + )			///< @brief ベクトルの和
-
-DEFINE_PROMOTE_BIND_OPERATOR1( vector2, - )			///< @brief ベクトルの差
-
-DEFINE_PROMOTE_BIND_OPERATOR2( vector2, * )			///< @brief ベクトルと定数の積
-DEFINE_PROMOTE_BIND_OPERATOR3( vector2, * )			///< @brief 定数とベクトルの積
-
-DEFINE_PROMOTE_BIND_OPERATOR2( vector2, / )			///< @brief ベクトルを定数で割る
+DEFINE_PROMOTE_BIND_OPERATOR1( vector2, * )			///< @brief 定数とベクトルの積
 
 
 

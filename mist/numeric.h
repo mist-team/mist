@@ -1701,7 +1701,12 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 
 	default:
 		{
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+			// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
+			matrix< __clapack__::integer > pivot;
+#else
 			matrix< __clapack__::integer, typename Allocator::template rebind< __clapack__::integer >::other > pivot;
+#endif
 			matrix< T, Allocator > m = lu_factorization( a, pivot, style );
 
 			value_type v = m( 0, 0 );
@@ -1765,7 +1770,12 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 
 	default:
 		{
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+			// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
+			matrix< __clapack__::integer > pivot;
+#else
 			matrix< __clapack__::integer, typename allocator_type::template rebind< __clapack__::integer >::other > pivot;
+#endif
 			matrix_type m = lu_factorization( e, pivot, style );
 
 			value_type v = m( 0, 0 );
@@ -1949,7 +1959,12 @@ const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, 
 {
 	typedef __clapack__::integer integer;
 	matrix< T, Allocator > a_( a );
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
+	matrix< __clapack__::integer > pivot( a.cols( ), 1 );
+#else
 	matrix< __clapack__::integer, typename Allocator::template rebind< __clapack__::integer >::other > pivot( a.cols( ), 1 );
+#endif
 	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
 }
 
@@ -1990,7 +2005,12 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
 	typedef matrix< value_type, allocator_type > matrix_type;
 	matrix_type a_( expression );
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
+	matrix< __clapack__::integer > pivot( a_.cols( ), 1 );
+#else
 	matrix< __clapack__::integer, typename allocator_type::template rebind< __clapack__::integer >::other > pivot( a_.cols( ), 1 );
+#endif
 	return( __lu__::__lu__< __numeric__::is_complex< value_type >::value >::lu_factorization( a_, pivot, style ) );
 }
 

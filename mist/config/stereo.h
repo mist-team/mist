@@ -127,20 +127,56 @@ public:
 
 
 	/// @brief 各音声成分に mono 値を足す
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const stereo &operator +=( const double &mono )
+#else
 	template < class TT >
-	const stereo &operator +=( const TT &mono ){ l = static_cast< value_type >( l + mono ); r = static_cast< value_type >( r + mono ); return( *this ); }
+	const stereo &operator +=( const TT &mono )
+#endif
+	{
+		l = static_cast< value_type >( l + mono );
+		r = static_cast< value_type >( r + mono );
+		return( *this );
+	}
 
 	/// @brief 各音声成分から mono 値を引く
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const stereo &operator -=( const double &mono )
+#else
 	template < class TT >
-	const stereo &operator -=( const TT &mono ){ l = static_cast< value_type >( l - mono ); r = static_cast< value_type >( r - mono ); return( *this ); }
+	const stereo &operator -=( const TT &mono )
+#endif
+	{
+		l = static_cast< value_type >( l - mono );
+		r = static_cast< value_type >( r - mono );
+		return( *this );
+	}
 
 	/// @brief 各音声成分に mono 値を掛ける
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const stereo &operator *=( const double &mono )
+#else
 	template < class TT >
-	const stereo &operator *=( const TT &mono ){ l = static_cast< value_type >( l * mono ); r = static_cast< value_type >( r * mono ); return( *this ); }
+	const stereo &operator *=( const TT &mono )
+#endif
+	{
+		l = static_cast< value_type >( l * mono );
+		r = static_cast< value_type >( r * mono );
+		return( *this );
+	}
 
 	/// @brief 各音声成分を mono 値で割る
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const stereo &operator /=( const double &mono )
+#else
 	template < class TT >
-	const stereo &operator /=( const TT &mono ){ l = static_cast< value_type >( l / mono ); r = static_cast< value_type >( r / mono ); return( *this ); }
+	const stereo &operator /=( const TT &mono )
+#endif
+	{
+		l = static_cast< value_type >( l / mono );
+		r = static_cast< value_type >( r / mono );
+		return( *this );
+	}
 
 
 	/// @brief 2つの音声成分が等しい（全要素が同じ値を持つ）かどうかを判定する
@@ -230,40 +266,34 @@ public:
 
 	// ステレオからモノラルへの自動キャスト演算子（危険のため一時停止）
 	//operator value_type( ) const { return( get_value( ) ); }
+
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( stereo, + )			///< @brief ステレオ音声データの和
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( stereo, + )			///< @brief ステレオ音声データと定数の和
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( stereo, - )			///< @brief ステレオ音声データの差
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( stereo, - )			///< @brief ステレオ音声データと定数の差
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( stereo, * )			///< @brief ステレオ音声データの積
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( stereo, * )			///< @brief ステレオ音声データと定数の積
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( stereo, / )			///< @brief ステレオ音声データの割り算
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( stereo, / )			///< @brief ステレオ音声データを定数で割る
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( stereo, % )			///< @brief ステレオ音声データの剰余
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( stereo, | )			///< @brief ステレオ音声データの | 演算
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( stereo, & )			///< @brief ステレオ音声データの & 演算
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( stereo, ^ )			///< @brief ステレオ音声データの ^ 演算
 };
 
 
 
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, + )			///< @brief ステレオ音声データの和
-DEFINE_PROMOTE_BIND_OPERATOR2( stereo, + )			///< @brief ステレオ音声データと定数の和
-DEFINE_PROMOTE_BIND_OPERATOR3( stereo, + )			///< @brief 定数とステレオ音声データの和
-
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, - )			///< @brief ステレオ音声データの差
-DEFINE_PROMOTE_BIND_OPERATOR2( stereo, - )			///< @brief ステレオ音声データと定数の差
-DEFINE_PROMOTE_BIND_OPERATOR4( stereo, - )			///< @brief 定数とステレオ音声データの差
-
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, * )			///< @brief ステレオ音声データの積
-DEFINE_PROMOTE_BIND_OPERATOR2( stereo, * )			///< @brief ステレオ音声データと定数の積
-DEFINE_PROMOTE_BIND_OPERATOR3( stereo, * )			///< @brief 定数とステレオ音声データの積
-
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, / )			///< @brief ステレオ音声データの割り算
-DEFINE_PROMOTE_BIND_OPERATOR2( stereo, / )			///< @brief ステレオ音声データを定数で割る
-
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, % )			///< @brief ステレオ音声データの剰余
-
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, | )			///< @brief ステレオ音声データの | 演算
-
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, & )			///< @brief ステレオ音声データの & 演算
-
-DEFINE_PROMOTE_BIND_OPERATOR1( stereo, ^ )			///< @brief ステレオ音声データの ^ 演算
-
-
-DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, == )		///< @brief 比較演算子 ==
-DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, != )		///< @brief 比較演算子 !=
-DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, <  )		///< @brief 比較演算子 <
-DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, <= )		///< @brief 比較演算子 <=
-DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, >  )		///< @brief 比較演算子 >
-DEFINE_PROMOTE_CONDITION_OPERATOR( stereo, >= )		///< @brief 比較演算子 >=
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, + )			///< @brief 定数とステレオ音声データの和
+DEFINE_PROMOTE_BIND_OPERATOR2( stereo, - )			///< @brief 定数とステレオ音声データの差
+DEFINE_PROMOTE_BIND_OPERATOR1( stereo, * )			///< @brief 定数とステレオ音声データの積
 
 
 

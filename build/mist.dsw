@@ -3,6 +3,18 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
+Project: "array_test"=".\array_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "binary_test"=".\binary_test.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -160,6 +172,18 @@ Package=<4>
 ###############################################################################
 
 Project: "operators_test"=".\operators_test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "quaternion_test"=".\quaternion_test.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

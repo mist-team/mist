@@ -131,20 +131,60 @@ public:
 
 
 	/// @brief RGB成分に pix 値を足す
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const rgb &operator +=( const double &pix )
+#else
 	template < class TT >
-	const rgb &operator +=( const TT &pix ){ r = static_cast< value_type >( r + pix ); g = static_cast< value_type >( g + pix ); b = static_cast< value_type >( b + pix ); return( *this ); }
+	const rgb &operator +=( const TT &pix )
+#endif
+	{
+		r = static_cast< value_type >( r + pix );
+		g = static_cast< value_type >( g + pix );
+		b = static_cast< value_type >( b + pix );
+		return( *this );
+	}
 
 	/// @brief RGB成分から pix 値を引く
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const rgb &operator -=( const double &pix )
+#else
 	template < class TT >
-	const rgb &operator -=( const TT &pix ){ r = static_cast< value_type >( r - pix ); g = static_cast< value_type >( g - pix ); b = static_cast< value_type >( b - pix ); return( *this ); }
+	const rgb &operator -=( const TT &pix )
+#endif
+	{
+		r = static_cast< value_type >( r - pix );
+		g = static_cast< value_type >( g - pix );
+		b = static_cast< value_type >( b - pix );
+		return( *this );
+	}
 
 	/// @brief RGB成分に pix 値を掛ける
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const rgb &operator *=( const double &pix )
+#else
 	template < class TT >
-	const rgb &operator *=( const TT &pix ){ r = static_cast< value_type >( r * pix ); g = static_cast< value_type >( g * pix ); b = static_cast< value_type >( b * pix ); return( *this ); }
+	const rgb &operator *=( const TT &pix )
+#endif
+	{
+		r = static_cast< value_type >( r * pix );
+		g = static_cast< value_type >( g * pix );
+		b = static_cast< value_type >( b * pix );
+		return( *this );
+	}
 
 	/// @brief RGB成分を pix 値で割る
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const rgb &operator /=( const double &pix )
+#else
 	template < class TT >
-	const rgb &operator /=( const TT &pix ){ r = static_cast< value_type >( r / pix ); g = static_cast< value_type >( g / pix ); b = static_cast< value_type >( b / pix ); return( *this ); }
+	const rgb &operator /=( const TT &pix )
+#endif
+	{
+		r = static_cast< value_type >( r / pix );
+		g = static_cast< value_type >( g / pix );
+		b = static_cast< value_type >( b / pix );
+		return( *this );
+	}
 
 
 	/// @brief 2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する
@@ -234,39 +274,35 @@ public:
 
 	// カラーからグレースケールへの自動キャスト演算子（危険のため一時停止）
 	//operator value_type( ) const { return( get_value( ) ); }
+
+
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, + )			///< @brief カラー画素の和
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( rgb, + )			///< @brief カラー画素と定数の和
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, - )			///< @brief カラー画素の差
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( rgb, - )			///< @brief カラー画素と定数の差
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, * )			///< @brief カラー画素の積
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( rgb, * )			///< @brief カラー画素と定数の積
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, / )			///< @brief カラー画素の割り算
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( rgb, / )			///< @brief カラー画素を定数で割る
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, % )			///< @brief カラー画素の剰余
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, | )			///< @brief カラー画素の | 演算
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, & )			///< @brief カラー画素の & 演算
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( rgb, ^ )			///< @brief カラー画素の ^ 演算
+
 };
 
 
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, + )			///< @brief カラー画素の和
-DEFINE_PROMOTE_BIND_OPERATOR2( rgb, + )			///< @brief カラー画素と定数の和
-DEFINE_PROMOTE_BIND_OPERATOR3( rgb, + )			///< @brief 定数とカラー画素の和
-
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, - )			///< @brief カラー画素の差
-DEFINE_PROMOTE_BIND_OPERATOR2( rgb, - )			///< @brief カラー画素と定数の差
-DEFINE_PROMOTE_BIND_OPERATOR4( rgb, - )			///< @brief 定数とカラー画素の差
-
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, * )			///< @brief カラー画素の積
-DEFINE_PROMOTE_BIND_OPERATOR2( rgb, * )			///< @brief カラー画素と定数の積
-DEFINE_PROMOTE_BIND_OPERATOR3( rgb, * )			///< @brief 定数とカラー画素の積
-
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, / )			///< @brief カラー画素の割り算
-DEFINE_PROMOTE_BIND_OPERATOR2( rgb, / )			///< @brief カラー画素を定数で割る
-
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, % )			///< @brief カラー画素の剰余
-
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, | )			///< @brief カラー画素の | 演算
-
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, & )			///< @brief カラー画素の & 演算
-
-DEFINE_PROMOTE_BIND_OPERATOR1( rgb, ^ )			///< @brief カラー画素の ^ 演算
-
-
-DEFINE_PROMOTE_CONDITION_OPERATOR( rgb, == )	///< @brief 比較演算子 ==
-DEFINE_PROMOTE_CONDITION_OPERATOR( rgb, != )	///< @brief 比較演算子 !=
-DEFINE_PROMOTE_CONDITION_OPERATOR( rgb, <  )	///< @brief 比較演算子 <
-DEFINE_PROMOTE_CONDITION_OPERATOR( rgb, <= )	///< @brief 比較演算子 <=
-DEFINE_PROMOTE_CONDITION_OPERATOR( rgb, >  )	///< @brief 比較演算子 >
-DEFINE_PROMOTE_CONDITION_OPERATOR( rgb, >= )	///< @brief 比較演算子 >=
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, + )			///< @brief 定数とカラー画素の和
+DEFINE_PROMOTE_BIND_OPERATOR2( rgb, - )			///< @brief 定数とカラー画素の差
+DEFINE_PROMOTE_BIND_OPERATOR1( rgb, * )			///< @brief 定数とカラー画素の積
 
 
 

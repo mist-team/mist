@@ -138,8 +138,12 @@ public:
 	//! 
 	//! @return 足し算結果
 	//! 
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const quaternion &operator +=( const double &a )
+#else
 	template < class TT >
 	const quaternion &operator +=( const TT &a )
+#endif
 	{
 		w = static_cast< value_type >( w + a );
 		return( *this );
@@ -175,8 +179,12 @@ public:
 	//! 
 	//! @return 引き算結果
 	//! 
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const quaternion &operator -=( const double &a )
+#else
 	template < class TT >
 	const quaternion &operator -=( const TT &a )
+#endif
 	{
 		w = static_cast< value_type >( w - a );
 		return( *this );
@@ -222,8 +230,12 @@ public:
 	//! 
 	//! @return 掛け算結果
 	//! 
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const quaternion &operator *=( const double &a )
+#else
 	template < class TT >
 	const quaternion &operator *=( const TT &a )
+#endif
 	{
 		w = static_cast< value_type >( w * a );
 		x = static_cast< value_type >( x * a );
@@ -258,8 +270,12 @@ public:
 	//! 
 	//! @return 掛け算結果
 	//! 
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const quaternion &operator /=( const double &a )
+#else
 	template < class TT >
 	const quaternion &operator /=( const TT &a )
+#endif
 	{
 		w = static_cast< value_type >( w / a );
 		x = static_cast< value_type >( x / a );
@@ -406,29 +422,26 @@ public:	// その他の関数
 		quaternion q = ( *this ) * quaternion( 0, static_cast< value_type >( v.x ), static_cast< value_type >( v.y ), static_cast< value_type >( v.z ) ) * inv( );
 		return( vector3< TT >( static_cast< TT >( q.x ), static_cast< TT >( q.y ), static_cast< TT >( q.z ) ) );
 	}
+
+
+	// 型の昇格を行う演算の定義
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( quaternion, + )			///< @brief クォータニオンの和
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( quaternion, + )			///< @brief クォータニオンと定数の和
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( quaternion, - )			///< @brief クォータニオンの差
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( quaternion, - )			///< @brief クォータニオンと定数の差
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( quaternion, * )			///< @brief クォータニオンの積
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( quaternion, * )			///< @brief クォータニオンと定数の積
+
+	DEFINE_PROMOTE_MEMBER_OPERATOR1( quaternion, / )			///< @brief クォータニオンの割り算
+	DEFINE_PROMOTE_MEMBER_OPERATOR2( quaternion, / )			///< @brief クォータニオンを定数で割る
 };
 
-DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, + )			///< @brief クォータニオンの和
-DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, + )			///< @brief クォータニオンと定数の和
-DEFINE_PROMOTE_BIND_OPERATOR3( quaternion, + )			///< @brief 定数とクォータニオンの和
+DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, + )			///< @brief 定数とクォータニオンの和
+DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, - )			///< @brief 定数とクォータニオンの差
+DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, * )			///< @brief 定数とクォータニオンの積
 
-DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, - )			///< @brief クォータニオンの差
-DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, - )			///< @brief クォータニオンと定数の差
-DEFINE_PROMOTE_BIND_OPERATOR4( quaternion, - )			///< @brief 定数とクォータニオンの差
-
-DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, * )			///< @brief クォータニオンの積
-DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, * )			///< @brief クォータニオンと定数の積
-DEFINE_PROMOTE_BIND_OPERATOR3( quaternion, * )			///< @brief 定数とクォータニオンの積
-
-DEFINE_PROMOTE_BIND_OPERATOR1( quaternion, / )			///< @brief クォータニオンの割り算
-DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, / )			///< @brief クォータニオンを定数で割る
-
-DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, == )		///< @brief 比較演算子 ==
-DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, != )		///< @brief 比較演算子 !=
-DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, <  )		///< @brief 比較演算子 <
-DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, <= )		///< @brief 比較演算子 <=
-DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, >  )		///< @brief 比較演算子 >
-DEFINE_PROMOTE_CONDITION_OPERATOR( quaternion, >= )		///< @brief 比較演算子 >=
 
 
 
