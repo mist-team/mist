@@ -49,6 +49,7 @@ public:
 public:
 	void append_filter( const filter &f );
 	void recompute_current_filter( );
+	filter *get_current_Filter( ){ return( current_filter_ ); }
 
 private:
 	filter_graph( ){}
@@ -64,6 +65,8 @@ public:
 	long onMouseMove( FXObject *obj, FXSelector sel, void *ptr );
 	long onKeyDown( FXObject *obj, FXSelector sel, void *ptr );
 	long onKeyUp( FXObject *obj, FXSelector sel, void *ptr );
+
+	long onDataChanged( FXObject *obj, FXSelector sel, void *ptr );
 
 	virtual void create( );
 

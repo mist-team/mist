@@ -116,9 +116,10 @@ long filter_graph::onMouseDown( FXObject *obj, FXSelector sel, void *ptr )
 		filters_.erase( filters_.begin( ) + index );
 		filters_.push_back( current_filter_ );
 
-		// メインウィンドウへ，選択フィルタが変更されたことを通知する
-		SendUserMessage( MIST_FILTER_CHANGED, static_cast< void * >( current_filter_ ) );
 	}
+
+	// メインウィンドウへ，選択フィルタが変更されたことを通知する
+	SendUserMessage( MIST_FILTER_CHANGED, static_cast< void * >( current_filter_ ) );
 
 	// ピンがクリックされたかどうかを判定する
 	if( current_filter_ == NULL )

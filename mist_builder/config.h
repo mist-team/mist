@@ -163,6 +163,52 @@ public:
 typedef std::vector< pin > pin_list;
 
 
+struct property
+{
+	enum PROPERTY_TYPE
+	{
+		NONE,
+		TEXT,
+		FILEOPEN,
+		FILESAVE,
+		BOOLEAN,
+		INTEGER,
+		REAL,
+	};
+
+	PROPERTY_TYPE	type;
+
+	FXString	label;
+	FXString	text;
+	bool		boolean;
+	FXint		integer;
+	FXdouble	real;
+
+	const property &operator =( const property &p )
+	{
+		if( &p != this )
+		{
+			type = p.type;
+			text = p.text;
+			boolean = p.boolean;
+			integer = p.integer;
+			real = p.real;
+		}
+		return( *this );
+	}
+
+	property( ) : type( NONE ), text( "" ), boolean( false ), integer( 0 ), real( 0.0 ){ }
+
+	property( PROPERTY_TYPE t, const FXString &l, const FXString &v ) : type( t ), label( l ), text( v ), boolean( false ), integer( 0 ), real( 0.0 ){ }
+	property( PROPERTY_TYPE t, const FXString &l, const char *v ) : type( t ), label( l ), text( v ), boolean( false ), integer( 0 ), real( 0.0 ){ }
+	property( PROPERTY_TYPE t, const FXString &l, bool v ) : type( t ), label( l ), text( "" ), boolean( v ), integer( 0 ), real( 0.0 ){ }
+	property( PROPERTY_TYPE t, const FXString &l, FXint v ) : type( t ), label( l ), text( "" ), boolean( false ), integer( v ), real( 0.0 ){ }
+	property( PROPERTY_TYPE t, const FXString &l, FXdouble v ) : type( t ), label( l ), text( "" ), boolean( false ), integer( 0 ), real( v ){ }
+
+	property( const property &p ) : type( p.type ), label( p.label ), text( p.text ), boolean( p.boolean ), integer( p.integer ), real( p.real ){ }
+};
+
+typedef std::vector< property > filter_properties;
 
 
 class filter : public layout_parameter
@@ -172,6 +218,7 @@ protected:
 	pin_list output_pins_;
 
 	data_type data_;
+	filter_properties properties_;
 
 
 public:
@@ -185,7 +232,6 @@ public:
 	virtual bool filtering( )
 	{
 		// デフォルトは単なる入力データのコピー
-		// デフォルトは単なる入力データのコピー
 		if( !is_input_pins_connected( ) )
 		{
 			data_.clear( );
@@ -193,6 +239,15 @@ public:
 
 		return( true );
 	}
+
+	/// @brief フィルタの設定項目を列挙する
+	filter_properties &enum_setting( )
+	{
+		return( properties_ );
+	}
+
+	/// @brief フィルタの設定の変更を反映する
+	virtual void apply_setting( ){ }
 
 
 public:

@@ -19,7 +19,7 @@ public:
 		{
 			// 全てのデータが接続されている場合のみ，フィルタリングを行う
 			data_type &in = get_input_data( 0 );
-			mist::median( in.color_image_, data_.color_image_, 3 );
+			mist::median( in.color_image_, data_.color_image_, properties_[ 0 ].integer );
 		}
 		else
 		{
@@ -31,8 +31,12 @@ public:
 
 	median_filter1( )
 	{
+		// ピンを設定する
 		input_pins_.push_back( pin( pin::COLOR ) );
 		output_pins_.push_back( pin( pin::COLOR ) );
+
+		// プロパティを設定する
+		properties_.push_back( property( property::INTEGER, "Mask Size", 3 ) );
 	}
 };
 
@@ -52,7 +56,7 @@ public:
 		{
 			// 全てのデータが接続されている場合のみ，フィルタリングを行う
 			data_type &in = get_input_data( 0 );
-			mist::median( in.gray_image_, data_.gray_image_, 3 );
+			mist::median( in.gray_image_, data_.gray_image_, properties_[ 0 ].integer );
 		}
 		else
 		{
@@ -64,8 +68,12 @@ public:
 
 	median_filter2( )
 	{
+		// ピンを設定する
 		input_pins_.push_back( pin( pin::GRAY ) );
 		output_pins_.push_back( pin( pin::GRAY ) );
+
+		// プロパティを設定する
+		properties_.push_back( property( property::INTEGER, "Mask Size", 3 ) );
 	}
 };
 
@@ -85,7 +93,7 @@ public:
 		{
 			// 全てのデータが接続されている場合のみ，フィルタリングを行う
 			data_type &in = get_input_data( 0 );
-			mist::median( in.mono_image_, data_.mono_image_, 3 );
+			mist::median( in.mono_image_, data_.mono_image_, properties_[ 0 ].integer );
 		}
 		else
 		{
@@ -97,8 +105,12 @@ public:
 
 	median_filter3( )
 	{
+		// ピンを設定する
 		input_pins_.push_back( pin( pin::MONO ) );
 		output_pins_.push_back( pin( pin::MONO ) );
+
+		// プロパティを設定する
+		properties_.push_back( property( property::INTEGER, "Mask Size", 3 ) );
 	}
 };
 

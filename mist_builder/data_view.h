@@ -113,6 +113,7 @@ public:
 	void draw_image( const data_type &buf );
 	void draw_image( const filter *pf );
 	void draw_image( );
+
 	void set_cursors( bool is_drag );
 
 protected:

@@ -16,8 +16,7 @@ public:
 	virtual bool filtering( )
 	{
 		// データをファイルから読み込む
-//		FXString filename = FXFileDialog::getOpenFilename( getApp( ), "Open Image", "" );
-		FXString filename = "../mist.png";
+		FXString filename = properties_[ 0 ].text;
 
 		if( filename != "" )
 		{
@@ -33,7 +32,11 @@ public:
 
 	input_filter( )
 	{
+		// ピンを設定する
 		output_pins_.push_back( pin( pin::COLOR ) );
+
+		// プロパティを設定する
+		properties_.push_back( property( property::FILEOPEN, "Open Image", "" ) );
 	}
 };
 

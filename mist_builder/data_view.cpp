@@ -396,7 +396,15 @@ void data_view::draw_image( const data_type &buf )
 
 void data_view::draw_image( const filter *pf )
 {
-	draw_image( pf->data( ) );
+	if( pf == NULL )
+	{
+		buffer_.fill( );
+		draw_image( );
+	}
+	else
+	{
+		draw_image( pf->data( ) );
+	}
 }
 
 void data_view::set_cursors( bool is_drag )

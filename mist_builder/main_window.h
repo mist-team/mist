@@ -21,6 +21,7 @@ private:
 
 	filter_graph	*filter_graph_;
 	data_view		*data_view_;
+	property_list	*property_list_;
 
 	FXListBox		*listbox_;
 	FXStatusBar		*statusbar_;
