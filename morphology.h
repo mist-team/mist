@@ -60,8 +60,8 @@ namespace __morphology__
 	// モルフォロジ演算に用いる円構造要素
 	inline morphology_structure circle( double radius, double resoX, double resoY )
 	{
-		typedef array2< unsigned short >::size_type size_type;
-		typedef array2< unsigned short >::difference_type difference_type;
+		typedef typename array2< unsigned short >::size_type size_type;
+		typedef typename array2< unsigned short >::difference_type difference_type;
 
 		double min_reso = resoX < resoY ? resoX: resoY;
 
@@ -126,8 +126,8 @@ namespace __morphology__
 	// モルフォロジ演算に用いる球構造要素
 	inline morphology_structure sphere( double radius, double resoX, double resoY, double resoZ )
 	{
-		typedef array3< unsigned short >::size_type size_type;
-		typedef array3< unsigned short >::difference_type difference_type;
+		typedef typename array3< unsigned short >::size_type size_type;
+		typedef typename array3< unsigned short >::difference_type difference_type;
 
 		double min_reso = resoX < resoY ? resoX: resoY;
 		min_reso = min_reso < resoZ ? min_reso : resoZ;
@@ -204,8 +204,8 @@ namespace __morphology__
 	// モルフォロジ演算に用いる正方形構造要素
 	inline morphology_structure square( double radius, double resoX, double resoY )
 	{
-		typedef array2< unsigned short >::size_type size_type;
-		typedef array2< unsigned short >::difference_type difference_type;
+		typedef typename array2< unsigned short >::size_type size_type;
+		typedef typename array2< unsigned short >::difference_type difference_type;
 
 		double min_reso = resoX < resoY ? resoX: resoY;
 
@@ -270,8 +270,8 @@ namespace __morphology__
 	// モルフォロジ演算に用いる立方体構造要素
 	inline morphology_structure cube( double radius, double resoX, double resoY, double resoZ )
 	{
-		typedef array3< unsigned short >::size_type size_type;
-		typedef array3< unsigned short >::difference_type difference_type;
+		typedef typename array3< unsigned short >::size_type size_type;
+		typedef typename array3< unsigned short >::difference_type difference_type;
 
 		double min_reso = resoX < resoY ? resoX: resoY;
 		min_reso = min_reso < resoZ ? min_reso : resoZ;
@@ -702,8 +702,8 @@ namespace __morphology_controller__
 template < class T, class Allocator >
 void erosion( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array2< T, Allocator >::value_type value_type;
-	typedef array2< T, Allocator >::size_type  size_type;
+	typedef typename array2< T, Allocator >::value_type value_type;
+	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
 	typedef __morphology__::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
@@ -750,8 +750,8 @@ void erosion( array2< T, Allocator > &in, const __morphology__::morphology_struc
 template < class T, class Allocator >
 void dilation( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array2< T, Allocator >::value_type value_type;
-	typedef array2< T, Allocator >::size_type  size_type;
+	typedef typename array2< T, Allocator >::value_type value_type;
+	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
 	typedef __morphology__::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
@@ -798,8 +798,8 @@ void dilation( array2< T, Allocator > &in, const __morphology__::morphology_stru
 template < class T, class Allocator >
 void opening( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array2< T, Allocator >::value_type value_type;
-	typedef array2< T, Allocator >::size_type  size_type;
+	typedef typename array2< T, Allocator >::value_type value_type;
+	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
 	typedef __morphology__::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
@@ -876,8 +876,8 @@ void opening( array2< T, Allocator > &in, const __morphology__::morphology_struc
 template < class T, class Allocator >
 void closing( array2< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array2< T, Allocator >::value_type value_type;
-	typedef array2< T, Allocator >::size_type  size_type;
+	typedef typename array2< T, Allocator >::value_type value_type;
+	typedef typename array2< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator > > morphology_thread;
 	typedef __morphology__::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
@@ -986,8 +986,8 @@ inline void closing( array2< T, Allocator > &in, double radius, typename array2<
 template < class T, class Allocator >
 void erosion( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array3< T, Allocator >::value_type value_type;
-	typedef array3< T, Allocator >::size_type  size_type;
+	typedef typename array3< T, Allocator >::value_type value_type;
+	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
 	typedef __morphology__::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
@@ -1034,8 +1034,8 @@ void erosion( array3< T, Allocator > &in, const __morphology__::morphology_struc
 template < class T, class Allocator >
 void dilation( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array3< T, Allocator >::value_type value_type;
-	typedef array3< T, Allocator >::size_type  size_type;
+	typedef typename array3< T, Allocator >::value_type value_type;
+	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
 	typedef __morphology__::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
@@ -1082,8 +1082,8 @@ void dilation( array3< T, Allocator > &in, const __morphology__::morphology_stru
 template < class T, class Allocator >
 void opening( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array3< T, Allocator >::value_type value_type;
-	typedef array3< T, Allocator >::size_type  size_type;
+	typedef typename array3< T, Allocator >::value_type value_type;
+	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
 	typedef __morphology__::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
@@ -1160,8 +1160,8 @@ void opening( array3< T, Allocator > &in, const __morphology__::morphology_struc
 template < class T, class Allocator >
 void closing( array3< T, Allocator > &in, const __morphology__::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
 {
-	typedef array3< T, Allocator >::value_type value_type;
-	typedef array3< T, Allocator >::size_type  size_type;
+	typedef typename array3< T, Allocator >::value_type value_type;
+	typedef typename array3< T, Allocator >::size_type  size_type;
 	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator > > morphology_thread;
 	typedef __morphology__::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
