@@ -13,10 +13,11 @@ ALL = \
 	image_test \
 	raw_test \
 	wav_test \
-	margin_array_test\
-	median_test\
-	morphology_test\
-	fft_test\
+	margin_array_test \
+	median_test \
+	morphology_test \
+	fft_test \
+	singleton_test \
 
 
 all: $(ALL)
@@ -64,6 +65,9 @@ morphology_test : morphology_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS) $(IMGLIBS)
 
 fft_test : fft_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+singleton_test : singleton_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 
