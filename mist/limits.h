@@ -12,9 +12,9 @@ _MIST_BEGIN
 
 
 // numeric_limitsの特殊化用マクロ
-#define _DEFINE_NUMERIC_LIMITS( _type_, _integer_, _signed_, _min_, _max_, _zero_ ) \
+#define _DEFINE_TYPE_LIMITS( _type_, _integer_, _signed_, _min_, _max_, _zero_ ) \
 	template < >\
-	struct numeric_limits< _type_ >\
+	struct type_limits< _type_ >\
 	{\
 		typedef _type_ value_type;\
 		\
@@ -28,7 +28,7 @@ _MIST_BEGIN
 
 
 template < class T >
-struct numeric_limits
+struct type_limits
 {
 	typedef T value_type;
 
@@ -41,22 +41,22 @@ struct numeric_limits
 };
 
 
-_DEFINE_NUMERIC_LIMITS(          char,  true,  true,  CHAR_MIN,  CHAR_MAX, 0x00 )
-_DEFINE_NUMERIC_LIMITS( signed   char,  true,  true, SCHAR_MIN, SCHAR_MAX, 0x00 )
-_DEFINE_NUMERIC_LIMITS( unsigned char,  true, false,      0x00, UCHAR_MAX, 0x00 )
+_DEFINE_TYPE_LIMITS(          char,  true,  true,  CHAR_MIN,  CHAR_MAX, 0x00 )
+_DEFINE_TYPE_LIMITS( signed   char,  true,  true, SCHAR_MIN, SCHAR_MAX, 0x00 )
+_DEFINE_TYPE_LIMITS( unsigned char,  true, false,      0x00, UCHAR_MAX, 0x00 )
 
-_DEFINE_NUMERIC_LIMITS( signed   short, true,  true,  SHRT_MIN,  SHRT_MAX, 0x0000 )
-_DEFINE_NUMERIC_LIMITS( unsigned short, true, false,    0x0000, USHRT_MAX, 0x0000 )
+_DEFINE_TYPE_LIMITS( signed   short, true,  true,  SHRT_MIN,  SHRT_MAX, 0x0000 )
+_DEFINE_TYPE_LIMITS( unsigned short, true, false,    0x0000, USHRT_MAX, 0x0000 )
 
-_DEFINE_NUMERIC_LIMITS( signed   int,   true,  true,   INT_MIN,   INT_MAX, 0 )
-_DEFINE_NUMERIC_LIMITS( unsigned int,   true, false,         0,  UINT_MAX, 0 )
+_DEFINE_TYPE_LIMITS( signed   int,   true,  true,   INT_MIN,   INT_MAX, 0 )
+_DEFINE_TYPE_LIMITS( unsigned int,   true, false,         0,  UINT_MAX, 0 )
 
-_DEFINE_NUMERIC_LIMITS( signed   long,  true,  true,  LONG_MIN,  LONG_MAX, 0 )
-_DEFINE_NUMERIC_LIMITS( unsigned long,  true, false,         0, ULONG_MAX, 0 )
+_DEFINE_TYPE_LIMITS( signed   long,  true,  true,  LONG_MIN,  LONG_MAX, 0 )
+_DEFINE_TYPE_LIMITS( unsigned long,  true, false,         0, ULONG_MAX, 0 )
 
-_DEFINE_NUMERIC_LIMITS(       float,   false,  true,   FLT_MIN,   FLT_MAX, 0.0f )
-_DEFINE_NUMERIC_LIMITS(      double,   false, false,   DBL_MIN,   DBL_MAX, 0 )
-_DEFINE_NUMERIC_LIMITS( long double,   false, false,  LDBL_MIN,  LDBL_MAX, 0 )
+_DEFINE_TYPE_LIMITS(       float,   false,  true,   FLT_MIN,   FLT_MAX, 0.0f )
+_DEFINE_TYPE_LIMITS(      double,   false, false,   DBL_MIN,   DBL_MAX, 0 )
+_DEFINE_TYPE_LIMITS( long double,   false, false,  LDBL_MIN,  LDBL_MAX, 0 )
 
 
 // mist名前空間の終わり
