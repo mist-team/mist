@@ -34,8 +34,8 @@ public:
 	typedef unsigned char value_type;
 
 private:
-	_MIST_CONST( signed int, BASE, 256 );
-	_MIST_CONST( unsigned int, DATA_NUM, __256_N__ );
+	_MIST_CONST( difference_type, BASE, 256 );
+	_MIST_CONST( size_type, DATA_NUM, __256_N__ );
 
 protected:
 	size_t		length_;
@@ -154,12 +154,12 @@ public:
 		}
 		else if( length_ == 1 )
 		{
-			value_type t = sign_ ? data_[ 0 ] : -data_[ 0 ];
+			difference_type t = sign_ ? data_[ 0 ] : -data_[ 0 ];
 			return( operator =( integer( a ) *= t ) );
 		}
 		else if( a.length_ == 1 )
 		{
-			value_type t = a.sign_ ? a.data_[ 0 ] : -a.data_[ 0 ];
+			difference_type t = a.sign_ ? a.data_[ 0 ] : -a.data_[ 0 ];
 			return( operator *=( t ) );
 		}
 
@@ -178,17 +178,14 @@ public:
 		integer x( 0 );
 		x.sign_ = sign_ == a.sign_;
 
-		size_type i, j, imax;
-		difference_type u, t;
-
-		for( j = 0 ; j < a.length_ ; j++ )
+		for( size_type j = 0 ; j < a.length_ ; j++ )
 		{
-			u = a.data_[ j ];
+			difference_type u = a.data_[ j ];
 			if( u != 0 )
 			{
-				t = 0;
-				imax = length_ + j - 1;
-				for( i = j ; i <= imax ; i++ )
+				difference_type t = 0;
+				size_type imax = length_ + j - 1;
+				for( size_type i = j ; i <= imax ; i++ )
 				{
 					t += ( x.data_[ i ] + u * data_[ i - j ] );
 					x.data_[ i ] = static_cast< value_type >( t % BASE );
@@ -203,8 +200,8 @@ public:
 				x.data_[ i ] = static_cast< value_type >( t );
 			}
 		}
-		x.length_ = length_ + a.length_ - 1;
-		if( x.data_[ x.length_ - 1 ] == 0 )
+		x.length_ = length_ + a.length_;
+		while( x.data_[ x.length_ - 1 ] == 0 )
 		{
 			x.length_--;
 		}
