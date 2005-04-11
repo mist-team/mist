@@ -2,8 +2,8 @@
 //!
 //! @brief カメラキャリブレーションを行う関数群
 //!
-//! @section カメラキャリブレーション
-//! -# R. Y. Tsai, ``A Versatile Camera Calibration Technique for High-Accuracy 3D Machine Vision Metrology Using Off-the-Shelf TV Cameras and Lenses,'' IEEE Journal of Robotics and Automation, Vol. RA-3, No. 4, pp. 323--344, 1987.
+//! - 参考文献
+//!   - R. Y. Tsai, ``A Versatile Camera Calibration Technique for High-Accuracy 3D Machine Vision Metrology Using Off-the-Shelf TV Cameras and Lenses,'' IEEE Journal of Robotics and Automation, Vol. RA-3, No. 4, pp. 323--344, 1987.
 //!
 
 #ifndef __INCLUDE_MIST_CALIBRATION__

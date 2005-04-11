@@ -2,8 +2,9 @@
 //!
 //! @brief 各次元の画像に対応した，各種距離変換・逆距離変換アルゴリズム
 //!
-//! @section ユークリッド距離変換
-//! -# 齋藤豊文, 鳥脇純一郎, "3次元ディジタル画像に対するユークリッド距離変換," 電子情報通信学会論文誌, J76-D-II, No. 3, pp.445-453, 1993
+//! - 参考文献
+//!   - ユークリッド距離変換
+//!     - 齋藤豊文, 鳥脇純一郎, "3次元ディジタル画像に対するユークリッド距離変換," 電子情報通信学会論文誌, J76-D-II, No. 3, pp.445-453, 1993
 //!
 
 #ifndef __INCLUDE_MIST_DISTANCE_TRANSFORM__
@@ -748,8 +749,8 @@ namespace calvin
 	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 	//! 
-	//! @section 参考文献
-	//! - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
+	//! - 参考文献
+	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
 	//! 
 	//! @param[in]  in         … 入力画像
 	//! @param[out] out        … 出力画像

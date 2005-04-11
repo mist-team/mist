@@ -1,6 +1,6 @@
 /// @file mist/io/image.h
 //!
-//! @brief BMP，PNG，PNM，TIFF，JPEGの画像を読み書きするためのライブラリ
+//! @brief BMP，PNG，PNM，TIFF，JPEG，GIF の画像を読み書きするためのライブラリ
 //!
 #ifndef __INCLUDE_MIST_IMAGE__
 #define __INCLUDE_MIST_IMAGE__
