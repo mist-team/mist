@@ -30,6 +30,7 @@
 #include "minimization.h"
 #endif
 
+
 #include <vector>
 
 
@@ -431,7 +432,8 @@ namespace Tsai
 
 			//std::cout << "( f, Tz, ka1 ) = " << ppp.t( ) << std::endl;
 
-			mist::powell::minimization( ppp, dirs, param, 0.0000001 );
+			mist::lucidi::minimization( ppp, dirs, param, 1.0e-16 );
+			//mist::powell::minimization( ppp, dirs, param, 0.0000001 );
 			//mist::gradient::minimization( ppp, param, 0.0000001, 0.01 );
 
 			//std::cout << "( f, Tz, ka1 ) = " << ppp.t( ) << std::endl;
