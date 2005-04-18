@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0104 
+version 1.0106 
 header_name {.h} 
 code_name {.cpp}
 decl {\#include "image_test.h"} {public
@@ -68,7 +68,7 @@ if( filename == NULL ) return;
 write_image_test( filename );
 
 draw_area->redraw( );
-Fl::wait( 0 );} selected
+Fl::wait( 0 );}
               xywh {15 15 100 20}
             }
             menuitem {} {
@@ -128,6 +128,11 @@ Fl::wait( 0 );}
             callback {median_test( );}
             xywh {90 90 100 20}
           }
+          menuitem {} {
+            label Mode
+            callback {mode_test( );} selected
+            xywh {100 100 100 20}
+          }
           submenu {} {
             label Morphology
             xywh {0 0 100 20}
@@ -174,7 +179,7 @@ Fl::wait( 0 );}
             }
           }
           submenu {} {
-            label Resolution open
+            label Resolution
             xywh {0 0 100 20}
           } {
             menuitem {} {

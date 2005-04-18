@@ -43,6 +43,7 @@ void boundary8_test( );
 void thinning_test( );
 
 void median_test( );
+void mode_test( );
 
 void erosion_test( );
 void dilation_test( );

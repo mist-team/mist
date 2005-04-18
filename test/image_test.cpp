@@ -16,6 +16,7 @@ image_draw_area *draw_area;
 #include <mist/filter/morphology.h>
 #include <mist/filter/interlace.h>
 #include <mist/filter/fusion.h>
+#include <mist/filter/mode.h>
 #include <mist/interpolate.h>
 #include <mist/threshold.h>
 #include <mist/timer.h>
@@ -177,6 +178,7 @@ void euclidean_distance_transform_test( )
 			image_object[ i ] = static_cast< unsigned char >( ( tmp2[ i ] - min ) / range * 200.0 + 55.0 );
 		}
 	}
+	pwindow->draw_area->redraw( );
 }
 
 void figure_decomposition_test( )
@@ -230,6 +232,7 @@ void thresholding_test( )
 	{
 		image_object[ i ] = tmp[ i ] < threshold ? 0 : 255;
 	}
+	pwindow->draw_area->redraw( );
 }
 
 void labeling4_test( )
@@ -251,6 +254,7 @@ void labeling4_test( )
 	{
 		image_object[ i ] = static_cast< unsigned char >( label[ i ] * 255.0 / static_cast< double >( label_num ) );
 	}
+	pwindow->draw_area->redraw( );
 }
 
 void labeling8_test( )
@@ -272,6 +276,7 @@ void labeling8_test( )
 	{
 		image_object[ i ] = static_cast< unsigned char >( label[ i ] * 255.0 / static_cast< double >( label_num ) );
 	}
+	pwindow->draw_area->redraw( );
 }
 
 void boundary4_test( )
@@ -293,6 +298,7 @@ void boundary4_test( )
 	{
 		image_object[ i ] = label[ i ];
 	}
+	pwindow->draw_area->redraw( );
 }
 
 void boundary8_test( )
@@ -314,6 +320,7 @@ void boundary8_test( )
 	{
 		image_object[ i ] = label[ i ];
 	}
+	pwindow->draw_area->redraw( );
 }
 
 void thinning_test( )
@@ -328,6 +335,7 @@ void thinning_test( )
 	{
 		image_object[ i ] = label[ i ] * 255;
 	}
+	pwindow->draw_area->redraw( );
 }
 
 void median_test( )
@@ -338,6 +346,26 @@ void median_test( )
 		mist::median( tmp, image_object, 5, 5, progress_callback( pwindow->progress_bar ), 0 );
 		std::cout << "Computation Time: " << t.elapse( ) << " sec." << std::endl;
 	}
+	pwindow->draw_area->redraw( );
+}
+
+void mode_test( )
+{
+	mist::array2< unsigned char > tmp;
+
+	mist::convert( image_object, tmp );
+
+	{
+		mist::timer t;
+		mist::mode( tmp, 5, progress_callback( pwindow->progress_bar ), 0 );
+		std::cout << "Computation Time: " << t.elapse( ) << " sec." << std::endl;
+	}
+
+	for( size_t i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		image_object[ i ] = tmp[ i ] == 0 ? 0 : 255;
+	}
+	pwindow->draw_area->redraw( );
 }
 
 void erosion_test( )
@@ -463,6 +491,7 @@ void interlace_test( bool is_odd_line )
 {
 	image_type tmp( image_object );
 	mist::interlace( tmp, image_object, is_odd_line );
+	pwindow->draw_area->redraw( );
 }
 
 
@@ -497,6 +526,7 @@ void expand_test( )
 			image_object[ i ] = original[ i ] != 0 ? 255 : 127;
 		}
 	}
+	pwindow->draw_area->redraw( );
 }
 
 
@@ -531,4 +561,5 @@ void shrink_test( )
 			image_object[ i ] = figure[ i ] == 0 ? 255 : 127;
 		}
 	}
+	pwindow->draw_area->redraw( );
 }
