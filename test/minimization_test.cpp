@@ -42,6 +42,7 @@ struct f2
 		count++;
 		const double pai = 3.1415926535897932384626433832795;
 		//	return( ( x - 100 ) * ( x - 100 ) );
+//		return( x );
 		return( std::sin( x * pai / 180.0 ) );
 		//	return( std::sin( x ) + x / 5.0 );
 	}
@@ -54,7 +55,7 @@ int main( int argc, char *argv[] )
 
 	typedef mist::matrix< double > matrix_type;
 
-	double ftol = 1.0e-6;
+	double ftol = 1.0e-16;
 
 	{
 		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f1 > functor_reference;
@@ -93,7 +94,7 @@ int main( int argc, char *argv[] )
 		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f2 > functor_reference;
 		double x;
 		f2 func;
-		double err = mist::gold::minimization( -90, 270, x, functor_reference( func ), 0.00001, 100, false );
+		double err = mist::gold::minimization( -90, 270, x, functor_reference( func ), 0.00001, 100, true );
 		cout << "Golden-ratio divide method" << endl;
 		cout << "f( " << x << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
@@ -101,7 +102,7 @@ int main( int argc, char *argv[] )
 		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f2 > functor_reference;
 		double x;
 		f2 func;
-		double err = mist::brent::minimization( -90, 270, x, functor_reference( func ), 0.00001, 100, false );
+		double err = mist::brent::minimization( -90, 270, x, functor_reference( func ), 0.00001, 100, true );
 		cout << "Brent's method" << endl;
 		cout << "f( " << x << " ) = " << err << " , count= " << func.count << endl << endl;
 	}

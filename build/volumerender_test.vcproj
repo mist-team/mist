@@ -92,7 +92,7 @@
 				OutputFile="$(OutDir)/volumerender_test.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="FALSE"
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"/>

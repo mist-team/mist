@@ -143,6 +143,9 @@
 			<File
 				RelativePath="..\mist\quaternion.h">
 			</File>
+			<File
+				RelativePath="..\mist\config\type_trait.h">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

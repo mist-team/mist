@@ -234,7 +234,7 @@ namespace Tsai
 		}
 
 		// (ii) 5つの未知数を解く
-		matrix_type L = mist::inverse( A.t( ) * A ) * A.t( ) * B;
+		matrix_type L = inverse( A.t( ) * A ) * A.t( ) * B;
 
 		// (iii.1) Tyを求める
 		double r1_ = L[ 0 ];
@@ -376,7 +376,7 @@ namespace Tsai
 			B( i, 0 ) = ( r7 * w.x + r8 * w.y + r9 * 0 ) * Yd;
 		}
 
-		L = mist::inverse( A.t( ) * A ) * A.t( ) * B;
+		L = inverse( A.t( ) * A ) * A.t( ) * B;
 
 		f = L[ 0 ];
 		Tz = L[ 1 ];
@@ -388,6 +388,31 @@ namespace Tsai
 			r6 = -r6;
 			r7 = -r7;
 			r8 = -r8;
+
+			// 回転行列Rを再決定する
+			{
+				double Rz = atan2( r4, r1 );
+				double s3 = std::sin( Rz );
+				double c3 = std::cos( Rz );
+				double Ry = atan2( -r7, r1 * c3 + r4 * s3 );
+				double Rx = atan2( r3 * s3 - r6 * c3, r5 * c3 - r2 * s3 );
+
+				double s1 = std::sin( Rx );
+				double c1 = std::cos( Rx );
+				double s2 = std::sin( Ry );
+				double c2 = std::cos( Ry );
+
+				r1 = c2 * c3;
+				r2 = c3 * s1 * s2 - c1 * s3;
+				r3 = s1 * s3 + c1 * c3 * s2;
+				r4 = c2 * s3;
+				r5 = s1 * s2 * s3 + c1 * c3;
+				r6 = c1 * s2 * s3 - c3 * s1;
+				r7 = -s2;
+				r8 = c2 * s1;
+				r9 = c1 * c2;
+			}
+
 			for( i = 0 ; i < num ; i++ )
 			{
 				const point3 &w = world[ i ];
@@ -399,10 +424,16 @@ namespace Tsai
 				B( i, 0 ) = ( r7 * w.x + r8 * w.y + r9 * 0 ) * Yd;
 			}
 
-			L = mist::inverse( A.t( ) * A ) * A.t( ) * B;
+			L = inverse( A.t( ) * A ) * A.t( ) * B;
 
 			f = L[ 0 ];
 			Tz = L[ 1 ];
+
+			if( f < 0 )
+			{
+				// なんかおかしいね･･･
+				return( false );
+			}
 		}
 
 		// (v) 最急降下法を用いて正確な焦点距離とTzの値を求める
@@ -425,16 +456,16 @@ namespace Tsai
 		param.ka1 = ka1;	// キャリブレーションの結果得られる円形の歪成分
 
 		{
-			mist::matrix< double > ppp( 3, 1 ), dirs = matrix_type::identity( 3, 3 );
+			matrix< double > ppp( 3, 1 ), dirs = matrix_type::identity( 3, 3 );
 			ppp[ 0 ] = f;
 			ppp[ 1 ] = Tz;
 			ppp[ 2 ] = ka1;
 
 			//std::cout << "( f, Tz, ka1 ) = " << ppp.t( ) << std::endl;
 
-			mist::lucidi::minimization( ppp, dirs, param, 1.0e-16 );
-			//mist::powell::minimization( ppp, dirs, param, 0.0000001 );
-			//mist::gradient::minimization( ppp, param, 0.0000001, 0.01 );
+			lucidi::minimization( ppp, dirs, param, 1.0e-16 );
+			//powell::minimization( ppp, dirs, param, 0.0000001 );
+			//gradient::minimization( ppp, param, 0.0000001, 0.01 );
 
 			//std::cout << "( f, Tz, ka1 ) = " << ppp.t( ) << std::endl;
 
@@ -444,6 +475,22 @@ namespace Tsai
 		}
 
 		p = param;
+
+		if( p.Tz < 0 )
+		{
+			// カメラの正方向の符号が逆転しているので，その他の符号を正しく設定する
+			// なんか知らないけどこれでうまく行くみたい
+			// どっかで座標系がひっくり返ったのか？
+			p.r1 = -p.r1;
+			p.r2 = -p.r2;
+			p.r4 = -p.r4;
+			p.r5 = -p.r5;
+			p.r7 = -p.r7;
+			p.r8 = -p.r8;
+			p.Tx = -p.Tx;
+			p.Ty = -p.Ty;
+			p.Tz = -p.Tz;
+		}
 
 		return( true );
 	}

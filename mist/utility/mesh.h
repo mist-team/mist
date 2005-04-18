@@ -76,7 +76,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	size_type labelnum = labeling4( binary, binary );
 	//std::cout << "LabelNum: " << labelnum << std::endl;
 
-	difference_type minimum_count = 4;
 	array< bool > mask( labelnum + 1 );
 	difference_type *count = new difference_type[ labelnum + 1 ];
 	difference_type *round = new difference_type[ labelnum + 1 ];
@@ -152,6 +151,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	}
 
 	// 円形度を評価して，不要な領域を除去する
+	difference_type minimum_count = 15; // この個数に満たない領域は削除する
 	for( i = 1 ; i <= labelnum ; i++ )
 	{
 		const double pai = 3.1415926535897932384626433832795;
