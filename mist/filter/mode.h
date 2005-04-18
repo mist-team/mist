@@ -705,7 +705,7 @@ namespace __mode_controller__
 }
 
 
-//! @addtogroup mode_group 最頻値フィルタフィルタ
+//! @addtogroup mode_group 最頻値フィルタ
 //!  @{
 
 

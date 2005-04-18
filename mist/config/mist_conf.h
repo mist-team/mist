@@ -489,6 +489,7 @@ struct __mist_console_callback__
 * - 2値画像に対する処理
 *   - @ref labeling_group					"ラベリング"
 *   - @ref boundary_group					"境界画素抽出"
+*   - @ref mode_group						"最頻値フィルタ"
 *   - @ref thinning_group					"細線化"
 *   - @ref distance_group					"距離変換"
 *     - @ref euclidean_distance_group		"ユークリッド距離変換"
