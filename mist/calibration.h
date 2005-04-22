@@ -234,7 +234,7 @@ namespace Tsai
 		}
 
 		// (ii) 5‚Â‚Ì–¢’m”‚ğ‰ğ‚­
-		matrix_type L = inverse( A.t( ) * A ) * A.t( ) * B;
+		matrix_type L = inverse( A ) * B;
 
 		// (iii.1) Ty‚ğ‹‚ß‚é
 		double r1_ = L[ 0 ];
@@ -376,7 +376,7 @@ namespace Tsai
 			B( i, 0 ) = ( r7 * w.x + r8 * w.y + r9 * 0 ) * Yd;
 		}
 
-		L = inverse( A.t( ) * A ) * A.t( ) * B;
+		L = inverse( A ) * B;
 
 		f = L[ 0 ];
 		Tz = L[ 1 ];
@@ -424,7 +424,7 @@ namespace Tsai
 				B( i, 0 ) = ( r7 * w.x + r8 * w.y + r9 * 0 ) * Yd;
 			}
 
-			L = inverse( A.t( ) * A ) * A.t( ) * B;
+			L = inverse( A ) * B;
 
 			f = L[ 0 ];
 			Tz = L[ 1 ];

@@ -3,6 +3,7 @@
 #include <mist/matrix.h>
 #include <mist/numeric.h>
 
+
 int main( )
 {
 	typedef mist::matrix< double > matrix;
@@ -12,7 +13,15 @@ int main( )
 							3.0,  1.0, -2.0,
 							1.0, -2.0, -5.0 );
 
+	matrix A( 3, 4 );
+
 	matrix b( 3, 2 );
+
+	A( 0, 0 ) = 1; A( 0, 1 ) = 3; A( 0, 2 ) = 1; A( 0, 3 ) = 4;
+	A( 1, 0 ) = 2; A( 1, 1 ) = 8; A( 1, 2 ) = 2; A( 1, 3 ) = 1;
+	A( 2, 0 ) = 7; A( 2, 1 ) = 4; A( 2, 2 ) = 3; A( 2, 3 ) = 5;
+
+	std::cout << A * mist::inverse( A ) << std::endl;
 
 	b( 0, 0 ) =  3.0;
 	b( 1, 0 ) =  1.0;

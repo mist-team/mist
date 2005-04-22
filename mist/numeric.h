@@ -1203,6 +1203,7 @@ namespace __inverse__
 		template < class T, class Allocator >
 		static matrix< T, Allocator >& inverse( matrix< T, Allocator > &a, matrix_style::style style )
 		{
+			typedef matrix< T, Allocator > matrix_type;
 			typedef __clapack__::integer integer;
 
 			if( a.empty( ) )
@@ -1213,79 +1214,151 @@ namespace __inverse__
 
 			integer info = 0;
 
-			switch( style )
+			if( a.rows( ) == a.cols( ) )
 			{
-			case matrix_style::sy:
+				// ２行２列と３行３列用の特殊バージョン
+				switch( a.rows( ) )
 				{
-					// LAPACK関数の引数
-					integer n      = static_cast< integer >( a.cols( ) );
-					integer lda    = static_cast< integer >( a.rows( ) );
-					integer *ipiv  = new integer[ n ];
-					typename matrix< T, Allocator >::value_type dmy;
-					integer lwork  = -1;
-					char *uplo    = "U";
-
-					// LU分解を行う
-					// まず最適な作業用配列のサイズを取得する
-					__clapack__::sytrf( uplo, n, NULL, lda, ipiv, &dmy, lwork, info );
-					if( info == 0 )
+				case 2:
 					{
-						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
-						matrix< T, Allocator > work( lwork, 1 );
-						__clapack__::sytrf( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
-
-						if( info == 0 )
+						double a11 = a( 0, 0 );
+						double a12 = a( 0, 1 );
+						double a21 = a( 1, 0 );
+						double a22 = a( 1, 1 );
+						double detA = a11 * a22 - a12 * a21;
+						if( detA != 0 )
 						{
-							if( lwork < n )
-							{
-								work.resize( n, 1 );
-							}
-							__clapack__::sytri( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), info );
-
-							// 結果が上三角のみにしか代入されていないため，下三角にもデータをコピーする
-							if( info == 0 )
-							{
-								typedef typename matrix< T, Allocator >::size_type size_type;
-								for( size_type c = 0 ; c < a.rows( ) ; c++ )
-								{
-									for( size_type r = c + 1 ; r < a.rows( ) ; r++ )
-									{
-										a( r, c ) = a( c, r );
-									}
-								}
-							}
+							a( 0, 0 ) =  a22 / detA;
+							a( 0, 1 ) = -a12 / detA;
+							a( 1, 0 ) = -a21 / detA;
+							a( 1, 1 ) =  a11 / detA;
+							return( a );
+						}
+						else
+						{
+							// 行列式がゼロ
+							info = 1;
 						}
 					}
-					delete [] ipiv;
-				}
-				break;
+					break;
 
-			case matrix_style::ge:
-			default:
-				{
-					// LAPACK関数の引数
-					integer n      = static_cast< integer >( a.cols( ) );
-					integer lda    = static_cast< integer >( a.rows( ) );
-					integer *ipiv  = new integer[ n ];
-					typename matrix< T, Allocator >::value_type dmy;
-					integer lwork  = -1;
-
-					// LU分解を行う
-					__clapack__::getrf( lda, n, &( a[0] ), lda, ipiv, info );
-					if( info == 0 )
+				case 3:
 					{
+						double a11 = a( 0, 0 ), a12 = a( 0, 1 ), a13 = a( 0, 2 );
+						double a21 = a( 1, 0 ), a22 = a( 1, 1 ), a23 = a( 1, 2 );
+						double a31 = a( 2, 0 ), a32 = a( 2, 1 ), a33 = a( 2, 2 );
+						double detA = a11 * a22 * a33 + a21 * a32 * a13 + a31 * a12 * a23 - a11 * a32 * a23 - a31 * a22 * a13 - a21 * a12 * a33;
+						if( detA != 0 )
+						{
+							double A11 = a22 * a33 - a23 * a32;
+							double A12 = a13 * a32 - a12 * a33;
+							double A13 = a12 * a23 - a13 * a22;
+							double A21 = a23 * a31 - a21 * a33;
+							double A22 = a11 * a33 - a13 * a31;
+							double A23 = a13 * a21 - a11 * a23;
+							double A31 = a21 * a32 - a22 * a31;
+							double A32 = a12 * a31 - a11 * a32;
+							double A33 = a11 * a22 - a12 * a21;
+							a( 0, 0 ) = A11 / detA;
+							a( 0, 1 ) = A12 / detA;
+							a( 0, 2 ) = A13 / detA;
+							a( 1, 0 ) = A21 / detA;
+							a( 1, 1 ) = A22 / detA;
+							a( 1, 2 ) = A23 / detA;
+							a( 1, 0 ) = A31 / detA;
+							a( 1, 1 ) = A32 / detA;
+							a( 1, 2 ) = A33 / detA;
+							return( a );
+						}
+						else
+						{
+							// 行列式がゼロ
+							info = 1;
+						}
+					}
+					break;
+
+				default:
+					break;;
+				}
+			}
+
+			if( info == 0 )
+			{
+				switch( style )
+				{
+				case matrix_style::sy:
+					{
+						// LAPACK関数の引数
+						integer n      = static_cast< integer >( a.cols( ) );
+						integer lda    = static_cast< integer >( a.rows( ) );
+						integer *ipiv  = new integer[ n ];
+						typename matrix< T, Allocator >::value_type dmy;
+						integer lwork  = -1;
+						char *uplo    = "U";
+
+						// LU分解を行う
 						// まず最適な作業用配列のサイズを取得する
-						__clapack__::getri( n, NULL, lda, NULL, &dmy, lwork, info );
+						__clapack__::sytrf( uplo, n, NULL, lda, ipiv, &dmy, lwork, info );
 						if( info == 0 )
 						{
 							lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 							matrix< T, Allocator > work( lwork, 1 );
-							__clapack__::getri( n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
+							__clapack__::sytrf( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
+
+							if( info == 0 )
+							{
+								if( lwork < n )
+								{
+									work.resize( n, 1 );
+								}
+								__clapack__::sytri( uplo, n, &( a[0] ), lda, ipiv, &( work[0] ), info );
+
+								// 結果が上三角のみにしか代入されていないため，下三角にもデータをコピーする
+								if( info == 0 )
+								{
+									typedef typename matrix< T, Allocator >::size_type size_type;
+									for( size_type c = 0 ; c < a.rows( ) ; c++ )
+									{
+										for( size_type r = c + 1 ; r < a.rows( ) ; r++ )
+										{
+											a( r, c ) = a( c, r );
+										}
+									}
+								}
+							}
 						}
+						delete [] ipiv;
 					}
-					delete [] ipiv;
+					break;
+
+				case matrix_style::ge:
+				default:
+					{
+						// LAPACK関数の引数
+						integer n      = static_cast< integer >( a.cols( ) );
+						integer lda    = static_cast< integer >( a.rows( ) );
+						integer *ipiv  = new integer[ n ];
+						typename matrix< T, Allocator >::value_type dmy;
+						integer lwork  = -1;
+
+						// LU分解を行う
+						__clapack__::getrf( lda, n, &( a[0] ), lda, ipiv, info );
+						if( info == 0 )
+						{
+							// まず最適な作業用配列のサイズを取得する
+							__clapack__::getri( n, NULL, lda, NULL, &dmy, lwork, info );
+							if( info == 0 )
+							{
+								lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
+								matrix< T, Allocator > work( lwork, 1 );
+								__clapack__::getri( n, &( a[0] ), lda, ipiv, &( work[0] ), lwork, info );
+							}
+						}
+						delete [] ipiv;
+					}
+					break;
 				}
-				break;
 			}
 
 			if( info != 0 )
@@ -3011,6 +3084,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 
 /// @brief 行列の逆行列をLU分解を用いて計算する
 //! 
+//! 正方行列で無い場合は，特異値分解を用いて一般化逆行列を計算する
+//! 
 //! \f[ {\bf A}^{-1} \f]
 //! 
 //! @param[in] a     … 入力行列
@@ -3021,13 +3096,36 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 template < class T, class Allocator >
 matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
-	matrix< T, Allocator > a_( a );
-	return( __inverse__::__inverse__< __numeric__::is_complex< T >::value >::inverse( a_, style ) );
+	typedef matrix< T, Allocator > matrix_type;
+	typedef typename matrix_type::size_type size_type;
+
+	if( a.rows( ) != a.cols( ) )
+	{
+		// 特異値分解を用いて一般化逆行列を計算する
+		matrix_type u, s, vt;
+		svd( a, u, s, vt, style );
+		size_type num = s.rows( ) < s.cols( ) ? s.rows( ) : s.cols( );
+		for( size_type i = 0 ; i < num ; i++ )
+		{
+			if( s( i, i ) != 0 )
+			{
+				s( i, i ) = 1 / s( i, i );
+			}
+		}
+		return( ( u * s * vt ).t( ) );
+	}
+	else
+	{
+		matrix_type a_( a );
+		return( __inverse__::__inverse__< __numeric__::is_complex< T >::value >::inverse( a_, style ) );
+	}
 }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
 /// @brief 行列の逆行列をLU分解を用いて計算する
+//! 
+//! 正方行列で無い場合は，特異値分解を用いて一般化逆行列を計算する
 //! 
 //! @param[in] expression … 複数の行列演算を表す式
 //! @param[in] style      … 入力行列の形式（デフォルトは一般行列を指定）
