@@ -118,7 +118,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 	for( m = 0 ; m < nComponents ; m++ )
 	{
-		std::cout << pdp[ m ] << std::endl;
+		std::cerr << pdp[ m ] << std::endl;
 	}
 #endif
 
@@ -244,7 +244,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 		for( m = 0 ; m < nComponents ; m++ )
 		{
-			std::cout << pdp[ m ] << std::endl;
+			std::cerr << pdp[ m ] << std::endl;
 		}
 #endif
 
@@ -302,7 +302,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, size_
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 	for( m = 0 ; m < nComponents ; m++ )
 	{
-		std::cout << pdp[ m ] << std::endl;
+		std::cerr << pdp[ m ] << std::endl;
 	}
 #endif
 
@@ -456,7 +456,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, size_
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 		for( m = 0 ; m < nComponents ; m++ )
 		{
-			std::cout << pdp[ m ] << std::endl;
+			std::cerr << pdp[ m ] << std::endl;
 		}
 #endif
 
@@ -630,7 +630,7 @@ namespace histogram
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 		for( m = 0 ; m < nComponents ; m++ )
 		{
-			std::cout << pdp[ m ] << std::endl;
+			std::cerr << pdp[ m ] << std::endl;
 		}
 #endif
 
@@ -752,7 +752,7 @@ namespace histogram
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 			for( m = 0 ; m < nComponents ; m++ )
 			{
-				std::cout << pdp[ m ] << std::endl;
+				std::cerr << pdp[ m ] << std::endl;
 			}
 #endif
 
@@ -817,7 +817,7 @@ namespace histogram
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 		for( m = 0 ; m < nComponents ; m++ )
 		{
-			std::cout << pdp[ m ] << std::endl;
+			std::cerr << pdp[ m ] << std::endl;
 		}
 #endif
 
@@ -1005,7 +1005,7 @@ namespace histogram
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 			for( m = 0 ; m < nComponents ; m++ )
 			{
-				std::cout << pdp[ m ] << std::endl;
+				std::cerr << pdp[ m ] << std::endl;
 			}
 #endif
 

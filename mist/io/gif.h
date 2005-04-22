@@ -331,7 +331,7 @@ namespace __gif_controller__
 						if( x + w > width || y + h > height )
 						{
 							// 画像サイズとあっていない！！
-							std::cout << "Error!!" << std::endl;
+							std::cerr << "Error!!" << std::endl;
 							return( false );
 						}
 
@@ -377,7 +377,7 @@ namespace __gif_controller__
 						}
 						else
 						{
-							std::cout << "LZW Decode failure." << std::endl;
+							std::cerr << "LZW Decode failure." << std::endl;
 						}
 
 						delete [] buff;

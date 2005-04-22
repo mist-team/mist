@@ -265,30 +265,30 @@ struct __mist_console_callback__
 		percent -= k2 * 10.0;
 		int k1 = static_cast< int >( percent );
 
-		std::cout << "busy... ";
+		std::cerr << "busy... ";
 		if( k3 == 0 )
 		{
-			std::cout << " ";
+			std::cerr << " ";
 			if( k2 == 0 )
 			{
-				std::cout << " " << k1;
+				std::cerr << " " << k1;
 			}
 			else
 			{
-				std::cout << k2 << k1;
+				std::cerr << k2 << k1;
 			}
 		}
 		else
 		{
-			std::cout << 1 << k2 << k1;
+			std::cerr << 1 << k2 << k1;
 		}
 		if( percent > 100.0 )
 		{
-			std::cout << "%" << std::endl;
+			std::cerr << "%" << std::endl;
 		}
 		else
 		{
-			std::cout << "%\r";
+			std::cerr << "%\r";
 		}
 		return( true );
 	}
@@ -308,7 +308,7 @@ struct __mist_console_callback__
 	//!
 	inline void mist_debug_assertion( ptrdiff_t index )
 	{
-		::std::cout << "Access Violation at ( " << static_cast< int >( index ) << " )" << ::std::endl;
+		::std::cerr << "Access Violation at ( " << static_cast< int >( index ) << " )" << ::std::endl;
 	}
 
 
@@ -319,7 +319,7 @@ struct __mist_console_callback__
 	//!
 	inline void mist_debug_assertion( ptrdiff_t index1, ptrdiff_t index2 )
 	{
-		::std::cout << "Access Violation at ( " << static_cast< int >( index1 ) << ", " << static_cast< int >( index2 ) << " )" << ::std::endl;
+		::std::cerr << "Access Violation at ( " << static_cast< int >( index1 ) << ", " << static_cast< int >( index2 ) << " )" << ::std::endl;
 	}
 
 
@@ -331,7 +331,7 @@ struct __mist_console_callback__
 	//!
 	inline void mist_debug_assertion( ptrdiff_t index1, ptrdiff_t index2, ptrdiff_t index3 )
 	{
-		::std::cout << "Access Violation at ( " << static_cast< int >( index1 ) << ", " << static_cast< int >( index2 ) << ", " << static_cast< int >( index3 ) << " )" << ::std::endl;
+		::std::cerr << "Access Violation at ( " << static_cast< int >( index1 ) << ", " << static_cast< int >( index2 ) << ", " << static_cast< int >( index3 ) << " )" << ::std::endl;
 	}
 
 

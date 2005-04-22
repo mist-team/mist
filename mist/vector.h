@@ -750,7 +750,7 @@ public:
 		if( base::size( ) != v2.size( ) || base::size( ) < 3 )
 		{
 			// 外積の計算ができません例外
-			::std::cout << "can't calculate outer product of two vectors." << ::std::endl;
+			::std::cerr << "can't calculate outer product of two vectors." << ::std::endl;
 			return( *this );
 		}
 #endif
@@ -799,7 +799,7 @@ public:
 		if( base::size( ) != v2.size( ) )
 		{
 			// 内積の計算ができません例外
-			::std::cout << "can't calculate inner product of two vectors." << ::std::endl;
+			::std::cerr << "can't calculate inner product of two vectors." << ::std::endl;
 			return( value_type( 0 ) );
 		}
 #endif

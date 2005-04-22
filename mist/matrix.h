@@ -315,7 +315,7 @@ struct matrix_add : public matrix_bind_operation< T1, T2 >
 		if( lhs.rows( ) != rhs.rows( ) || lhs.cols( ) != rhs.cols( ) )
 		{
 			// ‘«‚µZ‚Å‚«‚Ü‚¹‚ñ—áŠO
-			::std::cout << "‘«‚µZ‚ğs‚¨‚¤‚Æ‚·‚és—ñ‚Ìs‚Æ—ñ‚Ì”‚ªˆê’v‚µ‚Ü‚¹‚ñD" << ::std::endl;
+			::std::cerr << "‘«‚µZ‚ğs‚¨‚¤‚Æ‚·‚és—ñ‚Ìs‚Æ—ñ‚Ì”‚ªˆê’v‚µ‚Ü‚¹‚ñD" << ::std::endl;
 		}
 #endif
 	}
@@ -342,7 +342,7 @@ struct matrix_sub : public matrix_bind_operation< T1, T2 >
 		if( lhs.rows( ) != rhs.rows( ) || lhs.cols( ) != rhs.cols( ) )
 		{
 			// ˆø‚«Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-			::std::cout << "ˆø‚«Z‚ğs‚¨‚¤‚Æ‚·‚és—ñ‚Ìs‚Æ—ñ‚Ì”‚ªˆê’v‚µ‚Ü‚¹‚ñD" << ::std::endl;
+			::std::cerr << "ˆø‚«Z‚ğs‚¨‚¤‚Æ‚·‚és—ñ‚Ìs‚Æ—ñ‚Ì”‚ªˆê’v‚µ‚Ü‚¹‚ñD" << ::std::endl;
 		}
 #endif
 	}
@@ -369,7 +369,7 @@ struct matrix_mul : public matrix_bind_operation< T1, T2 >
 		if( lhs.cols( ) != rhs.rows( ) )
 		{
 			// Š|‚¯Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-			::std::cout << "Š|‚¯Z‚ğs‚¨‚¤‚Æ‚·‚és—ñ‚Ìs‚Æ—ñ‚Ì”‚ªˆê’v‚µ‚Ü‚¹‚ñD" << ::std::endl;
+			::std::cerr << "Š|‚¯Z‚ğs‚¨‚¤‚Æ‚·‚és—ñ‚Ìs‚Æ—ñ‚Ì”‚ªˆê’v‚µ‚Ü‚¹‚ñD" << ::std::endl;
 		}
 #endif
 	}
@@ -473,7 +473,7 @@ struct matrix_div_const : public matrix_bind_operation< T1, T2 >
 		if( rhs == 0 )
 		{
 			// ƒ[ƒœZ‚ğs‚¨‚¤‚Æ‚µ‚Ä‚¢‚é—áŠO
-			::std::cout << "ƒ[ƒœZ‚ğs‚¨‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·D" << ::std::endl;
+			::std::cerr << "ƒ[ƒœZ‚ğs‚¨‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·D" << ::std::endl;
 		}
 #endif
 	}
@@ -1057,7 +1057,7 @@ public:
 		if( m1.size( ) != m2.size( ) )
 		{
 			// ‘«‚µZ‚Å‚«‚Ü‚¹‚ñ—áŠO
-			::std::cout << "can't add arrays." << ::std::endl;
+			::std::cerr << "can't add arrays." << ::std::endl;
 			return( *this );
 		}
 #endif
@@ -1084,7 +1084,7 @@ public:
 		if( m1.size( ) != m2.size( ) )
 		{
 			// ˆø‚«Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-			::std::cout << "can't subtract matrixs." << ::std::endl;
+			::std::cerr << "can't subtract matrixs." << ::std::endl;
 			return( m1 );
 		}
 #endif
@@ -1112,7 +1112,7 @@ public:
 		if( m1.cols( ) != m2.rows( ) )
 		{
 			// Š|‚¯Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-			::std::cout << "can't multiply matrices." << ::std::endl;
+			::std::cerr << "can't multiply matrices." << ::std::endl;
 			return( m1 );
 		}
 #endif
@@ -1210,7 +1210,7 @@ public:
 		if( val == 0 )
 		{
 			// ƒ[ƒœZ”­¶
-			::std::cout << "zero division occured." << ::std::endl;
+			::std::cerr << "zero division occured." << ::std::endl;
 			return( m );
 		}
 #endif
@@ -1239,7 +1239,7 @@ public:
 		if( m1.cols( ) != m2.cols( ) || m1.rows( ) != m2.rows( ) )
 		{
 			// ‘«‚µZ‚Å‚«‚Ü‚¹‚ñ—áŠO
-			::std::cout << "can't add matrices." << ::std::endl;
+			::std::cerr << "can't add matrices." << ::std::endl;
 			return( m1 );
 		}
 #endif
@@ -1272,7 +1272,7 @@ public:
 		if( m1.cols( ) != m2.cols( ) || m1.rows( ) != m2.rows( ) )
 		{
 			// ˆø‚«Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-			::std::cout << "can't subtract matrices." << ::std::endl;
+			::std::cerr << "can't subtract matrices." << ::std::endl;
 			return( m1 );
 		}
 #endif
@@ -1305,7 +1305,7 @@ public:
 		if( m1.cols( ) != m2.rows( ) )
 		{
 			// Š|‚¯Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-			::std::cout << "can't multiply matrices." << ::std::endl;
+			::std::cerr << "can't multiply matrices." << ::std::endl;
 			return( m1 );
 		}
 #endif
@@ -1863,7 +1863,7 @@ inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m1, cons
 	if( m1.cols( ) != m2.rows( ) )
 	{
 		// Š|‚¯Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't multiply matrices." << ::std::endl;
+		::std::cerr << "can't multiply matrices." << ::std::endl;
 		return( m1 );
 	}
 #endif

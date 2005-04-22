@@ -39,7 +39,7 @@ struct mist_memory_operator
 	static typename Allocator::pointer allocate_objects1( Allocator &allocator, typename Allocator::size_type num )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Normal Allocator" << ::std::endl;
+		::std::cerr << "Normal Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
 		typename Allocator::value_type obj;
@@ -62,7 +62,7 @@ struct mist_memory_operator
 	static typename Allocator::pointer allocate_objects2( Allocator &allocator, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Normal Allocator" << ::std::endl;
+		::std::cerr << "Normal Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
 		for( typename Allocator::size_type i = 0 ; i < num ; i++ ) allocator.construct( &( ptr[i] ), obj );
@@ -84,7 +84,7 @@ struct mist_memory_operator
 	static typename Allocator::pointer allocate_objects3( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Normal Allocator" << ::std::endl;
+		::std::cerr << "Normal Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( e - s, 0 );
 		for( typename Allocator::pointer p = ptr ; s != e ; p++, s++ ) allocator.construct( p, *s );
@@ -104,7 +104,7 @@ struct mist_memory_operator
 	static void deallocate_objects( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Normal Deallocator" << ::std::endl;
+		::std::cerr << "Normal Deallocator" << ::std::endl;
 #endif
 		for( typename Allocator::size_type i = 0 ; i < num ; i++ ) allocator.destroy( &( ptr[i] ) );
 		allocator.deallocate( ptr, num );
@@ -126,7 +126,7 @@ struct mist_memory_operator
 	static typename Allocator::pointer copy_objects1( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Normal Copy Function" << ::std::endl;
+		::std::cerr << "Normal Copy Function" << ::std::endl;
 #endif
 		while( s != e )
 		{
@@ -153,7 +153,7 @@ struct mist_memory_operator
 	static typename Allocator::pointer copy_objects2( Allocator &allocator, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Normal Copy Function" << ::std::endl;
+		::std::cerr << "Normal Copy Function" << ::std::endl;
 #endif
 		for( typename Allocator::size_type i = 0 ; i < num ; i++ ) to[i] = ptr[i];
 		return( to + num );
@@ -173,7 +173,7 @@ struct mist_memory_operator
 	static void fill_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Normal Clean Function" << ::std::endl;
+		::std::cerr << "Normal Clean Function" << ::std::endl;
 #endif
 		for( typename Allocator::size_type i = 0 ; i < num ; i++ ) ptr[i] = obj;
 	}
@@ -191,7 +191,7 @@ struct mist_memory_operator
 	static void fill_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Normal Clean Function" << ::std::endl;
+		::std::cerr << "Normal Clean Function" << ::std::endl;
 #endif
 		typename Allocator::value_type obj;
 		for( typename Allocator::size_type i = 0 ; i < num ; i++ ) ptr[i] = obj;
@@ -218,7 +218,7 @@ struct mist_memory_operator< true >
 	static typename Allocator::pointer allocate_objects1( Allocator &allocator, typename Allocator::size_type num )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Memset Allocator" << ::std::endl;
+		::std::cerr << "Memset Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
 		::memset( ptr, 0, num * sizeof( typename Allocator::value_type ) );
@@ -240,7 +240,7 @@ struct mist_memory_operator< true >
 	static typename Allocator::pointer allocate_objects2( Allocator &allocator, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Specialized Allocator" << ::std::endl;
+		::std::cerr << "Specialized Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( num, 0 );
 		for( typename Allocator::size_type i = 0 ; i < num ; i++ ) ptr[i] = obj;
@@ -262,7 +262,7 @@ struct mist_memory_operator< true >
 	static typename Allocator::pointer allocate_objects3( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Memcpy Allocator" << ::std::endl;
+		::std::cerr << "Memcpy Allocator" << ::std::endl;
 #endif
 		typename Allocator::pointer ptr = allocator.allocate( e - s, 0 );
 		memcpy( ptr, s, ( e - s ) * sizeof( typename Allocator::value_type ) );
@@ -282,7 +282,7 @@ struct mist_memory_operator< true >
 	static void deallocate_objects( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Specialized Deallocator" << ::std::endl;
+		::std::cerr << "Specialized Deallocator" << ::std::endl;
 #endif
 		allocator.deallocate( ptr, num );
 	}
@@ -303,7 +303,7 @@ struct mist_memory_operator< true >
 	static typename Allocator::pointer copy_objects1( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Memcpy Copy Function" << ::std::endl;
+		::std::cerr << "Memcpy Copy Function" << ::std::endl;
 #endif
 		memcpy( x, s, ( e - s ) * sizeof( typename Allocator::value_type ) );
 		return( x + ( e - s ) );
@@ -325,7 +325,7 @@ struct mist_memory_operator< true >
 	static typename Allocator::pointer copy_objects2( Allocator &allocator, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Memcpy Copy Function" << ::std::endl;
+		::std::cerr << "Memcpy Copy Function" << ::std::endl;
 #endif
 		memcpy( to, ptr, num * sizeof( typename Allocator::value_type ) );
 		return( to + num );
@@ -345,7 +345,7 @@ struct mist_memory_operator< true >
 	static void fill_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Memcpy Clean Function" << ::std::endl;
+		::std::cerr << "Memcpy Clean Function" << ::std::endl;
 #endif
 		memset( ptr, obj, num * sizeof( typename Allocator::value_type ) );
 	}
@@ -363,7 +363,7 @@ struct mist_memory_operator< true >
 	static void fill_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
-		::std::cout << "Memcpy Clean Function" << ::std::endl;
+		::std::cerr << "Memcpy Clean Function" << ::std::endl;
 #endif
 		memset( ptr, 0, num * sizeof( typename Allocator::value_type ) );
 	}

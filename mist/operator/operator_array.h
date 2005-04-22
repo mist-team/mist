@@ -23,7 +23,7 @@ inline const array< T, Allocator >& operator +=( array< T, Allocator > &a1, cons
 	if( a1.size( ) != a2.size( ) )
 	{
 		// ‘«‚µZ‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't add arrays." << ::std::endl;
+		::std::cerr << "can't add arrays." << ::std::endl;
 		return( a1 );
 	}
 #endif
@@ -49,7 +49,7 @@ inline const array< T, Allocator >& operator -=( array< T, Allocator > &a1, cons
 	if( a1.size( ) != a2.size( ) )
 	{
 		// ˆø‚«Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't subtract arrays." << ::std::endl;
+		::std::cerr << "can't subtract arrays." << ::std::endl;
 		return( a1 );
 	}
 #endif
@@ -75,7 +75,7 @@ inline const array< T, Allocator >& operator *=( array< T, Allocator > &a1, cons
 	if( a1.size( ) != a2.size( ) )
 	{
 		// Š|‚¯Z‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't multiply arrays." << ::std::endl;
+		::std::cerr << "can't multiply arrays." << ::std::endl;
 		return( a1 );
 	}
 #endif
@@ -101,7 +101,7 @@ inline const array< T, Allocator >& operator /=( array< T, Allocator > &a1, cons
 	if( a1.size( ) != a2.size( ) )
 	{
 		// Š„‚èZ‚Å‚«‚Ü‚¹‚ñ—áŠO
-		::std::cout << "can't divide arrays." << ::std::endl;
+		::std::cerr << "can't divide arrays." << ::std::endl;
 		return( a1 );
 	}
 #endif
@@ -181,7 +181,7 @@ inline const array< T, Allocator >& operator /=( array< T, Allocator > &a1, type
 	if( val == 0 )
 	{
 		// ƒ[ƒœZ”­¶
-		::std::cout << "zero division occured." << ::std::endl;
+		::std::cerr << "zero division occured." << ::std::endl;
 		return;
 	}
 #endif
