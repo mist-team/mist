@@ -199,22 +199,9 @@ void figure_decomposition_test( )
 
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
-		//switch( label[ i ] )
-		//{
-		//case 1:
-		//	image_object[ i ] = 128.0;
-		//	break;
-
-		//case 2:
-		//	image_object[ i ] = 255.0;
-		//	break;
-
-		//default:
-		//	image_object[ i ] = 0;
-		//	break;
-		//}
-		image_object[ i ] = static_cast< unsigned char >( static_cast< double >( label[ i ] ) * 255.0 / static_cast< double >( label_num ) );
+		image_object[ i ] = static_cast< unsigned char >( label[ i ] / static_cast< double >( label_num ) * 255.0 );
 	}
+	pwindow->draw_area->redraw( );
 }
 
 void thresholding_test( )
