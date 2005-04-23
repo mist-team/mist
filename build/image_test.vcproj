@@ -137,6 +137,9 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath="..\mist\filter\decomposition.h">
+			</File>
+			<File
 				RelativePath="..\test\image_test.h">
 			</File>
 			<File
@@ -169,9 +172,6 @@
 			</File>
 			<File
 				RelativePath="..\mist\config\endian.h">
-			</File>
-			<File
-				RelativePath="..\mist\filter\figure_decomposition.h">
 			</File>
 			<File
 				RelativePath="..\mist\filter\fusion.h">

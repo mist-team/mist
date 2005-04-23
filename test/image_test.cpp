@@ -8,7 +8,7 @@ image_draw_area *draw_area;
 #include <mist/io/image.h>
 
 #include <mist/filter/distance.h>
-#include <mist/filter/figure_decomposition.h>
+#include <mist/filter/decomposition.h>
 #include <mist/filter/thinning.h>
 #include <mist/filter/labeling.h>
 #include <mist/filter/boundary.h>
@@ -131,7 +131,7 @@ void euclidean_distance_transform_test( )
 
 	mist::convert( image_object, tmp1 );
 
-	tmp1.reso( 1.0, 2.0 );
+	tmp1.reso( 1.0, 1.0 );
 	{
 		mist::timer t;
 		mist::calvin::distance_transform( tmp1, tmp2 );
@@ -189,8 +189,7 @@ void figure_decomposition_test( )
 
 	mist::convert( image_object, label );
 
-//	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( image_object, image_object, 255 );
-	size_t label_num = mist::__distance_figure_dedomposition__::figure_decomposition( label, label, 255 );
+	size_t label_num = mist::figure_decomposition( label, label );
 
 	if( label_num == 0 )
 	{

@@ -1,3 +1,7 @@
+/// @file mist/filter/decomposition.h
+//!
+//! @brief ユークリッド距離に基づく図形分割
+//!
 #ifndef __INCLUDE_MIST_FIGURE_DECOMPOSITION__
 #define __INCLUDE_MIST_FIGURE_DECOMPOSITION__
 
@@ -16,14 +20,16 @@
 
 
 #include <deque>
+#include <set>
+#include <algorithm>
 
 
 // mist名前空間の始まり
 _MIST_BEGIN
 
 
-// ユークリッド型距離変換
-namespace __distance_figure_dedomposition__
+// 図形分割用のツール
+namespace __figure_dedomposition__
 {
 	struct Position
 	{
@@ -31,14 +37,20 @@ namespace __distance_figure_dedomposition__
 		difference_type	x;
 		difference_type	y;
 		difference_type	z;
+		bool has_label;
 
-		Position( difference_type xx = 0, difference_type yy = 0, difference_type zz = 0 ) : x( xx ), y( yy ), z( zz )
+		Position( difference_type xx = 0, difference_type yy = 0, difference_type zz = 0, bool l = false ) : x( xx ), y( yy ), z( zz ), has_label( l )
 		{
+		}
+
+		bool operator <( const Position &p ) const
+		{
+			return( has_label > p.has_label );
 		}
 	};
 
-	template < class Array >
-	typename Array::value_type search_max( const Array &in, std::deque< Position > &list )
+	template < class Array, class Label >
+	typename Array::value_type search_max( const Array &in, const Label &label, std::deque< Position > &list, typename Array::value_type max )
 	{
 		typedef typename Array::size_type  size_type;
 		typedef typename Array::value_type value_type;
@@ -48,17 +60,6 @@ namespace __distance_figure_dedomposition__
 		if( in.empty( ) )
 		{
 			return( value_type( 0 ) );
-		}
-
-		const value_type infinity = type_limits< value_type >::maximum( );
-		value_type max = in[ 0 ];
-		// 現在の最大値を探索する
-		for( size_type i = 1 ; i < in.size( ) ; i++ )
-		{
-			if( in[ i ] != infinity )
-			{
-				max = max > in[ i ] ? max : in[ i ];
-			}
 		}
 
 		if( max == 0 )
@@ -74,148 +75,151 @@ namespace __distance_figure_dedomposition__
 				{
 					if( in( i, j, k ) == max )
 					{
-						list.push_back( Position( i, j, k ) );
+						list.push_back( Position( i, j, k, label( i, j, k ) != 0 ) );
 					}
 				}
 			}
 		}
+
+		std::sort( list.begin( ), list.end( ) );
+
 		return( max );
 	}
+}
 
-	template < class Array >
-	typename Array::size_type figure_decomposition( const Array &in, Array &out, typename Array::value_type label_max, typename Array::size_type max_iterations = -1 )
+
+
+/// @brief ユークリッド距離に基づく図形分割
+//!
+//! 図形をくびれ部分で分割する
+//!
+//! @param[in] in  … 入力データ
+//! @param[in] out … 出力画像
+//!
+//! @return 分割された領域の数
+//!
+template < class Array1, class Array2 >
+typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
+{
+	typedef typename Array1::size_type			size_type;
+	typedef typename Array1::difference_type	difference_type;
+	typedef typename Array2::value_type			value_type;
+
+	const typename array3< size_type >::value_type infinity = type_limits< typename array3< size_type >::value_type >::maximum( );
+
+	array3< difference_type > dist( in.width( ), in.height( ), in.depth( ) );
+
+	// 距離変換用の画像を作成
+	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		typedef typename Array::size_type		size_type;
-		typedef typename Array::difference_type	difference_type;
-		typedef typename Array::value_type		value_type;
+		dist[ i ] = in[ i ] != 0 ? 1 : 0;
+	}
 
-		const typename array3< size_type >::value_type infinity = type_limits< typename array3< size_type >::value_type >::maximum( );
+	calvin::distance_transform( dist, dist );
 
-		array3< size_type > dist( in.width( ), in.height( ), in.depth( ) );
+	typedef __figure_dedomposition__::Position position_type;
+	std::deque< position_type > list;
 
-		for( size_type i = 0 ; i < in.size( ) ; i++ )
+	// 画像中に含まれる距離値のリストを作成する
+	std::set< size_type > distance_list;
+	for( size_type l = 0 ; l < dist.size( ) ; l++ )
+	{
+		distance_list.insert( dist[ l ] );
+	}
+
+	size_type  label_count = 0;		// 現在のラベル数
+	size_type  loop_count = 0;		// 現在のラベル数
+	value_type current_label = 0;	// 現在処理中のラベル
+	value_type label_max = type_limits< value_type >::maximum( );	// ラベルの最大値
+	position_type pt;
+
+	array3< difference_type > mask( in.width( ), in.height( ), in.depth( ) );
+	out.fill( );
+
+	std::set< size_type >::reverse_iterator dite = distance_list.rbegin( );
+	for( ; dite != distance_list.rend( ) ; ++dite )
+	{
+		difference_type rr = search_max( dist, out, list, *dite );
+
+		difference_type rx = static_cast< difference_type >( std::ceil( std::sqrt( static_cast< double >( rr ) ) ) );
+		difference_type ry = in.height( ) < 2 ? 0 : rx;
+		difference_type rz = in.depth( ) < 2 ? 0 : rx;
+		difference_type RR = ( rx + 1 ) * ( rx + 1 );
+
+#ifdef DEBUG
+		printf( "                                                                   \r" );
+		printf( "looping ... % 4d, label =% 4d, size =% 3d, radius =%.3f )\r", ++loop_count, label_count, list.size( ), sqrt( (double)rr ) );
+#endif
+
+		std::deque< position_type >::iterator ite = list.begin( );
+		for( ; ite != list.end( ) ; ++ite )
 		{
-			dist[ i ] = in[ i ];
-		}
+			position_type &pt = *ite;
 
-		calvin::distance_transform( dist, dist );
-
-		typedef Position position_type;
-		std::deque< position_type > list;
-
-		size_type label_count = 0;
-		size_type loop_count = 0;
-		value_type current_label = 0;
-		position_type pt;
-
-		array3< difference_type > mask( in.width( ), in.height( ), in.depth( ) );
-		out.fill( );
-
-		printf( "looping start\n" );
-		while( loop_count++ < max_iterations )
-		{
-			difference_type rr = search_max( dist, list );
-
-			if( list.empty( ) )
+			if( out( pt.x, pt.y, pt.z ) == 0 )
 			{
-				// 全ての点を捜査し終わったので終了する
-				break;
+				// 他の領域から塗られていないので，新しいラベルとする
+				label_count++;
+				if( label_count > label_max )
+				{
+					// 最大のラベル数を超えた場合には，最大ラベルとする
+					label_count = label_max + 1; 
+				}
+				current_label = static_cast< value_type >( label_count );
+			}
+			else
+			{
+				// 既にラベルが割り当てられているので，そのラベルで塗りつぶす
+				current_label = out( pt.x, pt.y, pt.z );
 			}
 
-			difference_type rx = static_cast< difference_type >( std::ceil( std::sqrt( static_cast< double >( rr ) ) ) );
-			difference_type ry = rx;
-			difference_type rz = in.depth( ) < 2 ? 1 : rx;
-
-			printf( "                                                                   \r" );
-			printf( "looping ... % 4d, label =% 4d, size =% 3d, radius =%.3f )\r", ++loop_count, label_count, list.size( ), sqrt( (double)rr ) );
-
-			while( !list.empty( ) )
+			for( difference_type k = -rz ; k <= rz ; k++ )
 			{
-				std::deque< position_type >::iterator ite = list.begin( );
-				for( ; ite != list.end( ) ; ++ite )
-				{
-					Position &ppt = *ite;
-					if( out( ppt.x, ppt.y ) != 0 ) break;
-				}
-				if( ite == list.end( ) )
-				{
-					// すでにラベルが割り振られているものが見つからなかった場合
-					pt = list.front( );
-					list.pop_front( );
-				}
-				else
-				{
-					pt = *ite;
-					list.erase( ite );
-				}
+				size_type kk = k * k;
+				size_type pz = k + pt.z;
+				if( pz < 0 || pz >= in.depth( ) ) continue;
 
-				if( out( pt.x, pt.y ) == 0 )
+				for( difference_type j = -ry ; j <= ry ; j++ )
 				{
-					// 他の領域から塗られていないので，新しいラベルとする
-					label_count++;
-					if( label_count > label_max )
+					size_type jj = j * j;
+					size_type py = j + pt.y;
+					if( py < 0 || py >= in.height( ) ) continue;
+
+					for( difference_type i = -rx ; i <= rx ; i++ )
 					{
-						label_count = label_max + 1;
-					}
-					current_label = static_cast< value_type >( label_count );
-				}
-				else
-				{
-					// 既にラベルが割り当てられているので，そのラベルで塗りつぶす
-					current_label = out( pt.x, pt.y );
-				}
+						size_type ii = i * i;
+						size_type px = i + pt.x;
+						if( px < 0 || px >= in.width( ) ) continue;
 
-				for( difference_type k = -rz ; k <= rz ; k++ )
-				{
-					size_type kk = k * k;
-					size_type pz = k + pt.z;
-					if( pz < 0 || pz >= in.depth( ) ) continue;
-
-					for( difference_type j = -ry ; j <= ry ; j++ )
-					{
-						size_type jj = j * j;
-						size_type py = j + pt.y;
-						if( py < 0 || py >= in.height( ) ) continue;
-
-						for( difference_type i = -rx ; i <= rx ; i++ )
+						difference_type rrr = ii + jj + kk;
+						if( rrr < rr )
 						{
-							size_type ii = i * i;
-							size_type px = i + pt.x;
-							if( px < 0 || px >= in.width( ) ) continue;
-
-							difference_type rrr = ii + jj + kk;
-							if( rrr < rr )
+							if( dist( px, py, pz ) + rrr < RR )
 							{
-								if( dist( px, py, pz ) + rrr <= rr )
+								if( mask( px, py, pz ) < rr - rrr )
 								{
-									if( mask( px, py, pz ) < rr - rrr )
-									{
-										mask( px, py, pz ) = rr - rrr;
-										out( px, py, pz ) = current_label;
-									}
+									mask( px, py, pz ) = rr - rrr;
+									out( px, py, pz ) = current_label;
 								}
 							}
 						}
 					}
 				}
-
-				// 次回の最大値検索から外れるようにする
-				dist( pt.x, pt.y, pt.z ) = infinity;
 			}
-		}
 
-		// MAXラベル数を超えたものを除去
-		for( size_type j = 0 ; j < out.size( ) ; j++ )
-		{
-			out[ j ] = out[ j ] > label_max ? 0 : out[ j ];
+			// 次回の最大値検索から外れるようにする
+			dist( pt.x, pt.y, pt.z ) = infinity;
 		}
-
-		return( label_count );
 	}
 
+	// MAXラベル数を超えたものを除去
+	for( size_type j = 0 ; j < out.size( ) ; j++ )
+	{
+		out[ j ] = out[ j ] > label_max ? 0 : out[ j ];
+	}
+
+	return( label_count );
 }
-
-
 
 
 // mist名前空間の終わり
