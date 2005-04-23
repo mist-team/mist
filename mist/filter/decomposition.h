@@ -19,7 +19,7 @@
 #endif
 
 
-#include <deque>
+#include <vector>
 #include <set>
 #include <algorithm>
 
@@ -50,33 +50,25 @@ namespace __figure_dedomposition__
 	};
 
 	template < class Array, class Label >
-	typename Array::value_type search_max( const Array &in, const Label &label, std::deque< Position > &list, typename Array::value_type max )
+	typename Array::value_type search_max( const Array &in, const Label &label, std::vector< Position > &list, typename Array::value_type max )
 	{
 		typedef typename Array::size_type  size_type;
 		typedef typename Array::value_type value_type;
 
 		list.clear( );
 
-		if( in.empty( ) )
-		{
-			return( value_type( 0 ) );
-		}
-
-		if( max == 0 )
-		{
-			return( value_type( 0 ) );
-		}
-
+		size_type pos = 0;
 		for( size_type k = 0 ; k < in.depth( ) ; k++ )
 		{
 			for( size_type j = 0 ; j < in.height( ) ; j++ )
 			{
 				for( size_type i = 0 ; i < in.width( ) ; i++ )
 				{
-					if( in( i, j, k ) == max )
+					if( in[ pos ] == max )
 					{
-						list.push_back( Position( i, j, k, label( i, j, k ) != 0 ) );
+						list.push_back( Position( i, j, k, label[ pos ] != 0 ) );
 					}
+					pos++;
 				}
 			}
 		}
@@ -101,6 +93,11 @@ namespace __figure_dedomposition__
 template < class Array1, class Array2 >
 typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
 {
+	if( in.empty( ) )
+	{
+		return( 0 );
+	}
+
 	typedef typename Array1::size_type			size_type;
 	typedef typename Array1::difference_type	difference_type;
 	typedef typename Array2::value_type			value_type;
@@ -118,7 +115,7 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
 	calvin::distance_transform( dist, dist );
 
 	typedef __figure_dedomposition__::Position position_type;
-	std::deque< position_type > list;
+	std::vector< position_type > list;
 
 	// 画像中に含まれる距離値のリストを作成する
 	std::set< size_type > distance_list;
@@ -133,28 +130,47 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
 	value_type label_max = type_limits< value_type >::maximum( );	// ラベルの最大値
 	position_type pt;
 
-	array3< difference_type > mask( in.width( ), in.height( ), in.depth( ) );
+	array3< double > mask( in.width( ), in.height( ), in.depth( ) );
 	out.fill( );
 
+#ifdef DEBUG
+	size_type count[ 2 ] = { 0, 0 };
+#endif
 	std::set< size_type >::reverse_iterator dite = distance_list.rbegin( );
 	for( ; dite != distance_list.rend( ) ; ++dite )
 	{
 		difference_type rr = search_max( dist, out, list, *dite );
 
-		difference_type rx = static_cast< difference_type >( std::ceil( std::sqrt( static_cast< double >( rr ) ) ) );
+		double r = std::sqrt( static_cast< double >( rr ) );
+		difference_type rx = static_cast< difference_type >( std::ceil( r ) );
 		difference_type ry = in.height( ) < 2 ? 0 : rx;
 		difference_type rz = in.depth( ) < 2 ? 0 : rx;
 		difference_type RR = ( rx + 1 ) * ( rx + 1 );
 
 #ifdef DEBUG
-		printf( "                                                                   \r" );
-		printf( "looping ... % 4d, label =% 4d, size =% 3d, radius =%.3f )\r", ++loop_count, label_count, list.size( ), sqrt( (double)rr ) );
+		std::cerr << "                                                                   \r";
+		std::cerr << "looping ... " << ++loop_count << ", label = " << label_count << ", size = " << list.size( ) << ", radius = " << r << "\r";
 #endif
 
-		std::deque< position_type >::iterator ite = list.begin( );
+		std::vector< position_type >::iterator ite = list.begin( );
 		for( ; ite != list.end( ) ; ++ite )
 		{
 			position_type &pt = *ite;
+
+
+#ifdef DEBUG
+			count[ 0 ]++;
+			if( r <= mask( pt.x, pt.y, pt.z ) )
+			{
+				count[ 1 ]++;
+				continue;
+			}
+#else
+			if( r <= mask( pt.x, pt.y, pt.z ) )
+			{
+				continue;
+			}
+#endif
 
 			if( out( pt.x, pt.y, pt.z ) == 0 )
 			{
@@ -196,9 +212,10 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
 						{
 							if( dist( px, py, pz ) + rrr < RR )
 							{
-								if( mask( px, py, pz ) < rr - rrr )
+								double l = r - std::sqrt( static_cast< double >( rrr ) );
+								if( mask( px, py, pz ) < l )
 								{
-									mask( px, py, pz ) = rr - rrr;
+									mask( px, py, pz ) = l;
 									out( px, py, pz ) = current_label;
 								}
 							}
@@ -217,6 +234,10 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
 	{
 		out[ j ] = out[ j ] > label_max ? 0 : out[ j ];
 	}
+
+#ifdef DEBUG
+	std::cout << std::endl << "Skip Ratio: " << count[ 1 ] / ( double )count[ 0 ] << std::endl;
+#endif
 
 	return( label_count );
 }

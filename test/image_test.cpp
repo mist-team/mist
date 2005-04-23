@@ -189,7 +189,9 @@ void figure_decomposition_test( )
 
 	mist::convert( image_object, label );
 
+	mist::timer t;
 	size_t label_num = mist::figure_decomposition( label, label );
+	std::cout << std::endl << "Computation time: " << t << " sec" << std::endl << std::endl;
 
 	if( label_num == 0 )
 	{
