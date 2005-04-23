@@ -186,10 +186,13 @@ namespace __distance_figure_dedomposition__
 							difference_type rrr = ii + jj + kk;
 							if( rrr < rr )
 							{
-								if( mask( px, py, pz ) < rr - rrr )
+								if( dist( px, py, pz ) + rrr <= rr )
 								{
-									mask( px, py, pz ) = rr - rrr;
-									out( px, py, pz ) = current_label;
+									if( mask( px, py, pz ) < rr - rrr )
+									{
+										mask( px, py, pz ) = rr - rrr;
+										out( px, py, pz ) = current_label;
+									}
 								}
 							}
 						}
@@ -202,9 +205,9 @@ namespace __distance_figure_dedomposition__
 		}
 
 		// MAXƒ‰ƒxƒ‹”‚ð’´‚¦‚½‚à‚Ì‚ðœ‹Ž
-		for( i = 0 ; i < out.size( ) ; i++ )
+		for( size_type j = 0 ; j < out.size( ) ; j++ )
 		{
-			out[ i ] = out[ i ] > label_max ? 0 : out[ i ];
+			out[ j ] = out[ j ] > label_max ? 0 : out[ j ];
 		}
 
 		return( label_count );

@@ -55,12 +55,12 @@ namespace Tsai
 	struct parameter
 	{
 		// キャリブレーション前に入力する必要がある変数
-		double Ncx;		///< @brief カメラのX軸方向のセンサー素子数 [sel]
-		double Ncy;		///< @brief カメラのY軸方向のセンサー素子数 [sel]
+		double Ncx;		///< @brief カメラのX軸方向のセンサー素子数 [cell]
+		double Ncy;		///< @brief カメラのY軸方向のセンサー素子数 [cell]
 		double Nfx;		///< @brief 撮影される画像のX軸方向の画素数 [pixel]
 		double Nfy;		///< @brief 撮影される画像のY軸方向の画素数 [pixel]
-		double dx;		///< @brief カメラのX軸方向のセンサー素子の大きさ [mm/sel]
-		double dy;		///< @brief カメラのY軸方向のセンサー素子の大きさ [mm/sel]
+		double dx;		///< @brief カメラのX軸方向のセンサー素子の大きさ [mm/cell]
+		double dy;		///< @brief カメラのY軸方向のセンサー素子の大きさ [mm/cell]
 		double Cx;		///< @brief カメラ座標系におけるZ軸と画像平面の交点のX座標（画像中心を与える）[pixel]
 		double Cy;		///< @brief カメラ座標系におけるZ軸と画像平面の交点のY座標（画像中心を与える）[pixel]
 		double sx;		///< @brief 複数平面を用いたキャリブレーションの際に用いる，X軸方向の解像度を調整する係数
@@ -91,6 +91,38 @@ namespace Tsai
 		}
 	};
 
+
+	inline std::string to_string( double v, int f1, int f2 )
+	{
+		char format[ 20 ];
+		char buff[ 256 ];
+
+		if( f2 == 0 )
+		{
+			sprintf( format, "%%f" );
+		}
+		else
+		{
+			sprintf( format, "%%%d.%df", f1 + f2 + 1, f2 );
+		}
+
+		sprintf( buff, format, v );
+
+		return( buff );
+	}
+
+	inline std::string fixed_string( double v, int f1, int f2, size_t len )
+	{
+		std::string str = to_string( v, f1, f2 );
+		size_t i = str.length( );
+		for( ; i < len ; i++ )
+		{
+			str += " ";
+		}
+
+		return( str );
+	}
+
 	/// @brief カメラキャリブレーションパラメータを整形して出力する
 	//! 
 	//! @param[in,out] out … 入力と出力を行うストリーム
@@ -100,28 +132,29 @@ namespace Tsai
 	//! 
 	inline ::std::ostream &operator <<( ::std::ostream &out, const parameter &p )
 	{
-		out << "Ncx : " << p.Ncx << ::std::endl;
-		out << "Ncy : " << p.Ncy << ::std::endl;
-		out << "Nfx : " << p.Nfx << ::std::endl;
-		out << "Nfy : " << p.Nfy << ::std::endl;
-		out << "dx  : " << p.dx << ::std::endl;
-		out << "dy  : " << p.dy << ::std::endl;
-		out << "dpx : " << p.dpx << ::std::endl;
-		out << "dpy : " << p.dpy << ::std::endl;
-		out << "Cx  : " << p.Cx << ::std::endl;
-		out << "Cy  : " << p.Cy << ::std::endl;
-		out << "sx  : " << p.sx << ::std::endl;
+		out << "Ncx : " << fixed_string( p.Ncx, 4, 6, 12 ) << " [cell]" << ::std::endl;
+		out << "Ncy : " << fixed_string( p.Ncy, 4, 6, 12 ) << " [cell]" << ::std::endl;
+		out << "Nfx : " << fixed_string( p.Nfx, 4, 6, 12 ) << " [pixels]" << ::std::endl;
+		out << "Nfy : " << fixed_string( p.Nfy, 4, 6, 12 ) << " [pixels]" << ::std::endl;
+		out << "dx  : " << fixed_string( p.dx,  4, 6, 12 ) << " [mm/cell]" << ::std::endl;
+		out << "dy  : " << fixed_string( p.dy,  4, 6, 12 ) << " [mm/cell]" << ::std::endl;
+		out << "dpx : " << fixed_string( p.dpx, 4, 6, 12 ) << " [mm/pixel]" << ::std::endl;
+		out << "dpy : " << fixed_string( p.dpy, 4, 6, 12 ) << " [mm/pixel]" << ::std::endl;
+		out << "Cx  : " << fixed_string( p.Cx,  4, 6, 12 ) << " [pixel]" << ::std::endl;
+		out << "Cy  : " << fixed_string( p.Cy,  4, 6, 12 ) << " [pixel]" << ::std::endl;
+		out << "sx  : " << fixed_string( p.sx,  4, 6, 12 ) << ::std::endl;
 
 		out << ::std::endl;
 		out << "R =" << ::std::endl;
-		out << p.r1 << ", " << p.r2 << ", " << p.r3 << ::std::endl;
-		out << p.r4 << ", " << p.r5 << ", " << p.r6 << ::std::endl;
-		out << p.r7 << ", " << p.r8 << ", " << p.r9 << ::std::endl;
+		out << to_string( p.r1, 2, 6 ) << ", " << to_string( p.r2, 2, 6 ) << ", " << to_string( p.r3, 2, 6 ) << ::std::endl;
+		out << to_string( p.r4, 2, 6 ) << ", " << to_string( p.r5, 2, 6 ) << ", " << to_string( p.r6, 2, 6 ) << ::std::endl;
+		out << to_string( p.r7, 2, 6 ) << ", " << to_string( p.r8, 2, 6 ) << ", " << to_string( p.r2, 2, 6 ) << ::std::endl;
 
 		out << ::std::endl;
-		out << "T = ( " << p.Tx << ", " << p.Ty << ", " << p.Tz << " )" << ::std::endl;
-		out << "focal length = " << p.f << ::std::endl;
-		out << "kappa1 = " << p.ka1 << ::std::endl;
+		out << "T [mm] = ( " << p.Tx << ", " << p.Ty << ", " << p.Tz << " )" << ::std::endl;
+		out << "focal length = " << p.f << " [mm]" << ::std::endl;
+		out << "Tz / f = " << p.Tz / p.f << ::std::endl;
+		out << "kappa1 = " << p.ka1 << " [1/mm^2]" << ::std::endl;
 
 		return( out );
 	}
