@@ -105,6 +105,14 @@ public:
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
+	/// @brief データ型の変換を行う
+	template < class TT, class AAllocator = std::allocator< TT > > 
+	struct rebind
+	{
+		typedef array< TT, AAllocator > other;
+	};
+
+
 private:
 	mist_allocator< T, Allocator > allocator_;		///< @brief 各コンテナで利用するアロケータオブジェクト
 	size_type size_;								///< @brief コンテナに格納されている要素数
@@ -603,6 +611,13 @@ public:
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
+	/// @brief データ型の変換を行う
+	template < class TT, class AAllocator = std::allocator< TT > > 
+	struct rebind
+	{
+		typedef array1< TT, AAllocator > other;
+	};
+
 
 protected:
 	typedef array< T, Allocator > base;		///< @brief 基底クラスの別名
@@ -826,6 +841,13 @@ public:
 
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+
+	/// @brief データ型の変換を行う
+	template < class TT, class AAllocator = std::allocator< TT > > 
+	struct rebind
+	{
+		typedef array2< TT, AAllocator > other;
+	};
 
 
 protected:
@@ -1281,6 +1303,13 @@ public:
 
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 	typedef mist_reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+
+	/// @brief データ型の変換を行う
+	template < class TT, class AAllocator = std::allocator< TT > > 
+	struct rebind
+	{
+		typedef array3< TT, AAllocator > other;
+	};
 
 
 protected:

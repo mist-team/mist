@@ -10,6 +10,7 @@
 #include <mist/filter/labeling.h>
 #include <mist/filter/morphology.h>
 #include <mist/filter/linear.h>
+#include <mist/filter/decomposition.h>
 #include <mist/timer.h>
 
 
@@ -28,7 +29,7 @@ struct progress_callback
 		{
 			f_->show( );
 		}
-		f_->value( percent );
+		f_->value( static_cast< float >( percent ) );
 		Fl::wait( 0 );
 		return( true );
 	}
@@ -311,6 +312,15 @@ void ct_draw_area::closing( ct_image_window *wnd )
 		mist::timer t;
 		mist::closing( ct, 7 );
 		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
+	}
+}
+
+void ct_draw_area::figure_decomposition( ct_image_window *wnd )
+{
+	{
+		mist::timer t;
+		size_t label_num = mist::figure_decomposition( ct, ct );
+		std::cerr << "Label: " << label_num << ", Computation time: " << t << " sec" << std::endl;
 	}
 }
 

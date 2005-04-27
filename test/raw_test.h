@@ -54,6 +54,7 @@ public:
 	void dilation( ct_image_window *wnd );
 	void opening( ct_image_window *wnd );
 	void closing( ct_image_window *wnd );
+	void figure_decomposition( ct_image_window *wnd );
 
 public:
 	void read_image( ct_image_window *wnd );

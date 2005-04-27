@@ -521,6 +521,13 @@ public:
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
 
+	/// @brief データ型の変換を行う
+	template < class TT, class AAllocator = std::allocator< TT > > 
+	struct rebind
+	{
+		typedef matrix< TT, AAllocator > other;
+	};
+
 
 private:
 	typedef array< T, Allocator > base;

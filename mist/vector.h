@@ -719,6 +719,13 @@ public:
 	typedef typename base::reverse_iterator reverse_iterator;				///< @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
 	typedef typename base::const_reverse_iterator const_reverse_iterator;	///< @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
 
+	/// @brief データ型の変換を行う
+	template < class TT, class AAllocator = std::allocator< TT > > 
+	struct rebind
+	{
+		typedef vector< TT, AAllocator > other;
+	};
+
 
 	//template < class TT, class AAlocator >
 	//const vector& operator +=( const vector< TT, AAlocator > &v2 )

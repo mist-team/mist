@@ -185,6 +185,13 @@ void ct_image_window::cb_Closing(Fl_Menu_* o, void* v) {
   ((ct_image_window*)(o->parent()->user_data()))->cb_Closing_i(o,v);
 }
 
+inline void ct_image_window::cb_Figure_i(Fl_Menu_*, void*) {
+  ct_image->figure_decomposition( this );
+}
+void ct_image_window::cb_Figure(Fl_Menu_* o, void* v) {
+  ((ct_image_window*)(o->parent()->user_data()))->cb_Figure_i(o,v);
+}
+
 Fl_Menu_Item ct_image_window::menu_[] = {
  {"&File", 0,  0, 0, 64, 0, 0, 14, 56},
  {"&Open", 0,  (Fl_Callback*)ct_image_window::cb_Open, 0, 0, 0, 0, 14, 56},
@@ -202,6 +209,7 @@ Fl_Menu_Item ct_image_window::menu_[] = {
  {"Dilation", 0,  (Fl_Callback*)ct_image_window::cb_Dilation, 0, 0, 0, 0, 14, 56},
  {"Opening", 0,  (Fl_Callback*)ct_image_window::cb_Opening, 0, 0, 0, 0, 14, 56},
  {"Closing", 0,  (Fl_Callback*)ct_image_window::cb_Closing, 0, 0, 0, 0, 14, 56},
+ {"Figure Decomposition", 0,  (Fl_Callback*)ct_image_window::cb_Figure, 0, 0, 0, 0, 14, 56},
  {0,0,0,0,0,0,0,0,0},
  {0,0,0,0,0,0,0,0,0}
 };
