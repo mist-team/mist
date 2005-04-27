@@ -338,7 +338,7 @@ void ct_draw_area::figure_decomposition( ct_image_window *wnd )
 {
 	{
 		mist::timer t;
-		size_t label_num = mist::figure_decomposition( ct, ct, fd_progress_callback( ) );
+		size_t label_num = mist::figure_decomposition( ct, ct, -1, fd_progress_callback( ) );
 		std::cerr << std::endl << "Label: " << label_num << ", Computation time: " << t << " sec" << std::endl;
 	}
 }
