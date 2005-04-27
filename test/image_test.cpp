@@ -84,6 +84,63 @@ struct progress_callback
 	progress_callback( Fl_Progress *f ) : f_( f ){ }
 };
 
+struct fd_progress_callback
+{
+	/// @brief 図形分割の進行状況を返す
+	//!
+	//! @param[in] loop      … 現在の繰り返し回数
+	//! @param[in] label_num … 現在の最大ラベル番号
+	//! @param[in] radius    … 現在処理中の半径
+	//! @param[in] in        … 入力画像
+	//! @param[in] out       … 出力ラベル画像
+	//!
+	template < class Array >
+	void operator()( size_t loop, size_t label_num, double radius, const Array &in, const Array &out ) const
+	{
+		std::cerr << "                                                                   \r";
+		std::cerr << "looping ... " << loop << ", label = " << label_num << ", radius = " << radius << "\r";
+	}
+};
+
+struct fd_save_image_callback
+{
+	std::string path;
+	size_t max_label;
+
+	fd_save_image_callback( const std::string pname, size_t mlabel = 1 ) : path( pname ), max_label( mlabel )
+	{
+	}
+
+	fd_save_image_callback( const fd_save_image_callback &c ) : path( c.path ), max_label( c.max_label )
+	{
+	}
+
+	template < class Array >
+	void operator()( size_t loop, size_t label_num, double radius, const Array &in, const Array &out ) const
+	{
+		char buff[ 256 ];
+		sprintf( buff, "%06ld.bmp", loop );
+
+		Array tmp( in );
+		for( size_t i = 0 ; i < in.size( ) ; i++ )
+		{
+			if( out[ i ] != 0 )
+			{
+				tmp[ i ] = static_cast< unsigned char >( ( out[ i ] + 1 ) / static_cast< double >( max_label + 1 ) * 255.0 );
+			}
+			else if( in[ i ] != 0 )
+			{
+				tmp[ i ] = static_cast< unsigned char >( 1.0 / static_cast< double >( max_label + 1 ) * 255.0 );;
+			}
+		}
+
+		mist::write_image( tmp, path + buff );
+
+		std::cerr << "                                                                   \r";
+		std::cerr << "looping ... " << loop << ", label = " << label_num << ", radius = " << radius << "\r";
+	}
+};
+
 
 
 image_test_window *pwindow;
@@ -171,13 +228,15 @@ void euclidean_distance_transform_test( )
 void figure_decomposition_test( )
 {
 	mist::array2< unsigned char > label( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
+	mist::array2< unsigned char > tmp( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
 
 	image_type::size_type i;
 
-	mist::convert( image_object, label );
+	mist::convert( image_object, tmp );
 
 	mist::timer t;
-	size_t label_num = mist::figure_decomposition( label, label );
+	size_t label_num = mist::figure_decomposition( tmp, label, fd_progress_callback( ) );
+	mist::figure_decomposition( tmp, label, fd_save_image_callback( "D:\\hoge\\", label_num ) );
 	std::cerr << "Label: " << label_num << ", Computation time: " << t << " sec" << std::endl;
 
 	if( label_num == 0 )

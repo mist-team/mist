@@ -35,16 +35,121 @@ namespace __figure_dedomposition__
 	struct Position
 	{
 		typedef ptrdiff_t difference_type;
+		difference_type	RADIUS;
+		double			radius;
 		difference_type	index;
-		difference_type	radius;
 
-		Position( difference_type r = 0, difference_type indx = 0 ) : index( indx ), radius( r )
+		Position( difference_type r = 0, double R = 0, difference_type indx = 0 ) : RADIUS( r ), radius( R - std::sqrt( static_cast< double >( r ) ) ), index( indx )
 		{
 		}
 
 		bool operator <( const Position &p ) const
 		{
-			return( radius > p.radius );
+			return( RADIUS > p.RADIUS );
+		}
+	};
+
+	// 画像の端に画素を持っているかどうかを調べる
+	template < class T, class Allocator >
+	bool has_voxel_at_side( const array2< T, Allocator > &in )
+	{
+		typedef typename array2< T, Allocator >::size_type size_type;
+
+		for( size_type i = 0 ; i < in.width( ) ; i++ )
+		{
+			if( in( i, 0 ) != 0 || in( i, in.height( ) - 1 ) != 0 )
+			{
+				return( true );
+			}
+		}
+
+		for( size_type j = 0 ; j < in.height( ) ; j++ )
+		{
+			if( in( 0, j ) != 0 || in( in.width( ) - 1, j ) != 0 )
+			{
+				return( true );
+			}
+		}
+
+		return( false );
+	}
+
+	// 画像の端に画素を持っているかどうかを調べる
+	template < class T, class Allocator >
+	bool has_voxel_at_side( const array3< T, Allocator > &in )
+	{
+		typedef typename array2< T, Allocator >::size_type size_type;
+
+		if( in.depth( ) == 1 )
+		{
+			for( size_type i = 0 ; i < in.width( ) ; i++ )
+			{
+				if( in( i, 0, 0 ) != 0 || in( i, in.height( ) - 1, 0 ) != 0 )
+				{
+					return( true );
+				}
+			}
+
+			for( size_type j = 0 ; j < in.height( ) ; j++ )
+			{
+				if( in( 0, j, 0 ) != 0 || in( in.width( ) - 1, j, 0 ) != 0 )
+				{
+					return( true );
+				}
+			}
+		}
+		else
+		{
+			for( size_type j = 0 ; j < in.height( ) ; j++ )
+			{
+				for( size_type i = 0 ; i < in.width( ) ; i++ )
+				{
+					if( in( i, j, 0 ) != 0 || in( i, j, in.depth( ) - 1 ) != 0 )
+					{
+						return( true );
+					}
+				}
+			}
+
+			for( size_type k = 0 ; k < in.depth( ) ; k++ )
+			{
+				for( size_type i = 0 ; i < in.width( ) ; i++ )
+				{
+					if( in( i, 0, k ) != 0 || in( i, in.height( ) - 1, k ) != 0 )
+					{
+						return( true );
+					}
+				}
+			}
+
+			for( size_type k = 0 ; k < in.depth( ) ; k++ )
+			{
+				for( size_type j = 0 ; j < in.height( ) ; j++ )
+				{
+					if( in( 0, j, k ) != 0 || in( in.width( ) - 1, j, k ) != 0 )
+					{
+						return( true );
+					}
+				}
+			}
+		}
+
+		return( false );
+	}
+
+	struct __mist_dmy_fd_callback__
+	{
+		/// @brief 図形分割の進行状況を返す
+		//!
+		//! @param[in] loop      … 現在の繰り返し回数
+		//! @param[in] label_num … 現在の最大ラベル番号
+		//! @param[in] radius    … 現在処理中の半径
+		//! @param[in] in        … 入力画像
+		//! @param[in] out       … 出力ラベル画像
+		//!
+		template < class Array >
+		void operator()( size_t loop, size_t label_num, double radius, const Array &in, const Array &out ) const
+		{
 		}
 	};
 }
@@ -57,21 +162,22 @@ namespace __figure_dedomposition__
 //!
 //! @param[in] in  … 入力データ
 //! @param[in] out … 出力画像
+//! @param[in] f   … 進行状況を与えるコールバック
 //!
 //! @return 分割された領域の数
 //!
-template < class Array1, class Array2 >
-typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
+template < class Array1, class Array2, class Functor >
+typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, Functor f )
 {
 	if( in.empty( ) )
 	{
 		return( 0 );
 	}
 
-	typedef typename Array1::size_type			size_type;
-	typedef typename Array1::difference_type	difference_type;
-	typedef typename Array1::const_pointer		const_pointer;
-	typedef typename Array2::value_type			value_type;
+	typedef typename Array1::size_type									size_type;
+	typedef typename Array1::difference_type							difference_type;
+	typedef typename Array1::const_pointer								const_pointer;
+	typedef typename Array2::value_type									value_type;
 	typedef typename Array2::template rebind< difference_type >::other	distance_type;
 	typedef typename Array2::template rebind< double >::other			mask_type;
 
@@ -87,7 +193,9 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
 		dist[ i ] = in[ i ] != 0 ? 1 : 0;
 	}
 
+	if( __figure_dedomposition__::has_voxel_at_side( in ) )
 	{
+		// 画像の端に１画素がある場合
 		marray< distance_type > dist_tmp( dist, 1 );
 		distance_type &dist_tmp_map = dist_tmp;
 
@@ -105,19 +213,21 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
 			}
 		}
 	}
+	else
+	{
+		calvin::distance_transform( dist, dist );
+	}
+
 
 	typedef __figure_dedomposition__::Position position_type;
 
 	// 画像中に含まれる距離値のリストを作成する
-	std::multiset< position_type > distance_list;
+	std::set< difference_type > distance_list;
 	for( size_type l = 0 ; l < dist.size( ) ; l++ )
 	{
-		difference_type d = dist[ l ];
-		if( d > 1 )
-		{
-			distance_list.insert( position_type( dist[ l ], l ) );
-		}
+		distance_list.insert( dist[ l ] );
 	}
+
 
 	size_type label_count = 0;		// 現在のラベル数
 	size_type loop_count = 0;		// 現在のラベル数
@@ -133,121 +243,201 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
 	out.reso3( in.reso3( ) );
 	out.fill( );
 
-	typedef std::multiset< position_type >::iterator distance_iterator_type;
-	distance_iterator_type dite = distance_list.begin( );
-	for( ; dite != distance_list.end( ) ; )
+	typename std::set< difference_type >::reverse_iterator dite = distance_list.rbegin( );
+	for( ; dite != distance_list.rend( ) ; ++dite )
 	{
-		difference_type rr = dite->radius;
+		difference_type rr = *dite;
+
+		if( rr == 0 )
+		{
+			// ０の画素はアクセスしない
+			break;
+		}
+
 		double r = std::sqrt( static_cast< double >( rr ) );
 
 		std::deque< difference_type > list;
-
-		std::pair< distance_iterator_type, distance_iterator_type > range = distance_list.equal_range( position_type( rr, 0 ) );
-		std::multiset< position_type >::iterator rite = range.first;
-		for( ; rite != range.second ; ++rite )
+		for( size_type i = 0 ; i < dist.size( ) ; i++ )
 		{
-			list.push_back( rite->index );
+			// 現段階で最大の距離値を持つ画素を探す
+			if( dist[ i ] == rr && r > mask[ i ] )
+			{
+				list.push_back( i );
+			}
 		}
-		dite = rite;
 
 		difference_type rx = static_cast< difference_type >( std::ceil( r ) );
 		difference_type ry = in.height( ) < 2 ? 0 : rx;
 		difference_type rz = in.depth( ) < 2 ? 0 : rx;
 		difference_type RR = ( rx + 1 ) * ( rx + 1 );
 
-#ifdef WIN32//_DEBUG
-		std::cerr << "                                                                   \r";
-		std::cerr << "looping ... " << ++loop_count << ", label = " << label_count << ", size = " << list.size( ) << ", radius = " << r << "\r";
-#endif
+		f( ++loop_count, label_count, r, in, out );
 
-		std::vector< position_type > sphere;
+		if( rr > 1 )
 		{
-			difference_type cx = out.width( ) / 2;
-			difference_type cy = out.height( ) / 2;
-			difference_type cz = out.depth( ) / 2;
-			const_pointer cp = &out( cx, cy, cz );
-			for( difference_type k = -rz ; k <= rz ; k++ )
+			std::vector< position_type > sphere;
+			sphere.reserve( ( 2 * rx + 1 ) * ( 2 * ry + 1 ) * ( 2 * rz + 1 ) );
 			{
-				size_type kk = k * k;
-
-				for( difference_type j = -ry ; j <= ry ; j++ )
+				difference_type cx = out.width( ) / 2;
+				difference_type cy = out.height( ) / 2;
+				difference_type cz = out.depth( ) / 2;
+				const_pointer cp = &out( cx, cy, cz );
+				for( difference_type k = -rz ; k <= rz ; k++ )
 				{
-					size_type jj = j * j;
+					size_type kk = k * k;
 
-					for( difference_type i = -rx ; i <= rx ; i++ )
+					for( difference_type j = -ry ; j <= ry ; j++ )
 					{
-						size_type ii = i * i;
+						size_type jj = j * j;
 
-						difference_type rrr = ii + jj + kk;
-						if( rrr < rr )
+						for( difference_type i = -rx ; i <= rx ; i++ )
 						{
-							// インデックスとして，球の中心からの差を代入する
-							sphere.push_back( position_type( rrr, &out( cx + i, cy + j, cz + k ) - cp ) );
+							size_type ii = i * i;
+
+							difference_type rrr = ii + jj + kk;
+							if( rrr < rr )
+							{
+								// インデックスとして，球の中心からの差を代入する
+								sphere.push_back( position_type( rrr, r, &out( cx + i, cy + j, cz + k ) - cp ) );
+							}
+						}
+					}
+				}
+			}
+
+			while( !list.empty( ) )
+			{
+				typename std::deque< difference_type >::iterator ite = list.begin( );
+				difference_type index = 0;
+				for( ; ite != list.end( ) ; ++ite )
+				{
+					difference_type index = *ite;
+					if( out[ index ] != 0 )
+					{
+						break;
+					}
+				}
+				if( ite == list.end( ) )
+				{
+					// すでにラベルが割り振られているものが見つからなかった場合
+					index = list.front( );
+					list.pop_front( );
+				}
+				else
+				{
+					index = *ite;
+					list.erase( ite );
+				}
+
+				if( out[ index ] == 0 )
+				{
+					// 他の領域から塗られていないので，新しいラベルとする
+					label_count++;
+					if( label_count > label_max )
+					{
+						// 最大のラベル数を超えた場合には，最大ラベルとする
+						label_count = label_max + 1; 
+					}
+					current_label = static_cast< value_type >( label_count );
+				}
+				else
+				{
+					// 既にラベルが割り当てられているので，そのラベルで塗りつぶす
+					current_label = out[ index ];
+				}
+
+				for( size_type i = 0 ; i < sphere.size( ) ; i++ )
+				{
+					const position_type &pt = sphere[ i ];
+					const difference_type indx = index + pt.index;
+					if( mask[ indx ] < pt.radius )
+					{
+						if( dist[ indx ] + pt.RADIUS < RR )
+						{
+							mask[ indx ] = pt.radius;
+							out[ indx ] = static_cast< value_type >( current_label );
 						}
 					}
 				}
 			}
 		}
-
-		while( !list.empty( ) )
+		else
 		{
-			std::deque< difference_type >::iterator ite = list.begin( );
-			difference_type index = 0;
-			for( ; ite != list.end( ) ; ++ite )
+			// 距離値１の画素だけ特殊な処理を行う
+			std::vector< difference_type > sphere;
+			sphere.reserve( ( 2 * rx + 1 ) * ( 2 * ry + 1 ) * ( 2 * rz + 1 ) );
 			{
-				difference_type index = *ite;
-				if( out[ index ] != 0 )
+				difference_type cx = out.width( ) / 2;
+				difference_type cy = out.height( ) / 2;
+				difference_type cz = out.depth( ) / 2;
+				const_pointer cp = &out( cx, cy, cz );
+				for( difference_type k = -rz ; k <= rz ; k++ )
 				{
-					break;
-				}
-			}
-			if( ite == list.end( ) )
-			{
-				// すでにラベルが割り振られているものが見つからなかった場合
-				index = list.front( );
-				list.pop_front( );
-			}
-			else
-			{
-				index = *ite;
-				list.erase( ite );
-			}
-
-			if( r <= mask[ index ] )
-			{
-				continue;
-			}
-
-			if( out[ index ] == 0 )
-			{
-				// 他の領域から塗られていないので，新しいラベルとする
-				label_count++;
-				if( label_count > label_max )
-				{
-					// 最大のラベル数を超えた場合には，最大ラベルとする
-					label_count = label_max + 1; 
-				}
-				current_label = static_cast< value_type >( label_count );
-			}
-			else
-			{
-				// 既にラベルが割り当てられているので，そのラベルで塗りつぶす
-				current_label = out[ index ];
-			}
-
-			for( size_type i = 0 ; i < sphere.size( ) ; i++ )
-			{
-				const position_type &pt = sphere[ i ];
-				difference_type indx = index + pt.index;
-				difference_type rrr = pt.radius;
-				if( dist[ indx ] + rrr < RR )
-				{
-					double l = r - std::sqrt( static_cast< double >( rrr ) );
-					if( mask[ indx ] < l )
+					for( difference_type j = -ry ; j <= ry ; j++ )
 					{
-						mask[ indx ] = l;
-						out[ indx ] = static_cast< value_type >( current_label );
+						for( difference_type i = -rx ; i <= rx ; i++ )
+						{
+							// インデックスとして，８・２６近傍内の画素を代入する
+							sphere.push_back( &out( cx + i, cy + j, cz + k ) - cp );
+						}
 					}
+				}
+			}
+
+			while( !list.empty( ) )
+			{
+				typename std::deque< difference_type >::iterator ite = list.begin( );
+				difference_type index = 0;
+
+				current_label = 0;
+				for( ; ite != list.end( ) ; ++ite )
+				{
+					difference_type index = *ite;
+					const_pointer p = &out[ index ];
+
+					// ８・２６近傍から既に塗られているものを探してくる
+					for( size_type i = 0 ; i < sphere.size( ) ; i++ )
+					{
+						size_type cl = static_cast< size_type >( p[ sphere[ i ] ] );
+						if( cl != 0 )
+						{
+							current_label = cl;
+							break;
+						}
+					}
+					if( current_label != 0 )
+					{
+						break;
+					}
+				}
+
+				if( ite == list.end( ) )
+				{
+					// すでにラベルが割り振られているものが見つからなかった場合
+					index = list.front( );
+					list.pop_front( );
+				}
+				else
+				{
+					index = *ite;
+					list.erase( ite );
+				}
+
+				if( current_label == 0 )
+				{
+					// 他の領域から塗られていないので，新しいラベルとする
+					label_count++;
+					if( label_count > label_max )
+					{
+						// 最大のラベル数を超えた場合には，最大ラベルとする
+						label_count = label_max + 1; 
+					}
+					out[ index ] = static_cast< value_type >( label_count );
+				}
+				else
+				{
+					// 既にラベルが割り当てられているので，そのラベルで塗りつぶす
+					out[ index ] = static_cast< value_type >( current_label );
 				}
 			}
 		}
@@ -260,6 +450,22 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
 	}
 
 	return( label_count );
+}
+
+
+/// @brief ユークリッド距離に基づく図形分割
+//!
+//! 図形をくびれ部分で分割する
+//!
+//! @param[in] in  … 入力データ
+//! @param[in] out … 出力画像
+//!
+//! @return 分割された領域の数
+//!
+template < class Array1, class Array2 >
+typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
+{
+	figure_decomposition( in, out, __figure_dedomposition__::__mist_dmy_fd_callback__( ) );
 }
 
 
