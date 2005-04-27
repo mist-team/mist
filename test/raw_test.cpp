@@ -38,6 +38,25 @@ struct progress_callback
 };
 
 
+struct fd_progress_callback
+{
+	/// @brief 図形分割の進行状況を返す
+	//!
+	//! @param[in] loop      … 現在の繰り返し回数
+	//! @param[in] label_num … 現在の最大ラベル番号
+	//! @param[in] radius    … 現在処理中の半径
+	//! @param[in] in        … 入力画像
+	//! @param[in] out       … 出力ラベル画像
+	//!
+	template < class Array >
+	void operator()( size_t loop, size_t label_num, double radius, const Array &in, const Array &out ) const
+	{
+		std::cerr << "                                                                   \r";
+		std::cerr << "looping ... " << loop << ", label = " << label_num << ", radius = " << radius << "\r";
+	}
+};
+
+
 void ct_draw_area::draw( )
 {
 	mist::draw_image( buff, w( ), h( ) );
@@ -319,8 +338,8 @@ void ct_draw_area::figure_decomposition( ct_image_window *wnd )
 {
 	{
 		mist::timer t;
-		size_t label_num = mist::figure_decomposition( ct, ct );
-		std::cerr << "Label: " << label_num << ", Computation time: " << t << " sec" << std::endl;
+		size_t label_num = mist::figure_decomposition( ct, ct, fd_progress_callback( ) );
+		std::cerr << std::endl << "Label: " << label_num << ", Computation time: " << t << " sec" << std::endl;
 	}
 }
 

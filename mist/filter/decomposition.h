@@ -178,7 +178,7 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 	typedef typename Array1::difference_type							difference_type;
 	typedef typename Array1::const_pointer								const_pointer;
 	typedef typename Array2::value_type									value_type;
-	typedef typename Array2::template rebind< difference_type >::other	distance_type;
+	typedef typename Array2::template rebind< size_type >::other		distance_type;
 	typedef typename Array2::template rebind< double >::other			mask_type;
 
 	distance_type dist;
@@ -222,12 +222,11 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 	typedef __figure_dedomposition__::Position position_type;
 
 	// ‰æ‘œ’†‚ÉŠÜ‚Ü‚ê‚é‹——£’l‚ÌƒŠƒXƒg‚ğì¬‚·‚é
-	std::set< difference_type > distance_list;
+	std::map< size_type, size_type > distance_list;
 	for( size_type l = 0 ; l < dist.size( ) ; l++ )
 	{
-		distance_list.insert( dist[ l ] );
+		distance_list[ dist[ l ] ]++;
 	}
-
 
 	size_type label_count = 0;		// Œ»İ‚Ìƒ‰ƒxƒ‹”
 	size_type loop_count = 0;		// Œ»İ‚Ìƒ‰ƒxƒ‹”
@@ -243,10 +242,11 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 	out.reso3( in.reso3( ) );
 	out.fill( );
 
-	typename std::set< difference_type >::reverse_iterator dite = distance_list.rbegin( );
+	typename std::map< size_type, size_type >::reverse_iterator dite = distance_list.rbegin( );
 	for( ; dite != distance_list.rend( ) ; ++dite )
 	{
-		difference_type rr = *dite;
+		size_type rr = dite->first;
+		difference_type count = dite->second;
 
 		if( rr == 0 )
 		{
@@ -256,7 +256,8 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 
 		double r = std::sqrt( static_cast< double >( rr ) );
 
-		std::deque< difference_type > list;
+		std::vector< difference_type > list;
+		list.reserve( count );
 		for( size_type i = 0 ; i < dist.size( ) ; i++ )
 		{
 			// Œ»’iŠK‚ÅÅ‘å‚Ì‹——£’l‚ğ‚Â‰æ‘f‚ğ’T‚·
@@ -266,10 +267,11 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 			}
 		}
 
+
 		difference_type rx = static_cast< difference_type >( std::ceil( r ) );
 		difference_type ry = in.height( ) < 2 ? 0 : rx;
 		difference_type rz = in.depth( ) < 2 ? 0 : rx;
-		difference_type RR = ( rx + 1 ) * ( rx + 1 );
+		size_type       RR = ( rx + 1 ) * ( rx + 1 );
 
 		f( ++loop_count, label_count, r, in, out );
 
@@ -294,7 +296,7 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 						{
 							size_type ii = i * i;
 
-							difference_type rrr = ii + jj + kk;
+							size_type rrr = ii + jj + kk;
 							if( rrr < rr )
 							{
 								// ƒCƒ“ƒfƒbƒNƒX‚Æ‚µ‚ÄC‹…‚Ì’†S‚©‚ç‚Ì·‚ğ‘ã“ü‚·‚é
@@ -305,29 +307,26 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 				}
 			}
 
-			while( !list.empty( ) )
+			difference_type csize = list.size( );
+			while( csize > 0 )
 			{
-				typename std::deque< difference_type >::iterator ite = list.begin( );
-				difference_type index = 0;
-				for( ; ite != list.end( ) ; ++ite )
+				difference_type cindex = 0;
+				for( ; cindex < csize ; cindex++ )
 				{
-					difference_type index = *ite;
-					if( out[ index ] != 0 )
+					if( out[ list[ cindex ] ] != 0 )
 					{
 						break;
 					}
 				}
-				if( ite == list.end( ) )
+
+				if( cindex == csize )
 				{
-					// ‚·‚Å‚Éƒ‰ƒxƒ‹‚ªŠ„‚èU‚ç‚ê‚Ä‚¢‚é‚à‚Ì‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡
-					index = list.front( );
-					list.pop_front( );
+					cindex = 0;
 				}
-				else
-				{
-					index = *ite;
-					list.erase( ite );
-				}
+
+				difference_type index = list[ cindex ];
+				list[ cindex ] = list[ csize - 1 ];
+				csize--;
 
 				if( out[ index ] == 0 )
 				{
@@ -364,44 +363,49 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 		else
 		{
 			// ‹——£’l‚P‚Ì‰æ‘f‚¾‚¯“Áê‚Èˆ—‚ğs‚¤
-			std::vector< difference_type > sphere;
-			sphere.reserve( ( 2 * rx + 1 ) * ( 2 * ry + 1 ) * ( 2 * rz + 1 ) );
+			difference_type csize = list.size( );
+			while( csize > 0 )
 			{
-				difference_type cx = out.width( ) / 2;
-				difference_type cy = out.height( ) / 2;
-				difference_type cz = out.depth( ) / 2;
-				const_pointer cp = &out( cx, cy, cz );
-				for( difference_type k = -rz ; k <= rz ; k++ )
-				{
-					for( difference_type j = -ry ; j <= ry ; j++ )
-					{
-						for( difference_type i = -rx ; i <= rx ; i++ )
-						{
-							// ƒCƒ“ƒfƒbƒNƒX‚Æ‚µ‚ÄC‚WE‚Q‚U‹ß–T“à‚Ì‰æ‘f‚ğ‘ã“ü‚·‚é
-							sphere.push_back( &out( cx + i, cy + j, cz + k ) - cp );
-						}
-					}
-				}
-			}
-
-			while( !list.empty( ) )
-			{
-				typename std::deque< difference_type >::iterator ite = list.begin( );
-				difference_type index = 0;
-
 				current_label = 0;
-				for( ; ite != list.end( ) ; ++ite )
+
+				difference_type cindex = 0;
+				for( ; cindex < csize ; cindex++ )
 				{
-					difference_type index = *ite;
-					const_pointer p = &out[ index ];
+					difference_type indx = list[ cindex ];
+					difference_type z = indx / ( out.width( ) * out.height( ) );
+					difference_type y = ( indx - z * out.width( ) * out.height( ) ) / out.width( );
+					difference_type x = indx - ( y + z * out.height( ) ) * out.width( );
 
 					// ‚WE‚Q‚U‹ß–T‚©‚çŠù‚É“h‚ç‚ê‚Ä‚¢‚é‚à‚Ì‚ğ’T‚µ‚Ä‚­‚é
-					for( size_type i = 0 ; i < sphere.size( ) ; i++ )
+					for( difference_type k = -rz ; k <= rz ; k++ )
 					{
-						size_type cl = static_cast< size_type >( p[ sphere[ i ] ] );
-						if( cl != 0 )
+						size_type pz = k + z;
+						if( pz < 0 || pz >= in.depth( ) ) continue;
+
+						for( difference_type j = -ry ; j <= ry ; j++ )
 						{
-							current_label = cl;
+							size_type py = j + y;
+							if( py < 0 || py >= in.height( ) ) continue;
+
+							for( difference_type i = -rx ; i <= rx ; i++ )
+							{
+								size_type px = i + x;
+								if( py < 0 || py >= in.width( ) ) continue;
+
+								size_type cl = static_cast< size_type >( out( px, py, pz ) );
+								if( cl != 0 )
+								{
+									current_label = cl;
+									break;
+								}
+							}
+							if( current_label != 0 )
+							{
+								break;
+							}
+						}
+						if( current_label != 0 )
+						{
 							break;
 						}
 					}
@@ -411,17 +415,14 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 					}
 				}
 
-				if( ite == list.end( ) )
+				if( cindex == csize )
 				{
-					// ‚·‚Å‚Éƒ‰ƒxƒ‹‚ªŠ„‚èU‚ç‚ê‚Ä‚¢‚é‚à‚Ì‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡
-					index = list.front( );
-					list.pop_front( );
+					cindex = 0;
 				}
-				else
-				{
-					index = *ite;
-					list.erase( ite );
-				}
+
+				difference_type index = list[ cindex ];
+				list[ cindex ] = list[ csize - 1 ];
+				csize--;
 
 				if( current_label == 0 )
 				{
@@ -465,7 +466,7 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 template < class Array1, class Array2 >
 typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
 {
-	figure_decomposition( in, out, __figure_dedomposition__::__mist_dmy_fd_callback__( ) );
+	return( figure_decomposition( in, out, __figure_dedomposition__::__mist_dmy_fd_callback__( ) ) );
 }
 
 

@@ -235,8 +235,9 @@ void figure_decomposition_test( )
 	mist::convert( image_object, tmp );
 
 	mist::timer t;
-	size_t label_num = mist::figure_decomposition( tmp, label, fd_progress_callback( ) );
-	mist::figure_decomposition( tmp, label, fd_save_image_callback( "D:\\hoge\\", label_num ) );
+	size_t label_num = mist::figure_decomposition( tmp, label );
+	//size_t label_num = mist::figure_decomposition( tmp, label, fd_progress_callback( ) );
+	//mist::figure_decomposition( tmp, label, fd_save_image_callback( "D:\\hoge\\", label_num ) );
 	std::cerr << "Label: " << label_num << ", Computation time: " << t << " sec" << std::endl;
 
 	if( label_num == 0 )
