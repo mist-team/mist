@@ -18,6 +18,10 @@
 #include "distance.h"
 #endif
 
+#ifndef __INCLUDE_MIST_LABELING__
+#include "labeling.h"
+#endif
+
 
 #include <deque>
 #include <vector>
@@ -48,6 +52,18 @@ namespace __figure_dedomposition__
 			return( RADIUS > p.RADIUS );
 		}
 	};
+
+	template < class T, class Allocator >
+	inline typename array2< T, Allocator >::size_type do_labeling( array2< T, Allocator > &in )
+	{
+		return( labeling8( in, in ) );
+	}
+
+	template < class T, class Allocator >
+	inline typename array3< T, Allocator >::size_type do_labeling( array3< T, Allocator > &in )
+	{
+		return( labeling26( in, in ) );
+	}
 
 	// 画像の端に画素を持っているかどうかを調べる
 	template < class T, class Allocator >
@@ -160,14 +176,15 @@ namespace __figure_dedomposition__
 //!
 //! 図形をくびれ部分で分割する
 //!
-//! @param[in] in  … 入力データ
-//! @param[in] out … 出力画像
-//! @param[in] f   … 進行状況を与えるコールバック
+//! @param[in] in           … 入力データ
+//! @param[in] out          … 出力画像
+//! @param[in] max_distance … 最大距離値以上で発生するくびれは分割しないようにする
+//! @param[in] f            … 進行状況を与えるコールバック
 //!
 //! @return 分割された領域の数
 //!
 template < class Array1, class Array2, class Functor >
-typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, Functor f )
+typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, double max_distance, Functor f )
 {
 	if( in.empty( ) )
 	{
@@ -243,6 +260,30 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 	out.fill( );
 
 	typename std::map< size_type, size_type >::reverse_iterator dite = distance_list.rbegin( );
+
+	// 最大距離値より大きい部分は処理対象から省く
+	if( max_distance > 0 )
+	{
+		double md = max_distance * max_distance;
+		double Md = ( max_distance + 1 ) * ( max_distance + 1 );
+		for( size_type l = 0 ; l < dist.size( ) ; l++ )
+		{
+			if( dist[ l ] >= md )
+			{
+				out[ l ] = 1;
+			}
+		}
+		for( ; dite != distance_list.rend( ) ; ++dite )
+		{
+			if( dite->first < Md )
+			{
+				break;
+			}
+		}
+
+		label_count = __figure_dedomposition__::do_labeling( out );
+	}
+
 	for( ; dite != distance_list.rend( ) ; ++dite )
 	{
 		size_type rr = dite->first;
@@ -390,7 +431,7 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 							for( difference_type i = -rx ; i <= rx ; i++ )
 							{
 								size_type px = i + x;
-								if( py < 0 || py >= in.width( ) ) continue;
+								if( px < 0 || px >= in.width( ) ) continue;
 
 								size_type cl = static_cast< size_type >( out( px, py, pz ) );
 								if( cl != 0 )
@@ -453,20 +494,20 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 	return( label_count );
 }
 
-
 /// @brief ユークリッド距離に基づく図形分割
 //!
 //! 図形をくびれ部分で分割する
 //!
 //! @param[in] in  … 入力データ
 //! @param[in] out … 出力画像
+//! @param[in] max_distance … 最大距離値以上で発生するくびれは分割しないようにする
 //!
 //! @return 分割された領域の数
 //!
 template < class Array1, class Array2 >
-typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out )
+typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, double max_distance = -1 )
 {
-	return( figure_decomposition( in, out, __figure_dedomposition__::__mist_dmy_fd_callback__( ) ) );
+	return( figure_decomposition( in, out, max_distance, __figure_dedomposition__::__mist_dmy_fd_callback__( ) ) );
 }
 
 
