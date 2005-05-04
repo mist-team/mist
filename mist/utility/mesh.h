@@ -77,9 +77,9 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	//std::cout << "LabelNum: " << labelnum << std::endl;
 
 	array< bool > mask( labelnum + 1 );
-	difference_type *count = new difference_type[ labelnum + 1 ];
-	difference_type *round = new difference_type[ labelnum + 1 ];
-	vector_type *pos = new vector2< double >[ labelnum + 1 ];
+	array< difference_type > count( labelnum + 1 );
+	array< difference_type > round( labelnum + 1 );
+	array< vector_type > pos( labelnum + 1 );
 
 	for( i = 0 ; i <= labelnum ; i++ )
 	{
@@ -117,9 +117,16 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	{
 		for( i = 1 ; i < chart.width( ) - 1 ; i++ )
 		{
-			if( binary( i, j ) != 0 && ( binary( i - 1, j ) == 0 || binary( i + 1, j ) == 0 || binary( i, j - 1 ) == 0 || binary( i, j + 1 ) == 0 ) )
+			unsigned short label = binary( i, j );
+			if( label != 0 )
 			{
-				round[ binary( i, j ) ]++;
+				double x = i - pos[ label ].x;
+				double y = j - pos[ label ].y;
+				const double pai = 3.1415926535897932384626433832795;
+				if( x * x + y * y <= count[ label ] / pai * 2.25 )
+				{
+					round[ binary( i, j ) ]++;
+				}
 			}
 		}
 	}
@@ -154,16 +161,24 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	difference_type minimum_count = 15; // この個数に満たない領域は削除する
 	for( i = 1 ; i <= labelnum ; i++ )
 	{
-		const double pai = 3.1415926535897932384626433832795;
-		double e = 4.0 * pai * count[ i ] / static_cast< double >( round[ i ] * round[ i ] );
-		if( count[ i ] < minimum_count || e < 0.95 )
+		if( count[ i ] < minimum_count )
 		{
 			count[ i ] = 0;
 			mask[ i ] = true;
 		}
+		else
+		{
+			const double pai = 3.1415926535897932384626433832795;
+			double e = round[ i ] / static_cast< double >( count[ i ] );
+			if( e < 0.95 )
+			{
+				count[ i ] = 0;
+				mask[ i ] = true;
+			}
+			//std::cout << "ラベル: " << i << ", 円形度: " << e << std::endl;
+		}
 	}
 
-	delete [] round;
 
 	// 不要な領域を画像から取り除く
 	//for( j = 0 ; j < chart.height( ) - 0 ; j++ )
@@ -323,16 +338,28 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 
 			if( index < 0 )
 			{
-				// 対応店が見つからなかったので，見つからなかったマークを入れる
+				// 対応点が見つからなかったので，見つからなかったマークを入れる
 				p.x = -1;
 				p.y = -1;
 			}
 			else
 			{
 				// 対応点が見つかったので，以降の探索から除外する
+				vector_type diff = pos[ index ] - p;
 				p = pos[ index ];
 				found( circularY - rrr[ r ], c ) = 1;
 				mask[ index ] = true;
+
+				if( r == 0 )
+				{
+					for( difference_type rr = 0 ; rr < rows ; rr++ )
+					{
+						if( found( rr, c ) == 0 )
+						{
+							grid( rr, c ) += diff;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -457,9 +484,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		}
 	}
 
-
-	delete [] count;
-	delete [] pos;
 
 	{
 		difference_type width = chart.width( );
