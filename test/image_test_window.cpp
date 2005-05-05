@@ -68,6 +68,13 @@ void image_test_window::cb_Euclidean(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Euclidean_i(o,v);
 }
 
+inline void image_test_window::cb_Euclidean1_i(Fl_Menu_*, void*) {
+  euclidean_distance_skeleton_test( );
+}
+void image_test_window::cb_Euclidean1(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Euclidean1_i(o,v);
+}
+
 inline void image_test_window::cb_Figure_i(Fl_Menu_*, void*) {
   figure_decomposition_test( );
 }
@@ -278,6 +285,7 @@ Fl_Menu_Item image_test_window::menu_[] = {
  {0,0,0,0,0,0,0,0,0},
  {"&Edit", 0,  0, 0, 64, 0, 0, 14, 56},
  {"Euclidean Distance Transform", 0,  (Fl_Callback*)image_test_window::cb_Euclidean, 0, 0, 0, 0, 14, 56},
+ {"Euclidean Skeleton", 0,  (Fl_Callback*)image_test_window::cb_Euclidean1, 0, 0, 0, 0, 14, 56},
  {"Figure Decomposition", 0,  (Fl_Callback*)image_test_window::cb_Figure, 0, 0, 0, 0, 14, 56},
  {"Thresholding", 0,  (Fl_Callback*)image_test_window::cb_Thresholding, 0, 0, 0, 0, 14, 56},
  {"Labeling 4", 0,  (Fl_Callback*)image_test_window::cb_Labeling, 0, 0, 0, 0, 14, 56},

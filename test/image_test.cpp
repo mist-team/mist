@@ -225,6 +225,56 @@ void euclidean_distance_transform_test( )
 	pwindow->draw_area->redraw( );
 }
 
+
+void euclidean_distance_skeleton_test( )
+{
+	mist::array2< int > tmp1( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
+	mist::array2< int > tmp2( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );
+
+	image_type::size_type i = 0;
+
+	mist::convert( image_object, tmp1 );
+
+	tmp1.reso( 1.0, 1.0 );
+	mist::calvin::distance_transform( tmp1, tmp2 );
+
+	{
+		mist::timer t;
+		mist::skeleton1( tmp2, tmp2 );
+		mist::skeleton( tmp2, tmp2 );
+		std::cout << "Computation time for Calvin: " << t << " sec" << std::endl;
+	}
+
+	double min = tmp2[ 0 ];
+	double max = tmp2[ 0 ];
+	for( i = 1 ; i < tmp2.size( ) ; i++ )
+	{
+		if( min > tmp2[ i ] )
+		{
+			min = tmp2[ i ];
+		}
+		else if( max < tmp2[ i ] )
+		{
+			max = tmp2[ i ];
+		}
+	}
+
+	double range = max == min ? 1 : max - min; 
+
+	for( i = 0 ; i < image_object.size( ) ; i++ )
+	{
+		if( tmp2[ i ] == 0 )
+		{
+			image_object[ i ] = 0;
+		}
+		else
+		{
+			image_object[ i ] = static_cast< unsigned char >( ( tmp2[ i ] - min ) / range * 200.0 + 55.0 );
+		}
+	}
+	pwindow->draw_area->redraw( );
+}
+
 void figure_decomposition_test( )
 {
 	mist::array2< unsigned char > label( image_object.width( ), image_object.height( ), image_object.reso1( ), image_object.reso2( ) );

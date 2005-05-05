@@ -29,6 +29,8 @@ private:
   static void cb_Exit(Fl_Menu_*, void*);
   inline void cb_Euclidean_i(Fl_Menu_*, void*);
   static void cb_Euclidean(Fl_Menu_*, void*);
+  inline void cb_Euclidean1_i(Fl_Menu_*, void*);
+  static void cb_Euclidean1(Fl_Menu_*, void*);
   inline void cb_Figure_i(Fl_Menu_*, void*);
   static void cb_Figure(Fl_Menu_*, void*);
   inline void cb_Thresholding_i(Fl_Menu_*, void*);

@@ -99,6 +99,11 @@ Fl::wait( 0 );}
             xywh {0 0 100 20}
           }
           menuitem {} {
+            label {Euclidean Skeleton}
+            callback {euclidean_distance_skeleton_test( );} selected
+            xywh {10 10 100 20}
+          }
+          menuitem {} {
             label {Figure Decomposition}
             callback {figure_decomposition_test( );}
             xywh {10 10 100 20}
@@ -130,7 +135,7 @@ Fl::wait( 0 );}
           }
           menuitem {} {
             label Mode
-            callback {mode_test( );} selected
+            callback {mode_test( );}
             xywh {100 100 100 20}
           }
           submenu {} {
