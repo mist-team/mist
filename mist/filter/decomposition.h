@@ -396,7 +396,7 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 						if( dist[ indx ] + pt.RADIUS < RR )
 						{
 							mask[ indx ] = pt.radius;
-							//out[ indx ] = static_cast< value_type >( current_label );
+							out[ indx ] = static_cast< value_type >( current_label );
 						}
 					}
 				}
