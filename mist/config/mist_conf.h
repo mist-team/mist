@@ -488,9 +488,11 @@ struct __mist_console_callback__
 * - @ref morphology_group					"モルフォロジー演算"
 * - 2値画像に対する処理
 *   - @ref labeling_group					"ラベリング"
+*   - @ref decomposition_group				"図形分割"
 *   - @ref boundary_group					"境界画素抽出"
 *   - @ref mode_group						"最頻値フィルタ"
 *   - @ref thinning_group					"細線化"
+*   - @ref skeleton_group					"スケルトン抽出"
 *   - @ref distance_group					"距離変換"
 *     - @ref euclidean_distance_group		"ユークリッド距離変換"
 *     - @ref a								"4近傍型距離変換"

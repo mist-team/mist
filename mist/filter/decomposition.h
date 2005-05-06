@@ -171,6 +171,16 @@ namespace __figure_dedomposition__
 }
 
 
+//! @addtogroup decomposition_group 図形分割
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/decomposition.h>
+//! @endcode
+//!
+//!  @{
+
+
+
 
 /// @brief ユークリッド距離に基づく図形分割
 //!
@@ -512,6 +522,10 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 {
 	return( figure_decomposition( in, out, max_distance, __figure_dedomposition__::__mist_dmy_fd_callback__( ) ) );
 }
+
+
+/// @}
+//  図形分割グループの終わり
 
 
 // mist名前空間の終わり
