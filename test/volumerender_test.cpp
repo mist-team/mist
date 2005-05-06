@@ -5,7 +5,7 @@
 #include <FL/Fl_File_Chooser.H>
 #include <FL/gl_draw.H>
 
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 #include <io.h>
 #include <tchar.h>
 #else

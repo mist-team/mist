@@ -15,7 +15,7 @@
 #include "fft_util.h"
 #endif
 
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 #define	USE_CDFT_WINTHREADS
 #define USE_FFT2D_WINTHREADS
 #define USE_FFT3D_WINTHREADS

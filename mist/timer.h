@@ -10,7 +10,7 @@
 #include "config/mist_conf.h"
 #endif
 
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 
 #include <windows.h>
 #include <mmsystem.h>
@@ -52,7 +52,7 @@ public:
 	//! 
 	timer( )
 	{
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		_start_time = timeGetTime( );
 #else
 		gettimeofday( &_start_time, NULL );
@@ -62,7 +62,7 @@ public:
 	/// @brief 強制的に，タイマーをクリアする．
 	void reset( )
 	{
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		_start_time = timeGetTime( );
 #else
 		gettimeofday( &_start_time, NULL );
@@ -75,7 +75,7 @@ public:
 	//! 
 	double elapse( ) const
 	{
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		return( static_cast< double >( timeGetTime( ) - _start_time ) / 1000.0 );
 #else
 		timeval  _end_time;
@@ -85,7 +85,7 @@ public:
 	}
 
 private:
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	DWORD		_start_time;	///< @brief 時間計測開始時刻を保持する変数（Windows用）
 #else
 	timeval		_start_time;	///< @brief 時間計測開始時刻を保持する変数（Linux用）

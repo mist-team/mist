@@ -39,7 +39,7 @@ int main( int argc, char *argv[ ] )
 	std::string fname = "";
 	if( argc < 2 )
 	{
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		fname = "//eagle/data4/CTLung/haigeta/haigeta212.512.gz";
 #else
 		fname = "/data4/CTLung/haigeta/haigeta212.512.gz";

@@ -19,7 +19,7 @@
 // UNIX系とWindows用を使い分ける
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしないので特に必要なインクルードファイルは無し
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	#include <windows.h>
 #else
 	#include <pthread.h>
@@ -79,7 +79,7 @@ inline size_t get_cpu_num( )
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしないのでCPU数は常に1
 	return( 1 );
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	SYSTEM_INFO sysInfo;
 	GetSystemInfo( &sysInfo );
 	return( static_cast< size_t >( sysInfo.dwNumberOfProcessors ) );
@@ -108,7 +108,7 @@ private:
 
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしないので特に必要な変数は無し
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	HANDLE    thread_handle_;			// Windows用のスレッドを識別するハンドル
 	DWORD     thread_id_;				// Windows用のスレッドを識別するID
 #else
@@ -136,7 +136,7 @@ public:
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしない
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		thread_handle_ = t.thread_handle_;
 		thread_id_ = t.thread_id_;
 #else
@@ -162,7 +162,7 @@ public:
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしない
 		return( this == &t );
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		return( thread_id_ == t.thread_id_ );
 #else
 		return( pthread_equal( thread_id_, t.thread_id_ ) != 0 );
@@ -179,7 +179,7 @@ public:
 	// スレッドサポートはしない
 	thread( const thread &t ) :thread_exit_code_( t.thread_exit_code_ ){ }
 	thread( ) : thread_exit_code_( 0 ){ }
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	thread( const thread &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
 	thread( ) : thread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ){ }
 #else
@@ -201,7 +201,7 @@ public:
 		// スレッドサポートはしないので直接関数を呼び出す
 		bool ret = true;
 		thread_exit_code_ = thread_function( );
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		if( thread_handle_ != NULL ) return( false );
 		thread_handle_ = CreateThread( NULL, 0, map_thread_function, ( void * )this, 0, &( thread_id_ ) );
 		bool ret = thread_handle_ != NULL ? true : false;
@@ -241,7 +241,7 @@ public:
 		// スレッドサポートはしないので何もしない
 		// スレッドかされないため，dwMilliseconds は常に INFINITE 扱いとなる
 		return( true );
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		DWORD ret = WaitForSingleObject( thread_handle_, dwMilliseconds );
 		return ( SUCCEEDED( ret ) );
 #else
@@ -288,7 +288,7 @@ public:
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので常に true を返す
 		return( true );
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		BOOL ret = CloseHandle( thread_handle_ );
 		thread_handle_ = NULL;
 		return ( ret != 0 );
@@ -312,7 +312,7 @@ public:
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので常に true を返す
 		return( true );
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		return( SuspendThread( thread_handle_ ) != static_cast< DWORD >( -1 ) );
 #else
 //		return( pthread_suspend_np( thread_id_ ) == 0 );
@@ -333,7 +333,7 @@ public:
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので常に true を返す
 		return( true );
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		return( ResumeThread( thread_handle_ ) == 1 );
 #else
 //		return( pthread_resume_np( thread_id_ ) == 0 );
@@ -355,7 +355,7 @@ protected:
 
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしないので何もしない
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	static DWORD WINAPI map_thread_function( void *p )
 	{
 		thread *obj = static_cast< thread * >( p );
@@ -871,7 +871,7 @@ protected:
 
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	typedef char lock_object_type;					// スレッドサポートはしないのでダミー変数用意
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	typedef CRITICAL_SECTION lock_object_type;		// Windows用のロックオブジェクト(CRITIFCALSECTIONを利用)
 #else
 	typedef pthread_mutex_t lock_object_type;		// pthreadライブラリでのロックオブジェクト
@@ -958,7 +958,7 @@ protected:
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので特に必何もしない
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		InitializeCriticalSection( &l );	// クリティカルセクションオブジェクトを初期化
 #else
 		pthread_mutex_init( &l, NULL );		// pthread用のMutexオブジェクトを初期化
@@ -974,7 +974,7 @@ protected:
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので特に必何もしない
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		EnterCriticalSection( &l );		// クリティカルセクションオブジェクトをロック
 #else
 		pthread_mutex_lock( &l );		// pthread用のMutexオブジェクトをロック
@@ -990,7 +990,7 @@ protected:
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので特に必何もしない
-#elif defined( WIN32 )
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		LeaveCriticalSection( &l );		// クリティカルセクションオブジェクトをアンロック
 #else
 		pthread_mutex_unlock( &l );		// pthread用のMutexオブジェクトをアンロック

@@ -41,6 +41,16 @@ _MIST_BEGIN
 #endif
 
 
+// Microsoft Windows かどうかをチェック
+#if defined( WIN32 )
+	// 32bit Windows
+	#define __MIST_WINDOWS__	1
+#elif defined( WIN64 )
+	// 64bit Windows
+	#define __MIST_WINDOWS__	2
+#endif
+
+
 // Microsoft Visual C++ 6.0 では，static const を見サポートのための enum による代用
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 	#define _MIST_CONST( type, name, value ) enum{ name = value }

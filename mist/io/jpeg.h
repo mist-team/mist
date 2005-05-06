@@ -27,7 +27,7 @@
 #include <string>
 
 
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 
 	#define XMD_H
 	#define HAVE_INT32			// JPEG—pINT32Œ^‚ğ‚Á‚Ä‚¢‚ééŒ¾

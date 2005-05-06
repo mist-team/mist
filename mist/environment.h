@@ -16,7 +16,7 @@
 
 #include <string>
 
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 
 	#include <windows.h>
 	#include <shlwapi.h>
@@ -37,7 +37,7 @@ _MIST_BEGIN
 
 namespace __environment__
 {
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	static std::string cpu( size_t &num_processors )
 	{
 		SYSTEM_INFO info;

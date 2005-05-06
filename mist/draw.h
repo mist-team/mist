@@ -18,7 +18,7 @@
 #endif
 
 
-#ifdef WIN32
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 #include <windows.h>
 #endif
 
