@@ -191,12 +191,12 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 		return( 0 );
 	}
 
-	typedef typename Array1::size_type									size_type;
-	typedef typename Array1::difference_type							difference_type;
-	typedef typename Array1::const_pointer								const_pointer;
-	typedef typename Array2::value_type									value_type;
-	typedef typename Array2::template rebind< size_type >::other		distance_type;
-	typedef typename Array2::template rebind< double >::other			mask_type;
+	typedef typename Array1::size_type								size_type;
+	typedef typename Array1::difference_type						difference_type;
+	typedef typename Array1::const_pointer							const_pointer;
+	typedef typename Array2::value_type								value_type;
+	typedef typename Array2::template rebind< size_type >::other	distance_type;
+	typedef typename Array2::template rebind< double >::other		mask_type;
 
 	distance_type dist;
 	dist.resize( in.width( ), in.height( ), in.depth( ) );
@@ -284,6 +284,9 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 		label_count = __figure_dedomposition__::do_labeling( out );
 	}
 
+	f( 0, label_count, std::sqrt( static_cast< double >( dite->first ) ), in, out );
+
+	// ãóó£ílÇÃëÂÇ´Ç¢Ç‡ÇÃÇ©ÇÁèáî‘Ç…ÉâÉxÉãÇïúå≥ÇµÇƒÇ¢Ç≠
 	for( ; dite != distance_list.rend( ) ; ++dite )
 	{
 		size_type rr = dite->first;
@@ -302,7 +305,7 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 		for( size_type i = 0 ; i < dist.size( ) ; i++ )
 		{
 			// åªíiäKÇ≈ç≈ëÂÇÃãóó£ílÇéùÇ¬âÊëfÇíTÇ∑
-			if( dist[ i ] == rr && r > mask[ i ] )
+			if( dist[ i ] == rr && r >= static_cast< difference_type >( mask[ i ] + 1 ) )
 			{
 				list.push_back( i );
 			}
@@ -313,8 +316,6 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 		difference_type ry = in.height( ) < 2 ? 0 : rx;
 		difference_type rz = in.depth( ) < 2 ? 0 : rx;
 		size_type       RR = ( rx + 1 ) * ( rx + 1 );
-
-		f( ++loop_count, label_count, r, in, out );
 
 		if( rr > 1 )
 		{
@@ -395,7 +396,7 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 						if( dist[ indx ] + pt.RADIUS < RR )
 						{
 							mask[ indx ] = pt.radius;
-							out[ indx ] = static_cast< value_type >( current_label );
+							//out[ indx ] = static_cast< value_type >( current_label );
 						}
 					}
 				}
@@ -483,6 +484,8 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 				}
 			}
 		}
+
+		f( ++loop_count, label_count, r, in, out );
 	}
 
 	// MAXÉâÉxÉãêîÇí¥Ç¶ÇΩÇ‡ÇÃÇèúãé

@@ -835,7 +835,6 @@ namespace calvin
 /// @brief ユークリッド2乗距離画像を入力とするスケルトン抽出
 //! 
 //! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
-//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
 //! @param[in]  in         … ユークリッド2乗距離画像
 //! @param[out] out        … スケルトン点のみを残したユークリッド2乗距離画像
@@ -857,7 +856,7 @@ void skeleton( const Array1 &in, Array2 &out )
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		temp[ i ] = -1;
+		temp[ i ] = i;
 	}
 
 	difference_type w = in.width( );
@@ -911,7 +910,7 @@ void skeleton( const Array1 &in, Array2 &out )
 							if( xx + yy + zz < rr )
 							{
 								difference_type &p = temp( px, py, pz );
-								if( p < 0 || in[ p ] < rr )
+								if( in[ p ] < rr )
 								{
 									p = index;
 								}
@@ -943,73 +942,6 @@ void skeleton( const Array1 &in, Array2 &out )
 			out[ i ] = static_cast< value_type >( in[ i ] );
 		}
 	}
-}
-
-template < class Array1, class Array2 >
-void skeleton1( const Array1 &in, Array2 &out )
-{
-	typedef typename Array1::size_type        size_type;
-	typedef typename Array1::difference_type  difference_type;
-	typedef typename Array1::value_type       value_type;
-
-	out.resize( in.size1( ), in.size2( ), in.size3( ) );
-	out.reso1( in.reso1( ) );
-	out.reso2( in.reso2( ) );
-	out.reso3( in.reso3( ) );
-
-	difference_type w = in.width( );
-	difference_type h = in.height( );
-	difference_type d = in.depth( );
-	for( difference_type k = 0 ; k < d ; k++ )
-	{
-		for( difference_type j = 0 ; j < h ; j++ )
-		{
-			for( difference_type i = 0 ; i < w ; i++ )
-			{
-				difference_type rr = in( i, j, k );
-				double r = std::sqrt( static_cast< double >( rr ) );
-
-				if( rr == 0 )
-				{
-					continue;
-				}
-
-				bool flag = false;
-				for( difference_type z = -2 ; z <= 2 ; z++ )
-				{
-					difference_type zz = z * z;
-
-					for( difference_type y = -2 ; y <= 2 ; y++ )
-					{
-						difference_type yy = y * y;
-
-						for( difference_type x = -2 ; x <= 2 ; x++ )
-						{
-							difference_type xx = x * x;
-
-							double rrr = std::sqrt( static_cast< double >( in( i + x, j + y, k + z ) ) );
-							double len = std::sqrt( static_cast< double >( xx + yy + zz ) );
-
-							if( r + len <= rrr && len > 0 )
-							{
-								flag = true;
-							}
-						}
-					}
-				}
-
-				if( flag )
-				{
-					out( i, j, k ) = 0;
-				}
-				else
-				{
-					out( i, j, k ) = static_cast< value_type >( in( i, j, k ) );
-				}
-			}
-		}
-	}
-
 }
 
 /// @}

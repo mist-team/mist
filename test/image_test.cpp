@@ -240,7 +240,7 @@ void euclidean_distance_skeleton_test( )
 
 	{
 		mist::timer t;
-		mist::skeleton1( tmp2, tmp2 );
+		//mist::skeleton1( tmp2, tmp2 );
 		mist::skeleton( tmp2, tmp2 );
 		std::cout << "Computation time for Calvin: " << t << " sec" << std::endl;
 	}
