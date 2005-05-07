@@ -47,15 +47,16 @@ _MIST_BEGIN
 //! 
 //! @attention 入力画像はあらかじめ，しきい値処理を行っておく必要がある．
 //! @attention グリッドの点は左上を原点とする．
-//! @attention メッシュの上下左右を決める点は３点入力し，左側に大きな円を２個近づけて配置する．
+//! @attention メッシュの上下左右を決める点をL字型に4点配置し，Lの底辺に3点を配置する．
 //! 
 //! 出力されるメッシュの座標のうち，対応する点が見つからないものには (-1,-1) を出力する．
 //! 
-//! @param[in]     chart           … 入力画像（メッシュが映っている画像）
-//! @param[in,out] grid            … メッシュの各店の座標を入力とし，画像中の座標を格納がされる
-//! @param[in]     left_circularX  … メッシュの上下左右を決めるための左側の点のメッシュ上での列方向の位置（０から数えた時の位置）
-//! @param[in]     right_circularX … メッシュの上下左右を決めるための右側の点のメッシュ上での列方向の位置（０から数えた時の位置）
-//! @param[in]     circularY       … メッシュの上下左右を決めるための２つの点のメッシュ上での行方向の位置（０から数えた時の位置）
+//! @param[in]     chart  … 入力画像（メッシュが映っている画像）
+//! @param[in,out] grid   … メッシュの各店の座標を入力とし，画像中の座標を格納がされる
+//! @param[in]     leftX  … メッシュの上下左右を決めるための左側の点のメッシュ上での列方向の位置（０から数えた時の位置）
+//! @param[in]     leftY  … メッシュの上下左右を決めるための左側の点のメッシュ上での行方向の位置（０から数えた時の位置）
+//! @param[in]     rightX … メッシュの上下左右を決めるための右側の点のメッシュ上での列方向の位置（０から数えた時の位置）
+//! @param[in]     rightY … メッシュの上下左右を決めるための右側の点のメッシュ上での行方向の位置（０から数えた時の位置）
 //! 
 //! @return メッシュの抽出に成功したかどうか
 //! 
@@ -67,7 +68,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	typedef array2< T, Allocator >::size_type size_type;
 	typedef array2< T, Allocator >::difference_type difference_type;
 	typedef vector2< double > vector_type;
-	array2< unsigned short > binary;
+	array2< size_type > binary;
 
 
 	// ２値画像に変換
@@ -185,6 +186,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	difference_type index1 = 0;
 	difference_type index2 = 0;
 	difference_type index3 = 0;
+	difference_type index4 = 0;
 	difference_type max = 0;
 	for( i = 1, max = 0 ; i <= labelnum ; i++ )
 	{
@@ -212,40 +214,106 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 			index3 = i;
 		}
 	}
+	// 4番目に大きな領域を見つける
+	for( i = 1, max = 0 ; i <= labelnum ; i++ )
+	{
+		if( i != index1 && i != index2&& i != index3 && count[ i ] > max )
+		{
+			max = count[ i ];
+			index4 = i;
+		}
+	}
 
 	vector_type p1, p2, p3;
 	vector_type p1_ = grid( leftX, leftY );
 	vector_type p2_ = grid( leftX, rightY );
 	vector_type p3_ = grid( rightX, rightY );
-	// 面積の大きい領域で，中心に来る円の座標を決定する
+	// 面積の大きい領域で，第4の点を決定する
 	{
 		difference_type i1 = index1;
 		difference_type i2 = index2;
 		difference_type i3 = index3;
+		difference_type i4 = index4;
 		vector_type pp1 = pos[ index1 ];
 		vector_type pp2 = pos[ index2 ];
 		vector_type pp3 = pos[ index3 ];
+		vector_type pp4 = pos[ index4 ];
 		double len12 = ( pp1 - pp2 ).length( );
 		double len13 = ( pp1 - pp3 ).length( );
+		double len14 = ( pp1 - pp4 ).length( );
 		double len23 = ( pp2 - pp3 ).length( );
+		double len24 = ( pp2 - pp4 ).length( );
+		double len34 = ( pp3 - pp4 ).length( );
 
-		if( len12 >= len13 && len12 >= len23 )
+		// 三角形を構成する３点を選ぶ
+		double l123 = len12 + len23 + len13;
+		double l124 = len12 + len24 + len14;
+		double l134 = len13 + len34 + len14;
+		double l234 = len23 + len34 + len24;
+
+		if( l123 >= l124 && l123 >= l134 && l123 >= l234 )
 		{
 			index1 = i1;
-			index2 = i3;
-			index3 = i2;
+			index2 = i2;
+			index3 = i3;
+			index4 = i4;
 		}
-		else if( len13 >= len12 && len13 >= len23 )
+		else if( l124 >= l123 && l124 >= l134 && l124 >= l234 )
+		{
+			index1 = i1;
+			index2 = i2;
+			index3 = i4;
+			index4 = i3;
+		}
+		else if( l134 >= l123 && l134 >= l124 && l134 >= l234 )
+		{
+			index1 = i1;
+			index2 = i4;
+			index3 = i3;
+			index4 = i2;
+		}
+		else
+		{
+			index1 = i4;
+			index2 = i2;
+			index3 = i3;
+			index4 = i1;
+		}
+	}
+
+	// 面積の大きい領域で，Lの左上の点を決定する
+	{
+		difference_type i1 = index1;
+		difference_type i2 = index2;
+		difference_type i3 = index3;
+		difference_type i4 = index4;
+		vector_type pp1 = pos[ index1 ];
+		vector_type pp2 = pos[ index2 ];
+		vector_type pp3 = pos[ index3 ];
+		vector_type pp4 = pos[ index4 ];
+
+		// 第4の点から最も遠い点を選び，それの番号を１にする
+		double len14 = ( pp1 - pp4 ).length( );
+		double len24 = ( pp2 - pp4 ).length( );
+		double len34 = ( pp3 - pp4 ).length( );
+
+		if( len14 >= len24 && len14 >= len34 )
 		{
 			index1 = i1;
 			index2 = i2;
 			index3 = i3;
 		}
-		else
+		else if( len24 >= len14 && len24 >= len34 )
 		{
 			index1 = i2;
 			index2 = i1;
 			index3 = i3;
+		}
+		else
+		{
+			index1 = i3;
+			index2 = i1;
+			index3 = i2;
 		}
 	}
 
@@ -255,11 +323,11 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		vector_type p32 = pos[ index3 ] - pos[ index2 ];
 		vector3< double > v12( p12.x, p12.y, 0 );
 		vector3< double > v32( p32.x, p32.y, 0 );
-		vector3< double > v = v32.outer( v12 );
+		//　vector3< double > v = v32.outer( v12 );
 		if( v32.outer( v12 ).z >= 0 )
 		{
-			difference_type tmp = index1;
-			index1 = index3;
+			difference_type tmp = index2;
+			index2 = index3;
 			index3 = tmp;
 		}
 
@@ -297,8 +365,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 			}
 		}
 	}
-
-	return( true );
 
 	// 変換後のグリッド位置が撮影された絵の円内に入っていて，かつ基準ラインから前後に2ライン以内のものを優先的に割り当てる
 	matrix< int > found( rows, cols );
@@ -352,7 +418,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		}
 	}
 
-	return( true );
 
 	while( true )
 	{
