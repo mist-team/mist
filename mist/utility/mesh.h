@@ -60,7 +60,9 @@ _MIST_BEGIN
 //! @return メッシュの抽出に成功したかどうか
 //! 
 template < class T, class Allocator >
-bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double > > &grid, size_t left_circularX, size_t right_circularX, size_t circularY )
+bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double > > &grid,
+					typename array2< T, Allocator >::difference_type leftX, typename array2< T, Allocator >::difference_type leftY,
+					typename array2< T, Allocator >::difference_type rightX, typename array2< T, Allocator >::difference_type rightY )
 {
 	typedef array2< T, Allocator >::size_type size_type;
 	typedef array2< T, Allocator >::difference_type difference_type;
@@ -179,19 +181,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		}
 	}
 
-
-	// 不要な領域を画像から取り除く
-	//for( j = 0 ; j < chart.height( ) - 0 ; j++ )
-	//{
-	//	for( i = 0 ; i < chart.width( ) - 0 ; i++ )
-	//	{
-	//		if( count[ binary( i, j ) ] == 0 )
-	//		{
-	//			chart( i, j ) = 255;
-	//		}
-	//	}
-	//}
-
 	// 領域の面積の１番大きいものを選ぶ
 	difference_type index1 = 0;
 	difference_type index2 = 0;
@@ -224,12 +213,15 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		}
 	}
 
-	difference_type lindex, rindex;
-	vector_type p1, p2;
-	vector_type p1_ = grid( circularY, left_circularX );
-	vector_type p2_ = grid( circularY, right_circularX );
-	// 面積の大きい領域で，隣り合っているほうを１，そうでないほうを2とラベルつける
+	vector_type p1, p2, p3;
+	vector_type p1_ = grid( leftX, leftY );
+	vector_type p2_ = grid( leftX, rightY );
+	vector_type p3_ = grid( rightX, rightY );
+	// 面積の大きい領域で，中心に来る円の座標を決定する
 	{
+		difference_type i1 = index1;
+		difference_type i2 = index2;
+		difference_type i3 = index3;
 		vector_type pp1 = pos[ index1 ];
 		vector_type pp2 = pos[ index2 ];
 		vector_type pp3 = pos[ index3 ];
@@ -237,89 +229,87 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		double len13 = ( pp1 - pp3 ).length( );
 		double len23 = ( pp2 - pp3 ).length( );
 
-		if( len12 < len13 && len12 < len23 )
+		if( len12 >= len13 && len12 >= len23 )
 		{
-			p2 = pp3;
-			rindex = index3;
-			if( len13 < len23 )
-			{
-				p1 = pp2;
-				lindex = index2;
-			}
-			else
-			{
-				p1 = pp1;
-				lindex = index1;
-			}
+			index1 = i1;
+			index2 = i3;
+			index3 = i2;
 		}
-		else if( len13 < len12 && len13 < len23 )
+		else if( len13 >= len12 && len13 >= len23 )
 		{
-			p2 = pp2;
-			rindex = index2;
-			if( len12 < len23 )
-			{
-				p1 = pp3;
-				lindex = index3;
-			}
-			else
-			{
-				p1 = pp1;
-				lindex = index1;
-			}
+			index1 = i1;
+			index2 = i2;
+			index3 = i3;
 		}
 		else
 		{
-			p2 = pp1;
-			rindex = index1;
-			if( len12 < len13 )
-			{
-				p1 = pp3;
-				lindex = index3;
-			}
-			else
-			{
-				p1 = pp2;
-				lindex = index2;
-			}
+			index1 = i2;
+			index2 = i1;
+			index3 = i3;
 		}
 	}
 
-
-	// 求まった大きな２つの円の配置を元にグリッドの座標を更新する
 	{
-		double len1 = ( p2  - p1  ).length( );
-		double len2 = ( p2_ - p1_ ).length( );
-		double scale = len1 / len2;
-		vector_type dp = p1 - p1_;
-		vector_type d1 = ( p2  - p1  ).unit( );
-		vector_type d2 = ( p2_ - p1_ ).unit( );
-		double c = d1 ^ d2;
-		double s = std::sqrt( 1.0 - c * c );
-		if( ( d2.x * c - d1.x ) * d2.y < 0 || ( d1.y - d2.y * c ) * d2.x < 0 )
+		// ベクトルの外積が紙面の手前を向くように割り当てる
+		vector_type p12 = pos[ index1 ] - pos[ index2 ];
+		vector_type p32 = pos[ index3 ] - pos[ index2 ];
+		vector3< double > v12( p12.x, p12.y, 0 );
+		vector3< double > v32( p32.x, p32.y, 0 );
+		vector3< double > v = v32.outer( v12 );
+		if( v32.outer( v12 ).z >= 0 )
 		{
-			s = -s;
+			difference_type tmp = index1;
+			index1 = index3;
+			index3 = tmp;
 		}
 
-		for( i = 0 ; i < grid.size( ) ; i++ )
+		p1 = pos[ index1 ];
+		p2 = pos[ index2 ];
+		p3 = pos[ index3 ];
+	}
+
+
+	// 求まった大きな３つの円の配置を元にグリッドの座標を更新する
+	difference_type r, c, rows = grid.rows( ), cols = grid.cols( );
+	{
+		double scaleX = ( p3  - p2 ).length( ) / static_cast< double >( rightX - leftX );
+		//double scaleY = ( p1  - p2 ).length( ) / static_cast< double >( leftY - rightY );
+		double scaleY = ( p1  - p2 ).length( ) / static_cast< double >( leftY - rightY );
+
+		if( scaleX < 0 )
 		{
-			vector_type v = grid[ i ] - p1_;
-			grid[ i ].x = ( v.x * c - v.y * s ) * scale + p1.x;
-			grid[ i ].y = ( v.x * s + v.y * c ) * scale + p1.y;
+			scaleX = -scaleX;
+		}
+		if( scaleY < 0 )
+		{
+			scaleY = -scaleY;
+		}
+
+		vector_type dX = ( p3  - p2 ).unit( ) * scaleX;
+		vector_type dY = ( p1  - p2 ).unit( ) * scaleY;
+
+		for( r = 0 ; r < rows ; r++ )
+		{
+			for( c = 0 ; c < cols ; c++ )
+			{
+				vector_type &p = grid( r, c );
+				p = p2 + dX * ( c - leftX ) + dY * ( rightY - r );
+			}
 		}
 	}
+
+	return( true );
 
 	// 変換後のグリッド位置が撮影された絵の円内に入っていて，かつ基準ラインから前後に2ライン以内のものを優先的に割り当てる
-	difference_type r, c, rows = grid.rows( ), cols = grid.cols( );
-	difference_type rrr[ 3 ] = { 0, 1, -1 };
 	matrix< int > found( rows, cols );
 	matrix< double > flength( rows, cols );
-	for( r = 0 ; r <= 2 ; r++ )
+	for( r = rightY ; r >= leftY ; r-- )
 	{
-		for( c = left_circularX ; c <= static_cast< difference_type >( right_circularX ) ; c++ )
+		for( c = leftX ; c <= rightX ; c++ )
 		{
-			vector_type &p = grid( circularY - rrr[ r ], c );
-			size_type x = static_cast< size_type >( p.x );
-			size_type y = static_cast< size_type >( p.y );
+			vector_type &p = grid( r, c );
+			difference_type x = static_cast< size_type >( p.x );
+			difference_type y = static_cast< size_type >( p.y );
 
 			difference_type index = -1;
 			double min = 1.0e10;
@@ -347,22 +337,22 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 				// 対応点が見つかったので，以降の探索から除外する
 				vector_type diff = pos[ index ] - p;
 				p = pos[ index ];
-				found( circularY - rrr[ r ], c ) = 1;
+				found( r, c ) = 1;
 				mask[ index ] = true;
 
-				if( r == 0 )
+				if( r == rightY )
+				for( difference_type rr = 0 ; rr < rows ; rr++ )
 				{
-					for( difference_type rr = 0 ; rr < rows ; rr++ )
+					if( found( rr, c ) == 0 )
 					{
-						if( found( rr, c ) == 0 )
-						{
-							grid( rr, c ) += diff;
-						}
+						grid( rr, c ) += diff;
 					}
 				}
 			}
 		}
 	}
+
+	return( true );
 
 	while( true )
 	{
