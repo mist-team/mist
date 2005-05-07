@@ -183,10 +183,10 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	}
 
 	// 領域の面積の１番大きいものを選ぶ
-	difference_type index1 = 0;
-	difference_type index2 = 0;
-	difference_type index3 = 0;
-	difference_type index4 = 0;
+	difference_type index1 = -1;
+	difference_type index2 = -1;
+	difference_type index3 = -1;
+	difference_type index4 = -1;
 	difference_type max = 0;
 	for( i = 1, max = 0 ; i <= labelnum ; i++ )
 	{
@@ -217,7 +217,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	// 4番目に大きな領域を見つける
 	for( i = 1, max = 0 ; i <= labelnum ; i++ )
 	{
-		if( i != index1 && i != index2&& i != index3 && count[ i ] > max )
+		if( i != index1 && i != index2 && i != index3 && count[ i ] > max )
 		{
 			max = count[ i ];
 			index4 = i;
@@ -341,7 +341,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	difference_type r, c, rows = grid.rows( ), cols = grid.cols( );
 	{
 		double scaleX = ( p3  - p2 ).length( ) / static_cast< double >( rightX - leftX );
-		//double scaleY = ( p1  - p2 ).length( ) / static_cast< double >( leftY - rightY );
 		double scaleY = ( p1  - p2 ).length( ) / static_cast< double >( leftY - rightY );
 
 		if( scaleX < 0 )
@@ -366,17 +365,20 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		}
 	}
 
+
 	// 変換後のグリッド位置が撮影された絵の円内に入っていて，かつ基準ラインから前後に2ライン以内のものを優先的に割り当てる
 	matrix< int > found( rows, cols );
 	matrix< double > flength( rows, cols );
-	for( r = rightY ; r >= leftY ; r-- )
+	for( r = rightY ; r >= rightY - 1 ; r-- )
 	{
 		for( c = leftX ; c <= rightX ; c++ )
 		{
-			vector_type &p = grid( r, c );
-			difference_type x = static_cast< size_type >( p.x );
-			difference_type y = static_cast< size_type >( p.y );
+			if( found( r, c ) == 1 )
+			{
+				continue;
+			}
 
+			vector_type &p = grid( r, c );
 			difference_type index = -1;
 			double min = 1.0e10;
 			for( i = 1 ; i <= labelnum ; i++ )
@@ -407,13 +409,100 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 				mask[ index ] = true;
 
 				if( r == rightY )
-				for( difference_type rr = 0 ; rr < rows ; rr++ )
 				{
-					if( found( rr, c ) == 0 )
+					for( difference_type rr = 0 ; rr < rows ; rr++ )
 					{
-						grid( rr, c ) += diff;
+						if( found( rr, c ) == 0 )
+						{
+							grid( rr, c ) += diff;
+						}
 					}
 				}
+			}
+		}
+	}
+
+	for( r = rightY ; r >= leftY ; r-- )
+	{
+		for( c = leftX ; c <= leftX + 1 ; c++ )
+		{
+			if( found( r, c ) == 1 )
+			{
+				continue;
+			}
+
+			vector_type &p = grid( r, c );
+			difference_type index = -1;
+			double min = 1.0e10;
+			for( i = 1 ; i <= labelnum ; i++ )
+			{
+				if( !mask[ i ] )
+				{
+					double l = ( pos[ i ] - p ).length( );
+					if( l < min )
+					{
+						min = l;
+						index = i;
+					}
+				}
+			}
+
+			if( index < 0 )
+			{
+				// 対応点が見つからなかったので，見つからなかったマークを入れる
+				p.x = -1;
+				p.y = -1;
+			}
+			else
+			{
+				// 対応点が見つかったので，以降の探索から除外する
+				p = pos[ index ];
+				found( r, c ) = 1;
+				mask[ index ] = true;
+			}
+		}
+	}
+
+	// 再度，グリッドのアップデートを行う
+	for( r = rightY ; r >= leftY ; r-- )
+	{
+		for( c = leftX ; c <= rightX ; c++ )
+		{
+			if( found( r, c ) == 1 )
+			{
+				continue;
+			}
+
+			vector_type &p = grid( r, c );
+			grid( r, c ) = grid( r + 1, c ) + grid( r, c - 1 ) - grid( r + 1, c - 1 );
+
+			difference_type index = -1;
+			double min = 1.0e10;
+			for( i = 1 ; i <= labelnum ; i++ )
+			{
+				if( !mask[ i ] )
+				{
+					double l = ( pos[ i ] - p ).length( );
+					if( l < min )
+					{
+						min = l;
+						index = i;
+					}
+				}
+			}
+
+			if( index < 0 )
+			{
+				// 対応点が見つからなかったので，見つからなかったマークを入れる
+				p.x = -1;
+				p.y = -1;
+			}
+			else
+			{
+				// 対応点が見つかったので，以降の探索から除外する
+				p = pos[ index ];
+				found( r, c ) = 1;
+				mask[ index ] = true;
 			}
 		}
 	}
@@ -523,7 +612,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 
 				if( index < 0 || min > length_threshold )
 				{
-					// 対応店が見つからなかったので，見つからなかったマークを入れる
+					// 対応点が見つからなかったので，見つからなかったマークを入れる
 					p.x = -1;
 					p.y = -1;
 					found( r, c ) = 2;
