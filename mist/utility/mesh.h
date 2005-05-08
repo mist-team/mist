@@ -81,7 +81,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 
 	array< bool > mask( labelnum + 1 );
 	array< difference_type > count( labelnum + 1 );
-	array< difference_type > round( labelnum + 1 );
+	array< double > round( labelnum + 1 );
 	array< vector_type > pos( labelnum + 1 );
 
 	for( i = 0 ; i <= labelnum ; i++ )
@@ -92,10 +92,11 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		pos[ i ].y = 0;
 	}
 
-	// 各ラベルの画素数と重心位置を求める
-	for( j = 0 ; j < chart.height( ) ; j++ )
+	// 各ラベルの画素数，重心位置，周囲長を求める
+	const double _2 = std::sqrt( 2.0 );
+	for( j = 0 ; j < chart.height( ) - 1 ; j++ )
 	{
-		for( i = 0 ; i < chart.width( ) ; i++ )
+		for( i = 0 ; i < chart.width( ) - 1 ; i++ )
 		{
 			size_type label = binary( i, j );
 			if( label > 0 )
@@ -104,8 +105,52 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 				pos[ label ].x += i;
 				pos[ label ].y += j;
 			}
+
+			size_type l0 = label;
+			size_type l1 = binary( i + 1, j     );
+			size_type l2 = binary( i    , j + 1 );
+			size_type l3 = binary( i + 1, j + 1 );
+
+			if( l0 > 0 )
+			{
+				size_type num_eq = 0;
+				if( l1 == l0 ) num_eq++;
+				if( l2 == l0 ) num_eq++;
+				if( l3 == l0 ) num_eq++;
+
+				if( num_eq == 2 )
+				{
+					round[ l0 ] += _2;
+				}
+				else if( num_eq == 1 && l0 != l3 )
+				{
+					round[ l0 ] += 1.0;
+				}
+			}
+			else if( l1 > 0 )
+			{
+				if( l1 == l3 )
+				{
+					if( l1 == l2 )
+					{
+						round[ l1 ] += _2;
+					}
+					else
+					{
+						round[ l1 ] += 1.0;
+					}
+				}
+			}
+			else if( l2 > 0 )
+			{
+				if( l2 == l3 )
+				{
+					round[ l2 ] += 1.0;
+				}
+			}
 		}
 	}
+
 
 	// 各領域の重心位置を計算する
 	for( i = 1 ; i <= labelnum ; i++ )
@@ -113,25 +158,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		double num = count[ i ];
 		pos[ i ].x /= num;
 		pos[ i ].y /= num;
-	}
-
-	// 円形でない領域を取り除くために，各領域の境界画素の数をカウントする
-	for( j = 1 ; j < chart.height( ) - 1 ; j++ )
-	{
-		for( i = 1 ; i < chart.width( ) - 1 ; i++ )
-		{
-			unsigned short label = binary( i, j );
-			if( label != 0 )
-			{
-				double x = i - pos[ label ].x;
-				double y = j - pos[ label ].y;
-				const double pai = 3.1415926535897932384626433832795;
-				if( x * x + y * y <= count[ label ] / pai * 2.25 )
-				{
-					round[ binary( i, j ) ]++;
-				}
-			}
-		}
 	}
 
 	// 画面の境界に接している領域を取り除く
@@ -172,8 +198,10 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		else
 		{
 			const double pai = 3.1415926535897932384626433832795;
-			double e = round[ i ] / static_cast< double >( count[ i ] );
-			if( e < 0.95 )
+			const double S = count[ i ];
+			const double L = round[ i ];
+			double e = 4.0 * pai * S / ( L * L );
+			if( e < 0.4 )
 			{
 				count[ i ] = 0;
 				mask[ i ] = true;
@@ -182,47 +210,49 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		}
 	}
 
-	// 領域の面積の１番大きいものを選ぶ
+	// 領域の面積が大きいものから順番に4つ選ぶ
 	difference_type index1 = -1;
 	difference_type index2 = -1;
 	difference_type index3 = -1;
 	difference_type index4 = -1;
-	difference_type max = 0;
-	for( i = 1, max = 0 ; i <= labelnum ; i++ )
+	difference_type max1 = 0, max2 = 0, max3 = 0, max4 = 0;
+	for( i = 1 ; i <= labelnum ; i++ )
 	{
-		if( count[ i ] > max )
+		difference_type num = count[ i ];
+		if( num > max1 )
 		{
-			max = count[ i ];
+			index4 = index3;
+			index3 = index2;
+			index2 = index1;
 			index1 = i;
+			max4 = max3;
+			max3 = max2;
+			max2 = max1;
+			max1 = num;
 		}
-	}
-	// 2番目に大きな領域を見つける
-	for( i = 1, max = 0 ; i <= labelnum ; i++ )
-	{
-		if( i != index1 && count[ i ] > max )
+		else if( num > max2 )
 		{
-			max = count[ i ];
+			index4 = index3;
+			index3 = index2;
 			index2 = i;
+			max4 = max3;
+			max3 = max2;
+			max2 = num;
 		}
-	}
-	// 3番目に大きな領域を見つける
-	for( i = 1, max = 0 ; i <= labelnum ; i++ )
-	{
-		if( i != index1 && i != index2 && count[ i ] > max )
+		else if( num > max3 )
 		{
-			max = count[ i ];
+			index4 = index3;
 			index3 = i;
+			max4 = max3;
+			max3 = num;
 		}
-	}
-	// 4番目に大きな領域を見つける
-	for( i = 1, max = 0 ; i <= labelnum ; i++ )
-	{
-		if( i != index1 && i != index2 && i != index3 && count[ i ] > max )
+		else if( num > max4 )
 		{
-			max = count[ i ];
 			index4 = i;
+			max4 = num;
 		}
 	}
+
 
 	vector_type p1, p2, p3;
 	vector_type p1_ = grid( leftX, leftY );
@@ -355,9 +385,9 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		vector_type dX = ( p3  - p2 ).unit( ) * scaleX;
 		vector_type dY = ( p1  - p2 ).unit( ) * scaleY;
 
-		for( r = 0 ; r < rows ; r++ )
+		for( r = rightY ; r >= leftY ; r-- )
 		{
-			for( c = 0 ; c < cols ; c++ )
+			for( c = leftX ; c <= rightX ; c++ )
 			{
 				vector_type &p = grid( r, c );
 				p = p2 + dX * ( c - leftX ) + dY * ( rightY - r );
@@ -474,7 +504,9 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 			}
 
 			vector_type &p = grid( r, c );
-			grid( r, c ) = grid( r + 1, c ) + grid( r, c - 1 ) - grid( r + 1, c - 1 );
+
+			// 近傍点を使って，格子の初期位置を更新する
+			p = grid( r + 1, c ) + grid( r, c - 1 ) - grid( r + 1, c - 1 );
 
 			difference_type index = -1;
 			double min = 1.0e10;
@@ -591,9 +623,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 				}
 
 				vector_type &p = grid( r, c );
-				size_type x = static_cast< size_type >( p.x );
-				size_type y = static_cast< size_type >( p.y );
-				double length_threshold = flength( r, c );
 
 				difference_type index = -1;
 				double min = 1.0e10;
@@ -610,7 +639,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 					}
 				}
 
-				if( index < 0 || min > length_threshold )
+				if( index < 0 || min > flength( r, c ) )
 				{
 					// 対応点が見つからなかったので，見つからなかったマークを入れる
 					p.x = -1;
