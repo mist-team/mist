@@ -475,53 +475,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	}
 
 
-	// 再度，グリッドのアップデートを行う
-	for( r = rightY ; r >= leftY ; r-- )
-	{
-		for( c = leftX ; c <= rightX ; c++ )
-		{
-			if( found( r, c ) == 1 )
-			{
-				continue;
-			}
-
-			vector_type &p = grid( r, c );
-
-			// 近傍点を使って，格子の初期位置を更新する
-			p = grid( r + 1, c ) + grid( r, c - 1 ) - grid( r + 1, c - 1 );
-
-			difference_type index = -1;
-			double min = 1.0e10;
-			for( i = 1 ; i <= labelnum ; i++ )
-			{
-				if( !mask[ i ] )
-				{
-					double l = ( pos[ i ] - p ).length( );
-					if( l < min )
-					{
-						min = l;
-						index = i;
-					}
-				}
-			}
-
-			if( index < 0 )
-			{
-				// 対応点が見つからなかったので，見つからなかったマークを入れる
-				p.x = -1;
-				p.y = -1;
-			}
-			else
-			{
-				// 対応点が見つかったので，以降の探索から除外する
-				p = pos[ index ];
-				found( r, c ) = 1;
-				mask[ index ] = true;
-			}
-		}
-	}
-
-
 	while( true )
 	{
 		difference_type ncount = 0;
@@ -579,6 +532,50 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 					grid( r, c ) = grid( r - 1, c ) + ( grid( r - 1, c ) - grid( r - 2, c ) ).unit( ) * ( 2.0 * l2 - l1 );
 					found( r, c ) = -1;
 					flength( r, c ) = ( 2.0 * l2 - l1 ) / 2.0;
+				}
+				else if( c > 1 && r < rows - 1 && found( r + 1, c ) == 1 && found( r, c - 1 ) == 1 && found( r + 1, c - 1 ) == 1 )
+				{
+					vector_type &p0 = grid( r + 1, c - 1 );
+					vector_type &p1 = grid( r + 1, c );
+					vector_type &p2 = grid( r, c - 1 );
+					vector_type d = p1 + p2 - 2.0 * p0;
+
+					grid( r, c ) = d + p0;
+					found( r, c ) = -1;
+					flength( r, c ) = 0.5 * d.length( );
+				}
+				else if( c > 1 && r > 1 && found( r - 1, c ) == 1 && found( r, c - 1 ) == 1 && found( r - 1, c - 1 ) == 1 )
+				{
+					vector_type &p0 = grid( r - 1, c - 1 );
+					vector_type &p1 = grid( r - 1, c );
+					vector_type &p2 = grid( r, c - 1 );
+					vector_type d = p1 + p2 - 2.0 * p0;
+
+					grid( r, c ) = d + p0;
+					found( r, c ) = -1;
+					flength( r, c ) = 0.5 * d.length( );
+				}
+				else if( c < cols - 1 && r > 1 && found( r, c + 1 ) == 1 && found( r - 1, c ) == 1 && found( r - 1, c + 1 ) == 1 )
+				{
+					vector_type &p0 = grid( r - 1, c + 1 );
+					vector_type &p1 = grid( r - 1, c );
+					vector_type &p2 = grid( r, c + 1 );
+					vector_type d = p1 + p2 - 2.0 * p0;
+
+					grid( r, c ) = d + p0;
+					found( r, c ) = -1;
+					flength( r, c ) = 0.5 * d.length( );
+				}
+				else if( c < cols - 1 && r < rows - 1 && found( r, c + 1 ) == 1 && found( r + 1, c ) == 1 && found( r + 1, c + 1 ) == 1 )
+				{
+					vector_type &p0 = grid( r + 1, c + 1 );
+					vector_type &p1 = grid( r + 1, c );
+					vector_type &p2 = grid( r, c + 1 );
+					vector_type d = p1 + p2 - 2.0 * p0;
+
+					grid( r, c ) = d + p0;
+					found( r, c ) = -1;
+					flength( r, c ) = 0.5 * d.length( );
 				}
 				else
 				{

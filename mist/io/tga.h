@@ -327,7 +327,7 @@ namespace __tga_controller__
 
 			if( num_bytes <= static_cast< size_type >( pbuff - buff ) )
 			{
-				// RLEのデコードに失敗
+				// RLEのエンコードに失敗
 				delete [] buff;
 				return( num_bytes );
 			}
@@ -597,6 +597,8 @@ namespace __tga_controller__
 
 			if( is_encode_RLE )
 			{
+				// RLEエンコードを行う
+				// 失敗したら，無圧縮に変更する
 				difference_type nbytes = encode_RLE( image_data, width * height * pixel_bytes, pixel_bytes );
 
 				if( nbytes == width * height * pixel_bytes )
@@ -605,7 +607,6 @@ namespace __tga_controller__
 					header.image_descriptor = ( from_top ? 0x20 : 0 ) | ( from_left ? 0 : 0x10 );
 				}
 
-				// 今後サポート予定
 				return( _tga_header_::bytes + nbytes );
 			}
 			else
@@ -706,7 +707,7 @@ namespace __tga_controller__
 //! TGAファイルを読み込んで，MISTコンテナへ格納する．
 //! また，MISTコンテナからTGAファイルへの書き出しをサポート．
 //! 16，24，32ビットのビットマップに対応．
-//! 圧縮されたビットマップは未サポート．
+//! RLE圧縮されたTGAファイルの入出力をサポート．
 //!
 //! @code 次のヘッダをインクルードする
 //! #include <mist/io/tga.h>
