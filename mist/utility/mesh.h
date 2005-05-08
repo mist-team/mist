@@ -57,13 +57,15 @@ _MIST_BEGIN
 //! @param[in]     leftY  … メッシュの上下左右を決めるための左側の点のメッシュ上での行方向の位置（０から数えた時の位置）
 //! @param[in]     rightX … メッシュの上下左右を決めるための右側の点のメッシュ上での列方向の位置（０から数えた時の位置）
 //! @param[in]     rightY … メッシュの上下左右を決めるための右側の点のメッシュ上での行方向の位置（０から数えた時の位置）
+//! @param[in]     threshold_for_circular_ratio … メッシュの候補を絞り込むための円形度のしきい値（これより小さい値のものは除外）
 //! 
 //! @return メッシュの抽出に成功したかどうか
 //! 
 template < class T, class Allocator >
 bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double > > &grid,
 					typename array2< T, Allocator >::difference_type leftX, typename array2< T, Allocator >::difference_type leftY,
-					typename array2< T, Allocator >::difference_type rightX, typename array2< T, Allocator >::difference_type rightY )
+					typename array2< T, Allocator >::difference_type rightX, typename array2< T, Allocator >::difference_type rightY,
+					double threshold_for_circular_ratio = 0.4 )
 {
 	typedef array2< T, Allocator >::size_type size_type;
 	typedef array2< T, Allocator >::difference_type difference_type;
@@ -193,6 +195,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		if( count[ i ] < minimum_count )
 		{
 			count[ i ] = 0;
+			round[ i ] = 0;
 			mask[ i ] = true;
 		}
 		else
@@ -201,25 +204,26 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 			const double S = count[ i ];
 			const double L = round[ i ];
 			double e = 4.0 * pai * S / ( L * L );
-			if( e < 0.4 )
+			if( e < threshold_for_circular_ratio )
 			{
 				count[ i ] = 0;
+				round[ i ] = 0;
 				mask[ i ] = true;
 			}
 			//std::cout << "ラベル: " << i << ", 円形度: " << e << std::endl;
 		}
 	}
 
-	// 領域の面積が大きいものから順番に4つ選ぶ
+	// 領域の周囲長が大きいものから順番に4つ選ぶ
 	difference_type index1 = -1;
 	difference_type index2 = -1;
 	difference_type index3 = -1;
 	difference_type index4 = -1;
-	difference_type max1 = 0, max2 = 0, max3 = 0, max4 = 0;
+	double max1 = 0, max2 = 0, max3 = 0, max4 = 0;
 	for( i = 1 ; i <= labelnum ; i++ )
 	{
-		difference_type num = count[ i ];
-		if( num > max1 )
+		double len = round[ i ];
+		if( len > max1 )
 		{
 			index4 = index3;
 			index3 = index2;
@@ -228,36 +232,33 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 			max4 = max3;
 			max3 = max2;
 			max2 = max1;
-			max1 = num;
+			max1 = len;
 		}
-		else if( num > max2 )
+		else if( len > max2 )
 		{
 			index4 = index3;
 			index3 = index2;
 			index2 = i;
 			max4 = max3;
 			max3 = max2;
-			max2 = num;
+			max2 = len;
 		}
-		else if( num > max3 )
+		else if( len > max3 )
 		{
 			index4 = index3;
 			index3 = i;
 			max4 = max3;
-			max3 = num;
+			max3 = len;
 		}
-		else if( num > max4 )
+		else if( len > max4 )
 		{
 			index4 = i;
-			max4 = num;
+			max4 = len;
 		}
 	}
 
 
 	vector_type p1, p2, p3;
-	vector_type p1_ = grid( leftX, leftY );
-	vector_type p2_ = grid( leftX, rightY );
-	vector_type p3_ = grid( rightX, rightY );
 	// 面積の大きい領域で，第4の点を決定する
 	{
 		difference_type i1 = index1;
@@ -395,103 +396,84 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		}
 	}
 
-
-	// 変換後のグリッド位置が撮影された絵の円内に入っていて，かつ基準ラインから前後に2ライン以内のものを優先的に割り当てる
+	// マークした点にの線上に乗るものを先に割り当てる
 	matrix< int > found( rows, cols );
 	matrix< double > flength( rows, cols );
-	for( r = rightY ; r >= rightY - 1 ; r-- )
+	for( c = leftX, r = rightY ; c <= rightX ; c++ )
 	{
-		for( c = leftX ; c <= rightX ; c++ )
+		vector_type &p = grid( r, c );
+		difference_type index = -1;
+		double min = 1.0e10;
+		for( i = 1 ; i <= labelnum ; i++ )
 		{
-			if( found( r, c ) == 1 )
+			if( !mask[ i ] )
 			{
-				continue;
-			}
-
-			vector_type &p = grid( r, c );
-			difference_type index = -1;
-			double min = 1.0e10;
-			for( i = 1 ; i <= labelnum ; i++ )
-			{
-				if( !mask[ i ] )
+				double l = ( pos[ i ] - p ).length( );
+				if( l < min )
 				{
-					double l = ( pos[ i ] - p ).length( );
-					if( l < min )
-					{
-						min = l;
-						index = i;
-					}
+					min = l;
+					index = i;
 				}
 			}
+		}
 
-			if( index < 0 )
-			{
-				// 対応点が見つからなかったので，見つからなかったマークを入れる
-				p.x = -1;
-				p.y = -1;
-			}
-			else
-			{
-				// 対応点が見つかったので，以降の探索から除外する
-				vector_type diff = pos[ index ] - p;
-				p = pos[ index ];
-				found( r, c ) = 1;
-				mask[ index ] = true;
+		if( index < 0 )
+		{
+			// 対応点が見つからなかったので，見つからなかったマークを入れる
+			p.x = -1;
+			p.y = -1;
+		}
+		else
+		{
+			// 対応点が見つかったので，以降の探索から除外する
+			vector_type diff = pos[ index ] - p;
+			p = pos[ index ];
+			found( r, c ) = 1;
+			mask[ index ] = true;
 
-				if( r == rightY )
+			for( difference_type rr = 0 ; rr < rows ; rr++ )
+			{
+				if( found( rr, c ) == 0 )
 				{
-					for( difference_type rr = 0 ; rr < rows ; rr++ )
-					{
-						if( found( rr, c ) == 0 )
-						{
-							grid( rr, c ) += diff;
-						}
-					}
+					grid( rr, c ) += diff;
 				}
 			}
 		}
 	}
 
-	for( r = rightY ; r >= leftY ; r-- )
+	for( r = rightY - 1, c = leftX ; r >= leftY ; r-- )
 	{
-		for( c = leftX ; c <= leftX + 1 ; c++ )
+		vector_type &p = grid( r, c );
+		difference_type index = -1;
+		double min = 1.0e10;
+		for( i = 1 ; i <= labelnum ; i++ )
 		{
-			if( found( r, c ) == 1 )
+			if( !mask[ i ] )
 			{
-				continue;
-			}
-
-			vector_type &p = grid( r, c );
-			difference_type index = -1;
-			double min = 1.0e10;
-			for( i = 1 ; i <= labelnum ; i++ )
-			{
-				if( !mask[ i ] )
+				double l = ( pos[ i ] - p ).length( );
+				if( l < min )
 				{
-					double l = ( pos[ i ] - p ).length( );
-					if( l < min )
-					{
-						min = l;
-						index = i;
-					}
+					min = l;
+					index = i;
 				}
 			}
+		}
 
-			if( index < 0 )
-			{
-				// 対応点が見つからなかったので，見つからなかったマークを入れる
-				p.x = -1;
-				p.y = -1;
-			}
-			else
-			{
-				// 対応点が見つかったので，以降の探索から除外する
-				p = pos[ index ];
-				found( r, c ) = 1;
-				mask[ index ] = true;
-			}
+		if( index < 0 )
+		{
+			// 対応点が見つからなかったので，見つからなかったマークを入れる
+			p.x = -1;
+			p.y = -1;
+		}
+		else
+		{
+			// 対応点が見つかったので，以降の探索から除外する
+			p = pos[ index ];
+			found( r, c ) = 1;
+			mask[ index ] = true;
 		}
 	}
+
 
 	// 再度，グリッドのアップデートを行う
 	for( r = rightY ; r >= leftY ; r-- )
