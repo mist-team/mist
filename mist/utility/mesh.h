@@ -30,6 +30,9 @@
 #include "../drawing.h"
 #endif
 
+
+#include <deque>
+
 // mist名前空間の始まり
 _MIST_BEGIN
 
@@ -70,6 +73,8 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	typedef array2< T, Allocator >::size_type size_type;
 	typedef array2< T, Allocator >::difference_type difference_type;
 	typedef vector2< double > vector_type;
+	typedef std::deque< size_type > label_list_type;
+	typedef typename label_list_type::iterator label_iterator;
 	array2< size_type > binary;
 
 
@@ -81,7 +86,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	size_type labelnum = labeling4( binary, binary );
 	//std::cout << "LabelNum: " << labelnum << std::endl;
 
-	array< bool > mask( labelnum + 1 );
+	label_list_type label_list;
 	array< difference_type > count( labelnum + 1 );
 	array< double > round( labelnum + 1 );
 	array< vector_type > pos( labelnum + 1 );
@@ -196,7 +201,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		{
 			count[ i ] = 0;
 			round[ i ] = 0;
-			mask[ i ] = true;
 		}
 		else
 		{
@@ -208,7 +212,10 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 			{
 				count[ i ] = 0;
 				round[ i ] = 0;
-				mask[ i ] = true;
+			}
+			else
+			{
+				label_list.push_back( i );
 			}
 			//std::cout << "ラベル: " << i << ", 円形度: " << e << std::endl;
 		}
@@ -386,91 +393,62 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		vector_type dX = ( p3  - p2 ).unit( ) * scaleX;
 		vector_type dY = ( p1  - p2 ).unit( ) * scaleY;
 
-		for( r = rightY ; r >= leftY ; r-- )
+		// 全てのグリッドを初期化する
+		for( size_type i = 0 ; i < grid.size( ) ; i++ )
 		{
-			for( c = leftX ; c <= rightX ; c++ )
-			{
-				vector_type &p = grid( r, c );
-				p = p2 + dX * ( c - leftX ) + dY * ( rightY - r );
-			}
+			grid[ i ].x = -1;
+			grid[ i ].y = -1;
 		}
-	}
 
-	// マークした点にの線上に乗るものを先に割り当てる
-	matrix< int > found( rows, cols );
-	matrix< double > flength( rows, cols );
-	for( c = leftX, r = rightY ; c <= rightX ; c++ )
-	{
-		vector_type &p = grid( r, c );
-		difference_type index = -1;
-		double min = 1.0e10;
-		for( i = 1 ; i <= labelnum ; i++ )
+		// マークした点にの線上に乗るものを先に割り当てる
+		for( c = leftX, r = rightY ; c <= rightX ; c++ )
 		{
-			if( !mask[ i ] )
+			vector_type &p = grid( r, c );
+			p = p2 + dX * ( c - leftX ) + dY * ( rightY - r );
+
+			double min = 1.0e10;
+			label_iterator cur = label_list.end( );
+			for( label_iterator ite = label_list.begin( ) ; ite != label_list.end( ) ; ++ite )
 			{
-				double l = ( pos[ i ] - p ).length( );
+				double l = ( pos[ *ite ] - p ).length( );
 				if( l < min )
 				{
 					min = l;
-					index = i;
+					cur = ite;
 				}
+			}
+
+			if( cur != label_list.end( ) )
+			{
+				// 対応点が見つかったので，以降の探索から除外する
+				p = pos[ *cur ];
+				label_list.erase( cur );
 			}
 		}
 
-		if( index < 0 )
+		for( r = rightY - 1, c = leftX ; r >= leftY ; r-- )
 		{
-			// 対応点が見つからなかったので，見つからなかったマークを入れる
-			p.x = -1;
-			p.y = -1;
-		}
-		else
-		{
-			// 対応点が見つかったので，以降の探索から除外する
-			vector_type diff = pos[ index ] - p;
-			p = pos[ index ];
-			found( r, c ) = 1;
-			mask[ index ] = true;
+			vector_type &p = grid( r, c );
+			p = p2 + dX * ( c - leftX ) + dY * ( rightY - r );
 
-			for( difference_type rr = 0 ; rr < rows ; rr++ )
+			double min = 1.0e10;
+			label_iterator cur = label_list.end( );
+			for( label_iterator ite = label_list.begin( ) ; ite != label_list.end( ) ; ++ite )
 			{
-				if( found( rr, c ) == 0 )
-				{
-					grid( rr, c ) += diff;
-				}
-			}
-		}
-	}
-
-	for( r = rightY - 1, c = leftX ; r >= leftY ; r-- )
-	{
-		vector_type &p = grid( r, c );
-		difference_type index = -1;
-		double min = 1.0e10;
-		for( i = 1 ; i <= labelnum ; i++ )
-		{
-			if( !mask[ i ] )
-			{
-				double l = ( pos[ i ] - p ).length( );
+				double l = ( pos[ *ite ] - p ).length( );
 				if( l < min )
 				{
 					min = l;
-					index = i;
+					cur = ite;
 				}
 			}
-		}
 
-		if( index < 0 )
-		{
-			// 対応点が見つからなかったので，見つからなかったマークを入れる
-			p.x = -1;
-			p.y = -1;
-		}
-		else
-		{
-			// 対応点が見つかったので，以降の探索から除外する
-			p = pos[ index ];
-			found( r, c ) = 1;
-			mask[ index ] = true;
+			if( cur != label_list.end( ) )
+			{
+				// 対応点が見つかったので，以降の探索から除外する
+				p = pos[ *cur ];
+				label_list.erase( cur );
+			}
 		}
 	}
 
@@ -478,109 +456,129 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	while( true )
 	{
 		difference_type ncount = 0;
-		for( r = 0 ; r < rows ; r++ )
+		for( r = 0 ; r < rows && ncount < rows * cols ; r++ )
 		{
-			for( c = 0 ; c < cols ; c++ )
+			for( c = 0 ; c < cols && ncount < rows * cols ; c++ )
 			{
-				if( found( r, c ) >= 1 )
+				vector_type &p = grid( r, c );
+
+				if( p.x != -1 || p.y != -1 )
 				{
 					ncount++;
 					continue;
 				}
 
+				double search_length = 0.0;
+
 				// 近傍の状態を使って，グリッド上の点が存在すると思われる位置を予測する
-				if( 0 < c && c < cols - 1 && found( r, c - 1 ) == 1 && found( r, c + 1 ) == 1 )
+				if( 0 < c && c < cols - 1 && grid( r, c - 1 ).x >= 0 && grid( r, c + 1 ).x >= 0 )
 				{
-					grid( r, c ) = ( grid( r, c - 1 ) + grid( r, c + 1 ) ) / 2.0;
-					found( r, c ) = -1;
-					flength( r, c ) = ( grid( r, c - 1 ) - grid( r, c + 1 ) ).length( ) / 2.0;
+					p = ( grid( r, c - 1 ) + grid( r, c + 1 ) ) / 2.0;
+					search_length = ( grid( r, c - 1 ) - grid( r, c + 1 ) ).length( ) / 2.0;
 				}
-				else if( 0 < r && r < rows - 1 && found( r - 1, c ) == 1 && found( r + 1, c ) == 1 )
+				else if( 0 < r && r < rows - 1 && grid( r - 1, c ).x >= 0 && grid( r + 1, c ).x >= 0 )
 				{
-					grid( r, c ) = ( grid( r - 1, c ) + grid( r + 1, c ) ) / 2.0;
-					found( r, c ) = -1;
-					flength( r, c ) = ( grid( r - 1, c ) - grid( r + 1, c ) ).length( ) / 2.0;
+					p = ( grid( r - 1, c ) + grid( r + 1, c ) ) / 2.0;
+					search_length = ( grid( r - 1, c ) - grid( r + 1, c ) ).length( ) / 2.0;
 				}
-				else if( c < cols - 3 && found( r, c + 1 ) == 1 && found( r, c + 2 ) == 1 && found( r, c + 3 ) == 1 )
+				else if( c < cols - 3 && grid( r, c + 1 ).x >= 0 && grid( r, c + 2 ).x >= 0 && grid( r, c + 3 ).x >= 0 )
 				{
 					double l1 = ( grid( r, c + 2 ) - grid( r, c + 3 ) ).length( );
 					double l2 = ( grid( r, c + 1 ) - grid( r, c + 2 ) ).length( );
-					grid( r, c ) = grid( r, c + 1 ) + ( grid( r, c + 1 ) - grid( r, c + 2 ) ).unit( ) * ( 2.0 * l2 - l1 );
-					found( r, c ) = -1;
-					flength( r, c ) = ( 2.0 * l2 - l1 ) / 2.0;
+					p = grid( r, c + 1 ) + ( grid( r, c + 1 ) - grid( r, c + 2 ) ).unit( ) * ( 2.0 * l2 - l1 );
+					search_length = ( 2.0 * l2 - l1 ) / 2.0;
 				}
-				else if( c > 3 && found( r, c - 1 ) == 1 && found( r, c - 2 ) == 1 && found( r, c - 3 ) == 1 )
+				else if( c > 3 && grid( r, c - 1 ).x >= 0 && grid( r, c - 2 ).x >= 0 && grid( r, c - 3 ).x >= 0 )
 				{
 					double l1 = ( grid( r, c - 2 ) - grid( r, c - 3 ) ).length( );
 					double l2 = ( grid( r, c - 1 ) - grid( r, c - 2 ) ).length( );
-					grid( r, c ) = grid( r, c - 1 ) + ( grid( r, c - 1 ) - grid( r, c - 2 ) ).unit( ) * ( 2.0 * l2 - l1 );
-					found( r, c ) = -1;
-					flength( r, c ) = ( 2.0 * l2 - l1 ) / 2.0;
+					p = grid( r, c - 1 ) + ( grid( r, c - 1 ) - grid( r, c - 2 ) ).unit( ) * ( 2.0 * l2 - l1 );
+					search_length = ( 2.0 * l2 - l1 ) / 2.0;
 				}
-				else if( r < rows - 3 && found( r + 1, c ) == 1 && found( r + 2, c ) == 1 && found( r + 3, c ) == 1 )
+				else if( r < rows - 3 && grid( r + 1, c ).x >= 0 && grid( r + 2, c ).x >= 0 && grid( r + 3, c ).x >= 0 )
 				{
 					double l1 = ( grid( r + 2, c ) - grid( r + 3, c ) ).length( );
 					double l2 = ( grid( r + 1, c ) - grid( r + 2, c ) ).length( );
-					grid( r, c ) = grid( r + 1, c ) + ( grid( r + 1, c ) - grid( r + 2, c ) ).unit( ) * ( 2.0 * l2 - l1 );
-					found( r, c ) = -1;
-					flength( r, c ) = ( 2.0 * l2 - l1 ) / 2.0;
+					p = grid( r + 1, c ) + ( grid( r + 1, c ) - grid( r + 2, c ) ).unit( ) * ( 2.0 * l2 - l1 );
+					search_length = ( 2.0 * l2 - l1 ) / 2.0;
 				}
-				else if( r > 3 && found( r - 1, c ) == 1 && found( r - 2, c ) == 1 && found( r - 3, c ) == 1 )
+				else if( r > 3 && grid( r - 1, c ).x >= 0 && grid( r - 2, c ).x >= 0 && grid( r - 3, c ).x >= 0 )
 				{
 					double l1 = ( grid( r - 2, c ) - grid( r - 3, c ) ).length( );
 					double l2 = ( grid( r - 1, c ) - grid( r - 2, c ) ).length( );
-					grid( r, c ) = grid( r - 1, c ) + ( grid( r - 1, c ) - grid( r - 2, c ) ).unit( ) * ( 2.0 * l2 - l1 );
-					found( r, c ) = -1;
-					flength( r, c ) = ( 2.0 * l2 - l1 ) / 2.0;
+					p = grid( r - 1, c ) + ( grid( r - 1, c ) - grid( r - 2, c ) ).unit( ) * ( 2.0 * l2 - l1 );
+					search_length = ( 2.0 * l2 - l1 ) / 2.0;
 				}
-				else if( c > 1 && r < rows - 1 && found( r + 1, c ) == 1 && found( r, c - 1 ) == 1 && found( r + 1, c - 1 ) == 1 )
+				else if( c > 1 && r < rows - 1 && grid( r + 1, c ).x >= 0 && grid( r, c - 1 ).x >= 0 && grid( r + 1, c - 1 ).x >= 0 )
 				{
 					vector_type &p0 = grid( r + 1, c - 1 );
 					vector_type &p1 = grid( r + 1, c );
 					vector_type &p2 = grid( r, c - 1 );
 					vector_type d = p1 + p2 - 2.0 * p0;
 
-					grid( r, c ) = d + p0;
-					found( r, c ) = -1;
-					flength( r, c ) = 0.5 * d.length( );
+					p = d + p0;
+					search_length = 0.5 * d.length( );
 				}
-				else if( c > 1 && r > 1 && found( r - 1, c ) == 1 && found( r, c - 1 ) == 1 && found( r - 1, c - 1 ) == 1 )
+				else if( c > 1 && r > 1 && grid( r - 1, c ).x >= 0 && grid( r, c - 1 ).x >= 0 && grid( r - 1, c - 1 ).x >= 0 )
 				{
 					vector_type &p0 = grid( r - 1, c - 1 );
 					vector_type &p1 = grid( r - 1, c );
 					vector_type &p2 = grid( r, c - 1 );
 					vector_type d = p1 + p2 - 2.0 * p0;
 
-					grid( r, c ) = d + p0;
-					found( r, c ) = -1;
-					flength( r, c ) = 0.5 * d.length( );
+					p = d + p0;
+					search_length = 0.5 * d.length( );
 				}
-				else if( c < cols - 1 && r > 1 && found( r, c + 1 ) == 1 && found( r - 1, c ) == 1 && found( r - 1, c + 1 ) == 1 )
+				else if( c < cols - 1 && r > 1 && grid( r, c + 1 ).x >= 0 && grid( r - 1, c ).x >= 0 && grid( r - 1, c + 1 ).x >= 0 )
 				{
 					vector_type &p0 = grid( r - 1, c + 1 );
 					vector_type &p1 = grid( r - 1, c );
 					vector_type &p2 = grid( r, c + 1 );
 					vector_type d = p1 + p2 - 2.0 * p0;
 
-					grid( r, c ) = d + p0;
-					found( r, c ) = -1;
-					flength( r, c ) = 0.5 * d.length( );
+					p = d + p0;
+					search_length = 0.5 * d.length( );
 				}
-				else if( c < cols - 1 && r < rows - 1 && found( r, c + 1 ) == 1 && found( r + 1, c ) == 1 && found( r + 1, c + 1 ) == 1 )
+				else if( c < cols - 1 && r < rows - 1 && grid( r, c + 1 ).x >= 0 && grid( r + 1, c ).x >= 0 && grid( r + 1, c + 1 ).x >= 0 )
 				{
 					vector_type &p0 = grid( r + 1, c + 1 );
 					vector_type &p1 = grid( r + 1, c );
 					vector_type &p2 = grid( r, c + 1 );
 					vector_type d = p1 + p2 - 2.0 * p0;
 
-					grid( r, c ) = d + p0;
-					found( r, c ) = -1;
-					flength( r, c ) = 0.5 * d.length( );
+					p = d + p0;
+					search_length = 0.5 * d.length( );
 				}
 				else
 				{
 					// 近傍の点が見つからなかった
 					ncount++;
+					continue;
+				}
+
+				// 予測された点を用いて最寄の点を探す
+				double min = 1.0e10;
+				label_iterator cur = label_list.end( );
+				for( label_iterator ite = label_list.begin( ) ; ite != label_list.end( ) ; ++ite )
+				{
+					double l = ( pos[ *ite ] - p ).length( );
+					if( l < min )
+					{
+						min = l;
+						cur = ite;
+					}
+				}
+
+				if( cur != label_list.end( ) && min < search_length )
+				{
+					// 対応点が見つかったので，以降の探索から除外する
+					p = pos[ *cur ];
+					label_list.erase( cur );
+				}
+				else
+				{
+					// 対応点が見つからなかったので，見つからなかったマークを入れる
+					p.x = p.y = -2;
 				}
 			}
 		}
@@ -589,71 +587,6 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		{
 			// 更新すべき点が見つからなかったので終了する
 			break;
-		}
-
-		// 予測された位置を基にして，最寄の点を求める
-		for( r = 0 ; r < rows ; r++ )
-		{
-			for( c = 0 ; c < cols ; c++ )
-			{
-				if( found( r, c ) != -1 )
-				{
-					continue;
-				}
-
-				vector_type &p = grid( r, c );
-
-				difference_type index = -1;
-				double min = 1.0e10;
-				for( i = 1 ; i <= labelnum ; i++ )
-				{
-					if( !mask[ i ] )
-					{
-						double l = ( pos[ i ] - p ).length( );
-						if( l < min )
-						{
-							min = l;
-							index = i;
-						}
-					}
-				}
-
-				if( index < 0 || min > flength( r, c ) )
-				{
-					// 対応点が見つからなかったので，見つからなかったマークを入れる
-					p.x = -1;
-					p.y = -1;
-					found( r, c ) = 2;
-				}
-				else
-				{
-					// 対応点が見つかったので，以降の探索から除外する
-					p = pos[ index ];
-					found( r, c ) = 1;
-					mask[ index ] = true;
-				}
-			}
-		}
-	}
-
-
-	{
-		difference_type width = chart.width( );
-		difference_type height = chart.height( );
-		for( size_type r = 0 ; r < grid.rows( ) ; r++ )
-		{
-			for( size_type c = 0 ; c < grid.cols( ) ; c++ )
-			{
-				difference_type x = static_cast< difference_type >( grid( r, c ).x );
-				difference_type y = static_cast< difference_type >( grid( r, c ).y );
-				if( found( r, c ) != 1 || x < 0 || y < 0 )
-				{
-					// 点の見つからなかったものの座標にマークをつける
-					grid( r, c ).x = -1;
-					grid( r, c ).y = -1;
-					continue;
-				}
-			}
 		}
 	}
 
