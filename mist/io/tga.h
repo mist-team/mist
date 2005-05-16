@@ -432,7 +432,6 @@ namespace __tga_controller__
 							break;
 
 						case 32:
-							for( difference_type i = 0 ; i < width ; i++ )
 							{
 								unsigned char a = color_map_data[ index * 4 + 3 ];
 								unsigned char r = color_map_data[ index * 4 + 2 ];
@@ -491,8 +490,23 @@ namespace __tga_controller__
 				break;
 
 			case 3:	// Black and White Image
-				// 未サポート
-				ret = false;
+				if( header.pixel_depth != 8 )
+				{
+					ret = false;
+				}
+				else
+				{
+					for( j = 0 ; j < height ; j++ )
+					{
+						unsigned char *pixel = pixels + line_skip * j + ( from_left ? 0 : pixel_bytes ) * ( width - 1 );
+
+						for( i = 0 ; i < width ; i++ )
+						{
+							unsigned char *pix = pixel + pixel_skip * i;
+							image( i, j ) = pixel_converter::convert_to( pix[ 0 ], pix[ 0 ], pix[ 0 ] );
+						}
+					}
+				}
 				break;
 			}
 
