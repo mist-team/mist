@@ -297,7 +297,14 @@ void figure_decomposition_test( )
 
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
-		image_object[ i ] = static_cast< unsigned char >( label[ i ] / static_cast< double >( label_num ) * 255.0 );
+		if( label[ i ] == 0 )
+		{
+			image_object[ i ] = 0;
+		}
+		else
+		{
+			image_object[ i ] = static_cast< unsigned char >( label[ i ] / static_cast< double >( label_num ) * 255.0 );
+		}
 	}
 	pwindow->draw_area->redraw( );
 }

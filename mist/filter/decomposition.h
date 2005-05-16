@@ -315,7 +315,8 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 		for( size_type i = 0 ; i < dist.size( ) ; i++ )
 		{
 			// åªíiäKÇ≈ç≈ëÂÇÃãóó£ílÇéùÇ¬âÊëfÇíTÇ∑
-			if( dist[ i ] == rr && r >= static_cast< difference_type >( mask[ i ] + 1 ) )
+			if( dist[ i ] == rr && r >= mask[ i ] )
+			//if( dist[ i ] == rr && r >= static_cast< difference_type >( mask[ i ] + 1 ) )
 			{
 				list.push_back( i );
 			}
@@ -429,36 +430,32 @@ typename Array1::size_type figure_decomposition( const Array1 &in, Array2 &out, 
 					difference_type x = indx - ( y + z * out.height( ) ) * out.width( );
 
 					// ÇWÅEÇQÇUãﬂñTÇ©ÇÁä˘Ç…ìhÇÁÇÍÇƒÇ¢ÇÈÇ‡ÇÃÇíTÇµÇƒÇ≠ÇÈ
+					double min = 1.0e10;
 					for( difference_type k = -rz ; k <= rz ; k++ )
 					{
 						size_type pz = k + z;
 						if( pz < 0 || pz >= in.depth( ) ) continue;
+						double kk = k * k;
 
 						for( difference_type j = -ry ; j <= ry ; j++ )
 						{
 							size_type py = j + y;
 							if( py < 0 || py >= in.height( ) ) continue;
+							double jj = j * j;
 
 							for( difference_type i = -rx ; i <= rx ; i++ )
 							{
 								size_type px = i + x;
 								if( px < 0 || px >= in.width( ) ) continue;
+								double rR = i * i + jj + kk;
 
 								size_type cl = static_cast< size_type >( out( px, py, pz ) );
-								if( cl != 0 )
+								if( cl != 0 && min > rR )
 								{
 									current_label = cl;
-									break;
+									min = rR;
 								}
 							}
-							if( current_label != 0 )
-							{
-								break;
-							}
-						}
-						if( current_label != 0 )
-						{
-							break;
 						}
 					}
 					if( current_label != 0 )
