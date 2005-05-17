@@ -126,7 +126,7 @@ namespace dicom
 
 
 		/// @brief p から nbytes バイト分だけデータをコピーする
-		void copy( unsigned char *p, size_type nbytes )
+		void copy( const unsigned char *p, size_type nbytes )
 		{
 			if( num_bytes != nbytes )
 			{
@@ -238,40 +238,47 @@ namespace dicom
 		/// @brief string 型のデータに変換する（DICOMタグの内容が string 型をあらわしている必要がある）
 		std::string    to_string( ) const
 		{
-			static char buff[ 128 ];
-			switch( vr )
+			if( data != NULL && num_bytes > 0 )
 			{
-			case FL:
-				sprintf( buff, "%f", byte_array< float >( data ).get_value( ) );
-				break;
-			case FD:
-				sprintf( buff, "%f", byte_array< double >( data ).get_value( ) );
-				break;
-			case SL:
-				sprintf( buff, "%d", byte_array< signed int >( data ).get_value( ) );
-				break;
-			case SS:
-				sprintf( buff, "%d", byte_array< signed short >( data ).get_value( ) );
-				break;
-			case UL:
-				sprintf( buff, "%d", byte_array< unsigned int >( data ).get_value( ) );
-				break;
-			case US:
-				sprintf( buff, "%d", byte_array< unsigned short >( data ).get_value( ) );
-				break;
+				static char buff[ 128 ];
+				switch( vr )
+				{
+				case FL:
+					sprintf( buff, "%f", byte_array< float >( data ).get_value( ) );
+					break;
+				case FD:
+					sprintf( buff, "%f", byte_array< double >( data ).get_value( ) );
+					break;
+				case SL:
+					sprintf( buff, "%d", byte_array< signed int >( data ).get_value( ) );
+					break;
+				case SS:
+					sprintf( buff, "%d", byte_array< signed short >( data ).get_value( ) );
+					break;
+				case UL:
+					sprintf( buff, "%d", byte_array< unsigned int >( data ).get_value( ) );
+					break;
+				case US:
+					sprintf( buff, "%d", byte_array< unsigned short >( data ).get_value( ) );
+					break;
 
-			case OB:
-			case OW:
-			case SQ:
-			case UN:
-				return( "..." );
-				break;
+				case OB:
+				case OW:
+				case SQ:
+				case UN:
+					return( "..." );
+					break;
 
-			default:
-				return( std::string( reinterpret_cast< char * >( data ) ) );
-				break;
+				default:
+					return( std::string( reinterpret_cast< char * >( data ) ) );
+					break;
+				}
+				return( buff );
 			}
-			return( buff );
+			else
+			{
+				return( "empty" );
+			}
 		}
 
 		/// @brief DICOMタグの内容を表示する
@@ -332,23 +339,20 @@ namespace dicom
 		/// @brief 他のDICOMタグを用いて初期化する
 		dicom_element( const dicom_element &dicm ) : base( dicm ), data( NULL ), num_bytes( 0 )
 		{
-			create( dicm.num_bytes );
-			memcpy( data, dicm.data, sizeof( unsigned char ) * num_bytes );
+			copy( dicm.data, dicm.num_bytes );
 		}
 
 		/// @brief group，element，データ d，データのバイト数 nbytes をを用いて初期化する
 		dicom_element( unsigned short group, unsigned short element, const unsigned char *d = NULL, size_type nbytes = 0 )
 						: base( singleton< dicom_tag_table >::get_instance( ).get_tag( group, element ) ), data( NULL ), num_bytes( 0 )
 		{
-			create( nbytes );
-			memcpy( data, d, sizeof( unsigned char ) * num_bytes );
+			copy( d, nbytes );
 		}
 
 		/// @brief DICOMタグ tag，データ d，データのバイト数 nbytes をを用いて初期化する
 		dicom_element( const dicom_tag &t, const unsigned char *d = NULL, size_type nbytes = 0 ) : base( t ), data( NULL ), num_bytes( 0 )
 		{
-			create( nbytes );
-			memcpy( data, d, sizeof( unsigned char ) * num_bytes );
+			copy( d, nbytes );
 		}
 
 		/// @brief DICOMタグ用に確保したデータをすべて開放する
@@ -487,7 +491,8 @@ namespace dicom
 		double				window_width;				///< @brief 描画に用いる Window Width
 
 		double				KVP;						///< @brief 管電圧
-		double				mA;						///< @brief 管電流
+		double				mA;							///< @brief 管電流
+		double				thickness;					///< @brief スライス厚
 
 		dicom_image_info( ) :
 			compression_type( RAW ),
@@ -501,15 +506,16 @@ namespace dicom
 			image_position_x( 1.0 ),
 			image_position_y( 1.0 ),
 			image_position_z( 1.0 ),
-			rescale_intercept( 0 ),
+			rescale_intercept( 0.0 ),
 			bits_allocated( 8 ),
 			bits_stored( 8 ),
 			high_bits( 7 ),
 			pixel_representation( 0 ),
 			window_center( 128 ),
 			window_width( 256 ),
-			KVP( 0 ),
-			mA( 0 )
+			KVP( 0.0 ),
+			mA( 0.0 ),
+			thickness( 0.0 )
 		{
 		}
 	};
@@ -755,6 +761,9 @@ namespace dicom
 		{
 			info.mA = atoi( mA.c_str( ) );
 		}
+
+		// スライス厚を取得
+		info.thickness = find_tag( dicm, 0x0018, 0x0050, info.thickness );
 
 		// 画素に対するオフセットを取得
 		std::string rescale_intercept	= find_tag( dicm, 0x0028, 0x1052, "" );

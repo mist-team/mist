@@ -232,13 +232,23 @@ namespace dicom
 				break;
 			}
 
-#ifdef __SHOW_DICOM_UNKNOWN_TAG__
+#if defined( __SHOW_DICOM_ZEROBYTE_TAG__ ) && defined( __SHOW_DICOM_UNKNOWN_TAG__ )
 			printf( "( %04x, %04x, %s, % 8d ) = Unknown Tags!!\n", group, element, VR, num_bytes );
 #endif
-			if( data + 4 + num_bytes <= e )
+			if( vr == SQ )
 			{
-				numBytes = 0;
-				return( reinterpret_cast< unsigned char * >( data + 4 + num_bytes ) );
+				// 不明なタグだけどシーケンスタグということを確認
+				tag = dicom_tag( construct_dicom_tag( group, element ), vr, 1, "Unknown Tag" );
+				numBytes = num_bytes;
+				return( data + 4 );
+			}
+			else if( data + 4 + num_bytes <= e )
+			{
+				tag = dicom_tag( construct_dicom_tag( group, element ), vr, 1, "Unknown Tag" );
+				numBytes = num_bytes;
+				return( reinterpret_cast< unsigned char * >( data + 4 ) );
+				//numBytes = 0;
+				//return( reinterpret_cast< unsigned char * >( data + 4 + num_bytes ) );
 			}
 			else
 			{
@@ -648,7 +658,8 @@ namespace dicom
 			break;
 
 		default:
-			return( false );
+			// VRがわかんないからとりあえず良しとする
+			break;
 		}
 
 		return( true );
@@ -718,7 +729,7 @@ namespace dicom
 	//! 
 	//! @return 次のタグを指すポインタ
 	//! 
-	inline unsigned char *process_dicom_tag( dicom_tag_container &dicm, unsigned char *pointer, unsigned char *end_pointer, bool from_little_endian = true )
+	inline unsigned char *process_dicom_tag( dicom_tag_container &dicm, unsigned char *pointer, unsigned char *end_pointer, bool from_little_endian = true, bool is_in_sequence_tag = false )
 	{
 		difference_type numBytes = 0;
 		dicom_tag tag;
@@ -727,53 +738,74 @@ namespace dicom
 
 		if( tag.vr == SQ )
 		{
-			unsigned char *ep = numBytes == -1 ? end_pointer : pointer + numBytes;
-			if( ep > end_pointer )
+			unsigned char *sp = pointer;
+			if( numBytes != -1 && pointer + numBytes <= end_pointer )
 			{
-				// 認識不能なシーケンスタグ発見
-				return( NULL );
+				pointer += numBytes;
 			}
-			while( pointer + 8 <= ep )
+			else
 			{
-				if( is_sequence_tag_end( pointer, end_pointer ) )
+				unsigned char *ep = numBytes == -1 ? end_pointer : pointer + numBytes;
+				if( ep > end_pointer )
 				{
-					pointer += 8;
-					break;
+					// 認識不能なシーケンスタグ発見
+					return( NULL );
 				}
-				else
+				while( pointer + 8 <= ep )
 				{
-					if( !is_sequence_separate_tag( pointer, ep ) )
+					if( is_sequence_tag_end( pointer, end_pointer ) )
 					{
-						return( NULL );
+						pointer += 8;
+						break;
 					}
-
-					pointer += 4;
-					numBytes = to_current_endian( byte_array< unsigned int >( pointer ), from_little_endian ).get_value( );
-					pointer += 4;
-
-					unsigned char *epp = numBytes == -1 ? ep : pointer + numBytes;
-					if( epp > ep )
+					else
 					{
-						return( NULL );
-					}
-
-					while( pointer + 8 <= epp )
-					{
-						if( is_sequence_element_end( pointer, ep ) )
+						if( !is_sequence_separate_tag( pointer, ep ) )
 						{
-							pointer += 8;
-							break;
+							return( NULL );
 						}
-						else
+
+						pointer += 4;
+						numBytes = to_current_endian( byte_array< unsigned int >( pointer ), from_little_endian ).get_value( );
+						pointer += 4;
+
+						unsigned char *epp = numBytes == -1 ? ep : pointer + numBytes;
+						if( epp > ep )
 						{
-							pointer = process_dicom_tag( dicm, pointer, ep );
-							if( pointer == NULL )
+							return( NULL );
+						}
+
+						while( pointer + 8 <= epp )
+						{
+							if( is_sequence_element_end( pointer, ep ) )
 							{
-								return( NULL );
+								pointer += 8;
+								break;
+							}
+							else
+							{
+								pointer = process_dicom_tag( dicm, pointer, ep, from_little_endian, true );
+								if( pointer == NULL )
+								{
+									return( NULL );
+								}
 							}
 						}
 					}
 				}
+			}
+
+			if( !is_in_sequence_tag )
+			{
+				dicom_tag_container::iterator ite;
+				ite = dicm.append( dicom_element( tag, sp, pointer - sp ) );
+
+#ifdef __SHOW_DICOM_TAG__
+				if( ite != dicm.end( ) )
+				{
+					ite->second.show_tag( );
+				}
+#endif
 			}
 		}
 		else if( numBytes < -1 )
@@ -816,7 +848,10 @@ namespace dicom
 					if( p <= end_pointer )
 					{
 						numBytes = p - pointer;
-						ite = dicm.append( dicom_element( tag, pointer, numBytes ) );
+						if( !is_in_sequence_tag )
+						{
+							ite = dicm.append( dicom_element( tag, pointer, numBytes ) );
+						}
 						pointer += 8;
 					}
 					else
@@ -834,7 +869,7 @@ namespace dicom
 			pointer += numBytes;
 
 #ifdef __SHOW_DICOM_TAG__
-			if( ite != dicm.end( ) )
+			if( !is_in_sequence_tag && ite != dicm.end( ) )
 			{
 				ite->second.show_tag( );
 			}
@@ -842,17 +877,15 @@ namespace dicom
 		}
 		else if( numBytes > 0 )
 		{
-			if( !process_dicom_tag( tag, pointer, numBytes ) )
+			if( !process_dicom_tag( tag, pointer, numBytes, from_little_endian ) )
 			{
 				// 処理することができないDICOMタグを発見したので終了する
 				return( NULL );
 			}
-			else
+			else if( !is_in_sequence_tag )
 			{
 				dicom_tag_container::iterator ite;
 				ite = dicm.append( dicom_element( tag, pointer, numBytes ) );
-
-				pointer += numBytes;
 
 #ifdef __SHOW_DICOM_TAG__
 				if( ite != dicm.end( ) )
@@ -861,13 +894,22 @@ namespace dicom
 				}
 #endif
 			}
+
+			pointer += numBytes;
 		}
-#ifdef __SHOW_DICOM_ZEROBYTE_TAG__
-		else if( tag.vr != UNKNOWN )
+		else if( tag.vr != UNKNOWN && !is_in_sequence_tag )
 		{
-			dicom_element( tag, NULL, 0 ).show_tag( );
-		}
+			// 不明なタグもリストに追加する
+			dicom_tag_container::iterator ite;
+			ite = dicm.append( dicom_element( tag, NULL, 0 ) );
+
+#if defined( __SHOW_DICOM_ZEROBYTE_TAG__ ) && defined( __SHOW_DICOM_TAG__ )
+			if( ite != dicm.end( ) )
+			{
+				ite->second.show_tag( );
+			}
 #endif
+		}
 
 		return( pointer );
 	}
@@ -1088,6 +1130,15 @@ namespace dicom
 			fwrite( get_dicom_vr( vr ).c_str( ), 1, 2, fp );
 			fwrite( ZERO, 1, 2, fp );
 			fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
+			fwrite( data, 1, num_bytes, fp );
+			break;
+
+		case UNKNOWN:
+			fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( "UN", 1, 2, fp );
+			fwrite( get_dicom_vr( vr ).c_str( ), 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned int >( num_bytes ), to_little_endian ).get_bytes( ), 1, 4, fp );
 			fwrite( data, 1, num_bytes, fp );
 			break;
 
