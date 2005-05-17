@@ -238,13 +238,13 @@ namespace dicom
 			if( vr == SQ )
 			{
 				// 不明なタグだけどシーケンスタグということを確認
-				tag = dicom_tag( construct_dicom_tag( group, element ), vr, 1, "Unknown Tag" );
+				tag = dicom_tag( construct_dicom_tag( group, element ), vr, 1, "UNKNOWN" );
 				numBytes = num_bytes;
 				return( data + 4 );
 			}
 			else if( data + 4 + num_bytes <= e )
 			{
-				tag = dicom_tag( construct_dicom_tag( group, element ), vr, 1, "Unknown Tag" );
+				tag = dicom_tag( construct_dicom_tag( group, element ), vr, 1, "UNKNOWN" );
 				numBytes = num_bytes;
 				return( reinterpret_cast< unsigned char * >( data + 4 ) );
 				//numBytes = 0;
