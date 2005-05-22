@@ -68,6 +68,8 @@ namespace dicom
 	{
 		RAW,		///< @brief –³ˆ³k
 		JPEG,		///< @brief JPEGˆ³k
+		JPEGLS,		///< @brief ƒƒXƒŒƒXJPEGˆ³k
+		JPEG2000,	///< @brief JPEG2000ˆ³k
 		RLE,		///< @brief ƒ‰ƒ“ƒŒƒ“ƒOƒXiRLEjˆ³k
 	};
 
@@ -577,21 +579,21 @@ namespace dicom
 			{ "1.2.840.10008.1.2.4.54", JPEG, }, // JPEG ƒXƒyƒNƒgƒ‹‘I‘ðC”ñŠK‘wiˆ— 7 & 9j
 			{ "1.2.840.10008.1.2.4.55", JPEG, }, // JPEG ‘S”—ñC”ñŠK‘wiˆ— 10 & 12j
 			{ "1.2.840.10008.1.2.4.56", JPEG, }, // JPEG ‘S”—ñ,”ñŠK‘wiˆ— 11 & 13j
-			{ "1.2.840.10008.1.2.4.57", JPEG, }, // JPEG ‰Â‹t,”ñŠK‘wiˆ— 14j
-			{ "1.2.840.10008.1.2.4.58", JPEG, }, // JPEG ‰Â‹t,”ñŠK‘wiˆ— 15j
+			{ "1.2.840.10008.1.2.4.57", JPEGLS, }, // JPEG ‰Â‹t,”ñŠK‘wiˆ— 14j
+			{ "1.2.840.10008.1.2.4.58", JPEGLS, }, // JPEG ‰Â‹t,”ñŠK‘wiˆ— 15j
 			{ "1.2.840.10008.1.2.4.59", JPEG, }, // JPEG Šg’£,ŠK‘wiˆ— 16 & 18j
 			{ "1.2.840.10008.1.2.4.60", JPEG, }, // JPEG Šg’£,ŠK‘wiˆ— 17 & 19j
 			{ "1.2.840.10008.1.2.4.61", JPEG, }, // JPEG ƒXƒyƒNƒgƒ‹‘I‘ð,ŠK‘wiˆ— 20 & 22j
 			{ "1.2.840.10008.1.2.4.62", JPEG, }, // JPEG ƒXƒyƒNƒgƒ‹‘I‘ðCŠK‘wiˆ— 21 & 23j
 			{ "1.2.840.10008.1.2.4.63", JPEG, }, // JPEG ‘S”—ñCŠK‘wiˆ— 24 & 26j
 			{ "1.2.840.10008.1.2.4.64", JPEG, }, // JPEG ‘S”—ñCŠK‘wiˆ— 25 & 27j
-			{ "1.2.840.10008.1.2.4.65", JPEG, }, // JPEG ‰Â‹tCŠK‘wiˆ— 28j
-			{ "1.2.840.10008.1.2.4.66", JPEG, }, // JPEG ‰Â‹tCŠK‘wiˆ— 29j
-			{ "1.2.840.10008.1.2.4.70", JPEG, }, // JPEG ‰Â‹tC”ñŠK‘wCˆêŽŸ—\‘ªiˆ— 14 [‘I‘ð’l 1]jF‰Â‹t JPEG ‰æ‘œˆ³k—pƒfƒtƒHƒ‹ƒg“]‘—\•¶
-			{ "1.2.840.10008.1.2.4.80", JPEG, }, // JPEG-LS ‰Â‹t‰æ‘œˆ³k
-			{ "1.2.840.10008.1.2.4.81", JPEG, }, // JPEG-LS ”ñ‰Â‹ti€‰Â‹tj‰æ‘œˆ³k
-			{ "1.2.840.10008.1.2.4.90", JPEG, }, // JPEG 2000 Image Compression (Lossless Only)
-			{ "1.2.840.10008.1.2.4.91", JPEG, }, // JPEG 2000 Image Compression
+			{ "1.2.840.10008.1.2.4.65", JPEGLS, }, // JPEG ‰Â‹tCŠK‘wiˆ— 28j
+			{ "1.2.840.10008.1.2.4.66", JPEGLS, }, // JPEG ‰Â‹tCŠK‘wiˆ— 29j
+			{ "1.2.840.10008.1.2.4.70", JPEGLS, }, // JPEG ‰Â‹tC”ñŠK‘wCˆêŽŸ—\‘ªiˆ— 14 [‘I‘ð’l 1]jF‰Â‹t JPEG ‰æ‘œˆ³k—pƒfƒtƒHƒ‹ƒg“]‘—\•¶
+			{ "1.2.840.10008.1.2.4.80", JPEGLS, }, // JPEG-LS ‰Â‹t‰æ‘œˆ³k
+			{ "1.2.840.10008.1.2.4.81", JPEGLS, }, // JPEG-LS ”ñ‰Â‹ti€‰Â‹tj‰æ‘œˆ³k
+			{ "1.2.840.10008.1.2.4.90", JPEG2000, }, // JPEG 2000 Image Compression (Lossless Only)
+			{ "1.2.840.10008.1.2.4.91", JPEG2000, }, // JPEG 2000 Image Compression
 			{ "1.2.840.10008.1.2.5",     RLE, }, // Run Length Encoding
 			{ NULL, RAW, }, 
 		};
@@ -1017,6 +1019,8 @@ namespace dicom
 
 #ifndef __DECODE_JPEG_COMPRESSION__
 		case JPEG:
+		case JPEGLS:
+		case JPEG2000:
 			// ¡‚Ì‚Æ‚±‚ë–¢ƒTƒ|[ƒg
 			return( false );
 #endif
