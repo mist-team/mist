@@ -25,7 +25,7 @@ image_draw_area *draw_area;
 
 #define __INCLUDE_DICOM_TAG_ALL__	// 全てのDICOMタグをインポートする
 #define __SHOW_DICOM_TAG__			// コンソールにインクルードしたタグを表示する
-//#define __SHOW_DICOM_UNKNOWN_TAG__	// コンソールに認識出来なかったタグを表示する
+#define __SHOW_DICOM_UNKNOWN_TAG__	// コンソールに認識出来なかったタグを表示する
 #include <mist/io/dicom.h>
 
 

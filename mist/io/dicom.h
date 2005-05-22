@@ -51,6 +51,7 @@ _MIST_BEGIN
 // #define __SHOW_DICOM_TAG__
 // #define __SHOW_DICOM_UNKNOWN_TAG__
 // #define __SHOW_DICOM_ZEROBYTE_TAG__
+// #define __CHECK_TAG_FORMAT__
 
 
 /// DICOMファイルを操作する関数・クラスを含む名前空間
@@ -166,22 +167,8 @@ namespace dicom
 			}
 			else
 			{
-				switch( vr )
-				{
-				case OB:
-				case OW:
-				case UN:
-				case SQ:
-				case OF:
-				case UT:
-					data += 4;
-					num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
-					break;
-
-				default:
-					// 暗示的VR
-					num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
-				}
+				// 暗示的VR
+				num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
 			}
 			numBytes = num_bytes;
 			return( reinterpret_cast< unsigned char * >( data + 4 ) );
@@ -238,13 +225,13 @@ namespace dicom
 			if( vr == SQ )
 			{
 				// 不明なタグだけどシーケンスタグということを確認
-				tag = dicom_tag( construct_dicom_tag( group, element ), vr, 1, "UNKNOWN" );
+				tag = dicom_tag( construct_dicom_tag( group, element ), vr, -1, "UNKNOWN" );
 				numBytes = num_bytes;
 				return( data + 4 );
 			}
 			else if( data + 4 + num_bytes <= e )
 			{
-				tag = dicom_tag( construct_dicom_tag( group, element ), vr, 1, "UNKNOWN" );
+				tag = dicom_tag( construct_dicom_tag( group, element ), vr, -1, "UNKNOWN" );
 				numBytes = num_bytes;
 				return( reinterpret_cast< unsigned char * >( data + 4 ) );
 				//numBytes = 0;
@@ -552,7 +539,7 @@ namespace dicom
 			// 範囲 -2^15 ≦n≦ (2^15-1) の中の整数 n を表す。
 			if( tag.vm != -1 && ( num_bytes % 2 != 0 || (int)( num_bytes / 2 ) > tag.vm ) )
 			{
-				return( 0 );
+				return( false );
 			}
 
 			{
@@ -734,7 +721,7 @@ namespace dicom
 		difference_type numBytes = 0;
 		dicom_tag tag;
 
-		pointer = read_dicom_tag( pointer, end_pointer, tag, numBytes );
+		pointer = read_dicom_tag( pointer, end_pointer, tag, numBytes, from_little_endian );
 
 		if( tag.vr == SQ )
 		{
@@ -877,12 +864,20 @@ namespace dicom
 		}
 		else if( numBytes > 0 )
 		{
+#ifndef __CHECK_TAG_FORMAT__
+			if( !process_dicom_tag( tag, pointer, numBytes, from_little_endian ) )
+			{
+				// 規格に従っていないタグを発見したが，とりあえず無視しておく
+				std::cout << "Illegal DICOM tag is found!" << std::endl;
+			}
+#else
 			if( !process_dicom_tag( tag, pointer, numBytes, from_little_endian ) )
 			{
 				// 処理することができないDICOMタグを発見したので終了する
 				return( NULL );
 			}
-			else if( !is_in_sequence_tag )
+#endif
+			if( !is_in_sequence_tag )
 			{
 				dicom_tag_container::iterator ite;
 				ite = dicm.append( dicom_element( tag, pointer, numBytes ) );
