@@ -1017,13 +1017,13 @@ namespace dicom
 		case RAW:
 			return( true );
 
-#ifndef __DECODE_JPEG_COMPRESSION__
-		case JPEG:
-		case JPEGLS:
-		case JPEG2000:
-			// 今のところ未サポート
-			return( false );
-#endif
+//#ifndef __DECODE_JPEG_COMPRESSION__
+//		case JPEG:
+//		case JPEGLS:
+//		case JPEG2000:
+//			// 今のところ未サポート
+//			return( false );
+//#endif
 
 		default:
 			break;
@@ -1103,11 +1103,10 @@ namespace dicom
 				break;
 
 			case JPEG:
-				dst_pointer = decode_JPEG( p, p + num_bytes, dst_pointer, buff + dstBytes );
-				if( dst_pointer == NULL )
-				{
-					ret = false;
-				}
+			case JPEGLS:
+			case JPEG2000:
+				memcpy( dst_pointer, p, num_bytes );
+				dst_pointer += num_bytes;
 				break;
 
 			default:
@@ -1118,7 +1117,7 @@ namespace dicom
 
 		if( ret )
 		{
-			element.copy( buff, dstBytes );
+			element.copy( buff, dst_pointer - buff );
 		}
 
 		delete [] buff;

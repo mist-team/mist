@@ -914,12 +914,11 @@ namespace dicom
 	//! 
 	//! @param[out] dicm  … DICOMタグ毎にデータを登録するテーブル
 	//! @param[in]  filename … 入力DICOM]ファイル名
-	//! @param[in]  from_little_endian … 入力データがリトルエンディアンかどうか
 	//! 
 	//! @retval true  … DICOMファイルの処理に成功
 	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
 	//! 
-	inline bool read_dicom_tags( dicom_tag_container &dicm, const std::string &filename, bool from_little_endian = true )
+	inline bool read_dicom_tags( dicom_tag_container &dicm, const std::string &filename )
 	{
 		size_type filesize;
 		FILE *fp;
@@ -955,8 +954,8 @@ namespace dicom
 
 		dicm.clear( );
 
-		bool ret = true;
-
+		unsigned char *group_end_pointer = NULL;
+		bool ret = true, from_little_endian = true, once = true;
 		while( pointer < end_pointer )
 		{
 			pointer = process_dicom_tag( dicm, pointer, end_pointer, from_little_endian );
@@ -964,6 +963,36 @@ namespace dicom
 			{
 				ret = false;
 				break;
+			}
+
+			if( group_end_pointer == NULL && dicm.contain( 0x0002, 0x0000 ) )
+			{
+				// エンディアンの判定に用いる範囲を決定する
+				group_end_pointer = pointer + find_tag( dicm, 0x0002, 0x0000, static_cast< unsigned int >( 0 ) );
+			}
+
+			if( group_end_pointer != NULL && once && dicm.contain( 0x0002, 0x0010 ) )
+			{
+				// 一度しか実行されないようにする
+				once = false;
+
+				// エンディアンの形式を設定する
+				from_little_endian = find_tag( dicm, 0x0002, 0x0010, "" ) != "1.2.840.10008.1.2.2";
+
+				// ビッグエンディアンの場合は，このブロックだけリトルエンディアンで処理する
+				if( !from_little_endian )
+				{
+					while( pointer < group_end_pointer )
+					{
+						pointer = process_dicom_tag( dicm, pointer, group_end_pointer, true );
+						if( pointer == NULL )
+						{
+							pointer = end_pointer;
+							ret = false;
+							break;
+						}
+					}
+				}
 			}
 		}
 
@@ -1168,12 +1197,11 @@ namespace dicom
 	//! 
 	//! @param[out] dicm     … DICOMタグ毎にデータを登録するテーブル
 	//! @param[in]  filename … 出力DICOMファイル名
-	//! @param[in]  to_little_endian … 出力データの形式をリトルエンディアンにするかどうか
 	//! 
 	//! @retval true  … DICOMファイルの処理に成功
 	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
 	//! 
-	inline bool write_dicom_tags( const dicom_tag_container &dicm, const std::string &filename, bool to_little_endian = true )
+	inline bool write_dicom_tags( const dicom_tag_container &dicm_, const std::string &filename )
 	{
 		FILE *fp;
 		if( ( fp = fopen( filename.c_str( ), "wb" ) ) == NULL )
@@ -1192,11 +1220,26 @@ namespace dicom
 		fwrite( ZERO, sizeof( unsigned char ), 128, fp );
 		fwrite( DICM, sizeof( unsigned char ), 4, fp );
 
+		dicom_tag_container dicm( dicm_ );
+
 		// 明示的VRの指定がない場合は追加する
-		if( !to_little_endian || !dicm.contain( 0x0002, 0x0010 ) || find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2" )
+		if( !dicm.contain( 0x0002, 0x0010 ) )
 		{
-			std::string syntax = to_little_endian ? "1.2.840.10008.1.2.1" : "1.2.840.10008.1.2.2";
-			write_dicom_tag( 0x0002, 0x0010, UI, reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.size( ), fp, to_little_endian );
+			// Transfer Syntax UID が存在しない場合は，「Explicit VR Little Endian」を指定する
+			std::string syntax = "1.2.840.10008.1.2.1";
+			dicm.append( dicom_element( 0x0002, 0x0010, reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) ) );
+		}
+		else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2" )
+		{
+			// 「Implicit VR Little Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
+			std::string syntax = "1.2.840.10008.1.2.1";
+			dicm( 0x0002, 0x0010 ).copy( reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) );
+		}
+		else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2.2" )
+		{
+			// 「Implicit VR Little Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
+			std::string syntax = "1.2.840.10008.1.2.1";
+			dicm( 0x0002, 0x0010 ).copy( reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) );
 		}
 
 		// すべて明示的VRで記述する
@@ -1205,7 +1248,7 @@ namespace dicom
 		{
 			if( ite->second.enable )
 			{
-				write_dicom_tag( ite->second, fp, to_little_endian );
+				write_dicom_tag( ite->second, fp, true );
 			}
 		}
 
