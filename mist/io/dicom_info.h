@@ -528,6 +528,8 @@ namespace dicom
 	{
 	public:
 		bool			little_endian_encoding;		///< @brief データがリトルエンディアン形式かどうか
+		std::string		study_instance_uid;			///< @brief 検査の識別用ユニークID
+		std::string		series_instance_uid;		///< @brief シリーズの識別用ユニークID
 		int				series_number;				///< @brief シリーズ番号
 		int				acquisition_number;			///< @brief 収集番号
 		int				instance_number;			///< @brief インスタンス番号
@@ -535,17 +537,24 @@ namespace dicom
 	public:
 		/// @brief デフォルトのコンストラクタ
 		dicom_info( ) :
-			little_endian_encoding( true )
+			little_endian_encoding( true ),
+			study_instance_uid( "0" ),
+			series_instance_uid( "0" ),
+			series_number( 0 ),
+			acquisition_number( 0 ),
+			instance_number( 0 )
 		{
 		}
 
 		/// @brief 他のオブジェクトで初期化する
 		dicom_info( const dicom_info &info ) :
 			dicom_image_info( info ),
-			little_endian_encoding( true ),
-			series_number( 0 ),
-			acquisition_number( 0 ),
-			instance_number( 0 )
+			little_endian_encoding( info.little_endian_encoding ),
+			study_instance_uid( info.study_instance_uid ),
+			series_instance_uid( info.series_instance_uid ),
+			series_number( info.series_number ),
+			acquisition_number( info.acquisition_number ),
+			instance_number( info.instance_number )
 		{
 		}
 
@@ -556,6 +565,12 @@ namespace dicom
 			if( &info != this )
 			{
 				dicom_image_info::operator =( info );
+				little_endian_encoding = info.little_endian_encoding;
+				study_instance_uid = info.study_instance_uid;
+				series_instance_uid = info.series_instance_uid;
+				series_number = info.series_number;
+				acquisition_number = info.acquisition_number;
+				instance_number = info.instance_number;
 			}
 			return( *this );
 		}
@@ -781,8 +796,9 @@ namespace dicom
 		info.window_center			= find_tag( dicm, 0x0028, 0x1050, info.window_center );
 		info.window_width			= find_tag( dicm, 0x0028, 0x1051, info.window_width );
 
-
 		// データのシリーズを識別するデータを取得
+		info.study_instance_uid		= find_tag( dicm, 0x0020, 0x000D, info.study_instance_uid );
+		info.series_instance_uid	= find_tag( dicm, 0x0020, 0x000D, info.series_instance_uid );
 		info.series_number			= find_tag( dicm, 0x0020, 0x0011, info.series_number );
 		info.acquisition_number		= find_tag( dicm, 0x0020, 0x0012, info.acquisition_number );
 		info.instance_number		= find_tag( dicm, 0x0020, 0x0013, info.instance_number );
