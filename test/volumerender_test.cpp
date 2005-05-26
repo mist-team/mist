@@ -149,7 +149,19 @@ void volr_draw_area::draw_image( )
 		image_.resize( low_reso_, low_reso_ );
 	}
 
-	image_.reso( w( ) / static_cast< double >( h( ) ), 1.0 );
+	if( volr_parameter.perspective_view )
+	{
+		image_.reso( w( ) / static_cast< double >( h( ) ), 1.0 );
+	}
+	else
+	{
+		double W = ct.width( );
+		double H = ct.height( );
+		double D = ct.depth( );
+		double len = std::sqrt( W * W + H * H + D * D );
+		double reso = len / static_cast< double >( image_.width( ) ) / std::sqrt( 3.0 );
+		image_.reso( w( ) / static_cast< double >( h( ) ) * reso, 1.0 * reso );
+	}
 
 	p.pos.x	= camera_.pos.x - p.offset.x;
 	p.pos.y	= p.offset.y - camera_.pos.y;
@@ -247,6 +259,9 @@ void volr_draw_area::initialize( )
 	volr_parameter.termination			= 0.01;
 	volr_parameter.specular				= 0.8;
 	volr_parameter.distortion			= 0.0;
+	volr_parameter.perspective_view		= true;
+	volr_parameter.value_interpolation	= true;
+
 	
 	//	image_.resize( 512, 512 );
 	image_.resize( 256, 256 );

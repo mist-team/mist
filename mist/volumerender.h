@@ -307,7 +307,8 @@ namespace volumerender
 		vector_type	dir;
 		vector_type	up;
 		vector_type	offset;
-		bool	use_masking;
+		bool	perspective_view;
+		bool	value_interpolation;
 		double	fovy;
 		double	ambient_ratio;
 		double	diffuse_ratio;
@@ -319,7 +320,7 @@ namespace volumerender
 
 		boundingbox box[ 6 ];
 
-		parameter( ) : use_masking( false ), fovy( 80.0 ), ambient_ratio( 0.4 ), diffuse_ratio( 0.6 ), light_attenuation( 0.0 ),
+		parameter( ) : perspective_view( true ), value_interpolation( true ), fovy( 80.0 ), ambient_ratio( 0.4 ), diffuse_ratio( 0.6 ), light_attenuation( 0.0 ),
 						sampling_step( 1.0 ), termination( 0.01 ), specular( 1.0 ), distortion( 0.0 )
 		{
 		}
@@ -534,8 +535,8 @@ namespace value_interpolation
 		typedef typename Array2::value_type out_value_type;
 
 		vector_type pos = p.pos;
-		vector_type dir = p.dir;
-		vector_type up = p.up;
+		vector_type dir = p.dir.unit( );
+		vector_type up = p.up.unit( );
 		vector_type offset = p.offset;
 		double fovy = p.fovy;
 		double ambient_ratio = p.ambient_ratio;
@@ -548,6 +549,8 @@ namespace value_interpolation
 		double termination = p.termination;
 		double distortion = p.distortion;
 		bool bdistortion = distortion != 0.0;
+		bool bperspective = p.perspective_view;
+		bool bvalue_interpolation = p.value_interpolation;
 
 		const size_type w = in.width( );
 		const size_type h = in.height( );
@@ -626,7 +629,16 @@ namespace value_interpolation
 				}
 
 				// レイ方向をカメラ座標系からワールド座標系に変換
-				vector_type light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
+				vector_type light;
+				if( bperspective )
+				{
+					light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
+				}
+				else
+				{
+					pos = p.pos + yoko * Pos.x + up * Pos.y;
+					light = dir;
+				}
 
 				pixel_type add_intensity( 0 );
 				double add_opacity = 1;
@@ -711,10 +723,23 @@ namespace value_interpolation
 						double zz = spos.z - sk;
 
 						const_pointer p = &in( si, sj, sk );
+						double ct;
 
 						// CT値に対応する色と不透明度を取得
-						double ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
-						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
+						if( bvalue_interpolation )
+						{
+							ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
+							ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
+						}
+						else
+						{
+							// 補間しない時は，最近傍の値を取ってくる
+							difference_type ssi = volumerender::to_integer( spos.x + 0.5 );
+							difference_type ssj = volumerender::to_integer( spos.y + 0.5 );
+							difference_type ssk = volumerender::to_integer( spos.z + 0.5 );
+
+							ct = in( ssi, ssj, ssk );
+						}
 
 						const attribute_type &oc = table[ volumerender::to_integer( ct ) ];
 
