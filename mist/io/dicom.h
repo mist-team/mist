@@ -713,6 +713,7 @@ namespace dicom
 	//! @param[in]  pointer     … 先頭ポインタ
 	//! @param[in]  end_pointer … 末尾先頭ポインタ
 	//! @param[in]  from_little_endian … 入力データがリトルエンディアンかどうか
+	//! @param[in]  is_in_sequence_tag … VRがSQ内のタグであるかどうか（SQタグは一つにまとめる）
 	//! 
 	//! @return 次のタグを指すポインタ
 	//! 
@@ -1195,13 +1196,13 @@ namespace dicom
 
 	/// @brief DICOMのタグ集合をファイルに書き出す
 	//! 
-	//! @param[out] dicm     … DICOMタグ毎にデータを登録するテーブル
+	//! @param[out] dicom    … DICOMタグ毎にデータを登録するテーブル
 	//! @param[in]  filename … 出力DICOMファイル名
 	//! 
 	//! @retval true  … DICOMファイルの処理に成功
 	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
 	//! 
-	inline bool write_dicom_tags( const dicom_tag_container &dicm_, const std::string &filename )
+	inline bool write_dicom_tags( const dicom_tag_container &dicom, const std::string &filename )
 	{
 		FILE *fp;
 		if( ( fp = fopen( filename.c_str( ), "wb" ) ) == NULL )
@@ -1220,7 +1221,7 @@ namespace dicom
 		fwrite( ZERO, sizeof( unsigned char ), 128, fp );
 		fwrite( DICM, sizeof( unsigned char ), 4, fp );
 
-		dicom_tag_container dicm( dicm_ );
+		dicom_tag_container dicm( dicom );
 
 		// 明示的VRの指定がない場合は追加する
 		if( !dicm.contain( 0x0002, 0x0010 ) )
