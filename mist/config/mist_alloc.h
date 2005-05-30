@@ -400,16 +400,18 @@ public:
 	/// @brief num 個のオブジェクトのメモリを確保し初期化を行う（組み込み型かどうかで内部の実装を分岐）
 	pointer allocate_objects( size_type num )
 	{
-		if( !is_memory_shared( ) )
+		if( num == 0 || num > max_size( ) )
+		{
+			return( NULL );
+		}
+		else if( !is_memory_shared( ) )
 		{
 			// 自動でメモリを割り当てる場合
-			if( num <= 0 ) return( NULL );
 			return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects1( *this, num ) );
 		}
 		else
 		{
 			// 外部割り当てのメモリを利用する場合
-			if( shared_memory < num ) return( NULL );
 			return( shared_pointer );
 		}
 	}
@@ -417,16 +419,18 @@ public:
 	/// @brief num 個のオブジェクトのメモリを確保し obj を用いて初期化を行う（組み込み型かどうかで内部の実装を分岐）
 	pointer allocate_objects( size_type num, const_reference obj )
 	{
-		if( !is_memory_shared( ) )
+		if( num == 0 || num > max_size( ) )
+		{
+			return( NULL );
+		}
+		else if( !is_memory_shared( ) )
 		{
 			// 自動でメモリを割り当てる場合
-			if( num <= 0 ) return( NULL );
 			return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects2( *this, num, obj ) );
 		}
 		else
 		{
 			// 外部割り当てのメモリを利用する場合
-			if( shared_memory < num ) return( NULL );
 			mist_memory_operator< is_char< T >::value >::fill_objects1( *this, shared_pointer, num, obj );
 			return( shared_pointer );
 		}
@@ -435,17 +439,19 @@ public:
 	/// @brief num 個のオブジェクトを確保し，ポインタで囲まれた間のデータで初期化する(組み込み型のデータの場合は memcpy を利用する)
 	pointer allocate_objects( const_pointer s, const_pointer e )
 	{
-		if( !is_memory_shared( ) )
+		if( s >= e || e - s > max_size( ) )
+		{
+			return( NULL );
+		}
+		else if( !is_memory_shared( ) )
 		{
 			// 自動でメモリを割り当てる場合
-			if( s >= e ) return( NULL );
 			return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects3( *this, s, e ) );
 		}
 		else
 		{
 			// 外部割り当てのメモリを利用する場合
-			if( s >= e || shared_memory < e - s ) return( NULL );
-			mist_memory_operator< is_char< T >::value >:::copy_objects2( *this, s, e - s, shared_pointer );
+			mist_memory_operator< is_char< T >::value >::copy_objects2( *this, s, e - s, shared_pointer );
 			return( shared_pointer );
 		}
 	}
@@ -542,7 +548,7 @@ public:
 	/// @brief 使用しているアロケータが確保可能なメモリの最大値を返す
 	size_type max_size( ) const
 	{
-		return( shared_memory != 0 ? base::max_size( ) : mem_available )
+		return( shared_memory == 0 ? base::max_size( ) : shared_memory );
 	}
 
 	/// @brief 外部で割り当てられたメモリ領域を使用しているかどうか

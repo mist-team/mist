@@ -651,7 +651,7 @@ public:
 			ncols = ncols_ - col;
 		}
 
-		if( is_memory_shared( ) )
+		if( base::is_memory_shared( ) )
 		{
 			// 外部メモリを利用している場合
 			matrix o( *this );
@@ -1414,7 +1414,7 @@ public:
 	{
 		base::operator =( o );
 
-		if( empty( ) )
+		if( base::empty( ) )
 		{
 			size1_ = size2_ = 0;
 		}
@@ -1442,7 +1442,7 @@ public:
 
 		base::operator =( o );
 
-		if( empty( ) )
+		if( base::empty( ) )
 		{
 			size1_ = size2_ = 0;
 		}
@@ -1467,7 +1467,7 @@ public:
 	template < class Expression >
 	const matrix& operator =( const matrix_expression< Expression > &expression )
 	{
-		if( is_memory_shared( ) )
+		if( base::is_memory_shared( ) )
 		{
 			// 外部メモリを利用している場合
 			matrix m( *this );
@@ -1600,26 +1600,26 @@ public:
 	/// @brief 要素数 rnum 行 cnum 列 の行列を作成し，デフォルト値で要素を初期化する
 	matrix( size_type rnum, size_type cnum ) : base( rnum * cnum ), size1_( rnum ), size2_( cnum )
 	{
-		if( empty( ) ) size1_ = size2_ = 0;
+		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief 要素数 rnum 行 cnum 列 でアロケータ a のコピーを利用した行列を作成し，デフォルト値で要素を初期化する
 	matrix( size_type rnum, size_type cnum, const Allocator &a ) : base( rnum * cnum, a ), size1_( rnum ), size2_( cnum )
 	{
-		if( empty( ) ) size1_ = size2_ = 0;
+		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 
 	/// @brief 要素数 rnum 行 cnum 列 の行列を作成し，全要素を値 val で要素を初期化する
 	matrix( size_type rnum, size_type cnum, const T &val ) : base( rnum * cnum, val ), size1_( rnum ), size2_( cnum )
 	{
-		if( empty( ) ) size1_ = size2_ = 0;
+		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief 要素数 rnum 行 cnum 列 でアロケータ a のコピーを利用した行列を作成し，全要素を値 val で要素を初期化する
 	matrix( size_type rnum, size_type cnum, const T &val, const Allocator &a ) : base( rnum * cnum, val, a ), size1_( rnum ), size2_( cnum )
 	{
-		if( empty( ) ) size1_ = size2_ = 0;
+		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 
@@ -1628,13 +1628,13 @@ public:
 	/// @brief ptr が指すメモリ領域に，要素数 rnum 行 cnum 列 の行列を作成する（ptr が指す先の利用可能なメモリ量は mem_available ）
 	matrix( size_type rnum, size_type cnum, pointer ptr, size_type mem_available ) : base( rnum * cnum, ptr, mem_available ), size1_( rnum ), size2_( cnum )
 	{
-		if( empty( ) ) size1_ = size2_ = 0;
+		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief ptr が指すメモリ領域に，要素数 rnum 行 cnum 列 の行列を作成し，全要素を値 val で要素を初期化する（ptr が指す先の利用可能なメモリ量は mem_available ）
 	matrix( size_type rnum, size_type cnum, const T &val, pointer ptr, size_type mem_available ) : base( rnum * cnum, val, ptr, mem_available ), size1_( rnum ), size2_( cnum )
 	{
-		if( empty( ) ) size1_ = size2_ = 0;
+		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 
@@ -1645,14 +1645,14 @@ public:
 	template < class TT, class AAlocator >
 	matrix( const matrix< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) )
 	{
-		if( empty( ) ) size1_ = size2_ = 0;
+		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 
 	/// @brief 他の行列で同じ要素型のものを用いて初期化する
 	matrix( const matrix< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ )
 	{
-		if( empty( ) ) size1_ = size2_ = 0;
+		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 
@@ -1661,7 +1661,7 @@ public:
 	template < class Expression >
 	matrix( const matrix_expression< Expression > &expression ) : base( expression.rows( ) * expression.cols( ) ), size1_( expression.rows( ) ), size2_( expression.cols( ) )
 	{
-		if( empty( ) )
+		if( base::empty( ) )
 		{
 			size1_ = size2_ = 0;
 		}
