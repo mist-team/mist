@@ -3,6 +3,7 @@ include ../build/makeinclude
 
 ALL = \
 	array_test \
+	memory_test \
 	limits_test \
 	operators_test \
 	binary_test \
@@ -36,6 +37,9 @@ ALL = \
 all: $(ALL)
 
 array_test : array_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+memory_test : memory_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 matrix_test : matrix_test.o

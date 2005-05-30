@@ -134,22 +134,29 @@ public:
 	//! @param[in] dmy1 … ダミー変数（使用しない）
 	//! @param[in] dmy2 … ダミー変数（使用しない）
 	//! 
-	void resize( size_type num, size_type dmy1 = 0, size_type dmy2 = 0 )
+	//! @retval true  … 正常にリサイズが終了
+	//! @retval false … リサイズ後のメモリを確保できなかった場合
+	//! 
+	bool resize( size_type num, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
 		if( size_ < num )
 		{
 			allocator_.deallocate_objects( data_, size_ );
-			size_ = num;
-			data_ = allocator_.allocate_objects( size_ );
+			data_ = allocator_.allocate_objects( num );
+			size_ = data_ == NULL ? 0 : num;
 		}
 		else if( size_ > num )
 		{
 			data_ = allocator_.trim_objects( data_, size_, num );
-			size_ = num;
+			size_ = data_ == NULL ? 0 : num;
 		}
+
+		return( data_ != NULL );
 	}
 
 	/// @brief コンテナ内の要素をトリミングする
+	//!
+	//! メモリの確保に失敗したら，空のコンテナとなる
 	//!
 	//! @param[in] index … トリミングの開始位置（ゼロから始まるインデックス）
 	//! @param[in] num   … トリミング後の要素数（-1の場合は，最後までをコピーする）
@@ -174,13 +181,33 @@ public:
 			num = size( ) - index;
 		}
 
-		array o( num );
-		for( difference_type i = 0 ; i < num ; i++ )
+		if( is_memory_shared( ) )
 		{
-			o[ i ] = operator []( i + index );
-		}
+			// 外部メモリを利用している場合
+			array o( *this );
 
-		swap( o );
+			if( resize( num ) )
+			{
+				for( difference_type i = 0 ; i < num ; i++ )
+				{
+					operator []( i ) = o( i + index );
+				}
+			}
+			else
+			{
+				return( false );
+			}
+		}
+		else
+		{
+			array o( num );
+			for( difference_type i = 0 ; i < num ; i++ )
+			{
+				o[ i ] = operator []( i + index );
+			}
+
+			swap( o );
+		}
 
 		return( true );
 	}
@@ -188,19 +215,33 @@ public:
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
+	//! @attention どちらかのコンテナが外部メモリを利用している場合は，スワップは必ず失敗する
+	//! 
 	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
 	//! @param[in] a  … 内容を入れ替える対象
 	//! 
-	void swap( array &a )
+	//! @retval true  … データのスワップに成功
+	//! @retval false … データのスワップに失敗
+	//! 
+	bool swap( array &a )
 	{
-		size_type _dmy_size = size_;
-		size_ = a.size_;
-		a.size_ = _dmy_size;
+		if( is_memory_shared( ) || a.is_memory_shared( ) )
+		{
+			return( false );
+		}
+		else
+		{
+			size_type _dmy_size = size_;
+			size_ = a.size_;
+			a.size_ = _dmy_size;
 
-		value_type *dmy_data_ = data_;
-		data_ = a.data_;
-		a.data_ = dmy_data_;
+			value_type *dmy_data_ = data_;
+			data_ = a.data_;
+			a.data_ = dmy_data_;
+
+			return( true );
+		}
 	}
 
 
@@ -265,6 +306,9 @@ public:
 
 	/// @brief コンテナ内の要素が占めるデータ量をバイト単位で返す
 	size_type byte( ) const { return( size_ * sizeof( value_type ) ); }
+
+	/// @brief 外部で割り当てられたメモリ領域を使用しているかどうか
+	bool is_memory_shared( ) const { return( allocator_.is_memory_shared( ) ); }
 
 
 	/// @brief コンテナの先頭を指すランダムアクセスイテレータを返す
@@ -335,6 +379,7 @@ public:
 	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
 	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
 	//! コピー元とコピー先でデータ型（array< data > の data）が異なる場合の代入を行う．
+	//! メモリの確保に失敗したら，空のコンテナとなる
 	//! 
 	//! @param[in] o  … コピー元のコンテナ
 	//! 
@@ -346,15 +391,22 @@ public:
 		if( size_ > o.size( ) )
 		{
 			data_ = allocator_.trim_objects( data_, size_, o.size( ) );
-			size_ = o.size( );
+			size_ = data_ == NULL ? 0 : o.size( );
 		}
 		else if( size_ < o.size( ) )
 		{
 			allocator_.deallocate_objects( data_, size_ );
-			size_ = o.size( );
-			data_ = allocator_.allocate_objects( size_ );
+			data_ = allocator_.allocate_objects( o.size( ) );
+			size_ = data_ == NULL ? 0 : o.size( );
 		}
-		for( size_type i = 0 ; i < size_ ; i++ ) data_[i] = static_cast< value_type >( o[i] );
+
+		if( data_ != NULL )
+		{
+			for( size_type i = 0 ; i < size_ ; i++ )
+			{
+				data_[ i ] = static_cast< value_type >( o[ i ] );
+			}
+		}
 
 		return( *this );
 	}
@@ -363,6 +415,7 @@ public:
 	//! 
 	//! コピー元であるコンテナ o と全く同じコンテナを作成する．
 	//! コピー先（ここでは自分自身）の要素数が o と異なる場合は，自動的にサイズを調整する．
+	//! メモリの確保に失敗したら，空のコンテナとなる
 	//! 
 	//! @param[in] o  … コピー元のコンテナ
 	//! 
@@ -372,18 +425,25 @@ public:
 	{
 		if( this == &o ) return( *this );
 
+		// まず，アロケータをコピーする
+		allocator_ = o.allocator_;
+
 		if( size_ > o.size_ )
 		{
 			data_ = allocator_.trim_objects( data_, size_, o.size_ );
-			size_ = o.size_;
+			size_ = data_ == NULL ? 0 : o.size( );
 		}
 		else if( size_ < o.size_ )
 		{
 			allocator_.deallocate_objects( data_, size_ );
-			size_ = o.size_;
-			data_ = allocator_.allocate_objects( size_ );
+			data_ = allocator_.allocate_objects( o.size( ) );
+			size_ = data_ == NULL ? 0 : o.size( );
 		}
-		allocator_.copy_objects( o.data_, size_, data_ );
+
+		if( data_ != NULL )
+		{
+			allocator_.copy_objects( o.data_, size_, data_ );
+		}
 
 		return( *this );
 	}
@@ -522,34 +582,57 @@ public:
 	explicit array( size_type num ) : allocator_( ), size_( num ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_ );
+		if( data_ == NULL ) size_ = 0;
 	}
 	/// @brief 要素数 num 個のコンテナを作成し，アロケータ a のコピーを利用する
-	array( size_type num, const Allocator &a ) : allocator_( a ), size_( num ), data_( allocator_.allocate_objects( size_ ) )
+	array( size_type num, const Allocator &a ) : allocator_( a ), size_( num ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_ );
+		if( data_ == NULL ) size_ = 0;
 	}
+
 
 	/// @brief 要素数 num 個のコンテナを作成し，値 val で初期化する
 	array( size_type num, const value_type &val ) : allocator_( ), size_( num ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_, val );
+		if( data_ == NULL ) size_ = 0;
 	}
 	/// @brief 要素数 num 個のコンテナを作成し，値 val で初期化し，アロケータ a のコピーを利用する
 	array( size_type num, const value_type &val, const Allocator &a ) : allocator_( a ), size_( num ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_, val );
+		if( data_ == NULL ) size_ = 0;
 	}
+
 
 	/// @brief イテレータ s と e の範囲の値を用いて，配列を初期化する
 	array( const_iterator s, const_iterator e ) : allocator_( ), size_( e - s ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( s, e );
+		if( data_ == NULL ) size_ = 0;
 	}
 	/// @brief イテレータ s と e の範囲の値を用いて，配列を初期化し，アロケータ a のコピーを利用する
 	array( const_iterator s, const_iterator e, const Allocator &a ) : allocator_( a ), size_( e - s ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( s, e );
+		if( data_ == NULL ) size_ = 0;
 	}
+
+
+	/// @brief ptr が指すメモリ領域に，要素数 num 個のコンテナを作成する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array( size_type num, pointer ptr, size_type mem_available ) : allocator_( ptr, mem_available ), size_( num ), data_( NULL )
+	{
+		data_ = allocator_.allocate_objects( size_ );
+		if( data_ == NULL ) size_ = 0;
+	}
+	/// @brief ptr が指すメモリ領域に，要素数 num 個のコンテナを作成し値 val で初期化する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array( size_type num, const value_type &val, pointer ptr, size_type mem_available ) : allocator_( ptr, mem_available ), size_( num ), data_( NULL )
+	{
+		data_ = allocator_.allocate_objects( size_, val );
+		if( data_ == NULL ) size_ = 0;
+	}
+
 
 	/// @brief 他の array 配列で要素の型が異なるものから同じ要素数の配列を作成する
 	//!
@@ -559,14 +642,28 @@ public:
 	array( const array< TT, AAlocator > &o ) : allocator_( ), size_( o.size( ) ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_ );
-		for( size_type i = 0 ; i < size_ ; i++ ) data_[i] = static_cast< value_type >( o[i] );
+		if( data_ == NULL )
+		{
+			size_ = 0;
+		}
+		else
+		{
+			for( size_type i = 0 ; i < size_ ; i++ ) data_[i] = static_cast< value_type >( o[i] );
+		}
 	}
 
 	/// @brief 他の array 配列で同じ要素型のものを用いて初期化する
 	array( const array< T, Allocator > &o ) : allocator_( o.allocator_ ), size_( o.size_ ), data_( NULL )
 	{
 		data_ = allocator_.allocate_objects( size_ );
-		allocator_.copy_objects( o.data_, size_, data_ );
+		if( data_ == NULL )
+		{
+			size_ = 0;
+		}
+		else
+		{
+			allocator_.copy_objects( o.data_, size_, data_ );
+		}
 	}
 
 	/// @brief コンテナが利用しているリソースを全て開放する
@@ -713,16 +810,28 @@ public: // 配列に対する操作
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
+	//! @attention どちらかのコンテナが外部メモリを利用している場合は，スワップは必ず失敗する
+	//! 
 	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
 	//! @param[in] a  … 内容を入れ替える対象
 	//! 
-	void swap( array1 &a )
+	//! @retval true  … データのスワップに成功
+	//! @retval false … データのスワップに失敗
+	//! 
+	bool swap( array1 &a )
 	{
-		base::swap( a );
-		double dmy_reso1_ = reso1_;
-		reso1_ = a.reso1_;
-		a.reso1_ = dmy_reso1_;
+		if( base::swap( a ) )
+		{
+			double dmy_reso1_ = reso1_;
+			reso1_ = a.reso1_;
+			a.reso1_ = dmy_reso1_;
+			return( true );
+		}
+		else
+		{
+			return( false );
+		}
 	}
 
 public:
@@ -796,6 +905,15 @@ public:
 	array1( size_type num, double r1, const value_type &val, const Allocator &a ) : base( num, val, a ), reso1_( r1 ) {}
 
 
+	/// @brief ptr が指すメモリ領域に，要素数 num 個のコンテナを作成する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array1( size_type num, pointer ptr, size_type mem_available ) : base( num, ptr, mem_available ), reso1_( 1.0 ) {}
+
+	/// @brief ptr が指すメモリ領域に，要素数 num 個のコンテナを作成し，解像度を r1 に設定する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array1( size_type num, double r1, pointer ptr, size_type mem_available ) : base( num, ptr, mem_available ), reso1_( r1 ) {}
+
+	/// @brief ptr が指すメモリ領域に，要素数 num 個のコンテナを作成し，解像度を r1，値 val で初期化する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array1( size_type num, double r1, const value_type &val, pointer ptr, size_type mem_available ) : base( num, val, ptr, mem_available ), reso1_( r1 ) {}
+
 	/// @brief 他の array1 配列で要素の型が異なるものから同じ要素数の配列を作成する
 	//!
 	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
@@ -867,11 +985,22 @@ public:
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
 	//! @param[in] dmy1 … ダミー変数（使用しない）
 	//! 
-	void resize( size_type num1, size_type num2, size_type dmy1 = 0 )
+	//! @retval true  … 正常にリサイズが終了
+	//! @retval false … リサイズ後のメモリを確保できなかった場合
+	//! 
+	bool resize( size_type num1, size_type num2, size_type dmy1 = 0 )
 	{
-		base::resize( num1 * num2 );
-		size1_ = num1;
-		size2_ = num2;
+		if( base::resize( num1 * num2 ) )
+		{
+			size1_ = num1;
+			size2_ = num2;
+			return( true );
+		}
+		else
+		{
+			size1_ = size2_ = 0;
+			return( false );
+		}
 	}
 
 	/// @brief コンテナ内の要素をトリミングする
@@ -910,16 +1039,38 @@ public:
 			h = h_ - y;
 		}
 
-		array2 o( w, h, base::reso1( ), reso2( ) );
-		for( difference_type j = 0 ; j < h ; j++ )
+		if( is_memory_shared( ) )
 		{
-			for( difference_type i = 0 ; i < w ; i++ )
+			// 外部メモリを利用している場合
+			array2 o( *this );
+			if( resize( w, h ) )
 			{
-				o( i, j ) = operator ()( i + x, j + y );
+				for( difference_type j = 0 ; j < h ; j++ )
+				{
+					for( difference_type i = 0 ; i < w ; i++ )
+					{
+						operator ()( i, j ) = o( i + x, j + y );
+					}
+				}
+			}
+			else
+			{
+				return( false );
 			}
 		}
+		else
+		{
+			array2 o( w, h, base::reso1( ), reso2( ) );
+			for( difference_type j = 0 ; j < h ; j++ )
+			{
+				for( difference_type i = 0 ; i < w ; i++ )
+				{
+					o( i, j ) = operator ()( i + x, j + y );
+				}
+			}
 
-		swap( o );
+			swap( o );
+		}
 
 		return( true );
 	}
@@ -927,24 +1078,35 @@ public:
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
+	//! @attention どちらかのコンテナが外部メモリを利用している場合は，スワップは必ず失敗する
+	//! 
 	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
 	//! @param[in] a  … 内容を入れ替える対象
 	//! 
-	void swap( array2 &a )
+	//! @retval true  … データのスワップに成功
+	//! @retval false … データのスワップに失敗
+	//! 
+	bool swap( array2 &a )
 	{
-		base::swap( a );
+		if( base::swap( a ) )
+		{
+			double dmy_reso2_ = reso2_;
+			reso2_ = a.reso2_;
+			a.reso2_ = dmy_reso2_;
 
-		double dmy_reso2_ = reso2_;
-		reso2_ = a.reso2_;
-		a.reso2_ = dmy_reso2_;
-
-		size_type _dmy_size1 = size1_;
-		size_type _dmy_size2 = size2_;
-		size1_ = a.size1_;
-		size2_ = a.size2_;
-		a.size1_ = _dmy_size1;
-		a.size2_ = _dmy_size2;
+			size_type _dmy_size1 = size1_;
+			size_type _dmy_size2 = size2_;
+			size1_ = a.size1_;
+			size2_ = a.size2_;
+			a.size1_ = _dmy_size1;
+			a.size2_ = _dmy_size2;
+			return( true );
+		}
+		else
+		{
+			return( false );
+		}
 	}
 
 
@@ -1099,8 +1261,17 @@ public:
 	const array2& operator =( const array2< TT, AAlocator > &o )
 	{
 		base::operator =( o );
-		size1_ = o.size1( );
-		size2_ = o.size2( );
+
+		if( empty( ) )
+		{
+			size1_ = size2_ = 0;
+		}
+		else
+		{
+			size1_ = o.size1( );
+			size2_ = o.size2( );
+		}
+
 		reso2_ = o.reso2( );
 
 		return( *this );
@@ -1121,9 +1292,18 @@ public:
 		if( this == &o ) return( *this );
 
 		base::operator =( o );
-		size1_ = o.size1_;
-		size2_ = o.size2_;
-		reso2_ = o.reso2_;
+
+		if( empty( ) )
+		{
+			size1_ = size2_ = 0;
+		}
+		else
+		{
+			size1_ = o.size1( );
+			size2_ = o.size2( );
+		}
+
+		reso2_ = o.reso2( );
 
 		return( *this );
 	}
@@ -1231,29 +1411,73 @@ public:
 	explicit array2( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ), reso2_( 1.0 ) {}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，デフォルト値で要素を初期化する
-	array2( size_type num1, size_type num2 ) : base( num1 * num2 ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
+	array2( size_type num1, size_type num2 ) : base( num1 * num2 ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 )	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
+
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定する
-	array2( size_type num1, size_type num2, double r1, double r2 ) : base( num1 * num2, r1 ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
+	array2( size_type num1, size_type num2, double r1, double r2 ) : base( num1 * num2, r1 ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，使用するアロケータを a に設定する
-	array2( size_type num1, size_type num2, const Allocator &a ) : base( num1 * num2, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
+	array2( size_type num1, size_type num2, const Allocator &a ) : base( num1 * num2, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，使用するアロケータを a に設定する
-	array2( size_type num1, size_type num2, double r1, double r2, const Allocator &a ) : base( num1 * num2, r1, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
+	array2( size_type num1, size_type num2, double r1, double r2, const Allocator &a ) : base( num1 * num2, r1, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を 1.0 × 1.0 に設定し，全要素を val で初期化する
-	array2( size_type num1, size_type num2, const value_type &val ) : base( num1 * num2, val ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
+	array2( size_type num1, size_type num2, const value_type &val ) : base( num1 * num2, val ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，全要素を val で初期化する
-	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val ) : base( num1 * num2, r1, val ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
+	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val ) : base( num1 * num2, r1, val ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，使用するアロケータを a に設定する
-	array2( size_type num1, size_type num2, const value_type &val, const Allocator &a ) : base( num1 * num2, val, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 ) {}
+	array2( size_type num1, size_type num2, const value_type &val, const Allocator &a ) : base( num1 * num2, val, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2，使用するアロケータを a に設定し，全要素を val で初期化する
-	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val, const Allocator &a ) : base( num1 * num2, r1, val, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 ) {}
+	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val, const Allocator &a ) : base( num1 * num2, r1, val, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
+
+
+	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 個のコンテナを作成する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array2( size_type num1, size_type num2, pointer ptr, size_type mem_available ) : base( num1 * num2, ptr, mem_available ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
+
+	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array2( size_type num1, size_type num2, double r1, double r2, pointer ptr, size_type mem_available ) : base( num1 * num2, r1, ptr, mem_available ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
+
+	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2，値 val で初期化する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val, pointer ptr, size_type mem_available ) : base( num1 * num2, r1, val, ptr, mem_available ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
+
 
 
 	/// @brief 他の array2 配列で要素の型が異なるものから同じ要素数の配列を作成する
@@ -1261,10 +1485,16 @@ public:
 	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
 	//!
 	template < class TT, class AAlocator >
-	array2( const array2< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), reso2_( o.reso2( ) ) {}
+	array2( const array2< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), reso2_( o.reso2( ) )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 	/// @brief 他の array2 配列で同じ要素型のものを用いて初期化する
-	array2( const array2< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), reso2_( o.reso2_ ) {}
+	array2( const array2< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), reso2_( o.reso2_ )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 };
 
 
@@ -1331,12 +1561,23 @@ public:
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
 	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
 	//! 
-	void resize( size_type num1, size_type num2, size_type num3 )
+	//! @retval true  … 正常にリサイズが終了
+	//! @retval false … リサイズ後のメモリを確保できなかった場合
+	//! 
+	bool resize( size_type num1, size_type num2, size_type num3 )
 	{
-		base::resize( num1 * num2, num3 );
-		size1_ = num1;
-		size2_ = num2;
-		size3_ = num3;
+		if( base::resize( num1 * num2, num3 ) )
+		{
+			size1_ = num1;
+			size2_ = num2;
+			size3_ = num3;
+			return( true );
+		}
+		else
+		{
+			size1_ = size2_ = size3_ = 0;
+			return( false );
+		}
 	}
 
 	/// @brief コンテナ内の要素をトリミングする
@@ -1386,19 +1627,44 @@ public:
 			d = d_ - z;
 		}
 
-		array3 o( w, h, d, base::reso1( ), base::reso2( ), reso3( ) );
-		for( difference_type k = 0 ; k < d ; k++ )
+		if( is_memory_shared( ) )
 		{
-			for( difference_type j = 0 ; j < h ; j++ )
+			// 外部メモリを利用している場合
+			array3 o( *this );
+			if( resize( w, h, d ) )
 			{
-				for( difference_type i = 0 ; i < w ; i++ )
+				for( difference_type k = 0 ; k < d ; k++ )
 				{
-					o( i, j, k ) = operator ()( i + x, j + y, k + z );
+					for( difference_type j = 0 ; j < h ; j++ )
+					{
+						for( difference_type i = 0 ; i < w ; i++ )
+						{
+							operator ()( i, j, k ) = o( i + x, j + y, k + z );
+						}
+					}
 				}
 			}
+			else
+			{
+				return( false );
+			}
 		}
+		else
+		{
+			array3 o( w, h, d, base::reso1( ), base::reso2( ), reso3( ) );
+			for( difference_type k = 0 ; k < d ; k++ )
+			{
+				for( difference_type j = 0 ; j < h ; j++ )
+				{
+					for( difference_type i = 0 ; i < w ; i++ )
+					{
+						o( i, j, k ) = operator ()( i + x, j + y, k + z );
+					}
+				}
+			}
 
-		swap( o );
+			swap( o );
+		}
 
 		return( true );
 	}
@@ -1406,27 +1672,39 @@ public:
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
+	//! @attention どちらかのコンテナが外部メモリを利用している場合は，スワップは必ず失敗する
+	//! 
 	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
 	//! @param[in] a  … 内容を入れ替える対象
 	//! 
-	void swap( array3 &a )
+	//! @retval true  … データのスワップに成功
+	//! @retval false … データのスワップに失敗
+	//! 
+	bool swap( array3 &a )
 	{
-		base::swap( a );
+		if( base::swap( a ) )
+		{
+			double dmy_reso3_ = reso3_;
+			reso3_ = a.reso3_;
+			a.reso3_ = dmy_reso3_;
 
-		double dmy_reso3_ = reso3_;
-		reso3_ = a.reso3_;
-		a.reso3_ = dmy_reso3_;
+			size_type _dmy_size1 = size1_;
+			size_type _dmy_size2 = size2_;
+			size_type _dmy_size3 = size3_;
+			size1_ = a.size1_;
+			size2_ = a.size2_;
+			size3_ = a.size3_;
+			a.size1_ = _dmy_size1;
+			a.size2_ = _dmy_size2;
+			a.size3_ = _dmy_size3;
 
-		size_type _dmy_size1 = size1_;
-		size_type _dmy_size2 = size2_;
-		size_type _dmy_size3 = size3_;
-		size1_ = a.size1_;
-		size2_ = a.size2_;
-		size3_ = a.size3_;
-		a.size1_ = _dmy_size1;
-		a.size2_ = _dmy_size2;
-		a.size3_ = _dmy_size3;
+			return( true );
+		}
+		else
+		{
+			return( true );
+		}
 	}
 
 
@@ -1686,9 +1964,18 @@ public:
 	const array3& operator =( const array3< TT, AAlocator > &o )
 	{
 		base::operator =( o );
-		size1_ = o.size1( );
-		size2_ = o.size2( );
-		size3_ = o.size3( );
+
+		if( empty( ) )
+		{
+			size1_ = size2_ = size3_ = 0;
+		}
+		else
+		{
+			size1_ = o.size1( );
+			size2_ = o.size2( );
+			size3_ = o.size3( );
+		}
+
 		reso3_ = o.reso3( );
 
 		return( *this );
@@ -1709,10 +1996,19 @@ public:
 		if( this == &o ) return( *this );
 
 		base::operator =( o );
-		size1_ = o.size1_;
-		size2_ = o.size2_;
-		size3_ = o.size3_;
-		reso3_ = o.reso3_;
+
+		if( empty( ) )
+		{
+			size1_ = size2_ = size3_ = 0;
+		}
+		else
+		{
+			size1_ = o.size1( );
+			size2_ = o.size2( );
+			size3_ = o.size3( );
+		}
+
+		reso3_ = o.reso3( );
 
 		return( *this );
 	}
@@ -1823,29 +2119,74 @@ public:
 	explicit array3( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ), size3_( 0 ), reso3_( 1.0 ) {}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，デフォルト値で要素を初期化する
-	array3( size_type num1, size_type num2, size_type num3 ) : base( num1 * num2, num3 ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
+	array3( size_type num1, size_type num2, size_type num3 ) : base( num1 * num2, num3 ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定する
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3 ) : base( num1 * num2, num3, r1, r2 ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3 ) : base( num1 * num2, num3, r1, r2 ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，使用するアロケータを a に設定する
-	array3( size_type num1, size_type num2, size_type num3, const Allocator &a ) : base( num1 * num2, num3, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
+	array3( size_type num1, size_type num2, size_type num3, const Allocator &a ) : base( num1 * num2, num3, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定し，使用するアロケータを a に設定する
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const Allocator &a ) : base( num1 * num2, num3, r1, r2, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const Allocator &a ) : base( num1 * num2, num3, r1, r2, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
 
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を 1.0 × 1.0 × 1.0 に設定し，全要素を val で初期化する
-	array3( size_type num1, size_type num2, size_type num3, const value_type &val ) : base( num1 * num2, num3, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
+	array3( size_type num1, size_type num2, size_type num3, const value_type &val ) : base( num1 * num2, num3, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定し，全要素を val で初期化する
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val ) : base( num1 * num2, num3, r1, r2, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val ) : base( num1 * num2, num3, r1, r2, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定し，使用するアロケータを a に設定する
-	array3( size_type num1, size_type num2, size_type num3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 ) {}
+	array3( size_type num1, size_type num2, size_type num3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3，使用するアロケータを a に設定し，全要素を val で初期化する
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, r1, r2, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 ) {}
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, r1, r2, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
+
+
+
+	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 × num3 個のコンテナを作成する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array3( size_type num1, size_type num2, size_type num3, pointer ptr, size_type mem_available ) : base( num1 * num2, num3, ptr, mem_available ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
+
+	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, pointer ptr, size_type mem_available ) : base( num1 * num2, num3, r1, r2, ptr, mem_available ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
+
+	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3，値 val で初期化する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val, pointer ptr, size_type mem_available ) : base( num1 * num2, num3, r1, r2, val, ptr, mem_available ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
+
 
 
 	/// @brief 他の array3 配列で要素の型が異なるものから同じ要素数の配列を作成する
@@ -1853,10 +2194,16 @@ public:
 	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
 	//!
 	template < class TT, class AAlocator >
-	array3( const array3< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( o.size3( ) ), reso3_( o.reso3( ) ) {}
+	array3( const array3< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( o.size3( ) ), reso3_( o.reso3( ) )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
 
 	/// @brief 他の array3 配列で同じ要素型のものを用いて初期化する
-	array3( const array3< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), size3_( o.size3_ ), reso3_( o.reso3_ ) {}
+	array3( const array3< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), size3_( o.size3_ ), reso3_( o.reso3_ )
+	{
+		if( empty( ) ) size1_ = size2_ = size3_ = 0;
+	}
 };
 
 
@@ -1901,9 +2248,12 @@ public:
 	//! 
 	//! @param[in] num1 … リサイズ後の全要素数
 	//! 
-	void resize( size_type num1 )
+	//! @retval true  … 正常にリサイズが終了
+	//! @retval false … リサイズ後のメモリを確保できなかった場合
+	//! 
+	bool resize( size_type num1 )
 	{
-		base::resize( num1 + margin1_ * 2 );
+		return( base::resize( num1 + margin1_ * 2 ) );
 	}
 
 
@@ -1917,9 +2267,12 @@ public:
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
 	//! 
-	void resize( size_type num1, size_type num2 )
+	//! @retval true  … 正常にリサイズが終了
+	//! @retval false … リサイズ後のメモリを確保できなかった場合
+	//! 
+	bool resize( size_type num1, size_type num2 )
 	{
-		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2 );
+		return( base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2 ) );
 	}
 
 
@@ -1934,34 +2287,49 @@ public:
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
 	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
 	//! 
-	void resize( size_type num1, size_type num2, size_type num3 )
+	//! @retval true  … 正常にリサイズが終了
+	//! @retval false … リサイズ後のメモリを確保できなかった場合
+	//! 
+	bool resize( size_type num1, size_type num2, size_type num3 )
 	{
-		base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, num3 + margin3_ * 2 );
+		return( base::resize( num1 + margin1_ * 2, num2 + margin2_ * 2, num3 + margin3_ * 2 ) );
 	}
 
 
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
+	//! @attention どちらかのコンテナが外部メモリを利用している場合は，スワップは必ず失敗する
+	//! 
 	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
 	//! @param[in] a  … 内容を入れ替える対象
 	//! 
-	void swap( marray &a )
+	//! @retval true  … データのスワップに成功
+	//! @retval false … データのスワップに失敗
+	//! 
+	bool swap( marray &a )
 	{
-		base::swap( a );
+		if( base::swap( a ) )
+		{
+			size_type tmp = margin1_;
+			margin1_ = a.margin1_;
+			a.margin1_ = tmp;
 
-		size_type tmp = margin1_;
-		margin1_ = a.margin1_;
-		a.margin1_ = tmp;
+			tmp = margin2_;
+			margin2_ = a.margin2_;
+			a.margin2_ = tmp;
 
-		tmp = margin2_;
-		margin2_ = a.margin2_;
-		a.margin2_ = tmp;
+			tmp = margin3_;
+			margin3_ = a.margin3_;
+			a.margin3_ = tmp;
 
-		tmp = margin3_;
-		margin3_ = a.margin3_;
-		a.margin3_ = tmp;
+			return( true );
+		}
+		else
+		{
+			return( false );
+		}
 	}
 
 
@@ -1984,80 +2352,84 @@ public:
 	//! 
 	void fill_margin( const value_type &val = value_type( ) )
 	{
-		base &o = *this;
+		if( !empty( ) )
+		{
+			base &o = *this;
 
-		size_type i, j, k;
-		for( k = 0 ; k < margin3( ) ; k++ )
-		{
-			for( j = 0 ; j < o.size2( ) ; j++ )
-			{
-				for( i = 0 ; i < o.size1( ) ; i++ )
-				{
-					o( i, j, k ) = val;
-				}
-			}
-		}
-		for( k = o.size3( ) - margin3( ) ; k < o.size3( ) ; k++ )
-		{
-			for( j = 0 ; j < o.size2( ) ; j++ )
-			{
-				for( i = 0 ; i < o.size1( ) ; i++ )
-				{
-					o( i, j, k ) = val;
-				}
-			}
-		}
-
-		for( j = 0 ; j < margin2( ) ; j++ )
-		{
-			for( k = 0 ; k < o.size3( ) ; k++ )
-			{
-				for( i = 0 ; i < o.size1( ) ; i++ )
-				{
-					o( i, j, k ) = val;
-				}
-			}
-		}
-		for( j = o.size2( ) - margin2( ) ; j < o.size2( ) ; j++ )
-		{
-			for( k = 0 ; k < o.size3( ) ; k++ )
-			{
-				for( i = 0 ; i < o.size1( ) ; i++ )
-				{
-					o( i, j, k ) = val;
-				}
-			}
-		}
-
-		for( i = 0 ; i < margin1( ) ; i++ )
-		{
-			for( k = 0 ; k < o.size3( ) ; k++ )
+			size_type i, j, k;
+			for( k = 0 ; k < margin3( ) ; k++ )
 			{
 				for( j = 0 ; j < o.size2( ) ; j++ )
 				{
-					o( i, j, k ) = val;
+					for( i = 0 ; i < o.size1( ) ; i++ )
+					{
+						o( i, j, k ) = val;
+					}
 				}
 			}
-		}
-		for( i = o.size1( ) - margin1( ) ; i < o.size1( ) ; i++ )
-		{
-			for( k = 0 ; k < o.size3( ) ; k++ )
+			for( k = o.size3( ) - margin3( ) ; k < o.size3( ) ; k++ )
 			{
 				for( j = 0 ; j < o.size2( ) ; j++ )
 				{
-					o( i, j, k ) = val;
+					for( i = 0 ; i < o.size1( ) ; i++ )
+					{
+						o( i, j, k ) = val;
+					}
+				}
+			}
+
+			for( j = 0 ; j < margin2( ) ; j++ )
+			{
+				for( k = 0 ; k < o.size3( ) ; k++ )
+				{
+					for( i = 0 ; i < o.size1( ) ; i++ )
+					{
+						o( i, j, k ) = val;
+					}
+				}
+			}
+			for( j = o.size2( ) - margin2( ) ; j < o.size2( ) ; j++ )
+			{
+				for( k = 0 ; k < o.size3( ) ; k++ )
+				{
+					for( i = 0 ; i < o.size1( ) ; i++ )
+					{
+						o( i, j, k ) = val;
+					}
+				}
+			}
+
+			for( i = 0 ; i < margin1( ) ; i++ )
+			{
+				for( k = 0 ; k < o.size3( ) ; k++ )
+				{
+					for( j = 0 ; j < o.size2( ) ; j++ )
+					{
+						o( i, j, k ) = val;
+					}
+				}
+			}
+			for( i = o.size1( ) - margin1( ) ; i < o.size1( ) ; i++ )
+			{
+				for( k = 0 ; k < o.size3( ) ; k++ )
+				{
+					for( j = 0 ; j < o.size2( ) ; j++ )
+					{
+						o( i, j, k ) = val;
+					}
 				}
 			}
 		}
 	}
 
 
-	size_type size1( ) const { return( base::size1( ) - 2 * margin1_ ); }	///< @brief X軸方向のコンテナに格納されているデータ数を返す
-	size_type size2( ) const { return( base::size2( ) - 2 * margin2_ ); }	///< @brief Y軸方向のコンテナに格納されているデータ数を返す
-	size_type size3( ) const { return( base::size3( ) - 2 * margin3_ ); }	///< @brief Z軸方向のコンテナに格納されているデータ数を返す
-	size_type width( ) const { return( size1( ) ); }						///< @brief X軸方向のコンテナに格納されているデータ数を返す
-	size_type height( ) const { return( size2( ) ); }						///< @brief Y軸方向のコンテナに格納されているデータ数を返す
-	size_type depth( ) const { return( size3( ) ); }						///< @brief Z軸方向のコンテナに格納されているデータ数を返す
+	size_type size1( ) const { return( empty( ) ? 0 : base::size1( ) - 2 * margin1_ ); }	///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type size2( ) const { return( empty( ) ? 0 : base::size2( ) - 2 * margin2_ ); }	///< @brief Y軸方向のコンテナに格納されているデータ数を返す
+	size_type size3( ) const { return( empty( ) ? 0 : base::size3( ) - 2 * margin3_ ); }	///< @brief Z軸方向のコンテナに格納されているデータ数を返す
+
+	size_type width( ) const { return( size1( ) ); }		///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type height( ) const { return( size2( ) ); }		///< @brief Y軸方向のコンテナに格納されているデータ数を返す
+	size_type depth( ) const { return( size3( ) ); }		///< @brief Z軸方向のコンテナに格納されているデータ数を返す
 
 	size_type margin1( ) const { return( margin1_ ); }		///< @brief X軸方向のマージン幅を返す
 	size_type margin2( ) const { return( margin2_ ); }		///< @brief Y軸方向のマージン幅を返す
@@ -2190,8 +2562,14 @@ public:
 	template < class T, class Allocator >
 	const marray& operator =( const array< T, Allocator > &o )
 	{
-		base::resize( o.size( ) + margin1_ * 2 );
-		return( copy( o ) );
+		if( base::resize( o.size( ) + margin1_ * 2 ) )
+		{
+			return( copy( o ) );
+		}
+		else
+		{
+			return( *this );
+		}
 	}
 
 
@@ -2207,9 +2585,15 @@ public:
 	template < class T, class Allocator >
 	const marray& operator =( const array1< T, Allocator > &o )
 	{
-		base::resize( o.size( ) + margin1_ * 2 );
-		reso1( o.reso1( ) );
-		return( copy( o ) );
+		if( base::resize( o.size( ) + margin1_ * 2 ) )
+		{
+			reso1( o.reso1( ) );
+			return( copy( o ) );
+		}
+		else
+		{
+			return( *this );
+		}
 	}
 
 
@@ -2225,10 +2609,16 @@ public:
 	template < class T, class Allocator >
 	const marray& operator =( const array2< T, Allocator > &o )
 	{
-		base::resize( o.size1( ) + margin1_ * 2, o.size2( ) + margin2_ * 2 );
-		reso1( o.reso1( ) );
-		reso2( o.reso2( ) );
-		return( copy( o ) );
+		if( base::resize( o.size1( ) + margin1_ * 2, o.size2( ) + margin2_ * 2 ) )
+		{
+			reso1( o.reso1( ) );
+			reso2( o.reso2( ) );
+			return( copy( o ) );
+		}
+		else
+		{
+			return( *this );
+		}
 	}
 
 
@@ -2244,11 +2634,17 @@ public:
 	template < class T, class Allocator >
 	const marray& operator =( const array3< T, Allocator > &o )
 	{
-		base::resize( o.size1( ) + margin1_ * 2, o.size2( ) + margin2_ * 2, o.size3( ) + margin3_ * 2 );
-		reso1( o.reso1( ) );
-		reso2( o.reso2( ) );
-		reso3( o.reso3( ) );
-		return( copy( o ) );
+		if( base::resize( o.size1( ) + margin1_ * 2, o.size2( ) + margin2_ * 2, o.size3( ) + margin3_ * 2 ) )
+		{
+			reso1( o.reso1( ) );
+			reso2( o.reso2( ) );
+			reso3( o.reso3( ) );
+			return( copy( o ) );
+		}
+		else
+		{
+			return( false );
+		}
 	}
 
 // 要素へのアクセス
@@ -2591,10 +2987,18 @@ public:
 	//! 
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! 
-	void resize( size_type num1 )
+	bool resize( size_type num1 )
 	{
-		size1_ = num1;
-		base::resize( floor_square( size1_ ) );
+		if( base::resize( floor_square( num1 ) ) )
+		{
+			size1_ = num1;
+			return( true );
+		}
+		else
+		{
+			size1_ = 0;
+			return( false );
+		}
 	}
 
 
@@ -2608,14 +3012,20 @@ public:
 	//! @param[in] num1 … リサイズ後のX軸方向の要素数
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
 	//! 
-	void resize( size_type num1, size_type num2 )
+	bool resize( size_type num1, size_type num2 )
 	{
 		size_type s1 = floor_square( num1 );
 		size_type s2 = floor_square( num2 );
 		size1_ = num1;
 		size2_ = num2;
 		s1 = s1 > s2 ? s1 : s2;
-		base::resize( s1, s1 );
+		if( !base::resize( s1, s1 ) )
+		{
+			size1_ = size2_ = 0;
+			return( false );
+		}
+
+		return( true );
 	}
 
 
@@ -2630,7 +3040,7 @@ public:
 	//! @param[in] num2 … リサイズ後のY軸方向の要素数
 	//! @param[in] num3 … リサイズ後のZ軸方向の要素数
 	//! 
-	void resize( size_type num1, size_type num2, size_type num3 )
+	bool resize( size_type num1, size_type num2, size_type num3 )
 	{
 		size_type s1 = floor_square( num1 );
 		size_type s2 = floor_square( num2 );
@@ -2640,31 +3050,50 @@ public:
 		size3_ = num3;
 		s1 = s1 > s2 ? s1 : s2;
 		s1 = s1 > s3 ? s1 : s3;
-		base::resize( s1, s1, s1 );
+
+		if( !base::resize( s1, s1, s1 ) )
+		{
+			size1_ = size2_ = size3_ = 0;
+			return( false );
+		}
+
+		return( true );
 	}
 
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
+	//! @attention どちらかのコンテナが外部メモリを利用している場合は，スワップは必ず失敗する
+	//! 
 	//! 入れ替え元のコンテナ a の中身と全て入れ替える
 	//! 
 	//! @param[in] a  … 内容を入れ替える対象
 	//! 
-	void swap( buffered_array &a )
+	//! @retval true  … データのスワップに成功
+	//! @retval false … データのスワップに失敗
+	//! 
+	bool swap( buffered_array &a )
 	{
-		base::swap( a );
+		if( base::swap( a ) )
+		{
+			size_type tmp = size1_;
+			size1_ = a.size1_;
+			a.size1_ = tmp;
 
-		size_type tmp = size1_;
-		size1_ = a.size1_;
-		a.size1_ = tmp;
+			tmp = size2_;
+			size2_ = a.size2_;
+			a.size2_ = tmp;
 
-		tmp = size2_;
-		size2_ = a.size2_;
-		a.size2_ = tmp;
+			tmp = size3_;
+			size3_ = a.size3_;
+			a.size3_ = tmp;
 
-		tmp = size3_;
-		size3_ = a.size3_;
-		a.size3_ = tmp;
+			return( true );
+		}
+		else
+		{
+			return( false );
+		}
 	}
 
 
@@ -2794,9 +3223,17 @@ public:
 		if( this == &o ) return( *this );
 
 		base::operator =( o );
-		size1_ = o.size1_;
-		size2_ = o.size2_;
-		size3_ = o.size3_;
+
+		if( empty( ) )
+		{
+			size1_ = size2_ = size3_ = 0;
+		}
+		else
+		{
+			size1_ = o.size1_;
+			size2_ = o.size2_;
+			size3_ = o.size3_;
+		}
 
 		return( *this );
 	}

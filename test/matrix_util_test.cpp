@@ -143,7 +143,7 @@ int main( )
 		std::cout << a << std::endl << std::endl;
 
 		mist::svd( aa, u, s, vt );
-		mist::svd( aa, s, vt );
+		//mist::svd( aa, s, vt );
 		std::cout << u << std::endl << std::endl;
 		std::cout << s << std::endl << std::endl;
 		std::cout << vt << std::endl << std::endl;

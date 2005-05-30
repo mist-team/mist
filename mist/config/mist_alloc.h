@@ -391,33 +391,74 @@ public:
 	typedef typename Allocator::pointer pointer;					///< @brief MISTのコンテナ内に格納するデータ型のポインター型．mist::array< data > の場合，data * となる
 	typedef typename Allocator::const_pointer const_pointer;		///< @brief MISTのコンテナ内に格納するデータ型の const ポインター型．mist::array< data > の場合，const data * となる
 
+protected:
+	pointer   shared_pointer;		// 利用可能なメモリへのポインタ（外部とメモリを共有する場合のみ利用） 
+	size_type shared_memory;		// 利用可能なメモリ量（外部とメモリを共有する場合のみ利用） 
+
+
 public:
 	/// @brief num 個のオブジェクトのメモリを確保し初期化を行う（組み込み型かどうかで内部の実装を分岐）
 	pointer allocate_objects( size_type num )
 	{
-		if( num <= 0 ) return( NULL );
-		return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects1( *this, num ) );
+		if( !is_memory_shared( ) )
+		{
+			// 自動でメモリを割り当てる場合
+			if( num <= 0 ) return( NULL );
+			return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects1( *this, num ) );
+		}
+		else
+		{
+			// 外部割り当てのメモリを利用する場合
+			if( shared_memory < num ) return( NULL );
+			return( shared_pointer );
+		}
 	}
 
 	/// @brief num 個のオブジェクトのメモリを確保し obj を用いて初期化を行う（組み込み型かどうかで内部の実装を分岐）
 	pointer allocate_objects( size_type num, const_reference obj )
 	{
-		if( num <= 0 ) return( NULL );
-		return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects2( *this, num, obj ) );
+		if( !is_memory_shared( ) )
+		{
+			// 自動でメモリを割り当てる場合
+			if( num <= 0 ) return( NULL );
+			return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects2( *this, num, obj ) );
+		}
+		else
+		{
+			// 外部割り当てのメモリを利用する場合
+			if( shared_memory < num ) return( NULL );
+			mist_memory_operator< is_char< T >::value >::fill_objects1( *this, shared_pointer, num, obj );
+			return( shared_pointer );
+		}
 	}
 
 	/// @brief num 個のオブジェクトを確保し，ポインタで囲まれた間のデータで初期化する(組み込み型のデータの場合は memcpy を利用する)
 	pointer allocate_objects( const_pointer s, const_pointer e )
 	{
-		if( s >= e ) return( NULL );
-		return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects3( *this, s, e ) );
+		if( !is_memory_shared( ) )
+		{
+			// 自動でメモリを割り当てる場合
+			if( s >= e ) return( NULL );
+			return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects3( *this, s, e ) );
+		}
+		else
+		{
+			// 外部割り当てのメモリを利用する場合
+			if( s >= e || shared_memory < e - s ) return( NULL );
+			mist_memory_operator< is_char< T >::value >:::copy_objects2( *this, s, e - s, shared_pointer );
+			return( shared_pointer );
+		}
 	}
 
 	/// @brief num 個のオブジェクトのメモリを開放し，デストラクタを呼び出す（組み込み型の場合はデストラクタは呼ばない）
 	void deallocate_objects( pointer ptr, size_type num )
 	{
-		if( num <= 0 ) return;
-		mist_memory_operator< is_arithmetic< T >::value >::deallocate_objects( *this, ptr, num );
+		if( !is_memory_shared( ) )
+		{
+			// 自動でメモリを割り当てる場合
+			if( num <= 0 ) return;
+			mist_memory_operator< is_arithmetic< T >::value >::deallocate_objects( *this, ptr, num );
+		}
 	}
 
 	/// @brief ポインタ s から e までの間のデータを x にコピーする
@@ -458,13 +499,18 @@ public:
 		if( num < 0 ) return( NULL );				// トリム先の配列サイズが0より小さい例外
 		if( num == dest_num ) return( ptr );		// トリムによる変更の必要なし
 		if( num == 0 ) return( NULL );
+
+		if( !is_memory_shared( ) )
+		{
+			// 自動でメモリを割り当てる場合
 #if _MIST_ALLOCATOR_MEMORY_TRIM_ != 0
-		deallocate_objects( ptr + dest_num, num - dest_num );
-		fill_objects( ptr, dest_num );
+			deallocate_objects( ptr + dest_num, num - dest_num );
+			fill_objects( ptr, dest_num );
 #else
-		deallocate_objects( ptr, num );
-		ptr = allocate_objects( num );
+			deallocate_objects( ptr, num );
+			ptr = allocate_objects( num );
 #endif
+		}
 		return( dest_num == 0 ? NULL : ptr );
 	}
 
@@ -478,31 +524,72 @@ public:
 		if( num < 0 ) return( NULL );				// トリム先の配列サイズが0より小さい例外
 		if( num == dest_num ) return( ptr );		// トリムによる変更の必要なし
 		if( num == 0 ) return( NULL );
+
+		if( !is_memory_shared( ) )
+		{
+			// 自動でメモリを割り当てる場合
 #if _MIST_ALLOCATOR_MEMORY_TRIM_ != 0
-		deallocate_objects( ptr + dest_num, num - dest_num );
-		fill_objects( ptr, dest_num, obj );
+			deallocate_objects( ptr + dest_num, num - dest_num );
+			fill_objects( ptr, dest_num, obj );
 #else
-		deallocate_objects( ptr, num );
-		ptr = allocate_objects( num, obj );
+			deallocate_objects( ptr, num );
+			ptr = allocate_objects( num, obj );
 #endif
+		}
 		return( dest_num == 0 ? NULL : ptr );
 	}
 
+	/// @brief 使用しているアロケータが確保可能なメモリの最大値を返す
+	size_type max_size( ) const
+	{
+		return( shared_memory != 0 ? base::max_size( ) : mem_available )
+	}
+
+	/// @brief 外部で割り当てられたメモリ領域を使用しているかどうか
+	bool is_memory_shared( ) const
+	{
+		return( shared_memory != 0 );
+	}
 
 	/// @brief 他のアロケータを代入する
 	const Allocator &operator=( const Allocator &alloc )
 	{
-		if( &alloc != this ) base::operator=( alloc );
+		if( &alloc != this )
+		{
+			// 外部メモリを利用しているかどうかは受け継がない
+			base::operator=( alloc );
+		}
+		return( *this );
+	}
+
+	/// @brief 他のアロケータを代入する
+	const mist_allocator &operator=( const mist_allocator &alloc )
+	{
+		if( &alloc != this )
+		{
+			// 外部メモリを利用しているかどうかは受け継がない
+			base::operator=( alloc );
+		}
 		return( *this );
 	}
 
 
 	/// @brief デフォルトコンストラクタ
-	mist_allocator( ) : base( ){}
+	mist_allocator( ) : base( ), shared_pointer( NULL ), shared_memory( 0 ){}
+
+
+	/// @brief デフォルトコンストラクタ
+	//! 
+	//! @attention 外部で割り当てたメモリ領域を利用する場合
+	//! 
+	/// @param[in] ptr       … 外部メモリの先頭のポインタ
+	/// @param[in] mem_shared … 外部メモリに割り当てたメモリ量
+	//! 
+	mist_allocator( pointer ptr, size_type mem_shared ) : base( ),  shared_pointer( mem_shared == 0 ? NULL : ptr ), shared_memory( ptr == NULL ? 0 : mem_shared ){}
 
 
 	/// @brief 他のアロケータを用いて初期化する
-	mist_allocator( const Allocator &alloc ) : base( alloc ){}
+	mist_allocator( const Allocator &alloc ) : base( alloc ), shared_pointer( NULL ), shared_memory( 0 ){}
 };
 
 

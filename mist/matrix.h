@@ -543,19 +543,24 @@ public:
 	//! 
 	//! @param[in] num … リサイズ後の行列の行数
 	//! 
-	void resize( size_type num )
+	//! @retval true  … 正常にリサイズが終了
+	//! @retval false … リサイズ後のメモリを確保できなかった場合
+	//! 
+	bool resize( size_type num )
 	{
-		size1_ = num;
-		size2_ = 1;
-		base::resize( size1_ * size2_ );
+		if( base::resize( num ) )
+		{
+			size1_ = num;
+			size2_ = 1;
+			return( true );
+		}
+		else
+		{
+			size1_ = size2_ = 0;
+			return( false );
+		}
 	}
 
-	//void resize( size_type num, const T &val )
-	//{
-	//	size1_ = num;
-	//	size2_ = 1;
-	//	base::resize( size1_ * size2_, val );
-	//}
 
 	/// @brief 行列のサイズを num1 行 num2 列に変更する
 	//! 
@@ -563,29 +568,51 @@ public:
 	//! 全ての要素の値はデフォルトコンストラクタで初期化される．
 	//! また，組み込み型（int や double など）の場合は，全ての要素を0で初期化する．
 	//! 
-	//! @param[in] num1 … リサイズ後の行列の行数
-	//! @param[in] num2 … リサイズ後の行列の列数
+	//! @param[in] nrows … リサイズ後の行列の行数
+	//! @param[in] ncols … リサイズ後の行列の列数
 	//! 
-	void resize( size_type num1, size_type num2 )
+	//! @retval true  … 正常にリサイズが終了
+	//! @retval false … リサイズ後のメモリを確保できなかった場合
+	//! 
+	bool resize( size_type nrows, size_type ncols )
 	{
-		size1_ = num1;
-		size2_ = num2;
-		base::resize( size1_ * size2_ );
+		if( base::resize( nrows * ncols ) )
+		{
+			size1_ = nrows;
+			size2_ = ncols;
+			return( true );
+		}
+		else
+		{
+			size1_ = size2_ = 0;
+			return( false );
+		}
 	}
 
 	/// @brief 行列のサイズを num1 行 num2 列に変更する
 	//! 
 	//! 行列サイズを num1 行 num2 列に変更し，全ての要素を値 val で初期化する．
 	//! 
-	//! @param[in] num1 … リサイズ後の行列の行数
-	//! @param[in] num2 … リサイズ後の行列の列数
-	//! @param[in] val  … リサイズ後に各要素を初期化する値
+	//! @param[in] nrows … リサイズ後の行列の行数
+	//! @param[in] ncols … リサイズ後の行列の列数
+	//! @param[in] val   … リサイズ後に各要素を初期化する値
 	//! 
-	void resize( size_type num1, size_type num2, const T &val )
+	//! @retval true  … 正常にリサイズが終了
+	//! @retval false … リサイズ後のメモリを確保できなかった場合
+	//! 
+	bool resize( size_type nrows, size_type ncols, const T &val )
 	{
-		size1_ = num1;
-		size2_ = num2;
-		base::resize( size1_ * size2_, val );
+		if( base::resize( nrows * ncols, val ) )
+		{
+			size1_ = nrows;
+			size2_ = ncols;
+			return( true );
+		}
+		else
+		{
+			size1_ = size2_ = 0;
+			return( false );
+		}
 	}
 
 	/// @brief コンテナ内の要素をトリミングする
@@ -624,16 +651,39 @@ public:
 			ncols = ncols_ - col;
 		}
 
-		matrix o( nrows, ncols );
-		for( difference_type c = 0 ; c < ncols ; c++ )
+		if( is_memory_shared( ) )
 		{
-			for( difference_type r = 0 ; r < nrows ; r++ )
+			// 外部メモリを利用している場合
+			matrix o( *this );
+
+			if( resize( nrows, ncols ) )
 			{
-				o( r, c ) = operator ()( r + row, c + col );
+				for( difference_type c = 0 ; c < ncols ; c++ )
+				{
+					for( difference_type r = 0 ; r < nrows ; r++ )
+					{
+						o( r, c ) = operator ()( r + row, c + col );
+					}
+				}
+			}
+			else
+			{
+				return( false );
 			}
 		}
+		else
+		{
+			matrix o( nrows, ncols );
+			for( difference_type c = 0 ; c < ncols ; c++ )
+			{
+				for( difference_type r = 0 ; r < nrows ; r++ )
+				{
+					o( r, c ) = operator ()( r + row, c + col );
+				}
+			}
 
-		swap( o );
+			swap( o );
+		}
 
 		return( true );
 	}
@@ -645,15 +695,25 @@ public:
 	//! 
 	//! @param[in] m … 内容を入れ替える対象
 	//! 
-	void swap( matrix &m )
+	//! @retval true  … データのスワップに成功
+	//! @retval false … データのスワップに失敗
+	//! 
+	bool swap( matrix &m )
 	{
-		base::swap( m );
-		size_type _dmy_size1 = size1_;
-		size_type _dmy_size2 = size2_;
-		size1_ = m.size1_;
-		size2_ = m.size2_;
-		m.size1_ = _dmy_size1;
-		m.size2_ = _dmy_size2;
+		if( base::swap( m ) )
+		{
+			size_type _dmy_size1 = size1_;
+			size_type _dmy_size2 = size2_;
+			size1_ = m.size1_;
+			size2_ = m.size2_;
+			m.size1_ = _dmy_size1;
+			m.size2_ = _dmy_size2;
+			return( true );
+		}
+		else
+		{
+			return( false );
+		}
 	}
 
 	/// @brief 行列の要素を空にする
@@ -1353,8 +1413,16 @@ public:
 	const matrix& operator =( const matrix< TT, AAlocator > &o )
 	{
 		base::operator =( o );
-		size1_ = o.size1( );
-		size2_ = o.size2( );
+
+		if( empty( ) )
+		{
+			size1_ = size2_ = 0;
+		}
+		else
+		{
+			size1_ = o.size1( );
+			size2_ = o.size2( );
+		}
 
 		return( *this );
 	}
@@ -1373,8 +1441,16 @@ public:
 		if( this == &o ) return( *this );
 
 		base::operator =( o );
-		size1_ = o.size1( );
-		size2_ = o.size2( );
+
+		if( empty( ) )
+		{
+			size1_ = size2_ = 0;
+		}
+		else
+		{
+			size1_ = o.size1( );
+			size2_ = o.size2( );
+		}
 
 		return( *this );
 	}
@@ -1391,15 +1467,34 @@ public:
 	template < class Expression >
 	const matrix& operator =( const matrix_expression< Expression > &expression )
 	{
-		matrix m( expression.rows( ), expression.cols( ) );
-		for( size_type r = 0 ; r < m.rows( ) ; r++ )
+		if( is_memory_shared( ) )
 		{
-			for( size_type c = 0 ; c < m.cols( ) ; c++ )
+			// 外部メモリを利用している場合
+			matrix m( *this );
+
+			if( resize( expression.rows( ), expression.cols( ) ) )
 			{
-				m( r, c ) = expression( r, c );
+				for( size_type r = 0 ; r < m.rows( ) ; r++ )
+				{
+					for( size_type c = 0 ; c < m.cols( ) ; c++ )
+					{
+						m( r, c ) = expression( r, c );
+					}
+				}
 			}
 		}
-		m.swap( *this );
+		else
+		{
+			matrix m( expression.rows( ), expression.cols( ) );
+			for( size_type r = 0 ; r < m.rows( ) ; r++ )
+			{
+				for( size_type c = 0 ; c < m.cols( ) ; c++ )
+				{
+					m( r, c ) = expression( r, c );
+				}
+			}
+			m.swap( *this );
+		}
 
 		return( *this );
 	}
@@ -1503,17 +1598,44 @@ public:
 
 
 	/// @brief 要素数 rnum 行 cnum 列 の行列を作成し，デフォルト値で要素を初期化する
-	matrix( size_type rnum, size_type cnum ) : base( rnum * cnum ), size1_( rnum ), size2_( cnum ) {}
+	matrix( size_type rnum, size_type cnum ) : base( rnum * cnum ), size1_( rnum ), size2_( cnum )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 	/// @brief 要素数 rnum 行 cnum 列 でアロケータ a のコピーを利用した行列を作成し，デフォルト値で要素を初期化する
-	matrix( size_type rnum, size_type cnum, const Allocator &a ) : base( rnum * cnum, a ), size1_( rnum ), size2_( cnum ) {}
+	matrix( size_type rnum, size_type cnum, const Allocator &a ) : base( rnum * cnum, a ), size1_( rnum ), size2_( cnum )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 
 	/// @brief 要素数 rnum 行 cnum 列 の行列を作成し，全要素を値 val で要素を初期化する
-	matrix( size_type rnum, size_type cnum, const T &val ) : base( rnum * cnum, val ), size1_( rnum ), size2_( cnum ) {}
+	matrix( size_type rnum, size_type cnum, const T &val ) : base( rnum * cnum, val ), size1_( rnum ), size2_( cnum )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 	/// @brief 要素数 rnum 行 cnum 列 でアロケータ a のコピーを利用した行列を作成し，全要素を値 val で要素を初期化する
-	matrix( size_type rnum, size_type cnum, const T &val, const Allocator &a ) : base( rnum * cnum, val, a ), size1_( rnum ), size2_( cnum ) {}
+	matrix( size_type rnum, size_type cnum, const T &val, const Allocator &a ) : base( rnum * cnum, val, a ), size1_( rnum ), size2_( cnum )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
+
+
+
+
+	/// @brief ptr が指すメモリ領域に，要素数 rnum 行 cnum 列 の行列を作成する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	matrix( size_type rnum, size_type cnum, pointer ptr, size_type mem_available ) : base( rnum * cnum, ptr, mem_available ), size1_( rnum ), size2_( cnum )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
+
+	/// @brief ptr が指すメモリ領域に，要素数 rnum 行 cnum 列 の行列を作成し，全要素を値 val で要素を初期化する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	matrix( size_type rnum, size_type cnum, const T &val, pointer ptr, size_type mem_available ) : base( rnum * cnum, val, ptr, mem_available ), size1_( rnum ), size2_( cnum )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 
 	/// @brief 他の行列で要素の型が異なるものから同じサイズの行列を作成する
@@ -1521,11 +1643,17 @@ public:
 	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
 	//!
 	template < class TT, class AAlocator >
-	matrix( const matrix< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ){ }
+	matrix( const matrix< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 
 	/// @brief 他の行列で同じ要素型のものを用いて初期化する
-	matrix( const matrix< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ){ }
+	matrix( const matrix< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ )
+	{
+		if( empty( ) ) size1_ = size2_ = 0;
+	}
 
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
@@ -1533,12 +1661,19 @@ public:
 	template < class Expression >
 	matrix( const matrix_expression< Expression > &expression ) : base( expression.rows( ) * expression.cols( ) ), size1_( expression.rows( ) ), size2_( expression.cols( ) )
 	{
-		matrix &m = *this;
-		for( size_type r = 0 ; r < m.rows( ) ; r++ )
+		if( empty( ) )
 		{
-			for( size_type c = 0 ; c < m.cols( ) ; c++ )
+			size1_ = size2_ = 0;
+		}
+		else
+		{
+			matrix &m = *this;
+			for( size_type r = 0 ; r < m.rows( ) ; r++ )
 			{
-				m( r, c ) = expression( r, c );
+				for( size_type c = 0 ; c < m.cols( ) ; c++ )
+				{
+					m( r, c ) = expression( r, c );
+				}
 			}
 		}
 	}

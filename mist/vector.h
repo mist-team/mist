@@ -859,6 +859,13 @@ public:
 	vector( size_type num, const T &val, const Allocator &a ) : base( num, 1, val, a ) {}
 
 
+	/// @brief ptr が指すメモリ領域に，num 次元のベクトルを作成を作成する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	vector( size_type num, pointer ptr, size_type mem_available ) : base( num, 1, ptr, mem_available ) {}
+
+	/// @brief ptr が指すメモリ領域に，num 次元のベクトルを作成を作成し，全要素を値 val で要素を初期化する（ptr が指す先の利用可能なメモリ量は mem_available ）
+	vector( size_type num, const T &val, pointer ptr, size_type mem_available ) : base( num, 1, val, ptr, mem_available ) {}
+
+
 	/// @brief 他のベクトルで要素の型が異なるものから同じサイズのベクトルを作成する
 	//!
 	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
