@@ -79,7 +79,7 @@ namespace pixel_data
 				static_cast< GLsizei >( image.height( ) ),
 				0,
 				GL_LUMINANCE,
-				gl_type_trait< T >::gl_type,
+				gl_type_trait< typename Array::value_type >::gl_type,
 				static_cast< const GLvoid* >( &( image[0] ) )
 				);
 		}
@@ -141,7 +141,7 @@ namespace pixel_data
 					static_cast< GLsizei >( w ),
 					static_cast< GLsizei >( h ),
 					GL_LUMINANCE,
-					gl_type_trait< T >::gl_type,
+					gl_type_trait< typename Array::value_type >::gl_type,
 					static_cast< const GLvoid* >( &( image[0] ) )
 				);
 		}

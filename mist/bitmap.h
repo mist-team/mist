@@ -245,14 +245,14 @@ public:
 	//! 
 	//! @return 自分自身
 	//! 
-	template < size_t BITS, class AAlocator >
-	const bitmap& operator =( const bitmap< BITS, AAlocator > &o )
+	template < size_t BBITS, class AAlocator >
+	const bitmap& operator =( const bitmap< BBITS, AAlocator > &o )
 	{
 		if( resize( o.size1( ), o.size2( ) ) )
 		{
-			for( size_type j = 0 ; j < h ; j++ )
+			for( size_type j = 0 ; j < size2_ ; j++ )
 			{
-				for( size_type i = 0 ; i < w ; i++ )
+				for( size_type i = 0 ; i < size1_ ; i++ )
 				{
 					operator ()( i, j ) = o( i, j );
 				}
@@ -278,9 +278,9 @@ public:
 	{
 		if( resize( o.size1( ), o.size2( ) ) )
 		{
-			for( size_type j = 0 ; j < h ; j++ )
+			for( size_type j = 0 ; j < size2_ ; j++ )
 			{
-				for( size_type i = 0 ; i < w ; i++ )
+				for( size_type i = 0 ; i < size1_ ; i++ )
 				{
 					operator ()( i, j ) = o( i, j );
 				}
@@ -445,7 +445,7 @@ public:
 	bitmap( ) : base( ), size1_( 0 ), size2_( 0 ), nbytes_( 0 ) {}
 
 	/// @brief アロケータ a のコピーを利用する
-	explicit bitmap( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ), nbytes_( 0 )
+	explicit bitmap( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ), nbytes_( 0 ) {}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，デフォルト値で要素を初期化する
 	bitmap( size_type num1, size_type num2 ) : base( num_bytes( num1 ) * num2 ), size1_( num1 ), size2_( num2 ), nbytes_( num_bytes( num1 ) )
@@ -503,8 +503,8 @@ public:
 	//!
 	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
 	//!
-	template < size_t BITS, class AAlocator >
-	bitmap( const bitmap< BITS, AAlocator > &o ) : base( ), size1_( 0 ), size2_( 0 ), nbytes_( 0 )
+	template < size_t BBITS, class AAlocator >
+	bitmap( const bitmap< BBITS, AAlocator > &o ) : base( ), size1_( 0 ), size2_( 0 ), nbytes_( 0 )
 	{
 		if( resize( o.size1( ), o.size2( ) ) )
 		{
