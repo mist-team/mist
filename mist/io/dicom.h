@@ -1163,7 +1163,7 @@ namespace dicom
 			fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
 			fwrite( "UN", 1, 2, fp );
 			fwrite( get_dicom_vr( vr ).c_str( ), 1, 2, fp );
-			fwrite( from_current_endian( byte_array< unsigned int >( num_bytes ), to_little_endian ).get_bytes( ), 1, 4, fp );
+			fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
 			fwrite( data, 1, num_bytes, fp );
 			break;
 

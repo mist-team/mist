@@ -73,9 +73,9 @@ namespace __png_controller__
 			switch( color_type )
 			{
 			case PNG_COLOR_TYPE_GRAY:
-				for( j = 0 ; j < (size_type)height ; j++ )
+				for( j = 0 ; j < ( size_type )height ; j++ )
 				{
-					for( i = 0 ; i < (size_type )width ; i++ )
+					for( i = 0 ; i < ( size_type )width ; i++ )
 					{
 						image( i, j ) = pixel_converter::convert_to( png_buff[j][i], png_buff[j][i], png_buff[j][i] );
 					}
@@ -83,9 +83,9 @@ namespace __png_controller__
 				break;
 
 			case PNG_COLOR_TYPE_RGB:
-				for( j = 0 ; j < (size_type)height ; j++ )
+				for( j = 0 ; j < ( size_type )height ; j++ )
 				{
-					for( i = 0 ; i < (size_type )width ; i++ )
+					for( i = 0 ; i < ( size_type )width ; i++ )
 					{
 						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 3 + 0 ], png_buff[j][ i * 3 + 1 ], png_buff[j][ i * 3 + 2 ] );
 					}
@@ -93,9 +93,9 @@ namespace __png_controller__
 				break;
 
 			case PNG_COLOR_TYPE_RGBA:
-				for( j = 0 ; j < (size_type)height ; j++ )
+				for( j = 0 ; j < ( size_type )height ; j++ )
 				{
-					for( i = 0 ; i < (size_type )width ; i++ )
+					for( i = 0 ; i < ( size_type )width ; i++ )
 					{
 						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 4 + 0 ], png_buff[j][ i * 4 + 1 ], png_buff[j][ i * 4 + 2 ], png_buff[j][ i * 4 + 3 ] );
 					}
@@ -103,9 +103,9 @@ namespace __png_controller__
 				break;
 
 			case PNG_COLOR_TYPE_GA:
-				for( j = 0 ; j < (size_type)height ; j++ )
+				for( j = 0 ; j < ( size_type )height ; j++ )
 				{
-					for( i = 0 ; i < (size_type )width ; i++ )
+					for( i = 0 ; i < ( size_type )width ; i++ )
 					{
 						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 2 ], png_buff[j][ i * 2 ], png_buff[j][ i * 2 ], png_buff[j][ i * 2 + 1 ] );
 					}
@@ -113,9 +113,9 @@ namespace __png_controller__
 				break;
 
 			case PNG_COLOR_TYPE_PALETTE:
-				for( j = 0 ; j < (size_type)height ; j++ )
+				for( j = 0 ; j < ( size_type )height ; j++ )
 				{
-					for( i = 0 ; i < (size_type )width ; i++ )
+					for( i = 0 ; i < ( size_type )width ; i++ )
 					{
 						png_color &p = info_ptr->palette[ png_buff[j][ i ] ];
 						image( i, j ) = pixel_converter::convert_to( p.red, p.green, p.blue );
@@ -196,21 +196,21 @@ namespace __png_controller__
 				png_convert_from_time_t( &mod_time, gmt );
 				png_set_tIME( png_ptr, info_ptr, &mod_time );
 
-				text_ptr[0].key = "Title";
-				text_ptr[0].text = "slipapng library";
-				text_ptr[0].compression = PNG_TEXT_COMPRESSION_NONE;
-				text_ptr[1].key = "Author";
-				text_ptr[1].text = "mist project team";
-				text_ptr[1].compression = PNG_TEXT_COMPRESSION_NONE;
-				text_ptr[2].key = "Description";
-				text_ptr[2].text = "created by mist project team";
-				text_ptr[2].compression = PNG_TEXT_COMPRESSION_NONE;
-				text_ptr[3].key = "Creation Time";
-				text_ptr[3].text = png_convert_to_rfc1123( png_ptr, &mod_time );
-				text_ptr[3].compression = PNG_TEXT_COMPRESSION_NONE;
-				text_ptr[4].key = "Software";
-				text_ptr[4].text = "mist png converter";
-				text_ptr[4].compression = PNG_TEXT_COMPRESSION_NONE;
+				text_ptr[ 0 ].key = "Title";
+				text_ptr[ 0 ].text = "slipapng library";
+				text_ptr[ 0 ].compression = PNG_TEXT_COMPRESSION_NONE;
+				text_ptr[ 1 ].key = "Author";
+				text_ptr[ 1 ].text = "mist project team";
+				text_ptr[ 1 ].compression = PNG_TEXT_COMPRESSION_NONE;
+				text_ptr[ 2 ].key = "Description";
+				text_ptr[ 2 ].text = "created by mist project team";
+				text_ptr[ 2 ].compression = PNG_TEXT_COMPRESSION_NONE;
+				text_ptr[ 3 ].key = "Creation Time";
+				text_ptr[ 3 ].text = png_convert_to_rfc1123( png_ptr, &mod_time );
+				text_ptr[ 3 ].compression = PNG_TEXT_COMPRESSION_NONE;
+				text_ptr[ 4 ].key = "Software";
+				text_ptr[ 4 ].text = "mist png converter";
+				text_ptr[ 4 ].compression = PNG_TEXT_COMPRESSION_NONE;
 				png_set_text( png_ptr, info_ptr, text_ptr, 5 );
 			}
 
@@ -222,14 +222,14 @@ namespace __png_controller__
 			{
 				for( j = 0 ; j < height ; j++ )
 				{
-					png_buff[j] = new png_byte[width * 4];
+					png_buff[ j ] = new png_byte[width * 4];
 					for( i = 0 ; i < width ; i++ )
 					{
 						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
-						png_buff[j][ i * 4 + 0 ] = static_cast< unsigned char >( c.r );
-						png_buff[j][ i * 4 + 1 ] = static_cast< unsigned char >( c.g );
-						png_buff[j][ i * 4 + 2 ] = static_cast< unsigned char >( c.b );
-						png_buff[j][ i * 4 + 3 ] = static_cast< unsigned char >( c.a );
+						png_buff[ j ][ i * 4 + 0 ] = static_cast< unsigned char >( c.r );
+						png_buff[ j ][ i * 4 + 1 ] = static_cast< unsigned char >( c.g );
+						png_buff[ j ][ i * 4 + 2 ] = static_cast< unsigned char >( c.b );
+						png_buff[ j ][ i * 4 + 3 ] = static_cast< unsigned char >( c.a );
 					}
 				}
 			}
@@ -241,9 +241,9 @@ namespace __png_controller__
 					for( i = 0 ; i < width ; i++ )
 					{
 						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
-						png_buff[j][ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
-						png_buff[j][ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
-						png_buff[j][ i * 3 + 2 ] = static_cast< unsigned char >( c.b );
+						png_buff[ j ][ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
+						png_buff[ j ][ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
+						png_buff[ j ][ i * 3 + 2 ] = static_cast< unsigned char >( c.b );
 					}
 				}
 			}

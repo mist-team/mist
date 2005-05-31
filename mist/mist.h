@@ -486,7 +486,7 @@ public:
 	reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
-		return( data_[index] );
+		return( data_[ index ] );
 	}
 
 
@@ -503,7 +503,7 @@ public:
 	const_reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
-		return( data_[index] );
+		return( data_[ index ] );
 	}
 
 
@@ -520,7 +520,7 @@ public:
 	reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
-		return( data_[index] );
+		return( data_[ index ] );
 	}
 
 
@@ -537,7 +537,7 @@ public:
 	const_reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
-		return( data_[index] );
+		return( data_[ index ] );
 	}
 
 
@@ -552,7 +552,7 @@ public:
 	reference operator []( size_type index )
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
-		return( data_[index] );
+		return( data_[ index ] );
 	}
 
 
@@ -567,7 +567,7 @@ public:
 	const_reference operator []( size_type index ) const
 	{
 		_CHECK_ACCESS_VIOLATION1_( index )
-		return( data_[index] );
+		return( data_[ index ] );
 	}
 
 public:

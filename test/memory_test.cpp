@@ -6,7 +6,7 @@ int main( int argc, char *argv[] )
 	using namespace std;
 
 	typedef size_t size_type;
-	size_type i, j;
+	size_type i;
 
 	char memories[ 40 ];
 	size_type num = sizeof( memories ) - 1;
