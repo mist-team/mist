@@ -394,6 +394,7 @@ struct __mist_console_callback__
 * - @ref mist::array1			"array1"         : 音声を扱うための1次元配列
 * - @ref mist::array2			"array2"         : 2次元画像を扱うための画像クラス
 * - @ref mist::array3			"array3"         : 3次元画像を扱うための画像クラス
+* - @ref mist::bitmap			"bitmap"         : ビットマップ画像を扱うためのクラス
 * - @ref mist::marray			"marray"         : 1・2・3次元画像の縁にマージンを持った画像を扱うクラス
 * - @ref mist::buffered_array	"buffered_array" : 画像の一辺が2の指数乗となる画像を扱うクラス
 * - @ref mist::matrix			"matrix"         : 任意の行列を扱うためのクラス（Expression template を利用した高速な演算が可能）
