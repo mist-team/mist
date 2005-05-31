@@ -22,6 +22,7 @@ _MIST_BEGIN
 
 
 // MISTで利用する基底のデータ型
+template < class T > struct bgr;
 
 
 /// @brief カラー画像用の画素
@@ -59,6 +60,10 @@ public:
 	template < class TT >
 	rgb( const rgb< TT > &c ) : r( static_cast< value_type >( c.r ) ), g( static_cast< value_type >( c.g ) ), b( static_cast< value_type >( c.b ) ){ }
 
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	rgb( const bgr< TT > &c ) : r( static_cast< value_type >( c.r ) ), g( static_cast< value_type >( c.g ) ), b( static_cast< value_type >( c.b ) ){ }
+
 	/// @brief 他のカラー画素を用いて初期化する
 	rgb( const rgb< T > &c ) : r( c.r ), g( c.g ), b( c.b ){ }
 
@@ -69,6 +74,16 @@ public:
 	/// @brief 異なる型の他のカラー画素を代入する
 	template < class TT >
 	const rgb &operator =( const rgb< TT > &c )
+	{
+		r = static_cast< value_type >( c.r );
+		g = static_cast< value_type >( c.g );
+		b = static_cast< value_type >( c.b );
+		return( *this );
+	}
+
+	/// @brief 異なる型の他のカラー画素を代入する
+	template < class TT >
+	const rgb &operator =( const bgr< TT > &c )
 	{
 		r = static_cast< value_type >( c.r );
 		g = static_cast< value_type >( c.g );
@@ -323,6 +338,323 @@ DEFINE_PROMOTE_BIND_OPERATOR1( rgb, & )
 /// @brief カラー画素の ^ 演算
 DEFINE_PROMOTE_BIND_OPERATOR1( rgb, ^ )
 
+
+
+
+/// @brief BGRの順でデータが並ぶカラー画像用の画素
+//! 
+//! 主にWindowsのビットマップで利用されている
+//! 
+//! @code カラー画像の作成例
+//! mist::array2< mist::bgr< unsigned char > > image;
+//! @endcode
+//! 
+//! @param T … 各色成分のデータ型
+//! 
+template< class T >
+struct bgr
+{
+public:
+	typedef size_t size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef T& reference;					///< @brief データ型の参照．data の場合，data & となる
+	typedef const T& const_reference;		///< @brief データ型の const 参照．data の場合，const data & となる
+	typedef T value_type;					///< @brief 内部データ型．T と同じ
+	typedef T* pointer;						///< @brief データ型のポインター型．data の場合，data * となる
+	typedef const T* const_pointer;			///< @brief データ型の const ポインター型．data の場合，const data * となる
+
+public:
+	value_type b;		///< @brief 青色成分
+	value_type g;		///< @brief 緑色成分
+	value_type r;		///< @brief 赤色成分
+
+	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
+	bgr( ) : b( 0 ), g( 0 ), r( 0 ){ }
+
+	/// @brief 全ての成分を pix で初期化する
+	explicit bgr( const value_type &pix ) : b( pix ), g( pix ), r( pix ){ }
+
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	bgr( const bgr< TT > &c ) : b( static_cast< value_type >( c.b ) ), g( static_cast< value_type >( c.g ) ), r( static_cast< value_type >( c.r ) ){ }
+
+	/// @brief 他のカラー画素を用いて初期化する
+	bgr( const bgr< T > &c ) : b( c.b ), g( c.g ), r( c.r ){ }
+
+	/// @brief 赤 rr，緑 gg，青 bb を用いて初期化する
+	bgr( const value_type &rr, const value_type &gg, const value_type &bb ) : b( bb ), g( gg ), r( rr ){ }
+
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	bgr( const rgb< TT > &c ) : b( static_cast< value_type >( c.b ) ), g( static_cast< value_type >( c.g ) ), r( static_cast< value_type >( c.r ) ){ }
+
+
+	/// @brief 異なる型の他のカラー画素を代入する
+	template < class TT >
+	const bgr &operator =( const bgr< TT > &c )
+	{
+		b = static_cast< value_type >( c.b );
+		g = static_cast< value_type >( c.g );
+		r = static_cast< value_type >( c.r );
+		return( *this );
+	}
+
+	/// @brief 異なる型の他のカラー画素を代入する
+	template < class TT >
+	const bgr &operator =( const rgb< TT > &c )
+	{
+		b = static_cast< value_type >( c.b );
+		g = static_cast< value_type >( c.g );
+		r = static_cast< value_type >( c.r );
+		return( *this );
+	}
+
+	/// @brief 他のカラー画素を代入する
+	const bgr &operator =( const bgr< T > &c )
+	{
+		if( &c != this )
+		{
+			b = c.b;
+			g = c.g;
+			r = c.r;
+		}
+		return( *this );
+	}
+
+	/// @brief 全ての要素に pix を代入する
+	const bgr &operator =( const value_type &pix )
+	{
+		b = pix;
+		g = pix;
+		r = pix;
+		return( *this );
+	}
+
+
+	/// @brief 全要素の符号反転
+	const bgr  operator -( ) const { return( bgr( -r, -g, -b ) ); }
+
+	/// @brief RGB成分の和
+	template < class TT >
+	const bgr &operator +=( const bgr< TT > &c ){ b = static_cast< value_type >( b + c.b ); g = static_cast< value_type >( g + c.g ); r = static_cast< value_type >( r + c.r ); return( *this ); }
+
+	/// @brief RGB成分の差
+	template < class TT >
+	const bgr &operator -=( const bgr< TT > &c ){ b = static_cast< value_type >( b - c.b ); g = static_cast< value_type >( g - c.g ); r = static_cast< value_type >( r - c.r ); return( *this ); }
+
+	/// @brief RGB成分の積
+	template < class TT >
+	const bgr &operator *=( const bgr< TT > &c ){ b = static_cast< value_type >( b * c.b ); g = static_cast< value_type >( g * c.g ); r = static_cast< value_type >( r * c.r ); return( *this ); }
+
+	/// @brief RGB成分の割り算
+	template < class TT >
+	const bgr &operator /=( const bgr< TT > &c ){ b = static_cast< value_type >( b / c.b ); g = static_cast< value_type >( g / c.g ); r = static_cast< value_type >( r / c.r ); return( *this ); }
+
+	/// @brief RGB成分の剰余
+	const bgr &operator %=( const bgr &c ){ b %= c.b; g %= c.g; r %= c.r; return( *this ); }
+
+	/// @brief RGB成分の | 演算
+	const bgr &operator |=( const bgr &c ){ b |= c.b; g |= c.g; r |= c.r; return( *this ); }
+
+	/// @brief RGB成分の & 演算
+	const bgr &operator &=( const bgr &c ){ b &= c.b; g &= c.g; r &= c.r; return( *this ); }
+
+	/// @brief RGB成分の ^ 演算
+	const bgr &operator ^=( const bgr &c ){ b ^= c.b; g ^= c.g; r ^= c.r; return( *this ); }
+
+
+	/// @brief RGB成分に pix 値を足す
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const bgr &operator +=( const double &pix )
+#else
+	template < class TT >
+	const bgr &operator +=( const TT &pix )
+#endif
+	{
+		b = static_cast< value_type >( b + pix );
+		g = static_cast< value_type >( g + pix );
+		r = static_cast< value_type >( r + pix );
+		return( *this );
+	}
+
+	/// @brief RGB成分から pix 値を引く
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const bgr &operator -=( const double &pix )
+#else
+	template < class TT >
+	const bgr &operator -=( const TT &pix )
+#endif
+	{
+		b = static_cast< value_type >( b - pix );
+		g = static_cast< value_type >( g - pix );
+		r = static_cast< value_type >( r - pix );
+		return( *this );
+	}
+
+	/// @brief RGB成分に pix 値を掛ける
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const bgr &operator *=( const double &pix )
+#else
+	template < class TT >
+	const bgr &operator *=( const TT &pix )
+#endif
+	{
+		b = static_cast< value_type >( b * pix );
+		g = static_cast< value_type >( g * pix );
+		r = static_cast< value_type >( r * pix );
+		return( *this );
+	}
+
+	/// @brief RGB成分を pix 値で割る
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const bgr &operator /=( const double &pix )
+#else
+	template < class TT >
+	const bgr &operator /=( const TT &pix )
+#endif
+	{
+		b = static_cast< value_type >( b / pix );
+		g = static_cast< value_type >( g / pix );
+		r = static_cast< value_type >( r / pix );
+		return( *this );
+	}
+
+
+	/// @brief 2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … 2つのカラー画素が等しい場合
+	//! @retval false … 2つのカラー画素が異なる場合
+	//! 
+	bool operator ==( const bgr &c ) const { return( b == c.b && g == c.g && r == c.r ); }
+
+	/// @brief 2つのカラー画素が等しくない（全要素が同じ値を持つ）かどうかを判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b }
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … 2つのカラー画素が異なる場合
+	//! @retval false … 2つのカラー画素が等しい場合
+	//! 
+	bool operator !=( const bgr &c ) const { return( !( *this == c ) ); }
+
+	/// @brief 2つのカラー画素の < を判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b }
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 <  c2 の場合
+	//! @retval false … c1 >= c2 の場合
+	//! 
+	bool operator < ( const bgr &c ) const { return( !( *this >= c ) ); }
+
+	/// @brief 2つのカラー画素の <= を判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 <= c2 の場合
+	//! @retval false … c1 >  c2 の場合
+	//! 
+	bool operator <=( const bgr &c ) const { return( c >= *this ); }
+
+	/// @brief 2つのカラー画素の > を判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b }
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 >  c2 の場合
+	//! @retval false … c1 <= c2 の場合
+	//! 
+	bool operator > ( const bgr &c ) const { return( c < *this ); }
+
+	/// @brief 2つのカラー画素の >= を判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 >= c2 の場合
+	//! @retval false … c1 <  c2 の場合
+	//! 
+	bool operator >=( const bgr &c ) const { return( b >= c.b && g >= c.g && r >= c.r ); }
+
+
+	/// @brief NTSC系加重平均法により，グレースケールへ変換する
+	value_type get_value( ) const
+	{
+		return( static_cast< value_type >( b * 0.114478 + g * 0.586610 + r * 0.298912 ) );
+	}
+
+	// カラーからグレースケールへの自動キャスト演算子（危険のため一時停止）
+	//operator value_type( ) const { return( get_value( ) ); }
+
+};
+
+/// @brief カラー画素の和
+DEFINE_PROMOTE_BIND_OPERATOR1( bgr, + )
+
+/// @brief カラー画素と定数の和
+DEFINE_PROMOTE_BIND_OPERATOR2( bgr, + )
+
+/// @brief 定数とカラー画素の和
+DEFINE_PROMOTE_BIND_OPERATOR3( bgr, + )
+
+/// @brief カラー画素の差
+DEFINE_PROMOTE_BIND_OPERATOR1( bgr, - )
+
+/// @brief カラー画素と定数の差
+DEFINE_PROMOTE_BIND_OPERATOR2( bgr, - )
+
+/// @brief 定数とカラー画素の差
+DEFINE_PROMOTE_BIND_OPERATOR4( bgr, - )
+
+/// @brief カラー画素の積
+DEFINE_PROMOTE_BIND_OPERATOR1( bgr, * )
+
+/// @brief カラー画素と定数の積
+DEFINE_PROMOTE_BIND_OPERATOR2( bgr, * )
+
+/// @brief 定数とカラー画素の積
+DEFINE_PROMOTE_BIND_OPERATOR3( bgr, * )
+
+/// @brief カラー画素の割り算
+DEFINE_PROMOTE_BIND_OPERATOR1( bgr, / )
+
+/// @brief カラー画素を定数で割る
+DEFINE_PROMOTE_BIND_OPERATOR2( bgr, / )
+
+/// @brief カラー画素の剰余
+DEFINE_PROMOTE_BIND_OPERATOR1( bgr, % )
+
+
+/// @brief カラー画素の | 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( bgr, | )
+
+/// @brief カラー画素の & 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( bgr, & )
+
+/// @brief カラー画素の ^ 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( bgr, ^ )
 
 
 
@@ -770,6 +1102,11 @@ struct _pixel_converter_
 			enum{ value = true };\
 		};\
 		template < >\
+		struct is_color< bgr< type > >\
+		{\
+			enum{ value = true };\
+		};\
+		template < >\
 		struct is_color< rgba< type > >\
 		{\
 			enum{ value = true };\
@@ -781,7 +1118,24 @@ struct _pixel_converter_
 		struct _pixel_converter_< rgb< type > >\
 		{\
 			typedef type value_type;\
-			typedef rgb< type > color_type;\
+			typedef rgba< type > color_type;\
+			enum{ color_num = 3 };\
+			\
+			static color_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )\
+			{\
+				return( color_type( r, g, b ) );\
+			}\
+			\
+			static color_type convert_from( const color_type &pixel )\
+			{\
+				return( pixel );\
+			}\
+		};\
+		template < >\
+		struct _pixel_converter_< bgr< type > >\
+		{\
+			typedef type value_type;\
+			typedef rgba< type > color_type;\
 			enum{ color_num = 3 };\
 			\
 			static color_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )\
@@ -852,6 +1206,12 @@ struct _pixel_converter_
 	};
 
 	template < class T >
+	struct is_color< bgr< T > >
+	{
+		_MIST_CONST( bool, value, true );
+	};
+
+	template < class T >
 	struct is_color< rgba< T > >
 	{
 		_MIST_CONST( bool, value, true );
@@ -859,6 +1219,24 @@ struct _pixel_converter_
 
 	template < class T >
 	struct _pixel_converter_< rgb< T > >
+	{
+		typedef T value_type;
+		typedef rgba< T > color_type;
+		enum{ color_num = 3 };
+
+		static color_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )
+		{
+			return( color_type( r, g, b, a ) );
+		}
+
+		static color_type convert_from( const color_type &pixel )
+		{
+			return( pixel );
+		}
+	};
+
+	template < class T >
+	struct _pixel_converter_< bgr< T > >
 	{
 		typedef T value_type;
 		typedef rgba< T > color_type;

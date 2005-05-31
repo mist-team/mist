@@ -42,6 +42,20 @@ namespace __converter__
 		out.reso2( in.reso2( ) );
 	}
 
+	template < size_t T1, class T2, class Allocator1, class Allocator2 >
+	inline void resize( const mist::bitmap< T1, Allocator1 > &in, mist::array2< T2, Allocator2 > &out )
+	{
+		out.resize( in.size1( ), in.size2( ) );
+		out.reso1( 1.0 );
+		out.reso2( 1.0 );
+	}
+
+	template < class T1, size_t T2, class Allocator1, class Allocator2 >
+	inline void resize( const mist::array2< T1, Allocator1 > &in, mist::bitmap< T2, Allocator2 > &out )
+	{
+		out.resize( in.size1( ), in.size2( ) );
+	}
+
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	inline void resize( const mist::array3< T1, Allocator1 > &in, mist::array3< T2, Allocator2 > &out )
 	{

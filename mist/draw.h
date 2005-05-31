@@ -6,7 +6,9 @@
 #define __INCLUDE_MIST_DRAW__
 
 
+#ifndef __INCLUDE_MIST_H__
 #include "mist.h"
+#endif
 
 // カラー画像の設定を読み込む
 #ifndef __INCLUDE_MIST_COLOR_H__
@@ -15,6 +17,10 @@
 
 #ifndef __INCLUDE_MIST_VECTOR__
 #include "vector.h"
+#endif
+
+#ifndef __INCLUDE_BITMAP_H__
+#include "bitmap.h"
 #endif
 
 
@@ -64,8 +70,8 @@ namespace pixel_data
 	template < bool color >
 	struct __glTexImage2D__
 	{
-		template < class T, class Allocator >
-		static void glTexImage2D( const array2< T, Allocator > &image )
+		template < class Array >
+		static void glTexImage2D( const Array &image )
 		{
 			::glTexImage2D(
 				GL_TEXTURE_2D, 0, GL_RGBA,
@@ -96,6 +102,20 @@ namespace pixel_data
 						  );
 		}
 
+		template < size_t BITS, class Allocator >
+		static void glTexImage2D( const bitmap< BITS, Allocator > &image )
+		{
+			::glTexImage2D(
+							GL_TEXTURE_2D, 0, GL_RGBA,
+							static_cast< GLsizei >( image.width( ) ),
+							static_cast< GLsizei >( image.height( ) ),
+							0,
+							GL_BGR_EXT,
+							gl_type_trait< unsigned char >::gl_type,
+							static_cast< const GLvoid* >( &( image[0] ) )
+						  );
+		}
+
 		template < class T, class Allocator >
 		static void glTexImage2D( const array2< rgba< T >, Allocator > &image )
 		{
@@ -114,8 +134,8 @@ namespace pixel_data
 	template < bool color >
 	struct __glDrawPixels__
 	{
-		template < class T, class Allocator >
-		static void glDrawPixels( const array2< T, Allocator > &image, typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h )
+		template < class Array >
+		static void glDrawPixels( const Array &image, typename Array::size_type w, typename Array::size_type h )
 		{
 			::glDrawPixels(
 					static_cast< GLsizei >( w ),
@@ -142,6 +162,18 @@ namespace pixel_data
 				);
 		}
 
+		template < size_t BITS, class Allocator >
+		static void glDrawPixels( const bitmap< BITS, Allocator > &image, typename bitmap< BITS, Allocator >::size_type w, typename bitmap< BITS, Allocator >::size_type h )
+		{
+			::glDrawPixels(
+					static_cast< GLsizei >( w ),
+					static_cast< GLsizei >( h ),
+					GL_BGR_EXT,
+					gl_type_trait< unsigned char >::gl_type,
+					static_cast< const GLvoid* >( &( image[0] ) )
+				);
+		}
+
 		template < class T, class Allocator >
 		static void glDrawPixels( const array2< rgba< T >, Allocator > &image, typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h )
 		{
@@ -155,16 +187,16 @@ namespace pixel_data
 		}
 	};
 
-	template< class T, class Allocator >
-	void glTexImage2D( const array2< T, Allocator > &image )
+	template< class Array >
+	void glTexImage2D( const Array &image )
 	{
-		__glTexImage2D__< is_color< T >::value >::glTexImage2D( image );
+		__glTexImage2D__< is_color< typename Array::value_type >::value >::glTexImage2D( image );
 	}
 
-	template< class T, class Allocator >
-	void glDrawPixels( const array2< T, Allocator > &image, typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h )
+	template< class Array >
+	void glDrawPixels( const Array &image, typename Array::size_type w, typename Array::size_type h )
 	{
-		__glDrawPixels__< is_color< T >::value >::glDrawPixels( image, w, h );
+		__glDrawPixels__< is_color< typename Array::value_type >::value >::glDrawPixels( image, w, h );
 	}
 
 
@@ -243,20 +275,20 @@ namespace pixel_data
 //! @retval true  … 描画に成功
 //! @retval false … 不適切な入力画像の場合
 //! 
-template< class T, class Allocator >
-bool draw_buffer( const array2< T, Allocator > &image,
-					typename array2< T, Allocator >::size_type image_width, typename array2< T, Allocator >::size_type image_height,
-					typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
+template< class Array >
+bool draw_buffer( const Array &image,
+					typename Array::size_type image_width, typename Array::size_type image_height,
+					typename Array::size_type window_width, typename Array::size_type window_height,
 					double zoom = 1.0, double xpos = 0.0, double ypos = 0.0, bool interpolate = true )
 {
 	// 背景の初期化を行う
-	typedef typename array2< T, Allocator >::value_type value_type;
+	typedef typename Array::value_type value_type;
 	typedef pixel_data::pixel< is_float< value_type >::value > pixel;
 
 	if( image_width > image.width( ) || image_height > image.height( ) ) return( false );
 	if( image.width( ) != image.height( ) ) return( false );
 
-	typedef typename array2< T, Allocator >::size_type size_type;
+	typedef typename Array::size_type size_type;
 
 	// テクスチャのサイズが2の指数上になっているかどうかをチェック
 	if( !pixel_data::is_floor_square( image.width( ) ) ) return( false );
@@ -395,13 +427,12 @@ bool draw_buffer( const array2< T, Allocator > &image,
 //!                 );
 //! @endcode
 //!
-template< class T, class Allocator >
-bool draw_image( const array2< T, Allocator > &image,
-					typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
+template< class Array >
+bool draw_image( const Array &image, typename Array::size_type window_width, typename Array::size_type window_height,
 					double zoom = 1.0, double xpos = 0.0, double ypos = 0.0, double back_r = 0.0, double back_g = 0.0, double back_b = 0.0, bool interpolate = true, bool blend = false )
 {
-	typedef typename array2< T, Allocator >::size_type size_type;
-	typedef typename array2< T, Allocator >::value_type value_type;
+	typedef typename Array::size_type size_type;
+	typedef typename Array::value_type value_type;
 	typedef pixel_data::pixel< is_float< value_type >::value > pixel;
 	size_type size = image.width( ) > image.height( ) ? image.width( ) : image.height( ); 
 	size_type ttt = pixel_data::floor_square( size );
@@ -422,7 +453,7 @@ bool draw_image( const array2< T, Allocator > &image,
 	}
 	else
 	{
-		static array2< T, Allocator > img;
+		static Array img;
 
 		if( ttt > img.width( ) )
 		{
@@ -477,12 +508,12 @@ bool draw_image( const array2< T, Allocator > &image,
 //!                 );
 //! @endcode
 //!
-template< class T, class Allocator >
-bool draw_pixels( const array2< T, Allocator > &image, typename array2< T, Allocator >::size_type window_width, typename array2< T, Allocator >::size_type window_height,
-					typename array2< T, Allocator >::difference_type xpos = 0, typename array2< T, Allocator >::difference_type ypos = 0, bool blend = false )
+template< class Array >
+bool draw_pixels( const Array &image, typename Array::size_type window_width, typename Array::size_type window_height,
+									typename Array::difference_type xpos = 0, typename Array::difference_type ypos = 0, bool blend = false )
 {
-	typedef typename array2< T, Allocator >::size_type size_type;
-	typedef typename array2< T, Allocator >::value_type value_type;
+	typedef typename Array::size_type size_type;
+	typedef typename Array::value_type value_type;
 	typedef pixel_data::pixel< is_float< value_type >::value > pixel;
 
 	if( image.empty( ) ) return( false );

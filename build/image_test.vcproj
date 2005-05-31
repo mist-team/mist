@@ -150,6 +150,9 @@
 				RelativePath="..\mist\config\binary.h">
 			</File>
 			<File
+				RelativePath="..\mist\bitmap.h">
+			</File>
+			<File
 				RelativePath="..\mist\config\color.h">
 			</File>
 			<File
