@@ -90,15 +90,19 @@ inline size_t get_cpu_num( )
 }
 
 
-inline bool sleep( size_t dwMilliseconds )
+inline void sleep( size_t dwMilliseconds )
 {
 #if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-	return( SleepEx( dwMilliseconds, true ) == 0 );
+	SleepEx( dwMilliseconds, false );
 #else
 	timespec treq, trem;
 	treq.tv_sec = static_cast< time_t >( dwMilliseconds / 1000 );
-	treq.tv_nsec = static_cast< long >( ( dwMilliseconds % 1000 ) * 1000 );
-	return( nanosleep( &treq, &trem ) == 0 );
+	treq.tv_nsec = static_cast< long >( ( dwMilliseconds % 1000 ) * 1000000 );
+	
+	while( nanosleep( &treq, &trem ) != 0 )
+	{
+		treq = trem;
+	}
 #endif
 }
 

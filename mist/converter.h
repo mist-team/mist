@@ -14,6 +14,10 @@
 #include "config/color.h"
 #endif
 
+#ifndef __INCLUDE_BITMAP_H__
+#include "bitmap.h"
+#endif
+
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN
