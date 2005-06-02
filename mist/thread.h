@@ -24,6 +24,7 @@
 #else
 	#include <pthread.h>
 	#include <unistd.h>
+	#include <time.h>
 #endif
 
 #ifndef INFINITE
@@ -88,6 +89,18 @@ inline size_t get_cpu_num( )
 #endif
 }
 
+
+inline bool sleep( size_t dwMilliseconds )
+{
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+	return( SleepEx( dwMilliseconds, true ) == 0 );
+#else
+	timespec treq, trem;
+	treq.tv_sec = static_cast< time_t >( dwMilliseconds / 1000 );
+	treq.tv_nsec = static_cast< long >( ( dwMilliseconds % 1000 ) * 1000 );
+	return( nanosleep( &treq, &trem ) == 0 );
+#endif
+}
 
 
 /// @brief template 型のデータを扱うことができるスレッドクラス

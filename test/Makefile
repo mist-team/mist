@@ -4,6 +4,8 @@ include ../build/makeinclude
 ALL = \
 	array_test \
 	memory_test \
+	callback_test \
+	pointer_test \
 	limits_test \
 	operators_test \
 	binary_test \

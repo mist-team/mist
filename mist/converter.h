@@ -56,6 +56,12 @@ namespace __converter__
 		out.resize( in.size1( ), in.size2( ) );
 	}
 
+	template < size_t T1, size_t T2, class Allocator1, class Allocator2 >
+	inline void resize( const mist::bitmap< T1, Allocator1 > &in, mist::bitmap< T2, Allocator2 > &out )
+	{
+		out.resize( in.size1( ), in.size2( ) );
+	}
+
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	inline void resize( const mist::array3< T1, Allocator1 > &in, mist::array3< T2, Allocator2 > &out )
 	{
