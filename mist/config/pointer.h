@@ -144,7 +144,7 @@ namespace __shared_memory__
 			if( p != NULL )
 			{
 				ref_table_type &table = get_ref_table( );
-				ref_table_type::iterator ite = table.find( p );
+				typename ref_table_type::iterator ite = table.find( p );
 
 				if( ite == table.end( ) )
 				{
@@ -166,7 +166,7 @@ namespace __shared_memory__
 			if( p != NULL )
 			{
 				ref_table_type &table = get_ref_table( );
-				ref_table_type::iterator ite = table.find( p );
+				typename ref_table_type::iterator ite = table.find( p );
 
 				if( ite != table.end( ) )
 				{
@@ -188,7 +188,7 @@ namespace __shared_memory__
 			if( p != NULL )
 			{
 				ref_table_type &table = get_ref_table( );
-				ref_table_type::iterator ite = table.find( p );
+				typename ref_table_type::iterator ite = table.find( p );
 
 				if( ite != table.end( ) )
 				{
@@ -214,7 +214,6 @@ namespace __shared_memory__
 						if( c.ref_weak_count == 0 )
 						{
 							table.erase( ite );
-						std::cerr << "weak release" << std::endl;
 						}
 						else
 						{
@@ -243,7 +242,6 @@ namespace __shared_memory__
 					{
 						// ポインタに対する弱参照が存在しない場合は，NULLを代入する
 						table.erase( ite );
-						std::cerr << "weak release" << std::endl;
 					}
 				}
 			}
@@ -340,10 +338,10 @@ public:
 	bool operator ==( const pointer &p ) const { return( ptr_ == p ); }
 
 	/// @brief 2つのポインタが等しくないどうかを判定する
-	bool operator !=( const pointer &p ) const { return( ptr_ != p ) ); }
+	bool operator !=( const pointer &p ) const { return( ptr_ != p ); }
 
 	/// @brief 2つのポインタの <  を判定する
-	bool operator < ( const pointer &p ) const { return( ptr_ <  p ) ); }
+	bool operator < ( const pointer &p ) const { return( ptr_ <  p ); }
 
 	/// @brief 2つのポインタの <= を判定する
 	bool operator <=( const pointer &p ) const { return( ptr_ <= p ); }
@@ -458,10 +456,10 @@ public:
 	bool operator ==( const pointer &p ) const { return( ptr_ == p ); }
 
 	/// @brief 2つのポインタが等しくないどうかを判定する
-	bool operator !=( const pointer &p ) const { return( ptr_ != p ) ); }
+	bool operator !=( const pointer &p ) const { return( ptr_ != p ); }
 
 	/// @brief 2つのポインタの <  を判定する
-	bool operator < ( const pointer &p ) const { return( ptr_ <  p ) ); }
+	bool operator < ( const pointer &p ) const { return( ptr_ <  p ); }
 
 	/// @brief 2つのポインタの <= を判定する
 	bool operator <=( const pointer &p ) const { return( ptr_ <= p ); }
