@@ -35,13 +35,37 @@ int main( int argc, char *argv[] )
 	}
 
 	std::cout << std::endl << std::endl;
-	
+
 	{
-		mist::scoped_array< A > a( new A[ 10 ] );
+		mist::scoped_array< A > a( new A[ 2 ] );
 
 		std::cout << *a << std::endl;
 		std::cout << a->text << std::endl;
 	}
+
+	std::cout << std::endl << std::endl;
+
+
+	mist::weak_ptr< A > w;
+	std::cout << w << std::endl;
+	{
+		mist::shared_ptr< A > a = new A( "abcdefg" );
+
+		w = a;
+		std::cout << w << std::endl;
+
+		std::cout << *a << std::endl;
+
+		{
+			mist::shared_ptr< A > b = a;
+
+			std::cout << *a << std::endl;
+		}
+
+		std::cout << w << std::endl;
+	}
+
+	std::cout << w << std::endl;
 
 	return( 0 );
 }
