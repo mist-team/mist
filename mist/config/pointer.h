@@ -24,7 +24,7 @@ _MIST_BEGIN
 namespace __shared_memory__
 {
 	template < class T >
-	struct shared_memory_controller
+	struct shared_base
 	{
 	private:
 		typedef T* pointer;
@@ -32,130 +32,167 @@ namespace __shared_memory__
 		struct shared_memory_conter
 		{
 			typedef T* pointer;
-			bool isArray;
 			pointer ptr;
 			size_t ref_count;
 			size_t ref_weak_count;
 
-			shared_memory_conter( ) : isArray( false ), ptr( NULL ), ref_count( 0 ), ref_weak_count( 0 ){ }
-			shared_memory_conter( bool bArray, pointer p, size_t rc, size_t rwc ) : isArray( bArray ), ptr( p ), ref_count( rc ), ref_weak_count( rwc ){ }
+			shared_memory_conter( ) : ptr( NULL ), ref_count( 0 ), ref_weak_count( 0 ){ }
+			shared_memory_conter( pointer p, size_t rc, size_t rwc ) : ptr( p ), ref_count( rc ), ref_weak_count( rwc ){ }
 		};
 
-		typedef std::map< pointer, shared_memory_conter > ref_table_type;
+		typedef shared_memory_conter counter_type;
+		typedef std::map< pointer, counter_type > ref_table_type;
+		typedef typename ref_table_type::iterator ref_table_iterator;
 
-
-	public:
+	protected:
 		static ref_table_type &get_ref_table( )
 		{
-			static ref_table_type singleton_;
-			return( singleton_ );
+			static ref_table_type ref_table_singleton_;
+			return( ref_table_singleton_ );
 		}
 
-		static void add_ref( pointer p, bool isArray )
+		static ref_table_iterator get_ref_iterator( pointer p )
 		{
-			if( p != NULL )
-			{
-				ref_table_type &table = get_ref_table( );
-				typename ref_table_type::iterator ite = table.find( p );
+			ref_table_type &ref_table_ = get_ref_table( );
 
-				if( ite == table.end( ) )
+			if( p == NULL )
+			{
+				return( get_null_reference( ) ); 
+			}
+			else
+			{
+				ref_table_iterator ite = ref_table_.find( p );
+
+				if( ite == ref_table_.end( ) )
 				{
 					// 最初の追加のため，テーブルを初期化する
-					table[ p ] = shared_memory_conter( isArray, p, 1, 0 );
+					ite = ref_table_.insert( typename ref_table_type::value_type( p, counter_type( p, 0, 0 ) ) ).first;
 				}
-				else
-				{
-					// 参照カウントを増やす
-					shared_memory_conter &c = ite->second;
-					c.ref_count++;
-				}
+				return( ite ); 
 			}
 		}
 
-		// 弱参照用の参照カウントを増加させ，参照用ポインタを返す
-		static pointer * add_weak_ref( pointer p )
+		static ref_table_iterator get_null_reference( )
 		{
-
-			if( p != NULL )
-			{
-				ref_table_type &table = get_ref_table( );
-				typename ref_table_type::iterator ite = table.find( p );
-
-				if( ite != table.end( ) )
-				{
-					// 弱参照カウントを増やす
-					shared_memory_conter &c = ite->second;
-					c.ref_weak_count++;
-
-					return( &c.ptr );
-				}
-			}
-
-			// 不適切な参照の場合用
-			static pointer dmy_ptr = NULL;
-			return( &dmy_ptr );
+			ref_table_type &ref_table_ = get_ref_table( );
+			// NULL参照用のデータをあらかじめ挿入しておく
+			static ref_table_iterator null_ite_ = ref_table_.insert( typename ref_table_type::value_type( NULL, counter_type( NULL, 0, 0 ) ) ).first;
+			return( null_ite_ ); 
 		}
 
-		static void release( pointer p )
+		ref_table_iterator ref_ite_;
+
+		shared_base( ) : ref_ite_( get_null_reference( ) ){ }
+		shared_base( const shared_base &b ) : ref_ite_( b.ref_ite_ ){}
+
+		pointer get_pointer( ) const { return( ref_ite_->second.ptr ); }
+
+	protected:
+		// null 参照に設定する
+		void null_ref( )
 		{
-			if( p != NULL )
+			ref_ite_ = get_null_reference( );
+		}
+
+		// 参照用の参照カウントを増加させる
+		void add_ref( )
+		{
+			// 参照カウントを増やす
+			ref_ite_->second.ref_count++;
+		}
+
+		// 参照用の参照カウントを増加させる
+		void add_ref( pointer p )
+		{
+			ref_ite_ = get_ref_iterator( p );
+
+			// 参照カウントを増やす
+			ref_ite_->second.ref_count++;
+		}
+
+		// 参照用の参照カウントを増加させる
+		void add_ref( const shared_base &p )
+		{
+			ref_ite_ = p.ref_ite_;
+
+			// 参照カウントを増やす
+			ref_ite_->second.ref_count++;
+		}
+
+		// 弱参照用の参照カウントを増加させる
+		void add_weak_ref( )
+		{
+			// 参照カウントを増やす
+			ref_ite_->second.ref_weak_count++;
+		}
+
+		// 弱参照用の参照カウントを増加させる
+		void add_weak_ref( pointer p )
+		{
+			ref_ite_ = get_ref_iterator( p );
+
+			// 参照カウントを増やす
+			ref_ite_->second.ref_weak_count++;
+		}
+
+		// 弱参照用の参照カウントを増加させる
+		void add_weak_ref( const shared_base &p )
+		{
+			ref_ite_ = p.ref_ite_;
+
+			// 参照カウントを増やす
+			ref_ite_->second.ref_weak_count++;
+		}
+
+		void release( bool isArray )
+		{
+			counter_type &c = ref_ite_->second;
+			if( c.ptr != NULL )
 			{
-				ref_table_type &table = get_ref_table( );
-				typename ref_table_type::iterator ite = table.find( p );
+				// 参照カウントを減らす
+				c.ref_count--;
 
-				if( ite != table.end( ) )
+				// 参照カウントによって，メモリの開放を行う
+				if( c.ref_count == 0 )
 				{
-					shared_memory_conter &c = ite->second;
-
-					// 参照カウントを減らす
-					c.ref_count--;
-
-					// 参照カウントによって，メモリの開放を行う
-					if( c.ref_count == 0 )
+					// 参照カウントが 0 になったので，メモリを開放しテーブルから削除する
+					if( isArray )
 					{
-						// 参照カウントが 0 になったので，メモリを開放しテーブルから削除する
-						if( c.isArray )
-						{
-							delete [] p;
-						}
-						else
-						{
-							delete p;
-						}
+						delete [] c.ptr;
+					}
+					else
+					{
+						delete c.ptr;
+					}
 
-						// ポインタに対する弱参照が存在しない場合は，NULLを代入する
-						if( c.ref_weak_count == 0 )
-						{
-							table.erase( ite );
-						}
-						else
-						{
-							c.ptr = NULL;
-						}
+					// ポインタに対する弱参照が存在しない場合は，NULLを代入する
+					if( c.ref_weak_count == 0 )
+					{
+						ref_table_type &table = get_ref_table( );
+						table.erase( ref_ite_ );
+					}
+					else
+					{
+						c.ptr = NULL;
 					}
 				}
 			}
 		}
 
-		static void release_weak( pointer p )
+		void release_weak( )
 		{
-			if( p != NULL )
+			counter_type &c = ref_ite_->second;
+
+			if( c.ptr != NULL )
 			{
-				ref_table_type &table = get_ref_table( );
-				typename ref_table_type::iterator ite = table.find( p );
+				// 弱参照カウントを減らす
+				c.ref_weak_count--;
 
-				if( ite != table.end( ) )
+				if( c.ref_weak_count == 0 && c.ref_count == 0 )
 				{
-					shared_memory_conter &c = ite->second;
-
-					// 弱参照カウントを減らす
-					c.ref_weak_count--;
-
-					if( c.ref_weak_count == 0 && c.ref_count == 0 )
-					{
-						// ポインタに対する弱参照が存在しない場合は，NULLを代入する
-						table.erase( ite );
-					}
+					// ポインタに対する参照と弱参照が存在しない場合は，テーブルから削除する
+					ref_table_type &table = get_ref_table( );
+					table.erase( ref_ite_ );
 				}
 			}
 		}
@@ -299,7 +336,7 @@ private:
 //! @endcode
 //! 
 template < class T >
-class shared_ptr
+class shared_ptr : public __shared_memory__::shared_base< T >
 {
 public:
 	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
@@ -311,26 +348,24 @@ public:
 	typedef const T* const_pointer;		///< @brief データ型の const ポインター型．data の場合，const data * となる
 
 private:
-	typedef __shared_memory__::shared_memory_controller< T > shared_memory_controller;
-
-	pointer ptr_;		///< @brief 管理するポインタ
+	typedef __shared_memory__::shared_base< T > base;
 
 
 public:
 	/// @brief 未管理のポインタで初期化
-	shared_ptr( ) : ptr_( NULL ){ }
+	shared_ptr( ){ }
 
 	/// @brief 管理するポインタを設定し，参照カウントを 1 増やす
-	shared_ptr( pointer p ) : ptr_( p ){ shared_memory_controller::add_ref( ptr_, false ); }
+	shared_ptr( pointer p ){ base::add_ref( p ); }
 
 	/// @brief 他の共有メモリポインタを用いて初期化し，参照カウントを 1 増やす
-	shared_ptr( const shared_ptr &p ) : ptr_( p.ptr_ ){ shared_memory_controller::add_ref( ptr_, false ); }
+	shared_ptr( const shared_ptr &p ) : base( p ){ base::add_ref( ); }
 
 	/// @brief 管理するポインタの参照カウントを1減らす
 	//!
 	//! どこからも参照されなくなったらメモリを開放する
 	//! 
-	~shared_ptr( ){ shared_memory_controller::release( ptr_ ); }
+	~shared_ptr( ){ base::release( false ); }
 
 
 	/// @brief 他の共有メモリポインタを代入する
@@ -342,8 +377,8 @@ public:
 	{
 		if( &p != this )
 		{
-			shared_memory_controller::release( ptr_ );
-			shared_memory_controller::add_ref( ptr_ = p.ptr_, false );
+			base::release( false );
+			base::add_ref( p );
 		}
 
 		return( *this );
@@ -351,16 +386,16 @@ public:
 
 public:
 	/// @brief ポインタが指す内容への参照を返す
-	reference operator *( ){ return( *ptr_ ); }
+	reference operator *( ){ return( *base::get_pointer( ) ); }
 
 	/// @brief ポインタが指す内容への参照を返す
-	const_reference operator *( ) const { return( *ptr_ ); }
+	const_reference operator *( ) const { return( *base::get_pointer( ) ); }
 
 	/// @brief ポインタが指す内容へのアクセスを行う
-	pointer operator ->( ){ return( ptr_ ); }
+	pointer operator ->( ){ return( base::get_pointer( ) ); }
 
 	/// @brief ポインタが指す内容へのアクセスを行う
-	const_pointer operator ->( ) const { return( ptr_ ); }
+	const_pointer operator ->( ) const { return( base::get_pointer( ) ); }
 
 
 
@@ -370,8 +405,8 @@ public:
 	//! 
 	void reset( )
 	{ 
-		shared_memory_controller::release( ptr_ );
-		ptr_  = NULL;
+		base::release( false );
+		base::null_ref( );
 	}
 
 public:
@@ -450,7 +485,7 @@ template < class T > inline bool operator >=( const typename shared_ptr< T >::po
 //! @endcode
 //! 
 template < class T >
-class shared_array
+class shared_array : public __shared_memory__::shared_base< T >
 {
 public:
 	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
@@ -462,26 +497,23 @@ public:
 	typedef const T* const_pointer;		///< @brief データ型の const ポインター型．data の場合，const data * となる
 
 private:
-	typedef __shared_memory__::shared_memory_controller< T > shared_memory_controller;
-
-	pointer ptr_;		///< @brief 管理するポインタ
-
+	typedef __shared_memory__::shared_base< T > base;
 
 public:
 	/// @brief 未管理のポインタで初期化
-	shared_array( ) : ptr_( NULL ){ }
+	shared_array( ){ }
 
 	/// @brief 管理するポインタを設定し，参照カウントを 1 増やす
-	shared_array( pointer p ) : ptr_( p ){ shared_memory_controller::add_ref( ptr_, true ); }
+	shared_array( pointer p ){ base::add_ref( p ); }
 
 	/// @brief 他の共有メモリポインタを用いて初期化し，参照カウントを 1 増やす
-	shared_array( const shared_array &p ) : ptr_( p.ptr_ ){ shared_memory_controller::add_ref( ptr_, true ); }
+	shared_array( const shared_array &p ){ base::add_ref( p ); }
 
 	/// @brief 管理するポインタの参照カウントを1減らす
 	//!
 	//! どこからも参照されなくなったらメモリを開放する
 	//! 
-	~shared_array( ){ shared_memory_controller::release( ptr_ ); }
+	~shared_array( ){ base::release( true ); }
 
 
 	/// @brief 他の共有メモリポインタを代入する
@@ -493,8 +525,8 @@ public:
 	{
 		if( &p != this )
 		{
-			shared_memory_controller::release( ptr_ );
-			shared_memory_controller::add_ref( ptr_ = p.ptr_, true );
+			base::release( true );
+			base::add_ref( p );
 		}
 
 		return( *this );
@@ -502,23 +534,22 @@ public:
 
 public:
 	/// @brief ポインタが指す内容への参照を返す
-	reference operator *( ){ return( *ptr_ ); }
+	reference operator *( ){ return( *base::get_pointer( ) ); }
 
 	/// @brief ポインタが指す内容への参照を返す
-	const_reference operator *( ) const { return( *ptr_ ); }
+	const_reference operator *( ) const { return( *base::get_pointer( ) ); }
 
 	/// @brief ポインタが指す内容へのアクセスを行う
-	pointer operator ->( ){ return( ptr_ ); }
+	pointer operator ->( ){ return( base::get_pointer( ) ); }
 
 	/// @brief ポインタが指す内容へのアクセスを行う
-	const_pointer operator ->( ) const { return( ptr_ ); }
-
-
-	/// @brief 配列の要素へのアクセスを行う
-	reference operator []( difference_type index ){ return( ptr_[ index ] ); }
+	const_pointer operator ->( ) const { return( base::get_pointer( ) ); }
 
 	/// @brief 配列の要素へのアクセスを行う
-	const_reference operator []( difference_type index ) const { return( ptr_[ index ] ); }
+	reference operator []( difference_type index ){ return( base::get_pointer( )[ index ] ); }
+
+	/// @brief 配列の要素へのアクセスを行う
+	const_reference operator []( difference_type index ) const { return( base::get_pointer( )[ index ] ); }
 
 
 	/// @brief 管理しているポインタの参照カウントを減らす
@@ -527,8 +558,8 @@ public:
 	//! 
 	void reset( )
 	{ 
-		shared_memory_controller::release( ptr_ );
-		ptr_  = NULL;
+		base::release( true );
+		base::null_ref( );
 	}
 
 
@@ -607,7 +638,7 @@ template < class T > inline bool operator >=( const typename shared_array< T >::
 //! @endcode
 //! 
 template < class T >
-class weak_ptr
+class weak_ptr : public __shared_memory__::shared_base< T >
 {
 public:
 	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
@@ -619,30 +650,26 @@ public:
 	typedef const T* const_pointer;		///< @brief データ型の const ポインター型．data の場合，const data * となる
 
 private:
-	typedef __shared_memory__::shared_memory_controller< T > shared_memory_controller;
-
-	pointer ptr_;		///< @brief 弱参照先のポインタ(弱参照の開放用)
-	pointer *pptr_;		///< @brief 弱参照先のポインタ
-
+	typedef __shared_memory__::shared_base< T > base;
 
 public:
 	/// @brief 未管理のポインタで初期化
-	weak_ptr( ) : ptr_( NULL ), pptr_( shared_memory_controller::add_weak_ref( NULL ) ){ }
+	weak_ptr( ){ base::add_weak_ref( NULL ); }
 
 	/// @brief 共有メモリポインタの弱参照を用いて初期化する
-	weak_ptr( shared_ptr< T > &p ) : pptr_( shared_memory_controller::add_weak_ref( ptr_ = ( p == NULL ? NULL : &( *p ) ) ) ){ }
+	weak_ptr( shared_ptr< T > &p ){ base::add_weak_ref( p ); }
 
 	/// @brief 共有メモリポインタの弱参照を用いて初期化する
-	weak_ptr( const shared_ptr< T > &p ) : pptr_( shared_memory_controller::add_weak_ref( ptr_ = ( p == NULL ? NULL : &( *p ) ) ) ){ }
+	weak_ptr( const shared_ptr< T > &p ){ base::add_weak_ref( p ); }
 
 	/// @brief 共有メモリ型の配列ポインタの弱参照を用いて初期化する
-	weak_ptr( shared_array< T > &p ) : pptr_( shared_memory_controller::add_weak_ref( ptr_ = ( p == NULL ? NULL : &( *p ) ) ) ){ }
+	weak_ptr( shared_array< T > &p ){ base::add_weak_ref( p ); }
 
 	/// @brief 共有メモリ型の配列ポインタの弱参照を用いて初期化する
-	weak_ptr( const shared_array< T > &p ) : pptr_( shared_memory_controller::add_weak_ref( ptr_ = ( p == NULL ? NULL : &( *p ) ) ) ){ }
+	weak_ptr( const shared_array< T > &p ){ base::add_weak_ref( p ); }
 
 	/// @brief 弱参照の参照カウントを1減らす
-	~weak_ptr( ){ shared_memory_controller::release_weak( ptr_ ); }
+	~weak_ptr( ){ base::release_weak( ); }
 
 
 	/// @brief 他の共有メモリポインタを代入する
@@ -650,23 +677,13 @@ public:
 	//! @attention すでに管理しているポインタがある場合は，参照カウントを1減らす
 	//! @attention その際に，どこからも参照されなくなったらメモリを開放する
 	//! 
-	const weak_ptr &operator =( weak_ptr &p )
+	const weak_ptr &operator =( const weak_ptr &p )
 	{
-		shared_memory_controller::release_weak( *pptr_ );
-		pptr_ = shared_memory_controller::add_weak_ref( ptr_ = ( p == NULL ? NULL : &( *p ) ) );
-
-		return( *this );
-	}
-
-	/// @brief 他の共有メモリポインタを代入する
-	//!
-	//! @attention すでに管理しているポインタがある場合は，参照カウントを1減らす
-	//! @attention その際に，どこからも参照されなくなったらメモリを開放する
-	//! 
-	const weak_ptr &operator =( shared_ptr< T > &p )
-	{
-		shared_memory_controller::release_weak( *pptr_ );
-		pptr_ = shared_memory_controller::add_weak_ref( ptr_ = ( p == NULL ? NULL : &( *p ) ) );
+		if( this != &p )
+		{
+			base::release_weak( );
+			base::add_weak_ref( p );
+		}
 
 		return( *this );
 	}
@@ -678,24 +695,8 @@ public:
 	//! 
 	const weak_ptr &operator =( const shared_ptr< T > &p )
 	{
-		if( &p != this )
-		{
-			shared_memory_controller::release_weak( *pptr_ );
-			pptr_ = shared_memory_controller::add_weak_ref( ptr_ = ( p == NULL ? NULL : &( *p ) ) );
-		}
-
-		return( *this );
-	}
-
-	/// @brief 他の共有メモリ型の配列ポインタを代入する
-	//!
-	//! @attention すでに管理しているポインタがある場合は，参照カウントを1減らす
-	//! @attention その際に，どこからも参照されなくなったらメモリを開放する
-	//! 
-	const weak_ptr &operator =( shared_array< T > &p )
-	{
-		shared_memory_controller::release_weak( *pptr_ );
-		pptr_ = shared_memory_controller::add_weak_ref( ptr_ = ( p == NULL ? NULL : &( *p ) ) );
+		base::release_weak( );
+		base::add_weak_ref( p );
 
 		return( *this );
 	}
@@ -707,22 +708,42 @@ public:
 	//! 
 	const weak_ptr &operator =( const shared_array< T > &p )
 	{
-		shared_memory_controller::release_weak( *pptr_ );
-		pptr_ = shared_memory_controller::add_weak_ref( ptr_ = ( p == NULL ? NULL : &( *p ) ) );
+		base::release_weak( );
+		base::add_weak_ref( p );
 
 		return( *this );
 	}
 
 
 public:
-	reference operator *( ){ return( **pptr_ ); }
-	const_reference operator *( ) const { return( **pptr_ ); }
+	/// @brief ポインタが指す内容への参照を返す
+	reference operator *( ){ return( *base::get_pointer( ) ); }
 
-	pointer operator ->( ){ return( *pptr_ ); }
-	const_pointer operator ->( ) const { return( *pptr_ ); }
+	/// @brief ポインタが指す内容への参照を返す
+	const_reference operator *( ) const { return( *base::get_pointer( ) ); }
 
-	reference operator []( difference_type index ){ return( ptr_[ index ] ); }
-	const_reference operator []( difference_type index ) const { return( ptr_[ index ] ); }
+	/// @brief ポインタが指す内容へのアクセスを行う
+	pointer operator ->( ){ return( base::get_pointer( ) ); }
+
+	/// @brief ポインタが指す内容へのアクセスを行う
+	const_pointer operator ->( ) const { return( base::get_pointer( ) ); }
+
+	/// @brief 配列の要素へのアクセスを行う
+	reference operator []( difference_type index ){ return( base::get_pointer( )[ index ] ); }
+
+	/// @brief 配列の要素へのアクセスを行う
+	const_reference operator []( difference_type index ) const { return( base::get_pointer( )[ index ] ); }
+
+
+	/// @brief 管理しているポインタの参照カウントを減らす
+	//!
+	//! @attention どこからも参照されなくなったらメモリを開放する
+	//! 
+	void reset( )
+	{ 
+		base::release_weak( );
+		base::null_ref( );
+	}
 
 
 public:
@@ -772,13 +793,15 @@ template < class T > inline bool operator !=( const typename weak_ptr< T >::poin
 template < class T > inline bool operator < ( const typename weak_ptr< T >::pointer p1, const weak_ptr< T > &p2 ){ return( !( p2 <= p1 ) ); }
 template < class T > inline bool operator <=( const typename weak_ptr< T >::pointer p1, const weak_ptr< T > &p2 ){ return( !( p2 <  p1 ) ); }
 template < class T > inline bool operator > ( const typename weak_ptr< T >::pointer p1, const weak_ptr< T > &p2 ){ return( !( p2 >= p1 ) ); }
-template < class T > inline bool operator >=( const typename weak_ptr< T >::pointer p1, const weak_ptr< T > &p2 ){ return( !( p2 >  p1 ) ); }
+template < class T > inline bool operator >=( const typename weak_ptr< T >::pointer p1, const
+											 
+											 weak_ptr< T > &p2 ){ return( !( p2 >  p1 ) ); }
 
 
 /// @brief 指定されたストリームにデータを出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     a   … scoped_ptr 配列
+//! @param[in]     p   … scoped_ptr 配列
 //! 
 //! @return 入力されたストリーム
 //! 
@@ -793,7 +816,7 @@ inline std::ostream &operator <<( std::ostream &out, const scoped_ptr< T > &p )
 /// @brief 指定されたストリームにデータを出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     a   … scoped_array 配列
+//! @param[in]     p   … scoped_array 配列
 //! 
 //! @return 入力されたストリーム
 //! 
@@ -808,7 +831,7 @@ inline std::ostream &operator <<( std::ostream &out, const scoped_array< T > &p 
 /// @brief 指定されたストリームにデータを出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     a   … shared_ptr 配列
+//! @param[in]     p   … shared_ptr 配列
 //! 
 //! @return 入力されたストリーム
 //! 
@@ -822,7 +845,7 @@ inline std::ostream &operator <<( std::ostream &out, const shared_ptr< T > &p )
 /// @brief 指定されたストリームにデータを出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     a   … weak_ptr 配列
+//! @param[in]     p   … weak_ptr 配列
 //! 
 //! @return 入力されたストリーム
 //! 
