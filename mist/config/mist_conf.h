@@ -340,19 +340,18 @@ struct __mist_progress_callback__
 		}
 		else
 		{
-			std::string str = "*";
 			int i, p = static_cast< int >( percent / 2.0 );
 
 			for( i = 0 ; i < p ; i++ )
 			{
-				str += '*';
+				std::cerr << "*";
 			}
 			for( ; i < 51 ; i++ )
 			{
-				str += ' ';
+				std::cerr << " ";
 			}
 
-			std::cerr << str << "\r";
+			std::cerr << "\r";
 		}
 
 		return( true );
@@ -474,6 +473,7 @@ struct __mist_progress_callback__
 *
 * @subsection implement	実装補助
 * - @ref limits_group						"型に対する情報"
+* - @ref pointer_group						"自動的にメモリ管理を行うポインタ"
 * - @ref mist::timer						"時間計測"
 * - @ref environment_group					"計算機環境情報"
 * - @ref operator_group						"演算子の実装補助"

@@ -66,6 +66,26 @@ int main( int argc, char *argv[] )
 	}
 
 	std::cout << w << std::endl;
+	std::cout << std::endl << std::endl;
+
+	{
+		mist::shared_array< A > a = new A[ 2 ];
+
+		w = a;
+		std::cout << w << std::endl;
+
+		std::cout << *a << std::endl;
+
+		{
+			mist::shared_array< A > b = a;
+
+			std::cout << *a << std::endl;
+		}
+
+		std::cout << w << std::endl;
+	}
+
+	std::cout << w << std::endl;
 
 	return( 0 );
 }

@@ -19,94 +19,6 @@
 _MIST_BEGIN
 
 
-// MISTで利用する基底のデータ型
-
-
-/// @brief オブジェクトのスコープが切れると自動的にメモリ開放を行うポインタ
-//! 
-//! @attention 配列に対しては利用できない
-//! @attention 管理しているポインタを他のオブジェクトに譲渡することはできない
-//! 
-template < class T >
-class scoped_ptr
-{
-public:
-	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
-	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
-	typedef T value_type;				///< @brief 内部データ型．T と同じ
-	typedef T* pointer;					///< @brief データ型のポインター型．data の場合，data * となる
-	typedef T& reference;				///< @brief データ型の参照．data の場合，data & となる
-	typedef const T& const_reference;	///< @brief データ型の const 参照．data の場合，const data & となる
-	typedef const T* const_pointer;		///< @brief データ型の const ポインター型．data の場合，const data * となる
-
-private:
-	pointer ptr_;		///< @brief 管理するポインタ
-
-public:
-	/// @brief 管理するポインタを設定
-	scoped_ptr( pointer p ) : ptr_( p ){ }
-
-	/// @brief 管理するポインタを開放
-	~scoped_ptr( ){ delete ptr_; }
-
-
-public:
-	reference operator *( ){ return( *ptr_ ); }
-	const_reference operator *( ) const { return( *ptr_ ); }
-
-	pointer operator ->( ){ return( ptr_ ); }
-	const_pointer operator ->( ) const { return( ptr_ ); }
-
-
-private:
-	scoped_ptr( const scoped_ptr &p );
-	const scoped_ptr &operator  =( const scoped_ptr &p );
-};
-
-
-
-/// @brief オブジェクトのスコープが切れると配列用に確保したメモリの自動開放を行うポインタ
-//! 
-//! @attention 配列のポインタに対してしか利用できない
-//! @attention 管理しているポインタを他のオブジェクトに譲渡することはできない
-//! 
-template < class T >
-class scoped_array
-{
-public:
-	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
-	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
-	typedef T value_type;				///< @brief 内部データ型．T と同じ
-	typedef T* pointer;					///< @brief データ型のポインター型．data の場合，data * となる
-	typedef T& reference;				///< @brief データ型の参照．data の場合，data & となる
-	typedef const T& const_reference;	///< @brief データ型の const 参照．data の場合，const data & となる
-	typedef const T* const_pointer;		///< @brief データ型の const ポインター型．data の場合，const data * となる
-
-private:
-	pointer ptr_;		///< @brief 管理するポインタ
-
-public:
-	/// @brief 成分を b で初期化する
-	scoped_array( pointer p ) : ptr_( p ){ }
-
-	~scoped_array( ){ delete [] ptr_; }
-
-
-public:
-	reference operator *( ){ return( *ptr_ ); }
-	const_reference operator *( ) const { return( *ptr_ ); }
-
-	pointer operator ->( ){ return( ptr_ ); }
-	const_pointer operator ->( ) const { return( ptr_ ); }
-
-	reference operator []( difference_type index ){ return( ptr_[ index ] ); }
-	const_reference operator []( difference_type index ) const { return( ptr_[ index ] ); }
-
-private:
-	scoped_array( const scoped_array &p );
-	const scoped_array &operator  =( const scoped_array &p );
-};
-
 
 
 namespace __shared_memory__
@@ -126,7 +38,7 @@ namespace __shared_memory__
 			size_t ref_weak_count;
 
 			shared_memory_conter( ) : isArray( false ), ptr( NULL ), ref_count( 0 ), ref_weak_count( 0 ){ }
-			shared_memory_conter( bool barray, pointer p, size_t rc, size_t rwc ) : isArray( barray ), ptr( p ), ref_count( rc ), ref_weak_count( rwc ){ }
+			shared_memory_conter( bool bArray, pointer p, size_t rc, size_t rwc ) : isArray( bArray ), ptr( p ), ref_count( rc ), ref_weak_count( rwc ){ }
 		};
 
 		typedef std::map< pointer, shared_memory_conter > ref_table_type;
@@ -154,7 +66,8 @@ namespace __shared_memory__
 				else
 				{
 					// 参照カウントを増やす
-					table[ p ].ref_count++;
+					shared_memory_conter &c = ite->second;
+					c.ref_count++;
 				}
 			}
 		}
@@ -195,7 +108,7 @@ namespace __shared_memory__
 					shared_memory_conter &c = ite->second;
 
 					// 参照カウントを減らす
-					c.ref_count --;
+					c.ref_count--;
 
 					// 参照カウントによって，メモリの開放を行う
 					if( c.ref_count == 0 )
@@ -250,10 +163,140 @@ namespace __shared_memory__
 }
 
 
+
+//! @addtogroup pointer_group メモリ領域の自動開放を行うポインタ
+//!
+//! @code 次のヘッダを参照
+//! #include <mist/config/pointer.h>
+//! @endcode
+//!
+//! @{
+
+
+/// @brief オブジェクトのスコープが切れると自動的にメモリ開放を行うポインタ
+//! 
+//! @attention 配列に対しては利用できない
+//! @attention 管理しているポインタを他のオブジェクトに譲渡することはできない
+//! 
+//! @code ポインタの使用例
+//! {
+//!     mist::scoped_ptr< std::string > a( new std::string( "test" ) );
+//!	    std::cout << *a << std::endl;
+//! } // <- ここで a に割り当てたメモリ領域が，自動的に開放される
+//! @endcode
+//! 
+template < class T >
+class scoped_ptr
+{
+public:
+	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef T value_type;				///< @brief 内部データ型．T と同じ
+	typedef T* pointer;					///< @brief データ型のポインター型．data の場合，data * となる
+	typedef T& reference;				///< @brief データ型の参照．data の場合，data & となる
+	typedef const T& const_reference;	///< @brief データ型の const 参照．data の場合，const data & となる
+	typedef const T* const_pointer;		///< @brief データ型の const ポインター型．data の場合，const data * となる
+
+private:
+	pointer ptr_;		///< @brief 管理するポインタ
+
+public:
+	/// @brief 管理するポインタを設定
+	scoped_ptr( pointer p ) : ptr_( p ){ }
+
+	/// @brief 管理するポインタを開放
+	~scoped_ptr( ){ delete ptr_; }
+
+
+public:
+	reference operator *( ){ return( *ptr_ ); }
+	const_reference operator *( ) const { return( *ptr_ ); }
+
+	pointer operator ->( ){ return( ptr_ ); }
+	const_pointer operator ->( ) const { return( ptr_ ); }
+
+
+private:
+	scoped_ptr( const scoped_ptr &p );
+	const scoped_ptr &operator  =( const scoped_ptr &p );
+};
+
+
+
+/// @brief オブジェクトのスコープが切れると配列用に確保したメモリの自動開放を行うポインタ
+//! 
+//! @attention 配列のポインタに対してしか利用できない
+//! @attention 管理しているポインタを他のオブジェクトに譲渡することはできない
+//! 
+//! @code ポインタの使用例
+//! {
+//!     mist::scoped_array< std::string > a( new std::string[ 2 ] );
+//!	
+//!	    a[ 0 ] = "test1";
+//!	    a[ 1 ] = "test2";
+//!	
+//!	    std::cout << a[ 0 ] << a[ 1 ] << std::endl;
+//! } // <- ここで a に割り当てたメモリ領域が，自動的に開放される
+//! @endcode
+//! 
+template < class T >
+class scoped_array
+{
+public:
+	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef T value_type;				///< @brief 内部データ型．T と同じ
+	typedef T* pointer;					///< @brief データ型のポインター型．data の場合，data * となる
+	typedef T& reference;				///< @brief データ型の参照．data の場合，data & となる
+	typedef const T& const_reference;	///< @brief データ型の const 参照．data の場合，const data & となる
+	typedef const T* const_pointer;		///< @brief データ型の const ポインター型．data の場合，const data * となる
+
+private:
+	pointer ptr_;		///< @brief 管理するポインタ
+
+public:
+	/// @brief 成分を b で初期化する
+	scoped_array( pointer p ) : ptr_( p ){ }
+
+	~scoped_array( ){ delete [] ptr_; }
+
+
+public:
+	reference operator *( ){ return( *ptr_ ); }
+	const_reference operator *( ) const { return( *ptr_ ); }
+
+	pointer operator ->( ){ return( ptr_ ); }
+	const_pointer operator ->( ) const { return( ptr_ ); }
+
+	reference operator []( difference_type index ){ return( ptr_[ index ] ); }
+	const_reference operator []( difference_type index ) const { return( ptr_[ index ] ); }
+
+private:
+	scoped_array( const scoped_array &p );
+	const scoped_array &operator  =( const scoped_array &p );
+};
+
+
+
 /// @brief オブジェクトへのポインタの参照カウントを管理し，どこからも参照されなくなったときにメモリを自動開放するポインタ
 //! 
 //! @attention 配列に対しては利用できない
 //! @attention 循環参照が発生した場合は，正しく管理できない
+//! 
+//! @code ポインタの使用例
+//! {
+//!     mist::shared_ptr< std::string > a;
+//!     {
+//!         mist::shared_ptr< std::string > b = new std::string( "test" );
+//!	
+//!	        a = b;    // a が b と同じメモリ領域を参照するようにし，参照カウントを増やす
+//!	
+//!	    } // <- ここでは b に割り当てたメモリ領域の参照カウントが減るが，a が同じ領域を参照しているので，メモリ領域は開放されない
+//!	
+//!  ...
+//!	
+//! } // <- ここで a に割り当てたメモリ領域がどこからも参照されなくなるため，メモリ領域が自動的に開放される
+//! @endcode
 //! 
 template < class T >
 class shared_ptr
@@ -307,12 +350,29 @@ public:
 	}
 
 public:
+	/// @brief ポインタが指す内容への参照を返す
 	reference operator *( ){ return( *ptr_ ); }
+
+	/// @brief ポインタが指す内容への参照を返す
 	const_reference operator *( ) const { return( *ptr_ ); }
 
+	/// @brief ポインタが指す内容へのアクセスを行う
 	pointer operator ->( ){ return( ptr_ ); }
+
+	/// @brief ポインタが指す内容へのアクセスを行う
 	const_pointer operator ->( ) const { return( ptr_ ); }
 
+
+
+	/// @brief 管理しているポインタの参照カウントを減らす
+	//!
+	//! @attention どこからも参照されなくなったらメモリを開放する
+	//! 
+	void reset( )
+	{ 
+		shared_memory_controller::release( ptr_ );
+		ptr_  = NULL;
+	}
 
 public:
 	/// @brief 2つのポインタが同一かどうかを判定する
@@ -367,8 +427,27 @@ template < class T > inline bool operator >=( const typename shared_ptr< T >::po
 
 /// @brief 配列へのポインタの参照カウントを管理し，どこからも参照されなくなったときにメモリを自動開放するポインタ
 //! 
+//! 対象が配列ということを除けば，shared_ptr と同じ
+//! 
 //! @attention 配列に対してしか利用できない
 //! @attention 循環参照が発生した場合は，正しく管理できない
+//! 
+//! @code ポインタの使用例
+//! {
+//!     mist::shared_ptr< std::string > a;
+//!     {
+//!         mist::shared_ptr< std::string > b = new std::string[ 2 ];
+//!	
+//!	        a = b;    // a が b と同じメモリ領域を参照するようにし，参照カウントを増やす
+//!	
+//!	        a[ 0 ] = a[ 1 ] = "test";
+//!	
+//!	    } // <- ここでは b に割り当てたメモリ領域の参照カウントが減るが，a が同じ領域を参照しているので，メモリ領域は開放されない
+//!	
+//!  ...
+//!	
+//! } // <- ここで a に割り当てたメモリ領域がどこからも参照されなくなるため，メモリ領域が自動的に開放される
+//! @endcode
 //! 
 template < class T >
 class shared_array
@@ -422,14 +501,35 @@ public:
 	}
 
 public:
+	/// @brief ポインタが指す内容への参照を返す
 	reference operator *( ){ return( *ptr_ ); }
+
+	/// @brief ポインタが指す内容への参照を返す
 	const_reference operator *( ) const { return( *ptr_ ); }
 
+	/// @brief ポインタが指す内容へのアクセスを行う
 	pointer operator ->( ){ return( ptr_ ); }
+
+	/// @brief ポインタが指す内容へのアクセスを行う
 	const_pointer operator ->( ) const { return( ptr_ ); }
 
+
+	/// @brief 配列の要素へのアクセスを行う
 	reference operator []( difference_type index ){ return( ptr_[ index ] ); }
+
+	/// @brief 配列の要素へのアクセスを行う
 	const_reference operator []( difference_type index ) const { return( ptr_[ index ] ); }
+
+
+	/// @brief 管理しているポインタの参照カウントを減らす
+	//!
+	//! @attention どこからも参照されなくなったらメモリを開放する
+	//! 
+	void reset( )
+	{ 
+		shared_memory_controller::release( ptr_ );
+		ptr_  = NULL;
+	}
 
 
 public:
@@ -487,6 +587,24 @@ template < class T > inline bool operator >=( const typename shared_array< T >::
 //! 参照カウントが 0 にった際に，保持するポインタは NULL となる
 //! 
 //! @attention weak_ptr 自身は参照カウントを変化させない
+//! 
+//! @code 弱参照ポインタの使用例
+//! {
+//! mist::weak_ptr< std::string > a;
+//!	
+//! std::cout << a << std::endl;    // <- a はどこも参照していないので NULL  が入っている
+//!	
+//! {
+//!     mist::shared_ptr< std::string > b = new std::string[ 2 ];
+//!	
+//!	    a = b;    // b の弱参照を a に設定する
+//!	
+//!	    std::cout << a << std::endl;    // <- a は b を参照しているので b の参照先が表示される
+//!	
+//!	} // <- ここで b に割り当てたメモリ領域がどこからも参照されなくなるため，メモリ領域が自動的に開放される
+//!	
+//! std::cout << a << std::endl;    // <- a が参照していた b はもう存在しないので， NULL が入っている
+//! @endcode
 //! 
 template < class T >
 class weak_ptr
@@ -714,6 +832,9 @@ inline std::ostream &operator <<( std::ostream &out, const weak_ptr< T > &p )
 	out << &( *p );
 	return( out );
 }
+
+/// @}
+//  メモリ領域の自動開放を行うポインタ
 
 
 
