@@ -411,41 +411,41 @@ public:
 
 public:
 	/// @brief 2つのポインタが同一かどうかを判定する
-	bool operator ==( const shared_ptr &p ) const { return( ptr_ == p.ptr_ ); }
+	bool operator ==( const shared_ptr &p ) const { return( base::get_pointer( ) == p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタが等しくないどうかを判定する
-	bool operator !=( const shared_ptr &p ) const { return( ptr_ != p.ptr_ ); }
+	bool operator !=( const shared_ptr &p ) const { return( base::get_pointer( ) != p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの <  を判定する
-	bool operator < ( const shared_ptr &p ) const { return( ptr_ <  p.ptr_ ); }
+	bool operator < ( const shared_ptr &p ) const { return( base::get_pointer( ) <  p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの <= を判定する
-	bool operator <=( const shared_ptr &p ) const { return( ptr_ <= p.ptr_ ); }
+	bool operator <=( const shared_ptr &p ) const { return( base::get_pointer( ) <= p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの >  を判定する
-	bool operator > ( const shared_ptr &p ) const { return( ptr_ >  p.ptr_ ); }
+	bool operator > ( const shared_ptr &p ) const { return( base::get_pointer( ) >  p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの >= を判定する
-	bool operator >=( const shared_ptr &p ) const { return( ptr_ >= p.ptr_ ); }
+	bool operator >=( const shared_ptr &p ) const { return( base::get_pointer( ) >= p.get_pointer( ) ); }
 
 
 	/// @brief 2つのポインタが同一かどうかを判定する
-	bool operator ==( const pointer &p ) const { return( ptr_ == p ); }
+	bool operator ==( const pointer &p ) const { return( base::get_pointer( ) == p ); }
 
 	/// @brief 2つのポインタが等しくないどうかを判定する
-	bool operator !=( const pointer &p ) const { return( ptr_ != p ); }
+	bool operator !=( const pointer &p ) const { return( base::get_pointer( ) != p ); }
 
 	/// @brief 2つのポインタの <  を判定する
-	bool operator < ( const pointer &p ) const { return( ptr_ <  p ); }
+	bool operator < ( const pointer &p ) const { return( base::get_pointer( ) <  p ); }
 
 	/// @brief 2つのポインタの <= を判定する
-	bool operator <=( const pointer &p ) const { return( ptr_ <= p ); }
+	bool operator <=( const pointer &p ) const { return( base::get_pointer( ) <= p ); }
 
 	/// @brief 2つのポインタの >  を判定する
-	bool operator > ( const pointer &p ) const { return( ptr_ >  p ); }
+	bool operator > ( const pointer &p ) const { return( base::get_pointer( ) >  p ); }
 
 	/// @brief 2つのポインタの >= を判定する
-	bool operator >=( const pointer &p ) const { return( ptr_ >= p ); }
+	bool operator >=( const pointer &p ) const { return( base::get_pointer( ) >= p ); }
 
 };
 
@@ -565,41 +565,41 @@ public:
 
 public:
 	/// @brief 2つのポインタが同一かどうかを判定する
-	bool operator ==( const shared_array &p ) const { return( ptr_ == p.ptr_ ); }
+	bool operator ==( const shared_array &p ) const { return( base::get_pointer( ) == p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタが等しくないどうかを判定する
-	bool operator !=( const shared_array &p ) const { return( ptr_ != p.ptr_ ); }
+	bool operator !=( const shared_array &p ) const { return( base::get_pointer( ) != p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの <  を判定する
-	bool operator < ( const shared_array &p ) const { return( ptr_ <  p.ptr_ ); }
+	bool operator < ( const shared_array &p ) const { return( base::get_pointer( ) <  p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの <= を判定する
-	bool operator <=( const shared_array &p ) const { return( ptr_ <= p.ptr_ ); }
+	bool operator <=( const shared_array &p ) const { return( base::get_pointer( ) <= p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの >  を判定する
-	bool operator > ( const shared_array &p ) const { return( ptr_ >  p.ptr_ ); }
+	bool operator > ( const shared_array &p ) const { return( base::get_pointer( ) >  p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの >= を判定する
-	bool operator >=( const shared_array &p ) const { return( ptr_ >= p.ptr_ ); }
+	bool operator >=( const shared_array &p ) const { return( base::get_pointer( ) >= p.get_pointer( ) ); }
 
 
 	/// @brief 2つのポインタが同一かどうかを判定する
-	bool operator ==( const pointer &p ) const { return( ptr_ == p ); }
+	bool operator ==( const pointer &p ) const { return( base::get_pointer( ) == p ); }
 
 	/// @brief 2つのポインタが等しくないどうかを判定する
-	bool operator !=( const pointer &p ) const { return( ptr_ != p ); }
+	bool operator !=( const pointer &p ) const { return( base::get_pointer( ) != p ); }
 
 	/// @brief 2つのポインタの <  を判定する
-	bool operator < ( const pointer &p ) const { return( ptr_ <  p ); }
+	bool operator < ( const pointer &p ) const { return( base::get_pointer( ) <  p ); }
 
 	/// @brief 2つのポインタの <= を判定する
-	bool operator <=( const pointer &p ) const { return( ptr_ <= p ); }
+	bool operator <=( const pointer &p ) const { return( base::get_pointer( ) <= p ); }
 
 	/// @brief 2つのポインタの >  を判定する
-	bool operator > ( const pointer &p ) const { return( ptr_ >  p ); }
+	bool operator > ( const pointer &p ) const { return( base::get_pointer( ) >  p ); }
 
 	/// @brief 2つのポインタの >= を判定する
-	bool operator >=( const pointer &p ) const { return( ptr_ >= p ); }
+	bool operator >=( const pointer &p ) const { return( base::get_pointer( ) >= p ); }
 
 };
 
@@ -748,41 +748,41 @@ public:
 
 public:
 	/// @brief 2つのポインタが同一かどうかを判定する
-	bool operator ==( const weak_ptr &p ) const { return( *pptr_ == *p.pptr_ ); }
+	bool operator ==( const weak_ptr &p ) const { return( base::get_pointer( ) == p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタが等しくないどうかを判定する
-	bool operator !=( const weak_ptr &p ) const { return( *pptr_ != *p.pptr_ ); }
+	bool operator !=( const weak_ptr &p ) const { return( base::get_pointer( ) != p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの <  を判定する
-	bool operator < ( const weak_ptr &p ) const { return( *pptr_ <  *p.pptr_ ); }
+	bool operator < ( const weak_ptr &p ) const { return( base::get_pointer( ) <  p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの <= を判定する
-	bool operator <=( const weak_ptr &p ) const { return( *pptr_ <= *p.pptr_ ); }
+	bool operator <=( const weak_ptr &p ) const { return( base::get_pointer( ) <= p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの >  を判定する
-	bool operator > ( const weak_ptr &p ) const { return( *pptr_ >  *p.pptr_ ); }
+	bool operator > ( const weak_ptr &p ) const { return( base::get_pointer( ) >  p.get_pointer( ) ); }
 
 	/// @brief 2つのポインタの >= を判定する
-	bool operator >=( const weak_ptr &p ) const { return( *pptr_ >= *p.pptr_ ); }
+	bool operator >=( const weak_ptr &p ) const { return( base::get_pointer( ) >= p.get_pointer( ) ); }
 
 
 	/// @brief 2つのポインタが同一かどうかを判定する
-	bool operator ==( const pointer &p ) const { return( *pptr_ == p ); }
+	bool operator ==( const pointer &p ) const { return( base::get_pointer( ) == p ); }
 
 	/// @brief 2つのポインタが等しくないどうかを判定する
-	bool operator !=( const pointer &p ) const { return( *pptr_ != p ); }
+	bool operator !=( const pointer &p ) const { return( base::get_pointer( ) != p ); }
 
 	/// @brief 2つのポインタの <  を判定する
-	bool operator < ( const pointer &p ) const { return( *pptr_ <  p ); }
+	bool operator < ( const pointer &p ) const { return( base::get_pointer( ) <  p ); }
 
 	/// @brief 2つのポインタの <= を判定する
-	bool operator <=( const pointer &p ) const { return( *pptr_ <= p ); }
+	bool operator <=( const pointer &p ) const { return( base::get_pointer( ) <= p ); }
 
 	/// @brief 2つのポインタの >  を判定する
-	bool operator > ( const pointer &p ) const { return( *pptr_ >  p ); }
+	bool operator > ( const pointer &p ) const { return( base::get_pointer( ) >  p ); }
 
 	/// @brief 2つのポインタの >= を判定する
-	bool operator >=( const pointer &p ) const { return( *pptr_ >= p ); }
+	bool operator >=( const pointer &p ) const { return( base::get_pointer( ) >= p ); }
 
 };
 
