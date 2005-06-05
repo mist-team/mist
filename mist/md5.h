@@ -64,21 +64,22 @@ protected:
 		a = b + R( a + I( b, c, d ) + xk + ti, s );
 	}
 
-	void ToCurrentEndian( unsigned int x[ 16 ] )
+	void ToCurrentEndian( unsigned int *x, size_type len )
 	{
-		for( size_type i = 0 ; i < 16 ; i++ )
+		for( size_type i = 0 ; i < len ; i++ )
 		{
 			x[ i ] = to_current_endian( byte_array< unsigned int >( x[ i ] ), true ).get_value( );
 		}
 	}
 
-	void FromCurrentEndian( unsigned int x[ 16 ] )
+	void FromCurrentEndian( unsigned int *x, size_type len )
 	{
-		for( size_type i = 0 ; i < 16 ; i++ )
+		for( size_type i = 0 ; i < len ; i++ )
 		{
 			x[ i ] = from_current_endian( byte_array< unsigned int >( x[ i ] ), true ).get_value( );
 		}
 	}
+
 
 	void Round( unsigned int &a, unsigned int &b, unsigned int &c, unsigned int &d, unsigned int x[ 16 ] )
 	{
@@ -179,15 +180,15 @@ public:
 		D = 0x10325476;
 
 		size_type i;
-		unsigned char xx[ 64 ];
-		unsigned int *x = reinterpret_cast< unsigned int * >( xx );
+		unsigned int x[ 16 ];
+		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
 		const unsigned char *data = reinterpret_cast< const unsigned char * >( data_ );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 64 < len ; i += 64 )
 		{
 			memcpy( xx, data + i, sizeof( unsigned char ) * 64 );
-			ToCurrentEndian( x );
+			ToCurrentEndian( x, 16 );
 			Round( A, B, C, D, x );
 		}
 
@@ -202,7 +203,7 @@ public:
 			xx[ rest ] = 0x80;
 
 			// メッセージ処理を行う
-			ToCurrentEndian( x );
+			ToCurrentEndian( x, 16 );
 			Round( A, B, C, D, x );
 
 			// バイト長の分の処理を行う
@@ -220,7 +221,7 @@ public:
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
-			ToCurrentEndian( x );
+			ToCurrentEndian( x, 16 );
 
 			// バイト長の分の値を付加する
 			x[ 14 ] = static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 );
@@ -230,11 +231,11 @@ public:
 			Round( A, B, C, D, x );
 		}
 
-		FromCurrentEndian( reinterpret_cast< unsigned int * >( digest ) );
+		FromCurrentEndian( reinterpret_cast< unsigned int * >( digest ), 4 );
 	}
 
 	/// @brief ダイジェストバイト列の長さ
-	size_type size( ) const { return( 64 ); }
+	size_type size( ) const { return( 16 ); }
 
 	/// @brief ダイジェスト文字列の各バイトを取得する
 	unsigned char operator []( size_type index ) const { return( digest[ index ] ); }
@@ -246,7 +247,7 @@ public:
 		static char x16[ 16 ] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 		std::string str;
 
-		for( size_type i = 0 ; i < 16 ; i++ )
+		for( size_type i = 0 ; i < size( ) ; i++ )
 		{
 			str += x16[ ( digest[ i ] >> 4 ) & 0x0f ];
 			str += x16[ digest[ i ] & 0x0f ];
@@ -263,7 +264,7 @@ public:
 		D[ 1 ] = 0x04b2008f;
 		D[ 2 ] = 0x980980e9;
 		D[ 3 ] = 0x7e42f8ec;
-		FromCurrentEndian( D );
+		FromCurrentEndian( D, 4 );
 	}
 
 	/// @brief 指定された文字列のダイジェスト文字列で初期化する

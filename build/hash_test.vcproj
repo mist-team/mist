@@ -135,13 +135,10 @@
 				RelativePath="..\mist\md5.h">
 			</File>
 			<File
-				RelativePath="..\mist\mist.h">
-			</File>
-			<File
-				RelativePath="..\mist\config\mist_alloc.h">
-			</File>
-			<File
 				RelativePath="..\mist\config\mist_conf.h">
+			</File>
+			<File
+				RelativePath="..\mist\sha.h">
 			</File>
 		</Filter>
 	</Files>
