@@ -2,6 +2,9 @@
 //!
 //! @brief 任意のバイト列のMD5を計算する
 //!
+//! - 参考文献
+//!   - RFC1321, http://www.ietf.org/rfc/rfc1321.txt
+//!
 #ifndef __INCLUDE_MD5__
 #define __INCLUDE_MD5__
 
@@ -59,6 +62,22 @@ protected:
 	void II( unsigned int &a, unsigned int b, unsigned int c, unsigned int d, unsigned int xk, unsigned int s, unsigned int ti )
 	{
 		a = b + R( a + I( b, c, d ) + xk + ti, s );
+	}
+
+	void ToCurrentEndian( unsigned int x[ 16 ] )
+	{
+		for( size_type i = 0 ; i < 16 ; i++ )
+		{
+			x[ i ] = to_current_endian( byte_array< unsigned int >( x[ i ] ), true ).get_value( );
+		}
+	}
+
+	void FromCurrentEndian( unsigned int x[ 16 ] )
+	{
+		for( size_type i = 0 ; i < 16 ; i++ )
+		{
+			x[ i ] = from_current_endian( byte_array< unsigned int >( x[ i ] ), true ).get_value( );
+		}
 	}
 
 	void Round( unsigned int &a, unsigned int &b, unsigned int &c, unsigned int &d, unsigned int x[ 16 ] )
@@ -159,6 +178,8 @@ public:
 		C = 0x98badcfe;
 		D = 0x10325476;
 
+		ToCurrentEndian( reinterpret_cast< unsigned int * >( digest ) );
+
 		size_type i;
 		unsigned char xx[ 64 ];
 		unsigned int *x = reinterpret_cast< unsigned int * >( xx );
@@ -170,6 +191,7 @@ public:
 		for( i = 0 ; i + 64 < len ; i += 64 )
 		{
 			memcpy( xx, data + i, sizeof( unsigned char ) * 64 );
+			ToCurrentEndian( x );
 			Round( A, B, C, D, x );
 		}
 
@@ -184,6 +206,7 @@ public:
 			xx[ rest ] = 0x80;
 
 			// メッセージ処理を行う
+			ToCurrentEndian( x );
 			Round( A, B, C, D, x );
 
 			// バイト長の分の処理を行う
@@ -192,6 +215,7 @@ public:
 			x[ 15 ] = static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 );
 
 			// メッセージ処理を行う
+			ToCurrentEndian( x );
 			Round( A, B, C, D, x );
 		}
 		else
@@ -206,8 +230,11 @@ public:
 			x[ 15 ] = static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 );
 
 			// メッセージ処理を行う
+			ToCurrentEndian( x );
 			Round( A, B, C, D, x );
 		}
+
+		FromCurrentEndian( reinterpret_cast< unsigned int * >( digest ) );
 	}
 
 	/// @brief ダイジェストバイト列の長さ
@@ -240,6 +267,7 @@ public:
 		D[ 1 ] = 0x04b2008f;
 		D[ 2 ] = 0x980980e9;
 		D[ 3 ] = 0x7e42f8ec;
+		FromCurrentEndian( D );
 	}
 
 	/// @brief 指定された文字列のダイジェスト文字列で初期化する

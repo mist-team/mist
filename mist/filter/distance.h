@@ -5,6 +5,7 @@
 //! - 参考文献
 //!   - ユークリッド距離変換
 //!     - 齋藤豊文, 鳥脇純一郎, "3次元ディジタル画像に対するユークリッド距離変換," 電子情報通信学会論文誌, J76-D-II, No. 3, pp.445-453, 1993
+//!     - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
 //!
 
 #ifndef __INCLUDE_MIST_DISTANCE_TRANSFORM__
