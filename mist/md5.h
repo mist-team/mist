@@ -178,13 +178,9 @@ public:
 		C = 0x98badcfe;
 		D = 0x10325476;
 
-		ToCurrentEndian( reinterpret_cast< unsigned int * >( digest ) );
-
 		size_type i;
 		unsigned char xx[ 64 ];
 		unsigned int *x = reinterpret_cast< unsigned int * >( xx );
-		//unsigned int x[ 16 ];
-		//unsigned char *xx = reinterpret_cast< unsigned char * >( x );
 		const unsigned char *data = reinterpret_cast< const unsigned char * >( data_ );
 
 		// 入力データに対してメッセージ処理を行う
@@ -215,7 +211,6 @@ public:
 			x[ 15 ] = static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 );
 
 			// メッセージ処理を行う
-			ToCurrentEndian( x );
 			Round( A, B, C, D, x );
 		}
 		else
@@ -225,12 +220,13 @@ public:
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
+			ToCurrentEndian( x );
+
 			// バイト長の分の値を付加する
 			x[ 14 ] = static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 );
 			x[ 15 ] = static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 );
 
 			// メッセージ処理を行う
-			ToCurrentEndian( x );
 			Round( A, B, C, D, x );
 		}
 
