@@ -299,7 +299,7 @@ public:
 /// @brief 指定されたストリームにデータを出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     p   … weak_ptr 配列
+//! @param[in]     p   … md5 オブジェクト
 //! 
 //! @return 入力されたストリーム
 //! 
