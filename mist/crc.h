@@ -13,12 +13,7 @@
 _MIST_BEGIN
 
 
-//! @defgroup crc_group CRC
-//!
-//! @code 次のヘッダをインクルードする
-//! #include <mist/crc.h>
-//! @endcode
-//!
+//! @defgroup hash_group ハッシュ関数
 //!  @{
 
 namespace crc_generator_polynominal
@@ -213,7 +208,7 @@ struct crc
 
 
 /// @}
-//  CRCグループの終わり
+//  ハッシュ関数グループの終わり
 
 
 // mist名前空間の終わり

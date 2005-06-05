@@ -482,7 +482,9 @@ struct __mist_progress_callback__
 * - @ref free_form_group					"自由曲線・曲面"
 *   - @ref bspline_group					"Bスプライン曲線"
 *   - @ref spline_group						"3次スプライン曲線"
-* - @ref crc_group							"CRC"
+* - @ref hash_group							"ハッシュ関数"
+*   - @ref mist::crc						"CRC"
+*   - @ref mist::md5						"MD5"
 *
 *
 * @subsection numeric ベクトル・行列演算

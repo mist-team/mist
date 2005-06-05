@@ -4,6 +4,7 @@ include ../build/makeinclude
 ALL = \
 	array_test \
 	memory_test \
+	hash_test \
 	callback_test \
 	pointer_test \
 	limits_test \
@@ -42,6 +43,9 @@ array_test : array_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 memory_test : memory_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+hash_test : hash_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 callback_test : callback_test.o

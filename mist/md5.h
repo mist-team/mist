@@ -20,12 +20,7 @@
 _MIST_BEGIN
 
 
-//! @defgroup md5_group MD5
-//!
-//! @code 次のヘッダをインクルードする
-//! #include <mist/md5.h>
-//! @endcode
-//!
+//! @defgroup hash_group ハッシュ関数
 //!  @{
 
 
@@ -291,7 +286,7 @@ inline std::ostream &operator <<( std::ostream &out, const md5 &m )
 
 
 /// @}
-//  MD5グループの終わり
+//  ハッシュ関数グループの終わり
 
 
 // mist名前空間の終わり
