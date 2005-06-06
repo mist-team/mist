@@ -38,8 +38,6 @@ int main( int argc, char *argv[] )
 {
 	using namespace std;
 
-	std::cout << sizeof( size_t );
-
 	md5_test( "", "d41d8cd98f00b204e9800998ecf8427e" );
 	md5_test( "a", "0cc175b9c0f1b6a831c399e269772661" );
 	md5_test( "abc", "900150983cd24fb0d6963f7d28e17f72" );
