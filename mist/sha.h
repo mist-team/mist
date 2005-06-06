@@ -35,6 +35,7 @@ class sha1
 public:
 	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef unsigned int uint32;
 
 private:
 	unsigned char digest[ 20 ];
@@ -44,46 +45,46 @@ public:
 	size_type size( ) const { return( 20 ); }
 
 protected:
-	unsigned int R( unsigned int a, unsigned int s ){ return( ( a << s ) | ( a >> ( 32 - s ) ) ); }
+	uint32 R( uint32 a, uint32 s ){ return( ( a << s ) | ( a >> ( 32 - s ) ) ); }
 
-	void ToCurrentEndian( unsigned int *x, size_type len )
+	void ToCurrentEndian( uint32 *x, size_type len )
 	{
 		for( size_type i = 0 ; i < len ; i++ )
 		{
-			x[ i ] = to_current_endian( byte_array< unsigned int >( x[ i ] ), false ).get_value( );
+			x[ i ] = to_current_endian( byte_array< uint32 >( x[ i ] ), false ).get_value( );
 		}
 	}
 
-	void FromCurrentEndian( unsigned int *x, size_type len )
+	void FromCurrentEndian( uint32 *x, size_type len )
 	{
 		for( size_type i = 0 ; i < len ; i++ )
 		{
-			x[ i ] = from_current_endian( byte_array< unsigned int >( x[ i ] ), false ).get_value( );
+			x[ i ] = from_current_endian( byte_array< uint32 >( x[ i ] ), false ).get_value( );
 		}
 	}
 
-	void Round( unsigned int &a, unsigned int &b, unsigned int &c, unsigned int &d, unsigned int &e, unsigned int x[ 16 ] )
+	void Round( uint32 &a, uint32 &b, uint32 &c, uint32 &d, uint32 &e, uint32 x[ 16 ] )
 	{
 		size_type i;
-		unsigned int W[ 80 ];
+		uint32 W[ 80 ];
 
-		memcpy( W, x, sizeof( unsigned int ) * 16 );
+		memcpy( W, x, sizeof( uint32 ) * 16 );
 
 		for( i = 16 ; i < 80 ; i++ )
 		{
 			W[ i ] = R( W[ i - 3 ] ^ W[ i - 8 ] ^ W[ i - 14 ] ^ W[ i- 16 ], 1 );
 		}
 
-		unsigned int A = a;
-		unsigned int B = b;
-		unsigned int C = c;
-		unsigned int D = d;
-		unsigned int E = e;
+		uint32 A = a;
+		uint32 B = b;
+		uint32 C = c;
+		uint32 D = d;
+		uint32 E = e;
 
 		// ワードブロックごとの処理を行う
 		for( i = 0 ; i < 20 ; i++ )
 		{
-			unsigned int temp = R( A, 5 ) + ( ( B & C ) | ( ~B & D ) ) + E + W[ i ] + 0x5a827999;
+			uint32 temp = R( A, 5 ) + ( ( B & C ) | ( ~B & D ) ) + E + W[ i ] + 0x5a827999;
 			E = D;
 			D = C;
 			C = R( B, 30 );
@@ -93,7 +94,7 @@ protected:
 
 		for( ; i < 40 ; i++ )
 		{
-			unsigned int temp = R( A, 5 ) + ( B ^ C ^ D ) + E + W[ i ] + 0x6ed9eba1;
+			uint32 temp = R( A, 5 ) + ( B ^ C ^ D ) + E + W[ i ] + 0x6ed9eba1;
 			E = D;
 			D = C;
 			C = R( B, 30 );
@@ -103,7 +104,7 @@ protected:
 
 		for( ; i < 60 ; i++ )
 		{
-			unsigned int temp = R( A, 5 ) + ( ( B & C ) | ( B & D ) | ( C & D ) ) + E + W[ i ] + 0x8f1bbcdc;
+			uint32 temp = R( A, 5 ) + ( ( B & C ) | ( B & D ) | ( C & D ) ) + E + W[ i ] + 0x8f1bbcdc;
 			E = D;
 			D = C;
 			C = R( B, 30 );
@@ -113,7 +114,7 @@ protected:
 
 		for( ; i < 80 ; i++ )
 		{
-			unsigned int temp = R( A, 5 ) + ( B ^ C ^ D ) + E + W[ i ] + 0xca62c1d6;
+			uint32 temp = R( A, 5 ) + ( B ^ C ^ D ) + E + W[ i ] + 0xca62c1d6;
 			E = D;
 			D = C;
 			C = R( B, 30 );
@@ -133,18 +134,18 @@ public:
 	void generate( const void *data_, size_type len )
 	{
 		// 出力用のダイジェストバイト列を 32 ビット単位で処理できるようにする
-		unsigned int &A = *reinterpret_cast< unsigned int * >( digest );
-		unsigned int &B = *reinterpret_cast< unsigned int * >( digest + 4 );
-		unsigned int &C = *reinterpret_cast< unsigned int * >( digest + 8 );
-		unsigned int &D = *reinterpret_cast< unsigned int * >( digest + 12 );
-		unsigned int &E = *reinterpret_cast< unsigned int * >( digest + 16 );
+		uint32 &A = *reinterpret_cast< uint32 * >( digest );
+		uint32 &B = *reinterpret_cast< uint32 * >( digest + 4 );
+		uint32 &C = *reinterpret_cast< uint32 * >( digest + 8 );
+		uint32 &D = *reinterpret_cast< uint32 * >( digest + 12 );
+		uint32 &E = *reinterpret_cast< uint32 * >( digest + 16 );
 
 		// ダイジェストバイト列の初期化
-		const unsigned int H0 = 0x67452301;
-		const unsigned int H1 = 0xefcdab89;
-		const unsigned int H2 = 0x98badcfe;
-		const unsigned int H3 = 0x10325476;
-		const unsigned int H4 = 0xc3d2e1f0;
+		const uint32 H0 = 0x67452301;
+		const uint32 H1 = 0xefcdab89;
+		const uint32 H2 = 0x98badcfe;
+		const uint32 H3 = 0x10325476;
+		const uint32 H4 = 0xc3d2e1f0;
 
 		A = H0;
 		B = H1;
@@ -153,7 +154,7 @@ public:
 		E = H4;
 
 		size_type i;
-		unsigned int x[ 16 ];
+		uint32 x[ 16 ];
 		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
 		const unsigned char *data = reinterpret_cast< const unsigned char * >( data_ );
 
@@ -181,8 +182,8 @@ public:
 
 			// バイト長の分の処理を行う
 			memset( xx, 0, sizeof( unsigned char ) * 64 );
-			x[ 14 ] = static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 );
-			x[ 15 ] = static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 );
+			x[ 14 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
+			x[ 15 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
 
 			// メッセージ処理を行う
 			Round( A, B, C, D, E, x );
@@ -197,14 +198,14 @@ public:
 			ToCurrentEndian( x, 16 );
 
 			// バイト長の分の値を付加する
-			x[ 14 ] = static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 );
-			x[ 15 ] = static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 );
+			x[ 14 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
+			x[ 15 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
 
 			// メッセージ処理を行う
 			Round( A, B, C, D, E, x );
 		}
 
-		FromCurrentEndian( reinterpret_cast< unsigned int * >( digest ), 5 );
+		FromCurrentEndian( reinterpret_cast< uint32 * >( digest ), 5 );
 	}
 
 	/// @brief ダイジェスト文字列の各バイトを取得する
@@ -229,7 +230,7 @@ public:
 	/// @brief 空文字のダイジェスト文字列で初期化する
 	sha1( )
 	{
-		unsigned int *D = reinterpret_cast< unsigned int * >( digest );
+		uint32 *D = reinterpret_cast< uint32 * >( digest );
 		D[ 0 ] = 0xda39a3ee;
 		D[ 1 ] = 0x5e6b4b0d;
 		D[ 2 ] = 0x3255bfef;
@@ -274,6 +275,7 @@ class sha256
 public:
 	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef unsigned int uint32;
 
 private:
 	unsigned char digest[ 32 ];
@@ -283,53 +285,53 @@ public:
 	size_type size( ) const { return( 32 ); }
 
 protected:
-	unsigned int S( unsigned int a, unsigned int s ){ return( ( a >> s ) | ( a << ( 32 - s ) ) ); }
-	unsigned int R( unsigned int a, unsigned int s ){ return( a >> s ); }
-	unsigned int Ch( unsigned int x, unsigned int y, unsigned int z ){ return( ( x & y ) ^ ( ~x & z ) ); }
-	unsigned int Maj( unsigned int x, unsigned int y, unsigned int z ){ return( ( x & y ) ^ ( x & z ) ^ ( y & z ) ); }
-	unsigned int S0( unsigned int x ){ return( S( x,  2 ) ^ S( x, 13 ) ^ S( x, 22 ) ); }
-	unsigned int S1( unsigned int x ){ return( S( x,  6 ) ^ S( x, 11 ) ^ S( x, 25 ) ); }
-	unsigned int s0( unsigned int x ){ return( S( x,  7 ) ^ S( x, 18 ) ^ R( x,  3 ) ); }
-	unsigned int s1( unsigned int x ){ return( S( x, 17 ) ^ S( x, 19 ) ^ R( x, 10 ) ); }
+	uint32 S( uint32 a, uint32 s ){ return( ( a >> s ) | ( a << ( 32 - s ) ) ); }
+	uint32 R( uint32 a, uint32 s ){ return( a >> s ); }
+	uint32 Ch( uint32 x, uint32 y, uint32 z ){ return( ( x & y ) ^ ( ~x & z ) ); }
+	uint32 Maj( uint32 x, uint32 y, uint32 z ){ return( ( x & y ) ^ ( x & z ) ^ ( y & z ) ); }
+	uint32 S0( uint32 x ){ return( S( x,  2 ) ^ S( x, 13 ) ^ S( x, 22 ) ); }
+	uint32 S1( uint32 x ){ return( S( x,  6 ) ^ S( x, 11 ) ^ S( x, 25 ) ); }
+	uint32 s0( uint32 x ){ return( S( x,  7 ) ^ S( x, 18 ) ^ R( x,  3 ) ); }
+	uint32 s1( uint32 x ){ return( S( x, 17 ) ^ S( x, 19 ) ^ R( x, 10 ) ); }
 
-	void ToCurrentEndian( unsigned int *x, size_type len )
+	void ToCurrentEndian( uint32 *x, size_type len )
 	{
 		for( size_type i = 0 ; i < len ; i++ )
 		{
-			x[ i ] = to_current_endian( byte_array< unsigned int >( x[ i ] ), false ).get_value( );
+			x[ i ] = to_current_endian( byte_array< uint32 >( x[ i ] ), false ).get_value( );
 		}
 	}
 
-	void FromCurrentEndian( unsigned int *x, size_type len )
+	void FromCurrentEndian( uint32 *x, size_type len )
 	{
 		for( size_type i = 0 ; i < len ; i++ )
 		{
-			x[ i ] = from_current_endian( byte_array< unsigned int >( x[ i ] ), false ).get_value( );
+			x[ i ] = from_current_endian( byte_array< uint32 >( x[ i ] ), false ).get_value( );
 		}
 	}
 
-	void Round( unsigned int *H, unsigned int x[ 16 ] )
+	void Round( uint32 *H, uint32 x[ 16 ] )
 	{
 		size_type i;
-		unsigned int W[ 64 ];
+		uint32 W[ 64 ];
 
-		memcpy( W, x, sizeof( unsigned int ) * 16 );
+		memcpy( W, x, sizeof( uint32 ) * 16 );
 
 		for( i = 16 ; i < 64 ; i++ )
 		{
 			W[ i ] = s1( W[ i - 2 ] ) + W[ i - 7 ] + s0( W[ i - 15 ] ) + W[ i- 16 ];
 		}
 
-		unsigned int a = H[ 0 ];
-		unsigned int b = H[ 1 ];
-		unsigned int c = H[ 2 ];
-		unsigned int d = H[ 3 ];
-		unsigned int e = H[ 4 ];
-		unsigned int f = H[ 5 ];
-		unsigned int g = H[ 6 ];
-		unsigned int h = H[ 7 ];
+		uint32 a = H[ 0 ];
+		uint32 b = H[ 1 ];
+		uint32 c = H[ 2 ];
+		uint32 d = H[ 3 ];
+		uint32 e = H[ 4 ];
+		uint32 f = H[ 5 ];
+		uint32 g = H[ 6 ];
+		uint32 h = H[ 7 ];
 
-		static unsigned int K[] =
+		static uint32 K[] =
 			{
 				0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
 				0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
@@ -344,8 +346,8 @@ protected:
 		// ワードブロックごとの処理を行う
 		for( i = 0 ; i < 64 ; i++ )
 		{
-			unsigned int T1 = h + S1( e ) + Ch( e, f, g ) + K[ i ] + W[ i ];
-			unsigned int T2 = S0( a ) + Maj( a, b, c );
+			uint32 T1 = h + S1( e ) + Ch( e, f, g ) + K[ i ] + W[ i ];
+			uint32 T2 = S0( a ) + Maj( a, b, c );
 			h = g;
 			g = f;
 			f = e;
@@ -371,7 +373,7 @@ public:
 	void generate( const void *data_, size_type len )
 	{
 		// 出力用のダイジェストバイト列を 32 ビット単位で処理できるようにする
-		unsigned int *H = reinterpret_cast< unsigned int * >( digest );
+		uint32 *H = reinterpret_cast< uint32 * >( digest );
 
 		// ダイジェストバイト列の初期化
 		H[ 0 ] = 0x6a09e667;
@@ -384,7 +386,7 @@ public:
 		H[ 7 ] = 0x5be0cd19;
 
 		size_type i;
-		unsigned int x[ 16 ];
+		uint32 x[ 16 ];
 		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
 		const unsigned char *data = reinterpret_cast< const unsigned char * >( data_ );
 
@@ -412,8 +414,8 @@ public:
 
 			// バイト長の分の処理を行う
 			memset( xx, 0, sizeof( unsigned char ) * 64 );
-			x[ 14 ] = static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 );
-			x[ 15 ] = static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 );
+			x[ 14 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
+			x[ 15 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
 
 			// メッセージ処理を行う
 			Round( H, x );
@@ -428,14 +430,14 @@ public:
 			ToCurrentEndian( x, 16 );
 
 			// バイト長の分の値を付加する
-			x[ 14 ] = static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 );
-			x[ 15 ] = static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 );
+			x[ 14 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
+			x[ 15 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
 
 			// メッセージ処理を行う
 			Round( H, x );
 		}
 
-		FromCurrentEndian( reinterpret_cast< unsigned int * >( digest ), 8 );
+		FromCurrentEndian( reinterpret_cast< uint32 * >( digest ), 8 );
 	}
 
 
@@ -457,7 +459,7 @@ public:
 	/// @brief 空文字のダイジェスト文字列で初期化する
 	sha256( )
 	{
-		unsigned int *H = reinterpret_cast< unsigned int * >( digest );
+		uint32 *H = reinterpret_cast< uint32 * >( digest );
 		H[ 0 ] = 0xe3b0c442;
 		H[ 1 ] = 0x98fc1c14;
 		H[ 2 ] = 0x9afbf4c8;
@@ -505,7 +507,6 @@ class sha384
 public:
 	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
-
 	typedef unsigned long long int uint64;
 
 private:
