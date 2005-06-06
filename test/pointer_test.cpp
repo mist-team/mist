@@ -49,8 +49,7 @@ int main( int argc, char *argv[] )
 	mist::weak_ptr< A > w;
 	std::cout << w << std::endl;
 	{
-		mist::shared_ptr< A > a = NULL;
-//		mist::shared_ptr< A > a = new A( "abcdefg" );
+		mist::shared_ptr< A > a = new A( "abcdefg" );
 
 		w = a;
 		std::cout << w << std::endl;
