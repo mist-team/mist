@@ -2,6 +2,12 @@
 //!
 //! @brief 離散コサイン変換のアルゴリズム
 //!
+//! 東京大学の Takuya OOURA 氏が開発された，FFTのパッケージを利用しています．
+//! 
+//! http://momonga.t.u-tokyo.ac.jp/~ooura/fft.html
+//! 
+//! Copyright Takuya OOURA, 1996-2001 (Email: ooura@kurims.kyoto-u.ac.jp or ooura@mmm.t.u-tokyo.ac.jp) 
+//!
 
 #ifndef __INCLUDE_DCT_H__
 #define __INCLUDE_DCT_H__

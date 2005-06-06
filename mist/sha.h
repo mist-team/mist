@@ -995,7 +995,7 @@ public:
 /// @brief 指定されたストリームにデータを出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     p   … sha1 オブジェクト
+//! @param[in]     m   … sha1 オブジェクト
 //! 
 //! @return 入力されたストリーム
 //! 
@@ -1008,7 +1008,7 @@ inline std::ostream &operator <<( std::ostream &out, const sha1 &m )
 /// @brief 指定されたストリームにデータを出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     p   … sha256 オブジェクト
+//! @param[in]     m   … sha256 オブジェクト
 //! 
 //! @return 入力されたストリーム
 //! 
@@ -1021,7 +1021,7 @@ inline std::ostream &operator <<( std::ostream &out, const sha256 &m )
 /// @brief 指定されたストリームにデータを出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     p   … sha384 オブジェクト
+//! @param[in]     m   … sha384 オブジェクト
 //! 
 //! @return 入力されたストリーム
 //! 
@@ -1034,7 +1034,7 @@ inline std::ostream &operator <<( std::ostream &out, const sha384 &m )
 /// @brief 指定されたストリームにデータを出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     p   … sha512 オブジェクト
+//! @param[in]     m   … sha512 オブジェクト
 //! 
 //! @return 入力されたストリーム
 //! 
