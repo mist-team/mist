@@ -485,6 +485,10 @@ struct __mist_progress_callback__
 * - @ref hash_group							"ハッシュ関数"
 *   - @ref mist::crc						"CRC"
 *   - @ref mist::md5						"MD5"
+*   - @ref mist::sha1						"SHA-1"
+*   - @ref mist::sha256						"SHA-256"
+*   - @ref mist::sha384						"SHA-384"
+*   - @ref mist::sha512						"SHA-512"
 *
 *
 * @subsection numeric ベクトル・行列演算

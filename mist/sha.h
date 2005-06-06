@@ -1,9 +1,10 @@
-/// @file mist/md5.h
+/// @file mist/sha.h
 //!
 //! @brief 任意のバイト列のMD5を計算する
 //!
 //! - 参考文献
-//!   - RFC3174, http://www.ietf.org/rfc/rfc3174.txt
+//!   - SHA-1, RFC3174, http://www.ietf.org/rfc/rfc3174.txt
+//!   - SHA-256, 384, 512, "Descriptions of SHA-256, SHA-384, and SHA-512." http://csrc.nist.gov/cryptval/shs/sha256-384-512.pdf 
 //!
 #ifndef __INCLUDE_SHA__
 #define __INCLUDE_SHA__
@@ -22,140 +23,6 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
-
-namespace __integer64__
-{
-	class uint64
-	{
-	public:
-		typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
-		typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
-
-	private:
-		unsigned int value[ 2 ];
-
-	public:
-		explicit uint64( unsigned int high = 0, unsigned int low = 0 )
-		{
-			value[ 0 ] = low;
-			value[ 1 ] = high;
-		}
-
-		const uint64 &operator =( unsigned int a )
-		{
-			value[ 1 ] = 0;
-			value[ 0 ] = a;
-
-			return( *this );
-		}
-
-		const uint64 &operator +=( const uint64 &a )
-		{
-			if( value[ 0 ] < 0xffffffff - a.value[ 0 ] )
-			{
-				value[ 0 ] += a.value[ 0 ];
-				value[ 1 ] += a.value[ 1 ];
-			}
-			else
-			{
-				unsigned int v1 = ( value[ 0 ] & 0x0000ffff ) + ( a.value[ 0 ] & 0x0000ffff );
-				unsigned int v2 = ( ( value[ 0 ] & 0xffff0000 ) >> 16 ) + ( ( a.value[ 0 ] & 0xffff0000 ) >> 16 ) + ( v1 >> 16 );
-
-				value[ 0 ] = ( ( v2 << 16 ) & 0xffff0000 ) + ( v1 & 0x0000ffff );
-				value[ 1 ] += a.value[ 1 ] + ( ( v2 & 0xffff0000 ) >> 16 );
-			}
-			return( *this );
-		}
-
-		const uint64 &operator <<=( size_type a )
-		{
-			value[ 1 ] = ( value[ 1 ] << a ) | ( value[ 0 ] >> ( 32 - a ) );
-			value[ 0 ] = value[ 0 ] << a;
-
-			return( *this );
-		}
-
-		const uint64 &operator >>=( size_type a )
-		{
-			value[ 0 ] = ( value[ 0 ] >> a ) | ( value[ 1 ] << ( 32 - a ) );
-			value[ 1 ] = value[ 1 ] >> a;
-
-			return( *this );
-		}
-
-		const uint64 &operator |=( const uint64 &a )
-		{
-			value[ 0 ] |= a.value[ 0 ];
-			value[ 1 ] |= a.value[ 1 ];
-			return( *this );
-		}
-
-		const uint64 &operator &=( const uint64 &a )
-		{
-			value[ 0 ] &= a.value[ 0 ];
-			value[ 1 ] &= a.value[ 1 ];
-			return( *this );
-		}
-
-		const uint64 &operator ^=( const uint64 &a )
-		{
-			value[ 0 ] ^= a.value[ 0 ];
-			value[ 1 ] ^= a.value[ 1 ];
-			return( *this );
-		}
-
-		uint64 operator ~( ) const
-		{
-			uint64 v;
-			v.value[ 0 ] = ~value[ 0 ];
-			v.value[ 1 ] = ~value[ 1 ];
-			return( v );
-		}
-
-
-		/// @brief ダイジェスト文字列を返す
-		uint64 to_current_endian( bool from_little_endian ) const
-		{
-			uint64 v;
-			v.value[ 0 ] = mist::to_current_endian( byte_array< unsigned int >( value[ 1 ] ), from_little_endian ).get_value( );
-			v.value[ 1 ] = mist::to_current_endian( byte_array< unsigned int >( value[ 0 ] ), from_little_endian ).get_value( );
-			return( v );
-		}
-
-		/// @brief ダイジェスト文字列を返す
-		uint64 from_current_endian( bool to_little_endian ) const
-		{
-			uint64 v;
-			v.value[ 0 ] = mist::from_current_endian( byte_array< unsigned int >( value[ 1 ] ), to_little_endian ).get_value( );
-			v.value[ 1 ] = mist::from_current_endian( byte_array< unsigned int >( value[ 0 ] ), to_little_endian ).get_value( );
-			return( v );
-		}
-
-		/// @brief ダイジェスト文字列を返す
-		std::string to_string( ) const
-		{
-			static char x16[ 16 ] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-			std::string str;
-
-			const unsigned char *v = reinterpret_cast< const unsigned char * >( value );
-			for( int i = 7 ; i >= 0 ; i-- )
-			{
-				str += x16[ ( v[ i ] >> 4 ) & 0x0f ];
-				str += x16[ v[ i ] & 0x0f ];
-			}
-
-			return( str );
-		}
-	};
-
-	inline const uint64 operator +( const uint64 &v1, const uint64 &v2 ){ return( uint64( v1 ) += v2 ); }
-	inline const uint64 operator |( const uint64 &v1, const uint64 &v2 ){ return( uint64( v1 ) |= v2 ); }
-	inline const uint64 operator &( const uint64 &v1, const uint64 &v2 ){ return( uint64( v1 ) &= v2 ); }
-	inline const uint64 operator ^( const uint64 &v1, const uint64 &v2 ){ return( uint64( v1 ) ^= v2 ); }
-
-	inline const uint64 operator <<( const uint64 &v1, const uint64::size_type a ){ return( uint64( v1 ) <<= a ); }
-	inline const uint64 operator >>( const uint64 &v1, const uint64::size_type a ){ return( uint64( v1 ) >>= a ); }
-}
 
 
 //! @defgroup hash_group ハッシュ関数
@@ -633,17 +500,262 @@ public:
 
 
 /// @brief SHA-384 を生成するクラス
+class sha384
+{
+public:
+	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+
+	typedef unsigned long long int uint64;
+
+private:
+	unsigned char digest[ 48 ];
+
+public:
+	/// @brief ダイジェストバイト列の長さ
+	size_type size( ) const { return( 48 ); }
+
+protected:
+	uint64 S( const uint64 &a, unsigned int s ){ return( ( a >> s ) | ( a << ( 64 - s ) ) ); }
+	uint64 R( const uint64 &a, unsigned int s ){ return( a >> s ); }
+	uint64 Ch( const uint64 &x, const uint64 &y, const uint64 &z ){ return( ( x & y ) ^ ( ~x & z ) ); }
+	uint64 Maj( const uint64 &x, const uint64 &y, const uint64 &z ){ return( ( x & y ) ^ ( x & z ) ^ ( y & z ) ); }
+	uint64 S0( const uint64 &x ){ return( S( x, 28 ) ^ S( x, 34 ) ^ S( x, 39 ) ); }
+	uint64 S1( const uint64 &x ){ return( S( x, 14 ) ^ S( x, 18 ) ^ S( x, 41 ) ); }
+	uint64 s0( const uint64 &x ){ return( S( x,  1 ) ^ S( x,  8 ) ^ R( x,  7 ) ); }
+	uint64 s1( const uint64 &x ){ return( S( x, 19 ) ^ S( x, 61 ) ^ R( x,  6 ) ); }
+
+	void ToCurrentEndian( uint64 *x, size_type len )
+	{
+		for( size_type i = 0 ; i < len ; i++ )
+		{
+			x[ i ] = to_current_endian( byte_array< uint64 >( x[ i ] ), false ).get_value( );
+		}
+	}
+
+	void FromCurrentEndian( uint64 *x, size_type len )
+	{
+		for( size_type i = 0 ; i < len ; i++ )
+		{
+			x[ i ] = from_current_endian( byte_array< uint64 >( x[ i ] ), false ).get_value( );
+		}
+	}
+
+	void Round( uint64 *H, uint64 x[ 16 ] )
+	{
+		size_type i;
+		uint64 W[ 80 ];
+
+		memcpy( W, x, sizeof( uint64 ) * 16 );
+
+		for( i = 16 ; i < 80 ; i++ )
+		{
+			W[ i ] = s1( W[ i - 2 ] ) + W[ i - 7 ] + s0( W[ i - 15 ] ) + W[ i- 16 ];
+		}
+
+		uint64 a = H[ 0 ];
+		uint64 b = H[ 1 ];
+		uint64 c = H[ 2 ];
+		uint64 d = H[ 3 ];
+		uint64 e = H[ 4 ];
+		uint64 f = H[ 5 ];
+		uint64 g = H[ 6 ];
+		uint64 h = H[ 7 ];
+
+
+		static uint64 K[] = {	 4794697086780616226ULL,  8158064640168781261ULL, 13096744586834688815ULL, 16840607885511220156ULL,
+								 4131703408338449720ULL,  6480981068601479193ULL, 10538285296894168987ULL, 12329834152419229976ULL,
+								15566598209576043074ULL,  1334009975649890238ULL,  2608012711638119052ULL,  6128411473006802146ULL,
+								 8268148722764581231ULL,  9286055187155687089ULL, 11230858885718282805ULL, 13951009754708518548ULL,
+								16472876342353939154ULL, 17275323862435702243ULL,  1135362057144423861ULL,  2597628984639134821ULL,
+								 3308224258029322869ULL,  5365058923640841347ULL,  6679025012923562964ULL,  8573033837759648693ULL,
+								10970295158949994411ULL, 12119686244451234320ULL, 12683024718118986047ULL, 13788192230050041572ULL,
+								14330467153632333762ULL, 15395433587784984357ULL,   489312712824947311ULL,  1452737877330783856ULL,
+								 2861767655752347644ULL,  3322285676063803686ULL,  5560940570517711597ULL,  5996557281743188959ULL,
+								 7280758554555802590ULL,  8532644243296465576ULL,  9350256976987008742ULL, 10552545826968843579ULL,
+								11727347734174303076ULL, 12113106623233404929ULL, 14000437183269869457ULL, 14369950271660146224ULL,
+								15101387698204529176ULL, 15463397548674623760ULL, 17586052441742319658ULL,  1182934255886127544ULL,
+								 1847814050463011016ULL,  2177327727835720531ULL,  2830643537854262169ULL,  3796741975233480872ULL,
+								 4115178125766777443ULL,  5681478168544905931ULL,  6601373596472566643ULL,  7507060721942968483ULL,
+								 8399075790359081724ULL,  8693463985226723168ULL,  9568029438360202098ULL, 10144078919501101548ULL,
+								10430055236837252648ULL, 11840083180663258601ULL, 13761210420658862357ULL, 14299343276471374635ULL,
+								14566680578165727644ULL, 15097957966210449927ULL, 16922976911328602910ULL, 17689382322260857208ULL,
+								  500013540394364858ULL,   748580250866718886ULL,  1242879168328830382ULL,  1977374033974150939ULL,
+								 2944078676154940804ULL,  3659926193048069267ULL,  4368137639120453308ULL,  4836135668995329356ULL,
+								 5532061633213252278ULL,  6448918945643986474ULL,  6902733635092675308ULL,  7801388544844847127ULL };
+
+
+		// ワードブロックごとの処理を行う
+		for( i = 0 ; i < 80 ; i++ )
+		{
+			uint64 T1 = h + S1( e ) + Ch( e, f, g ) + K[ i ] + W[ i ];
+			uint64 T2 = S0( a ) + Maj( a, b, c );
+			h = g;
+			g = f;
+			f = e;
+			e = d + T1;
+			d = c;
+			c = b;
+			b = a;
+			a = T1 + T2;
+		}
+
+		H[ 0 ] += a;
+		H[ 1 ] += b;
+		H[ 2 ] += c;
+		H[ 3 ] += d;
+		H[ 4 ] += e;
+		H[ 5 ] += f;
+		H[ 6 ] += g;
+		H[ 7 ] += h;
+	}
+
+public:
+	/// @brief data[ 0 ] から data[ len - 1 ] の len バイトの MD5 を計算する．
+	void generate( const void *data_, size_type len )
+	{
+		// 出力用のダイジェストバイト列
+		uint64 H[ 8 ];
+
+		// ダイジェストバイト列の初期化
+		H[ 0 ] = 14680500436340154072ULL;
+		H[ 1 ] =  7105036623409894663ULL;
+		H[ 2 ] = 10473403895298186519ULL;
+		H[ 3 ] =  1526699215303891257ULL;
+		H[ 4 ] =  7436329637833083697ULL;
+		H[ 5 ] = 10282925794625328401ULL;
+		H[ 6 ] = 15784041429090275239ULL;
+		H[ 7 ] =  5167115440072839076ULL;
+
+		size_type i;
+		uint64 x[ 16 ];
+		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
+		const unsigned char *data = reinterpret_cast< const unsigned char * >( data_ );
+
+		// 入力データに対してメッセージ処理を行う
+		for( i = 0 ; i + 128 < len ; i += 128 )
+		{
+			memcpy( xx, data + i, sizeof( unsigned char ) * 128 );
+			ToCurrentEndian( x, 16 );
+			Round( H, x );
+		}
+
+		size_type rest = len - i;
+
+		// 最後にバイト長を足す分が存在しなければ，64バイトに拡張して処理する
+		if( rest >= 128 - 16 )
+		{
+			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
+			memset( xx + rest, 0, sizeof( unsigned char ) * ( 128 - rest ) );
+			// 先頭のビットを 1 にする
+			xx[ rest ] = 0x80;
+
+			// メッセージ処理を行う
+			ToCurrentEndian( x, 16 );
+			Round( H, x );
+
+			// バイト長の分の処理を行う
+			memset( xx, 0, sizeof( unsigned char ) * 128 );
+			x[ 14 ] = uint64( static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 ) );
+			x[ 15 ] = uint64( static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 ) );
+
+			// メッセージ処理を行う
+			Round( H, x );
+		}
+		else
+		{
+			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
+			memset( xx + rest, 0, sizeof( unsigned char ) * ( 128 - rest ) );
+			// 先頭のビットを 1 にする
+			xx[ rest ] = 0x80;
+
+			ToCurrentEndian( x, 16 );
+
+			// バイト長の分の値を付加する
+			x[ 14 ] = uint64( static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 ) );
+			x[ 15 ] = uint64( static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 ) );
+
+			// メッセージ処理を行う
+			Round( H, x );
+		}
+
+		FromCurrentEndian( H, 8 );
+
+		// 文字列を左に切り詰める
+		memcpy( digest, H, size( ) );
+	}
+
+
+	/// @brief ダイジェスト文字列を返す
+	std::string to_string( ) const
+	{
+		static char x16[ 16 ] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+		std::string str;
+
+		for( size_type i = 0 ; i < size( ) ; i++ )
+		{
+			str += x16[ ( digest[ i ] >> 4 ) & 0x0f ];
+			str += x16[ digest[ i ] & 0x0f ];
+		}
+
+		return( str );
+	}
+
+	/// @brief 空文字のダイジェスト文字列で初期化する
+	sha384( )
+	{
+		uint64 H[ 8 ];
+		H[ 0 ] =  4084871133771109944ULL;
+		H[ 1 ] =  5537512736557228906ULL;
+		H[ 2 ] =  2449315056349742915ULL;
+		H[ 3 ] =  5479974471432856026ULL;
+		H[ 4 ] =  2832446131465577979ULL;
+		H[ 5 ] = 15355817813220047195ULL;
+		FromCurrentEndian( H, 8 );
+
+		// 文字列を左に切り詰める
+		memcpy( digest, H, size( ) );
+	}
+
+	/// @brief 指定された文字列のダイジェスト文字列で初期化する
+	sha384( const std::string &str ){ generate( str.c_str( ), str.length( ) ); }
+
+	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
+	sha384( const void *data, size_type len ){ generate( data, len ); }
+
+
+public:
+	/// @brief 2つのMD5が同一かどうかを判定する
+	bool operator ==( const sha1 &m ) const
+	{
+		for( size_type i = 0 ; i < size( ) ; i++ )
+		{
+			if( digest[ i ] != m[ i ] )
+			{
+				return( false );
+			}
+		}
+		return( true );
+	}
+
+	/// @brief 2つのダイジェスト文字列が同一かどうかを判定する
+	bool operator ==( const std::string &str ) const
+	{
+		return( str == to_string( ) );
+	}
+};
+
+
+
+
+/// @brief SHA-512 を生成するクラス
 class sha512
 {
 public:
 	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
-#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ > 0
-	typedef unsigned __int64 uint64;
-#else
-	typedef u_int64_t uint64;
-#endif
+	typedef unsigned long long int uint64;
 
 private:
 	unsigned char digest[ 64 ];
@@ -699,26 +811,28 @@ protected:
 		uint64 g = H[ 6 ];
 		uint64 h = H[ 7 ];
 
-		static uint64 K[] = {	0x428a2f98d728ae22, 0x7137449123ef65cd, 0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc,
-								0x3956c25bf348b538, 0x59f111f1b605d019, 0x923f82a4af194f9b, 0xab1c5ed5da6d8118,
-								0xd807aa98a3030242, 0x12835b0145706fbe, 0x243185be4ee4b28c, 0x550c7dc3d5ffb4e2,
-								0x72be5d74f27b896f, 0x80deb1fe3b1696b1, 0x9bdc06a725c71235, 0xc19bf174cf692694,
-								0xe49b69c19ef14ad2, 0xefbe4786384f25e3, 0x0fc19dc68b8cd5b5, 0x240ca1cc77ac9c65,
-								0x2de92c6f592b0275, 0x4a7484aa6ea6e483, 0x5cb0a9dcbd41fbd4, 0x76f988da831153b5,
-								0x983e5152ee66dfab, 0xa831c66d2db43210, 0xb00327c898fb213f, 0xbf597fc7beef0ee4,
-								0xc6e00bf33da88fc2, 0xd5a79147930aa725, 0x06ca6351e003826f, 0x142929670a0e6e70,
-								0x27b70a8546d22ffc, 0x2e1b21385c26c926, 0x4d2c6dfc5ac42aed, 0x53380d139d95b3df,
-								0x650a73548baf63de, 0x766a0abb3c77b2a8, 0x81c2c92e47edaee6, 0x92722c851482353b,
-								0xa2bfe8a14cf10364, 0xa81a664bbc423001, 0xc24b8b70d0f89791, 0xc76c51a30654be30,
-								0xd192e819d6ef5218, 0xd69906245565a910, 0xf40e35855771202a, 0x106aa07032bbd1b8,
-								0x19a4c116b8d2d0c8, 0x1e376c085141ab53, 0x2748774cdf8eeb99, 0x34b0bcb5e19b48a8,
-								0x391c0cb3c5c95a63, 0x4ed8aa4ae3418acb, 0x5b9cca4f7763e373, 0x682e6ff3d6b2b8a3,
-								0x748f82ee5defb2fc, 0x78a5636f43172f60, 0x84c87814a1f0ab72, 0x8cc702081a6439ec,
-								0x90befffa23631e28, 0xa4506cebde82bde9, 0xbef9a3f7b2c67915, 0xc67178f2e372532b,
-								0xca273eceea26619c, 0xd186b8c721c0c207, 0xeada7dd6cde0eb1e, 0xf57d4f7fee6ed178,
-								0x06f067aa72176fba, 0x0a637dc5a2c898a6, 0x113f9804bef90dae, 0x1b710b35131c471b,
-								0x28db77f523047d84, 0x32caab7b40c72493, 0x3c9ebe0a15c9bebc, 0x431d67c49c100d4c,
-								0x4cc5d4becb3e42b6, 0x597f299cfc657e2a, 0x5fcb6fab3ad6faec, 0x6c44198c4a475817 };
+
+		static uint64 K[] = {	 4794697086780616226ULL,  8158064640168781261ULL, 13096744586834688815ULL, 16840607885511220156ULL,
+								 4131703408338449720ULL,  6480981068601479193ULL, 10538285296894168987ULL, 12329834152419229976ULL,
+								15566598209576043074ULL,  1334009975649890238ULL,  2608012711638119052ULL,  6128411473006802146ULL,
+								 8268148722764581231ULL,  9286055187155687089ULL, 11230858885718282805ULL, 13951009754708518548ULL,
+								16472876342353939154ULL, 17275323862435702243ULL,  1135362057144423861ULL,  2597628984639134821ULL,
+								 3308224258029322869ULL,  5365058923640841347ULL,  6679025012923562964ULL,  8573033837759648693ULL,
+								10970295158949994411ULL, 12119686244451234320ULL, 12683024718118986047ULL, 13788192230050041572ULL,
+								14330467153632333762ULL, 15395433587784984357ULL,   489312712824947311ULL,  1452737877330783856ULL,
+								 2861767655752347644ULL,  3322285676063803686ULL,  5560940570517711597ULL,  5996557281743188959ULL,
+								 7280758554555802590ULL,  8532644243296465576ULL,  9350256976987008742ULL, 10552545826968843579ULL,
+								11727347734174303076ULL, 12113106623233404929ULL, 14000437183269869457ULL, 14369950271660146224ULL,
+								15101387698204529176ULL, 15463397548674623760ULL, 17586052441742319658ULL,  1182934255886127544ULL,
+								 1847814050463011016ULL,  2177327727835720531ULL,  2830643537854262169ULL,  3796741975233480872ULL,
+								 4115178125766777443ULL,  5681478168544905931ULL,  6601373596472566643ULL,  7507060721942968483ULL,
+								 8399075790359081724ULL,  8693463985226723168ULL,  9568029438360202098ULL, 10144078919501101548ULL,
+								10430055236837252648ULL, 11840083180663258601ULL, 13761210420658862357ULL, 14299343276471374635ULL,
+								14566680578165727644ULL, 15097957966210449927ULL, 16922976911328602910ULL, 17689382322260857208ULL,
+								  500013540394364858ULL,   748580250866718886ULL,  1242879168328830382ULL,  1977374033974150939ULL,
+								 2944078676154940804ULL,  3659926193048069267ULL,  4368137639120453308ULL,  4836135668995329356ULL,
+								 5532061633213252278ULL,  6448918945643986474ULL,  6902733635092675308ULL,  7801388544844847127ULL };
+
 
 		// ワードブロックごとの処理を行う
 		for( i = 0 ; i < 80 ; i++ )
@@ -753,14 +867,14 @@ public:
 		uint64 *H = reinterpret_cast< uint64 * >( digest );
 
 		// ダイジェストバイト列の初期化
-		H[ 0 ] = 0x6a09e667f3bcc908;
-		H[ 1 ] = 0xbb67ae8584caa73b;
-		H[ 2 ] = 0x3c6ef372fe94f82b;
-		H[ 3 ] = 0xa54ff53a5f1d36f1;
-		H[ 4 ] = 0x510e527fade682d1;
-		H[ 5 ] = 0x9b05688c2b3e6c1f;
-		H[ 6 ] = 0x1f83d9abfb41bd6b;
-		H[ 7 ] = 0x5be0cd19137e2179;
+		H[ 0 ] =  7640891576956012808ULL;
+		H[ 1 ] = 13503953896175478587ULL;
+		H[ 2 ] =  4354685564936845355ULL;
+		H[ 3 ] = 11912009170470909681ULL;
+		H[ 4 ] =  5840696475078001361ULL;
+		H[ 5 ] = 11170449401992604703ULL;
+		H[ 6 ] =  2270897969802886507ULL;
+		H[ 7 ] =  6620516959819538809ULL;
 
 		size_type i;
 		uint64 x[ 16 ];
@@ -837,14 +951,14 @@ public:
 	sha512( )
 	{
 		uint64 *H = reinterpret_cast< uint64 * >( digest );
-		H[ 0 ] = 0xcf83e1357eefb8bd;
-		H[ 0 ] = 0xf1542850d66d8007;
-		H[ 0 ] = 0xd620e4050b5715dc;
-		H[ 0 ] = 0x83f4a921d36ce9ce;
-		H[ 0 ] = 0x47d0d13c5d85f2b0;
-		H[ 0 ] = 0xff8318d2877eec2f;
-		H[ 0 ] = 0x63b931bd47417a81;
-		H[ 0 ] = 0xa538327af927da3e;
+		H[ 0 ] = 14953042807679334589ULL;
+		H[ 1 ] = 17389568388844322823ULL;
+		H[ 2 ] = 15429583033687545308ULL;
+		H[ 3 ] =  9508410676032104910ULL;
+		H[ 4 ] =  5174866029046002352ULL;
+		H[ 5 ] = 18411586994116160559ULL;
+		H[ 6 ] =  7185829369460390529ULL;
+		H[ 7 ] = 11905321118701443646ULL;
 		FromCurrentEndian( H, 8 );
 	}
 
@@ -911,11 +1025,11 @@ inline std::ostream &operator <<( std::ostream &out, const sha256 &m )
 //! 
 //! @return 入力されたストリーム
 //! 
-//inline std::ostream &operator <<( std::ostream &out, const sha384 &m )
-//{
-//	out << m.to_string( );
-//	return( out );
-//}
+inline std::ostream &operator <<( std::ostream &out, const sha384 &m )
+{
+	out << m.to_string( );
+	return( out );
+}
 
 /// @brief 指定されたストリームにデータを出力する
 //! 
