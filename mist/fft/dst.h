@@ -124,7 +124,7 @@ bool dst( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 //! @return •ÏŠ·‚É¬Œ÷‚µ‚½‚©‚Ç‚¤‚©
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool dst_inverse( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
+bool idst( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.size( ) ) )
 	{
@@ -257,7 +257,7 @@ bool dst( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 //! @return •ÏŠ·‚É¬Œ÷‚µ‚½‚©‚Ç‚¤‚©
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool dst_inverse( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
+bool idst( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) || !__fft_util__::size_check( ( unsigned int ) in.height( ) ) )
 	{
@@ -415,7 +415,7 @@ bool dst( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 //! @return •ÏŠ·‚É¬Œ÷‚µ‚½‚©‚Ç‚¤‚©
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool dst_inverse( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
+bool idst( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.width( ) ) ||
 		!__fft_util__::size_check( ( unsigned int ) in.height( ) ) ||

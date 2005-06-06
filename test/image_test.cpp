@@ -56,9 +56,10 @@ image_draw_area::image_draw_area( int x, int y, int w, int h ) : Fl_Gl_Window( x
 
 void image_draw_area::draw( )
 {
-//	mist::draw_pixels( image_object, w( ), h( ), -100, 1 );
 	mist::bitmap< 24 > bmp( image_object );
-	mist::draw_image( bmp, w( ), h( ), 1.0, 0.0, 0.0, 128.0, 128.0, 128.0, interpolate_ );
+//	mist::draw_pixels( image_object, w( ), h( ), -100, 1 );
+	mist::draw_pixels( bmp, w( ), h( ), 0, 0 );
+//	mist::draw_image( bmp, w( ), h( ), 1.0, 0.0, 0.0, 128.0, 128.0, 128.0, interpolate_ );
 }
 
 

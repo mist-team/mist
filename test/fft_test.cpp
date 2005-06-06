@@ -85,11 +85,11 @@ int main( int argc, char *argv[ ] )
 		mist::timer t;
 
 #if TEST_MODE == DCT_TEST
-		mist::dct_inverse( work1d, a1df );
+		mist::idct( work1d, a1df );
 #elif TEST_MODE == DST_TEST
-		mist::dst_inverse( work1d, a1df );
+		mist::idst( work1d, a1df );
 #else
-		mist::fft_inverse( work1d, a1df );
+		mist::ifft( work1d, a1df );
 #endif
 
 		std::cout << mode << "_inverse computation Time: " << t.elapse( ) << " (sec)" << std::endl;
@@ -142,11 +142,11 @@ int main( int argc, char *argv[ ] )
 		mist::timer t;
 
 #if TEST_MODE == DCT_TEST
-		mist::dct_inverse( work2d, a2df );
+		mist::idct( work2d, a2df );
 #elif TEST_MODE == DST_TEST
-		mist::dst_inverse( work2d, a2df );
+		mist::idst( work2d, a2df );
 #else
-		mist::fft_inverse( work2d, a2df );
+		mist::ifft( work2d, a2df );
 #endif
 
 		std::cout << mode << "_inverse computation Time: " << t.elapse( ) << " (sec)" << std::endl;
@@ -200,11 +200,11 @@ int main( int argc, char *argv[ ] )
 		mist::timer t;
 
 #if TEST_MODE == DCT_TEST
-		mist::dct_inverse( work3d, a3df );
+		mist::idct( work3d, a3df );
 #elif TEST_MODE == DST_TEST
-		mist::dst_inverse( work3d, a3df );
+		mist::idst( work3d, a3df );
 #else
-		mist::fft_inverse( work3d, a3df );
+		mist::ifft( work3d, a3df );
 #endif
 
 		std::cout << mode << "_inverse computation Time: " << t.elapse( ) << " (sec)" << std::endl;
