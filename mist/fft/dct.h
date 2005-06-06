@@ -50,6 +50,7 @@ _MIST_BEGIN
 //! 
 //! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
 //! @attention 入力画像の一辺が2の指数乗の必要がある
+//! @attention 出力が実数のみの配列の場合は，パワーを返す
 //! 
 //! @param[in]  in  … 入力画像
 //! @param[out] out … 出力画像
@@ -171,6 +172,7 @@ bool dct_inverse( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &
 //! 
 //! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
 //! @attention 入力画像の一辺が2の指数乗の必要がある
+//! @attention 出力が実数のみの画像配列の場合は，パワーを返す
 //! 
 //! @param[in]  in  … 入力画像
 //! @param[out] out … 出力画像
@@ -323,6 +325,7 @@ bool dct_inverse( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &
 //! 
 //! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
 //! @attention 入力画像の一辺が2の指数乗の必要がある
+//! @attention 出力が実数のみの画像配列の場合は，パワーを返す
 //! 
 //! @param[in]  in  … 入力画像
 //! @param[out] out … 出力画像

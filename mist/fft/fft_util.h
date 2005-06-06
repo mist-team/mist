@@ -111,13 +111,13 @@ namespace __fft_util__
 		template < class T >
 		static void convert_from( const std::complex< double > &v, T &out )
 		{
-			out = static_cast< T >( v.real( ) );
+			out = static_cast< T >( std::sqrt( v.real( ) * v.real( ) + v.imag( ) * v.imag( ) ) );
 		}
 
 		template < class T >
 		static void convert_from( const double r, const double i, T &out )
 		{
-			out = static_cast< T >( r );
+			out = static_cast< T >( std::sqrt( r * r + i * i ) );
 		}
 	};
 
