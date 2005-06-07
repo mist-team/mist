@@ -484,6 +484,8 @@ struct __mist_progress_callback__
 *   - @ref spline_group						"3次スプライン曲線"
 * - @ref hash_group							"ハッシュ関数"
 *   - @ref mist::crc						"CRC"
+*   - @ref mist::md2						"MD2"
+*   - @ref mist::md4						"MD4"
 *   - @ref mist::md5						"MD5"
 *   - @ref mist::sha1						"SHA-1"
 *   - @ref mist::sha256						"SHA-256"
@@ -518,7 +520,7 @@ struct __mist_progress_callback__
 *   - @ref mist::uniform::random			"一様乱数"
 *   - @ref mist::gauss::random				"正規乱数"
 * - @ref a									"グラフ描画(2次元)"
-* - 画像や基本オブジェkの描画
+* - 画像や基本オブジェクトの描画
 *   - @ref image_draw_group					"OpenGLを用いた2次元画像描画"
 *   - @ref image_drawing_group				"直線・円の描画"
 * - @ref minimization_group					"関数の最小化"

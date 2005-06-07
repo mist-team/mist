@@ -23,9 +23,22 @@ _MIST_BEGIN
 
 /// @brief 足し算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「+=」オペレータを実装しているクラスに対して，２項演算子の「+」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「+=」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_add< hoge >
+//! {
+//!      hoge &operator +=( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( *hoge );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
 struct implement_operator_add
@@ -41,9 +54,22 @@ struct implement_operator_add
 
 /// @brief 引き算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「-=」オペレータを実装しているクラスに対して，２項演算子の「-」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「-=」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_sub< hoge >
+//! {
+//!      hoge &operator -=( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( *hoge );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
 struct implement_operator_sub
@@ -60,9 +86,22 @@ struct implement_operator_sub
 
 /// @brief 掛け算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「*=」オペレータを実装しているクラスに対して，２項演算子の「*」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「*=」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_mul< hoge >
+//! {
+//!      hoge &operator *=( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( *hoge );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
 struct implement_operator_mul
@@ -79,9 +118,22 @@ struct implement_operator_mul
 
 /// @brief 割り算
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「/=」オペレータを実装しているクラスに対して，２項演算子の「/」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「/=」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_div< hoge >
+//! {
+//!      hoge &operator /=( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( *hoge );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
 struct implement_operator_div
@@ -98,9 +150,22 @@ struct implement_operator_div
 
 /// @brief 等しくない
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「==」オペレータを実装しているクラスに対して，２項演算子の「!=」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「==」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_ne< hoge >
+//! {
+//!      bool operator ==( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( ... );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
 struct implement_operator_ne
@@ -115,9 +180,22 @@ struct implement_operator_ne
 
 /// @brief より大きい
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「<」オペレータを実装しているクラスに対して，２項演算子の「>」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「<」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_gt< hoge >
+//! {
+//!      bool operator <( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( ... );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
 struct implement_operator_gt
@@ -132,9 +210,22 @@ struct implement_operator_gt
 
 /// @brief 以下
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「<」オペレータを実装しているクラスに対して，２項演算子の「<=」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「<」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_le< hoge >
+//! {
+//!      bool operator <( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( ... );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
 struct implement_operator_le
@@ -149,9 +240,22 @@ struct implement_operator_le
 
 /// @brief 以上
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「<」オペレータを実装しているクラスに対して，２項演算子の「>=」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「<」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_ge< hoge >
+//! {
+//!      bool operator <( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( ... );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
 struct implement_operator_ge
@@ -164,14 +268,27 @@ struct implement_operator_ge
 
 
 
-/// @brief %演算子
+/// @brief 剰余演算子
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「%=」オペレータを実装しているクラスに対して，２項演算子の「%」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「%=」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_mod< hoge >
+//! {
+//!      hoge &operator %=( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( *this );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
-struct implement_operator_modulo
+struct implement_operator_mod
 {
 	friend T operator %( const T &obj1, const T &obj2 )
 	{
@@ -183,14 +300,27 @@ struct implement_operator_modulo
 
 
 
-/// @brief |演算子
+/// @brief ビットOR演算子
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「|=」オペレータを実装しているクラスに対して，２項演算子の「|」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「|=」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_or< hoge >
+//! {
+//!      hoge &operator |=( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( *this );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
-struct implement_operator_bitor
+struct implement_operator_or
 {
 	friend T operator |( const T &obj1, const T &obj2 )
 	{
@@ -202,14 +332,27 @@ struct implement_operator_bitor
 
 
 
-/// @brief &演算子
+/// @brief ビットAND演算子
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「&=」オペレータを実装しているクラスに対して，２項演算子の「&」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「&=」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_and< hoge >
+//! {
+//!      hoge &operator &=( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( *this );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
-struct implement_operator_bitand
+struct implement_operator_and
 {
 	friend T operator &( const T &obj1, const T &obj2 )
 	{
@@ -221,14 +364,27 @@ struct implement_operator_bitand
 
 
 
-/// @brief ^演算子
+/// @brief XOR演算子
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「^=」オペレータを実装しているクラスに対して，２項演算子の「^」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @attention 「^=」オペレータは，必ず実装しておく必要があります．
+//! 
+//! @param T  … 本オペレータを実装するクラス
+//! 
+//! @code 使用例
+//! class hoge : mist::implement_operator_xor< hoge >
+//! {
+//!      hoge &operator ^=( const hoge &h )
+//!      {
+//!          ... 処理を実装する ...
+//!          return( *this );
+//!      }
+//! };
+//! @endcode
 //! 
 template < class T >
-struct implement_operator_exclusiveor
+struct implement_operator_xor
 {
 	friend T operator ^( const T &obj1, const T &obj2 )
 	{
@@ -242,9 +398,9 @@ struct implement_operator_exclusiveor
 
 /// @brief 四則演算オペレータを実装する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「+=」，「-=」，「*=」，「/=」オペレータを実装しているクラスに対して，２項演算子の「+」，「-」，「*」，「/」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @param T  … 本オペレータを実装するクラス
 //! 
 template < class T >
 struct implement_arithmetic_operators : public
@@ -259,9 +415,9 @@ struct implement_arithmetic_operators : public
 
 /// @brief 比較オペレータを実装する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「==」，「<」オペレータを実装しているクラスに対して，２項演算子の「!=」，「>」，「<=」，「>=」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @param T  … 本オペレータを実装するクラス
 //! 
 template < class T >
 struct implement_comparison_operators : public
@@ -277,15 +433,15 @@ struct implement_comparison_operators : public
 
 /// @brief ビット演算オペレータを実装する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「|=」，「&=」，「^=」オペレータを実装しているクラスに対して，２項演算子の「|」，「&」，「^」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @param T  … 本オペレータを実装するクラス
 //! 
 template < class T >
 struct implement_bit_operators : public
-	implement_operator_bitor< T >,
-	implement_operator_bitand< T >,
-	implement_operator_exclusiveor< T >
+	implement_operator_or< T >,
+	implement_operator_and< T >,
+	implement_operator_xor< T >
 {
 };
 
@@ -293,9 +449,10 @@ struct implement_bit_operators : public
 
 /// @brief 全てのオペレータを実装する
 //! 
-//! 詳細な説明や関数の使用例を書く
+//! 「+=」，「-=」，「*=」，「/=」，「==」，「<」，「|=」，「&=」，「^=」オペレータを実装しているクラスに対して，
+//! ２項演算子の「+」，「-」，「*」，「/」，「!=」，「>」，「<=」，「>=」，「|」，「&」，「^」を自動的に実装する
 //! 
-//! @param T  … 引数の説明
+//! @param T  … 本オペレータを実装するクラス
 //! 
 template < class T >
 struct implement_operators : public
