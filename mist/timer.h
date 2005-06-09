@@ -45,6 +45,50 @@ _MIST_BEGIN
 //!
 class timer
 {
+private:
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+	union timeval
+	{
+		LARGE_INTEGER largeint;
+		unsigned long long int uint64;
+	};
+
+	// Windows の場合で，高分解能カウンタが利用可能なら利用する
+	static timeval __QueryPerformanceFrequency__( )
+	{
+		timeval dmy;
+		QueryPerformanceFrequency( &( dmy.largeint ) );
+		return( dmy );
+	}
+
+	static timeval _QueryPerformanceFrequency_( )
+	{
+		static timeval dmy = __QueryPerformanceFrequency__( );
+		return( dmy );
+	}
+
+	static double _timeGetTime_( )
+	{
+		timeval dmy;
+		if( QueryPerformanceCounter( &( dmy.largeint ) ) )
+		{
+			return( static_cast< double >( dmy.uint64 ) / static_cast< double >( _QueryPerformanceFrequency_( ).uint64 ) );
+		}
+		else
+		{
+			return( 1 );
+			//return( static_cast< double >( timeGetTime( ) ) / 1000.0 );
+		}
+	}
+#else
+	static double _timeGetTime_( )
+	{
+		timeval dmy;
+		gettimeofday( &dmy, NULL );
+		return( static_cast< double >( dmy.tv_sec ) + static_cast< double >( dmy.tv_usec ) / 1000000.0 );
+	}
+#endif
+
 public:
 	/// @brief 時間計測を行うためのクラスのコンストラクタ．
 	//! 
@@ -52,21 +96,13 @@ public:
 	//! 
 	timer( )
 	{
-#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-		_start_time = timeGetTime( );
-#else
-		gettimeofday( &_start_time, NULL );
-#endif
-	} // postcondition: elapsed()==0
+		_start_time = _timeGetTime_( );
+	}
 
 	/// @brief 強制的に，タイマーをクリアする．
 	void reset( )
 	{
-#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-		_start_time = timeGetTime( );
-#else
-		gettimeofday( &_start_time, NULL );
-#endif
+		_start_time = _timeGetTime_( );
 	}
 
 	/// @brief 時間計測開始時からの経過時間をミリ秒単位で返す．
@@ -75,22 +111,11 @@ public:
 	//! 
 	double elapse( ) const
 	{
-#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-		return( static_cast< double >( timeGetTime( ) - _start_time ) / 1000.0 );
-#else
-		timeval  _end_time;
-		gettimeofday( &_end_time, NULL );
-		return( static_cast< double >( _end_time.tv_sec - _start_time.tv_sec ) + static_cast< double >( _end_time.tv_usec - _start_time.tv_usec ) / 1000000.0 );
-#endif
+		return( _timeGetTime_( ) - _start_time );
 	}
 
 private:
-#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-	DWORD		_start_time;	///< @brief 時間計測開始時刻を保持する変数（Windows用）
-#else
-	timeval		_start_time;	///< @brief 時間計測開始時刻を保持する変数（Linux用）
-#endif
-
+	double	_start_time;	///< @brief 時間計測開始時刻を保持する変数
 };
 
 
