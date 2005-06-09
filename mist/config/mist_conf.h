@@ -463,7 +463,7 @@ struct __mist_progress_callback__
 * - @ref mist::binary						"バイナリ画素"
 * - @ref color_group						"色空間を扱うクラス"
 *   - @ref mist::rgb						"カラー画素"
-*   - @ref mist::bge						"Windows用のビットマップで利用されるカラー画素"
+*   - @ref mist::bgr						"Windows用のビットマップで利用されるカラー画素"
 *   - @ref mist::rgba						"カラー画素（アルファ付き）"
 * - @ref mist::stereo						"ステレオ音声"
 * - @ref mist::quaternion					"クォータニオン（四元数）"
