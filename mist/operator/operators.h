@@ -458,7 +458,7 @@ template < class T >
 struct implement_operators : public
 	implement_arithmetic_operators< T >,
 	implement_comparison_operators< T >,
-	implement_operator_modulo< T >,
+	implement_operator_mod< T >,
 	implement_bit_operators< T >
 {
 };
