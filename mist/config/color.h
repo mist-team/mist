@@ -1088,7 +1088,7 @@ inline void hsv2rgb( double h, double s, double v, double &r, double &g, double 
 {
 	if( s == 0.0 )
 	{
-		r = g = b = v;
+		r = g = b = v * 255.0;
 	}
 	else
 	{
@@ -1097,9 +1097,9 @@ inline void hsv2rgb( double h, double s, double v, double &r, double &g, double 
 
 		ht /= 360;
 
-		double t1 = v * ( 255.0 - s ) / 255.0;
-		double t2 = v * ( 255.0 - s * d / 360.0 ) / 255.0;
-		double t3 = v * ( 255.0 - s * ( 360.0 - d ) / 360.0 ) / 255.0;
+		double t1 = v * ( 1.0 - s );
+		double t2 = v * ( 1.0 - s * d / 360.0 );
+		double t3 = v * ( 1.0 - s * ( 360.0 - d ) / 360.0 );
 
 		switch( ht )
 		{
@@ -1139,6 +1139,10 @@ inline void hsv2rgb( double h, double s, double v, double &r, double &g, double 
 			b = t2;
 			break;
 		}
+
+		r *= 255.0;
+		g *= 255.0;
+		b *= 255.0;
 	}
 }
 
