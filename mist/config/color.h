@@ -25,6 +25,15 @@ _MIST_BEGIN
 template < class T > struct bgr;
 
 
+//! @addtogroup color_group MIST全般で利用可能な色を表現するクラス
+//!
+//! @code 次のヘッダを参照
+//! #include <mist/config/color.h>
+//! @endcode
+//!
+//! @{
+
+
 /// @brief カラー画像用の画素
 //! 
 //! @code カラー画像の作成例
@@ -1066,12 +1075,84 @@ inline void rgb2hsv( double r, double g, double b, double &h, double &s, double 
 }
 
 
+/// @brief HSV色空間をRGB色空間に変換する
+//! 
+//! @param[in]  h … HSV色空間のH(色相)成分（０～３６０）
+//! @param[in]  s … HSV色空間のS(彩度)成分（０～１）
+//! @param[in]  v … HSV色空間のV(明度青)成分（０～１）
+//! @param[out] r … RGB色空間のR(赤)成分（０～２５５）
+//! @param[out] g … RGB色空間のG(緑)成分（０～２５５）
+//! @param[out] b … RGB色空間のB(青)成分（０～２５５）
+//! 
+inline void hsv2rgb( double h, double s, double v, double &r, double &g, double &b )
+{
+	if( s == 0.0 )
+	{
+		r = g = b = v;
+	}
+	else
+	{
+		int ht = static_cast< int >( h * 6.0 );
+		int d  = ht % 360;
+
+		ht /= 360;
+
+		double t1 = v * ( 255.0 - s ) / 255.0;
+		double t2 = v * ( 255.0 - s * d / 360.0 ) / 255.0;
+		double t3 = v * ( 255.0 - s * ( 360.0 - d ) / 360.0 ) / 255.0;
+
+		switch( ht )
+		{
+		case 0:
+			r = v;
+			g = t3;
+			b = t1;
+			break;
+
+		case 1:
+			r = t2;
+			g = v;
+			b = t1;
+			break;
+
+		case 2:
+			r = t1;
+			g = v;
+			b = t3;
+			break;
+
+		case 3:
+			r = t1;
+			g = t2;
+			b = v;
+			break;
+
+		case 4:
+			r = t3;
+			g = t1;
+			b = v;
+			break;
+
+		default:
+			r = v;
+			g = t1;
+			b = t2;
+			break;
+		}
+	}
+}
+
+
 /// @brief 入力された型がカラー画像かどうか調べる
 template < class T >
 struct is_color
 {
 	_MIST_CONST( bool, value, false );
 };
+
+
+/// @}
+//  MIST全般で利用できるMIST全般で利用可能な色を表現するクラス
 
 
 // 画素の変換をサポートするためのコンバータ
