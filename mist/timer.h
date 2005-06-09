@@ -76,8 +76,7 @@ private:
 		}
 		else
 		{
-			return( 1 );
-			//return( static_cast< double >( timeGetTime( ) ) / 1000.0 );
+			return( static_cast< double >( timeGetTime( ) ) / 1000.0 );
 		}
 	}
 #else
