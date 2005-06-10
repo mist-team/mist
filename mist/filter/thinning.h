@@ -235,14 +235,14 @@ namespace euclidean
 		inline void val9_1( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
 							typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
 		{
-			p[ 0 ] = in( i , j );
-			p[ 1 ] = in( i + 1, j );
+			p[ 0 ] = in( i    , j     );
+			p[ 1 ] = in( i + 1, j     );
 			p[ 2 ] = in( i + 1, j - 1 );
-			p[ 3 ] = in( i , j - 1 );
+			p[ 3 ] = in( i    , j - 1 );
 			p[ 4 ] = in( i - 1, j - 1 );
-			p[ 5 ] = in( i - 1, j );
+			p[ 5 ] = in( i - 1, j     );
 			p[ 6 ] = in( i - 1, j + 1 );
-			p[ 7 ] = in( i , j + 1 );
+			p[ 7 ] = in( i    , j + 1 );
 			p[ 8 ] = in( i + 1, j + 1 );
 		}
 
@@ -250,14 +250,14 @@ namespace euclidean
 		inline void val9_2( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
 							typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
 		{
-			p[ 0 ] = in( i , j );
-			p[ 1 ] = in( i - 1, j );
+			p[ 0 ] = in( i    , j     );
+			p[ 1 ] = in( i - 1, j     );
 			p[ 2 ] = in( i - 1, j + 1 );
-			p[ 3 ] = in( i , j + 1 );
+			p[ 3 ] = in( i    , j + 1 );
 			p[ 4 ] = in( i + 1, j + 1 );
-			p[ 5 ] = in( i + 1, j );
+			p[ 5 ] = in( i + 1, j     );
 			p[ 6 ] = in( i + 1, j - 1 );
-			p[ 7 ] = in( i , j - 1 );
+			p[ 7 ] = in( i    , j - 1 );
 			p[ 8 ] = in( i - 1, j - 1 );
 		}
 
@@ -265,20 +265,20 @@ namespace euclidean
 		inline void val9_3( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
 							typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
 		{
-			p[ 0 ] = in( i , j );
-			p[ 1 ] = in( i + 1, j );
+			p[ 0 ] = in( i    , j     );
+			p[ 1 ] = in( i + 1, j     );
 			p[ 2 ] = in( i + 1, j + 1 );
-			p[ 3 ] = in( i , j + 1 );
+			p[ 3 ] = in( i    , j + 1 );
 			p[ 4 ] = in( i - 1, j + 1 );
-			p[ 5 ] = in( i - 1, j );
+			p[ 5 ] = in( i - 1, j     );
 			p[ 6 ] = in( i - 1, j - 1 );
-			p[ 7 ] = in( i , j - 1 );
+			p[ 7 ] = in( i    , j - 1 );
 			p[ 8 ] = in( i + 1, j - 1 );
 		}
 
 		template < class T > inline T max_pixel( T p[ 9 ] )
 		{
-			int max = 0;
+			T max = 0;
 
 			for( int i = 1 ; i < 9 ; i++ )
 			{
