@@ -1020,6 +1020,8 @@ namespace __color_utility__
 
 /// @brief RGB色空間をHSV色空間に変換する
 //! 
+//! @attention 入力と出力の値の範囲に注意！！
+//! 
 //! @param[in]  r … RGB色空間のR(赤)成分（０～２５５）
 //! @param[in]  g … RGB色空間のG(緑)成分（０～２５５）
 //! @param[in]  b … RGB色空間のB(青)成分（０～２５５）
@@ -1076,6 +1078,8 @@ inline void rgb2hsv( double r, double g, double b, double &h, double &s, double 
 
 
 /// @brief HSV色空間をRGB色空間に変換する
+//! 
+//! @attention 入力と出力の値の範囲に注意！！
 //! 
 //! @param[in]  h … HSV色空間のH(色相)成分（０～３６０）
 //! @param[in]  s … HSV色空間のS(彩度)成分（０～１）
