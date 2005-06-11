@@ -224,7 +224,7 @@ public:
 	sha1( const std::string &str ) : base( 20 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	sha1( const void *data, size_type len ) : base( 20 ){ compute_hash( data, len ); }
+	sha1( const void *data, uint64 len ) : base( 20 ){ compute_hash( data, len ); }
 
 };
 
@@ -415,7 +415,7 @@ public:
 	sha256( const std::string &str ) : base( 32 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	sha256( const void *data, size_type len ) : base( 32 ){ compute_hash( data, len ); }
+	sha256( const void *data, uint64 len ) : base( 32 ){ compute_hash( data, len ); }
 
 };
 
@@ -620,7 +620,7 @@ public:
 	sha384( const std::string &str ) : base( 48 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	sha384( const void *data, size_type len ) : base( 48 ){ compute_hash( data, len ); }
+	sha384( const void *data, uint64 len ) : base( 48 ){ compute_hash( data, len ); }
 
 };
 
@@ -822,7 +822,7 @@ public:
 	sha512( const std::string &str ) : base( 64 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	sha512( const void *data, size_type len ) : base( 64 ){ compute_hash( data, len ); }
+	sha512( const void *data, uint64 len ) : base( 64 ){ compute_hash( data, len ); }
 
 };
 

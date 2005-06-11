@@ -169,7 +169,7 @@ public:
 	md2( const std::string &str ) : base( 16 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	md2( const void *data, size_type len ) : base( 16 ){ compute_hash( data, len ); }
+	md2( const void *data, uint64 len ) : base( 16 ){ compute_hash( data, len ); }
 };
 
 
@@ -338,7 +338,7 @@ public:
 	md4( const std::string &str ) : base( 16 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	md4( const void *data, size_type len ) : base( 16 ){ compute_hash( data, len ); }
+	md4( const void *data, uint64 len ) : base( 16 ){ compute_hash( data, len ); }
 
 };
 
@@ -568,7 +568,7 @@ public:
 	md5( const std::string &str ) : base( 16 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	md5( const void *data, size_type len ) : base( 16 ){ compute_hash( data, len ); }
+	md5( const void *data, uint64 len ) : base( 16 ){ compute_hash( data, len ); }
 
 };
 
