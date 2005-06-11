@@ -75,6 +75,12 @@ private:
   static void cb_Reso5(Fl_Menu_*, void*);
   inline void cb_Reso6_i(Fl_Menu_*, void*);
   static void cb_Reso6(Fl_Menu_*, void*);
+  inline void cb_Reso7_i(Fl_Menu_*, void*);
+  static void cb_Reso7(Fl_Menu_*, void*);
+  inline void cb_Reso8_i(Fl_Menu_*, void*);
+  static void cb_Reso8(Fl_Menu_*, void*);
+  inline void cb_Reso9_i(Fl_Menu_*, void*);
+  static void cb_Reso9(Fl_Menu_*, void*);
   inline void cb_Interlace_i(Fl_Menu_*, void*);
   static void cb_Interlace(Fl_Menu_*, void*);
   inline void cb_Interlace1_i(Fl_Menu_*, void*);

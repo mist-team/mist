@@ -100,7 +100,7 @@ Fl::wait( 0 );}
           }
           menuitem {} {
             label {Euclidean Skeleton}
-            callback {euclidean_distance_skeleton_test( );} selected
+            callback {euclidean_distance_skeleton_test( );}
             xywh {10 10 100 20}
           }
           menuitem {} {
@@ -184,7 +184,7 @@ Fl::wait( 0 );}
             }
           }
           submenu {} {
-            label Resolution
+            label Resolution open
             xywh {0 0 100 20}
           } {
             menuitem {} {
@@ -193,14 +193,24 @@ Fl::wait( 0 );}
               xywh {95 95 100 20}
             }
             menuitem {} {
-              label {Reso up with linear}
+              label {Reso up with mean}
               callback {interpolate_test( 1, true );}
               xywh {105 105 100 20}
             }
             menuitem {} {
-              label {Reso up with cubic}
+              label {Reso up with linear}
               callback {interpolate_test( 2, true );}
+              xywh {105 105 100 20}
+            }
+            menuitem {} {
+              label {Reso up with cubic}
+              callback {interpolate_test( 3, true );}
               xywh {115 115 100 20}
+            }
+            menuitem {} {
+              label {Reso up with sinc}
+              callback {interpolate_test( 4, true );}
+              xywh {125 125 100 20}
             }
             menuitem {} {
               label {Reso down with nearest}
@@ -209,18 +219,23 @@ Fl::wait( 0 );}
             }
             menuitem {} {
               label {Reso down with mean}
-              callback {interpolate_test( 3, false );}
+              callback {interpolate_test( 1, false );}
               xywh {125 125 100 20}
             }
             menuitem {} {
               label {Reso down with linear}
-              callback {interpolate_test( 1, false );}
+              callback {interpolate_test( 2, false );}
               xywh {115 115 100 20}
             }
             menuitem {} {
               label {Reso down with cubic}
-              callback {interpolate_test( 2, false );}
+              callback {interpolate_test( 3, false );}
               xywh {125 125 100 20}
+            }
+            menuitem {} {
+              label {Reso down with sinc}
+              callback {interpolate_test( 4, false );} selected
+              xywh {135 135 100 20}
             }
           }
           menuitem {} {

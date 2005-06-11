@@ -56,9 +56,11 @@ image_draw_area::image_draw_area( int x, int y, int w, int h ) : Fl_Gl_Window( x
 
 void image_draw_area::draw( )
 {
-	mist::bitmap< 24 > bmp( image_object );
 //	mist::draw_pixels( image_object, w( ), h( ), -100, 1 );
-	mist::draw_pixels( bmp, w( ), h( ), 0, 0 );
+	mist::draw_image( image_object, w( ), h( ), 1.0, 0.0, 0.0, 128.0, 128.0, 128.0, interpolate_ );
+
+//	mist::bitmap< 24 > bmp( image_object );
+//	mist::draw_pixels( bmp, w( ), h( ), 0, 0 );
 //	mist::draw_image( bmp, w( ), h( ), 1.0, 0.0, 0.0, 128.0, 128.0, 128.0, interpolate_ );
 }
 
@@ -424,7 +426,8 @@ void thinning_test( )
 
 	mist::convert( image_object, label );
 
-	mist::thinning( label, label );
+	mist::euclidean::thinning( label, label );
+//	mist::thinning( label, label );
 
 	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
 	{
@@ -545,41 +548,33 @@ void interpolate_test( int mode, bool reso_up )
 	image_type::size_type w = reso_up ? tmp.width( ) * 2 : tmp.width( ) / 2;
 	image_type::size_type h = reso_up ? tmp.height( ) * 2 : tmp.height( ) / 2;
 
-	mist::array2<unsigned char > hoge( 3, 3 );
-//	mist::array2< mist::rgb< unsigned char > > hoge( 3, 3 );
-	hoge( 0, 0 ) = 0; hoge( 1, 0 ) = 1; hoge( 2, 0 ) = 0;
-	hoge( 0, 1 ) = 1; hoge( 1, 1 ) = 1; hoge( 2, 1 ) = 1;
-	hoge( 0, 2 ) = 0; hoge( 1, 2 ) = 1; hoge( 2, 2 ) = 0;
-
-	mist::array2< double > hogehoge;
-//	mist::array2< mist::rgb< double > > hogehoge;
-
+	mist::timer t;
 
 	switch( mode )
 	{
 	case 0:
 		mist::nearest::interpolate( tmp, image_object, w, h, 1 );
-		mist::nearest::interpolate( hoge, hogehoge, 6, 6 );
+		break;
+
+	case 1:
+		mist::mean::interpolate( tmp, image_object, w, h );
 		break;
 
 	case 2:
 		mist::linear::interpolate( tmp, image_object, w, h );
-		mist::linear::interpolate( hoge, hogehoge, 6, 6 );
+		break;
+
+	case 4:
+		mist::sinc::interpolate( tmp, image_object, w, h );
 		break;
 
 	case 3:
-		mist::mean::interpolate( tmp, image_object, w, h );
-		mist::mean::interpolate( hoge, hogehoge, 6, 6 );
-		break;
-
-	case 1:
 	default:
 		mist::cubic::interpolate( tmp, image_object, w, h );
-		mist::cubic::interpolate( hoge, hogehoge, 6, 6 );
 		break;
 	}
 
-	std::cout << hogehoge << std::endl << std::endl;
+	std::cout << "Computation Time: " << t << " sec." << std::endl;
 }
 
 void interlace_test( bool is_odd_line )
