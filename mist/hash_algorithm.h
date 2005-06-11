@@ -32,7 +32,27 @@ _MIST_BEGIN
 //!  @{
 
 
-/// @brief MD2 を生成するクラス
+/// @brief ハッシュ関数を計算する基底クラス
+//!
+//! MD2，MD4，MD5，SHA1，SHA-256，SHA-384，SHA-512 を計算するための基底クラス
+//!
+//! @attention SHA-384，SHA-512 を計算する際に 64 ビット整数を利用するため，コンパイラが 64 ビットをサポートする必要あり．
+//!
+//! @code ハッシュ関数の計算例
+//! // ハッシュ関数を SHA1 で初期化する
+//! mist::hash_algorithm &h = mist::sha1( "a" );
+//! 
+//! // ハッシュ関数値のダイジェスト文字列を出力する
+//! std::cout << h << std::endl;
+//! 
+//! // 別の文字列で再計算する
+//! h.compute_hash( "あいうえお" );
+//! 
+//! // ハッシュ関数値のダイジェスト文字列を出力する
+//! std::cout << h << std::endl;
+//! 
+//! @endcode
+//!
 class hash_algorithm
 {
 public:
@@ -147,7 +167,7 @@ public:
 /// @brief 指定されたストリームにデータを出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     m   … md5 オブジェクト
+//! @param[in]     h   … ハッシュ関数オブジェクト
 //! 
 //! @return 入力されたストリーム
 //! 

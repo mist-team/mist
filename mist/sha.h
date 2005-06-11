@@ -27,7 +27,7 @@ _MIST_BEGIN
 
 
 
-//! @defgroup hash_group ハッシュ関数
+//! @addtogroup hash_group ハッシュ関数
 //!  @{
 
 

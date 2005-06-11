@@ -13,9 +13,6 @@
 _MIST_BEGIN
 
 
-//! @defgroup hash_group ハッシュ関数
-//!  @{
-
 namespace crc_generator_polynominal
 {
 
@@ -205,10 +202,6 @@ struct crc
 		return ( generate( pdata, len, gen_poly ) == 0 );
 	}
 };
-
-
-/// @}
-//  ハッシュ関数グループの終わり
 
 
 // mist名前空間の終わり
