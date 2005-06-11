@@ -48,7 +48,7 @@ protected:
 
 public:
 	/// @brief data[ 0 ] から data[ len - 1 ] の len バイトのハッシュ関数値を計算する．
-	virtual void compute_hash( const void *bytes, size_type len ) = 0;
+	virtual void compute_hash( const void *bytes, uint64 len ) = 0;
 
 	/// @brief 文字列 str のハッシュ関数値を計算する．
 	void compute_hash( const std::string &str ){ compute_hash( str.c_str( ), str.length( ) ); }
@@ -79,7 +79,7 @@ public:
 		return( str );
 	}
 
-private:
+protected:
 	// ハッシュ関数のコピーは禁止！！
 	hash_algorithm &operator =( const hash_algorithm &h );
 	hash_algorithm( const hash_algorithm &h );
@@ -91,7 +91,7 @@ protected:
 	/// @brief 指定されたダイジェスト文字列で初期化する（派生クラスでのみ利用可能）
 	hash_algorithm( const std::string &str ) : nbytes( str.length( ) / 2 ), digest( new unsigned char[ nbytes ] )
 	{
-		static char x16[ 256 ] = {	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		static uint8 x16[ 256 ] = {	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 									0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 									0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 									0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -102,12 +102,14 @@ protected:
 
 		for( size_type i = 0, indx = 0 ; i < size( ) ; i++, indx += 2 )
 		{
-			digest[ i ] = ( ( x16[ str[ indx ] ] << 4 ) & 0xf0 ) | ( x16[ str[ indx + 1 ] ] & 0x0f );
+			size_type s1 = static_cast< uint8 >( str[ indx ] );
+			size_type s2 = static_cast< uint8 >( str[ indx + 1 ] );
+			digest[ i ] = ( ( x16[ s1 ] << 4 ) & 0xf0 ) | ( x16[ s2 ] & 0x0f );
 		}
 	}
 
 	/// @brief ダイジェストに利用したデータを削除する
-	~hash_algorithm( )
+	virtual ~hash_algorithm( )
 	{
 		delete [] digest;
 	}

@@ -131,9 +131,12 @@ protected:
 	}
 
 public:
-	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの SHA1 を計算する．
-	virtual void compute_hash( const void *bytes, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ length - 1 ] の length バイトの SHA1 を計算する．
+	virtual void compute_hash( const void *bytes, uint64 length )
 	{
+		size_type len = static_cast< size_type >( length );
+		length *= 8;
+
 		// 出力用のダイジェストバイト列を 32 ビット単位で処理できるようにする
 		uint32 &A = *reinterpret_cast< uint32 * >( digest );
 		uint32 &B = *reinterpret_cast< uint32 * >( digest + 4 );
@@ -156,13 +159,13 @@ public:
 
 		size_type i;
 		uint32 x[ 16 ];
-		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
+		uint8 *xx = reinterpret_cast< uint8 * >( x );
+		const uint8 *data = reinterpret_cast< const uint8 * >( bytes );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 64 < len ; i += 64 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * 64 );
+			memcpy( xx, data + i, sizeof( uint8 ) * 64 );
 			ToCurrentEndian( x, 16 );
 			Round( A, B, C, D, E, x );
 		}
@@ -172,8 +175,8 @@ public:
 		// 最後にバイト長を足す分が存在しなければ，64バイトに拡張して処理する
 		if( rest >= 64 - 8 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 64 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 64 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
@@ -182,50 +185,31 @@ public:
 			Round( A, B, C, D, E, x );
 
 			// バイト長の分の処理を行う
-			memset( xx, 0, sizeof( unsigned char ) * 64 );
-			x[ 14 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
-			x[ 15 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
+			memset( xx, 0, sizeof( uint8 ) * 64 );
+			x[ 14 ] = static_cast< uint32 >( length >> 32 );
+			x[ 15 ] = static_cast< uint32 >( length );
 
 			// メッセージ処理を行う
 			Round( A, B, C, D, E, x );
 		}
 		else
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 64 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 64 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
 			ToCurrentEndian( x, 16 );
 
 			// バイト長の分の値を付加する
-			x[ 14 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
-			x[ 15 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
+			x[ 14 ] = static_cast< uint32 >( length >> 32 );
+			x[ 15 ] = static_cast< uint32 >( length );
 
 			// メッセージ処理を行う
 			Round( A, B, C, D, E, x );
 		}
 
 		FromCurrentEndian( reinterpret_cast< uint32 * >( digest ), 5 );
-	}
-
-	/// @brief ダイジェスト文字列の各バイトを取得する
-	unsigned char operator []( size_type index ) const { return( digest[ index ] ); }
-
-
-	/// @brief ダイジェスト文字列を返す
-	std::string to_string( ) const
-	{
-		static char x16[ 16 ] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-		std::string str;
-
-		for( size_type i = 0 ; i < size( ) ; i++ )
-		{
-			str += x16[ ( digest[ i ] >> 4 ) & 0x0f ];
-			str += x16[ digest[ i ] & 0x0f ];
-		}
-
-		return( str );
 	}
 
 
@@ -345,9 +329,12 @@ protected:
 	}
 
 public:
-	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの SHA-256 を計算する．
-	virtual void compute_hash( const void *bytes, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ length - 1 ] の length バイトの SHA-256 を計算する．
+	virtual void compute_hash( const void *bytes, uint64 length )
 	{
+		size_type len = static_cast< size_type >( length );
+		length *= 8;
+
 		// 出力用のダイジェストバイト列を 32 ビット単位で処理できるようにする
 		uint32 *H = reinterpret_cast< uint32 * >( digest );
 
@@ -363,13 +350,13 @@ public:
 
 		size_type i;
 		uint32 x[ 16 ];
-		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
+		uint8 *xx = reinterpret_cast< uint8 * >( x );
+		const uint8 *data = reinterpret_cast< const uint8 * >( bytes );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 64 < len ; i += 64 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * 64 );
+			memcpy( xx, data + i, sizeof( uint8 ) * 64 );
 			ToCurrentEndian( x, 16 );
 			Round( H, x );
 		}
@@ -379,8 +366,8 @@ public:
 		// 最後にバイト長を足す分が存在しなければ，64バイトに拡張して処理する
 		if( rest >= 64 - 8 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 64 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 64 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
@@ -389,25 +376,25 @@ public:
 			Round( H, x );
 
 			// バイト長の分の処理を行う
-			memset( xx, 0, sizeof( unsigned char ) * 64 );
-			x[ 14 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
-			x[ 15 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
+			memset( xx, 0, sizeof( uint8 ) * 64 );
+			x[ 14 ] = static_cast< uint32 >( length >> 32 );
+			x[ 15 ] = static_cast< uint32 >( length );
 
 			// メッセージ処理を行う
 			Round( H, x );
 		}
 		else
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 64 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 64 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
 			ToCurrentEndian( x, 16 );
 
 			// バイト長の分の値を付加する
-			x[ 14 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
-			x[ 15 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
+			x[ 14 ] = static_cast< uint32 >( length >> 32 );
+			x[ 15 ] = static_cast< uint32 >( length );
 
 			// メッセージ処理を行う
 			Round( H, x );
@@ -449,8 +436,8 @@ public:
 
 
 protected:
-	uint64 S( const uint64 &a, unsigned int s ){ return( ( a >> s ) | ( a << ( 64 - s ) ) ); }
-	uint64 R( const uint64 &a, unsigned int s ){ return( a >> s ); }
+	uint64 S( const uint64 &a, uint32 s ){ return( ( a >> s ) | ( a << ( 64 - s ) ) ); }
+	uint64 R( const uint64 &a, uint32 s ){ return( a >> s ); }
 	uint64 Ch( const uint64 &x, const uint64 &y, const uint64 &z ){ return( ( x & y ) ^ ( ~x & z ) ); }
 	uint64 Maj( const uint64 &x, const uint64 &y, const uint64 &z ){ return( ( x & y ) ^ ( x & z ) ^ ( y & z ) ); }
 	uint64 S0( const uint64 &x ){ return( S( x, 28 ) ^ S( x, 34 ) ^ S( x, 39 ) ); }
@@ -544,9 +531,12 @@ protected:
 	}
 
 public:
-	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの SHA-384 を計算する．
-	virtual void compute_hash( const void *bytes, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ length - 1 ] の length バイトの SHA-384 を計算する．
+	virtual void compute_hash( const void *bytes, uint64 length )
 	{
+		size_type len = static_cast< size_type >( length );
+		length *= 8;
+
 		// 出力用のダイジェストバイト列
 		uint64 H[ 8 ];
 
@@ -562,13 +552,13 @@ public:
 
 		size_type i;
 		uint64 x[ 16 ];
-		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
+		uint8 *xx = reinterpret_cast< uint8 * >( x );
+		const uint8 *data = reinterpret_cast< const uint8 * >( bytes );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 128 < len ; i += 128 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * 128 );
+			memcpy( xx, data + i, sizeof( uint8 ) * 128 );
 			ToCurrentEndian( x, 16 );
 			Round( H, x );
 		}
@@ -578,8 +568,8 @@ public:
 		// 最後にバイト長を足す分が存在しなければ，64バイトに拡張して処理する
 		if( rest >= 128 - 16 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 128 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 128 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
@@ -588,25 +578,25 @@ public:
 			Round( H, x );
 
 			// バイト長の分の処理を行う
-			memset( xx, 0, sizeof( unsigned char ) * 128 );
-			x[ 14 ] = uint64( static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 ) );
-			x[ 15 ] = uint64( static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 ) );
+			memset( xx, 0, sizeof( uint8 ) * 128 );
+			x[ 14 ] = 0;
+			x[ 15 ] = length;
 
 			// メッセージ処理を行う
 			Round( H, x );
 		}
 		else
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 128 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 128 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
 			ToCurrentEndian( x, 16 );
 
 			// バイト長の分の値を付加する
-			x[ 14 ] = uint64( static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 ) );
-			x[ 15 ] = uint64( static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 ) );
+			x[ 14 ] = 0;
+			x[ 15 ] = length;
 
 			// メッセージ処理を行う
 			Round( H, x );
@@ -651,8 +641,8 @@ public:
 	typedef base::uint64			uint64;				///< @brief 符号なし64ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned long long int 型と同じ．
 
 protected:
-	uint64 S( const uint64 &a, unsigned int s ){ return( ( a >> s ) | ( a << ( 64 - s ) ) ); }
-	uint64 R( const uint64 &a, unsigned int s ){ return( a >> s ); }
+	uint64 S( const uint64 &a, uint32 s ){ return( ( a >> s ) | ( a << ( 64 - s ) ) ); }
+	uint64 R( const uint64 &a, uint32 s ){ return( a >> s ); }
 	uint64 Ch( const uint64 &x, const uint64 &y, const uint64 &z ){ return( ( x & y ) ^ ( ~x & z ) ); }
 	uint64 Maj( const uint64 &x, const uint64 &y, const uint64 &z ){ return( ( x & y ) ^ ( x & z ) ^ ( y & z ) ); }
 	uint64 S0( const uint64 &x ){ return( S( x, 28 ) ^ S( x, 34 ) ^ S( x, 39 ) ); }
@@ -746,9 +736,12 @@ protected:
 	}
 
 public:
-	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの SHA-512 を計算する．
-	virtual void compute_hash( const void *bytes, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ length - 1 ] の length バイトの SHA-512 を計算する．
+	virtual void compute_hash( const void *bytes, uint64 length )
 	{
+		size_type len = static_cast< size_type >( length );
+		length *= 8;
+
 		// 出力用のダイジェストバイト列を 32 ビット単位で処理できるようにする
 		uint64 *H = reinterpret_cast< uint64 * >( digest );
 
@@ -764,13 +757,13 @@ public:
 
 		size_type i;
 		uint64 x[ 16 ];
-		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
+		uint8 *xx = reinterpret_cast< uint8 * >( x );
+		const uint8 *data = reinterpret_cast< const uint8 * >( bytes );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 128 < len ; i += 128 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * 128 );
+			memcpy( xx, data + i, sizeof( uint8 ) * 128 );
 			ToCurrentEndian( x, 16 );
 			Round( H, x );
 		}
@@ -780,8 +773,8 @@ public:
 		// 最後にバイト長を足す分が存在しなければ，64バイトに拡張して処理する
 		if( rest >= 128 - 16 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 128 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 128 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
@@ -790,25 +783,25 @@ public:
 			Round( H, x );
 
 			// バイト長の分の処理を行う
-			memset( xx, 0, sizeof( unsigned char ) * 128 );
-			x[ 14 ] = uint64( static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 ) );
-			x[ 15 ] = uint64( static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 ) );
+			memset( xx, 0, sizeof( uint8 ) * 128 );
+			x[ 14 ] = 0;
+			x[ 15 ] = length;
 
 			// メッセージ処理を行う
 			Round( H, x );
 		}
 		else
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 128 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 128 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
 			ToCurrentEndian( x, 16 );
 
 			// バイト長の分の値を付加する
-			x[ 14 ] = uint64( static_cast< unsigned int >( ( len & 0xc0000000 ) >> 27 ) );
-			x[ 15 ] = uint64( static_cast< unsigned int >( ( len & 0x3fffffff ) << 3 ) );
+			x[ 14 ] = 0;
+			x[ 15 ] = length;
 
 			// メッセージ処理を行う
 			Round( H, x );

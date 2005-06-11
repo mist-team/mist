@@ -46,10 +46,13 @@ public:
 
 
 public:
-	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの MD2 を計算する．
-	virtual void compute_hash( const void *bytes, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ length - 1 ] の length バイトの MD2 を計算する．
+	virtual void compute_hash( const void *bytes, uint64 length )
 	{
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
+		size_type len = static_cast< size_type >( length );
+		length *= 8;
+
+		const uint8 *data = reinterpret_cast< const uint8 * >( bytes );
 		size_type R = len % 16;
 		size_type i, j, N16 = len / 16;
 		uint8 pad = static_cast< uint8 >( 16 - R );
@@ -186,24 +189,21 @@ public:
 
 
 protected:
-	uint32 F( uint32 a, uint32 b, uint32 c ){ return( ( a & b ) | ( ~a & c ) ); }
-	uint32 G( uint32 a, uint32 b, uint32 c ){ return( ( a & b ) | ( a & c ) | ( c & b ) ); }
-	uint32 H( uint32 a, uint32 b, uint32 c ){ return( a ^ b ^ c ); }
 	uint32 R( uint32 a, uint32 s ){ return( ( a << s ) | ( a >> ( 32 - s ) ) ); }
 
 	void FF( uint32 &a, uint32 b, uint32 c, uint32 d, uint32 xk, uint32 s )
 	{
-		a = R( a + F( b, c, d ) + xk, s );
+		a = R( a + ( ( b & c ) | ( ~b & d ) ) + xk, s );
 	}
 
 	void GG( uint32 &a, uint32 b, uint32 c, uint32 d, uint32 xk, uint32 s )
 	{
-		a = R( a + G( b, c, d ) + xk + 0x5a827999, s );
+		a = R( a + ( ( b & c ) | ( b & d ) | ( d & c ) ) + xk + 0x5a827999, s );
 	}
 
 	void HH( uint32 &a, uint32 b, uint32 c, uint32 d, uint32 xk, uint32 s )
 	{
-		a = R( a + H( b, c, d ) + xk + 0x6ed9eba1, s );
+		a = R( a + ( b ^ c ^ d ) + xk + 0x6ed9eba1, s );
 	}
 
 	void ToCurrentEndian( uint32 *x, size_type len )
@@ -253,9 +253,12 @@ protected:
 	}
 
 public:
-	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの MD4 を計算する．
-	virtual void compute_hash( const void *bytes, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ length - 1 ] の length バイトの MD4 を計算する．
+	virtual void compute_hash( const void *bytes, uint64 length )
 	{
+		size_type len = static_cast< size_type >( length );
+		length *= 8;
+
 		// 出力用のダイジェストバイト列を 32 ビット単位で処理できるようにする
 		uint32 &A = *reinterpret_cast< uint32 * >( digest );
 		uint32 &B = *reinterpret_cast< uint32 * >( digest + 4 );
@@ -270,13 +273,13 @@ public:
 
 		size_type i;
 		uint32 x[ 16 ];
-		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
+		uint8 *xx = reinterpret_cast< uint8 * >( x );
+		const uint8 *data = reinterpret_cast< const uint8 * >( bytes );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 64 < len ; i += 64 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * 64 );
+			memcpy( xx, data + i, sizeof( uint8 ) * 64 );
 			ToCurrentEndian( x, 16 );
 			Round( A, B, C, D, x );
 		}
@@ -286,8 +289,8 @@ public:
 		// 最後にバイト長を足す分が存在しなければ，64バイトに拡張して処理する
 		if( rest >= 64 - 8 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 64 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 64 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
@@ -296,25 +299,25 @@ public:
 			Round( A, B, C, D, x );
 
 			// バイト長の分の処理を行う
-			memset( xx, 0, sizeof( unsigned char ) * 64 );
-			x[ 14 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
-			x[ 15 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
+			memset( xx, 0, sizeof( uint8 ) * 64 );
+			x[ 14 ] = static_cast< uint32 >( length );
+			x[ 15 ] = static_cast< uint32 >( length >> 32 );
 
 			// メッセージ処理を行う
 			Round( A, B, C, D, x );
 		}
 		else
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 64 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 64 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
 			ToCurrentEndian( x, 16 );
 
 			// バイト長の分の値を付加する
-			x[ 14 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
-			x[ 15 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
+			x[ 14 ] = static_cast< uint32 >( length );
+			x[ 15 ] = static_cast< uint32 >( length >> 32 );
 
 			// メッセージ処理を行う
 			Round( A, B, C, D, x );
@@ -358,30 +361,26 @@ public:
 
 
 protected:
-	uint32 F( uint32 a, uint32 b, uint32 c ){ return( ( a & b ) | ( ~a & c ) ); }
-	uint32 G( uint32 a, uint32 b, uint32 c ){ return( ( a & c ) | ( ~c & b ) ); }
-	uint32 H( uint32 a, uint32 b, uint32 c ){ return( a ^ b ^ c ); }
-	uint32 I( uint32 a, uint32 b, uint32 c ){ return( b ^ ( a | ~c ) ); }
 	uint32 R( uint32 a, uint32 s ){ return( ( a << s ) | ( a >> ( 32 - s ) ) ); }
 
 	void FF( uint32 &a, uint32 b, uint32 c, uint32 d, uint32 xk, uint32 s, uint32 ti )
 	{
-		a = b + R( a + F( b, c, d ) + xk + ti, s );
+		a = b + R( a + ( ( b & c ) | ( ~b & d ) ) + xk + ti, s );
 	}
 
 	void GG( uint32 &a, uint32 b, uint32 c, uint32 d, uint32 xk, uint32 s, uint32 ti )
 	{
-		a = b + R( a + G( b, c, d ) + xk + ti, s );
+		a = b + R( a + ( ( b & d ) | ( ~d & c ) ) + xk + ti, s );
 	}
 
 	void HH( uint32 &a, uint32 b, uint32 c, uint32 d, uint32 xk, uint32 s, uint32 ti )
 	{
-		a = b + R( a + H( b, c, d ) + xk + ti, s );
+		a = b + R( a + ( b ^ c ^ d ) + xk + ti, s );
 	}
 
 	void II( uint32 &a, uint32 b, uint32 c, uint32 d, uint32 xk, uint32 s, uint32 ti )
 	{
-		a = b + R( a + I( b, c, d ) + xk + ti, s );
+		a = b + R( a + ( c ^ ( b | ~d ) ) + xk + ti, s );
 	}
 
 	void ToCurrentEndian( uint32 *x, size_type len )
@@ -484,9 +483,12 @@ protected:
 	}
 
 public:
-	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの MD5 を計算する．
-	virtual void compute_hash( const void *bytes, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ length - 1 ] の length バイトの MD5 を計算する．
+	virtual void compute_hash( const void *bytes, uint64 length )
 	{
+		size_type len = static_cast< size_type >( length );
+		length *= 8;
+
 		// 出力用のダイジェストバイト列を 32 ビット単位で処理できるようにする
 		uint32 &A = *reinterpret_cast< uint32 * >( digest );
 		uint32 &B = *reinterpret_cast< uint32 * >( digest + 4 );
@@ -501,13 +503,13 @@ public:
 
 		size_type i;
 		uint32 x[ 16 ];
-		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
+		uint8 *xx = reinterpret_cast< uint8 * >( x );
+		const uint8 *data = reinterpret_cast< const uint8 * >( bytes );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 64 < len ; i += 64 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * 64 );
+			memcpy( xx, data + i, sizeof( uint8 ) * 64 );
 			ToCurrentEndian( x, 16 );
 			Round( A, B, C, D, x );
 		}
@@ -517,8 +519,8 @@ public:
 		// 最後にバイト長を足す分が存在しなければ，64バイトに拡張して処理する
 		if( rest >= 64 - 8 )
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 64 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 64 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
@@ -527,25 +529,25 @@ public:
 			Round( A, B, C, D, x );
 
 			// バイト長の分の処理を行う
-			memset( xx, 0, sizeof( unsigned char ) * 64 );
-			x[ 14 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
-			x[ 15 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
+			memset( xx, 0, sizeof( uint8 ) * 64 );
+			x[ 14 ] = static_cast< uint32 >( length );
+			x[ 15 ] = static_cast< uint32 >( length >> 32 );
 
 			// メッセージ処理を行う
 			Round( A, B, C, D, x );
 		}
 		else
 		{
-			memcpy( xx, data + i, sizeof( unsigned char ) * rest );
-			memset( xx + rest, 0, sizeof( unsigned char ) * ( 64 - rest ) );
+			memcpy( xx, data + i, sizeof( uint8 ) * rest );
+			memset( xx + rest, 0, sizeof( uint8 ) * ( 64 - rest ) );
 			// 先頭のビットを 1 にする
 			xx[ rest ] = 0x80;
 
 			ToCurrentEndian( x, 16 );
 
 			// バイト長の分の値を付加する
-			x[ 14 ] = static_cast< uint32 >( ( len & 0x3fffffff ) << 3 );
-			x[ 15 ] = static_cast< uint32 >( ( len & 0xc0000000 ) >> 27 );
+			x[ 14 ] = static_cast< uint32 >( length );
+			x[ 15 ] = static_cast< uint32 >( length >> 32 );
 
 			// メッセージ処理を行う
 			Round( A, B, C, D, x );
