@@ -17,7 +17,9 @@
 #include "config/endian.h"
 #endif
 
-#include <string>
+#ifndef __INCLUDE_HASH_ALGORITHM__
+#include "hash_algorithm.h"
+#endif
 
 
 // mist名前空間の始まり
@@ -30,19 +32,18 @@ _MIST_BEGIN
 
 
 /// @brief SHA-1 を生成するクラス
-class sha1
+class sha1 : public hash_algorithm
 {
-public:
-	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
-	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
-	typedef unsigned int uint32;
-
 private:
-	unsigned char digest[ 20 ];
+	typedef hash_algorithm  base;
 
 public:
-	/// @brief ダイジェストバイト列の長さ
-	size_type size( ) const { return( 20 ); }
+	typedef base::size_type			size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef base::difference_type	difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef base::uint8				uint8;				///< @brief 符号なし8ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned char 型と同じ．
+	typedef base::uint32			uint32;				///< @brief 符号なし32ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned int 型と同じ．
+	typedef base::uint64			uint64;				///< @brief 符号なし64ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned long long int 型と同じ．
+
 
 protected:
 	uint32 R( uint32 a, uint32 s ){ return( ( a << s ) | ( a >> ( 32 - s ) ) ); }
@@ -130,8 +131,8 @@ protected:
 	}
 
 public:
-	/// @brief data[ 0 ] から data[ len - 1 ] の len バイトの MD5 を計算する．
-	void generate( const void *data_, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの SHA1 を計算する．
+	virtual void compute_hash( const void *bytes, size_type len )
 	{
 		// 出力用のダイジェストバイト列を 32 ビット単位で処理できるようにする
 		uint32 &A = *reinterpret_cast< uint32 * >( digest );
@@ -156,7 +157,7 @@ public:
 		size_type i;
 		uint32 x[ 16 ];
 		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( data_ );
+		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 64 < len ; i += 64 )
@@ -227,62 +228,37 @@ public:
 		return( str );
 	}
 
+
+	/// @brief ハッシュ関数名を返す
+	virtual const std::string name( ) const{ return( "SHA1" ); }
+
+
 	/// @brief 空文字のダイジェスト文字列で初期化する
-	sha1( )
-	{
-		uint32 *D = reinterpret_cast< uint32 * >( digest );
-		D[ 0 ] = 0xda39a3ee;
-		D[ 1 ] = 0x5e6b4b0d;
-		D[ 2 ] = 0x3255bfef;
-		D[ 3 ] = 0x95601890;
-		D[ 4 ] = 0xafd80709;
-		FromCurrentEndian( D, 5 );
-	}
+	sha1( ) : base( "da39a3ee5e6b4b0d3255bfef95601890afd80709" ){ }
 
 	/// @brief 指定された文字列のダイジェスト文字列で初期化する
-	sha1( const std::string &str ){ generate( str.c_str( ), str.length( ) ); }
+	sha1( const std::string &str ) : base( 20 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	sha1( const void *data, size_type len ){ generate( data, len ); }
+	sha1( const void *data, size_type len ) : base( 20 ){ compute_hash( data, len ); }
 
-
-public:
-	/// @brief 2つのMD5が同一かどうかを判定する
-	bool operator ==( const sha1 &m ) const
-	{
-		for( size_type i = 0 ; i < size( ) ; i++ )
-		{
-			if( digest[ i ] != m[ i ] )
-			{
-				return( false );
-			}
-		}
-		return( true );
-	}
-
-	/// @brief 2つのダイジェスト文字列が同一かどうかを判定する
-	bool operator ==( const std::string &str ) const
-	{
-		return( str == to_string( ) );
-	}
 };
 
 
 
 /// @brief SHA-256 を生成するクラス
-class sha256
+class sha256 : public hash_algorithm
 {
-public:
-	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
-	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
-	typedef unsigned int uint32;
-
 private:
-	unsigned char digest[ 32 ];
+	typedef hash_algorithm  base;
 
 public:
-	/// @brief ダイジェストバイト列の長さ
-	size_type size( ) const { return( 32 ); }
+	typedef base::size_type			size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef base::difference_type	difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef base::uint8				uint8;				///< @brief 符号なし8ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned char 型と同じ．
+	typedef base::uint32			uint32;				///< @brief 符号なし32ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned int 型と同じ．
+	typedef base::uint64			uint64;				///< @brief 符号なし64ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned long long int 型と同じ．
+
 
 protected:
 	uint32 S( uint32 a, uint32 s ){ return( ( a >> s ) | ( a << ( 32 - s ) ) ); }
@@ -369,8 +345,8 @@ protected:
 	}
 
 public:
-	/// @brief data[ 0 ] から data[ len - 1 ] の len バイトの MD5 を計算する．
-	void generate( const void *data_, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの SHA-256 を計算する．
+	virtual void compute_hash( const void *bytes, size_type len )
 	{
 		// 出力用のダイジェストバイト列を 32 ビット単位で処理できるようにする
 		uint32 *H = reinterpret_cast< uint32 * >( digest );
@@ -388,7 +364,7 @@ public:
 		size_type i;
 		uint32 x[ 16 ];
 		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( data_ );
+		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 64 < len ; i += 64 )
@@ -441,80 +417,36 @@ public:
 	}
 
 
-	/// @brief ダイジェスト文字列を返す
-	std::string to_string( ) const
-	{
-		static char x16[ 16 ] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-		std::string str;
+	/// @brief ハッシュ関数名を返す
+	virtual const std::string name( ) const{ return( "SHA-256" ); }
 
-		for( size_type i = 0 ; i < size( ) ; i++ )
-		{
-			str += x16[ ( digest[ i ] >> 4 ) & 0x0f ];
-			str += x16[ digest[ i ] & 0x0f ];
-		}
-
-		return( str );
-	}
 
 	/// @brief 空文字のダイジェスト文字列で初期化する
-	sha256( )
-	{
-		uint32 *H = reinterpret_cast< uint32 * >( digest );
-		H[ 0 ] = 0xe3b0c442;
-		H[ 1 ] = 0x98fc1c14;
-		H[ 2 ] = 0x9afbf4c8;
-		H[ 3 ] = 0x996fb924;
-		H[ 4 ] = 0x27ae41e4;
-		H[ 5 ] = 0x649b934c;
-		H[ 6 ] = 0xa495991b;
-		H[ 7 ] = 0x7852b855;
-		FromCurrentEndian( H, 8 );
-	}
+	sha256( ) : base( "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" ){ }
 
 	/// @brief 指定された文字列のダイジェスト文字列で初期化する
-	sha256( const std::string &str ){ generate( str.c_str( ), str.length( ) ); }
+	sha256( const std::string &str ) : base( 32 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	sha256( const void *data, size_type len ){ generate( data, len ); }
+	sha256( const void *data, size_type len ) : base( 32 ){ compute_hash( data, len ); }
 
-
-public:
-	/// @brief 2つのMD5が同一かどうかを判定する
-	bool operator ==( const sha1 &m ) const
-	{
-		for( size_type i = 0 ; i < size( ) ; i++ )
-		{
-			if( digest[ i ] != m[ i ] )
-			{
-				return( false );
-			}
-		}
-		return( true );
-	}
-
-	/// @brief 2つのダイジェスト文字列が同一かどうかを判定する
-	bool operator ==( const std::string &str ) const
-	{
-		return( str == to_string( ) );
-	}
 };
 
 
 
 /// @brief SHA-384 を生成するクラス
-class sha384
+class sha384 : public hash_algorithm
 {
-public:
-	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
-	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
-	typedef unsigned long long int uint64;
-
 private:
-	unsigned char digest[ 48 ];
+	typedef hash_algorithm  base;
 
 public:
-	/// @brief ダイジェストバイト列の長さ
-	size_type size( ) const { return( 48 ); }
+	typedef base::size_type			size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef base::difference_type	difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef base::uint8				uint8;				///< @brief 符号なし8ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned char 型と同じ．
+	typedef base::uint32			uint32;				///< @brief 符号なし32ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned int 型と同じ．
+	typedef base::uint64			uint64;				///< @brief 符号なし64ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned long long int 型と同じ．
+
 
 protected:
 	uint64 S( const uint64 &a, unsigned int s ){ return( ( a >> s ) | ( a << ( 64 - s ) ) ); }
@@ -612,8 +544,8 @@ protected:
 	}
 
 public:
-	/// @brief data[ 0 ] から data[ len - 1 ] の len バイトの MD5 を計算する．
-	void generate( const void *data_, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの SHA-384 を計算する．
+	virtual void compute_hash( const void *bytes, size_type len )
 	{
 		// 出力用のダイジェストバイト列
 		uint64 H[ 8 ];
@@ -631,7 +563,7 @@ public:
 		size_type i;
 		uint64 x[ 16 ];
 		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( data_ );
+		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 128 < len ; i += 128 )
@@ -687,83 +619,36 @@ public:
 	}
 
 
-	/// @brief ダイジェスト文字列を返す
-	std::string to_string( ) const
-	{
-		static char x16[ 16 ] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-		std::string str;
+	/// @brief ハッシュ関数名を返す
+	virtual const std::string name( ) const{ return( "SHA-384" ); }
 
-		for( size_type i = 0 ; i < size( ) ; i++ )
-		{
-			str += x16[ ( digest[ i ] >> 4 ) & 0x0f ];
-			str += x16[ digest[ i ] & 0x0f ];
-		}
-
-		return( str );
-	}
 
 	/// @brief 空文字のダイジェスト文字列で初期化する
-	sha384( )
-	{
-		uint64 H[ 8 ];
-		H[ 0 ] =  4084871133771109944ULL;
-		H[ 1 ] =  5537512736557228906ULL;
-		H[ 2 ] =  2449315056349742915ULL;
-		H[ 3 ] =  5479974471432856026ULL;
-		H[ 4 ] =  2832446131465577979ULL;
-		H[ 5 ] = 15355817813220047195ULL;
-		FromCurrentEndian( H, 8 );
-
-		// 文字列を左に切り詰める
-		memcpy( digest, H, size( ) );
-	}
+	sha384( ) : base( "38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b" ){ }
 
 	/// @brief 指定された文字列のダイジェスト文字列で初期化する
-	sha384( const std::string &str ){ generate( str.c_str( ), str.length( ) ); }
+	sha384( const std::string &str ) : base( 48 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	sha384( const void *data, size_type len ){ generate( data, len ); }
+	sha384( const void *data, size_type len ) : base( 48 ){ compute_hash( data, len ); }
 
-
-public:
-	/// @brief 2つのMD5が同一かどうかを判定する
-	bool operator ==( const sha1 &m ) const
-	{
-		for( size_type i = 0 ; i < size( ) ; i++ )
-		{
-			if( digest[ i ] != m[ i ] )
-			{
-				return( false );
-			}
-		}
-		return( true );
-	}
-
-	/// @brief 2つのダイジェスト文字列が同一かどうかを判定する
-	bool operator ==( const std::string &str ) const
-	{
-		return( str == to_string( ) );
-	}
 };
 
 
 
 
 /// @brief SHA-512 を生成するクラス
-class sha512
+class sha512 : public hash_algorithm
 {
-public:
-	typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
-	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
-
-	typedef unsigned long long int uint64;
-
 private:
-	unsigned char digest[ 64 ];
+	typedef hash_algorithm  base;
 
 public:
-	/// @brief ダイジェストバイト列の長さ
-	size_type size( ) const { return( 64 ); }
+	typedef base::size_type			size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef base::difference_type	difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef base::uint8				uint8;				///< @brief 符号なし8ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned char 型と同じ．
+	typedef base::uint32			uint32;				///< @brief 符号なし32ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned int 型と同じ．
+	typedef base::uint64			uint64;				///< @brief 符号なし64ビット整数を表す型．内部のハッシュ関数値を計算するのに利用．内部的には unsigned long long int 型と同じ．
 
 protected:
 	uint64 S( const uint64 &a, unsigned int s ){ return( ( a >> s ) | ( a << ( 64 - s ) ) ); }
@@ -861,8 +746,8 @@ protected:
 	}
 
 public:
-	/// @brief data[ 0 ] から data[ len - 1 ] の len バイトの MD5 を計算する．
-	void generate( const void *data_, size_type len )
+	/// @brief bytes[ 0 ] から bytes[ len - 1 ] の len バイトの SHA-512 を計算する．
+	virtual void compute_hash( const void *bytes, size_type len )
 	{
 		// 出力用のダイジェストバイト列を 32 ビット単位で処理できるようにする
 		uint64 *H = reinterpret_cast< uint64 * >( digest );
@@ -880,7 +765,7 @@ public:
 		size_type i;
 		uint64 x[ 16 ];
 		unsigned char *xx = reinterpret_cast< unsigned char * >( x );
-		const unsigned char *data = reinterpret_cast< const unsigned char * >( data_ );
+		const unsigned char *data = reinterpret_cast< const unsigned char * >( bytes );
 
 		// 入力データに対してメッセージ処理を行う
 		for( i = 0 ; i + 128 < len ; i += 128 )
@@ -933,117 +818,21 @@ public:
 	}
 
 
-	/// @brief ダイジェスト文字列を返す
-	std::string to_string( ) const
-	{
-		static char x16[ 16 ] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-		std::string str;
+	/// @brief ハッシュ関数名を返す
+	virtual const std::string name( ) const{ return( "SHA-512" ); }
 
-		for( size_type i = 0 ; i < size( ) ; i++ )
-		{
-			str += x16[ ( digest[ i ] >> 4 ) & 0x0f ];
-			str += x16[ digest[ i ] & 0x0f ];
-		}
-
-		return( str );
-	}
 
 	/// @brief 空文字のダイジェスト文字列で初期化する
-	sha512( )
-	{
-		uint64 *H = reinterpret_cast< uint64 * >( digest );
-		H[ 0 ] = 14953042807679334589ULL;
-		H[ 1 ] = 17389568388844322823ULL;
-		H[ 2 ] = 15429583033687545308ULL;
-		H[ 3 ] =  9508410676032104910ULL;
-		H[ 4 ] =  5174866029046002352ULL;
-		H[ 5 ] = 18411586994116160559ULL;
-		H[ 6 ] =  7185829369460390529ULL;
-		H[ 7 ] = 11905321118701443646ULL;
-		FromCurrentEndian( H, 8 );
-	}
+	sha512( ) : base( "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" ){ }
 
 	/// @brief 指定された文字列のダイジェスト文字列で初期化する
-	sha512( const std::string &str ){ generate( str.c_str( ), str.length( ) ); }
+	sha512( const std::string &str ) : base( 64 ) { base::compute_hash( str ); }
 
 	/// @brief 指定されたバイト列のダイジェスト文字列で初期化する
-	sha512( const void *data, size_type len ){ generate( data, len ); }
+	sha512( const void *data, size_type len ) : base( 64 ){ compute_hash( data, len ); }
 
-
-public:
-	/// @brief 2つのMD5が同一かどうかを判定する
-	bool operator ==( const sha1 &m ) const
-	{
-		for( size_type i = 0 ; i < size( ) ; i++ )
-		{
-			if( digest[ i ] != m[ i ] )
-			{
-				return( false );
-			}
-		}
-		return( true );
-	}
-
-	/// @brief 2つのダイジェスト文字列が同一かどうかを判定する
-	bool operator ==( const std::string &str ) const
-	{
-		return( str == to_string( ) );
-	}
 };
 
-
-
-/// @brief 指定されたストリームにデータを出力する
-//! 
-//! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     m   … sha1 オブジェクト
-//! 
-//! @return 入力されたストリーム
-//! 
-inline std::ostream &operator <<( std::ostream &out, const sha1 &m )
-{
-	out << m.to_string( );
-	return( out );
-}
-
-/// @brief 指定されたストリームにデータを出力する
-//! 
-//! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     m   … sha256 オブジェクト
-//! 
-//! @return 入力されたストリーム
-//! 
-inline std::ostream &operator <<( std::ostream &out, const sha256 &m )
-{
-	out << m.to_string( );
-	return( out );
-}
-
-/// @brief 指定されたストリームにデータを出力する
-//! 
-//! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     m   … sha384 オブジェクト
-//! 
-//! @return 入力されたストリーム
-//! 
-inline std::ostream &operator <<( std::ostream &out, const sha384 &m )
-{
-	out << m.to_string( );
-	return( out );
-}
-
-/// @brief 指定されたストリームにデータを出力する
-//! 
-//! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     m   … sha512 オブジェクト
-//! 
-//! @return 入力されたストリーム
-//! 
-inline std::ostream &operator <<( std::ostream &out, const sha512 &m )
-{
-	out << m.to_string( );
-	return( out );
-}
 
 
 /// @}
