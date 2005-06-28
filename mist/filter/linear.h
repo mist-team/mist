@@ -1,742 +1,363 @@
 /// @file mist/filter/linear.h
 //!
-//! @brief 各次元の画像に対応した線形フィルタを計算するためのライブラリ
+//! @brief 線形フィルタのためのライブラリ
 //!
+
+
 
 #ifndef __INCLUDE_FILTER_LINEAR_FILTER_H__
 #define __INCLUDE_FILTER_LINEAR_FILTER_H__
+
 
 
 #ifndef __INCLUDE_MIST_H__
 #include "../mist.h"
 #endif
 
-#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
-#include "../config/type_trait.h"
-#endif
-
+#include <algorithm>
 #include <cmath>
-#include <functional>
+#include <mist/config/color.h>
+
+
 
 // mist名前空間の始まり
 _MIST_BEGIN
 
 
-namespace __linear_filter__
+
+namespace __linear__
 {
+
+	//
+	// カーネル配列を受け取って関数オブジェクトを作る
+	//
+	template< typename In, typename Out, typename Kernel_array >
+	class function_type
+	{
+		Kernel_array ka_;
+		array< int > pd_;
+
+	public:
+
+		function_type( const Kernel_array &ka, const size_t o ) : ka_( ka )
+		{
+			// std::cout << "function_type_1" << std::endl;
+			pd_.resize( ka_.size( ) );
+			for( size_t i = 0 ; i < ka_.size( ) ; i ++ )
+			{
+				pd_[ i ] = i - o;
+			}
+		}
+		function_type( const Kernel_array &ka, const size_t oi, const size_t oj, const size_t w ) : ka_( ka )
+		{
+			// std::cout << "function_type_2" << std::endl;
+			array2< size_t > pd_2( ka_.width( ), ka_.height( ) );
+			for( size_t j = 0 ; j < ka_.height( ) ; j ++ )
+			{
+				for( size_t i = 0 ; i < ka_.width( ) ; i ++ )
+				{
+					pd_2( i, j ) = ( j - oj ) * w + i - oi;
+				}
+			}
+			pd_ = pd_2;
+		}
+		function_type( const Kernel_array &ka, const size_t oi, const size_t oj, const size_t ok, const size_t w, const size_t h ) : ka_( ka )
+		{
+			// std::cout << "function_type_3" << std::endl;
+			array3< size_t > pd_3( ka_.width( ), ka_.height( ), ka_.depth( ) );
+			for( size_t k = 0 ; k < ka_.depth( ) ; k ++ )
+			{
+				for( size_t j = 0 ; j < ka_.height( ) ; j ++ )
+				{
+					for( size_t i = 0 ; i < ka_.width( ) ; i ++ )
+					{
+						pd_3( i, j, k ) = ( k - ok ) * w * h + ( j - oj ) * w + i - oi;
+					}
+				}
+			}
+			pd_ = pd_3;
+		}
+
+		const Out operator ( )( const In &v ) const
+		{
+			const In * const pv = &v;
+			double res = 0.0;
+			for( size_t i = 0 ; i < ka_.size( ) ; i ++ )
+			{ 
+				res += *( pv + pd_[ i ] ) * ka_[ i ];
+			}
+			return ( static_cast< Out >( res ) );
+		}
+
+	};
+
+
+
+	//
+	// カーネル配列を受け取って関数オブジェクトを作る（mist::rgb用）
+	//
+	template < typename In, typename Out, typename Kernel_array >
+	class function_type< In, rgb< Out >, Kernel_array >
+	{
+		Kernel_array ka_;
+		array< int > pd_;
+
+	public:
+
+		function_type( const Kernel_array &ka, const size_t o ) : ka_( ka )
+		{
+			// std::cout << "function_type_1" << std::endl;
+			pd_.resize( ka_.size( ) );
+			for( size_t i = 0 ; i < ka_.size( ) ; i ++ )
+			{
+				pd_[ i ] = i - o;
+			}
+		}
+		function_type( const Kernel_array &ka, const size_t oi, const size_t oj, const size_t w ) : ka_( ka )
+		{
+			// std::cout << "function_type_2" << std::endl;
+			array2< size_t > pd_2( ka_.width( ), ka_.height( ) );
+			for( size_t j = 0 ; j < ka_.height( ) ; j ++ )
+			{
+				for( size_t i = 0 ; i < ka_.width( ) ; i ++ )
+				{
+					pd_2( i, j ) = ( j - oj ) * w + i - oi;
+				}
+			}
+			pd_ = pd_2;
+		}
+		function_type( const Kernel_array &ka, const size_t oi, const size_t oj, const size_t ok, const size_t w, const size_t h ) : ka_( ka )
+		{
+			// std::cout << "function_type_3" << std::endl;
+			array3< size_t > pd_3( ka_.width( ), ka_.height( ), ka_.depth( ) );
+			for( size_t k = 0 ; k < ka_.depth( ) ; k ++ )
+			{
+				for( size_t j = 0 ; j < ka_.height( ) ; j ++ )
+				{
+					for( size_t i = 0 ; i < ka_.width( ) ; i ++ )
+					{
+						pd_3( i, j, k ) = ( k - ok ) * w * h + ( j - oj ) * w + i - oi;
+					}
+				}
+			}
+			pd_ = pd_3;
+		}
+
+		const rgb< Out > operator ( )( const In &v ) const
+		{
+			const In * const pv = &v;
+			rgb< double > res = rgb< double >( );
+			for( size_t i = 0 ; i < ka_.size( ) ; i ++ )
+			{ 
+				res += *( pv + pd_[ i ] ) * ka_[ i ];
+			}
+			return ( static_cast< rgb< Out > >( res ) );
+		}
+
+	};
+
+
+	template< typename In, typename Out, typename Func >
+	class abs
+	{
+		Func f_;
+	public:
+		abs( const Func &f ) : f_( f )
+		{
+			// std::cout << "abs" << std::endl;
+		}
+		const Out operator ( )( const In &v ) const
+		{
+			return static_cast< Out >( std::fabs( f_( v ) ) );
+		}
+	};
+
+	template< typename In, typename Out, typename Func >
+	class abs< In, rgb< Out >, Func >
+	{
+		Func f_;
+	public:
+		abs( const Func &f ) : f_( f )
+		{
+			// std::cout << "abs" << std::endl;
+		}
+		const rgb< Out > operator ( )( const In &v ) const
+		{
+			const rgb< Out > res = f_( v );
+			return ( rgb< Out >( static_cast< Out >( std::fabs( static_cast< double >( res.r ) ) ) , static_cast< Out >( std::fabs( static_cast< double >( res.g ) ) ) , static_cast< Out >( std::fabs( static_cast< double >( res.b ) ) ) ) );
+		}
+	};
+
+
+
+	inline void uniw( array< double > &a, const size_t size )
+	{
+		// std::cout << "uniw_0" << std::endl;
+		a.resize( size );
+		a.fill( 1.0 / a.size( ) );
+	}
+
+	inline void uniw_1( array1< double > &a, const size_t size )
+	{
+		// std::cout << "uniw_1" << std::endl;
+		a.resize( size );
+		a.fill( 1.0 / a.size( ) );
+	}
+
+	inline void uniw_2( array2< double > &a, const size_t size )
+	{
+		// std::cout << "uniw_2" << std::endl;
+		a.resize( size, size );
+		a.fill( 1.0 / a.size( ) );
+	}
+
+	inline void uniw_3( array3< double > &a, const size_t size )
+	{
+		// std::cout << "uniw_3" << std::endl;
+		a.resize( size, size, size );
+		a.fill( 1.0 / a.size( ) );
+	}
+
+
+
+	template< typename Array >
+	inline void normalize( Array &a )
+	{
+		double nrm  = 0;
+		for( size_t i = 0 ; i < a.size( ) ; i ++ )
+		{
+			nrm += a[ i ];
+		}
+		for( size_t i = 0 ; i < a.size( ) ; i ++ )
+		{
+			a[ i ] /= nrm;
+		}
+	}
+
+
+	inline void gaus( array< double > &a, const size_t size, const double sigma )
+	{
+		// std::cout << "gaus_0" << std::endl;
+		a.resize( size );
+		const int o = size / 2;
+		for( size_t i = 0 ; i < size ; i ++ )
+		{
+			const int ii = static_cast< int >( i );
+			a[ i ] = std::exp( -( ( ii - o ) * ( ii - o ) ) / ( 2 * sigma * sigma ) );
+		}
+		normalize( a );
+	}
+
+	inline void gaus_1( array1< double > &a, const size_t size, const double sigma )
+	{
+		// std::cout << "gaus_1" << std::endl;
+		a.resize( size );
+		const int o = size / 2;
+		for( size_t i = 0 ; i < size ; i ++ )
+		{
+			const int ii = static_cast< int >( i );
+			a[ i ] = std::exp( -( ( ii - o ) * ( ii - o ) ) / ( 2 * sigma * sigma ) );
+		}
+		normalize( a );
+	}
+
+	inline void gaus_2( array2< double > &a, const size_t size, const double sigma )
+	{
+		// std::cout << "gaus_2" << std::endl;
+		a.resize( size, size );
+		const int o = size / 2;
+		for( size_t j = 0 ; j < size ; j ++ )
+		{
+			for( size_t i = 0 ; i < size ; i ++ )
+			{
+				const int ii = static_cast< int >( i );
+				const int jj = static_cast< int >( j );
+				a( i, j ) = std::exp( -( ( ii - o ) * ( ii - o ) + ( jj - o ) * ( jj - o ) ) / ( 2 * sigma * sigma ) );
+			}
+		}
+		normalize( a );
+	}
+
+	inline void gaus_3( array3< double > &a, const size_t size, const double sigma )
+	{
+		// std::cout << "gaus_3" << std::endl;
+		a.resize( size, size, size );
+		const int o = size / 2;
+		for( size_t k = 0 ; k < size ; k ++ )
+		{
+			for( size_t j = 0 ; j < size ; j ++ )
+			{
+				for( size_t i = 0 ; i < size ; i ++ )
+				{
+					const int ii = static_cast< int >( i );
+					const int jj = static_cast< int >( j );
+					const int kk = static_cast< int >( k );
+					a( i, j, k ) = std::exp( -( ( ii - o ) * ( ii - o ) + ( jj - o ) * ( jj - o ) + ( kk - o ) * ( kk - o ) ) / ( 2 * sigma * sigma ) );
+				}
+			}
+		}
+		normalize( a );
+	}
+
 	
-	//////
-	////// 配列の端以外の各要素に対する計算
-	//////
-	template < class Calc_type, class Out_type, class Array_in, class Array_kernel, class Post_func >
-	inline Out_type  calc_non_edge( 
-										const Array_in								&in, 
-										const typename Array_in::difference_type	*pindex, 
-										const Array_kernel							&kernel, 
-										const typename Array_in::size_type			ii,
-										Post_func									p_func )
+
+	inline void lapl( array< double > &a )
 	{
-		typedef typename Array_in::size_type size_type;
-		
-		Calc_type  ret = Calc_type( );
-		typename Array_in::const_pointer p = &in[ ii ];
-		for( size_type i = 0 ; i < kernel.size( ) ; i++ )
-		{
-			ret += p[ pindex[ i ] ] * kernel[ i ];
-		}
-
-		return ( p_func( ret ) );
-	}		
-
-
-	//////
-	////// 配列の端の要素に対する計算
-	//////
-	template < class Out_type, class Array_in, class Post_func >
-	inline Out_type  calc_edge( 
-									const Array_in						&in, 
-									const typename Array_in::size_type	i,
-									Post_func							p_func )
-	{
-		return ( p_func( in[ i ]  ) );
-	}
-	
-	
-	//////
-	////// カーネル適用
-	//////
-
-	// カーネル適用 ( array )
-	template < class Calc_type, class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel, class Post_func >
-	inline void  apply( 
-							const array< T_in, Allocator_in >			&in, 
-							array< T_out, Allocator_out >				&out, 
-							const array< T_kernel, Allocator_kernel >	&kernel,
-							const unsigned int							kernel_center,
-							const Post_func								p_func )
-	{
-		out.resize( in.size( ) );
-
-		typedef typename array< T_in, Allocator_in >::size_type			size_type;
-		typedef typename array< T_in, Allocator_in >::difference_type	difference_type;
-		typedef typename array< T_out, Allocator_out >::value_type		out_type;
-		typedef Calc_type												calc_type;
-
-		const  size_type s_i = kernel_center;
-		const  size_type e_i = in.size( ) - ( kernel.size( ) - kernel_center ) + 1;  
-
-		typedef typename array< T_in, Allocator_in >::const_pointer const_pointer;
-		difference_type *pindex = new difference_type[ kernel.size( ) ];
-
-		size_type		i, count = 0;
-		const_pointer	p = &in( in.size( ) / 2 );
-		for( i = 0 ; i < kernel.size1( ) ; i++ )
-		{
-			pindex[ count++ ] = &in( in.size( ) / 2 + i - kernel_center ) - p;
-		}
-
-		for( i = s_i ; i < e_i ; i++ )
-		{
-			out( i ) = calc_non_edge< calc_type, out_type >( in, pindex, kernel, i, p_func );
-		}
-
-		// 端の処理
-		for( i = 0 ; i < s_i ; i++ )
-		{
-			out( i ) = calc_edge< out_type >( in, i, p_func );	
-		}
-		for( i = e_i ; i < in.size( ) ; i++ )
-		{
-			out( i ) = calc_edge< out_type >( in, i, p_func );	
-		}		
+		// std::cout << "lapl_0" << std::endl;
+		a.resize( 3 );
+		a[ 0 ] = 1.0;  a[ 1 ] = -2.0;  a[ 2 ] = 1.0;
 	}
 
-	// カーネル適用 ( array1 )
-	template < class Calc_type, class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel, class Post_func >
-	inline void  apply(
-							const array1< T_in, Allocator_in >			&in, 
-							array1< T_out, Allocator_out >				&out, 
-							const array1< T_kernel, Allocator_kernel >	&kernel,
-							const unsigned int							kernel_center_i,
-							const Post_func								p_func )
+	inline void lapl_1( array1< double > &a )
 	{
-		out.resize( in.size1( ) );
-		out.reso1( in.reso1( ) );
-
-		typedef typename array1< T_in, Allocator_in >::size_type		size_type;
-		typedef typename array1< T_in, Allocator_in >::difference_type	difference_type;
-		typedef typename array1< T_out, Allocator_out >::value_type		out_type;
-		typedef Calc_type												calc_type;
-
-		const size_type  s_i = kernel_center_i;
-		const size_type  e_i = in.size1( ) - ( kernel.size1( ) - kernel_center_i ) + 1;
-
-		typedef typename array1< T_in, Allocator_in >::const_pointer const_pointer;
-		difference_type *pindex = new difference_type[ kernel.size( ) ];
-
-		size_type		i, count = 0;
-		const_pointer	p = &in( in.width( ) / 2 );
-		for( i = 0 ; i < kernel.size1( ) ; i++ )
-		{
-			pindex[ count++ ] = &in( in.size1( ) / 2 + i - kernel_center_i ) - p;
-		}
-
-		for( i = s_i ; i < e_i ; i++ )
-		{
-			out( i ) = calc_non_edge< calc_type, out_type >( in, pindex, kernel, i, p_func );	
-		}
-
-		// 端の処理
-		for( i = 0 ; i < s_i ; i++ )
-		{
-			out( i ) = calc_edge< out_type >( in, i, p_func );	
-		}
-		for( i = e_i ; i < in.size1( ) ; i++ )
-		{
-			out( i ) = calc_edge< out_type >( in, i, p_func );	
-		}		
+		// std::cout << "lapl_1" << std::endl;
+		a.resize( 3 );
+		a[ 0 ] = 1.0;  a[ 1 ] = -2.0;  a[ 2 ] = 1.0;
 	}
 
-	// カーネル適用 ( array2 )
-	template < class Calc_type, class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel, class Post_func >
-	inline void apply( 
-						const array2< T_in, Allocator_in >			&in, 
-						array2< T_out, Allocator_out >				&out, 
-						const array2< T_kernel, Allocator_kernel >	&kernel,
-						const unsigned int							kernel_center_i,
-						const unsigned int							kernel_center_j,
-						Post_func									p_func ) 
+	inline void lapl_2( array2< double > &a )
 	{
-		out.resize( in.size1( ), in.size2( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-
-		typedef typename array2< T_in, Allocator_in >::size_type			size_type;
-		typedef typename array2< T_in, Allocator_in >::difference_type		difference_type;
-		typedef typename array2< T_out, Allocator_out >::value_type			out_type;
-		typedef Calc_type													calc_type;
-
-		const size_type  s_i = kernel_center_i;
-		const size_type  e_i = in.size1( ) - ( kernel.size1( ) - kernel_center_i ) + 1;
-		const size_type  s_j = kernel_center_j;
-		const size_type  e_j = in.size2( ) - ( kernel.size2( ) - kernel_center_j ) + 1;
-
-		typedef typename array2< T_in, Allocator_in >::const_pointer const_pointer;
-		difference_type *pindex = new difference_type[ kernel.size( ) ];
-
-		size_type	   i, j, count = 0;
-		const_pointer  p = &in( in.width( ) / 2, in.height( ) / 2 );
-		for( j = 0 ; j < kernel.size2( ) ; j++ )
-		{
-			for( i = 0 ; i < kernel.size1( ) ; i++ )
-			{
-				pindex[ count++ ] = &in( in.size1( ) / 2 + i - kernel_center_i, in.size2( ) / 2 + j - kernel_center_j ) - p;
-			}
-		}
-
-		for( j = s_j ; j < e_j ; j++ )
-		{
-			for( i = s_i ; i < e_i ; i++ )
-			{
-				out( i, j ) = calc_non_edge< calc_type, out_type >( in, pindex, kernel, j * in.size1( ) + i, p_func );
-			}
-		}
-
-		delete [] pindex;
-
-		// 端の処理
-		for( j = 0 ; j < in.size2( ) ; j++ )
-		{
-			for( i = 0 ; i < s_i ; i++ )
-			{
-				out( i, j ) = calc_edge< out_type >( in, j * in.size1( ) + i, p_func );
-			}
-			for( i = e_i ; i < in.size1( ) ; i++ )
-			{
-				out( i, j ) = calc_edge< out_type >( in, j * in.size1( ) + i, p_func );
-			}
-		}
-		for( j = 0 ; j < s_j ; j++ )
-		{
-			for( i = s_i ; i < e_i ; i++ )
-			{
-				out( i, j ) = calc_edge< out_type >( in, j * in.size1( ) + i, p_func );
-			}
-		}
-		for( j = e_j ; j < in.size2( ) ; j++ )
-		{
-			for( i = s_i ; i < e_i ; i++ )
-			{
-				out( i, j ) = calc_edge< out_type >( in, j * in.size1( ) + i, p_func );
-			}
-		}
+		// std::cout << "lapl_2" << std::endl;
+		a.resize( 3, 3 );
+		a( 0, 0 ) = 1.0;  a( 1, 0 ) = 1.0;  a( 2, 0 ) = 1.0;
+		a( 0, 1 ) = 1.0;  a( 1, 1 ) = -8.0;  a( 2, 1 ) = 1.0;
+		a( 0, 2 ) = 1.0;  a( 1, 2 ) = 1.0;  a( 2, 2 ) = 1.0;
 	}
 
-	// カーネル適用 ( array3 )
-	template < class Calc_type, class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel, class Post_func >
-	void apply( 
-					const array3< T_in, Allocator_in >			&in, 
-					array3< T_out, Allocator_out >				&out, 
-					const array3< T_kernel, Allocator_kernel >	&kernel,
-					const unsigned int							kernel_center_i,
-					const unsigned int							kernel_center_j,
-					const unsigned int							kernel_center_k,
-					const Post_func								p_func )
+	inline void lapl_3( array3< double > &a )
 	{
-		out.resize( in.size1( ), in.size2( ), in.size3( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-		out.reso3( in.reso3( ) );
-		
-		typedef typename array3< T_in, Allocator_in >::size_type		size_type;
-		typedef typename array3< T_in, Allocator_in >::difference_type	difference_type;
-		typedef typename array3< T_out, Allocator_out >::value_type		out_type;
-		typedef Calc_type												calc_type;
-		
-		const size_type  s_i = kernel_center_i;
-		const size_type  e_i = in.size1( ) - ( kernel.size1( ) - kernel_center_i ) + 1;
-		const size_type  s_j = kernel_center_j;
-		const size_type  e_j = in.size2( ) - ( kernel.size2( ) - kernel_center_j ) + 1;
-		const size_type  s_k = kernel_center_k;
-		const size_type  e_k = in.size3( ) - ( kernel.size3( ) - kernel_center_k ) + 1;
-
-		typedef typename array3< T_in, Allocator_in >::const_pointer const_pointer;
-		difference_type *pindex = new difference_type[ kernel.size( ) ];
-
-		size_type		i, j, k, count = 0;
-		const_pointer	p = &in( in.width( ) / 2, in.height( ) / 2, in.depth( ) / 2 );
-		for( k = 0 ; k < kernel.size3( ) ; k++ )
-		{
-			for( j = 0 ; j < kernel.size2( ) ; j++ )
-			{
-				for( i = 0 ; i < kernel.size1( ) ; i++ )
-				{
-					pindex[ count++ ] = &in( in.size1( ) / 2 + i - kernel_center_i, in.size2( ) / 2 + j - kernel_center_j, in.size3( ) / 2 + k - kernel_center_k ) - p;
-				}
-			}
-		}
-
-		for( k = s_k ; k < e_k ; k++ )
-		{
-			for( j = s_j ; j < e_j ; j++ )
-			{
-				for( i = s_i ; i < e_i ; i++ )
-				{
-					out( i, j, k ) = calc_non_edge< calc_type, out_type >( in, pindex, kernel, k * in.size1( ) *in.size2( ) + j *in.size1( ) + i, p_func );
-				}
-			}
-		}
-
-		delete [] pindex;
-
-
-		// 端の処理
-		for( k = 0 ; k < in.size3( ) ; k++ )
-		{
-			for( j = 0 ; j < in.size2( ) ; j++ )
-			{
-				for( i = 0 ; i < s_i ; i++ )
-				{
-					out( i, j, k ) = calc_edge< out_type >( in, k * in.size1( ) * in.size2( ) + j * in.size1( ) + i, p_func );
-				}
-				for( i = e_i ; i < in.size1( ) ; i++ )
-				{
-					out( i, j, k ) = calc_edge< out_type >( in, k * in.size1( ) * in.size2( ) + j * in.size1( ) + i, p_func );
-				}
-			}
-			for( j = 0 ; j < s_j ; j++ )
-			{
-				for( i = s_i ; i < e_i ; i++ )
-				{
-					out( i, j, k ) = calc_edge< out_type >( in, k * in.size1( ) * in.size2( ) + j * in.size1( ) + i, p_func );
-				}
-			}
-			for( j = e_j ; j < in.size2( ) ; j++ )
-			{
-				for( i = s_i ; i < e_i ; i++ )
-				{
-					out( i, j, k ) = calc_edge< out_type >( in, k * in.size1( ) * in.size2( ) + j * in.size1( ) + i, p_func );
-				}
-			}
-		}
-		for( k = 0 ; k < s_k ; k++ )
-		{
-			for( j = s_j ; j < e_j ; j++ )
-			{
-				for( i = s_i ; i < e_i ; i++ )
-				{
-					out( i, j, k ) = calc_edge< out_type >( in, k * in.size1( ) * in.size2( ) + j * in.size1( ) + i, p_func );
-				}
-			}
-		}
-		for( k = e_k ; k < in.size3() ; k++ )
-		{
-			for( j = s_j ; j < e_j ; j++ )
-			{
-				for( i = s_i ; i < e_i ; i++ )
-				{
-					out( i, j, k ) = calc_edge< out_type >( in, k * in.size1( ) * in.size2( ) + j * in.size1( ) + i, p_func );
-				}
-			}
-		}
-	}
-
-
-	//////
-	////// 出力配列の要素型が算術型なら，内部の計算は double 型で行う．それ以外( mist::rgb< > 等 )の場合は，出力配列の要素型で計算する
-	//////
-
-	// 算術型なので double 型で計算する 
-	template < bool Is_arithm = true >
-	struct _is_arithm
-	{
-		template < class Out_type >
-		struct _type
-		{
-			typedef double  calc_type;
-		};
-	};
-
-	// 算術型ではないので出力配列の要素型で計算する
-	template <>
-	struct _is_arithm< false >
-	{
-		template < class Out_type >
-		struct _type
-		{
-			typedef Out_type  calc_type;
-		};
-	};
-
-
-	//////
-	////// デフォルト後処理関数オブジェクトを生成
-	//////
-	template < class Calc_type, class Out_type >
-	struct default_func : public std::unary_function< Calc_type, Out_type >
-	{
-		typedef std::unary_function< Calc_type, Out_type > base;
-		typedef typename base::result_type result_type;
-		typedef typename base::argument_type argument_type;
-
-		result_type  operator( )( argument_type  v )
-		{
-			return ( static_cast< result_type >( v ) );
-		}
-	};
-
-
-	//////
-	////// 指定された単項関数オブジェクトから後処理関数オブジェクトを生成
-	//////
-
-	// STLの unary_function を継承した関数オブジェクトを使用するとき
-	template < class Calc_type, class Out_type, class Unary_func >
-	struct post_func1 : public std::unary_function< Calc_type, Out_type >
-	{
-		typedef std::unary_function< Calc_type, Out_type > base;
-		typedef typename base::result_type result_type;
-		typedef typename base::argument_type argument_type;
-
-		typedef Unary_func							unary_func;
-		typedef typename unary_func::argument_type	unary_arg;
-		
-		unary_func  u_func_;
-
-		post_func1( unary_func  u_func ) : u_func_( u_func )
-		{
-		}
-
-		result_type  operator( )( argument_type  v )
-		{
-			return ( static_cast< result_type >( u_func_( static_cast< unary_arg >( v ) ) ) );
-		}
-	};
-
-	// 通常の関数を使用するとき
-	template < class Calc_type, class Out_type, class Unary_arg, class Unary_res >
-	struct post_func2 : public std::unary_function< Calc_type, Out_type >
-	{
-		typedef std::unary_function< Calc_type, Out_type > base;
-		typedef typename base::result_type result_type;
-		typedef typename base::argument_type argument_type;
-
-		typedef Unary_res	unary_func( Unary_arg );
-		typedef Unary_arg	unary_arg;
-		
-		unary_func  *u_func_;
-
-		post_func2( unary_func  *u_func ) : u_func_( u_func )
-		{
-		}
-
-		result_type  operator( )( argument_type  v ) 
-		{
-			return ( static_cast< result_type >( ( *u_func_ )( static_cast< unary_arg >( v ) ) ) );
-		}
-	};
-
-
-	//////
-	////// 配列の正規化 ( array, array1, array2, array3 )
-	//////
-	template < class Array >
-	inline void normalize( Array  &ary )
-	{
-		typedef typename Array::size_type  size_type;
-		typedef typename Array::value_type value_type;
-		
-		double  norm = 0;
-
-		size_type  i;
-		for( i = 0 ; i < ary.size( ) ; i++ )
-		{
-			norm += ary[ i ];
-		}
-		for( i = 0 ; i < ary.size( ) ; i++ )
-		{
-			ary[ i ] =  static_cast< value_type >( ary[ i ] / norm );
-		}
-	}
-
-
-	//////
-    ////// MIST側で予め用意してあるフィルターのカーネル生成のための識別子
-	//////
-	struct filter_style
-	{
-		enum styles
-		{
-			user_defined,
-			gaus,
-			lapl
-		};
-	};
-
-
-	//////
-	////// MIST側で予め用意してあるフィルターに関するカーネル生成関数
-	//////
-
-	// 該当なし
-	template< filter_style::styles  Style = filter_style::user_defined >
-	struct pre_defined_kernel
-	{
-	};
-
-	// 3×3ガウシアンカーネル関数
-	template < >
-	struct pre_defined_kernel< filter_style::gaus >
-	{
-		// gaussian ( array )
-		inline static void  gen_func( array< double >  &kernel, unsigned int  &center ) 
-		{	
-			center = 1;
-
-			kernel.resize( 3 );	
-
-			kernel( 0 ) = 0.60653066;
-			kernel( 1 ) = 1.0;
-			kernel( 2 ) = 0.60653066;
-
-			normalize( kernel );
-		}
-
-		// gaussian ( array1 )
-		inline static void  gen_func( array1< double >  &kernel, unsigned int  &center_i )
-		{
-			center_i = 0;
-
-			kernel.resize( 3 );	
-
-			kernel( 0 ) = 0.60653066;
-			kernel( 1 ) = 1.0;
-			kernel( 2 ) = 0.60653066;
-
-			normalize( kernel );
-		}
-
-		// gaussian ( array2 ) 
-		inline static void  gen_func( array2< double >  &kernel, unsigned int  &center_i, unsigned int  &center_j )
-		{
-			center_i = 1;
-			center_j = 1;
-
-			kernel.resize( 3, 3 );	
-
-			kernel( 0, 0 ) = 0.367879441;
-			kernel( 1, 0 ) = 0.60653066;
-			kernel( 2, 0 ) = 0.367879441;
-			kernel( 0, 1 ) = 0.60653066;
-			kernel( 1, 1 ) = 1.0;
-			kernel( 2, 1 ) = 0.60653066;
-			kernel( 0, 2 ) = 0.367879441;
-			kernel( 1, 2 ) = 0.60653066;
-			kernel( 2, 2 ) = 0.367879441;	
-
-			normalize( kernel );
-		}
-
-		// gaussian ( array3 )
-		inline static void  gen_func( array3< double >  &kernel, unsigned int  &center_i, unsigned int  &center_j, unsigned int  &center_k )
-		{
-			center_i = 1;
-			center_j = 1;
-			center_k = 1;
-
-			kernel.resize( 3, 3, 3 );	
-
-			kernel( 0, 0, 0 ) = 0.22313016;
-			kernel( 1, 0, 0 ) = 0.367879441;
-			kernel( 2, 0, 0 ) = 0.22313016;
-			kernel( 0, 1, 0 ) = 0.367879441;
-			kernel( 1, 1, 0 ) = 0.60653066;
-			kernel( 2, 1, 0 ) = 0.367879441;
-			kernel( 0, 2, 0 ) = 0.22313016;
-			kernel( 1, 2, 0 ) = 0.367879441;
-			kernel( 2, 2, 0 ) = 0.22313016;
-
-			kernel( 0, 0, 1 ) = 0.367879441;
-			kernel( 1, 0, 1 ) = 0.60653066;
-			kernel( 2, 0, 1 ) = 0.367879441;
-			kernel( 0, 1, 1 ) = 0.60653066;
-			kernel( 1, 1, 1 ) = 1.0;
-			kernel( 2, 1, 1 ) = 0.60653066;
-			kernel( 0, 2, 1 ) = 0.367879441;
-			kernel( 1, 2, 1 ) = 0.60653066;
-			kernel( 2, 2, 1 ) = 0.367879441;
-
-			kernel( 0, 0, 2 ) = 0.22313016;
-			kernel( 1, 0, 2 ) = 0.367879441;
-			kernel( 2, 0, 2 ) = 0.22313016;
-			kernel( 0, 1, 2 ) = 0.367879441;
-			kernel( 1, 1, 2 ) = 0.60653066;
-			kernel( 2, 1, 2 ) = 0.367879441;
-			kernel( 0, 2, 2 ) = 0.22313016;
-			kernel( 1, 2, 2 ) = 0.367879441;
-			kernel( 2, 2, 2 ) = 0.22313016;
-
-			normalize( kernel );
-		}
-	};
-
-	// 3×3ラプラシアンカーネル関数
-	template < >
-	struct pre_defined_kernel< filter_style::lapl >
-	{
-		// laplacian ( array )
-		inline static void  gen_func( array< double >  &kernel, unsigned int  &center )
-		{
-			center = 1;
-
-			kernel.resize( 3 );
-
-			kernel( 0 ) = 1.0;
-			kernel( 1 ) = -2.0;
-			kernel( 2 ) = 1.0;
-		}
-
-		// laplacian ( array1 ) 
-		inline static void  gen_func( array1< double >  &kernel, unsigned int  &center_i )
-		{
-			center_i = 1;
-
-			kernel.resize( 3 );		
-
-			kernel( 0 ) = 1.0;
-			kernel( 1 ) = -2.0;
-			kernel( 2 ) = 1.0;
-		}
-
-		// laplacian ( array2 ) 
-		inline static void  gen_func( array2< double >  &kernel, unsigned int  &center_i, unsigned int  &center_j )
-		{
-			center_i = 1;
-			center_j = 1;
-
-			kernel.resize( 3, 3 );		
-
-			kernel( 0, 0 ) = 1.0;
-			kernel( 1, 0 ) = 1.0;
-			kernel( 2, 0 ) = 1.0;
-			kernel( 0, 1 ) = 1.0;
-			kernel( 1, 1 ) = -8.0;
-			kernel( 2, 1 ) = 1.0;
-			kernel( 0, 2 ) = 1.0;
-			kernel( 1, 2 ) = 1.0;
-			kernel( 2, 2 ) = 1.0;	
-		}
-
-		// laplacian ( array3 ) 
-		inline static void  gen_func( array3< double >  &kernel, unsigned int  &center_i, unsigned int  &center_j, unsigned int  &center_k  )
-		{
-			center_i = 1;
-			center_j = 1;
-			center_k = 1;
-
-			kernel.resize( 3, 3, 3 );
-
-			kernel( 0, 0, 0 ) = 1.0;
-			kernel( 1, 0, 0 ) = 1.0;
-			kernel( 2, 0, 0 ) = 1.0;
-			kernel( 0, 1, 0 ) = 1.0;
-			kernel( 1, 1, 0 ) = 1.0;
-			kernel( 2, 1, 0 ) = 1.0;
-			kernel( 0, 2, 0 ) = 1.0;
-			kernel( 1, 2, 0 ) = 1.0;
-			kernel( 2, 2, 0 ) = 1.0;
-	
-			kernel( 0, 0, 1 ) = 1.0;
-			kernel( 1, 0, 1 ) = 1.0;
-			kernel( 2, 0, 1 ) = 1.0;
-			kernel( 0, 1, 1 ) = 1.0;
-			kernel( 1, 1, 1 ) = -26.0;
-			kernel( 2, 1, 1 ) = 1.0;
-			kernel( 0, 2, 1 ) = 1.0;
-			kernel( 1, 2, 1 ) = 1.0;
-			kernel( 2, 2, 1 ) = 1.0;
-
-			kernel( 0, 0, 2 ) = 1.0;
-			kernel( 1, 0, 2 ) = 1.0;
-			kernel( 2, 0, 2 ) = 1.0;
-			kernel( 0, 1, 2 ) = 1.0;
-			kernel( 1, 1, 2 ) = 1.0;
-			kernel( 2, 1, 2 ) = 1.0;
-			kernel( 0, 2, 2 ) = 1.0;
-			kernel( 1, 2, 2 ) = 1.0;
-			kernel( 2, 2, 2 ) = 1.0;
-		}
-	};
-
-
-	//////
-	////// MIST側で予め用意してあるフィルター適用
-	//////
-
-	// array
-	template< filter_style::styles Filter_style, class Calc_type, class T_in, class Allocator_in, class T_out, class Allocator_out, class Post_func >
-	inline void  apply_pre_defined_kernel( 
-											const array< T_in, Allocator_in >	&in, 
-											array< T_out, Allocator_out >		&out, 
-											Post_func							p_func )
-	{
-		array< double >		kernel;
-		unsigned int		kernel_center;	
-
-		pre_defined_kernel< Filter_style >::gen_func( kernel, kernel_center );
-
-		apply< Calc_type >( in, out, kernel, kernel_center, p_func );
-	}
-
-	// array1
-	template< filter_style::styles Filter_style, class Calc_type, class T_in, class Allocator_in, class T_out, class Allocator_out, class Post_func >
-	inline void  apply_pre_defined_kernel( 
-											const array1< T_in, Allocator_in >	&in, 
-											array1< T_out, Allocator_out >		&out, 
-											Post_func							p_func )
-	{
-		array1< double >	kernel;
-		unsigned int		kernel_center_i;
-
-		pre_defined_kernel< Filter_style >::gen_func( kernel, kernel_center_i );
-
-		apply< Calc_type >( in, out, kernel, kernel_center_i, p_func );
-	}
-
-	// array2
-	template< filter_style::styles Filter_style, class Calc_type, class T_in, class Allocator_in, class T_out, class Allocator_out, class Post_func >
-	inline void  apply_pre_defined_kernel( 
-											const array2< T_in, Allocator_in >	&in, 
-											array2< T_out, Allocator_out >		&out, 
-											Post_func							p_func )
-	{
-		array2< double >	kernel;
-		unsigned int		kernel_center_i;
-		unsigned int		kernel_center_j;
-
-		pre_defined_kernel< Filter_style >::gen_func( kernel, kernel_center_i, kernel_center_j );
-
-		apply< Calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, p_func );
-	}
-
-	// array3
-	template< filter_style::styles Filter_style, class Calc_type, class T_in, class Allocator_in, class T_out, class Allocator_out, class Post_func >
-	inline void  apply_pre_defined_kernel( 
-											const array3< T_in, Allocator_in >	&in, 
-											array3< T_out, Allocator_out >		&out, 
-											Post_func							p_func )
-	{
-		array3< double >	kernel;
-		unsigned int		kernel_center_i;
-		unsigned int		kernel_center_j;
-		unsigned int		kernel_center_k;
-
-		pre_defined_kernel< Filter_style >::gen_func( kernel, kernel_center_i, kernel_center_j, kernel_center_k );
-
-		apply< Calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, kernel_center_k, p_func );
+		// std::cout << "lapl_3" << std::endl;
+		a.resize( 3, 3, 3 );
+		a( 0, 0, 0 ) = 1.0;  a( 1, 0, 0 ) = 1.0;  a( 2, 0, 0 ) = 1.0;
+		a( 0, 1, 0 ) = 1.0;  a( 1, 1, 0 ) = 1.0;  a( 2, 1, 0 ) = 1.0;
+		a( 0, 2, 0 ) = 1.0;  a( 1, 2, 0 ) = 1.0;  a( 2, 2, 0 ) = 1.0;
+		a( 0, 0, 1 ) = 1.0;  a( 1, 0, 1 ) = 1.0;  a( 2, 0, 1 ) = 1.0;
+		a( 0, 1, 1 ) = 1.0;  a( 1, 1, 1 ) = -26.0;  a( 2, 1, 1 ) = 1.0;
+		a( 0, 2, 1 ) = 1.0;  a( 1, 2, 1 ) = 1.0;  a( 2, 2, 1 ) = 1.0;
+		a( 0, 0, 2 ) = 1.0;  a( 1, 0, 2 ) = 1.0;  a( 2, 0, 2 ) = 1.0;
+		a( 0, 1, 2 ) = 1.0;  a( 1, 1, 2 ) = 1.0;  a( 2, 1, 2 ) = 1.0;
+		a( 0, 2, 2 ) = 1.0;  a( 1, 2, 2 ) = 1.0;  a( 2, 2, 2 ) = 1.0;
 	}
 
 }
+
+
+
+// 
+// std::transformのインタフェースを変えたもの
+//
+template< typename In_array, typename Out_array, typename Func >
+inline void filtering(
+				   const In_array &in,
+				   Out_array &out,
+				   const Func func,
+				   const size_t begin,
+				   const size_t end )
+{
+	std::transform( &in[ begin ], &in[ end ], &out[ begin ], func );
+}
+
+
 
 //! @addtogroup linear_group 線形フィルタ
 //!
@@ -744,800 +365,499 @@ namespace __linear_filter__
 //! #include <mist/filter/linear.h>
 //! @endcode
 //!
-//! 自分で定義した線形フィルタ用カーネルを各次元の画像に適用します．
+//! 配列の端（カーネルがはみ出すところ）の要素の計算は行いません．
+//!
+//! 使用可能な要素型は，算術型か mist::rgb< 算術型 > に限ります．
+//! 内部の計算は，出力配列の要素型が算術型の場合は double 型，
+//! mist::rgb< 算術型 > の場合は mist::rgb< double > で行います．
+//!
+//! 自分で定義した線形フィルタ用カーネルを各次元の画像に適用できます．
 //! 
 //! @code 使用例(5×5一様重み平滑化フィルタ)
 //! mist::array2< unsigned char > in, out;
 //!
-//! mist::read_bmp( in, "hoge.bmp" );  // 適当な入力データ 
+//! mist::read_bmp( in, "hoge.bmp" );  // 適当な入力配列 
 //!
-//! mist::array2< double > kernel( 5, 5 );
+//! mist::array2< double > kernel( 5, 5 ); // 適当なカーネル配列
 //! kernel.fill( 1.0 / kernel.size( ) );  // 5×5一様重み平滑化フィルタ用のカーネルを作成
 //!
-//! mist::linear_filter( in, out, kernel );  // フィルタの適用
+//! mist::linear_filter( in, out, kernel, 2, 2 );  // フィルタの適用（カーネル配列とカーネル中心を渡します）
 //! @endcode
 //!
-//! また，3×3ガウシアンフィルタ，3×3ラプラシアンフィルタを array, array1, array2, array3 で用意してあります．
+//! カーネルサイズ3（1次元），3×3（2次元），3×3×3（3次元）に特化した線形フィルタを用意してあります．
 //!
-//! 内部の計算は，出力配列の要素型が算術型の場合は double 型，
-//! それ以外（ mist::rgb<> 等 ）の場合は出力配列の要素型で行います．
+//! @code 使用例(5×5一様重み平滑化フィルタ)
+//! mist::array2< unsigned char > in, out;
 //!
-//! 各関数の引数として適当な単項関数(引数が一つの関数)，
-//! またはSTLの単項関数オブジェクト( std::unary_function から派生させた関数オブジェクト)を渡すことにより，
-//! 要素の計算が終了して出力配列に格納する直前にはさむ後処理を指定することができます．
+//! mist::read_bmp( in, "hoge.bmp" );  // 適当な入力配列 
 //!
-//! @code 後処理関数の例1：差分絶対値フィルタの各要素の計算値の絶対値を出力配列に格納したい
-//! mist::laplacian( in, out, std::fabsl );
+//! mist::array2< double > size_3_kernel( 3, 3 ); // 適当なカーネル配列
+//! size_3_kernel.fill( 1.0 / size_3_kernel.size( ) );  // 3×3一様重み平滑化フィルタ用のカーネルを作成
+//!
+//! mist::size_3_filter( in, out, size_3_kernel );  // フィルタの適用（カーネル配列とカーネル中心を渡します）
 //! @endcode
 //!
-//! @code 後処理関数の例2：フィルタの出力を unsigned char のレンジに納めたい 
-//! unsigned char  func( const double  v )  // v を unsigned char に切り詰める単項関数
-//! {
-//!     return ( ( v > 255 ) ? 255 : ( ( v < 0 ) ? 0 : static_cast< unsigned char >( val ) ) );
-//! }
-//!
-//!     // 中略 //
-//! 
-//! mist::array2< unsigned char >  in, out;
-//! 
-//!     // 適当な 入力配列 in を作成 //
-//!
-//! mist::array2< double >  kernel;
-//!
-//!     // 適当な kernel を作成 //
-//! 
-//! mist::linear_filter( in, out, func, kernel );  // 単項関数 func を引数として渡す
-//! @endcode
-//!
-//! @code 後処理関数の例3：ガウシアンをかけた後，2値化（STLの関数オブジェクトを使用）
-//! #include <functional> // std::unary_function<> を用いるため
-//! 
-//! struct th_func : std::unary_function< double, unsigned char >
-//!     // augument_type を double ，result_type を unsigned char とする関数オブジェクト 
-//! {
-//!     argument_type  th_;  // 2値化閾値
-//!     
-//!     th_func( const argument_type  th ) : th_( th )  // コンストラクタ
-//!     {
-//!     }
-//!     
-//!     result_type  operator( )( const argument_type  v ) const  
-//!         // v が th_ より小さければ 0 を，th_ 以上ならば 255 を出力する
-//!     {
-//!         return ( ( v < th_ ) ? 0 : 255 );
-//!     }
-//! };
-//!
-//!     // 中略 //
-//! 
-//! mist::gaussian( in, out, th_func( 127.5 ) ); 
-//!     // 各要素に対するガウシアンの計算結果を閾値 127.5 で2値化した結果を出力配列に格納
-//! @endcode
-//!
+//! 一様重み平滑化フィルタ，ガウシアンフィルタ，ラプラシアンフィルタ（絶対値）を array, array1, array2, array3 で用意してあります．
 //!
 //!  @{
 
-/// @brief 自分で定義したkernelを用いた線形フィルタ( array )
+
+
+/// @brief 一般の線形フィルタ( array )
 //! 
-//! 予め，線形フィルタ用のカーネル配列を自分で定義しておき，それを用いたフィルタ処理を行う．
-//! カーネルの中心位置は，中央( kernel.size( ) / 2 )に設定される
-//! 
+//! カーネル配列とその中心位置を指定する
+//!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[in]  u_func … 後処理関数 ( 無くても良い )
-//! @param[in]  kernel … カーネル配列
+//! @param[kernel] kernel    …カーネル配列
+//! @param[offset] offset    …カーネル中心位置
 //!
-// 通常の関数を渡す場合
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_arg, class Unary_res, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array< T_in, Allocator_in >			&in, 
-							array< T_out, Allocator_out >				&out, 
-							Unary_res									u_func( Unary_arg ),
-							const array< T_kernel, Allocator_kernel >	&kernel )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline bool linear_filter(
+				   const array< In_value, In_alloc > &in,
+				   array< Out_value, Out_alloc > &out,
+				   const array< Kernel_value, Kernel_alloc > &kernel,
+				   const size_t offset )
 {
-	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_arg																											unary_arg;
-	typedef Unary_res																											unary_res;
- 
-	const unsigned int	kernel_center = kernel.size( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
+	// std::cout << "linear_0" << std::endl;
+	typedef array< Kernel_value, Kernel_alloc > Kernel_array;
+	out.resize( in.size( ) );
+	const __linear__::function_type< In_value, Out_value, Kernel_array > func( kernel, offset );
+	const size_t begin = offset;
+	const size_t end = in.size( ) - ( kernel.size( ) - offset - 1 );
+	filtering( in, out, func, begin, end );
+	return ( 1 );
 }
 
-// 関数オブジェクトを渡す場合
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_func, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array< T_in, Allocator_in >			&in, 
-							array< T_out, Allocator_out >				&out, 
-							Unary_func									u_func,
-							const array< T_kernel, Allocator_kernel >	&kernel )
-{
-	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_func																											unary_func;
- 
-	const unsigned int	kernel_center = kernel.size( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
-}
-
-// 何も渡さない場合
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array< T_in, Allocator_in >			&in, 
-							array< T_out, Allocator_out >				&out, 
-							const array< T_kernel, Allocator_kernel >	&kernel )
-{
-	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
- 
-	const unsigned int	kernel_center = kernel.size( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center, __linear_filter__::default_func< calc_type, out_type >( ) );
-}
-
-
-/// @brief 自分で定義したkernelを用いた線形フィルタ( array1 )
+/// @brief 一般の線形フィルタ( array1 )
 //! 
-//! 予め，線形フィルタ用のカーネル配列を自分で定義しておき，それを用いたフィルタ処理を行う．
-//! カーネルの中心位置は，中央( kernel.width( ) / 2 )に設定される
-//! 
+//! カーネル配列とその中心位置を指定する
+//!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[in]  u_func … 後処理関数 ( 無くても良い )
-//! @param[in]  kernel … カーネル配列
+//! @param[kernel] kernel    …カーネル配列
+//! @param[offset] offset    …カーネル中心位置
 //!
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_arg, class Unary_res, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array1< T_in, Allocator_in >			&in, 
-							array1< T_out, Allocator_out >				&out, 
-							Unary_res									u_func( Unary_arg ),
-							const array1< T_kernel, Allocator_kernel >	&kernel )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline bool linear_filter(
+				   const array1< In_value, In_alloc > &in,
+				   array1< Out_value, Out_alloc > &out,
+				   const array1< Kernel_value, Kernel_alloc > &kernel,
+				   const size_t offset )
 {
-	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_arg																											unary_arg;
-	typedef Unary_res																											unary_res;
- 
-	const unsigned int	kernel_center_i = kernel.width( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
+	// std::cout << "linear_1" << std::endl;
+	typedef array1< Kernel_value, Kernel_alloc > Kernel_array;
+	out.resize( in.width( ) );
+	out.reso1( in.reso1( ) );
+	const __linear__::function_type< In_value, Out_value, Kernel_array > func( kernel, offset );
+	const size_t begin = offset;
+	const size_t end = in.size( ) - ( kernel.width( ) - offset - 1 );
+	filtering( in, out, func, begin, end );
+	return ( 1 );
 }
 
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_func, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array1< T_in, Allocator_in >			&in, 
-							array1< T_out, Allocator_out >				&out, 
-							Unary_func									u_func,
-							const array1< T_kernel, Allocator_kernel >	&kernel )
-{
-	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_func																											unary_func;
-
-	const unsigned int	kernel_center_i = kernel.width( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
-}
-
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array1< T_in, Allocator_in >			&in, 
-							array1< T_out, Allocator_out >				&out, 
-							const array1< T_kernel, Allocator_kernel >	&kernel )
-{
-	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
- 
-	const unsigned int	kernel_center_i = kernel.width( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, __linear_filter__::default_func< calc_type, out_type >( ) );
-}
-
-
-/// @brief 自分で定義したkernelを用いた線形フィルタ( array2 )
+/// @brief 一般の線形フィルタ( array2 )
 //! 
-//! 予め，線形フィルタ用のカーネル配列を自分で定義しておき，それを用いたフィルタ処理を行う．
-//! カーネルの中心位置は，中央( kernel.width( ) / 2, kernel.height( ) / 2 )に設定される
-//! 
+//! カーネル配列とその中心位置を指定する
+//!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[in]  u_func … 後処理関数 ( 無くても良い )
-//! @param[in]  kernel … カーネル配列
+//! @param[kernel] kernel    …カーネル配列
+//! @param[offset] offset_i    …i方向のカーネル中心位置
+//! @param[offset] offset_j    …j方向のカーネル中心位置
 //!
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_arg, class Unary_res, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array2< T_in, Allocator_in >			&in, 
-							array2< T_out, Allocator_out >				&out, 
-							Unary_res									u_func( Unary_arg ),
-							const array2< T_kernel, Allocator_kernel >	&kernel )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline bool linear_filter(
+				   const array2< In_value, In_alloc > &in,
+				   array2< Out_value, Out_alloc > &out,
+				   const array2< Kernel_value, Kernel_alloc > &kernel,
+				   const size_t offset_i,
+				   const size_t offset_j )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_arg																											unary_arg;
-	typedef Unary_res																											unary_res;
-
-	const unsigned int	kernel_center_i = kernel.width( ) / 2;
-	const unsigned int	kernel_center_j = kernel.height( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
+	// std::cout << "linear_2" << std::endl;
+	typedef array2< Kernel_value, Kernel_alloc > Kernel_array;
+	out.resize( in.width( ), in.height( ) );
+	out.reso1( in.reso1( ) );
+	out.reso2( in.reso2( ) );
+	const __linear__::function_type< In_value, Out_value, Kernel_array > func( kernel, offset_i, offset_j, in.width( ) );
+	const size_t begin = offset_j * in.width( ) + offset_i;
+	const size_t end = in.size( ) - ( ( kernel.height( ) - offset_j - 1 ) * in.width( ) + kernel.width( ) - offset_i - 1 );
+	filtering( in, out, func, begin, end );
+	return ( 1 );
 }
 
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_func, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array2< T_in, Allocator_in >			&in, 
-							array2< T_out, Allocator_out >				&out, 
-							Unary_func									u_func,
-							const array2< T_kernel, Allocator_kernel >	&kernel )
-{
-	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_func																											unary_func;
-
-	const unsigned int	kernel_center_i = kernel.width( ) / 2;
-	const unsigned int	kernel_center_j = kernel.height( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
-}
-
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array2< T_in, Allocator_in >			&in, 
-							array2< T_out, Allocator_out >				&out, 
-							const array2< T_kernel, Allocator_kernel >	&kernel )
-{
-	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-
-	const unsigned int	kernel_center_i = kernel.width( ) / 2;
-	const unsigned int	kernel_center_j = kernel.height( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, __linear_filter__::default_func< calc_type, out_type >( ) );
-}
-	
-
-/// @brief 自分で定義したkernelを用いた線形フィルタ( array3 )
+/// @brief 一般の線形フィルタ( array2 )
 //! 
-//! 予め，線形フィルタ用のカーネル配列を自分で定義しておき，それを用いたフィルタ処理を行う．
-//! カーネルの中心位置は，中央( kernel.width( ) / 2, kernel.height( ) / 2, kernel.depth( ) / 2 )に設定される
-//! 
+//! カーネル配列とその中心位置を指定する
+//!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[in]  u_func … 後処理関数 ( 無くても良い )
-//! @param[in]  kernel … カーネル配列
+//! @param[kernel] kernel    …カーネル配列
+//! @param[offset] offset_i    …i方向のカーネル中心位置
+//! @param[offset] offset_j    …j方向のカーネル中心位置
+//! @param[offset] offset_j    …k方向のカーネル中心位置
 //!
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_arg, class Unary_res, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array3< T_in, Allocator_in >			&in, 
-							array3< T_out, Allocator_out >				&out, 
-							Unary_res									u_func( Unary_arg ),
-							const array3< T_kernel, Allocator_kernel >	&kernel )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline bool linear_filter(
+				   const array3< In_value, In_alloc > &in,
+				   array3< Out_value, Out_alloc > &out,
+				   const array3< Kernel_value, Kernel_alloc > &kernel,
+				   const size_t offset_i,
+				   const size_t offset_j,
+				   const size_t offset_k )
 {
-	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_arg																											unary_arg;
-	typedef Unary_res																											unary_res;
- 
-	const unsigned int	kernel_center_i = kernel.width( ) / 2;
-	const unsigned int	kernel_center_j = kernel.height( ) / 2;
-	const unsigned int	kernel_center_k = kernel.depth( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, kernel_center_k, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
-}
-
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_func, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array3< T_in, Allocator_in >			&in, 
-							array3< T_out, Allocator_out >				&out, 
-							Unary_func									u_func,
-							const array3< T_kernel, Allocator_kernel >	&kernel )
-{
-	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_func																											unary_func;
- 
-	const unsigned int	kernel_center_i = kernel.width( ) / 2;
-	const unsigned int	kernel_center_j = kernel.height( ) / 2;
-	const unsigned int	kernel_center_k = kernel.depth( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, kernel_center_k, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
-}
-
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array3< T_in, Allocator_in >			&in, 
-							array3< T_out, Allocator_out >				&out, 
-							const array3< T_kernel, Allocator_kernel >	&kernel )
-{
-	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
- 
-	const unsigned int	kernel_center_i = kernel.width( ) / 2;
-	const unsigned int	kernel_center_j = kernel.height( ) / 2;
-	const unsigned int	kernel_center_k = kernel.depth( ) / 2;
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, kernel_center_k, __linear_filter__::default_func< calc_type, out_type >( ) );
+	// std::cout << "linear_3" << std::endl;
+	typedef array3< Kernel_value, Kernel_alloc > Kernel_array;
+	out.resize( in.width( ), in.height( ), in.depth( ) );
+	out.reso1( in.reso1( ) );
+	out.reso2( in.reso2( ) );
+	out.reso3( in.reso3( ) );
+	const __linear__::function_type< In_value, Out_value, Kernel_array > func( kernel, offset_i, offset_j, offset_k, in.width( ), in.height( ) );
+	const size_t begin = offset_k * in.height( ) * in.width( ) + offset_j * in.width( ) + offset_i;
+	const size_t end = in.size( ) - ( ( kernel.depth( ) - offset_k - 1 ) * in.height( ) * in.width( ) + ( kernel.height( ) - offset_j - 1 ) * in.width( ) + kernel.width( ) - offset_i - 1 );
+	filtering( in, out, func, begin, end );
+	return ( 1 );
 }
 
 
-/// @brief 自分で定義したkernelを用いた線形フィルタ( array : カーネルの中心位置を指定可能 )
+
+/// @brief サイズ3の線形フィルタ( array, array1, array2, array3 )
 //! 
-//! @param[in]  in              … 入力配列
-//! @param[out] out             … 出力配列
-//! @param[in]  u_func          … 後処理関数 ( 無くても良い )
-//! @param[in]  kernel          … カーネル配列
-//! @param[in]  kernel_center   … カーネルの中心位置
+//! サイズ3(1次元)，3×3(2次元)，3×3×3(3次元)に特化した線形フィルタ
 //!
-// 通常の関数を渡す場合
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_arg, class Unary_res, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array< T_in, Allocator_in >			&in, 
-							array< T_out, Allocator_out >				&out, 
-							Unary_res									u_func( Unary_arg ),
-							const array< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int								kernel_center )
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//! @param[kernel] kernel    …カーネル配列
+//!
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline bool size_3_filter(
+				   const array< In_value, In_alloc > &in,
+				   array< Out_value, Out_alloc > &out,
+				   const array< Kernel_value, Kernel_alloc > &kernel )
 {
-	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_arg																											unary_arg;
-	typedef Unary_res																											unary_res;
- 
-	kernel_center = ( kernel_center < kernel.size( ) ) ? kernel_center : ( kernel.size( ) - 1 );
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
+	// std::cout << "size_3_0" << std::endl;
+	if( kernel.width( ) - 3 )
+	{
+		return ( 0 );
+	}
+	return ( linear_filter( in, out, kernel, 1 ) );
 }
 
-// 関数オブジェクトを渡す場合
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_func, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array< T_in, Allocator_in >			&in, 
-							array< T_out, Allocator_out >				&out, 
-							Unary_func									u_func,
-							const array< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int								kernel_center )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline bool size_3_filter(
+				   const array1< In_value, In_alloc > &in,
+				   array1< Out_value, Out_alloc > &out,
+				   const array1< Kernel_value, Kernel_alloc > &kernel )
 {
-	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_func																											unary_func;
- 
-	kernel_center = ( kernel_center < kernel.size( ) ) ? kernel_center : ( kernel.size( ) - 1 );
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
+	// std::cout << "size_3_1" << std::endl;
+	if( kernel.width( ) - 3 )
+	{
+		return ( 0 );
+	}
+	return ( linear_filter( in, out, kernel, 1 ) );
 }
 
-// 何も渡さない場合
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array< T_in, Allocator_in >			&in, 
-							array< T_out, Allocator_out >				&out, 
-							const array< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int								kernel_center )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline bool size_3_filter(
+				   const array2< In_value, In_alloc > &in,
+				   array2< Out_value, Out_alloc > &out,
+				   const array2< Kernel_value, Kernel_alloc > &kernel )
 {
-	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
- 
-	kernel_center = ( kernel_center < kernel.size( ) ) ? kernel_center : ( kernel.size( ) - 1 );
+	// std::cout << "size_3_2" << std::endl;
+	if( kernel.width( ) - 3 || kernel.height( ) - 3 )
+	{
+		return ( 0 );
+	}
+	return ( linear_filter( in, out, kernel, 1, 1 ) );
+}
 
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center, __linear_filter__::default_func< calc_type, out_type >( ) );
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline bool size_3_filter(
+				   const array3< In_value, In_alloc > &in,
+				   array3< Out_value, Out_alloc > &out,
+				   const array3< Kernel_value, Kernel_alloc > &kernel )
+{
+	// std::cout << "size_3_3" << std::endl;
+	if( kernel.width( ) - 3 || kernel.height( ) - 3 || kernel.depth( ) - 3 )
+	{
+		return ( 0 );
+	}
+	return ( linear_filter( in, out, kernel, 1, 1, 1 ) );
 }
 
 
-/// @brief 自分で定義したkernelを用いた線形フィルタ( array1 : カーネルの中心位置を指定可能 )
+/// @brief 一様重み平滑化( array, array1, array2, array3 )
 //! 
-//! @param[in]  in              … 入力配列
-//! @param[out] out             … 出力配列
-//! @param[in]  u_func          … 後処理関数 ( 無くても良い )
-//! @param[in]  kernel          … カーネル配列
-//! @param[in]  kernel_center_i … カーネルの中心位置
+//! サイズ指定可能な一様重み平滑化
 //!
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_arg, class Unary_res, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array1< T_in, Allocator_in >			&in, 
-							array1< T_out, Allocator_out >				&out, 
-							Unary_res									u_func( Unary_arg ),
-							const array1< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int								kernel_center_i )
-{
-	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_arg																											unary_arg;
-	typedef Unary_res																											unary_res;
- 
-	kernel_center_i = ( kernel_center_i < kernel.width( ) ) ? kernel_center_i : ( kernel.width( ) - 1 );
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
-}
-
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_func, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array1< T_in, Allocator_in >			&in, 
-							array1< T_out, Allocator_out >				&out, 
-							Unary_func									u_func,
-							const array1< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int								kernel_center_i )
-{
-	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_func																											unary_func;
- 
-	kernel_center_i = ( kernel_center_i < kernel.width( ) ) ? kernel_center_i : ( kernel.width( ) - 1 );
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
-}
-
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array1< T_in, Allocator_in >			&in, 
-							array1< T_out, Allocator_out >				&out, 
-							const array1< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int								kernel_center_i )
-{
-	typedef typename array1< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
- 
-	kernel_center_i = ( kernel_center_i < kernel.width( ) ) ? kernel_center_i : ( kernel.width( ) - 1 );
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, __linear_filter__::default_func< calc_type, out_type >( ) );
-}
-
-
-/// @brief 自分で定義したkernelを用いた線形フィルタ( array2 : カーネルの中心位置を指定可能 )
-//! 
-//! @param[in]  in              … 入力配列
-//! @param[out] out             … 出力配列
-//! @param[in]  u_func          … 後処理関数 ( 無くても良い )
-//! @param[in]  kernel          … カーネル配列
-//! @param[in]  kernel_center_i … カーネルの中心位置( width 方向 )
-//! @param[in]  kernel_center_j … カーネルの中心位置( height 方向 )
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//! @param[size] size    … フィルタのサイズ（デフォルト 3）
 //!
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_arg, class Unary_res, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array2< T_in, Allocator_in >			&in, 
-							array2< T_out, Allocator_out >				&out, 
-							Unary_res									u_func( Unary_arg ),
-							const array2< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int								kernel_center_i,
-							unsigned int								kernel_center_j )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool uniform_weight( 
+				   const mist::array< In_value, In_alloc > &in, 
+				   mist::array< Out_value, Out_alloc > &out,
+				   const size_t size = 3 )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_arg																											unary_arg;
-	typedef Unary_res																											unary_res;
-
-	kernel_center_i = ( kernel_center_i < kernel.width( )  ) ? kernel_center_i : ( kernel.width( )  - 1 );
-	kernel_center_j = ( kernel_center_j < kernel.height( ) ) ? kernel_center_j : ( kernel.height( ) - 1 );
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
+	// std::cout << "uniform_0" << std::endl;
+	const size_t _size = ( size % 2 ) ? size : size - 1;
+	const size_t offset = _size / 2;
+	array< double > kernel;
+	__linear__::uniw( kernel, _size );
+	return ( linear_filter( in, out, kernel, offset ) );
 }
 
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_func, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array2< T_in, Allocator_in >			&in, 
-							array2< T_out, Allocator_out >				&out, 
-							Unary_func									u_func,
-							const array2< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int								kernel_center_i,
-							unsigned int								kernel_center_j )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool uniform_weight( 
+				   const mist::array1< In_value, In_alloc > &in, 
+				   mist::array1< Out_value, Out_alloc > &out,
+				   const size_t size = 3 )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_func																											unary_func;
-
-	kernel_center_i = ( kernel_center_i < kernel.width( )  ) ? kernel_center_i : ( kernel.width( )  - 1 );
-	kernel_center_j = ( kernel_center_j < kernel.height( ) ) ? kernel_center_j : ( kernel.height( ) - 1 );
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
+	// std::cout << "uniform_1" << std::endl;
+	const size_t _size = ( size % 2 ) ? size : size - 1;
+	const size_t offset = _size / 2;
+	array1< double > kernel;
+	__linear__::uniw_1( kernel, _size );
+	return ( linear_filter( in, out, kernel, offset ) );
 }
 
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array2< T_in, Allocator_in >			&in, 
-							array2< T_out, Allocator_out >				&out, 
-							const array2< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int								kernel_center_i,
-							unsigned int								kernel_center_j )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool uniform_weight( 
+				   const mist::array2< In_value, In_alloc > &in, 
+				   mist::array2< Out_value, Out_alloc > &out,
+				   const size_t size = 3 )
 {
-	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-
-	kernel_center_i = ( kernel_center_i < kernel.width( )  ) ? kernel_center_i : ( kernel.width( )  - 1 );
-	kernel_center_j = ( kernel_center_j < kernel.height( ) ) ? kernel_center_j : ( kernel.height( ) - 1 );
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, __linear_filter__::default_func< calc_type, out_type >( ) );
-}
-	
-
-/// @brief 自分で定義したkernelを用いた線形フィルタ( array3 : カーネルの中心位置を指定可能 )
-//! 
-//! @param[in]  in              … 入力配列
-//! @param[out] out             … 出力配列
-//! @param[in]  u_func          … 後処理関数 ( 無くても良い )
-//! @param[in]  kernel          … カーネル配列
-//! @param[in]  kernel_center_i … カーネルの中心位置( width 方向 )
-//! @param[in]  kernel_center_j … カーネルの中心位置( height 方向 )
-//! @param[in]  kernel_center_k … カーネルの中心位置( depth 方向 )
-//!
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_arg, class Unary_res, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array3< T_in, Allocator_in >			&in, 
-							array3< T_out, Allocator_out >				&out, 
-							Unary_res									u_func( Unary_arg ),
-							const array3< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int							kernel_center_i,
-							unsigned int							kernel_center_j, 
-							unsigned int							kernel_center_k )
-{
-	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_arg																											unary_arg;
-	typedef Unary_res																											unary_res;
-
-	kernel_center_i = ( kernel_center_i < kernel.width( )  ) ? kernel_center_i : ( kernel.width( )  - 1 );
-	kernel_center_j = ( kernel_center_j < kernel.height( ) ) ? kernel_center_j : ( kernel.height( ) - 1 );
-	kernel_center_k = ( kernel_center_k < kernel.depth( )  ) ? kernel_center_k : ( kernel.depth( )  - 1 );
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, kernel_center_k, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
+	// std::cout << "uniform_2" << std::endl;
+	const size_t _size = ( size % 2 ) ? size : size - 1;
+	const size_t offset = _size / 2;
+	array2< double > kernel;
+	__linear__::uniw_2( kernel, _size );
+	return ( linear_filter( in, out, kernel, offset, offset ) );
 }
 
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class Unary_func, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array3< T_in, Allocator_in >			&in, 
-							array3< T_out, Allocator_out >				&out, 
-							Unary_func									u_func,
-							const array3< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int							kernel_center_i,
-							unsigned int							kernel_center_j, 
-							unsigned int							kernel_center_k )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool uniform_weight( 
+				   const mist::array3< In_value, In_alloc > &in, 
+				   mist::array3< Out_value, Out_alloc > &out,
+				   const size_t size = 3 )
 {
-	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_func																											unary_func;
- 
-	kernel_center_i = ( kernel_center_i < kernel.width( )  ) ? kernel_center_i : ( kernel.width( )  - 1 );
-	kernel_center_j = ( kernel_center_j < kernel.height( ) ) ? kernel_center_j : ( kernel.height( ) - 1 );
-	kernel_center_k = ( kernel_center_k < kernel.depth( )  ) ? kernel_center_k : ( kernel.depth( )  - 1 );
-
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, kernel_center_k, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
-}
-
-template < class T_in, class Allocator_in, class T_out, class Allocator_out, class T_kernel, class Allocator_kernel >
-inline void  linear_filter(
-							const array3< T_in, Allocator_in >			&in, 
-							array3< T_out, Allocator_out >				&out, 
-							const array3< T_kernel, Allocator_kernel >	&kernel, 
-							unsigned int								kernel_center_i,
-							unsigned int								kernel_center_j,
-							unsigned int								kernel_center_k )
-{
-	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
- 
-	__linear_filter__::apply< calc_type >( in, out, kernel, kernel_center_i, kernel_center_j, kernel_center_k, __linear_filter__::default_func< calc_type, out_type >( ) );
+	// std::cout << "uniform_3" << std::endl;
+	const size_t _size = ( size % 2 ) ? size : size - 1;
+	const size_t offset = _size / 2;
+	array3< double > kernel;
+	__linear__::uniw_3( kernel, _size );
+	return ( linear_filter( in, out, kernel, offset, offset, offset ) );
 }
 
 
 /// @brief ガウシアン( array, array1, array2, array3 )
 //! 
-//! kernelサイズ3×3のガウシアン
+//! 範囲と強度を指定可能なガウシアン
 //!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[in]  u_func … 後処理関数 ( 無くても良い )
-//! 
-// 通常の関数を渡す場合
-template < class Array_in, class Array_out, class Unary_arg, class Unary_res >
-inline void  gaussian(
-						const Array_in								&in,
-						Array_out									&out,
-						Unary_res									u_func( Unary_arg ) )
+//! @param[range] range    … ガウシアンの範囲（デフォルト 1）
+//! @param[sigma] sigma    … ガウシアンの強度（デフォルト 1.0）
+//!
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool gaussian( 
+				   const mist::array< In_value, In_alloc > &in, 
+				   mist::array< Out_value, Out_alloc > &out,
+				   const size_t range = 1,
+				   const double sigma = 1.0 )
 {
-	typedef __linear_filter__::filter_style																						filter_style;
-	typedef typename Array_out::value_type																						out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_arg																											unary_arg;
-	typedef Unary_res																											unary_res;
- 
-	__linear_filter__::apply_pre_defined_kernel< filter_style::gaus, calc_type >( in, out, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
+	// std::cout << "gaussian_0" << std::endl;
+	array< double > kernel;
+	__linear__::gaus( kernel, range, sigma );
+	return ( linear_filter( in, out, kernel, range ) );
 }
 
-// 関数オブジェクトを渡す場合
-template < class Array_in, class Array_out, class Unary_func >
-inline void  gaussian(
-						const Array_in								&in,
-						Array_out									&out,
-						Unary_func									u_func )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool gaussian( 
+				   const mist::array1< In_value, In_alloc > &in, 
+				   mist::array1< Out_value, Out_alloc > &out,
+				   const size_t range = 1,
+				   const double sigma = 1.0 )
 {
-	typedef __linear_filter__::filter_style																						filter_style;
-	typedef typename Array_out::value_type																						out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_func																											unary_func;
- 
-	__linear_filter__::apply_pre_defined_kernel< filter_style::gaus, calc_type >( in, out, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
+	// std::cout << "gaussian_1" << std::endl;
+	array1< double > kernel;
+	__linear__::gaus_1( kernel, range, sigma );
+	return ( linear_filter( in, out, kernel, range ) );
 }
 
-// 何も渡さない場合
-template < class Array_in, class Array_out >
-inline void  gaussian(
-							const Array_in		&in,
-							Array_out			&out )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool gaussian( 
+				   const mist::array2< In_value, In_alloc > &in, 
+				   mist::array2< Out_value, Out_alloc > &out,
+				   const size_t range = 1,
+				   const double sigma = 1.0 )
 {
-	typedef __linear_filter__::filter_style																						filter_style;
-	typedef typename Array_out::value_type																						out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
- 
-	__linear_filter__::apply_pre_defined_kernel< filter_style::gaus, calc_type >( in, out, __linear_filter__::default_func< calc_type, out_type >( ) );
+	// std::cout << "gaussian_2" << std::endl;
+	array2< double > kernel;
+	__linear__::gaus_2( kernel, range, sigma );
+	return ( linear_filter( in, out, kernel, range, range ) );
 }
 
-template < class T_in, class Allocator_in, class T_out, class Allocator_out >
-inline void  gaussian(
-							const array< T_in, Allocator_in >			&in, 
-							array< T_out, Allocator_out >				&out, 
-							double										sigma )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool gaussian( 
+				   const mist::array3< In_value, In_alloc > &in, 
+				   mist::array3< Out_value, Out_alloc > &out,
+				   const size_t range = 1,
+				   const double sigma = 1.0 )
 {
-	typedef typename array< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename array< T_out, Allocator_out >::size_type																	size_type;
-	typedef typename array< T_out, Allocator_out >::difference_type																difference_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-
-	double _2sigma = 2.0 * sigma * sigma;
-
-	sigma *= 2.0;
-	difference_type r = sigma - static_cast< int >( sigma ) == 0.0 ? static_cast< int >( sigma ) : static_cast< int >( sigma ) + 1;
-	array< double > kernel( 2 * r + 1 );
-
-
-	double sum = 0.0;
-	for( difference_type i = -r ; i <= r ; i++ )
-	{
-		double e = std::exp( -( i * i ) / _2sigma );
-		kernel[ i + r ] = e;
-		sum += e;
-	}
-
-	for( size_type l = 0 ; l < kernel.size( ) ; l++ )
-	{
-		kernel[ l ] /= sum;
-	}
-
-	linear_filter( in, out, kernel );
-}
-
-template < class T_in, class Allocator_in, class T_out, class Allocator_out >
-inline void  gaussian(
-							const array2< T_in, Allocator_in >			&in, 
-							array2< T_out, Allocator_out >				&out, 
-							double										sigma )
-{
-	typedef typename array2< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename array2< T_out, Allocator_out >::size_type																	size_type;
-	typedef typename array2< T_out, Allocator_out >::difference_type															difference_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-
-	difference_type r = sigma - static_cast< int >( sigma ) == 0.0 ? static_cast< int >( sigma ) : static_cast< int >( sigma ) + 1;
-	array2< double > kernel( 2 * r + 1, 2 * r + 1 );
-	double _2sigma = 2.0 * sigma * sigma;
-
-
-	double sum = 0.0;
-	for( difference_type j = -r ; j <= r ; j++ )
-	{
-		for( difference_type i = -r ; i <= r ; i++ )
-		{
-			double e = std::exp( -( i * i + j * j ) / _2sigma );
-			kernel( i + r, j + r ) = e;
-			sum += e;
-		}
-	}
-
-	for( size_type i = 0 ; i < kernel.size( ) ; i++ )
-	{
-		kernel[ i ] /= sum;
-	}
-
-	linear_filter( in, out, kernel );
-}
-
-template < class T_in, class Allocator_in, class T_out, class Allocator_out >
-inline void  gaussian(
-							const array3< T_in, Allocator_in >			&in, 
-							array3< T_out, Allocator_out >				&out, 
-							double										sigma )
-{
-	typedef typename array3< T_out, Allocator_out >::value_type																	out_type;
-	typedef typename array3< T_out, Allocator_out >::size_type																	size_type;
-	typedef typename array3< T_out, Allocator_out >::difference_type															difference_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-
-	difference_type r = sigma - static_cast< int >( sigma ) == 0.0 ? static_cast< int >( sigma ) : static_cast< int >( sigma ) + 1;
-	array3< double > kernel( 2 * r + 1, 2 * r + 1, 2 * r + 1 );
-	double _2sigma = 2.0 * sigma * sigma;
-
-
-	double sum = 0.0;
-	for( difference_type k = -r ; k <= r ; k++ )
-	{
-		for( difference_type j = -r ; j <= r ; j++ )
-		{
-			for( difference_type i = -r ; i <= r ; i++ )
-			{
-				double e = std::exp( -( i * i + j * j + k * k ) / _2sigma );
-				kernel( i + r, j + r, k + r ) = e;
-				sum += e;
-			}
-		}
-	}
-
-	for( size_type i = 0 ; i < kernel.size( ) ; i++ )
-	{
-		kernel[ i ] /= sum;
-	}
-
-	linear_filter( in, out, kernel );
+	// std::cout << "gaussian_3" << std::endl;
+	array3< double > kernel;
+	__linear__::gaus_3( kernel, range, sigma );
+	return ( linear_filter( in, out, kernel, range, range, range ) );
 }
 
 
 
 /// @brief ラプラシアン( array, array1, array2, array3 )
 //! 
-//! kernelサイズ3×3のラプラシアン
+//! サイズ3のラプラシアン
 //!
-//! 出力配列の要素型を unsigned とする場合は注意が必要．
-//! 適切な u_func を定義しない場合，想定する出力が得られない場合があります．
-//! 
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[in]  u_func … 後処理関数 ( 無くても良い )
 //!
-// 通常の関数を渡す場合
-template < class Array_in, class Array_out, class Unary_arg, class Unary_res >
-inline void  laplacian(
-						const Array_in		&in,
-						Array_out			&out,
-						Unary_res			u_func( Unary_arg ) )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool laplacian( 
+				   const mist::array< In_value, In_alloc > &in, 
+				   mist::array< Out_value, Out_alloc > &out )
 {
-	typedef __linear_filter__::filter_style																						filter_style;
-	typedef typename Array_out::value_type																						out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_arg																											unary_arg;
-	typedef Unary_res																											unary_res;
-
-	__linear_filter__::apply_pre_defined_kernel< filter_style::lapl, calc_type >( in, out, __linear_filter__::post_func2< calc_type, out_type, unary_arg, unary_res >( u_func ) );
+	// std::cout << "laplacian_0" << std::endl;
+	array< double > kernel;
+	__linear__::lapl( kernel );
+	return ( linear_filter( in, out, kernel, 1 ) );
 }
 
-// 関数オブジェクトを渡す場合
-template < class Array_in, class Array_out, class Unary_func >
-inline void  laplacian(
-						const Array_in		&in,
-						Array_out			&out,
-						Unary_func			u_func )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool laplacian( 
+				   const mist::array1< In_value, In_alloc > &in, 
+				   mist::array1< Out_value, Out_alloc > &out )
 {
-	typedef __linear_filter__::filter_style																						filter_style;
-	typedef typename Array_out::value_type																						out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-	typedef Unary_func																											unary_func;
-
-	__linear_filter__::apply_pre_defined_kernel< filter_style::lapl, calc_type >( in, out, __linear_filter__::post_func1< calc_type, out_type, unary_func >( u_func ) );
+	// std::cout << "laplacian_1" << std::endl;
+	array1< double > kernel;
+	__linear__::lapl_1( kernel );
+	return ( linear_filter( in, out, kernel, 1 ) );
 }
 
-// 何も渡さない場合
-template < class Array_in, class Array_out >
-inline void  laplacian(
-							const Array_in		&in,
-							Array_out			&out )
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool laplacian( 
+				   const mist::array2< In_value, In_alloc > &in, 
+				   mist::array2< Out_value, Out_alloc > &out )
 {
-	typedef __linear_filter__::filter_style																						filter_style;
-	typedef typename Array_out::value_type																						out_type;
-	typedef typename __linear_filter__::_is_arithm< is_arithmetic< out_type >::value >::template _type< out_type >::calc_type	calc_type;
-
-	__linear_filter__::apply_pre_defined_kernel< filter_style::lapl, calc_type >( in, out, __linear_filter__::default_func< calc_type, out_type >( ) );
+	// std::cout << "laplacian_2" << std::endl;
+	array2< double > kernel;
+	__linear__::lapl_2( kernel );
+	return ( linear_filter( in, out, kernel, 1, 1 ) );
 }
+
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool laplacian( 
+				   const mist::array3< In_value, In_alloc > &in, 
+				   mist::array3< Out_value, Out_alloc > &out )
+{
+	// std::cout << "laplacian_3" << std::endl;
+	array3< double > kernel;
+	__linear__::lapl_3( kernel );
+	return ( linear_filter( in, out, kernel, 1, 1, 1 ) );
+}
+
+
+
+/// @brief 絶対値を返すラプラシアン( array, array1, array2, array3 )
+//! 
+//! サイズ3の絶対値を返すラプラシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool laplacian_abs( 
+				   const mist::array< In_value, In_alloc > &in, 
+				   mist::array< Out_value, Out_alloc > &out )
+{
+	typedef __linear__::function_type< In_value, Out_value, array< double > > Function_type;
+	// std::cout << "lapl_abs_0" << std::endl;
+	out.resize( in.size( ) );
+	array< double > kernel;
+	__linear__::lapl( kernel );
+	const Function_type func( kernel, 1 );
+	const size_t begin = 1;
+	const size_t end = in.size( ) - 1; 
+	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
+	return ( 1 );
+}
+
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool laplacian_abs( 
+				   const mist::array1< In_value, In_alloc > &in, 
+				   mist::array1< Out_value, Out_alloc > &out )
+{
+	typedef __linear__::function_type< In_value, Out_value, array1< double > > Function_type;
+	// std::cout << "lapl_abs_1" << std::endl;
+	out.resize( in.width( ) );
+	out.reso1( in.reso1( ) );
+	array1< double > kernel;
+	__linear__::lapl_1( kernel );
+	const __linear__::function_type< In_value, Out_value, array1< double > > func( kernel, 1 );
+	const size_t begin = 1;
+	const size_t end = in.size( ) - 1; 
+	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
+	return ( 1 );
+}
+
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool laplacian_abs( 
+				   const mist::array2< In_value, In_alloc > &in, 
+				   mist::array2< Out_value, Out_alloc > &out )
+{
+	typedef __linear__::function_type< In_value, Out_value, array2< double > > Function_type; 
+	// std::cout << "lapl_abs_2" << std::endl;
+	out.resize( in.width( ), in.height( ) );
+	out.reso1( in.reso1( ) );
+	out.reso2( in.reso2( ) );
+	array2< double > kernel;
+	__linear__::lapl_2( kernel );
+	const Function_type func( kernel, 1, 1, in.width( ) );
+	const size_t begin = in.width( ) + 1;
+	const size_t end = in.size( ) - ( in.width( ) + 1 ); 
+	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
+	return ( 1 );
+}
+
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
+inline bool laplacian_abs( 
+				   const mist::array3< In_value, In_alloc > &in, 
+				   mist::array3< Out_value, Out_alloc > &out )
+{
+	typedef __linear__::function_type< In_value, Out_value, array3< double > > Function_type;
+	// std::cout << "lapl_abs_3" << std::endl;
+	out.resize( in.width( ), in.height( ), in.depth( ) );
+	out.reso1( in.reso1( ) );
+	out.reso2( in.reso2( ) );
+	out.reso3( in.reso3( ) );
+	array3< double > kernel;
+	__linear__::lapl_3( kernel );
+	const Function_type func( kernel, 1, 1, 1, in.width( ), in.height( ) );
+	const size_t begin = in.height( ) * in.width( ) + in.width( ) + 1;
+	const size_t end = in.size( ) - ( in.height( ) * in.width( ) + in.width( ) + 1 ); 
+	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
+	return ( 1 );
+}
+
+
 
 /// @}
 //  線形グループの終わり
 
 
+
 // mist名前空間の終わり
 _MIST_END
+
+
 
 #endif // __INCLUDE_FILTER_LINEAR_FILTER_H__
