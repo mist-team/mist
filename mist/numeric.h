@@ -954,30 +954,6 @@ namespace __lu__
 			switch( style )
 			{
 			case matrix_style::sy:
-				{
-					// LAPACK関数の引数
-					integer m      = static_cast< integer >( a.rows( ) );
-					integer n      = static_cast< integer >( a.cols( ) );
-					integer lda    = m;
-					integer lwork  = -1;
-					value_type dmy;
-					char *uplo    = "U";
-
-					pivot.resize( n, 1 );
-
-					// まず最適な作業用配列のサイズを取得する
-					__clapack__::sytrf( uplo, n, NULL, lda, NULL, &dmy, lwork, info );
-					if( info == 0 )
-					{
-						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
-						matrix< T, Allocator1 > work( lwork, 1 );
-
-						// LU分解を行う
-						__clapack__::sytrf( uplo, n, &( a[0] ), lda, &( pivot[0] ), &( work[0] ), lwork, info );
-					}
-				}
-				break;
-
 			case matrix_style::ge:
 			default:
 				{
@@ -1025,30 +1001,6 @@ namespace __lu__
 			switch( style )
 			{
 			case matrix_style::sy:
-				{
-					// LAPACK関数の引数
-					integer m      = static_cast< integer >( a.rows( ) );
-					integer n      = static_cast< integer >( a.cols( ) );
-					integer lda    = m;
-					integer lwork  = -1;
-					value_type dmy;
-					char *uplo    = "U";
-
-					pivot.resize( n, 1 );
-
-					// まず最適な作業用配列のサイズを取得する
-					__clapack__::sytrf( uplo, n, NULL, lda, NULL, &dmy, lwork, info );
-					if( info == 0 )
-					{
-						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
-						matrix< T, Allocator1 > work( lwork, 1 );
-
-						// LU分解を行う
-						__clapack__::sytrf( uplo, n, &( a[0] ), lda, &( pivot[0] ), &( work[0] ), lwork, info );
-					}
-				}
-				break;
-
 			case matrix_style::ge:
 			default:
 				{
