@@ -7,6 +7,7 @@
 int main( )
 {
 	typedef mist::matrix< double > matrix;
+	typedef mist::matrix< double >::size_type size_type;
 	//typedef mist::matrix< std::complex<float> > matrix;
 	//typedef mist::matrix< std::complex< double > > matrix;
 	matrix a = matrix::_33(	1.0,  3.0,  1.0,
@@ -42,6 +43,16 @@ int main( )
 		matrix c;
 		mist::multiply( a, a, c, false, false );
 		std::cout << c << std::endl << std::endl;
+	}
+
+	{
+		matrix L, U, pivot;
+		mist::lu_factorization( a, L, U, pivot );
+
+		std::cout << L << std::endl << std::endl;
+		std::cout << U << std::endl << std::endl;
+		std::cout << pivot << std::endl << std::endl;
+		std::cout << pivot * L * U << std::endl << std::endl;
 	}
 
 	{

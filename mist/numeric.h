@@ -954,6 +954,43 @@ namespace __lu__
 			switch( style )
 			{
 			case matrix_style::sy:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer lwork  = -1;
+					value_type dmy;
+					char *uplo    = "U";
+
+					pivot.resize( n, 1 );
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::sytrf( uplo, n, NULL, lda, NULL, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
+						matrix< T, Allocator1 > work( lwork, 1 );
+
+						// LU分解を行う
+						__clapack__::sytrf( uplo, n, &( a[0] ), lda, &( pivot[0] ), &( work[0] ), lwork, info );
+
+						// 結果が上三角のみにしか代入されていないため，下三角にもデータをコピーする
+						if( info == 0 )
+						{
+							typedef typename matrix< T, Allocator1 >::size_type size_type;
+							for( size_type c = 0 ; c < a.rows( ) ; c++ )
+							{
+								for( size_type r = c + 1 ; r < a.rows( ) ; r++ )
+								{
+									a( r, c ) = a( c, r );
+								}
+							}
+						}
+					}
+				}
+				break;
+
 			case matrix_style::ge:
 			default:
 				{
@@ -1001,6 +1038,43 @@ namespace __lu__
 			switch( style )
 			{
 			case matrix_style::sy:
+				{
+					// LAPACK関数の引数
+					integer m      = static_cast< integer >( a.rows( ) );
+					integer n      = static_cast< integer >( a.cols( ) );
+					integer lda    = m;
+					integer lwork  = -1;
+					value_type dmy;
+					char *uplo    = "U";
+
+					pivot.resize( n, 1 );
+
+					// まず最適な作業用配列のサイズを取得する
+					__clapack__::sytrf( uplo, n, NULL, lda, NULL, &dmy, lwork, info );
+					if( info == 0 )
+					{
+						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
+						matrix< T, Allocator1 > work( lwork, 1 );
+
+						// LU分解を行う
+						__clapack__::sytrf( uplo, n, &( a[0] ), lda, &( pivot[0] ), &( work[0] ), lwork, info );
+
+						// 結果が上三角のみにしか代入されていないため，下三角にもデータをコピーする
+						if( info == 0 )
+						{
+							typedef typename matrix< T, Allocator1 >::size_type size_type;
+							for( size_type c = 0 ; c < a.rows( ) ; c++ )
+							{
+								for( size_type r = c + 1 ; r < a.rows( ) ; r++ )
+								{
+									a( r, c ) = a( c, r );
+								}
+							}
+						}
+					}
+				}
+				break;
+
 			case matrix_style::ge:
 			default:
 				{
@@ -2599,6 +2673,45 @@ inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1
 #endif
 
 
+/// @brief LU分解などで得られるピボット配列からピボット行列を作成
+//! 
+//! @param[in]  pivot … ピボット配列
+//! @param[out] out   … ピボット行列
+//!
+//! @return \f$tr\left( {\bf A} \right)\f$
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2 >
+inline void permutation_matrix( const matrix< T1, Allocator1 > &pivot, matrix< T2, Allocator2 > &out )
+{
+	typedef typename matrix< T1, Allocator1 >::size_type size_type;
+	typedef typename matrix< T1, Allocator1 >::value_type value_type;
+
+	size_type i;
+	matrix< T1, Allocator1 > p( pivot );
+	for( i = 0 ; i < pivot.size( ) ; i++ )
+	{
+		p[ i ] = static_cast< value_type >( i );
+	}
+
+	// ピボットでデータを入れ替える
+	for( i = 0 ; i < pivot.size( ) ; i++ )
+	{
+		value_type tmp = p[ i ];
+		p[ i ] = p[ pivot[ i ] - 1 ];
+		p[ pivot[ i ] - 1 ] = tmp;
+	}
+
+	out.resize( pivot.size( ), pivot.size( ) );
+	out.fill( );
+
+	// ピボット行列を作成する
+	for( i = 0 ; i < pivot.size( ) ; i++ )
+	{
+		out( p[ i ], i ) = 1;
+	}
+}
+
+
 /// @brief トレースの計算（対角成分の和）
 //! 
 //! \f[
@@ -2884,6 +2997,51 @@ const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a
 	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
 }
 
+
+/// @brief 行列のLU分解を行う
+//! 
+//! \f[ {\bf A} = {\bf P} \; \times \; {\bf L} \; \times \; {\bf U} \f]
+//! 
+//! @param[in]  a     … 入力行列 \f$\mbox{\bf A}\f$
+//! @param[out] L     … 下三角行列 \f$\mbox{\bf L}\f$
+//! @param[out] U     … 上三角行列 \f$\mbox{\bf U}\f$
+//! @param[out] pivot … ピボット選択を行った結果を元に戻す行列 \f$\mbox{\bf P}\f$
+//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
+//!
+//! @return LU分解に成功したかどうか
+//! 
+template < class T, class Allocator >
+bool lu_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &L, matrix< T, Allocator > &U, matrix< T, Allocator > &pivot, matrix_style::style style = matrix_style::ge )
+{
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
+	matrix< __clapack__::integer > piv( a.cols( ), 1 );
+#else
+	matrix< __clapack__::integer, typename Allocator::template rebind< __clapack__::integer >::other > piv( a.cols( ), 1 );
+#endif
+
+	L = a;
+	__lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( L, piv, style );
+
+	typedef typename matrix< T, Allocator >::size_type size_type;
+
+	U.resize( L.rows( ), L.cols( ) );
+	for( size_type r = 0 ; r < a.rows( ) ; r++ )
+	{
+		for( size_type c = r ; c < a.cols( ) ; c++ )
+		{
+			U( r, c ) = L( r, c );
+			L( r, c ) = 0;
+		}
+		L( r, r ) = 1;
+	}
+
+	permutation_matrix( piv, pivot );
+
+	return( true );
+}
+
+
 /// @brief 行列のLU分解を行う
 //! 
 //! @param[in]  a     … 入力行列
@@ -2904,6 +3062,7 @@ const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, 
 #endif
 	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
 }
+
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
