@@ -865,6 +865,12 @@ namespace dicom
 		}
 		else if( numBytes > 0 )
 		{
+			// 不適切なバイト数かどうかをチェックする
+			if( pointer + numBytes > end_pointer )
+			{
+				return( NULL );
+			}
+
 #ifndef __CHECK_TAG_FORMAT__
 			if( !process_dicom_tag( tag, pointer, numBytes, from_little_endian ) )
 			{
@@ -1003,7 +1009,24 @@ namespace dicom
 		printf( "\n\n\n" );
 #endif
 
-		return( ret );
+		// 適切なDICOMファイルかどうかをチェックする
+		if( ret )
+		{
+			dicom_tag_container::iterator ite = dicm.begin( );
+			for( ; ite != dicm.end( ) ; ++ite )
+			{
+				if( ite->second.comment != "UNKNOWN" )
+				{
+					return( true );
+				}
+			}
+
+			return( false );
+		}
+		else
+		{
+			return( false );
+		}
 	}
 
 
