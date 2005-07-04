@@ -409,8 +409,8 @@ inline void filtering(
 //!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[kernel] kernel    …カーネル配列
-//! @param[offset] offset    …カーネル中心位置
+//! @param[in]  kernel …カーネル配列
+//! @param[in]  offset …カーネル中心位置
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline bool linear_filter(
@@ -435,8 +435,8 @@ inline bool linear_filter(
 //!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[kernel] kernel    …カーネル配列
-//! @param[offset] offset    …カーネル中心位置
+//! @param[in]  kernel …カーネル配列
+//! @param[in]  offset …カーネル中心位置
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline bool linear_filter(
@@ -460,11 +460,11 @@ inline bool linear_filter(
 //! 
 //! カーネル配列とその中心位置を指定する
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//! @param[kernel] kernel    …カーネル配列
-//! @param[offset] offset_i    …i方向のカーネル中心位置
-//! @param[offset] offset_j    …j方向のカーネル中心位置
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   …カーネル配列
+//! @param[in]  offset_i …i方向のカーネル中心位置
+//! @param[in]  offset_j …j方向のカーネル中心位置
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline bool linear_filter(
@@ -490,12 +490,12 @@ inline bool linear_filter(
 //! 
 //! カーネル配列とその中心位置を指定する
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//! @param[kernel] kernel    …カーネル配列
-//! @param[offset] offset_i    …i方向のカーネル中心位置
-//! @param[offset] offset_j    …j方向のカーネル中心位置
-//! @param[offset] offset_j    …k方向のカーネル中心位置
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   …カーネル配列
+//! @param[in]  offset_i …i方向のカーネル中心位置
+//! @param[in]  offset_j …j方向のカーネル中心位置
+//! @param[in]  offset_j …k方向のカーネル中心位置
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline bool linear_filter(
@@ -527,7 +527,7 @@ inline bool linear_filter(
 //!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[kernel] kernel    …カーネル配列
+//! @param[in]  kernel …カーネル配列
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline bool size_3_filter(
@@ -592,7 +592,7 @@ inline bool size_3_filter(
 //!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[size] size    … フィルタのサイズ（デフォルト 3）
+//! @param[in]  size    … フィルタのサイズ（デフォルト 3）
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
 inline bool uniform_weight( 
@@ -657,8 +657,8 @@ inline bool uniform_weight(
 //!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
-//! @param[range] range    … ガウシアンの範囲（デフォルト 1）
-//! @param[sigma] sigma    … ガウシアンの強度（デフォルト 1.0）
+//! @param[in]  range  … ガウシアンの範囲（デフォルト 1）
+//! @param[out] sigma  … ガウシアンの強度（デフォルト 1.0）
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
 inline bool gaussian( 
