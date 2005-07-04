@@ -666,7 +666,7 @@ namespace __calvin__
 
 
 /// @brief 斉藤先生によるユークリッド距離変換
-namespace euclidean
+namespace saito
 {
 	/// @brief ユークリッド距離変換
 	//! 
@@ -821,8 +821,28 @@ namespace calvin
 }
 
 
+/// @brief ユークリッド距離変換
+namespace euclidean
+{
+	/// @brief ユークリッド距離変換
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! 
+	//! @param[in]  in         … 入力画像
+	//! @param[out] out        … 出力画像
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	template < class Array1, class Array2 >
+	void distance_transform( const Array1 &in, Array2 &out, typename Array1::size_type thread_num = 0 )
+	{
+		calvin::distance_transform( in, out, thread_num );
+	}
+}
+
 /// @}
 //  ユークリッド距離変換グループの終わり
+
 
 
 //! @addtogroup skeleton_group スケルトン抽出

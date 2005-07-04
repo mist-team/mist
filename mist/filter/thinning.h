@@ -380,7 +380,7 @@ namespace euclidean
 			}
 
 			//‹——£•ÏŠ·
-			calvin::distance_transform( id, id );
+			euclidean::distance_transform( id, id );
 
 			//×‚ßˆ—@1‰ñ–Ú
 			ic = id;

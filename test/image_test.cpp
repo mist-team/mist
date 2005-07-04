@@ -196,7 +196,7 @@ void euclidean_distance_transform_test( )
 	tmp1.reso( 1.0, 1.0 );
 	{
 		mist::timer t;
-		mist::calvin::distance_transform( tmp1, tmp2 );
+		mist::euclidean::distance_transform( tmp1, tmp2 );
 		std::cout << "Computation time for Calvin: " << t << " sec" << std::endl;
 	}
 
@@ -241,7 +241,7 @@ void euclidean_distance_skeleton_test( )
 	mist::convert( image_object, tmp1 );
 
 	tmp1.reso( 1.0, 1.0 );
-	mist::calvin::distance_transform( tmp1, tmp2 );
+	mist::euclidean::distance_transform( tmp1, tmp2 );
 
 	{
 		mist::timer t;

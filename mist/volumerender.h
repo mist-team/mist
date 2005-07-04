@@ -1089,7 +1089,7 @@ bool generate_depth_map( const Array &in, DepthMap &dmap, const volumerender::at
 		}
 	}
 
-	calvin::distance_transform( dmap, dmap, thread_num );
+	euclidean::distance_transform( dmap, dmap, thread_num );
 
 	for( size_type i = 0 ; i < dmap.size( ) ; i++ )
 	{

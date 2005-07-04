@@ -259,7 +259,7 @@ void ct_draw_area::euclidean_distance_transform( ct_image_window *wnd )
 	}
 	{
 		mist::timer t;
-		mist::euclidean::distance_transform( tmp2, tmp2 );
+		mist::saito::distance_transform( tmp2, tmp2 );
 		std::cout << "Computation time for Saito: " << t << " sec" << std::endl;
 	}
 
