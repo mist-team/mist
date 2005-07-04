@@ -495,7 +495,7 @@ inline bool linear_filter(
 //! @param[in]  kernel   …カーネル配列
 //! @param[in]  offset_i …i方向のカーネル中心位置
 //! @param[in]  offset_j …j方向のカーネル中心位置
-//! @param[in]  offset_j …k方向のカーネル中心位置
+//! @param[in]  offset_k …k方向のカーネル中心位置
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline bool linear_filter(
