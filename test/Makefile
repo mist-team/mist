@@ -14,6 +14,7 @@ ALL = \
 	quaternion_test \
 	iterator_test \
 	thread_test \
+	region_growing_test \
 	image_test \
 	raw_test \
 	volumerender_test \
@@ -64,6 +65,9 @@ matrix_util_test2 : matrix_util_test2.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LAPACKLIBS) $(LIBS) $(LDLIBS)
 
 vector_test : vector_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LAPACKLIBS) $(LIBS) $(LDLIBS)
+
+region_growing_test : region_growing_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LAPACKLIBS) $(LIBS) $(LDLIBS)
 
 limits_test : limits_test.o

@@ -554,11 +554,13 @@ struct __mist_progress_callback__
 * @subsubsection image-filter フィルタ系
 * - @ref linear_group						"線形フィルタ"
 * - @ref median_group						"メディアンフィルタ"
+* - @ref region_growing_group				"領域拡張法"
 * - @ref interpolate_group					"画像補間"
 *   - @ref mist::nearest					"最近傍型補間"
 *   - @ref mist::mean						"平均値型補間"
 *   - @ref mist::linear						"線形補間"
-*   - @ref mist::cubic						"3次補間"
+*   - @ref mist::cubic						"3次補間（sinc関数の3次近似を利用した補間）"
+*   - @ref mist::sinc						"sinc関数補間（全画素を畳み込むので計算コスト大）"
 * - カラー画像に対する処理
 *   - @ref interlace_group					"インターレス除去"
 * - @ref threshold_group					"閾値選択"
