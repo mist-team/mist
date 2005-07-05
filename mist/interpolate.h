@@ -881,7 +881,7 @@ namespace __sinc__
 				for( ; j < height ; j++ )
 				{
 					difference_type i;
-					const_pointer p = &in( 0, j );
+					const_pointer p = &in( 0, j, k );
 					double tmpX = 0.0;
 					for( i = 0 ; i <= ix ; i++ )
 					{
@@ -920,7 +920,7 @@ namespace __sinc__
 				for( ; j < height ; j++ )
 				{
 					difference_type i;
-					const_pointer p = &in( 0, j );
+					const_pointer p = &in( 0, j, k );
 					double tmpX = 0.0;
 					for( i = 0 ; i <= ix ; i++ )
 					{

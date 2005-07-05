@@ -93,7 +93,7 @@ inline size_t get_cpu_num( )
 inline void sleep( size_t dwMilliseconds )
 {
 #if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-	SleepEx( dwMilliseconds, false );
+	SleepEx( static_cast< DWORD >( dwMilliseconds ), false );
 #else
 	timespec treq, trem;
 	treq.tv_sec = static_cast< time_t >( dwMilliseconds / 1000 );
