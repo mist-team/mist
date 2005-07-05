@@ -44,8 +44,19 @@ _MIST_BEGIN
 //! 
 namespace region_growing_utility
 {
+	struct pointer_diff2
+	{
+		typedef ptrdiff_t	difference_type;
+
+		ptrdiff_t diff1;
+		ptrdiff_t diff2;
+
+		pointer_diff2( ptrdiff_t d1 = 0, ptrdiff_t d2 = 0 ) : diff1( d1 ), diff2( d2 ){ }
+	};
+
 	typedef vector3< ptrdiff_t > point_type;
 	typedef std::vector< point_type > point_list_type;
+	typedef std::vector< pointer_diff2 > ptrdiff_list_type;
 
 	struct no_mask
 	{
@@ -158,14 +169,16 @@ namespace region_growing_utility
 	};
 
 
-template < class Component >
-	point_list_type create_component_list( const Component &components )
+	template < class Array1, class Array2, class Component >
+	ptrdiff_list_type create_component_list( const Array1 &in1, const Array2 &in2, const Component &components )
 	{
-		typedef typename point_list_type::size_type			size_type;
-		typedef typename point_list_type::difference_type	difference_type;
-		typedef typename point_list_type::value_type		value_type;
+		typedef typename Array1::const_pointer				const_pointer1;
+		typedef typename Array2::const_pointer				const_pointer2;
+		typedef typename ptrdiff_list_type::size_type		size_type;
+		typedef typename ptrdiff_list_type::difference_type	difference_type;
+		typedef typename ptrdiff_list_type::value_type		value_type;
 
-		point_list_type list;
+		ptrdiff_list_type list;
 
 		difference_type w = components.width( );
 		difference_type h = components.height( );
@@ -173,6 +186,15 @@ template < class Component >
 		difference_type cx = w / 2;
 		difference_type cy = h / 2;
 		difference_type cz = d / 2;
+		difference_type ox1 = in1.width( ) / 2;
+		difference_type oy1 = in1.height( ) / 2;
+		difference_type oz1 = in1.depth( ) / 2;
+		difference_type ox2 = in2.width( ) / 2;
+		difference_type oy2 = in2.height( ) / 2;
+		difference_type oz2 = in2.depth( ) / 2;
+
+		const_pointer1 p1 = &in1( ox1, oy1, oz1 );
+		const_pointer2 p2 = &in2( ox2, oy2, oz2 );
 
 		for( difference_type k = 0 ; k < d ; k++ )
 		{
@@ -182,13 +204,118 @@ template < class Component >
 				{
 					if( components( i - cx, j - cy, k - cz ) )
 					{
-						list.push_back( point_type( i - cx, j - cy, k - cz ) );
+						ptrdiff_t d1 = &in1( ox1 + i - cx, oy1 + j - cy, oz1 + k - cz ) - p1;
+						ptrdiff_t d2 = &in2( ox2 + i - cx, oy2 + j - cy, oz2 + k - cz ) - p2;
+						list.push_back( pointer_diff2( d1, d2 ) );
 					}
 				}
 			}
 		}
 
 		return( list );
+	}
+
+
+	template < class Array1, class Array2, class Component >
+	ptrdiff_list_type create_update_list( const Array1 &in1, const Array2 &in2, const Component &components )
+	{
+		typedef typename Array1::const_pointer				const_pointer1;
+		typedef typename Array2::const_pointer				const_pointer2;
+		typedef typename ptrdiff_list_type::size_type		size_type;
+		typedef typename ptrdiff_list_type::difference_type	difference_type;
+		typedef typename ptrdiff_list_type::value_type		value_type;
+
+		ptrdiff_list_type list;
+
+		difference_type w = components.width( );
+		difference_type h = components.height( );
+		difference_type d = components.depth( );
+		difference_type cx = w / 2;
+		difference_type cy = h / 2;
+		difference_type cz = d / 2;
+		difference_type ox1 = in1.width( ) / 2;
+		difference_type oy1 = in1.height( ) / 2;
+		difference_type oz1 = in1.depth( ) / 2;
+		difference_type ox2 = in2.width( ) / 2;
+		difference_type oy2 = in2.height( ) / 2;
+		difference_type oz2 = in2.depth( ) / 2;
+
+		const_pointer1 p1 = &in1( ox1, oy1, oz1 );
+		const_pointer2 p2 = &in2( ox2, oy2, oz2 );
+
+		switch( components.expand_mode( ) )
+		{
+		case 0:
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1, oz1 ) - p1, &in2( ox2 - 1, oy2, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1, oz1 ) - p1, &in2( ox2 + 1, oy2, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1, oy1 - 1, oz1 ) - p1, &in2( ox2, oy2 - 1, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1, oy1 + 1, oz1 ) - p1, &in2( ox2, oy2 + 1, oz2 ) - p2 ) );
+			break;
+
+		case 1:
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1, oz1 ) - p1, &in2( ox2 - 1, oy2, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1, oz1 ) - p1, &in2( ox2 + 1, oy2, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1, oy1 - 1, oz1 ) - p1, &in2( ox2, oy2 - 1, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1, oy1 + 1, oz1 ) - p1, &in2( ox2, oy2 + 1, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1, oy1, oz1 - 1 ) - p1, &in2( ox2, oy2, oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1, oy1, oz1 + 1 ) - p1, &in2( ox2, oy2, oz2 + 1 ) - p2 ) );
+			break;
+
+		case 3:
+		default:
+			list = create_component_list( in1, in2, components );
+			break;
+		}
+
+		return( list );
+	}
+
+
+	template < class T, class Allocator, class Array, class PointType >
+	bool check_component_list( const array2< T, Allocator > &in1, const Array &in2, const PointType &pt, pointer_diff2 &ptr )
+	{
+		typedef typename array2< T, Allocator >::const_pointer	const_pointer1;
+		typedef typename Array::const_pointer					const_pointer2;
+		typedef typename ptrdiff_list_type::difference_type		difference_type;
+
+		if( pt.x < 0 || pt.x >= static_cast< difference_type >( in1.width( ) ) || pt.y < 0 || pt.y >= static_cast< difference_type >( in1.height( ) ) )
+		{
+			return( false );
+		}
+		else if( in2( pt.x, pt.y ) != 0 )
+		{
+			return( false );
+		}
+		else
+		{
+			ptr.diff1 = &in1( pt.x, pt.y) - &in1[ 0 ];
+			ptr.diff2 = &in2( pt.x, pt.y ) - &in2[ 0 ];
+			return( true );
+		}
+	}
+
+
+	template < class T, class Allocator, class Array, class PointType >
+	bool check_component_list( const array3< T, Allocator > &in1, const Array &in2, const PointType &pt, pointer_diff2 &ptr )
+	{
+		typedef typename array3< T, Allocator >::const_pointer	const_pointer1;
+		typedef typename Array::const_pointer					const_pointer2;
+		typedef typename ptrdiff_list_type::difference_type		difference_type;
+
+		if( cur.x < 0 || cur.x >= static_cast< difference_type >( in1.width( ) ) || cur.y < 0 || cur.y >= static_cast< difference_type >( in1.height( ) ) || cur.z < 0 || cur.z >= static_cast< difference_type >( in1.depth( ) ) )
+		{
+			return( false );
+		}
+		else if( in2( cur.x, cur.y, cur.z ) != 0 )
+		{
+			return( false );
+		}
+		else
+		{
+			ptr.diff1 = &in1( cur.x, cur.y, cur.z ) - &in1[ 0 ];
+			ptr.diff2 = &in2( cur.x, cur.y, cur.z ) - &in2[ 0 ];
+			return( true );
+		}
 	}
 
 	template < class T >
@@ -222,26 +349,32 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 	}
 
 	typedef typename Array1::template rebind< unsigned char >::other mask_type;
-	typedef region_growing_utility::point_type point_type;
+	typedef region_growing_utility::pointer_diff2 pointer_diff_type;
 
-	typedef typename Array1::size_type       size_type;
-	typedef typename Array1::value_type      value_type;
-	typedef typename Array1::difference_type difference_type;
-	typedef typename Array2::value_type      out_value_type;
+	typedef typename Array1::size_type			size_type;
+	typedef typename Array1::value_type			value_type;
+	typedef typename Array1::difference_type	difference_type;
+	typedef typename Array2::value_type			out_value_type;
 
-	std::deque< point_type > que;
-	std::vector< point_type > clist = region_growing_utility::create_component_list( components );
-	std::vector< value_type > element( clist.size( ) );
-
-	difference_type w = in.width( );
-	difference_type h = in.height( );
-	difference_type d = in.depth( );
+	typedef typename Array1::const_pointer		const_pointer;
+	typedef typename mask_type::pointer			work_pointer;
+	typedef typename Array2::pointer			output_pointer;
 
 	size_type rx = components.width( ) / 2;
 	size_type ry = components.height( ) / 2;
 	size_type rz = components.depth( ) / 2;
 
 	marray< mask_type > work( in, region_growing_utility::maximum( rx, ry, rz ) );
+	mask_type &base_work = work;
+
+	std::deque< pointer_diff_type > que;
+	region_growing_utility::ptrdiff_list_type clist = region_growing_utility::create_component_list( in, base_work, components );
+	region_growing_utility::ptrdiff_list_type ulist = region_growing_utility::create_update_list( in, base_work, components );
+	std::vector< value_type > element( clist.size( ) );
+
+	difference_type w = in.width( );
+	difference_type h = in.height( );
+	difference_type d = in.depth( );
 	size_type count = 0;
 
 	// 注目点が範囲外に出ないことを監視するマスク
@@ -268,16 +401,11 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 
 	for( typename PointList::const_iterator ite = start_points.begin( ) ; ite != start_points.end( ) ; ++ite )
 	{
-		const typename PointList::value_type &cur = *ite;
-
-		if( cur.x < 0 || cur.x >= w ) continue;
-		if( cur.y < 0 || cur.y >= h ) continue;
-		if( cur.z < 0 || cur.z >= d ) continue;
-
-		if( work( cur.x, cur.y, cur.z ) == 0 )
+		region_growing_utility::pointer_diff2 ptr;
+		if( region_growing_utility::check_component_list( in, base_work, *ite, ptr ) )
 		{
-			work( cur.x, cur.y, cur.z ) = 1;
-			que.push_back( point_type( cur.x, cur.y, cur.z ) );
+			base_work[ ptr.diff2 ] = 1;
+			que.push_back( ptr );
 		}
 	}
 
@@ -291,16 +419,20 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 
 	while( !que.empty( ) )
 	{
-		point_type cur = que.front( );
+		pointer_diff_type cur = que.front( );
 		que.pop_front( );
+
+		const_pointer  pi = &in[ 0 ] + cur.diff1;
+		work_pointer   pw = &base_work[ 0 ] + cur.diff2;
+		output_pointer po = &out[ 0 ] + cur.diff1;
 
 		size_type num = 0;
 		for( size_type i = 0 ; i < clist.size( ) ; i++ )
 		{
-			point_type pt = clist[ i ] + cur;
-			if( work( pt.x, pt.y, pt.z ) != 255 )
+			const pointer_diff_type &d = clist[ i ];
+			if( pw[ d.diff2 ] != 255 )
 			{
-				element[ num++ ] = in( pt.x, pt.y, pt.z );
+				element[ num++ ] = pi[ d.diff1 ];
 			}
 		}
 
@@ -313,89 +445,21 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 
 			for( size_type i = 0 ; i < clist.size( ) ; i++ )
 			{
-				point_type pt = cur + clist[ i ];
-				if( work( pt.x, pt.y, pt.z ) != 255 )
+				const pointer_diff_type &d = clist[ i ];
+				if( pw[ d.diff2 ] != 255 )
 				{
-					out( pt.x, pt.y, pt.z ) = output_value;
+					po[ d.diff1 ] = output_value;
 				}
 			}
 
-			switch( components.expand_mode( ) )
+			for( size_type i = 0 ; i < ulist.size( ) ; i++ )
 			{
-			case 0:
+				const pointer_diff_type &d = ulist[ i ];
+				if( pw[ d.diff2 ] == 0 )
 				{
-					if( work( cur.x - 1, cur.y , cur.z ) == 0 )
-					{
-						work( cur.x - 1, cur.y, cur.z ) = 1;
-						que.push_back( point_type( cur.x - 1, cur.y    , cur.z ) );
-					}
-					if( work( cur.x + 1, cur.y, cur.z ) == 0 )
-					{
-						work( cur.x + 1, cur.y, cur.z ) = 1;
-						que.push_back( point_type( cur.x + 1, cur.y    , cur.z ) );
-					}
-					if( work( cur.x, cur.y - 1, cur.z ) == 0 )
-					{
-						work( cur.x, cur.y - 1, cur.z ) = 1;
-						que.push_back( point_type( cur.x    , cur.y - 1, cur.z ) );
-					}
-					if( work( cur.x, cur.y + 1, cur.z ) == 0 )
-					{
-						work( cur.x, cur.y + 1, cur.z ) = 1;
-						que.push_back( point_type( cur.x    , cur.y + 1, cur.z ) );
-					}
+					pw[ d.diff2 ] = 1;
+					que.push_back( pointer_diff_type( cur.diff1 + d.diff1, cur.diff2 + d.diff2 ) );
 				}
-				break;
-
-			case 1:
-				{
-					if( work( cur.x - 1, cur.y , cur.z ) == 0 )
-					{
-						work( cur.x - 1, cur.y, cur.z ) = 1;
-						que.push_back( point_type( cur.x - 1, cur.y    , cur.z     ) );
-					}
-					if( work( cur.x + 1, cur.y, cur.z ) == 0 )
-					{
-						work( cur.x + 1, cur.y, cur.z ) = 1;
-						que.push_back( point_type( cur.x + 1, cur.y    , cur.z     ) );
-					}
-					if( work( cur.x, cur.y - 1, cur.z ) == 0 )
-					{
-						work( cur.x, cur.y - 1, cur.z ) = 1;
-						que.push_back( point_type( cur.x    , cur.y - 1, cur.z     ) );
-					}
-					if( work( cur.x, cur.y + 1, cur.z ) == 0 )
-					{
-						work( cur.x, cur.y + 1, cur.z ) = 1;
-						que.push_back( point_type( cur.x    , cur.y + 1, cur.z     ) );
-					}
-					if( work( cur.x, cur.y, cur.z - 1 ) == 0 )
-					{
-						work( cur.x, cur.y, cur.z - 1 ) = 1;
-						que.push_back( point_type( cur.x    , cur.y    , cur.z - 1 ) );
-					}
-					if( work( cur.x, cur.y, cur.z + 1 ) == 0 )
-					{
-						work( cur.x, cur.y, cur.z + 1 ) = 1;
-						que.push_back( point_type( cur.x    , cur.y    , cur.z + 1 ) );
-					}
-				}
-				break;
-
-			case 3:
-			default:
-				{
-					for( size_type i = 0 ; i < clist.size( ) ; i++ )
-					{
-						point_type pt = clist[ i ] + cur;
-						if( work( pt.x, pt.y, pt.z ) == 0 )
-						{
-							work( pt.x, pt.y, pt.z ) = 1;
-							que.push_back( pt );
-						}
-					}
-				}
-				break;
 			}
 		}
 	}

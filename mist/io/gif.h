@@ -279,7 +279,7 @@ namespace __gif_controller__
 		{
 			static difference_type _2[ ] = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096 };
 
-			// TGA用のヘッダの位置を指定する
+			// GIF用のヘッダの位置を指定する
 			_gif_header_	*pheader		= reinterpret_cast < _gif_header_ * >( gif );
 			_gif_header_	&header			= *pheader;
 
@@ -293,6 +293,13 @@ namespace __gif_controller__
 			//difference_type color_resolution			= ( header.image_flags & 0x70 ) >> 4;
 			//bool            sort_flag					= ( header.image_flags & 0x08 ) != 0;
 			difference_type size_of_global_color_table	= ( header.image_flags & 0x07 );
+
+			if( size_of_global_color_table < 0 || size_of_global_color_table > 11 )
+			{
+				// GIFファイルではない
+				return( false );
+			}
+
 			difference_type global_color_table_bytes	= 3 * _2[ size_of_global_color_table + 1 ];
 
 			difference_type width  = header.image_width;
