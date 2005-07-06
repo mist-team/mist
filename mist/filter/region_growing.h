@@ -35,6 +35,21 @@ _MIST_BEGIN
 //! #include <mist/filter/region_growing.h>
 //! @endcode
 //!
+//! @code 領域拡張法の使用例
+//! typedef mist::region_growing_utility::point_type    point_type;     // 領域拡張の開始点を指定する型（mist::vector2 や mist::vector3 で代用可）
+//! typedef mist::region_growing_utility::circle        component_type; // 領域拡張に用いる構造要素
+//! typedef mist::region_growing_utility::less< short > condition_type; // 領域拡張のの拡張条件
+//!
+//! mist::region_growing(
+//!                       in,                    // 入力画像
+//!                       out,                   // 領域拡張を行った結果を格納する画像	
+//!                       point_type( x, y ),    // 拡張開始点（リストにすることで複数指定可能）
+//!                       128,                   // 領域拡張の結果に代入する値
+//!                       component_type( 20 ),  // 領域拡張に用いる構造要素（画素，円，球など）
+//!                       condition_type( 128 )  // 領域拡張のの拡張条件（未満，以上，範囲など）
+//!                     );
+//! @endcode
+//!
 //!  @{
 
 
@@ -60,7 +75,7 @@ namespace region_growing_utility
 
 
 	/// @brief 次の注目点の定め方
-	enum expand_mode
+	enum expand_mode_type
 	{
 		NC4,	///< @brief ４近傍（２次元）
 		NC8,	///< @brief ８近傍（２次元）
@@ -93,7 +108,7 @@ namespace region_growing_utility
 		bool operator ()( difference_type i, difference_type j, difference_type k ) const { return( true ); }
 
 		/// @brief 次の注目点の定め方
-		expand_mode expand_mode( ) const { return( NC4 ); }
+		expand_mode_type expand_mode( ) const { return( NC4 ); }
 	};
 
 
@@ -111,7 +126,7 @@ namespace region_growing_utility
 		bool operator ()( difference_type i, difference_type j, difference_type k ) const { return( true ); }
 
 		/// @brief 次の注目点の定め方
-		expand_mode expand_mode( ) const { return( NC6 ); }
+		expand_mode_type expand_mode( ) const { return( NC6 ); }
 	};
 
 
@@ -148,7 +163,7 @@ namespace region_growing_utility
 		}
 
 		/// @brief 次の注目点の定め方
-		expand_mode expand_mode( ) const { return( NC4 ); }
+		expand_mode_type expand_mode( ) const { return( NC4 ); }
 
 		/// @brief 半径と解像度を指定して球を初期化（楕円の作成も可能）
 		circle( double radius, double resoX = 1.0, double resoY = 1.0 ) : radius_( radius ), resoX_( resoX ), resoY_( resoY ),
@@ -186,7 +201,7 @@ namespace region_growing_utility
 		}
 
 		/// @brief 次の注目点の定め方
-		expand_mode expand_mode( ) const { return( NC6 ); }
+		expand_mode_type expand_mode( ) const { return( NC6 ); }
 
 		/// @brief 半径と解像度を指定して球を初期化（楕円体の作成も可能）
 		sphere( double radius, double resoX = 1.0, double resoY = 1.0, double resoZ = 1.0 ) :
@@ -342,12 +357,6 @@ namespace region_growing_utility
 
 		ptrdiff_list_type list;
 
-		difference_type w = components.width( );
-		difference_type h = components.height( );
-		difference_type d = components.depth( );
-		difference_type cx = w / 2;
-		difference_type cy = h / 2;
-		difference_type cz = d / 2;
 		difference_type ox1 = in1.width( ) / 2;
 		difference_type oy1 = in1.height( ) / 2;
 		difference_type oz1 = in1.depth( ) / 2;
@@ -453,21 +462,6 @@ namespace region_growing_utility
 //! @param[in]  max_num      … 最大反復回数
 //!
 //! @return 入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に false を返す
-//!
-//! @code 領域拡張法の使用例
-//! typedef mist::region_growing_utility::point_type    point_type;     // 領域拡張の開始点を指定する型（mist::vector2 や mist::vector3 で代用可）
-//! typedef mist::region_growing_utility::circle        component_type; // 領域拡張に用いる構造要素
-//! typedef mist::region_growing_utility::less< short > condition_type; // 領域拡張のの拡張条件
-//!
-//! mist::region_growing(
-//!                       in,                    // 入力画像
-//!                       out,                   // 領域拡張を行った結果を格納する画像	
-//!                       point_type( x, y ),    // 拡張開始点（リストにすることで複数指定可能）
-//!                       128,                   // 領域拡張の結果に代入する値
-//!                       component_type( 20 ),  // 領域拡張に用いる構造要素（画素，円，球など）
-//!                       condition_type( 128 )  // 領域拡張のの拡張条件（未満，以上，範囲など）
-//!                     );
-//! @endcode
 //! 
 template < class Array1, class Array2, class MaskType, class PointList, class Component, class Condition >
 bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const PointList &start_points, typename Array2::value_type output_value,
@@ -502,11 +496,6 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 	std::deque< pointer_diff_type > que;								// 注目点画素のリスト
 	std::vector< value_type > element( clist.size( ) );					// 拡張条件の判定に用いる画素の配列
 	region_growing_utility::ptrdiff_list_type elist( clist.size( ) );	// 拡張条件の判定に用いる画素へのポインタを覚える配列
-
-	difference_type w = in.width( );
-	difference_type h = in.height( );
-	difference_type d = in.depth( );
-	size_type count = 0;
 
 	// 画像の外側に拡張しないようにマスクを設定する
 	work.fill( );
@@ -549,6 +538,10 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 		out.reso2( in.reso2( ) );
 		out.reso3( in.reso3( ) );
 	}
+
+	
+	size_type count = 0;	// 反復回数の計測用カウンタ
+
 
 	// 領域拡張の条件によって，構造要素内の全要素を判定に用いるかどうかを決める
 	// require_all_elements が false の場合には，すでに判定済みの画素は2度目の判定を行わない
