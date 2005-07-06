@@ -2,6 +2,7 @@
 #include <mist/mist.h>
 #include <mist/io/bmp.h>
 #include <mist/filter/region_growing.h>
+#include <mist/timer.h>
 
 int main( int argc, char *argv[] )
 {
@@ -33,8 +34,12 @@ int main( int argc, char *argv[] )
 		}
 	}
 
+	mist::timer t;
+
 	mist::region_growing_utility::point_type s( w / 2, h / 2, 0 );
-	mist::region_growing( input, output, s, 128, mist::region_growing_utility::circle( 20 ), mist::region_growing_utility::Range< unsigned char >( 0, 128 ) );
+	mist::region_growing( input, output, s, 128, mist::region_growing_utility::circle( 20 ), mist::region_growing_utility::range< unsigned char >( 0, 128 ) );
+
+	cout << "Calculation Time: " << t << " (sec)" << endl;
 
 	mist::write_bmp( output, "hoge.bmp" );
 

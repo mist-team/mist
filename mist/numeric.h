@@ -2776,9 +2776,9 @@ inline const typename matrix_expression< Expression >::value_type trace( const m
 //!     =
 //!     \left|
 //!          \begin{array}{ccccc}
-//!            a_{11} & \cdots & a_{1j} & \cdots & a_{1n} \\ //
-//!            a_{21} & \cdots & a_{2j} & \cdots & a_{2n} \\ //
-//!            \vdots & \cdots & \vdots & \cdots & \vdots \\ //
+//!            a_{11} & \cdots & a_{1j} & \cdots & a_{1n} \\
+//!            a_{21} & \cdots & a_{2j} & \cdots & a_{2n} \\
+//!            \vdots & \cdots & \vdots & \cdots & \vdots \\
 //!            a_{n1} & \cdots & a_{nj} & \cdots & a_{nn}
 //!          \end{array}
 //!     \right|
@@ -2787,8 +2787,8 @@ inline const typename matrix_expression< Expression >::value_type trace( const m
 //!       \left( -1 \right)^{j+1} a_{1j}
 //!       \left|
 //!            \begin{array}{cccccc}
-//!              a_{21} & \cdots & a_{2,j-1} & a_{2,j+1} & \cdots & a_{2n} \\ //
-//!              \vdots & \cdots & \vdots    & \vdots    & \cdots & \vdots \\ //
+//!              a_{21} & \cdots & a_{2,j-1} & a_{2,j+1} & \cdots & a_{2n} \\
+//!              \vdots & \cdots & \vdots    & \vdots    & \cdots & \vdots \\
 //!              a_{n1} & \cdots & a_{n,j-1} & a_{n,j+1} & \cdots & a_{nn}
 //!            \end{array}
 //!       \right|

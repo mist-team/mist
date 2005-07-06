@@ -2732,7 +2732,7 @@ public:
 	//!
 	reference operator []( difference_type index )
 	{
-		return( base::at( index + margin1_ ) );
+		return( base::operator []( index ) );
 	}
 
 
@@ -2744,7 +2744,7 @@ public:
 	//!
 	reference operator ()( difference_type index )
 	{
-		return( base::at( index + margin1_ ) );
+		return( base::operator ()( index + margin1_ ) );
 	}
 
 	/// @brief ( i, j ) で示される位置の要素の参照を返す
@@ -2756,7 +2756,7 @@ public:
 	//!
 	reference operator ()( difference_type i, difference_type j )
 	{
-		return( base::at( i + margin1_, j + margin2_ ) );
+		return( base::operator ()( i + margin1_, j + margin2_ ) );
 	}
 
 	/// @brief ( i, j, k ) で示される位置の要素の参照を返す
@@ -2769,9 +2769,20 @@ public:
 	//!
 	reference operator ()( difference_type i, difference_type j, difference_type k )
 	{
-		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
+		return( base::operator ()( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
+
+	/// @brief index で示される位置の要素の参照を返す
+	//!
+	/// @param[in] index … コンテナ内の要素位置
+	//! 
+	/// @return 指定された要素を示す参照
+	//!
+	const_reference operator []( difference_type index ) const
+	{
+		return( base::operator []( index ) );
+	}
 
 	/// @brief index で示される位置の要素の const 参照を返す
 	//!
@@ -2781,7 +2792,7 @@ public:
 	//!
 	const_reference operator ()( difference_type index ) const
 	{
-		return( base::at( index + margin1_ ) );
+		return( base::operator ()( index + margin1_ ) );
 	}
 
 	/// @brief ( i, j ) で示される位置の要素の const 参照を返す
@@ -2793,7 +2804,7 @@ public:
 	//!
 	const_reference operator ()( difference_type i, difference_type j ) const
 	{
-		return( base::at( i + margin1_, j + margin2_ ) );
+		return( base::operator ()( i + margin1_, j + margin2_ ) );
 	}
 
 	/// @brief ( i, j, k ) で示される位置の要素の const 参照を返す
@@ -2806,7 +2817,7 @@ public:
 	//!
 	const_reference operator ()( difference_type i, difference_type j, difference_type k ) const
 	{
-		return( base::at( i + margin1_, j + margin2_, k + margin3_ ) );
+		return( base::operator ()( i + margin1_, j + margin2_, k + margin3_ ) );
 	}
 
 
