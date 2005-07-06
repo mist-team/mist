@@ -60,11 +60,11 @@ namespace __utility__
 //! 
 //! @return データの平均値
 //! 
-template < class T, class Allocator >
-inline typename __utility__::__value_type__< T >::value_type average( const array< T, Allocator > &a )
+template < class Array >
+inline typename __utility__::__value_type__< typename Array::value_type >::value_type average( const Array &a )
 {
-	typedef typename array< T, Allocator >::size_type size_type;
-	typedef typename __utility__::__value_type__< T >::value_type value_type;
+	typedef typename Array::size_type size_type;
+	typedef typename __utility__::__value_type__< typename Array::value_type >::value_type value_type;
 
 	if( a.empty( ) )
 	{
@@ -89,11 +89,11 @@ inline typename __utility__::__value_type__< T >::value_type average( const arra
 //! 
 //! @return データの分散
 //! 
-template < class T, class Allocator >
-inline typename __utility__::__value_type__< T >::value_type variance( const array< T, Allocator > &a, double ave )
+template < class Array >
+inline typename __utility__::__value_type__< typename Array::value_type >::value_type variance( const Array &a, double ave )
 {
-	typedef typename array< T, Allocator >::size_type size_type;
-	typedef typename __utility__::__value_type__< T >::value_type value_type;
+	typedef typename Array::size_type size_type;
+	typedef typename __utility__::__value_type__< typename Array::value_type >::value_type value_type;
 
 	if( a.empty( ) )
 	{
@@ -118,8 +118,8 @@ inline typename __utility__::__value_type__< T >::value_type variance( const arr
 //! 
 //! @return データの分散
 //! 
-template < class T, class Allocator >
-inline typename __utility__::__value_type__< T >::value_type variance( const array< T, Allocator > &a )
+template < class Array >
+inline typename __utility__::__value_type__< typename Array::value_type >::value_type variance( const Array &a )
 {
 	return( variance( a, average( a ) ) );
 }
