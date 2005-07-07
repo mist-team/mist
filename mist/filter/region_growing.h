@@ -59,21 +59,6 @@ _MIST_BEGIN
 //! 
 namespace region_growing_utility
 {
-	struct pointer_diff2
-	{
-		typedef ptrdiff_t	difference_type;
-
-		ptrdiff_t diff1;
-		ptrdiff_t diff2;
-
-		pointer_diff2( ptrdiff_t d1 = 0, ptrdiff_t d2 = 0 ) : diff1( d1 ), diff2( d2 ){ }
-	};
-
-	typedef vector3< ptrdiff_t >			point_type;			///< @brief 領域拡張法で利用する座標を表す型
-	typedef std::vector< point_type >		point_list_type;	///< @brief 領域拡張法で利用する座標のリスト型
-	typedef std::vector< pointer_diff2 >	ptrdiff_list_type;
-
-
 	/// @brief 次の注目点の定め方
 	enum expand_mode_type
 	{
@@ -82,15 +67,6 @@ namespace region_growing_utility
 		NC6,	///< @brief ６近傍（３次元）
 		NC26,	///< @brief ２６近傍（３次元）
 		ALL		///< @brief 構造要素内のすべての点
-	};
-
-	struct no_mask
-	{
-		typedef size_t		size_type;
-		typedef ptrdiff_t	difference_type;
-
-		bool empty( ) const { return( true ); }
-		bool operator ()( difference_type i, difference_type j, difference_type k ) const { return( false ); }
 	};
 
 
@@ -297,6 +273,35 @@ namespace region_growing_utility
 		/// @brief 任意の下限と上限で範囲を初期化
 		range( value_type min, value_type max ) : min_( min ), max_( max ){ }
 	};
+}
+
+
+// 領域拡張法の内部で利用する型など
+namespace __region_growing_utility__
+{
+	struct pointer_diff2
+	{
+		typedef ptrdiff_t	difference_type;
+
+		ptrdiff_t diff1;
+		ptrdiff_t diff2;
+
+		pointer_diff2( ptrdiff_t d1 = 0, ptrdiff_t d2 = 0 ) : diff1( d1 ), diff2( d2 ){ }
+	};
+
+	typedef vector3< ptrdiff_t >			point_type;			///< @brief 領域拡張法で利用する座標を表す型
+	typedef std::vector< point_type >		point_list_type;	///< @brief 領域拡張法で利用する座標のリスト型
+	typedef std::vector< pointer_diff2 >	ptrdiff_list_type;
+
+
+	struct no_mask
+	{
+		typedef size_t		size_type;
+		typedef ptrdiff_t	difference_type;
+
+		bool empty( ) const { return( true ); }
+		bool operator ()( difference_type i, difference_type j, difference_type k ) const { return( false ); }
+	};
 
 
 	template < class Array1, class Array2, class Component >
@@ -369,14 +374,14 @@ namespace region_growing_utility
 
 		switch( components.expand_mode( ) )
 		{
-		case NC4:
+		case region_growing_utility::NC4:
 			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1, oz1 ) - p1, &in2( ox2 - 1, oy2, oz2 ) - p2 ) );
 			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1, oz1 ) - p1, &in2( ox2 + 1, oy2, oz2 ) - p2 ) );
 			list.push_back( pointer_diff2( &in1( ox1, oy1 - 1, oz1 ) - p1, &in2( ox2, oy2 - 1, oz2 ) - p2 ) );
 			list.push_back( pointer_diff2( &in1( ox1, oy1 + 1, oz1 ) - p1, &in2( ox2, oy2 + 1, oz2 ) - p2 ) );
 			break;
 
-		case NC6:
+		case region_growing_utility::NC6:
 			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1, oz1 ) - p1, &in2( ox2 - 1, oy2, oz2 ) - p2 ) );
 			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1, oz1 ) - p1, &in2( ox2 + 1, oy2, oz2 ) - p2 ) );
 			list.push_back( pointer_diff2( &in1( ox1, oy1 - 1, oz1 ) - p1, &in2( ox2, oy2 - 1, oz2 ) - p2 ) );
@@ -385,7 +390,7 @@ namespace region_growing_utility
 			list.push_back( pointer_diff2( &in1( ox1, oy1, oz1 + 1 ) - p1, &in2( ox2, oy2, oz2 + 1 ) - p2 ) );
 			break;
 
-		case ALL:
+		case region_growing_utility::ALL:
 		default:
 			list = create_component_list( in1, in2, components );
 			break;
@@ -402,18 +407,23 @@ namespace region_growing_utility
 		typedef typename Array::const_pointer					const_pointer2;
 		typedef typename ptrdiff_list_type::difference_type		difference_type;
 
-		if( pt.x < 0 || pt.x >= static_cast< difference_type >( in1.width( ) ) || pt.y < 0 || pt.y >= static_cast< difference_type >( in1.height( ) ) )
+		difference_type x = static_cast< difference_type >( pt.x );
+		difference_type y = static_cast< difference_type >( pt.y );
+		difference_type w = in1.width( );
+		difference_type h = in1.height( );
+
+		if( x < 0 || x >= w || y < 0 || y >= h )
 		{
 			return( false );
 		}
-		else if( in2( pt.x, pt.y ) != 0 )
+		else if( in2( x, y ) != 0 )
 		{
 			return( false );
 		}
 		else
 		{
-			ptr.diff1 = &in1( pt.x, pt.y) - &in1[ 0 ];
-			ptr.diff2 = &in2( pt.x, pt.y ) - &in2[ 0 ];
+			ptr.diff1 = &in1( x, y) - &in1[ 0 ];
+			ptr.diff2 = &in2( x, y ) - &in2[ 0 ];
 			return( true );
 		}
 	}
@@ -426,21 +436,66 @@ namespace region_growing_utility
 		typedef typename Array::const_pointer					const_pointer2;
 		typedef typename ptrdiff_list_type::difference_type		difference_type;
 
-		if( pt.x < 0 || pt.x >= static_cast< difference_type >( in1.width( ) ) || pt.y < 0 || pt.y >= static_cast< difference_type >( in1.height( ) ) || pt.z < 0 || pt.z >= static_cast< difference_type >( in1.depth( ) ) )
+		difference_type x = static_cast< difference_type >( pt.x );
+		difference_type y = static_cast< difference_type >( pt.y );
+		difference_type z = static_cast< difference_type >( pt.z );
+		difference_type w = in1.width( );
+		difference_type h = in1.height( );
+		difference_type d = in1.depth( );
+
+		if( x < 0 || x >= w || y < 0 || y >= h || z < 0 || z >= d )
 		{
 			return( false );
 		}
-		else if( in2( pt.x, pt.y, pt.z ) != 0 )
+		else if( in2( x, y, z ) != 0 )
 		{
 			return( false );
 		}
 		else
 		{
-			ptr.diff1 = &in1( pt.x, pt.y, pt.z ) - &in1[ 0 ];
-			ptr.diff2 = &in2( pt.x, pt.y, pt.z ) - &in2[ 0 ];
+			ptr.diff1 = &in1( x, y, z ) - &in1[ 0 ];
+			ptr.diff2 = &in2( x, y, z ) - &in2[ 0 ];
 			return( true );
 		}
 	}
+
+
+	template < class PointType >
+	struct point_list_converter
+	{
+		typedef std::vector< PointType > point_list_type;
+
+		static point_list_type create_point_list( const PointType &pt )
+		{
+			point_list_type list( 1 );
+			list[ 0 ] = pt;
+			return( list );
+		}
+	};
+
+
+	template < class PointType >
+	struct point_list_converter< std::vector< PointType > >
+	{
+		typedef std::vector< PointType > point_list_type;
+
+		static point_list_type create_point_list( const point_list_type &list )
+		{
+			return( list );
+		}
+	};
+
+	template < class PointType >
+	struct point_list_converter< std::deque< PointType > >
+	{
+		typedef std::deque< PointType > point_list_type;
+
+		static point_list_type create_point_list( const point_list_type &list )
+		{
+			return( list );
+		}
+	};
+
 
 	template < class T >
 	inline const T &maximum( const T &v0, const T &v1, const T &v2 )
@@ -455,7 +510,7 @@ namespace region_growing_utility
 //! @param[in]  in           … 入力画像
 //! @param[out] out          … 出力マークデータ
 //! @param[in]  mask         … 処理対象外マスク
-//! @param[in]  start_points … 領域拡張の開始点のリスト（複数指定可能）
+//! @param[in]  start_points … 領域拡張の開始点のリスト（複数指定する場合は，std::vectorなどのリストに代入すること）
 //! @param[in]  output_value … 出力マークデータに書き込む値
 //! @param[in]  components   … 領域拡張に用いる構造要素
 //! @param[in]  condition    … 構造要素内の画素が満たすべき条件
@@ -473,7 +528,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 	}
 
 	typedef typename Array1::template rebind< unsigned char >::other mask_type;
-	typedef region_growing_utility::pointer_diff2 pointer_diff_type;
+	typedef __region_growing_utility__::pointer_diff2 pointer_diff_type;
 
 	typedef typename Array1::size_type			size_type;
 	typedef typename Array1::value_type			value_type;
@@ -488,14 +543,14 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 	size_type ry = components.height( ) / 2;
 	size_type rz = components.depth( ) / 2;
 
-	marray< mask_type > work( in, region_growing_utility::maximum( rx, ry, rz ) );	// 注目点が範囲外に出ないことを監視するマスク
+	marray< mask_type > work( in, __region_growing_utility__::maximum( rx, ry, rz ) );	// 注目点が範囲外に出ないことを監視するマスク
 
-	region_growing_utility::ptrdiff_list_type clist = region_growing_utility::create_component_list( in, work, components );	// 構造要素内の画素のリスト
-	region_growing_utility::ptrdiff_list_type ulist = region_growing_utility::create_update_list( in, work, components );		// ある注目点の次に注目点になる画素のリスト
+	__region_growing_utility__::ptrdiff_list_type clist = __region_growing_utility__::create_component_list( in, work, components );	// 構造要素内の画素のリスト
+	__region_growing_utility__::ptrdiff_list_type ulist = __region_growing_utility__::create_update_list( in, work, components );		// ある注目点の次に注目点になる画素のリスト
 
-	std::deque< pointer_diff_type > que;								// 注目点画素のリスト
-	std::vector< value_type > element( clist.size( ) );					// 拡張条件の判定に用いる画素の配列
-	region_growing_utility::ptrdiff_list_type elist( clist.size( ) );	// 拡張条件の判定に用いる画素へのポインタを覚える配列
+	std::deque< pointer_diff_type > que;									// 注目点画素のリスト
+	std::vector< value_type > element( clist.size( ) );						// 拡張条件の判定に用いる画素の配列
+	__region_growing_utility__::ptrdiff_list_type elist( clist.size( ) );	// 拡張条件の判定に用いる画素へのポインタを覚える配列
 
 	// 画像の外側に拡張しないようにマスクを設定する
 	work.fill( );
@@ -519,13 +574,16 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 		}
 	}
 
+	typedef __region_growing_utility__::point_list_converter< PointList > start_point_list_converter;
+	typedef typename start_point_list_converter::point_list_type start_point_list_type;
+	start_point_list_type sps = start_point_list_converter::create_point_list( start_points );
+
 	// 拡張開始点が画像内に存在しているかどうかをチェックする
-	for( typename PointList::const_iterator ite = start_points.begin( ) ; ite != start_points.end( ) ; ++ite )
+	for( typename start_point_list_type::const_iterator ite = sps.begin( ) ; ite != sps.end( ) ; ++ite )
 	{
-		region_growing_utility::pointer_diff2 ptr;
-		if( region_growing_utility::check_component_list( in, work, *ite, ptr ) )
+		__region_growing_utility__::pointer_diff2 ptr;
+		if( __region_growing_utility__::check_component_list( in, work, *ite, ptr ) )
 		{
-			work[ ptr.diff2 ] = 1;
 			que.push_back( ptr );
 		}
 	}
@@ -558,13 +616,16 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 			work_pointer   pw = &work[ 0 ] + cur.diff2;
 			output_pointer po = &out[ 0 ] + cur.diff1;
 
+			// 以降の処理で注目点とならないように，現在の注目店をマスクする
+			pw[ 0 ] |= 0xf0;
+
 			// 拡張条件判定に用いる画素を列挙する
 			// ここで，マスクされている領域は範囲に含めない（画像外など）
 			size_type num = 0;
 			for( size_type i = 0 ; i < clist.size( ) ; i++ )
 			{
 				const pointer_diff_type &d = clist[ i ];
-				if( pw[ d.diff2 ] <= 1 )
+				if( ( pw[ d.diff2 ] & 0x0f ) == 0 )
 				{
 					element[ num ] = pi[ d.diff1 ];
 					elist[ num ]   = d;
@@ -573,7 +634,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 			}
 
 			// 拡張条件の判定を行う
-			if( condition( element, num ) )
+			if( num != 0 && condition( element, num ) )
 			{
 				if( ++count > max_num )
 				{
@@ -591,9 +652,9 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 				for( size_type i = 0 ; i < ulist.size( ) ; i++ )
 				{
 					const pointer_diff_type &d = ulist[ i ];
-					if( pw[ d.diff2 ] <= 128 )
+					if( ( pw[ d.diff2 ] & 0xf0 ) == 0 )
 					{
-						pw[ d.diff2 ] = 200;
+						pw[ d.diff2 ] |= 0xf0;
 						que.push_back( pointer_diff_type( cur.diff1 + d.diff1, cur.diff2 + d.diff2 ) );
 					}
 				}
@@ -613,6 +674,9 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 			work_pointer   pw = &work[ 0 ] + cur.diff2;
 			output_pointer po = &out[ 0 ] + cur.diff1;
 
+			// 以降の処理で注目点とならないように，現在の注目店をマスクする
+			pw[ 0 ] |= 0xf0;
+
 			// 拡張条件判定に用いる画素を列挙する
 			// ここで，マスクされている領域は範囲に含めない（画像外など）
 			// また，すでに判定済みの画素も除外する
@@ -621,7 +685,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 			for( size_type i = 0 ; i < clist.size( ) ; i++ )
 			{
 				const pointer_diff_type &d = clist[ i ];
-				if( pw[ d.diff2 ] <= 1 )
+				if( ( pw[ d.diff2 ] & 0x0f ) == 0 )
 				{
 					element[ num ] = pi[ d.diff1 ];
 					elist[ num ]   = d;
@@ -641,7 +705,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 				for( size_type i = 0 ; i < num ; i++ )
 				{
 					const pointer_diff_type &d = elist[ i ];
-					pw[ d.diff2 ] = 2;
+					pw[ d.diff2 ] |= 1;
 					po[ d.diff1 ] = output_value;
 				}
 
@@ -649,9 +713,9 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 				for( size_type i = 0 ; i < ulist.size( ) ; i++ )
 				{
 					const pointer_diff_type &d = ulist[ i ];
-					if( pw[ d.diff2 ] <= 128 )
+					if( ( pw[ d.diff2 ] & 0xf0 ) == 0 )
 					{
-						pw[ d.diff2 ] = 200;
+						pw[ d.diff2 ] |= 0xf0;
 						que.push_back( pointer_diff_type( cur.diff1 + d.diff1, cur.diff2 + d.diff2 ) );
 					}
 				}
@@ -670,11 +734,11 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 //!
 //! @param[in]  in           … 入力画像
 //! @param[out] out          … 出力マークデータ
-//! @param[in]  start_points … 領域拡張の開始点のリスト（複数指定可能）
+//! @param[in]  start_points … 領域拡張の開始点のリスト（複数指定する場合は，std::vectorなどのリストに代入すること）
 //! @param[in]  output_value … 出力マークデータに書き込む値
 //! @param[in]  components   … 領域拡張に用いる構造要素
 //! @param[in]  condition    … 構造要素内の画素が満たすべき条件
-//! @param[in]  max_num      … 最大反復回数
+//! @param[in]  max_num      … 最大反復回数（省略した場合は条件を満たす点が存在しなくなるまで実行する）
 //!
 //! @return 入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に false を返す
 //!
@@ -682,33 +746,9 @@ template < class Array1, class Array2, class PointList, class Component, class C
 bool region_growing( const Array1 &in, Array2 &out, const PointList &start_points, typename Array2::value_type output_value,
 										const Component &components, const Condition &condition, typename Array1::size_type max_num = type_limits< typename Array1::size_type >::maximum( ) )
 {
-	return( region_growing( in, out, region_growing_utility::no_mask( ), start_points, output_value, components, condition, max_num ) );
+	return( region_growing( in, out, __region_growing_utility__::no_mask( ), start_points, output_value, components, condition, max_num ) );
 }
 
-
-
-/// @brief 任意の構造要素と条件を用いて領域拡張を行う関数
-//!
-//! 処理対象外マスクを設定しない領域拡張法
-//!
-//! @param[in]  in           … 入力画像
-//! @param[out] out          … 出力マークデータ
-//! @param[in]  start_point  … 領域拡張の開始点（１点のみ指定可能）
-//! @param[in]  output_value … 出力マークデータに書き込む値
-//! @param[in]  components   … 領域拡張に用いる構造要素
-//! @param[in]  condition    … 構造要素内の画素が満たすべき条件
-//! @param[in]  max_num      … 最大反復回数
-//!
-//! @return 入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に false を返す
-//!
-template < class Array1, class Array2, class Component, class Condition >
-bool region_growing( const Array1 &in, Array2 &out, const region_growing_utility::point_type &start_point, typename Array2::value_type output_value,
-										const Component &components, const Condition &condition, typename Array1::size_type max_num = type_limits< typename Array1::size_type >::maximum( ) )
-{
-	region_growing_utility::point_list_type list( 1 );
-	list[ 0 ] = start_point;
-	return( region_growing( in, out, region_growing_utility::no_mask( ), list, output_value, components, condition, max_num ) );
-}
 
 /// @}
 //  領域拡張法グループの終わり

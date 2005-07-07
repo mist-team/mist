@@ -36,8 +36,19 @@ int main( int argc, char *argv[] )
 
 	mist::timer t;
 
-	mist::region_growing_utility::point_type s( w / 2, h / 2, 0 );
-	mist::region_growing( input, output, s, 128, mist::region_growing_utility::circle( 20 ), mist::region_growing_utility::range< unsigned char >( 0, 128 ) );
+	typedef mist::vector2< int >								point_type;     // 領域拡張の開始点を指定する型（mist::vector2 や mist::vector3 で代用可）
+//	typedef mist::region_growing_utility::pixel					component_type; // 領域拡張に用いる構造要素
+	typedef mist::region_growing_utility::circle				component_type; // 領域拡張に用いる構造要素
+	typedef mist::region_growing_utility::less< unsigned int >	condition_type; // 領域拡張のの拡張条件
+
+	mist::region_growing(
+							input,							// 入力画像
+							output,							// 領域拡張を行った結果を格納する画像	
+							point_type( (int)w / 2, (int)h / 2 ),		// 拡張開始点（リストにすることで複数指定可能）
+							128,							// 領域拡張の結果に代入する値
+							component_type( 20 ),			// 領域拡張に用いる構造要素（画素，円，球など）
+							condition_type( 128 )			// 領域拡張のの拡張条件（未満，以上，範囲など）
+						);
 
 	cout << "Calculation Time: " << t << " (sec)" << endl;
 
