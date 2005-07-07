@@ -6,6 +6,7 @@
 #define __INCLUDE_RANDOM__
 
 #include "mist.h"
+#include "matrix.h"
 #include <cmath>
 
 // mist名前空間の始まり
@@ -325,7 +326,7 @@ namespace gauss
 
 	/// @brief 正規乱数のジェネレータ
 	//! 
-	//! 平均値と標準偏差を指定し，一様乱数ジェネレータを用いて正規乱数を発生させるクラス．
+	//! 平均値と分散を指定し，一様乱数ジェネレータを用いて正規乱数を発生させるクラス．
 	//! 
 	class random 
 	{
@@ -349,12 +350,12 @@ namespace gauss
 		/// @brief コンストラクタ
 		//! 
 		//! @param[in] mean … 正規乱数の平均
-		//! @param[in] standard_deviation … 正規乱数の標準偏差
+		//! @param[in] variance … 正規乱数の分散
 		//! 
-		random( const double mean, const double standard_deviation ) :
+		random( const double mean, const double variance ) :
 			u_rand_( ),
 			mean_( mean ), 
-			standard_deviation_( standard_deviation )
+			standard_deviation_( std::sqrt( variance ) )
 		{
 		}
 
@@ -362,12 +363,12 @@ namespace gauss
 		//! 
 		//! @param[in] seed … u_rand_のseed(これを用いてジェネレータの状態を初期化する)
 		//! @param[in] mean … 正規乱数の平均
-		//! @param[in] standard_deviation … 正規乱数の標準偏差
+		//! @param[in] variance … 正規乱数の分散
 		//! 
-		random( const unsigned long seed, const double mean = 0.0, const double standard_deviation = 1.0 ) :
+		random( const unsigned long seed, const double mean = 0.0, const double variance = 1.0 ) :
 			u_rand_( seed ),
 			mean_( mean ), 
-			standard_deviation_( standard_deviation )
+			standard_deviation_( std::sqrt( variance ) )
 		{
 		}
 
@@ -375,12 +376,12 @@ namespace gauss
 		//! 
 		//! @param[in] seed_array … u_rand_のseed配列
 		//! @param[in] mean … 正規乱数の平均
-		//! @param[in] standard_deviation … 正規乱数の標準偏差
+		//! @param[in] variance … 正規乱数の分散
 		//! 
-		random( const array< unsigned long >& seed_array, const double mean = 0.0, const double standard_deviation = 1.0 ) :
+		random( const array< unsigned long >& seed_array, const double mean = 0.0, const double variance = 1.0 ) :
 			u_rand_( seed_array ),
 			mean_( mean ), 
-			standard_deviation_( standard_deviation )
+			standard_deviation_( std::sqrt( variance ) )
 		{
 		}
 
@@ -434,15 +435,15 @@ namespace gauss
 		/// @brief 正規乱数のパラメータ指定
 		//! 
 		//! @param[in] mean … 正規乱数の平均
-		//! @param[in] standard_deviation … 正規乱数の標準偏差
+		//! @param[in] variance … 正規乱数の分散
 		//! 
-		void set_param( const double& mean = 0.0, const double& standard_deviation = 1.0 )
+		void set_param( const double& mean = 0.0, const double& variance = 1.0 )
 		{
 			mean_ = mean;
-			standard_deviation_ = standard_deviation;
+			standard_deviation_ = std::sqrt( variance );
 		}
-
-		/// @brief 指定された平均・標準偏差の正規乱数を生成
+		
+		/// @brief 指定された平均・分散の正規乱数を生成
 		//! 
 		//! @return 生成された正規乱数
 		//! 
@@ -451,9 +452,150 @@ namespace gauss
 			return( standard_deviation_ * std::sqrt( -2.0 * std::log( 1.0 - u_rand_.real2( ) ) ) * std::cos( u_rand_.pai_timed_by_2_ * ( 1.0 - u_rand_.real2( ) ) ) + mean_ );
 		}
 
+		/// @brief 指定された平均・分散の正規乱数を生成
+		//! 
+		//! @return 生成された正規乱数
+		//! 
+		const double operator( )( )
+		{
+			return( standard_deviation_ * std::sqrt( -2.0 * std::log( 1.0 - u_rand_.real2( ) ) ) * std::cos( u_rand_.pai_timed_by_2_ * ( 1.0 - u_rand_.real2( ) ) ) + mean_ );
+		}
+
 	};
 
 } // gauss
+
+
+	/// @brief 多変量正規乱数のジェネレータ
+namespace multivariate_gauss
+{
+
+	const mist::matrix< double > choleski( const mist::matrix< double > &mat1 )
+	{
+		// coded by h.ishida
+		mist::matrix< double > mat2( mat1.rows( ), mat1.cols( ) );
+		size_t i, j, m, k = mat1.cols( );
+		double s;
+		mat2( 0, 0 ) = std::sqrt( mat1( 0, 0 ) );
+		for( i = 0 ; i < k ; i ++ )
+		{
+			mat2( i, 0 ) = mat1( i, 0 ) / mat2( 0, 0 );
+		}
+		for(i = 1 ; i < k ; i ++ )
+		{
+			s = 0.0;
+			for( j = 0 ; j < i ; j ++ )
+			{
+				s += mat2( i, j ) * mat2( i, j );
+			}
+			mat2( i, i ) = sqrt( mat1( i, i ) - s );
+			for( j = 1 ; j < i ; j ++ )
+			{
+				s = 0.0;
+				for( m = 0 ; m < j ; m ++ )
+				{
+					s += mat2( i, m ) * mat2( j, m );
+				}
+				mat2( i, j ) = ( mat1( i, j ) - s ) / mat2( j, j );
+				mat2( j, i ) = 0.0;
+			}
+		}
+		return mat2;
+	}
+
+
+	/// @brief 多変量正規乱数のジェネレータ
+	//! 
+	//! 平均ベクトルと共分散行列を指定し，正規乱数ジェネレータを用いて多変量正規乱数（ベクトル）を発生させるクラス．
+	//! 
+	class random 
+	{
+		mist::gauss::random g_rand_;	///< @brief 正規乱数ジェネレータ >
+
+		mist::matrix< double > mean_;			///< @brief 生成する正規乱数の平均ベクトル
+		mist::matrix< double > l_triangle_;		///< @brief 生成する正規乱数の共分散行列
+
+	public:
+
+		/// @brief デフォルトコンストラクタ
+		//! 
+		//! 
+		random( ) :
+			g_rand_( ),
+			mean_( mist::matrix< double >( ) ), 
+			l_triangle_( mist::matrix< double >( ) )
+		{
+		}
+
+		/// @brief コンストラクタ
+		//! 
+		//! @param[in] mean … 多変量正規乱数の平均ベクトル
+		//! @param[in] covariance … 多変量正規乱数の共分散行列
+		//! 
+		random( const mist::matrix< double > &mean, const mist::matrix< double > &covariance ) :
+			g_rand_( ),
+			mean_( mean ), 
+			l_triangle_( choleski( covariance ) )
+		{
+		}
+
+		/// @brief コンストラクタ
+		//! 
+		//! @param[in] seed … g_rand_のseed(これを用いてジェネレータの状態を初期化する)
+		//! @param[in] mean … 多変量正規乱数の平均ベクトル
+		//! @param[in] standard_deviation … 多変量正規乱数の共分散行列
+		//! 
+		random( const unsigned long seed, const mist::matrix< double > &mean, const mist::matrix< double > &covariance ) :
+			g_rand_( seed ),
+			mean_( mean ), 
+			l_triangle_( choleski( covariance ) )
+		{
+		}
+
+		/// @brief コンストラクタ
+		//! 
+		//! @param[in] seed_array … g_rand_のseed配列
+		//! @param[in] mean … 多変量正規乱数の平均ベクトル
+		//! @param[in] standard_deviation … 多変量正規乱数の共分散行列
+		//! 
+		random( const array< unsigned long >& seed_array, const mist::matrix< double > &mean, const mist::matrix< double > &covariance ) :
+			g_rand_( seed_array ),
+			mean_( mean ), 
+			l_triangle_( choleski( covariance ) )
+		{
+		}
+		
+		/// @brief 指定された平均・標準偏差の正規乱数を生成
+		//! 
+		//! @return 生成された正規乱数
+		//! 
+		const mist::matrix< double > generate( )
+		{
+			mist::matrix< double > r_vec( mean_.rows( ), mean_.cols( ) );
+			for( size_t i = 0 ; i < r_vec.size( ) ; i ++ )
+			{
+				r_vec[ i ] = g_rand_.generate( ); 
+			}
+			return( mean_ + l_triangle_ * r_vec );
+		}
+
+		/// @brief 指定された平均・標準偏差の正規乱数を生成
+		//! 
+		//! @return 生成された正規乱数
+		//! 
+		const mist::matrix< double > operator( )( )
+		{
+			mist::matrix< double > r_vec( mean_.rows( ), mean_.cols( ) );
+			for( size_t i = 0 ; i < r_vec.size( ) ; i ++ )
+			{
+				r_vec[ i ] = g_rand_.generate( ); 
+			}
+			return( mean_ + l_triangle_ * r_vec );
+		}
+	};
+
+
+} // multivariate_gauss
 
 /// @}
 //  擬似乱数の生成の終わり
@@ -501,3 +643,4 @@ _MIST_END
 */
 
 #endif // __INCLUDE_RANDOM__
+
