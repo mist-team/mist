@@ -498,9 +498,21 @@ namespace __region_growing_utility__
 
 
 	template < class T >
-	inline const T &maximum( const T &v0, const T &v1, const T &v2 )
+	inline const T maximum( const T &v0, const typename type_trait< T >::value_type &v1 )
+	{
+		return( v0 > v1 ? v0 : v1 );
+	}
+
+	template < class T >
+	inline const T maximum( const T &v0, const typename type_trait< T >::value_type &v1, const typename type_trait< T >::value_type &v2 )
 	{
 		return( v0 > v1 ? ( v0 > v2 ? v0 : v2 ) : ( v1 > v2 ? v1 : v2 ) );
+	}
+
+	template < class T >
+	inline const T maximum( const T &v0, const typename type_trait< T >::value_type &v1, const typename type_trait< T >::value_type &v2, const typename type_trait< T >::value_type &v3 )
+	{
+		return( maximum( maximum( v0, v1 ), maximum( v2, v3 ) ) );
 	}
 }
 
@@ -543,7 +555,9 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 	size_type ry = components.height( ) / 2;
 	size_type rz = components.depth( ) / 2;
 
-	marray< mask_type > work( in, __region_growing_utility__::maximum( rx, ry, rz ) );	// 注目点が範囲外に出ないことを監視するマスク
+	// 注目点が範囲外に出ないことを監視するマスク
+	// 最低でも外側に１画素の安全領域を作成する
+	marray< mask_type > work( in, __region_growing_utility__::maximum( rx, ry, rz, 1 ) );
 
 	__region_growing_utility__::ptrdiff_list_type clist = __region_growing_utility__::create_component_list( in, work, components );	// 構造要素内の画素のリスト
 	__region_growing_utility__::ptrdiff_list_type ulist = __region_growing_utility__::create_update_list( in, work, components );		// ある注目点の次に注目点になる画素のリスト
