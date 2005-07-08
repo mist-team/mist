@@ -142,6 +142,9 @@
 			<File
 				RelativePath="..\test\raw_test.h">
 			</File>
+			<File
+				RelativePath="..\mist\filter\thinning.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="MISTƒtƒ@ƒCƒ‹"

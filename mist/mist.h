@@ -3383,7 +3383,7 @@ inline std::ostream &operator <<( std::ostream &out, const array< T, Allocator >
 	typename array< T, Allocator >::size_type i;
 	for( i = 0 ; i < a.size( ) ; i++ )
 	{
-		out << a[i];
+		out << a[ i ];
 		if( i != a.size1( ) - 1 ) out << ", ";
 	}
 
@@ -3408,7 +3408,7 @@ inline std::ostream &operator <<( std::ostream &out, const array1< T, Allocator 
 	typename array1< T, Allocator >::size_type i;
 	for( i = 0 ; i < a.size( ) ; i++ )
 	{
-		out << a[i];
+		out << a[ i ];
 		if( i != a.size1( ) - 1 ) out << ", ";
 	}
 

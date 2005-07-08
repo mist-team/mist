@@ -6,8 +6,6 @@
 //!   - 鳥脇純一郎, ``画像理解のためのディジタル画像処理〔I〕〔II〕，'' 昭晃堂，1988
 //!   - 鈴木智, 阿部圭一, ``距離変換の結果を利用した二値画像の逐次細線化,'' 電子情報通信学会論文誌D, vol.68-D, no.4, pp.473-480, 1985
 //!
-#include <deque>
-
 #ifndef __INCLUDE_MIST_THINNING__
 #define __INCLUDE_MIST_THINNING__
 
@@ -20,9 +18,15 @@
 #include "../limits.h"
 #endif
 
+#ifndef __INCLUDE_MIST_MATRIX__
+#include "../matrix.h"
+#endif
+
 #ifndef __INCLUDE_MIST_LIMITS__
 #include "distance.h"
 #endif
+
+#include <deque>
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -31,8 +35,8 @@ _MIST_BEGIN
 namespace __thinning_controller__
 {
 	template < class T, class Allocator >
-	inline void val9( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
-					  typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
+		inline void val9( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
+		typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
 	{
 		p[ 0 ] = in( i , j );
 		p[ 1 ] = in( i + 1, j );
@@ -96,7 +100,7 @@ namespace __thinning_controller__
 	}
 
 	template < class T, class Allocator >
-	void thinning( array2< T, Allocator > &ia )
+		void thinning( array2< T, Allocator > &ia )
 	{
 		typedef typename array2< T, Allocator >::size_type size_type;
 		typedef typename array2< T, Allocator >::value_type value_type;
@@ -233,8 +237,8 @@ namespace euclidean
 	namespace __utility__
 	{
 		template < class T, class Allocator >
-		inline void val9_1( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
-							typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
+			inline void val9_1( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
+			typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
 		{
 			p[ 0 ] = in( i    , j     );
 			p[ 1 ] = in( i + 1, j     );
@@ -248,8 +252,8 @@ namespace euclidean
 		}
 
 		template < class T, class Allocator >
-		inline void val9_2( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
-							typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
+			inline void val9_2( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
+			typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
 		{
 			p[ 0 ] = in( i    , j     );
 			p[ 1 ] = in( i - 1, j     );
@@ -263,8 +267,8 @@ namespace euclidean
 		}
 
 		template < class T, class Allocator >
-		inline void val9_3( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
-							typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
+			inline void val9_3( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
+			typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
 		{
 			p[ 0 ] = in( i    , j     );
 			p[ 1 ] = in( i + 1, j     );
@@ -363,7 +367,7 @@ namespace euclidean
 		//!   - 鈴木智, 阿部圭一, ``距離変換の結果を利用した二値画像の逐次細線化,'' 電子情報通信学会論文誌D, vol.68-D, no.4, pp.473-480, 1985.
 		//!
 		template < class T, class Allocator >
-		void thinning( array2< T, Allocator > &ia )
+			void thinning( array2< T, Allocator > &ia )
 		{
 			typedef typename array2< T, Allocator >::size_type size_type;
 			typedef typename array2< T, Allocator >::value_type value_type;
@@ -560,7 +564,7 @@ namespace euclidean
 			}
 		}
 
-				//3次元画像の細線化
+		//3次元画像の細線化
 		template < size_t Nc >
 		struct neighbor
 		{
@@ -568,7 +572,7 @@ namespace euclidean
 			typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 			template < class T >
-			static T P1( T p[ 4 ][ 9 ], difference_type i, difference_type j )
+				static T P1( T p[ 4 ][ 9 ], difference_type i, difference_type j )
 			{
 				if( j >= 9 )
 				{
@@ -581,7 +585,7 @@ namespace euclidean
 			}
 
 			template < class T >
-			static T P2( T p[ 4 ][ 9 ], difference_type i, difference_type j )
+				static T P2( T p[ 4 ][ 9 ], difference_type i, difference_type j )
 			{
 				if( j >= 9 )
 				{
@@ -617,7 +621,7 @@ namespace euclidean
 				}
 
 				for( size_type k = 0 ; k < 4 ; k++ )
-				{	
+				{
 					difference_type tmp = 0;
 					for( size_type h = 0 ; h < 2 ; h++ )
 					{
@@ -639,7 +643,7 @@ namespace euclidean
 				difference_type sx = 0;
 
 				for( size_type k = 0 ; k < 4 ; k++ )
-				{	
+				{
 					difference_type tmp = 0;
 					for( size_type h = 0 ; h < 2 ; h++ )
 					{
@@ -654,7 +658,7 @@ namespace euclidean
 			template < class Array >
 			static bool is_deletable( const Array &in, size_type i, size_type j, size_type k )
 			{
-				difference_type p[ 4 ][ 9 ];
+				int p[ 4 ][ 9 ];
 
 				// 近傍情報を取得
 				p[ 1 ][ 0 ] = in( i    , j    , k - 1 ) > 0 ? 1 : 0;
@@ -775,7 +779,7 @@ namespace euclidean
 					typedef matrix< difference_type > matrix_type;
 
 					//隣接行列
-					matrix_type M( 6, 6 ); 
+					matrix_type M( 6, 6 );
 
 					M( 0, 0 ) = 0          ; M( 0, 1 ) = p[ 1 ][ 1 ]; M( 0, 2 ) = p[ 1 ][ 3 ]; M( 0, 3 ) = p[ 1 ][ 7 ]; M( 0, 4 ) = p[ 1 ][ 5 ]; M( 0, 5 ) = 0;
 					M( 1, 0 ) = p[ 1 ][ 1 ]; M( 1, 1 ) = 0          ; M( 1, 2 ) = p[ 2 ][ 2 ]; M( 1, 3 ) = p[ 2 ][ 8 ]; M( 1, 4 ) = 0          ; M( 1, 5 ) = p[ 3 ][ 1 ];
@@ -784,7 +788,7 @@ namespace euclidean
 					M( 4, 0 ) = p[ 1 ][ 5 ]; M( 4, 1 ) = 0          ; M( 4, 2 ) = p[ 2 ][ 4 ]; M( 4, 3 ) = p[ 2 ][ 6 ]; M( 4, 4 ) = 0          ; M( 4, 5 ) = p[ 3 ][ 5 ];
 					M( 5, 0 ) = 0          ; M( 5, 1 ) = p[ 3 ][ 1 ]; M( 5, 2 ) = p[ 3 ][ 3 ]; M( 5, 3 ) = p[ 3 ][ 7 ]; M( 5, 4 ) = p[ 3 ][ 5 ]; M( 5, 5 ) = 0;
 
-					matrix_type I = matrix_type::identity( 6, 6 ); 
+					matrix_type I = matrix_type::identity( 6, 6 );
 					matrix_type N = M * ( I + M * ( I + M * ( I + M * ( I + M ) ) ));
 
 					for( size_type r = 0 ; r < N.size( ) ; r++ )
@@ -891,7 +895,7 @@ namespace euclidean
 				}
 
 				for( size_type k = 0 ; k < 4 ; k++ )
-				{	
+				{
 					difference_type tmp = 0;
 					for( size_type h = 0 ; h < 2 ; h++ )
 					{
@@ -915,7 +919,7 @@ namespace euclidean
 				difference_type sx = 0;
 
 				for( size_type k = 0 ; k < 4 ; k++ )
-				{	
+				{
 					difference_type tmp = 0;
 					for( size_type h = 0 ; h < 2 ; h++ )
 					{
@@ -930,7 +934,7 @@ namespace euclidean
 			template < class Array >
 			static bool is_deletable( const Array &in, size_type i, size_type j, size_type k )
 			{
-				difference_type p[ 4 ][ 9 ];
+				int p[ 4 ][ 9 ];
 
 				// 近傍情報を取得
 				p[ 1 ][ 0 ] = in( i    , j    , k - 1 ) > 0 ? 1 : 0;
@@ -1079,10 +1083,10 @@ namespace euclidean
 				//５．
 				else if( num == 6 )
 				{
-					typedef matrix< difference_type > matrix_type;
+					typedef matrix< int > matrix_type;
 
 					//隣接行列
-					matrix_type M( 6, 6 ); 
+					matrix_type M( 6, 6 );
 
 					M( 0, 0 ) = 0          ; M( 0, 1 ) = p[ 1 ][ 1 ]; M( 0, 2 ) = p[ 1 ][ 3 ]; M( 0, 3 ) = p[ 1 ][ 7 ]; M( 0, 4 ) = p[ 1 ][ 5 ]; M( 0, 5 ) = 0;
 					M( 1, 0 ) = p[ 1 ][ 1 ]; M( 1, 1 ) = 0          ; M( 1, 2 ) = p[ 2 ][ 2 ]; M( 1, 3 ) = p[ 2 ][ 8 ]; M( 1, 4 ) = 0          ; M( 1, 5 ) = p[ 3 ][ 1 ];
@@ -1091,7 +1095,7 @@ namespace euclidean
 					M( 4, 0 ) = p[ 1 ][ 5 ]; M( 4, 1 ) = 0          ; M( 4, 2 ) = p[ 2 ][ 4 ]; M( 4, 3 ) = p[ 2 ][ 6 ]; M( 4, 4 ) = 0          ; M( 4, 5 ) = p[ 3 ][ 5 ];
 					M( 5, 0 ) = 0          ; M( 5, 1 ) = p[ 3 ][ 1 ]; M( 5, 2 ) = p[ 3 ][ 3 ]; M( 5, 3 ) = p[ 3 ][ 7 ]; M( 5, 4 ) = p[ 3 ][ 5 ]; M( 5, 5 ) = 0;
 
-					matrix_type I = matrix_type::identity( 6, 6 ); 
+					matrix_type I = matrix_type::identity( 6, 6 );
 					matrix_type N = M * ( I + M * ( I + M * ( I + M * ( I + M ) ) ));
 
 					for( size_type r = 0 ; r < N.size( ) ; r++ )
@@ -1177,25 +1181,32 @@ namespace euclidean
 		template< class T >
 		struct border
 		{
-				int i, j ,k;
-				T value;
-				border( int ii, int jj, int kk, T val ):i( ii ), j( jj ), k( kk ), value( val ) {}
+			typedef ptrdiff_t difference_type;
+
+			difference_type i;
+			difference_type j;
+			difference_type k;
+			T value;
+
+			border( difference_type ii, difference_type jj, difference_type kk, T val ) : i( ii ), j( jj ), k( kk ), value( val ) {}
 		};
 
 		template < class T, class Allocator >
 		void thinning6( array3< T, Allocator > &in )
 		{
 			typedef typename array3< T, Allocator >::size_type size_type;
+			typedef typename array3< T, Allocator >::difference_type difference_type;
 			typedef neighbor< 6 > neighbor_type;
 			typedef border< T > border_type;
 			typedef std::deque< border_type > border_list_type;
+
 			T max, min;
 			int num, loop = 0;
 			border_list_type blist;
 			array3< T, Allocator > id;
 
 			//Step1 距離変換
-			euclidean::distance_transform(in, in);
+			euclidean::distance_transform( in, in );
 
 			//図形の端は０
 			for( size_type j = 0 ; j < in.height( ) ; j++ )
@@ -1206,7 +1217,7 @@ namespace euclidean
 					in( i, j, in.depth( ) - 1 ) = 0;
 				}
 			}
-			
+
 			for( size_type k = 0 ; k < in.depth( ) ; k++ )
 			{
 				for( size_type j = 0 ; j < in.height( ) ; j++ )
@@ -1259,8 +1270,8 @@ namespace euclidean
 								in( i, j, k - 1 ) == 0 || in( i, j, k + 1 ) == 0 )
 							{
 								blist.push_back( border_type( i, j, k, in( i, j, k ) ) );
-								in( i, j, k ) = 1; 
-									
+								in( i, j, k ) = 1;
+
 							}
 						}
 					}
@@ -1275,9 +1286,10 @@ namespace euclidean
 				{
 					if( ite->value <= min )
 					{
-						int i = ite->i;
-						int j = ite->j;
-						int k = ite->k;
+						difference_type i = ite->i;
+						difference_type j = ite->j;
+						difference_type k = ite->k;
+
 						//消去不可能なら一時保存点
 						if( !neighbor_type::is_deletable( in, i, j, k ) )
 						{
@@ -1314,7 +1326,7 @@ namespace euclidean
 							if( in( i + 1, j - 1, k + 1 ) > 0 ) num++;
 							if( in( i + 1, j    , k + 1 ) > 0 ) num++;
 							if( in( i + 1, j + 1, k + 1 ) > 0 ) num++;
-							
+
 							//端点なら永久保存点
 							if( num == 1 )
 							{
@@ -1331,22 +1343,23 @@ namespace euclidean
 				}
 
 				//Step4 サブサイクル
-				for( int bordertype = 7 ; bordertype < 16 ; bordertype++ )
+				for( difference_type bordertype = 7 ; bordertype < 16 ; bordertype++ )
 				{
 					for( ite = blist.begin( ) ; ite != blist.end( ) ; )
 					{
 						if( ite->value == bordertype )
 						{
-							int i = ite->i;
-							int j = ite->j;
-							int k = ite->k;
+							difference_type i = ite->i;
+							difference_type j = ite->j;
+							difference_type k = ite->k;
+
 							//消去不可能なら一時保存点
 							if( !neighbor_type::is_deletable( in, i, j, k ) )
 							{
 								ite->value = 16;
 							}
 							else
-							{	
+							{
 								num = 0;
 								if( in( i    , j    , k - 1 ) > 0 ) num++;
 								if( in( i    , j + 1, k - 1 ) > 0 ) num++;
@@ -1376,7 +1389,7 @@ namespace euclidean
 								if( in( i + 1, j - 1, k + 1 ) > 0 ) num++;
 								if( in( i + 1, j    , k + 1 ) > 0 ) num++;
 								if( in( i + 1, j + 1, k + 1 ) > 0 ) num++;
-								
+
 								//端点なら永久保存点
 								if( num == 1 )
 								{
@@ -1388,7 +1401,7 @@ namespace euclidean
 								{
 									in( i, j, k ) = 0;
 									ite = blist.erase( ite );
-									
+
 									if( in( i - 1, j, k ) > 20 )
 									{
 										blist.push_back( border_type( i - 1, j, k, in( i - 1, j, k ) ) );
@@ -1405,7 +1418,7 @@ namespace euclidean
 										in( i, j - 1, k ) = 1;
 									}
 									if( in( i, j + 1, k ) > 20 )
-									{ 
+									{
 										blist.push_back( border_type( i, j + 1, k, in( i, j + 1, k ) ) );
 										in( i, j + 1, k ) = 1;
 									}
@@ -1438,7 +1451,7 @@ namespace euclidean
 						}
 					}
 				}
-				
+
 				//Step5 終了判定
 				min = max;
 				num = 0;
@@ -1447,7 +1460,7 @@ namespace euclidean
 					if( ite->value < min && ite->value > 20) min = ite->value;
 					if( ite->value == 16) num++;
 				}
-			
+
 			}while( min < max || num != blist.size( ) );
 
 			//Step6 後処理
@@ -1470,6 +1483,7 @@ namespace euclidean
 		void thinning26( array3< T, Allocator > &in )
 		{
 			typedef typename array3< T, Allocator >::size_type size_type;
+			typedef typename array3< T, Allocator >::difference_type difference_type;
 			typedef neighbor< 26 > neighbor_type;
 			typedef border< T > border_type;
 			typedef std::deque< border_type > border_list_type;
@@ -1490,7 +1504,7 @@ namespace euclidean
 					in( i, j, in.depth( ) - 1 ) = 0;
 				}
 			}
-			
+
 			for( size_type k = 0 ; k < in.depth( ) ; k++ )
 			{
 				for( size_type j = 0 ; j < in.height( ) ; j++ )
@@ -1543,8 +1557,8 @@ namespace euclidean
 								in( i, j, k - 1 ) == 0 || in( i, j, k + 1 ) == 0 )
 							{
 								blist.push_back( border_type( i, j, k, in( i, j, k ) ) );
-								in( i, j, k ) = 1; 
-									
+								in( i, j, k ) = 1;
+
 							}
 						}
 					}
@@ -1559,9 +1573,10 @@ namespace euclidean
 				{
 					if( ite->value <= min )
 					{
-						int i = ite->i;
-						int j = ite->j;
-						int k = ite->k;
+						difference_type i = ite->i;
+						difference_type j = ite->j;
+						difference_type k = ite->k;
+
 						//消去不可能なら一時保存点
 						if( !neighbor_type::is_deletable( in, i, j, k ) )
 						{
@@ -1598,7 +1613,7 @@ namespace euclidean
 							if( in( i + 1, j - 1, k + 1 ) > 0 ) num++;
 							if( in( i + 1, j    , k + 1 ) > 0 ) num++;
 							if( in( i + 1, j + 1, k + 1 ) > 0 ) num++;
-							
+
 							//端点なら永久保存点
 							if( num == 1 )
 							{
@@ -1615,22 +1630,23 @@ namespace euclidean
 				}
 
 				//Step4 サブサイクル
-				for( int bordertype = 7 ; bordertype < 16 ; bordertype++ )
+				for( difference_type bordertype = 7 ; bordertype < 16 ; bordertype++ )
 				{
 					for( ite = blist.begin( ) ; ite != blist.end( ) ; )
 					{
 						if( ite->value == bordertype )
 						{
-							int i = ite->i;
-							int j = ite->j;
-							int k = ite->k;
+							difference_type i = ite->i;
+							difference_type j = ite->j;
+							difference_type k = ite->k;
+
 							//消去不可能なら一時保存点
 							if( !neighbor_type::is_deletable( in, i, j, k ) )
 							{
 								ite->value = 16;
 							}
 							else
-							{	
+							{
 								num = 0;
 								if( in( i    , j    , k - 1 ) > 0 ) num++;
 								if( in( i    , j + 1, k - 1 ) > 0 ) num++;
@@ -1660,7 +1676,7 @@ namespace euclidean
 								if( in( i + 1, j - 1, k + 1 ) > 0 ) num++;
 								if( in( i + 1, j    , k + 1 ) > 0 ) num++;
 								if( in( i + 1, j + 1, k + 1 ) > 0 ) num++;
-								
+
 								//端点なら永久保存点
 								if( num == 1 )
 								{
@@ -1672,7 +1688,7 @@ namespace euclidean
 								{
 									in( i, j, k ) = 0;
 									ite = blist.erase( ite );
-									
+
 									if( in( i - 1, j, k ) > 20 )
 									{
 										blist.push_back( border_type( i - 1, j, k, in( i - 1, j, k ) ) );
@@ -1689,7 +1705,7 @@ namespace euclidean
 										in( i, j - 1, k ) = 1;
 									}
 									if( in( i, j + 1, k ) > 20 )
-									{ 
+									{
 										blist.push_back( border_type( i, j + 1, k, in( i, j + 1, k ) ) );
 										in( i, j + 1, k ) = 1;
 									}
@@ -1722,7 +1738,7 @@ namespace euclidean
 						}
 					}
 				}
-				
+
 				//Step5 終了判定
 				min = max;
 				num = 0;
@@ -1780,11 +1796,12 @@ namespace euclidean
 		__utility__::thinning( out );
 	}
 
+
 	/// @brief 3次元画像に対する収縮スケルトンアルゴリズム
-	//! 
+	//!
 	//! @param[in]  in  … 入力画像
 	//! @param[out] out … 出力画像
-	//! 
+	//!
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void shrink_skelton6( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 	{
@@ -1803,6 +1820,7 @@ namespace euclidean
 		__utility__::shrink_skelton6( out );
 	}
 
+
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void shrink_skelton26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 	{
@@ -1820,6 +1838,8 @@ namespace euclidean
 		}
 		__utility__::shrink_skelton6( out );
 	}
+
+
 	/// @brief ユークリッド距離を用いた3次元画像に対する細線化アルゴリズム
 	//!
 	//! 細線化結果は8連結となる
@@ -1846,6 +1866,8 @@ namespace euclidean
 		}
 		__utility__::thinning6( out );
 	}
+
+
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void thinning26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 	{

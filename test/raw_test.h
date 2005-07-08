@@ -50,6 +50,8 @@ public:
 	void euclidean_distance_transform( ct_image_window *wnd );
 	void labeling6( ct_image_window *wnd );
 	void labeling26( ct_image_window *wnd );
+	void thinning6( ct_image_window *wnd );
+	void thinning26( ct_image_window *wnd );
 	void erosion( ct_image_window *wnd );
 	void dilation( ct_image_window *wnd );
 	void opening( ct_image_window *wnd );

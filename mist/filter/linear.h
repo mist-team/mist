@@ -34,47 +34,62 @@ namespace __linear__
 	template< typename In, typename Out, typename Kernel_array >
 	class function_type
 	{
+		typedef size_t size_type;
+		typedef ptrdiff_t difference_type;
+
 		Kernel_array ka_;
-		array< int > pd_;
+		array< difference_type > pd_;
 
 	public:
-
-		function_type( const Kernel_array &ka, const size_t o ) : ka_( ka )
+		function_type( const Kernel_array &ka, const difference_type o ) : ka_( ka )
 		{
 			// std::cout << "function_type_1" << std::endl;
 			pd_.resize( ka_.size( ) );
-			for( size_t i = 0 ; i < ka_.size( ) ; i ++ )
+			difference_type size = ka_.size( );
+			for( difference_type i = 0 ; i < size ; i ++ )
 			{
 				pd_[ i ] = i - o;
 			}
 		}
-		function_type( const Kernel_array &ka, const size_t oi, const size_t oj, const size_t w ) : ka_( ka )
+
+		function_type( const Kernel_array &ka, const difference_type oi, const difference_type oj, const difference_type w ) : ka_( ka )
 		{
 			// std::cout << "function_type_2" << std::endl;
 			array2< size_t > pd_2( ka_.width( ), ka_.height( ) );
-			for( size_t j = 0 ; j < ka_.height( ) ; j ++ )
+
+			difference_type width = ka_.width( );
+			difference_type height = ka_.height( );
+
+			for( difference_type j = 0 ; j < height ; j ++ )
 			{
-				for( size_t i = 0 ; i < ka_.width( ) ; i ++ )
+				for( difference_type i = 0 ; i < width ; i ++ )
 				{
 					pd_2( i, j ) = ( j - oj ) * w + i - oi;
 				}
 			}
 			pd_ = pd_2;
 		}
-		function_type( const Kernel_array &ka, const size_t oi, const size_t oj, const size_t ok, const size_t w, const size_t h ) : ka_( ka )
+
+		function_type( const Kernel_array &ka, const difference_type oi, const difference_type oj, const difference_type ok, const difference_type w, const difference_type h ) : ka_( ka )
 		{
 			// std::cout << "function_type_3" << std::endl;
-			array3< size_t > pd_3( ka_.width( ), ka_.height( ), ka_.depth( ) );
-			for( size_t k = 0 ; k < ka_.depth( ) ; k ++ )
+			array3< difference_type > pd_3( ka_.width( ), ka_.height( ), ka_.depth( ) );
+
+			difference_type width = ka_.width( );
+			difference_type height = ka_.height( );
+			difference_type depth = ka_.depth( );
+
+			for( difference_type k = 0 ; k < depth ; k ++ )
 			{
-				for( size_t j = 0 ; j < ka_.height( ) ; j ++ )
+				for( difference_type j = 0 ; j < height ; j ++ )
 				{
-					for( size_t i = 0 ; i < ka_.width( ) ; i ++ )
+					for( difference_type i = 0 ; i < width ; i ++ )
 					{
 						pd_3( i, j, k ) = ( k - ok ) * w * h + ( j - oj ) * w + i - oi;
 					}
 				}
 			}
+
 			pd_ = pd_3;
 		}
 
@@ -82,7 +97,7 @@ namespace __linear__
 		{
 			const In * const pv = &v;
 			double res = 0.0;
-			for( size_t i = 0 ; i < ka_.size( ) ; i ++ )
+			for( size_type i = 0 ; i < ka_.size( ) ; i ++ )
 			{ 
 				res += *( pv + pd_[ i ] ) * ka_[ i ];
 			}

@@ -144,6 +144,16 @@ class ct_image_window {open
             xywh {40 40 100 20}
           }
           menuitem {} {
+            label {Thinning 6}
+            callback {ct_image->thinning6( this );}
+            xywh {40 40 100 20}
+          }
+          menuitem {} {
+            label {Thinning 26}
+            callback {ct_image->thinning26( this );} selected
+            xywh {50 50 100 20}
+          }
+          menuitem {} {
             label Erosion
             callback {ct_image->erosion( this );}
             xywh {50 50 100 20}
@@ -165,7 +175,7 @@ class ct_image_window {open
           }
           menuitem {} {
             label {Figure Decomposition}
-            callback {ct_image->figure_decomposition( this );} selected
+            callback {ct_image->figure_decomposition( this );}
             xywh {90 90 100 20}
           }
         }

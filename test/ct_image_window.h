@@ -65,6 +65,10 @@ private:
   static void cb_Labeling(Fl_Menu_*, void*);
   inline void cb_Labeling1_i(Fl_Menu_*, void*);
   static void cb_Labeling1(Fl_Menu_*, void*);
+  inline void cb_Thinning_i(Fl_Menu_*, void*);
+  static void cb_Thinning(Fl_Menu_*, void*);
+  inline void cb_Thinning1_i(Fl_Menu_*, void*);
+  static void cb_Thinning1(Fl_Menu_*, void*);
   inline void cb_Erosion_i(Fl_Menu_*, void*);
   static void cb_Erosion(Fl_Menu_*, void*);
   inline void cb_Dilation_i(Fl_Menu_*, void*);

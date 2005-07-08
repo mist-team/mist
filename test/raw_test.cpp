@@ -11,6 +11,7 @@
 #include <mist/filter/morphology.h>
 #include <mist/filter/linear.h>
 #include <mist/filter/decomposition.h>
+#include <mist/filter/thinning.h>
 #include <mist/timer.h>
 
 
@@ -293,6 +294,30 @@ void ct_draw_area::labeling26( ct_image_window *wnd )
 
 	size_t label_num = mist::labeling26( ct, ct );
 	printf( "label_num = %d\n", label_num );
+
+	redraw( );
+	Fl::wait( 0 );
+}
+
+void ct_draw_area::thinning6( ct_image_window *wnd )
+{
+	if( ct.empty( ) ) return;
+
+	mist::timer t;
+	mist::euclidean::thinning6( ct, ct );
+	std::cout << "Computation Time: " << t.elapse( ) << std::endl;
+
+	redraw( );
+	Fl::wait( 0 );
+}
+
+void ct_draw_area::thinning26( ct_image_window *wnd )
+{
+	if( ct.empty( ) ) return;
+
+	mist::timer t;
+	mist::euclidean::thinning26( ct, ct );
+	std::cout << "Computation Time: " << t.elapse( ) << std::endl;
 
 	redraw( );
 	Fl::wait( 0 );
