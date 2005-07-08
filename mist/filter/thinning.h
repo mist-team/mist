@@ -26,7 +26,8 @@
 #include "distance.h"
 #endif
 
-#include <deque>
+#include <vector>
+
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -1163,6 +1164,20 @@ namespace euclidean
 			border( difference_type ii, difference_type jj, difference_type kk, T val ) : i( ii ), j( jj ), k( kk ), value( val ), distance( val ) {}
 		};
 
+		template < class T >
+		inline std::ostream &operator <<( std::ostream &out, const border< T > &b )
+		{
+			out << "( ";
+			out << b.i << ", ";
+			out << b.j << ", ";
+			out << b.k;
+			out << " ) = ( ";
+			out << b.value << ", ";
+			out << b.distance;
+			out << " )";
+			return( out );
+		}
+
 		template < class T, class Allocator, class Neighbor >
 		void thinning( array3< T, Allocator > &in, Neighbor __dmy__ )
 		{
@@ -1171,10 +1186,8 @@ namespace euclidean
 			typedef T value_type;
 			typedef Neighbor neighbor_type;
 			typedef border< T > border_type;
-			typedef std::deque< border_type > border_list_type;
-
-			size_type num, loop = 0;
-			border_list_type blist;
+			typedef std::vector< border_type > border_list_type;
+			typedef border_list_type::iterator iterator_type;
 
 			// Step1 距離変換
 			euclidean::distance_transform( in, in );
@@ -1219,6 +1232,8 @@ namespace euclidean
 				}
 			}
 
+			border_list_type blist, slist[ 9 ];
+
 			// Step2 境界画素の検出
 			for( size_type k = 0 ; k < in.depth( ) ; k++ )
 			{
@@ -1240,26 +1255,119 @@ namespace euclidean
 				}
 			}
 
+			// 以降の処理のためにメモリの予備を確保する
+			blist.reserve( blist.size( ) * 2 + 1 );
+			slist[ 0 ].reserve( blist.size( ) );
+			slist[ 1 ].reserve( blist.size( ) );
+			slist[ 2 ].reserve( blist.size( ) );
+			slist[ 3 ].reserve( blist.size( ) );
+			slist[ 4 ].reserve( blist.size( ) );
+			slist[ 5 ].reserve( blist.size( ) );
+			slist[ 6 ].reserve( blist.size( ) );
+			slist[ 7 ].reserve( blist.size( ) );
+			slist[ 8 ].reserve( blist.size( ) );
+
+			size_type count = 0, loop = 0;
+
 			do
 			{
+				difference_type __length__ = blist.size( );
+
 				//Step3 メインサイクル
-				typename border_list_type::iterator ite = blist.begin( );
-				for( ; ite != blist.end( ) ; )
+				for( difference_type l = 0 ; l < __length__ ; )
 				{
-					if( ite->value <= min )
+					border_type &b = blist[ l ];
+
+					if( b.value <= min )
 					{
-						difference_type i = ite->i;
-						difference_type j = ite->j;
-						difference_type k = ite->k;
+						difference_type i = b.i;
+						difference_type j = b.j;
+						difference_type k = b.k;
+
+						// 消去不可能なら一時保存点
+						if( !neighbor_type::is_deletable( in, i, j, k ) )
+						{
+							b.value = 16;
+						}
+						else
+						{
+							size_type num = 0;
+							if( in( i    , j    , k - 1 ) > 0 ) num++;
+							if( in( i    , j + 1, k - 1 ) > 0 ) num++;
+							if( in( i - 1, j + 1, k - 1 ) > 0 ) num++;
+							if( in( i - 1, j    , k - 1 ) > 0 ) num++;
+							if( in( i - 1, j - 1, k - 1 ) > 0 ) num++;
+							if( in( i    , j - 1, k - 1 ) > 0 ) num++;
+							if( in( i + 1, j - 1, k - 1 ) > 0 ) num++;
+							if( in( i + 1, j    , k - 1 ) > 0 ) num++;
+							if( in( i + 1, j + 1, k - 1 ) > 0 ) num++;
+
+							if( in( i    , j + 1, k     ) > 0 ) num++;
+							if( in( i - 1, j + 1, k     ) > 0 ) num++;
+							if( in( i - 1, j    , k     ) > 0 ) num++;
+							if( in( i - 1, j - 1, k     ) > 0 ) num++;
+							if( in( i    , j - 1, k     ) > 0 ) num++;
+							if( in( i + 1, j - 1, k     ) > 0 ) num++;
+							if( in( i + 1, j    , k     ) > 0 ) num++;
+							if( in( i + 1, j + 1, k     ) > 0 ) num++;
+
+							if( in( i    , j    , k + 1 ) > 0 ) num++;
+							if( in( i    , j + 1, k + 1 ) > 0 ) num++;
+							if( in( i - 1, j + 1, k + 1 ) > 0 ) num++;
+							if( in( i - 1, j    , k + 1 ) > 0 ) num++;
+							if( in( i - 1, j - 1, k + 1 ) > 0 ) num++;
+							if( in( i    , j - 1, k + 1 ) > 0 ) num++;
+							if( in( i + 1, j - 1, k + 1 ) > 0 ) num++;
+							if( in( i + 1, j    , k + 1 ) > 0 ) num++;
+							if( in( i + 1, j + 1, k + 1 ) > 0 ) num++;
+
+							// 端点なら永久保存点
+							if( num == 1 )
+							{
+								b = blist[ -- __length__ ];
+								continue;
+							}
+							else
+							{
+								difference_type val = num / 3 + 7;
+								b.value = static_cast< value_type >( val );
+
+								if( 7 <= val && val <= 15 )
+								{
+									slist[ val - 7 ].push_back( b );
+									b = blist[ --__length__ ];
+									continue;
+								}
+							}
+						}
+					}
+					l++;
+				}
+
+				blist.erase( blist.begin( ) + __length__, blist.end( ) );
+
+				// Step4 サブサイクル
+				for( size_type ll = 0 ; ll < 9 ; ll++ )
+				{
+					border_list_type &list = slist[ ll ];
+
+					for( size_type l = 0 ; l < list.size( ) ; l++ )
+					{
+						border_type &b = list[ l ];
+
+						difference_type i = b.i;
+						difference_type j = b.j;
+						difference_type k = b.k;
 
 						//消去不可能なら一時保存点
 						if( !neighbor_type::is_deletable( in, i, j, k ) )
 						{
-							ite->value = 16;
+							b.value = 16;
+							blist.push_back( b );
 						}
 						else
 						{
-							num = 0;
+							size_type num = 0;
 							if( in( i    , j    , k - 1 ) > 0 ) num++;
 							if( in( i    , j + 1, k - 1 ) > 0 ) num++;
 							if( in( i - 1, j + 1, k - 1 ) > 0 ) num++;
@@ -1292,151 +1400,92 @@ namespace euclidean
 							//端点なら永久保存点
 							if( num == 1 )
 							{
-								ite = blist.erase( ite );
-								continue;
 							}
+							//画素の消去
 							else
 							{
-								ite->value = (int)( num / 3 ) + 7;
-							}
-						}
-					}
-					++ite;
-				}
+								in( i, j, k ) = 0;
 
-				//Step4 サブサイクル
-				for( difference_type bordertype = 7 ; bordertype < 16 ; bordertype++ )
-				{
-					for( ite = blist.begin( ) ; ite != blist.end( ) ; )
-					{
-						if( ite->value == bordertype )
-						{
-							difference_type i = ite->i;
-							difference_type j = ite->j;
-							difference_type k = ite->k;
-
-							//消去不可能なら一時保存点
-							if( !neighbor_type::is_deletable( in, i, j, k ) )
-							{
-								ite->value = 16;
-							}
-							else
-							{
-								num = 0;
-								if( in( i    , j    , k - 1 ) > 0 ) num++;
-								if( in( i    , j + 1, k - 1 ) > 0 ) num++;
-								if( in( i - 1, j + 1, k - 1 ) > 0 ) num++;
-								if( in( i - 1, j    , k - 1 ) > 0 ) num++;
-								if( in( i - 1, j - 1, k - 1 ) > 0 ) num++;
-								if( in( i    , j - 1, k - 1 ) > 0 ) num++;
-								if( in( i + 1, j - 1, k - 1 ) > 0 ) num++;
-								if( in( i + 1, j    , k - 1 ) > 0 ) num++;
-								if( in( i + 1, j + 1, k - 1 ) > 0 ) num++;
-
-								if( in( i    , j + 1, k     ) > 0 ) num++;
-								if( in( i - 1, j + 1, k     ) > 0 ) num++;
-								if( in( i - 1, j    , k     ) > 0 ) num++;
-								if( in( i - 1, j - 1, k     ) > 0 ) num++;
-								if( in( i    , j - 1, k     ) > 0 ) num++;
-								if( in( i + 1, j - 1, k     ) > 0 ) num++;
-								if( in( i + 1, j    , k     ) > 0 ) num++;
-								if( in( i + 1, j + 1, k     ) > 0 ) num++;
-
-								if( in( i    , j    , k + 1 ) > 0 ) num++;
-								if( in( i    , j + 1, k + 1 ) > 0 ) num++;
-								if( in( i - 1, j + 1, k + 1 ) > 0 ) num++;
-								if( in( i - 1, j    , k + 1 ) > 0 ) num++;
-								if( in( i - 1, j - 1, k + 1 ) > 0 ) num++;
-								if( in( i    , j - 1, k + 1 ) > 0 ) num++;
-								if( in( i + 1, j - 1, k + 1 ) > 0 ) num++;
-								if( in( i + 1, j    , k + 1 ) > 0 ) num++;
-								if( in( i + 1, j + 1, k + 1 ) > 0 ) num++;
-
-								//端点なら永久保存点
-								if( num == 1 )
+								if( in( i - 1, j, k ) > 20 )
 								{
-									ite = blist.erase( ite );
-									continue;
+									blist.push_back( border_type( i - 1, j, k, in( i - 1, j, k ) ) );
+									in( i - 1, j, k ) = 1;
 								}
-								//画素の消去
-								else
+								if( in( i + 1, j, k ) > 20 )
 								{
-									in( i, j, k ) = 0;
-									ite = blist.erase( ite );
-
-									if( in( i - 1, j, k ) > 20 )
-									{
-										blist.push_back( border_type( i - 1, j, k, in( i - 1, j, k ) ) );
-										in( i - 1, j, k ) = 1;
-									}
-									if( in( i + 1, j, k ) > 20 )
-									{
-										blist.push_back( border_type( i + 1, j, k, in( i + 1, j, k ) ) );
-										in( i + 1, j, k ) = 1;
-									}
-									if( in( i, j - 1, k ) > 20 )
-									{
-										blist.push_back( border_type( i, j - 1, k, in( i, j - 1, k ) ) );
-										in( i, j - 1, k ) = 1;
-									}
-									if( in( i, j + 1, k ) > 20 )
-									{
-										blist.push_back( border_type( i, j + 1, k, in( i, j + 1, k ) ) );
-										in( i, j + 1, k ) = 1;
-									}
-									if( in( i, j, k - 1 ) > 20 )
-									{
-										blist.push_back( border_type( i, j, k - 1, in( i, j, k - 1 ) ) );
-										in( i, j, k - 1) = 1;
-									}
-									if( in( i, j, k + 1 ) > 20 )
-									{
-										blist.push_back( border_type( i, j, k + 1, in( i, j, k + 1 ) ) );
-										in( i, j, k + 1 ) = 1;
-									}
-
-									continue;
+									blist.push_back( border_type( i + 1, j, k, in( i + 1, j, k ) ) );
+									in( i + 1, j, k ) = 1;
+								}
+								if( in( i, j - 1, k ) > 20 )
+								{
+									blist.push_back( border_type( i, j - 1, k, in( i, j - 1, k ) ) );
+									in( i, j - 1, k ) = 1;
+								}
+								if( in( i, j + 1, k ) > 20 )
+								{
+									blist.push_back( border_type( i, j + 1, k, in( i, j + 1, k ) ) );
+									in( i, j + 1, k ) = 1;
+								}
+								if( in( i, j, k - 1 ) > 20 )
+								{
+									blist.push_back( border_type( i, j, k - 1, in( i, j, k - 1 ) ) );
+									in( i, j, k - 1 ) = 1;
+								}
+								if( in( i, j, k + 1 ) > 20 )
+								{
+									blist.push_back( border_type( i, j, k + 1, in( i, j, k + 1 ) ) );
+									in( i, j, k + 1 ) = 1;
 								}
 							}
 						}
-						++ite;
 					}
+
+					// 次以降の処理のためにリスト空にする（内部で使用するメモリ容量は変化しない）
+					list.clear( );
 				}
 
-				for( ite = blist.begin( ) ; ite != blist.end( ) ; ++ite )
+				for( size_type l = 0 ; l < blist.size( ) ; l++ )
 				{
-					if( ite->value == 16 )
+					border_type &b = blist[ l ];
+					if( b.value == 16 )
 					{
-						if( neighbor_type::is_deletable( in, ite->i, ite->j, ite->k ) )
+						if( neighbor_type::is_deletable( in, b.i, b.j, b.k ) )
 						{
-							ite->value = ite->distance;
+							b.value = b.distance;
 						}
 					}
 				}
 
 				//Step5 終了判定
 				min = max;
-				num = 0;
-				for( ite = blist.begin( ) ; ite != blist.end( ) ; ++ite )
+				count = 0;
+				for( size_type l = 0 ; l < blist.size( ) ; l++ )
 				{
-					if( ite->value < min && ite->value > 20) min = ite->value;
-					if( ite->value == 16) num++;
+					border_type &b = blist[ l ];
+					if( b.value < min && b.value > 20 )
+					{
+						min = b.value;
+					}
+
+					if( b.value == 16 )
+					{
+						count++;
+					}
 				}
 
-			} while( min < max || num != blist.size( ) );
+				std::cout << loop++ << "          \r";
+				//std::cout << loop++ << ", " << max << ", " << min << ", " << count << ", " << blist.size( ) << std::endl;
 
-			//Step6 後処理
-			for( size_type k = 0 ; k < in.depth( ) ; k++ )
+			} while( min < max || count != blist.size( ) );
+
+			std::cout << std::endl;
+
+			// Step6 後処理
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
 			{
-				for( size_type j = 0 ; j < in.height( ) ; j++ )
+				if( in[ i ] != 0 )
 				{
-					for( size_type i = 0 ; i < in.width( ) ; i++ )
-					{
-						if( in( i, j, k ) != 0 )
-						{
-							in( i ,j, k ) = 1;
-						}
-					}
+					in[ i ] = 1;
 				}
 			}
 		}
