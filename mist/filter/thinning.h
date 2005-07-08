@@ -22,7 +22,7 @@
 #include "../matrix.h"
 #endif
 
-#ifndef __INCLUDE_MIST_LIMITS__
+#ifndef __INCLUDE_MIST_DISTANCE_TRANSFORM__
 #include "distance.h"
 #endif
 
