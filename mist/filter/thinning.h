@@ -36,8 +36,8 @@ _MIST_BEGIN
 namespace __thinning_controller__
 {
 	template < class T, class Allocator >
-		inline void val9( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
-		typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
+	inline void val9( const array2< T, Allocator > &in, typename array2< T, Allocator >::value_type p[ 9 ],
+	typename array2< T, Allocator >::size_type i, typename array2< T, Allocator >::size_type j )
 	{
 		p[ 0 ] = in( i , j );
 		p[ 1 ] = in( i + 1, j );
@@ -573,7 +573,7 @@ namespace euclidean
 			typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 			template < class T >
-				static T P1( T p[ 4 ][ 9 ], difference_type i, difference_type j )
+				static T P1( T *p[ 4 ], difference_type i, difference_type j )
 			{
 				if( j >= 9 )
 				{
@@ -586,7 +586,7 @@ namespace euclidean
 			}
 
 			template < class T >
-				static T P2( T p[ 4 ][ 9 ], difference_type i, difference_type j )
+				static T P2( T *p[ 4 ], difference_type i, difference_type j )
 			{
 				if( j >= 9 )
 				{
@@ -604,7 +604,7 @@ namespace euclidean
 
 			//連結数 6連結
 			template < class T >
-			static difference_type Nc6( T p[ 3 ][ 9 ] )
+			static difference_type Nc6( T *p[ 4 ] )
 			{
 				static size_type S0[] = { 1, 3 };
 				static size_type S1[] = { 1, 3, 5, 7 };
@@ -636,7 +636,7 @@ namespace euclidean
 
 			//連結数 6連結
 			template < class T >
-			static difference_type Sx( T p[ 3 ][ 9 ] )
+			static difference_type Sx( T *p[ 4 ] )
 			{
 				static size_type S0[] = { 1, 3 };
 				static size_type S1[] = { 1, 3, 5, 7 };
@@ -656,42 +656,10 @@ namespace euclidean
 			}
 
 
-			template < class Array >
-			static bool is_deletable( const Array &in, size_type i, size_type j, size_type k )
+			static bool is_deletable( const int v[ 27 ] )
 			{
-				int p[ 4 ][ 9 ];
-
-				// 近傍情報を取得
-				p[ 1 ][ 0 ] = in( i    , j    , k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 1 ] = in( i    , j + 1, k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 2 ] = in( i - 1, j + 1, k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 3 ] = in( i - 1, j    , k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 4 ] = in( i - 1, j - 1, k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 5 ] = in( i    , j - 1, k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 6 ] = in( i + 1, j - 1, k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 7 ] = in( i + 1, j    , k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 8 ] = in( i + 1, j + 1, k - 1 ) > 0 ? 1 : 0;
-
-				p[ 2 ][ 0 ] = in( i    , j    , k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 1 ] = in( i    , j + 1, k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 2 ] = in( i - 1, j + 1, k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 3 ] = in( i - 1, j    , k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 4 ] = in( i - 1, j - 1, k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 5 ] = in( i    , j - 1, k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 6 ] = in( i + 1, j - 1, k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 7 ] = in( i + 1, j    , k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 8 ] = in( i + 1, j + 1, k     ) > 0 ? 1 : 0;
-
-				p[ 3 ][ 0 ] = in( i    , j    , k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 1 ] = in( i    , j + 1, k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 2 ] = in( i - 1, j + 1, k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 3 ] = in( i - 1, j    , k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 4 ] = in( i - 1, j - 1, k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 5 ] = in( i    , j - 1, k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 6 ] = in( i + 1, j - 1, k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 7 ] = in( i + 1, j    , k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 8 ] = in( i + 1, j + 1, k + 1 ) > 0 ? 1 : 0;
-
+				// 近傍情報を設定
+				const int *p[ 4 ] = { NULL, v + 0, v + 9, v + 18 };
 
 				//１．連結数
 				if( Nc6( p ) != 1 )
@@ -817,7 +785,7 @@ namespace euclidean
 			typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 			template < class T >
-			static T P1( T p[ 4 ][ 9 ], difference_type i, difference_type j )
+			static T P1( T *p[ 4 ], difference_type i, difference_type j )
 			{
 				if( j >= 9 )
 				{
@@ -830,7 +798,7 @@ namespace euclidean
 			}
 
 			template < class T >
-			static T P2( T p[ 4 ][ 9 ], difference_type i, difference_type j )
+			static T P2( T *p[ 4 ], difference_type i, difference_type j )
 			{
 				if( j >= 9 )
 				{
@@ -847,7 +815,7 @@ namespace euclidean
 			}
 
 			template < class T >
-			static T P1_( T p[ 4 ][ 9 ], difference_type i, difference_type j )
+			static T P1_( T *p[ 4 ], difference_type i, difference_type j )
 			{
 				if( j >= 9 )
 				{
@@ -860,7 +828,7 @@ namespace euclidean
 			}
 
 			template < class T >
-			static T P2_( T p[ 4 ][ 9 ], difference_type i, difference_type j )
+			static T P2_( T *p[ 4 ], difference_type i, difference_type j )
 			{
 				if( j >= 9 )
 				{
@@ -876,9 +844,10 @@ namespace euclidean
 				}
 			}
 
-			//連結数 26連結
+
+			// 連結数 26連結
 			template < class T >
-			static difference_type Nc26( T p[ 3 ][ 9 ] )
+			static difference_type Nc26( T *p[ 4 ] )
 			{
 				static size_type S0[] = { 1, 3 };
 				static size_type S1[] = { 1, 3, 5, 7 };
@@ -912,7 +881,7 @@ namespace euclidean
 
 			//
 			template < class T >
-			static difference_type Sx( T p[ 3 ][ 9 ] )
+			static difference_type Sx( T *p[ 4 ] )
 			{
 				static size_type S0[] = { 1, 3 };
 				static size_type S1[] = { 1, 3, 5, 7 };
@@ -932,42 +901,12 @@ namespace euclidean
 			}
 
 
-			template < class Array >
-			static bool is_deletable( const Array &in, size_type i, size_type j, size_type k )
+			static bool is_deletable( const int v[ 27 ] )
 			{
-				int p[ 4 ][ 9 ];
-
-				// 近傍情報を取得
-				p[ 1 ][ 0 ] = in( i    , j    , k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 1 ] = in( i    , j + 1, k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 2 ] = in( i - 1, j + 1, k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 3 ] = in( i - 1, j    , k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 4 ] = in( i - 1, j - 1, k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 5 ] = in( i    , j - 1, k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 6 ] = in( i + 1, j - 1, k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 7 ] = in( i + 1, j    , k - 1 ) > 0 ? 1 : 0;
-				p[ 1 ][ 8 ] = in( i + 1, j + 1, k - 1 ) > 0 ? 1 : 0;
-
-				p[ 2 ][ 0 ] = in( i    , j    , k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 1 ] = in( i    , j + 1, k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 2 ] = in( i - 1, j + 1, k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 3 ] = in( i - 1, j    , k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 4 ] = in( i - 1, j - 1, k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 5 ] = in( i    , j - 1, k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 6 ] = in( i + 1, j - 1, k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 7 ] = in( i + 1, j    , k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 8 ] = in( i + 1, j + 1, k     ) > 0 ? 1 : 0;
-
-				p[ 3 ][ 0 ] = in( i    , j    , k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 1 ] = in( i    , j + 1, k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 2 ] = in( i - 1, j + 1, k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 3 ] = in( i - 1, j    , k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 4 ] = in( i - 1, j - 1, k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 5 ] = in( i    , j - 1, k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 6 ] = in( i + 1, j - 1, k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 7 ] = in( i + 1, j    , k + 1 ) > 0 ? 1 : 0;
-				p[ 3 ][ 8 ] = in( i + 1, j + 1, k + 1 ) > 0 ? 1 : 0;
-
+				// 近傍情報を設定
+				int pp[ 27 ];
+				const int *p[ 4 ] = { NULL, pp + 0, pp + 9, pp + 18 };
+				memcpy( pp, v, sizeof( int ) * 27 );
 
 				//１．連結数
 				if( Nc26( p ) != 1 )
@@ -976,35 +915,10 @@ namespace euclidean
 				}
 
 				// 近傍情報を取得 0-1反転
-				p[ 1 ][ 0 ] = in( i    , j    , k - 1 ) > 0 ? 0 : 1;
-				p[ 1 ][ 1 ] = in( i    , j + 1, k - 1 ) > 0 ? 0 : 1;
-				p[ 1 ][ 2 ] = in( i - 1, j + 1, k - 1 ) > 0 ? 0 : 1;
-				p[ 1 ][ 3 ] = in( i - 1, j    , k - 1 ) > 0 ? 0 : 1;
-				p[ 1 ][ 4 ] = in( i - 1, j - 1, k - 1 ) > 0 ? 0 : 1;
-				p[ 1 ][ 5 ] = in( i    , j - 1, k - 1 ) > 0 ? 0 : 1;
-				p[ 1 ][ 6 ] = in( i + 1, j - 1, k - 1 ) > 0 ? 0 : 1;
-				p[ 1 ][ 7 ] = in( i + 1, j    , k - 1 ) > 0 ? 0 : 1;
-				p[ 1 ][ 8 ] = in( i + 1, j + 1, k - 1 ) > 0 ? 0 : 1;
-
-				p[ 2 ][ 0 ] = in( i    , j    , k     ) > 0 ? 1 : 0;
-				p[ 2 ][ 1 ] = in( i    , j + 1, k     ) > 0 ? 0 : 1;
-				p[ 2 ][ 2 ] = in( i - 1, j + 1, k     ) > 0 ? 0 : 1;
-				p[ 2 ][ 3 ] = in( i - 1, j    , k     ) > 0 ? 0 : 1;
-				p[ 2 ][ 4 ] = in( i - 1, j - 1, k     ) > 0 ? 0 : 1;
-				p[ 2 ][ 5 ] = in( i    , j - 1, k     ) > 0 ? 0 : 1;
-				p[ 2 ][ 6 ] = in( i + 1, j - 1, k     ) > 0 ? 0 : 1;
-				p[ 2 ][ 7 ] = in( i + 1, j    , k     ) > 0 ? 0 : 1;
-				p[ 2 ][ 8 ] = in( i + 1, j + 1, k     ) > 0 ? 0 : 1;
-
-				p[ 3 ][ 0 ] = in( i    , j    , k + 1 ) > 0 ? 0 : 1;
-				p[ 3 ][ 1 ] = in( i    , j + 1, k + 1 ) > 0 ? 0 : 1;
-				p[ 3 ][ 2 ] = in( i - 1, j + 1, k + 1 ) > 0 ? 0 : 1;
-				p[ 3 ][ 3 ] = in( i - 1, j    , k + 1 ) > 0 ? 0 : 1;
-				p[ 3 ][ 4 ] = in( i - 1, j - 1, k + 1 ) > 0 ? 0 : 1;
-				p[ 3 ][ 5 ] = in( i    , j - 1, k + 1 ) > 0 ? 0 : 1;
-				p[ 3 ][ 6 ] = in( i + 1, j - 1, k + 1 ) > 0 ? 0 : 1;
-				p[ 3 ][ 7 ] = in( i + 1, j    , k + 1 ) > 0 ? 0 : 1;
-				p[ 3 ][ 8 ] = in( i + 1, j + 1, k + 1 ) > 0 ? 0 : 1;
+				for( size_t i = 0 ; i < 27 ; i++ )
+				{
+					pp[ i ] = pp[ i ] == 0 ? 1 : 0;
+				}
 
 				//２．6近傍にある1-要素の個数
 				difference_type num = p[ 1 ][ 0 ] + p[ 2 ][ 1 ] + p[ 2 ][ 3 ] + p[ 2 ][ 5 ] + p[ 2 ][ 7 ] + p[ 3 ][ 0 ];
@@ -1155,13 +1069,11 @@ namespace euclidean
 		{
 			typedef ptrdiff_t difference_type;
 
-			difference_type i;
-			difference_type j;
-			difference_type k;
+			difference_type diff;
 			T value;
 			T distance;
 
-			border( difference_type ii, difference_type jj, difference_type kk, T val ) : i( ii ), j( jj ), k( kk ), value( val ), distance( val ) {}
+			border( difference_type d, T val ) : diff( d ), value( val ), distance( val ) {}
 		};
 
 		template < class T >
@@ -1178,11 +1090,22 @@ namespace euclidean
 			return( out );
 		}
 
+		template < class Tin, class Tout, class Difference >
+		void create_neighbor_list( const Tin *pin, Tout *pout, Difference p[ 27 ] )
+		{
+			for( size_t i = 0 ; i < 27 ; i++ )
+			{
+				pout[ i ] = pin[ p[ i ] ] > 0 ? 1 : 0;
+			}
+		}
+
 		template < class T, class Allocator, class Neighbor >
 		void thinning( array3< T, Allocator > &in, Neighbor __dmy__ )
 		{
 			typedef typename array3< T, Allocator >::size_type size_type;
 			typedef typename array3< T, Allocator >::difference_type difference_type;
+			typedef typename array3< T, Allocator >::const_pointer const_pointer;
+			typedef typename array3< T, Allocator >::pointer pointer;
 			typedef T value_type;
 			typedef Neighbor neighbor_type;
 			typedef border< T > border_type;
@@ -1233,23 +1156,71 @@ namespace euclidean
 			}
 
 			border_list_type blist, slist[ 9 ];
+			difference_type diff[ 27 ], nc6[ 6 ];
+			int val[ 27 ];
 
-			// Step2 境界画素の検出
-			for( size_type k = 0 ; k < in.depth( ) ; k++ )
 			{
-				for( size_type j = 0 ; j < in.height( ) ; j++ )
+				difference_type ox = in.width( ) / 2;
+				difference_type oy = in.height( ) / 2;
+				difference_type oz = in.depth( ) / 2;
+
+				const_pointer p0 = &in( ox, oy, oz );
+
+
+				diff[  0 ] = &in( ox    , oy    , oz - 1 ) - p0;
+				diff[  1 ] = &in( ox    , oy + 1, oz - 1 ) - p0;
+				diff[  2 ] = &in( ox - 1, oy + 1, oz - 1 ) - p0;
+				diff[  3 ] = &in( ox - 1, oy    , oz - 1 ) - p0;
+				diff[  4 ] = &in( ox - 1, oy - 1, oz - 1 ) - p0;
+				diff[  5 ] = &in( ox    , oy - 1, oz - 1 ) - p0;
+				diff[  6 ] = &in( ox + 1, oy - 1, oz - 1 ) - p0;
+				diff[  7 ] = &in( ox + 1, oy    , oz - 1 ) - p0;
+				diff[  8 ] = &in( ox + 1, oy + 1, oz - 1 ) - p0;
+
+				diff[  9 ] = &in( ox    , oy    , oz     ) - p0;
+				diff[ 10 ] = &in( ox    , oy + 1, oz     ) - p0;
+				diff[ 11 ] = &in( ox - 1, oy + 1, oz     ) - p0;
+				diff[ 12 ] = &in( ox - 1, oy    , oz     ) - p0;
+				diff[ 13 ] = &in( ox - 1, oy - 1, oz     ) - p0;
+				diff[ 14 ] = &in( ox    , oy - 1, oz     ) - p0;
+				diff[ 15 ] = &in( ox + 1, oy - 1, oz     ) - p0;
+				diff[ 16 ] = &in( ox + 1, oy    , oz     ) - p0;
+				diff[ 17 ] = &in( ox + 1, oy + 1, oz     ) - p0;
+
+				diff[ 18 ] = &in( ox    , oy    , oz + 1 ) - p0;
+				diff[ 19 ] = &in( ox    , oy + 1, oz + 1 ) - p0;
+				diff[ 20 ] = &in( ox - 1, oy + 1, oz + 1 ) - p0;
+				diff[ 21 ] = &in( ox - 1, oy    , oz + 1 ) - p0;
+				diff[ 22 ] = &in( ox - 1, oy - 1, oz + 1 ) - p0;
+				diff[ 23 ] = &in( ox    , oy - 1, oz + 1 ) - p0;
+				diff[ 24 ] = &in( ox + 1, oy - 1, oz + 1 ) - p0;
+				diff[ 25 ] = &in( ox + 1, oy    , oz + 1 ) - p0;
+				diff[ 26 ] = &in( ox + 1, oy + 1, oz + 1 ) - p0;
+
+				nc6[ 0 ] = diff[ 12 ];
+				nc6[ 1 ] = diff[ 16 ];
+				nc6[ 2 ] = diff[ 14 ];
+				nc6[ 3 ] = diff[ 10 ];
+				nc6[ 4 ] = diff[  0 ];
+				nc6[ 5 ] = diff[ 18 ];
+			}
+
+			{
+				const_pointer p0 = &in[ 0 ];
+
+				// Step2 境界画素の検出
+				for( size_type i = 0 ; i < in.size( ) ; i++ )
 				{
-					for( size_type i = 0 ; i < in.width( ) ; i++ )
+					value_type &v = in[ i ];
+					if( v > 20 )
 					{
-						if( in( i, j, k ) > 20 )
+						const_pointer p = &v;
+						if( p[ nc6[ 0 ] ] == 0 || p[ nc6[ 1 ] ] == 0 ||
+							p[ nc6[ 2 ] ] == 0 || p[ nc6[ 3 ] ] == 0 ||
+							p[ nc6[ 4 ] ] == 0 || p[ nc6[ 5 ] ] == 0 )
 						{
-							if( in( i - 1, j, k ) == 0 || in( i + 1, j, k ) == 0 ||
-								in( i, j - 1, k ) == 0 || in( i, j + 1, k ) == 0 ||
-								in( i, j, k - 1 ) == 0 || in( i, j, k + 1 ) == 0 )
-							{
-								blist.push_back( border_type( i, j, k, in( i, j, k ) ) );
-								in( i, j, k ) = 1;
-							}
+							blist.push_back( border_type( p - p0, v ) );
+							v = 1;
 						}
 					}
 				}
@@ -1277,49 +1248,46 @@ namespace euclidean
 				for( difference_type l = 0 ; l < __length__ ; )
 				{
 					border_type &b = blist[ l ];
+					pointer p = &in[ b.diff ];
 
 					if( b.value <= min )
 					{
-						difference_type i = b.i;
-						difference_type j = b.j;
-						difference_type k = b.k;
+						create_neighbor_list( p, val, diff );
 
 						// 消去不可能なら一時保存点
-						if( !neighbor_type::is_deletable( in, i, j, k ) )
+						if( !neighbor_type::is_deletable( val ) )
 						{
 							b.value = 16;
 						}
 						else
 						{
-							size_type num = 0;
-							if( in( i    , j    , k - 1 ) > 0 ) num++;
-							if( in( i    , j + 1, k - 1 ) > 0 ) num++;
-							if( in( i - 1, j + 1, k - 1 ) > 0 ) num++;
-							if( in( i - 1, j    , k - 1 ) > 0 ) num++;
-							if( in( i - 1, j - 1, k - 1 ) > 0 ) num++;
-							if( in( i    , j - 1, k - 1 ) > 0 ) num++;
-							if( in( i + 1, j - 1, k - 1 ) > 0 ) num++;
-							if( in( i + 1, j    , k - 1 ) > 0 ) num++;
-							if( in( i + 1, j + 1, k - 1 ) > 0 ) num++;
-
-							if( in( i    , j + 1, k     ) > 0 ) num++;
-							if( in( i - 1, j + 1, k     ) > 0 ) num++;
-							if( in( i - 1, j    , k     ) > 0 ) num++;
-							if( in( i - 1, j - 1, k     ) > 0 ) num++;
-							if( in( i    , j - 1, k     ) > 0 ) num++;
-							if( in( i + 1, j - 1, k     ) > 0 ) num++;
-							if( in( i + 1, j    , k     ) > 0 ) num++;
-							if( in( i + 1, j + 1, k     ) > 0 ) num++;
-
-							if( in( i    , j    , k + 1 ) > 0 ) num++;
-							if( in( i    , j + 1, k + 1 ) > 0 ) num++;
-							if( in( i - 1, j + 1, k + 1 ) > 0 ) num++;
-							if( in( i - 1, j    , k + 1 ) > 0 ) num++;
-							if( in( i - 1, j - 1, k + 1 ) > 0 ) num++;
-							if( in( i    , j - 1, k + 1 ) > 0 ) num++;
-							if( in( i + 1, j - 1, k + 1 ) > 0 ) num++;
-							if( in( i + 1, j    , k + 1 ) > 0 ) num++;
-							if( in( i + 1, j + 1, k + 1 ) > 0 ) num++;
+							// 自分自身を除く
+							size_type num = val[  0 ];
+							num += val[  1 ];
+							num += val[  2 ];
+							num += val[  3 ];
+							num += val[  4 ];
+							num += val[  5 ];
+							num += val[  6 ];
+							num += val[  7 ];
+							num += val[  8 ];
+							num += val[ 10 ];
+							num += val[ 11 ];
+							num += val[ 12 ];
+							num += val[ 13 ];
+							num += val[ 14 ];
+							num += val[ 15 ];
+							num += val[ 16 ];
+							num += val[ 17 ];
+							num += val[ 18 ];
+							num += val[ 19 ];
+							num += val[ 20 ];
+							num += val[ 21 ];
+							num += val[ 22 ];
+							num += val[ 23 ];
+							num += val[ 24 ];
+							num += val[ 25 ];
+							num += val[ 26 ];
 
 							// 端点なら永久保存点
 							if( num == 1 )
@@ -1354,87 +1322,71 @@ namespace euclidean
 					for( size_type l = 0 ; l < list.size( ) ; l++ )
 					{
 						border_type &b = list[ l ];
+						pointer p = &in[ b.diff ];
 
-						difference_type i = b.i;
-						difference_type j = b.j;
-						difference_type k = b.k;
+						create_neighbor_list( p, val, diff );
 
 						//消去不可能なら一時保存点
-						if( !neighbor_type::is_deletable( in, i, j, k ) )
+						if( !neighbor_type::is_deletable( val ) )
 						{
 							b.value = 16;
 							blist.push_back( b );
 						}
 						else
 						{
-							size_type num = 0;
-							if( in( i    , j    , k - 1 ) > 0 ) num++;
-							if( in( i    , j + 1, k - 1 ) > 0 ) num++;
-							if( in( i - 1, j + 1, k - 1 ) > 0 ) num++;
-							if( in( i - 1, j    , k - 1 ) > 0 ) num++;
-							if( in( i - 1, j - 1, k - 1 ) > 0 ) num++;
-							if( in( i    , j - 1, k - 1 ) > 0 ) num++;
-							if( in( i + 1, j - 1, k - 1 ) > 0 ) num++;
-							if( in( i + 1, j    , k - 1 ) > 0 ) num++;
-							if( in( i + 1, j + 1, k - 1 ) > 0 ) num++;
+							size_type num = 0, i;
 
-							if( in( i    , j + 1, k     ) > 0 ) num++;
-							if( in( i - 1, j + 1, k     ) > 0 ) num++;
-							if( in( i - 1, j    , k     ) > 0 ) num++;
-							if( in( i - 1, j - 1, k     ) > 0 ) num++;
-							if( in( i    , j - 1, k     ) > 0 ) num++;
-							if( in( i + 1, j - 1, k     ) > 0 ) num++;
-							if( in( i + 1, j    , k     ) > 0 ) num++;
-							if( in( i + 1, j + 1, k     ) > 0 ) num++;
-
-							if( in( i    , j    , k + 1 ) > 0 ) num++;
-							if( in( i    , j + 1, k + 1 ) > 0 ) num++;
-							if( in( i - 1, j + 1, k + 1 ) > 0 ) num++;
-							if( in( i - 1, j    , k + 1 ) > 0 ) num++;
-							if( in( i - 1, j - 1, k + 1 ) > 0 ) num++;
-							if( in( i    , j - 1, k + 1 ) > 0 ) num++;
-							if( in( i + 1, j - 1, k + 1 ) > 0 ) num++;
-							if( in( i + 1, j    , k + 1 ) > 0 ) num++;
-							if( in( i + 1, j + 1, k + 1 ) > 0 ) num++;
+							// 自分自身を除く周りを調べる
+							for( i = 0 ; i < 9 && num < 2 ; i++ )
+							{
+								if( val[ i ] > 0 )
+								{
+									num++;
+								}
+							}
+							for( i = 10 ; i < 27 && num < 2 ; i++ )
+							{
+								if( val[ i ] > 0 )
+								{
+									num++;
+								}
+							}
 
 							//端点なら永久保存点
-							if( num == 1 )
+							if( num > 1 )
 							{
-							}
-							//画素の消去
-							else
-							{
-								in( i, j, k ) = 0;
+								//画素の消去
+								p[ 0 ] = 0;
 
-								if( in( i - 1, j, k ) > 20 )
+								if( p[ nc6[ 0 ] ] > 20 )
 								{
-									blist.push_back( border_type( i - 1, j, k, in( i - 1, j, k ) ) );
-									in( i - 1, j, k ) = 1;
+									blist.push_back( border_type( b.diff + nc6[ 0 ], p[ nc6[ 0 ] ] ) );
+									p[ nc6[ 0 ] ] = 1;
 								}
-								if( in( i + 1, j, k ) > 20 )
+								if( p[ nc6[ 1 ] ] > 20 )
 								{
-									blist.push_back( border_type( i + 1, j, k, in( i + 1, j, k ) ) );
-									in( i + 1, j, k ) = 1;
+									blist.push_back( border_type( b.diff + nc6[ 1 ], p[ nc6[ 1 ] ] ) );
+									p[ nc6[ 1 ] ] = 1;
 								}
-								if( in( i, j - 1, k ) > 20 )
+								if( p[ nc6[ 2 ] ] > 20 )
 								{
-									blist.push_back( border_type( i, j - 1, k, in( i, j - 1, k ) ) );
-									in( i, j - 1, k ) = 1;
+									blist.push_back( border_type( b.diff + nc6[ 2 ], p[ nc6[ 2 ] ] ) );
+									p[ nc6[ 2 ] ] = 1;
 								}
-								if( in( i, j + 1, k ) > 20 )
+								if( p[ nc6[ 3 ] ] > 20 )
 								{
-									blist.push_back( border_type( i, j + 1, k, in( i, j + 1, k ) ) );
-									in( i, j + 1, k ) = 1;
+									blist.push_back( border_type( b.diff + nc6[ 3 ], p[ nc6[ 3 ] ] ) );
+									p[ nc6[ 3 ] ] = 1;
 								}
-								if( in( i, j, k - 1 ) > 20 )
+								if( p[ nc6[ 4 ] ] > 20 )
 								{
-									blist.push_back( border_type( i, j, k - 1, in( i, j, k - 1 ) ) );
-									in( i, j, k - 1 ) = 1;
+									blist.push_back( border_type( b.diff + nc6[ 4 ], p[ nc6[ 4 ] ] ) );
+									p[ nc6[ 4 ] ] = 1;
 								}
-								if( in( i, j, k + 1 ) > 20 )
+								if( p[ nc6[ 5 ] ] > 20 )
 								{
-									blist.push_back( border_type( i, j, k + 1, in( i, j, k + 1 ) ) );
-									in( i, j, k + 1 ) = 1;
+									blist.push_back( border_type( b.diff + nc6[ 5 ], p[ nc6[ 5 ] ] ) );
+									p[ nc6[ 5 ] ] = 1;
 								}
 							}
 						}
@@ -1447,9 +1399,13 @@ namespace euclidean
 				for( size_type l = 0 ; l < blist.size( ) ; l++ )
 				{
 					border_type &b = blist[ l ];
+					pointer p = &in[ b.diff ];
+
 					if( b.value == 16 )
 					{
-						if( neighbor_type::is_deletable( in, b.i, b.j, b.k ) )
+						create_neighbor_list( p, val, diff );
+
+						if( neighbor_type::is_deletable( val ) )
 						{
 							b.value = b.distance;
 						}
@@ -1473,8 +1429,7 @@ namespace euclidean
 					}
 				}
 
-				std::cout << loop++ << "          \r";
-				//std::cout << loop++ << ", " << max << ", " << min << ", " << count << ", " << blist.size( ) << std::endl;
+				// std::cout << loop++ << "          \r";
 
 			} while( min < max || count != blist.size( ) );
 

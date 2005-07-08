@@ -142,9 +142,6 @@
 			<File
 				RelativePath="..\test\raw_test.h">
 			</File>
-			<File
-				RelativePath="..\mist\filter\thinning.h">
-			</File>
 		</Filter>
 		<Filter
 			Name="MISTƒtƒ@ƒCƒ‹"
@@ -172,6 +169,9 @@
 			</File>
 			<File
 				RelativePath="..\mist\io\raw.h">
+			</File>
+			<File
+				RelativePath="..\mist\filter\thinning.h">
 			</File>
 			<File
 				RelativePath="..\mist\thread.h">
