@@ -526,13 +526,13 @@ namespace __region_growing_utility__
 //! @param[in]  output_value … 出力マークデータに書き込む値
 //! @param[in]  components   … 領域拡張に用いる構造要素
 //! @param[in]  condition    … 構造要素内の画素が満たすべき条件
-//! @param[in]  max_num      … 最大反復回数
+//! @param[in]  max_loop     … 最大反復回数
 //!
 //! @return 入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に false を返す
 //! 
 template < class Array1, class Array2, class MaskType, class PointList, class Component, class Condition >
 bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const PointList &start_points, typename Array2::value_type output_value,
-														const Component &components, const Condition &condition, typename Array1::size_type max_num )
+														const Component &components, const Condition &condition, typename Array1::size_type max_loop )
 {
 	if( in.empty( ) || is_same_object( in, out ) )
 	{
@@ -612,7 +612,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 	}
 
 	
-	size_type count = 0;	// 反復回数の計測用カウンタ
+	size_type loop = 0;	// 反復回数の計測用カウンタ
 
 
 	// 領域拡張の条件によって，構造要素内の全要素を判定に用いるかどうかを決める
@@ -650,7 +650,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 			// 拡張条件の判定を行う
 			if( num != 0 && condition( element, num ) )
 			{
-				if( ++count > max_num )
+				if( ++loop > max_loop )
 				{
 					return( false );
 				}
@@ -710,7 +710,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 			// 拡張条件の判定を行う
 			if( condition( element, num ) )
 			{
-				if( ++count > max_num )
+				if( ++loop > max_loop )
 				{
 					return( false );
 				}
@@ -752,15 +752,15 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 //! @param[in]  output_value … 出力マークデータに書き込む値
 //! @param[in]  components   … 領域拡張に用いる構造要素
 //! @param[in]  condition    … 構造要素内の画素が満たすべき条件
-//! @param[in]  max_num      … 最大反復回数（省略した場合は条件を満たす点が存在しなくなるまで実行する）
+//! @param[in]  max_loop     … 最大反復回数（省略した場合は条件を満たす点が存在しなくなるまで実行する）
 //!
 //! @return 入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に false を返す
 //!
 template < class Array1, class Array2, class PointList, class Component, class Condition >
 bool region_growing( const Array1 &in, Array2 &out, const PointList &start_points, typename Array2::value_type output_value,
-										const Component &components, const Condition &condition, typename Array1::size_type max_num = type_limits< typename Array1::size_type >::maximum( ) )
+										const Component &components, const Condition &condition, typename Array1::size_type max_loop = type_limits< typename Array1::size_type >::maximum( ) )
 {
-	return( region_growing( in, out, __region_growing_utility__::no_mask( ), start_points, output_value, components, condition, max_num ) );
+	return( region_growing( in, out, __region_growing_utility__::no_mask( ), start_points, output_value, components, condition, max_loop ) );
 }
 
 

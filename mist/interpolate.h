@@ -743,6 +743,352 @@ namespace __cubic__
 
 
 
+
+
+
+// 3次のsinc関数による内挿補間
+namespace __bspline__
+{
+	// 0 <= t < 1 の場合
+	inline double bspline1( double t ){ return( 2.0 / 3.0 + ( 0.5 * t - 1.0 ) * t * t ); }
+
+	// 1 <= t < 2 の場合
+	inline double bspline2( double t ){ return( 3.0 / 4.0 + ( -2.0 + ( 1.0 - t / 6.0 ) * t ) * t ); }
+
+
+	template < bool b >
+	struct _bspline_
+	{
+		template < class T, class Allocator >
+		static double bspline___( const array< T, Allocator > &in,
+								typename array< T, Allocator >::size_type i[4],
+								typename array< T, Allocator >::size_type j[4],
+								typename array< T, Allocator >::size_type k[4],
+								double x, double y, double z )
+		{
+			typedef typename array< T, Allocator >::value_type value_type;
+
+			double u0 = bspline2( 1 + x );
+			double u1 = bspline1( x );
+			double u2 = bspline1( 1 - x );
+			double u3 = bspline2( 2 - x );
+			double pix = in[ i[ 0 ] ] * u0 + in[ i[ 1 ] ] * u1 + in[ i[ 2 ] ] * u2 + in[ i[ 3 ] ] * u3;
+
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+
+			return( pix );
+		}
+
+		template < class T, class Allocator >
+		static double bspline___( const array2< T, Allocator > &in,
+								typename array2< T, Allocator >::size_type i[4],
+								typename array2< T, Allocator >::size_type j[4],
+								typename array2< T, Allocator >::size_type k[4],
+								double x, double y, double z )
+		{
+			typedef typename array2< T, Allocator >::value_type value_type;
+
+			double u0 = bspline2( 1 + x );
+			double u1 = bspline1( x );
+			double u2 = bspline1( 1 - x );
+			double u3 = bspline2( 2 - x );
+			double v0 = bspline2( 1 + y );
+			double v1 = bspline1( y );
+			double v2 = bspline1( 1 - y );
+			double v3 = bspline2( 2 - y );
+			double pix = ( in( i[ 0 ], j[ 0 ] ) * u0 + in( i[ 1 ], j[ 0 ] ) * u1 + in( i[ 2 ], j[ 0 ] ) * u2 + in( i[ 3 ], j[ 0 ] ) * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ] ) * u0 + in( i[ 1 ], j[ 1 ] ) * u1 + in( i[ 2 ], j[ 1 ] ) * u2 + in( i[ 3 ], j[ 1 ] ) * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ] ) * u0 + in( i[ 1 ], j[ 2 ] ) * u1 + in( i[ 2 ], j[ 2 ] ) * u2 + in( i[ 3 ], j[ 2 ] ) * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ] ) * u3 ) * v3;
+
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+
+			return( pix );
+		}
+
+		template < class T, class Allocator >
+		static double bspline___( const array3< T, Allocator > &in,
+								typename array3< T, Allocator >::size_type i[4],
+								typename array3< T, Allocator >::size_type j[4],
+								typename array3< T, Allocator >::size_type k[4],
+								double x, double y, double z )
+		{
+			typedef typename array3< T, Allocator >::value_type value_type;
+
+			double u0 = bspline2( 1 + x );
+			double u1 = bspline1( x );
+			double u2 = bspline1( 1 - x );
+			double u3 = bspline2( 2 - x );
+			double v0 = bspline2( 1 + y );
+			double v1 = bspline1( y );
+			double v2 = bspline1( 1 - y );
+			double v3 = bspline2( 2 - y );
+			double w0 = bspline2( 1 + z );
+			double w1 = bspline1( z );
+			double w2 = bspline1( 1 - z );
+			double w3 = bspline2( 2 - z );
+
+			double p0 = ( ( in( i[ 0 ], j[ 0 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 0 ] ) * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 0 ] ) * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 0 ] ) * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 0 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 0 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 0 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 0 ] ) * u3 ) * v3 );
+			double p1 = ( ( in( i[ 0 ], j[ 0 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 1 ] ) * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 1 ] ) * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 1 ] ) * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 1 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 1 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 1 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 1 ] ) * u3 ) * v3 );
+			double p2 = ( ( in( i[ 0 ], j[ 0 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 2 ] ) * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 2 ] ) * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 2 ] ) * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 2 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 2 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 2 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 2 ] ) * u3 ) * v3 );
+			double p3 = ( ( in( i[ 0 ], j[ 0 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 0 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 0 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 0 ], k[ 3 ] ) * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ) * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ) * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ) * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ) * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ) * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ) * u3 ) * v3 );
+			double pix = p0 * w0 + p1 * w1 + p2 * w2 + p3 * w3;
+
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+
+			return( pix );
+		}
+	};
+
+	template < >
+	struct _bspline_< true >
+	{
+		template < class T, class Allocator >
+		static const rgb< double >  bspline___( const array< T, Allocator > &in,
+												typename array< T, Allocator >::size_type i[4],
+												typename array< T, Allocator >::size_type j[4],
+												typename array< T, Allocator >::size_type k[4],
+												double x, double y, double z )
+		{
+			typedef typename array< T, Allocator >::value_type color;
+			typedef typename color::value_type value_type;
+
+			double u0 = bspline2( 1 + x );
+			double u1 = bspline1( x );
+			double u2 = bspline1( 1 - x );
+			double u3 = bspline2( 2 - x );
+			double r = in[ i[ 0 ] ].r * u0 + in[ i[ 1 ] ].r * u1 + in[ i[ 2 ] ].r * u2 + in[ i[ 3 ] ].r * u3;
+			double g = in[ i[ 0 ] ].g * u0 + in[ i[ 1 ] ].g * u1 + in[ i[ 2 ] ].g * u2 + in[ i[ 3 ] ].g * u3;
+			double b = in[ i[ 0 ] ].b * u0 + in[ i[ 1 ] ].b * u1 + in[ i[ 2 ] ].b * u2 + in[ i[ 3 ] ].b * u3;
+
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+
+			return( rgb< double >( r, g, b ) );
+		}
+
+		template < class T, class Allocator >
+		static const rgb< double >  bspline___( const array2< T, Allocator > &in,
+												typename array2< T, Allocator >::size_type i[4],
+												typename array2< T, Allocator >::size_type j[4],
+												typename array2< T, Allocator >::size_type k[4],
+												double x, double y, double z )
+		{
+			typedef typename array2< T, Allocator >::value_type color;
+			typedef typename color::value_type value_type;
+
+			double u0 = bspline2( 1 + x );
+			double u1 = bspline1( x );
+			double u2 = bspline1( 1 - x );
+			double u3 = bspline2( 2 - x );
+			double v0 = bspline2( 1 + y );
+			double v1 = bspline1( y );
+			double v2 = bspline1( 1 - y );
+			double v3 = bspline2( 2 - y );
+
+			double r  =   ( in( i[ 0 ], j[ 0 ] ).r * u0 + in( i[ 1 ], j[ 0 ] ).r * u1 + in( i[ 2 ], j[ 0 ] ).r * u2 + in( i[ 3 ], j[ 0 ] ).r * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ] ).r * u0 + in( i[ 1 ], j[ 1 ] ).r * u1 + in( i[ 2 ], j[ 1 ] ).r * u2 + in( i[ 3 ], j[ 1 ] ).r * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ] ).r * u0 + in( i[ 1 ], j[ 2 ] ).r * u1 + in( i[ 2 ], j[ 2 ] ).r * u2 + in( i[ 3 ], j[ 2 ] ).r * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ] ).r * u0 + in( i[ 1 ], j[ 3 ] ).r * u1 + in( i[ 2 ], j[ 3 ] ).r * u2 + in( i[ 3 ], j[ 3 ] ).r * u3 ) * v3;
+			double g  =   ( in( i[ 0 ], j[ 0 ] ).g * u0 + in( i[ 1 ], j[ 0 ] ).g * u1 + in( i[ 2 ], j[ 0 ] ).g * u2 + in( i[ 3 ], j[ 0 ] ).g * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ] ).g * u0 + in( i[ 1 ], j[ 1 ] ).g * u1 + in( i[ 2 ], j[ 1 ] ).g * u2 + in( i[ 3 ], j[ 1 ] ).g * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ] ).g * u0 + in( i[ 1 ], j[ 2 ] ).g * u1 + in( i[ 2 ], j[ 2 ] ).g * u2 + in( i[ 3 ], j[ 2 ] ).g * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ] ).g * u0 + in( i[ 1 ], j[ 3 ] ).g * u1 + in( i[ 2 ], j[ 3 ] ).g * u2 + in( i[ 3 ], j[ 3 ] ).g * u3 ) * v3;
+			double b  =   ( in( i[ 0 ], j[ 0 ] ).b * u0 + in( i[ 1 ], j[ 0 ] ).b * u1 + in( i[ 2 ], j[ 0 ] ).b * u2 + in( i[ 3 ], j[ 0 ] ).b * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ] ).b * u0 + in( i[ 1 ], j[ 1 ] ).b * u1 + in( i[ 2 ], j[ 1 ] ).b * u2 + in( i[ 3 ], j[ 1 ] ).b * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ] ).b * u0 + in( i[ 1 ], j[ 2 ] ).b * u1 + in( i[ 2 ], j[ 2 ] ).b * u2 + in( i[ 3 ], j[ 2 ] ).b * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ] ).b * u0 + in( i[ 1 ], j[ 3 ] ).b * u1 + in( i[ 2 ], j[ 3 ] ).b * u2 + in( i[ 3 ], j[ 3 ] ).b * u3 ) * v3;
+
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+
+			return( rgb< double >( r, g, b ) );
+		}
+
+		template < class T, class Allocator >
+		static const rgb< double >  bspline___( const array3< T, Allocator > &in,
+												typename array3< T, Allocator >::size_type i[4],
+												typename array3< T, Allocator >::size_type j[4],
+												typename array3< T, Allocator >::size_type k[4],
+												double x, double y, double z )
+		{
+			typedef typename array3< T, Allocator >::value_type color;
+			typedef typename color::value_type value_type;
+
+			double u0 = bspline2( 1 + x );
+			double u1 = bspline1( x );
+			double u2 = bspline1( 1 - x );
+			double u3 = bspline2( 2 - x );
+			double v0 = bspline2( 1 + y );
+			double v1 = bspline1( y );
+			double v2 = bspline1( 1 - y );
+			double v3 = bspline2( 2 - y );
+			double w0 = bspline2( 1 + z );
+			double w1 = bspline1( z );
+			double w2 = bspline1( 1 - z );
+			double w3 = bspline2( 2 - z );
+
+			double r0 = ( ( in( i[ 0 ], j[ 0 ], k[ 0 ] ).r * u0 + in( i[ 1 ], j[ 0 ], k[ 0 ] ).r * u1 + in( i[ 2 ], j[ 0 ], k[ 0 ] ).r * u2 + in( i[ 3 ], j[ 0 ], k[ 0 ] ).r * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 0 ] ).r * u0 + in( i[ 1 ], j[ 1 ], k[ 0 ] ).r * u1 + in( i[ 2 ], j[ 1 ], k[ 0 ] ).r * u2 + in( i[ 3 ], j[ 1 ], k[ 0 ] ).r * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 0 ] ).r * u0 + in( i[ 1 ], j[ 2 ], k[ 0 ] ).r * u1 + in( i[ 2 ], j[ 2 ], k[ 0 ] ).r * u2 + in( i[ 3 ], j[ 2 ], k[ 0 ] ).r * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 0 ] ).r * u0 + in( i[ 1 ], j[ 3 ], k[ 0 ] ).r * u1 + in( i[ 2 ], j[ 3 ], k[ 0 ] ).r * u2 + in( i[ 3 ], j[ 3 ], k[ 0 ] ).r * u3 ) * v3 );
+			double r1 = ( ( in( i[ 0 ], j[ 0 ], k[ 1 ] ).r * u0 + in( i[ 1 ], j[ 0 ], k[ 1 ] ).r * u1 + in( i[ 2 ], j[ 0 ], k[ 1 ] ).r * u2 + in( i[ 3 ], j[ 0 ], k[ 1 ] ).r * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 1 ] ).r * u0 + in( i[ 1 ], j[ 1 ], k[ 1 ] ).r * u1 + in( i[ 2 ], j[ 1 ], k[ 1 ] ).r * u2 + in( i[ 3 ], j[ 1 ], k[ 1 ] ).r * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 1 ] ).r * u0 + in( i[ 1 ], j[ 2 ], k[ 1 ] ).r * u1 + in( i[ 2 ], j[ 2 ], k[ 1 ] ).r * u2 + in( i[ 3 ], j[ 2 ], k[ 1 ] ).r * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 1 ] ).r * u0 + in( i[ 1 ], j[ 3 ], k[ 1 ] ).r * u1 + in( i[ 2 ], j[ 3 ], k[ 1 ] ).r * u2 + in( i[ 3 ], j[ 3 ], k[ 1 ] ).r * u3 ) * v3 );
+			double r2 = ( ( in( i[ 0 ], j[ 0 ], k[ 2 ] ).r * u0 + in( i[ 1 ], j[ 0 ], k[ 2 ] ).r * u1 + in( i[ 2 ], j[ 0 ], k[ 2 ] ).r * u2 + in( i[ 3 ], j[ 0 ], k[ 2 ] ).r * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 2 ] ).r * u0 + in( i[ 1 ], j[ 1 ], k[ 2 ] ).r * u1 + in( i[ 2 ], j[ 1 ], k[ 2 ] ).r * u2 + in( i[ 3 ], j[ 1 ], k[ 2 ] ).r * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 2 ] ).r * u0 + in( i[ 1 ], j[ 2 ], k[ 2 ] ).r * u1 + in( i[ 2 ], j[ 2 ], k[ 2 ] ).r * u2 + in( i[ 3 ], j[ 2 ], k[ 2 ] ).r * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 2 ] ).r * u0 + in( i[ 1 ], j[ 3 ], k[ 2 ] ).r * u1 + in( i[ 2 ], j[ 3 ], k[ 2 ] ).r * u2 + in( i[ 3 ], j[ 3 ], k[ 2 ] ).r * u3 ) * v3 );
+			double r3 = ( ( in( i[ 0 ], j[ 0 ], k[ 3 ] ).r * u0 + in( i[ 1 ], j[ 0 ], k[ 3 ] ).r * u1 + in( i[ 2 ], j[ 0 ], k[ 3 ] ).r * u2 + in( i[ 3 ], j[ 0 ], k[ 3 ] ).r * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ).r * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ).r * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ).r * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ).r * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ).r * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ).r * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ).r * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ).r * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ).r * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ).r * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ).r * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ).r * u3 ) * v3 );
+			double g0 = ( ( in( i[ 0 ], j[ 0 ], k[ 0 ] ).g * u0 + in( i[ 1 ], j[ 0 ], k[ 0 ] ).g * u1 + in( i[ 2 ], j[ 0 ], k[ 0 ] ).g * u2 + in( i[ 3 ], j[ 0 ], k[ 0 ] ).g * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 0 ] ).g * u0 + in( i[ 1 ], j[ 1 ], k[ 0 ] ).g * u1 + in( i[ 2 ], j[ 1 ], k[ 0 ] ).g * u2 + in( i[ 3 ], j[ 1 ], k[ 0 ] ).g * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 0 ] ).g * u0 + in( i[ 1 ], j[ 2 ], k[ 0 ] ).g * u1 + in( i[ 2 ], j[ 2 ], k[ 0 ] ).g * u2 + in( i[ 3 ], j[ 2 ], k[ 0 ] ).g * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 0 ] ).g * u0 + in( i[ 1 ], j[ 3 ], k[ 0 ] ).g * u1 + in( i[ 2 ], j[ 3 ], k[ 0 ] ).g * u2 + in( i[ 3 ], j[ 3 ], k[ 0 ] ).g * u3 ) * v3 );
+			double g1 = ( ( in( i[ 0 ], j[ 0 ], k[ 1 ] ).g * u0 + in( i[ 1 ], j[ 0 ], k[ 1 ] ).g * u1 + in( i[ 2 ], j[ 0 ], k[ 1 ] ).g * u2 + in( i[ 3 ], j[ 0 ], k[ 1 ] ).g * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 1 ] ).g * u0 + in( i[ 1 ], j[ 1 ], k[ 1 ] ).g * u1 + in( i[ 2 ], j[ 1 ], k[ 1 ] ).g * u2 + in( i[ 3 ], j[ 1 ], k[ 1 ] ).g * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 1 ] ).g * u0 + in( i[ 1 ], j[ 2 ], k[ 1 ] ).g * u1 + in( i[ 2 ], j[ 2 ], k[ 1 ] ).g * u2 + in( i[ 3 ], j[ 2 ], k[ 1 ] ).g * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 1 ] ).g * u0 + in( i[ 1 ], j[ 3 ], k[ 1 ] ).g * u1 + in( i[ 2 ], j[ 3 ], k[ 1 ] ).g * u2 + in( i[ 3 ], j[ 3 ], k[ 1 ] ).g * u3 ) * v3 );
+			double g2 = ( ( in( i[ 0 ], j[ 0 ], k[ 2 ] ).g * u0 + in( i[ 1 ], j[ 0 ], k[ 2 ] ).g * u1 + in( i[ 2 ], j[ 0 ], k[ 2 ] ).g * u2 + in( i[ 3 ], j[ 0 ], k[ 2 ] ).g * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 2 ] ).g * u0 + in( i[ 1 ], j[ 1 ], k[ 2 ] ).g * u1 + in( i[ 2 ], j[ 1 ], k[ 2 ] ).g * u2 + in( i[ 3 ], j[ 1 ], k[ 2 ] ).g * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 2 ] ).g * u0 + in( i[ 1 ], j[ 2 ], k[ 2 ] ).g * u1 + in( i[ 2 ], j[ 2 ], k[ 2 ] ).g * u2 + in( i[ 3 ], j[ 2 ], k[ 2 ] ).g * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 2 ] ).g * u0 + in( i[ 1 ], j[ 3 ], k[ 2 ] ).g * u1 + in( i[ 2 ], j[ 3 ], k[ 2 ] ).g * u2 + in( i[ 3 ], j[ 3 ], k[ 2 ] ).g * u3 ) * v3 );
+			double g3 = ( ( in( i[ 0 ], j[ 0 ], k[ 3 ] ).g * u0 + in( i[ 1 ], j[ 0 ], k[ 3 ] ).g * u1 + in( i[ 2 ], j[ 0 ], k[ 3 ] ).g * u2 + in( i[ 3 ], j[ 0 ], k[ 3 ] ).g * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ).g * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ).g * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ).g * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ).g * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ).g * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ).g * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ).g * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ).g * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ).g * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ).g * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ).g * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ).g * u3 ) * v3 );
+			double b0 = ( ( in( i[ 0 ], j[ 0 ], k[ 0 ] ).b * u0 + in( i[ 1 ], j[ 0 ], k[ 0 ] ).b * u1 + in( i[ 2 ], j[ 0 ], k[ 0 ] ).b * u2 + in( i[ 3 ], j[ 0 ], k[ 0 ] ).b * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 0 ] ).b * u0 + in( i[ 1 ], j[ 1 ], k[ 0 ] ).b * u1 + in( i[ 2 ], j[ 1 ], k[ 0 ] ).b * u2 + in( i[ 3 ], j[ 1 ], k[ 0 ] ).b * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 0 ] ).b * u0 + in( i[ 1 ], j[ 2 ], k[ 0 ] ).b * u1 + in( i[ 2 ], j[ 2 ], k[ 0 ] ).b * u2 + in( i[ 3 ], j[ 2 ], k[ 0 ] ).b * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 0 ] ).b * u0 + in( i[ 1 ], j[ 3 ], k[ 0 ] ).b * u1 + in( i[ 2 ], j[ 3 ], k[ 0 ] ).b * u2 + in( i[ 3 ], j[ 3 ], k[ 0 ] ).b * u3 ) * v3 );
+			double b1 = ( ( in( i[ 0 ], j[ 0 ], k[ 1 ] ).b * u0 + in( i[ 1 ], j[ 0 ], k[ 1 ] ).b * u1 + in( i[ 2 ], j[ 0 ], k[ 1 ] ).b * u2 + in( i[ 3 ], j[ 0 ], k[ 1 ] ).b * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 1 ] ).b * u0 + in( i[ 1 ], j[ 1 ], k[ 1 ] ).b * u1 + in( i[ 2 ], j[ 1 ], k[ 1 ] ).b * u2 + in( i[ 3 ], j[ 1 ], k[ 1 ] ).b * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 1 ] ).b * u0 + in( i[ 1 ], j[ 2 ], k[ 1 ] ).b * u1 + in( i[ 2 ], j[ 2 ], k[ 1 ] ).b * u2 + in( i[ 3 ], j[ 2 ], k[ 1 ] ).b * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 1 ] ).b * u0 + in( i[ 1 ], j[ 3 ], k[ 1 ] ).b * u1 + in( i[ 2 ], j[ 3 ], k[ 1 ] ).b * u2 + in( i[ 3 ], j[ 3 ], k[ 1 ] ).b * u3 ) * v3 );
+			double b2 = ( ( in( i[ 0 ], j[ 0 ], k[ 2 ] ).b * u0 + in( i[ 1 ], j[ 0 ], k[ 2 ] ).b * u1 + in( i[ 2 ], j[ 0 ], k[ 2 ] ).b * u2 + in( i[ 3 ], j[ 0 ], k[ 2 ] ).b * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 2 ] ).b * u0 + in( i[ 1 ], j[ 1 ], k[ 2 ] ).b * u1 + in( i[ 2 ], j[ 1 ], k[ 2 ] ).b * u2 + in( i[ 3 ], j[ 1 ], k[ 2 ] ).b * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 2 ] ).b * u0 + in( i[ 1 ], j[ 2 ], k[ 2 ] ).b * u1 + in( i[ 2 ], j[ 2 ], k[ 2 ] ).b * u2 + in( i[ 3 ], j[ 2 ], k[ 2 ] ).b * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 2 ] ).b * u0 + in( i[ 1 ], j[ 3 ], k[ 2 ] ).b * u1 + in( i[ 2 ], j[ 3 ], k[ 2 ] ).b * u2 + in( i[ 3 ], j[ 3 ], k[ 2 ] ).b * u3 ) * v3 );
+			double b3 = ( ( in( i[ 0 ], j[ 0 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 0 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 0 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 0 ], k[ 3 ] ).b * u3 ) * v0
+						+ ( in( i[ 0 ], j[ 1 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 1 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 1 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 1 ], k[ 3 ] ).b * u3 ) * v1
+						+ ( in( i[ 0 ], j[ 2 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 2 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 2 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 2 ], k[ 3 ] ).b * u3 ) * v2
+						+ ( in( i[ 0 ], j[ 3 ], k[ 3 ] ).b * u0 + in( i[ 1 ], j[ 3 ], k[ 3 ] ).b * u1 + in( i[ 2 ], j[ 3 ], k[ 3 ] ).b * u2 + in( i[ 3 ], j[ 3 ], k[ 3 ] ).b * u3 ) * v3 );
+
+			double r = r0 * w0 + r1 * w1 + r2 * w2 + r3 * w3;
+			double g = g0 * w0 + g1 * w1 + g2 * w2 + g3 * w3;
+			double b = b0 * w0 + b1 * w1 + b2 * w2 + b3 * w3;
+
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+
+			return( rgb< double >( r, g, b ) );
+		}
+	};
+
+	template < class Array1, class Array2 >
+	void interpolate( const Array1 &in, Array2 &out,
+						typename Array1::size_type thread_idx, typename Array1::size_type thread_numx,
+						typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
+						typename Array1::size_type thread_idz, typename Array1::size_type thread_numz )
+	{
+		typedef typename Array1::size_type  size_type;
+		typedef typename Array1::value_type value_type;
+		typedef typename Array2::value_type out_value_type;
+
+		size_type i, j, k, ii[ 4 ], jj[ 4 ], kk[ 4 ];
+		size_type iw = in.width( );
+		size_type ih = in.height( );
+		size_type id = in.depth( );
+		size_type ow = out.width( );
+		size_type oh = out.height( );
+		size_type od = out.depth( );
+
+		double sx = static_cast< double >( iw ) / static_cast< double >( ow );
+		double sy = static_cast< double >( ih ) / static_cast< double >( oh );
+		double sz = static_cast< double >( id ) / static_cast< double >( od );
+		double x, y, z;
+
+		for( k = thread_idz ; k < od ; k += thread_numz )
+		{
+			z = sz * k;
+			kk[ 1 ] = static_cast< size_type >( z );
+			kk[ 0 ] = kk[ 1 ] > 0      ? kk[ 1 ] - 1 : kk[ 1 ];
+			kk[ 2 ] = kk[ 1 ] < id - 1 ? kk[ 1 ] + 1 : kk[ 1 ];
+			kk[ 3 ] = kk[ 2 ] < id - 1 ? kk[ 2 ] + 1 : kk[ 2 ];
+			z -= kk[ 1 ];
+
+			for( j = thread_idy ; j < oh ; j += thread_numy )
+			{
+				y = sy * j;
+				jj[ 1 ] = static_cast< size_type >( y );
+				jj[ 0 ] = jj[ 1 ] > 0      ? jj[ 1 ] - 1 : jj[ 1 ];
+				jj[ 2 ] = jj[ 1 ] < ih - 1 ? jj[ 1 ] + 1 : jj[ 1 ];
+				jj[ 3 ] = jj[ 2 ] < ih - 1 ? jj[ 2 ] + 1 : jj[ 2 ];
+				y -= jj[ 1 ];
+
+				for( i = thread_idx ; i < ow ; i += thread_numx )
+				{
+					x = sx * i;
+					ii[ 1 ] = static_cast< size_type >( x );
+					ii[ 0 ] = ii[ 1 ] > 0      ? ii[ 1 ] - 1 : ii[ 1 ];
+					ii[ 2 ] = ii[ 1 ] < iw - 1 ? ii[ 1 ] + 1 : ii[ 1 ];
+					ii[ 3 ] = ii[ 2 ] < iw - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
+					x -= ii[ 1 ];
+
+					out( i, j, k ) = static_cast< out_value_type >( _bspline_< is_color< value_type >::value >::bspline___( in, ii, jj, kk, x, y, z ) );
+				}
+			}
+		}
+	}
+}
+
+
+
 // フルスケールでのsinc関数を用いた内挿補間
 namespace __sinc__
 {
@@ -1130,6 +1476,29 @@ namespace __interpolate_controller__
 	}
 
 
+	// 3次のbpline関数を用いた補間
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	void bspline__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+					typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num )
+	{
+		__bspline__::interpolate( in, out, thread_id, thread_num, 0, 1, 0, 1 );
+	}
+
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	void bspline__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+					typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num )
+	{
+		__bspline__::interpolate( in, out, 0, 1, thread_id, thread_num, 0, 1 );
+	}
+
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	void bspline__( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+					typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num )
+	{
+		__bspline__::interpolate( in, out, 0, 1, 0, 1, thread_id, thread_num );
+	}
+
+
 	// フルスケールの sinc 関数を用いた補間
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	void sinc__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
@@ -1168,6 +1537,7 @@ namespace __interpolate_controller__
 			Mean,
 			Linear,
 			Cubic,
+			Bspline,
 			Sinc,
 		};
 
@@ -1229,6 +1599,10 @@ namespace __interpolate_controller__
 
 			case Cubic:
 				cubic__( *in_, *out_, thread_id_, thread_num_ );
+				break;
+
+			case Bspline:
+				bspline__( *in_, *out_, thread_id_, thread_num_ );
 				break;
 
 			case Sinc:
