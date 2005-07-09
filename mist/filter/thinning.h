@@ -645,7 +645,6 @@ namespace euclidean
 
 				for( size_type k = 0 ; k < 4 ; k++ )
 				{
-					difference_type tmp = 0;
 					for( size_type h = 0 ; h < 2 ; h++ )
 					{
 						sx += ( 1 - P1( p, S0[ h ], S1[ k ] + 1 ) ) * P1( p, S0[ h ], S1[ k ] ) * P1( p, S0[ h ], S1[ k ] + 2 ) * P1( p, S0[ h ], 0 ) * P1( p, 2, S1[ k ] ) * P1( p, 2, S1[ k ] + 1 ) * P1( p, 2, S1[ k ] + 2 );
@@ -890,7 +889,6 @@ namespace euclidean
 
 				for( size_type k = 0 ; k < 4 ; k++ )
 				{
-					difference_type tmp = 0;
 					for( size_type h = 0 ; h < 2 ; h++ )
 					{
 						sx += ( 1 - P1( p, S0[ h ], S1[ k ] + 1 ) ) * P1( p, S0[ h ], S1[ k ] ) * P1( p, S0[ h ], S1[ k ] + 2 ) * P1( p, S0[ h ], 0 ) * P1( p, 2, S1[ k ] ) * P1( p, 2, S1[ k ] + 1 ) * P1( p, 2, S1[ k ] + 2 );
@@ -919,7 +917,7 @@ namespace euclidean
 				{
 					pp[ i ] = v[ i ] == 0 ? 1 : 0;
 				}
-				pp[ i ] = v[ i ];
+				pp[ 9 ] = v[ 9 ];
 				for( size_t i = 10 ; i < 27 ; i++ )
 				{
 					pp[ i ] = v[ i ] == 0 ? 1 : 0;
@@ -1119,7 +1117,6 @@ namespace euclidean
 			typedef Neighbor neighbor_type;
 			typedef border< T > border_type;
 			typedef std::vector< border_type > border_list_type;
-			typedef border_list_type::iterator iterator_type;
 
 			// Step1 距離変換
 			euclidean::distance_transform( in, in );
@@ -1251,10 +1248,10 @@ namespace euclidean
 
 			do
 			{
-				difference_type __length__ = blist.size( );
+				size_type __length__ = 0;
 
 				//Step3 メインサイクル
-				for( difference_type l = 0 ; l < __length__ ; )
+				for( size_type l = 0 ; l < blist.size( ) ; l++ )
 				{
 					border_type &b = blist[ l ];
 					pointer p = &in[ b.diff ];
@@ -1301,7 +1298,6 @@ namespace euclidean
 							// 端点なら永久保存点
 							if( num == 1 )
 							{
-								b = blist[ -- __length__ ];
 								continue;
 							}
 							else
@@ -1312,13 +1308,13 @@ namespace euclidean
 								if( 7 <= val && val <= 15 )
 								{
 									slist[ val - 7 ].push_back( b );
-									b = blist[ --__length__ ];
 									continue;
 								}
 							}
 						}
 					}
-					l++;
+
+					blist[ __length__++ ] = b;
 				}
 
 				blist.erase( blist.begin( ) + __length__, blist.end( ) );
