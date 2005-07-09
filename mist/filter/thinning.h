@@ -326,11 +326,11 @@ namespace __euclidean_utility__
 		return ( ret );
 	}
 
-	/// @brief ユークリッド距離を用いた細線化の実装 by 林さん
-	//!
-	//! - 参考文献
-	//!   - 鈴木智, 阿部圭一, ``距離変換の結果を利用した二値画像の逐次細線化,'' 電子情報通信学会論文誌D, vol.68-D, no.4, pp.473-480, 1985.
-	//!
+	// ユークリッド距離を用いた細線化の実装 by 林さん
+	//
+	// - 参考文献
+	//   - 鈴木智, 阿部圭一, ``距離変換の結果を利用した二値画像の逐次細線化,'' 電子情報通信学会論文誌D, vol.68-D, no.4, pp.473-480, 1985.
+	//
 	template < class T, class Allocator >
 	void thinning( array2< T, Allocator > &ia )
 	{
@@ -1451,15 +1451,24 @@ void thinning( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out
 	__thinning_controller__::thinning( out );
 }
 
+/// @}
+//  細線化グループの終わり
+
 
 /// @brief ユークリッド距離変換を用いた細線化アルゴリズム
 namespace euclidean
 {
+	//! @addtogroup thinning_group 細線化
+	//!  @{
+
 	/// @brief ユークリッド距離を用いた2次元画像に対する細線化アルゴリズム
 	//!
 	//! 細線化結果は8連結となる
 	//!
-	//! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
+	//! - 参考文献
+	//!  - 鈴木智, 阿部圭一, ``距離変換の結果を利用した二値画像の逐次細線化,'' 電子情報通信学会論文誌D, vol.68-D, no.4, pp.473-480, 1985.
+	//!
+	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化を行うことが可能です
 	//!
 	//! @param[in]  in  … 入力画像
 	//! @param[out] out … 出力画像
@@ -1585,11 +1594,11 @@ namespace euclidean
 		}
 		__euclidean_utility__::thinning( out, __euclidean_utility__::neighbor< 26 >( ) );
 	}
+
+	/// @}
+	//  細線化グループの終わり
 }
 
-
-/// @}
-//  細線化グループの終わり
 
 
 // mist名前空間の終わり

@@ -466,7 +466,7 @@ namespace gauss
 } // gauss
 
 
-	/// @brief 多変量正規乱数のジェネレータ
+/// @brief 多変量正規乱数のジェネレータ
 namespace multivariate_gauss
 {
 
@@ -543,7 +543,7 @@ namespace multivariate_gauss
 		//! 
 		//! @param[in] seed … g_rand_のseed(これを用いてジェネレータの状態を初期化する)
 		//! @param[in] mean … 多変量正規乱数の平均ベクトル
-		//! @param[in] standard_deviation … 多変量正規乱数の共分散行列
+		//! @param[in] covariance … 多変量正規乱数の共分散行列
 		//! 
 		random( const unsigned long seed, const mist::matrix< double > &mean, const mist::matrix< double > &covariance ) :
 			g_rand_( seed ),
@@ -556,7 +556,7 @@ namespace multivariate_gauss
 		//! 
 		//! @param[in] seed_array … g_rand_のseed配列
 		//! @param[in] mean … 多変量正規乱数の平均ベクトル
-		//! @param[in] standard_deviation … 多変量正規乱数の共分散行列
+		//! @param[in] covariance … 多変量正規乱数の共分散行列
 		//! 
 		random( const array< unsigned long >& seed_array, const mist::matrix< double > &mean, const mist::matrix< double > &covariance ) :
 			g_rand_( seed_array ),
