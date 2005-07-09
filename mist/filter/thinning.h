@@ -758,7 +758,7 @@ namespace euclidean
 					M( 5, 0 ) = 0          ; M( 5, 1 ) = p[ 3 ][ 1 ]; M( 5, 2 ) = p[ 3 ][ 3 ]; M( 5, 3 ) = p[ 3 ][ 7 ]; M( 5, 4 ) = p[ 3 ][ 5 ]; M( 5, 5 ) = 0;
 
 					matrix_type I = matrix_type::identity( 6, 6 );
-					matrix_type N = M * ( I + M * ( I + M * ( I + M * ( I + M ) ) ));
+					matrix_type N = M * matrix_type( I + M * matrix_type( I + M * matrix_type( I + M * ( I + M ) ) ));
 
 					for( size_type r = 0 ; r < N.size( ) ; r++ )
 					{
@@ -905,7 +905,7 @@ namespace euclidean
 			{
 				// ‹ß–Tî•ñ‚ðÝ’è
 				int pp[ 27 ];
-				const int *p[ 4 ] = { NULL, pp + 0, pp + 9, pp + 18 };
+				const int *p[ 4 ] = { NULL, v + 0, v + 9, v + 18 };
 				memcpy( pp, v, sizeof( int ) * 27 );
 
 				//‚PD˜AŒ‹”
@@ -915,10 +915,19 @@ namespace euclidean
 				}
 
 				// ‹ß–Tî•ñ‚ðŽæ“¾ 0-1”½“]
-				for( size_t i = 0 ; i < 27 ; i++ )
+				for( size_t i = 0 ; i < 9 ; i++ )
 				{
-					pp[ i ] = pp[ i ] == 0 ? 1 : 0;
+					pp[ i ] = v[ i ] == 0 ? 1 : 0;
 				}
+				pp[ i ] = v[ i ];
+				for( size_t i = 10 ; i < 27 ; i++ )
+				{
+					pp[ i ] = v[ i ] == 0 ? 1 : 0;
+				}
+
+				p[ 1 ] = pp;
+				p[ 2 ] = pp + 9;
+				p[ 3 ] = pp + 18;
 
 				//‚QD6‹ß–T‚É‚ ‚é1-—v‘f‚ÌŒÂ”
 				difference_type num = p[ 1 ][ 0 ] + p[ 2 ][ 1 ] + p[ 2 ][ 3 ] + p[ 2 ][ 5 ] + p[ 2 ][ 7 ] + p[ 3 ][ 0 ];
@@ -1011,7 +1020,7 @@ namespace euclidean
 					M( 5, 0 ) = 0          ; M( 5, 1 ) = p[ 3 ][ 1 ]; M( 5, 2 ) = p[ 3 ][ 3 ]; M( 5, 3 ) = p[ 3 ][ 7 ]; M( 5, 4 ) = p[ 3 ][ 5 ]; M( 5, 5 ) = 0;
 
 					matrix_type I = matrix_type::identity( 6, 6 );
-					matrix_type N = M * ( I + M * ( I + M * ( I + M * ( I + M ) ) ));
+					matrix_type N = M * matrix_type( I + M * matrix_type( I + M * matrix_type( I + M * ( I + M ) ) ));
 
 					for( size_type r = 0 ; r < N.size( ) ; r++ )
 					{
@@ -1429,7 +1438,7 @@ namespace euclidean
 					}
 				}
 
-				// std::cout << loop++ << "          \r";
+				std::cout << loop++ << "          \r";
 
 			} while( min < max || count != blist.size( ) );
 
