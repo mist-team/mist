@@ -560,6 +560,7 @@ struct __mist_progress_callback__
 *   - @ref mist::mean						"平均値型補間"
 *   - @ref mist::linear						"線形補間"
 *   - @ref mist::cubic						"3次補間（sinc関数の3次近似を利用した補間）"
+*   - @ref mist::BSpline					"3次のBスプライン補間"
 *   - @ref mist::sinc						"sinc関数補間（全画素を畳み込むので計算コスト大）"
 * - カラー画像に対する処理
 *   - @ref interlace_group					"インターレス除去"
