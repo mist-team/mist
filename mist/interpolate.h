@@ -2676,6 +2676,267 @@ namespace cubic
 
 
 
+/// @brief 3次のBスプライン関数を用いた補間
+namespace BSpline
+{
+	/// @brief 1次元配列に対する3次のBスプライン関数を用いた補間
+	//!
+	//! 拡大縮小に伴う画素の内挿を，近傍の4点を用いて3次のBスプライン間数で決定する
+	//!
+	//! @attention 拡大縮小に伴い，画像の解像度も自動的に変換される
+	//!
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//!
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	bool interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+						typename array< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+	{
+		if( is_same_object( in, out ) || width == 0 )
+		{
+			return( false );
+		}
+
+		typedef typename array< T1, Allocator1 >::size_type  size_type;
+		typedef __interpolate_controller__::interpolate_thread< array< T1, Allocator1 >, array< T2, Allocator2 > > interpolate_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		size_type i;
+		out.resize( width );
+
+		if( in.width( ) == width )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return( true );
+		}
+
+		interpolate_thread *thread = new interpolate_thread[ thread_num ];
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, interpolate_thread::Bspline, i, thread_num );
+		}
+
+		do_threads( thread, thread_num );
+
+		delete [] thread;
+
+		return( true );
+	}
+
+	/// @brief 1次元配列に対する3次のBスプライン関数を用いた補間
+	//!
+	//! 拡大縮小に伴う画素の内挿を，近傍の4点を用いて3次のBスプライン間数で決定する
+	//!
+	//! @attention 拡大縮小に伴い，画像の解像度も自動的に変換される
+	//!
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//!
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	bool interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
+					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+	{
+		if( is_same_object( in, out ) || width == 0 )
+		{
+			return( false );
+		}
+
+		typedef typename array1< T1, Allocator1 >::size_type  size_type;
+		typedef __interpolate_controller__::interpolate_thread< array1< T1, Allocator1 >, array1< T2, Allocator2 > > interpolate_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		size_type i;
+		out.resize( width );
+		out.reso1( in.reso1( ) * static_cast< double >( in.size( ) ) / static_cast< double >( width ) );
+
+		if( in.width( ) == width )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array1< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return( true );
+		}
+
+		interpolate_thread *thread = new interpolate_thread[ thread_num ];
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, interpolate_thread::Bspline, i, thread_num );
+		}
+
+		do_threads( thread, thread_num );
+
+		delete [] thread;
+
+		return( true );
+	}
+
+
+	/// @brief 2次元配列に対する3次のBスプライン関数を用いた補間
+	//!
+	//! 拡大縮小に伴う画素の内挿を，近傍の16点を用いて3次のBスプライン間数で決定する
+	//!
+	//! @attention 拡大縮小に伴い，画像の解像度も自動的に変換される
+	//!
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのX軸方向のサイズ
+	//! @param[in]  height     … 出力データのY軸方向のサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//!
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	bool interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+					typename array2< T1, Allocator1 >::size_type width, typename array2< T1, Allocator1 >::size_type height,
+					typename array2< T1, Allocator1 >::size_type thread_num = 0 )
+	{
+		if( is_same_object( in, out ) || width == 0 || height == 0 )
+		{
+			return( false );
+		}
+
+		typedef typename array2< T1, Allocator1 >::size_type  size_type;
+		typedef __interpolate_controller__::interpolate_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 > > interpolate_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		size_type i;
+		out.resize( width, height );
+		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
+		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
+
+		if( in.width( ) == width && in.height( ) == height )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array2< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return( true );
+		}
+
+		interpolate_thread *thread = new interpolate_thread[ thread_num ];
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, interpolate_thread::Bspline, i, thread_num );
+		}
+
+		do_threads( thread, thread_num );
+
+		delete [] thread;
+
+		return( true );
+	}
+
+
+	/// @brief 3次元配列に対する3次のBスプライン関数を用いた補間
+	//!
+	//! 拡大縮小に伴う画素の内挿を，近傍の64点を用いて3次のBスプライン間数で決定する
+	//!
+	//! @attention 拡大縮小に伴い，画像の解像度も自動的に変換される
+	//!
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力データ
+	//! @param[out] out        … 出力データ
+	//! @param[in]  width      … 出力データのX軸方向のサイズ
+	//! @param[in]  height     … 出力データのY軸方向のサイズ
+	//! @param[in]  depth      … 出力データのZ軸方向のサイズ
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … 補間に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//!
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	bool interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+					typename array3< T1, Allocator1 >::size_type width,
+					typename array3< T1, Allocator1 >::size_type height,
+					typename array3< T1, Allocator1 >::size_type depth,
+					typename array3< T1, Allocator1 >::size_type thread_num = 0 )
+	{
+		if( is_same_object( in, out ) || width == 0 || height == 0 || depth == 0 )
+		{
+			return( false );
+		}
+
+		typedef typename array3< T1, Allocator1 >::size_type  size_type;
+		typedef __interpolate_controller__::interpolate_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 > > interpolate_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		size_type i;
+		out.resize( width, height, depth );
+		out.reso1( in.reso1( ) * static_cast< double >( in.width( ) ) / static_cast< double >( width ) );
+		out.reso2( in.reso2( ) * static_cast< double >( in.height( ) ) / static_cast< double >( height ) );
+		out.reso3( in.reso3( ) * static_cast< double >( in.depth( ) ) / static_cast< double >( depth ) );
+
+		if( in.width( ) == width && in.height( ) == height && in.depth( ) == depth )
+		{
+			for( i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< typename array3< T2, Allocator2 >::value_type >( in[ i ] );
+			}
+			return( true );
+		}
+
+		interpolate_thread *thread = new interpolate_thread[ thread_num ];
+
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, interpolate_thread::Bspline, i, thread_num );
+		}
+
+		do_threads( thread, thread_num );
+
+		delete [] thread;
+
+		return( true );
+	}
+}
+
+
+
 
 /// @brief sinc関数を用いた補間
 namespace sinc
@@ -2935,7 +3196,6 @@ namespace sinc
 		return( true );
 	}
 }
-
 
 /// @}
 //  画像補間グループの終わり

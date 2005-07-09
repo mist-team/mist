@@ -568,6 +568,10 @@ void interpolate_test( int mode, bool reso_up )
 		mist::sinc::interpolate( tmp, image_object, w, h );
 		break;
 
+	case 5:
+		mist::BSpline::interpolate( tmp, image_object, w, h );
+		break;
+
 	case 3:
 	default:
 		mist::cubic::interpolate( tmp, image_object, w, h );

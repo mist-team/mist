@@ -216,38 +216,52 @@ void image_test_window::cb_Reso4(Fl_Menu_* o, void* v) {
 }
 
 inline void image_test_window::cb_Reso5_i(Fl_Menu_*, void*) {
-  interpolate_test( 0, false );
+  interpolate_test( 5, true );
 }
 void image_test_window::cb_Reso5(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Reso5_i(o,v);
 }
 
 inline void image_test_window::cb_Reso6_i(Fl_Menu_*, void*) {
-  interpolate_test( 1, false );
+  interpolate_test( 0, false );
 }
 void image_test_window::cb_Reso6(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Reso6_i(o,v);
 }
 
 inline void image_test_window::cb_Reso7_i(Fl_Menu_*, void*) {
-  interpolate_test( 2, false );
+  interpolate_test( 1, false );
 }
 void image_test_window::cb_Reso7(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Reso7_i(o,v);
 }
 
 inline void image_test_window::cb_Reso8_i(Fl_Menu_*, void*) {
-  interpolate_test( 3, false );
+  interpolate_test( 2, false );
 }
 void image_test_window::cb_Reso8(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Reso8_i(o,v);
 }
 
 inline void image_test_window::cb_Reso9_i(Fl_Menu_*, void*) {
-  interpolate_test( 4, false );
+  interpolate_test( 3, false );
 }
 void image_test_window::cb_Reso9(Fl_Menu_* o, void* v) {
   ((image_test_window*)(o->parent()->user_data()))->cb_Reso9_i(o,v);
+}
+
+inline void image_test_window::cb_Resoa_i(Fl_Menu_*, void*) {
+  interpolate_test( 4, false );
+}
+void image_test_window::cb_Resoa(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Resoa_i(o,v);
+}
+
+inline void image_test_window::cb_Resob_i(Fl_Menu_*, void*) {
+  interpolate_test( 5, false );
+}
+void image_test_window::cb_Resob(Fl_Menu_* o, void* v) {
+  ((image_test_window*)(o->parent()->user_data()))->cb_Resob_i(o,v);
 }
 
 inline void image_test_window::cb_Interlace_i(Fl_Menu_*, void*) {
@@ -330,11 +344,13 @@ Fl_Menu_Item image_test_window::menu_[] = {
  {"Reso up with linear", 0,  (Fl_Callback*)image_test_window::cb_Reso2, 0, 0, 0, 0, 14, 56},
  {"Reso up with cubic", 0,  (Fl_Callback*)image_test_window::cb_Reso3, 0, 0, 0, 0, 14, 56},
  {"Reso up with sinc", 0,  (Fl_Callback*)image_test_window::cb_Reso4, 0, 0, 0, 0, 14, 56},
- {"Reso down with nearest", 0,  (Fl_Callback*)image_test_window::cb_Reso5, 0, 0, 0, 0, 14, 56},
- {"Reso down with mean", 0,  (Fl_Callback*)image_test_window::cb_Reso6, 0, 0, 0, 0, 14, 56},
- {"Reso down with linear", 0,  (Fl_Callback*)image_test_window::cb_Reso7, 0, 0, 0, 0, 14, 56},
- {"Reso down with cubic", 0,  (Fl_Callback*)image_test_window::cb_Reso8, 0, 0, 0, 0, 14, 56},
- {"Reso down with sinc", 0,  (Fl_Callback*)image_test_window::cb_Reso9, 0, 0, 0, 0, 14, 56},
+ {"Reso up with bspline", 0,  (Fl_Callback*)image_test_window::cb_Reso5, 0, 0, 0, 0, 14, 56},
+ {"Reso down with nearest", 0,  (Fl_Callback*)image_test_window::cb_Reso6, 0, 0, 0, 0, 14, 56},
+ {"Reso down with mean", 0,  (Fl_Callback*)image_test_window::cb_Reso7, 0, 0, 0, 0, 14, 56},
+ {"Reso down with linear", 0,  (Fl_Callback*)image_test_window::cb_Reso8, 0, 0, 0, 0, 14, 56},
+ {"Reso down with cubic", 0,  (Fl_Callback*)image_test_window::cb_Reso9, 0, 0, 0, 0, 14, 56},
+ {"Reso down with sinc", 0,  (Fl_Callback*)image_test_window::cb_Resoa, 0, 0, 0, 0, 14, 56},
+ {"Reso down with bspline", 0,  (Fl_Callback*)image_test_window::cb_Resob, 0, 0, 0, 0, 14, 56},
  {0,0,0,0,0,0,0,0,0},
  {"Interlace Even", 0,  (Fl_Callback*)image_test_window::cb_Interlace, 0, 0, 0, 0, 14, 56},
  {"Interlace Odd", 0,  (Fl_Callback*)image_test_window::cb_Interlace1, 0, 0, 0, 0, 14, 56},

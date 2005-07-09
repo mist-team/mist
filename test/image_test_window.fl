@@ -213,6 +213,11 @@ Fl::wait( 0 );}
               xywh {125 125 100 20}
             }
             menuitem {} {
+              label {Reso up with bspline}
+              callback {interpolate_test( 5, true );} selected
+              xywh {135 135 100 20}
+            }
+            menuitem {} {
               label {Reso down with nearest}
               callback {interpolate_test( 0, false );}
               xywh {105 105 100 20}
@@ -234,7 +239,12 @@ Fl::wait( 0 );}
             }
             menuitem {} {
               label {Reso down with sinc}
-              callback {interpolate_test( 4, false );} selected
+              callback {interpolate_test( 4, false );}
+              xywh {135 135 100 20}
+            }
+            menuitem {} {
+              label {Reso down with bspline}
+              callback {interpolate_test( 5, false );}
               xywh {135 135 100 20}
             }
           }
