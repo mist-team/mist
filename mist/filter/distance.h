@@ -314,15 +314,6 @@ namespace __distance_transform_controller__
 // Calvinによるユークリッド型距離変換の実装部分
 namespace __calvin__
 {
-	inline bool remove_edt( const double uR, const double vR, const double wR, const double ud, const double vd, const double wd )
-	{
-		const double a = vd - ud;
-		const double b = wd - vd;
-		const double c = a + b;
-		return( c * vR - b * uR - a * wR - a * b * c > 0 );
-	}
-
-
 	template < int DIMENSION >
 	struct __access__
 	{
@@ -501,6 +492,15 @@ namespace __calvin__
 	};
 
 
+	inline bool remove_edt( const double uR, const double vR, const double wR, const double ud, const double vd, const double wd )
+	{
+		const double a = vd - ud;
+		const double b = wd - vd;
+		const double c = a + b;
+		return( c * vR - b * uR - a * wR - a * b * c > 0 );
+	}
+
+
 	/// @brief Y,Z軸方向用の距離伝播関数（1次以外の全ての次元）
 	template < int DIMENSION >
 	struct __distance_transform__
@@ -508,12 +508,11 @@ namespace __calvin__
 		template < class Array >
 		static void distance_transform( Array &in, const __range__< DIMENSION > &range, typename Array::size_type thread_id = 0, typename Array::size_type thread_num = 1 )
 		{
-			typedef typename Array::size_type  size_type;
-			typedef typename Array::value_type value_type;
-			typedef typename Array::difference_type difference_type;
+			typedef typename Array::size_type		size_type;
+			typedef typename Array::value_type		value_type;
+			typedef typename Array::pointer			pointer;
+			typedef typename Array::difference_type	difference_type;
 			typedef __access__< DIMENSION > access;
-
-			size_type i1, i2, i3;
 
 			size_type _1s = range.begin1( );
 			size_type _2s = range.begin2( );
@@ -523,76 +522,113 @@ namespace __calvin__
 			size_type _3e = range.end3( );
 
 			double as = access::aspect( in );
+			difference_type diff = &access::at( in, 1, 0, 0 ) - &access::at( in, 0, 0, 0 );
 
-			double *f = new double[ _1e - _1s + 2 ];
 			double *g = new double[ _1e - _1s + 2 ];
 			double *h = new double[ _1e - _1s + 2 ];
 
-			for( i3 = _3s + thread_id ; i3 <= _3e ; i3 += thread_num )
+			for( size_type i3 = _3s + thread_id ; i3 <= _3e ; i3 += thread_num )
 			{
-				for( i2 = _2s ; i2 <= _2e ; i2++ )
+				for( size_type i2 = _2s ; i2 <= _2e ; i2++ )
 				{
-					difference_type l = 0;
-
-					for( i1 = _1s ; i1 <= _1e ; i1++ )
+					pointer p = &access::at( in, 0, i2, i3 );
+					for( size_type _i1s = _1s ; _i1s <= _1e ; )
 					{
-						difference_type n = i1 - _1s + 1;
-						double nd = static_cast< double >( n ) * as;
-
-						f[ n ] = access::at( in, i1, i2, i3 );
-
-						if( l < 2 )
+						// 最初に画素が始まる位置を検索する
+						for( ; _i1s <= _1e ; _i1s++ )
 						{
-							l++;
-							g[ l ] = f[ n ];
-							h[ l ] = nd;
-						}
-						else
-						{
-							while( l >= 2 && remove_edt( g[ l - 1 ], g[ l ], f[ n ], h[ l - 1 ], h[ l ], nd ) )
-							{
-								l--;
-							}
-							l++;
-							g[ l ] = f[ n ];
-							h[ l ] = nd;
-						}
-					}
-
-					if( l == 0 )
-					{
-						break;
-					}
-
-					difference_type ns = l;
-					l = 1;
-
-					for( i1 = _1s ; i1 <= _1e ; i1++ )
-					{
-						double n = i1 - _1s + 1;
-						double nd = n * as;
-						double len = h[ l ] - nd;
-						
-						len = g[ l ] + len * len;
-						for( ; l < ns ; l++ )
-						{
-							double len_ = h[ l + 1 ] - nd;
-							len_ = g[ l + 1 ] + len_ * len_;
-							if( len > len_ )
-							{
-								len = len_;
-							}
-							else
+							if( p[ _i1s * diff ] != 0 )
 							{
 								break;
 							}
 						}
-						access::at( in, i1, i2, i3 ) = static_cast< value_type >( len );
+
+						if( _i1s > _1e )
+						{
+							// 処理対象が存在しないのでスキップ
+							break;
+						}
+
+						// 連続する画素の終端を検索する
+						size_type _i1e;
+						for( _i1e = _i1s ; _i1e <= _1e ; _i1e++ )
+						{
+							if( p[ _i1e * diff ] == 0 )
+							{
+								break;
+							}
+						}
+
+						if( _i1s > 0 )
+						{
+							_i1s--;
+						}
+						if( _i1e > _1e )
+						{
+							_i1e = _1e;
+						}
+
+						difference_type l = 0;
+
+						for( size_type i1 = _i1s ; i1 <= _i1e ; i1++ )
+						{
+							double nd = static_cast< double >( i1 - _i1s + 1 ) * as;
+							double fn = p[ i1 * diff ];
+
+							if( l < 2 )
+							{
+								l++;
+								g[ l ] = fn;
+								h[ l ] = nd;
+							}
+							else
+							{
+								while( l >= 2 && remove_edt( g[ l - 1 ], g[ l ], fn, h[ l - 1 ], h[ l ], nd ) )
+								{
+									l--;
+								}
+								l++;
+								g[ l ] = fn;
+								h[ l ] = nd;
+							}
+						}
+
+						if( l == 0 )
+						{
+							break;
+						}
+
+						difference_type ns = l;
+						l = 1;
+
+						for( size_type i1 = _i1s ; i1 <= _i1e ; i1++ )
+						{
+							double nd = ( i1 - _i1s + 1 ) * as;
+							double len = h[ l ] - nd;
+							
+							len = g[ l ] + len * len;
+							for( ; l < ns ; l++ )
+							{
+								double len_ = h[ l + 1 ] - nd;
+								len_ = g[ l + 1 ] + len_ * len_;
+								if( len > len_ )
+								{
+									len = len_;
+								}
+								else
+								{
+									break;
+								}
+							}
+							p[ i1 * diff ] = static_cast< value_type >( len );
+						}
+
+						// 次の位置に設定する
+						_i1s = _i1e + 1;
 					}
 				}
 			}
 
-			delete [] f;
 			delete [] g;
 			delete [] h;
 		}
