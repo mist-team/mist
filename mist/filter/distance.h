@@ -389,12 +389,124 @@ namespace __calvin__
 		inline static double aspect( const Array &in ){ return( in.reso3( ) / in.reso1( ) ); }
 	};
 
+	template < int DIMENSION >
+	struct __range__
+	{
+		typedef size_t size_type;
+
+		size_type sx;
+		size_type ex;
+		size_type sy;
+		size_type ey;
+		size_type sz;
+		size_type ez;
+
+		__range__(  ) : sx( 0 ), ex( 0 ), sy( 0 ), ey( 0 ), sz( 0 ), ez( 0 )
+		{
+		}
+
+		__range__( size_type ssx, size_type eex, size_type ssy, size_type eey, size_type ssz, size_type eez )
+					: sx( ssx ), ex( eex ), sy( ssy ), ey( eey ), sz( ssz ), ez( eez )
+		{
+		}
+
+		template < int DIM >
+		__range__( const __range__< DIM > &r )
+					: sx( r.sx ), ex( r.ex ), sy( r.sy ), ey( r.ey ), sz( r.sz ), ez( r.ez )
+		{
+		}
+
+		size_type begin1( ) const { return( sx ); }
+		size_type end1( ) const { return( ex ); }
+
+		size_type begin2( ) const { return( sy ); }
+		size_type end2( ) const { return( ey ); }
+
+		size_type begin3( ) const { return( sz ); }
+		size_type end3( ) const { return( ez ); }
+	};
+
+	template <  >
+	struct __range__< 2 >
+	{
+		typedef size_t size_type;
+
+		size_type sx;
+		size_type ex;
+		size_type sy;
+		size_type ey;
+		size_type sz;
+		size_type ez;
+
+		__range__(  ) : sx( 0 ), ex( 0 ), sy( 0 ), ey( 0 ), sz( 0 ), ez( 0 )
+		{
+		}
+
+		__range__( size_type ssx, size_type eex, size_type ssy, size_type eey, size_type ssz, size_type eez )
+					: sx( ssx ), ex( eex ), sy( ssy ), ey( eey ), sz( ssz ), ez( eez )
+		{
+		}
+
+		template < int DIM >
+		__range__( const __range__< DIM > &r )
+					: sx( r.sx ), ex( r.ex ), sy( r.sy ), ey( r.ey ), sz( r.sz ), ez( r.ez )
+		{
+		}
+
+		size_type begin1( ) const { return( sy ); }
+		size_type end1( ) const { return( ey ); }
+
+		size_type begin2( ) const { return( sx ); }
+		size_type end2( ) const { return( ex ); }
+
+		size_type begin3( ) const { return( sz ); }
+		size_type end3( ) const { return( ez ); }
+	};
+
+	template <  >
+	struct __range__< 3 >
+	{
+		typedef size_t size_type;
+
+		size_type sx;
+		size_type ex;
+		size_type sy;
+		size_type ey;
+		size_type sz;
+		size_type ez;
+
+		__range__(  ) : sx( 0 ), ex( 0 ), sy( 0 ), ey( 0 ), sz( 0 ), ez( 0 )
+		{
+		}
+
+		__range__( size_type ssx, size_type eex, size_type ssy, size_type eey, size_type ssz, size_type eez )
+					: sx( ssx ), ex( eex ), sy( ssy ), ey( eey ), sz( ssz ), ez( eez )
+		{
+		}
+
+		template < int DIM >
+		__range__( const __range__< DIM > &r )
+					: sx( r.sx ), ex( r.ex ), sy( r.sy ), ey( r.ey ), sz( r.sz ), ez( r.ez )
+		{
+		}
+
+		size_type begin1( ) const { return( sz ); }
+		size_type end1( ) const { return( ez ); }
+
+		size_type begin2( ) const { return( sx ); }
+		size_type end2( ) const { return( ex ); }
+
+		size_type begin3( ) const { return( sy ); }
+		size_type end3( ) const { return( ey ); }
+	};
+
+
 	/// @brief Y,Z軸方向用の距離伝播関数（1次以外の全ての次元）
 	template < int DIMENSION >
 	struct __distance_transform__
 	{
 		template < class Array >
-		static void distance_transform( Array &in, typename Array::size_type thread_id = 0, typename Array::size_type thread_num = 1 )
+		static void distance_transform( Array &in, const __range__< DIMENSION > &range, typename Array::size_type thread_id = 0, typename Array::size_type thread_num = 1 )
 		{
 			typedef typename Array::size_type  size_type;
 			typedef typename Array::value_type value_type;
@@ -403,34 +515,33 @@ namespace __calvin__
 
 			size_type i1, i2, i3;
 
-			size_type _1 = access::size1( in );
-			size_type _2 = access::size2( in );
-			size_type _3 = access::size3( in );
+			size_type _1s = range.begin1( );
+			size_type _2s = range.begin2( );
+			size_type _3s = range.begin3( );
+			size_type _1e = range.end1( );
+			size_type _2e = range.end2( );
+			size_type _3e = range.end3( );
 
 			value_type infinity = type_limits< value_type >::maximum( );
 
 			double as = access::aspect( in );
 
-			double *f = new double[ _1 + 1 ];
-			double *g = new double[ _1 + 1 ];
-			double *h = new double[ _1 + 1 ];
+			double *f = new double[ _1e - _1s + 2 ];
+			double *g = new double[ _1e - _1s + 2 ];
+			double *h = new double[ _1e - _1s + 2 ];
 
-			for( i3 = thread_id ; i3 < _3 ; i3 += thread_num )
+			for( i3 = _3s + thread_id ; i3 <= _3e ; i3 += thread_num )
 			{
-				for( i2 = 0 ; i2 < _2 ; i2++ )
+				for( i2 = _2s ; i2 <= _2e ; i2++ )
 				{
 					difference_type l = 0;
 
-					for( i1 = 0 ; i1 < _1 ; i1++ )
+					for( i1 = _1s ; i1 <= _1e ; i1++ )
 					{
-						difference_type n = i1 + 1;
+						difference_type n = i1 - _1s + 1;
 						double nd = static_cast< double >( n ) * as;
 
 						f[ n ] = access::at( in, i1, i2, i3 );
-						if( f[ n ] == infinity )
-						{
-							continue;
-						}
 
 						if( l < 2 )
 						{
@@ -452,15 +563,15 @@ namespace __calvin__
 
 					if( l == 0 )
 					{
-						continue;
+						break;
 					}
 
 					difference_type ns = l;
 					l = 1;
 
-					for( i1 = 0 ; i1 < _1 ; i1++ )
+					for( i1 = _1s ; i1 <= _1e ; i1++ )
 					{
-						double n = i1 + 1;
+						double n = i1 - _1s + 1;
 						double nd = n * as;
 						double len = h[ l ] - nd;
 						
@@ -495,7 +606,7 @@ namespace __calvin__
 	struct __distance_transform__< 1 >
 	{
 		template < class Array >
-			static void distance_transform( Array &in, typename Array::size_type thread_id = 0, typename Array::size_type thread_num = 1 )
+		static void distance_transform( Array &in, const __range__< 1 > &range, typename Array::size_type thread_id = 0, typename Array::size_type thread_num = 1 )
 		{
 			typedef typename Array::size_type  size_type;
 			typedef typename Array::value_type value_type;
@@ -510,21 +621,28 @@ namespace __calvin__
 
 			const value_type max = type_limits< value_type >::maximum( );
 
-			for( k = 0 ; k < d ; k++ )
+			difference_type sx = range.begin1( );
+			difference_type sy = range.begin2( );
+			difference_type sz = range.begin3( );
+			difference_type ex = range.end1( );
+			difference_type ey = range.end2( );
+			difference_type ez = range.end3( );
+
+			for( k = sz ; k <= ez ; k++ )
 			{
-				for( j = thread_id ; j < h ; j += thread_num )
+				for( j = sy + thread_id ; j <= ey ; j += thread_num )
 				{
-					if( in( 0, j, k ) != 0 )
+					if( in( sx, j, k ) != 0 )
 					{
 						len = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
-						in( 0, j, k ) = len * len;
+						in( sx, j, k ) = len * len;
 					}
 					else
 					{
 						len = 0;
 					}
 
-					for( i = 1 ; i < w ; i++ )
+					for( i = sx + 1 ; i <= ex ; i++ )
 					{
 						if( in( i, j, k ) != 0 )
 						{
@@ -537,17 +655,17 @@ namespace __calvin__
 						}
 					}
 
-					if( in( w - 1, j, k ) != 0 )
+					if( in( ex, j, k ) != 0 )
 					{
 						len = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
-						in( w - 1, j, k ) = len * len;
+						in( ex, j, k ) = len * len;
 					}
 					else
 					{
 						len = 0;
 					}
 
-					for( i = w - 2 ; i >= 0 ; i-- )
+					for( i = ex - 1 ; i >= 0 ; i-- )
 					{
 						if( in( i, j, k ) != 0 )
 						{
@@ -564,6 +682,207 @@ namespace __calvin__
 		}
 	};
 
+	template < class Array, int DIMENSION >
+	bool compute_object_range( const Array &in, __range__< DIMENSION > &range )
+	{
+		typedef typename Array::size_type size_type;
+		typedef typename Array::difference_type difference_type;
+
+		difference_type w = in.width( );
+		difference_type h = in.height( );
+		difference_type d = in.depth( );
+
+		difference_type sx, ex, sy, ey, sz, ez, i, j, k;
+
+		sx = sy = sz = 0;
+		ex = w - 1;
+		ey = h - 1;
+		ez = d - 1;
+
+		for( k = 0 ; k < d ; k++ )
+		{
+			bool found = false;
+			for( j = 0 ; j < h ; j++ )
+			{
+				for( i = 0 ; i < w ; i++ )
+				{
+					if( in( i, j, k ) != 0 )
+					{
+						found = true;
+						break;
+					}
+				}
+
+				if( found )
+				{
+					break;
+				}
+			}
+
+			if( found )
+			{
+				break;
+			}
+		}
+
+		if( k >= d )
+		{
+			// 何も見つからなかった・・・
+			return( false );
+		}
+
+		sz = k;
+
+		for( k = d - 1 ; k > sz ; k-- )
+		{
+			bool found = false;
+			for( j = 0 ; j < h ; j++ )
+			{
+				for( i = 0 ; i < w ; i++ )
+				{
+					if( in( i, j, k ) != 0 )
+					{
+						found = true;
+						break;
+					}
+				}
+
+				if( found )
+				{
+					break;
+				}
+			}
+
+			if( found )
+			{
+				break;
+			}
+		}
+
+		ez = k;
+
+		for( j = 0 ; j < h ; j++ )
+		{
+			bool found = false;
+			for( k = sz ; k <= ez ; k++ )
+			{
+				for( i = 0 ; i < w ; i++ )
+				{
+					if( in( i, j, k ) != 0 )
+					{
+						found = true;
+						break;
+					}
+				}
+
+				if( found )
+				{
+					break;
+				}
+			}
+
+			if( found )
+			{
+				break;
+			}
+		}
+
+		sy = j;
+
+		for( j = h - 1 ; j > sy ; j-- )
+		{
+			bool found = false;
+			for( k = sz ; k <= ez ; k++ )
+			{
+				for( i = 0 ; i < w ; i++ )
+				{
+					if( in( i, j, k ) != 0 )
+					{
+						found = true;
+						break;
+					}
+				}
+
+				if( found )
+				{
+					break;
+				}
+			}
+
+			if( found )
+			{
+				break;
+			}
+		}
+
+		ey = j;
+
+		for( i = 0 ; i < w ; i++ )
+		{
+			bool found = false;
+			for( k = sz ; k <= ez ; k++ )
+			{
+				for( j = sy ; j <= ey ; j++ )
+				{
+					if( in( i, j, k ) != 0 )
+					{
+						found = true;
+						break;
+					}
+				}
+
+				if( found )
+				{
+					break;
+				}
+			}
+
+			if( found )
+			{
+				break;
+			}
+		}
+
+		sx = i;
+
+		for( i = w - 1 ; i > sx ; i-- )
+		{
+			bool found = false;
+			for( k = sz ; k <= ez ; k++ )
+			{
+				for( j = sy ; j <= ey ; j++ )
+				{
+					if( in( i, j, k ) != 0 )
+					{
+						found = true;
+						break;
+					}
+				}
+
+				if( found )
+				{
+					break;
+				}
+			}
+
+			if( found )
+			{
+				break;
+			}
+		}
+
+		ex = i;
+
+		// 一回り大きい範囲を設定する
+		range.sx = sx > 0 ? sx - 1 : 0;
+		range.ex = ex < w - 1 ? ex + 1 : w - 1;
+		range.sy = sy > 0 ? sy - 1 : 0;
+		range.ey = ey < h - 1 ? ey + 1 : h - 1;
+		range.sz = sz > 0 ? sz - 1 : 0;
+		range.ez = ez < d - 1 ? ez + 1 : d - 1;
+
+		return( true );
+	}
 
 	template < class T >
 	class calvin_distance_transform_thread : public mist::thread< calvin_distance_transform_thread< T > >
@@ -581,11 +900,13 @@ namespace __calvin__
 		// 入出力用の画像へのポインタ
 		T *in_;
 		size_type axis_;
+		__range__< 1 > range_;
 
 	public:
-		void setup_parameters( T &in, size_type axis, size_type thread_id, size_type thread_num )
+		void setup_parameters( T &in, const __range__< 1 > &range, size_type axis, size_type thread_id, size_type thread_num )
 		{
 			in_  = &in;
+			range_ = range;
 			axis_ = axis;
 			thread_id_ = thread_id;
 			thread_num_ = thread_num;
@@ -604,6 +925,7 @@ namespace __calvin__
 				thread_id_ = p.thread_id_;
 				thread_num_ = p.thread_num_;
 				in_ = p.in_;
+				range_ = p.range_;
 				axis_ = p.axis_;
 			}
 			return( *this );
@@ -625,16 +947,16 @@ namespace __calvin__
 			switch( axis_ )
 			{
 			case 0:
-				__distance_transform__< 1 >::distance_transform( *in_, thread_id_, thread_num_ );
+				__distance_transform__< 1 >::distance_transform( *in_, __range__< 1 >( range_ ), thread_id_, thread_num_ );
 				break;
 
 			case 1:
-				__distance_transform__< 2 >::distance_transform( *in_, thread_id_, thread_num_ );
+				__distance_transform__< 2 >::distance_transform( *in_, __range__< 2 >( range_ ), thread_id_, thread_num_ );
 				break;
 
 			case 2:
 			default:
-				__distance_transform__< 3 >::distance_transform( *in_, thread_id_, thread_num_ );
+				__distance_transform__< 3 >::distance_transform( *in_, __range__< 3 >( range_ ), thread_id_, thread_num_ );
 				break;
 			}
 			return( true );
@@ -781,6 +1103,13 @@ namespace calvin
 			out[ i ] = static_cast< value_type >( in[ i ] != 0 ? 1 : 0 );
 		}
 
+		__calvin__::__range__< 0 > object_range;
+		if( !__calvin__::compute_object_range( out, object_range ) )
+		{
+			// １つも１画素が見つからなかったので終了する
+			return;
+		}
+
 		calvin_distance_transform_thread *thread = new calvin_distance_transform_thread[ thread_num ];
 
 		if( in.width( ) > 1 )
@@ -788,7 +1117,7 @@ namespace calvin
 			// X軸方向の処理
 			for( i = 0 ; i < thread_num ; i++ )
 			{
-				thread[ i ].setup_parameters( out, 0, i, thread_num );
+				thread[ i ].setup_parameters( out, object_range, 0, i, thread_num );
 			}
 
 			do_threads_( thread, thread_num );
@@ -799,7 +1128,7 @@ namespace calvin
 			// Y軸方向の処理
 			for( i = 0 ; i < thread_num ; i++ )
 			{
-				thread[ i ].setup_parameters( out, 1, i, thread_num );
+				thread[ i ].setup_parameters( out, object_range, 1, i, thread_num );
 			}
 
 			do_threads_( thread, thread_num );
@@ -810,7 +1139,7 @@ namespace calvin
 			// Y軸方向の処理
 			for( i = 0 ; i < thread_num ; i++ )
 			{
-				thread[ i ].setup_parameters( out, 2, i, thread_num );
+				thread[ i ].setup_parameters( out, object_range, 2, i, thread_num );
 			}
 
 			do_threads_( thread, thread_num );
@@ -877,7 +1206,7 @@ void skeleton( const Array1 &in, Array2 &out )
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		temp[ i ] = i;
+		temp[ i ] = static_cast< typename array3< difference_type >::value_type >( i );
 	}
 
 	difference_type w = in.width( );

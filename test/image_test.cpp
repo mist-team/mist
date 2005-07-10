@@ -192,11 +192,16 @@ void euclidean_distance_transform_test( )
 	image_type::size_type i = 0;
 
 	mist::convert( image_object, tmp1 );
+	mist::convert( image_object, tmp2 );
 
-	tmp1.reso( 1.0, 1.0 );
 	{
 		mist::timer t;
-		mist::euclidean::distance_transform( tmp1, tmp2 );
+		mist::saito::distance_transform( tmp1, tmp1 );
+		std::cout << "Computation time for Saito: " << t << " sec" << std::endl;
+	}
+	{
+		mist::timer t;
+		mist::calvin::distance_transform( tmp2, tmp2, 1 );
 		std::cout << "Computation time for Calvin: " << t << " sec" << std::endl;
 	}
 
@@ -216,8 +221,10 @@ void euclidean_distance_transform_test( )
 
 	double range = max == min ? 1 : max - min; 
 
+	double err = 0.0;
 	for( i = 0 ; i < image_object.size( ) ; i++ )
 	{
+		err += ( tmp1[ i ] - tmp2[ i ] ) * ( tmp1[ i ] - tmp2[ i ] );
 		if( tmp2[ i ] == 0 )
 		{
 			image_object[ i ] = 0;
@@ -227,6 +234,7 @@ void euclidean_distance_transform_test( )
 			image_object[ i ] = static_cast< unsigned char >( ( tmp2[ i ] - min ) / range * 200.0 + 55.0 );
 		}
 	}
+	std::cout << "Error: " << err << std::endl;
 	pwindow->draw_area->redraw( );
 }
 
