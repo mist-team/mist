@@ -642,44 +642,45 @@ namespace __calvin__
 		template < class Array >
 		static void distance_transform( Array &in, const __range__< 1 > &range, typename Array::size_type thread_id = 0, typename Array::size_type thread_num = 1 )
 		{
-			typedef typename Array::size_type  size_type;
-			typedef typename Array::value_type value_type;
-			typedef typename Array::difference_type difference_type;
-
-			difference_type i, j, k;
-			value_type len;
+			typedef typename Array::size_type		size_type;
+			typedef typename Array::value_type		value_type;
+			typedef typename Array::pointer			pointer;
+			typedef typename Array::difference_type	difference_type;
 
 			const difference_type w = in.width( );
-
 			const value_type max = type_limits< value_type >::maximum( );
+			value_type len;
 
-			difference_type sx = range.begin1( );
-			difference_type sy = range.begin2( );
-			difference_type sz = range.begin3( );
-			difference_type ex = range.end1( );
-			difference_type ey = range.end2( );
-			difference_type ez = range.end3( );
+			size_type sx = range.begin1( );
+			size_type sy = range.begin2( );
+			size_type sz = range.begin3( );
+			size_type ex = range.end1( );
+			size_type ey = range.end2( );
+			size_type ez = range.end3( );
 
-			for( k = sz ; k <= ez ; k++ )
+			for( size_type k = sz ; k <= ez ; k++ )
 			{
-				for( j = sy + thread_id ; j <= ey ; j += thread_num )
+				for( size_type j = sy + thread_id ; j <= ey ; j += thread_num )
 				{
-					if( in( sx, j, k ) != 0 )
+					pointer sp = &in( sx, j, k );
+					pointer ep = &in( ex, j, k );
+
+					if( sp[ 0 ] != 0 )
 					{
 						len = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
-						in( sx, j, k ) = len * len;
+						sp[ 0 ] = len * len;
 					}
 					else
 					{
 						len = 0;
 					}
 
-					for( i = sx + 1 ; i <= ex ; i++ )
+					for( pointer p = sp + 1 ; p <= ep ; p++ )
 					{
-						if( in( i, j, k ) != 0 )
+						if( *p != 0 )
 						{
 							len = len + 1 < max ? len + 1 : len;
-							in( i, j, k ) = len * len;
+							*p = len * len;
 						}
 						else
 						{
@@ -687,22 +688,22 @@ namespace __calvin__
 						}
 					}
 
-					if( in( ex, j, k ) != 0 )
+					if( ep[ 0 ] != 0 )
 					{
 						len = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
-						in( ex, j, k ) = len * len;
+						ep[ 0 ] = len * len;
 					}
 					else
 					{
 						len = 0;
 					}
 
-					for( i = ex - 1 ; i >= 0 ; i-- )
+					for( pointer p = ep - 1 ; p >= sp ; p-- )
 					{
-						if( in( i, j, k ) != 0 )
+						if( *p != 0 )
 						{
 							len = len + 1 < max ? len + 1 : len;
-							in( i, j, k ) = in( i, j, k ) < len * len ? in( i, j, k ) : len * len;
+							*p = *p < len * len ? *p : len * len;
 						}
 						else
 						{
