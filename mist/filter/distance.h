@@ -522,8 +522,6 @@ namespace __calvin__
 			size_type _2e = range.end2( );
 			size_type _3e = range.end3( );
 
-			value_type infinity = type_limits< value_type >::maximum( );
-
 			double as = access::aspect( in );
 
 			double *f = new double[ _1e - _1s + 2 ];
@@ -616,8 +614,6 @@ namespace __calvin__
 			value_type len;
 
 			const difference_type w = in.width( );
-			const difference_type h = in.height( );
-			const difference_type d = in.depth( );
 
 			const value_type max = type_limits< value_type >::maximum( );
 
@@ -873,7 +869,7 @@ namespace __calvin__
 
 		ex = i;
 
-		// ˆê‰ñ‚è‘å‚«‚¢”ÍˆÍ‚ðÝ’è‚·‚é
+		// ˆêŽü‚è‘å‚«‚¢”ÍˆÍ‚ðÝ’è‚·‚é
 		range.sx = sx > 0 ? sx - 1 : 0;
 		range.ex = ex < w - 1 ? ex + 1 : w - 1;
 		range.sy = sy > 0 ? sy - 1 : 0;
