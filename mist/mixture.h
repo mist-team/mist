@@ -103,7 +103,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_
 
 	typedef size_t size_type;
 
-	size_type k, m, n;
+	size_type k, m;
 	//const double	pi = atan( 1.0f ) * 4.0f;
 	const double pi = 3.1415926535897932384626433832795;
 	const double _2pi = std::sqrt( 2.0 * pi );
@@ -147,7 +147,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_
 	}
 
 	// EMアルゴリズムの開始
-	for( n = 0 ; n < nMaxIteration ; n++ )
+	for( nIteration = 0 ; nIteration < nMaxIteration ; nIteration++ )
 	{
 		// E-step
 		for( k = 0 ; k < nSamples ; k++ )
@@ -299,7 +299,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *opdp, size
 
 	typedef size_t size_type;
 
-	size_type k, m, n;
+	size_type k, m;
 	//const double	pi = atan( 1.0f ) * 4.0f;
 	const double pi = 3.1415926535897932384626433832795;
 	const double _2pi = 2.0 * pi;
@@ -345,7 +345,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *opdp, size
 	}
 
 	// EMアルゴリズムの開始
-	for( n = 0 ; n < nMaxIteration ; n++ )
+	for( nIteration = 0 ; nIteration < nMaxIteration ; nIteration++ )
 	{
 		// E-step
 
@@ -615,7 +615,7 @@ namespace histogram
 
 		typedef size_t size_type;
 
-		size_type k, m, n;
+		size_type k, m;
 
 		const double pi = 3.1415926535897932384626433832795;
 		const double _2pi = std::sqrt( 2.0 * pi );
@@ -667,7 +667,7 @@ namespace histogram
 
 
 		// EMアルゴリズムの開始
-		for( n = 0 ; n < nMaxIteration ; n++ )
+		for( nIteration = 0 ; nIteration < nMaxIteration ; nIteration++ )
 		{
 			// E-step
 			for( k = 0 ; k < nSamples ; k++ )
@@ -841,7 +841,7 @@ namespace histogram
 
 		typedef size_t size_type;
 
-		size_type i, j, k, m, n;
+		size_type i, j, k, m;
 
 		const double pi = 3.1415926535897932384626433832795;
 		const double _2pi = 2.0 * pi;
@@ -895,7 +895,7 @@ namespace histogram
 
 
 		// EMアルゴリズムの開始
-		for( n = 0 ; n < nMaxIteration ; n++ )
+		for( nIteration = 0 ; nIteration < nMaxIteration ; nIteration++ )
 		{
 			// E-step
 
