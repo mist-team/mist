@@ -83,7 +83,7 @@ namespace mixture
 //! @attention 入力となるデータの配列として，通常のデータ配列，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．
 //! 
 //! @param[in]     rSamples      … 入力サンプル
-//! @param[in]     pdp           … 分布パラメータ
+//! @param[in,out] opdp          … 分布パラメータ
 //! @param[in]     nSamples      … 入力サンプル数
 //! @param[in]     nComponents   … 推定する混合分布の数
 //! @param[in]     nMaxIteration … 最大ループ回数
@@ -94,7 +94,7 @@ namespace mixture
 //! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 //! 
 template < class Array >
-bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
+bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
 {
 	if( rSamples.empty( ) || nComponents == 0 )
 	{
@@ -107,12 +107,11 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t
 	//const double	pi = atan( 1.0f ) * 4.0f;
 	const double pi = 3.1415926535897932384626433832795;
 	const double _2pi = std::sqrt( 2.0 * pi );
-	double fLikelihood;
+	const double _log_2pi = std::log( _2pi );
 	double fLastLikelihood = -1.0e30;
-	double tmp;
 
 	array2< double > Weight( nSamples, nComponents );
-
+	std::vector< mixture::distribution > pdp( nComponents );
 
 
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
@@ -122,33 +121,38 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t
 	}
 #endif
 
+	// 入力データを作業データにコピーする
+	for( m = 0 ; m < nComponents ; m++ )
+	{
+		pdp[ m ] = opdp[ m ];
+	}
 
 	// 初期分布データの重みの和を１に正規化する
-	tmp = 0.0;
-	for( m = 0 ; m < nComponents ; m++ )
 	{
-		tmp += pdp[ m ].weight;
-	}
+		double tmp = 0.0;
+		for( m = 0 ; m < nComponents ; m++ )
+		{
+			tmp += pdp[ m ].weight;
+		}
 
-	if( tmp <= 0.0 )
-	{
-		return( false );
-	}
+		if( tmp <= 0.0 )
+		{
+			return( false );
+		}
 
-	for( m = 0 ; m < nComponents ; m++ )
-	{
-		pdp[ m ].weight /= tmp;
+		for( m = 0 ; m < nComponents ; m++ )
+		{
+			pdp[ m ].weight /= tmp;
+		}
 	}
-
 
 	// EMアルゴリズムの開始
 	for( n = 0 ; n < nMaxIteration ; n++ )
 	{
 		// E-step
-
 		for( k = 0 ; k < nSamples ; k++ )
 		{
-			tmp = 0.0;
+			double tmp = 0.0;
 
 			for( m = 0 ; m < nComponents ; m++ )
 			{
@@ -221,11 +225,11 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t
 			return( false );
 		}
 
-		fLikelihood = 0.0;
+		double fLikelihood = 0.0;
 
 		for( k = 0 ; k < nSamples ; k++ )
 		{
-			tmp = 0.0;
+			double tmp = 0.0;
 
 			for( m = 0 ; m < nComponents ; m++ )
 			{
@@ -238,7 +242,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t
 				return( false );
 			}
 
-			fLikelihood += std::log( tmp / _2pi );
+			fLikelihood += std::log( tmp ) - _log_2pi;
 		}
 
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
@@ -251,6 +255,12 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t
 		if( fLastLikelihood > fLikelihood || std::abs( fLastLikelihood - fLikelihood ) < fEpsilon )
 		{
 			break;
+		}
+
+		// 出力に作業データを反映させる
+		for( m = 0 ; m < nComponents ; m++ )
+		{
+			opdp[ m ] = pdp[ m ];
 		}
 
 		fLastLikelihood = fLikelihood;
@@ -267,7 +277,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t
 //! @attention 入力データは，MISTで提供する vector2 タイプである必要があります．
 //!
 //! @param[in]     rSamples      … 入力サンプル
-//! @param[in]     pdp           … 分布パラメータ
+//! @param[in,out] opdp          … 分布パラメータ
 //! @param[in]     nSamples      … 入力サンプル数
 //! @param[in]     nComponents   … 推定する混合分布の数
 //! @param[in]     nMaxIteration … 最大ループ回数
@@ -278,7 +288,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t
 //! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 //! 
 template < class Array >
-bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
+bool estimate_mixture( const Array &rSamples, mixture::distribution2 *opdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
 {
 	if( rSamples.empty( ) || nComponents == 0 )
 	{
@@ -291,12 +301,11 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, size_
 	//const double	pi = atan( 1.0f ) * 4.0f;
 	const double pi = 3.1415926535897932384626433832795;
 	const double _2pi = 2.0 * pi;
-	double fLikelihood;
+	const double _log_2pi = std::log( _2pi );
 	double fLastLikelihood = -1.0e30;
-	double tmp;
 
 	array2< double > Weight( nSamples, nComponents );
-
+	std::vector< mixture::distribution2 > pdp( nComponents );
 
 
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
@@ -307,23 +316,31 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, size_
 #endif
 
 
+	// 入力データを作業データにコピーする
+	for( m = 0 ; m < nComponents ; m++ )
+	{
+		pdp[ m ] = opdp[ m ];
+	}
+
+
 	// 初期分布データの重みの和を１に正規化する
-	tmp = 0.0;
-	for( m = 0 ; m < nComponents ; m++ )
 	{
-		tmp += pdp[ m ].weight;
-	}
+		double tmp = 0.0;
+		for( m = 0 ; m < nComponents ; m++ )
+		{
+			tmp += pdp[ m ].weight;
+		}
 
-	if( tmp <= 0.0 )
-	{
-		return( false );
-	}
+		if( tmp <= 0.0 )
+		{
+			return( false );
+		}
 
-	for( m = 0 ; m < nComponents ; m++ )
-	{
-		pdp[ m ].weight /= tmp;
+		for( m = 0 ; m < nComponents ; m++ )
+		{
+			pdp[ m ].weight /= tmp;
+		}
 	}
-
 
 	// EMアルゴリズムの開始
 	for( n = 0 ; n < nMaxIteration ; n++ )
@@ -332,7 +349,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, size_
 
 		for( k = 0 ; k < nSamples ; k++ )
 		{
-			tmp = 0.0;
+			double tmp = 0.0;
 
 			for( m = 0 ; m < nComponents ; m++ )
 			{
@@ -426,11 +443,11 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, size_
 			return( false );
 		}
 
-		fLikelihood = 0.0;
+		double fLikelihood = 0.0;
 
 		for( k = 0 ; k < nSamples ; k++ )
 		{
-			tmp = 0.0;
+			double tmp = 0.0;
 
 			for( m = 0 ; m < nComponents ; m++ )
 			{
@@ -450,7 +467,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, size_
 				return( false );
 			}
 
-			fLikelihood += std::log( tmp / _2pi );
+			fLikelihood += std::log( tmp ) - _log_2pi;
 		}
 
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
@@ -465,10 +482,13 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, size_
 			break;
 		}
 
-		fLastLikelihood = fLikelihood;
+		// 出力に作業データを反映させる
+		for( m = 0 ; m < nComponents ; m++ )
+		{
+			opdp[ m ] = pdp[ m ];
+		}
 
-		//static int count = 0;
-		//std::cout << count++ << "                                           \r";
+		fLastLikelihood = fLikelihood;
 	}
 
 	return( true );
@@ -569,7 +589,7 @@ namespace histogram
 	//! @attention 入力となるデータの配列として，通常のデータ配列，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．
 	//! 
 	//! @param[in]     rSamples      … 入力サンプル
-	//! @param[in]     pdp           … 分布パラメータ
+	//! @param[in,out] opdp          … 分布パラメータ
 	//! @param[in]     nSamples      … 入力サンプル数
 	//! @param[in]     nComponents   … 推定する混合分布の数
 	//! @param[in]     minimum       … ヒストグラムを作成した際の最小値
@@ -582,7 +602,7 @@ namespace histogram
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class Array >
-	bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, size_t nSamples, size_t nComponents, double minimum, double bin, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
+	bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_t nSamples, size_t nComponents, double minimum, double bin, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
 	{
 		if( rSamples.empty( ) || nComponents == 0 || bin == 0.0 )
 		{
@@ -595,12 +615,19 @@ namespace histogram
 
 		const double pi = 3.1415926535897932384626433832795;
 		const double _2pi = std::sqrt( 2.0 * pi );
-		double fLikelihood;
+		const double _log_2pi = std::log( _2pi );
 		double fLastLikelihood = -1.0e30;
 		double tmp, number_of_samples;
 
 		array2< double > Weight( nSamples, nComponents );
+		std::vector< mixture::distribution > pdp( nComponents );
 
+
+		// 入力データを作業データにコピーする
+		for( m = 0 ; m < nComponents ; m++ )
+		{
+			pdp[ m ] = opdp[ m ];
+		}
 
 		// 初期分布データの重みの和を１に正規化する
 		tmp = 0.0;
@@ -639,7 +666,6 @@ namespace histogram
 		for( n = 0 ; n < nMaxIteration ; n++ )
 		{
 			// E-step
-
 			for( k = 0 ; k < nSamples ; k++ )
 			{
 				if( rSamples[ k ] == 0 )
@@ -724,7 +750,7 @@ namespace histogram
 				return( false );
 			}
 
-			fLikelihood = 0.0;
+			double fLikelihood = 0.0;
 
 			for( k = 0 ; k < nSamples ; k++ )
 			{
@@ -746,7 +772,7 @@ namespace histogram
 					return( false );
 				}
 
-				fLikelihood += rSamples[ k ] * std::log( tmp / _2pi );
+				fLikelihood += rSamples[ k ] * ( std::log( tmp ) - _log_2pi );
 			}
 
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
@@ -761,6 +787,12 @@ namespace histogram
 				break;
 			}
 
+			// 出力に作業データを反映させる
+			for( m = 0 ; m < nComponents ; m++ )
+			{
+				opdp[ m ] = pdp[ m ];
+			}
+
 			fLastLikelihood = fLikelihood;
 		}
 
@@ -768,7 +800,7 @@ namespace histogram
 		// 平均値を元に戻す
 		for( m = 0 ; m < nComponents ; m++ )
 		{
-			pdp[ m ].av += minimum;
+			opdp[ m ].av += minimum;
 		}
 
 		return( true );
@@ -781,7 +813,7 @@ namespace histogram
 	//! @attention 入力となるデータの配列として，MISTで提供する2次元コンテナが利用可能です．
 	//!
 	//! @param[in]     rSamples      … 入力サンプル
-	//! @param[in]     pdp           … 分布パラメータ
+	//! @param[in,out] opdp          … 分布パラメータ
 	//! @param[in]     nComponents   … 推定する混合分布の数
 	//! @param[in]     minimum1      … ヒストグラムを作成した際の第1軸方向での最小値
 	//! @param[in]     minimum2      … ヒストグラムを作成した際の第2軸方向での最小値
@@ -794,7 +826,7 @@ namespace histogram
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class T, class Allocator >
-	bool estimate_mixture( const array2< T, Allocator > &rSamples, mixture::distribution2 *pdp, size_t nComponents, double minimum1, double minimum2, double bin, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
+	bool estimate_mixture( const array2< T, Allocator > &rSamples, mixture::distribution2 *opdp, size_t nComponents, double minimum1, double minimum2, double bin, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
 	{
 		if( rSamples.empty( ) || nComponents == 0 )
 		{
@@ -807,11 +839,12 @@ namespace histogram
 
 		const double pi = 3.1415926535897932384626433832795;
 		const double _2pi = 2.0 * pi;
-		double fLikelihood;
+		const double _log_2pi = std::log( _2pi );
 		double fLastLikelihood = -1.0e30;
-		double tmp, number_of_samples;
+		double number_of_samples;
 
 		array3< double > Weight( rSamples.width( ), rSamples.height( ), nComponents );
+		std::vector< mixture::distribution2 > pdp( nComponents );
 
 
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
@@ -821,29 +854,37 @@ namespace histogram
 		}
 #endif
 
+		// 入力データを作業データにコピーする
+		for( m = 0 ; m < nComponents ; m++ )
+		{
+			pdp[ m ] = opdp[ m ];
+		}
+
 
 		// 初期分布データの重みの和を１に正規化する
-		tmp = 0.0;
-		for( m = 0 ; m < nComponents ; m++ )
 		{
-			tmp += pdp[ m ].weight;
-		}
+			double tmp = 0.0;
+			for( m = 0 ; m < nComponents ; m++ )
+			{
+				tmp += pdp[ m ].weight;
+			}
 
-		if( tmp <= 0.0 )
-		{
-			return( false );
-		}
+			if( tmp <= 0.0 )
+			{
+				return( false );
+			}
 
-		for( m = 0 ; m < nComponents ; m++ )
-		{
-			pdp[ m ].weight /= tmp;
-			pdp[ m ].av.x   -= minimum1;
-			pdp[ m ].av.y   -= minimum2;
-		}
+			for( m = 0 ; m < nComponents ; m++ )
+			{
+				pdp[ m ].weight /= tmp;
+				pdp[ m ].av.x   -= minimum1;
+				pdp[ m ].av.y   -= minimum2;
+			}
 
-		for( k = 0, number_of_samples = 0.0 ; k < rSamples.size( ) ; k++ )
-		{
-			number_of_samples += rSamples[ k ];
+			for( k = 0, number_of_samples = 0.0 ; k < rSamples.size( ) ; k++ )
+			{
+				number_of_samples += rSamples[ k ];
+			}
 		}
 
 
@@ -861,7 +902,7 @@ namespace histogram
 						continue;
 					}
 
-					tmp = 0.0;
+					double tmp = 0.0;
 
 					for( m = 0 ; m < nComponents ; m++ )
 					{
@@ -967,7 +1008,7 @@ namespace histogram
 				return( false );
 			}
 
-			fLikelihood = 0.0;
+			double fLikelihood = 0.0;
 
 			for( j = 0 ; j < rSamples.height( ) ; j++ )
 			{
@@ -978,7 +1019,7 @@ namespace histogram
 						continue;
 					}
 
-					tmp = 0.0;
+					double tmp = 0.0;
 
 					for( m = 0 ; m < nComponents ; m++ )
 					{
@@ -998,7 +1039,7 @@ namespace histogram
 						return( false );
 					}
 
-					fLikelihood += rSamples( i, j ) * std::log( tmp / _2pi );
+					fLikelihood += rSamples( i, j ) * ( std::log( tmp ) - _log_2pi );
 				}
 			}
 
@@ -1014,16 +1055,19 @@ namespace histogram
 				break;
 			}
 
-			fLastLikelihood = fLikelihood;
+			// 出力に作業データを反映させる
+			for( m = 0 ; m < nComponents ; m++ )
+			{
+				opdp[ m ] = pdp[ m ];
+			}
 
-			//static int count = 0;
-			//std::cout << count++ << "                                           \r";
+			fLastLikelihood = fLikelihood;
 		}
 
 		for( m = 0 ; m < nComponents ; m++ )
 		{
-			pdp[ m ].av.x += minimum1;
-			pdp[ m ].av.y += minimum2;
+			opdp[ m ].av.x += minimum1;
+			opdp[ m ].av.y += minimum2;
 		}
 
 		return( true );
