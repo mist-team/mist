@@ -1291,9 +1291,9 @@ namespace __inverse__
 							a( 1, 0 ) = A21 / detA;
 							a( 1, 1 ) = A22 / detA;
 							a( 1, 2 ) = A23 / detA;
-							a( 1, 0 ) = A31 / detA;
-							a( 1, 1 ) = A32 / detA;
-							a( 1, 2 ) = A33 / detA;
+							a( 2, 0 ) = A31 / detA;
+							a( 2, 1 ) = A32 / detA;
+							a( 2, 2 ) = A33 / detA;
 							return( a );
 						}
 						else
@@ -2823,7 +2823,7 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 
 	case 3:
 		return( a( 0, 0 ) * a( 1, 1 ) * a( 2, 2 ) + a( 0, 1 ) * a( 1, 2 ) * a( 2, 0 ) + a( 0, 2 ) * a( 1, 0 ) * a( 2, 1 )
-				- a( 0, 2 ) * a( 1, 1 ) * a( 2, 0 ) + a( 0, 1 ) * a( 1, 0 ) * a( 2, 2 ) + a( 0, 0 ) * a( 1, 2 ) * a( 2, 1 ) );
+				- a( 0, 2 ) * a( 1, 1 ) * a( 2, 0 ) - a( 0, 1 ) * a( 1, 0 ) * a( 2, 2 ) - a( 0, 0 ) * a( 1, 2 ) * a( 2, 1 ) );
 		break;
 
 	default:
@@ -2899,7 +2899,7 @@ inline const typename matrix_expression< Expression >::value_type det( const mat
 
 	case 3:
 		return( e( 0, 0 ) * e( 1, 1 ) * e( 2, 2 ) + e( 0, 1 ) * e( 1, 2 ) * e( 2, 0 ) + e( 0, 2 ) * e( 1, 0 ) * e( 2, 1 )
-				- e( 0, 2 ) * e( 1, 1 ) * e( 2, 0 ) + e( 0, 1 ) * e( 1, 0 ) * e( 2, 2 ) + e( 0, 0 ) * e( 1, 2 ) * e( 2, 1 ) );
+				- e( 0, 2 ) * e( 1, 1 ) * e( 2, 0 ) - e( 0, 1 ) * e( 1, 0 ) * e( 2, 2 ) - e( 0, 0 ) * e( 1, 2 ) * e( 2, 1 ) );
 		break;
 
 	default:
