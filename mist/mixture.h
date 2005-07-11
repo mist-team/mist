@@ -87,14 +87,14 @@ namespace mixture
 //! @param[in]     nSamples      … 入力サンプル数
 //! @param[in]     nComponents   … 推定する混合分布の数
 //! @param[in]     nMaxIteration … 最大ループ回数
-//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 //! @param[out]    nIteration    … 実際のループ回数
 //!
 //! @retval true  … 混合分布の推定に成功
 //! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 //! 
 template < class Array >
-bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
+bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double tolerance, size_t &nIteration )
 {
 	if( rSamples.empty( ) || nComponents == 0 )
 	{
@@ -250,9 +250,11 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_
 		{
 			std::cerr << pdp[ m ] << std::endl;
 		}
+#elif defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 2
+		printf( "%f = ( %f, %f, %f )\n", fLikelihood, pdp[ 0 ].weight, pdp[ 0 ].av, pdp[ 0 ].sd );
 #endif
 
-		if( fLastLikelihood > fLikelihood || std::abs( fLastLikelihood - fLikelihood ) < fEpsilon )
+		if( 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
 		{
 			break;
 		}
@@ -281,14 +283,14 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_
 //! @param[in]     nSamples      … 入力サンプル数
 //! @param[in]     nComponents   … 推定する混合分布の数
 //! @param[in]     nMaxIteration … 最大ループ回数
-//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+//! @param[in,out] tolerance     … 対数尤度の打ち切り許容相対誤差
 //! @param[out]    nIteration    … 実際のループ回数
 //!
 //! @retval true  … 混合分布の推定に成功
 //! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 //! 
 template < class Array >
-bool estimate_mixture( const Array &rSamples, mixture::distribution2 *opdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
+bool estimate_mixture( const Array &rSamples, mixture::distribution2 *opdp, size_t nSamples, size_t nComponents, size_t nMaxIteration, double tolerance, size_t &nIteration )
 {
 	if( rSamples.empty( ) || nComponents == 0 )
 	{
@@ -475,9 +477,11 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *opdp, size
 		{
 			std::cerr << pdp[ m ] << std::endl;
 		}
+#elif defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 2
+		printf( "%f = ( %f, %f )\n", fLikelihood, pdp[ 0 ].weight, pdp[ 0 ].av );
 #endif
 
-		if( fLastLikelihood > fLikelihood || std::abs( fLastLikelihood - fLikelihood ) < fEpsilon )
+		if( 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
 		{
 			break;
 		}
@@ -501,18 +505,18 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *opdp, size
 //! @attention 入力データは，MISTで提供する vector2 タイプで分布が mixture::distribution2 の場合は2次元正規分布推定になります．
 //! 
 //! @param[in]     rSamples      … 入力サンプル
-//! @param[in]     pdp           … 分布パラメータ
+//! @param[in,out] pdp           … 分布パラメータ
 //! @param[in]     nMaxIteration … 最大ループ回数
-//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 //! @param[out]    nIteration    … 実際のループ回数
 //!
 //! @retval true  … 混合分布の推定に成功
 //! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 //! 
 template < class Array1, class Array2 >
-bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, typename Array1::size_type nMaxIteration, double fEpsilon, typename Array1::size_type &nIteration )
+bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, typename Array1::size_type nMaxIteration, double tolerance, typename Array1::size_type &nIteration )
 {
-	return( estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), nMaxIteration, fEpsilon, nIteration ) );
+	return( estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), nMaxIteration, tolerance, nIteration ) );
 }
 
 
@@ -522,18 +526,18 @@ bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, typename Array1::siz
 //! @attention 入力データは，MISTで提供する vector2 タイプで分布が mixture::distribution2 の場合は2次元正規分布推定になります．
 //! 
 //! @param[in]     rSamples      … 入力サンプル
-//! @param[in]     pdp           … 分布パラメータ
+//! @param[in,out] pdp           … 分布パラメータ
 //! @param[in]     nMaxIteration … 最大ループ回数
-//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 //!
 //! @retval true  … 混合分布の推定に成功
 //! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 //! 
 template < class Array1, class Array2 >
-bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, typename Array1::size_type nMaxIteration, double fEpsilon )
+bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, typename Array1::size_type nMaxIteration, double tolerance )
 {
 	typename Array1::size_type nIteration = 0;
-	return( estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), nMaxIteration, fEpsilon, nIteration ) );
+	return( estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), nMaxIteration, tolerance, nIteration ) );
 }
 
 
@@ -542,19 +546,19 @@ bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, typename Array1::siz
 //! @attention 入力となるデータの配列として，MISTで提供するコンテナもしくはSTLで提供されているvector，dequeコンテナが利用可能です．
 //! 
 //! @param[in]     rSamples      … 入力サンプル
-//! @param[in]     pdp           … 分布パラメータ
+//! @param[in,out] pdp           … 分布パラメータ
 //! @param[in]     nComponents   … 推定する混合分布の数
 //! @param[in]     nMaxIteration … 最大ループ回数
-//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 //!
 //! @retval true  … 混合分布の推定に成功
 //! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 //! 
 template < class Array >
-bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, typename Array::size_type nComponents, typename Array::size_type nMaxIteration, double fEpsilon )
+bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, typename Array::size_type nComponents, typename Array::size_type nMaxIteration, double tolerance )
 {
 	size_t nIteration = 0;
-	return( estimate_mixture( rSamples, pdp, rSamples.size( ), nComponents, nMaxIteration, fEpsilon, nIteration ) );
+	return( estimate_mixture( rSamples, pdp, rSamples.size( ), nComponents, nMaxIteration, tolerance, nIteration ) );
 }
 
 
@@ -564,19 +568,19 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, typena
 //! @attention 入力データは，MISTで提供する vector2 タイプある必要があります．
 //! 
 //! @param[in]     rSamples      … 入力サンプル
-//! @param[in]     pdp           … 分布パラメータ
+//! @param[in,out] pdp           … 分布パラメータ
 //! @param[in]     nComponents   … 推定する混合分布の数
 //! @param[in]     nMaxIteration … 最大ループ回数
-//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 //!
 //! @retval true  … 混合分布の推定に成功
 //! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 //! 
 template < class Array >
-bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, typename Array::size_type nComponents, typename Array::size_type nMaxIteration, double fEpsilon )
+bool estimate_mixture( const Array &rSamples, mixture::distribution2 *pdp, typename Array::size_type nComponents, typename Array::size_type nMaxIteration, double tolerance )
 {
 	size_t nIteration = 0;
-	return( estimate_mixture( rSamples, pdp, rSamples.size( ), nComponents, nMaxIteration, fEpsilon, nIteration ) );
+	return( estimate_mixture( rSamples, pdp, rSamples.size( ), nComponents, nMaxIteration, tolerance, nIteration ) );
 }
 
 
@@ -595,14 +599,14 @@ namespace histogram
 	//! @param[in]     minimum       … ヒストグラムを作成した際の最小値
 	//! @param[in]     bin           … ヒストグラムを作成した際のビン幅
 	//! @param[in]     nMaxIteration … 最大ループ回数
-	//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+	//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 	//! @param[out]    nIteration    … 実際のループ回数
 	//!
 	//! @retval true  … 混合分布の推定に成功
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class Array >
-	bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_t nSamples, size_t nComponents, double minimum, double bin, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
+	bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_t nSamples, size_t nComponents, double minimum, double bin, size_t nMaxIteration, double tolerance, size_t &nIteration )
 	{
 		if( rSamples.empty( ) || nComponents == 0 || bin == 0.0 )
 		{
@@ -780,9 +784,11 @@ namespace histogram
 			{
 				std::cerr << pdp[ m ] << std::endl;
 			}
+#elif defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 2
+		printf( "%f = ( %f, %f, %f )\n", fLikelihood, pdp[ 0 ].weight, pdp[ 0 ].av, pdp[ 0 ].sd );
 #endif
 
-			if( fLastLikelihood > fLikelihood || std::abs( fLastLikelihood - fLikelihood ) < fEpsilon )
+			if( 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
 			{
 				break;
 			}
@@ -819,14 +825,14 @@ namespace histogram
 	//! @param[in]     minimum2      … ヒストグラムを作成した際の第2軸方向での最小値
 	//! @param[in]     bin           … ヒストグラムを作成した際のビン幅
 	//! @param[in]     nMaxIteration … 最大ループ回数
-	//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+	//! @param[in]     tolerance      … 対数尤度の打ち切り許容相対誤差
 	//! @param[out]    nIteration    … 実際のループ回数
 	//!
 	//! @retval true  … 混合分布の推定に成功
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class T, class Allocator >
-	bool estimate_mixture( const array2< T, Allocator > &rSamples, mixture::distribution2 *opdp, size_t nComponents, double minimum1, double minimum2, double bin, size_t nMaxIteration, double fEpsilon, size_t &nIteration )
+	bool estimate_mixture( const array2< T, Allocator > &rSamples, mixture::distribution2 *opdp, size_t nComponents, double minimum1, double minimum2, double bin, size_t nMaxIteration, double tolerance, size_t &nIteration )
 	{
 		if( rSamples.empty( ) || nComponents == 0 )
 		{
@@ -1048,9 +1054,11 @@ namespace histogram
 			{
 				std::cerr << pdp[ m ] << std::endl;
 			}
+#elif defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 2
+		printf( "%f = ( %f, %f )\n", fLikelihood, pdp[ 0 ].weight, pdp[ 0 ].av );
 #endif
 
-			if( fLastLikelihood > fLikelihood || std::abs( fLastLikelihood - fLikelihood ) < fEpsilon )
+			if( 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
 			{
 				break;
 			}
@@ -1079,20 +1087,20 @@ namespace histogram
 	//! @attention 入力となるデータの配列として，MISTで提供するコンテナもしくはSTLで提供されているvector，dequeコンテナが利用可能です．
 	//! 
 	//! @param[in]     rSamples      … 入力サンプル
-	//! @param[in]     pdp           … 分布パラメータ
+	//! @param[in,out] pdp           … 分布パラメータ
 	//! @param[in]     minimum       … ヒストグラムを作成した際の最小値
 	//! @param[in]     bin           … ヒストグラムを作成した際のビン幅
 	//! @param[in]     nMaxIteration … 最大ループ回数
-	//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+	//! @param[in]     tolerance      … 対数尤度の打ち切り許容相対誤差
 	//! @param[out]    nIteration    … 実際のループ回数
 	//!
 	//! @retval true  … 混合分布の推定に成功
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class Array1, class Array2 >
-	bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, double minimum, double bin, typename Array1::size_type nMaxIteration, double fEpsilon, typename Array1::size_type &nIteration )
+	bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, double minimum, double bin, typename Array1::size_type nMaxIteration, double tolerance, typename Array1::size_type &nIteration )
 	{
-		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), minimum, bin, nMaxIteration, fEpsilon, nIteration ) );
+		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), minimum, bin, nMaxIteration, tolerance, nIteration ) );
 	}
 
 
@@ -1101,20 +1109,20 @@ namespace histogram
 	//! @attention 入力となるデータの配列として，MISTで提供するコンテナもしくはSTLで提供されているvector，dequeコンテナが利用可能です．
 	//! 
 	//! @param[in]     rSamples      … 入力サンプル
-	//! @param[in]     pdp           … 分布パラメータ
+	//! @param[in,out] pdp           … 分布パラメータ
 	//! @param[in]     minimum       … ヒストグラムを作成した際の最小値
 	//! @param[in]     bin           … ヒストグラムを作成した際のビン幅
 	//! @param[in]     nMaxIteration … 最大ループ回数
-	//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+	//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 	//!
 	//! @retval true  … 混合分布の推定に成功
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class Array1, class Array2 >
-	bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, double minimum, double bin, typename Array1::size_type nMaxIteration, double fEpsilon )
+	bool estimate_mixture( const Array1 &rSamples, Array2 &pdp, double minimum, double bin, typename Array1::size_type nMaxIteration, double tolerance )
 	{
 		typename Array1::size_type nIteration = 0;
-		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), minimum, bin, nMaxIteration, fEpsilon, nIteration ) );
+		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], rSamples.size( ), pdp.size( ), minimum, bin, nMaxIteration, tolerance, nIteration ) );
 	}
 
 
@@ -1123,21 +1131,21 @@ namespace histogram
 	//! @attention 入力となるデータの配列として，MISTで提供するコンテナもしくはSTLで提供されているvector，dequeコンテナが利用可能です．
 	//! 
 	//! @param[in]     rSamples      … 入力サンプル
-	//! @param[in]     pdp           … 分布パラメータ
+	//! @param[in,out] pdp           … 分布パラメータ
 	//! @param[in]     nComponents   … 推定する混合分布の数
 	//! @param[in]     minimum       … ヒストグラムを作成した際の最小値
 	//! @param[in]     bin           … ヒストグラムを作成した際のビン幅
 	//! @param[in]     nMaxIteration … 最大ループ回数
-	//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+	//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 	//!
 	//! @retval true  … 混合分布の推定に成功
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class Array >
-	bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, typename Array::size_type nComponents, double minimum, double bin, typename Array::size_type nMaxIteration, double fEpsilon )
+	bool estimate_mixture( const Array &rSamples, mixture::distribution *pdp, typename Array::size_type nComponents, double minimum, double bin, typename Array::size_type nMaxIteration, double tolerance )
 	{
 		size_t nIteration = 0;
-		return( histogram::estimate_mixture( rSamples, pdp, rSamples.size( ), nComponents, minimum, bin, nMaxIteration, fEpsilon, nIteration ) );
+		return( histogram::estimate_mixture( rSamples, pdp, rSamples.size( ), nComponents, minimum, bin, nMaxIteration, tolerance, nIteration ) );
 	}
 
 
@@ -1152,21 +1160,21 @@ namespace histogram
 	//! @attention 正しい平均値を求めるためには，EMアルゴリズムの推定結果の平均値に，入力されたヒストグラムのオフセットを足してください．
 	//! 
 	//! @param[in]     rSamples      … 入力サンプル
-	//! @param[in]     pdp           … 分布パラメータ
+	//! @param[in,out] pdp           … 分布パラメータ
 	//! @param[in]     minimum1      … ヒストグラムを作成した際の第1軸方向での最小値
 	//! @param[in]     minimum2      … ヒストグラムを作成した際の第2軸方向での最小値
 	//! @param[in]     bin           … ヒストグラムを作成した際のビン幅
 	//! @param[in]     nMaxIteration … 最大ループ回数
-	//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+	//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 	//! @param[out]    nIteration    … 実際のループ回数
 	//!
 	//! @retval true  … 混合分布の推定に成功
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class T, class Allocator, class Array1 >
-	bool estimate_mixture( const array2< T, Allocator > &rSamples, Array1 &pdp, double minimum1, double minimum2, double bin, typename Array1::size_type nMaxIteration, double fEpsilon, typename Array1::size_type &nIteration )
+	bool estimate_mixture( const array2< T, Allocator > &rSamples, Array1 &pdp, double minimum1, double minimum2, double bin, typename Array1::size_type nMaxIteration, double tolerance, typename Array1::size_type &nIteration )
 	{
-		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], pdp.size( ), minimum1, minimum2, bin, nMaxIteration, fEpsilon, nIteration ) );
+		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], pdp.size( ), minimum1, minimum2, bin, nMaxIteration, tolerance, nIteration ) );
 	}
 
 
@@ -1177,21 +1185,21 @@ namespace histogram
 	//! @attention 正しい平均値を求めるためには，EMアルゴリズムの推定結果の平均値に，入力されたヒストグラムのオフセットを足してください．
 	//! 
 	//! @param[in]     rSamples      … 入力サンプル
-	//! @param[in]     pdp           … 分布パラメータ
+	//! @param[in,out] pdp           … 分布パラメータ
 	//! @param[in]     minimum1      … ヒストグラムを作成した際の第1軸方向での最小値
 	//! @param[in]     minimum2      … ヒストグラムを作成した際の第2軸方向での最小値
 	//! @param[in]     bin           … ヒストグラムを作成した際のビン幅
 	//! @param[in]     nMaxIteration … 最大ループ回数
-	//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+	//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 	//!
 	//! @retval true  … 混合分布の推定に成功
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class T, class Allocator, class Array1 >
-	bool estimate_mixture( const array2< T, Allocator > &rSamples, Array1 &pdp, double minimum1, double minimum2, double bin, typename Array1::size_type nMaxIteration, double fEpsilon )
+	bool estimate_mixture( const array2< T, Allocator > &rSamples, Array1 &pdp, double minimum1, double minimum2, double bin, typename Array1::size_type nMaxIteration, double tolerance )
 	{
 		typename array< T, Allocator >::size_type nIteration = 0;
-		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], pdp.size( ), minimum1, minimum2, bin, nMaxIteration, fEpsilon, nIteration ) );
+		return( histogram::estimate_mixture( rSamples, &pdp[ 0 ], pdp.size( ), minimum1, minimum2, bin, nMaxIteration, tolerance, nIteration ) );
 	}
 
 
@@ -1202,22 +1210,22 @@ namespace histogram
 	//! @attention 正しい平均値を求めるためには，EMアルゴリズムの推定結果の平均値に，入力されたヒストグラムのオフセットを足してください．
 	//! 
 	//! @param[in]     rSamples      … 入力サンプル
-	//! @param[in]     pdp           … 分布パラメータ
+	//! @param[in,out] pdp           … 分布パラメータ
 	//! @param[in]     nComponents   … 推定する混合分布の数
 	//! @param[in]     minimum1      … ヒストグラムを作成した際の第1軸方向での最小値
 	//! @param[in]     minimum2      … ヒストグラムを作成した際の第2軸方向での最小値
 	//! @param[in]     bin           … ヒストグラムを作成した際のビン幅
 	//! @param[in]     nMaxIteration … 最大ループ回数
-	//! @param[in,out] fEpsilon      … 対数尤度の打ち切り精度
+	//! @param[in]     tolerance     … 対数尤度の打ち切り許容相対誤差
 	//!
 	//! @retval true  … 混合分布の推定に成功
 	//! @retval false … 混合分布の推定に失敗，もしくは入力データが空
 	//! 
 	template < class T, class Allocator >
-	bool estimate_mixture( const array2< T, Allocator > &rSamples, mixture::distribution2 *pdp, typename array2< T, Allocator >::size_type nComponents, double minimum1, double minimum2, double bin, typename array2< T, Allocator >::size_type nMaxIteration, double fEpsilon )
+	bool estimate_mixture( const array2< T, Allocator > &rSamples, mixture::distribution2 *pdp, typename array2< T, Allocator >::size_type nComponents, double minimum1, double minimum2, double bin, typename array2< T, Allocator >::size_type nMaxIteration, double tolerance )
 	{
 		size_t nIteration = 0;
-		return( histogram::estimate_mixture( rSamples, pdp, nComponents, minimum1, minimum2, bin, nMaxIteration, fEpsilon, nIteration ) );
+		return( histogram::estimate_mixture( rSamples, pdp, nComponents, minimum1, minimum2, bin, nMaxIteration, tolerance, nIteration ) );
 	}
 }
 
