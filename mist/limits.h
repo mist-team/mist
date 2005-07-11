@@ -210,7 +210,7 @@ namespace __limits_min_max__
 	inline const T limits_min_max__( const T &v, const T &min, const T &max )
 	{
 		return( v < min ? min : ( v > max ? max : v ) );
-	};
+	}
 
 	template < bool _ISCOLOR_ >
 	struct limits_min_max

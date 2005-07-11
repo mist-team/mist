@@ -35,7 +35,7 @@ namespace __pnm_controller__
 		P3,
 		P4,
 		P5,
-		P6,
+		P6
 	};
 
 	template < bool b >
