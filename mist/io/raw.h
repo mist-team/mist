@@ -460,6 +460,29 @@ bool write_raw_gz( const array< T, Allocator > &image, const std::string &filena
 //! @param[in]  x                  … 入力画像の画素サイズ
 //! @param[in]  offset             … 画像に足しこむオフセット値
 //! @param[in]  from_little_endian … 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）
+//! @param[in]  __dmy__            … 読み込もうとしているデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど）
+//! @param[in]  callback           … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator, class ValueType, class Functor >
+bool read_raw( array1< T, Allocator > &image, const std::string &filename, typename array1< T, Allocator >::size_type w,
+				double x, typename array1< T, Allocator >::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback )
+{
+	image.reso1( x );
+	return( __raw_controller__::raw_controller::read( image, filename, w, 1, 1, offset, from_little_endian, 0, callback, __dmy__ ) );
+}
+
+
+/// @brief 無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む
+//! 
+//! @param[out] image              … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename           … 入力ファイル名
+//! @param[in]  w                  … 入力画像の幅
+//! @param[in]  x                  … 入力画像の画素サイズ
+//! @param[in]  offset             … 画像に足しこむオフセット値
+//! @param[in]  from_little_endian … 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）
 //! @param[in]  callback           … 進行状況を通知するコールバック関数
 //!
 //! @retval true  … 画像の読み込みに成功
@@ -470,8 +493,7 @@ bool read_raw( array1< T, Allocator > &image, const std::string &filename, typen
 				double x, typename array1< T, Allocator >::value_type offset, bool from_little_endian, Functor callback )
 {
 	typename array1< T, Allocator >::value_type v( 0 );
-	image.reso1( x );
-	return( __raw_controller__::raw_controller::read( image, filename, w, 1, 1, offset, from_little_endian, 0, callback, v ) );
+	return( read_raw( image, filename, w, x, offset, from_little_endian, v, callback ) );
 }
 
 
@@ -496,6 +518,34 @@ bool read_raw( array1< T, Allocator > &image, const std::string &filename, typen
 
 
 
+
+/// @brief 無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む
+//! 
+//! @param[out] image              … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename           … 入力ファイル名
+//! @param[in]  w                  … 入力画像のX軸方向のサイズ
+//! @param[in]  h                  … 入力画像のY軸方向のサイズ
+//! @param[in]  x                  … 入力画像のX軸方向の画素サイズ
+//! @param[in]  y                  … 入力画像のY軸方向の画素サイズ
+//! @param[in]  offset             … 画像に足しこむオフセット値
+//! @param[in]  from_little_endian … 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）
+//! @param[in]  __dmy__            … 読み込もうとしているデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど）
+//! @param[in]  callback           … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator, class ValueType, class Functor >
+bool read_raw( array2< T, Allocator > &image, const std::string &filename,
+				typename array2< T, Allocator >::size_type w, typename array2< T, Allocator >::size_type h,
+				double x, double y, typename array2< T, Allocator >::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback )
+{
+	image.reso1( x );
+	image.reso2( y );
+	return( __raw_controller__::raw_controller::read( image, filename, w, h, 1, offset, from_little_endian, 0, callback, __dmy__ ) );
+}
+
+
 /// @brief 無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む
 //! 
 //! @param[out] image              … 画像を読み込む先のMISTコンテナ
@@ -517,9 +567,7 @@ bool read_raw( array2< T, Allocator > &image, const std::string &filename,
 				double x, double y, typename array2< T, Allocator >::value_type offset, bool from_little_endian, Functor callback )
 {
 	typename array2< T, Allocator >::value_type v( 0 );
-	image.reso1( x );
-	image.reso2( y );
-	return( __raw_controller__::raw_controller::read( image, filename, w, h, 1, offset, from_little_endian, 0, callback, v ) );
+	return( read_raw( image, filename, w, h, x, y, offset, from_little_endian, 0, v, callback ) );
 }
 
 
@@ -561,6 +609,38 @@ bool read_raw( array2< T, Allocator > &image, const std::string &filename,
 //! @param[in]  z                  … 入力画像のZ軸方向の画素サイズ
 //! @param[in]  offset             … 画像に足しこむオフセット値
 //! @param[in]  from_little_endian … 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）
+//! @param[in]  __dmy__            … 読み込もうとしているデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど）
+//! @param[in]  callback           … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator, class ValueType, class Functor >
+bool read_raw( array3< T, Allocator > &image, const std::string &filename,
+				typename array3< T, Allocator >::size_type w, typename array3< T, Allocator >::size_type h, typename array3< T, Allocator >::size_type d,
+				double x, double y, double z, typename array3< T, Allocator >::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback )
+{
+	image.reso1( x );
+	image.reso2( y );
+	image.reso3( z );
+	return( __raw_controller__::raw_controller::read( image, filename, w, h, d, offset, from_little_endian, 0, callback, __dmy__ ) );
+}
+
+
+
+
+/// @brief 無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む
+//! 
+//! @param[out] image              … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename           … 入力ファイル名
+//! @param[in]  w                  … 入力画像のX軸方向のサイズ
+//! @param[in]  h                  … 入力画像のY軸方向のサイズ
+//! @param[in]  d                  … 入力画像のZ軸方向のサイズ
+//! @param[in]  x                  … 入力画像のX軸方向の画素サイズ
+//! @param[in]  y                  … 入力画像のY軸方向の画素サイズ
+//! @param[in]  z                  … 入力画像のZ軸方向の画素サイズ
+//! @param[in]  offset             … 画像に足しこむオフセット値
+//! @param[in]  from_little_endian … 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）
 //! @param[in]  callback           … 進行状況を通知するコールバック関数
 //!
 //! @retval true  … 画像の読み込みに成功
@@ -572,10 +652,7 @@ bool read_raw( array3< T, Allocator > &image, const std::string &filename,
 				double x, double y, double z, typename array3< T, Allocator >::value_type offset, bool from_little_endian, Functor callback )
 {
 	typename array3< T, Allocator >::value_type v( 0 );
-	image.reso1( x );
-	image.reso2( y );
-	image.reso3( z );
-	return( __raw_controller__::raw_controller::read( image, filename, w, h, d, offset, from_little_endian, 0, callback, v ) );
+	return( read_raw( image, filename, w, h, d, x, y, z, offset, from_little_endian, v, callback ) );
 }
 
 

@@ -721,9 +721,9 @@ protected:
 	double reso1_;							///< @brief コンテナ内の要素の解像度（ミリや周波数など）
 
 public:
-	double reso1( double r1 ){ return( reso1_ = r1 ); }		//< @brief X軸方向の解像度を r1 に設定し，設定後の値を返す
-	double reso1( ) const { return( reso1_ ); }				//< @brief X軸方向の解像度を返す
-	void reso( double r1 ){ reso1_ = r1; }					//< @brief X軸方向の解像度を r1 に設定し，設定後の値を返す
+	double reso1( double r1 ){ return( reso1_ = r1 ); }								//< @brief X軸方向の解像度を r1 に設定し，設定後の値を返す
+	double reso1( ) const { return( reso1_ ); }										//< @brief X軸方向の解像度を返す
+	void reso( double r1, double dmy1 = 1.0, double dmy2 = 1.0 ){ reso1_ = r1; }	//< @brief X軸方向の解像度を r1 に設定し，設定後の値を返す
 
 
 /************************************************************************************************************
@@ -1131,10 +1131,11 @@ public:
 
 	///< @brief X軸とY軸方向の解像度を1度に設定する
 	//!
-	//! @param[in] r1 … 新しいX軸方向の解像度
-	//! @param[in] r2 … 新しいY軸方向の解像度
+	//! @param[in] r1  … 新しいX軸方向の解像度
+	//! @param[in] r2  … 新しいY軸方向の解像度
+	//! @param[in] dmy … 利用しない
 	//!
-	void reso( double r1, double r2 ){ base::reso1_ = r1; reso2_ = r2; }
+	void reso( double r1, double r2, double dmy = 1.0 ){ base::reso1_ = r1; reso2_ = r2; }
 
 
 
