@@ -344,6 +344,68 @@ namespace __raw_controller__
 //! @param[in]  w                  … 入力画像の幅
 //! @param[in]  offset             … 画像に足しこむオフセット値
 //! @param[in]  from_little_endian … 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）
+//! @param[in]  __dmy__            … 読み込もうとしているデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど）
+//! @param[in]  callback           … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator, class ValueType, class Functor >
+bool read_raw( array< T, Allocator > &image, const std::string &filename, typename array< T, Allocator >::size_type w,
+							typename array< T, Allocator >::value_type offset, bool from_little_endian, ValueType __dmy__, Functor callback )
+{
+	return( __raw_controller__::raw_controller::read( image, filename, w, 1, 1, offset, from_little_endian, 0, callback, __dmy__ ) );
+}
+
+/// @brief MISTコンテナ内の画像を 無圧縮RAW 画像として出力する
+//! 
+//! @attention データを変換して保存する際に，値のオーバーフローなどは無視するので注意が必要
+//! 
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式（リトルエンディアン … true，ビッグエンディアン … false）
+//! @param[in]  __dmy__         … 出力するデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど）
+//! @param[in] callback         … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator, class ValueType, class Functor >
+bool write_raw( const array< T, Allocator > &image, const std::string &filename, typename array< T, Allocator >::value_type offset, bool to_little_endian, ValueType __dmy__, Functor callback )
+{
+	return( __raw_controller__::raw_controller::write( image, filename, offset, to_little_endian, callback, __dmy__ ) );
+}
+
+/// @brief MISTコンテナ内の画像を GZ圧縮RAW 画像として出力する
+//! 
+//! @attention データを変換して保存する際に，値のオーバーフローなどは無視するので注意が必要
+//! 
+//! @param[in] image            … 画像を読み込む先のMISTコンテナ
+//! @param[in] filename         … 入力ファイル名
+//! @param[in] offset           … 画像から引き算するオフセット値
+//! @param[in] to_little_endian … 出力画像のデータ形式（リトルエンディアン … true，ビッグエンディアン … false）
+//! @param[in]  __dmy__         … 出力するデータの型をあらわすダミーオブジェクト（short型のオブジェクトなど）
+//! @param[in] callback         … 進行状況を通知するコールバック関数
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator, class ValueType, class Functor >
+bool write_raw_gz( const array< T, Allocator > &image, const std::string &filename, typename array< T, Allocator >::value_type offset, bool to_little_endian, ValueType __dmy__, Functor callback )
+{
+	return( __raw_controller__::raw_controller::write_gz( image, filename, offset, to_little_endian, callback, __dmy__ ) );
+}
+
+
+
+/// @brief 無圧縮RAW，GZ圧縮RAW 画像をMISTコンテナに読み込む
+//! 
+//! @param[out] image              … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename           … 入力ファイル名
+//! @param[in]  w                  … 入力画像の幅
+//! @param[in]  offset             … 画像に足しこむオフセット値
+//! @param[in]  from_little_endian … 入力画像が記録されている形式（リトルエンディアン … true，ビッグエンディアン … false）
 //! @param[in]  callback           … 進行状況を通知するコールバック関数
 //!
 //! @retval true  … 画像の読み込みに成功
@@ -354,8 +416,9 @@ bool read_raw( array< T, Allocator > &image, const std::string &filename, typena
 							typename array< T, Allocator >::value_type offset, bool from_little_endian, Functor callback )
 {
 	typename array< T, Allocator >::value_type v( 0 );
-	return( __raw_controller__::raw_controller::read( image, filename, w, 1, 1, offset, from_little_endian, 0, callback, v ) );
+	return( read_raw( image, filename, w, offset, from_little_endian, v, callback ) );
 }
+
 
 
 /// @brief MISTコンテナ内の画像を 無圧縮RAW 画像として出力する
@@ -372,8 +435,7 @@ bool read_raw( array< T, Allocator > &image, const std::string &filename, typena
 template < class T, class Allocator, class Functor >
 bool write_raw( const array< T, Allocator > &image, const std::string &filename, typename array< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
 {
-	typename array< T, Allocator >::value_type v( 0 );
-	return( __raw_controller__::raw_controller::write( image, filename, offset, to_little_endian, callback, v ) );
+	return( write_raw( image, filename, offset, to_little_endian, v, callback ) );
 }
 
 
@@ -392,7 +454,7 @@ template < class T, class Allocator, class Functor >
 bool write_raw_gz( const array< T, Allocator > &image, const std::string &filename, typename array< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
 {
 	typename array< T, Allocator >::value_type v( 0 );
-	return( __raw_controller__::raw_controller::write_gz( image, filename, offset, to_little_endian, callback, v ) );
+	return( write_raw_gz( image, filename, offset, to_little_endian, v, callback ) );
 }
 
 
