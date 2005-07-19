@@ -435,6 +435,7 @@ bool read_raw( array< T, Allocator > &image, const std::string &filename, typena
 template < class T, class Allocator, class Functor >
 bool write_raw( const array< T, Allocator > &image, const std::string &filename, typename array< T, Allocator >::value_type offset, bool to_little_endian, Functor callback )
 {
+	typename array< T, Allocator >::value_type v( 0 );
 	return( write_raw( image, filename, offset, to_little_endian, v, callback ) );
 }
 
