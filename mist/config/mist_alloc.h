@@ -514,7 +514,7 @@ public:
 			fill_objects( ptr, dest_num );
 #else
 			deallocate_objects( ptr, num );
-			ptr = allocate_objects( num );
+			ptr = allocate_objects( dest_num );
 #endif
 		}
 		return( dest_num == 0 ? NULL : ptr );
@@ -539,7 +539,7 @@ public:
 			fill_objects( ptr, dest_num, obj );
 #else
 			deallocate_objects( ptr, num );
-			ptr = allocate_objects( num, obj );
+			ptr = allocate_objects( dest_num, obj );
 #endif
 		}
 		return( dest_num == 0 ? NULL : ptr );
