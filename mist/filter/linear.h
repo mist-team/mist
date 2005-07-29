@@ -250,12 +250,12 @@ namespace __linear__
 	}
 
 
-	inline void gaus( array< double > &a, const size_t size, const double sigma )
+	inline void gaus( array< double > &a, const size_t range, const double sigma )
 	{
 		// std::cout << "gaus_0" << std::endl;
-		a.resize( size );
-		const int o = size / 2;
-		for( size_t i = 0 ; i < size ; i ++ )
+		a.resize( range * 2 + 1 );
+		const int o = range;
+		for( size_t i = 0 ; i < a.size( ) ; i ++ )
 		{
 			const int ii = static_cast< int >( i );
 			a[ i ] = std::exp( -( ( ii - o ) * ( ii - o ) ) / ( 2 * sigma * sigma ) );
@@ -263,12 +263,12 @@ namespace __linear__
 		normalize( a );
 	}
 
-	inline void gaus_1( array1< double > &a, const size_t size, const double sigma )
+	inline void gaus_1( array1< double > &a, const size_t range, const double sigma )
 	{
 		// std::cout << "gaus_1" << std::endl;
-		a.resize( size );
-		const int o = size / 2;
-		for( size_t i = 0 ; i < size ; i ++ )
+		a.resize( range * 2 + 1 );
+		const int o = range;
+		for( size_t i = 0 ; i < a.size( ) ; i ++ )
 		{
 			const int ii = static_cast< int >( i );
 			a[ i ] = std::exp( -( ( ii - o ) * ( ii - o ) ) / ( 2 * sigma * sigma ) );
@@ -276,14 +276,14 @@ namespace __linear__
 		normalize( a );
 	}
 
-	inline void gaus_2( array2< double > &a, const size_t size, const double sigma )
+	inline void gaus_2( array2< double > &a, const size_t range, const double sigma )
 	{
 		// std::cout << "gaus_2" << std::endl;
-		a.resize( size, size );
-		const int o = size / 2;
-		for( size_t j = 0 ; j < size ; j ++ )
+		a.resize( range * 2 + 1, range * 2 + 1 );
+		const int o = range;
+		for( size_t j = 0 ; j < a.height( ) ; j ++ )
 		{
-			for( size_t i = 0 ; i < size ; i ++ )
+			for( size_t i = 0 ; i < a.width( ) ; i ++ )
 			{
 				const int ii = static_cast< int >( i );
 				const int jj = static_cast< int >( j );
@@ -293,16 +293,16 @@ namespace __linear__
 		normalize( a );
 	}
 
-	inline void gaus_3( array3< double > &a, const size_t size, const double sigma )
+	inline void gaus_3( array3< double > &a, const size_t range, const double sigma )
 	{
 		// std::cout << "gaus_3" << std::endl;
-		a.resize( size, size, size );
-		const int o = size / 2;
-		for( size_t k = 0 ; k < size ; k ++ )
+		a.resize( range * 2 + 1, range * 2 + 1, range * 2 + 1 );
+		const int o = range;
+		for( size_t k = 0 ; k < a.depth( ) ; k ++ )
 		{
-			for( size_t j = 0 ; j < size ; j ++ )
+			for( size_t j = 0 ; j < a.height( ) ; j ++ )
 			{
-				for( size_t i = 0 ; i < size ; i ++ )
+				for( size_t i = 0 ; i < a.width() ; i ++ )
 				{
 					const int ii = static_cast< int >( i );
 					const int jj = static_cast< int >( j );
