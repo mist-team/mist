@@ -264,6 +264,12 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		}
 	}
 
+	// ’†S‚Ì‰~‚ªˆê‚Â‚àŒ©‚Â‚©‚ç‚È‚¢
+	if( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
+	{
+		return( false );
+	}
+
 
 	vector_type p1, p2, p3;
 	// –ÊÏ‚Ì‘å‚«‚¢—Ìˆæ‚ÅC‘æ4‚Ì“_‚ðŒˆ’è‚·‚é
