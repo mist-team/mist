@@ -623,8 +623,7 @@ namespace __euclidean_utility__
 
 			return( sx );
 		}
-
-
+	
 		static bool is_deletable( const int v[ 27 ] )
 		{
 			// 近傍情報を設定
@@ -744,6 +743,61 @@ namespace __euclidean_utility__
 			}
 
 			return( true );
+		}
+	
+		//３次元単体のチェック
+		static bool is_3d_simplex( const int v[ 27 ] )
+		{
+			// 近傍情報を設定
+			int p[ 3 ][ 3 ][ 3 ];
+
+			p[ 0 ][ 0 ][ 0 ] = v[  4 ];
+			p[ 1 ][ 0 ][ 0 ] = v[  5 ];
+			p[ 2 ][ 0 ][ 0 ] = v[  6 ];
+			p[ 0 ][ 1 ][ 0 ] = v[  3 ];
+			p[ 1 ][ 1 ][ 0 ] = v[  0 ];
+			p[ 2 ][ 1 ][ 0 ] = v[  7 ];
+			p[ 0 ][ 2 ][ 0 ] = v[  2 ];
+			p[ 1 ][ 2 ][ 0 ] = v[  1 ];
+			p[ 2 ][ 2 ][ 0 ] = v[  8 ];
+			p[ 0 ][ 0 ][ 1 ] = v[ 13 ];
+			p[ 1 ][ 0 ][ 1 ] = v[ 14 ];
+			p[ 2 ][ 0 ][ 1 ] = v[ 15 ];
+			p[ 0 ][ 1 ][ 1 ] = v[ 12 ];
+			p[ 1 ][ 1 ][ 1 ] = v[  9 ];
+			p[ 2 ][ 1 ][ 1 ] = v[ 16 ];
+			p[ 0 ][ 2 ][ 1 ] = v[ 11 ];
+			p[ 1 ][ 2 ][ 1 ] = v[ 10 ];
+			p[ 2 ][ 2 ][ 1 ] = v[ 17 ];
+			p[ 0 ][ 0 ][ 2 ] = v[ 22 ];
+			p[ 1 ][ 0 ][ 2 ] = v[ 23 ];
+			p[ 2 ][ 0 ][ 2 ] = v[ 24 ];
+			p[ 0 ][ 1 ][ 2 ] = v[ 21 ];
+			p[ 1 ][ 1 ][ 2 ] = v[ 18 ];
+			p[ 2 ][ 1 ][ 2 ] = v[ 25 ];
+			p[ 0 ][ 2 ][ 2 ] = v[ 20 ];
+			p[ 1 ][ 2 ][ 2 ] = v[ 19 ];
+			p[ 2 ][ 2 ][ 2 ] = v[ 26 ];
+
+			if( p[ 1 ][ 1 ][ 1 ] == 0 ) return( false );
+
+			for( size_type k = 1 ; k < 3 ; k++ ) 
+			{
+				for( size_type j = 1 ; j < 3 ; j++ ) 
+				{
+					for( size_type i = 1 ; i < 3 ; i++ ) 
+					{
+						if( p[ i - 1 ][ j ][ k ] * p[ i ][ j - 1 ][ k ] * p[ i ][ j ][ k - 1 ] *
+							p[ i - 1 ][ j - 1 ][ k ] * p[ i ][ j - 1 ][ k - 1 ] * p[ i - 1 ][ j ][ k - 1 ] * 
+							p[ i ][ j ][ k ] * p[ i - 1 ][ j - 1 ][ k - 1 ] != 0 )
+						{
+							return( true );
+						}
+					}
+				}
+			}
+			
+			return( false );
 		}
 	};
 
@@ -1006,6 +1060,83 @@ namespace __euclidean_utility__
 
 			return( true );
 		}
+	
+		//３次元単体のチェック
+		static bool is_3d_simplex( const int v[ 27 ] )
+		{
+			// 近傍情報を設定
+			int p[ 3 ][ 3 ][ 3 ];
+
+			p[ 0 ][ 0 ][ 0 ] = v[  4 ];
+			p[ 1 ][ 0 ][ 0 ] = v[  5 ];
+			p[ 2 ][ 0 ][ 0 ] = v[  6 ];
+			p[ 0 ][ 1 ][ 0 ] = v[  3 ];
+			p[ 1 ][ 1 ][ 0 ] = v[  0 ];
+			p[ 2 ][ 1 ][ 0 ] = v[  7 ];
+			p[ 0 ][ 2 ][ 0 ] = v[  2 ];
+			p[ 1 ][ 2 ][ 0 ] = v[  1 ];
+			p[ 2 ][ 2 ][ 0 ] = v[  8 ];
+			p[ 0 ][ 0 ][ 1 ] = v[ 13 ];
+			p[ 1 ][ 0 ][ 1 ] = v[ 14 ];
+			p[ 2 ][ 0 ][ 1 ] = v[ 15 ];
+			p[ 0 ][ 1 ][ 1 ] = v[ 12 ];
+			p[ 1 ][ 1 ][ 1 ] = v[  9 ];
+			p[ 2 ][ 1 ][ 1 ] = v[ 16 ];
+			p[ 0 ][ 2 ][ 1 ] = v[ 11 ];
+			p[ 1 ][ 2 ][ 1 ] = v[ 10 ];
+			p[ 2 ][ 2 ][ 1 ] = v[ 17 ];
+			p[ 0 ][ 0 ][ 2 ] = v[ 22 ];
+			p[ 1 ][ 0 ][ 2 ] = v[ 23 ];
+			p[ 2 ][ 0 ][ 2 ] = v[ 24 ];
+			p[ 0 ][ 1 ][ 2 ] = v[ 21 ];
+			p[ 1 ][ 1 ][ 2 ] = v[ 18 ];
+			p[ 2 ][ 1 ][ 2 ] = v[ 25 ];
+			p[ 0 ][ 2 ][ 2 ] = v[ 20 ];
+			p[ 1 ][ 2 ][ 2 ] = v[ 19 ];
+			p[ 2 ][ 2 ][ 2 ] = v[ 26 ];
+
+			if( p[ 1 ][ 1 ][ 1 ] == 0 ) return( false );
+
+			int num = 0;
+			for( size_type k = 1 ; k < 3 ; k++ ) 
+			{
+				for( size_type j = 1 ; j < 3 ; j++ ) 
+				{
+					for( size_type i = 1 ; i < 3 ; i++ ) 
+					{
+						if( p[ 1 ][ 1 ][ 1 ] != 0 ) num++;
+						if( p[ i - 1 ][ 1 ][ 1 ] != 0 ) num++;
+						if( p[ 1 ][ j - 1 ][ 1 ] != 0 ) num++;
+						if( p[ 1 ][ 1 ][ k - 1 ] != 0 ) num++;
+						if( p[ i - 1 ][ j - 1 ][ 1 ] != 0 ) num++;
+						if( p[ 1 ][ j - 1 ] [ k - 1 ] != 0 ) num++;
+						if( p[ i - 1 ][ 1 ][ k - 1 ] != 0 ) num++;
+						if( p[ i - 1 ][ j - 1 ][ k - 1 ] != 0 ) num++;
+
+						if( num > 4 ) return( true );
+						if( num < 4 ) return( false );
+
+						if( p[ 1 ][ 1 ][ k - 1 ] * ( p[ 1 ][ 1 ][ k - 1 ] * p[ i - 1 ][ 1 ][ k - 1 ] + 
+													 p[ 1 ][ j - 1 ][ 1 ] * p[ 1 ][ j - 1 ][ k - 1 ] + 
+													 p[ i - 1][ j - 1 ][ 1 ] * p[ i - 1 ][ j - 1 ][ k - 1 ] ) != 0 )
+						{
+							return( true );
+						}
+						if( p[ i - 1 ][ 1 ][ 1 ] * ( p[ 1 ][ j - 1 ][ 1 ] * p[ i - 1 ][ j - 1 ][ 1 ] +
+													 p[ 1 ][ j - 1 ][ k - 1 ] * p[ i - 1 ][ j - 1 ][ k - 1 ] ) != 0 )
+						{
+							return( true );
+						}
+						if( p[ 1 ][ j - 1 ][ 1 ] * ( p[ i - 1 ][ 1 ][ k - 1 ] * p[ i - 1 ][ j - 1 ][ k - 1 ] ) != 0 )
+						{
+							return( true );
+						}
+					}
+				}
+			}
+			
+			return( false );
+		}
 	};
 
 
@@ -1040,7 +1171,7 @@ namespace __euclidean_utility__
 		} while( loop );
 	}
 
-	//　ユークリッド距離変換を用いた3次元ディジタル画像の細線化
+	//　ユークリッド距離変換を用いた3次元ディジタル画像の細線化と薄面化
 	//	- 参考文献
 	//   - 斉藤豊文, 森健策, 鳥脇純一郎, ``ユークリッド距離変換を用いた3次元ディジタル画像の薄面化および細線化の逐次型アルゴリズムとその諸性質,'' 電子情報通信学会論文誌D-II, vol.J79-D-II, no.10, pp.1675-1685, 1996
 	//
@@ -1422,6 +1553,315 @@ namespace __euclidean_utility__
 			}
 		}
 	}
+
+	//薄面化
+	template < class T, class Allocator, class Neighbor >
+	void surface_thinning( array3< T, Allocator > &in, Neighbor __dmy__ )
+	{
+		typedef typename array3< T, Allocator >::size_type size_type;
+		typedef typename array3< T, Allocator >::difference_type difference_type;
+		typedef typename array3< T, Allocator >::const_pointer const_pointer;
+		typedef typename array3< T, Allocator >::pointer pointer;
+		typedef T value_type;
+		typedef Neighbor neighbor_type;
+		typedef border< T > border_type;
+		typedef std::vector< border_type > border_list_type;
+
+		// Step1 距離変換
+		euclidean::distance_transform( in, in );
+
+		// 図形の端は０
+		for( size_type j = 0 ; j < in.height( ) ; j++ )
+		{
+			for( size_type i = 0 ; i < in.width( ) ; i++ )
+			{
+				in( i, j, 0 ) = 0;
+				in( i, j, in.depth( ) - 1 ) = 0;
+			}
+		}
+
+		for( size_type k = 0 ; k < in.depth( ) ; k++ )
+		{
+			for( size_type j = 0 ; j < in.height( ) ; j++ )
+			{
+				in( 0, j, k ) = 0;
+				in( in.width( ) - 1, j, k ) = 0;
+			}
+		}
+
+		for( size_type k = 0 ; k < in.depth( ) ; k++ )
+		{
+			for( size_type i = 0 ; i < in.width( ) ; i++ )
+			{
+				in( i, 0, k ) = 0;
+				in( i, in.height( ) - 1, k ) = 0;
+			}
+		}
+
+		value_type min = type_limits< value_type >::maximum( ), max = type_limits< value_type >::minimum( );
+		for( size_type i = 0 ; i < in.size( ) ; i++ )
+		{
+			value_type &v = in[ i ];
+			if( v != 0 )
+			{
+				v += 20;
+				if( v > max ) max = v;
+				if( v < min ) min = v;
+			}
+		}
+
+		border_list_type blist, slist[ 9 ];
+		difference_type diff[ 27 ], nc6[ 6 ];
+		int val[ 27 ];
+
+		{
+			difference_type ox = in.width( ) / 2;
+			difference_type oy = in.height( ) / 2;
+			difference_type oz = in.depth( ) / 2;
+
+			const_pointer p0 = &in( ox, oy, oz );
+
+
+			diff[  0 ] = &in( ox    , oy    , oz - 1 ) - p0;
+			diff[  1 ] = &in( ox    , oy + 1, oz - 1 ) - p0;
+			diff[  2 ] = &in( ox - 1, oy + 1, oz - 1 ) - p0;
+			diff[  3 ] = &in( ox - 1, oy    , oz - 1 ) - p0;
+			diff[  4 ] = &in( ox - 1, oy - 1, oz - 1 ) - p0;
+			diff[  5 ] = &in( ox    , oy - 1, oz - 1 ) - p0;
+			diff[  6 ] = &in( ox + 1, oy - 1, oz - 1 ) - p0;
+			diff[  7 ] = &in( ox + 1, oy    , oz - 1 ) - p0;
+			diff[  8 ] = &in( ox + 1, oy + 1, oz - 1 ) - p0;
+
+			diff[  9 ] = &in( ox    , oy    , oz     ) - p0;
+			diff[ 10 ] = &in( ox    , oy + 1, oz     ) - p0;
+			diff[ 11 ] = &in( ox - 1, oy + 1, oz     ) - p0;
+			diff[ 12 ] = &in( ox - 1, oy    , oz     ) - p0;
+			diff[ 13 ] = &in( ox - 1, oy - 1, oz     ) - p0;
+			diff[ 14 ] = &in( ox    , oy - 1, oz     ) - p0;
+			diff[ 15 ] = &in( ox + 1, oy - 1, oz     ) - p0;
+			diff[ 16 ] = &in( ox + 1, oy    , oz     ) - p0;
+			diff[ 17 ] = &in( ox + 1, oy + 1, oz     ) - p0;
+
+			diff[ 18 ] = &in( ox    , oy    , oz + 1 ) - p0;
+			diff[ 19 ] = &in( ox    , oy + 1, oz + 1 ) - p0;
+			diff[ 20 ] = &in( ox - 1, oy + 1, oz + 1 ) - p0;
+			diff[ 21 ] = &in( ox - 1, oy    , oz + 1 ) - p0;
+			diff[ 22 ] = &in( ox - 1, oy - 1, oz + 1 ) - p0;
+			diff[ 23 ] = &in( ox    , oy - 1, oz + 1 ) - p0;
+			diff[ 24 ] = &in( ox + 1, oy - 1, oz + 1 ) - p0;
+			diff[ 25 ] = &in( ox + 1, oy    , oz + 1 ) - p0;
+			diff[ 26 ] = &in( ox + 1, oy + 1, oz + 1 ) - p0;
+
+			nc6[ 0 ] = diff[ 12 ];
+			nc6[ 1 ] = diff[ 16 ];
+			nc6[ 2 ] = diff[ 14 ];
+			nc6[ 3 ] = diff[ 10 ];
+			nc6[ 4 ] = diff[  0 ];
+			nc6[ 5 ] = diff[ 18 ];
+		}
+
+		{
+			const_pointer p0 = &in[ 0 ];
+
+			// Step2 境界画素の検出
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				value_type &v = in[ i ];
+				if( v > 20 )
+				{
+					const_pointer p = &v;
+					if( p[ nc6[ 0 ] ] == 0 || p[ nc6[ 1 ] ] == 0 ||
+						p[ nc6[ 2 ] ] == 0 || p[ nc6[ 3 ] ] == 0 ||
+						p[ nc6[ 4 ] ] == 0 || p[ nc6[ 5 ] ] == 0 )
+					{
+						blist.push_back( border_type( p - p0, v ) );
+						v = 1;
+					}
+				}
+			}
+		}
+
+		// 以降の処理のためにメモリの予備を確保する
+		blist.reserve( blist.size( ) * 2 + 1 );
+		slist[ 0 ].reserve( blist.size( ) );
+		slist[ 1 ].reserve( blist.size( ) );
+		slist[ 2 ].reserve( blist.size( ) );
+		slist[ 3 ].reserve( blist.size( ) );
+		slist[ 4 ].reserve( blist.size( ) );
+		slist[ 5 ].reserve( blist.size( ) );
+		slist[ 6 ].reserve( blist.size( ) );
+		slist[ 7 ].reserve( blist.size( ) );
+		slist[ 8 ].reserve( blist.size( ) );
+
+		size_type count = 0, loop = 0;
+
+		do
+		{
+			size_type __length__ = 0;
+
+			//Step3 メインサイクル
+			for( size_type l = 0 ; l < blist.size( ) ; l++ )
+			{
+				border_type &b = blist[ l ];
+				pointer p = &in[ b.diff ];
+
+				if( b.value <= min )
+				{
+					create_neighbor_list( p, val, diff );
+
+					// 消去不可能なら永久保存点
+					if( !neighbor_type::is_deletable( val ) )
+					{
+						continue;
+					}
+					else
+					{
+						// 図形の厚さが１なら永久保存点
+						if( !neighbor_type::is_3d_simplex( val ) )
+						{
+							continue;
+						}
+						else
+						{
+							// 自分自身を除く
+							size_type num = val[  0 ];
+							num += val[  1 ];
+							num += val[  2 ];
+							num += val[  3 ];
+							num += val[  4 ];
+							num += val[  5 ];
+							num += val[  6 ];
+							num += val[  7 ];
+							num += val[  8 ];
+							num += val[ 10 ];
+							num += val[ 11 ];
+							num += val[ 12 ];
+							num += val[ 13 ];
+							num += val[ 14 ];
+							num += val[ 15 ];
+							num += val[ 16 ];
+							num += val[ 17 ];
+							num += val[ 18 ];
+							num += val[ 19 ];
+							num += val[ 20 ];
+							num += val[ 21 ];
+							num += val[ 22 ];
+							num += val[ 23 ];
+							num += val[ 24 ];
+							num += val[ 25 ];
+							num += val[ 26 ];
+
+							difference_type val = num / 3 + 7;
+							b.value = static_cast< value_type >( val );
+
+							if( 7 <= val && val <= 15 )
+							{
+								slist[ val - 7 ].push_back( b );
+								continue;
+							}
+						}
+					}
+				}
+
+				blist[ __length__++ ] = b;
+			}
+
+			blist.erase( blist.begin( ) + __length__, blist.end( ) );
+
+			// Step4 サブサイクル
+			for( size_type ll = 0 ; ll < 9 ; ll++ )
+			{
+				border_list_type &list = slist[ ll ];
+
+				for( size_type l = 0 ; l < list.size( ) ; l++ )
+				{
+					border_type &b = list[ l ];
+					pointer p = &in[ b.diff ];
+
+					create_neighbor_list( p, val, diff );
+
+					//消去不可能なら永久保存点
+					if( !neighbor_type::is_deletable( val ) )
+					{
+						continue;
+					}
+					else
+					{
+						//図形の厚さが１なら永久保存点
+						if( !neighbor_type::is_3d_simplex( val ) )
+						{
+							continue;
+						}
+						else
+						{
+							//画素の消去
+							p[ 0 ] = 0;
+
+							if( p[ nc6[ 0 ] ] > 20 )
+							{
+								blist.push_back( border_type( b.diff + nc6[ 0 ], p[ nc6[ 0 ] ] ) );
+								p[ nc6[ 0 ] ] = 1;
+							}
+							if( p[ nc6[ 1 ] ] > 20 )
+							{
+								blist.push_back( border_type( b.diff + nc6[ 1 ], p[ nc6[ 1 ] ] ) );
+								p[ nc6[ 1 ] ] = 1;
+							}
+							if( p[ nc6[ 2 ] ] > 20 )
+							{
+								blist.push_back( border_type( b.diff + nc6[ 2 ], p[ nc6[ 2 ] ] ) );
+								p[ nc6[ 2 ] ] = 1;
+							}
+							if( p[ nc6[ 3 ] ] > 20 )
+							{
+								blist.push_back( border_type( b.diff + nc6[ 3 ], p[ nc6[ 3 ] ] ) );
+								p[ nc6[ 3 ] ] = 1;
+							}
+							if( p[ nc6[ 4 ] ] > 20 )
+							{
+								blist.push_back( border_type( b.diff + nc6[ 4 ], p[ nc6[ 4 ] ] ) );
+								p[ nc6[ 4 ] ] = 1;
+							}
+							if( p[ nc6[ 5 ] ] > 20 )
+							{
+								blist.push_back( border_type( b.diff + nc6[ 5 ], p[ nc6[ 5 ] ] ) );
+								p[ nc6[ 5 ] ] = 1;
+							}
+						}
+					}
+				}
+
+				// 次以降の処理のためにリスト空にする（内部で使用するメモリ容量は変化しない）
+				list.clear( );
+			}
+
+			//Step5 終了判定
+			min = max;
+			count = 0;
+			for( size_type l = 0 ; l < blist.size( ) ; l++ )
+			{
+				border_type &b = blist[ l ];
+				if( b.value < min && b.value > 20 )
+				{
+					min = b.value;
+				}
+			}
+
+			std::cout << loop++ << "          \r";
+
+		} while( min < max || blist.size( ) > 0 );
+
+		std::cout << std::endl;
+
+		// Step6 後処理
+		for( size_type i = 0 ; i < in.size( ) ; i++ )
+		{
+			if( in[ i ] != 0 )
+			{
+				in[ i ] = 1;
+			}
+		}
+	}
 }
 
 
@@ -1613,6 +2053,66 @@ namespace euclidean
 			out[ i ] = in[ i ] > 0 ? 1 : 0;
 		}
 		__euclidean_utility__::thinning( out, __euclidean_utility__::neighbor< 26 >( ) );
+	}
+
+	/// @brief ユークリッド距離を用いた3次元画像に対する薄面化アルゴリズム
+	//!
+	//! 薄面化結果は6連結となる
+	//!
+	//!	- 参考文献
+	//!	- 斉藤豊文, 森健策, 鳥脇純一郎, ``ユークリッド距離変換を用いた3次元ディジタル画像の薄面化および細線化の逐次型アルゴリズムとその諸性質,'' 電子情報通信学会論文誌D-II, vol.J79-D-II, no.10, pp.1675-1685, 1996
+	//!
+	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化することが可能です
+	//! @param[in]  in  … 入力画像
+	//! @param[out] out … 出力画像
+	//!
+	template < class T1, class T2, class Allocator1, class Allocator2 >
+	void surface_thinning6( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
+	{
+		typedef typename array3< T2, Allocator2 >::size_type  size_type;
+		typedef typename array3< T2, Allocator2 >::value_type value_type;
+
+		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+		out.reso3( in.reso3( ) );
+
+		for( size_type i = 0 ; i < in.size( ) ; i++ )
+		{
+			out[ i ] = in[ i ] > 0 ? 1 : 0;
+		}
+		__euclidean_utility__::surface_thinning( out, __euclidean_utility__::neighbor< 6 >( ) );
+	}
+
+
+	/// @brief ユークリッド距離を用いた3次元画像に対する薄面化アルゴリズム
+	//!
+	//! 薄面化結果は26連結となる
+	//!
+	//!	- 参考文献
+	//!	- 斉藤豊文, 森健策, 鳥脇純一郎, ``ユークリッド距離変換を用いた3次元ディジタル画像の薄面化および細線化の逐次型アルゴリズムとその諸性質,'' 電子情報通信学会論文誌D-II, vol.J79-D-II, no.10, pp.1675-1685, 1996
+	//!
+	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化することが可能です
+	//!
+	//! @param[in]  in  … 入力画像
+	//! @param[out] out … 出力画像
+	//!
+	template < class T1, class T2, class Allocator1, class Allocator2 >
+	void surface_thinning26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
+	{
+		typedef typename array3< T2, Allocator2 >::size_type  size_type;
+		typedef typename array3< T2, Allocator2 >::value_type value_type;
+
+		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+		out.reso3( in.reso3( ) );
+
+		for( size_type i = 0 ; i < in.size( ) ; i++ )
+		{
+			out[ i ] = in[ i ] > 0 ? 1 : 0;
+		}
+		__euclidean_utility__::surface_thinning( out, __euclidean_utility__::neighbor< 26 >( ) );
 	}
 
 	/// @}
