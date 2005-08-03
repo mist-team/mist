@@ -1097,44 +1097,83 @@ namespace __euclidean_utility__
 
 			if( p[ 1 ][ 1 ][ 1 ] == 0 ) return( false );
 
-			int num = 0;
-			for( size_type k = 1 ; k < 3 ; k++ ) 
+
+			for( size_type k = 0 ; k < 3 ; k += 2 ) 
 			{
-				for( size_type j = 1 ; j < 3 ; j++ ) 
+				for( size_type j = 0 ; j < 3 ; j += 2 ) 
 				{
-					for( size_type i = 1 ; i < 3 ; i++ ) 
+					for( size_type i = 0 ; i < 3 ; i += 2 ) 
 					{
-						if( p[ 1 ][ 1 ][ 1 ] != 0 ) num++;
-						if( p[ i - 1 ][ 1 ][ 1 ] != 0 ) num++;
-						if( p[ 1 ][ j - 1 ][ 1 ] != 0 ) num++;
-						if( p[ 1 ][ 1 ][ k - 1 ] != 0 ) num++;
-						if( p[ i - 1 ][ j - 1 ][ 1 ] != 0 ) num++;
-						if( p[ 1 ][ j - 1 ] [ k - 1 ] != 0 ) num++;
-						if( p[ i - 1 ][ 1 ][ k - 1 ] != 0 ) num++;
-						if( p[ i - 1 ][ j - 1 ][ k - 1 ] != 0 ) num++;
+						int num = 0;
+						
+						if( p[ i ][ j ][ 1 ] != 0 ) num++;
+						if( p[ i ][ j ][ k ] != 0 ) num++;
+						if( p[ i ][ 1 ][ 1 ] != 0 ) num++;
+						if( p[ i ][ 1 ][ k ] != 0 ) num++;
+						if( p[ 1 ][ j ][ 1 ] != 0 ) num++;
+						if( p[ 1 ][ j ][ k ] != 0 ) num++;
+						if( p[ 1 ][ 1 ][ k ] != 0 ) num++;
 
-						if( num > 4 ) return( true );
-						if( num < 4 ) return( false );
+						//if( p[ i ][ j ][ k ] != 0 ) num++;
+						//if( p[ i - 1 ][ j ][ k ] != 0 ) num++;
+						//if( p[ i ][ j - 1 ][ 1 ] != 0 ) num++;
+						//if( p[ i ][ j ][ k - 1 ] != 0 ) num++;
+						//if( p[ i - 1 ][ j - 1 ][ k ] != 0 ) num++;
+						//if( p[ i ][ j - 1 ] [ k - 1 ] != 0 ) num++;
+						//if( p[ i - 1 ][ j ][ k - 1 ] != 0 ) num++;
+						//if( p[ i - 1 ][ j - 1 ][ k - 1 ] != 0 ) num++;
 
-						if( p[ 1 ][ 1 ][ k - 1 ] * ( p[ 1 ][ 1 ][ k - 1 ] * p[ i - 1 ][ 1 ][ k - 1 ] + 
-													 p[ 1 ][ j - 1 ][ 1 ] * p[ 1 ][ j - 1 ][ k - 1 ] + 
-													 p[ i - 1][ j - 1 ][ 1 ] * p[ i - 1 ][ j - 1 ][ k - 1 ] ) != 0 )
+						if( num > 3 ) return( true );
+						if( num < 3 ) continue;//return( false );
+
+						//if( p[ i ][ j ][ k - 1 ] * ( p[ i ][ j ][ k - 1 ] * p[ i - 1 ][ j ][ k - 1 ] + 
+						//							 p[ i ][ j - 1 ][ k ] * p[ i ][ j - 1 ][ k - 1 ] + 
+						//							 p[ i - 1][ j - 1 ][ k ] * p[ i - 1 ][ j - 1 ][ k - 1 ] ) != 0 )
+						//{
+						//	return( true );
+						//}
+						//if( p[ i - 1 ][ j ][ k ] * ( p[ i ][ j - 1 ][ k ] * p[ i - 1 ][ j - 1 ][ k ] +
+						//							 p[ i ][ j - 1 ][ k - 1 ] * p[ i - 1 ][ j - 1 ][ k - 1 ] ) != 0 )
+						//{
+						//	return( true );
+						//}
+						//if( p[ i ][ j - 1 ][ k ] * ( p[ i - 1 ][ j ][ k - 1 ] * p[ i - 1 ][ j - 1 ][ k - 1 ] ) != 0 )
+						//{
+						//	return( true );
+						//}
+
+						//if( p[ i ][ j ][ k ] * p[ i - 1 ][ j ][ k ] * p[ i ][ j - 1 ][ k ] * p[ i - 1 ][ j - 1 ][ k ] != 0 ) return( false );
+						//if( p[ i ][ j ][ k ] * p[ i - 1 ][ j ][ k ] * p[ i ][ j ][ k - 1 ] * p[ i - 1 ][ j ][ k - 1 ] != 0 ) return( false );
+						//if( p[ i ][ j ][ k ] * p[ i ][ j - 1 ][ k ] * p[ i ][ j ][ k - 1 ] * p[ i ][ j - 1 ][ k - 1 ] != 0 ) return( false );
+						//if( p[ i ][ j ][ k ] * p[ i - 1 ][ j ][ k ] * p[ i ][ j - 1 ][ k - 1 ] * p[ i - 1 ][ j - 1 ][ k - 1 ] != 0 ) return( false );
+						//if( p[ i ][ j ][ k ] * p[ i ][ j - 1 ][ k ] * p[ i - 1 ][ j ][ k - 1 ] * p[ i - 1 ][ j - 1 ][ k - 1 ] != 0 ) return( false );
+						//if( p[ i ][ j ][ k ] * p[ i ][ j ][ k - 1 ] * p[ i - 1 ][ j - 1 ][ k ] * p[ i - 1 ][ j - 1 ][ k - 1 ] != 0 ) return( false );
+						
+						if( p[ 1 ][ 1 ][ k ] * ( p[ 1 ][ 1 ][ k ] * p[ i ][ 1 ][ k ] + 
+												 p[ 1 ][ j ][ 1 ] * p[ 1 ][ j ][ k ] + 
+												 p[ i ][ j ][ 1 ] * p[ i ][ j ][ k ] ) != 0 )
 						{
-							return( true );
+							continue;
+							//return( false );
 						}
-						if( p[ i - 1 ][ 1 ][ 1 ] * ( p[ 1 ][ j - 1 ][ 1 ] * p[ i - 1 ][ j - 1 ][ 1 ] +
-													 p[ 1 ][ j - 1 ][ k - 1 ] * p[ i - 1 ][ j - 1 ][ k - 1 ] ) != 0 )
+						if( p[ i ][ 1 ][ 1 ] * ( p[ 1 ][ j ][ 1 ] * p[ i ][ j ][ 1 ] +
+												 p[ 1 ][ j ][ k ] * p[ i ][ j ][ k ] ) != 0 )
 						{
-							return( true );
+							continue;
+							//return( false );
 						}
-						if( p[ 1 ][ j - 1 ][ 1 ] * ( p[ i - 1 ][ 1 ][ k - 1 ] * p[ i - 1 ][ j - 1 ][ k - 1 ] ) != 0 )
+						if( p[ 1 ][ j ][ 1 ] * ( p[ i ][ 1 ][ k ] * p[ i ][ j ][ k ] ) != 0 )
 						{
-							return( true );
+							continue;
+							//return( false );
 						}
+
+						return( true );
+
 					}
 				}
 			}
-			
+			//return( true );
 			return( false );
 		}
 	};
