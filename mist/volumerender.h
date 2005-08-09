@@ -72,6 +72,8 @@ namespace volumerender
 		//attribute( const attribute &a ) : pixel( a.pixel ), alpha( a.alpha ), has_alpha( a.has_alpha ){ }
 
 		attribute( const attribute &a ) : pixel( a.pixel ), alpha( a.alpha ), has_alpha( a.has_alpha ){ }
+
+		attribute( const value_type &pix, double a ) : pixel( pix ), alpha( a ), has_alpha( a > 0.0 ){ }
 	
 	};
 
@@ -158,7 +160,22 @@ namespace volumerender
 			}
 		}
 
-	protected:
+	public:
+		const difference_type minimum( ) const
+		{
+			return( sindex_ );
+		}
+
+		const difference_type maximum( ) const
+		{
+			return( eindex_ );
+		}
+
+		const bool empty( ) const
+		{
+			return( eindex_ < sindex_ );
+		}
+
 		value_type &operator []( difference_type index )
 		{
 			return( base::operator []( zero_index_ + index ) );
@@ -169,7 +186,6 @@ namespace volumerender
 			return( base::at( zero_index_ + index ) );
 		}
 
-	public:
 		const value_type &operator []( difference_type index ) const
 		{
 			return( base::operator []( zero_index_ + index ) );
@@ -326,6 +342,27 @@ namespace volumerender
 		}
 	};
 
+	inline std::ostream &operator <<( std::ostream &out, const parameter &p )
+	{
+		out << "Pos = ( " << p.pos << " )" << std::endl;
+		out << "Dir = ( " << p.dir << " )" << std::endl;
+		out << "Up  = ( " << p.up  << " )" << std::endl;
+
+		out << "Center = ( " << p.offset  << " )" << std::endl;
+
+		out << "Perspective = " << p.perspective_view << std::endl;
+		out << "ValueInterpolation = " << p.value_interpolation << std::endl;
+		out << "Fovy = " << p.fovy << std::endl;
+		out << "Ambient = " << p.ambient_ratio << std::endl;
+		out << "Diffuse = " << p.diffuse_ratio << std::endl;
+		out << "Specular = " << p.specular << std::endl;
+		out << "LightAtten = " << p.light_attenuation << std::endl;
+		out << "SamplingStep = " << p.sampling_step << std::endl;
+		out << "Termination = " << p.termination << std::endl;
+		out << "Distortion = " << p.distortion << std::endl;
+
+		return( out );
+	}
 
 	// 倍精度浮動小数を整数に丸める
 	// 正の数の場合は，通常の int キャストと同じ動作をする

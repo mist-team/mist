@@ -101,7 +101,7 @@ namespace __linear__
 			{ 
 				res += *( pv + pd_[ i ] ) * ka_[ i ];
 			}
-			return ( static_cast< Out >( res ) );
+			return( static_cast< Out >( res ) );
 		}
 
 	};
@@ -166,7 +166,7 @@ namespace __linear__
 			{ 
 				res += *( pv + pd_[ i ] ) * ka_[ i ];
 			}
-			return ( static_cast< rgb< Out > >( res ) );
+			return( static_cast< rgb< Out > >( res ) );
 		}
 
 	};
@@ -183,7 +183,7 @@ namespace __linear__
 		}
 		const Out operator ( )( const In &v ) const
 		{
-			return static_cast< Out >( std::fabs( f_( v ) ) );
+			return( static_cast< Out >( std::fabs( f_( v ) ) ) );
 		}
 	};
 
@@ -199,7 +199,7 @@ namespace __linear__
 		const rgb< Out > operator ( )( const In &v ) const
 		{
 			const rgb< Out > res = f_( v );
-			return ( rgb< Out >( static_cast< Out >( std::fabs( static_cast< double >( res.r ) ) ) , static_cast< Out >( std::fabs( static_cast< double >( res.g ) ) ) , static_cast< Out >( std::fabs( static_cast< double >( res.b ) ) ) ) );
+			return( rgb< Out >( static_cast< Out >( std::fabs( static_cast< double >( res.r ) ) ) , static_cast< Out >( std::fabs( static_cast< double >( res.g ) ) ) , static_cast< Out >( std::fabs( static_cast< double >( res.b ) ) ) ) );
 		}
 	};
 
@@ -441,7 +441,7 @@ inline bool linear_filter(
 	const size_t begin = offset;
 	const size_t end = in.size( ) - ( kernel.size( ) - offset - 1 );
 	filtering( in, out, func, begin, end );
-	return ( 1 );
+	return( true );
 }
 
 /// @brief 一般の線形フィルタ( array1 )
@@ -468,7 +468,7 @@ inline bool linear_filter(
 	const size_t begin = offset;
 	const size_t end = in.size( ) - ( kernel.width( ) - offset - 1 );
 	filtering( in, out, func, begin, end );
-	return ( 1 );
+	return( true );
 }
 
 /// @brief 一般の線形フィルタ( array2 )
@@ -498,7 +498,7 @@ inline bool linear_filter(
 	const size_t begin = offset_j * in.width( ) + offset_i;
 	const size_t end = in.size( ) - ( ( kernel.height( ) - offset_j - 1 ) * in.width( ) + kernel.width( ) - offset_i - 1 );
 	filtering( in, out, func, begin, end );
-	return ( 1 );
+	return( true );
 }
 
 /// @brief 一般の線形フィルタ( array2 )
@@ -531,7 +531,7 @@ inline bool linear_filter(
 	const size_t begin = offset_k * in.height( ) * in.width( ) + offset_j * in.width( ) + offset_i;
 	const size_t end = in.size( ) - ( ( kernel.depth( ) - offset_k - 1 ) * in.height( ) * in.width( ) + ( kernel.height( ) - offset_j - 1 ) * in.width( ) + kernel.width( ) - offset_i - 1 );
 	filtering( in, out, func, begin, end );
-	return ( 1 );
+	return( true );
 }
 
 
@@ -553,9 +553,9 @@ inline bool size_3_filter(
 	// std::cout << "size_3_0" << std::endl;
 	if( kernel.width( ) - 3 )
 	{
-		return ( 0 );
+		return( false );
 	}
-	return ( linear_filter( in, out, kernel, 1 ) );
+	return( linear_filter( in, out, kernel, 1 ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
@@ -567,9 +567,9 @@ inline bool size_3_filter(
 	// std::cout << "size_3_1" << std::endl;
 	if( kernel.width( ) - 3 )
 	{
-		return ( 0 );
+		return( false );
 	}
-	return ( linear_filter( in, out, kernel, 1 ) );
+	return( linear_filter( in, out, kernel, 1 ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
@@ -581,9 +581,9 @@ inline bool size_3_filter(
 	// std::cout << "size_3_2" << std::endl;
 	if( kernel.width( ) - 3 || kernel.height( ) - 3 )
 	{
-		return ( 0 );
+		return( false );
 	}
-	return ( linear_filter( in, out, kernel, 1, 1 ) );
+	return( linear_filter( in, out, kernel, 1, 1 ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
@@ -595,9 +595,9 @@ inline bool size_3_filter(
 	// std::cout << "size_3_3" << std::endl;
 	if( kernel.width( ) - 3 || kernel.height( ) - 3 || kernel.depth( ) - 3 )
 	{
-		return ( 0 );
+		return( false );
 	}
-	return ( linear_filter( in, out, kernel, 1, 1, 1 ) );
+	return( linear_filter( in, out, kernel, 1, 1, 1 ) );
 }
 
 
@@ -620,7 +620,7 @@ inline bool uniform_weight(
 	const size_t offset = _size / 2;
 	array< double > kernel;
 	__linear__::uniw( kernel, _size );
-	return ( linear_filter( in, out, kernel, offset ) );
+	return( linear_filter( in, out, kernel, offset ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -634,7 +634,7 @@ inline bool uniform_weight(
 	const size_t offset = _size / 2;
 	array1< double > kernel;
 	__linear__::uniw_1( kernel, _size );
-	return ( linear_filter( in, out, kernel, offset ) );
+	return( linear_filter( in, out, kernel, offset ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -648,7 +648,7 @@ inline bool uniform_weight(
 	const size_t offset = _size / 2;
 	array2< double > kernel;
 	__linear__::uniw_2( kernel, _size );
-	return ( linear_filter( in, out, kernel, offset, offset ) );
+	return( linear_filter( in, out, kernel, offset, offset ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -662,7 +662,7 @@ inline bool uniform_weight(
 	const size_t offset = _size / 2;
 	array3< double > kernel;
 	__linear__::uniw_3( kernel, _size );
-	return ( linear_filter( in, out, kernel, offset, offset, offset ) );
+	return( linear_filter( in, out, kernel, offset, offset, offset ) );
 }
 
 
@@ -685,7 +685,7 @@ inline bool gaussian(
 	// std::cout << "gaussian_0" << std::endl;
 	array< double > kernel;
 	__linear__::gaus( kernel, range, sigma );
-	return ( linear_filter( in, out, kernel, range ) );
+	return( linear_filter( in, out, kernel, range ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -698,7 +698,7 @@ inline bool gaussian(
 	// std::cout << "gaussian_1" << std::endl;
 	array1< double > kernel;
 	__linear__::gaus_1( kernel, range, sigma );
-	return ( linear_filter( in, out, kernel, range ) );
+	return( linear_filter( in, out, kernel, range ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -711,7 +711,7 @@ inline bool gaussian(
 	// std::cout << "gaussian_2" << std::endl;
 	array2< double > kernel;
 	__linear__::gaus_2( kernel, range, sigma );
-	return ( linear_filter( in, out, kernel, range, range ) );
+	return( linear_filter( in, out, kernel, range, range ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -724,7 +724,7 @@ inline bool gaussian(
 	// std::cout << "gaussian_3" << std::endl;
 	array3< double > kernel;
 	__linear__::gaus_3( kernel, range, sigma );
-	return ( linear_filter( in, out, kernel, range, range, range ) );
+	return( linear_filter( in, out, kernel, range, range, range ) );
 }
 
 
@@ -744,7 +744,7 @@ inline bool laplacian(
 	// std::cout << "laplacian_0" << std::endl;
 	array< double > kernel;
 	__linear__::lapl( kernel );
-	return ( linear_filter( in, out, kernel, 1 ) );
+	return( linear_filter( in, out, kernel, 1 ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -755,7 +755,7 @@ inline bool laplacian(
 	// std::cout << "laplacian_1" << std::endl;
 	array1< double > kernel;
 	__linear__::lapl_1( kernel );
-	return ( linear_filter( in, out, kernel, 1 ) );
+	return( linear_filter( in, out, kernel, 1 ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -766,7 +766,7 @@ inline bool laplacian(
 	// std::cout << "laplacian_2" << std::endl;
 	array2< double > kernel;
 	__linear__::lapl_2( kernel );
-	return ( linear_filter( in, out, kernel, 1, 1 ) );
+	return( linear_filter( in, out, kernel, 1, 1 ) );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -777,7 +777,7 @@ inline bool laplacian(
 	// std::cout << "laplacian_3" << std::endl;
 	array3< double > kernel;
 	__linear__::lapl_3( kernel );
-	return ( linear_filter( in, out, kernel, 1, 1, 1 ) );
+	return( linear_filter( in, out, kernel, 1, 1, 1 ) );
 }
 
 
@@ -803,7 +803,7 @@ inline bool laplacian_abs(
 	const size_t begin = 1;
 	const size_t end = in.size( ) - 1; 
 	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
-	return ( 1 );
+	return( true );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -821,7 +821,7 @@ inline bool laplacian_abs(
 	const size_t begin = 1;
 	const size_t end = in.size( ) - 1; 
 	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
-	return ( 1 );
+	return( true );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -840,7 +840,7 @@ inline bool laplacian_abs(
 	const size_t begin = in.width( ) + 1;
 	const size_t end = in.size( ) - ( in.width( ) + 1 ); 
 	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
-	return ( 1 );
+	return( true );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
@@ -860,7 +860,7 @@ inline bool laplacian_abs(
 	const size_t begin = in.height( ) * in.width( ) + in.width( ) + 1;
 	const size_t end = in.size( ) - ( in.height( ) * in.width( ) + in.width( ) + 1 ); 
 	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
-	return ( 1 );
+	return( true );
 }
 
 
