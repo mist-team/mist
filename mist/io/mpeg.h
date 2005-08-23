@@ -32,7 +32,7 @@ namespace __libavcodec__
 //! @defgroup mpeg_group mpeg1, mpeg2形式ビデオストリーム入出力のためのライブラリ
 //!
 //!
-//! 本ライブラリは，http://ffmpeg.sourceforge.net/index.php で開発が行われている libavcodec, libavformat を利用している
+//! 本ライブラリは，http://ffmpeg.sourceforge.net/index.php で開発が行われている ffmpeg-0.4.8 の libavcodec, libavformat を利用している
 //! エンコードとデコードはこのライブラリのAPIを用いて実装されているため，別途ライブラリを用意する必要がある
 //!
 //!
