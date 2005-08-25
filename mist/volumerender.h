@@ -557,7 +557,7 @@ namespace volumerender
 namespace rendering_helper
 {
 	template < class Array, class T >
-	class __single_interpolation__
+	class value_interpolation
 	{
 	protected:
 		typedef typename volumerender::parameter::vector_type vector_type;
@@ -572,7 +572,7 @@ namespace rendering_helper
 		const volumerender::attribute_table< T > &table;
 		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
 
-		__single_interpolation__( const Array &image, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl ) : in( image ), p( param ), table( tbl )
+		value_interpolation( const Array &image, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl ) : in( image ), p( param ), table( tbl )
 		{
 			difference_type cx = in.width( ) / 2;
 			difference_type cy = in.height( ) / 2;
@@ -600,193 +600,6 @@ namespace rendering_helper
 					table.has_alpha( p[ d2 ] ) || table.has_alpha( p[ d3 ] ) ||
 					table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
 					table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) );
-		}
-
-		bool render( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz, attribute_type &oc ) const
-		{
-			return( false );
-		}
-
-		vector_type normal( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz ) const
-		{
-			const_pointer p0 = &in( i, j, k );
-			const_pointer p1 = p0 + d1;
-			const_pointer p2 = p0 + d2;
-			const_pointer p3 = p0 + d3;
-			const_pointer p4 = p0 + d4;
-			const_pointer p5 = p0 + d5;
-			const_pointer p6 = p0 + d6;
-			const_pointer p7 = p0 + d7;
-
-			double n0x = p3[  0  ] - p0[ -_1 ];
-			double n0y = p0[ -_2 ] - p1[  0  ];
-			double n0z = p4[  0  ] - p0[ -_3 ];
-			double n1x = p2[  0  ] - p1[ -_1 ];
-			double n1y = p0[  0  ] - p1[  _2 ];
-			double n1z = p5[  0  ] - p1[ -_3 ];
-			double n2x = p2[  _1 ] - p1[  0  ];
-			double n2y = p3[  0  ] - p2[  _2 ];
-			double n2z = p6[  0  ] - p2[ -_3 ];
-			double n3x = p3[  _1 ] - p0[  0  ];
-			double n3y = p3[ -_2 ] - p2[  0  ];
-			double n3z = p7[  0  ] - p3[ -_3 ];
-			double n4x = p7[  0  ] - p4[ -_1 ];
-			double n4y = p4[ -_2 ] - p5[  0  ];
-			double n4z = p4[  _3 ] - p0[  0  ];
-			double n5x = p6[  0  ] - p5[ -_1 ];
-			double n5y = p4[  0  ] - p5[  _2 ];
-			double n5z = p5[  _3 ] - p1[  0  ];
-			double n6x = p6[  _1 ] - p5[  0  ];
-			double n6y = p7[  0  ] - p6[  _2 ];
-			double n6z = p6[  _3 ] - p2[  0  ];
-			double n7x = p7[  _1 ] - p4[  0  ];
-			double n7y = p7[ -_2 ] - p6[  0  ];
-			double n7z = p7[  _3 ] - p3[  0  ];
-
-			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
-			nx += ( ( n4x + ( n7x - n4x ) * xx ) + ( n5x - n4x + ( n4x - n5x + n6x - n7x ) * xx ) * yy - nx ) * zz;
-			double ny  = ( n0y + ( n3y - n0y ) * xx ) + ( n1y - n0y + ( n0y - n1y + n2y - n3y ) * xx ) * yy;
-			ny += ( ( n4y + ( n7y - n4y ) * xx ) + ( n5y - n4y + ( n4y - n5y + n6y - n7y ) * xx ) * yy - ny ) * zz;
-			double nz  = ( n0z + ( n3z - n0z ) * xx ) + ( n1z - n0z + ( n0z - n1z + n2z - n3z ) * xx ) * yy;
-			nz += ( ( n4z + ( n7z - n4z ) * xx ) + ( n5z - n4z + ( n4z - n5z + n6z - n7z ) * xx ) * yy - nz ) * zz;
-
-			nx /= in.reso1( );
-			ny /= in.reso2( );
-			nz /= in.reso3( );
-			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
-			nx /= len;
-			ny /= len;
-			nz /= len;
-
-			return( vector_type( nx, ny, nz ) );
-		}
-	};
-
-
-	template < class Array1, class Array2, class T >
-	class __bind_interpolation__
-	{
-	protected:
-		typedef typename volumerender::parameter::vector_type vector_type;
-		typedef typename Array1::size_type size_type;
-		typedef typename Array1::const_pointer const_pointer;
-		typedef typename Array2::const_pointer const_mk_pointer;
-		typedef typename Array1::difference_type difference_type;
-		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
-
-	public:
-		const Array1 &in;
-		const Array2 &mk;
-		const volumerender::parameter &p;
-		const volumerender::attribute_table< T > &table;
-		const volumerender::attribute_table< T > &mktable;
-		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
-
-		__bind_interpolation__( const Array1 &image, const Array2 &mark, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl, const volumerender::attribute_table< T > &mktbl )
-			: in( image ), mk( mark ), p( param ), table( tbl ), mktable( mktbl )
-		{
-			difference_type cx = in.width( ) / 2;
-			difference_type cy = in.height( ) / 2;
-			difference_type cz = in.depth( ) / 2;
-			const_pointer ppp = &in( cx, cy, cz );
-			d0 = 0;
-			d1 = &in( cx    , cy + 1, cz     ) - ppp;
-			d2 = &in( cx + 1, cy + 1, cz     ) - ppp;
-			d3 = &in( cx + 1, cy    , cz     ) - ppp;
-			d4 = &in( cx    , cy    , cz + 1 ) - ppp;
-			d5 = &in( cx    , cy + 1, cz + 1 ) - ppp;
-			d6 = &in( cx + 1, cy + 1, cz + 1 ) - ppp;
-			d7 = &in( cx + 1, cy    , cz + 1 ) - ppp;
-			_1 = &in( cx + 1, cy    , cz     ) - ppp;
-			_2 = &in( cx    , cy + 1, cz     ) - ppp;
-			_3 = &in( cx    , cy    , cz + 1 ) - ppp;
-		}
-
-		bool check( difference_type i, difference_type j, difference_type k ) const
-		{
-			const_pointer p = &in( i, j, k );
-
-			// この位置における物体が不透明の場合は次のステップへ移行する
-			return( table.has_alpha( p[ d0 ] ) || table.has_alpha( p[ d1 ] ) ||
-					table.has_alpha( p[ d2 ] ) || table.has_alpha( p[ d3 ] ) ||
-					table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
-					table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) );
-		}
-
-		bool render( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz, attribute_type &oc ) const
-		{
-			return( false );
-		}
-
-		vector_type normal( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz ) const
-		{
-			const_pointer p0 = &in( i, j, k );
-			const_pointer p1 = p0 + d1;
-			const_pointer p2 = p0 + d2;
-			const_pointer p3 = p0 + d3;
-			const_pointer p4 = p0 + d4;
-			const_pointer p5 = p0 + d5;
-			const_pointer p6 = p0 + d6;
-			const_pointer p7 = p0 + d7;
-
-			double n0x = p3[  0  ] - p0[ -_1 ];
-			double n0y = p0[ -_2 ] - p1[  0  ];
-			double n0z = p4[  0  ] - p0[ -_3 ];
-			double n1x = p2[  0  ] - p1[ -_1 ];
-			double n1y = p0[  0  ] - p1[  _2 ];
-			double n1z = p5[  0  ] - p1[ -_3 ];
-			double n2x = p2[  _1 ] - p1[  0  ];
-			double n2y = p3[  0  ] - p2[  _2 ];
-			double n2z = p6[  0  ] - p2[ -_3 ];
-			double n3x = p3[  _1 ] - p0[  0  ];
-			double n3y = p3[ -_2 ] - p2[  0  ];
-			double n3z = p7[  0  ] - p3[ -_3 ];
-			double n4x = p7[  0  ] - p4[ -_1 ];
-			double n4y = p4[ -_2 ] - p5[  0  ];
-			double n4z = p4[  _3 ] - p0[  0  ];
-			double n5x = p6[  0  ] - p5[ -_1 ];
-			double n5y = p4[  0  ] - p5[  _2 ];
-			double n5z = p5[  _3 ] - p1[  0  ];
-			double n6x = p6[  _1 ] - p5[  0  ];
-			double n6y = p7[  0  ] - p6[  _2 ];
-			double n6z = p6[  _3 ] - p2[  0  ];
-			double n7x = p7[  _1 ] - p4[  0  ];
-			double n7y = p7[ -_2 ] - p6[  0  ];
-			double n7z = p7[  _3 ] - p3[  0  ];
-
-			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
-			nx += ( ( n4x + ( n7x - n4x ) * xx ) + ( n5x - n4x + ( n4x - n5x + n6x - n7x ) * xx ) * yy - nx ) * zz;
-			double ny  = ( n0y + ( n3y - n0y ) * xx ) + ( n1y - n0y + ( n0y - n1y + n2y - n3y ) * xx ) * yy;
-			ny += ( ( n4y + ( n7y - n4y ) * xx ) + ( n5y - n4y + ( n4y - n5y + n6y - n7y ) * xx ) * yy - ny ) * zz;
-			double nz  = ( n0z + ( n3z - n0z ) * xx ) + ( n1z - n0z + ( n0z - n1z + n2z - n3z ) * xx ) * yy;
-			nz += ( ( n4z + ( n7z - n4z ) * xx ) + ( n5z - n4z + ( n4z - n5z + n6z - n7z ) * xx ) * yy - nz ) * zz;
-
-			nx /= in.reso1( );
-			ny /= in.reso2( );
-			nz /= in.reso3( );
-			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
-			nx /= len;
-			ny /= len;
-			nz /= len;
-
-			return( vector_type( nx, ny, nz ) );
-		}
-	};
-
-
-	template < class Array, class T >
-	class value_interpolation : public __single_interpolation__< Array, T >
-	{
-	protected:
-		typedef __single_interpolation__< Array, T > base;
-		typedef typename base::size_type size_type;
-		typedef typename base::const_pointer const_pointer;
-		typedef typename base::difference_type difference_type;
-		typedef typename base::attribute_type attribute_type;
-
-	public:
-		value_interpolation( const Array &image, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl ) : base( image, param, tbl )
-		{
 		}
 
 		bool render( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz, attribute_type &oc ) const
@@ -801,22 +614,107 @@ namespace rendering_helper
 
 			return( oc.has_alpha );
 		}
+
+		vector_type normal( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz ) const
+		{
+			const_pointer p0 = &in( i, j, k );
+			const_pointer p1 = p0 + d1;
+			const_pointer p2 = p0 + d2;
+			const_pointer p3 = p0 + d3;
+			const_pointer p4 = p0 + d4;
+			const_pointer p5 = p0 + d5;
+			const_pointer p6 = p0 + d6;
+			const_pointer p7 = p0 + d7;
+
+			double n0x = p3[  0  ] - p0[ -_1 ];
+			double n0y = p0[ -_2 ] - p1[  0  ];
+			double n0z = p4[  0  ] - p0[ -_3 ];
+			double n1x = p2[  0  ] - p1[ -_1 ];
+			double n1y = p0[  0  ] - p1[  _2 ];
+			double n1z = p5[  0  ] - p1[ -_3 ];
+			double n2x = p2[  _1 ] - p1[  0  ];
+			double n2y = p3[  0  ] - p2[  _2 ];
+			double n2z = p6[  0  ] - p2[ -_3 ];
+			double n3x = p3[  _1 ] - p0[  0  ];
+			double n3y = p3[ -_2 ] - p2[  0  ];
+			double n3z = p7[  0  ] - p3[ -_3 ];
+			double n4x = p7[  0  ] - p4[ -_1 ];
+			double n4y = p4[ -_2 ] - p5[  0  ];
+			double n4z = p4[  _3 ] - p0[  0  ];
+			double n5x = p6[  0  ] - p5[ -_1 ];
+			double n5y = p4[  0  ] - p5[  _2 ];
+			double n5z = p5[  _3 ] - p1[  0  ];
+			double n6x = p6[  _1 ] - p5[  0  ];
+			double n6y = p7[  0  ] - p6[  _2 ];
+			double n6z = p6[  _3 ] - p2[  0  ];
+			double n7x = p7[  _1 ] - p4[  0  ];
+			double n7y = p7[ -_2 ] - p6[  0  ];
+			double n7z = p7[  _3 ] - p3[  0  ];
+
+			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
+			nx += ( ( n4x + ( n7x - n4x ) * xx ) + ( n5x - n4x + ( n4x - n5x + n6x - n7x ) * xx ) * yy - nx ) * zz;
+			double ny  = ( n0y + ( n3y - n0y ) * xx ) + ( n1y - n0y + ( n0y - n1y + n2y - n3y ) * xx ) * yy;
+			ny += ( ( n4y + ( n7y - n4y ) * xx ) + ( n5y - n4y + ( n4y - n5y + n6y - n7y ) * xx ) * yy - ny ) * zz;
+			double nz  = ( n0z + ( n3z - n0z ) * xx ) + ( n1z - n0z + ( n0z - n1z + n2z - n3z ) * xx ) * yy;
+			nz += ( ( n4z + ( n7z - n4z ) * xx ) + ( n5z - n4z + ( n4z - n5z + n6z - n7z ) * xx ) * yy - nz ) * zz;
+
+			nx /= in.reso1( );
+			ny /= in.reso2( );
+			nz /= in.reso3( );
+			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
+			nx /= len;
+			ny /= len;
+			nz /= len;
+
+			return( vector_type( nx, ny, nz ) );
+		}
 	};
 
 
 	template < class Array, class T >
-	class color_interpolation : public __single_interpolation__< Array, T >
+	class color_interpolation
 	{
 	protected:
-		typedef __single_interpolation__< Array, T > base;
-		typedef typename base::size_type size_type;
-		typedef typename base::const_pointer const_pointer;
-		typedef typename base::difference_type difference_type;
-		typedef typename base::attribute_type attribute_type;
+		typedef typename volumerender::parameter::vector_type vector_type;
+		typedef typename Array::size_type size_type;
+		typedef typename Array::const_pointer const_pointer;
+		typedef typename Array::difference_type difference_type;
+		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
 
 	public:
-		color_interpolation( const Array &image, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl ) : base( image, param, tbl )
+		const Array &in;
+		const volumerender::parameter &p;
+		const volumerender::attribute_table< T > &table;
+		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
+
+		color_interpolation( const Array &image, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl ) : in( image ), p( param ), table( tbl )
 		{
+			difference_type cx = in.width( ) / 2;
+			difference_type cy = in.height( ) / 2;
+			difference_type cz = in.depth( ) / 2;
+			const_pointer ppp = &in( cx, cy, cz );
+			d0 = 0;
+			d1 = &in( cx    , cy + 1, cz     ) - ppp;
+			d2 = &in( cx + 1, cy + 1, cz     ) - ppp;
+			d3 = &in( cx + 1, cy    , cz     ) - ppp;
+			d4 = &in( cx    , cy    , cz + 1 ) - ppp;
+			d5 = &in( cx    , cy + 1, cz + 1 ) - ppp;
+			d6 = &in( cx + 1, cy + 1, cz + 1 ) - ppp;
+			d7 = &in( cx + 1, cy    , cz + 1 ) - ppp;
+			_1 = &in( cx + 1, cy    , cz     ) - ppp;
+			_2 = &in( cx    , cy + 1, cz     ) - ppp;
+			_3 = &in( cx    , cy    , cz + 1 ) - ppp;
+		}
+
+		bool check( difference_type i, difference_type j, difference_type k ) const
+		{
+			const_pointer p = &in( i, j, k );
+
+			// この位置における物体が不透明の場合は次のステップへ移行する
+			return( table.has_alpha( p[ d0 ] ) || table.has_alpha( p[ d1 ] ) ||
+					table.has_alpha( p[ d2 ] ) || table.has_alpha( p[ d3 ] ) ||
+					table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
+					table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) );
 		}
 
 		bool render( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz, attribute_type &oc ) const
@@ -872,24 +770,111 @@ namespace rendering_helper
 				return( true );
 			}
 		}
+
+		vector_type normal( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz ) const
+		{
+			const_pointer p0 = &in( i, j, k );
+			const_pointer p1 = p0 + d1;
+			const_pointer p2 = p0 + d2;
+			const_pointer p3 = p0 + d3;
+			const_pointer p4 = p0 + d4;
+			const_pointer p5 = p0 + d5;
+			const_pointer p6 = p0 + d6;
+			const_pointer p7 = p0 + d7;
+
+			double n0x = p3[  0  ] - p0[ -_1 ];
+			double n0y = p0[ -_2 ] - p1[  0  ];
+			double n0z = p4[  0  ] - p0[ -_3 ];
+			double n1x = p2[  0  ] - p1[ -_1 ];
+			double n1y = p0[  0  ] - p1[  _2 ];
+			double n1z = p5[  0  ] - p1[ -_3 ];
+			double n2x = p2[  _1 ] - p1[  0  ];
+			double n2y = p3[  0  ] - p2[  _2 ];
+			double n2z = p6[  0  ] - p2[ -_3 ];
+			double n3x = p3[  _1 ] - p0[  0  ];
+			double n3y = p3[ -_2 ] - p2[  0  ];
+			double n3z = p7[  0  ] - p3[ -_3 ];
+			double n4x = p7[  0  ] - p4[ -_1 ];
+			double n4y = p4[ -_2 ] - p5[  0  ];
+			double n4z = p4[  _3 ] - p0[  0  ];
+			double n5x = p6[  0  ] - p5[ -_1 ];
+			double n5y = p4[  0  ] - p5[  _2 ];
+			double n5z = p5[  _3 ] - p1[  0  ];
+			double n6x = p6[  _1 ] - p5[  0  ];
+			double n6y = p7[  0  ] - p6[  _2 ];
+			double n6z = p6[  _3 ] - p2[  0  ];
+			double n7x = p7[  _1 ] - p4[  0  ];
+			double n7y = p7[ -_2 ] - p6[  0  ];
+			double n7z = p7[  _3 ] - p3[  0  ];
+
+			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
+			nx += ( ( n4x + ( n7x - n4x ) * xx ) + ( n5x - n4x + ( n4x - n5x + n6x - n7x ) * xx ) * yy - nx ) * zz;
+			double ny  = ( n0y + ( n3y - n0y ) * xx ) + ( n1y - n0y + ( n0y - n1y + n2y - n3y ) * xx ) * yy;
+			ny += ( ( n4y + ( n7y - n4y ) * xx ) + ( n5y - n4y + ( n4y - n5y + n6y - n7y ) * xx ) * yy - ny ) * zz;
+			double nz  = ( n0z + ( n3z - n0z ) * xx ) + ( n1z - n0z + ( n0z - n1z + n2z - n3z ) * xx ) * yy;
+			nz += ( ( n4z + ( n7z - n4z ) * xx ) + ( n5z - n4z + ( n4z - n5z + n6z - n7z ) * xx ) * yy - nz ) * zz;
+
+			nx /= in.reso1( );
+			ny /= in.reso2( );
+			nz /= in.reso3( );
+			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
+			nx /= len;
+			ny /= len;
+			nz /= len;
+
+			return( vector_type( nx, ny, nz ) );
+		}
 	};
 
 
 	template < class Array1, class Array2, class T >
-	class value_interpolation_with_mark : public __bind_interpolation__< Array1, Array2, T >
+	class value_interpolation_with_mark
 	{
 	protected:
-		typedef __bind_interpolation__< Array1, Array2, T > base;
-		typedef typename base::size_type size_type;
-		typedef typename base::const_pointer const_pointer;
-		typedef typename base::const_mk_pointer const_mk_pointer;
-		typedef typename base::difference_type difference_type;
-		typedef typename base::attribute_type attribute_type;
+		typedef typename volumerender::parameter::vector_type vector_type;
+		typedef typename Array1::size_type size_type;
+		typedef typename Array1::const_pointer const_pointer;
+		typedef typename Array2::const_pointer const_mk_pointer;
+		typedef typename Array1::difference_type difference_type;
+		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
 
 	public:
+		const Array1 &in;
+		const Array2 &mk;
+		const volumerender::parameter &p;
+		const volumerender::attribute_table< T > &table;
+		const volumerender::attribute_table< T > &mktable;
+		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
 
-		value_interpolation_with_mark( const Array1 &image, const Array2 &mark, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl, const volumerender::attribute_table< T > &mktbl ) : base( image, mark, param, tbl, mktbl )
+		value_interpolation_with_mark( const Array1 &image, const Array2 &mark, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl, const volumerender::attribute_table< T > &mktbl )
+			: in( image ), mk( mark ), p( param ), table( tbl ), mktable( mktbl )
 		{
+			difference_type cx = in.width( ) / 2;
+			difference_type cy = in.height( ) / 2;
+			difference_type cz = in.depth( ) / 2;
+			const_pointer ppp = &in( cx, cy, cz );
+			d0 = 0;
+			d1 = &in( cx    , cy + 1, cz     ) - ppp;
+			d2 = &in( cx + 1, cy + 1, cz     ) - ppp;
+			d3 = &in( cx + 1, cy    , cz     ) - ppp;
+			d4 = &in( cx    , cy    , cz + 1 ) - ppp;
+			d5 = &in( cx    , cy + 1, cz + 1 ) - ppp;
+			d6 = &in( cx + 1, cy + 1, cz + 1 ) - ppp;
+			d7 = &in( cx + 1, cy    , cz + 1 ) - ppp;
+			_1 = &in( cx + 1, cy    , cz     ) - ppp;
+			_2 = &in( cx    , cy + 1, cz     ) - ppp;
+			_3 = &in( cx    , cy    , cz + 1 ) - ppp;
+		}
+
+		bool check( difference_type i, difference_type j, difference_type k ) const
+		{
+			const_pointer p = &in( i, j, k );
+
+			// この位置における物体が不透明の場合は次のステップへ移行する
+			return( table.has_alpha( p[ d0 ] ) || table.has_alpha( p[ d1 ] ) ||
+					table.has_alpha( p[ d2 ] ) || table.has_alpha( p[ d3 ] ) ||
+					table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
+					table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) );
 		}
 
 		bool render( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz, attribute_type &oc ) const
@@ -961,24 +946,100 @@ namespace rendering_helper
 				return( true );
 			}
 		}
+
+		vector_type normal( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz ) const
+		{
+			const_pointer p0 = &in( i, j, k );
+			const_pointer p1 = p0 + d1;
+			const_pointer p2 = p0 + d2;
+			const_pointer p3 = p0 + d3;
+			const_pointer p4 = p0 + d4;
+			const_pointer p5 = p0 + d5;
+			const_pointer p6 = p0 + d6;
+			const_pointer p7 = p0 + d7;
+
+			double n0x = p3[  0  ] - p0[ -_1 ];
+			double n0y = p0[ -_2 ] - p1[  0  ];
+			double n0z = p4[  0  ] - p0[ -_3 ];
+			double n1x = p2[  0  ] - p1[ -_1 ];
+			double n1y = p0[  0  ] - p1[  _2 ];
+			double n1z = p5[  0  ] - p1[ -_3 ];
+			double n2x = p2[  _1 ] - p1[  0  ];
+			double n2y = p3[  0  ] - p2[  _2 ];
+			double n2z = p6[  0  ] - p2[ -_3 ];
+			double n3x = p3[  _1 ] - p0[  0  ];
+			double n3y = p3[ -_2 ] - p2[  0  ];
+			double n3z = p7[  0  ] - p3[ -_3 ];
+			double n4x = p7[  0  ] - p4[ -_1 ];
+			double n4y = p4[ -_2 ] - p5[  0  ];
+			double n4z = p4[  _3 ] - p0[  0  ];
+			double n5x = p6[  0  ] - p5[ -_1 ];
+			double n5y = p4[  0  ] - p5[  _2 ];
+			double n5z = p5[  _3 ] - p1[  0  ];
+			double n6x = p6[  _1 ] - p5[  0  ];
+			double n6y = p7[  0  ] - p6[  _2 ];
+			double n6z = p6[  _3 ] - p2[  0  ];
+			double n7x = p7[  _1 ] - p4[  0  ];
+			double n7y = p7[ -_2 ] - p6[  0  ];
+			double n7z = p7[  _3 ] - p3[  0  ];
+
+			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
+			nx += ( ( n4x + ( n7x - n4x ) * xx ) + ( n5x - n4x + ( n4x - n5x + n6x - n7x ) * xx ) * yy - nx ) * zz;
+			double ny  = ( n0y + ( n3y - n0y ) * xx ) + ( n1y - n0y + ( n0y - n1y + n2y - n3y ) * xx ) * yy;
+			ny += ( ( n4y + ( n7y - n4y ) * xx ) + ( n5y - n4y + ( n4y - n5y + n6y - n7y ) * xx ) * yy - ny ) * zz;
+			double nz  = ( n0z + ( n3z - n0z ) * xx ) + ( n1z - n0z + ( n0z - n1z + n2z - n3z ) * xx ) * yy;
+			nz += ( ( n4z + ( n7z - n4z ) * xx ) + ( n5z - n4z + ( n4z - n5z + n6z - n7z ) * xx ) * yy - nz ) * zz;
+
+			nx /= in.reso1( );
+			ny /= in.reso2( );
+			nz /= in.reso3( );
+			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
+			nx /= len;
+			ny /= len;
+			nz /= len;
+
+			return( vector_type( nx, ny, nz ) );
+		}
 	};
 
 
 	template < class Array1, class Array2, class T >
-	class value_interpolation_and_mark : public __bind_interpolation__< Array1, Array2, T >
+	class value_interpolation_and_mark
 	{
 	protected:
-		typedef __bind_interpolation__< Array1, Array2, T > base;
-		typedef typename base::size_type size_type;
-		typedef typename base::const_pointer const_pointer;
-		typedef typename base::const_mk_pointer const_mk_pointer;
-		typedef typename base::difference_type difference_type;
-		typedef typename base::attribute_type attribute_type;
+		typedef typename volumerender::parameter::vector_type vector_type;
+		typedef typename Array1::size_type size_type;
+		typedef typename Array1::const_pointer const_pointer;
+		typedef typename Array2::const_pointer const_mk_pointer;
+		typedef typename Array1::difference_type difference_type;
+		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
 
 	public:
+		const Array1 &in;
+		const Array2 &mk;
+		const volumerender::parameter &p;
+		const volumerender::attribute_table< T > &table;
+		const volumerender::attribute_table< T > &mktable;
+		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
 
-		value_interpolation_and_mark( const Array1 &image, const Array2 &mark, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl, const volumerender::attribute_table< T > &mktbl ) : base( image, mark, param, tbl, mktbl )
+		value_interpolation_and_mark( const Array1 &image, const Array2 &mark, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl, const volumerender::attribute_table< T > &mktbl )
+			: in( image ), mk( mark ), p( param ), table( tbl ), mktable( mktbl )
 		{
+			difference_type cx = in.width( ) / 2;
+			difference_type cy = in.height( ) / 2;
+			difference_type cz = in.depth( ) / 2;
+			const_pointer ppp = &in( cx, cy, cz );
+			d0 = 0;
+			d1 = &in( cx    , cy + 1, cz     ) - ppp;
+			d2 = &in( cx + 1, cy + 1, cz     ) - ppp;
+			d3 = &in( cx + 1, cy    , cz     ) - ppp;
+			d4 = &in( cx    , cy    , cz + 1 ) - ppp;
+			d5 = &in( cx    , cy + 1, cz + 1 ) - ppp;
+			d6 = &in( cx + 1, cy + 1, cz + 1 ) - ppp;
+			d7 = &in( cx + 1, cy    , cz + 1 ) - ppp;
+			_1 = &in( cx + 1, cy    , cz     ) - ppp;
+			_2 = &in( cx    , cy + 1, cz     ) - ppp;
+			_3 = &in( cx    , cy    , cz + 1 ) - ppp;
 		}
 
 		bool check( difference_type i, difference_type j, difference_type k ) const
@@ -1043,25 +1104,100 @@ namespace rendering_helper
 				return( false );
 			}
 		}
+
+		vector_type normal( difference_type i, difference_type j, difference_type k, double xx, double yy, double zz ) const
+		{
+			const_pointer p0 = &in( i, j, k );
+			const_pointer p1 = p0 + d1;
+			const_pointer p2 = p0 + d2;
+			const_pointer p3 = p0 + d3;
+			const_pointer p4 = p0 + d4;
+			const_pointer p5 = p0 + d5;
+			const_pointer p6 = p0 + d6;
+			const_pointer p7 = p0 + d7;
+
+			double n0x = p3[  0  ] - p0[ -_1 ];
+			double n0y = p0[ -_2 ] - p1[  0  ];
+			double n0z = p4[  0  ] - p0[ -_3 ];
+			double n1x = p2[  0  ] - p1[ -_1 ];
+			double n1y = p0[  0  ] - p1[  _2 ];
+			double n1z = p5[  0  ] - p1[ -_3 ];
+			double n2x = p2[  _1 ] - p1[  0  ];
+			double n2y = p3[  0  ] - p2[  _2 ];
+			double n2z = p6[  0  ] - p2[ -_3 ];
+			double n3x = p3[  _1 ] - p0[  0  ];
+			double n3y = p3[ -_2 ] - p2[  0  ];
+			double n3z = p7[  0  ] - p3[ -_3 ];
+			double n4x = p7[  0  ] - p4[ -_1 ];
+			double n4y = p4[ -_2 ] - p5[  0  ];
+			double n4z = p4[  _3 ] - p0[  0  ];
+			double n5x = p6[  0  ] - p5[ -_1 ];
+			double n5y = p4[  0  ] - p5[  _2 ];
+			double n5z = p5[  _3 ] - p1[  0  ];
+			double n6x = p6[  _1 ] - p5[  0  ];
+			double n6y = p7[  0  ] - p6[  _2 ];
+			double n6z = p6[  _3 ] - p2[  0  ];
+			double n7x = p7[  _1 ] - p4[  0  ];
+			double n7y = p7[ -_2 ] - p6[  0  ];
+			double n7z = p7[  _3 ] - p3[  0  ];
+
+			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
+			nx += ( ( n4x + ( n7x - n4x ) * xx ) + ( n5x - n4x + ( n4x - n5x + n6x - n7x ) * xx ) * yy - nx ) * zz;
+			double ny  = ( n0y + ( n3y - n0y ) * xx ) + ( n1y - n0y + ( n0y - n1y + n2y - n3y ) * xx ) * yy;
+			ny += ( ( n4y + ( n7y - n4y ) * xx ) + ( n5y - n4y + ( n4y - n5y + n6y - n7y ) * xx ) * yy - ny ) * zz;
+			double nz  = ( n0z + ( n3z - n0z ) * xx ) + ( n1z - n0z + ( n0z - n1z + n2z - n3z ) * xx ) * yy;
+			nz += ( ( n4z + ( n7z - n4z ) * xx ) + ( n5z - n4z + ( n4z - n5z + n6z - n7z ) * xx ) * yy - nz ) * zz;
+
+			nx /= in.reso1( );
+			ny /= in.reso2( );
+			nz /= in.reso3( );
+			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
+			nx /= len;
+			ny /= len;
+			nz /= len;
+
+			return( vector_type( nx, ny, nz ) );
+		}
 	};
 
 
 	template < class Array1, class Array2, class T >
-	class value_interpolation_or_mark : public __bind_interpolation__< Array1, Array2, T >
+	class value_interpolation_or_mark
 	{
 	protected:
-		typedef __bind_interpolation__< Array1, Array2, T > base;
-		typedef typename base::vector_type vector_type;
-		typedef typename base::size_type size_type;
-		typedef typename base::const_pointer const_pointer;
-		typedef typename base::const_mk_pointer const_mk_pointer;
-		typedef typename base::difference_type difference_type;
-		typedef typename base::attribute_type attribute_type;
+		typedef typename volumerender::parameter::vector_type vector_type;
+		typedef typename Array1::size_type size_type;
+		typedef typename Array1::const_pointer const_pointer;
+		typedef typename Array2::const_pointer const_mk_pointer;
+		typedef typename Array1::difference_type difference_type;
+		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
 
 	public:
+		const Array1 &in;
+		const Array2 &mk;
+		const volumerender::parameter &p;
+		const volumerender::attribute_table< T > &table;
+		const volumerender::attribute_table< T > &mktable;
+		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
 
-		value_interpolation_or_mark( const Array1 &image, const Array2 &mark, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl, const volumerender::attribute_table< T > &mktbl ) : base( image, mark, param, tbl, mktbl )
+		value_interpolation_or_mark( const Array1 &image, const Array2 &mark, const volumerender::parameter &param, const volumerender::attribute_table< T > &tbl, const volumerender::attribute_table< T > &mktbl )
+			: in( image ), mk( mark ), p( param ), table( tbl ), mktable( mktbl )
 		{
+			difference_type cx = in.width( ) / 2;
+			difference_type cy = in.height( ) / 2;
+			difference_type cz = in.depth( ) / 2;
+			const_pointer ppp = &in( cx, cy, cz );
+			d0 = 0;
+			d1 = &in( cx    , cy + 1, cz     ) - ppp;
+			d2 = &in( cx + 1, cy + 1, cz     ) - ppp;
+			d3 = &in( cx + 1, cy    , cz     ) - ppp;
+			d4 = &in( cx    , cy    , cz + 1 ) - ppp;
+			d5 = &in( cx    , cy + 1, cz + 1 ) - ppp;
+			d6 = &in( cx + 1, cy + 1, cz + 1 ) - ppp;
+			d7 = &in( cx + 1, cy    , cz + 1 ) - ppp;
+			_1 = &in( cx + 1, cy    , cz     ) - ppp;
+			_2 = &in( cx    , cy + 1, cz     ) - ppp;
+			_3 = &in( cx    , cy    , cz + 1 ) - ppp;
 		}
 
 		bool check( difference_type i, difference_type j, difference_type k ) const
@@ -1244,288 +1380,286 @@ namespace rendering_helper
 }
 
 
-// ボリュームレンダリングエンジン
-// いろいろなレンダラ（色の決定方法）を組み合わせることが可能
-template < class Array1, class Array2, class DepthMap, class Renderer, class T >
-bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &depth_map, const Renderer &renderer, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type thread_id, typename Array1::size_type thread_num )
+// ボリュームレンダリング
+namespace __volumerendering_controller__
 {
-	typedef typename volumerender::parameter::vector_type vector_type;
-	typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
-	typedef typename volumerender::attribute_table< T >::pixel_type pixel_type;
-	typedef typename Array1::size_type size_type;
-	typedef typename Array1::difference_type difference_type;
-	typedef typename Array1::value_type value_type;
-	typedef typename Array1::const_pointer const_pointer;
-	typedef typename Array2::value_type out_value_type;
-
-	vector_type pos = param.pos;
-	vector_type dir = param.dir.unit( );
-	vector_type up = param.up.unit( );
-	vector_type offset = param.offset;
-	double fovy = param.fovy;
-	double ambient_ratio = param.ambient_ratio;
-	double diffuse_ratio = param.diffuse_ratio;
-	double specular = param.specular;
-	bool   bSpecular = specular > 0.0;
-	const volumerender::boundingbox *box = param.box;
-	double lightAtten = param.light_attenuation;
-	double sampling_step = param.sampling_step;
-	double termination = param.termination;
-	double distortion = param.distortion;
-	bool bdistortion = distortion != 0.0;
-	bool bperspective = param.perspective_view;
-
-	const size_type w = in.width( );
-	const size_type h = in.height( );
-	const size_type d = in.depth( );
-
-	const size_type image_width  = out.width( );
-	const size_type image_height = out.height( );
-
-	// スライス座標系の実寸をワールドと考える
-	vector_type casting_start, casting_end;
-
-	const double pai = 3.1415926535897932384626433832795;
-	double focal = ( static_cast< double >( image_height ) / 2.0 ) / std::tan( fovy * pai / 180.0 / 2.0 );
-
-	double cx = static_cast< double >( image_width ) / 2.0;
-	double cy = static_cast< double >( image_height ) / 2.0;
-	double ax = in.reso1( );
-	double ay = in.reso2( );
-	double az = in.reso3( );
-
-	double asp = out.reso2( ) / out.reso1( );
-
-	double masp = ax < ay ? ax : ay;
-	masp = masp < az ? masp : az;
-
-	vector_type yoko = ( dir * up ).unit( );
-
-	if( out.reso1( ) < out.reso2( ) )
+	// いろいろなレンダラ（色の決定方法）を組み合わせることが可能なボリュームレンダリングエンジン
+	template < class Array1, class Array2, class DepthMap, class Renderer, class T >
+	bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &depth_map, const Renderer &renderer, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type thread_id, typename Array1::size_type thread_num )
 	{
-		yoko *= out.reso1( ) / out.reso2( );
-	}
-	else
-	{
-		up *= out.reso2( ) / out.reso1( );
-		focal *= out.reso2( ) / out.reso1( );
-	}
+		typedef typename volumerender::parameter::vector_type vector_type;
+		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
+		typedef typename volumerender::attribute_table< T >::pixel_type pixel_type;
+		typedef typename Array1::size_type size_type;
+		typedef typename Array1::difference_type difference_type;
+		typedef typename Array1::value_type value_type;
+		typedef typename Array1::const_pointer const_pointer;
+		typedef typename Array2::value_type out_value_type;
 
-	double max_distance = pos.length( ) + std::sqrt( static_cast< double >( w * w + h * h + d * d ) );
+		vector_type pos = param.pos;
+		vector_type dir = param.dir.unit( );
+		vector_type up = param.up.unit( );
+		vector_type offset = param.offset;
+		double fovy = param.fovy;
+		double ambient_ratio = param.ambient_ratio;
+		double diffuse_ratio = param.diffuse_ratio;
+		double specular = param.specular;
+		bool   bSpecular = specular > 0.0;
+		const  volumerender::boundingbox *box = param.box;
+		double lightAtten = param.light_attenuation;
+		double sampling_step = param.sampling_step;
+		double termination = param.termination;
+		double distortion = param.distortion;
+		bool   bdistortion = distortion != 0.0;
+		bool   bperspective = param.perspective_view;
 
-	for( size_type j = thread_id ; j < image_height ; j += thread_num )
-	{
-		for( size_type i = 0 ; i < image_width ; i++ )
+		const size_type w = in.width( );
+		const size_type h = in.height( );
+		const size_type d = in.depth( );
+
+		const size_type image_width  = out.width( );
+		const size_type image_height = out.height( );
+
+		// スライス座標系の実寸をワールドと考える
+		vector_type casting_start, casting_end;
+
+		const double pai = 3.1415926535897932384626433832795;
+		double focal = ( static_cast< double >( image_height ) / 2.0 ) / std::tan( fovy * pai / 180.0 / 2.0 );
+
+		double cx = static_cast< double >( image_width ) / 2.0;
+		double cy = static_cast< double >( image_height ) / 2.0;
+		double ax = in.reso1( );
+		double ay = in.reso2( );
+		double az = in.reso3( );
+
+		double asp = out.reso2( ) / out.reso1( );
+
+		double masp = ax < ay ? ax : ay;
+		masp = masp < az ? masp : az;
+
+		vector_type yoko = ( dir * up ).unit( );
+
+		if( out.reso1( ) < out.reso2( ) )
 		{
-			// 投影面上の点をカメラ座標系に変換
-			vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
+			yoko *= out.reso1( ) / out.reso2( );
+		}
+		else
+		{
+			up *= out.reso2( ) / out.reso1( );
+			focal *= out.reso2( ) / out.reso1( );
+		}
 
-			// 歪関数を適用する
-			if( bdistortion )
+		double max_distance = pos.length( ) + std::sqrt( static_cast< double >( w * w + h * h + d * d ) );
+
+		for( size_type j = thread_id ; j < image_height ; j += thread_num )
+		{
+			for( size_type i = 0 ; i < image_width ; i++ )
 			{
-				double x = Pos.x / cx;
-				double y = Pos.y / cy * asp;
-				double ll = x * x + y * y;
-				double r  = 1.0 + distortion * ll;
-				Pos.x *= r;
-				Pos.y *= r;
-			}
+				// 投影面上の点をカメラ座標系に変換
+				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
 
-			// レイ方向をカメラ座標系からワールド座標系に変換
-			vector_type light;
-			if( bperspective )
-			{
-				light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
-			}
-			else
-			{
-				pos = param.pos + yoko * Pos.x + up * Pos.y;
-				light = dir;
-			}
-
-			pixel_type add_intensity( 0 );
-			double add_opacity = 1;
-
-			casting_start = pos;
-			casting_end = pos + light * max_distance;
-
-			// 物体との衝突判定
-			if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ] )
-				&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ] )
-				&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ] )
-				&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ] )
-				&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
-				&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
-			{
-				// 光の減衰を実現するために，カメラからの距離を測る
-				Pos.x = (  pos.x + offset.x ) / ax;
-				Pos.y = ( -pos.y + offset.y ) / ay;
-				Pos.z = (  pos.z + offset.z ) / az;
-
-				// ワールド座標系（左手）からスライス座標系（右手）に変換
-				// 以降は，全てスライス座標系で計算する
-				casting_start.x = (  casting_start.x + offset.x ) / ax;
-				casting_start.y = ( -casting_start.y + offset.y ) / ay;
-				casting_start.z = (  casting_start.z + offset.z ) / az;
-				casting_end.x   = (  casting_end.x   + offset.x ) / ax;
-				casting_end.y   = ( -casting_end.y   + offset.y ) / ay;
-				casting_end.z   = (  casting_end.z   + offset.z ) / az;
-
-				vector_type spos = casting_start;
-				vector_type ray = ( casting_end - casting_start ).unit( );
-
-				// 光の減衰の距離を実測に直すためのパラメータ
-				double dlen = vector_type( ray.x * ax, ray.y * ay, ray.z * az ).length( );
-
-				// 直方体画素の画像上では方向によってサンプリング間隔が変わってしまう問題に対応
-				double ray_sampling_step = sampling_step * masp / dlen;
-
-				vector_type ray_step = ray * ray_sampling_step;
-
-				double n = ( casting_end - casting_start ).length( );
-				double l = 0, of = ( Pos - casting_start ).length( );
-
-				while( l < n )
+				// 歪関数を適用する
+				if( bdistortion )
 				{
-					difference_type si = volumerender::to_integer( spos.x );
-					difference_type sj = volumerender::to_integer( spos.y );
-					difference_type sk = volumerender::to_integer( spos.z );
-
-					// この位置における物体が不透明の場合は次のステップへ移行する
-					if( renderer.check( si, sj, sk ) )
-					{
-						if( l > 0 )
-						{
-							spos.x -= ray.x;
-							spos.y -= ray.y;
-							spos.z -= ray.z;
-							l -= 1.0;
-						}
-						break;
-					}
-
-					double current_step = depth_map( si, sj, sk );
-					l += current_step;
-					spos.x += ray.x * current_step;
-					spos.y += ray.y * current_step;
-					spos.z += ray.z * current_step;
+					double x = Pos.x / cx;
+					double y = Pos.y / cy * asp;
+					double ll = x * x + y * y;
+					double r  = 1.0 + distortion * ll;
+					Pos.x *= r;
+					Pos.y *= r;
 				}
 
-				while( l < n )
+				// レイ方向をカメラ座標系からワールド座標系に変換
+				vector_type light;
+				if( bperspective )
 				{
-					difference_type si = volumerender::to_integer( spos.x );
-					difference_type sj = volumerender::to_integer( spos.y );
-					difference_type sk = volumerender::to_integer( spos.z );
+					light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
+				}
+				else
+				{
+					pos = param.pos + yoko * Pos.x + up * Pos.y;
+					light = dir;
+				}
 
-					double xx = spos.x - si;
-					double yy = spos.y - sj;
-					double zz = spos.z - sk;
+				pixel_type add_intensity( 0 );
+				double add_opacity = 1;
 
-					attribute_type oc;
+				casting_start = pos;
+				casting_end = pos + light * max_distance;
 
-					if( renderer.render( si, sj, sk, xx, yy, zz, oc ) )
+				// 物体との衝突判定
+				if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
+				{
+					// 光の減衰を実現するために，カメラからの距離を測る
+					Pos.x = (  pos.x + offset.x ) / ax;
+					Pos.y = ( -pos.y + offset.y ) / ay;
+					Pos.z = (  pos.z + offset.z ) / az;
+
+					// ワールド座標系（左手）からスライス座標系（右手）に変換
+					// 以降は，全てスライス座標系で計算する
+					casting_start.x = (  casting_start.x + offset.x ) / ax;
+					casting_start.y = ( -casting_start.y + offset.y ) / ay;
+					casting_start.z = (  casting_start.z + offset.z ) / az;
+					casting_end.x   = (  casting_end.x   + offset.x ) / ax;
+					casting_end.y   = ( -casting_end.y   + offset.y ) / ay;
+					casting_end.z   = (  casting_end.z   + offset.z ) / az;
+
+					vector_type spos = casting_start;
+					vector_type ray = ( casting_end - casting_start ).unit( );
+
+					// 光の減衰の距離を実測に直すためのパラメータ
+					double dlen = vector_type( ray.x * ax, ray.y * ay, ray.z * az ).length( );
+
+					// 直方体画素の画像上では方向によってサンプリング間隔が変わってしまう問題に対応
+					double ray_sampling_step = sampling_step * masp / dlen;
+
+					vector_type ray_step = ray * ray_sampling_step;
+
+					double n = ( casting_end - casting_start ).length( );
+					double l = 0, of = ( Pos - casting_start ).length( );
+
+					while( l < n )
 					{
-						double lAtten = 1.0;
-						if( lightAtten > 0.0 )
+						difference_type si = volumerender::to_integer( spos.x );
+						difference_type sj = volumerender::to_integer( spos.y );
+						difference_type sk = volumerender::to_integer( spos.z );
+
+						// この位置における物体が不透明の場合は次のステップへ移行する
+						if( renderer.check( si, sj, sk ) )
 						{
-							double len = ( l + of ) * dlen;
-							lAtten /= 1.0 + lightAtten * ( len * len );
-						}
-
-						double c = light.inner( renderer.normal( si, sj, sk, xx, yy, zz ) );
-						c = c < 0.0 ? -c : c;
-
-						double spec = 0.0;
-						if( bSpecular )
-						{
-							spec = 2.0 * c * c - 1.0;
-
-							if( spec <= 0.0 )
+							if( l > 0 )
 							{
-								spec = 0;
+								spos.x -= ray.x;
+								spos.y -= ray.y;
+								spos.z -= ray.z;
+								l -= 1.0;
 							}
-							else
-							{
-								spec *= spec;	//  2乗
-								spec *= spec;	//  4乗
-								spec *= spec;	//  8乗
-								spec *= spec;	// 16乗
-								spec *= spec;	// 32乗
-								spec *= spec;	// 64乗
-								//spec *= spec;	// 128乗
-								spec *= specular * 255.0;
-							}
-						}
-
-						c = c * diffuse_ratio + ambient_ratio;
-
-						double alpha = oc.alpha * sampling_step;
-						add_intensity += alpha * add_opacity * ( oc.pixel * c + spec ) * lAtten;
-						add_opacity *= ( 1.0 - alpha );
-
-						// 画素がレンダリング結果に与える影響がしきい値以下になった場合は終了
-						if( add_opacity < termination )
-						{
 							break;
 						}
 
-						spos.x += ray_step.x;
-						spos.y += ray_step.y;
-						spos.z += ray_step.z;
-						l += ray_sampling_step;
+						double current_step = depth_map( si, sj, sk );
+						l += current_step;
+						spos.x += ray.x * current_step;
+						spos.y += ray.y * current_step;
+						spos.z += ray.z * current_step;
 					}
-					else
+
+					while( l < n )
 					{
-						// この位置における物体が透明の場合は次のステップへ移行する
-						spos += ray_step;
-						l += ray_sampling_step;
+						difference_type si = volumerender::to_integer( spos.x );
+						difference_type sj = volumerender::to_integer( spos.y );
+						difference_type sk = volumerender::to_integer( spos.z );
 
-						size_t count = 0;
-						while( l < n )
+						double xx = spos.x - si;
+						double yy = spos.y - sj;
+						double zz = spos.z - sk;
+
+						attribute_type oc;
+
+						if( renderer.render( si, sj, sk, xx, yy, zz, oc ) )
 						{
-							difference_type si = volumerender::to_integer( spos.x );
-							difference_type sj = volumerender::to_integer( spos.y );
-							difference_type sk = volumerender::to_integer( spos.z );
-
-							// この位置における物体が不透明の場合は次のステップへ移行する
-							if( renderer.check( si, sj, sk ) )
+							double lAtten = 1.0;
+							if( lightAtten > 0.0 )
 							{
-								if( count > 0 )
+								double len = ( l + of ) * dlen;
+								lAtten /= 1.0 + lightAtten * ( len * len );
+							}
+
+							double c = light.inner( renderer.normal( si, sj, sk, xx, yy, zz ) );
+							c = c < 0.0 ? -c : c;
+
+							double spec = 0.0;
+							if( bSpecular )
+							{
+								spec = 2.0 * c * c - 1.0;
+
+								if( spec <= 0.0 )
 								{
-									spos.x -= ray.x;
-									spos.y -= ray.y;
-									spos.z -= ray.z;
-									l -= 1.0;
+									spec = 0;
 								}
+								else
+								{
+									spec *= spec;	//  2乗
+									spec *= spec;	//  4乗
+									spec *= spec;	//  8乗
+									spec *= spec;	// 16乗
+									spec *= spec;	// 32乗
+									spec *= spec;	// 64乗
+									//spec *= spec;	// 128乗
+									spec *= specular * 255.0;
+								}
+							}
+
+							c = c * diffuse_ratio + ambient_ratio;
+
+							double alpha = oc.alpha * sampling_step;
+							add_intensity += alpha * add_opacity * ( oc.pixel * c + spec ) * lAtten;
+							add_opacity *= ( 1.0 - alpha );
+
+							// 画素がレンダリング結果に与える影響がしきい値以下になった場合は終了
+							if( add_opacity < termination )
+							{
 								break;
 							}
 
-							double current_step = depth_map( si, sj, sk );
-							l += current_step;
-							spos.x += ray.x * current_step;
-							spos.y += ray.y * current_step;
-							spos.z += ray.z * current_step;
+							spos.x += ray_step.x;
+							spos.y += ray_step.y;
+							spos.z += ray_step.z;
+							l += ray_sampling_step;
+						}
+						else
+						{
+							// この位置における物体が透明の場合は次のステップへ移行する
+							spos += ray_step;
+							l += ray_sampling_step;
 
-							count++;
+							size_t count = 0;
+							while( l < n )
+							{
+								difference_type si = volumerender::to_integer( spos.x );
+								difference_type sj = volumerender::to_integer( spos.y );
+								difference_type sk = volumerender::to_integer( spos.z );
+
+								// この位置における物体が不透明の場合は次のステップへ移行する
+								if( renderer.check( si, sj, sk ) )
+								{
+									if( count > 0 )
+									{
+										spos.x -= ray.x;
+										spos.y -= ray.y;
+										spos.z -= ray.z;
+										l -= 1.0;
+									}
+									break;
+								}
+
+								double current_step = depth_map( si, sj, sk );
+								l += current_step;
+								spos.x += ray.x * current_step;
+								spos.y += ray.y * current_step;
+								spos.z += ray.z * current_step;
+
+								count++;
+							}
 						}
 					}
+					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
 				}
-				out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
-			}
-			else
-			{
-				out( i, j ) = 0;
+				else
+				{
+					out( i, j ) = 0;
+				}
 			}
 		}
+		return( true );
 	}
-	return( true );
-}
 
 
-
-// ボリュームレンダリングのスレッド実装
-namespace __volumerendering_controller__
-{
 	template < class Array1, class Array2, class DepthMap, class Renderer, class T >
 	class volumerendering_thread : public mist::thread< volumerendering_thread< Array1, Array2, DepthMap, Renderer, T > >
 	{
