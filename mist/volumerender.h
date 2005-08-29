@@ -1659,6 +1659,249 @@ namespace __volumerendering_controller__
 		return( true );
 	}
 
+	// いろいろなレンダラ（色の決定方法）を組み合わせ，指定した位置のレイが最初にあたる位置を返す関数
+	template < class Array1, class Array2, class DepthMap, class Renderer, class T >
+	typename volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &out, const DepthMap &depth_map, const Renderer &renderer, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type i, typename Array1::size_type j )
+	{
+		typedef typename volumerender::parameter::vector_type vector_type;
+		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
+		typedef typename volumerender::attribute_table< T >::pixel_type pixel_type;
+		typedef typename Array1::size_type size_type;
+		typedef typename Array1::difference_type difference_type;
+		typedef typename Array1::value_type value_type;
+		typedef typename Array1::const_pointer const_pointer;
+		typedef typename Array2::value_type out_value_type;
+
+		vector_type pos = param.pos;
+		vector_type dir = param.dir.unit( );
+		vector_type up = param.up.unit( );
+		vector_type offset = param.offset;
+		double fovy = param.fovy;
+		double ambient_ratio = param.ambient_ratio;
+		double diffuse_ratio = param.diffuse_ratio;
+		double specular = param.specular;
+		bool   bSpecular = specular > 0.0;
+		const  volumerender::boundingbox *box = param.box;
+		double lightAtten = param.light_attenuation;
+		double sampling_step = param.sampling_step;
+		double termination = param.termination;
+		double distortion = param.distortion;
+		bool   bdistortion = distortion != 0.0;
+		bool   bperspective = param.perspective_view;
+
+		const size_type w = in.width( );
+		const size_type h = in.height( );
+		const size_type d = in.depth( );
+
+		const size_type image_width  = out.width( );
+		const size_type image_height = out.height( );
+
+		// スライス座標系の実寸をワールドと考える
+		vector_type casting_start, casting_end;
+
+		const double pai = 3.1415926535897932384626433832795;
+		double focal = ( static_cast< double >( image_height ) / 2.0 ) / std::tan( fovy * pai / 180.0 / 2.0 );
+
+		double cx = static_cast< double >( image_width ) / 2.0;
+		double cy = static_cast< double >( image_height ) / 2.0;
+		double ax = in.reso1( );
+		double ay = in.reso2( );
+		double az = in.reso3( );
+
+		double asp = out.reso2( ) / out.reso1( );
+
+		double masp = ax < ay ? ax : ay;
+		masp = masp < az ? masp : az;
+
+		vector_type yoko = ( dir * up ).unit( );
+
+		if( out.reso1( ) < out.reso2( ) )
+		{
+			yoko *= out.reso1( ) / out.reso2( );
+		}
+		else
+		{
+			up *= out.reso2( ) / out.reso1( );
+			focal *= out.reso2( ) / out.reso1( );
+		}
+
+		double max_distance = pos.length( ) + std::sqrt( static_cast< double >( w * w + h * h + d * d ) );
+
+		{
+			// 投影面上の点をカメラ座標系に変換
+			vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
+
+			// 歪関数を適用する
+			if( bdistortion )
+			{
+				double x = Pos.x / cx;
+				double y = Pos.y / cy * asp;
+				double ll = x * x + y * y;
+				double r  = 1.0 + distortion * ll;
+				Pos.x *= r;
+				Pos.y *= r;
+			}
+
+			// レイ方向をカメラ座標系からワールド座標系に変換
+			vector_type light;
+			if( bperspective )
+			{
+				light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
+			}
+			else
+			{
+				pos = param.pos + yoko * Pos.x + up * Pos.y;
+				light = dir;
+			}
+
+			double add_opacity = 1;
+
+			casting_start = pos;
+			casting_end = pos + light * max_distance;
+
+			// 物体との衝突判定
+			if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ] )
+				&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ] )
+				&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ] )
+				&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ] )
+				&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
+				&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
+			{
+				// 光の減衰を実現するために，カメラからの距離を測る
+				Pos.x = (  pos.x + offset.x ) / ax;
+				Pos.y = ( -pos.y + offset.y ) / ay;
+				Pos.z = (  pos.z + offset.z ) / az;
+
+				// ワールド座標系（左手）からスライス座標系（右手）に変換
+				// 以降は，全てスライス座標系で計算する
+				casting_start.x = (  casting_start.x + offset.x ) / ax;
+				casting_start.y = ( -casting_start.y + offset.y ) / ay;
+				casting_start.z = (  casting_start.z + offset.z ) / az;
+				casting_end.x   = (  casting_end.x   + offset.x ) / ax;
+				casting_end.y   = ( -casting_end.y   + offset.y ) / ay;
+				casting_end.z   = (  casting_end.z   + offset.z ) / az;
+
+				vector_type spos = casting_start;
+				vector_type ray = ( casting_end - casting_start ).unit( );
+
+				// 光の減衰の距離を実測に直すためのパラメータ
+				double dlen = vector_type( ray.x * ax, ray.y * ay, ray.z * az ).length( );
+
+				// 直方体画素の画像上では方向によってサンプリング間隔が変わってしまう問題に対応
+				double ray_sampling_step = sampling_step * masp / dlen;
+
+				vector_type ray_step = ray * ray_sampling_step;
+
+				double n = ( casting_end - casting_start ).length( );
+				double l = 0, of = ( Pos - casting_start ).length( );
+
+				while( l < n )
+				{
+					difference_type si = volumerender::to_integer( spos.x );
+					difference_type sj = volumerender::to_integer( spos.y );
+					difference_type sk = volumerender::to_integer( spos.z );
+
+					// この位置における物体が不透明の場合は次のステップへ移行する
+					if( renderer.check( si, sj, sk ) )
+					{
+						if( l > 0 )
+						{
+							spos.x -= ray.x;
+							spos.y -= ray.y;
+							spos.z -= ray.z;
+							l -= 1.0;
+						}
+						break;
+					}
+
+					double current_step = depth_map( si, sj, sk );
+					l += current_step;
+					spos.x += ray.x * current_step;
+					spos.y += ray.y * current_step;
+					spos.z += ray.z * current_step;
+				}
+
+				while( l < n )
+				{
+					difference_type si = volumerender::to_integer( spos.x );
+					difference_type sj = volumerender::to_integer( spos.y );
+					difference_type sk = volumerender::to_integer( spos.z );
+
+					double xx = spos.x - si;
+					double yy = spos.y - sj;
+					double zz = spos.z - sk;
+
+					attribute_type oc;
+
+					if( renderer.render( si, sj, sk, xx, yy, zz, oc ) )
+					{
+
+						double alpha = oc.alpha * sampling_step;
+						double aopacity = add_opacity * ( 1.0 - alpha );
+
+						// 画素がレンダリング結果に与える影響がしきい値以下になった場合は終了
+						if( aopacity < add_opacity )
+						{
+							break;
+						}
+
+						add_opacity = aopacity;
+
+						spos.x += ray_step.x;
+						spos.y += ray_step.y;
+						spos.z += ray_step.z;
+						l += ray_sampling_step;
+					}
+					else
+					{
+						// この位置における物体が透明の場合は次のステップへ移行する
+						spos += ray_step;
+						l += ray_sampling_step;
+
+						size_t count = 0;
+						while( l < n )
+						{
+							difference_type si = volumerender::to_integer( spos.x );
+							difference_type sj = volumerender::to_integer( spos.y );
+							difference_type sk = volumerender::to_integer( spos.z );
+
+							// この位置における物体が不透明の場合は次のステップへ移行する
+							if( renderer.check( si, sj, sk ) )
+							{
+								if( count > 0 )
+								{
+									spos.x -= ray.x;
+									spos.y -= ray.y;
+									spos.z -= ray.z;
+									l -= 1.0;
+								}
+								break;
+							}
+
+							double current_step = depth_map( si, sj, sk );
+							l += current_step;
+							spos.x += ray.x * current_step;
+							spos.y += ray.y * current_step;
+							spos.z += ray.z * current_step;
+
+							count++;
+						}
+					}
+				}
+
+				spos.x *= ax;
+				spos.y *= ay;
+				spos.z *= az;
+				return( spos );
+			}
+			else
+			{
+				double infinity = type_limits< double >::maximum( );
+				return( vector_type( infinity, infinity, infinity ) );
+			}
+		}
+	}
+
 
 	template < class Array1, class Array2, class DepthMap, class Renderer, class T >
 	class volumerendering_thread : public mist::thread< volumerendering_thread< Array1, Array2, DepthMap, Renderer, T > >
@@ -1767,6 +2010,33 @@ bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &dmap, const
 	delete [] thread;
 	
 	return( true );
+}
+
+template < class Array1, class Array2, class DepthMap, class Renderer, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &out, const DepthMap &depth_map, const Renderer &renderer, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type i, typename Array1::size_type j )
+{
+	return( __volumerendering_controller__::collision_detection( in, out, depth_map, renderer, param, table, i, j ) );
+}
+
+template < class Array1, class Array2, class DepthMap, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &out, const DepthMap &depth_map, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type i, typename Array1::size_type j )
+{
+	if( param.value_interpolation )
+	{
+		typedef rendering_helper::value_interpolation< Array1, T > Renderer;
+		return( collision_detection( in, out, depth_map, Renderer( in, param, table ), param, table, i, j ) );
+	}
+	else
+	{
+		typedef rendering_helper::color_interpolation< Array1, T > Renderer;
+		return( collision_detection( in, out, depth_map, Renderer( in, param, table ), param, table, i, j ) );
+	}
+}
+
+template < class Array1, class Array2, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &out, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type i, typename Array1::size_type j )
+{
+	return( collision_detection( in, out, volumerender::no_depth_map( ), param, table, i, j ) );
 }
 
 
