@@ -56,6 +56,7 @@ struct thread_object
 	virtual bool close( ) = 0;
 	virtual bool suspend( ) = 0;
 	virtual bool resume( ) = 0;
+	virtual ~thread_object( ){ }
 };
 
 

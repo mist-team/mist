@@ -75,6 +75,30 @@ namespace mixture
 		out << "( " << a.weight << ", " << a.av << ", < " << a.v[ 0 ] << ", " << a.v[ 1 ] << ", " << a.v[ 2 ] << ", " << a.v[ 3 ] << " > )";
 		return( out );
 	}
+
+	// dpで与えられる正規分布の(x,y)における値を返す。
+	inline double gauss( const mist::mixture::distribution2 &dp, double x, double y )
+	{
+		double t = dp.v[ 0 ] * dp.v[ 3 ] - dp.v[ 1 ] * dp.v[ 2 ];
+		double a = dp.v[ 3 ] / t;
+		double b = -dp.v[ 1 ] / t;
+		double c = -dp.v[ 2 ] / t;
+		double d = dp.v[ 0 ] / t;
+		x -= dp.av.x;
+		y -= dp.av.y;
+		const double pi = 3.1415926535897932384626433832795;
+		const double _2pi = 2.0 * pi;
+		double vvv = ( a * x + b * y ) * x + ( c * x + d * y ) * y;
+		return ( 1.0 / ( _2pi * sqrt( t ) ) * std::exp( - vvv / 2.0 ) );
+	}
+
+	inline double gauss( const mist::mixture::distribution &dp, double x )
+	{
+		const double pi = 3.1415926535897932384626433832795;
+		const double _2pi = std::sqrt( 2.0 * pi );
+		double myu = x - dp.av;
+		return ( 1.0 / ( _2pi * dp.sd ) * std::exp( - myu * myu / ( 2.0 * dp.sd * dp.sd ) ) );
+	}
 }
 
 
@@ -234,7 +258,8 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_
 			for( m = 0 ; m < nComponents ; m++ )
 			{
 				double myu = rSamples[ k ] - pdp[ m ].av;
-				tmp += Weight( k, m ) * pdp[ m ].weight * std::exp( - myu * myu / ( 2.0 * pdp[ m ].sd * pdp[ m ].sd ) ) / pdp[ m ].sd;
+				tmp += pdp[ m ].weight * std::exp( - myu * myu / ( 2.0 * pdp[ m ].sd * pdp[ m ].sd ) ) / pdp[ m ].sd;
+				//tmp += Weight( k, m ) * pdp[ m ].weight * std::exp( - myu * myu / ( 2.0 * pdp[ m ].sd * pdp[ m ].sd ) ) / pdp[ m ].sd;
 			}
 
 			if( tmp == 0.0 )
@@ -254,7 +279,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_
 		printf( "%f = ( %f, %f, %f )\n", fLikelihood, pdp[ 0 ].weight, pdp[ 0 ].av, pdp[ 0 ].sd );
 #endif
 
-		if( 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
+		if( fLastLikelihood >= fLikelihood || 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
 		{
 			break;
 		}
@@ -270,7 +295,6 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution *opdp, size_
 
 	return( true );
 }
-
 
 
 /// @brief データ系列から正規分布の混合分布を推定する
@@ -481,7 +505,7 @@ bool estimate_mixture( const Array &rSamples, mixture::distribution2 *opdp, size
 		printf( "%f = ( %f, %f )\n", fLikelihood, pdp[ 0 ].weight, pdp[ 0 ].av );
 #endif
 
-		if( 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
+		if( fLastLikelihood >= fLikelihood || 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
 		{
 			break;
 		}
@@ -788,7 +812,7 @@ namespace histogram
 		printf( "%f = ( %f, %f, %f )\n", fLikelihood, pdp[ 0 ].weight, pdp[ 0 ].av, pdp[ 0 ].sd );
 #endif
 
-			if( 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
+			if( fLastLikelihood >= fLikelihood || 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
 			{
 				break;
 			}
@@ -1058,7 +1082,7 @@ namespace histogram
 		printf( "%f = ( %f, %f )\n", fLikelihood, pdp[ 0 ].weight, pdp[ 0 ].av );
 #endif
 
-			if( 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
+			if( fLastLikelihood >= fLikelihood || 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
 			{
 				break;
 			}
