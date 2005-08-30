@@ -2039,6 +2039,40 @@ volumerender::parameter::vector_type collision_detection( const Array1 &in, cons
 	return( collision_detection( in, out, volumerender::no_depth_map( ), param, table, i, j ) );
 }
 
+template < class Array1, class Array2, class Array3, class DepthMap, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const DepthMap &dmap, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, typename Array1::size_type i, typename Array1::size_type j )
+{
+	typedef rendering_helper::value_interpolation_with_mark< Array1, Array2, T > Renderer;
+	return( collision_detection( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, i, j ) );
+}
+
+template < class Array1, class Array2, class Array3, class DepthMap, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const DepthMap &dmap, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, bool apply_and_operation, typename Array1::size_type i, typename Array1::size_type j )
+{
+	if( apply_and_operation )
+	{
+		typedef rendering_helper::value_interpolation_and_mark< Array1, Array2, T > Renderer;
+		return( collision_detection( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, i, j ) );
+	}
+	else
+	{
+		typedef rendering_helper::value_interpolation_or_mark< Array1, Array2, T > Renderer;
+		return( collision_detection( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, i, j ) );
+	}
+}
+
+template < class Array1, class Array2, class Array3, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, typename Array1::size_type i, typename Array1::size_type j )
+{
+	return( collision_detection( in, mk, out, volumerender::no_depth_map( ), param, table, mktable, i, j ) );
+}
+
+template < class Array1, class Array2, class Array3, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, bool apply_and_operation, typename Array1::size_type i, typename Array1::size_type j )
+{
+	return( collision_detection( in, mk, out, volumerender::no_depth_map( ), param, table, mktable, apply_and_operation, i, j ) );
+}
+
 
 /// @brief ボリュームレンダリング
 //! 
@@ -2121,7 +2155,6 @@ bool volumerendering( const Array1 &in, const Array2 &mk, Array3 &out, const Dep
 		return( false );
 	}
 
-	typedef typename Array1::size_type size_type;
 	typedef rendering_helper::value_interpolation_with_mark< Array1, Array2, ATTRIBUTETYPE > Renderer;
 	return( volumerendering( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, thread_num ) );
 }
@@ -2156,13 +2189,11 @@ bool volumerendering( const Array1 &in, const Array2 &mk, Array3 &out, const Dep
 
 	if( apply_and_operation )
 	{
-		typedef typename Array1::size_type size_type;
 		typedef rendering_helper::value_interpolation_and_mark< Array1, Array2, ATTRIBUTETYPE > Renderer;
 		return( volumerendering( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, thread_num ) );
 	}
 	else
 	{
-		typedef typename Array1::size_type size_type;
 		typedef rendering_helper::value_interpolation_or_mark< Array1, Array2, ATTRIBUTETYPE > Renderer;
 		return( volumerendering( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, thread_num ) );
 	}
