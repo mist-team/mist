@@ -2012,67 +2012,6 @@ bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &dmap, const
 	return( true );
 }
 
-template < class Array1, class Array2, class DepthMap, class Renderer, class T >
-volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &out, const DepthMap &depth_map, const Renderer &renderer, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type i, typename Array1::size_type j )
-{
-	return( __volumerendering_controller__::collision_detection( in, out, depth_map, renderer, param, table, i, j ) );
-}
-
-template < class Array1, class Array2, class DepthMap, class T >
-volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &out, const DepthMap &depth_map, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type i, typename Array1::size_type j )
-{
-	if( param.value_interpolation )
-	{
-		typedef rendering_helper::value_interpolation< Array1, T > Renderer;
-		return( collision_detection( in, out, depth_map, Renderer( in, param, table ), param, table, i, j ) );
-	}
-	else
-	{
-		typedef rendering_helper::color_interpolation< Array1, T > Renderer;
-		return( collision_detection( in, out, depth_map, Renderer( in, param, table ), param, table, i, j ) );
-	}
-}
-
-template < class Array1, class Array2, class T >
-volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &out, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type i, typename Array1::size_type j )
-{
-	return( collision_detection( in, out, volumerender::no_depth_map( ), param, table, i, j ) );
-}
-
-template < class Array1, class Array2, class Array3, class DepthMap, class T >
-volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const DepthMap &dmap, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, typename Array1::size_type i, typename Array1::size_type j )
-{
-	typedef rendering_helper::value_interpolation_with_mark< Array1, Array2, T > Renderer;
-	return( collision_detection( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, i, j ) );
-}
-
-template < class Array1, class Array2, class Array3, class DepthMap, class T >
-volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const DepthMap &dmap, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, bool apply_and_operation, typename Array1::size_type i, typename Array1::size_type j )
-{
-	if( apply_and_operation )
-	{
-		typedef rendering_helper::value_interpolation_and_mark< Array1, Array2, T > Renderer;
-		return( collision_detection( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, i, j ) );
-	}
-	else
-	{
-		typedef rendering_helper::value_interpolation_or_mark< Array1, Array2, T > Renderer;
-		return( collision_detection( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, i, j ) );
-	}
-}
-
-template < class Array1, class Array2, class Array3, class T >
-volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, typename Array1::size_type i, typename Array1::size_type j )
-{
-	return( collision_detection( in, mk, out, volumerender::no_depth_map( ), param, table, mktable, i, j ) );
-}
-
-template < class Array1, class Array2, class Array3, class T >
-volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, bool apply_and_operation, typename Array1::size_type i, typename Array1::size_type j )
-{
-	return( collision_detection( in, mk, out, volumerender::no_depth_map( ), param, table, mktable, apply_and_operation, i, j ) );
-}
-
 
 /// @brief ボリュームレンダリング
 //! 
@@ -2244,6 +2183,188 @@ template < class Array1, class Array2, class Array3, class ATTRIBUTETYPE >
 bool volumerendering( const Array1 &in, const Array2 &mk, Array3 &out, const volumerender::parameter &param, const volumerender::attribute_table< ATTRIBUTETYPE > &table, const volumerender::attribute_table< ATTRIBUTETYPE > &mktable, bool apply_and_operation, typename Array1::size_type thread_num = 0 )
 {
 	return( volumerendering( in, mk, out, volumerender::no_depth_map( ), param, table, mktable, apply_and_operation, thread_num ) );
+}
+
+
+
+/// @brief 衝突判定ルーチン（MISTのボリュームレンダリングエンジンで利用）
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in] in         … 入力画像
+//! @param[in] out        … 出力ボリュームレンダリング画像
+//! @param[in] dmap       … レンダリングを高速化するための距離画像
+//! @param[in] renderer   … ボリュームレンダリングの実装
+//! @param[in] param      … ボリュームレンダリングのパラメータ
+//! @param[in] table      … ボリュームレンダリングの色－値テーブル
+//! @param[in] i          … 衝突判定を行う出力画像中のX軸方向の位置
+//! @param[in] j          … 衝突判定を行う出力画像中のY軸方向の位置
+//! 
+//! @return 出力画像中の画素 (i, j) にもっとも影響を与える入力画像中の画素の座標
+//! 
+template < class Array1, class Array2, class DepthMap, class Renderer, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &out, const DepthMap &dmap, const Renderer &renderer, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type i, typename Array1::size_type j )
+{
+	return( __volumerendering_controller__::collision_detection( in, out, dmap, renderer, param, table, i, j ) );
+}
+
+
+/// @brief 衝突判定ルーチン（MISTのボリュームレンダリングエンジンで利用）
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in] in         … 入力画像
+//! @param[in] out        … ボリュームレンダリング結果画像
+//! @param[in] dmap       … レンダリングを高速化するための距離画像
+//! @param[in] param      … ボリュームレンダリングのパラメータ
+//! @param[in] table      … ボリュームレンダリングの色－値テーブル
+//! @param[in] i          … 衝突判定を行う出力画像中のX軸方向の位置
+//! @param[in] j          … 衝突判定を行う出力画像中のY軸方向の位置
+//! 
+//! @return 出力画像中の画素 (i, j) にもっとも影響を与える入力画像中の画素の座標
+//! 
+template < class Array1, class Array2, class DepthMap, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &out, const DepthMap &dmap, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type i, typename Array1::size_type j )
+{
+	if( param.value_interpolation )
+	{
+		typedef rendering_helper::value_interpolation< Array1, T > Renderer;
+		return( collision_detection( in, out, dmap, Renderer( in, param, table ), param, table, i, j ) );
+	}
+	else
+	{
+		typedef rendering_helper::color_interpolation< Array1, T > Renderer;
+		return( collision_detection( in, out, dmap, Renderer( in, param, table ), param, table, i, j ) );
+	}
+}
+
+
+/// @brief 衝突判定ルーチン（MISTのボリュームレンダリングエンジンで利用）
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in] in         … 入力画像
+//! @param[in] out        … ボリュームレンダリング結果画像
+//! @param[in] param      … ボリュームレンダリングのパラメータ
+//! @param[in] table      … ボリュームレンダリングの色－値テーブル
+//! @param[in] i          … 衝突判定を行う出力画像中のX軸方向の位置
+//! @param[in] j          … 衝突判定を行う出力画像中のY軸方向の位置
+//! 
+//! @return 出力画像中の画素 (i, j) にもっとも影響を与える入力画像中の画素の座標
+//! 
+template < class Array1, class Array2, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &out, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type i, typename Array1::size_type j )
+{
+	return( collision_detection( in, out, volumerender::no_depth_map( ), param, table, i, j ) );
+}
+
+
+/// @brief 衝突判定ルーチン（MISTのボリュームレンダリングエンジンで利用）
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in] in         … 入力画像
+//! @param[in] mk         … マーク画像
+//! @param[in] out        … ボリュームレンダリング結果画像
+//! @param[in] dmap       … レンダリングを高速化するための距離画像
+//! @param[in] param      … ボリュームレンダリングのパラメータ
+//! @param[in] table      … ボリュームレンダリングの色－値テーブル
+//! @param[in] mktable    … マークデータ用の色－値テーブル
+//! @param[in] i          … 衝突判定を行う出力画像中のX軸方向の位置
+//! @param[in] j          … 衝突判定を行う出力画像中のY軸方向の位置
+//! 
+//! @return 出力画像中の画素 (i, j) にもっとも影響を与える入力画像中の画素の座標
+//! 
+template < class Array1, class Array2, class Array3, class DepthMap, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const DepthMap &dmap, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, typename Array1::size_type i, typename Array1::size_type j )
+{
+	typedef rendering_helper::value_interpolation_with_mark< Array1, Array2, T > Renderer;
+	return( collision_detection( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, i, j ) );
+}
+
+
+/// @brief 衝突判定ルーチン（MISTのボリュームレンダリングエンジンで利用）
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in] in                  … 入力画像
+//! @param[in] mk                  … マーク画像
+//! @param[in] out                 … ボリュームレンダリング結果画像
+//! @param[in] dmap                … レンダリングを高速化するための距離画像
+//! @param[in] param               … ボリュームレンダリングのパラメータ
+//! @param[in] table               … ボリュームレンダリングの色－値テーブル
+//! @param[in] mktable             … マークデータ用の色－値テーブル
+//! @param[in] apply_and_operation … CTとマークの共通部分のみをレンダリングするか，和集合をレンダリングするか
+//! @param[in] i                   … 衝突判定を行う出力画像中のX軸方向の位置
+//! @param[in] j                   … 衝突判定を行う出力画像中のY軸方向の位置
+//! 
+//! @return 出力画像中の画素 (i, j) にもっとも影響を与える入力画像中の画素の座標
+//! 
+template < class Array1, class Array2, class Array3, class DepthMap, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const DepthMap &dmap, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, bool apply_and_operation, typename Array1::size_type i, typename Array1::size_type j )
+{
+	if( apply_and_operation )
+	{
+		typedef rendering_helper::value_interpolation_and_mark< Array1, Array2, T > Renderer;
+		return( collision_detection( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, i, j ) );
+	}
+	else
+	{
+		typedef rendering_helper::value_interpolation_or_mark< Array1, Array2, T > Renderer;
+		return( collision_detection( in, out, dmap, Renderer( in, mk, param, table, mktable ), param, table, i, j ) );
+	}
+}
+
+
+/// @brief 衝突判定ルーチン（MISTのボリュームレンダリングエンジンで利用）
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in] in         … 入力画像
+//! @param[in] mk         … マーク画像
+//! @param[in] out        … ボリュームレンダリング結果画像
+//! @param[in] param      … ボリュームレンダリングのパラメータ
+//! @param[in] table      … ボリュームレンダリングの色－値テーブル
+//! @param[in] mktable    … マークデータ用の色－値テーブル
+//! @param[in] i          … 衝突判定を行う出力画像中のX軸方向の位置
+//! @param[in] j          … 衝突判定を行う出力画像中のY軸方向の位置
+//! 
+//! @return 出力画像中の画素 (i, j) にもっとも影響を与える入力画像中の画素の座標
+//! 
+template < class Array1, class Array2, class Array3, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, typename Array1::size_type i, typename Array1::size_type j )
+{
+	return( collision_detection( in, mk, out, volumerender::no_depth_map( ), param, table, mktable, i, j ) );
+}
+
+
+/// @brief 衝突判定ルーチン（MISTのボリュームレンダリングエンジンで利用）
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in] in                  … 入力画像
+//! @param[in] mk                  … マーク画像
+//! @param[in] out                 … ボリュームレンダリング結果画像
+//! @param[in] param               … ボリュームレンダリングのパラメータ
+//! @param[in] table               … ボリュームレンダリングの色－値テーブル
+//! @param[in] mktable             … マークデータ用の色－値テーブル
+//! @param[in] apply_and_operation … CTとマークの共通部分のみをレンダリングするか，和集合をレンダリングするか
+//! @param[in] i                   … 衝突判定を行う出力画像中のX軸方向の位置
+//! @param[in] j                   … 衝突判定を行う出力画像中のY軸方向の位置
+//! 
+//! @return 出力画像中の画素 (i, j) にもっとも影響を与える入力画像中の画素の座標
+//! 
+template < class Array1, class Array2, class Array3, class T >
+volumerender::parameter::vector_type collision_detection( const Array1 &in, const Array2 &mk, const Array3 &out, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, const volumerender::attribute_table< T > &mktable, bool apply_and_operation, typename Array1::size_type i, typename Array1::size_type j )
+{
+	return( collision_detection( in, mk, out, volumerender::no_depth_map( ), param, table, mktable, apply_and_operation, i, j ) );
 }
 
 
