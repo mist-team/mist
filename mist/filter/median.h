@@ -40,15 +40,16 @@ namespace __median_filter_with_histogram__
 						typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
 						typename Array1::size_type thread_idz, typename Array1::size_type thread_numz, Functor f )
 	{
-		typedef typename Array1::size_type  size_type;
-		typedef typename Array1::value_type value_type;
-		typedef typename Array2::value_type out_value_type;
-		typedef unsigned short hist_value;
+		typedef typename Array1::size_type			size_type;
+		typedef typename Array1::difference_type	difference_type;
+		typedef typename Array1::value_type			value_type;
+		typedef typename Array2::value_type			out_value_type;
+		typedef size_type hist_value;
 
 		size_type range = static_cast< size_type >( max - min + 1 );
 		size_type a = 0, i, j, k, x, y, z, ri, leftnum;
-		signed int pth, th, lt_med;
-		value_type med;
+		difference_type pth, th, lt_med;
+		difference_type med;
 
 		size_type w = in.width( );
 		size_type h = in.height( );
@@ -61,9 +62,9 @@ namespace __median_filter_with_histogram__
 		size_type bh = fh / 2;
 		size_type bd = fd / 2;
 
-		value_type *leftmost = new value_type[ fh * fd ];
-		value_type *sort = new value_type[ fw * fh * fd + 1 ];
-		hist_value *hist = new hist_value[range];
+		size_type *leftmost = new size_type[ fh * fd ];
+		size_type *sort = new size_type[ fw * fh * fd + 1 ];
+		hist_value *hist = new hist_value[ range ];
 
 		for( k = thread_idz ; k < d ; k += thread_numz )
 		{
@@ -76,7 +77,7 @@ namespace __median_filter_with_histogram__
 				leftnum = 0;
 				for( z = k < bd ? 0 : k - bd ; z <= k + bd && z < d ; z++ )
 				{
-					for(y = j < bh ? 0 : j - bh ; y <= j + bh && y < h ; y++ )
+					for( y = j < bh ? 0 : j - bh ; y <= j + bh && y < h ; y++ )
 					{
 						leftmost[ leftnum++ ] = in( 0, y, z ) - min;
 						for( x = 0 ; x <= bw ; x++ )
