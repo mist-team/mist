@@ -44,7 +44,7 @@ namespace __median_filter_with_histogram__
 		typedef typename Array1::difference_type	difference_type;
 		typedef typename Array1::value_type			value_type;
 		typedef typename Array2::value_type			out_value_type;
-		typedef size_type hist_value;
+		typedef difference_type hist_value;
 
 		size_type range = static_cast< size_type >( max - min + 1 );
 		size_type a = 0, i, j, k, x, y, z, ri, leftnum;
@@ -62,8 +62,8 @@ namespace __median_filter_with_histogram__
 		size_type bh = fh / 2;
 		size_type bd = fd / 2;
 
-		size_type *leftmost = new size_type[ fh * fd ];
-		size_type *sort = new size_type[ fw * fh * fd + 1 ];
+		difference_type *leftmost = new difference_type[ fh * fd ];
+		difference_type *sort = new difference_type[ fw * fh * fd + 1 ];
 		hist_value *hist = new hist_value[ range ];
 
 		for( k = thread_idz ; k < d ; k += thread_numz )
