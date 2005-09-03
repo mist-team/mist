@@ -862,7 +862,7 @@ namespace mpeg
 
 		/// @brief array2形式の画像をエンコードしてストリームに書き込む(RGB)
 		//! 
-		//! @param[in] iamge … フレーム画像
+		//! @param[in] image … フレーム画像
 		//!
 		bool write_frame( const mist::array2< mist::rgb< unsigned char > > &image )
 		{
@@ -963,7 +963,7 @@ namespace mpeg
 
 		/// @brief エンコードバッファサイズを設定
 		//! 
-		//! @param[in] … エンコードバッファサイズ
+		//! @param[in] encode_buf_size … エンコードバッファサイズ
 		//!
 		bool encode_buf_size( const int encode_buf_size )
 		{
