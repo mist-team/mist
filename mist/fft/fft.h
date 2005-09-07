@@ -162,9 +162,10 @@ bool ifft( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 
 	out.resize( in.size( ) );
 
+	double __value__ = 1.0 / in.size( );
 	for( i = 0 ; i < out.size( ) ; i++ )
 	{
-		out[ i ] = __fft_util__::convert_complex< T2 >::convert_from( data[ 2 * i ], data[ 2 * i + 1 ] ) / in.size( );
+		out[ i ] = __fft_util__::convert_complex< T2 >::convert_from( data[ 2 * i ] * __value__, data[ 2 * i + 1 ] * __value__ );
 	}
 
 	__fft_util__::deallocate_memory( mem );
@@ -300,11 +301,12 @@ bool ifft( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 
 	out.resize( in.width( ), in.height( ) );
 
+	double __value__ = 1.0 / in.size( );
 	for( i = 0 ; i < out.width( ) ; i++ )
 	{
 		for( j = 0 ; j < out.height( ) ; j++ )
 		{
-			out( i, j ) = __fft_util__::convert_complex< T2 >::convert_from( data[ i ][ 2 * j ], data[ i ][ 2 * j + 1 ] ) / in.size( );
+			out( i, j ) = __fft_util__::convert_complex< T2 >::convert_from( data[ i ][ 2 * j ] * __value__, data[ i ][ 2 * j + 1 ] * __value__ );
 		}
 	}
 
@@ -372,7 +374,7 @@ bool fft( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
 
 	ip[ 0 ] = 0;
 
-	ooura_fft::cdft3d( static_cast< int >(in.width( )), static_cast< int >(in.height( )), static_cast< int >(in.depth( ) * 2), -1, data, t, ip, w );
+	ooura_fft::cdft3d( static_cast< int >( in.width( ) ), static_cast< int >( in.height( ) ), static_cast< int >( in.depth( ) * 2 ), -1, data, t, ip, w );
 
 	out.resize( in.width( ), in.height( ), in.depth( ) );
 
@@ -455,13 +457,14 @@ bool ifft( const array3< T1, Allocator1 > &in, array3< T2 , Allocator2 > &out )
 
 	out.resize( in.width( ), in.height( ), in.depth( ) );
 
+	double __value__ = 1.0 / in.size( );
 	for( i = 0 ; i < out.width( ) ; i++ )
 	{
 		for( j = 0 ; j < out.height( ) ; j++ )
 		{
 			for( k = 0 ; k < out.depth( ) ; k++ )
 			{
-				out( i, j, k ) = __fft_util__::convert_complex< T2 >::convert_from( data[ i ][ j ][ 2 * k ], data[ i ][ j ][ 2 * k + 1 ] ) / ( in.size( ) );
+				out( i, j, k ) = __fft_util__::convert_complex< T2 >::convert_from( data[ i ][ j ][ 2 * k ] * __value__, data[ i ][ j ][ 2 * k + 1 ] * __value__ );
 			}
 		}
 	}
