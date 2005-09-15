@@ -1,6 +1,10 @@
 /// @file mist/volumerender.h
 //!
 //! @brief ３次元画像のボリュームレンダリングエンジン
+//! 
+//! - 参考文献
+//!   - 林雄一郎，樋口義剛，森健策，長谷川純一，末永康仁，鳥脇純一郎, "ボリュームレンダリング画像における3次元関心領域の指定法と開発とその仮想化内視鏡システムへの応用," 電子通信学会論文誌D, J87-D-II, No.1, pp.361-367，2004
+//!   - K. Mori, Y. Suenaga and J. Toriwaki, ``Fast volume rendering based on software optimization using multimedia instructions on PC platform,'' Proceedings of Computer Assisted Radiology and Surgery 2002, pp.467-472, 2002
 //!
 #ifndef __INCLUDE_MIST_VOLUMERENDER__
 #define __INCLUDE_MIST_VOLUMERENDER__
@@ -1755,6 +1759,7 @@ namespace __volumerendering_controller__
 			}
 
 			double add_opacity = 1;
+			double old_add_opacity = 0.0;
 
 			casting_start = pos;
 			casting_end = pos + light * max_distance;
@@ -1781,6 +1786,7 @@ namespace __volumerendering_controller__
 				casting_end.y   = ( -casting_end.y   + offset.y ) / ay;
 				casting_end.z   = (  casting_end.z   + offset.z ) / az;
 
+				vector_type opos = casting_start;
 				vector_type spos = casting_start;
 				vector_type ray = ( casting_end - casting_start ).unit( );
 
@@ -1837,15 +1843,22 @@ namespace __volumerendering_controller__
 					{
 
 						double alpha = oc.alpha * sampling_step;
-						double aopacity = add_opacity * ( 1.0 - alpha );
+						double aopacity = alpha * add_opacity;
 
 						// 画素がレンダリング結果に与える影響がしきい値以下になった場合は終了
-						if( aopacity < add_opacity )
+						if( old_add_opacity < aopacity )
+						{
+							opos = spos;
+							old_add_opacity = aopacity;
+						}
+
+						add_opacity = add_opacity * ( 1.0 - alpha );
+
+						// 画素がレンダリング結果に与える影響がしきい値以下になった場合は終了
+						if( add_opacity < termination )
 						{
 							break;
 						}
-
-						add_opacity = aopacity;
 
 						spos.x += ray_step.x;
 						spos.y += ray_step.y;
