@@ -85,6 +85,58 @@ namespace dicom
 	}
 
 
+	/// @brief シーケンスタグかどうかを判定する
+	//! 
+	//! @param[in] p … 先頭ポインタ
+	//! @param[in] e … 末尾ポインタ
+	//! 
+	//! @retval true  … シーケンスタグの場合
+	//! @retval false … それ以外
+	//! 
+	inline bool is_sequence_separate_tag( const unsigned char *p, const unsigned char *e )
+	{
+		if( p + 4 > e )
+		{
+			return( false );
+		}
+		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x00 && p[ 3 ] == 0xe0 );
+	}
+
+	/// @brief シーケンス要素終了タグかどうか
+	//! 
+	//! @param[in] p … 先頭ポインタ
+	//! @param[in] e … 末尾ポインタ
+	//! 
+	//! @retval true  … シーケンス要素終了タグの場合
+	//! @retval false … それ以外
+	//! 
+	inline bool is_sequence_element_end( const unsigned char *p, const unsigned char *e )
+	{
+		if( p + 8 > e )
+		{
+			return( false );
+		}
+		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x0d && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
+	}
+
+	/// @brief シーケンス終了タグかどうか
+	//! 
+	//! @param[in] p … 先頭ポインタ
+	//! @param[in] e … 末尾ポインタ
+	//! 
+	//! @retval true  … シーケンス終了タグの場合
+	//! @retval false … それ以外
+	//! 
+	inline bool is_sequence_tag_end( const unsigned char *p, const unsigned char *e )
+	{
+		if( p + 8 > e )
+		{
+			return( false );
+		}
+		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0xdd && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
+	}
+
+
 	/// @brief DICOMのタグを読み込み，テーブルに登録されているものと照合する
 	//! 
 	//! テーブルに登録されていない場合は，読み飛ばす．
@@ -225,7 +277,14 @@ namespace dicom
 			if( vr == SQ )
 			{
 				// 不明なタグだけどシーケンスタグということを確認
-				tag = dicom_tag( construct_dicom_tag( group, element ), vr, -1, "UNKNOWN" );
+				tag = dicom_tag( construct_dicom_tag( group, element ), SQ, -1, "UNKNOWN" );
+				numBytes = num_bytes;
+				return( data + 4 );
+			}
+			else if( data + 4 + 4 <= e && data[ 0 ] == 0xff && data[ 1 ] == 0xff && data[ 2 ] == 0xff && data[ 3 ] == 0xff && is_sequence_separate_tag( data + 4, e ) )
+			{
+				// 不明なタグだけどシーケンスタグの可能性がある場合ということを確認
+				tag = dicom_tag( construct_dicom_tag( group, element ), SQ, -1, "UNKNOWN" );
 				numBytes = num_bytes;
 				return( data + 4 );
 			}
@@ -653,58 +712,6 @@ namespace dicom
 	}
 
 
-	/// @brief シーケンスタグかどうかを判定する
-	//! 
-	//! @param[in] p … 先頭ポインタ
-	//! @param[in] e … 末尾ポインタ
-	//! 
-	//! @retval true  … シーケンスタグの場合
-	//! @retval false … それ以外
-	//! 
-	inline bool is_sequence_separate_tag( const unsigned char *p, const unsigned char *e )
-	{
-		if( p + 4 > e )
-		{
-			return( false );
-		}
-		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x00 && p[ 3 ] == 0xe0 );
-	}
-
-	/// @brief シーケンス要素終了タグかどうか
-	//! 
-	//! @param[in] p … 先頭ポインタ
-	//! @param[in] e … 末尾ポインタ
-	//! 
-	//! @retval true  … シーケンス要素終了タグの場合
-	//! @retval false … それ以外
-	//! 
-	inline bool is_sequence_element_end( const unsigned char *p, const unsigned char *e )
-	{
-		if( p + 8 > e )
-		{
-			return( false );
-		}
-		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0x0d && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
-	}
-
-	/// @brief シーケンス終了タグかどうか
-	//! 
-	//! @param[in] p … 先頭ポインタ
-	//! @param[in] e … 末尾ポインタ
-	//! 
-	//! @retval true  … シーケンス終了タグの場合
-	//! @retval false … それ以外
-	//! 
-	inline bool is_sequence_tag_end( const unsigned char *p, const unsigned char *e )
-	{
-		if( p + 8 > e )
-		{
-			return( false );
-		}
-		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0xdd && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
-	}
-
-
 	/// @brief DICOMのタグを処理する
 	//! 
 	//! シーケンスを表すDICOMタグが見つかった場合は，再帰的に本関数が適用される
@@ -1030,7 +1037,7 @@ namespace dicom
 	}
 
 
-	/// @brief DICOMのタグ集合をファイルに書き出す
+	/// @brief DICOMのタグ集合を Explicit VR 形式でファイルに書き出す
 	//! 
 	//! @param[in]  group     … グループID
 	//! @param[in]  element   … エレメントID
@@ -1043,9 +1050,11 @@ namespace dicom
 	//! @retval true  … DICOMファイルの処理に成功
 	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
 	//! 
-	inline bool write_dicom_tag( unsigned short group, unsigned short element, dicom_vr vr, const unsigned char *data, size_t num_bytes, FILE *fp, bool to_little_endian = true )
+	inline bool write_dicom_tag_explicit_vr( unsigned short group, unsigned short element, dicom_vr vr, const unsigned char *data, size_t num_bytes, FILE *fp, bool to_little_endian = true )
 	{
-		unsigned char ZERO[] = { 0, 0, 0 };
+		unsigned char ZERO[] = { 0, 0, 0, 0 };
+		unsigned char FFFF[] = { 0xff, 0xff, 0xff, 0xff };
+
 		switch( vr )
 		{
 		case OW:
@@ -1066,7 +1075,6 @@ namespace dicom
 				case OW:
 					if( num_bytes % 2 == 0 )
 					{
-						// データのバイト数がおかしい
 						for( size_t i = 0 ; i < num_bytes ; i += 2 )
 						{
 							fwrite( from_current_endian( byte_array< unsigned short >( data + i ), to_little_endian ).get_bytes( ), 1, 2, fp );
@@ -1074,6 +1082,7 @@ namespace dicom
 					}
 					else
 					{
+						// データのバイト数がおかしい
 						return( false );
 					}
 					break;
@@ -1082,7 +1091,6 @@ namespace dicom
 				default:
 					if( num_bytes % 4 == 0 )
 					{
-						// データのバイト数がおかしい
 						for( size_t i = 0 ; i < num_bytes ; i += 4 )
 						{
 							fwrite( from_current_endian( byte_array< unsigned int >( data + i ), to_little_endian ).get_bytes( ), 1, 4, fp );
@@ -1090,6 +1098,7 @@ namespace dicom
 					}
 					else
 					{
+						// データのバイト数がおかしい
 						return( false );
 					}
 					break;
@@ -1121,7 +1130,6 @@ namespace dicom
 				case AT:
 					if( num_bytes % 2 == 0 )
 					{
-						// データのバイト数がおかしい
 						for( size_t i = 0 ; i < num_bytes ; i += 2 )
 						{
 							fwrite( from_current_endian( byte_array< unsigned short >( data + i ), to_little_endian ).get_bytes( ), 1, 2, fp );
@@ -1129,6 +1137,7 @@ namespace dicom
 					}
 					else
 					{
+						// データのバイト数がおかしい
 						return( false );
 					}
 					break;
@@ -1138,7 +1147,6 @@ namespace dicom
 				case FL:
 					if( num_bytes % 4 == 0 )
 					{
-						// データのバイト数がおかしい
 						for( size_t i = 0 ; i < num_bytes ; i += 4 )
 						{
 							fwrite( from_current_endian( byte_array< unsigned int >( data + i ), to_little_endian ).get_bytes( ), 1, 4, fp );
@@ -1146,6 +1154,7 @@ namespace dicom
 					}
 					else
 					{
+						// データのバイト数がおかしい
 						return( false );
 					}
 					break;
@@ -1154,7 +1163,6 @@ namespace dicom
 				default:
 					if( num_bytes % 8 == 0 )
 					{
-						// データのバイト数がおかしい
 						for( size_t i = 0 ; i < num_bytes ; i += 8 )
 						{
 							fwrite( from_current_endian( byte_array< double >( data + i ), to_little_endian ).get_bytes( ), 1, 8, fp );
@@ -1162,6 +1170,7 @@ namespace dicom
 					}
 					else
 					{
+						// データのバイト数がおかしい
 						return( false );
 					}
 					break;
@@ -1171,14 +1180,23 @@ namespace dicom
 
 		case OB:
 		case UN:
-		case SQ:
 		case UT:
+		case SQ:
 			fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
 			fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
 			fwrite( get_dicom_vr( vr ).c_str( ), 1, 2, fp );
 			fwrite( ZERO, 1, 2, fp );
-			fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
-			fwrite( data, 1, num_bytes, fp );
+			// データがシーケンスになっているかを調べ，出力方法を切り替える
+			if( num_bytes > 4 + 8 && is_sequence_separate_tag( data, data + num_bytes ) && is_sequence_tag_end( data + num_bytes - 8, data + num_bytes ) )
+			{
+				fwrite( FFFF, 1, 4, fp );
+				fwrite( data, 1, num_bytes, fp );
+			}
+			else
+			{
+				fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
+				fwrite( data, 1, num_bytes, fp );
+			}
 			break;
 
 		case UNKNOWN:
@@ -1202,7 +1220,35 @@ namespace dicom
 		return( true );
 	}
 
-	/// @brief DICOMのタグ集合をファイルに書き出す
+
+
+	/// @brief DICOMのタグ集合を Implicit VR 形式でファイルに書き出す
+	//! 
+	//! @param[in]  group     … グループID
+	//! @param[in]  element   … エレメントID
+	//! @param[in]  vr        … VRタグ
+	//! @param[in]  data      … データ
+	//! @param[in]  num_bytes … データのバイト数
+	//! @param[out] fp    … 出力ファイルストリーム
+	//! @param[in]  to_little_endian … 出力データの形式をリトルエンディアンにするかどうか
+	//! 
+	//! @retval true  … DICOMファイルの処理に成功
+	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
+	//! 
+	inline bool write_dicom_tag_implicit_vr( unsigned short group, unsigned short element, dicom_vr vr, const unsigned char *data, size_t num_bytes, FILE *fp, bool to_little_endian = true )
+	{
+		unsigned char ZERO[] = { 0, 0, 0, 0 };
+		unsigned char FFFF[] = { 0xff, 0xff, 0xff, 0xff };
+
+		fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
+		fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
+		fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
+		fwrite( data, 1, num_bytes, fp );
+
+		return( true );
+	}
+
+	/// @brief DICOMのタグ集合を Explicit VR 形式でファイルに書き出す
 	//! 
 	//! @param[in]  e     … ファイルに出力するDICOMタグ
 	//! @param[out] fp    … 出力ファイルストリーム
@@ -1211,9 +1257,135 @@ namespace dicom
 	//! @retval true  … DICOMファイルの処理に成功
 	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
 	//! 
-	inline bool write_dicom_tag( const dicom_element &e, FILE *fp, bool to_little_endian = true )
+	inline bool write_dicom_tag_explicit_vr( const dicom_element &e, FILE *fp, bool to_little_endian = true )
 	{
-		return( write_dicom_tag( e.get_group( ), e.get_element( ), e.vr, e.data, e.num_bytes, fp, to_little_endian ) );
+		return( write_dicom_tag_explicit_vr( e.get_group( ), e.get_element( ), e.vr, e.data, e.num_bytes, fp, to_little_endian ) );
+	}
+
+	/// @brief DICOMのタグ集合を Implicit VR 形式でファイルに書き出す
+	//! 
+	//! @param[in]  e     … ファイルに出力するDICOMタグ
+	//! @param[out] fp    … 出力ファイルストリーム
+	//! @param[in]  to_little_endian … 出力データの形式をリトルエンディアンにするかどうか
+	//! 
+	//! @retval true  … DICOMファイルの処理に成功
+	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
+	//! 
+	inline bool write_dicom_tag_implicit_vr( const dicom_element &e, FILE *fp, bool to_little_endian = true )
+	{
+		return( write_dicom_tag_implicit_vr( e.get_group( ), e.get_element( ), e.vr, e.data, e.num_bytes, fp, to_little_endian ) );
+	}
+
+
+	/// @brief DICOMのタグを出力する際に各タグが必要とするバイト数を計算する
+	//! 
+	//! @param[in] e          … DICOMタグ
+	//! @param[in] implicitVR … Implicit VR 形式かどうか
+	//! 
+	//! @return タグのバイト数
+	//! 
+	inline size_t get_write_dicom_tag_size( const dicom_element &e, bool implicitVR )
+	{
+		if( implicitVR )
+		{
+			return( 8 + e.num_bytes );
+		}
+		else
+		{
+			size_t num_bytes = 0;
+
+			switch( e.vr )
+			{
+			case OW:
+			case OF:
+			case OB:
+			case UN:
+			case SQ:
+			case UT:
+			case UNKNOWN:
+				num_bytes = 12 + e.num_bytes;
+				break;
+
+			case US:
+			case SS:
+			case AT:
+			case UL:
+			case SL:
+			case FL:
+			case FD:
+			default:
+				num_bytes = 8 + e.num_bytes;
+				break;
+			}
+
+			return( num_bytes );
+		}
+	}
+
+
+	/// @brief DICOMの Group Length を計算し，タグに設定する
+	//! 
+	//! @param[in,out] dicom      … DICOMタグ毎にデータを登録するテーブル
+	//! @param[in]     implicitVR … Implicit VR 形式かどうか
+	//! 
+	inline void compute_group_length( dicom_tag_container &dicm, bool implicitVR )
+	{
+		std::map< unsigned short, size_t > group_length;
+		dicom_tag_container::iterator ite;
+		for( ite = dicm.begin( ) ; ite != dicm.end( ) ; ++ite )
+		{
+			const dicom_element &e = ite->second;
+			if( e.enable )
+			{
+				unsigned short group     = e.get_group( );
+				unsigned short element   = e.get_element( );
+				size_t num_bytes = get_write_dicom_tag_size( e, implicitVR );
+
+				if( element != 0x0000 )
+				{
+					// Group Length のタグはスキップする
+					if( group_length.find( group ) != group_length.end( ) )
+					{
+						group_length[ group ] += num_bytes;
+					}
+					else
+					{
+						group_length[ group ] = num_bytes;
+					}
+				}
+			}
+		}
+
+		for( ite = dicm.begin( ) ; ite != dicm.end( ) ; ++ite )
+		{
+			dicom_element &e = ite->second;
+			unsigned short group   = e.get_group( );
+			unsigned short element = e.get_element( );
+
+			if( element == 0x0000 )
+			{
+				// Group Length のタグにデータを設定する
+				size_t num_bytes = group_length[ group ];
+
+				switch( e.num_bytes )
+				{
+				case 2:
+					{
+						byte_array< unsigned short > b( static_cast< unsigned short >( num_bytes ) );
+						memcpy( e.data, b.get_bytes( ), e.num_bytes );
+					}
+					break;
+
+				case 4:
+				default:
+					{
+						byte_array< unsigned int > b( static_cast< unsigned int >( num_bytes ) );
+						memcpy( e.data, b.get_bytes( ), e.num_bytes );
+					}
+					break;
+				}
+			}
+		}
 	}
 
 
@@ -1246,25 +1418,30 @@ namespace dicom
 
 		dicom_tag_container dicm( dicom );
 
+		bool implicitVR = true;
+
 		// 明示的VRの指定がない場合は追加する
 		if( !dicm.contain( 0x0002, 0x0010 ) )
 		{
-			// Transfer Syntax UID が存在しない場合は，「Explicit VR Little Endian」を指定する
-			std::string syntax = "1.2.840.10008.1.2.1";
+			// Transfer Syntax UID が存在しない場合は，「Implicit VR Little Endian」を指定する
+			std::string syntax = "1.2.840.10008.1.2";
 			dicm.append( dicom_element( 0x0002, 0x0010, reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) ) );
 		}
-		else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2" )
+		else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2.1" )
 		{
-			// 「Implicit VR Little Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
-			std::string syntax = "1.2.840.10008.1.2.1";
-			dicm( 0x0002, 0x0010 ).copy( reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) );
+			// 「Explicit VR Little Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
+			implicitVR = false;
 		}
 		else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2.2" )
 		{
-			// 「Implicit VR Little Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
+			// 「Implicit VR Big Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
+			implicitVR = false;
 			std::string syntax = "1.2.840.10008.1.2.1";
 			dicm( 0x0002, 0x0010 ).copy( reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) );
 		}
+
+		// Group Length を正しく設定する
+		compute_group_length( dicm, implicitVR );
 
 		// すべて明示的VRで記述する
 		dicom_tag_container::const_iterator ite = dicm.begin( );
@@ -1272,7 +1449,14 @@ namespace dicom
 		{
 			if( ite->second.enable )
 			{
-				write_dicom_tag( ite->second, fp, true );
+				if( implicitVR )
+				{
+					write_dicom_tag_implicit_vr( ite->second, fp, true );
+				}
+				else
+				{
+					write_dicom_tag_explicit_vr( ite->second, fp, true );
+				}
 			}
 		}
 
