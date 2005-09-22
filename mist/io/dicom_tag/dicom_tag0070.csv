@@ -1,3 +1,4 @@
+{0,0x0070,0x0000,UL,1,"""Group 0070 Length""",},//
 {0,0x0070,0x0001,SQ,1,"""Graphic Annotation Sequence""",},//
 {0,0x0070,0x0002,CS,1,"""Graphic Layer""",},//
 {0,0x0070,0x0003,CS,1,"""Bounding Box Annotation Units""",},//

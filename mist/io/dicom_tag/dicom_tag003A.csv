@@ -1,3 +1,4 @@
+{0,0x003A,0x0000,UL,1,"""Group 003A Length""",},//
 {0,0x003A,0x0004,CS,1,"""Waveform Originality""",},//
 {0,0x003A,0x0005,US,1,"""Number of Waveform Channels""",},//
 {0,0x003A,0x0010,UL,1,"""Number of Waveform Samples""",},//

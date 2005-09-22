@@ -1,3 +1,4 @@
+{0,0x2000,0x0000,UL,1,"""Group 2000 Length""",},//
 {0,0x2000,0x0010,IS,1,"""Number of Copies""",},//
 {0,0x2000,0x001E,SQ,1,"""Printer Configuration Sequence""",},//
 {0,0x2000,0x0020,CS,1,"""Print Priority""",},//

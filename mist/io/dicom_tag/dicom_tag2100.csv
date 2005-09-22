@@ -1,3 +1,4 @@
+{0,0x2100,0x0000,UL,1,"""Group 2100 Length""",},//
 {0,0x2100,0x0010,SH,1,"""Print Job ID""",},//
 {0,0x2100,0x0020,CS,1,"""Execution Status""",},//
 {0,0x2100,0x0030,CS,1,"""Execution Status Info""",},//

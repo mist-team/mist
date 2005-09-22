@@ -1,3 +1,4 @@
+{0,0x0012,0x0000,UL,1,"""Group 0012 Length""",},//
 {0,0x0012,0x0010,LO,1,"""Clinical Trial Sponsor Name""",},//
 {0,0x0012,0x0020,LO,1,"""Clinical Trial Protocol ID""",},//
 {0,0x0012,0x0021,LO,1,"""Clinical Trial Protocol Name""",},//

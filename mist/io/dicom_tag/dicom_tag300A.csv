@@ -1,3 +1,4 @@
+{0,0x300A,0x0000,UL,1,"""Group 300A Length""",},//
 {0,0x300A,0x0002,SH,1,"""RT Plan Label""",},//
 {0,0x300A,0x0003,LO,1,"""RT Plan Name""",},//
 {0,0x300A,0x0004,ST,1,"""RT Plan Description""",},//

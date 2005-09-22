@@ -1,3 +1,4 @@
+{0,0x2130,0x0000,UL,1,"""Group 2130 Length""",},//
 {0,0x2130,0x0010,SQ,1,"""Print Management Capabilities Sequence""",},//
 {0,0x2130,0x0015,SQ,1,"""Printer Characteristics Sequence""",},//
 {0,0x2130,0x0030,SQ,1,"""Film Box Content Sequence""",},//

@@ -1,3 +1,4 @@
+{0,0x0088,0x0000,UL,1,"""Group 0088 Length""",},//
 {0,0x0088,0x0130,SH,1,"""Storage Media File-set ID""",},//
 {0,0x0088,0x0140,UI,1,"""Storage Media File-set UID""",},//
 {0,0x0088,0x0200,SQ,1,"""Icon Image Sequence""",},//

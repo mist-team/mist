@@ -1,3 +1,4 @@
+{0,0x3008,0x0000,UL,1,"""Group 3008 Length""",},//
 {0,0x3008,0x0010,SQ,1,"""Measured Dose Reference Sequence""",},//
 {0,0x3008,0x0012,ST,1,"""Measured Dose Description""",},//
 {0,0x3008,0x0014,CS,1,"""Measured Dose Type""",},//

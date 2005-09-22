@@ -1,3 +1,4 @@
+{0,0x0040,0x0000,UL,1,"""Group 0040 Length""",},//
 {0,0x0040,0x0001,AE,-1,"""Scheduled Station AE Title""",},//
 {0,0x0040,0x0002,DA,1,"""Scheduled Procedure Step Start Date""",},//
 {0,0x0040,0x0003,TM,1,"""Scheduled Procedure Step Start Time""",},//

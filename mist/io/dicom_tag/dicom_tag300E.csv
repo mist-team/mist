@@ -1,3 +1,4 @@
+{0,0x300E,0x0000,UL,1,"""Group 300E Length""",},//
 {0,0x300E,0x0002,CS,1,"""Approval Status""",},//
 {0,0x300E,0x0004,DA,1,"""Review Date""",},//
 {0,0x300E,0x0005,TM,1,"""Review Time""",},//

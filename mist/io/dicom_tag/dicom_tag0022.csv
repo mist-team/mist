@@ -1,3 +1,4 @@
+{0,0x0022,0x0000,UL,1,"""Group 0022 Length""",},//
 {0,0x0022,0x0001,US,1,"""Light Path Filter Pass-Through Wavelength""",},//
 {0,0x0022,0x0002,US,2,"""Light Path Filter Pass Band""",},//
 {0,0x0022,0x0003,US,1,"""Image Path Filter Pass-Through Wavelength""",},//

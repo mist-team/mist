@@ -1,3 +1,4 @@
+{0,0x0018,0x0000,UL,1,"""Group 0018 Length""",},//
 {0,0x0018,0x0010,LO,1,"""Contrast/Bolus Agent""",},//
 {0,0x0018,0x0012,SQ,1,"""Contrast/Bolus Agent Sequence""",},//
 {0,0x0018,0x0014,SQ,1,"""Contrast/Bolus Administration Route Sequence""",},//

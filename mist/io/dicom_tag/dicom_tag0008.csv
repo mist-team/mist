@@ -1,3 +1,4 @@
+{0,0x0008,0x0000,UL,1,"""Group 0008 Length""",},//
 {0,0x0008,0x0005,CS,-1,"""Specific Character Set""",},//
 {0,0x0008,0x0008,CS,-1,"""Image Type""",},//
 {0,0x0008,0x0012,DA,1,"""Instance Creation Date""",},//

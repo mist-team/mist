@@ -1,3 +1,4 @@
+{0,0x0010,0x0000,UL,1,"""Group 0010 Length""",},//
 {0,0x0010,0x0010,PN,1,"""PatientÅfs Name""",},//
 {0,0x0010,0x0020,LO,1,"""Patient ID""",},//
 {0,0x0010,0x0021,LO,1,"""Issuer of Patient ID""",},//

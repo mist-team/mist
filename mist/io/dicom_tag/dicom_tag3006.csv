@@ -1,3 +1,4 @@
+{0,0x3006,0x0000,UL,1,"""Group 3006 Length""",},//
 {0,0x3006,0x0002,SH,1,"""Structure Set Label""",},//
 {0,0x3006,0x0004,LO,1,"""Structure Set Name""",},//
 {0,0x3006,0x0006,ST,1,"""Structure Set Description""",},//

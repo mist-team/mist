@@ -1,3 +1,4 @@
+{0,0x0050,0x0000,UL,1,"""Group 0050 Length""",},//
 {0,0x0050,0x0004,CS,1,"""Calibration Image""",},//
 {0,0x0050,0x0010,SQ,1,"""Device Sequence""",},//
 {0,0x0050,0x0014,DS,1,"""Device Length""",},//

@@ -290,11 +290,21 @@ namespace dicom
 			}
 			else if( data + 4 + num_bytes <= e )
 			{
-				tag = dicom_tag( construct_dicom_tag( group, element ), vr, -1, "UNKNOWN" );
-				numBytes = num_bytes;
-				return( reinterpret_cast< unsigned char * >( data + 4 ) );
-				//numBytes = 0;
-				//return( reinterpret_cast< unsigned char * >( data + 4 + num_bytes ) );
+				if( element == 0x0000 )
+				{
+					// Group Length タグ
+					char str[ 50 ];
+					sprintf( str, "Group %04d Length", group );
+					tag = dicom_tag( construct_dicom_tag( group, element ), UL, 1, str );
+					numBytes = num_bytes;
+					return( reinterpret_cast< unsigned char * >( data + 4 ) );
+				}
+				else
+				{
+					tag = dicom_tag( construct_dicom_tag( group, element ), vr, -1, "UNKNOWN" );
+					numBytes = num_bytes;
+					return( reinterpret_cast< unsigned char * >( data + 4 ) );
+				}
 			}
 			else
 			{
@@ -1237,13 +1247,38 @@ namespace dicom
 	//! 
 	inline bool write_dicom_tag_implicit_vr( unsigned short group, unsigned short element, dicom_vr vr, const unsigned char *data, size_t num_bytes, FILE *fp, bool to_little_endian = true )
 	{
-		unsigned char ZERO[] = { 0, 0, 0, 0 };
 		unsigned char FFFF[] = { 0xff, 0xff, 0xff, 0xff };
 
-		fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
-		fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
-		fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
-		fwrite( data, 1, num_bytes, fp );
+		switch( vr )
+		{
+		case OB:
+		case UN:
+		case UT:
+		case SQ:
+			// データがシーケンスになっているかを調べ，出力方法を切り替える
+			if( num_bytes > 4 + 8 && is_sequence_separate_tag( data, data + num_bytes ) && is_sequence_tag_end( data + num_bytes - 8, data + num_bytes ) )
+			{
+				fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
+				fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
+				fwrite( FFFF, 1, 4, fp );
+				fwrite( data, 1, num_bytes, fp );
+			}
+			else
+			{
+				fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
+				fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
+				fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
+				fwrite( data, 1, num_bytes, fp );
+			}
+			break;
+
+		default:
+			fwrite( from_current_endian( byte_array< unsigned short >( group ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
+			fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
+			fwrite( data, 1, num_bytes, fp );
+			break;
+		}
 
 		return( true );
 	}
@@ -1405,39 +1440,65 @@ namespace dicom
 			return( false );
 		}
 
-		// DICOMのヘッダ情報を書き込む
-		unsigned char ZERO[ 128 ];
-		unsigned char DICM[ 4 ];
-		memset( ZERO, 0, sizeof( unsigned char ) * 128 );
-		DICM[ 0 ] = 'D';
-		DICM[ 1 ] = 'I';
-		DICM[ 2 ] = 'C';
-		DICM[ 3 ] = 'M';
-		fwrite( ZERO, sizeof( unsigned char ), 128, fp );
-		fwrite( DICM, sizeof( unsigned char ), 4, fp );
+		// DICOMのプリアンブルのタグが存在するかどうかを調べる
+		bool hasPreamble = false;
+		{
+			unsigned short elements[] = { 0x0001, 0x0002, 0x0003, 0x0010, 0x0012, 0x0013, 0x0016, 0x0100, 0x0102 };
+			size_t num = sizeof( elements ) / sizeof( unsigned short );
+			for( size_t i = 0 ; i < num ; i++ )
+			{
+				if( dicom.contain( 0x0002, elements[ i ] ) )
+				{
+					// データが存在するのでプリアンブルを埋め込む
+					hasPreamble = true;
+					break;
+				}
+			}
+		}
 
 		dicom_tag_container dicm( dicom );
-
 		bool implicitVR = true;
 
-		// 明示的VRの指定がない場合は追加する
-		if( !dicm.contain( 0x0002, 0x0010 ) )
+		if( hasPreamble )
 		{
-			// Transfer Syntax UID が存在しない場合は，「Implicit VR Little Endian」を指定する
-			std::string syntax = "1.2.840.10008.1.2";
-			dicm.append( dicom_element( 0x0002, 0x0010, reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) ) );
-		}
-		else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2.1" )
-		{
-			// 「Explicit VR Little Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
-			implicitVR = false;
-		}
-		else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2.2" )
-		{
-			// 「Implicit VR Big Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
-			implicitVR = false;
-			std::string syntax = "1.2.840.10008.1.2.1";
-			dicm( 0x0002, 0x0010 ).copy( reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) );
+			// DICOMのヘッダ情報を書き込む
+			unsigned char ZERO[ 128 ];
+			unsigned char DICM[ 4 ];
+			memset( ZERO, 0, sizeof( unsigned char ) * 128 );
+			DICM[ 0 ] = 'D';
+			DICM[ 1 ] = 'I';
+			DICM[ 2 ] = 'C';
+			DICM[ 3 ] = 'M';
+			fwrite( ZERO, sizeof( unsigned char ), 128, fp );
+			fwrite( DICM, sizeof( unsigned char ), 4, fp );
+
+
+			// 明示的VRの指定がない場合は追加する
+			if( !dicm.contain( 0x0002, 0x0010 ) )
+			{
+				// Transfer Syntax UID が存在しない場合は，「Implicit VR Little Endian」を指定する
+				std::string syntax = "1.2.840.10008.1.2";
+				dicm.append( dicom_element( 0x0002, 0x0010, reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) ) );
+			}
+			else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2.1" )
+			{
+				// 「Explicit VR Little Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
+				implicitVR = false;
+			}
+			else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2.2" )
+			{
+				// 「Implicit VR Big Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
+				implicitVR = false;
+				std::string syntax = "1.2.840.10008.1.2.1";
+				dicm( 0x0002, 0x0010 ).copy( reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) );
+			}
+
+			// Group 0002 の長さが挿入されていない場合は挿入する
+			if( !dicm.contain( 0x0002, 0x0000 ) )
+			{
+				byte_array< unsigned int > b( static_cast< unsigned int >( 0 ) );
+				dicm.append( dicom_element( 0x0002, 0x0000, b.get_bytes( ), b.length( ) ) );
+			}
 		}
 
 		// Group Length を正しく設定する
@@ -1449,7 +1510,8 @@ namespace dicom
 		{
 			if( ite->second.enable )
 			{
-				if( implicitVR )
+				// Group 0002 だけは Explicit VR Little Endian Transfer Syntax でエンコードする必要あり
+				if( implicitVR && ite->second.get_group( ) != 0x0002 )
 				{
 					write_dicom_tag_implicit_vr( ite->second, fp, true );
 				}

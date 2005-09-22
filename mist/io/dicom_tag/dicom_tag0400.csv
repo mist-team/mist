@@ -1,3 +1,4 @@
+{0,0x0400,0x0000,UL,1,"""Group 0400 Length""",},//
 {0,0x0400,0x0005,US,1,"""MAC ID Number""",},//
 {0,0x0400,0x0010,UI,1,"""MAC Calculation Transfer Syntax UID""",},//
 {0,0x0400,0x0015,CS,1,"""MAC Algorithm""",},//

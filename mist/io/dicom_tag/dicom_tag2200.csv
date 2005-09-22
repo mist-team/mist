@@ -1,0 +1,18 @@
+{0,0x2200,0x0000,UL,1,"""Group 2200 Length""",},//
+{0,0x2200,0x0001,CS,1,"""Label Using Information Extracted From Instances""",},//
+{0,0x2200,0x0002,UT,1,"""Label Text""",},//
+{0,0x2200,0x0003,CS,1,"""Label Style Selection""",},//
+{0,0x2200,0x0004,LT,1,"""Media Disposition""",},//
+{0,0x2200,0x0005,LT,1,"""Barcode Value""",},//
+{0,0x2200,0x0006,CS,1,"""Barcode Symbology""",},//
+{0,0x2200,0x0007,CS,1,"""Allow Media Splitting""",},//
+{0,0x2200,0x0008,CS,1,"""Include Non-DICOM Objects""",},//
+{0,0x2200,0x0009,CS,1,"""Include Display Application""",},//
+{0,0x2200,0x000A,CS,1,"""Preserve Composite Instances After Media Creation""",},//
+{0,0x2200,0x000B,US,1,"""Total Number of Pieces of Media Created""",},//
+{0,0x2200,0x000C,LO,1,"""Requested Media Application Profile""",},//
+{0,0x2200,0x000D,SQ,1,"""Referenced Storage Media Sequence""",},//
+{0,0x2200,0x000E,AT,-1,"""Failure Attributes""",},//
+{0,0x2200,0x000F,CS,1,"""Allow Lossy Compression""",},//
+{0,0x2200,0x0020,CS,1,"""Request Priority""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//
