@@ -530,6 +530,8 @@ namespace dicom
 		bool			little_endian_encoding;		///< @brief データがリトルエンディアン形式かどうか
 		std::string		study_instance_uid;			///< @brief 検査の識別用ユニークID
 		std::string		series_instance_uid;		///< @brief シリーズの識別用ユニークID
+		std::string		study_id;					///< @brief 検査ID
+		std::string		patient_id;					///< @brief 患者ID
 		int				series_number;				///< @brief シリーズ番号
 		int				acquisition_number;			///< @brief 収集番号
 		int				instance_number;			///< @brief インスタンス番号
@@ -540,6 +542,8 @@ namespace dicom
 			little_endian_encoding( true ),
 			study_instance_uid( "0" ),
 			series_instance_uid( "0" ),
+			study_id( "0" ),
+			patient_id( "0" ),
 			series_number( 0 ),
 			acquisition_number( 0 ),
 			instance_number( 0 )
@@ -552,6 +556,8 @@ namespace dicom
 			little_endian_encoding( info.little_endian_encoding ),
 			study_instance_uid( info.study_instance_uid ),
 			series_instance_uid( info.series_instance_uid ),
+			study_id( info.study_id ),
+			patient_id( info.patient_id ),
 			series_number( info.series_number ),
 			acquisition_number( info.acquisition_number ),
 			instance_number( info.instance_number )
@@ -568,6 +574,8 @@ namespace dicom
 				little_endian_encoding = info.little_endian_encoding;
 				study_instance_uid = info.study_instance_uid;
 				series_instance_uid = info.series_instance_uid;
+				study_id = info.study_id;
+				patient_id = info.patient_id;
 				series_number = info.series_number;
 				acquisition_number = info.acquisition_number;
 				instance_number = info.instance_number;
@@ -802,6 +810,9 @@ namespace dicom
 		info.series_number			= find_tag( dicm, 0x0020, 0x0011, info.series_number );
 		info.acquisition_number		= find_tag( dicm, 0x0020, 0x0012, info.acquisition_number );
 		info.instance_number		= find_tag( dicm, 0x0020, 0x0013, info.instance_number );
+
+		info.study_id				= find_tag( dicm, 0x0020, 0x0010, info.study_id );
+		info.patient_id				= find_tag( dicm, 0x0010, 0x0020, info.patient_id );
 
 		return( true );
 	}

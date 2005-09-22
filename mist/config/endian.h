@@ -68,6 +68,9 @@ public:
 		}
 	}
 
+	/// @brief 内部で使用するバイト数を返す
+	size_type length( ) const { return( sizeof( value_type ) ); }
+
 	/// @brief index で指定されて位置のバイトを取得する
 	unsigned char &operator[]( size_type index ){ return( byte[ index ] ); }
 
