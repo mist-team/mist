@@ -1966,6 +1966,205 @@ namespace __volumerendering_controller__
 }
 
 
+namespace __mip_controller__
+{
+	template < class Array1, class Array2 >
+	bool mip( const Array1 &in, Array2 &out, const volumerender::parameter &p, typename Array1::size_type thread_id, typename Array1::size_type thread_num )
+	{
+		typedef typename volumerender::parameter::vector_type vector_type;
+		typedef typename Array1::size_type size_type;
+		typedef typename Array1::difference_type difference_type;
+		typedef typename Array1::value_type value_type;
+		typedef typename Array1::const_pointer const_pointer;
+		typedef typename Array2::value_type out_value_type;
+
+		vector_type pos = p.pos;
+		vector_type dir = p.dir.unit( );
+		vector_type up = p.up.unit( );
+		vector_type offset = p.offset;
+		const volumerender::boundingbox *box = p.box;
+		double sampling_step = p.sampling_step;
+
+		const size_type w = in.width( );
+		const size_type h = in.height( );
+		const size_type d = in.depth( );
+
+		const size_type image_width  = out.width( );
+		const size_type image_height = out.height( );
+
+		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
+		{
+			difference_type cx = in.width( ) / 2;
+			difference_type cy = in.height( ) / 2;
+			difference_type cz = in.depth( ) / 2;
+			const_pointer ppp = &in( cx, cy, cz );
+			d0 = 0;
+			d1 = &in( cx    , cy + 1, cz     ) - ppp;
+			d2 = &in( cx + 1, cy + 1, cz     ) - ppp;
+			d3 = &in( cx + 1, cy    , cz     ) - ppp;
+			d4 = &in( cx    , cy    , cz + 1 ) - ppp;
+			d5 = &in( cx    , cy + 1, cz + 1 ) - ppp;
+			d6 = &in( cx + 1, cy + 1, cz + 1 ) - ppp;
+			d7 = &in( cx + 1, cy    , cz + 1 ) - ppp;
+			_1 = &in( cx + 1, cy    , cz     ) - ppp;
+			_2 = &in( cx    , cy + 1, cz     ) - ppp;
+			_3 = &in( cx    , cy    , cz + 1 ) - ppp;
+		}
+
+		// スライス座標系の実寸をワールドと考える
+		vector_type casting_start, casting_end;
+
+		double cx = static_cast< double >( image_width ) / 2.0;
+		double cy = static_cast< double >( image_height ) / 2.0;
+		double ax = in.reso1( );
+		double ay = in.reso2( );
+		double az = in.reso3( );
+
+		double asp = out.reso2( ) / out.reso1( );
+
+		double masp = ax < ay ? ax : ay;
+		masp = masp < az ? masp : az;
+
+		vector_type yoko = ( dir * up ).unit( );
+
+		if( out.reso1( ) < out.reso2( ) )
+		{
+			yoko *= out.reso1( ) / out.reso2( );
+		}
+		else
+		{
+			up *= out.reso2( ) / out.reso1( );
+		}
+
+		double max_distance = pos.length( ) + std::sqrt( static_cast< double >( w * w + h * h + d * d ) );
+
+		for( size_type j = thread_id ; j < image_height ; j += thread_num )
+		{
+			for( size_type i = 0 ; i < image_width ; i++ )
+			{
+				// 投影面上の点をカメラ座標系に変換
+				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), 0 );
+
+				// 平行投影にする
+				vector_type light;
+				pos = p.pos + yoko * Pos.x + up * Pos.y;
+				light = dir;
+
+				double maximum_intensity = type_limits< double >::minimum( );
+
+				casting_start = pos;
+				casting_end = pos + light * max_distance;
+
+				// 物体との衝突判定
+				if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
+				{
+					// ワールド座標系（左手）からスライス座標系（右手）に変換
+					// 以降は，全てスライス座標系で計算する
+					casting_start.x = (  casting_start.x + offset.x ) / ax;
+					casting_start.y = ( -casting_start.y + offset.y ) / ay;
+					casting_start.z = (  casting_start.z + offset.z ) / az;
+					casting_end.x   = (  casting_end.x   + offset.x ) / ax;
+					casting_end.y   = ( -casting_end.y   + offset.y ) / ay;
+					casting_end.z   = (  casting_end.z   + offset.z ) / az;
+
+					vector_type spos = casting_start;
+					vector_type ray = ( casting_end - casting_start ).unit( );
+
+					// 光の減衰の距離を実測に直すためのパラメータ
+					double dlen = vector_type( ray.x * ax, ray.y * ay, ray.z * az ).length( );
+
+					// 直方体画素の画像上では方向によってサンプリング間隔が変わってしまう問題に対応
+					double ray_sampling_step = sampling_step * masp / dlen;
+
+					vector_type ray_step = ray * ray_sampling_step;
+
+					double n = ( casting_end - casting_start ).length( );
+					double l = 0;
+
+					while( l < n )
+					{
+						difference_type si = volumerender::to_integer( spos.x );
+						difference_type sj = volumerender::to_integer( spos.y );
+						difference_type sk = volumerender::to_integer( spos.z );
+
+						double xx = spos.x - si;
+						double yy = spos.y - sj;
+						double zz = spos.z - sk;
+
+						const_pointer p = &in( si, sj, sk );
+						double ct;
+
+						// CT値に対応する色と不透明度を取得
+						ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
+						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
+
+						if( maximum_intensity < ct )
+						{
+							maximum_intensity = ct;
+						}
+
+						spos.x += ray_step.x;
+						spos.y += ray_step.y;
+						spos.z += ray_step.z;
+						l += ray_sampling_step;
+					}
+				}
+
+				out( i, j ) = maximum_intensity;
+			}
+		}
+		return( true );
+	}
+
+
+	template < class Array1, class Array2 >
+	class mip_thread : public mist::thread< mip_thread< Array1, Array2 > >
+	{
+	public:
+		typedef mist::thread< mip_thread< Array1, Array2 > > base;
+		typedef typename base::thread_exit_type thread_exit_type;
+		typedef typename Array1::size_type size_type;
+		typedef typename Array1::value_type value_type;
+
+	private:
+		size_t thread_id_;
+		size_t thread_num_;
+
+		// 入出力用の画像へのポインタ
+		const Array1 *in_;
+		Array2 *out_;
+		const volumerender::parameter *param_;
+
+	public:
+		void setup_parameters( const Array1 &in, Array2 &out, const volumerender::parameter &p, size_type thread_id, size_type thread_num )
+		{
+			in_  = &in;
+			out_ = &out;
+			param_ = &p;
+			thread_id_ = thread_id;
+			thread_num_ = thread_num;
+		}
+
+		mip_thread( size_type id = 0, size_type num = 1 ) : thread_id_( id ), thread_num_( num ), in_( NULL ), out_( NULL ), param_( NULL )
+		{
+		}
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( )
+		{
+			mip( *in_, *out_, *param_, thread_id_, thread_num_ );
+			return( true );
+		}
+	};
+}
+
+
 
 //! @addtogroup visualization_group
 //!
@@ -2199,6 +2398,54 @@ bool volumerendering( const Array1 &in, const Array2 &mk, Array3 &out, const vol
 }
 
 
+
+/// @brief ボリュームレンダリング
+//! 
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @param[in]  in         … 入力画像
+//! @param[out] out        … 出力画像
+//! @param[in]  dmap       … レンダリングを高速化するための距離画像
+//! @param[in]  renderer   … ボリュームレンダリングの実装
+//! @param[in]  param      … ボリュームレンダリングのパラメータ
+//! @param[in]  table      … ボリュームレンダリングの色－値テーブル
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … ボリュームレンダリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class Array1, class Array2 >
+bool mip( const Array1 &in, Array2 &out, const volumerender::parameter &p, typename Array1::size_type thread_num = 0 )
+{
+	if( is_same_object( in, out ) || in.empty( ) )
+	{
+		return( false );
+	}
+
+	typedef typename Array1::size_type size_type;
+	typedef __mip_controller__::mip_thread< Array1, Array2 > mip_thread;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	mip_thread *thread = new mip_thread[ thread_num ];
+
+	size_type i;
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].setup_parameters( in, out, p, i, thread_num );
+	}
+
+	// スレッドを実行して，終了まで待機する
+	do_threads_( thread, thread_num );
+
+	delete [] thread;
+	
+	return( true );
+}
 
 /// @brief 衝突判定ルーチン（MISTのボリュームレンダリングエンジンで利用）
 //! 
