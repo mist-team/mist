@@ -65,6 +65,7 @@ namespace region_growing_utility
 		NC4,	///< @brief ‚S‹ß–Ti‚QŽŸŒ³j
 		NC8,	///< @brief ‚W‹ß–Ti‚QŽŸŒ³j
 		NC6,	///< @brief ‚U‹ß–Ti‚RŽŸŒ³j
+		NC18,	///< @brief ‚P‚W‹ß–Ti‚RŽŸŒ³j
 		NC26,	///< @brief ‚Q‚U‹ß–Ti‚RŽŸŒ³j
 		ALL		///< @brief \‘¢—v‘f“à‚Ì‚·‚×‚Ä‚Ì“_
 	};
@@ -381,6 +382,17 @@ namespace __region_growing_utility__
 			list.push_back( pointer_diff2( &in1( ox1, oy1 + 1, oz1 ) - p1, &in2( ox2, oy2 + 1, oz2 ) - p2 ) );
 			break;
 
+		case region_growing_utility::NC8:
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1 - 1, oz1 ) - p1, &in2( ox2 - 1, oy2 - 1, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 - 1, oz1 ) - p1, &in2( ox2    , oy2 - 1, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1 - 1, oz1 ) - p1, &in2( ox2 + 1, oy2 - 1, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1    , oz1 ) - p1, &in2( ox2 - 1, oy2    , oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1    , oz1 ) - p1, &in2( ox2 + 1, oy2    , oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1 + 1, oz1 ) - p1, &in2( ox2 - 1, oy2 + 1, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 + 1, oz1 ) - p1, &in2( ox2    , oy2 + 1, oz2 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1 + 1, oz1 ) - p1, &in2( ox2 + 1, oy2 + 1, oz2 ) - p2 ) );
+			break;
+
 		case region_growing_utility::NC6:
 			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1, oz1 ) - p1, &in2( ox2 - 1, oy2, oz2 ) - p2 ) );
 			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1, oz1 ) - p1, &in2( ox2 + 1, oy2, oz2 ) - p2 ) );
@@ -388,6 +400,56 @@ namespace __region_growing_utility__
 			list.push_back( pointer_diff2( &in1( ox1, oy1 + 1, oz1 ) - p1, &in2( ox2, oy2 + 1, oz2 ) - p2 ) );
 			list.push_back( pointer_diff2( &in1( ox1, oy1, oz1 - 1 ) - p1, &in2( ox2, oy2, oz2 - 1 ) - p2 ) );
 			list.push_back( pointer_diff2( &in1( ox1, oy1, oz1 + 1 ) - p1, &in2( ox2, oy2, oz2 + 1 ) - p2 ) );
+			break;
+
+		case region_growing_utility::NC18:
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 - 1, oz1 - 1 ) - p1, &in2( ox2    , oy2 - 1, oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1    , oz1 - 1 ) - p1, &in2( ox2 - 1, oy2    , oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1    , oz1 - 1 ) - p1, &in2( ox2    , oy2    , oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1    , oz1 - 1 ) - p1, &in2( ox2 + 1, oy2    , oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 + 1, oz1 - 1 ) - p1, &in2( ox2    , oy2 + 1, oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1 - 1, oz1     ) - p1, &in2( ox2 - 1, oy2 - 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 - 1, oz1     ) - p1, &in2( ox2    , oy2 - 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1 - 1, oz1     ) - p1, &in2( ox2 + 1, oy2 - 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1    , oz1     ) - p1, &in2( ox2 - 1, oy2    , oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1    , oz1     ) - p1, &in2( ox2 + 1, oy2    , oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1 + 1, oz1     ) - p1, &in2( ox2 - 1, oy2 + 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 + 1, oz1     ) - p1, &in2( ox2    , oy2 + 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1 + 1, oz1     ) - p1, &in2( ox2 + 1, oy2 + 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 - 1, oz1 + 1 ) - p1, &in2( ox2    , oy2 - 1, oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1    , oz1 + 1 ) - p1, &in2( ox2 - 1, oy2    , oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1    , oz1 + 1 ) - p1, &in2( ox2    , oy2    , oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1    , oz1 + 1 ) - p1, &in2( ox2 + 1, oy2    , oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 + 1, oz1 + 1 ) - p1, &in2( ox2    , oy2 + 1, oz2 + 1 ) - p2 ) );
+			break;
+
+		case region_growing_utility::NC26:
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1 - 1, oz1 - 1 ) - p1, &in2( ox2 - 1, oy2 - 1, oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 - 1, oz1 - 1 ) - p1, &in2( ox2    , oy2 - 1, oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1 - 1, oz1 - 1 ) - p1, &in2( ox2 + 1, oy2 - 1, oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1    , oz1 - 1 ) - p1, &in2( ox2 - 1, oy2    , oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1    , oz1 - 1 ) - p1, &in2( ox2    , oy2    , oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1    , oz1 - 1 ) - p1, &in2( ox2 + 1, oy2    , oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1 + 1, oz1 - 1 ) - p1, &in2( ox2 - 1, oy2 + 1, oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 + 1, oz1 - 1 ) - p1, &in2( ox2    , oy2 + 1, oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1 + 1, oz1 - 1 ) - p1, &in2( ox2 + 1, oy2 + 1, oz2 - 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1 - 1, oz1     ) - p1, &in2( ox2 - 1, oy2 - 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 - 1, oz1     ) - p1, &in2( ox2    , oy2 - 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1 - 1, oz1     ) - p1, &in2( ox2 + 1, oy2 - 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1    , oz1     ) - p1, &in2( ox2 - 1, oy2    , oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1    , oz1     ) - p1, &in2( ox2 + 1, oy2    , oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1 + 1, oz1     ) - p1, &in2( ox2 - 1, oy2 + 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 + 1, oz1     ) - p1, &in2( ox2    , oy2 + 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1 + 1, oz1     ) - p1, &in2( ox2 + 1, oy2 + 1, oz2     ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1 - 1, oz1 + 1 ) - p1, &in2( ox2 - 1, oy2 - 1, oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 - 1, oz1 + 1 ) - p1, &in2( ox2    , oy2 - 1, oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1 - 1, oz1 + 1 ) - p1, &in2( ox2 + 1, oy2 - 1, oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1    , oz1 + 1 ) - p1, &in2( ox2 - 1, oy2    , oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1    , oz1 + 1 ) - p1, &in2( ox2    , oy2    , oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1    , oz1 + 1 ) - p1, &in2( ox2 + 1, oy2    , oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 - 1, oy1 + 1, oz1 + 1 ) - p1, &in2( ox2 - 1, oy2 + 1, oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1    , oy1 + 1, oz1 + 1 ) - p1, &in2( ox2    , oy2 + 1, oz2 + 1 ) - p2 ) );
+			list.push_back( pointer_diff2( &in1( ox1 + 1, oy1 + 1, oz1 + 1 ) - p1, &in2( ox2 + 1, oy2 + 1, oz2 + 1 ) - p2 ) );
 			break;
 
 		case region_growing_utility::ALL:
@@ -630,7 +692,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 			work_pointer   pw = &work[ 0 ] + cur.diff2;
 			output_pointer po = &out[ 0 ] + cur.diff1;
 
-			// ˆÈ~‚Ìˆ—‚Å’–Ú“_‚Æ‚È‚ç‚È‚¢‚æ‚¤‚ÉCŒ»Ý‚Ì’–Ú“X‚ðƒ}ƒXƒN‚·‚é
+			// ˆÈ~‚Ìˆ—‚Å’–Ú“_‚Æ‚È‚ç‚È‚¢‚æ‚¤‚ÉCŒ»Ý‚Ì’–Ú“_‚ðƒ}ƒXƒN‚·‚é
 			pw[ 0 ] |= 0xf0;
 
 			// Šg’£ðŒ”»’è‚É—p‚¢‚é‰æ‘f‚ð—ñ‹“‚·‚é
@@ -688,7 +750,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 			work_pointer   pw = &work[ 0 ] + cur.diff2;
 			output_pointer po = &out[ 0 ] + cur.diff1;
 
-			// ˆÈ~‚Ìˆ—‚Å’–Ú“_‚Æ‚È‚ç‚È‚¢‚æ‚¤‚ÉCŒ»Ý‚Ì’–Ú“X‚ðƒ}ƒXƒN‚·‚é
+			// ˆÈ~‚Ìˆ—‚Å’–Ú“_‚Æ‚È‚ç‚È‚¢‚æ‚¤‚ÉCŒ»Ý‚Ì’–Ú“_‚ðƒ}ƒXƒN‚·‚é
 			pw[ 0 ] |= 0xf0;
 
 			// Šg’£ðŒ”»’è‚É—p‚¢‚é‰æ‘f‚ð—ñ‹“‚·‚é
