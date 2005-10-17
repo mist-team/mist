@@ -13,7 +13,7 @@
 **
 **         We developed these programs since 2003/09/05.
 **
-**             $LastChangedDate$
+**             $LastChangedDate::                    $
 **             $LastChangedRevision$
 **             $LastChangedBy$
 **             $HeadURL$
