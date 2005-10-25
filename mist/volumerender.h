@@ -1674,8 +1674,6 @@ namespace __volumerendering_controller__
 		double lightAtten = param.light_attenuation;
 		double sampling_step = param.sampling_step;
 		double termination = param.termination;
-		double distortion = param.distortion;
-		bool   bdistortion = distortion != 0.0;
 		bool   bperspective = param.perspective_view;
 
 		const size_type w = in.width( );
@@ -1719,17 +1717,6 @@ namespace __volumerendering_controller__
 		{
 			// 投影面上の点をカメラ座標系に変換
 			vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
-
-			// 歪関数を適用する
-			if( bdistortion )
-			{
-				double x = Pos.x / cx;
-				double y = Pos.y / cy * asp;
-				double ll = x * x + y * y;
-				double r  = 1.0 + distortion * ll;
-				Pos.x *= r;
-				Pos.y *= r;
-			}
 
 			// レイ方向をカメラ座標系からワールド座標系に変換
 			vector_type light;

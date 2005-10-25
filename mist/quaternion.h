@@ -85,6 +85,37 @@ public:
 		z = static_cast< value_type >( s * axis.z );
 	}
 
+
+	/// @brief カメラの視線方向と上向き方向を用いて，カメラの姿勢を表すクォータニオンを計算する
+	//! 
+	//! @param[in] dir … 回転前のベクトル
+	//! @param[in] up  … 回転後のベクトル
+	//! 
+	template < class TT >
+	quaternion( vector3< TT > dir, vector3< TT > up )
+	{
+		// ワールド座標の単位ベクトル
+		vector3< TT > e2( 0, 1, 0 );
+		vector3< TT > e3( 0, 0, 1 );
+
+		// 単位ベクトルにする
+		dir = dir.unit( );
+		up  = up.unit( );
+
+		// 視線方向を合わせるクォータニオンを作成
+		quaternion q1 = quaternion::rotate( e3, dir );
+
+		// Y軸を回転させる
+		e2 = q1.rotate( e2 );
+
+		// 上向き方向を合わせるクォータニオンを作成
+		quaternion q2 = quaternion::rotate( e2, up, dir );
+
+		// 回転を合成する
+		operator =( q2 * q1 );
+	}
+
+
 	/// @brief 他のクォータニオンオブジェクトを代入する
 	template < class TT >
 	const quaternion &operator =( const quaternion< TT > &q )
@@ -108,6 +139,9 @@ public:
 		}
 		return ( *this );
 	}
+
+	/// @brief 符号反転したクォータニオンを返す
+	quaternion operator -( ) const { return ( quaternion( -w, -x, -y, -z ) ); }
 
 	/// @brief クォータニオンの足し算
 	//! 
@@ -384,9 +418,9 @@ public:	// その他の関数
 	//! 	\mbox{\boldmath p}^{-1} = \frac{ \overline{ \mbox{\boldmath p} } }{ \left\| \mbox{\boldmath p} \right\|^2 }
 	//! \f]
 	//! 
-	const quaternion inv( ) const
+	const quaternion< double > inv( ) const
 	{
-		value_type length_ = length( );
+		double length_ = length( );
 		return( conjugate( ) / ( length_ * length_ ) );
 	}
 
@@ -396,10 +430,30 @@ public:	// その他の関数
 	//! 	\frac{ \mbox{\boldmath p} }{ \left\| \mbox{\boldmath p} \right\|^2 }
 	//! \f]
 	//! 
-	const quaternion unit( ) const
+	const quaternion< double > unit( ) const
 	{
-		value_type length_ = length( );
-		return quaternion( w / length_, x / length_, y / length_, z / length_ );
+		double length_ = length( );
+		return( quaternion< double >( w / length_, x / length_, y / length_, z / length_ ) );
+	}
+
+	/// <summary>
+	/// クォータニオンの内積
+	/// </summary>
+	/// <param name="a">左辺値</param>
+	/// <param name="b">右辺値</param>
+	/// <returns>内積の計算結果</returns>
+	/// @brief クォータニオンの内積
+	//! 
+	//! @param[in] q … 右辺値
+	//! 
+	//! \f[
+	//! 	p_w \times q_w + p_x \times q_x + p_y \times q_y + p_z \times q_z
+	//! \f]
+	//! 
+	template < class TT >
+	double inner( const quaternion< TT > &q ) const
+	{
+		return( w * q.w + x * q.x + y * q.y + z * q.z );
 	}
 
 	/// @brief クォータニオンのノルム
@@ -408,7 +462,7 @@ public:	// その他の関数
 	//! 	\left\| \mbox{\boldmath p} \right\| = \sqrt{ p_w^2 + p_x^2 + p_y^2 + p_z^2 }
 	//! \f]
 	//! 
-	value_type length( ) const { return ( static_cast< value_type >( std::sqrt( (double)( w * w + x * x + y * y + z * z ) ) ) ); }
+	double length( ) const { return (  std::sqrt( static_cast< double >( w * w + x * x + y * y + z * z ) ) ); }
 
 
 	/// @brief クォータニオンを用いたベクトルの回転
@@ -424,6 +478,65 @@ public:	// その他の関数
 		return( vector3< TT >( static_cast< TT >( q.x ), static_cast< TT >( q.y ), static_cast< TT >( q.z ) ) );
 	}
 
+
+
+	/// @brief ベクトル1からベクトル2への回転を表すクォータニオンを作成する
+	//! 
+	//! @param[in] v1 … 回転前のベクトル
+	//! @param[in] v2 … 回転後のベクトル
+	//! 
+	//! @return 回転を表すクォータニオン
+	//! 
+	template < class TT >
+	static quaternion rotate( vector3< TT > v1, vector3< TT > v2 )
+	{
+		// 単位ベクトルにする
+		v1 = v1.unit( );
+		v2 = v2.unit( );
+
+		// 回転角度を計算する
+		double c = std::sqrt( ( v1.inner( v2 ) + 1.0 ) * 0.5 );
+
+		if( std::abs( c - 1.0 ) < 1.0e-6 )
+		{
+			return( quaternion( 1, 0, 0, 0 ) );
+		}
+
+		return( quaternion( c, std::sqrt( 1.0 - c * c ) * v1.outer( v2 ).unit( ) ) );
+	}
+
+	/// @brief 指定した回転軸を用いてベクトル1からベクトル2への回転を表すクォータニオンを作成する
+	//! 
+	//! @param[in] v1   … 回転前のベクトル
+	//! @param[in] v2   … 回転後のベクトル
+	//! @param[in] axis … 回転軸ベクトル
+	//! 
+	//! @return 回転を表すクォータニオン
+	//! 
+	template < class TT >
+	static quaternion rotate( vector3< TT > v1, vector3< TT > v2, const vector3< TT > &axis )
+	{
+		// 単位ベクトルにする
+		v1 = v1.unit( );
+		v2 = v2.unit( );
+
+		// 回転角度を計算する
+		double c = std::sqrt( ( v1.inner( v2 ) + 1.0 ) * 0.5 );
+
+		if( std::abs( c - 1.0 ) < 1.0e-6 )
+		{
+			return( quaternion( 1, 0, 0, 0 ) );
+		}
+
+		double s = std::sqrt( 1.0 - c * c );
+
+		if( axis.inner( v1.outer( v2 ) ) < 0.0 )
+		{
+			s = -s;
+		}
+
+		return( quaternion( c, s * axis ) );
+	}
 };
 
 // 型の昇格を行う演算の定義
@@ -491,17 +604,41 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 
 /// @brief 球面線形補間を行う
 //! 
-//! @param[in] p1 … 補間もとのクォータニオン
-//! @param[in] p2 … 補間もとのクォータニオン
+//! @param[in] q1 … 補間もとのクォータニオン1
+//! @param[in] q2 … 補間もとのクォータニオン2
 //! @param[in] t  … [0,1]の間の数値で，補間点
 //! 
 //! @return 球面線形補間されたクォータニオン
 //! 
-//template < class T1, class T2 >
-//const quaternion< promote_trait< T1, T2 >::value_type > interpolate( const quaternion< T1 > &p1, const quaternion< T2 > &p2, double t )
-//{
-//	typedef quaternion< promote_trait< T1, T2 >::value_type > quaternion_type;
-//}
+template < class T1, class T2 >
+const quaternion< double > interpolate( const quaternion< T1 > &q1, const quaternion< T2 > &q2, double t )
+{
+	typedef quaternion< double > quaternion_type;
+
+	quaternion_type Q1( q1.unit( ) );
+	quaternion_type Q2( q2.unit( ) );
+
+	double dot = Q1.inner( Q2 );
+
+	if( std::abs( dot ) < 1.0e-6 )
+	{
+		return( Q1 );
+	}
+	else if( dot < 0.0 )
+	{
+		double theta = std::acos( dot );
+
+		// 球面線形補間を行う
+		return( quaternion_type( Q1 * std::sin( theta * ( 1.0 - t ) ) - Q2 * std::sin( theta * t ) ).unit( ) );
+	}
+	else
+	{
+		double theta = std::acos( dot );
+
+		// 球面線形補間を行う
+		return( quaternion_type( Q1 * std::sin( theta * ( 1.0 - t ) ) + Q2 * std::sin( theta * t ) ).unit( ) );
+	}
+}
 
 
 // クォータニオンから行列へ変換する
