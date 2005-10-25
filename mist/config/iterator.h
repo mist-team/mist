@@ -353,48 +353,51 @@ inline const mist_iterator2< T, Distance, Pointer, Reference > operator -( const
 //! 
 //! @param _Ite … 基本となる順方向ランダムアクセスイテレータ
 //! 
-template< class _Ite >
+template< class T >
 class mist_reverse_iterator :
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 	public std::iterator<
-		typename _Ite::iterator_category,
-		typename _Ite::value_type,
-		typename _Ite::difference_type
+		typename T::iterator_category,
+		typename T::value_type,
+		typename T::difference_type
 	>
 #else
 	public std::iterator<
-		typename _Ite::iterator_category,
-		typename _Ite::value_type,
-		typename _Ite::difference_type,
-		typename _Ite::pointer,
-		typename _Ite::reference
+		typename T::iterator_category,
+		typename T::value_type,
+		typename T::difference_type,
+		typename T::pointer,
+		typename T::reference
 	>
 #endif
 {
+private:
+	typedef T iterator_type;
+
 public:
- 	typedef typename _Ite::size_type size_type;					///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
- 	typedef typename _Ite::difference_type difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
-	typedef typename _Ite::value_type value_type;				///< @brief ///< @brief 内部データ型．bool と同じ
-	typedef typename _Ite::pointer pointer;						///< @brief データ型のポインター型．data の場合，data * となる
-	typedef typename _Ite::reference reference;					///< @brief データ型の参照．data の場合，data & となる
-	typedef typename _Ite::const_reference const_reference;		///< @brief データ型の const 参照．data の場合，const data & となる
+ 	typedef typename T::size_type size_type;					///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+ 	typedef typename T::difference_type difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename T::value_type value_type;					///< @brief ///< @brief 内部データ型．bool と同じ
+	typedef typename T::pointer pointer;						///< @brief データ型のポインター型．data の場合，data * となる
+	typedef typename T::reference reference;					///< @brief データ型の参照．data の場合，data & となる
+	typedef typename T::const_reference const_reference;		///< @brief データ型の const 参照．data の場合，const data & となる
 
 protected:
-	_Ite current_iterator_;		///< @brief 順方向ランダムアクセスイテレータ
+	iterator_type current_iterator_;		///< @brief 順方向ランダムアクセスイテレータ
 
 public:
 	/// @brief デフォルトコンストラクタ
 	mist_reverse_iterator( ){ }
 
 	/// @brief 順方向ランダムアクセスイテレータを用いて初期化する
-	mist_reverse_iterator( const _Ite &ite ) : current_iterator_( ite ){ }
+	mist_reverse_iterator( const iterator_type &ite ) : current_iterator_( ite ){ }
 
 	/// @brief 逆方向ランダムアクセスイテレータを用いて初期化する
 	mist_reverse_iterator( const mist_reverse_iterator &ite ) : current_iterator_( ite.current_iterator_ ){ }
 
 
 	/// @brief 順方向ランダムアクセスイテレータを代入する
-	const mist_reverse_iterator& operator =( const _Ite &ite )
+	const mist_reverse_iterator& operator =( const iterator_type &ite )
 	{
 		current_iterator_ = ite;
 		return( *this );
@@ -411,14 +414,14 @@ public:
 	/// @brief 要素の参照
 	reference operator *()
 	{
-		_Ite _tmp = current_iterator_;
+		iterator_type _tmp = current_iterator_;
 		return( *( --_tmp ) );
 	}
 
 	/// @brief 要素の const 参照
 	const_reference operator *() const
 	{
-		_Ite _tmp = current_iterator_;
+		iterator_type _tmp = current_iterator_;
 		return( *( --_tmp ) );
 	}
 
@@ -502,39 +505,39 @@ public:
 
 
 /// @brief dist だけ + 方向にイテレータを進めたイテレータを返す
-template< class _Ite >
-inline const mist_reverse_iterator< _Ite > operator +( const mist_reverse_iterator< _Ite > &ite1, const mist_reverse_iterator< _Ite > ite2 )
+template< class T >
+inline const mist_reverse_iterator< T > operator +( const mist_reverse_iterator< T > &ite1, const mist_reverse_iterator< T > ite2 )
 {
-	return( mist_reverse_iterator< _Ite >( ite1 ) += ite2 );
+	return( mist_reverse_iterator< T >( ite1 ) += ite2 );
 }
 
 /// @brief dist だけ + 方向にイテレータを進めたイテレータを返す
-template< class _Ite >
-inline const mist_reverse_iterator< _Ite > operator +( const mist_reverse_iterator< _Ite > &ite, typename _Ite::difference_type dist )
+template< class T >
+inline const mist_reverse_iterator< T > operator +( const mist_reverse_iterator< T > &ite, typename T::difference_type dist )
 {
-	return( mist_reverse_iterator< _Ite >( ite ) += dist );
+	return( mist_reverse_iterator< T >( ite ) += dist );
 }
 
 /// @brief dist だけ - 方向にイテレータを進めたイテレータを返す
-template< class _Ite >
-inline const mist_reverse_iterator< _Ite > operator +( typename _Ite::difference_type dist, const mist_reverse_iterator< _Ite > &ite )
+template< class T >
+inline const mist_reverse_iterator< T > operator +( typename T::difference_type dist, const mist_reverse_iterator< T > &ite )
 {
-	return( mist_reverse_iterator< _Ite >( ite ) += dist );
+	return( mist_reverse_iterator< T >( ite ) += dist );
 }
 
 
-//template< class _Ite >
-//inline const typename mist_reverse_iterator< _Ite >::difference_type operator -( const mist_reverse_iterator< _Ite > &ite1, const mist_reverse_iterator< _Ite > ite2 )
+//template< class T >
+//inline const typename mist_reverse_iterator< T >::difference_type operator -( const mist_reverse_iterator< T > &ite1, const mist_reverse_iterator< T > ite2 )
 //{
 //	return( ite1 - ite2 );
 //}
 
 
 /// @brief dist だけ - 方向にイテレータを進めたイテレータを返す
-template< class _Ite >
-inline const mist_reverse_iterator< _Ite > operator -( const mist_reverse_iterator< _Ite > &ite, typename _Ite::difference_type dist )
+template< class T >
+inline const mist_reverse_iterator< T > operator -( const mist_reverse_iterator< T > &ite, typename T::difference_type dist )
 {
-	return( mist_reverse_iterator< _Ite >( ite ) -= dist );
+	return( mist_reverse_iterator< T >( ite ) -= dist );
 }
 
 // mist名前空間の終わり
