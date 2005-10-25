@@ -84,8 +84,6 @@ private:
   static void cb_Light(Fl_Value_Slider*, void*);
   inline void cb_Field_i(Fl_Value_Slider*, void*);
   static void cb_Field(Fl_Value_Slider*, void*);
-  inline void cb_Barrel_i(Fl_Value_Slider*, void*);
-  static void cb_Barrel(Fl_Value_Slider*, void*);
   inline void cb_OUT_i(Fl_Button*, void*);
   static void cb_OUT(Fl_Button*, void*);
 public:

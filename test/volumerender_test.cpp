@@ -258,7 +258,6 @@ void volr_draw_area::initialize( )
 	volr_parameter.sampling_step		= 1.0;
 	volr_parameter.termination			= 0.01;
 	volr_parameter.specular				= 0.8;
-	volr_parameter.distortion			= 0.0;
 	volr_parameter.perspective_view		= true;
 	volr_parameter.value_interpolation	= true;
 

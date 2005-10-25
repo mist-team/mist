@@ -336,12 +336,11 @@ namespace volumerender
 		double	sampling_step;
 		double	termination;
 		double	specular;
-		double	distortion;
 
 		boundingbox box[ 6 ];
 
 		parameter( ) : perspective_view( true ), value_interpolation( true ), fovy( 80.0 ), ambient_ratio( 0.4 ), diffuse_ratio( 0.6 ), light_attenuation( 0.0 ),
-						sampling_step( 1.0 ), termination( 0.01 ), specular( 1.0 ), distortion( 0.0 )
+						sampling_step( 1.0 ), termination( 0.01 ), specular( 1.0 )
 		{
 		}
 	};
@@ -363,7 +362,6 @@ namespace volumerender
 		out << "LightAtten = " << p.light_attenuation << std::endl;
 		out << "SamplingStep = " << p.sampling_step << std::endl;
 		out << "Termination = " << p.termination << std::endl;
-		out << "Distortion = " << p.distortion << std::endl;
 
 		return( out );
 	}
@@ -1413,8 +1411,6 @@ namespace __volumerendering_controller__
 		double lightAtten = param.light_attenuation;
 		double sampling_step = param.sampling_step;
 		double termination = param.termination;
-		double distortion = param.distortion;
-		bool   bdistortion = distortion != 0.0;
 		bool   bperspective = param.perspective_view;
 
 		const size_type w = in.width( );
@@ -1461,17 +1457,6 @@ namespace __volumerendering_controller__
 			{
 				// 投影面上の点をカメラ座標系に変換
 				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
-
-				// 歪関数を適用する
-				if( bdistortion )
-				{
-					double x = Pos.x / cx;
-					double y = Pos.y / cy * asp;
-					double ll = x * x + y * y;
-					double r  = 1.0 + distortion * ll;
-					Pos.x *= r;
-					Pos.y *= r;
-				}
 
 				// レイ方向をカメラ座標系からワールド座標系に変換
 				vector_type light;

@@ -209,13 +209,6 @@ void volr_image_window::cb_Field(Fl_Value_Slider* o, void* v) {
   ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_Field_i(o,v);
 }
 
-inline void volr_image_window::cb_Barrel_i(Fl_Value_Slider* o, void*) {
-  volr_image->barrel_distortion( o->value( ) );
-}
-void volr_image_window::cb_Barrel(Fl_Value_Slider* o, void* v) {
-  ((volr_image_window*)(o->parent()->parent()->user_data()))->cb_Barrel_i(o,v);
-}
-
 inline void volr_image_window::cb_OUT_i(Fl_Button* o, void*) {
   if( o->value( ) )
 {
@@ -234,7 +227,7 @@ void volr_image_window::cb_OUT(Fl_Button* o, void* v) {
 
 volr_image_window::volr_image_window( ) {
   Fl_Double_Window* w;
-  { Fl_Double_Window* o = image_window = new Fl_Double_Window(421, 582);
+  { Fl_Double_Window* o = image_window = new Fl_Double_Window(421, 561);
     w = o;
     o->user_data((void*)(this));
     { Fl_Group* o = new Fl_Group(5, 30, 410, 410, "VolumeRendering");
@@ -264,7 +257,7 @@ volr_image_window::volr_image_window( ) {
       o->selection_color((Fl_Color)1);
       o->hide();
     }
-    { Fl_Group* o = new Fl_Group(120, 445, 295, 130);
+    { Fl_Group* o = new Fl_Group(120, 445, 295, 110);
       { Fl_Choice* o = high_reso = new Fl_Choice(120, 445, 85, 25, "High:");
         o->down_box(FL_BORDER_BOX);
         o->menu(menu_high_reso);
@@ -310,15 +303,6 @@ volr_image_window::volr_image_window( ) {
         o->step(1);
         o->value(80);
         o->callback((Fl_Callback*)cb_Field);
-        o->align(FL_ALIGN_LEFT);
-      }
-      { Fl_Value_Slider* o = new Fl_Value_Slider(120, 555, 295, 20, "Barrel Distortion:");
-        o->type(1);
-        o->box(FL_PLASTIC_DOWN_BOX);
-        o->minimum(-3);
-        o->maximum(3);
-        o->step(0.001);
-        o->callback((Fl_Callback*)cb_Barrel);
         o->align(FL_ALIGN_LEFT);
       }
       o->end();

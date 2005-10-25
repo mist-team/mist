@@ -155,15 +155,6 @@ public:
 		Fl::wait( 0 );
 	}
 
-	void barrel_distortion( double bdistortion )
-	{
-		volr_parameter.distortion = bdistortion;
-
-		draw_flag_ = true;
-		redraw( );
-		Fl::wait( 0 );
-	}
-
 	void inside_mode( bool is_inside )
 	{
 		inside_mode_ = is_inside;
