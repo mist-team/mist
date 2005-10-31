@@ -436,12 +436,6 @@ public:	// その他の関数
 		return( quaternion< double >( w / length_, x / length_, y / length_, z / length_ ) );
 	}
 
-	/// <summary>
-	/// クォータニオンの内積
-	/// </summary>
-	/// <param name="a">左辺値</param>
-	/// <param name="b">右辺値</param>
-	/// <returns>内積の計算結果</returns>
 	/// @brief クォータニオンの内積
 	//! 
 	//! @param[in] q … 右辺値
@@ -495,11 +489,21 @@ public:	// その他の関数
 		v2 = v2.unit( );
 
 		// 回転角度を計算する
-		double c = std::sqrt( ( v1.inner( v2 ) + 1.0 ) * 0.5 );
+		double dot = v1.inner( v2 );
+		if( dot < -1.0 )
+		{
+			return( quaternion( -1, 0, 0, 0 ) );
+		}
 
-		if( std::abs( c - 1.0 ) < 1.0e-6 )
+		double c = std::sqrt( ( dot + 1.0 ) * 0.5 );
+
+		if( std::abs( c - 1.0 ) < 1.0e-6 || c > 1.0 )
 		{
 			return( quaternion( 1, 0, 0, 0 ) );
+		}
+		else if( std::abs( c + 1.0 ) < 1.0e-6 || c < -1.0 )
+		{
+			return( quaternion( -1, 0, 0, 0 ) );
 		}
 
 		return( quaternion( c, std::sqrt( 1.0 - c * c ) * v1.outer( v2 ).unit( ) ) );
@@ -521,11 +525,21 @@ public:	// その他の関数
 		v2 = v2.unit( );
 
 		// 回転角度を計算する
-		double c = std::sqrt( ( v1.inner( v2 ) + 1.0 ) * 0.5 );
+		double dot = v1.inner( v2 );
+		if( dot < -1.0 )
+		{
+			return( quaternion( -1, 0, 0, 0 ) );
+		}
 
-		if( std::abs( c - 1.0 ) < 1.0e-6 )
+		double c = std::sqrt( ( dot + 1.0 ) * 0.5 );
+
+		if( std::abs( c - 1.0 ) < 1.0e-6 || c > 1.0 )
 		{
 			return( quaternion( 1, 0, 0, 0 ) );
+		}
+		else if( std::abs( c + 1.0 ) < 1.0e-6 || c < -1.0 )
+		{
+			return( quaternion( -1, 0, 0, 0 ) );
 		}
 
 		double s = std::sqrt( 1.0 - c * c );
@@ -736,6 +750,7 @@ const quaternion< T > track_ball( const vector2< T > &p1, const vector2< T > &p2
 	//	sp1 = sp1.unit();
 	//	sp2 = sp2.unit();
 
+	// 右手系と左手系でここの外積の向きを反転させる
 	//	Vector3<double> axis = (sp2 * sp1).unit();
 	vector3< T > axis = ( sp1 * sp2 ).unit( );
 	axis = ( axis.x * axisX + axis.y * axisY + axis.z * axisZ ).unit( );
