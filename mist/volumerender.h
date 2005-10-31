@@ -2378,10 +2378,7 @@ bool volumerendering( const Array1 &in, const Array2 &mk, Array3 &out, const vol
 //!
 //! @param[in]  in         … 入力画像
 //! @param[out] out        … 出力画像
-//! @param[in]  dmap       … レンダリングを高速化するための距離画像
-//! @param[in]  renderer   … ボリュームレンダリングの実装
-//! @param[in]  param      … ボリュームレンダリングのパラメータ
-//! @param[in]  table      … ボリュームレンダリングの色－値テーブル
+//! @param[in]  p          … レンダリングパラメータ
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … ボリュームレンダリングに成功

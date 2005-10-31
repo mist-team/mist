@@ -1360,7 +1360,7 @@ namespace dicom
 
 	/// @brief DICOMの Group Length を計算し，タグに設定する
 	//! 
-	//! @param[in,out] dicom      … DICOMタグ毎にデータを登録するテーブル
+	//! @param[in,out] dicm       … DICOMタグ毎にデータを登録するテーブル
 	//! @param[in]     implicitVR … Implicit VR 形式かどうか
 	//! 
 	inline void compute_group_length( dicom_tag_container &dicm, bool implicitVR )
