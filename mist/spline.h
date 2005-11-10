@@ -24,85 +24,85 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
+namespace __spline_utility__
+{
+	template < class T >
+	struct arithmetic_operation
+	{
+		// 一般のデータ型用の点演算
+		static const T add( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 + v2 ); }
 
-// 一般のデータ型用の点演算
-template < class T >
-inline const T add( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 + v2 ); }
+		static const T add( const T &v1, const typename T::value_type &v2 ){ return( v1 + v2 ); }
 
-template < class T >
-inline const T add( const T &v1, const typename T::value_type &v2 ){ return( v1 + v2 ); }
+		static const T sub( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 - v2 ); }
 
-template < class T >
-inline const T sub( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 - v2 ); }
+		static const T sub( const T &v1, const typename T::value_type &v2 ){ return( v1 - v2 ); }
 
-template < class T >
-inline const T sub( const T &v1, const typename T::value_type &v2 ){ return( v1 - v2 ); }
+		static const T mul( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 * v2 ); }
 
-template < class T >
-inline const T mul( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 * v2 ); }
+		static const T mul( const T &v1, const typename T::value_type &v2 ){ return( v1 * v2 ); }
 
-template < class T >
-inline const T mul( const T &v1, const typename T::value_type &v2 ){ return( v1 * v2 ); }
+		static const T div( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 / v2 ); }
 
-template < class T >
-inline const T div( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 / v2 ); }
+		static const T div( const T &v1, const typename T::value_type &v2 ){ return( v1 / v2 ); }
+	};
 
-template < class T >
-inline const T div( const T &v1, const typename T::value_type &v2 ){ return( v1 / v2 ); }
+	template < class T >
+	struct arithmetic_operation< vector3< T > >
+	{
+		// vector3 用の点演算
+		static const vector3< T > add( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x + v2.x, v1.y + v2.y, v1.z + v2.z ) ); }
+
+		static const vector3< T > add( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x + val, v1.y + val, v1.z + val ) ); }
+
+		static const vector3< T > sub( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x - v2.x, v1.y - v2.y, v1.z - v2.z ) ); }
+
+		static const vector3< T > sub( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x - val, v1.y - val, v1.z - val ) ); }
+
+		static const vector3< T > mul( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ) ); }
+
+		static const vector3< T > mul( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x * val, v1.y * val, v1.z * val ) ); }
+
+		static const vector3< T > div( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x / v2.x, v1.y / v2.y, v1.z / v2.z ) ); }
+
+		static const vector3< T > div( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x / val, v1.y / val, v1.z / val ) ); }
+	};
+
+	template < class T >
+	struct arithmetic_operation< vector2< T > >
+	{
+		// vector2 用の点演算
+		static const vector2< T > add( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x + v2.x, v1.y + v2.y ) ); }
+
+		static const vector2< T > add( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x + val, v1.y + val ) ); }
+
+		static const vector2< T > sub( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x - v2.x, v1.y - v2.y ) ); }
+
+		static const vector2< T > sub( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x - val, v1.y - val ) ); }
+
+		static const vector2< T > mul( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x * v2.x, v1.y * v2.y ) ); }
+
+		static const vector2< T > mul( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x * val, v1.y * val ) ); }
+
+		static const vector2< T > div( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x / v2.x, v1.y / v2.y ) ); }
+
+		static const vector2< T > div( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x / val, v1.y / val ) ); }
+	};
 
 
+	// 一般のデータ型用の点演算
+	template < class T1, class T2 >
+	inline const T1 add( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::add( v1, v2 ) ); }
 
-// vector3 用の点演算
-template < class T >
-inline const vector3< T > add( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x + v2.x, v1.y + v2.y, v1.z + v2.z ) ); }
+	template < class T1, class T2 >
+	inline const T1 sub( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::add( v1, v2 ) ); }
 
-template < class T >
-inline const vector3< T > add( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x + val, v1.y + val, v1.z + val ) ); }
+	template < class T1, class T2 >
+	inline const T1 div( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::add( v1, v2 ) ); }
 
-template < class T >
-inline const vector3< T > sub( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x - v2.x, v1.y - v2.y, v1.z - v2.z ) ); }
-
-template < class T >
-inline const vector3< T > sub( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x - val, v1.y - val, v1.z - val ) ); }
-
-template < class T >
-inline const vector3< T > mul( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ) ); }
-
-template < class T >
-inline const vector3< T > mul( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x * val, v1.y * val, v1.z * val ) ); }
-
-template < class T >
-inline const vector3< T > div( const vector3< T > &v1, const vector3< T > &v2 ){ return( vector3< T >( v1.x / v2.x, v1.y / v2.y, v1.z / v2.z ) ); }
-
-template < class T >
-inline const vector3< T > div( const vector3< T > &v1, const typename vector3< T >::value_type &val ){ return( vector3< T >( v1.x / val, v1.y / val, v1.z / val ) ); }
-
-
-// vector2 用の点演算
-template < class T >
-inline const vector2< T > add( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x + v2.x, v1.y + v2.y ) ); }
-
-template < class T >
-inline const vector2< T > add( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x + val, v1.y + val ) ); }
-
-template < class T >
-inline const vector2< T > sub( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x - v2.x, v1.y - v2.y ) ); }
-
-template < class T >
-inline const vector2< T > sub( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x - val, v1.y - val ) ); }
-
-template < class T >
-inline const vector2< T > mul( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x * v2.x, v1.y * v2.y ) ); }
-
-template < class T >
-inline const vector2< T > mul( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x * val, v1.y * val ) ); }
-
-template < class T >
-inline const vector2< T > div( const vector2< T > &v1, const vector2< T > &v2 ){ return( vector2< T >( v1.x / v2.x, v1.y / v2.y ) ); }
-
-template < class T >
-inline const vector2< T > div( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x / val, v1.y / val ) ); }
-
+	template < class T1, class T2 >
+	inline const T1 mul( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::add( v1, v2 ) ); }
+}
 
 
 //! @addtogroup free_form_group 自由曲線・曲面
@@ -187,6 +187,8 @@ protected:
 	/// @brief 閉曲線の各制御点上での微係数を計算する
 	void closed_spline( )
 	{
+		using namespace __spline_utility__;
+
 		base p = *this;
 
 		p.push_back( p[ 0 ] );
@@ -265,6 +267,8 @@ protected:
 	/// @brief 開曲線の各制御点上での1次微係数を計算する
 	void open_spline( )
 	{
+		using namespace __spline_utility__;
+
 		const base &p = *this;
 
 		difference_type n, num = p.size( );
@@ -346,6 +350,8 @@ public:
 	//!
 	value_type operator( )( double t )
 	{
+		using namespace __spline_utility__;
+
 		// 曲線を構築するのに必要な点数が存在しない場合
 		if( base::size( ) < 3 || p1_.size( ) < base::size( ) )
 		{
