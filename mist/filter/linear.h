@@ -204,37 +204,6 @@ namespace __linear__
 	};
 
 
-
-	inline void uniw( array< double > &a, const size_t size )
-	{
-		// std::cout << "uniw_0" << std::endl;
-		a.resize( size );
-		a.fill( 1.0 / a.size( ) );
-	}
-
-	inline void uniw_1( array1< double > &a, const size_t size )
-	{
-		// std::cout << "uniw_1" << std::endl;
-		a.resize( size );
-		a.fill( 1.0 / a.size( ) );
-	}
-
-	inline void uniw_2( array2< double > &a, const size_t size )
-	{
-		// std::cout << "uniw_2" << std::endl;
-		a.resize( size, size );
-		a.fill( 1.0 / a.size( ) );
-	}
-
-	inline void uniw_3( array3< double > &a, const size_t size )
-	{
-		// std::cout << "uniw_3" << std::endl;
-		a.resize( size, size, size );
-		a.fill( 1.0 / a.size( ) );
-	}
-
-
-
 	template< typename Array >
 	inline void normalize( Array &a )
 	{
@@ -248,72 +217,6 @@ namespace __linear__
 			a[ i ] /= nrm;
 		}
 	}
-
-
-	inline void gaus( array< double > &a, const size_t range, const double sigma )
-	{
-		// std::cout << "gaus_0" << std::endl;
-		a.resize( range * 2 + 1 );
-		const int o = range;
-		for( size_t i = 0 ; i < a.size( ) ; i ++ )
-		{
-			const int ii = static_cast< int >( i );
-			a[ i ] = std::exp( -( ( ii - o ) * ( ii - o ) ) / ( 2 * sigma * sigma ) );
-		}
-		normalize( a );
-	}
-
-	inline void gaus_1( array1< double > &a, const size_t range, const double sigma )
-	{
-		// std::cout << "gaus_1" << std::endl;
-		a.resize( range * 2 + 1 );
-		const int o = range;
-		for( size_t i = 0 ; i < a.size( ) ; i ++ )
-		{
-			const int ii = static_cast< int >( i );
-			a[ i ] = std::exp( -( ( ii - o ) * ( ii - o ) ) / ( 2 * sigma * sigma ) );
-		}
-		normalize( a );
-	}
-
-	inline void gaus_2( array2< double > &a, const size_t range, const double sigma )
-	{
-		// std::cout << "gaus_2" << std::endl;
-		a.resize( range * 2 + 1, range * 2 + 1 );
-		const int o = range;
-		for( size_t j = 0 ; j < a.height( ) ; j ++ )
-		{
-			for( size_t i = 0 ; i < a.width( ) ; i ++ )
-			{
-				const int ii = static_cast< int >( i );
-				const int jj = static_cast< int >( j );
-				a( i, j ) = std::exp( -( ( ii - o ) * ( ii - o ) + ( jj - o ) * ( jj - o ) ) / ( 2 * sigma * sigma ) );
-			}
-		}
-		normalize( a );
-	}
-
-	inline void gaus_3( array3< double > &a, const size_t range, const double sigma )
-	{
-		// std::cout << "gaus_3" << std::endl;
-		a.resize( range * 2 + 1, range * 2 + 1, range * 2 + 1 );
-		const int o = range;
-		for( size_t k = 0 ; k < a.depth( ) ; k ++ )
-		{
-			for( size_t j = 0 ; j < a.height( ) ; j ++ )
-			{
-				for( size_t i = 0 ; i < a.width() ; i ++ )
-				{
-					const int ii = static_cast< int >( i );
-					const int jj = static_cast< int >( j );
-					const int kk = static_cast< int >( k );
-					a( i, j, k ) = std::exp( -( ( ii - o ) * ( ii - o ) + ( jj - o ) * ( jj - o ) + ( kk - o ) * ( kk - o ) ) / ( 2 * sigma * sigma ) );
-				}
-			}
-		}
-		normalize( a );
-	}
-
 	
 
 	inline void lapl( array< double > &a )
@@ -412,7 +315,7 @@ inline void filtering(
 //! mist::size_3_filter( in, out, size_3_kernel );  // フィルタの適用（カーネル配列とカーネル中心を渡します）
 //! @endcode
 //!
-//! 一様重み平滑化フィルタ，ガウシアンフィルタ，ラプラシアンフィルタ（絶対値）を array, array1, array2, array3 で用意してあります．
+//! ラプラシアンフィルタ（絶対値）を array, array1, array2, array3 で用意してあります．
 //!
 //!  @{
 
@@ -598,133 +501,6 @@ inline bool size_3_filter(
 		return( false );
 	}
 	return( linear_filter( in, out, kernel, 1, 1, 1 ) );
-}
-
-
-/// @brief 一様重み平滑化( array, array1, array2, array3 )
-//! 
-//! サイズ指定可能な一様重み平滑化
-//!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//! @param[in]  size    … フィルタのサイズ（デフォルト 3）
-//!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool uniform_weight( 
-				   const mist::array< In_value, In_alloc > &in, 
-				   mist::array< Out_value, Out_alloc > &out,
-				   const size_t size = 3 )
-{
-	// std::cout << "uniform_0" << std::endl;
-	const size_t _size = ( size % 2 ) ? size : size - 1;
-	const size_t offset = _size / 2;
-	array< double > kernel;
-	__linear__::uniw( kernel, _size );
-	return( linear_filter( in, out, kernel, offset ) );
-}
-
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool uniform_weight( 
-				   const mist::array1< In_value, In_alloc > &in, 
-				   mist::array1< Out_value, Out_alloc > &out,
-				   const size_t size = 3 )
-{
-	// std::cout << "uniform_1" << std::endl;
-	const size_t _size = ( size % 2 ) ? size : size - 1;
-	const size_t offset = _size / 2;
-	array1< double > kernel;
-	__linear__::uniw_1( kernel, _size );
-	return( linear_filter( in, out, kernel, offset ) );
-}
-
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool uniform_weight( 
-				   const mist::array2< In_value, In_alloc > &in, 
-				   mist::array2< Out_value, Out_alloc > &out,
-				   const size_t size = 3 )
-{
-	// std::cout << "uniform_2" << std::endl;
-	const size_t _size = ( size % 2 ) ? size : size - 1;
-	const size_t offset = _size / 2;
-	array2< double > kernel;
-	__linear__::uniw_2( kernel, _size );
-	return( linear_filter( in, out, kernel, offset, offset ) );
-}
-
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool uniform_weight( 
-				   const mist::array3< In_value, In_alloc > &in, 
-				   mist::array3< Out_value, Out_alloc > &out,
-				   const size_t size = 3 )
-{
-	// std::cout << "uniform_3" << std::endl;
-	const size_t _size = ( size % 2 ) ? size : size - 1;
-	const size_t offset = _size / 2;
-	array3< double > kernel;
-	__linear__::uniw_3( kernel, _size );
-	return( linear_filter( in, out, kernel, offset, offset, offset ) );
-}
-
-
-/// @brief ガウシアン( array, array1, array2, array3 )
-//! 
-//! 範囲と強度を指定可能なガウシアン
-//!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//! @param[in]  range  … ガウシアンの範囲（デフォルト 1）
-//! @param[out] sigma  … ガウシアンの強度（デフォルト 1.0）
-//!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool gaussian( 
-				   const mist::array< In_value, In_alloc > &in, 
-				   mist::array< Out_value, Out_alloc > &out,
-				   const size_t range = 1,
-				   const double sigma = 1.0 )
-{
-	// std::cout << "gaussian_0" << std::endl;
-	array< double > kernel;
-	__linear__::gaus( kernel, range, sigma );
-	return( linear_filter( in, out, kernel, range ) );
-}
-
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool gaussian( 
-				   const mist::array1< In_value, In_alloc > &in, 
-				   mist::array1< Out_value, Out_alloc > &out,
-				   const size_t range = 1,
-				   const double sigma = 1.0 )
-{
-	// std::cout << "gaussian_1" << std::endl;
-	array1< double > kernel;
-	__linear__::gaus_1( kernel, range, sigma );
-	return( linear_filter( in, out, kernel, range ) );
-}
-
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool gaussian( 
-				   const mist::array2< In_value, In_alloc > &in, 
-				   mist::array2< Out_value, Out_alloc > &out,
-				   const size_t range = 1,
-				   const double sigma = 1.0 )
-{
-	// std::cout << "gaussian_2" << std::endl;
-	array2< double > kernel;
-	__linear__::gaus_2( kernel, range, sigma );
-	return( linear_filter( in, out, kernel, range, range ) );
-}
-
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool gaussian( 
-				   const mist::array3< In_value, In_alloc > &in, 
-				   mist::array3< Out_value, Out_alloc > &out,
-				   const size_t range = 1,
-				   const double sigma = 1.0 )
-{
-	// std::cout << "gaussian_3" << std::endl;
-	array3< double > kernel;
-	__linear__::gaus_3( kernel, range, sigma );
-	return( linear_filter( in, out, kernel, range, range, range ) );
 }
 
 
