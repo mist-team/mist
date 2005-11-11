@@ -136,7 +136,7 @@ namespace __gaussian__
 //! @param[out] sigma  … ガウシアンの強度（半径から計算されるため普通は与えなくても良い：デフォルト 0.0）
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool gaussian( 
+inline void gaussian( 
 				   const mist::array< In_value, In_alloc > &in, 
 				   mist::array< Out_value, Out_alloc > &out,
 				   const double radius = 2.0,
@@ -153,13 +153,12 @@ inline bool gaussian(
 	size_t begin = gauss.size( ) / 2;
 	size_t end = in.size( ) - begin;
 	__gaussian__::pointer_differences( p_diff, 1 );
-	std::cout << begin << " " << end ;
 	__gaussian__::filter_type< calc_type >::filtering( in, out, begin, end, gauss, p_diff );
 }
 
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool gaussian( 
+inline void gaussian( 
 				   const mist::array1< In_value, In_alloc > &in, 
 				   mist::array1< Out_value, Out_alloc > &out,
 				   const double radius = 2.0,
@@ -183,7 +182,7 @@ inline bool gaussian(
 
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool gaussian( 
+inline void gaussian( 
 				   const mist::array2< In_value, In_alloc > &in, 
 				   mist::array2< Out_value, Out_alloc > &out,
 				   const double radius = 2.0,
@@ -214,7 +213,7 @@ inline bool gaussian(
 
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool gaussian( 
+inline void gaussian( 
 				   const mist::array3< In_value, In_alloc > &in, 
 				   mist::array3< Out_value, Out_alloc > &out,
 				   const double radius = 2.0,
