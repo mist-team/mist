@@ -107,7 +107,7 @@ namespace __uniform_weight__
 //! @param[in] size  … フィルタの一辺のサイズ（デフォルト 3）
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool uniform_weight( 
+inline void uniform_weight( 
 				   const mist::array< In_value, In_alloc > &in, 
 				   mist::array< Out_value, Out_alloc > &out,
 				   const size_t size = 3 )
@@ -123,13 +123,12 @@ inline bool uniform_weight(
 	size_t begin = uni_w.size( ) / 2;
 	size_t end = in.size( ) - begin;
 	__uniform_weight__::pointer_differences( p_diff, 1 );
-	std::cout << begin << " " << end ;
 	__uniform_weight__::filter_type< calc_type >::filtering( in, out, begin, end, uni_w, p_diff );
 }
 
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool uniform_weight( 
+inline void uniform_weight( 
 				   const mist::array1< In_value, In_alloc > &in, 
 				   mist::array1< Out_value, Out_alloc > &out,
 				   const size_t size = 3 )
@@ -152,7 +151,7 @@ inline bool uniform_weight(
 
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool uniform_weight( 
+inline void uniform_weight( 
 				   const mist::array2< In_value, In_alloc > &in, 
 				   mist::array2< Out_value, Out_alloc > &out,
 				   const size_t size = 3 )
@@ -182,7 +181,7 @@ inline bool uniform_weight(
 
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool uniform_weight( 
+inline void uniform_weight( 
 				   const mist::array3< In_value, In_alloc > &in, 
 				   mist::array3< Out_value, Out_alloc > &out,
 				   const size_t size = 3 )
