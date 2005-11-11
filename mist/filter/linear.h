@@ -302,19 +302,6 @@ inline void filtering(
 //! mist::linear_filter( in, out, kernel, 2, 2 );  // フィルタの適用（カーネル配列とカーネル中心を渡します）
 //! @endcode
 //!
-//! カーネルサイズ3（1次元），3×3（2次元），3×3×3（3次元）に特化した線形フィルタを用意してあります．
-//!
-//! @code 使用例(5×5一様重み平滑化フィルタ)
-//! mist::array2< unsigned char > in, out;
-//!
-//! mist::read_bmp( in, "hoge.bmp" );  // 適当な入力配列 
-//!
-//! mist::array2< double > size_3_kernel( 3, 3 ); // 適当なカーネル配列
-//! size_3_kernel.fill( 1.0 / size_3_kernel.size( ) );  // 3×3一様重み平滑化フィルタ用のカーネルを作成
-//!
-//! mist::size_3_filter( in, out, size_3_kernel );  // フィルタの適用（カーネル配列とカーネル中心を渡します）
-//! @endcode
-//!
 //! ラプラシアンフィルタ（絶対値）を array, array1, array2, array3 で用意してあります．
 //!
 //!  @{
@@ -347,6 +334,23 @@ inline bool linear_filter(
 	return( true );
 }
 
+/// @brief 一般の線形フィルタ( array )
+//! 
+//! カーネル配列を指定する(中心はカーネルのサイズから計算)
+//!
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   …カーネル配列
+//!
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline void linear_filter(
+				   const array< In_value, In_alloc > &in,
+				   array< Out_value, Out_alloc > &out,
+				   const array< Kernel_value, Kernel_alloc > &kernel )
+{
+	linear_filter( in, out, kernel, kernel.size( ) / 2 );
+}
+
 /// @brief 一般の線形フィルタ( array1 )
 //! 
 //! カーネル配列とその中心位置を指定する
@@ -357,7 +361,7 @@ inline bool linear_filter(
 //! @param[in]  offset …カーネル中心位置
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline bool linear_filter(
+inline void linear_filter(
 				   const array1< In_value, In_alloc > &in,
 				   array1< Out_value, Out_alloc > &out,
 				   const array1< Kernel_value, Kernel_alloc > &kernel,
@@ -371,7 +375,23 @@ inline bool linear_filter(
 	const size_t begin = offset;
 	const size_t end = in.size( ) - ( kernel.width( ) - offset - 1 );
 	filtering( in, out, func, begin, end );
-	return( true );
+}
+
+/// @brief 一般の線形フィルタ( array1 )
+//! 
+//! カーネル配列を指定する(中心はカーネルのサイズから計算)
+//!
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   …カーネル配列
+//!
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline void linear_filter(
+				   const array1< In_value, In_alloc > &in,
+				   array1< Out_value, Out_alloc > &out,
+				   const array1< Kernel_value, Kernel_alloc > &kernel )
+{
+	linear_filter( in, out, kernel, kernel.width( ) / 2 );
 }
 
 /// @brief 一般の線形フィルタ( array2 )
@@ -385,7 +405,7 @@ inline bool linear_filter(
 //! @param[in]  offset_j …j方向のカーネル中心位置
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline bool linear_filter(
+inline void linear_filter(
 				   const array2< In_value, In_alloc > &in,
 				   array2< Out_value, Out_alloc > &out,
 				   const array2< Kernel_value, Kernel_alloc > &kernel,
@@ -401,10 +421,26 @@ inline bool linear_filter(
 	const size_t begin = offset_j * in.width( ) + offset_i;
 	const size_t end = in.size( ) - ( ( kernel.height( ) - offset_j - 1 ) * in.width( ) + kernel.width( ) - offset_i - 1 );
 	filtering( in, out, func, begin, end );
-	return( true );
 }
 
 /// @brief 一般の線形フィルタ( array2 )
+//! 
+//! カーネル配列を指定する(中心はカーネルのサイズから計算)
+//!
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   …カーネル配列
+//!
+template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
+inline void linear_filter(
+				   const array2< In_value, In_alloc > &in,
+				   array2< Out_value, Out_alloc > &out,
+				   const array2< Kernel_value, Kernel_alloc > &kernel )
+{
+	linear_filter( in, out, kernel, kernel.width( ) / 2, kernel.height( ) / 2 );
+}
+
+/// @brief 一般の線形フィルタ( array3 )
 //! 
 //! カーネル配列とその中心位置を指定する
 //!
@@ -416,7 +452,7 @@ inline bool linear_filter(
 //! @param[in]  offset_k …k方向のカーネル中心位置
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline bool linear_filter(
+inline linear_filter(
 				   const array3< In_value, In_alloc > &in,
 				   array3< Out_value, Out_alloc > &out,
 				   const array3< Kernel_value, Kernel_alloc > &kernel,
@@ -434,75 +470,24 @@ inline bool linear_filter(
 	const size_t begin = offset_k * in.height( ) * in.width( ) + offset_j * in.width( ) + offset_i;
 	const size_t end = in.size( ) - ( ( kernel.depth( ) - offset_k - 1 ) * in.height( ) * in.width( ) + ( kernel.height( ) - offset_j - 1 ) * in.width( ) + kernel.width( ) - offset_i - 1 );
 	filtering( in, out, func, begin, end );
-	return( true );
 }
 
-
-
-/// @brief サイズ3の線形フィルタ( array, array1, array2, array3 )
+/// @brief 一般の線形フィルタ( array3 )
 //! 
-//! サイズ3(1次元)，3×3(2次元)，3×3×3(3次元)に特化した線形フィルタ
+//! カーネル配列を指定する(中心はカーネルのサイズから計算)
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//! @param[in]  kernel …カーネル配列
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   …カーネル配列
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline bool size_3_filter(
-				   const array< In_value, In_alloc > &in,
-				   array< Out_value, Out_alloc > &out,
-				   const array< Kernel_value, Kernel_alloc > &kernel )
-{
-	// std::cout << "size_3_0" << std::endl;
-	if( kernel.width( ) - 3 )
-	{
-		return( false );
-	}
-	return( linear_filter( in, out, kernel, 1 ) );
-}
-
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline bool size_3_filter(
-				   const array1< In_value, In_alloc > &in,
-				   array1< Out_value, Out_alloc > &out,
-				   const array1< Kernel_value, Kernel_alloc > &kernel )
-{
-	// std::cout << "size_3_1" << std::endl;
-	if( kernel.width( ) - 3 )
-	{
-		return( false );
-	}
-	return( linear_filter( in, out, kernel, 1 ) );
-}
-
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline bool size_3_filter(
-				   const array2< In_value, In_alloc > &in,
-				   array2< Out_value, Out_alloc > &out,
-				   const array2< Kernel_value, Kernel_alloc > &kernel )
-{
-	// std::cout << "size_3_2" << std::endl;
-	if( kernel.width( ) - 3 || kernel.height( ) - 3 )
-	{
-		return( false );
-	}
-	return( linear_filter( in, out, kernel, 1, 1 ) );
-}
-
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline bool size_3_filter(
+inline void linear_filter(
 				   const array3< In_value, In_alloc > &in,
 				   array3< Out_value, Out_alloc > &out,
 				   const array3< Kernel_value, Kernel_alloc > &kernel )
 {
-	// std::cout << "size_3_3" << std::endl;
-	if( kernel.width( ) - 3 || kernel.height( ) - 3 || kernel.depth( ) - 3 )
-	{
-		return( false );
-	}
-	return( linear_filter( in, out, kernel, 1, 1, 1 ) );
+	linear_filter( in, out, kernel, kernel.width( ) / 2, kernel.height( ) / 2, kernel.depth( ) / 2 );
 }
-
 
 
 /// @brief ラプラシアン( array, array1, array2, array3 )
@@ -513,47 +498,47 @@ inline bool size_3_filter(
 //! @param[out] out    … 出力配列
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool laplacian( 
+inline void laplacian( 
 				   const mist::array< In_value, In_alloc > &in, 
 				   mist::array< Out_value, Out_alloc > &out )
 {
 	// std::cout << "laplacian_0" << std::endl;
 	array< double > kernel;
 	__linear__::lapl( kernel );
-	return( linear_filter( in, out, kernel, 1 ) );
+	linear_filter( in, out, kernel, 1 );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool laplacian( 
+inline void laplacian( 
 				   const mist::array1< In_value, In_alloc > &in, 
 				   mist::array1< Out_value, Out_alloc > &out )
 {
 	// std::cout << "laplacian_1" << std::endl;
 	array1< double > kernel;
 	__linear__::lapl_1( kernel );
-	return( linear_filter( in, out, kernel, 1 ) );
+	linear_filter( in, out, kernel, 1 );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool laplacian( 
+inline void laplacian( 
 				   const mist::array2< In_value, In_alloc > &in, 
 				   mist::array2< Out_value, Out_alloc > &out )
 {
 	// std::cout << "laplacian_2" << std::endl;
 	array2< double > kernel;
 	__linear__::lapl_2( kernel );
-	return( linear_filter( in, out, kernel, 1, 1 ) );
+	linear_filter( in, out, kernel, 1, 1 );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool laplacian( 
+inline void laplacian( 
 				   const mist::array3< In_value, In_alloc > &in, 
 				   mist::array3< Out_value, Out_alloc > &out )
 {
 	// std::cout << "laplacian_3" << std::endl;
 	array3< double > kernel;
 	__linear__::lapl_3( kernel );
-	return( linear_filter( in, out, kernel, 1, 1, 1 ) );
+	linear_filter( in, out, kernel, 1, 1, 1 );
 }
 
 
@@ -566,7 +551,7 @@ inline bool laplacian(
 //! @param[out] out    … 出力配列
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool laplacian_abs( 
+inline void laplacian_abs( 
 				   const mist::array< In_value, In_alloc > &in, 
 				   mist::array< Out_value, Out_alloc > &out )
 {
@@ -579,11 +564,10 @@ inline bool laplacian_abs(
 	const size_t begin = 1;
 	const size_t end = in.size( ) - 1; 
 	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
-	return( true );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool laplacian_abs( 
+inline void laplacian_abs( 
 				   const mist::array1< In_value, In_alloc > &in, 
 				   mist::array1< Out_value, Out_alloc > &out )
 {
@@ -595,13 +579,12 @@ inline bool laplacian_abs(
 	__linear__::lapl_1( kernel );
 	const __linear__::function_type< In_value, Out_value, array1< double > > func( kernel, 1 );
 	const size_t begin = 1;
-	const size_t end = in.size( ) - 1; 
+	const size_t end = in.size( ) - begin; 
 	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
-	return( true );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool laplacian_abs( 
+inline void laplacian_abs( 
 				   const mist::array2< In_value, In_alloc > &in, 
 				   mist::array2< Out_value, Out_alloc > &out )
 {
@@ -614,13 +597,12 @@ inline bool laplacian_abs(
 	__linear__::lapl_2( kernel );
 	const Function_type func( kernel, 1, 1, in.width( ) );
 	const size_t begin = in.width( ) + 1;
-	const size_t end = in.size( ) - ( in.width( ) + 1 ); 
+	const size_t end = in.size( ) - begin; 
 	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
-	return( true );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline bool laplacian_abs( 
+inline laplacian_abs( 
 				   const mist::array3< In_value, In_alloc > &in, 
 				   mist::array3< Out_value, Out_alloc > &out )
 {
@@ -634,9 +616,8 @@ inline bool laplacian_abs(
 	__linear__::lapl_3( kernel );
 	const Function_type func( kernel, 1, 1, 1, in.width( ), in.height( ) );
 	const size_t begin = in.height( ) * in.width( ) + in.width( ) + 1;
-	const size_t end = in.size( ) - ( in.height( ) * in.width( ) + in.width( ) + 1 ); 
+	const size_t end = in.size( ) - begin; 
 	filtering( in, out, __linear__::abs< In_value, Out_value, Function_type >( func ), begin, end );
-	return( true );
 }
 
 
