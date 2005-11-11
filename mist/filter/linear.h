@@ -107,6 +107,31 @@ namespace __linear__
 	};
 
 
+	template< typename Kernel_type >
+	inline void kernel_culling( const mist::array< Kernel_type > &k1, const mist::array< int > &p1, mist::array< Kernel_type > &k2, mist::array< int > &p2 )
+	{
+		size_t size = 0;
+		for( size_t i = 0 ; i < k1.size( ) ; i ++ )
+		{
+			if( k1[ i ] != 0 )
+			{
+				size ++;
+			}
+		}
+		k2.resize( size );
+		p2.resize( size );
+		size_t m = 0;
+		for( size_t i = 0 ; i < k1.size( ) ; i ++ )
+		{
+			if( k1[ i ] != 0 )
+			{
+				k2[ m ] = k1[ i ];
+				p2[ m ] = p1[ i ];
+				m ++;
+			}
+		}
+	}
+
 
 	template< typename Calc_type >
 	struct filter_type
@@ -114,14 +139,18 @@ namespace __linear__
 		template< typename In_type, typename Out_type, typename Kernel_type >
 		static filtering( const mist::array< In_type > &in, mist::array< Out_type > &out, const size_t begin, const size_t end, const mist::array< Kernel_type > &kernel, const mist::array< int > &p_diff )
 		{
+
+			mist::array< Kernel_type > kernel2;
+			mist::array< int > p_diff2;
+			kernel_culling( kernel, p_diff, kernel2, p_diff2 );
 			Calc_type val;
 			for( size_t i = begin ; i < end ; i ++ )
 			{
 				val = Calc_type( );
 				int di = static_cast< int >( i );
-				for( size_t m = 0 ; m < kernel.size( ) ; m ++ )
+				for( size_t m = 0 ; m < kernel2.size( ) ; m ++ )
 				{
-					val += in[ static_cast< size_t >( di + p_diff[ m ] ) ] * kernel[ m ];
+					val += in[ static_cast< size_t >( di + p_diff2[ m ] ) ] * kernel2[ m ];
 				}
 				out[ i ] = static_cast< Out_type >( abs_type< is_unsigned< Out_type >::value >::func( val ) );
 			}
@@ -134,14 +163,17 @@ namespace __linear__
 		template< typename In_type, typename Out_type, typename Kernel_type >
 		static filtering( const mist::array< In_type > &in, mist::array< mist::rgb< Out_type > > &out, const size_t begin, const size_t end, const mist::array< Kernel_type > &kernel, const mist::array< int > &p_diff )
 		{
+			mist::array< Kernel_type > kernel2;
+			mist::array< int > p_diff2;
+			kernel_culling( kernel, p_diff, kernel2, p_diff2 );
 			mist::rgb< double > val;
 			for( size_t i = begin ; i < end ; i ++ )
 			{
 				val = mist::rgb< double >( );
 				int di = static_cast< int >( i );
-				for( size_t m = 0 ; m < kernel.size( ) ; m ++ )
+				for( size_t m = 0 ; m < kernel2.size( ) ; m ++ )
 				{
-					val += in[ static_cast< size_t >( di + p_diff[ m ] ) ] * kernel[ m ];
+					val += in[ static_cast< size_t >( di + p_diff2[ m ] ) ] * kernel2[ m ];
 				}
 				out[ i ].r = static_cast< Out_type >( abs_type< is_unsigned< Out_type >::value >::func( val.r ) );
 				out[ i ].g = static_cast< Out_type >( abs_type< is_unsigned< Out_type >::value >::func( val.g ) );
@@ -412,7 +444,6 @@ inline void linear_filter(
 /// @brief ラプラシアン( array, array1, array2, array3 )
 //! 
 //! サイズ3のラプラシアン
-//! 出力の型がunsignedの場合は，処理結果の絶対値を返します
 //!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
