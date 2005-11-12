@@ -10,6 +10,8 @@
 #include <mist/filter/labeling.h>
 #include <mist/filter/morphology.h>
 #include <mist/filter/linear.h>
+#include <mist/filter/gaussian.h>
+#include <mist/filter/uniform_weight.h>
 #include <mist/filter/decomposition.h>
 #include <mist/filter/thinning.h>
 #include <mist/timer.h>

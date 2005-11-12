@@ -137,7 +137,7 @@ namespace __linear__
 	struct filter_type
 	{
 		template< typename In_type, typename Out_type, typename Kernel_type >
-		static filtering( const mist::array< In_type > &in, mist::array< Out_type > &out, const size_t begin, const size_t end, const mist::array< Kernel_type > &kernel, const mist::array< int > &p_diff )
+		static void filtering( const mist::array< In_type > &in, mist::array< Out_type > &out, const size_t begin, const size_t end, const mist::array< Kernel_type > &kernel, const mist::array< int > &p_diff )
 		{
 
 			mist::array< Kernel_type > kernel2;
@@ -161,7 +161,7 @@ namespace __linear__
 	struct filter_type< mist::rgb< double > >
 	{
 		template< typename In_type, typename Out_type, typename Kernel_type >
-		static filtering( const mist::array< In_type > &in, mist::array< mist::rgb< Out_type > > &out, const size_t begin, const size_t end, const mist::array< Kernel_type > &kernel, const mist::array< int > &p_diff )
+		static void filtering( const mist::array< In_type > &in, mist::array< mist::rgb< Out_type > > &out, const size_t begin, const size_t end, const mist::array< Kernel_type > &kernel, const mist::array< int > &p_diff )
 		{
 			mist::array< Kernel_type > kernel2;
 			mist::array< int > p_diff2;
@@ -271,12 +271,12 @@ namespace __linear__
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline void linear_filter(
-				   const array< In_value, In_alloc > &in,
-				   array< Out_value, Out_alloc > &out,
-				   const array< Kernel_value, Kernel_alloc > &kernel,
-				   const size_t offset )
+						  const array< In_value, In_alloc > &in,
+						  array< Out_value, Out_alloc > &out,
+						  const array< Kernel_value, Kernel_alloc > &kernel,
+						  const size_t offset )
 {
-	typedef typename __linear__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __linear__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 	mist::array< int > p_diff( kernel.size( ) );
 	__linear__::pointer_differences( p_diff, offset, 1 );
 	out.resize( in.size( ) );
@@ -295,9 +295,9 @@ inline void linear_filter(
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline void linear_filter(
-				   const array< In_value, In_alloc > &in,
-				   array< Out_value, Out_alloc > &out,
-				   const array< Kernel_value, Kernel_alloc > &kernel )
+						  const array< In_value, In_alloc > &in,
+						  array< Out_value, Out_alloc > &out,
+						  const array< Kernel_value, Kernel_alloc > &kernel )
 {
 	linear_filter( in, out, kernel, kernel.size( ) / 2 );
 }
@@ -313,12 +313,12 @@ inline void linear_filter(
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline void linear_filter(
-				   const array1< In_value, In_alloc > &in,
-				   array1< Out_value, Out_alloc > &out,
-				   const array1< Kernel_value, Kernel_alloc > &kernel,
-				   const size_t offset )
+						  const array1< In_value, In_alloc > &in,
+						  array1< Out_value, Out_alloc > &out,
+						  const array1< Kernel_value, Kernel_alloc > &kernel,
+						  const size_t offset )
 {
-	typedef typename __linear__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __linear__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 	mist::array< int > p_diff( kernel.size( ) );
 	__linear__::pointer_differences( p_diff, offset, 1 );
 	out.resize( in.size( ) );
@@ -338,9 +338,9 @@ inline void linear_filter(
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline void linear_filter(
-				   const array1< In_value, In_alloc > &in,
-				   array1< Out_value, Out_alloc > &out,
-				   const array1< Kernel_value, Kernel_alloc > &kernel )
+						  const array1< In_value, In_alloc > &in,
+						  array1< Out_value, Out_alloc > &out,
+						  const array1< Kernel_value, Kernel_alloc > &kernel )
 {
 	linear_filter( in, out, kernel, kernel.width( ) / 2 );
 }
@@ -357,13 +357,13 @@ inline void linear_filter(
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline void linear_filter(
-				   const array2< In_value, In_alloc > &in,
-				   array2< Out_value, Out_alloc > &out,
-				   const array2< Kernel_value, Kernel_alloc > &kernel,
-				   const size_t offset_i,
-				   const size_t offset_j )
+						  const array2< In_value, In_alloc > &in,
+						  array2< Out_value, Out_alloc > &out,
+						  const array2< Kernel_value, Kernel_alloc > &kernel,
+						  const size_t offset_i,
+						  const size_t offset_j )
 {
-	typedef typename __linear__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __linear__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 	mist::array2< int > p_diff( kernel.width( ), kernel.height( ) );
 	__linear__::pointer_differences_2( p_diff, offset_i, offset_j, 1, in.width( ) );
 	out.resize( in.width( ), in.height( ) );
@@ -384,9 +384,9 @@ inline void linear_filter(
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline void linear_filter(
-				   const array2< In_value, In_alloc > &in,
-				   array2< Out_value, Out_alloc > &out,
-				   const array2< Kernel_value, Kernel_alloc > &kernel )
+						  const array2< In_value, In_alloc > &in,
+						  array2< Out_value, Out_alloc > &out,
+						  const array2< Kernel_value, Kernel_alloc > &kernel )
 {
 	linear_filter( in, out, kernel, kernel.width( ) / 2, kernel.height( ) / 2 );
 }
@@ -404,14 +404,14 @@ inline void linear_filter(
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline void linear_filter(
-				   const array3< In_value, In_alloc > &in,
-				   array3< Out_value, Out_alloc > &out,
-				   const array3< Kernel_value, Kernel_alloc > &kernel,
-				   const size_t offset_i,
-				   const size_t offset_j,
-				   const size_t offset_k )
+						  const array3< In_value, In_alloc > &in,
+						  array3< Out_value, Out_alloc > &out,
+						  const array3< Kernel_value, Kernel_alloc > &kernel,
+						  const size_t offset_i,
+						  const size_t offset_j,
+						  const size_t offset_k )
 {
-	typedef typename __linear__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __linear__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 	mist::array3< int > p_diff( kernel.width( ), kernel.height( ), kernel.depth( ) );
 	__linear__::pointer_differences_3( p_diff, offset_i, offset_j, offset_k, 1, in.width( ), in.width( ) * in.height( ) );
 	out.resize( in.width( ), in.height( ), in.depth( ) );
@@ -433,9 +433,9 @@ inline void linear_filter(
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
 inline void linear_filter(
-				   const array3< In_value, In_alloc > &in,
-				   array3< Out_value, Out_alloc > &out,
-				   const array3< Kernel_value, Kernel_alloc > &kernel )
+						  const array3< In_value, In_alloc > &in,
+						  array3< Out_value, Out_alloc > &out,
+						  const array3< Kernel_value, Kernel_alloc > &kernel )
 {
 	linear_filter( in, out, kernel, kernel.width( ) / 2, kernel.height( ) / 2, kernel.depth( ) / 2 );
 }
@@ -449,33 +449,25 @@ inline void linear_filter(
 //! @param[out] out    c o—Í”z—ñ
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline void laplacian( 
-				   const mist::array< In_value, In_alloc > &in, 
-				   mist::array< Out_value, Out_alloc > &out )
+inline void laplacian( const mist::array< In_value, In_alloc > &in, mist::array< Out_value, Out_alloc > &out )
 {
 	linear_filter( in, out, __linear__::lapl_1( ).a );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline void laplacian( 
-				   const mist::array1< In_value, In_alloc > &in, 
-				   mist::array1< Out_value, Out_alloc > &out )
+inline void laplacian( const mist::array1< In_value, In_alloc > &in, mist::array1< Out_value, Out_alloc > &out )
 {
 	linear_filter( in, out, __linear__::lapl_1( ).a );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline void laplacian( 
-				   const mist::array2< In_value, In_alloc > &in, 
-				   mist::array2< Out_value, Out_alloc > &out )
+inline void laplacian( const mist::array2< In_value, In_alloc > &in, mist::array2< Out_value, Out_alloc > &out )
 {
 	linear_filter( in, out, __linear__::lapl_2( ).a );
 }
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline void laplacian( 
-				   const mist::array3< In_value, In_alloc > &in, 
-				   mist::array3< Out_value, Out_alloc > &out )
+inline void laplacian( const mist::array3< In_value, In_alloc > &in, mist::array3< Out_value, Out_alloc > &out )
 {
 	linear_filter( in, out, __linear__::lapl_3( ).a );
 }

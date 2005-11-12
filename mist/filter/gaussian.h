@@ -91,7 +91,7 @@ namespace __gaussian__
 	struct filter_type
 	{
 		template< typename In_type, typename Out_type >
-			static filtering( const mist::array< In_type > &in, mist::array< Out_type > &out, const size_t begin, const size_t end, const mist::array< double > &gauss, const mist::array< int > &p_diff )
+		static void filtering( const mist::array< In_type > &in, mist::array< Out_type > &out, const size_t begin, const size_t end, const mist::array< double > &gauss, const mist::array< int > &p_diff )
 		{
 			Calc_type val;
 			for( size_t i = begin ; i < end ; i ++ )
@@ -137,12 +137,12 @@ namespace __gaussian__
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
 inline void gaussian( 
-				   const mist::array< In_value, In_alloc > &in, 
-				   mist::array< Out_value, Out_alloc > &out,
-				   const double radius = 2.0,
-				   const double sigma = 0.0 )
+					 const mist::array< In_value, In_alloc > &in, 
+					 mist::array< Out_value, Out_alloc > &out,
+					 const double radius = 2.0,
+					 const double sigma = 0.0 )
 {
-	typedef typename __gaussian__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __gaussian__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 	
 	array< double > gauss;
 	__gaussian__::gaussian_kernel( gauss, radius, sigma );
@@ -159,12 +159,12 @@ inline void gaussian(
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
 inline void gaussian( 
-				   const mist::array1< In_value, In_alloc > &in, 
-				   mist::array1< Out_value, Out_alloc > &out,
-				   const double radius = 2.0,
-				   const double sigma = 0.0 )
+					 const mist::array1< In_value, In_alloc > &in, 
+					 mist::array1< Out_value, Out_alloc > &out,
+					 const double radius = 2.0,
+					 const double sigma = 0.0 )
 {
-	typedef typename __gaussian__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __gaussian__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 	
 	out.reso1( in.reso1( ) );
 	
@@ -183,12 +183,12 @@ inline void gaussian(
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
 inline void gaussian( 
-				   const mist::array2< In_value, In_alloc > &in, 
-				   mist::array2< Out_value, Out_alloc > &out,
-				   const double radius = 2.0,
-				   const double sigma = 0.0 )
+					 const mist::array2< In_value, In_alloc > &in, 
+					 mist::array2< Out_value, Out_alloc > &out,
+					 const double radius = 2.0,
+					 const double sigma = 0.0 )
 {
-	typedef typename __gaussian__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __gaussian__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 
 	out.reso1( in.reso1( ) );
 	out.reso2( in.reso2( ) );
@@ -214,12 +214,12 @@ inline void gaussian(
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
 inline void gaussian( 
-				   const mist::array3< In_value, In_alloc > &in, 
-				   mist::array3< Out_value, Out_alloc > &out,
-				   const double radius = 2.0,
-				   const double sigma = 0.0 )
+					 const mist::array3< In_value, In_alloc > &in, 
+					 mist::array3< Out_value, Out_alloc > &out,
+					 const double radius = 2.0,
+					 const double sigma = 0.0 )
 {
-	typedef typename __gaussian__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __gaussian__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 	
 	out.reso1( in.reso1( ) );
 	out.reso2( in.reso2( ) );

@@ -65,7 +65,7 @@ namespace __uniform_weight__
 	struct filter_type
 	{
 		template< typename In_type, typename Out_type >
-			static filtering( const mist::array< In_type > &in, mist::array< Out_type > &out, const size_t begin, const size_t end, const mist::array< double > &uni_w, const mist::array< int > &p_diff )
+		static void filtering( const mist::array< In_type > &in, mist::array< Out_type > &out, const size_t begin, const size_t end, const mist::array< double > &uni_w, const mist::array< int > &p_diff )
 		{
 			Calc_type val;
 			for( size_t i = begin ; i < end ; i ++ )
@@ -108,11 +108,11 @@ namespace __uniform_weight__
 //!
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
 inline void uniform_weight( 
-				   const mist::array< In_value, In_alloc > &in, 
-				   mist::array< Out_value, Out_alloc > &out,
-				   const size_t size = 3 )
+						   const mist::array< In_value, In_alloc > &in, 
+						   mist::array< Out_value, Out_alloc > &out,
+						   const size_t size = 3 )
 {
-	typedef typename __uniform_weight__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __uniform_weight__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 	
 	array< double > uni_w;
 	__uniform_weight__::uniform_weight_kernel( uni_w, size );
@@ -129,11 +129,11 @@ inline void uniform_weight(
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
 inline void uniform_weight( 
-				   const mist::array1< In_value, In_alloc > &in, 
-				   mist::array1< Out_value, Out_alloc > &out,
-				   const size_t size = 3 )
+						   const mist::array1< In_value, In_alloc > &in, 
+						   mist::array1< Out_value, Out_alloc > &out,
+						   const size_t size = 3 )
 {
-	typedef typename __uniform_weight__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __uniform_weight__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 	
 	out.reso1( in.reso1( ) );
 	
@@ -152,11 +152,11 @@ inline void uniform_weight(
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
 inline void uniform_weight( 
-				   const mist::array2< In_value, In_alloc > &in, 
-				   mist::array2< Out_value, Out_alloc > &out,
-				   const size_t size = 3 )
+						   const mist::array2< In_value, In_alloc > &in, 
+						   mist::array2< Out_value, Out_alloc > &out,
+						   const size_t size = 3 )
 {
-	typedef typename __uniform_weight__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __uniform_weight__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 
 	out.reso1( in.reso1( ) );
 	out.reso2( in.reso2( ) );
@@ -182,11 +182,11 @@ inline void uniform_weight(
 
 template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
 inline void uniform_weight( 
-				   const mist::array3< In_value, In_alloc > &in, 
-				   mist::array3< Out_value, Out_alloc > &out,
-				   const size_t size = 3 )
+						   const mist::array3< In_value, In_alloc > &in, 
+						   mist::array3< Out_value, Out_alloc > &out,
+						   const size_t size = 3 )
 {
-	typedef typename __uniform_weight__::calc_type< is_color< Out_alloc::value_type >::value >::type calc_type;
+	typedef typename __uniform_weight__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
 	
 	out.reso1( in.reso1( ) );
 	out.reso2( in.reso2( ) );
