@@ -163,11 +163,9 @@ void volr_draw_area::draw_image( )
 		image_.reso( w( ) / static_cast< double >( h( ) ) * reso, 1.0 * reso );
 	}
 
-	p.pos.x	= camera_.pos.x - p.offset.x;
-	p.pos.y	= p.offset.y - camera_.pos.y;
-	p.pos.z	= camera_.pos.z - p.offset.z;
-	p.dir	= camera_.dir;
-	p.up	= camera_.up;
+	p.pos = camera_.pos;
+	p.dir = camera_.dir;
+	p.up  = camera_.up;
 
 	{
 		mist::timer t;
@@ -260,6 +258,9 @@ void volr_draw_area::initialize( )
 	volr_parameter.specular				= 0.8;
 	volr_parameter.perspective_view		= true;
 	volr_parameter.value_interpolation	= true;
+	volr_parameter.left_to_right		= true;
+	volr_parameter.top_to_bottom		= false;
+	volr_parameter.front_to_back		= true;
 
 	
 	//	image_.resize( 512, 512 );
@@ -300,11 +301,9 @@ void volr_draw_area::rotate_camera( int sx, int sy, int x, int y )
 	mist::quaternion< double > q = mist::track_ball( p1, p2, tyoko, tup, tdir );
 
 	point3 pos = q.rotate( old_camera_.dir ) * ( - zoom_ );
-	camera_.pos.x	= pos.x + p.offset.x;
-	camera_.pos.y	= p.offset.y - pos.y;
-	camera_.pos.z	= pos.z + p.offset.z;
-	camera_.dir		= - pos.unit( );
-	camera_.up		= q.rotate( old_camera_.up ).unit( );
+	camera_.pos	= pos + p.offset;
+	camera_.dir = - pos.unit( );
+	camera_.up  = q.rotate( old_camera_.up ).unit( );
 }
 
 void volr_draw_area::rotate_camera( int x, int y, double step )
@@ -316,11 +315,9 @@ void volr_draw_area::rotate_camera( int x, int y, double step )
 	point3 tyoko = old_camera_.dir * old_camera_.up;
 	mist::quaternion< double > q = mist::track_ball( p1, p2, tyoko, tup, tdir, 5.0 );
 
-	camera_.dir    = q.rotate( old_camera_.dir ).unit( );
-	camera_.pos.x += old_camera_.dir.x * step;
-	camera_.pos.y -= old_camera_.dir.y * step;
-	camera_.pos.z += old_camera_.dir.z * step;
-	camera_.up     = q.rotate( old_camera_.up ).unit( );
+	camera_.dir  = q.rotate( old_camera_.dir ).unit( );
+	camera_.pos += old_camera_.dir * step;
+	camera_.up   = q.rotate( old_camera_.up ).unit( );
 }
 
 void volr_draw_area::move_camera( double x, double y, double z )
@@ -330,9 +327,7 @@ void volr_draw_area::move_camera( double x, double y, double z )
 	point3 tyoko = camera_.dir * camera_.up;
 
 	point3 pos = tyoko * x + tup * y + tdir * z;
-	camera_.pos.x += pos.x;
-	camera_.pos.y -= pos.y;
-	camera_.pos.z += pos.z;
+	camera_.pos += pos;
 }
 
 

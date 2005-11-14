@@ -337,10 +337,14 @@ namespace volumerender
 		double	termination;
 		double	specular;
 
+		bool left_to_right;
+		bool top_to_bottom;
+		bool front_to_back;
+
 		boundingbox box[ 6 ];
 
 		parameter( ) : perspective_view( true ), value_interpolation( true ), fovy( 80.0 ), ambient_ratio( 0.4 ), diffuse_ratio( 0.6 ), light_attenuation( 0.0 ),
-						sampling_step( 1.0 ), termination( 0.01 ), specular( 1.0 )
+						sampling_step( 1.0 ), termination( 0.01 ), specular( 1.0 ), left_to_right( true ), top_to_bottom( true ), front_to_back( true )
 		{
 		}
 	};
@@ -629,28 +633,28 @@ namespace rendering_helper
 			const_pointer p7 = p0 + d7;
 
 			double n0x = p3[  0  ] - p0[ -_1 ];
-			double n0y = p0[ -_2 ] - p1[  0  ];
+			double n0y = p1[  0  ] - p0[ -_2 ];
 			double n0z = p4[  0  ] - p0[ -_3 ];
 			double n1x = p2[  0  ] - p1[ -_1 ];
-			double n1y = p0[  0  ] - p1[  _2 ];
+			double n1y = p1[  _2 ] - p0[  0  ];
 			double n1z = p5[  0  ] - p1[ -_3 ];
 			double n2x = p2[  _1 ] - p1[  0  ];
-			double n2y = p3[  0  ] - p2[  _2 ];
+			double n2y = p2[  _2 ] - p3[  0  ];
 			double n2z = p6[  0  ] - p2[ -_3 ];
 			double n3x = p3[  _1 ] - p0[  0  ];
-			double n3y = p3[ -_2 ] - p2[  0  ];
+			double n3y = p2[  0  ] - p3[ -_2 ];
 			double n3z = p7[  0  ] - p3[ -_3 ];
 			double n4x = p7[  0  ] - p4[ -_1 ];
-			double n4y = p4[ -_2 ] - p5[  0  ];
+			double n4y = p5[  0  ] - p4[ -_2 ];
 			double n4z = p4[  _3 ] - p0[  0  ];
 			double n5x = p6[  0  ] - p5[ -_1 ];
-			double n5y = p4[  0  ] - p5[  _2 ];
+			double n5y = p5[  _2 ] - p4[  0  ];
 			double n5z = p5[  _3 ] - p1[  0  ];
 			double n6x = p6[  _1 ] - p5[  0  ];
-			double n6y = p7[  0  ] - p6[  _2 ];
+			double n6y = p6[  _2 ] - p7[  0  ];
 			double n6z = p6[  _3 ] - p2[  0  ];
 			double n7x = p7[  _1 ] - p4[  0  ];
-			double n7y = p7[ -_2 ] - p6[  0  ];
+			double n7y = p6[  0  ] - p7[ -_2 ];
 			double n7z = p7[  _3 ] - p3[  0  ];
 
 			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
@@ -785,28 +789,28 @@ namespace rendering_helper
 			const_pointer p7 = p0 + d7;
 
 			double n0x = p3[  0  ] - p0[ -_1 ];
-			double n0y = p0[ -_2 ] - p1[  0  ];
+			double n0y = p1[  0  ] - p0[ -_2 ];
 			double n0z = p4[  0  ] - p0[ -_3 ];
 			double n1x = p2[  0  ] - p1[ -_1 ];
-			double n1y = p0[  0  ] - p1[  _2 ];
+			double n1y = p1[  _2 ] - p0[  0  ];
 			double n1z = p5[  0  ] - p1[ -_3 ];
 			double n2x = p2[  _1 ] - p1[  0  ];
-			double n2y = p3[  0  ] - p2[  _2 ];
+			double n2y = p2[  _2 ] - p3[  0  ];
 			double n2z = p6[  0  ] - p2[ -_3 ];
 			double n3x = p3[  _1 ] - p0[  0  ];
-			double n3y = p3[ -_2 ] - p2[  0  ];
+			double n3y = p2[  0  ] - p3[ -_2 ];
 			double n3z = p7[  0  ] - p3[ -_3 ];
 			double n4x = p7[  0  ] - p4[ -_1 ];
-			double n4y = p4[ -_2 ] - p5[  0  ];
+			double n4y = p5[  0  ] - p4[ -_2 ];
 			double n4z = p4[  _3 ] - p0[  0  ];
 			double n5x = p6[  0  ] - p5[ -_1 ];
-			double n5y = p4[  0  ] - p5[  _2 ];
+			double n5y = p5[  _2 ] - p4[  0  ];
 			double n5z = p5[  _3 ] - p1[  0  ];
 			double n6x = p6[  _1 ] - p5[  0  ];
-			double n6y = p7[  0  ] - p6[  _2 ];
+			double n6y = p6[  _2 ] - p7[  0  ];
 			double n6z = p6[  _3 ] - p2[  0  ];
 			double n7x = p7[  _1 ] - p4[  0  ];
-			double n7y = p7[ -_2 ] - p6[  0  ];
+			double n7y = p6[  0  ] - p7[ -_2 ];
 			double n7z = p7[  _3 ] - p3[  0  ];
 
 			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
@@ -961,28 +965,28 @@ namespace rendering_helper
 			const_pointer p7 = p0 + d7;
 
 			double n0x = p3[  0  ] - p0[ -_1 ];
-			double n0y = p0[ -_2 ] - p1[  0  ];
+			double n0y = p1[  0  ] - p0[ -_2 ];
 			double n0z = p4[  0  ] - p0[ -_3 ];
 			double n1x = p2[  0  ] - p1[ -_1 ];
-			double n1y = p0[  0  ] - p1[  _2 ];
+			double n1y = p1[  _2 ] - p0[  0  ];
 			double n1z = p5[  0  ] - p1[ -_3 ];
 			double n2x = p2[  _1 ] - p1[  0  ];
-			double n2y = p3[  0  ] - p2[  _2 ];
+			double n2y = p2[  _2 ] - p3[  0  ];
 			double n2z = p6[  0  ] - p2[ -_3 ];
 			double n3x = p3[  _1 ] - p0[  0  ];
-			double n3y = p3[ -_2 ] - p2[  0  ];
+			double n3y = p2[  0  ] - p3[ -_2 ];
 			double n3z = p7[  0  ] - p3[ -_3 ];
 			double n4x = p7[  0  ] - p4[ -_1 ];
-			double n4y = p4[ -_2 ] - p5[  0  ];
+			double n4y = p5[  0  ] - p4[ -_2 ];
 			double n4z = p4[  _3 ] - p0[  0  ];
 			double n5x = p6[  0  ] - p5[ -_1 ];
-			double n5y = p4[  0  ] - p5[  _2 ];
+			double n5y = p5[  _2 ] - p4[  0  ];
 			double n5z = p5[  _3 ] - p1[  0  ];
 			double n6x = p6[  _1 ] - p5[  0  ];
-			double n6y = p7[  0  ] - p6[  _2 ];
+			double n6y = p6[  _2 ] - p7[  0  ];
 			double n6z = p6[  _3 ] - p2[  0  ];
 			double n7x = p7[  _1 ] - p4[  0  ];
-			double n7y = p7[ -_2 ] - p6[  0  ];
+			double n7y = p6[  0  ] - p7[ -_2 ];
 			double n7z = p7[  _3 ] - p3[  0  ];
 
 			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
@@ -1119,28 +1123,28 @@ namespace rendering_helper
 			const_pointer p7 = p0 + d7;
 
 			double n0x = p3[  0  ] - p0[ -_1 ];
-			double n0y = p0[ -_2 ] - p1[  0  ];
+			double n0y = p1[  0  ] - p0[ -_2 ];
 			double n0z = p4[  0  ] - p0[ -_3 ];
 			double n1x = p2[  0  ] - p1[ -_1 ];
-			double n1y = p0[  0  ] - p1[  _2 ];
+			double n1y = p1[  _2 ] - p0[  0  ];
 			double n1z = p5[  0  ] - p1[ -_3 ];
 			double n2x = p2[  _1 ] - p1[  0  ];
-			double n2y = p3[  0  ] - p2[  _2 ];
+			double n2y = p2[  _2 ] - p3[  0  ];
 			double n2z = p6[  0  ] - p2[ -_3 ];
 			double n3x = p3[  _1 ] - p0[  0  ];
-			double n3y = p3[ -_2 ] - p2[  0  ];
+			double n3y = p2[  0  ] - p3[ -_2 ];
 			double n3z = p7[  0  ] - p3[ -_3 ];
 			double n4x = p7[  0  ] - p4[ -_1 ];
-			double n4y = p4[ -_2 ] - p5[  0  ];
+			double n4y = p5[  0  ] - p4[ -_2 ];
 			double n4z = p4[  _3 ] - p0[  0  ];
 			double n5x = p6[  0  ] - p5[ -_1 ];
-			double n5y = p4[  0  ] - p5[  _2 ];
+			double n5y = p5[  _2 ] - p4[  0  ];
 			double n5z = p5[  _3 ] - p1[  0  ];
 			double n6x = p6[  _1 ] - p5[  0  ];
-			double n6y = p7[  0  ] - p6[  _2 ];
+			double n6y = p6[  _2 ] - p7[  0  ];
 			double n6z = p6[  _3 ] - p2[  0  ];
 			double n7x = p7[  _1 ] - p4[  0  ];
-			double n7y = p7[ -_2 ] - p6[  0  ];
+			double n7y = p6[  0  ] - p7[ -_2 ];
 			double n7z = p7[  _3 ] - p3[  0  ];
 
 			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
@@ -1300,28 +1304,28 @@ namespace rendering_helper
 			const_pointer p7 = p0 + d7;
 
 			double n0x = p3[  0  ] - p0[ -_1 ];
-			double n0y = p0[ -_2 ] - p1[  0  ];
+			double n0y = p1[  0  ] - p0[ -_2 ];
 			double n0z = p4[  0  ] - p0[ -_3 ];
 			double n1x = p2[  0  ] - p1[ -_1 ];
-			double n1y = p0[  0  ] - p1[  _2 ];
+			double n1y = p1[  _2 ] - p0[  0  ];
 			double n1z = p5[  0  ] - p1[ -_3 ];
 			double n2x = p2[  _1 ] - p1[  0  ];
-			double n2y = p3[  0  ] - p2[  _2 ];
+			double n2y = p2[  _2 ] - p3[  0  ];
 			double n2z = p6[  0  ] - p2[ -_3 ];
 			double n3x = p3[  _1 ] - p0[  0  ];
-			double n3y = p3[ -_2 ] - p2[  0  ];
+			double n3y = p2[  0  ] - p3[ -_2 ];
 			double n3z = p7[  0  ] - p3[ -_3 ];
 			double n4x = p7[  0  ] - p4[ -_1 ];
-			double n4y = p4[ -_2 ] - p5[  0  ];
+			double n4y = p5[  0  ] - p4[ -_2 ];
 			double n4z = p4[  _3 ] - p0[  0  ];
 			double n5x = p6[  0  ] - p5[ -_1 ];
-			double n5y = p4[  0  ] - p5[  _2 ];
+			double n5y = p5[  _2 ] - p4[  0  ];
 			double n5z = p5[  _3 ] - p1[  0  ];
 			double n6x = p6[  _1 ] - p5[  0  ];
-			double n6y = p7[  0  ] - p6[  _2 ];
+			double n6y = p6[  _2 ] - p7[  0  ];
 			double n6z = p6[  _3 ] - p2[  0  ];
 			double n7x = p7[  _1 ] - p4[  0  ];
-			double n7y = p7[ -_2 ] - p6[  0  ];
+			double n7y = p6[  0  ] - p7[ -_2 ];
 			double n7z = p7[  _3 ] - p3[  0  ];
 
 			double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
@@ -1398,20 +1402,21 @@ namespace __volumerendering_controller__
 		typedef typename Array1::const_pointer const_pointer;
 		typedef typename Array2::value_type out_value_type;
 
-		vector_type pos = param.pos;
-		vector_type dir = param.dir.unit( );
-		vector_type up = param.up.unit( );
-		vector_type offset = param.offset;
-		double fovy = param.fovy;
+		vector_type offset  = param.offset;
+		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
+		vector_type pos     = param.pos - offset;
+		vector_type dir     = param.dir.unit( );
+		vector_type up      = param.up.unit( );
+		const  volumerender::boundingbox *box = param.box;
+		double fovy          = param.fovy;
 		double ambient_ratio = param.ambient_ratio;
 		double diffuse_ratio = param.diffuse_ratio;
-		double specular = param.specular;
-		bool   bSpecular = specular > 0.0;
-		const  volumerender::boundingbox *box = param.box;
-		double lightAtten = param.light_attenuation;
+		double specular      = param.specular;
+		bool   bSpecular     = specular > 0.0;
+		double lightAtten    = param.light_attenuation;
 		double sampling_step = param.sampling_step;
-		double termination = param.termination;
-		bool   bperspective = param.perspective_view;
+		double termination   = param.termination;
+		bool   bperspective  = param.perspective_view;
 
 		const size_type w = in.width( );
 		const size_type h = in.height( );
@@ -1428,9 +1433,15 @@ namespace __volumerendering_controller__
 
 		double cx = static_cast< double >( image_width ) / 2.0;
 		double cy = static_cast< double >( image_height ) / 2.0;
+		double left_to_right = param.left_to_right ? 1.0 : -1.0;
+		double top_to_bottom = param.top_to_bottom ? 1.0 : -1.0;
+		double front_to_back = param.front_to_back ? 1.0 : -1.0;
 		double ax = in.reso1( );
 		double ay = in.reso2( );
 		double az = in.reso3( );
+		double asx = ax * left_to_right;
+		double asy = ay * top_to_bottom;
+		double asz = az * front_to_back;
 
 		double asp = out.reso2( ) / out.reso1( );
 
@@ -1485,18 +1496,21 @@ namespace __volumerendering_controller__
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
 				{
 					// 光の減衰を実現するために，カメラからの距離を測る
-					Pos.x = (  pos.x + offset.x ) / ax;
-					Pos.y = ( -pos.y + offset.y ) / ay;
-					Pos.z = (  pos.z + offset.z ) / az;
+					Pos.x = pos.x / asx + osffset.x;
+					Pos.y = pos.y / asy + osffset.y;
+					Pos.z = pos.z / asz + osffset.z;
 
 					// ワールド座標系（左手）からスライス座標系（右手）に変換
 					// 以降は，全てスライス座標系で計算する
-					casting_start.x = (  casting_start.x + offset.x ) / ax;
-					casting_start.y = ( -casting_start.y + offset.y ) / ay;
-					casting_start.z = (  casting_start.z + offset.z ) / az;
-					casting_end.x   = (  casting_end.x   + offset.x ) / ax;
-					casting_end.y   = ( -casting_end.y   + offset.y ) / ay;
-					casting_end.z   = (  casting_end.z   + offset.z ) / az;
+					casting_start.x = casting_start.x / asx + osffset.x;
+					casting_start.y = casting_start.y / asy + osffset.y;
+					casting_start.z = casting_start.z / asz + osffset.z;
+					casting_end.x   = casting_end.x   / asx + osffset.x;
+					casting_end.y   = casting_end.y   / asy + osffset.y;
+					casting_end.z   = casting_end.z   / asz + osffset.z;
+
+					// 光源の向きもスライス座標にあわせる
+					vector_type slight = vector_type( light.x * left_to_right, light.y * top_to_bottom, light.z * front_to_back );
 
 					vector_type spos = casting_start;
 					vector_type ray = ( casting_end - casting_start ).unit( );
@@ -1559,7 +1573,7 @@ namespace __volumerendering_controller__
 								lAtten /= 1.0 + lightAtten * ( len * len );
 							}
 
-							double c = light.inner( renderer.normal( si, sj, sk, xx, yy, zz ) );
+							double c = slight.inner( renderer.normal( si, sj, sk, xx, yy, zz ) );
 							c = c < 0.0 ? -c : c;
 
 							double spec = 0.0;
@@ -1661,10 +1675,11 @@ namespace __volumerendering_controller__
 		typedef typename Array1::const_pointer const_pointer;
 		typedef typename Array2::value_type out_value_type;
 
-		vector_type pos = param.pos;
+		vector_type offset  = param.offset;
+		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
+		vector_type pos     = param.pos - offset;
 		vector_type dir = param.dir.unit( );
 		vector_type up = param.up.unit( );
-		vector_type offset = param.offset;
 		double fovy = param.fovy;
 		double ambient_ratio = param.ambient_ratio;
 		double diffuse_ratio = param.diffuse_ratio;
@@ -1691,9 +1706,15 @@ namespace __volumerendering_controller__
 
 		double cx = static_cast< double >( image_width ) / 2.0;
 		double cy = static_cast< double >( image_height ) / 2.0;
+		double left_to_right = param.left_to_right ? 1.0 : -1.0;
+		double top_to_bottom = param.top_to_bottom ? 1.0 : -1.0;
+		double front_to_back = param.front_to_back ? 1.0 : -1.0;
 		double ax = in.reso1( );
 		double ay = in.reso2( );
 		double az = in.reso3( );
+		double asx = ax * left_to_right;
+		double asy = ay * top_to_bottom;
+		double asz = az * front_to_back;
 
 		double asp = out.reso2( ) / out.reso1( );
 
@@ -1745,18 +1766,18 @@ namespace __volumerendering_controller__
 				&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
 			{
 				// 光の減衰を実現するために，カメラからの距離を測る
-				Pos.x = (  pos.x + offset.x ) / ax;
-				Pos.y = ( -pos.y + offset.y ) / ay;
-				Pos.z = (  pos.z + offset.z ) / az;
+				Pos.x = pos.x / asx + osffset.x;
+				Pos.y = pos.y / asy + osffset.y;
+				Pos.z = pos.z / asz + osffset.z;
 
 				// ワールド座標系（左手）からスライス座標系（右手）に変換
 				// 以降は，全てスライス座標系で計算する
-				casting_start.x = (  casting_start.x + offset.x ) / ax;
-				casting_start.y = ( -casting_start.y + offset.y ) / ay;
-				casting_start.z = (  casting_start.z + offset.z ) / az;
-				casting_end.x   = (  casting_end.x   + offset.x ) / ax;
-				casting_end.y   = ( -casting_end.y   + offset.y ) / ay;
-				casting_end.z   = (  casting_end.z   + offset.z ) / az;
+				casting_start.x = casting_start.x / asx + osffset.x;
+				casting_start.y = casting_start.y / asy + osffset.y;
+				casting_start.z = casting_start.z / asz + osffset.z;
+				casting_end.x   = casting_end.x   / asx + osffset.x;
+				casting_end.y   = casting_end.y   / asy + osffset.y;
+				casting_end.z   = casting_end.z   / asz + osffset.z;
 
 				vector_type opos = casting_start;
 				vector_type spos = casting_start;
