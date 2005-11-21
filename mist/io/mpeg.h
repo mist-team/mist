@@ -166,14 +166,6 @@ namespace mpeg
 		int				bytes_not_decoded_;		///< @brief まだデコードされていないデータのバイト数
 		uint8_t			*p_decoding_packet_;	///< @brief デコード中のパケット内の位置を指すポインタ
 
-		/// @brief 代入演算子のオーバロード
-		//! 
-		//! 代入を禁止
-		//! 
-		input_video& operator =( const input_video &iv )
-		{
-		}
-
 	public:
 
 		/// @brief コンストラクタ
@@ -281,7 +273,7 @@ namespace mpeg
 			if( is_open_ )
 			{
 				// Free the frames
-				av_free( p_frame_src_->data[ 0 ] );
+				//av_free( p_frame_src_->data[ 0 ] );
 				av_free( p_frame_src_);
 				delete [ ] p_frame_rgb_->data[ 0 ];
 				av_free( p_frame_rgb_);
@@ -638,14 +630,6 @@ namespace mpeg
 		int				frame_rate_base_;		///< @brief フレームレートベース（実際のフレームレート＝フレームレート/フレームレートベース）
 		int				gop_size_;				///< @brief GOPサイズ（この枚数の連続フレーム中に必ず１枚以上Iフレームが存在する）
 		int				max_b_frames_;			///< @brief 最大連続Bフレーム数
-
-		/// @brief 代入演算子のオーバロード
-		//! 
-		//! 代入を禁止
-		//!
-		output_video& operator =( const output_video &iv )
-		{
-		}
 
 	public:
 
