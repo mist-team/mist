@@ -1472,8 +1472,6 @@ namespace __volumerendering_controller__
 		double asy = ay * top_to_bottom;
 		double asz = az * front_to_back;
 
-		double asp = out.reso2( ) / out.reso1( );
-
 		double masp = ax < ay ? ax : ay;
 		masp = masp < az ? masp : az;
 

@@ -40,9 +40,9 @@ int main( int argc, char *argv[] )
 		mist::rgb2hsv( r, g, b, h, s, v );
 		mist::hsv2rgb( h, s, v, R, G, B );
 
-		std::cout << mist::rgb< signed int >( r, g, b ) << std::endl;
-		std::cout << mist::rgb< signed int >( h, s, v ) << std::endl;
-		std::cout << mist::rgb< signed int >( R, G, B ) << std::endl;
+		std::cout << mist::rgb< double >( r, g, b ) << std::endl;
+		std::cout << mist::rgb< double >( h, s, v ) << std::endl;
+		std::cout << mist::rgb< double >( R, G, B ) << std::endl;
 	}
 
 	{
