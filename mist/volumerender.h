@@ -33,6 +33,7 @@
 //! - 参考文献
 //!   - 林雄一郎，樋口義剛，森健策，長谷川純一，末永康仁，鳥脇純一郎, "ボリュームレンダリング画像における3次元関心領域の指定法と開発とその仮想化内視鏡システムへの応用," 電子通信学会論文誌D, J87-D-II, No.1, pp.361-367，2004
 //!   - K. Mori, Y. Suenaga and J. Toriwaki, ``Fast volume rendering based on software optimization using multimedia instructions on PC platform,'' Proceedings of Computer Assisted Radiology and Surgery 2002, pp.467-472, 2002
+//!   - K. Mori, Y. Suenaga and J. Toriwaki, ``Fast software-based volume rendering using multimedia instructions on PC platforms and its application to virtual endoscopy,'' Proceedings of SPIE, Vol. 5031, pp.111-122, 2003
 //!
 #ifndef __INCLUDE_MIST_VOLUMERENDER__
 #define __INCLUDE_MIST_VOLUMERENDER__

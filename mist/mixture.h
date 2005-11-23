@@ -87,9 +87,11 @@ namespace mixture
 	/// @brief 混合分布を推定するための分布パラメータ
 	struct distribution2
 	{
-		double				weight;		///< 混合重み
-		vector2< double >	av;			///< 平均
-		double				v[ 4 ];		///< 共分散行列
+		typedef vector2< double > vector_type;
+
+		double			weight;		///< 混合重み
+		vector_type		av;			///< 平均
+		double			v[ 4 ];		///< 共分散行列
 
 		distribution2( ) : weight( 1.0 )
 		{

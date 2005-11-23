@@ -1,3 +1,29 @@
+/****************************************************************************************************************************
+**       MIST ( Media Integration Standard Toolkit )
+**
+**        We defined following template classes.
+**
+**          array  : template class of one dimensionl array with STL support.
+**          array1 : template class of one dimensionl array containing resolution.
+**          array2 : template class of two dimensionl array containing pixel resolution.
+**          array3 : template class of three dimensionl array containing voxel resolution.
+**          matrix : template class of matrix with its operations, and impremented using expression template technique.
+**          vector : template class of vector with its operations, and impremented using expression template technique.
+**
+**
+**         We developed these programs since 2003/09/05.
+**
+**             $LastChangedDate::                      $
+**             $LastChangedRevision$
+**             $LastChangedBy$
+**             $HeadURL$
+**
+**
+**              Copyright MIST Project Team.
+**                    All Rights Reserved.
+**
+****************************************************************************************************************************/
+
 // 
 // Copyright (c) 2003-2005, MIST Project, Intelligent Media Integration COE, Nagoya University
 // All rights reserved.
@@ -25,33 +51,6 @@
 // IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-
-/****************************************************************************************************************************
-**       MIST ( Media Integration Standard Toolkit )
-**
-**        We defined following template classes.
-**
-**          array  : template class of one dimensionl array with STL support.
-**          array1 : template class of one dimensionl array containing resolution.
-**          array2 : template class of two dimensionl array containing pixel resolution.
-**          array3 : template class of three dimensionl array containing voxel resolution.
-**          matrix : template class of matrix with its operations, and impremented using expression template technique.
-**          vector : template class of vector with its operations, and impremented using expression template technique.
-**
-**
-**         We developed these programs since 2003/09/05.
-**
-**             $LastChangedDate::                      $
-**             $LastChangedRevision$
-**             $LastChangedBy$
-**             $HeadURL$
-**
-**
-**              Copyright MIST Project Team.
-**                    All Rights Reserved.
-**
-****************************************************************************************************************************/
-
 
 
 /// @file mist/mist.h

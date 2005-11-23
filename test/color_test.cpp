@@ -34,6 +34,18 @@ int main( int argc, char *argv[] )
 	using namespace std;
 
 	{
+		double r = 255, g = 0, b = 0;
+		double h, s, v, R, G, B;
+
+		mist::rgb2hsv( r, g, b, h, s, v );
+		mist::hsv2rgb( h, s, v, R, G, B );
+
+		std::cout << mist::rgb< signed int >( r, g, b ) << std::endl;
+		std::cout << mist::rgb< signed int >( h, s, v ) << std::endl;
+		std::cout << mist::rgb< signed int >( R, G, B ) << std::endl;
+	}
+
+	{
 		mist::rgb< signed int > v1( 1, 2, 3 );
 		mist::rgb< float > v2( 1.5, 2.5, 4.5 );
 
