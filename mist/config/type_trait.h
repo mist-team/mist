@@ -324,6 +324,43 @@ template< class T >
 struct type_trait{ typedef T value_type; };
 
 
+// 値の四捨五入をするクラス
+template < bool b >
+struct __half_adjust__
+{
+	static double convert( const double value )
+	{
+		return( value + 0.5 );
+	}
+};
+
+
+// 値の四捨五入をするクラス
+template < >
+struct __half_adjust__< false >
+{
+	static double convert( const double value )
+	{
+		return( value );
+	}
+};
+
+
+/// @brief 値の四捨五入をする
+//! 
+//! 整数型の場合のみ四捨五入を実行する
+//! 
+template < class T >
+struct half_adjust
+{
+	typedef T value_type;
+
+	static value_type convert( const double value )
+	{
+		return( static_cast< value_type >( __half_adjust__< is_integer< value_type >::value >::convert( value ) ) );
+	}
+};
+
 
 /// @brief 型のAND演算を行う
 //! 

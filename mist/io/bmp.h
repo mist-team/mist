@@ -657,6 +657,7 @@ namespace __bmp_controller__
 
 			return( true );
 		}
+
 		static bool read( array2< T, Allocator > &image, const std::string &filename )
 		{
 			typedef typename array2< T, Allocator >::size_type size_type;
