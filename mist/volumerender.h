@@ -396,6 +396,11 @@ namespace volumerender
 		out << "SamplingStep = " << p.sampling_step << std::endl;
 		out << "Termination = " << p.termination << std::endl;
 
+		int left_to_right = p.left_to_right ? 1 : -1;
+		int top_to_bottom = p.top_to_bottom ? 1 : -1;
+		int front_to_back = p.front_to_back ? 1 : -1;
+		out << "Orientation = ( " << left_to_right << ", " << top_to_bottom << ", " << front_to_back << " )" << std::endl;
+
 		return( out );
 	}
 
@@ -1475,6 +1480,10 @@ namespace __volumerendering_controller__
 		double masp = ax < ay ? ax : ay;
 		masp = masp < az ? masp : az;
 
+		pos.x *= left_to_right;
+		pos.y *= top_to_bottom;
+		pos.z *= front_to_back;
+
 		vector_type yoko = ( dir * up ).unit( );
 
 		if( out.reso1( ) < out.reso2( ) )
@@ -1747,6 +1756,10 @@ namespace __volumerendering_controller__
 
 		double masp = ax < ay ? ax : ay;
 		masp = masp < az ? masp : az;
+
+		pos.x *= left_to_right;
+		pos.y *= top_to_bottom;
+		pos.z *= front_to_back;
 
 		vector_type yoko = ( dir * up ).unit( );
 
