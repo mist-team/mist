@@ -194,7 +194,7 @@ inline void uniform_weight(
 	
 	mist::array< int > p_diff( uni_w.size( ) );
 
-	mist::array< calc_type > work( in.size( ) );
+	mist::array< Out_value > work( in.size( ) );
 	size_t begin = uni_w.size( ) / 2;
 	size_t end = in.size( ) - begin;
 	__uniform_weight__::pointer_differences( p_diff, 1 );
@@ -225,20 +225,21 @@ inline void uniform_weight(
 	
 	mist::array< int > p_diff( uni_w.size( ) );
 
-	mist::array< calc_type > work1( in.size( ) );
+	mist::array< Out_value > work1( in.size( ) );
 	size_t begin = uni_w.size( ) / 2;
 	size_t end = in.size( ) - begin;
 	__uniform_weight__::pointer_differences( p_diff, 1 );
 	__uniform_weight__::filter_type< calc_type >::filtering( in, work1, begin, end, uni_w, p_diff );
 	
-	mist::array< calc_type > work2( in.size( ) );
+	mist::array< Out_value > work2( in.size( ) );
 	begin = ( uni_w.size( ) / 2 ) * ( in.width( ) + 1 );
 	end = in.size( ) - begin;
 	__uniform_weight__::pointer_differences( p_diff, static_cast< int >( in.width( ) ) );	
 	__uniform_weight__::filter_type< calc_type >::filtering( work1, work2, begin, end, uni_w, p_diff );
+	work1.clear( );
 
 	out.resize( in.width( ), in.height( ), in.depth( ) );
-	begin = ( uni_w.size( ) / 2 ) * ( in.height( ) + in.width( ) + 1 );
+	begin = ( uni_w.size( ) / 2 ) * ( in.height( ) * in.width( ) + in.width( ) + 1 );
 	end = in.size( ) - begin;
 	__uniform_weight__::pointer_differences( p_diff, static_cast< int >( in.width( ) * in.height( ) ) );	
 	__uniform_weight__::filter_type< calc_type >::filtering( work2, out, begin, end, uni_w, p_diff );
