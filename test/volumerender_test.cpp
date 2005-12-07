@@ -197,7 +197,7 @@ void volr_draw_area::draw_image( )
 
 	{
 		mist::timer t;
-//		mist::volumerendering( ct, image_, mist::volumerender::no_depth_map( ), barrel_distortion_, p, table );
+//		mist::volumerendering( ct, image_, mist::volumerender::no_depth_map( ), p, table );
 		mist::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table );
 		fps_ = 1.0 / t.elapse( );
 	}
@@ -286,9 +286,9 @@ void volr_draw_area::initialize( )
 	volr_parameter.specular				= 0.8;
 	volr_parameter.perspective_view		= true;
 	volr_parameter.value_interpolation	= true;
-	volr_parameter.left_to_right		= true;
-	volr_parameter.top_to_bottom		= false;
-	volr_parameter.front_to_back		= true;
+	volr_parameter.left_to_right		= left_to_right;
+	volr_parameter.top_to_bottom		= top_to_bottom;
+	volr_parameter.front_to_back		= front_to_back;
 
 	
 	//	image_.resize( 512, 512 );
@@ -328,8 +328,14 @@ void volr_draw_area::rotate_camera( int sx, int sy, int x, int y )
 	point3 tyoko = old_camera_.dir * old_camera_.up;
 	mist::quaternion< double > q = mist::track_ball( p1, p2, tyoko, tup, tdir );
 
+	int __left_to_right__ = left_to_right ? 1 : -1;
+	int __top_to_bottom__ = top_to_bottom ? 1 : -1;
+	int __front_to_back__ = front_to_back ? 1 : -1;
+
 	point3 pos = q.rotate( old_camera_.dir ) * ( - zoom_ );
-	camera_.pos	= pos + p.offset;
+	camera_.pos.x = pos.x * __left_to_right__ + p.offset.x;
+	camera_.pos.y = pos.y * __top_to_bottom__ + p.offset.y;
+	camera_.pos.z = pos.z * __front_to_back__ + p.offset.z;
 	camera_.dir = - pos.unit( );
 	camera_.up  = q.rotate( old_camera_.up ).unit( );
 }
@@ -343,9 +349,15 @@ void volr_draw_area::rotate_camera( int x, int y, double step )
 	point3 tyoko = old_camera_.dir * old_camera_.up;
 	mist::quaternion< double > q = mist::track_ball( p1, p2, tyoko, tup, tdir, 5.0 );
 
-	camera_.dir  = q.rotate( old_camera_.dir ).unit( );
-	camera_.pos += old_camera_.dir * step;
-	camera_.up   = q.rotate( old_camera_.up ).unit( );
+	int __left_to_right__ = left_to_right ? 1 : -1;
+	int __top_to_bottom__ = top_to_bottom ? 1 : -1;
+	int __front_to_back__ = front_to_back ? 1 : -1;
+
+	camera_.dir    = q.rotate( old_camera_.dir ).unit( );
+	camera_.pos.x += old_camera_.dir.x * step * __left_to_right__;
+	camera_.pos.y += old_camera_.dir.y * step * __top_to_bottom__;
+	camera_.pos.z += old_camera_.dir.z * step * __front_to_back__;
+	camera_.up     = q.rotate( old_camera_.up ).unit( );
 }
 
 void volr_draw_area::move_camera( double x, double y, double z )

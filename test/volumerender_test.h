@@ -68,6 +68,9 @@ public:
 		inside_mode_ = false;
 		high_reso_ = 256;
 		low_reso_  = 128;
+		left_to_right = true;
+		top_to_bottom = false;
+		front_to_back = true;
 	}
 	volr_draw_area( int x, int y, int w, int h ) : Fl_Gl_Window( x, y, w, h ), zoom_( 300.0 ), fps_( 1.0 )
 	{
@@ -76,6 +79,9 @@ public:
 		inside_mode_ = false;
 		high_reso_ = 256;
 		low_reso_  = 128;
+		left_to_right = true;
+		top_to_bottom = false;
+		front_to_back = true;
 	}
 	virtual ~volr_draw_area(){ }
 
@@ -91,6 +97,10 @@ private:
 	double fps_;
 	int drag_beg_x;
 	int drag_beg_y;
+
+	bool left_to_right;
+	bool top_to_bottom;
+	bool front_to_back;
 
 	size_type high_reso_;
 	size_type low_reso_;
