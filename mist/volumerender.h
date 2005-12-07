@@ -427,8 +427,8 @@ namespace volumerender
 
 		double operator()( difference_type i, difference_type j, difference_type k ) const
 		{
-			double l = depth_map_( i >> 1, j >> 1, k >> 1 );
-			return( l < 1.0 ? 2.0 : l * 2.0 );
+			double l = ( int )depth_map_( i >> 2, j >> 2, k >> 2 );
+			return( l < 1.0 ? 2.0 : ( l - 1 ) * 4.0 + 2.0 );
 		}
 	};
 
@@ -2681,35 +2681,36 @@ bool generate_depth_map( const Array &in, DepthMap &dmap, const volumerender::at
 	}
 
 	typedef typename Array::size_type size_type;
+	typedef typename Array::difference_type difference_type;
+	typedef typename Array::const_pointer const_pointer;
 
-	dmap.resize( in.width( ) / 2, in.height( ) / 2, in.depth( ) / 2 );
+	difference_type num = 4;
+	difference_type w = in.width( )  / num;
+	difference_type h = in.height( ) / num;
+	difference_type d = in.depth( )  / num;
+	difference_type rw = in.width( )  > w * num ? 1 : 0;
+	difference_type rh = in.height( ) > h * num ? 1 : 0;
+	difference_type rd = in.depth( )  > d * num ? 1 : 0;
+
+	dmap.resize( w + rw + 1, h + rh + 1, d + rd + 1 );
 	dmap.reso( 1.0, 1.0, 1.0 );
+	dmap.fill( 1 );
 
-	for( size_type k = 0 ; k < dmap.depth( ) ; k++ )
+	for( size_type k = 0 ; k < in.depth( ) ; k++ )
 	{
-		size_type _3 = k * 2;
-		for( size_type j = 0 ; j < dmap.height( ) ; j++ )
+		size_type _3 = k / num;
+		for( size_type j = 0 ; j < in.height( ) ; j++ )
 		{
-			size_type _2 = j * 2;
-			for( size_type i = 0 ; i < dmap.width( ) ; i++ )
+			size_type _2 = j / num;
+			for( size_type i = 0 ; i < in.width( ) ; i++ )
 			{
-				size_type _1 = i * 2;
-				bool b1 = table.has_alpha( in( _1    , _2    , _3     ) );
-				bool b2 = table.has_alpha( in( _1 + 1, _2    , _3     ) );
-				bool b3 = table.has_alpha( in( _1    , _2 + 1, _3     ) );
-				bool b4 = table.has_alpha( in( _1 + 1, _2 + 1, _3     ) );
-				bool b5 = table.has_alpha( in( _1    , _2    , _3 + 1 ) );
-				bool b6 = table.has_alpha( in( _1 + 1, _2    , _3 + 1 ) );
-				bool b7 = table.has_alpha( in( _1    , _2 + 1, _3 + 1 ) );
-				bool b8 = table.has_alpha( in( _1 + 1, _2 + 1, _3 + 1 ) );
+				size_type _1 = i / num;
 
-				if( b1 || b2 || b3 || b4 || b5 || b6 || b7 || b8 )
+				const_pointer ptr = &in( _1, _2, _3 );
+
+				if( table.has_alpha( in( i, j, k ) ) )
 				{
-					dmap( i, j, k ) = 0;
-				}
-				else
-				{
-					dmap( i, j, k ) = 1;
+					dmap( _1, _2, _3 ) = 0;
 				}
 			}
 		}
