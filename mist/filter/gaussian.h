@@ -226,7 +226,7 @@ inline void gaussian(
 	
 	mist::array< int > p_diff( gauss.size( ) );
 
-	mist::array< calc_type > work( in.size( ) );
+	mist::array< Out_value > work( in.size( ) );
 	size_t begin = gauss.size( ) / 2;
 	size_t end = in.size( ) - begin;
 	__gaussian__::pointer_differences( p_diff, 1 );
@@ -258,20 +258,21 @@ inline void gaussian(
 	
 	mist::array< int > p_diff( gauss.size( ) );
 
-	mist::array< calc_type > work1( in.size( ) );
+	mist::array< Out_value > work1( in.size( ) );
 	size_t begin = gauss.size( ) / 2;
 	size_t end = in.size( ) - begin;
 	__gaussian__::pointer_differences( p_diff, 1 );
 	__gaussian__::filter_type< calc_type >::filtering( in, work1, begin, end, gauss, p_diff );
 	
-	mist::array< calc_type > work2( in.size( ) );
+	mist::array< Out_value > work2( in.size( ) );
 	begin = ( gauss.size( ) / 2 ) * ( in.width( ) + 1 );
 	end = in.size( ) - begin;
 	__gaussian__::pointer_differences( p_diff, static_cast< int >( in.width( ) ) );	
 	__gaussian__::filter_type< calc_type >::filtering( work1, work2, begin, end, gauss, p_diff );
+	work1.clear( );
 
 	out.resize( in.width( ), in.height( ), in.depth( ) );
-	begin = ( gauss.size( ) / 2 ) * ( in.height( ) + in.width( ) + 1 );
+	begin = ( gauss.size( ) / 2 ) * ( in.height( ) * in.width( ) + in.width( ) + 1 );
 	end = in.size( ) - begin;
 	__gaussian__::pointer_differences( p_diff, static_cast< int >( in.width( ) * in.height( ) ) );	
 	__gaussian__::filter_type< calc_type >::filtering( work2, out, begin, end, gauss, p_diff );
