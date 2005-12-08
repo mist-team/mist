@@ -427,8 +427,8 @@ namespace volumerender
 
 		double operator()( difference_type i, difference_type j, difference_type k ) const
 		{
-			double l = ( int )depth_map_( i >> 2, j >> 2, k >> 2 );
-			return( l < 1.0 ? 2.0 : ( l - 1 ) * 4.0 + 2.0 );
+			double l = depth_map_( i >> 2, j >> 2, k >> 2 );
+			return( l < 1.0 ? 2.0 : l * 4.0 - 2.0 );
 		}
 	};
 
@@ -2680,17 +2680,18 @@ bool generate_depth_map( const Array &in, DepthMap &dmap, const volumerender::at
 		return( false );
 	}
 
+	typedef typename DepthMap::value_type value_type;
 	typedef typename Array::size_type size_type;
 	typedef typename Array::difference_type difference_type;
 	typedef typename Array::const_pointer const_pointer;
 
-	difference_type num = 4;
-	difference_type w = in.width( )  / num;
-	difference_type h = in.height( ) / num;
-	difference_type d = in.depth( )  / num;
-	difference_type rw = in.width( )  > w * num ? 1 : 0;
-	difference_type rh = in.height( ) > h * num ? 1 : 0;
-	difference_type rd = in.depth( )  > d * num ? 1 : 0;
+	size_type num = 4;
+	size_type w   = in.width( )  / num;
+	size_type h   = in.height( ) / num;
+	size_type d   = in.depth( )  / num;
+	size_type rw  = in.width( )  > w * num ? 1 : 0;
+	size_type rh  = in.height( ) > h * num ? 1 : 0;
+	size_type rd  = in.depth( )  > d * num ? 1 : 0;
 
 	dmap.resize( w + rw + 1, h + rh + 1, d + rd + 1 );
 	dmap.reso( 1.0, 1.0, 1.0 );
@@ -2720,7 +2721,7 @@ bool generate_depth_map( const Array &in, DepthMap &dmap, const volumerender::at
 
 	for( size_type i = 0 ; i < dmap.size( ) ; i++ )
 	{
-		dmap[ i ] = std::sqrt( dmap[ i ] );
+		dmap[ i ] = static_cast< value_type >( std::sqrt( static_cast< double >( dmap[ i ] ) ) );
 	}
 	
 	return( true );
