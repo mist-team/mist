@@ -178,6 +178,32 @@ _DEFINE_TYPE_LIMITS( long double,   false,  true,  LDBL_MIN,  LDBL_MAX, 0 )
 		static value_type maximum( ) { return( rgba< type >( type_limits< rgb_value_type >::maximum( ) ) ); }\
 		static value_type zero( ) { return( rgba< type >( type_limits< rgb_value_type >::zero( ) ) ); }\
 	};\
+	template < >\
+	struct type_limits< bgr< type > >\
+	{\
+		typedef bgr< type > value_type;\
+		typedef bgr< type >::value_type bgr_value_type;\
+		\
+		enum{ is_integer = type_limits< bgr_value_type >::is_integer };\
+		enum{ is_signed  = type_limits< bgr_value_type >::is_signed };\
+		\
+		static value_type minimum( ) { return( bgr< type >( type_limits< bgr_value_type >::minimum( ) ) ); }\
+		static value_type maximum( ) { return( bgr< type >( type_limits< bgr_value_type >::maximum( ) ) ); }\
+		static value_type zero( ) { return( bgr< type >( type_limits< bgr_value_type >::zero( ) ) ); }\
+	};\
+	template < >\
+	struct type_limits< bgra< type > >\
+	{\
+		typedef bgra< type > value_type;\
+		typedef bgra< type >::value_type bgr_value_type;\
+		\
+		enum{ is_integer = type_limits< bgr_value_type >::is_integer };\
+		enum{ is_signed  = type_limits< bgr_value_type >::is_signed };\
+		\
+		static value_type minimum( ) { return( bgra< type >( type_limits< bgr_value_type >::minimum( ) ) ); }\
+		static value_type maximum( ) { return( bgra< type >( type_limits< bgr_value_type >::maximum( ) ) ); }\
+		static value_type zero( ) { return( bgra< type >( type_limits< bgr_value_type >::zero( ) ) ); }\
+	};\
 
 	// ŠeŒ^‚É‘Î‚·‚é“ÁŽê‰»
 	_DEFINE_COLOR_TYPE_LIMITS(unsigned char)
@@ -226,6 +252,34 @@ _DEFINE_TYPE_LIMITS( long double,   false,  true,  LDBL_MIN,  LDBL_MAX, 0 )
 		static value_type zero( ) { return( rgba< T >( type_limits< rgb_value_type >::zero( ) ) ); }
 	};
 
+	template < class T >
+	struct type_limits< bgr< T > >
+	{
+		typedef bgr< T > value_type;
+		typedef typename bgr< T >::value_type bgr_value_type;
+
+		enum{ is_integer = type_limits< bgr_value_type >::is_integer };
+		enum{ is_signed  = type_limits< bgr_value_type >::is_signed };
+
+		static value_type minimum( ) { return( bgr< T >( type_limits< bgr_value_type >::minimum( ) ) ); }
+		static value_type maximum( ) { return( bgr< T >( type_limits< bgr_value_type >::maximum( ) ) ); }
+		static value_type zero( ) { return( bgr< T >( type_limits< bgr_value_type >::zero( ) ) ); }
+	};
+
+	template < class T >
+	struct type_limits< bgra< T > >
+	{
+		typedef bgra< T > value_type;
+		typedef typename bgra< T >::value_type bgr_value_type;
+
+		enum{ is_integer = type_limits< bgr_value_type >::is_integer };
+		enum{ is_signed  = type_limits< bgr_value_type >::is_signed };
+
+		static value_type minimum( ) { return( bgra< T >( type_limits< bgr_value_type >::minimum( ) ) ); }
+		static value_type maximum( ) { return( bgra< T >( type_limits< bgr_value_type >::maximum( ) ) ); }
+		static value_type zero( ) { return( bgra< T >( type_limits< bgr_value_type >::zero( ) ) ); }
+	};
+
 #endif
 
 
@@ -263,6 +317,18 @@ namespace __limits_min_max__
 		static const rgba< T > limits( const rgba< T > &v, const rgba< T > &min, const rgba< T > &max )
 		{
 			return( rgba< T >( limits_min_max__( v.r, min.r, max.r ), limits_min_max__( v.g, min.g, max.g ), limits_min_max__( v.b, min.b, max.b ), limits_min_max__( v.a, min.a, max.a ) ) );
+		}
+
+		template < class T >
+		static const bgr< T > limits( const bgr< T > &v, const bgr< T > &min, const bgr< T > &max )
+		{
+			return( bgr< T >( limits_min_max__( v.r, min.r, max.r ), limits_min_max__( v.g, min.g, max.g ), limits_min_max__( v.b, min.b, max.b ) ) );
+		}
+
+		template < class T >
+		static const bgra< T > limits( const bgra< T > &v, const bgra< T > &min, const bgra< T > &max )
+		{
+			return( bgra< T >( limits_min_max__( v.r, min.r, max.r ), limits_min_max__( v.g, min.g, max.g ), limits_min_max__( v.b, min.b, max.b ), limits_min_max__( v.a, min.a, max.a ) ) );
 		}
 	};
 }
@@ -315,6 +381,20 @@ namespace __limits_0_255__
 		{
 			typedef limits_0_255__< is_char< T >::value > limits_0_255_;
 			return( rgba< T >( limits_0_255_::limits( v.r ), limits_0_255_::limits( v.g ), limits_0_255_::limits( v.b ), limits_0_255_::limits( v.a ) ) );
+		}
+
+		template < class T >
+		static const bgr< T > limits( const bgr< T > &v )
+		{
+			typedef limits_0_255__< is_char< T >::value > limits_0_255_;
+			return( bgr< T >( limits_0_255_::limits( v.r ), limits_0_255_::limits( v.g ), limits_0_255_::limits( v.b ) ) );
+		}
+
+		template < class T >
+		static const bgra< T > limits( const bgra< T > &v )
+		{
+			typedef limits_0_255__< is_char< T >::value > limits_0_255_;
+			return( bgra< T >( limits_0_255_::limits( v.r ), limits_0_255_::limits( v.g ), limits_0_255_::limits( v.b ), limits_0_255_::limits( v.a ) ) );
 		}
 	};
 }

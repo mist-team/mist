@@ -989,6 +989,314 @@ DEFINE_PROMOTE_BIND_OPERATOR1( rgba, ^ )
 
 
 
+
+
+/// @brief BGRAの順でデータが並ぶカラー画像用の画素
+//! 
+//! 主にWindowsのビットマップで利用されている
+//! 
+//! @code カラー画像の作成例
+//! mist::array2< mist::bgra< unsigned char > > image;
+//! @endcode
+//! 
+//! @param T … 各色成分のデータ型
+//! 
+template< class T >
+struct bgra : public bgr< T >
+{
+protected:
+	typedef bgr< T > base;
+
+public:
+	typedef typename base::size_type		size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename base::difference_type	difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename base::reference		reference;				///< @brief データ型の参照．data の場合，data & となる
+	typedef typename base::const_reference	const_reference;		///< @brief データ型の const 参照．data の場合，const data & となる
+	typedef typename base::value_type		value_type;				///< @brief 内部データ型．T と同じ
+	typedef typename base::pointer			pointer;				///< @brief データ型のポインター型．data の場合，data * となる
+	typedef typename base::const_pointer	const_pointer;			///< @brief データ型の const ポインター型．data の場合，const data * となる
+
+public:
+	value_type a;		///< @brief アルファ成分
+
+	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
+	bgra( ) : base( ), a( 255 ){ }
+
+	/// @brief 全ての成分を pix で初期化する
+	explicit bgra( const value_type &pix ) : base( pix ), a( 255 ){ }
+
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	bgra( const bgra< TT > &c ) : base( c ), a( static_cast< value_type >( c.a ) ){ }
+
+	/// @brief 他のカラー画素を用いて初期化する
+	bgra( const bgra< T > &c ) : base( c ), a( c.a ){ }
+
+
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	bgra( const rgb< TT > &c ) : base( c ), a( 255 ){ }
+
+	/// @brief 他のカラー画素を用いて初期化する
+	bgra( const rgb< T > &c ) : base( c ), a( 255 ){ }
+
+
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	bgra( const bgr< TT > &c ) : base( c ), a( 255 ){ }
+
+	/// @brief 他のカラー画素を用いて初期化する
+	bgra( const bgr< T > &c ) : base( c ), a( 255 ){ }
+
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	bgra( const rgba< TT > &c ) : base( c ), a( c.a ){ }
+
+	/// @brief 赤 rr，緑 gg，青 bb を用いて初期化する
+	bgra( const value_type &rr, const value_type &gg, const value_type &bb, const value_type &aa = 255 ) : base( rr, gg, bb ), a( aa ){ }
+
+
+	/// @brief 異なる型の他のカラー画素を代入する
+	template < class TT >
+	const bgra &operator =( const bgra< TT > &c )
+	{
+		base::operator =( c );
+		a = static_cast< value_type >( c.a );
+		return( *this );
+	}
+
+	/// @brief 他のカラー画素を代入する
+	const bgra &operator =( const bgra< T > &c )
+	{
+		if( &c != this )
+		{
+			base::operator =( c );
+			a = c.a;
+		}
+		return( *this );
+	}
+
+	/// @brief 全ての要素に pix を代入する
+	const bgra &operator =( const value_type &pix )
+	{
+		base::operator =( pix );
+		return( *this );
+	}
+
+
+	/// @brief 全要素の符号反転
+	const bgra  operator -( ) const { return( bgra( -base::r, -base::g, -base::b, a ) ); }
+
+	/// @brief RGB成分の和
+	template < class TT >
+	const bgra &operator +=( const bgra< TT > &c ){ base::operator +=( ( const base &)c ); return( *this ); }
+
+	/// @brief RGB成分の差
+	template < class TT >
+	const bgra &operator -=( const bgra< TT > &c ){ base::operator -=( ( const base &)c ); return( *this ); }
+
+	/// @brief RGB成分の積
+	template < class TT >
+	const bgra &operator *=( const bgra< TT > &c ){ base::operator *=( ( const base &)c ); return( *this ); }
+
+	/// @brief RGB成分の割り算
+	template < class TT >
+	const bgra &operator /=( const bgra< TT > &c ){ base::operator /=( ( const base &)c ); return( *this ); }
+
+	/// @brief RGB成分の剰余
+	const bgra &operator %=( const bgra &c ){ base::operator %=( ( const base &)c ); return( *this ); }
+
+	/// @brief RGB成分の | 演算
+	const bgra &operator |=( const bgra &c ){ base::operator |=( ( const base &)c ); return( *this ); }
+
+	/// @brief RGB成分の & 演算
+	const bgra &operator &=( const bgra &c ){ base::operator &=( ( const base &)c ); return( *this ); }
+
+	/// @brief RGB成分の ^ 演算
+	const bgra &operator ^=( const bgra &c ){ base::operator ^=( ( const base &)c ); return( *this ); }
+
+
+	/// @brief RGB成分に pix 値を足す
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const bgra &operator +=( const double &pix )
+#else
+	template < class TT >
+	const bgra &operator +=( const TT &pix )
+#endif
+	{
+		base::operator +=( pix );
+		return( *this );
+	}
+
+	/// @brief RGB成分から pix 値を引く
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const bgra &operator -=( const double &pix )
+#else
+	template < class TT >
+	const bgra &operator -=( const TT &pix )
+#endif
+	{
+		base::operator -=( pix );
+		return( *this );
+	}
+
+	/// @brief RGB成分に pix 値を掛ける
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const bgra &operator *=( const double &pix )
+#else
+	template < class TT >
+	const bgra &operator *=( const TT &pix )
+#endif
+	{
+		base::operator *=( pix );
+		return( *this );
+	}
+
+	/// @brief RGB成分を pix 値で割る
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const bgra &operator /=( const double &pix )
+#else
+	template < class TT >
+	const bgra &operator /=( const TT &pix )
+#endif
+	{
+		base::operator /=( pix );
+		return( *this );
+	}
+
+
+	/// @brief 2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … 2つのカラー画素が等しい場合
+	//! @retval false … 2つのカラー画素が異なる場合
+	//! 
+	bool operator ==( const bgra &c ) const { return( base::operator ==( c ) ); }
+
+	/// @brief 2つのカラー画素が等しくない（全要素が同じ値を持つ）かどうかを判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b }
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … 2つのカラー画素が異なる場合
+	//! @retval false … 2つのカラー画素が等しい場合
+	//! 
+	bool operator !=( const bgra &c ) const { return( !( *this == c ) ); }
+
+	/// @brief 2つのカラー画素の < を判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b }
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 <  c2 の場合
+	//! @retval false … c1 >= c2 の場合
+	//! 
+	bool operator < ( const bgra &c ) const { return( !( *this >= c ) ); }
+
+	/// @brief 2つのカラー画素の <= を判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 <= c2 の場合
+	//! @retval false … c1 >  c2 の場合
+	//! 
+	bool operator <=( const bgra &c ) const { return( c >= *this ); }
+
+	/// @brief 2つのカラー画素の > を判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b }
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 >  c2 の場合
+	//! @retval false … c1 <= c2 の場合
+	//! 
+	bool operator > ( const bgra &c ) const { return( c < *this ); }
+
+	/// @brief 2つのカラー画素の >= を判定する
+	//! 
+	//! \f[
+	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b
+	//! \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 >= c2 の場合
+	//! @retval false … c1 <  c2 の場合
+	//! 
+	bool operator >=( const bgra &c ) const { return( base::operator >=( c ) ); }
+
+};
+
+/// @brief カラー画素の和
+DEFINE_PROMOTE_BIND_OPERATOR1( bgra, + )
+
+/// @brief カラー画素と定数の和
+DEFINE_PROMOTE_BIND_OPERATOR2( bgra, + )
+
+/// @brief 定数とカラー画素の和
+DEFINE_PROMOTE_BIND_OPERATOR3( bgra, + )
+
+/// @brief カラー画素の差
+DEFINE_PROMOTE_BIND_OPERATOR1( bgra, - )
+
+/// @brief カラー画素と定数の差
+DEFINE_PROMOTE_BIND_OPERATOR2( bgra, - )
+
+/// @brief 定数とカラー画素の差
+DEFINE_PROMOTE_BIND_OPERATOR4( bgra, - )
+
+/// @brief カラー画素の積
+DEFINE_PROMOTE_BIND_OPERATOR1( bgra, * )
+
+/// @brief カラー画素と定数の積
+DEFINE_PROMOTE_BIND_OPERATOR2( bgra, * )
+
+/// @brief 定数とカラー画素の積
+DEFINE_PROMOTE_BIND_OPERATOR3( bgra, * )
+
+/// @brief カラー画素の割り算
+DEFINE_PROMOTE_BIND_OPERATOR1( bgra, / )
+
+/// @brief カラー画素を定数で割る
+DEFINE_PROMOTE_BIND_OPERATOR2( bgra, / )
+
+/// @brief カラー画素の剰余
+DEFINE_PROMOTE_BIND_OPERATOR1( bgra, % )
+
+
+/// @brief カラー画素の | 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( bgra, | )
+
+/// @brief カラー画素の & 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( bgra, & )
+
+/// @brief カラー画素の ^ 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( bgra, ^ )
+
+
+
+
+
+
+
 /// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
