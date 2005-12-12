@@ -198,7 +198,8 @@ void volr_draw_area::draw_image( )
 	{
 		mist::timer t;
 //		mist::volumerendering( ct, image_, mist::volumerender::no_depth_map( ), p, table );
-		mist::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table );
+//		mist::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table );
+		mist::specialized::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table );
 		fps_ = 1.0 / t.elapse( );
 	}
 }

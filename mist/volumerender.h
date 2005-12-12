@@ -1421,6 +1421,424 @@ namespace rendering_helper
 
 
 // ボリュームレンダリング
+namespace __volumerendering_specialized__
+{
+	// CT値補間タイプのレンダリングに特化したボリュームレンダリングエンジン
+	template < class Array1, class Array2, class DepthMap, class T >
+	bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &depth_map, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type thread_id, typename Array1::size_type thread_num )
+	{
+		typedef typename volumerender::parameter::vector_type vector_type;
+		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
+		typedef typename volumerender::attribute_table< T >::pixel_type pixel_type;
+		typedef typename Array1::size_type size_type;
+		typedef typename Array1::difference_type difference_type;
+		typedef typename Array1::value_type value_type;
+		typedef typename Array1::const_pointer const_pointer;
+		typedef typename Array2::value_type out_value_type;
+
+		vector_type offset  = param.offset;
+		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
+		vector_type pos     = param.pos - offset;
+		vector_type dir     = param.dir.unit( );
+		vector_type up      = param.up.unit( );
+		const  volumerender::boundingbox *box = param.box;
+		double fovy          = param.fovy;
+		double ambient_ratio = param.ambient_ratio;
+		double diffuse_ratio = param.diffuse_ratio;
+		double specular      = param.specular;
+		bool   bSpecular     = specular > 0.0;
+		double lightAtten    = param.light_attenuation;
+		double sampling_step = param.sampling_step;
+		double termination   = param.termination;
+		bool   bperspective  = param.perspective_view;
+
+		const size_type w = in.width( );
+		const size_type h = in.height( );
+		const size_type d = in.depth( );
+
+		const size_type image_width  = out.width( );
+		const size_type image_height = out.height( );
+
+		// 高速にアドレス計算を行うためのポインタの差分
+		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
+		{
+			difference_type cx = in.width( ) / 2;
+			difference_type cy = in.height( ) / 2;
+			difference_type cz = in.depth( ) / 2;
+			const_pointer ppp = &in( cx, cy, cz );
+			d0 = 0;
+			d1 = &in( cx    , cy + 1, cz     ) - ppp;
+			d2 = &in( cx + 1, cy + 1, cz     ) - ppp;
+			d3 = &in( cx + 1, cy    , cz     ) - ppp;
+			d4 = &in( cx    , cy    , cz + 1 ) - ppp;
+			d5 = &in( cx    , cy + 1, cz + 1 ) - ppp;
+			d6 = &in( cx + 1, cy + 1, cz + 1 ) - ppp;
+			d7 = &in( cx + 1, cy    , cz + 1 ) - ppp;
+			_1 = &in( cx + 1, cy    , cz     ) - ppp;
+			_2 = &in( cx    , cy + 1, cz     ) - ppp;
+			_3 = &in( cx    , cy    , cz + 1 ) - ppp;
+		}
+
+		// スライス座標系の実寸をワールドと考える
+		vector_type casting_start, casting_end;
+
+		const double pai = 3.1415926535897932384626433832795;
+		double focal = ( static_cast< double >( image_height ) / 2.0 ) / std::tan( fovy * pai / 180.0 / 2.0 );
+
+		double cx = static_cast< double >( image_width ) / 2.0;
+		double cy = static_cast< double >( image_height ) / 2.0;
+		double left_to_right = param.left_to_right ? 1.0 : -1.0;
+		double top_to_bottom = param.top_to_bottom ? 1.0 : -1.0;
+		double front_to_back = param.front_to_back ? 1.0 : -1.0;
+		double ax = in.reso1( );
+		double ay = in.reso2( );
+		double az = in.reso3( );
+		double asx = ax * left_to_right;
+		double asy = ay * top_to_bottom;
+		double asz = az * front_to_back;
+
+		double masp = ax < ay ? ax : ay;
+		masp = masp < az ? masp : az;
+
+		pos.x *= left_to_right;
+		pos.y *= top_to_bottom;
+		pos.z *= front_to_back;
+
+		vector_type yoko = ( dir * up ).unit( );
+
+		if( out.reso1( ) < out.reso2( ) )
+		{
+			yoko *= out.reso1( ) / out.reso2( );
+		}
+		else
+		{
+			up *= out.reso2( ) / out.reso1( );
+			focal *= out.reso2( ) / out.reso1( );
+		}
+
+		double max_distance = pos.length( ) + std::sqrt( static_cast< double >( w * w + h * h + d * d ) );
+
+		for( size_type j = thread_id ; j < image_height ; j += thread_num )
+		{
+			for( size_type i = 0 ; i < image_width ; i++ )
+			{
+				// 投影面上の点をカメラ座標系に変換
+				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
+
+				// レイ方向をカメラ座標系からワールド座標系に変換
+				vector_type light;
+				if( bperspective )
+				{
+					light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
+				}
+				else
+				{
+					pos = param.pos + yoko * Pos.x + up * Pos.y;
+					light = dir;
+				}
+
+				pixel_type add_intensity( 0 );
+				double add_opacity = 1;
+
+				casting_start = pos;
+				casting_end = pos + light * max_distance;
+
+				// 物体との衝突判定
+				if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
+				{
+					// 光の減衰を実現するために，カメラからの距離を測る
+					Pos.x = pos.x / asx + osffset.x;
+					Pos.y = pos.y / asy + osffset.y;
+					Pos.z = pos.z / asz + osffset.z;
+
+					// ワールド座標系（左手）からスライス座標系（右手）に変換
+					// 以降は，全てスライス座標系で計算する
+					casting_start.x = casting_start.x / asx + osffset.x;
+					casting_start.y = casting_start.y / asy + osffset.y;
+					casting_start.z = casting_start.z / asz + osffset.z;
+					casting_end.x   = casting_end.x   / asx + osffset.x;
+					casting_end.y   = casting_end.y   / asy + osffset.y;
+					casting_end.z   = casting_end.z   / asz + osffset.z;
+
+					// 光源の向きもスライス座標にあわせる
+					vector_type slight = vector_type( light.x * left_to_right, light.y * top_to_bottom, light.z * front_to_back );
+
+					vector_type spos = casting_start;
+					vector_type ray = ( casting_end - casting_start ).unit( );
+
+					// 光の減衰の距離を実測に直すためのパラメータ
+					double dlen = vector_type( ray.x * ax, ray.y * ay, ray.z * az ).length( );
+
+					// 直方体画素の画像上では方向によってサンプリング間隔が変わってしまう問題に対応
+					double ray_sampling_step = sampling_step * masp / dlen;
+
+					vector_type ray_step = ray * ray_sampling_step;
+
+					double n = ( casting_end - casting_start ).length( );
+					double l = 0, of = ( Pos - casting_start ).length( );
+
+					while( l < n )
+					{
+						difference_type si = volumerender::to_integer( spos.x );
+						difference_type sj = volumerender::to_integer( spos.y );
+						difference_type sk = volumerender::to_integer( spos.z );
+
+						// 判定を行う範囲の先頭ポインタを取得
+						const_pointer p = &in( si, sj, sk );
+
+						// この位置における物体が不透明の場合は次のステップへ移行する
+						if( table.has_alpha( p[ d0 ] ) || table.has_alpha( p[ d1 ] ) ||
+							table.has_alpha( p[ d2 ] ) || table.has_alpha( p[ d3 ] ) ||
+							table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
+							table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) )
+						{
+							if( l > 0 )
+							{
+								spos.x -= ray.x;
+								spos.y -= ray.y;
+								spos.z -= ray.z;
+								l -= 1.0;
+							}
+							break;
+						}
+
+						double current_step = depth_map( si, sj, sk );
+						l += current_step;
+						spos.x += ray.x * current_step;
+						spos.y += ray.y * current_step;
+						spos.z += ray.z * current_step;
+					}
+
+					while( l < n )
+					{
+						difference_type si = volumerender::to_integer( spos.x );
+						difference_type sj = volumerender::to_integer( spos.y );
+						difference_type sk = volumerender::to_integer( spos.z );
+
+						double xx = spos.x - si;
+						double yy = spos.y - sj;
+						double zz = spos.z - sk;
+
+						const_pointer p = &in( si, sj, sk );
+
+						// CT値に対応する色と不透明度を取得
+						double ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
+						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
+
+						const attribute_type &oc = table[ volumerender::to_integer( ct ) ];
+
+						if( oc.has_alpha )
+						{
+							const_pointer p0 = p;
+							const_pointer p1 = p0 + d1;
+							const_pointer p2 = p0 + d2;
+							const_pointer p3 = p0 + d3;
+							const_pointer p4 = p0 + d4;
+							const_pointer p5 = p0 + d5;
+							const_pointer p6 = p0 + d6;
+							const_pointer p7 = p0 + d7;
+
+							double n0x = p3[  0  ] - p0[ -_1 ];
+							double n0y = p1[  0  ] - p0[ -_2 ];
+							double n0z = p4[  0  ] - p0[ -_3 ];
+							double n1x = p2[  0  ] - p1[ -_1 ];
+							double n1y = p1[  _2 ] - p0[  0  ];
+							double n1z = p5[  0  ] - p1[ -_3 ];
+							double n2x = p2[  _1 ] - p1[  0  ];
+							double n2y = p2[  _2 ] - p3[  0  ];
+							double n2z = p6[  0  ] - p2[ -_3 ];
+							double n3x = p3[  _1 ] - p0[  0  ];
+							double n3y = p2[  0  ] - p3[ -_2 ];
+							double n3z = p7[  0  ] - p3[ -_3 ];
+							double n4x = p7[  0  ] - p4[ -_1 ];
+							double n4y = p5[  0  ] - p4[ -_2 ];
+							double n4z = p4[  _3 ] - p0[  0  ];
+							double n5x = p6[  0  ] - p5[ -_1 ];
+							double n5y = p5[  _2 ] - p4[  0  ];
+							double n5z = p5[  _3 ] - p1[  0  ];
+							double n6x = p6[  _1 ] - p5[  0  ];
+							double n6y = p6[  _2 ] - p7[  0  ];
+							double n6z = p6[  _3 ] - p2[  0  ];
+							double n7x = p7[  _1 ] - p4[  0  ];
+							double n7y = p6[  0  ] - p7[ -_2 ];
+							double n7z = p7[  _3 ] - p3[  0  ];
+
+							double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
+							nx += ( ( n4x + ( n7x - n4x ) * xx ) + ( n5x - n4x + ( n4x - n5x + n6x - n7x ) * xx ) * yy - nx ) * zz;
+							double ny  = ( n0y + ( n3y - n0y ) * xx ) + ( n1y - n0y + ( n0y - n1y + n2y - n3y ) * xx ) * yy;
+							ny += ( ( n4y + ( n7y - n4y ) * xx ) + ( n5y - n4y + ( n4y - n5y + n6y - n7y ) * xx ) * yy - ny ) * zz;
+							double nz  = ( n0z + ( n3z - n0z ) * xx ) + ( n1z - n0z + ( n0z - n1z + n2z - n3z ) * xx ) * yy;
+							nz += ( ( n4z + ( n7z - n4z ) * xx ) + ( n5z - n4z + ( n4z - n5z + n6z - n7z ) * xx ) * yy - nz ) * zz;
+
+							nx /= in.reso1( );
+							ny /= in.reso2( );
+							nz /= in.reso3( );
+							double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
+							nx /= len;
+							ny /= len;
+							nz /= len;
+
+							double c = slight.x * nx + slight.y * ny + slight.z * nz;
+							c = c < 0.0 ? -c : c;
+
+							double spec = 0.0;
+							if( bSpecular )
+							{
+								spec = 2.0 * c * c - 1.0;
+
+								if( spec <= 0.0 )
+								{
+									spec = 0;
+								}
+								else
+								{
+									spec *= spec;	//  2乗
+									spec *= spec;	//  4乗
+									spec *= spec;	//  8乗
+									spec *= spec;	// 16乗
+									spec *= spec;	// 32乗
+									spec *= spec;	// 64乗
+									//spec *= spec;	// 128乗
+									spec *= specular * 255.0;
+								}
+							}
+
+							double lAtten = 1.0;
+							if( lightAtten > 0.0 )
+							{
+								double len = ( l + of ) * dlen;
+								lAtten /= 1.0 + lightAtten * ( len * len );
+							}
+
+							c = c * diffuse_ratio + ambient_ratio;
+
+							double alpha = oc.alpha * sampling_step;
+							add_intensity += alpha * add_opacity * ( oc.pixel * c + spec ) * lAtten;
+							add_opacity *= ( 1.0 - alpha );
+
+							// 画素がレンダリング結果に与える影響がしきい値以下になった場合は終了
+							if( add_opacity < termination )
+							{
+								break;
+							}
+
+							spos.x += ray_step.x;
+							spos.y += ray_step.y;
+							spos.z += ray_step.z;
+							l += ray_sampling_step;
+						}
+						else
+						{
+							// この位置における物体が透明の場合は次のステップへ移行する
+							spos += ray_step;
+							l += ray_sampling_step;
+
+							size_t count = 0;
+							while( l < n )
+							{
+								difference_type si = volumerender::to_integer( spos.x );
+								difference_type sj = volumerender::to_integer( spos.y );
+								difference_type sk = volumerender::to_integer( spos.z );
+
+								const_pointer p = &in( si, sj, sk );
+
+								// この位置における物体が不透明の場合は次のステップへ移行する
+								if( table.has_alpha( p[ d0 ] ) || table.has_alpha( p[ d1 ] ) ||
+									table.has_alpha( p[ d2 ] ) || table.has_alpha( p[ d3 ] ) ||
+									table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
+									table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) )
+								{
+									if( count > 0 )
+									{
+										spos.x -= ray.x;
+										spos.y -= ray.y;
+										spos.z -= ray.z;
+										l -= 1.0;
+									}
+									break;
+								}
+
+								double current_step = depth_map( si, sj, sk );
+								l += current_step;
+								spos.x += ray.x * current_step;
+								spos.y += ray.y * current_step;
+								spos.z += ray.z * current_step;
+
+								count++;
+							}
+						}
+					}
+
+					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
+				}
+				else
+				{
+					out( i, j ) = 0;
+				}
+			}
+		}
+		return( true );
+	}
+
+	template < class Array1, class Array2, class DepthMap, class T >
+	class volumerendering_thread : public mist::thread< volumerendering_thread< Array1, Array2, DepthMap, T > >
+	{
+	public:
+		typedef mist::thread< volumerendering_thread< Array1, Array2, DepthMap, T > > base;
+		typedef typename base::thread_exit_type thread_exit_type;
+		typedef typename Array1::size_type size_type;
+		typedef typename Array1::value_type value_type;
+
+	private:
+		size_t thread_id_;
+		size_t thread_num_;
+
+		// 入出力用の画像へのポインタ
+		const Array1 *in_;
+		Array2 *out_;
+		const DepthMap *depth_map_;
+		const volumerender::parameter *param_;
+		const volumerender::attribute_table< T > *table_;
+
+	public:
+		void setup_parameters( const Array1 &in, Array2 &out, const DepthMap &depth_map, const volumerender::parameter &p, const volumerender::attribute_table< T > &t, size_type thread_id, size_type thread_num )
+		{
+			in_  = &in;
+			out_ = &out;
+			depth_map_ = &depth_map;
+			param_ = &p;
+			table_ = &t;
+			thread_id_ = thread_id;
+			thread_num_ = thread_num;
+		}
+
+		volumerendering_thread( size_type id = 0, size_type num = 1 ) : thread_id_( id ), thread_num_( num ),
+													in_( NULL ), out_( NULL ), depth_map_( NULL ), param_( NULL ), table_( NULL )
+		{
+		}
+		volumerendering_thread( const volumerendering_thread &p ) : base( p ), thread_id_( p.thread_id_ ), thread_num_( p.thread_num_ ),
+																		in_( p.in_ ), out_( p.out_ ), depth_map_( p.depth_map_ ),
+																		param_( p.param_ ), table_( p.table_ )
+		{
+		}
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( )
+		{
+			volumerendering( *in_, *out_, *depth_map_, *param_, *table_, thread_id_, thread_num_ );
+			return( true );
+		}
+	};
+}
+
+
+// ボリュームレンダリング
 namespace __volumerendering_controller__
 {
 	// いろいろなレンダラ（色の決定方法）を組み合わせることが可能なボリュームレンダリングエンジン
@@ -2430,6 +2848,77 @@ bool volumerendering( const Array1 &in, const Array2 &mk, Array3 &out, const vol
 	return( volumerendering( in, mk, out, volumerender::no_depth_map( ), param, table, mktable, apply_and_operation, thread_num ) );
 }
 
+
+namespace specialized
+{
+	/// @brief ボリュームレンダリング
+	//! 
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力画像
+	//! @param[out] out        … 出力画像
+	//! @param[in]  dmap       … レンダリングを高速化するための距離画像
+	//! @param[in]  param      … ボリュームレンダリングのパラメータ
+	//! @param[in]  table      … ボリュームレンダリングの色－値テーブル
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … ボリュームレンダリングに成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+	//! 
+	template < class Array1, class Array2, class DepthMap, class ATTRIBUTETYPE >
+	bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &dmap, const volumerender::parameter &param, const volumerender::attribute_table< ATTRIBUTETYPE > &table, typename Array1::size_type thread_num = 0 )
+	{
+		if( is_same_object( in, out ) || in.empty( ) )
+		{
+			return( false );
+		}
+
+		typedef typename Array1::size_type size_type;
+		typedef __volumerendering_specialized__::volumerendering_thread< Array1, Array2, DepthMap, ATTRIBUTETYPE > volumerendering_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		volumerendering_thread *thread = new volumerendering_thread[ thread_num ];
+
+		size_type i;
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, dmap, param, table, i, thread_num );
+		}
+
+		// スレッドを実行して，終了まで待機する
+		do_threads_( thread, thread_num );
+
+		delete [] thread;
+		
+		return( true );
+	}
+
+
+	/// @brief ボリュームレンダリング
+	//! 
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @param[in]  in         … 入力画像
+	//! @param[out] out        … 出力画像
+	//! @param[in]  param      … ボリュームレンダリングのパラメータ
+	//! @param[in]  table      … ボリュームレンダリングの色－値テーブル
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … ボリュームレンダリングに成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+	//! 
+	template < class Array1, class Array2, class ATTRIBUTETYPE >
+	bool volumerendering( const Array1 &in, Array2 &out, const volumerender::parameter &param, const volumerender::attribute_table< ATTRIBUTETYPE > &table, typename Array1::size_type thread_num = 0 )
+	{
+		return( specialized::volumerendering( in, out, volumerender::no_depth_map( ), param, table, thread_num ) );
+	}
+}
 
 
 /// @brief ボリュームレンダリング
