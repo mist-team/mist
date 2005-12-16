@@ -152,8 +152,6 @@ namespace mpeg
 
 	/// @brief 異なるストリーム間でフレームバッファのやり取りを行うためのクラス
 	//! 
-	//! 
-	//!
 	class frame_t
 	{
 		AVFrame *p_frame_;
@@ -212,8 +210,6 @@ namespace mpeg
 
 		/// @brief デストラクタ
 		//! 
-		//!
-		//!
 		~input_video( )
 		{ 
 			close( );
@@ -285,8 +281,6 @@ namespace mpeg
 
 		/// @brief ビデオストリームを閉じる
 		//! 
-		//!
-		//!
 		bool close( )
 		{
 			if( is_open_ )
@@ -305,8 +299,6 @@ namespace mpeg
 
 		/// @brief ビデオストリームが開いているかどうかを返す
 		//! 
-		//!
-		//!
 		bool is_open( ) const
 		{
 			return is_open_;
@@ -314,8 +306,6 @@ namespace mpeg
 
 		/// @brief ストリームのフォーマットを標準出力にダンプする
 		//! 
-		//!
-		//!
 		bool dump_format( ) const
 		{
 			if( is_open_ )
@@ -328,8 +318,6 @@ namespace mpeg
 
 		/// @brief 現在のフレームバッファを得る
 		//! 
-		//!
-		//!
 		frame_t frame( ) const
 		{
 			if( is_open_ )
@@ -341,8 +329,6 @@ namespace mpeg
 
 		/// @brief 現在のフレーム番号を得る
 		//! 
-		//!
-		//!
 		int frame_number( ) const
 		{
 			if( is_open_ )
@@ -354,8 +340,6 @@ namespace mpeg
 
 		/// @brief 現在のフレームがキーフレームなら真を返す
 		//! 
-		//!
-		//!
 		bool is_key_frame( ) const
 		{
 			if( is_open_ )
@@ -365,45 +349,11 @@ namespace mpeg
 			return false;
 		}
 
-		/// @brief フレームバッファの内容をデコードしてarray2形式の画像に格納(RGB)
-		//! 
-		//! @param[out] image … フレーム画像を格納するための２次元配列
-		//!
-		bool read_frame( mist::array2< mist::rgb< unsigned char > > &image )
-		{
-			if( is_open_ )
-			{
-				if( read( ) )
-				{
-					get_image( image );
-					return true;
-				}
-			}
-			return false;
-		}
-
-		/// @brief フレームバッファの内容をデコードしてarray2形式の画像に格納(グレイスケール)
-		//! 
-		//! @param[out] frame … フレーム画像を格納するための２次元配列
-		//!
-		bool read_frame( mist::array2< unsigned char > &frame )
-		{
-			if( is_open_ )
-			{
-				if( read( ) )
-				{
-					get_image( frame );
-					return true;
-				}
-			}
-			return false;
-		}
-
 		/// @brief 指定した回数だけフレームスキップ
 		//! 
 		//! @param[in] num … スキップ枚数
 		//!
-		bool skip_frame( const size_t num = 1 )
+		bool skip( const size_t num = 1 )
 		{
 			if( is_open_ )
 			{
@@ -425,7 +375,7 @@ namespace mpeg
 		//! 
 		//! @param[out] image … フレーム画像を格納するための２次元配列
 		//!
-		void get_image( mist::array2< mist::rgb< unsigned char > > &image )
+		void get( mist::array2< mist::rgb< unsigned char > > &image )
 		{
 			AVCodecContext *p_cctx = &p_fctx_->streams[ video_stream_index_ ]->codec;
 			img_convert( ( AVPicture * )p_frame_rgb_, PIX_FMT_RGB24, ( AVPicture * )p_frame_src_, p_cctx->pix_fmt, p_cctx->width, p_cctx->height );
@@ -443,7 +393,7 @@ namespace mpeg
 		//! 
 		//! @param[out] image … フレーム画像を格納するための２次元配列
 		//!
-		void get_image( mist::array2< unsigned char > &image )
+		void get( mist::array2< unsigned char > &image )
 		{
 			AVCodecContext *p_cctx = &p_fctx_->streams[ video_stream_index_ ]->codec;
 			img_convert( ( AVPicture * )p_frame_rgb_, PIX_FMT_RGB24, ( AVPicture * )p_frame_src_, p_cctx->pix_fmt, p_cctx->width, p_cctx->height );
@@ -458,8 +408,6 @@ namespace mpeg
 
 		/// @brief フレーム読み込んで，デコードしてフレームバッファに格納
 		//! 
-		//!
-		//!
 		bool read( )
 		{
 			int bytes_decoded, frame_finished;
@@ -504,10 +452,16 @@ namespace mpeg
 			return frame_finished != 0;
 		}
 
+		/// @brief フレームバッファに格納された画像のインターレス除去
+		//! 
+		bool deinterlace( )
+		{
+			AVCodecContext *p_cctx = &p_fctx_->streams[ video_stream_index_ ]->codec;
+			return avpicture_deinterlace( ( AVPicture * )p_frame_src_, ( AVPicture * )p_frame_src_, p_cctx->pix_fmt, p_cctx->width, p_cctx->height) >= 0;
+		}
+
 		/// @brief mpegファイル名を得る
 		//! 
-		//!
-		//!
 		char *filename( ) const
 		{
 			if( is_open_ )
@@ -519,8 +473,6 @@ namespace mpeg
 	    
 		/// @brief ビットレートを得る
 		//! 
-		//!
-		//!
 		int bit_rate( )  const
 		{
 			if( is_open_ )
@@ -532,8 +484,6 @@ namespace mpeg
 		
 		/// @brief フレームの幅を得る
 		//! 
-		//!
-		//!
 		int width( ) const
 		{
 			if( is_open_ )
@@ -545,8 +495,6 @@ namespace mpeg
 		
 		/// @brief フレームの高さを得る
 		//! 
-		//!
-		//!
 		int height( ) const
 		{
 			if( is_open_ )
@@ -558,8 +506,6 @@ namespace mpeg
 		
 		/// @brief フレームレートを得る
 		//! 
-		//!
-		//!
 		int frame_rate( ) const
 		{
 			if( is_open_ )
@@ -571,8 +517,6 @@ namespace mpeg
 		
 		/// @brief フレームレートベースを得る（実際のフレームレート＝フレームレート/フレームレートベース）
 		//! 
-		//!
-		//!
 		int frame_rate_base( ) const
 		{
 			if( is_open_ )
@@ -584,8 +528,6 @@ namespace mpeg
 		
 		/// @brief GOPサイズを得る（この枚数の連続フレーム中に必ず１枚以上Iフレームが存在する）
 		//! 
-		//!
-		//!
 		int gop_size( ) const
 		{
 			if( is_open_ )
@@ -597,8 +539,6 @@ namespace mpeg
 		
 		/// @brief 最大連続Bフレーム数を得る
 		//! 
-		//!
-		//!
 		int max_b_frames( ) const
 		{
 			if( is_open_ )
@@ -661,8 +601,6 @@ namespace mpeg
 		
 		/// @brief デストラクタ
 		//! 
-		//!
-		//!
 		~output_video( )
 		{
 			close( );
@@ -743,8 +681,6 @@ namespace mpeg
 
 		/// @brief ビデオストリームを閉じる
 		//! 
-		//!
-		//!
 		bool close( )
 		{
 			if( is_open_ )
@@ -771,8 +707,6 @@ namespace mpeg
 
 		/// @brief ビデオが開いているかどうかを返す
 		//! 
-		//!
-		//!
 		bool is_open( ) const
 		{
 			return is_open_;
@@ -780,8 +714,6 @@ namespace mpeg
 
 		/// @brief ストリームのフォーマットを標準出力にダンプする
 		//! 
-		//!
-		//!
 		bool dump_format( ) const
 		{
 			if( is_open_ )
@@ -794,8 +726,6 @@ namespace mpeg
 
 		/// @brief 現在のフレームバッファを得る
 		//! 
-		//!
-		//!
 		frame_t frame( ) const
 		{
 			if( is_open_ )
@@ -807,8 +737,6 @@ namespace mpeg
 
 		/// @brief 現在のフレーム番号を得る
 		//! 
-		//!
-		//!
 		int frame_number( ) const
 		{
 			if( is_open_ )
@@ -820,8 +748,6 @@ namespace mpeg
 
 		/// @brief 現在のフレームがキーフレームであれば、真を返す
 		//! 
-		//!
-		//!
 		bool is_key_frame( ) const
 		{
 			if( is_open_ )
@@ -831,31 +757,11 @@ namespace mpeg
 			return false;
 		}
 
-		/// @brief array2形式の画像をエンコードしてストリームに書き込む(RGB)
-		//! 
-		//! @param[in] image … フレーム画像
-		//!
-		bool write_frame( const mist::array2< mist::rgb< unsigned char > > &image )
-		{
-			put_image( image );
-			return( write( ) );
-		}
-
-		/// @brief array2形式の画像をエンコードしてストリームに書き込む(グレイスケール)
-		//! 
-		//! @param[in] image … フレーム画像
-		//!
-		bool write_frame( const mist::array2< unsigned char > &image )
-		{
-			put_image( image );
-			return( write( ) );
-		}
-
 		/// @brief array2形式の画像をフレームバッファに書き込む(RGB)
 		//! 
 		//! @param[in] image … フレーム画像
 		//!
-		bool put_image( const mist::array2< mist::rgb< unsigned char > > &image )
+		bool put( const mist::array2< mist::rgb< unsigned char > > &image )
 		{
 			if( is_open_ )
 			{
@@ -877,7 +783,7 @@ namespace mpeg
 		//! 
 		//! @param[in] image … フレーム画像
 		//!
-		bool put_image( const mist::array2< unsigned char > &image )
+		bool put( const mist::array2< unsigned char > &image )
 		{
 			if( is_open_ )
 			{
@@ -895,21 +801,23 @@ namespace mpeg
 			return false;
 		}
 
-		/// @brief 受け取ったフレームバッファの内容をエンコードしてストリームに書き込む
+		/// @brief frame_t型のフレーム画像をフレームバッファに書き込む
 		//! 
-		//! @param[in] frame … フレームバッファ
+		//! @param[in] frame … frame_t型のフレーム画像
 		//!
-		bool write( const frame_t &frame )
+		bool put( const frame_t &frame )
 		{
-			AVCodecContext *p_cctx = &p_fctx_->streams[ video_stream_index_ ]->codec;
-			img_convert((AVPicture *)p_frame_dst_, p_cctx->pix_fmt, (AVPicture*)( frame.p_frame( ) ), frame.pix_fmt( ), p_cctx->width, p_cctx->height);
-			return write( );
+			if( is_open_ )
+			{
+				AVCodecContext *p_cctx = &p_fctx_->streams[ video_stream_index_ ]->codec;
+				img_convert((AVPicture *)p_frame_dst_, p_cctx->pix_fmt/*PIX_FMT_YUV420P*/, (AVPicture*)( frame.p_frame( ) ), frame.pix_fmt( ), p_cctx->width, p_cctx->height);
+				return true;
+			}
+			return false;
 		}
 
 		/// @brief フレームバッファの内容をエンコードしてストリームに書き込む
 		//! 
-		//!
-		//!
 		bool write( )
 		{
 			if( is_open_ )
@@ -926,6 +834,16 @@ namespace mpeg
 				return bytes_encoded != 0;
 			}
 			return false;
+		}
+
+		/// @brief フレームバッファに格納された画像のインターレス除去
+		//! 
+		//! @param[in] encode_buf_size … エンコードバッファサイズ
+		//!
+		bool deinterlace( )
+		{
+			AVCodecContext *p_cctx = &p_fctx_->streams[ video_stream_index_ ]->codec;
+			return avpicture_deinterlace( ( AVPicture * )p_frame_dst_, ( AVPicture * )p_frame_dst_, p_cctx->pix_fmt, p_cctx->width, p_cctx->height) >= 0;
 		}
 
 		/// @brief エンコードバッファサイズを設定
@@ -1050,8 +968,6 @@ namespace mpeg
 
 		/// @brief mpegファイル名を得る
 		//! 
-		//!
-		//!
 		char *filename( ) const
 		{
 			if( is_open_ )
@@ -1063,8 +979,6 @@ namespace mpeg
 
 		/// @brief ビットレートを得る
 		//! 
-		//!
-		//!
 		int bit_rate( )  const
 		{
 			if( is_open_ )
@@ -1076,8 +990,6 @@ namespace mpeg
 
 		/// @brief フレーム画像の幅を得る
 		//! 
-		//!
-		//!
 		int width( ) const
 		{
 			if( is_open_ )
@@ -1089,8 +1001,6 @@ namespace mpeg
 
 		/// @brief フレーム画像の高さを得る
 		//! 
-		//!
-		//!
 		int height( ) const
 		{
 			if( is_open_ )
@@ -1102,8 +1012,6 @@ namespace mpeg
 
 		/// @brief フレームレートを得る
 		//! 
-		//!
-		//!
 		int frame_rate( ) const
 		{
 			if( is_open_ )
@@ -1115,8 +1023,6 @@ namespace mpeg
 
 		/// @brief フレームレートベースを得る（実際のフレームレート＝フレームレート/フレームレートベース）
 		//! 
-		//!
-		//!
 		int frame_rate_base( ) const
 		{
 			if( is_open_ )
@@ -1128,8 +1034,6 @@ namespace mpeg
 
 		/// @brief GOPサイズを得る（この枚数の連続フレーム中に必ず１枚以上Iフレームが存在する）
 		//! 
-		//!
-		//!
 		int gop_size( ) const
 		{
 			if( is_open_ )
@@ -1141,8 +1045,6 @@ namespace mpeg
 
 		/// @brief 最大連続Bフレーム数を得る
 		//! 
-		//!
-		//!
 		int max_b_frames( ) const
 		{
 			if( is_open_ )
@@ -1205,28 +1107,12 @@ namespace mpeg
 	template< typename Stream, typename Image >
 	inline bool read_frame( Stream &video, Image &image )
 	{
-		return video.read_frame( image );
-	}
-
-	/// @brief ビデオストリームからフレームを取り出してデコードし，フレームバッファに格納
-	//! 
-	//! @param[in,out] video           … ビデオストリーム
-	//!
-	template< typename Stream >
-	inline bool read( Stream &video )
-	{
-		return video.read( );
-	}
-
-	/// @brief フレームバッファに格納されたフレーム画像をarray2形式の画像に変換
-	//! 
-	//! @param[in,out] video           … ビデオストリーム
-	//! @param[in]     image           … フレーム画像
-	//!
-	template< typename Stream, typename Image >
-	inline bool get_image( Stream &video, Image &image )
-	{
-		return video.put_image( image );
+		if ( video.read( ) )
+		{
+			video.get( image );
+			return true;
+		}
+		return false;
 	}
 
 	/// @brief array2形式の画像をビデオストリームに書き込む
@@ -1237,39 +1123,8 @@ namespace mpeg
 	template< typename Stream, typename Image >
 	inline bool write_frame( Stream &video, const Image &image )
 	{
-		return video.write_frame( image );
-	}
-
-	/// @brief 受け取ったフレームバッファの内容をエンコードして，デオストリームにフレームに書き込む
-	//! 
-	//! @param[in,out] video           … ビデオストリーム
-	//! @param[in]     frame           … フレームバッファ
-	//!
-	template< typename Stream >
-	inline bool write( Stream &video, const frame_t &frame )
-	{
-		return video.write( frame );
-	}
-
-	/// @brief フレームバッファの内容をエンコードしてビデオストリームに書き込む
-	//! 
-	//! @param[in,out] video           … ビデオストリーム
-	//!
-	template< typename Stream >
-	inline bool write( Stream &video )
-	{
+		video.put( image );
 		return video.write( );
-	}
-
-	/// @brief array2形式の画像をフレームバッファに書き込む
-	//! 
-	//! @param[in,out] video           … ビデオストリーム
-	//! @param[in]     image           … フレーム画像
-	//!
-	template< typename Stream, typename Image >
-	inline bool put_image( Stream &video, const Image &image )
-	{
-		return video.put_image( image );
 	}
 
 	/// @brief 指定した回数だけフレームスキップ
@@ -1280,7 +1135,7 @@ namespace mpeg
 	template< typename Stream >
 	inline bool skip_frame( Stream &video, const size_t num = 1 )
 	{
-		return video.skip_frame( num );
+		return video.skip( num );
 	}
 
 	/// @brief 指定した回数だけビデオストリーム間でフレーム画像のコピー
@@ -1296,7 +1151,11 @@ namespace mpeg
 		{
 			if( src.read( ) )
 			{
-				dst.write( src.frame( ) );
+				dst.put( src.frame( ) );
+				if( !dst.write( ) )
+				{
+					return false;
+				}
 			}
 			else
 			{
@@ -1327,38 +1186,6 @@ namespace mpeg
 		}
 		return false;
 	}
-
-	/// @brief 現在のフレームバッファを得る
-	//! 
-	//! @param[in] video         … ビデオストリーム
-	//!
-	template< typename Stream >
-	inline frame_t frame( const Stream &video )
-	{
-		return video.frame( );
-	}
-
-	/// @brief 現在のフレーム番号を得る
-	//! 
-	//! @param[in] video         … ビデオストリーム
-	//!
-	template< typename Stream >
-	inline int frame_number( const Stream &video )
-	{
-		return video.frame_number( );
-	}
-
-	/// @brief 現在のフレームがキーフレームであれば，真を返す
-	//! 
-	//! @param[in] video         … ビデオストリーム
-	//!
-	template< typename Stream >
-	inline bool is_key_frame( const Stream &video )
-	{
-		return video.is_key_frame( );
-	}
-
-
 
 } // namespace mpeg
 
