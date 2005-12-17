@@ -1448,6 +1448,7 @@ namespace __volumerendering_specialized__
 		double specular      = param.specular;
 		bool   bSpecular     = specular > 0.0;
 		double lightAtten    = param.light_attenuation;
+		bool   bLightAtten   = lightAtten > 0.0;
 		double sampling_step = param.sampling_step;
 		double termination   = param.termination;
 		bool   bperspective  = param.perspective_view;
@@ -1493,6 +1494,9 @@ namespace __volumerendering_specialized__
 		double ax = in.reso1( );
 		double ay = in.reso2( );
 		double az = in.reso3( );
+		double _1_ax = 1.0 / ax;
+		double _1_ay = 1.0 / ay;
+		double _1_az = 1.0 / az;
 		double asx = ax * left_to_right;
 		double asy = ay * top_to_bottom;
 		double asz = az * front_to_back;
@@ -1614,6 +1618,16 @@ namespace __volumerendering_specialized__
 						spos.z += ray.z * current_step;
 					}
 
+					double n0x, n0y, n0z;
+					double n1x, n1y, n1z;
+					double n2x, n2y, n2z;
+					double n3x, n3y, n3z;
+					double n4x, n4y, n4z;
+					double n5x, n5y, n5z;
+					double n6x, n6y, n6z;
+					double n7x, n7y, n7z;
+					const_pointer op = NULL;
+
 					while( l < n )
 					{
 						difference_type si = volumerender::to_integer( spos.x );
@@ -1634,39 +1648,44 @@ namespace __volumerendering_specialized__
 
 						if( oc.has_alpha )
 						{
-							const_pointer p0 = p;
-							const_pointer p1 = p0 + d1;
-							const_pointer p2 = p0 + d2;
-							const_pointer p3 = p0 + d3;
-							const_pointer p4 = p0 + d4;
-							const_pointer p5 = p0 + d5;
-							const_pointer p6 = p0 + d6;
-							const_pointer p7 = p0 + d7;
+							if( p != op )
+							{
+								const_pointer p0 = p;
+								const_pointer p1 = p0 + d1;
+								const_pointer p2 = p0 + d2;
+								const_pointer p3 = p0 + d3;
+								const_pointer p4 = p0 + d4;
+								const_pointer p5 = p0 + d5;
+								const_pointer p6 = p0 + d6;
+								const_pointer p7 = p0 + d7;
 
-							double n0x = p3[  0  ] - p0[ -_1 ];
-							double n0y = p1[  0  ] - p0[ -_2 ];
-							double n0z = p4[  0  ] - p0[ -_3 ];
-							double n1x = p2[  0  ] - p1[ -_1 ];
-							double n1y = p1[  _2 ] - p0[  0  ];
-							double n1z = p5[  0  ] - p1[ -_3 ];
-							double n2x = p2[  _1 ] - p1[  0  ];
-							double n2y = p2[  _2 ] - p3[  0  ];
-							double n2z = p6[  0  ] - p2[ -_3 ];
-							double n3x = p3[  _1 ] - p0[  0  ];
-							double n3y = p2[  0  ] - p3[ -_2 ];
-							double n3z = p7[  0  ] - p3[ -_3 ];
-							double n4x = p7[  0  ] - p4[ -_1 ];
-							double n4y = p5[  0  ] - p4[ -_2 ];
-							double n4z = p4[  _3 ] - p0[  0  ];
-							double n5x = p6[  0  ] - p5[ -_1 ];
-							double n5y = p5[  _2 ] - p4[  0  ];
-							double n5z = p5[  _3 ] - p1[  0  ];
-							double n6x = p6[  _1 ] - p5[  0  ];
-							double n6y = p6[  _2 ] - p7[  0  ];
-							double n6z = p6[  _3 ] - p2[  0  ];
-							double n7x = p7[  _1 ] - p4[  0  ];
-							double n7y = p6[  0  ] - p7[ -_2 ];
-							double n7z = p7[  _3 ] - p3[  0  ];
+								n0x = p3[  0  ] - p0[ -_1 ];
+								n0y = p1[  0  ] - p0[ -_2 ];
+								n0z = p4[  0  ] - p0[ -_3 ];
+								n1x = p2[  0  ] - p1[ -_1 ];
+								n1y = p1[  _2 ] - p0[  0  ];
+								n1z = p5[  0  ] - p1[ -_3 ];
+								n2x = p2[  _1 ] - p1[  0  ];
+								n2y = p2[  _2 ] - p3[  0  ];
+								n2z = p6[  0  ] - p2[ -_3 ];
+								n3x = p3[  _1 ] - p0[  0  ];
+								n3y = p2[  0  ] - p3[ -_2 ];
+								n3z = p7[  0  ] - p3[ -_3 ];
+								n4x = p7[  0  ] - p4[ -_1 ];
+								n4y = p5[  0  ] - p4[ -_2 ];
+								n4z = p4[  _3 ] - p0[  0  ];
+								n5x = p6[  0  ] - p5[ -_1 ];
+								n5y = p5[  _2 ] - p4[  0  ];
+								n5z = p5[  _3 ] - p1[  0  ];
+								n6x = p6[  _1 ] - p5[  0  ];
+								n6y = p6[  _2 ] - p7[  0  ];
+								n6z = p6[  _3 ] - p2[  0  ];
+								n7x = p7[  _1 ] - p4[  0  ];
+								n7y = p6[  0  ] - p7[ -_2 ];
+								n7z = p7[  _3 ] - p3[  0  ];
+
+								op = p;
+							}
 
 							double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
 							nx += ( ( n4x + ( n7x - n4x ) * xx ) + ( n5x - n4x + ( n4x - n5x + n6x - n7x ) * xx ) * yy - nx ) * zz;
@@ -1675,14 +1694,15 @@ namespace __volumerendering_specialized__
 							double nz  = ( n0z + ( n3z - n0z ) * xx ) + ( n1z - n0z + ( n0z - n1z + n2z - n3z ) * xx ) * yy;
 							nz += ( ( n4z + ( n7z - n4z ) * xx ) + ( n5z - n4z + ( n4z - n5z + n6z - n7z ) * xx ) * yy - nz ) * zz;
 
-							nx /= in.reso1( );
-							ny /= in.reso2( );
-							nz /= in.reso3( );
-							double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
-							nx /= len;
-							ny /= len;
-							nz /= len;
+							nx *= _1_ax;
+							ny *= _1_ay;
+							nz *= _1_az;
+							double _1_len = 1.0 / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( ) );
+							nx *= _1_len;
+							ny *= _1_len;
+							nz *= _1_len;
 
+							// –@ü‚ª”½“]‚µ‚Ä‚¢‚éê‡‚Ö‚Ì‘Î‰
 							double c = slight.x * nx + slight.y * ny + slight.z * nz;
 							c = c < 0.0 ? -c : c;
 
@@ -1709,7 +1729,7 @@ namespace __volumerendering_specialized__
 							}
 
 							double lAtten = 1.0;
-							if( lightAtten > 0.0 )
+							if( bLightAtten )
 							{
 								double len = ( l + of ) * dlen;
 								lAtten /= 1.0 + lightAtten * ( len * len );
