@@ -1618,14 +1618,10 @@ namespace __volumerendering_specialized__
 						spos.z += ray.z * current_step;
 					}
 
-					double n0x, n0y, n0z;
-					double n1x, n1y, n1z;
-					double n2x, n2y, n2z;
-					double n3x, n3y, n3z;
-					double n4x, n4y, n4z;
-					double n5x, n5y, n5z;
-					double n6x, n6y, n6z;
-					double n7x, n7y, n7z;
+					double nct[ 8 ];
+					double ndx[ 8 ];
+					double ndy[ 8 ];
+					double ndz[ 8 ];
 					const_pointer op = NULL;
 
 					while( l < n )
@@ -1640,9 +1636,21 @@ namespace __volumerendering_specialized__
 
 						const_pointer p = &in( si, sj, sk );
 
+						if( p != op )
+						{
+							nct[ 0 ] = p[ d0 ];
+							nct[ 1 ] = p[ d3 ] - p[ d0 ];
+							nct[ 2 ] = p[ d1 ] - p[ d0 ];
+							nct[ 3 ] = p[ d2 ] - p[ d3 ] - nct[ 2 ];
+							nct[ 4 ] = p[ d4 ];
+							nct[ 5 ] = p[ d7 ] - p[ d4 ];
+							nct[ 6 ] = p[ d5 ] - p[ d4 ];
+							nct[ 7 ] = p[ d6 ] - p[ d7 ] - nct[ 6 ];
+						}
+
 						// CT値に対応する色と不透明度を取得
-						double ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
-						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
+						double ct = ( nct[ 0 ] + nct[ 1 ] * xx ) + ( nct[ 2 ] + nct[ 3 ] * xx ) * yy;
+						ct += ( ( nct[ 4 ] + nct[ 5 ] * xx ) + ( nct[ 6 ] + nct[ 7 ] * xx ) * yy - ct ) * zz;
 
 						const attribute_type &oc = table[ volumerender::to_integer( ct ) ];
 
@@ -1659,40 +1667,67 @@ namespace __volumerendering_specialized__
 								const_pointer p6 = p0 + d6;
 								const_pointer p7 = p0 + d7;
 
-								n0x = p3[  0  ] - p0[ -_1 ];
-								n0y = p1[  0  ] - p0[ -_2 ];
-								n0z = p4[  0  ] - p0[ -_3 ];
-								n1x = p2[  0  ] - p1[ -_1 ];
-								n1y = p1[  _2 ] - p0[  0  ];
-								n1z = p5[  0  ] - p1[ -_3 ];
-								n2x = p2[  _1 ] - p1[  0  ];
-								n2y = p2[  _2 ] - p3[  0  ];
-								n2z = p6[  0  ] - p2[ -_3 ];
-								n3x = p3[  _1 ] - p0[  0  ];
-								n3y = p2[  0  ] - p3[ -_2 ];
-								n3z = p7[  0  ] - p3[ -_3 ];
-								n4x = p7[  0  ] - p4[ -_1 ];
-								n4y = p5[  0  ] - p4[ -_2 ];
-								n4z = p4[  _3 ] - p0[  0  ];
-								n5x = p6[  0  ] - p5[ -_1 ];
-								n5y = p5[  _2 ] - p4[  0  ];
-								n5z = p5[  _3 ] - p1[  0  ];
-								n6x = p6[  _1 ] - p5[  0  ];
-								n6y = p6[  _2 ] - p7[  0  ];
-								n6z = p6[  _3 ] - p2[  0  ];
-								n7x = p7[  _1 ] - p4[  0  ];
-								n7y = p6[  0  ] - p7[ -_2 ];
-								n7z = p7[  _3 ] - p3[  0  ];
+								double n0x = p3[  0  ] - p0[ -_1 ];
+								double n0y = p1[  0  ] - p0[ -_2 ];
+								double n0z = p4[  0  ] - p0[ -_3 ];
+								double n1x = p2[  0  ] - p1[ -_1 ];
+								double n1y = p1[  _2 ] - p0[  0  ];
+								double n1z = p5[  0  ] - p1[ -_3 ];
+								double n2x = p2[  _1 ] - p1[  0  ];
+								double n2y = p2[  _2 ] - p3[  0  ];
+								double n2z = p6[  0  ] - p2[ -_3 ];
+								double n3x = p3[  _1 ] - p0[  0  ];
+								double n3y = p2[  0  ] - p3[ -_2 ];
+								double n3z = p7[  0  ] - p3[ -_3 ];
+								double n4x = p7[  0  ] - p4[ -_1 ];
+								double n4y = p5[  0  ] - p4[ -_2 ];
+								double n4z = p4[  _3 ] - p0[  0  ];
+								double n5x = p6[  0  ] - p5[ -_1 ];
+								double n5y = p5[  _2 ] - p4[  0  ];
+								double n5z = p5[  _3 ] - p1[  0  ];
+								double n6x = p6[  _1 ] - p5[  0  ];
+								double n6y = p6[  _2 ] - p7[  0  ];
+								double n6z = p6[  _3 ] - p2[  0  ];
+								double n7x = p7[  _1 ] - p4[  0  ];
+								double n7y = p6[  0  ] - p7[ -_2 ];
+								double n7z = p7[  _3 ] - p3[  0  ];
+
+								ndx[ 0 ] = n0x;
+								ndx[ 1 ] = n3x - n0x;
+								ndx[ 2 ] = n1x - n0x;
+								ndx[ 3 ] = n2x - n3x - ndx[ 2 ];
+								ndx[ 4 ] = n4x;
+								ndx[ 5 ] = n7x - n4x;
+								ndx[ 6 ] = n5x - n4x;
+								ndx[ 7 ] = n6x - n7x - ndx[ 6 ];
+
+								ndy[ 0 ] = n0y;
+								ndy[ 1 ] = n3y - n0y;
+								ndy[ 2 ] = n1y - n0y;
+								ndy[ 3 ] = n2y - n3y - ndy[ 2 ];
+								ndy[ 4 ] = n4y;
+								ndy[ 5 ] = n7y - n4y;
+								ndy[ 6 ] = n5y - n4y;
+								ndy[ 7 ] = n6y - n7y - ndy[ 6 ];
+
+								ndz[ 0 ] = n0z;
+								ndz[ 1 ] = n3z - n0z;
+								ndz[ 2 ] = n1z - n0z;
+								ndz[ 3 ] = n2z - n3z - ndz[ 2 ];
+								ndz[ 4 ] = n4z;
+								ndz[ 5 ] = n7z - n4z;
+								ndz[ 6 ] = n5z - n4z;
+								ndz[ 7 ] = n6z - n7z - ndz[ 6 ];
 
 								op = p;
 							}
 
-							double nx  = ( n0x + ( n3x - n0x ) * xx ) + ( n1x - n0x + ( n0x - n1x + n2x - n3x ) * xx ) * yy;
-							nx += ( ( n4x + ( n7x - n4x ) * xx ) + ( n5x - n4x + ( n4x - n5x + n6x - n7x ) * xx ) * yy - nx ) * zz;
-							double ny  = ( n0y + ( n3y - n0y ) * xx ) + ( n1y - n0y + ( n0y - n1y + n2y - n3y ) * xx ) * yy;
-							ny += ( ( n4y + ( n7y - n4y ) * xx ) + ( n5y - n4y + ( n4y - n5y + n6y - n7y ) * xx ) * yy - ny ) * zz;
-							double nz  = ( n0z + ( n3z - n0z ) * xx ) + ( n1z - n0z + ( n0z - n1z + n2z - n3z ) * xx ) * yy;
-							nz += ( ( n4z + ( n7z - n4z ) * xx ) + ( n5z - n4z + ( n4z - n5z + n6z - n7z ) * xx ) * yy - nz ) * zz;
+							double nx  = ( ndx[ 0 ] + ndx[ 1 ] * xx ) + ( ndx[ 2 ] + ndx[ 3 ] * xx ) * yy;
+							nx += ( ( ndx[ 4 ] + ndx[ 5 ] * xx ) + ( ndx[ 6 ] + ndx[ 7 ] * xx ) * yy - nx ) * zz;
+							double ny  = ( ndy[ 0 ] + ndy[ 1 ] * xx ) + ( ndy[ 2 ] + ndy[ 3 ] * xx ) * yy;
+							ny += ( ( ndy[ 4 ] + ndy[ 5 ] * xx ) + ( ndy[ 6 ] + ndy[ 7 ] * xx ) * yy - ny ) * zz;
+							double nz  = ( ndz[ 0 ] + ndz[ 1 ] * xx ) + ( ndz[ 2 ] + ndz[ 3 ] * xx ) * yy;
+							nz += ( ( ndz[ 4 ] + ndz[ 5 ] * xx ) + ( ndz[ 6 ] + ndz[ 7 ] * xx ) * yy - nz ) * zz;
 
 							nx *= _1_ax;
 							ny *= _1_ay;
@@ -1735,10 +1770,8 @@ namespace __volumerendering_specialized__
 								lAtten /= 1.0 + lightAtten * ( len * len );
 							}
 
-							c = c * diffuse_ratio + ambient_ratio;
-
 							double alpha = oc.alpha * sampling_step;
-							add_intensity += alpha * add_opacity * ( oc.pixel * c + spec ) * lAtten;
+							add_intensity += alpha * add_opacity * ( oc.pixel * ( c * diffuse_ratio + ambient_ratio ) + spec ) * lAtten;
 							add_opacity *= ( 1.0 - alpha );
 
 							// 画素がレンダリング結果に与える影響がしきい値以下になった場合は終了
