@@ -135,9 +135,9 @@ void ct_draw_area::read_image( ct_image_window *wnd )
 	const char *filename = fl_file_chooser( "Open", "*", "" );
 	if( filename == NULL ) return;
 
-	size_type w = 512;
-	size_type h = 512;
-	size_type d = 189;
+	int w = 512;
+	int h = 512;
+	int d = 189;
 	double x = 0.625;
 	double y = 0.625;
 	double z = 1.0;
@@ -154,9 +154,9 @@ void ct_draw_area::read_image( ct_image_window *wnd )
 
 	if( window.show( ) )
 	{
-		w = static_cast< size_type >( window.width->value( ) );
-		h = static_cast< size_type >( window.height->value( ) );
-		d = static_cast< size_type >( window.depth->value( ) );
+		w = static_cast< int >( window.width->value( ) );
+		h = static_cast< int >( window.height->value( ) );
+		d = static_cast< int >( window.depth->value( ) );
 		x = window.sizeX->value( );
 		y = window.sizeY->value( );
 		z = window.sizeZ->value( );
@@ -164,7 +164,7 @@ void ct_draw_area::read_image( ct_image_window *wnd )
 
 		if( mist::read_raw( ct, filename, w, h, d, x, y, z, offset, false, progress_callback( wnd->progress_bar ) ) )
 		{
-			wnd->Indx->range( 0, ct.depth( ) - 1 );
+			wnd->Indx->range( 0, static_cast< double >( ct.depth( ) - 1 ) );
 		}
 		else
 		{

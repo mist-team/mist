@@ -34,7 +34,6 @@
 #ifndef __INCLUDE_MIST_CONF_H__
 #define __INCLUDE_MIST_CONF_H__
 
-
 #include <iostream>
 
 
@@ -60,14 +59,35 @@ _MIST_BEGIN
 
 
 // Microsoft Visual C++ のバージョンをチェック
-#if defined( _MSC_VER ) && _MSC_VER <= 1200
-	// Visual C++6.0
-	#define __MIST_MSVC__		6
-#elif _MSC_VER > 1200
-	// Visual Studio .NETバージョン
-	#define __MIST_MSVC__		7
+#if defined( _MSC_VER )
+	#if _MSC_VER <= 1200
+		// Visual C++6.0
+		#define __MIST_MSVC__		6
+	#elif _MSC_VER < 1400
+		// Visual Studio .NET 2002 - 2003バージョン
+		#define __MIST_MSVC__		7
+	#else
+		// Visual Studio 2005 バージョン
+		#define __MIST_MSVC__		8
+	#endif
 #endif
 
+
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ >= 8
+	// セキュリティ上の理由で、sprintf や fopen などの関数呼び出しが警告となる問題への対処
+	// ここでの設定は、MISTをインクルードするすべてのファイルに影響があります
+	//
+	// 次のいずれかを選択する
+
+	// 挙動が不明なので、今のところ警告を無視する
+	#pragma warning( disable : 4996 )
+
+	//#undef _CRT_SECURE_CPP_OVERLOAD_SECURE_NAMES
+	//#define _CRT_SECURE_CPP_OVERLOAD_SECURE_NAMES		0
+	////#define _CRT_SECURE_NO_DEPRECATE					1	// セキュリティが弱い古い関数を利用する
+	//#undef _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES
+	//#define _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES		1	// セキュリティが強化された関数を利用する（実行に時間が必要となる可能性あり）
+#endif
 
 // Microsoft Windows かどうかをチェック
 #if defined( WIN32 )
@@ -245,7 +265,7 @@ struct __mist_dmy_callback__
 	//! @return true  … アルゴリズムの実行を継続
 	//! @return false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止
 	//!
-	bool operator()( double percent ) const { return( true ); }
+	bool operator()( long double percent ) const { return( true ); }
 };
 
 
@@ -269,7 +289,7 @@ struct __mist_convert_callback__
 	//! @return true  … アルゴリズムの実行を継続
 	//! @return false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止
 	//!
-	bool operator()( double percent ) const
+	bool operator()( long double percent ) const
 	{
 		percent = lower_ + percent / 100.0 * ( upper_ - lower_ );
 		return( f_( percent ) );
@@ -295,7 +315,7 @@ struct __mist_console_callback__
 	//! @return true  … アルゴリズムの実行を継続
 	//! @return false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止
 	//!
-	bool operator()( double percent ) const
+	bool operator()( long double percent ) const
 	{
 		int k3 = static_cast< int >( percent / 100.0 );
 		percent -= k3 * 100.0;
@@ -360,7 +380,7 @@ struct __mist_progress_callback__
 	//! @return true  … アルゴリズムの実行を継続
 	//! @return false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止
 	//!
-	bool operator()( double percent ) const
+	bool operator()( long double percent ) const
 	{
 		if( percent > 100.0 )
 		{

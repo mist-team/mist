@@ -174,7 +174,8 @@ namespace __raw_controller__
 
 			f( 0.0 );
 
-			size_type i = 0, pre_progress = 0;
+			size_type i = 0;
+			unsigned int pre_progress = 0;
 			while( !gzeof( fp ) )
 			{
 				size_type num = gzread( fp, ( void * )tmparray, sizeof( ValueType ) * 4096 );
@@ -204,7 +205,7 @@ namespace __raw_controller__
 
 				// 進行状況を0～100％で表示する
 				// コールバック関数の戻り値が false になった場合は処理を中断し，制御を返す
-				size_type progress = static_cast< size_type >( static_cast< double >( i + 1 ) / static_cast< double >( image.size( ) ) * 100.0 );
+				unsigned int progress = static_cast< unsigned int >( static_cast< double >( i + 1 ) / static_cast< double >( image.size( ) ) * 100.0 );
 				if( progress != pre_progress )
 				{
 					pre_progress = progress;
@@ -330,7 +331,7 @@ namespace __raw_controller__
 				if( progress != pre_progress )
 				{
 					pre_progress = progress;
-					if( !f( progress ) )
+					if( !f( static_cast< double >( progress ) ) )
 					{
 						gzclose( fp );
 						return( false );

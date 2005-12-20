@@ -34,6 +34,10 @@
 #define __INCLUDE_MIST_DICOM__
 
 
+#ifndef __INCLUDE_MIST_CONF_H__
+#include "../config/mist_conf.h"
+#endif
+
 #ifndef __INCLUDE_MIST_H__
 #include "../mist.h"
 #endif

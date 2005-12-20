@@ -108,7 +108,7 @@ struct progress_callback
 		{
 			f_->show( );
 		}
-		f_->value( percent );
+		f_->value( static_cast< float >( percent ) );
 		Fl::wait( 0 );
 		return( true );
 	}

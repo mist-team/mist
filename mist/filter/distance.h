@@ -601,7 +601,7 @@ namespace __calvin__
 						for( size_type i1 = _i1s ; i1 <= _i1e ; i1++ )
 						{
 							double nd = static_cast< double >( i1 - _i1s + 1 ) * as;
-							double fn = p[ i1 * diff ];
+							double fn = static_cast< double >( p[ i1 * diff ] );
 
 							if( l < 2 )
 							{

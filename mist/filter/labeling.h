@@ -216,7 +216,10 @@ namespace __labeling_controller__
 		typedef typename Array::value_type value_type;
 
 //		typedef difference_type label_value_type;
+//		typedef size_type label_value_type;
 		typedef unsigned int label_value_type;
+
+		typedef std::vector< label_value_type >::value_type vector_label_value_type;
 
 		size_type label_num = 0;
 		size_type i, j, k, l, count;
@@ -299,7 +302,7 @@ namespace __labeling_controller__
 								{
 									if( T[ m ] == L[ l ] )
 									{
-										T[ m ] = L1;
+										T[ m ] = static_cast< vector_label_value_type >( L1 );
 									}
 								}
 							}

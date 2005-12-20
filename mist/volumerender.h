@@ -2616,7 +2616,7 @@ namespace __mip_controller__
 					}
 				}
 
-				out( i, j ) = maximum_intensity;
+				out( i, j ) = static_cast< out_value_type >( maximum_intensity );
 			}
 		}
 		return( true );

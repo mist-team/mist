@@ -75,7 +75,7 @@ int main( )
 
 	{
 		matrix L, U, pivot;
-		mist::lu_factorization( a, L, U, pivot );
+		mist::lu_factorization( a, L, U, pivot, mist::matrix_style::sy );
 
 		std::cout << L << std::endl << std::endl;
 		std::cout << U << std::endl << std::endl;

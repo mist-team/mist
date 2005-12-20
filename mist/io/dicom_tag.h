@@ -35,7 +35,7 @@
 
 
 #ifndef __INCLUDE_MIST_CONF_H__
-#include "mist_conf.h"
+#include "../config/mist_conf.h"
 #endif
 
 #include <iostream>
