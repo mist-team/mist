@@ -60,19 +60,11 @@ namespace __spline_utility__
 		// 一般のデータ型用の点演算
 		static const T add( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 + v2 ); }
 
-		static const T add( const T &v1, const typename T::value_type &v2 ){ return( v1 + v2 ); }
-
 		static const T sub( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 - v2 ); }
-
-		static const T sub( const T &v1, const typename T::value_type &v2 ){ return( v1 - v2 ); }
 
 		static const T mul( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 * v2 ); }
 
-		static const T mul( const T &v1, const typename T::value_type &v2 ){ return( v1 * v2 ); }
-
 		static const T div( const T &v1, const typename type_trait< T >::value_type &v2 ){ return( v1 / v2 ); }
-
-		static const T div( const T &v1, const typename T::value_type &v2 ){ return( v1 / v2 ); }
 	};
 
 	template < class T >
@@ -123,13 +115,13 @@ namespace __spline_utility__
 	inline const T1 add( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::add( v1, v2 ) ); }
 
 	template < class T1, class T2 >
-	inline const T1 sub( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::add( v1, v2 ) ); }
+	inline const T1 sub( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::sub( v1, v2 ) ); }
 
 	template < class T1, class T2 >
-	inline const T1 div( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::add( v1, v2 ) ); }
+	inline const T1 div( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::div( v1, v2 ) ); }
 
 	template < class T1, class T2 >
-	inline const T1 mul( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::add( v1, v2 ) ); }
+	inline const T1 mul( const T1 &v1, const T2 &v2 ){ return( arithmetic_operation< T1 >::mul( v1, v2 ) ); }
 }
 
 
@@ -231,7 +223,7 @@ protected:
 		value_type _0 = value_type( base::operator[]( 0 ) ) * 0;
 		value_type _1 = add( _0, 1 );
 		value_type _2 = add( _0, 2 );
-		value_type _4 = add( _0, 3 );
+		value_type _4 = add( _0, 4 );
 
 		p1_.clear( );
 
@@ -311,7 +303,7 @@ protected:
 		value_type _0 = value_type( base::operator[]( 0 ) ) * 0;
 		value_type _1 = add( _0, 1 );
 		value_type _2 = add( _0, 2 );
-		value_type _4 = add( _0, 3 );
+		value_type _4 = add( _0, 4 );
 
 		// 開始点と終点について
 		a[ 0 ]   = _0;
