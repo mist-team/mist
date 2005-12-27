@@ -109,6 +109,91 @@ namespace __spline_utility__
 		static const vector2< T > div( const vector2< T > &v1, const typename vector2< T >::value_type &val ){ return( vector2< T >( v1.x / val, v1.y / val ) ); }
 	};
 
+	template < class T >
+	struct arithmetic_operation< array< T > >
+	{
+		// array 用の点演算
+		static const array< T > add( const array< T > &v1, const array< T > &v2 )
+		{ 
+			array< T > ret( v1.size( ) ); 
+			for( size_t i = 0 ; i < ret.size( ) ; i ++ )
+			{ 
+				ret[ i ] = v1[ i ] + v2[ i ]; 
+			} 
+			return( ret ); 
+		}
+
+		static const array< T > add( const array< T > &v1, const typename array< T >::value_type &val )
+		{ 
+			array< T > ret( v1.size( ) ); 
+			for( size_t i = 0 ; i < ret.size( ) ; i ++ )
+			{ 
+				ret[ i ] = v1[ i ] + val; 
+			} 
+			return( ret ); 
+		}
+
+		static const array< T > sub( const array< T > &v1, const array< T > &v2 )
+		{ 
+			array< T > ret( v1.size( ) ); 
+			for( size_t i = 0 ; i < ret.size( ) ; i ++ )
+			{ 
+				ret[ i ] = v1[ i ] - v2[ i ]; 
+			} 
+			return( ret ); 
+		}
+
+		static const array< T > sub( const array< T > &v1, const typename array< T >::value_type &val )
+		{ 
+			array< T > ret( v1.size( ) ); 
+			for( size_t i = 0 ; i < ret.size( ) ; i ++ )
+			{ 
+				ret[ i ] = v1[ i ] - val; 
+			} 
+			return( ret ); 
+		}
+
+		static const array< T > mul( const array< T > &v1, const array< T > &v2 )
+		{ 
+			array< T > ret( v1.size( ) ); 
+			for( size_t i = 0 ; i < ret.size( ) ; i ++ )
+			{ 
+				ret[ i ] = v1[ i ] * v2[ i ]; 
+			} 
+			return( ret ); 
+		}
+
+		static const array< T > mul( const array< T > &v1, const typename array< T >::value_type &val )
+		{ 
+			array< T > ret( v1.size( ) ); 
+			for( size_t i = 0 ; i < ret.size( ) ; i ++ )
+			{ 
+				ret[ i ] = v1[ i ] * val; 
+			} 
+			return( ret ); 
+		}
+
+		static const array< T > div( const array< T > &v1, const array< T > &v2 )
+		{ 
+			array< T > ret( v1.size( ) ); 
+			for( size_t i = 0 ; i < ret.size( ) ; i ++ )
+			{ 
+				ret[ i ] = v1[ i ] / v2[ i ]; 
+			} 
+			return( ret ); 
+		}
+
+		static const array< T > div( const array< T > &v1, const typename array< T >::value_type &val )
+		{ 
+			array< T > ret( v1.size( ) ); 
+			for( size_t i = 0 ; i < ret.size( ) ; i ++ )
+			{ 
+				ret[ i ] = v1[ i ] / val; 
+			} 
+			return( ret ); 
+		}
+	};
+
 
 	// 一般のデータ型用の点演算
 	template < class T1, class T2 >
