@@ -277,7 +277,7 @@ namespace __raw_controller__
 				if( progress != pre_progress )
 				{
 					pre_progress = progress;
-					if( !f( progress ) )
+					if( !f( static_cast< double >( progress ) ) )
 					{
 						fclose( fp );
 						return( false );

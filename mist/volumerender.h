@@ -1636,7 +1636,9 @@ namespace __volumerendering_specialized__
 
 						const_pointer p = &in( si, sj, sk );
 
-						if( p != op )
+						bool need_update = p != op;
+
+						if( need_update )
 						{
 							nct[ 0 ] = p[ d0 ];
 							nct[ 1 ] = p[ d3 ] - p[ d0 ];
@@ -1656,7 +1658,7 @@ namespace __volumerendering_specialized__
 
 						if( oc.has_alpha )
 						{
-							if( p != op )
+							if( need_update )
 							{
 								const_pointer p0 = p;
 								const_pointer p1 = p0 + d1;
@@ -1738,8 +1740,9 @@ namespace __volumerendering_specialized__
 							nz *= _1_len;
 
 							// –@ü‚ª”½“]‚µ‚Ä‚¢‚éê‡‚Ö‚Ì‘Î‰
-							double c = slight.x * nx + slight.y * ny + slight.z * nz;
-							c = c < 0.0 ? -c : c;
+							double c = fabs( slight.x * nx + slight.y * ny + slight.z * nz );
+							//double c = slight.x * nx + slight.y * ny + slight.z * nz;
+							//c = c < 0.0 ? -c : c;
 
 							double spec = 0.0;
 							if( bSpecular )
