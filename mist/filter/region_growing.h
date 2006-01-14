@@ -127,11 +127,19 @@ namespace region_growing_utility
 		size_type height( ) const { return( 1 ); }	///< @brief 構造要素の高さを返す
 		size_type depth( ) const { return( 1 ); }	///< @brief 構造要素の深さを返す
 
+		expand_mode_type __expand_mode__;
+
 		/// @brief 任意の位置が構造要素内かどうかを判定する関数
 		bool operator ()( difference_type i, difference_type j, difference_type k ) const { return( true ); }
 
 		/// @brief 次の注目点の定め方
 		expand_mode_type expand_mode( ) const { return( NC6 ); }
+
+		/// @brief NC6 近傍型のボクセル
+		voxel( ) : __expand_mode__( NC6 ){ }
+
+		/// @brief 指定した近傍のボクセルとして初期化する
+		voxel( expand_mode_type mode ) : __expand_mode__( mode ){ }
 	};
 
 
@@ -258,6 +266,90 @@ namespace region_growing_utility
 
 		/// @brief 任意のしきい値で初期化
 		less( value_type threshold ) : th_( threshold ){ }
+	};
+
+
+	/// @brief 領域拡張法で用いる拡張条件
+	//!
+	//! 条件判定リスト内の全ての画素がある値より大きい
+	//!
+	template < class T >
+	class greater
+	{
+	private:
+		typedef size_t		size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+		typedef ptrdiff_t	difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+		typedef T			value_type;			///< @brief 条件判定に用いるデータ型
+
+	protected:
+		value_type th_;		///< @brief しきい値
+
+	public:
+		/// @brief 条件判定リスト内の画素が条件を満たすかどうかを調べる
+		template < class VerifyList >
+		bool operator()( const VerifyList &elements, size_type num ) const
+		{
+			typedef typename VerifyList::value_type verify_value_type;
+
+			for( size_type i = 0 ; i < num ; i++ )
+			{
+				const verify_value_type &v = elements[ i ];
+				if( v < th_ )
+				{
+					return ( false );
+				}
+			}
+
+			return ( true );
+		}
+
+		/// @brief 条件判定を行う際に，構造要素内の全画素が必要な場合は true を返す
+		bool require_all_elements( ) const { return( false ); }
+
+		/// @brief 任意のしきい値で初期化
+		greater( value_type threshold ) : th_( threshold ){ }
+	};
+
+
+	/// @brief 領域拡張法で用いる拡張条件
+	//!
+	//! 条件判定リスト内の全ての画素がある値と等しい
+	//!
+	template < class T >
+	class equal
+	{
+	private:
+		typedef size_t		size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+		typedef ptrdiff_t	difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+		typedef T			value_type;			///< @brief 条件判定に用いるデータ型
+
+	protected:
+		value_type th_;		///< @brief しきい値
+
+	public:
+		/// @brief 条件判定リスト内の画素が条件を満たすかどうかを調べる
+		template < class VerifyList >
+		bool operator()( const VerifyList &elements, size_type num ) const
+		{
+			typedef typename VerifyList::value_type verify_value_type;
+
+			for( size_type i = 0 ; i < num ; i++ )
+			{
+				const verify_value_type &v = elements[ i ];
+				if( v < th_ || th_ < v )
+				{
+					return ( false );
+				}
+			}
+
+			return ( true );
+		}
+
+		/// @brief 条件判定を行う際に，構造要素内の全画素が必要な場合は true を返す
+		bool require_all_elements( ) const { return( false ); }
+
+		/// @brief 任意のしきい値で初期化
+		equal( value_type threshold ) : th_( threshold ){ }
 	};
 
 
