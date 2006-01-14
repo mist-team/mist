@@ -280,7 +280,7 @@ namespace __labeling_controller__
 						{
 							label_num++;
 						}
-						T.push_back( label_num );
+						T.push_back( static_cast< label_value_type >( label_num ) );
 
 						in( i, j, k ) = static_cast< value_type >( label_num );
 					}
