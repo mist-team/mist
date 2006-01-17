@@ -191,8 +191,8 @@ namespace __figure_dedomposition__
 		//! @param[in] in        … 入力画像
 		//! @param[in] out       … 出力ラベル画像
 		//!
-		template < class Array >
-		void operator()( size_t loop, size_t label_num, double radius, const Array &in, const Array &out ) const
+		template < class Array1, class Array2 >
+		void operator()( size_t loop, size_t label_num, double radius, const Array1 &in, const Array2 &out ) const
 		{
 		}
 	};
