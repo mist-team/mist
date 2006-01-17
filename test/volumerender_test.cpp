@@ -183,9 +183,9 @@ void volr_draw_area::draw_image( )
 	}
 	else
 	{
-		double W = ct.width( );
-		double H = ct.height( );
-		double D = ct.depth( );
+		double W = static_cast< double >( ct.width( ) );
+		double H = static_cast< double >( ct.height( ) );
+		double D = static_cast< double >( ct.depth( ) );
 		double len = std::sqrt( W * W + H * H + D * D );
 		double reso = len / static_cast< double >( image_.width( ) ) / std::sqrt( 3.0 );
 		image_.reso( w( ) / static_cast< double >( h( ) ) * reso, 1.0 * reso );
@@ -218,9 +218,9 @@ void volr_draw_area::read_image( volr_image_window *wnd )
 	ct_value_type offset = 0;
 
 	parameter_window window;
-	window.width->value( w );
-	window.height->value( h );
-	window.depth->value( d );
+	window.width->value( static_cast< double >( w ) );
+	window.height->value( static_cast< double >( h ) );
+	window.depth->value( static_cast< double >( d ) );
 	window.sizeX->value( x );
 	window.sizeY->value( y );
 	window.sizeZ->value( z );

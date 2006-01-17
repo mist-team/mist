@@ -180,7 +180,7 @@ namespace uniform
 			i = 1;
 			j = 0;	
 
-			for( k = ( number_n_ > seed_array.size( ) ? number_n_ : seed_array.size( ) ) ; k > 0 ; k-- )
+			for( k = ( number_n_ > seed_array.size( ) ? number_n_ : static_cast< unsigned long >( seed_array.size( ) ) ) ; k > 0 ; k-- )
 			{
 				mt_[ i ] = ( mt_[ i ] ^ ( ( mt_[ i - 1 ] ^ ( mt_[ i - 1 ] >> 30 ) ) * 1664525UL ) ) + seed_array[ j ] + j;  /* non linear */
 				mt_[ i ] &= 0xffffffffUL;  /* for WORDSIZE > 32 machines */
