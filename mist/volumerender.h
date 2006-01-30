@@ -348,6 +348,41 @@ namespace volumerender
 		return( true );
 	}
 
+	template < class T >
+	inline bool check_intersection( vector3< T > &p1, vector3< T > &p2, const boundingbox &box, vector3< T > &normal )
+	{
+		typedef vector3< T > vector_type;
+		typedef typename vector3< T >::value_type value_type;
+
+		vector_type n( box.a, box.b, box.c );
+
+		value_type d1 = p1.inner( n );
+		value_type d2 = p2.inner( n );
+		bool c1 = box.d + d1 >= 0;
+		bool c2 = box.d + d2 >= 0;
+
+		if( c1 && c2 )
+		{
+			return( true );
+		}
+		else if( !c1 && !c2 )
+		{
+			return( false );
+		}
+		vector_type v1 = p1;
+		vector_type v2 = p2;
+		if( !c1 )
+		{
+			p1 = v2 + ( v1 - v2 ) * ( ( box.d + d2 ) / ( d2 - d1 ) );
+			normal = n;
+		}
+		if( !c2 )
+		{
+			p2 = v1 + ( v2 - v1 ) * ( ( box.d + d1 ) / ( d1 - d2 ) );
+		}
+		return( true );
+	}
+
 	struct parameter
 	{
 		typedef vector3< double > vector_type;
@@ -1501,8 +1536,8 @@ namespace __volumerendering_specialized__
 		double asy = ay * top_to_bottom;
 		double asz = az * front_to_back;
 
-		double masp = ax < ay ? ax : ay;
-		masp = masp < az ? masp : az;
+		double masp = ax > ay ? ax : ay;
+		masp = masp > az ? masp : az;
 
 		pos.x *= left_to_right;
 		pos.y *= top_to_bottom;
@@ -1546,14 +1581,15 @@ namespace __volumerendering_specialized__
 
 				casting_start = pos;
 				casting_end = pos + light * max_distance;
+				vector_type normal;
 
 				// 物体との衝突判定
-				if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
+				if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ], normal )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ], normal )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ], normal )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ], normal )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ], normal )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ], normal ) )
 				{
 					// 光の減衰を実現するために，カメラからの距離を測る
 					Pos.x = pos.x / asx + osffset.x;
@@ -1623,6 +1659,205 @@ namespace __volumerendering_specialized__
 					double ndy[ 8 ];
 					double ndz[ 8 ];
 					const_pointer op = NULL;
+
+					if( l == 0.0 )
+					{
+						difference_type si = volumerender::to_integer( spos.x );
+						difference_type sj = volumerender::to_integer( spos.y );
+						difference_type sk = volumerender::to_integer( spos.z );
+
+						double xx = spos.x - si;
+						double yy = spos.y - sj;
+						double zz = spos.z - sk;
+
+						const_pointer p = &in( si, sj, sk );
+
+						nct[ 0 ] = p[ d0 ];
+						nct[ 1 ] = p[ d3 ] - p[ d0 ];
+						nct[ 2 ] = p[ d1 ] - p[ d0 ];
+						nct[ 3 ] = p[ d2 ] - p[ d3 ] - nct[ 2 ];
+						nct[ 4 ] = p[ d4 ];
+						nct[ 5 ] = p[ d7 ] - p[ d4 ];
+						nct[ 6 ] = p[ d5 ] - p[ d4 ];
+						nct[ 7 ] = p[ d6 ] - p[ d7 ] - nct[ 6 ];
+
+						// CT値に対応する色と不透明度を取得
+						double ct = ( nct[ 0 ] + nct[ 1 ] * xx ) + ( nct[ 2 ] + nct[ 3 ] * xx ) * yy;
+						ct += ( ( nct[ 4 ] + nct[ 5 ] * xx ) + ( nct[ 6 ] + nct[ 7 ] * xx ) * yy - ct ) * zz;
+
+						const attribute_type &oc = table[ volumerender::to_integer( ct ) ];
+
+						if( oc.has_alpha )
+						{
+							const_pointer p0 = p;
+							const_pointer p1 = p0 + d1;
+							const_pointer p2 = p0 + d2;
+							const_pointer p3 = p0 + d3;
+							const_pointer p4 = p0 + d4;
+							const_pointer p5 = p0 + d5;
+							const_pointer p6 = p0 + d6;
+							const_pointer p7 = p0 + d7;
+
+							double n0x = p3[  0  ] - p0[ -_1 ];
+							double n0y = p1[  0  ] - p0[ -_2 ];
+							double n0z = p4[  0  ] - p0[ -_3 ];
+							double n1x = p2[  0  ] - p1[ -_1 ];
+							double n1y = p1[  _2 ] - p0[  0  ];
+							double n1z = p5[  0  ] - p1[ -_3 ];
+							double n2x = p2[  _1 ] - p1[  0  ];
+							double n2y = p2[  _2 ] - p3[  0  ];
+							double n2z = p6[  0  ] - p2[ -_3 ];
+							double n3x = p3[  _1 ] - p0[  0  ];
+							double n3y = p2[  0  ] - p3[ -_2 ];
+							double n3z = p7[  0  ] - p3[ -_3 ];
+							double n4x = p7[  0  ] - p4[ -_1 ];
+							double n4y = p5[  0  ] - p4[ -_2 ];
+							double n4z = p4[  _3 ] - p0[  0  ];
+							double n5x = p6[  0  ] - p5[ -_1 ];
+							double n5y = p5[  _2 ] - p4[  0  ];
+							double n5z = p5[  _3 ] - p1[  0  ];
+							double n6x = p6[  _1 ] - p5[  0  ];
+							double n6y = p6[  _2 ] - p7[  0  ];
+							double n6z = p6[  _3 ] - p2[  0  ];
+							double n7x = p7[  _1 ] - p4[  0  ];
+							double n7y = p6[  0  ] - p7[ -_2 ];
+							double n7z = p7[  _3 ] - p3[  0  ];
+
+							ndx[ 0 ] = n0x;
+							ndx[ 1 ] = n3x - n0x;
+							ndx[ 2 ] = n1x - n0x;
+							ndx[ 3 ] = n2x - n3x - ndx[ 2 ];
+							ndx[ 4 ] = n4x;
+							ndx[ 5 ] = n7x - n4x;
+							ndx[ 6 ] = n5x - n4x;
+							ndx[ 7 ] = n6x - n7x - ndx[ 6 ];
+
+							ndy[ 0 ] = n0y;
+							ndy[ 1 ] = n3y - n0y;
+							ndy[ 2 ] = n1y - n0y;
+							ndy[ 3 ] = n2y - n3y - ndy[ 2 ];
+							ndy[ 4 ] = n4y;
+							ndy[ 5 ] = n7y - n4y;
+							ndy[ 6 ] = n5y - n4y;
+							ndy[ 7 ] = n6y - n7y - ndy[ 6 ];
+
+							ndz[ 0 ] = n0z;
+							ndz[ 1 ] = n3z - n0z;
+							ndz[ 2 ] = n1z - n0z;
+							ndz[ 3 ] = n2z - n3z - ndz[ 2 ];
+							ndz[ 4 ] = n4z;
+							ndz[ 5 ] = n7z - n4z;
+							ndz[ 6 ] = n5z - n4z;
+							ndz[ 7 ] = n6z - n7z - ndz[ 6 ];
+
+							op = p;
+
+							double nx  = ( ndx[ 0 ] + ndx[ 1 ] * xx ) + ( ndx[ 2 ] + ndx[ 3 ] * xx ) * yy;
+							nx += ( ( ndx[ 4 ] + ndx[ 5 ] * xx ) + ( ndx[ 6 ] + ndx[ 7 ] * xx ) * yy - nx ) * zz;
+							double ny  = ( ndy[ 0 ] + ndy[ 1 ] * xx ) + ( ndy[ 2 ] + ndy[ 3 ] * xx ) * yy;
+							ny += ( ( ndy[ 4 ] + ndy[ 5 ] * xx ) + ( ndy[ 6 ] + ndy[ 7 ] * xx ) * yy - ny ) * zz;
+							double nz  = ( ndz[ 0 ] + ndz[ 1 ] * xx ) + ( ndz[ 2 ] + ndz[ 3 ] * xx ) * yy;
+							nz += ( ( ndz[ 4 ] + ndz[ 5 ] * xx ) + ( ndz[ 6 ] + ndz[ 7 ] * xx ) * yy - nz ) * zz;
+
+							// 切断面の法線を反映させる
+							double _1_len = 1.0 / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( ) ) * 0.5; 
+							nx = nx * _1_len + normal.x;
+							ny = ny * _1_len + normal.y;
+							nz = nz * _1_len + normal.z;
+
+							nx *= _1_ax;
+							ny *= _1_ay;
+							nz *= _1_az;
+
+							// 法線が反転している場合への対応
+							double c = fabs( ( slight.x * nx + slight.y * ny + slight.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( ) ) );
+
+							double spec = 0.0;
+							if( bSpecular )
+							{
+								spec = 2.0 * c * c - 1.0;
+
+								if( spec <= 0.0 )
+								{
+									spec = 0;
+								}
+								else
+								{
+									spec *= spec;	//  2乗
+									spec *= spec;	//  4乗
+									spec *= spec;	//  8乗
+									spec *= spec;	// 16乗
+									spec *= spec;	// 32乗
+									spec *= spec;	// 64乗
+									//spec *= spec;	// 128乗
+									spec *= specular * 255.0;
+								}
+							}
+
+							double lAtten = 1.0;
+							if( bLightAtten )
+							{
+								double len = ( l + of ) * dlen;
+								lAtten /= 1.0 + lightAtten * ( len * len );
+							}
+
+							double alpha = oc.alpha * sampling_step;
+							add_intensity += alpha * add_opacity * ( oc.pixel * ( c * diffuse_ratio + ambient_ratio ) + spec ) * lAtten;
+							add_opacity *= ( 1.0 - alpha );
+
+							// 画素がレンダリング結果に与える影響がしきい値以下になった場合は終了
+							if( add_opacity < termination )
+							{
+								out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
+								continue;
+							}
+
+							spos.x += ray_step.x;
+							spos.y += ray_step.y;
+							spos.z += ray_step.z;
+							l += ray_sampling_step;
+						}
+						else
+						{
+							// この位置における物体が透明の場合は次のステップへ移行する
+							spos += ray_step;
+							l += ray_sampling_step;
+
+							size_t count = 0;
+							while( l < n )
+							{
+								difference_type si = volumerender::to_integer( spos.x );
+								difference_type sj = volumerender::to_integer( spos.y );
+								difference_type sk = volumerender::to_integer( spos.z );
+
+								const_pointer p = &in( si, sj, sk );
+
+								// この位置における物体が不透明の場合は次のステップへ移行する
+								if( table.has_alpha( p[ d0 ] ) || table.has_alpha( p[ d1 ] ) ||
+									table.has_alpha( p[ d2 ] ) || table.has_alpha( p[ d3 ] ) ||
+									table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
+									table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) )
+								{
+									if( count > 0 )
+									{
+										spos.x -= ray.x;
+										spos.y -= ray.y;
+										spos.z -= ray.z;
+										l -= 1.0;
+									}
+									break;
+								}
+
+								double current_step = depth_map( si, sj, sk );
+								l += current_step;
+								spos.x += ray.x * current_step;
+								spos.y += ray.y * current_step;
+								spos.z += ray.z * current_step;
+
+								count++;
+							}
+						}
+					}
 
 					while( l < n )
 					{
@@ -1734,13 +1969,9 @@ namespace __volumerendering_specialized__
 							nx *= _1_ax;
 							ny *= _1_ay;
 							nz *= _1_az;
-							double _1_len = 1.0 / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( ) );
-							nx *= _1_len;
-							ny *= _1_len;
-							nz *= _1_len;
 
 							// 法線が反転している場合への対応
-							double c = fabs( slight.x * nx + slight.y * ny + slight.z * nz );
+							double c = fabs( ( slight.x * nx + slight.y * ny + slight.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( ) ) );
 							//double c = slight.x * nx + slight.y * ny + slight.z * nz;
 							//c = c < 0.0 ? -c : c;
 
