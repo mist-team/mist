@@ -1536,8 +1536,8 @@ namespace __volumerendering_specialized__
 		double asy = ay * top_to_bottom;
 		double asz = az * front_to_back;
 
-		double masp = ax > ay ? ax : ay;
-		masp = masp > az ? masp : az;
+		double masp = ax < ay ? ax : ay;
+		masp = masp < az ? masp : az;
 
 		pos.x *= left_to_right;
 		pos.y *= top_to_bottom;
@@ -1652,6 +1652,13 @@ namespace __volumerendering_specialized__
 						spos.x += ray.x * current_step;
 						spos.y += ray.y * current_step;
 						spos.z += ray.z * current_step;
+					}
+
+					// ’[‚Ü‚Å“ž’B‚µ‚½ê‡‚Í‰½‚à‚µ‚È‚¢
+					if( l >= n )
+					{
+						out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
+						continue;
 					}
 
 					double nct[ 8 ];
