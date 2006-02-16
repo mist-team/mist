@@ -35,6 +35,7 @@
 
 #include <limits.h>
 #include <float.h>
+#include <limits>
 
 
 #ifndef __INCLUDE_MIST_CONF_H__
@@ -106,20 +107,20 @@ struct type_limits
 	//!
 	//! 整数の場合は true になる
 	//!
-	_MIST_CONST( bool, is_integer, false );
+	_MIST_CONST( bool, is_integer, std::numeric_limits< T >::is_integer );
 
 	/// @brief 指定された型が符号付かどうか
 	//!
 	//! 符号付の場合は true になる
 	//!
-	_MIST_CONST( bool, is_signed, false );
+	_MIST_CONST( bool, is_signed, std::numeric_limits< T >::is_signed );
 
 
 	/// @brief 型が表現できる最も最小の値を返す
-	static value_type minimum( ) { return( 0 ); }
+	static value_type minimum( ) { return( std::numeric_limits< T >::min( ) ); }
 
 	/// @brief 型が表現できる最も最大の値を返す
-	static value_type maximum( ) { return( 1 ); }
+	static value_type maximum( ) { return( std::numeric_limits< T >::max( ) ); }
 
 	/// @brief 型が表現できるゼロに対応する値を返す
 	static value_type zero( ){ return( 0 ); }
@@ -147,7 +148,6 @@ _DEFINE_TYPE_LIMITS( unsigned long,  true, false,         0, ULONG_MAX, 0 )
 _DEFINE_TYPE_LIMITS(       float,   false,  true,   FLT_MIN,   FLT_MAX, 0.0f )
 _DEFINE_TYPE_LIMITS(      double,   false,  true,   DBL_MIN,   DBL_MAX, 0 )
 _DEFINE_TYPE_LIMITS( long double,   false,  true,  LDBL_MIN,  LDBL_MAX, 0 )
-
 
 #if defined(__MIST_MSVC__) && __MIST_MSVC__ < 7
 
