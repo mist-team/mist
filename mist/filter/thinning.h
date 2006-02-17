@@ -1170,28 +1170,111 @@ namespace __euclidean_utility__
 	};
 
 
+	template < class Tin, class Tout, class Difference >
+	void create_neighbor_list( const Tin *pin, Tout *pout, Difference p[ 27 ] )
+	{
+		for( size_t i = 0 ; i < 27 ; i++ )
+		{
+			pout[ i ] = pin[ p[ i ] ] > 0 ? 1 : 0;
+		}
+	}
+
 	template < class T, class Allocator, class Neighbor >
 	void shrink_skelton( array3< T, Allocator > &in, Neighbor __dmy__ )
 	{
 		typedef typename array3< T, Allocator >::size_type size_type;
+		typedef typename array3< T, Allocator >::difference_type difference_type;
+		typedef typename array3< T, Allocator >::const_pointer const_pointer;
+		typedef typename array3< T, Allocator >::value_type value_type;
 		typedef Neighbor neighbor_type;
 
-		bool loop;
+		difference_type diff[ 27 ];
+		int val[ 27 ];
 
+		{
+			difference_type ox = in.width( ) / 2;
+			difference_type oy = in.height( ) / 2;
+			difference_type oz = in.depth( ) / 2;
+
+			const_pointer p0 = &in( ox, oy, oz );
+
+			diff[  0 ] = &in( ox    , oy    , oz - 1 ) - p0;
+			diff[  1 ] = &in( ox    , oy + 1, oz - 1 ) - p0;
+			diff[  2 ] = &in( ox - 1, oy + 1, oz - 1 ) - p0;
+			diff[  3 ] = &in( ox - 1, oy    , oz - 1 ) - p0;
+			diff[  4 ] = &in( ox - 1, oy - 1, oz - 1 ) - p0;
+			diff[  5 ] = &in( ox    , oy - 1, oz - 1 ) - p0;
+			diff[  6 ] = &in( ox + 1, oy - 1, oz - 1 ) - p0;
+			diff[  7 ] = &in( ox + 1, oy    , oz - 1 ) - p0;
+			diff[  8 ] = &in( ox + 1, oy + 1, oz - 1 ) - p0;
+
+			diff[  9 ] = &in( ox    , oy    , oz     ) - p0;
+			diff[ 10 ] = &in( ox    , oy + 1, oz     ) - p0;
+			diff[ 11 ] = &in( ox - 1, oy + 1, oz     ) - p0;
+			diff[ 12 ] = &in( ox - 1, oy    , oz     ) - p0;
+			diff[ 13 ] = &in( ox - 1, oy - 1, oz     ) - p0;
+			diff[ 14 ] = &in( ox    , oy - 1, oz     ) - p0;
+			diff[ 15 ] = &in( ox + 1, oy - 1, oz     ) - p0;
+			diff[ 16 ] = &in( ox + 1, oy    , oz     ) - p0;
+			diff[ 17 ] = &in( ox + 1, oy + 1, oz     ) - p0;
+
+			diff[ 18 ] = &in( ox    , oy    , oz + 1 ) - p0;
+			diff[ 19 ] = &in( ox    , oy + 1, oz + 1 ) - p0;
+			diff[ 20 ] = &in( ox - 1, oy + 1, oz + 1 ) - p0;
+			diff[ 21 ] = &in( ox - 1, oy    , oz + 1 ) - p0;
+			diff[ 22 ] = &in( ox - 1, oy - 1, oz + 1 ) - p0;
+			diff[ 23 ] = &in( ox    , oy - 1, oz + 1 ) - p0;
+			diff[ 24 ] = &in( ox + 1, oy - 1, oz + 1 ) - p0;
+			diff[ 25 ] = &in( ox + 1, oy    , oz + 1 ) - p0;
+			diff[ 26 ] = &in( ox + 1, oy + 1, oz + 1 ) - p0;
+		}
+
+		// ê}å`ÇÃí[ÇÕ0
+		for( size_type j = 0 ; j < in.height( ) ; j++ )
+		{
+			for( size_type i = 0 ; i < in.width( ) ; i++ )
+			{
+				in( i, j, 0 ) = 0;
+				in( i, j, in.depth( ) - 1 ) = 0;
+			}
+		}
+
+		for( size_type k = 0 ; k < in.depth( ) ; k++ )
+		{
+			for( size_type j = 0 ; j < in.height( ) ; j++ )
+			{
+				in( 0, j, k ) = 0;
+				in( in.width( ) - 1, j, k ) = 0;
+			}
+		}
+
+		for( size_type k = 0 ; k < in.depth( ) ; k++ )
+		{
+			for( size_type i = 0 ; i < in.width( ) ; i++ )
+			{
+				in( i, 0, k ) = 0;
+				in( i, in.height( ) - 1, k ) = 0;
+			}
+		}
+
+		bool loop;
 		do
 		{
 			loop = false;
-			for( size_type k = 0 ; k < in.depth( ) ; k++ )
+			for( size_type k = 1 ; k < in.depth( ) - 1 ; k++ )
 			{
-				for( size_type j = 0 ; j < in.height( ) ; j++ )
+				for( size_type j = 1 ; j < in.height( ) - 1 ; j++ )
 				{
-					for( size_type i = 0 ; i < in.width( ) ; i++ )
+					for( size_type i = 1 ; i < in.width( ) - 1 ; i++ )
 					{
-						if( in( i, j, k ) != 0 )
+						value_type &v = in( i, j, k );
+						if( v != 0 )
 						{
-							if( neighbor_type::is_deletable( in, i, j, k ) )
+							create_neighbor_list( &v, val, diff );
+
+							if( neighbor_type::is_deletable( val ) )
 							{
-								in( i, j, k ) = 0;
+								v = 0;
 								loop = true;
 							}
 						}
@@ -1231,15 +1314,6 @@ namespace __euclidean_utility__
 		return( out );
 	}
 
-	template < class Tin, class Tout, class Difference >
-	void create_neighbor_list( const Tin *pin, Tout *pout, Difference p[ 27 ] )
-	{
-		for( size_t i = 0 ; i < 27 ; i++ )
-		{
-			pout[ i ] = pin[ p[ i ] ] > 0 ? 1 : 0;
-		}
-	}
-
 	template < class T, class Allocator, class Neighbor >
 	void thinning( array3< T, Allocator > &in, Neighbor __dmy__ )
 	{
@@ -1255,7 +1329,7 @@ namespace __euclidean_utility__
 		// Step1 ãóó£ïœä∑
 		euclidean::distance_transform( in, in );
 
-		// ê}å`ÇÃí[ÇÕÇO
+		// ê}å`ÇÃí[ÇÕ0
 		for( size_type j = 0 ; j < in.height( ) ; j++ )
 		{
 			for( size_type i = 0 ; i < in.width( ) ; i++ )
