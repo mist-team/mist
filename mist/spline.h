@@ -305,7 +305,7 @@ protected:
 		value_type *c = new value_type[ num ];
 
 		// まず，単位要素を作成する
-		value_type _0 = value_type( base::operator[]( 0 ) ) * 0;
+		value_type _0 = mul( value_type( base::operator[]( 0 ) ), 0 );
 		value_type _1 = add( _0, 1 );
 		value_type _2 = add( _0, 2 );
 		value_type _4 = add( _0, 4 );
@@ -385,7 +385,7 @@ protected:
 		p1_.clear( );
 
 		// まず，単位要素を作成する
-		value_type _0 = value_type( base::operator[]( 0 ) ) * 0;
+		value_type _0 = mul( value_type( base::operator[]( 0 ) ), 0 );
 		value_type _1 = add( _0, 1 );
 		value_type _2 = add( _0, 2 );
 		value_type _4 = add( _0, 4 );
