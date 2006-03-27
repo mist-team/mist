@@ -239,7 +239,24 @@ public:
 	//! @retval true  … v1 <  v2 の場合
 	//! @retval false … v1 >= v2 の場合
 	//! 
-	bool operator < ( const vector3 &v ) const { return( !( *this >= v ) ); }
+	bool operator < ( const vector3 &v ) const
+	{
+		if( x == v.x )
+		{
+			if( y == v.y )
+			{
+				return( z < v.z );
+			}
+			else
+			{
+				return( y < v.y );
+			}
+		}
+		else
+		{
+			return( x < v.x );
+		}
+	}
 
 	/// @brief 2つのベクトルの <= を判定する
 	//! 
@@ -278,7 +295,7 @@ public:
 	//! @retval true  … v1 >= v2 の場合
 	//! @retval false … v1 <  v2 の場合
 	//! 
-	bool operator >=( const vector3 &v ) const { return( x >= v.x && y >= v.y && z >= v.z ); }
+	bool operator >=( const vector3 &v ) const { return( !( v < *this ) ); }
 
 
 	/// @brief 単位ベクトルを計算する
@@ -557,7 +574,17 @@ public:
 	//! @retval true  … v1 <  v2 の場合
 	//! @retval false … v1 >= v2 の場合
 	//! 
-	bool operator < ( const vector2 &v ) const { return( !( *this >= v ) ); }
+	bool operator < ( const vector2 &v ) const
+	{
+		if( x == v.x )
+		{
+			return( y < v.y );
+		}
+		else
+		{
+			return( x < v.x );
+		}
+	}
 
 	/// @brief 2つのベクトルの <= を判定する
 	//! 
@@ -596,7 +623,7 @@ public:
 	//! @retval true  … v1 >= v2 の場合
 	//! @retval false … v1 <  v2 の場合
 	//! 
-	bool operator >=( const vector2 &v ) const { return( x >= v.x && y >= v.y ); }
+	bool operator >=( const vector2 &v ) const { return( !( v < *this ) ); }
 
 
 	/// @brief 単位ベクトルを計算する

@@ -276,7 +276,24 @@ public:
 	//! @retval true  … c1 <  c2 の場合
 	//! @retval false … c1 >= c2 の場合
 	//! 
-	bool operator < ( const rgb &c ) const { return( !( *this >= c ) ); }
+	bool operator < ( const rgb &c ) const
+	{
+		if( r == c.r )
+		{
+			if( g == c.g )
+			{
+				return( b < c.b );
+			}
+			else
+			{
+				return( g < c.g );
+			}
+		}
+		else
+		{
+			return( r < c.r );
+		}
+	}
 
 	/// @brief 2つのカラー画素の <= を判定する
 	//! 
@@ -315,7 +332,7 @@ public:
 	//! @retval true  … c1 >= c2 の場合
 	//! @retval false … c1 <  c2 の場合
 	//! 
-	bool operator >=( const rgb &c ) const { return( r >= c.r && g >= c.g && b >= c.b ); }
+	bool operator >=( const rgb &c ) const { return( !( c < *this ) ); }
 
 
 	/// @brief NTSC系加重平均法により，グレースケールへ変換する
@@ -594,7 +611,24 @@ public:
 	//! @retval true  … c1 <  c2 の場合
 	//! @retval false … c1 >= c2 の場合
 	//! 
-	bool operator < ( const bgr &c ) const { return( !( *this >= c ) ); }
+	bool operator < ( const bgr &c ) const
+	{
+		if( r == c.r )
+		{
+			if( g == c.g )
+			{
+				return( b < c.b );
+			}
+			else
+			{
+				return( g < c.g );
+			}
+		}
+		else
+		{
+			return( r < c.r );
+		}
+	}
 
 	/// @brief 2つのカラー画素の <= を判定する
 	//! 
@@ -633,7 +667,7 @@ public:
 	//! @retval true  … c1 >= c2 の場合
 	//! @retval false … c1 <  c2 の場合
 	//! 
-	bool operator >=( const bgr &c ) const { return( b >= c.b && g >= c.g && r >= c.r ); }
+	bool operator >=( const bgr &c ) const { return( !( c < *this ) ); }
 
 
 	/// @brief NTSC系加重平均法により，グレースケールへ変換する
@@ -894,7 +928,17 @@ public:
 	//! @retval true  … c1 <  c2 の場合
 	//! @retval false … c1 >= c2 の場合
 	//! 
-	bool operator < ( const rgba &c ) const { return( !( *this >= c ) ); }
+	bool operator < ( const rgba &c ) const
+	{
+		if( a == c.a )
+		{
+			return( base::operator <( c ) );
+		}
+		else
+		{
+			return( a < c.a );
+		}
+	}
 
 	/// @brief 2つのカラー画素の <= を判定する
 	//! 
@@ -933,7 +977,7 @@ public:
 	//! @retval true  … c1 >= c2 の場合
 	//! @retval false … c1 <  c2 の場合
 	//! 
-	bool operator >=( const rgba &c ) const { return( base::operator >=( c ) ); }
+	bool operator >=( const rgba &c ) const { return( !( c < *this ) ); }
 
 };
 
@@ -1202,7 +1246,18 @@ public:
 	//! @retval true  … c1 <  c2 の場合
 	//! @retval false … c1 >= c2 の場合
 	//! 
-	bool operator < ( const bgra &c ) const { return( !( *this >= c ) ); }
+	bool operator < ( const bgra &c ) const
+	{
+		if( a == c.a )
+		{
+			return( base::operator <( c ) );
+		}
+		else
+		{
+			return( a < c.a );
+		}
+	}
+
 
 	/// @brief 2つのカラー画素の <= を判定する
 	//! 
@@ -1241,7 +1296,7 @@ public:
 	//! @retval true  … c1 >= c2 の場合
 	//! @retval false … c1 <  c2 の場合
 	//! 
-	bool operator >=( const bgra &c ) const { return( base::operator >=( c ) ); }
+	bool operator >=( const bgra &c ) const { return( !( c < *this ) ); }
 
 };
 

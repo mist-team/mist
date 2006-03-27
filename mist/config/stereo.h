@@ -244,7 +244,17 @@ public:
 	//! @retval true  … s1 <  s2 の場合
 	//! @retval false … s1 >= s2 の場合
 	//! 
-	bool operator < ( const stereo &s ) const { return( !( *this >= s ) ); }
+	bool operator < ( const stereo &s ) const
+	{
+		if( l == s.l )
+		{
+			return( r < s.r );
+		}
+		else
+		{
+			return( l < s.l );
+		}
+	}
 
 	/// @brief 2つの音声成分の <= を判定する
 	//! 
@@ -283,7 +293,7 @@ public:
 	//! @retval true  … s1 >= s2 の場合
 	//! @retval false … s1 <  s2 の場合
 	//! 
-	bool operator >=( const stereo &s ) const { return( l >= s.l && r >= s.r ); }
+	bool operator >=( const stereo &s ) const { return( !( s < *this ) ); }
 
 
 	/// @brief ステレオ音声からモノラル音声に変換する

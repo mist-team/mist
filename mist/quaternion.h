@@ -385,7 +385,31 @@ public:
 	//! @retval true  … p <  q の場合
 	//! @retval false … p >= q の場合
 	//! 
-	bool operator < ( const quaternion &q ) const { return( !( *this >= q ) ); }
+	bool operator < ( const quaternion &q ) const
+	{
+		if( w == q.w )
+		{
+			if( x == q.x )
+			{
+				if( y == q.y )
+				{
+					return( z < q.z );
+				}
+				else
+				{
+					return( y < q.y );
+				}
+			}
+			else
+			{
+				return( x < q.x );
+			}
+		}
+		else
+		{
+			return( w < q.w );
+		}
+	}
 
 	/// @brief 2つのベクトルの <= を判定する
 	//! 
@@ -424,7 +448,7 @@ public:
 	//! @retval true  … p >= q の場合
 	//! @retval false … p <  q の場合
 	//! 
-	bool operator >=( const quaternion &q ) const { return( w >= q.w && x >= q.x && y >= q.y && z >= q.z ); }
+	bool operator >=( const quaternion &q ) const { return( !( q < *this ) ); }
 
 
 public:	// その他の関数
