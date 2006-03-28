@@ -295,7 +295,7 @@ public:
 	//! @retval true  … v1 >= v2 の場合
 	//! @retval false … v1 <  v2 の場合
 	//! 
-	bool operator >=( const vector3 &v ) const { return( !( v < *this ) ); }
+	bool operator >=( const vector3 &v ) const { return( !( *this < v ) ); }
 
 
 	/// @brief 単位ベクトルを計算する
@@ -623,7 +623,7 @@ public:
 	//! @retval true  … v1 >= v2 の場合
 	//! @retval false … v1 <  v2 の場合
 	//! 
-	bool operator >=( const vector2 &v ) const { return( !( v < *this ) ); }
+	bool operator >=( const vector2 &v ) const { return( !( *this < v ) ); }
 
 
 	/// @brief 単位ベクトルを計算する

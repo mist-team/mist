@@ -448,7 +448,7 @@ public:
 	//! @retval true  c p >= q ‚Ìê‡
 	//! @retval false c p <  q ‚Ìê‡
 	//! 
-	bool operator >=( const quaternion &q ) const { return( !( q < *this ) ); }
+	bool operator >=( const quaternion &q ) const { return( !( *this < q ) ); }
 
 
 public:	// ‚»‚Ì‘¼‚ÌŠÖ”

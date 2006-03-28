@@ -293,7 +293,7 @@ public:
 	//! @retval true  … s1 >= s2 の場合
 	//! @retval false … s1 <  s2 の場合
 	//! 
-	bool operator >=( const stereo &s ) const { return( !( s < *this ) ); }
+	bool operator >=( const stereo &s ) const { return( !( *this < s ) ); }
 
 
 	/// @brief ステレオ音声からモノラル音声に変換する

@@ -332,7 +332,7 @@ public:
 	//! @retval true  … c1 >= c2 の場合
 	//! @retval false … c1 <  c2 の場合
 	//! 
-	bool operator >=( const rgb &c ) const { return( !( c < *this ) ); }
+	bool operator >=( const rgb &c ) const { return( !( *this < c ) ); }
 
 
 	/// @brief NTSC系加重平均法により，グレースケールへ変換する
@@ -667,7 +667,7 @@ public:
 	//! @retval true  … c1 >= c2 の場合
 	//! @retval false … c1 <  c2 の場合
 	//! 
-	bool operator >=( const bgr &c ) const { return( !( c < *this ) ); }
+	bool operator >=( const bgr &c ) const { return( !( *this < c ) ); }
 
 
 	/// @brief NTSC系加重平均法により，グレースケールへ変換する
@@ -977,7 +977,7 @@ public:
 	//! @retval true  … c1 >= c2 の場合
 	//! @retval false … c1 <  c2 の場合
 	//! 
-	bool operator >=( const rgba &c ) const { return( !( c < *this ) ); }
+	bool operator >=( const rgba &c ) const { return( !( *this < c ) ); }
 
 };
 
@@ -1296,7 +1296,7 @@ public:
 	//! @retval true  … c1 >= c2 の場合
 	//! @retval false … c1 <  c2 の場合
 	//! 
-	bool operator >=( const bgra &c ) const { return( !( c < *this ) ); }
+	bool operator >=( const bgra &c ) const { return( !( *this < c ) ); }
 
 };
 
