@@ -63,6 +63,22 @@ _MIST_BEGIN
 //! @{
 
 
+// numeric_limits‚Ì“Áê‰»—pƒ}ƒNƒ
+#define _DEFINE_TYPE_LIMITS( _type_, _integer_, _signed_, _min_, _max_, _zero_ ) \
+	template < >\
+	struct type_limits< _type_ >\
+	{\
+		typedef _type_ value_type;\
+		\
+		enum{ is_integer = _integer_ };\
+		enum{ is_signed  = _signed_ };\
+		\
+		static value_type minimum( ) { return(  _min_ ); }\
+		static value_type maximum( ) { return(  _max_ ); }\
+		static value_type zero( ){ return( _zero_ ); }\
+	};\
+
+
 /// @brief “ü—Í‚³‚ê‚½Œ^‚Ìî•ñ‚ğæ“¾‚·‚é
 //! 
 //! “ü—Í‚³‚ê‚½Œ^‚ÌˆÈ‰º‚Ìî•ñ‚ğ’²‚×‚é
@@ -109,6 +125,10 @@ struct type_limits
 	/// @brief Œ^‚ª•\Œ»‚Å‚«‚éƒ[ƒ‚É‘Î‰‚·‚é’l‚ğ•Ô‚·
 	static value_type zero( ){ return( 0 ); }
 };
+
+_DEFINE_TYPE_LIMITS(       float,   false,  true,  -FLT_MAX,  FLT_MAX, 0.0f )
+_DEFINE_TYPE_LIMITS(      double,   false,  true,  -DBL_MAX,  DBL_MAX, 0 )
+_DEFINE_TYPE_LIMITS( long double,   false,  true, -LDBL_MAX, LDBL_MAX, 0 )
 
 
 /// @}
