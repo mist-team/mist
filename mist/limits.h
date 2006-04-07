@@ -64,7 +64,7 @@ _MIST_BEGIN
 
 
 // numeric_limits‚Ì“Áê‰»—pƒ}ƒNƒ
-#define _DEFINE_TYPE_LIMITS( _type_, _integer_, _signed_, _min_, _tiny_, _max_, _zero_ ) \
+#define _DEFINE_TYPE_LIMITS( _type_, _integer_, _signed_, _tiny_, _min_, _max_, _zero_ ) \
 	template < >\
 	struct type_limits< _type_ >\
 	{\
