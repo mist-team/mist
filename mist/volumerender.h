@@ -736,7 +736,7 @@ namespace rendering_helper
 			nx /= in.reso1( );
 			ny /= in.reso2( );
 			nz /= in.reso3( );
-			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
+			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( );
 			nx /= len;
 			ny /= len;
 			nz /= len;
@@ -892,7 +892,7 @@ namespace rendering_helper
 			nx /= in.reso1( );
 			ny /= in.reso2( );
 			nz /= in.reso3( );
-			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
+			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( );
 			nx /= len;
 			ny /= len;
 			nz /= len;
@@ -1068,7 +1068,7 @@ namespace rendering_helper
 			nx /= in.reso1( );
 			ny /= in.reso2( );
 			nz /= in.reso3( );
-			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
+			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( );
 			nx /= len;
 			ny /= len;
 			nz /= len;
@@ -1226,7 +1226,7 @@ namespace rendering_helper
 			nx /= in.reso1( );
 			ny /= in.reso2( );
 			nz /= in.reso3( );
-			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
+			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( );
 			nx /= len;
 			ny /= len;
 			nz /= len;
@@ -1407,7 +1407,7 @@ namespace rendering_helper
 			nx /= in.reso1( );
 			ny /= in.reso2( );
 			nz /= in.reso3( );
-			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( );
+			double len = std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( );
 			nx /= len;
 			ny /= len;
 			nz /= len;
@@ -1767,7 +1767,7 @@ namespace __volumerendering_specialized__
 							nz += ( ( ndz[ 4 ] + ndz[ 5 ] * xx ) + ( ndz[ 6 ] + ndz[ 7 ] * xx ) * yy - nz ) * zz;
 
 							// Ø’f–Ê‚Ì–@ü‚ğ”½‰f‚³‚¹‚é
-							double _1_len = 1.0 / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( ) ) * 0.5; 
+							double _1_len = 1.0 / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) ) * 0.5; 
 							nx = nx * _1_len + normal.x;
 							ny = ny * _1_len + normal.y;
 							nz = nz * _1_len + normal.z;
@@ -1777,7 +1777,7 @@ namespace __volumerendering_specialized__
 							nz *= _1_az;
 
 							// –@ü‚ª”½“]‚µ‚Ä‚¢‚éê‡‚Ö‚Ì‘Î‰
-							double c = fabs( ( slight.x * nx + slight.y * ny + slight.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( ) ) );
+							double c = fabs( ( slight.x * nx + slight.y * ny + slight.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) ) );
 
 							double spec = 0.0;
 							if( bSpecular )
@@ -1978,7 +1978,7 @@ namespace __volumerendering_specialized__
 							nz *= _1_az;
 
 							// –@ü‚ª”½“]‚µ‚Ä‚¢‚éê‡‚Ö‚Ì‘Î‰
-							double c = fabs( ( slight.x * nx + slight.y * ny + slight.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::minimum( ) ) );
+							double c = fabs( ( slight.x * nx + slight.y * ny + slight.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) ) );
 							//double c = slight.x * nx + slight.y * ny + slight.z * nz;
 							//c = c < 0.0 ? -c : c;
 
@@ -2792,7 +2792,7 @@ namespace __mip_controller__
 				pos = p.pos + yoko * Pos.x + up * Pos.y;
 				light = dir;
 
-				double maximum_intensity = type_limits< double >::minimum( );
+				double maximum_intensity = type_limits< double >::tiny( );
 
 				casting_start = pos;
 				casting_end = pos + light * max_distance;

@@ -306,7 +306,7 @@ bool enclose( double &a, double &b, double &c, double &fa, double &fb, double &f
 {
 	const double gold = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
 	const double _1_gold = 1.0 / gold;
-	const double dust = type_limits< double >::minimum( );		// ゼロ除算を避けるためのゴミ値
+	const double dust = type_limits< double >::tiny( );		// ゼロ除算を避けるためのゴミ値
 	const double limit = 100.0;									// 放物線補外を適用する区間の最大更新幅
 
 	if( a == b )

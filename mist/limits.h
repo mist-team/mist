@@ -64,7 +64,7 @@ _MIST_BEGIN
 
 
 // numeric_limitsの特殊化用マクロ
-#define _DEFINE_TYPE_LIMITS( _type_, _integer_, _signed_, _min_, _max_, _zero_ ) \
+#define _DEFINE_TYPE_LIMITS( _type_, _integer_, _signed_, _min_, _tiny_, _max_, _zero_ ) \
 	template < >\
 	struct type_limits< _type_ >\
 	{\
@@ -73,6 +73,7 @@ _MIST_BEGIN
 		enum{ is_integer = _integer_ };\
 		enum{ is_signed  = _signed_ };\
 		\
+		static value_type tiny( ) { return(  _tiny_ ); }\
 		static value_type minimum( ) { return(  _min_ ); }\
 		static value_type maximum( ) { return(  _max_ ); }\
 		static value_type zero( ){ return( _zero_ ); }\
@@ -116,6 +117,9 @@ struct type_limits
 	_MIST_CONST( bool, is_signed, std::numeric_limits< T >::is_signed );
 
 
+	/// @brief 型が表現できる０より大きい正の最小値を返す
+	static value_type tiny( ) { return( static_cast< value_type >( 1 ) ); }
+
 	/// @brief 型が表現できる最も最小の値を返す
 	static value_type minimum( ) { return( (std::numeric_limits< T >::min)( ) ); }
 
@@ -123,12 +127,12 @@ struct type_limits
 	static value_type maximum( ) { return( (std::numeric_limits< T >::max)( ) ); }
 
 	/// @brief 型が表現できるゼロに対応する値を返す
-	static value_type zero( ){ return( 0 ); }
+	static value_type zero( ){ return( static_cast< value_type >( 0 ) ); }
 };
 
-_DEFINE_TYPE_LIMITS(       float,   false,  true,  -FLT_MAX,  FLT_MAX, 0.0f )
-_DEFINE_TYPE_LIMITS(      double,   false,  true,  -DBL_MAX,  DBL_MAX, 0 )
-_DEFINE_TYPE_LIMITS( long double,   false,  true, -LDBL_MAX, LDBL_MAX, 0 )
+_DEFINE_TYPE_LIMITS(       float,   false,  true,  FLT_MIN,  -FLT_MAX,  FLT_MAX, 0.0f )
+_DEFINE_TYPE_LIMITS(      double,   false,  true,  DBL_MIN,  -DBL_MAX,  DBL_MAX, 0 )
+_DEFINE_TYPE_LIMITS( long double,   false,  true, LDBL_MIN, -LDBL_MAX, LDBL_MAX, 0 )
 
 
 /// @}
