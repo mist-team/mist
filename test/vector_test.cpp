@@ -48,27 +48,27 @@ void test_vector1( )
 	mist::vector2< signed int > v1( 1, 2 );
 	mist::vector2< float > v2( 3.5, 4.5 );
 
-	cout << " ( A, B ) = ( " << v1 << ", " << v2 << " )" << endl;
-	cout << " 1. Operator A + B = \t"; cout << ( v1 + v2 ) << endl;
-	cout << " 4. Operator A - B = \t"; cout << ( v1 - v2 ) << endl;
-	cout << " 7. Operator A * B = \t"; cout << ( v1 * v2 ) << endl;
-	cout << " 8. Operator A * 2 = \t"; cout << ( v1 *  2 ) << endl;
-	cout << " 9. Operator 2 * B = \t"; cout << ( 2  * v2 ) << endl;
-	cout << "11. Operator A / 2 = \t"; cout << ( v1 / 2  ) << endl;
+	cout << " ( A, B ) = ( " << v1 << " ), ( " << v2 << " )" << endl;
+	cout << " 1. Operator A + B      = "; cout << ( v1 + v2 ) << endl;
+	cout << " 4. Operator A - B      = "; cout << ( v1 - v2 ) << endl;
+	cout << " 7. Operator A * B      = "; cout << ( v1 * v2 ) << endl;
+	cout << " 8. Operator A * 2      = "; cout << ( v1 *  2 ) << endl;
+	cout << " 9. Operator 2 * B      = "; cout << ( 2  * v2 ) << endl;
+	cout << "11. Operator A / 2      = "; cout << ( v1 / 2  ) << endl;
 
-	cout << "12. Outer Product A * B = \t"; cout << ( v1 * v2 ) << endl;
-	cout << "13. Inner Product A ^ B = \t"; cout << ( v1 ^ v2 ) << endl;
+	cout << "12. Outer Product A * B = "; cout << ( v1 * v2 ) << endl;
+	cout << "13. Inner Product A ^ B = "; cout << ( v1 ^ v2 ) << endl;
 
-	cout << "16. Operator A == B = \t"; cout << ( v1 == v2 ) << endl;
-	cout << "17. Operator A != B = \t"; cout << ( v1 != v2 ) << endl;
-	cout << "18. Operator A <  B = \t"; cout << ( v1 <  v2 ) << endl;
-	cout << "19. Operator A <= B = \t"; cout << ( v1 <= v2 ) << endl;
-	cout << "20. Operator A >  B = \t"; cout << ( v1 >  v2 ) << endl;
-	cout << "21. Operator A >= B = \t"; cout << ( v1 >= v2 ) << endl;
+	cout << "16. Operator A == B     = "; cout << ( v1 == v2 ) << endl;
+	cout << "17. Operator A != B     = "; cout << ( v1 != v2 ) << endl;
+	cout << "18. Operator A <  B     = "; cout << ( v1 <  v2 ) << endl;
+	cout << "19. Operator A <= B     = "; cout << ( v1 <= v2 ) << endl;
+	cout << "20. Operator A >  B     = "; cout << ( v1 >  v2 ) << endl;
+	cout << "21. Operator A >= B     = "; cout << ( v1 >= v2 ) << endl;
 
 
-	cout << "22. Operator 2.5 * A + 3.8 * B = \t"; cout << ( 2.5 * v1 + 3.8 * v2 ) << endl;
-	cout << "23. Operator 2.5 * ( A + B ) = \t"; cout << ( 2.5 * ( v1 + v2 ) ) << endl;
+	cout << "22. Operator 2.5 * A + 3.8 * B = "; cout << ( 2.5 * v1 + 3.8 * v2 ) << endl;
+	cout << "23. Operator 2.5 * ( A + B )   = "; cout << ( 2.5 * ( v1 + v2 ) ) << endl;
 
 	v1 = 2.5 * ( v1 + v2 );
 }
@@ -80,27 +80,27 @@ void test_vector2( )
 	mist::vector3< signed int > v1( 1, 2, 3 );
 	mist::vector3< float > v2( 1.5, 2.5, 4.5 );
 
-	cout << " ( A, B ) = ( " << v1 << ", " << v2 << " )" << endl;
-	cout << " 1. Operator A + B = \t"; cout << ( v1 + v2 ) << endl;
-	cout << " 4. Operator A - B = \t"; cout << ( v1 - v2 ) << endl;
-	cout << " 7. Operator A * B = \t"; cout << ( v1 * v2 ) << endl;
-	cout << " 8. Operator A * 2 = \t"; cout << ( v1 *  2 ) << endl;
-	cout << " 9. Operator 2 * B = \t"; cout << ( 2  * v2 ) << endl;
-	cout << "11. Operator A / 2 = \t"; cout << ( v1 / 2  ) << endl;
+	cout << " ( A, B ) = ( " << v1 << " ), ( " << v2 << " )" << endl;
+	cout << " 1. Operator A + B      = "; cout << ( v1 + v2 ) << endl;
+	cout << " 4. Operator A - B      = "; cout << ( v1 - v2 ) << endl;
+	cout << " 7. Operator A * B      = "; cout << ( v1 * v2 ) << endl;
+	cout << " 8. Operator A * 2      = "; cout << ( v1 *  2 ) << endl;
+	cout << " 9. Operator 2 * B      = "; cout << ( 2  * v2 ) << endl;
+	cout << "11. Operator A / 2      = "; cout << ( v1 / 2  ) << endl;
 
-	cout << "12. Outer Product A * B = \t"; cout << ( v1 * v2 ) << endl;
-	cout << "13. Inner Product A ^ B = \t"; cout << ( v1 ^ v2 ) << endl;
+	cout << "12. Outer Product A * B = "; cout << ( v1 * v2 ) << endl;
+	cout << "13. Inner Product A ^ B = "; cout << ( v1 ^ v2 ) << endl;
 
-	cout << "16. Operator A == B = \t"; cout << ( v1 == v2 ) << endl;
-	cout << "17. Operator A != B = \t"; cout << ( v1 != v2 ) << endl;
-	cout << "18. Operator A <  B = \t"; cout << ( v1 <  v2 ) << endl;
-	cout << "19. Operator A <= B = \t"; cout << ( v1 <= v2 ) << endl;
-	cout << "20. Operator A >  B = \t"; cout << ( v1 >  v2 ) << endl;
-	cout << "21. Operator A >= B = \t"; cout << ( v1 >= v2 ) << endl;
+	cout << "16. Operator A == B     = "; cout << ( v1 == v2 ) << endl;
+	cout << "17. Operator A != B     = "; cout << ( v1 != v2 ) << endl;
+	cout << "18. Operator A <  B     = "; cout << ( v1 <  v2 ) << endl;
+	cout << "19. Operator A <= B     = "; cout << ( v1 <= v2 ) << endl;
+	cout << "20. Operator A >  B     = "; cout << ( v1 >  v2 ) << endl;
+	cout << "21. Operator A >= B     = "; cout << ( v1 >= v2 ) << endl;
 
 
 	cout << "22. Operator 2.5 * A + 3.8 * B = \t"; cout << ( 2.5 * v1 + 3.8 * v2 ) << endl;
-	cout << "23. Operator 2.5 * ( A + B ) = \t"; cout << ( 2.5 * ( v1 + v2 ) ) << endl;
+	cout << "23. Operator 2.5 * ( A + B )   = \t"; cout << ( 2.5 * ( v1 + v2 ) ) << endl;
 
 	v1 = 2.5 * ( v1 + v2 );
 }

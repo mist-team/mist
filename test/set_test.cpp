@@ -55,11 +55,11 @@ void set_test( )
 	cout << " ( A ) = ( " << s1 << " )" << endl;
 	cout << " ( B ) = ( " << s2 << " )" << endl;
 	cout << " 1. Operator A  + B  = \t"; cout << ( s1 + s2 ) << endl;
-	cout << " 2. Operator A  + 3  = \t"; cout << ( s1 + 21 ) << endl;
-	cout << " 3. Operator 21 + B  = \t"; cout << ( 21 + s2 ) << endl;
+	cout << " 2. Operator A  + 3  = \t"; cout << ( s1 + 3  ) << endl;
+	cout << " 3. Operator 3  + B  = \t"; cout << ( 3  + s2 ) << endl;
 	cout << " 4. Operator A  - B  = \t"; cout << ( s1 - s2 ) << endl;
 	cout << " 5. Operator A  - 3  = \t"; cout << ( s1 - 3  ) << endl;
-	cout << " 6. Operator 21 - B  = \t"; cout << ( 21 - s2 ) << endl;
+	cout << " 6. Operator 3  - B  = \t"; cout << ( 3  - s2 ) << endl;
 	cout << " 7. Operator A  * B  = \t"; cout << ( s1 * s2 ) << endl;
 	cout << " 8. Operator A  * 2  = \t"; cout << ( s1 *  2 ) << endl;
 	cout << " 9. Operator 2  * B  = \t"; cout << ( 2  * s2 ) << endl;
@@ -120,11 +120,11 @@ void multiset_test( )
 	cout << " ( A ) = ( " << s1 << " )" << endl;
 	cout << " ( B ) = ( " << s2 << " )" << endl;
 	cout << " 1. Operator A  + B  = \t"; cout << ( s1 + s2 ) << endl;
-	cout << " 2. Operator A  + 3  = \t"; cout << ( s1 + 21 ) << endl;
-	cout << " 3. Operator 21 + B  = \t"; cout << ( 21 + s2 ) << endl;
+	cout << " 2. Operator A  + 3  = \t"; cout << ( s1 + 3  ) << endl;
+	cout << " 3. Operator 3  + B  = \t"; cout << ( 3  + s2 ) << endl;
 	cout << " 4. Operator A  - B  = \t"; cout << ( s1 - s2 ) << endl;
 	cout << " 5. Operator A  - 3  = \t"; cout << ( s1 - 3  ) << endl;
-	cout << " 6. Operator 21 - B  = \t"; cout << ( 21 - s2 ) << endl;
+	cout << " 6. Operator 3  - B  = \t"; cout << ( 3  - s2 ) << endl;
 	cout << " 7. Operator A  * B  = \t"; cout << ( s1 * s2 ) << endl;
 	cout << " 8. Operator A  * 2  = \t"; cout << ( s1 *  2 ) << endl;
 	cout << " 9. Operator 2  * B  = \t"; cout << ( 2  * s2 ) << endl;
@@ -165,9 +165,12 @@ void multiset_test( )
 
 int main( int argc, char *argv[] )
 {
-
+	std::cout << "Set Test" << std::endl;
 	set_test( );
+
 	std::cout << std::endl << std::endl;
+
+	std::cout << "Multi Set Test" << std::endl;
 	multiset_test( );
 
 	return( 0 );
