@@ -29,6 +29,7 @@
 #include <iostream>
 #include <mist/mist.h>
 #include <mist/matrix.h>
+#include <mist/vector.h>
 
 #include <algorithm>
 
@@ -100,6 +101,85 @@ int main( int argc, char *argv[] )
 			for( int i = 1 ; ite != a.col_rend( 1 ) ; ite++, i++ )
 			{
 				*ite = i;
+			}
+
+			cout << a << endl << endl;
+
+			sort( a.col_begin( 1 ), a.col_end( 1 ) );
+
+			cout << "sorted result" << endl << a << endl << endl;
+		}
+	}
+
+	{
+		cout << endl << endl << "MIST Vector Part." << endl;
+		{
+			cout << "Forward Iterator Test row axis" << endl;
+
+			mist::matrix< mist::vector2< double > > a( 3, 3 );
+			mist::matrix< mist::vector2< double > >::iterator ite = a.row_begin( 1 );
+
+			for( int i = 1 ; ite != a.row_end( 1 ) ; ite++, i++ )
+			{
+				ite->x = i;
+				ite->y = i;
+			}
+
+			cout << a << endl << endl;
+
+			sort( a.row_rbegin( 1 ), a.row_rend( 1 ) );
+
+			cout << "sorted result" << endl << a << endl << endl;
+		}
+		
+		{
+			cout << "Reverse Iterator Test row axis" << endl;
+
+			mist::matrix< mist::vector2< double > > a( 3, 3 );
+			mist::matrix< mist::vector2< double > >::reverse_iterator ite = a.row_rbegin( 1 );
+
+			for( int i = 1 ; ite != a.row_rend( 1 ) ; ite++, i++ )
+			{
+				ite->x = i;
+				ite->y = i;
+			}
+
+			cout << a << endl << endl;
+
+			sort( a.row_begin( 1 ), a.row_end( 1 ) );
+
+			cout << "sorted result" << endl << a << endl << endl;
+		}
+
+		{
+			cout << "Forward Iterator Test col axis" << endl;
+
+			mist::matrix< mist::vector2< double > > a( 3, 3 );
+			mist::matrix< mist::vector2< double > >::iterator ite = a.col_begin( 1 );
+
+			for( int i = 1 ; ite != a.col_end( 1 ) ; ite++, i++ )
+			{
+				ite->x = i;
+				ite->y = i;
+			}
+
+			cout << a << endl << endl;
+
+			sort( a.col_rbegin( 1 ), a.col_rend( 1 ) );
+
+			cout << "sorted result" << endl << a << endl << endl;
+		}
+
+		{
+			cout << "Reverse Iterator Test col axis" << endl;
+
+			mist::matrix< mist::vector2< double > > a( 3, 3 );
+			mist::matrix< mist::vector2< double > >::reverse_iterator ite = a.col_rbegin( 1 );
+
+			for( int i = 1 ; ite != a.col_rend( 1 ) ; ite++, i++ )
+			{
+				ite->x = i;
+				ite->y = i;
 			}
 
 			cout << a << endl << endl;

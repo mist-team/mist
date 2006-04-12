@@ -97,6 +97,12 @@ public:
 	/// @brief 要素の const 参照
 	const_reference operator *() const { return( *data_ ); }
 
+	/// @brief 要素のアドレス演算子
+	pointer operator->( ){ return( &**this ); }
+
+	/// @brief 要素の const アドレス演算子
+	const pointer operator->( ) const { return( &**this ); }
+
 	/// @brief dist で指定した位置の要素の参照
 	reference operator []( difference_type dist ){ return( data_[ dist * diff_pointer_ ] ); }
 
@@ -272,6 +278,12 @@ public:
 		difference_type rest = index_ - step * width_;
 		return( *( data_ + rest + step * step_ ) );
 	}
+
+	/// @brief 要素のアドレス演算子
+	pointer operator->( ){ return( &**this ); }
+
+	/// @brief 要素の const アドレス演算子
+	const pointer operator->( ) const { return( &**this ); }
 
 	/// @brief dist で指定した位置の要素の参照
 	reference operator []( difference_type dist ){ return( *( *this += dist ) ); }
@@ -452,6 +464,12 @@ public:
 		iterator_type _tmp = current_iterator_;
 		return( *( --_tmp ) );
 	}
+
+	/// @brief 要素のアドレス演算子
+	pointer operator->( ){ return( &**this ); }
+
+	/// @brief 要素の const アドレス演算子
+	const pointer operator->( ) const { return( &**this ); }
 
 	/// @brief dist で指定した位置の要素の参照
 	reference operator []( difference_type dist ){ return( *( *this + dist ) ); }
