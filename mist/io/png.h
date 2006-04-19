@@ -168,6 +168,17 @@ namespace __png_controller__
 
 		static bool write( const array2< T, Allocator > &image, const std::string &filename, int compression_level )
 		{
+			if( image.width( ) == 0 )
+			{
+				std::cerr << "Image width is zero!" << std::endl;
+				return( false );
+			}
+			else if( image.height( ) == 0 )
+			{
+				std::cerr << "Image height is zero!" << std::endl;
+				return( false );
+			}
+			
 			FILE *fp;
 			png_structp	png_ptr;
 			png_infop	info_ptr;

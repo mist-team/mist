@@ -247,6 +247,16 @@ namespace __tiff_controller__
 			{
 				return( false );
 			}
+			else if( image.width( ) == 0 )
+			{
+				std::cerr << "Image width is zero!" << std::endl;
+				return( false );
+			}
+			else if( image.height( ) == 0 )
+			{
+				std::cerr << "Image height is zero!" << std::endl;
+				return( false );
+			}
 
 			TIFF *tif;
 			size_type tiffW, tiffH;

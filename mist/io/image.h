@@ -129,6 +129,17 @@ inline bool read_image( mist::array2< T, Allocator > &image, const std::string &
 		return( false );
 	}
 
+	if( image.width( ) == 0 )
+	{
+		std::cerr << "Image width is zero!" << std::endl;
+		return( false );
+	}
+	else if( image.height( ) == 0 )
+	{
+		std::cerr << "Image height is zero!" << std::endl;
+		return( false );
+	}
+
 	bool ret = false;
 	if( ext == ".jpeg" || ext == ".jpg" )
 	{

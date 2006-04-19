@@ -431,7 +431,17 @@ namespace __pnm_controller__
 		{
 			typedef typename array2< T, Allocator >::size_type size_type;
 
-			if( pnm_type == UNKNOWN )
+			if( image.width( ) == 0 )
+			{
+				std::cerr << "Image width is zero!" << std::endl;
+				return( false );
+			}
+			else if( image.height( ) == 0 )
+			{
+				std::cerr << "Image height is zero!" << std::endl;
+				return( false );
+			}
+			else if( pnm_type == UNKNOWN )
 			{
 				std::cerr << "This format is not supported currently!" << std::endl;
 				return( false );

@@ -693,7 +693,17 @@ namespace __bmp_controller__
 		{
 			typedef typename array2< T, Allocator >::size_type size_type;
 
-			if( !is_supported( bmp_bits ) )
+			if( image.width( ) == 0 )
+			{
+				std::cerr << "Image width is zero!" << std::endl;
+				return( false );
+			}
+			else if( image.height( ) == 0 )
+			{
+				std::cerr << "Image height is zero!" << std::endl;
+				return( false );
+			}
+			else if( !is_supported( bmp_bits ) )
 			{
 				std::cerr << "This format is not supported currently!" << std::endl;
 				return( false );

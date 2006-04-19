@@ -146,6 +146,17 @@ namespace __jpeg_controller__
 
 		static bool write( const array2< T, Allocator > &image, const std::string &filename, int quality )
 		{
+			if( image.width( ) == 0 )
+			{
+				std::cerr << "Image width is zero!" << std::endl;
+				return( false );
+			}
+			else if( image.height( ) == 0 )
+			{
+				std::cerr << "Image height is zero!" << std::endl;
+				return( false );
+			}
+			
 			FILE *fout;						// 読み書き用ファイルポインター
 			fout = fopen( filename.c_str( ), "wb" );
 			if( fout == NULL ) return( false );
