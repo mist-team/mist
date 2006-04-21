@@ -2385,7 +2385,7 @@ namespace __svd__
 /// @brief 行列×行列の演算を行う
 //! 
 //! \f[
-//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! 	{\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
 //! \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
@@ -2396,7 +2396,7 @@ namespace __svd__
 //! @param[in]  alpha … 行列演算の和を計算するときの係数
 //! @param[in]  beta  … 行列演算の和を計算するときの係数
 //!
-//! @return \f$tr\left( {\bf A} \right)\f$
+//! @return 行列の積が正しく計算できたかどうか
 //! 
 template < class T, class Allocator >
 inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocator > &b, matrix< T, Allocator > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T, Allocator >::value_type alpha, typename matrix< T, Allocator >::value_type beta )
@@ -2447,7 +2447,7 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 /// @brief 行列×行列の演算を行う
 //! 
 //! \f[
-//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! 	{\bf C} = {\bf A} \times {\bf B}
 //! \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
@@ -2456,7 +2456,7 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 //! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
 //! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
 //!
-//! @return \f$tr\left( {\bf A} \right)\f$
+//! @return 行列の積が正しく計算できたかどうか
 //! 
 template < class T, class Allocator >
 inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocator > &b, matrix< T, Allocator > &c, bool a_is_transpose = false, bool b_is_transpose = false )
@@ -2470,7 +2470,7 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 /// @brief 行列×行列の演算を行う
 //! 
 //! \f[
-//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! 	{\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
 //! \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
@@ -2481,7 +2481,7 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 //! @param[in]  alpha … 行列演算の和を計算するときの係数
 //! @param[in]  beta  … 行列演算の和を計算するときの係数
 //!
-//! @return \f$tr\left( {\bf A} \right)\f$
+//! @return 行列の積が正しく計算できたかどうか
 //! 
 template < class Expression1, class Expression2, class T, class Allocator >
 inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_expression< Expression2 > &b, matrix< T, Allocator > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T, Allocator >::value_type alpha, typename matrix< T, Allocator >::value_type beta )
@@ -2498,7 +2498,7 @@ inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_ex
 /// @brief 行列×行列の演算を行う
 //! 
 //! \f[
-//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! 	{\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
 //! \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
@@ -2509,7 +2509,7 @@ inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_ex
 //! @param[in]  alpha … 行列演算の和を計算するときの係数
 //! @param[in]  beta  … 行列演算の和を計算するときの係数
 //!
-//! @return \f$tr\left( {\bf A} \right)\f$
+//! @return 行列の積が正しく計算できたかどうか
 //! 
 template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
 inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression< Expression > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T1, Allocator1 >::value_type alpha, typename matrix< T1, Allocator1 >::value_type beta )
@@ -2523,7 +2523,7 @@ inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression
 /// @brief 行列×行列の演算を行う
 //! 
 //! \f[
-//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! 	{\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
 //! \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
@@ -2534,7 +2534,7 @@ inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression
 //! @param[in]  alpha … 行列演算の和を計算するときの係数
 //! @param[in]  beta  … 行列演算の和を計算するときの係数
 //!
-//! @return \f$tr\left( {\bf A} \right)\f$
+//! @return 行列の積が正しく計算できたかどうか
 //! 
 template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
 inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1, Allocator1 > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T1, Allocator1 >::value_type alpha, typename matrix< T1, Allocator1 >::value_type beta )
@@ -2549,7 +2549,7 @@ inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1
 /// @brief 行列×行列の演算を行う
 //! 
 //! \f[
-//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! 	{\bf C} = {\bf A} \times {\bf B}
 //! \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
@@ -2557,10 +2557,8 @@ inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1
 //! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
 //! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
 //! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
-//! @param[in]  alpha … 行列演算の和を計算するときの係数
-//! @param[in]  beta  … 行列演算の和を計算するときの係数
 //!
-//! @return \f$tr\left( {\bf A} \right)\f$
+//! @return 行列の積が正しく計算できたかどうか
 //! 
 template < class Expression1, class Expression2, class T, class Allocator >
 inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_expression< Expression2 > &b, matrix< T, Allocator > &c, bool a_is_transpose = false, bool b_is_transpose = false )
@@ -2577,7 +2575,7 @@ inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_ex
 /// @brief 行列×行列の演算を行う
 //! 
 //! \f[
-//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! 	{\bf C} = {\bf A} \times {\bf B}
 //! \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
@@ -2585,10 +2583,8 @@ inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_ex
 //! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
 //! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
 //! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
-//! @param[in]  alpha … 行列演算の和を計算するときの係数
-//! @param[in]  beta  … 行列演算の和を計算するときの係数
 //!
-//! @return \f$tr\left( {\bf A} \right)\f$
+//! @return 行列の積が正しく計算できたかどうか
 //! 
 template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
 inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression< Expression > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose = false, bool b_is_transpose = false )
@@ -2602,7 +2598,7 @@ inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression
 /// @brief 行列×行列の演算を行う
 //! 
 //! \f[
-//! 	\alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
+//! 	{\bf C} = {\bf A} \times {\bf B}
 //! \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
@@ -2610,10 +2606,8 @@ inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression
 //! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
 //! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
 //! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
-//! @param[in]  alpha … 行列演算の和を計算するときの係数
-//! @param[in]  beta  … 行列演算の和を計算するときの係数
 //!
-//! @return \f$tr\left( {\bf A} \right)\f$
+//! @return 行列の積が正しく計算できたかどうか
 //! 
 template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
 inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1, Allocator1 > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose = false, bool b_is_transpose = false )
@@ -2632,7 +2626,7 @@ inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1
 //! @param[in]  pivot … ピボット配列
 //! @param[out] out   … ピボット行列
 //!
-//! @return \f$tr\left( {\bf A} \right)\f$
+//! @return ピボット行列
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 inline void permutation_matrix( const matrix< T1, Allocator1 > &pivot, matrix< T2, Allocator2 > &out )
@@ -2826,7 +2820,7 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 //! @param[in] e     … 複数の行列演算を表す式
 //! @param[in] style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
-//! @return 戻り値の説明
+//! @return \f$\left| {\bf A} \right|\f$
 //! 
 template < class Expression >
 inline const typename matrix_expression< Expression >::value_type det( const matrix_expression< Expression > &e, matrix_style::style style = matrix_style::ge )
