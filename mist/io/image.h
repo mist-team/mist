@@ -129,17 +129,6 @@ inline bool read_image( mist::array2< T, Allocator > &image, const std::string &
 		return( false );
 	}
 
-	if( image.width( ) == 0 )
-	{
-		std::cerr << "Image width is zero!" << std::endl;
-		return( false );
-	}
-	else if( image.height( ) == 0 )
-	{
-		std::cerr << "Image height is zero!" << std::endl;
-		return( false );
-	}
-
 	bool ret = false;
 	if( ext == ".jpeg" || ext == ".jpg" )
 	{
@@ -196,6 +185,18 @@ inline bool write_image( mist::array2< T, Allocator > &image, const std::string 
 	std::string ext = __image_controller__::to_lower_case( __image_controller__::get_ext( filename ) );
 	if( ext == "" )
 	{
+		std::cerr << "Unknown file type!" << std::endl;
+		return( false );
+	}
+
+	if( image.width( ) == 0 )
+	{
+		std::cerr << "Image width is zero!" << std::endl;
+		return( false );
+	}
+	else if( image.height( ) == 0 )
+	{
+		std::cerr << "Image height is zero!" << std::endl;
 		return( false );
 	}
 
