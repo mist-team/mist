@@ -55,6 +55,9 @@
 
 #include <png.h>
 
+// 以下のコードは libpng に付属のサンプルコード，および KATO 氏が http://www5.cds.ne.jp/~kato/png/ にて
+// 掲載しているソースを参考に作成し，MISTで利用できるように独自の拡張を施したものである．
+
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -78,26 +81,32 @@ namespace __png_controller__
 			int				bit_depth, color_type, interlace_type;
 			size_type		i, j;
 
-			fp = fopen( filename.c_str( ), "rb" );                           // まずファイルを開きます
+			fp = fopen( filename.c_str( ), "rb" );	// 読み込むPNG画像ファイルを開く
 			if( !fp ) return( false );
 
-			// png_ptr構造体を確保・初期化します
+			// PNGの画像を読み込む際に，必要となる各種構造体を初期化する
 			png_ptr = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
-			info_ptr = png_create_info_struct( png_ptr );             // info_ptr構造体を確保・初期化します
-			png_init_io( png_ptr, fp );                               // libpngにfpを知らせます
-			png_read_info( png_ptr, info_ptr );                       // PNGファイルのヘッダを読み込みます
-			png_get_IHDR( png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);         // IHDRチャンク情報を取得します
+			info_ptr = png_create_info_struct( png_ptr );	// png_infop 構造体を初期化する
+			png_init_io( png_ptr, fp );						// png_structp にファイルポインタを設定する
+			png_read_info( png_ptr, info_ptr );				// PNGファイルのヘッダを読み込む
+			png_get_IHDR( png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);	// IHDRチャンク情報を取得する
 
+			// PNGの画像を操作するための一時配列を用意する
 			png_bytepp png_buff;
-			png_buff = ( png_bytepp )malloc( height * sizeof( png_bytep ) ); // 以下３行は２次元配列を確保します
-			for( i = 0 ; i < (size_type)height ; i++ ) png_buff[i] = ( png_bytep )malloc( png_get_rowbytes( png_ptr, info_ptr ) );
+			png_buff = ( png_bytepp )malloc( height * sizeof( png_bytep ) );
+			for( i = 0 ; i < (size_type)height ; i++ )
+			{
+				png_buff[i] = ( png_bytep )malloc( png_get_rowbytes( png_ptr, info_ptr ) );
+			}
 
 			image.resize( width, height );
 
-			png_read_image( png_ptr, png_buff );	// 画像データを読み込みます
+			// 画像データを読み込む
+			png_read_image( png_ptr, png_buff );
 
 			bool ret = true;
 
+			// PNG に格納されている画像の形式に応じてデータを読み込む
 			switch( color_type )
 			{
 			case PNG_COLOR_TYPE_GRAY:
@@ -156,11 +165,14 @@ namespace __png_controller__
 				break;
 			}
 
-			for( i = 0 ; i < (size_type)height ; i++ ) free( png_buff[i] );            // 以下２行は２次元配列を解放します
+			// 一時画像用に確保したメモリを開放する
+			for( i = 0 ; i < (size_type)height ; i++ ) free( png_buff[i] );
 			free( png_buff );
 
-			// ２つの構造体のメモリを解放します
-			png_destroy_read_struct( &png_ptr, &info_ptr, (png_infopp)NULL );
+			// PNG の操作用に使用した構造体のメモリを解放する
+			png_destroy_read_struct( &png_ptr, &info_ptr, NULL );
+
+			// PNG のファイルを閉じる
 			fclose( fp );
 
 			return( ret );
@@ -227,7 +239,7 @@ namespace __png_controller__
 			png_set_gAMA( png_ptr, info_ptr, 1.0 );
 
 			{
-				time_t		gmt;		// G.M.T.
+				time_t		gmt;
 				png_time	mod_time;
 				png_text	text_ptr[5];
 
