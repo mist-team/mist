@@ -30,8 +30,8 @@
 //!
 //! @brief MT(Mersenne Twister)法による乱数発生を扱うためのライブラリ
 //!
-#ifndef __INCLUDE_RANDOM__
-#define __INCLUDE_RANDOM__
+#ifndef __INCLUDE_MIST_RANDOM__
+#define __INCLUDE_MIST_RANDOM__
 
 #include "mist.h"
 #include "matrix.h"
@@ -351,14 +351,13 @@ namespace uniform
 /// @brief 正規乱数のジェネレータ
 namespace gauss
 {
-
 	/// @brief 正規乱数のジェネレータ
 	//! 
 	//! 平均値と分散を指定し，一様乱数ジェネレータを用いて正規乱数を発生させるクラス．
 	//! 
 	class random 
 	{
-		mist::uniform::random u_rand_;	///< @brief 一様乱数ジェネレータ >
+		uniform::random u_rand_;	///< @brief 一様乱数ジェネレータ >
 
 		double mean_;					///< @brief 生成する正規乱数の平均値
 		double standard_deviation_;		///< @brief 生成する正規乱数の標準偏差
@@ -497,51 +496,54 @@ namespace gauss
 /// @brief 多変量正規乱数のジェネレータ
 namespace multivariate_gauss
 {
-
-	const mist::matrix< double > choleski( const mist::matrix< double > &mat1 )
-	{
-		// coded by h.ishida
-		mist::matrix< double > mat2( mat1.rows( ), mat1.cols( ) );
-		size_t i, j, m, k = mat1.cols( );
-		double s;
-		mat2( 0, 0 ) = std::sqrt( mat1( 0, 0 ) );
-		for( i = 0 ; i < k ; i ++ )
-		{
-			mat2( i, 0 ) = mat1( i, 0 ) / mat2( 0, 0 );
-		}
-		for(i = 1 ; i < k ; i ++ )
-		{
-			s = 0.0;
-			for( j = 0 ; j < i ; j ++ )
-			{
-				s += mat2( i, j ) * mat2( i, j );
-			}
-			mat2( i, i ) = sqrt( mat1( i, i ) - s );
-			for( j = 1 ; j < i ; j ++ )
-			{
-				s = 0.0;
-				for( m = 0 ; m < j ; m ++ )
-				{
-					s += mat2( i, m ) * mat2( j, m );
-				}
-				mat2( i, j ) = ( mat1( i, j ) - s ) / mat2( j, j );
-				mat2( j, i ) = 0.0;
-			}
-		}
-		return mat2;
-	}
-
-
 	/// @brief 多変量正規乱数のジェネレータ
 	//! 
 	//! 平均ベクトルと共分散行列を指定し，正規乱数ジェネレータを用いて多変量正規乱数（ベクトル）を発生させるクラス．
 	//! 
 	class random 
 	{
-		mist::gauss::random g_rand_;	///< @brief 正規乱数ジェネレータ >
+	private:
+		gauss::random g_rand_;	///< @brief 正規乱数ジェネレータ >
 
-		mist::matrix< double > mean_;			///< @brief 生成する正規乱数の平均ベクトル
-		mist::matrix< double > l_triangle_;		///< @brief 生成する正規乱数の共分散行列
+		matrix< double > mean_;			///< @brief 生成する正規乱数の平均ベクトル
+		matrix< double > l_triangle_;		///< @brief 生成する正規乱数の共分散行列
+
+		// coded by h.ishida
+		const matrix< double > choleski( const matrix< double > &mat1 )
+		{
+			matrix< double > mat2( mat1.rows( ), mat1.cols( ) );
+			size_t i, j, m, k = mat1.cols( );
+
+			mat2( 0, 0 ) = std::sqrt( mat1( 0, 0 ) );
+
+			for( i = 0 ; i < k ; i ++ )
+			{
+				mat2( i, 0 ) = mat1( i, 0 ) / mat2( 0, 0 );
+			}
+
+			for( i = 1 ; i < k ; i ++ )
+			{
+				double s = 0.0;
+				for( j = 0 ; j < i ; j ++ )
+				{
+					s += mat2( i, j ) * mat2( i, j );
+				}
+
+				mat2( i, i ) = sqrt( mat1( i, i ) - s );
+				for( j = 1 ; j < i ; j ++ )
+				{
+					s = 0.0;
+					for( m = 0 ; m < j ; m ++ )
+					{
+						s += mat2( i, m ) * mat2( j, m );
+					}
+					mat2( i, j ) = ( mat1( i, j ) - s ) / mat2( j, j );
+					mat2( j, i ) = 0.0;
+				}
+			}
+
+			return( mat2 );
+		}
 
 	public:
 
@@ -550,8 +552,8 @@ namespace multivariate_gauss
 		//! 
 		random( ) :
 			g_rand_( ),
-			mean_( mist::matrix< double >( ) ), 
-			l_triangle_( mist::matrix< double >( ) )
+			mean_( matrix< double >( ) ), 
+			l_triangle_( matrix< double >( ) )
 		{
 		}
 
@@ -560,7 +562,7 @@ namespace multivariate_gauss
 		//! @param[in] mean … 多変量正規乱数の平均ベクトル
 		//! @param[in] covariance … 多変量正規乱数の共分散行列
 		//! 
-		random( const mist::matrix< double > &mean, const mist::matrix< double > &covariance ) :
+		random( const matrix< double > &mean, const matrix< double > &covariance ) :
 			g_rand_( ),
 			mean_( mean ), 
 			l_triangle_( choleski( covariance ) )
@@ -573,7 +575,7 @@ namespace multivariate_gauss
 		//! @param[in] mean … 多変量正規乱数の平均ベクトル
 		//! @param[in] covariance … 多変量正規乱数の共分散行列
 		//! 
-		random( const unsigned long seed, const mist::matrix< double > &mean, const mist::matrix< double > &covariance ) :
+		random( const unsigned long seed, const matrix< double > &mean, const matrix< double > &covariance ) :
 			g_rand_( seed ),
 			mean_( mean ), 
 			l_triangle_( choleski( covariance ) )
@@ -586,7 +588,7 @@ namespace multivariate_gauss
 		//! @param[in] mean … 多変量正規乱数の平均ベクトル
 		//! @param[in] covariance … 多変量正規乱数の共分散行列
 		//! 
-		random( const array< unsigned long >& seed_array, const mist::matrix< double > &mean, const mist::matrix< double > &covariance ) :
+		random( const array< unsigned long >& seed_array, const matrix< double > &mean, const matrix< double > &covariance ) :
 			g_rand_( seed_array ),
 			mean_( mean ), 
 			l_triangle_( choleski( covariance ) )
@@ -597,9 +599,9 @@ namespace multivariate_gauss
 		//! 
 		//! @return 生成された正規乱数
 		//! 
-		const mist::matrix< double > generate( )
+		const matrix< double > generate( )
 		{
-			mist::matrix< double > r_vec( mean_.rows( ), mean_.cols( ) );
+			matrix< double > r_vec( mean_.rows( ), mean_.cols( ) );
 			for( size_t i = 0 ; i < r_vec.size( ) ; i ++ )
 			{
 				r_vec[ i ] = g_rand_.generate( ); 
@@ -611,9 +613,9 @@ namespace multivariate_gauss
 		//! 
 		//! @return 生成された正規乱数
 		//! 
-		const mist::matrix< double > operator( )( )
+		const matrix< double > operator( )( )
 		{
-			mist::matrix< double > r_vec( mean_.rows( ), mean_.cols( ) );
+			matrix< double > r_vec( mean_.rows( ), mean_.cols( ) );
 			for( size_t i = 0 ; i < r_vec.size( ) ; i ++ )
 			{
 				r_vec[ i ] = g_rand_.generate( ); 
@@ -670,5 +672,5 @@ _MIST_END
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#endif // __INCLUDE_RANDOM__
+#endif // __INCLUDE_MIST_RANDOM__
 
