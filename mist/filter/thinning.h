@@ -571,7 +571,7 @@ namespace __euclidean_utility__
 		typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 		template < class T >
-			static T P1( T *p[ 4 ], difference_type i, difference_type j )
+		static T P1( T *p[ 4 ], difference_type i, difference_type j )
 		{
 			if( j >= 9 )
 			{
@@ -584,7 +584,7 @@ namespace __euclidean_utility__
 		}
 
 		template < class T >
-			static T P2( T *p[ 4 ], difference_type i, difference_type j )
+		static T P2( T *p[ 4 ], difference_type i, difference_type j )
 		{
 			if( j >= 9 )
 			{
@@ -2023,6 +2023,10 @@ namespace euclidean
 	//!
 	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化を行うことが可能です
 	//!
+	//! @attention 細線化を行う際に，出力画像の要素のデータ型で一度ユークリッド2乗距離変換した後，細線化処理が実行されます．
+	//! @attention そのため，出力画像のデータ型が unsinged char の場合には，画像のサイズによっては距離変換が最後まで正しく行われません．
+	//! @attention 再選かを実行する場合は，unsigned short かそれよりも大きい値を表現できるデータ型を利用してください． 
+	//!
 	//! @param[in]  in  … 入力画像
 	//! @param[out] out … 出力画像
 	//!
@@ -2107,6 +2111,11 @@ namespace euclidean
 	//!	- 斉藤豊文, 森健策, 鳥脇純一郎, ``ユークリッド距離変換を用いた3次元ディジタル画像の薄面化および細線化の逐次型アルゴリズムとその諸性質,'' 電子情報通信学会論文誌D-II, vol.J79-D-II, no.10, pp.1675-1685, 1996
 	//!
 	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化することが可能です
+	//!
+	//! @attention 細線化を行う際に，出力画像の要素のデータ型で一度ユークリッド2乗距離変換した後，細線化処理が実行されます．
+	//! @attention そのため，出力画像のデータ型が unsinged char の場合には，画像のサイズによっては距離変換が最後まで正しく行われません．
+	//! @attention 再選かを実行する場合は，unsigned short かそれよりも大きい値を表現できるデータ型を利用してください． 
+	//!
 	//! @param[in]  in  … 入力画像
 	//! @param[out] out … 出力画像
 	//!
@@ -2137,6 +2146,10 @@ namespace euclidean
 	//!	- 斉藤豊文, 森健策, 鳥脇純一郎, ``ユークリッド距離変換を用いた3次元ディジタル画像の薄面化および細線化の逐次型アルゴリズムとその諸性質,'' 電子情報通信学会論文誌D-II, vol.J79-D-II, no.10, pp.1675-1685, 1996
 	//!
 	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化することが可能です
+	//!
+	//! @attention 細線化を行う際に，出力画像の要素のデータ型で一度ユークリッド2乗距離変換した後，細線化処理が実行されます．
+	//! @attention そのため，出力画像のデータ型が unsinged char の場合には，画像のサイズによっては距離変換が最後まで正しく行われません．
+	//! @attention 再選かを実行する場合は，unsigned short かそれよりも大きい値を表現できるデータ型を利用してください． 
 	//!
 	//! @param[in]  in  … 入力画像
 	//! @param[out] out … 出力画像
