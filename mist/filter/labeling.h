@@ -387,9 +387,11 @@ namespace __labeling_controller__
 //! 2次元画像に対する4近傍型ラベリング
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
-//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
-//! @attention また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
-//! @attention 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
+//! 
+//! ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要
+//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+//! また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
+//! 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
@@ -426,10 +428,11 @@ typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Alloca
 //! 2次元画像に対する4近傍型ラベリング
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
-//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
-//! @attention ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
-//! @attention また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
-//! @attention 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
+//! 
+//! ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+//! また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
+//! 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
@@ -449,10 +452,11 @@ typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Alloca
 //! 2次元画像に対する8近傍型ラベリング
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
-//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
-//! @attention ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
-//! @attention また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
-//! @attention 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
+//! 
+//! ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+//! また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
+//! 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
@@ -489,10 +493,11 @@ typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Alloca
 //! 2次元画像に対する8近傍型ラベリング
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
-//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
-//! @attention ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
-//! @attention また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
-//! @attention 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
+//! 
+//! ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+//! また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
+//! 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
@@ -512,10 +517,11 @@ inline typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1,
 //! 3次元画像に対する6近傍型ラベリング
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
-//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
-//! @attention ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
-//! @attention また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
-//! @attention 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
+//! 
+//! ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+//! また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
+//! 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
@@ -552,10 +558,11 @@ typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Alloca
 //! 3次元画像に対する6近傍型ラベリング
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
-//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
-//! @attention ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
-//! @attention また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
-//! @attention 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
+//! 
+//! ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+//! また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
+//! 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
@@ -575,10 +582,11 @@ inline typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1,
 //! 3次元画像に対する18近傍型ラベリング
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
-//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
-//! @attention ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
-//! @attention また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
-//! @attention 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
+//! 
+//! ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+//! また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
+//! 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
@@ -615,10 +623,11 @@ typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Alloc
 //! 3次元画像に対する18近傍型ラベリング
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
-//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
-//! @attention ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
-//! @attention また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
-//! @attention 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
+//! 
+//! ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+//! また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
+//! 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
@@ -638,10 +647,11 @@ inline typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1
 //! 3次元画像に対する26近傍型ラベリング
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
-//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
-//! @attention ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
-//! @attention また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
-//! @attention 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
+//! 
+//! ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+//! また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
+//! 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
@@ -679,16 +689,15 @@ typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Alloc
 //! 3次元画像に対する26近傍型ラベリング
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しくラベリングすることが可能です
-//! @attention ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
-//! @attention ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
-//! @attention また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
-//! @attention 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
+//! 
+//! ただし，データ型が char 型を利用する場合は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+//! また，最大ラベル数を超えた場合は自動的に最大ラベル数を更新する．そのため，メモリ使用量が増加する可能性がある．
+//! 初期値の max_label を大きくとることでメモリの再確保が減り高速に動作するようになる（そのかわり，初期メモリ量が増加する）．
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
 //! @param[in]  max_label … 最大で割り当てるラベル数のデフォルト値
-//! 
-//! @return 割り当てられたラベル数
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 inline typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T2, Allocator2 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
@@ -701,7 +710,7 @@ inline typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1
 
 /// @brief ある範囲内での最大のラベルを抽出する
 //! 
-//! 3次元画像に対する8近傍型ラベリングを用いて，最大連結成分を抽出する
+//! 2次元画像に対する8近傍型ラベリングを用いて，最大連結成分を抽出する
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しく動作する
 //! 
@@ -712,8 +721,6 @@ inline typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1
 //! @param[in]  sy        … Y軸方向の小さい側の位置
 //! @param[in]  ey        … Y軸方向の大きい側の位置
 //! @param[in]  max_label … 最大で割り当てるラベル数
-//! 
-//! @return 割り当てられたラベル数
 //! 
 template < class T1,  class T2, class Allocator1, class Allocator2 >
 void maximum_region(
@@ -729,7 +736,7 @@ void maximum_region(
 	typedef typename array2< T1, Allocator1 >::size_type size_type;
 	typedef typename array2< T1, Allocator1 >::difference_type difference_type;
 
-	array2< int > tmp;
+	array2< size_type > tmp;
 	size_type i, j;
 
 	size_type label_num = mist::labeling8( in, tmp, max_label );
@@ -906,6 +913,132 @@ void maximum_region( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 
 }
 
 
+
+
+/// @brief 画像の0/1を反転させて穴埋め処理を行う
+//! 
+//! 2次元画像に対する4近傍型ラベリングを用いて，穴埋め処理を行う
+//! 
+//! @attention 入力と出力が同じ画像オブジェクトでも正しく動作する
+//! 
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
+//! 
+template < class T1,  class T2, class Allocator1, class Allocator2 >
+void remove_hole_region( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T1, Allocator1 >::size_type max_label = __labeling_controller__::default_label_num2< T2 >::value )
+{
+	typedef typename array2< T1, Allocator1 >::size_type size_type;
+	typedef typename array2< T1, Allocator1 >::difference_type difference_type;
+
+	array2< size_type > tmp;
+	size_type i;
+
+	tmp.resize( in.size1( ), in.size2( ) );
+	tmp.reso1( in.reso1( ) );
+	tmp.reso2( in.reso2( ) );
+
+	// 反転した画像を作成する
+	for( i = 0 ; i < tmp.size( ) ; i++ )
+	{
+		tmp[ i ] = in[ i ] == 0;
+	}
+
+	size_type label_num = mist::labeling4( tmp, tmp, max_label );
+
+	// 指定された範囲内の最大ラベルを探索
+	size_type *menseki = new size_type[ label_num + 1 ];
+	for( i = 0 ; i <= label_num ; i++ )
+	{
+		menseki[ i ] = 0;
+	}
+
+	for( i = 0 ; i < tmp.size( ) ; i++ )
+	{
+		menseki[ tmp[ i ] ]++;
+	}
+
+	max_label = 1;
+	for( i = 2 ; i <= label_num ; i++ )
+	{
+		max_label = menseki[ i ] > menseki[ max_label ] ? i : max_label;
+	}
+	delete [] menseki;
+
+	out.resize( in.size1( ), in.size2( ) );
+	out.reso1( in.reso1( ) );
+	out.reso2( in.reso2( ) );
+
+	// 最大成分を残し，反転した画像を出力する
+	for( i = 0 ; i < out.size( ) ; i++ )
+	{
+		out[ i ] = tmp[ i ] == max_label ? 0 : 1;
+	}
+}
+
+
+/// @brief 画像の0/1を反転させて穴埋め処理を行う
+//! 
+//! 3次元画像に対する4近傍型ラベリングを用いて，穴埋め処理を行う
+//! 
+//! @attention 入力と出力が同じ画像オブジェクトでも正しく動作する
+//! 
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
+//! 
+template < class T1,  class T2, class Allocator1, class Allocator2 >
+void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T1, Allocator1 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
+{
+	typedef typename array2< T1, Allocator1 >::size_type size_type;
+	typedef typename array2< T1, Allocator1 >::difference_type difference_type;
+
+	array3< size_type > tmp;
+	size_type i;
+
+	tmp.resize( in.size1( ), in.size2( ), in.size3( ) );
+	tmp.reso1( in.reso1( ) );
+	tmp.reso2( in.reso2( ) );
+	tmp.reso2( in.reso3( ) );
+
+	// 反転した画像を作成する
+	for( i = 0 ; i < tmp.size( ) ; i++ )
+	{
+		tmp[ i ] = in[ i ] == 0;
+	}
+
+	size_type label_num = mist::labeling6( tmp, tmp, max_label );
+
+	// 指定された範囲内の最大ラベルを探索
+	size_type *menseki = new size_type[ label_num + 1 ];
+	for( i = 0 ; i <= label_num ; i++ )
+	{
+		menseki[ i ] = 0;
+	}
+
+	for( i = 0 ; i < tmp.size( ) ; i++ )
+	{
+		menseki[ tmp[ i ] ]++;
+	}
+
+	max_label = 1;
+	for( i = 2 ; i <= label_num ; i++ )
+	{
+		max_label = menseki[ i ] > menseki[ max_label ] ? i : max_label;
+	}
+	delete [] menseki;
+
+	out.resize( in.size1( ), in.size2( ), in.size3( ) );
+	out.reso1( in.reso1( ) );
+	out.reso2( in.reso2( ) );
+	out.reso2( in.reso3( ) );
+
+	// 最大成分を残し，反転した画像を出力する
+	for( i = 0 ; i < out.size( ) ; i++ )
+	{
+		out[ i ] = tmp[ i ] == max_label ? 0 : 1;
+	}
+}
 
 /// @}
 //  ラベリンググループの終わり

@@ -508,9 +508,9 @@ namespace multivariate_gauss
 		matrix< double > mean_;			///< @brief ¶¬‚·‚é³‹K—”‚Ì•½‹ÏƒxƒNƒgƒ‹
 		matrix< double > l_triangle_;		///< @brief ¶¬‚·‚é³‹K—”‚Ì‹¤•ªŽUs—ñ
 
-		// coded by h.ishida
 		const matrix< double > choleski( const matrix< double > &mat1 )
 		{
+			// coded by h.ishida
 			matrix< double > mat2( mat1.rows( ), mat1.cols( ) );
 			size_t i, j, m, k = mat1.cols( );
 
