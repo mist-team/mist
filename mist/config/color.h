@@ -1591,6 +1591,11 @@ struct _pixel_converter_
 		{\
 			enum{ value = true };\
 		};\
+		template < >\
+		struct is_color< bgra< type > >\
+		{\
+			enum{ value = true };\
+		};\
 
 
 	#define __PIXEL_CONVERTER__( type ) \
@@ -1633,6 +1638,23 @@ struct _pixel_converter_
 		{\
 			typedef type value_type;\
 			typedef rgba< type > color_type;\
+			enum{ color_num = 4 };\
+			\
+			static color_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )\
+			{\
+				return( color_type( r, g, b, a ) );\
+			}\
+			\
+			static color_type convert_from( const color_type &pixel )\
+			{\
+				return( pixel );\
+			}\
+		};\
+		template < >\
+		struct _pixel_converter_< bgra< type > >\
+		{\
+			typedef type value_type;\
+			typedef bgra< type > color_type;\
 			enum{ color_num = 4 };\
 			\
 			static color_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )\
@@ -1698,6 +1720,12 @@ struct _pixel_converter_
 	};
 
 	template < class T >
+	struct is_color< bgra< T > >
+	{
+		_MIST_CONST( bool, value, true );
+	};
+
+	template < class T >
 	struct _pixel_converter_< rgb< T > >
 	{
 		typedef T value_type;
@@ -1738,6 +1766,24 @@ struct _pixel_converter_
 	{
 		typedef T value_type;
 		typedef rgba< T > color_type;
+		enum{ color_num = 4 };
+
+		static color_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )
+		{
+			return( color_type( r, g, b, a ) );
+		}
+
+		static color_type convert_from( const color_type &pixel )
+		{
+			return( pixel );
+		}
+	};
+
+	template < class T >
+	struct _pixel_converter_< bgra< T > >
+	{
+		typedef T value_type;
+		typedef bgra< T > color_type;
 		enum{ color_num = 4 };
 
 		static color_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )
