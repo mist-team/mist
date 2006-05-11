@@ -153,6 +153,7 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 	typedef vector2< double > vector_type;
 	typedef std::deque< __mesh_information__ > mesh_list_type;
 	typedef typename mesh_list_type::iterator mesh_iterator;
+	typedef typename mesh_list_type::reverse_iterator mesh_reverse_iterator;
 	array2< size_type > binary;
 
 
@@ -296,13 +297,18 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 		}
 	}
 
+	if( mesh_list.size( ) < 10 )
+	{
+		return( false );
+	}
+
 	// 周囲長の大きさを基準として並べ替える
 	std::sort( mesh_list.begin( ), mesh_list.end( ), __mesh_information__::sort_by_round );
 
 	// 周囲長の大き差を基準として，基準点列を抽出する
 	{
 		mesh_iterator ite = mesh_list.begin( );
-		size_type base_mesh_num = 1;
+		difference_type base_mesh_num = 1;
 		double oround = ite->round;
 	
 		ite->mark = 1;
@@ -312,9 +318,9 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 		{
 			double round = ite->round;
 
-			// 一つ前の周囲長の80％以上であれば，基準点としてマークする
+			// 一つ前の周囲長の90％以上であれば，基準点としてマークする
 			//std::cout << "周囲長: " << round << ", 比: " << round / oround << std::endl;
-			if( round > oround * 0.8 )
+			if( round > oround * 0.9 )
 			{
 				ite->mark = 1;
 				base_mesh_num++;
@@ -334,6 +340,23 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 		// 基準点の数が少ない場合には終了
 		if( base_mesh_num < 2 )
 		{
+			for( ite = mesh_list.begin( ) ; ite != mesh_list.end( ) ; ++ite )
+			{
+				meshes[ ite->label ].mark = ite->mark;
+			}
+
+			for( i = 0 ; i < chart.size( ) ; i++ )
+			{
+				if( meshes[ binary[ i ] ].mark >= 0 && meshes[ binary[ i ] ].enabled )
+				{
+					chart[ i ] = static_cast< unsigned char >( meshes[ binary[ i ] ].mark );
+				}
+				else
+				{
+					chart[ i ] = 255;
+				}
+			}
+
 			return( false );
 		}
 
@@ -342,19 +365,135 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 		double y1 = mesh_list[ 0 ].pos.y;
 		double x2 = mesh_list[ 1 ].pos.x;
 		double y2 = mesh_list[ 1 ].pos.y;
-		double a = y2 - y1;
-		double b = x1 - x2;
-		//double c = x2 * y1 - x1 * y2;
+		double A = y2 - y1;
+		double B = x1 - x2;
+		double C = x2 * y1 - x1 * y2;
 
 		mesh_iterator site = mesh_list.begin( );
 		mesh_iterator eite = site + base_mesh_num;
+
+		// 判定ミスの基準点を排除する
+		{
+			double __threshold__ = std::sqrt( ( x1 - x2 ) * ( x1 - x2 ) + ( y1 - y2 ) * ( y1 - y2 ) ) * 0.5;
+			double D = 1.0 / std::sqrt( A * A + B * B );
+			for( ite = site ; ite != eite ; ++ite )
+			{
+				if( std::abs( A * ite->pos.x + B * ite->pos.y + C ) * D > __threshold__ )
+				{
+					ite->mark = 100;
+					base_mesh_num--;
+				}
+			}
+		}
+
+		// 末尾を再設定する
+		eite = site + base_mesh_num;
+
+		// 基準点を順番に並べ替える評価値を計算する
 		for( ite = site ; ite != eite ; ++ite )
 		{
-			ite->length = - b * ite->pos.x + a * ite->pos.y;
+			ite->length = - B * ite->pos.x + A * ite->pos.y;
 		}
 
 		// 基準線に沿って並び替える
 		std::sort( site, eite, __mesh_information__::sort_by_length );
+		site = mesh_list.begin( );
+		eite = site + base_mesh_num;
+
+		// 大きさが変化する位置を再度検出する
+		{
+			// まず，もっとも周囲長の長いものを見つける
+			mesh_iterator mite = mesh_list.begin( );
+			mesh_iterator oite = mesh_list.begin( );
+			mesh_iterator cite = oite;
+			for( ; cite != eite ; ++cite )
+			{
+				if( mite->round < cite->round )
+				{
+					mite = cite;
+				}
+			}
+
+			for( cite = mite, oite = mite ; cite != eite ; ++cite )
+			{
+				double r1 = oite->round;
+				double r2 = cite->round;
+
+				// 一つ前の周囲長の80％以上であれば，基準点としてマークする
+				//std::cout << "周囲長: " << r1 << ", 比: " << r2 / r1 << std::endl;
+				if( ( r1 > r2 && r2 < r1 * 0.8 ) || ( r1 < r2 && r1 < r2 * 0.8 ) )
+				{
+					break;
+				}
+
+				oite = cite;
+			}
+
+			for( ; cite != eite ; ++cite )
+			{
+				cite->mark = 100;
+				cite->length = 1.0e10;
+			}
+
+			mesh_reverse_iterator rmite( mite + 1 );
+			mesh_reverse_iterator reite = mesh_list.rend( );
+			mesh_reverse_iterator rcite( rmite );
+			for( mesh_reverse_iterator roite = rmite ; rcite != reite ; ++rcite )
+			{
+				double r1 = roite->round;
+				double r2 = rcite->round;
+
+				// 一つ前の周囲長の80％以上であれば，基準点としてマークする
+				//std::cout << "周囲長: " << r1 << ", 比: " << r2 / r1 << std::endl;
+				if( ( r1 > r2 && r2 < r1 * 0.8 ) || ( r1 < r2 && r1 < r2 * 0.8 ) )
+				{
+					break;
+				}
+
+				roite = rcite;
+			}
+
+			for( ; rcite != reite ; ++rcite )
+			{
+				rcite->mark = 100;
+				rcite->length = 1.0e10;
+			}
+
+			for( cite = site, base_mesh_num = 0 ; cite != eite ; ++cite )
+			{
+				if( cite->mark == 1 )
+				{
+					base_mesh_num++;
+				}
+			}
+
+			// 基準線に沿って並び替える
+			std::sort( site, eite, __mesh_information__::sort_by_length );
+			site = mesh_list.begin( );
+			eite = site + base_mesh_num;
+
+			if( col + 1 < base_mesh_num )
+			{
+				for( ite = mesh_list.begin( ) ; ite != mesh_list.end( ) ; ++ite )
+				{
+					meshes[ ite->label ].mark = ite->mark;
+				}
+
+				for( i = 0 ; i < chart.size( ) ; i++ )
+				{
+					if( meshes[ binary[ i ] ].mark >= 0 && meshes[ binary[ i ] ].enabled )
+					{
+						chart[ i ] = static_cast< unsigned char >( meshes[ binary[ i ] ].mark );
+					}
+					else
+					{
+						chart[ i ] = 255;
+					}
+				}
+
+				return( false );
+			}
+		}
 
 		// 中心をあらわす基準点を決定する
 		double len0 = __mesh_utility__::__compute_border_distance__( mesh_list[ 0 ].pos, chart.width( ), chart.height( ) );
@@ -363,7 +502,9 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 		if( len0 < len1 )
 		{
 			// 並び順を逆転させる
-			std::reverse( site, eite );
+			std::reverse( mesh_list.begin( ), mesh_list.begin( ) + base_mesh_num );
+			site = mesh_list.begin( );
+			eite = site + base_mesh_num;
 		}
 
 		// 順番に値を設定する
@@ -374,7 +515,12 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 			ite->mark = mark++;
 			ite->row = row;
 			ite->col = column--;
+			//std::cout << "( " << ite->row << ", " << ite->col << " )" << std::endl;
 			grid( ite->row, ite->col ) = ite->pos;
+		}
+		for( ; ite != mesh_list.end( ) ; ++ite )
+		{
+			ite->mark = 100;
 		}
 
 		// 出力データを整形する
@@ -428,11 +574,10 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 		}
 	}
 
-
 	{
 		for( i = 0 ; i < chart.size( ) ; i++ )
 		{
-			if( meshes[ binary[ i ] ].mark >= 0 )
+			if( meshes[ binary[ i ] ].mark >= 0 && meshes[ binary[ i ] ].enabled )
 			{
 				chart[ i ] = static_cast< unsigned char >( meshes[ binary[ i ] ].mark );
 			}
