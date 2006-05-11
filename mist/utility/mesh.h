@@ -60,6 +60,8 @@
 
 
 #include <deque>
+#include <set>
+#include <algorithm>
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -73,36 +75,84 @@ _MIST_BEGIN
 //!
 //!  @{
 
+namespace __mesh_utility__
+{
+	struct __mesh_information__
+	{
+		typedef size_t size_type;
+		typedef ptrdiff_t difference_type;
+		typedef vector2< double > vector_type;
+
+		difference_type label;
+		difference_type count;
+		double          round;
+		vector_type     pos;
+		bool            enabled;
+		difference_type mark;
+		difference_type row;
+		difference_type col;
+		double          length;
+
+		__mesh_information__( ) : label( -1 ), count( 0 ), round( 0.0 ), pos( 0.0, 0.0 ), enabled( true ), mark( -1 ), row( -1 ), col( -1 ), length( 1.0e10 )
+		{
+		}
+
+		// 周囲長の大きさで並べ替える
+		bool operator <( const __mesh_information__ &m ) const
+		{
+			return( this->round > m.round );
+		}
+
+		static bool sort_by_round( const __mesh_information__ &m1, const __mesh_information__ &m2 )
+		{
+			return( m1.round > m2.round );
+		}
+
+		static bool sort_by_length( const __mesh_information__ &m1, const __mesh_information__ &m2 )
+		{
+			return( m1.length < m2.length );
+		}
+	};
+
+	inline double __minimum__( double v1, double v2 )
+	{
+		return( v1 < v2 ? v1 : v2 );
+	}
+
+	inline double __compute_border_distance__( const vector2< double > &pos, double image_width, double image_height )
+	{
+		double xmin = __minimum__( std::abs( pos.x ), std::abs( image_width - pos.x ) );
+		double ymin = __minimum__( std::abs( pos.y ), std::abs( image_height - pos.y ) );
+		return( __minimum__( xmin, ymin ) );
+	}
+}
 
 /// @brief 円を格子状に並べた画像から，各点を抽出しメッシュ上の点と対応付ける
 //! 
 //! @attention 入力画像はあらかじめ，しきい値処理を行っておく必要がある．
-//! @attention グリッドの点は左上を原点とする．
-//! @attention メッシュの上下左右を決める点をL字型に4点配置し，Lの底辺に3点を配置する．
+//! 
+//! グリッドの点は左上を原点とし，メッシュの基準ラインを定める点列を配置する．
+//! 点列のサンプルは，mist/utility/mesh.ai を参考に作成してください．
 //! 
 //! 出力されるメッシュの座標のうち，対応する点が見つからないものには (-1,-1) を出力する．
 //! 
-//! @param[in]     chart  … 入力画像（メッシュが映っている画像）
-//! @param[in,out] grid   … メッシュの各点の座標を入力とし，画像中の座標を格納がされる
-//! @param[in]     leftX  … メッシュの上下左右を決めるための左側の点のメッシュ上での列方向の位置（０から数えた時の位置）
-//! @param[in]     leftY  … メッシュの上下左右を決めるための左側の点のメッシュ上での行方向の位置（０から数えた時の位置）
-//! @param[in]     rightX … メッシュの上下左右を決めるための右側の点のメッシュ上での列方向の位置（０から数えた時の位置）
-//! @param[in]     rightY … メッシュの上下左右を決めるための右側の点のメッシュ上での行方向の位置（０から数えた時の位置）
+//! @param[in]     chart … 入力画像（メッシュが映っている画像）
+//! @param[in,out] grid  … 撮影した画像に含まれるメッシュの点数で初期化された配列（画像に移っていない点も含めた総数）を入力とし，画像中の座標が結果として出力される
+//! @param[in]     row   … メッシュの基準ラインを定める点列の中心を表す行方向の位置（０から数えた時の位置）
+//! @param[in]     col   … メッシュの基準ラインを定める点列の中心を表す列方向の位置（０から数えた時の位置）
 //! @param[in]     threshold_for_circular_ratio … メッシュの候補を絞り込むための円形度のしきい値（これより小さい値のものは除外）
 //! 
 //! @return メッシュの抽出に成功したかどうか
 //! 
 template < class T, class Allocator >
-bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double > > &grid,
-					typename array2< T, Allocator >::difference_type leftX, typename array2< T, Allocator >::difference_type leftY,
-					typename array2< T, Allocator >::difference_type rightX, typename array2< T, Allocator >::difference_type rightY,
-					double threshold_for_circular_ratio = 0.4 )
+bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &grid, typename array2< T, Allocator >::difference_type row, typename array2< T, Allocator >::difference_type col, double threshold_for_circular_ratio = 0.4 )
 {
+	typedef __mesh_utility__::__mesh_information__ __mesh_information__;
 	typedef array2< T, Allocator >::size_type size_type;
 	typedef array2< T, Allocator >::difference_type difference_type;
 	typedef vector2< double > vector_type;
-	typedef std::deque< size_type > label_list_type;
-	typedef typename label_list_type::iterator label_iterator;
+	typedef std::deque< __mesh_information__ > mesh_list_type;
+	typedef typename mesh_list_type::iterator mesh_iterator;
 	array2< size_type > binary;
 
 
@@ -110,22 +160,30 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	convert( chart, binary );
 
 	size_type i, j;
+	difference_type r, c;
+	difference_type rows = grid.rows( );
+	difference_type cols = grid.cols( );
 
 	size_type labelnum = labeling4( binary, binary );
 	//std::cout << "LabelNum: " << labelnum << std::endl;
 
-	label_list_type label_list;
-	array< difference_type > count( labelnum + 1 );
-	array< double > round( labelnum + 1 );
-	array< vector_type > pos( labelnum + 1 );
+	mesh_list_type mesh_list;
+	array< __mesh_information__ > meshes( labelnum + 1 );
 
 	for( i = 0 ; i <= labelnum ; i++ )
 	{
-		count[ i ] = 0;
-		round[ i ] = 0;
-		pos[ i ].x = 0;
-		pos[ i ].y = 0;
+		meshes[ i ].label = i;
 	}
+
+	// 全てのグリッドを初期化する
+	for( size_type i = 0 ; i < grid.size( ) ; i++ )
+	{
+		grid[ i ].x = -1;
+		grid[ i ].y = -1;
+	}
+
+	// 背景は無効にする
+	meshes[ 0 ].enabled = false;
 
 	// 各ラベルの画素数，重心位置，周囲長を求める
 	const double _2 = std::sqrt( 2.0 );
@@ -133,18 +191,20 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	{
 		for( i = 0 ; i < chart.width( ) - 1 ; i++ )
 		{
-			size_type label = binary( i, j );
-			if( label > 0 )
-			{
-				count[ label ]++;
-				pos[ label ].x += i;
-				pos[ label ].y += j;
-			}
+			__mesh_information__ &mesh = meshes[ binary( i, j ) ];
+			 mesh.count++;
+			 mesh.pos.x += i;
+			 mesh.pos.y += j;
 
-			size_type l0 = label;
-			size_type l1 = binary( i + 1, j     );
-			size_type l2 = binary( i    , j + 1 );
-			size_type l3 = binary( i + 1, j + 1 );
+			// 画像の周囲長を計算する
+			__mesh_information__ &m0 = mesh;
+			__mesh_information__ &m1 = meshes[ binary( i + 1, j     ) ];
+			__mesh_information__ &m2 = meshes[ binary( i    , j + 1 ) ];
+			__mesh_information__ &m3 = meshes[ binary( i + 1, j + 1 ) ];
+			size_type l0 = m0.label;
+			size_type l1 = m1.label;
+			size_type l2 = m2.label;
+			size_type l3 = m3.label;
 
 			if( l0 > 0 )
 			{
@@ -155,11 +215,11 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 
 				if( num_eq == 2 )
 				{
-					round[ l0 ] += _2;
+					m0.round += _2;
 				}
 				else if( num_eq == 1 && l0 != l3 )
 				{
-					round[ l0 ] += 1.0;
+					m0.round += 1.0;
 				}
 			}
 			else if( l1 > 0 )
@@ -168,11 +228,11 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 				{
 					if( l1 == l2 )
 					{
-						round[ l1 ] += _2;
+						m1.round += _2;
 					}
 					else
 					{
-						round[ l1 ] += 1.0;
+						m1.round += 1.0;
 					}
 				}
 			}
@@ -180,7 +240,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 			{
 				if( l2 == l3 )
 				{
-					round[ l2 ] += 1.0;
+					m2.round += 1.0;
 				}
 			}
 		}
@@ -190,303 +250,201 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 	// 各領域の重心位置を計算する
 	for( i = 1 ; i <= labelnum ; i++ )
 	{
-		double num = count[ i ];
-		pos[ i ].x /= num;
-		pos[ i ].y /= num;
+		__mesh_information__ &mesh = meshes[ i ];
+		mesh.pos.x /= mesh.count;
+		mesh.pos.y /= mesh.count;
 	}
 
 	// 画面の境界に接している領域を取り除く
 	for( i = 0 ; i < chart.width( ) ; i++ )
 	{
-		if( binary( i, 0 ) != 0 )
-		{
-			count[ binary( i, 0 ) ] = 0;
-		}
-		if( binary( i, chart.height( ) - 1 ) != 0 )
-		{
-			count[ binary( i, chart.height( ) - 1 ) ] = 0;
-		}
+		meshes[ binary( i, 0 ) ].enabled = false;
+		meshes[ binary( i, chart.height( ) - 1 ) ].enabled = false;
 	}
 
 	// 画面の境界に接している領域を取り除く
 	for( j = 0 ; j < chart.height( ) ; j++ )
 	{
-		if( binary( 0, j ) != 0 )
-		{
-			count[ binary( 0, j ) ] = 0;
-		}
-		if( binary( chart.width( ) - 1, j ) != 0 )
-		{
-			count[ binary( chart.width( ) - 1, j ) ] = 0;
-		}
+		meshes[ binary( 0, j ) ].enabled = false;
+		meshes[ binary( chart.width( ) - 1, j ) ].enabled = false;
 	}
 
 	// 円形度を評価して，不要な領域を除去する
 	difference_type minimum_count = 15; // この個数に満たない領域は削除する
 	for( i = 1 ; i <= labelnum ; i++ )
 	{
-		if( count[ i ] < minimum_count )
+		__mesh_information__ &mesh = meshes[ i ];
+		if( mesh.count < minimum_count )
 		{
-			count[ i ] = 0;
-			round[ i ] = 0;
+			mesh.enabled = false;
 		}
-		else
+		else if( mesh.enabled )
 		{
 			const double pai = 3.1415926535897932384626433832795;
-			const double S = count[ i ];
-			const double L = round[ i ];
+			const double S = mesh.count;
+			const double L = mesh.round;
 			double e = 4.0 * pai * S / ( L * L );
 			if( e < threshold_for_circular_ratio )
 			{
-				count[ i ] = 0;
-				round[ i ] = 0;
+				mesh.enabled = false;
 			}
 			else
 			{
-				label_list.push_back( i );
+				mesh_list.push_back( mesh );
 			}
 			//std::cout << "ラベル: " << i << ", 円形度: " << e << std::endl;
 		}
 	}
 
-	// 領域の周囲長が大きいものから順番に4つ選ぶ
-	difference_type index1 = -1;
-	difference_type index2 = -1;
-	difference_type index3 = -1;
-	difference_type index4 = -1;
-	double max1 = 0, max2 = 0, max3 = 0, max4 = 0;
-	for( i = 1 ; i <= labelnum ; i++ )
+	// 周囲長の大きさを基準として並べ替える
+	std::sort( mesh_list.begin( ), mesh_list.end( ), __mesh_information__::sort_by_round );
+
+	// 周囲長の大き差を基準として，基準点列を抽出する
 	{
-		double len = round[ i ];
-		if( len > max1 )
+		mesh_iterator ite = mesh_list.begin( );
+		size_type base_mesh_num = 1;
+		double oround = ite->round;
+	
+		ite->mark = 1;
+		++ite;
+
+		for( ; ite != mesh_list.end( ) ; ++ite )
 		{
-			index4 = index3;
-			index3 = index2;
-			index2 = index1;
-			index1 = i;
-			max4 = max3;
-			max3 = max2;
-			max2 = max1;
-			max1 = len;
-		}
-		else if( len > max2 )
-		{
-			index4 = index3;
-			index3 = index2;
-			index2 = i;
-			max4 = max3;
-			max3 = max2;
-			max2 = len;
-		}
-		else if( len > max3 )
-		{
-			index4 = index3;
-			index3 = i;
-			max4 = max3;
-			max3 = len;
-		}
-		else if( len > max4 )
-		{
-			index4 = i;
-			max4 = len;
-		}
-	}
+			double round = ite->round;
 
-	// 中心の円が一つも見つからない
-	if( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
-	{
-		return( false );
-	}
-
-
-	vector_type p1, p2, p3;
-	// 面積の大きい領域で，第4の点を決定する
-	{
-		difference_type i1 = index1;
-		difference_type i2 = index2;
-		difference_type i3 = index3;
-		difference_type i4 = index4;
-		vector_type pp1 = pos[ index1 ];
-		vector_type pp2 = pos[ index2 ];
-		vector_type pp3 = pos[ index3 ];
-		vector_type pp4 = pos[ index4 ];
-		double len12 = ( pp1 - pp2 ).length( );
-		double len13 = ( pp1 - pp3 ).length( );
-		double len14 = ( pp1 - pp4 ).length( );
-		double len23 = ( pp2 - pp3 ).length( );
-		double len24 = ( pp2 - pp4 ).length( );
-		double len34 = ( pp3 - pp4 ).length( );
-
-		// 三角形を構成する３点を選ぶ
-		double l123 = len12 + len23 + len13;
-		double l124 = len12 + len24 + len14;
-		double l134 = len13 + len34 + len14;
-		double l234 = len23 + len34 + len24;
-
-		if( l123 >= l124 && l123 >= l134 && l123 >= l234 )
-		{
-			index1 = i1;
-			index2 = i2;
-			index3 = i3;
-			index4 = i4;
-		}
-		else if( l124 >= l123 && l124 >= l134 && l124 >= l234 )
-		{
-			index1 = i1;
-			index2 = i2;
-			index3 = i4;
-			index4 = i3;
-		}
-		else if( l134 >= l123 && l134 >= l124 && l134 >= l234 )
-		{
-			index1 = i1;
-			index2 = i4;
-			index3 = i3;
-			index4 = i2;
-		}
-		else
-		{
-			index1 = i4;
-			index2 = i2;
-			index3 = i3;
-			index4 = i1;
-		}
-	}
-
-	// 面積の大きい領域で，Lの左上の点を決定する
-	{
-		difference_type i1 = index1;
-		difference_type i2 = index2;
-		difference_type i3 = index3;
-		difference_type i4 = index4;
-		vector_type pp1 = pos[ index1 ];
-		vector_type pp2 = pos[ index2 ];
-		vector_type pp3 = pos[ index3 ];
-		vector_type pp4 = pos[ index4 ];
-
-		// 第4の点から最も遠い点を選び，それの番号を１にする
-		double len14 = ( pp1 - pp4 ).length( );
-		double len24 = ( pp2 - pp4 ).length( );
-		double len34 = ( pp3 - pp4 ).length( );
-
-		if( len14 >= len24 && len14 >= len34 )
-		{
-			index1 = i1;
-			index2 = i2;
-			index3 = i3;
-		}
-		else if( len24 >= len14 && len24 >= len34 )
-		{
-			index1 = i2;
-			index2 = i1;
-			index3 = i3;
-		}
-		else
-		{
-			index1 = i3;
-			index2 = i1;
-			index3 = i2;
-		}
-	}
-
-	{
-		// ベクトルの外積が紙面の手前を向くように割り当てる
-		vector_type p12 = pos[ index1 ] - pos[ index2 ];
-		vector_type p32 = pos[ index3 ] - pos[ index2 ];
-		vector3< double > v12( p12.x, p12.y, 0 );
-		vector3< double > v32( p32.x, p32.y, 0 );
-		//　vector3< double > v = v32.outer( v12 );
-		if( v32.outer( v12 ).z >= 0 )
-		{
-			difference_type tmp = index2;
-			index2 = index3;
-			index3 = tmp;
-		}
-
-		p1 = pos[ index1 ];
-		p2 = pos[ index2 ];
-		p3 = pos[ index3 ];
-	}
-
-
-	// 求まった大きな３つの円の配置を元にグリッドの座標を更新する
-	difference_type r, c, rows = grid.rows( ), cols = grid.cols( );
-	{
-		double scaleX = ( p3  - p2 ).length( ) / static_cast< double >( rightX - leftX );
-		double scaleY = ( p1  - p2 ).length( ) / static_cast< double >( leftY - rightY );
-
-		if( scaleX < 0 )
-		{
-			scaleX = -scaleX;
-		}
-		if( scaleY < 0 )
-		{
-			scaleY = -scaleY;
-		}
-
-		vector_type dX = ( p3  - p2 ).unit( ) * scaleX;
-		vector_type dY = ( p1  - p2 ).unit( ) * scaleY;
-
-		// 全てのグリッドを初期化する
-		for( size_type i = 0 ; i < grid.size( ) ; i++ )
-		{
-			grid[ i ].x = -1;
-			grid[ i ].y = -1;
-		}
-
-		// マークした点にの線上に乗るものを先に割り当てる
-		for( c = leftX, r = rightY ; c <= rightX ; c++ )
-		{
-			vector_type &p = grid( r, c );
-			p = p2 + dX * ( c - leftX ) + dY * ( rightY - r );
-
-			double min = 1.0e10;
-			label_iterator cur = label_list.end( );
-			for( label_iterator ite = label_list.begin( ) ; ite != label_list.end( ) ; ++ite )
+			// 一つ前の周囲長の80％以上であれば，基準点としてマークする
+			//std::cout << "周囲長: " << round << ", 比: " << round / oround << std::endl;
+			if( round > oround * 0.8 )
 			{
-				double l = ( pos[ *ite ] - p ).length( );
-				if( l < min )
+				ite->mark = 1;
+				base_mesh_num++;
+				oround = round;
+			}
+			else
+			{
+				break;
+			}
+		}
+		for( ; ite != mesh_list.end( ) ; ++ite )
+		{
+			ite->mark = 100;
+		}
+
+		/// 基準となる中心点を見つける
+		// 基準点の数が少ない場合には終了
+		if( base_mesh_num < 2 )
+		{
+			return( false );
+		}
+
+		// まず，大きい基準点の座標を用いて基準点を結ぶ直線を求める
+		double x1 = mesh_list[ 0 ].pos.x;
+		double y1 = mesh_list[ 0 ].pos.y;
+		double x2 = mesh_list[ 1 ].pos.x;
+		double y2 = mesh_list[ 1 ].pos.y;
+		double a = y2 - y1;
+		double b = x1 - x2;
+		//double c = x2 * y1 - x1 * y2;
+
+		mesh_iterator site = mesh_list.begin( );
+		mesh_iterator eite = site + base_mesh_num;
+		for( ite = site ; ite != eite ; ++ite )
+		{
+			ite->length = - b * ite->pos.x + a * ite->pos.y;
+		}
+
+		// 基準線に沿って並び替える
+		std::sort( site, eite, __mesh_information__::sort_by_length );
+
+		// 中心をあらわす基準点を決定する
+		double len0 = __mesh_utility__::__compute_border_distance__( mesh_list[ 0 ].pos, chart.width( ), chart.height( ) );
+		double len1 = __mesh_utility__::__compute_border_distance__( mesh_list[ base_mesh_num - 1 ].pos, chart.width( ), chart.height( ) );
+
+		if( len0 < len1 )
+		{
+			// 並び順を逆転させる
+			std::reverse( site, eite );
+		}
+
+		// 順番に値を設定する
+		difference_type mark = 1;
+		difference_type column = col;
+		for( ite = site ; ite != eite ; ++ite )
+		{
+			ite->mark = mark++;
+			ite->row = row;
+			ite->col = column--;
+			grid( ite->row, ite->col ) = ite->pos;
+		}
+
+		// 出力データを整形する
+		for( ite = mesh_list.begin( ) ; ite != mesh_list.end( ) ; ++ite )
+		{
+			meshes[ ite->label ].mark = ite->mark;
+		}
+		
+		// 求まった大きな３つの円の配置を元にグリッドの座標を更新する
+		__mesh_information__ m1 = mesh_list[ 0 ];
+		__mesh_information__ m2 = mesh_list[ base_mesh_num - 1 ];
+
+		vector_type p1 = m1.pos;
+		vector_type p2 = m2.pos;
+		vector_type dir = ( p1 - p2 ).unit( );
+		vector_type norm( -dir.y, dir.x );
+		double length = ( p1 - p2 ).length( ) / static_cast< double >( base_mesh_num );
+
+		// 不用なデータを削除する
+		mesh_list.erase( site, eite );
+
+		// 基準ラインで確定しているものの近傍のみを確定させる
+		difference_type rindex[] = { -1, 1 };
+		for( r = 0 ; r < 2 ; r++ )
+		{
+			for( c = m1.col ; c >= m2.col ; c-- )
+			{
+				vector_type &op = grid( m1.row + rindex[ r ], c );
+				vector_type p = grid( m1.row, c ) + rindex[ r ] * norm * length;
+
+				double min = 1.0e10;
+				mesh_iterator cur = mesh_list.begin( );
+				for( mesh_iterator cite = mesh_list.begin( ) ; cite != mesh_list.end( ) ; ++cite )
 				{
-					min = l;
-					cur = ite;
+					double l = ( cite->pos - p ).length( );
+					if( l < min )
+					{
+						min = l;
+						cur = cite;
+					}
+				}
+
+				// 一定距離以上はなれた探索点は無視する
+				if( cur != mesh_list.end( ) && min < length )
+				{
+					// 対応点が見つかったので，以降の探索から除外する
+					op = cur->pos;
+					mesh_list.erase( cur );
 				}
 			}
-
-			if( cur != label_list.end( ) )
-			{
-				// 対応点が見つかったので，以降の探索から除外する
-				p = pos[ *cur ];
-				label_list.erase( cur );
-			}
 		}
+	}
 
-		for( r = rightY - 1, c = leftX ; r >= leftY ; r-- )
+
+	{
+		for( i = 0 ; i < chart.size( ) ; i++ )
 		{
-			vector_type &p = grid( r, c );
-			p = p2 + dX * ( c - leftX ) + dY * ( rightY - r );
-
-			double min = 1.0e10;
-			label_iterator cur = label_list.end( );
-			for( label_iterator ite = label_list.begin( ) ; ite != label_list.end( ) ; ++ite )
+			if( meshes[ binary[ i ] ].mark >= 0 )
 			{
-				double l = ( pos[ *ite ] - p ).length( );
-				if( l < min )
-				{
-					min = l;
-					cur = ite;
-				}
+				chart[ i ] = static_cast< unsigned char >( meshes[ binary[ i ] ].mark );
 			}
-
-			if( cur != label_list.end( ) )
+			else
 			{
-				// 対応点が見つかったので，以降の探索から除外する
-				p = pos[ *cur ];
-				label_list.erase( cur );
+				chart[ i ] = 255;
 			}
 		}
 	}
 
 
+	// 反復的に対応点を見つける
 	while( true )
 	{
 		difference_type ncount = 0;
@@ -494,7 +452,7 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		{
 			for( c = 0 ; c < cols && ncount < rows * cols ; c++ )
 			{
-				vector_type &p = grid( r, c );
+				vector_type p = grid( r, c );
 
 				if( p.x != -1 || p.y != -1 )
 				{
@@ -592,28 +550,52 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 
 				// 予測された点を用いて最寄の点を探す
 				double min = 1.0e10;
-				label_iterator cur = label_list.end( );
-				for( label_iterator ite = label_list.begin( ) ; ite != label_list.end( ) ; ++ite )
+				mesh_iterator cur = mesh_list.begin( );
+				for( mesh_iterator cite = mesh_list.begin( ) ; cite != mesh_list.end( ) ; ++cite )
 				{
-					double l = ( pos[ *ite ] - p ).length( );
+					double l = ( cite->pos - p ).length( );
 					if( l < min )
 					{
 						min = l;
-						cur = ite;
+						cur = cite;
 					}
 				}
 
-				if( cur != label_list.end( ) && min < search_length )
+				if( cur != mesh_list.end( ) && min < search_length && min < cur->length )
 				{
-					// 対応点が見つかったので，以降の探索から除外する
-					p = pos[ *cur ];
-					label_list.erase( cur );
+					// 以前に割り当てられていた場合は切り替える
+					if( cur->row >= 0 || cur->col >= 0 )
+					{
+						grid( cur->row, cur->col ).x = -1;
+						grid( cur->row, cur->col ).y = -1;
+					}
+
+					cur->row = r;
+					cur->col = c;
+					cur->length = min;
+
+					// 対応点が見つかったので，以降の探索から除外候補に追加する
+					grid( r, c ) = cur->pos;
+					cur->mark = -2;
 				}
 				else
 				{
 					// 対応点が見つからなかったので，見つからなかったマークを入れる
-					p.x = p.y = -2;
+					grid( r, c ).x = -2;
+					grid( r, c ).y = -2;
 				}
+			}
+		}
+
+		for( mesh_iterator ite = mesh_list.begin( ) ; ite != mesh_list.end( ) ; )
+		{
+			if( ite->mark == -2 )
+			{
+				ite = mesh_list.erase( ite );
+			}
+			else
+			{
+				++ite;
 			}
 		}
 
@@ -621,6 +603,47 @@ bool extract_mesh( const array2< T, Allocator > &chart, matrix< vector2< double 
 		{
 			// 更新すべき点が見つからなかったので終了する
 			break;
+		}
+	}
+
+	// 孤立点を削除する
+	for( r = 0 ; r < rows ; r++ )
+	{
+		for( c = 0 ; c < cols ; c++ )
+		{
+			if( grid( r, c ).x < 0 )
+			{
+				continue;
+			}
+
+			bool b1 = r > 0    ? grid( r - 1, c ).x >= 0 : false;
+			bool b2 = r < rows ? grid( r + 1, c ).x >= 0 : false;
+			bool b3 = c > 0    ? grid( r, c - 1 ).x >= 0 : false;
+			bool b4 = c < cols ? grid( r, c + 1 ).x >= 0 : false;
+
+			size_t count = 0;
+			if( r > 0    && grid( r - 1, c ).x >= 0 )
+			{
+				count++;
+			}
+			if( r < rows && grid( r + 1, c ).x >= 0 )
+			{
+				count++;
+			}
+			if( c > 0    && grid( r, c - 1 ).x >= 0 )
+			{
+				count++;
+			}
+			if( c < cols && grid( r, c + 1 ).x >= 0 )
+			{
+				count++;
+			}
+
+			if( count <= 1 )
+			{
+				grid( r, c ).x = -2;
+				grid( r, c ).y = -2;
+			}
 		}
 	}
 
