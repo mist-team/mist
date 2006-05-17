@@ -207,6 +207,115 @@ namespace discriminant_analysis
 
 		return( static_cast< value_type >( max_k + min ) );
 	}
+
+	/// @brief 判別分析法によるしきい値決定
+	//!
+	//! 指定した範囲内でのみ閾値を決定する
+	//!
+	//! @param[in] in … 入力データ
+	//! @param[in] x  … しきい値を計算する左上のX座標
+	//! @param[in] y  … しきい値を計算する左上のY座標
+	//! @param[in] w  … しきい値を計算する範囲の幅
+	//! @param[in] h  … しきい値を計算する範囲の高さ
+	//!
+	//! @return 判別分析法によって決定したしきい値
+	//!
+	template < class T, class Allocator >
+	typename array2< T, Allocator >::value_type threshold(  const array2< T, Allocator > &in,
+															typename array2< T, Allocator >::size_type x,
+															typename array2< T, Allocator >::size_type y,
+															typename array2< T, Allocator >::size_type w,
+															typename array2< T, Allocator >::size_type h )
+	{
+		typedef typename array2< T, Allocator >::size_type  size_type;
+		typedef typename array2< T, Allocator >::value_type value_type;
+
+		if( in.empty( ) )
+		{
+			return( value_type( 0 ) );
+		}
+		else if( in.width( ) <= x || in.height( ) <= y )
+		{
+			return( value_type( 0 ) );
+		}
+
+		if( in.width( ) < x + w )
+		{
+			w = in.width( ) - x;
+		}
+		if( in.height( ) < y + h )
+		{
+			h = in.height( ) - y;
+		}
+
+		value_type min = in[ 0 ];
+		value_type max = in[ 0 ];
+
+		size_type i, j, k;
+
+		for( i = 1 ; i < in.size( ) ; i++ )
+		{
+			if( min > in[ i ] )
+			{
+				min = in[ i ];
+			}
+			else if( max < in[ i ] )
+			{
+				max = in[ i ];
+			}
+		}
+
+		size_type level = static_cast< size_type >( max - min ) + 1;
+		size_type max_k;
+		double *p   = new double[ level ];
+		double myu, omg;
+		double myuT, sig, max_sig = 0.0;
+
+		for( k = 0 ; k < level ; k++ )
+		{
+			p[ k ] = 0.0;
+		}
+
+		for( j = y ; j < y + h ; j++ )
+		{
+			for( i = x ; i < x + w ; i++ )
+			{
+				p[ static_cast< size_type >( in( i, j ) - min ) ]++;
+			}
+		}
+
+		size_type N = w * h;
+		for( k = 0 ; k < level ; k++ )
+		{
+			p[ k ] /= static_cast< double >( N );
+		}
+
+		myuT = 0.0;
+		for( k = 0 ; k < level ; k++ )
+		{
+			myuT += k * p[ k ];
+		}
+
+		myu = 0.0;
+		omg = p[ 0 ];
+		max_k = 0;
+		max_sig = ( myuT * omg - myu ) * ( myuT * omg - myu ) / ( omg * ( 1.0 - omg ) );
+		for( k = 1 ; k < level ; k++ )
+		{
+			omg = omg + p[ k ];
+			myu = myu + k * p[ k ];
+			sig = ( myuT * omg - myu ) * ( myuT * omg - myu ) / ( omg * ( 1.0 - omg ) );
+			if( sig > max_sig )
+			{
+				max_sig = sig;
+				max_k = k;
+			}
+		}
+
+		delete [] p;
+
+		return( static_cast< value_type >( max_k + min ) );
+	}
 }
 
 /// @}
