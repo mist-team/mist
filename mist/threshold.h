@@ -248,20 +248,23 @@ namespace discriminant_analysis
 			h = in.height( ) - y;
 		}
 
-		value_type min = in[ 0 ];
-		value_type max = in[ 0 ];
+		value_type min = in( x, y );
+		value_type max = min;
 
 		size_type i, j, k;
 
-		for( i = 1 ; i < in.size( ) ; i++ )
+		for( j = y ; j < y + h ; j++ )
 		{
-			if( min > in[ i ] )
+			for( i = x ; i < x + w ; i++ )
 			{
-				min = in[ i ];
-			}
-			else if( max < in[ i ] )
-			{
-				max = in[ i ];
+				if( min > in( i, j ) )
+				{
+					min = in( i, j );
+				}
+				else if( max < in( i, j ) )
+				{
+					max = in( i, j );
+				}
 			}
 		}
 
