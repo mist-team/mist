@@ -85,6 +85,10 @@ _MIST_BEGIN
 // #define __SHOW_DICOM_ZEROBYTE_TAG__
 // #define __CHECK_TAG_FORMAT__
 
+// 次のマクロを定義すると，認識不能なタグは排除する
+// #define __EXCLUDE_DICOM_UNKNOWN_TAG__
+// #define __EXCLUDE_DICOM_ZEROBYTE_TAG__
+
 
 /// DICOMファイルを操作する関数・クラスを含む名前空間
 namespace dicom
@@ -974,44 +978,18 @@ namespace dicom
 	//! @retval true  … DICOMファイルの処理に成功
 	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
 	//! 
-	inline bool read_dicom_tags( dicom_tag_container &dicm, const std::string &filename )
+	inline bool read_dicom_tags( dicom_tag_container &dicm, unsigned char *buff, size_type numBytes, bool is_little_endian = true )
 	{
-		size_type filesize;
-		FILE *fp;
-		if( ( fp = fopen( filename.c_str( ), "rb" ) ) == NULL )
-		{
-			return( false );
-		}
-
-		// ファイルサイズを取得
-		fseek( fp, 0, SEEK_END );
-		filesize = ftell( fp );
-		fseek( fp, 0, SEEK_SET );
-
-		unsigned char *buff = new unsigned char[ filesize + 1 ];
 		unsigned char *pointer = buff;
-		size_type read_size = 0;
-		while( feof( fp ) == 0 )
-		{
-			read_size = fread( pointer, sizeof( unsigned char ), 1024, fp );
-			if( read_size < 1024 )
-			{
-				break;
-			}
-			pointer += read_size;
-		}
-		fclose( fp );
+		unsigned char *end_pointer = buff + numBytes;
 
-
-		unsigned char *end_pointer = buff + filesize;
-		pointer = buff;
 		// DICOMデータの先頭までポインタを移動
 		pointer = check_dicom_file( pointer, end_pointer );
 
 		dicm.clear( );
 
 		unsigned char *group_end_pointer = NULL;
-		bool ret = true, from_little_endian = true, once = true;
+		bool ret = true, from_little_endian = is_little_endian, once = true;
 		while( pointer < end_pointer )
 		{
 			pointer = process_dicom_tag( dicm, pointer, end_pointer, from_little_endian );
@@ -1051,6 +1029,53 @@ namespace dicom
 				}
 			}
 		}
+
+#ifdef __SHOW_DICOM_TAG__
+		printf( "\n\n\n" );
+#endif
+
+		return( ret );
+	}
+
+
+	/// @brief DICOMファイルを読み込んで，全てのDICOMタグを処理しテーブルに登録する
+	//! 
+	//! @param[out] dicm  … DICOMタグ毎にデータを登録するテーブル
+	//! @param[in]  filename … 入力DICOM]ファイル名
+	//! 
+	//! @retval true  … DICOMファイルの処理に成功
+	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合
+	//! 
+	inline bool read_dicom_tags( dicom_tag_container &dicm, const std::string &filename )
+	{
+		size_type filesize;
+		FILE *fp;
+		if( ( fp = fopen( filename.c_str( ), "rb" ) ) == NULL )
+		{
+			return( false );
+		}
+
+		// ファイルサイズを取得
+		fseek( fp, 0, SEEK_END );
+		filesize = ftell( fp );
+		fseek( fp, 0, SEEK_SET );
+
+		unsigned char *buff = new unsigned char[ filesize + 1 ];
+		unsigned char *pointer = buff;
+		size_type read_size = 0;
+		while( feof( fp ) == 0 )
+		{
+			read_size = fread( pointer, sizeof( unsigned char ), 1024, fp );
+			if( read_size < 1024 )
+			{
+				break;
+			}
+			pointer += read_size;
+		}
+
+		fclose( fp );
+
+		bool ret = read_dicom_tags( dicm, buff, filesize, true );
 
 		delete [] buff;
 
