@@ -321,8 +321,8 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 
 			//std::cout << "周囲長: " << round << ", 比: " << round / oround << std::endl;
 
-			// 一つ前の周囲長の90％以上で，最大の円の周囲長の半分以上の長さがある場合，基準点としてマークする
-			if( round > oround * 0.9 && round * 2 > maxround )
+			// 一つ前の周囲長の90％以上で，最大の円の周囲長の80%以上の長さがある場合，基準点としてマークする
+			if( round > oround * 0.9 && round > maxround * 0.5 )
 			{
 				ite->mark = 1;
 				base_mesh_num++;
@@ -376,7 +376,7 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 
 		// 判定ミスの基準点を排除する
 		{
-			double __threshold__ = std::sqrt( ( x1 - x2 ) * ( x1 - x2 ) + ( y1 - y2 ) * ( y1 - y2 ) ) * 0.5;
+			double __threshold__ = std::sqrt( ( x1 - x2 ) * ( x1 - x2 ) + ( y1 - y2 ) * ( y1 - y2 ) ) * 0.2;
 			double D = 1.0 / std::sqrt( A * A + B * B );
 			for( ite = site ; ite != eite ; ++ite )
 			{
@@ -388,13 +388,17 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 			}
 		}
 
-		// 末尾を再設定する
-		eite = site + base_mesh_num;
-
 		// 基準点を順番に並べ替える評価値を計算する
 		for( ite = site ; ite != eite ; ++ite )
 		{
-			ite->length = - B * ite->pos.x + A * ite->pos.y;
+			if( ite->mark == 1 )
+			{
+				ite->length = - B * ite->pos.x + A * ite->pos.y;
+			}
+			else
+			{
+				ite->length = 1.0e10;
+			}
 		}
 
 		// 基準線に沿って並び替える
@@ -503,11 +507,7 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 		{
 			mesh_iterator ite1 = mesh_list.begin( );
 			mesh_iterator ite2 = ite1 + base_mesh_num - 1;
-
-			vector_type p1 = ite1->pos;
-			vector_type p2 = ite2->pos;
-			vector_type dir = ( p1 - p2 ).unit( );
-			double length = ( p1 - p2 ).length( ) / static_cast< double >( base_mesh_num - 1 );
+			double lth = 2.0 * ( ite1->pos - ite2->pos ).length( ) / static_cast< double >( base_mesh_num - 1 );
 
 			double ratio1 = 1.0e10;
 			double ratio2 = 1.0e10;
@@ -516,9 +516,13 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 			double len1 = __mesh_utility__::__compute_border_distance__( mesh_list[ base_mesh_num - 1 ].pos, chart.width( ), chart.height( ) );
 
 			// 端から一定距離以上離れている場合に判定を行う
-			if( len0 > length * 2.0 )
+			if( len0 > lth )
 			{
-				vector_type p = p1 + dir * length * 0.5;
+				vector_type p1  = ite1->pos;
+				vector_type p2  = ( ite1 + 1 )->pos;
+				double length   = ( p1 - p2 ).length( );
+				vector_type dir = ( p1 - p2 ).unit( );
+				vector_type p   = p1 + dir * length * 0.8;
 
 				double min = 1.0e10;
 				for( mesh_iterator cite = mesh_list.begin( ) ; cite != mesh_list.end( ) ; ++cite )
@@ -530,13 +534,16 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 						ratio1 = cite->round / ite1->round;
 					}
 				}
-
 			}
 
 			// 端から一定距離以上離れている場合に判定を行う
-			if( len1 > length * 2.0 )
+			if( len1 > lth )
 			{
-				vector_type p = p2 - dir * length * 0.5;
+				vector_type p1  = ite2->pos;
+				vector_type p2  = ( ite2 - 1 )->pos;
+				double length   = ( p1 - p2 ).length( );
+				vector_type dir = ( p1 - p2 ).unit( );
+				vector_type p   = p1 + dir * length * 0.8;
 
 				double min = 1.0e10;
 				for( mesh_iterator cite = mesh_list.begin( ) ; cite != mesh_list.end( ) ; ++cite )
@@ -548,7 +555,6 @@ bool extract_mesh( array2< T, Allocator > &chart, matrix< vector2< double > > &g
 						ratio2 = cite->round / ite2->round;
 					}
 				}
-
 			}
 
 			if( ratio1 > ratio2 )
