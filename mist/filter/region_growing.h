@@ -39,12 +39,12 @@
 #include "../mist.h"
 #endif
 
-#ifndef __INCLUDE_MIST_VECTOR__
-#include "../vector.h"
-#endif
-
 #ifndef __INCLUDE_MIST_LIMITS__
 #include "../limits.h"
+#endif
+
+#ifndef __INCLUDE_MIST_VECTOR__
+#include "../vector.h"
 #endif
 
 #include <deque>
@@ -804,6 +804,11 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 		// 構造要素内のすべての点を用いて評価を行う
 		while( !que.empty( ) )
 		{
+			if( ++loop > max_loop )
+			{
+				return( false );
+			}
+
 			// リストの先頭画素を取り出す
 			pointer_diff_type cur = que.front( );
 			que.pop_front( );
@@ -832,11 +837,6 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 			// 拡張条件の判定を行う
 			if( num != 0 && condition( element, num ) )
 			{
-				if( ++loop > max_loop )
-				{
-					return( false );
-				}
-
 				// 条件を満たした構造要素内の画素すべてを塗りつぶす
 				for( size_type i = 0 ; i < num ; i++ )
 				{
@@ -862,6 +862,11 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 		// すでに判定された画素については評価を行わない
 		while( !que.empty( ) )
 		{
+			if( ++loop > max_loop )
+			{
+				return( false );
+			}
+
 			// リストの先頭画素を取り出す
 			pointer_diff_type cur = que.front( );
 			que.pop_front( );
@@ -892,11 +897,6 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 			// 拡張条件の判定を行う
 			if( condition( element, num ) )
 			{
-				if( ++loop > max_loop )
-				{
-					return( false );
-				}
-
 				// 条件を満たした構造要素内の画素すべてを塗りつぶす
 				for( size_type i = 0 ; i < num ; i++ )
 				{
