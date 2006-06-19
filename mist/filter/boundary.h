@@ -209,7 +209,7 @@ namespace __boundary_controller__
 
 
 	template < class Array, class neighbor, class Functor >
-	typename Array::size_type boundary( Array &in, typename Array::value_type value, const neighbor dmy, Functor f )
+	typename Array::size_type boundary( Array &in, typename Array::value_type border, typename Array::value_type inside, const neighbor dmy, Functor f )
 	{
 		typedef typename Array::size_type  size_type;
 		typedef typename Array::value_type value_type;
@@ -278,7 +278,10 @@ namespace __boundary_controller__
 
 		for( i = 0 ; i < in.size( ) ; i++ )
 		{
-			in[ i ] = in[ i ] == 2 ? value : 0;
+			if( in[ i ] > 0 )
+			{
+				in[ i ] = in[ i ] == 2 ? border : inside;
+			}
 		}
 
 		f( 100.1 );
@@ -305,16 +308,17 @@ namespace __boundary_controller__
 //! 背景と4近傍で接する境界を抽出する
 //! 抽出された境界は，8連結となる
 //! 
-//! @param[in]  in    … 入力画像
-//! @param[in]  value … 境界画素に代入する値
-//! @param[in]  f     … 進行状況を返すコールバック関数
+//! @param[in]  in     … 入力画像
+//! @param[in]  border … 境界画素に代入する値
+//! @param[in]  inside … 内部領域画素に代入する値
+//! @param[in]  f      … 進行状況を返すコールバック関数
 //! 
 //! @return 境界画素数
 //! 
 template < class T, class Allocator, class Functor >
-typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type value, Functor f )
+typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside, Functor f )
 {
-	return( __boundary_controller__::boundary( in, value, __boundary_controller__::neighbors< 4 >( ), f ) );
+	return( __boundary_controller__::boundary( in, border, inside, __boundary_controller__::neighbors< 4 >( ), f ) );
 }
 
 
@@ -323,15 +327,16 @@ typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in
 //! 背景と4近傍で接する境界を抽出する
 //! 抽出された境界は，8連結となる
 //! 
-//! @param[in]  in    … 入力画像
-//! @param[in]  value … 境界画素に代入する値
+//! @param[in]  in     … 入力画像
+//! @param[in]  border … 境界画素に代入する値
+//! @param[in]  inside … 内部領域画素に代入する値
 //! 
 //! @return 境界画素数
 //! 
 template < class T, class Allocator >
-inline typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type value )
+inline typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside = 0 )
 {
-	return( boundary4( in, value, __mist_dmy_callback__( ) ) );
+	return( boundary4( in, border, inside, __mist_dmy_callback__( ) ) );
 }
 
 
@@ -341,16 +346,17 @@ inline typename array2< T, Allocator >::size_type boundary4( array2< T, Allocato
 //! 背景と8近傍で接する境界を抽出する
 //! 抽出された境界は，4連結となる
 //! 
-//! @param[in]  in    … 入力画像
-//! @param[in]  value … 境界画素に代入する値
-//! @param[in]  f     … 進行状況を返すコールバック関数
+//! @param[in]  in     … 入力画像
+//! @param[in]  border … 境界画素に代入する値
+//! @param[in]  inside … 内部領域画素に代入する値
+//! @param[in]  f      … 進行状況を返すコールバック関数
 //! 
 //! @return 境界画素数
 //! 
 template < class T, class Allocator, class Functor >
-typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type value, Functor f )
+typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside, Functor f )
 {
-	return( __boundary_controller__::boundary( in, value, __boundary_controller__::neighbors< 8 >( ), f ) );
+	return( __boundary_controller__::boundary( in, border, inside, __boundary_controller__::neighbors< 8 >( ), f ) );
 }
 
 
@@ -359,15 +365,16 @@ typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in
 //! 背景と8近傍で接する境界を抽出する
 //! 抽出された境界は，4連結となる
 //! 
-//! @param[in]  in    … 入力画像
-//! @param[in]  value … 境界画素に代入する値
+//! @param[in]  in     … 入力画像
+//! @param[in]  border … 境界画素に代入する値
+//! @param[in]  inside … 内部領域画素に代入する値
 //! 
 //! @return 境界画素数
 //! 
 template < class T, class Allocator >
-inline typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type value )
+inline typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside = 0 )
 {
-	return( boundary8( in, value, __mist_dmy_callback__( ) ) );
+	return( boundary8( in, border, inside, __mist_dmy_callback__( ) ) );
 }
 
 
@@ -376,16 +383,17 @@ inline typename array2< T, Allocator >::size_type boundary8( array2< T, Allocato
 //! 背景と6近傍で接する境界を抽出する
 //! 抽出された境界は，26連結となる
 //! 
-//! @param[in]  in    … 入力画像
-//! @param[in]  value … 境界画素に代入する値
-//! @param[in]  f     … 進行状況を返すコールバック関数
+//! @param[in]  in     … 入力画像
+//! @param[in]  border … 境界画素に代入する値
+//! @param[in]  inside … 内部領域画素に代入する値
+//! @param[in]  f      … 進行状況を返すコールバック関数
 //! 
 //! @return 境界画素数
 //! 
 template < class T, class Allocator, class Functor >
-typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value, Functor f )
+typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside, Functor f )
 {
-	return( __boundary_controller__::boundary( in, value, __boundary_controller__::neighbors< 6 >( ), f ) );
+	return( __boundary_controller__::boundary( in, border, inside, __boundary_controller__::neighbors< 6 >( ), f ) );
 }
 
 
@@ -394,15 +402,16 @@ typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in
 //! 背景と6近傍で接する境界を抽出する
 //! 抽出された境界は，26連結となる
 //! 
-//! @param[in]  in    … 入力画像
-//! @param[in]  value … 境界画素に代入する値
+//! @param[in]  in     … 入力画像
+//! @param[in]  border … 境界画素に代入する値
+//! @param[in]  inside … 内部領域画素に代入する値
 //! 
 //! @return 境界画素数
 //! 
 template < class T, class Allocator >
-inline typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value )
+inline typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside = 0 )
 {
-	return( boundary6( in, value, __mist_dmy_callback__( ) ) );
+	return( boundary6( in, border, inside, __mist_dmy_callback__( ) ) );
 }
 
 
@@ -411,16 +420,17 @@ inline typename array3< T, Allocator >::size_type boundary6( array3< T, Allocato
 //! 背景と18近傍で接する境界を抽出する
 //! 抽出された境界は，6'連結となる
 //! 
-//! @param[in]  in    … 入力画像
-//! @param[in]  value … 境界画素に代入する値
-//! @param[in]  f     … 進行状況を返すコールバック関数
+//! @param[in]  in     … 入力画像
+//! @param[in]  border … 境界画素に代入する値
+//! @param[in]  inside … 内部領域画素に代入する値
+//! @param[in]  f      … 進行状況を返すコールバック関数
 //! 
 //! @return 境界画素数
 //! 
 template < class T, class Allocator, class Functor >
-typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value, Functor f )
+typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside, Functor f )
 {
-	return( __boundary_controller__::boundary( in, value, __boundary_controller__::neighbors< 18 >( ), f ) );
+	return( __boundary_controller__::boundary( in, border, inside, __boundary_controller__::neighbors< 18 >( ), f ) );
 }
 
 
@@ -429,15 +439,16 @@ typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &i
 //! 背景と18近傍で接する境界を抽出する
 //! 抽出された境界は，6'連結となる
 //! 
-//! @param[in]  in    … 入力画像
-//! @param[in]  value … 境界画素に代入する値
+//! @param[in]  in     … 入力画像
+//! @param[in]  border … 境界画素に代入する値
+//! @param[in]  inside … 内部領域画素に代入する値
 //! 
 //! @return 境界画素数
 //! 
 template < class T, class Allocator >
-inline typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value )
+inline typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside = 0 )
 {
-	return( boundary18( in, value, __mist_dmy_callback__( ) ) );
+	return( boundary18( in, border, inside, __mist_dmy_callback__( ) ) );
 }
 
 
@@ -446,16 +457,17 @@ inline typename array3< T, Allocator >::size_type boundary18( array3< T, Allocat
 //! 背景と26近傍で接する境界を抽出する
 //! 抽出された境界は，6連結となる
 //! 
-//! @param[in]  in    … 入力画像
-//! @param[in]  value … 境界画素に代入する値
-//! @param[in]  f     … 進行状況を返すコールバック関数
+//! @param[in]  in     … 入力画像
+//! @param[in]  border … 境界画素に代入する値
+//! @param[in]  inside … 内部領域画素に代入する値
+//! @param[in]  f      … 進行状況を返すコールバック関数
 //! 
 //! @return 境界画素数
 //! 
 template < class T, class Allocator, class Functor >
-typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value, Functor f )
+typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside, Functor f )
 {
-	return( __boundary_controller__::boundary( in, value, __boundary_controller__::neighbors< 26 >( ), f ) );
+	return( __boundary_controller__::boundary( in, border, inside, __boundary_controller__::neighbors< 26 >( ), f ) );
 }
 
 
@@ -464,15 +476,16 @@ typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &i
 //! 背景と26近傍で接する境界を抽出する
 //! 抽出された境界は，6連結となる
 //! 
-//! @param[in]  in    … 入力画像
-//! @param[in]  value … 境界画素に代入する値
+//! @param[in]  in     … 入力画像
+//! @param[in]  border … 境界画素に代入する値
+//! @param[in]  inside … 内部領域画素に代入する値
 //! 
 //! @return 境界画素数
 //! 
 template < class T, class Allocator >
-inline typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type value )
+inline typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside = 0 )
 {
-	return( boundary26( in, value, __mist_dmy_callback__( ) ) );
+	return( boundary26( in, border, inside, __mist_dmy_callback__( ) ) );
 }
 
 
