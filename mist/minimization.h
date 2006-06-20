@@ -214,7 +214,7 @@ namespace __minimization_utility__
 
 		infinity = std::sqrt( infinity );
 
-		// まず，十分に遠い天を設定する
+		// まず，十分に遠い点を設定する
 		p1 = p - dir * infinity - offset;
 		p2 = p + dir * infinity - offset;
 
@@ -307,7 +307,7 @@ bool enclose( double &a, double &b, double &c, double &fa, double &fb, double &f
 	const double gold = ( 3.0 - std::sqrt( 5.0 ) ) / 2.0;
 	const double _1_gold = 1.0 / gold;
 	const double dust = type_limits< double >::tiny( );		// ゼロ除算を避けるためのゴミ値
-	const double limit = 100.0;									// 放物線補外を適用する区間の最大更新幅
+	const double limit = 100.0;								// 放物線補外を適用する区間の最大更新幅
 
 	if( a == b )
 	{
@@ -376,7 +376,7 @@ bool enclose( double &a, double &b, double &c, double &fa, double &fb, double &f
 			// 区間を囲い込むことに成功したので終了する
 			break;
 		}
-		else if( ( b + limit * cb ) * ( x - c ) > 0 )
+		else if( ( b + limit * cb - x ) * ( x - c ) > 0 )
 		{
 			// 補間点 x が区間 b < c < x を満たしていて，許容範囲内に補間点が存在する
 			double fx = f( x );
@@ -384,25 +384,27 @@ bool enclose( double &a, double &b, double &c, double &fa, double &fb, double &f
 			if( fx < fc )
 			{
 				// 現在の端である fc よりも関数値が小さい場合は，区間を更新する
-				// a <- b, b <- x としてする
+				// a <- b, b <- x てする
 				a = b;
 				b = x;
 				fa = fb;
 				fb = fx;
+
+				// 新しい区間点 c を黄金分割比を用いて求める
+				c = a + _1_gold * ( b - a );
+				fc = f( c );
 			}
 			else
 			{
-				// そうでなければ，不適切な放物線補外を行ったので黄金分割比を用いて更新する
-				// a <- b, b <- c とする
+				// b < c < x かつ fc < fx のため，区間の囲い込みに成功
+				// 区間 ( b, x ) に極小が存在する
 				a = b;
 				b = c;
+				c = x;
 				fa = fb;
 				fb = fc;
+				fc = fx;
 			}
-
-			// 新しい区間点 c を黄金分割比を用いて求める
-			c = a + _1_gold * ( b - a );
-			fc = f( c );
 		}
 		else
 		{
@@ -1546,7 +1548,7 @@ namespace powell
 }
 
 
-/// @brief Powell法（方向集合を用いた多変数関数の極小値の探索）
+/// @brief Lucidi法（方向集合を用いた多変数関数の極小値の探索）
 namespace lucidi
 {
 	template < class Functor >
@@ -1554,26 +1556,25 @@ namespace lucidi
 	{
 		while( true )
 		{
-			double a = alpha / delta;
-			a = a < alpha_max ? a : alpha_max;
-
-			if( alpha == alpha_max )
+			if( alpha >= alpha_max )
 			{
-				return( alpha );
+				return( alpha_max );
 			}
-
-			double fp = f( a );
-			if( fp > fp0 - gamma * a * a )
+			else
 			{
-				return( alpha );
-			}
+				double a = alpha / delta;
+				if( f( a ) > fp0 - gamma * a * a )
+				{
+					return( alpha );
+				}
 
-			alpha = a;
+				alpha = a;
+			}
 		}
 	}
 
 
-	/// @brief Powell 法による多次元変数による極小値の探索を行う
+	/// @brief Lucidi 提案の多変数関数の極小値探索
 	//! 
 	//! 手法について何か書く
 	//! 
@@ -1631,19 +1632,20 @@ namespace lucidi
 					dir[ r ] = dirs( r, c );
 				}
 
-				if( alpha > 0.0 && functor( alpha ) <= fp0 - gamma * alpha * alpha )
+				if( alpha > 0.0 )
 				{
-					a[ c ] = alpha = expantion_step( alpha, infinity, delta, gamma, fp0, functor );
-
-					// 位置を更新
-					for( r = 0 ; r < p.size( ) ; r++ )
+					double gaa = gamma * alpha * alpha;
+					if( functor( alpha ) <= fp0 - gaa )
 					{
-						p[ r ] += dir[ r ] * alpha;
+						a[ c ] = alpha = expantion_step( alpha, infinity, delta, gamma, fp0, functor );
+
+						// 位置を更新
+						for( r = 0 ; r < p.size( ) ; r++ )
+						{
+							p[ r ] += dir[ r ] * alpha;
+						}
 					}
-				}
-				else
-				{ 
-					if( alpha > 0.0 && ( fp = functor( -alpha ) ) <= fp0 - gamma * alpha * alpha )
+					else if( functor( -alpha ) <= fp0 - gaa )
 					{
 						// 探索に用いる方向集合をコピーする
 						for( r = 0 ; r < dirs.rows( ) ; r++ )
@@ -1666,8 +1668,14 @@ namespace lucidi
 						alpha_count++;
 					}
 				}
+				else
+				{
+					a[ c ] = theta * alpha;
+					alpha = 0.0;
+					alpha_count++;
+				}
 			}
- 
+
 			fp = f( p );
 
 			if( alpha_count < dirs.cols( ) )
