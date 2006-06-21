@@ -209,7 +209,7 @@ namespace __boundary_controller__
 
 
 	template < class Array, class neighbor, class Functor >
-	typename Array::size_type boundary( Array &in, typename Array::value_type border, typename Array::value_type inside, const neighbor dmy, Functor f )
+	typename Array::size_type boundary( Array &in, typename Array::value_type border, typename Array::value_type inside, bool boundary_is_border, const neighbor dmy, Functor f )
 	{
 		typedef typename Array::size_type  size_type;
 		typedef typename Array::value_type value_type;
@@ -227,6 +227,7 @@ namespace __boundary_controller__
 		f( 0.0 );
 
 		size_type count = 0;
+		value_type boundary = boundary_is_border ? 0 : 1;
 
 		for( i = 0 ; i < in.size( ) ; i++ )
 		{
@@ -238,21 +239,21 @@ namespace __boundary_controller__
 			kk[ 0 ] = k == 0 ? k : k - 1;
 			kk[ 1 ] = k;
 			kk[ 2 ] = k == depth - 1 ? k : k + 1;
-			kk[ 3 ] = 1 < k && k < depth - 1 ? 1 : 0;
+			kk[ 3 ] = 1 < k && k < depth - 1 ? 1 : boundary;
 
 			for( j = 0 ; j < height ; j++ )
 			{
 				jj[ 0 ] = j == 0 ? j : j - 1;
 				jj[ 1 ] = j;
 				jj[ 2 ] = j == height - 1 ? j : j + 1;
-				jj[ 3 ] = 1 < j && j < height - 1 ? 1 : 0;
+				jj[ 3 ] = 1 < j && j < height - 1 ? 1 : boundary;
 
 				for( i = 0 ; i < width ; i++ )
 				{
 					ii[ 0 ] = i == 0 ? i : i - 1;
 					ii[ 1 ] = i;
 					ii[ 2 ] = i == width - 1 ? i : i + 1;
-					ii[ 3 ] = 1 < i && i < width - 1 ? 1 : 0;
+					ii[ 3 ] = 1 < i && i < width - 1 ? 1 : boundary;
 
 					if( in( i, j, k ) != 0 )
 					{
@@ -311,14 +312,15 @@ namespace __boundary_controller__
 //! @param[in]  in     c “ü—Í‰æ‘œ
 //! @param[in]  border c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  inside c “à•”—Ìˆæ‰æ‘f‚É‘ã“ü‚·‚é’l
+//! @param[in]  boundary_is_border c ‰æ‘œ‹«ŠE‚ğ‹«ŠE‰æ‘f‚Æl‚¦‚é‚©‚Ç‚¤‚©
 //! @param[in]  f      c isó‹µ‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
 //! 
 //! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator, class Functor >
-typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside, Functor f )
+typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside, bool boundary_is_border, Functor f )
 {
-	return( __boundary_controller__::boundary( in, border, inside, __boundary_controller__::neighbors< 4 >( ), f ) );
+	return( __boundary_controller__::boundary( in, border, inside, boundary_is_border, __boundary_controller__::neighbors< 4 >( ), f ) );
 }
 
 
@@ -330,13 +332,14 @@ typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in
 //! @param[in]  in     c “ü—Í‰æ‘œ
 //! @param[in]  border c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  inside c “à•”—Ìˆæ‰æ‘f‚É‘ã“ü‚·‚é’l
+//! @param[in]  boundary_is_border c ‰æ‘œ‹«ŠE‚ğ‹«ŠE‰æ‘f‚Æl‚¦‚é‚©‚Ç‚¤‚©
 //! 
 //! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator >
-inline typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside = 0 )
+inline typename array2< T, Allocator >::size_type boundary4( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside = 0, bool boundary_is_border = true )
 {
-	return( boundary4( in, border, inside, __mist_dmy_callback__( ) ) );
+	return( boundary4( in, border, inside, boundary_is_border, __mist_dmy_callback__( ) ) );
 }
 
 
@@ -349,14 +352,15 @@ inline typename array2< T, Allocator >::size_type boundary4( array2< T, Allocato
 //! @param[in]  in     c “ü—Í‰æ‘œ
 //! @param[in]  border c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  inside c “à•”—Ìˆæ‰æ‘f‚É‘ã“ü‚·‚é’l
+//! @param[in]  boundary_is_border c ‰æ‘œ‹«ŠE‚ğ‹«ŠE‰æ‘f‚Æl‚¦‚é‚©‚Ç‚¤‚©
 //! @param[in]  f      c isó‹µ‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
 //! 
 //! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator, class Functor >
-typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside, Functor f )
+typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside, bool boundary_is_border, Functor f )
 {
-	return( __boundary_controller__::boundary( in, border, inside, __boundary_controller__::neighbors< 8 >( ), f ) );
+	return( __boundary_controller__::boundary( in, border, inside, boundary_is_border, __boundary_controller__::neighbors< 8 >( ), f ) );
 }
 
 
@@ -368,13 +372,14 @@ typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in
 //! @param[in]  in     c “ü—Í‰æ‘œ
 //! @param[in]  border c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  inside c “à•”—Ìˆæ‰æ‘f‚É‘ã“ü‚·‚é’l
+//! @param[in]  boundary_is_border c ‰æ‘œ‹«ŠE‚ğ‹«ŠE‰æ‘f‚Æl‚¦‚é‚©‚Ç‚¤‚©
 //! 
 //! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator >
-inline typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside = 0 )
+inline typename array2< T, Allocator >::size_type boundary8( array2< T, Allocator > &in, typename array2< T, Allocator >::value_type border, typename array2< T, Allocator >::value_type inside = 0, bool boundary_is_border = true )
 {
-	return( boundary8( in, border, inside, __mist_dmy_callback__( ) ) );
+	return( boundary8( in, border, inside, boundary_is_border, __mist_dmy_callback__( ) ) );
 }
 
 
@@ -386,14 +391,15 @@ inline typename array2< T, Allocator >::size_type boundary8( array2< T, Allocato
 //! @param[in]  in     c “ü—Í‰æ‘œ
 //! @param[in]  border c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  inside c “à•”—Ìˆæ‰æ‘f‚É‘ã“ü‚·‚é’l
+//! @param[in]  boundary_is_border c ‰æ‘œ‹«ŠE‚ğ‹«ŠE‰æ‘f‚Æl‚¦‚é‚©‚Ç‚¤‚©
 //! @param[in]  f      c isó‹µ‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
 //! 
 //! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator, class Functor >
-typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside, Functor f )
+typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside, bool boundary_is_border, Functor f )
 {
-	return( __boundary_controller__::boundary( in, border, inside, __boundary_controller__::neighbors< 6 >( ), f ) );
+	return( __boundary_controller__::boundary( in, border, inside, boundary_is_border, __boundary_controller__::neighbors< 6 >( ), f ) );
 }
 
 
@@ -405,13 +411,14 @@ typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in
 //! @param[in]  in     c “ü—Í‰æ‘œ
 //! @param[in]  border c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  inside c “à•”—Ìˆæ‰æ‘f‚É‘ã“ü‚·‚é’l
+//! @param[in]  boundary_is_border c ‰æ‘œ‹«ŠE‚ğ‹«ŠE‰æ‘f‚Æl‚¦‚é‚©‚Ç‚¤‚©
 //! 
 //! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator >
-inline typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside = 0 )
+inline typename array3< T, Allocator >::size_type boundary6( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside = 0, bool boundary_is_border = true )
 {
-	return( boundary6( in, border, inside, __mist_dmy_callback__( ) ) );
+	return( boundary6( in, border, inside, boundary_is_border, __mist_dmy_callback__( ) ) );
 }
 
 
@@ -423,14 +430,15 @@ inline typename array3< T, Allocator >::size_type boundary6( array3< T, Allocato
 //! @param[in]  in     c “ü—Í‰æ‘œ
 //! @param[in]  border c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  inside c “à•”—Ìˆæ‰æ‘f‚É‘ã“ü‚·‚é’l
+//! @param[in]  boundary_is_border c ‰æ‘œ‹«ŠE‚ğ‹«ŠE‰æ‘f‚Æl‚¦‚é‚©‚Ç‚¤‚©
 //! @param[in]  f      c isó‹µ‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
 //! 
 //! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator, class Functor >
-typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside, Functor f )
+typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside, bool boundary_is_border, Functor f )
 {
-	return( __boundary_controller__::boundary( in, border, inside, __boundary_controller__::neighbors< 18 >( ), f ) );
+	return( __boundary_controller__::boundary( in, border, inside, boundary_is_border, __boundary_controller__::neighbors< 18 >( ), f ) );
 }
 
 
@@ -442,13 +450,14 @@ typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &i
 //! @param[in]  in     c “ü—Í‰æ‘œ
 //! @param[in]  border c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  inside c “à•”—Ìˆæ‰æ‘f‚É‘ã“ü‚·‚é’l
+//! @param[in]  boundary_is_border c ‰æ‘œ‹«ŠE‚ğ‹«ŠE‰æ‘f‚Æl‚¦‚é‚©‚Ç‚¤‚©
 //! 
 //! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator >
-inline typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside = 0 )
+inline typename array3< T, Allocator >::size_type boundary18( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside = 0, bool boundary_is_border = true )
 {
-	return( boundary18( in, border, inside, __mist_dmy_callback__( ) ) );
+	return( boundary18( in, border, inside, boundary_is_border, __mist_dmy_callback__( ) ) );
 }
 
 
@@ -460,14 +469,15 @@ inline typename array3< T, Allocator >::size_type boundary18( array3< T, Allocat
 //! @param[in]  in     c “ü—Í‰æ‘œ
 //! @param[in]  border c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  inside c “à•”—Ìˆæ‰æ‘f‚É‘ã“ü‚·‚é’l
+//! @param[in]  boundary_is_border c ‰æ‘œ‹«ŠE‚ğ‹«ŠE‰æ‘f‚Æl‚¦‚é‚©‚Ç‚¤‚©
 //! @param[in]  f      c isó‹µ‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNŠÖ”
 //! 
 //! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator, class Functor >
-typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside, Functor f )
+typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside, bool boundary_is_border, Functor f )
 {
-	return( __boundary_controller__::boundary( in, border, inside, __boundary_controller__::neighbors< 26 >( ), f ) );
+	return( __boundary_controller__::boundary( in, border, inside, boundary_is_border, __boundary_controller__::neighbors< 26 >( ), f ) );
 }
 
 
@@ -479,13 +489,14 @@ typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &i
 //! @param[in]  in     c “ü—Í‰æ‘œ
 //! @param[in]  border c ‹«ŠE‰æ‘f‚É‘ã“ü‚·‚é’l
 //! @param[in]  inside c “à•”—Ìˆæ‰æ‘f‚É‘ã“ü‚·‚é’l
+//! @param[in]  boundary_is_border c ‰æ‘œ‹«ŠE‚ğ‹«ŠE‰æ‘f‚Æl‚¦‚é‚©‚Ç‚¤‚©
 //! 
 //! @return ‹«ŠE‰æ‘f”
 //! 
 template < class T, class Allocator >
-inline typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside = 0 )
+inline typename array3< T, Allocator >::size_type boundary26( array3< T, Allocator > &in, typename array3< T, Allocator >::value_type border, typename array3< T, Allocator >::value_type inside = 0, bool boundary_is_border = true )
 {
-	return( boundary26( in, border, inside, __mist_dmy_callback__( ) ) );
+	return( boundary26( in, border, inside, boundary_is_border, __mist_dmy_callback__( ) ) );
 }
 
 
