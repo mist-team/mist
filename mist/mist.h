@@ -124,13 +124,13 @@ public:
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
 
 	/// @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
-	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
+	typedef mist_iterator1< T, ptrdiff_t, const_pointer, const_reference > const_iterator;
 
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
 
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
-	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, const_pointer, const_reference > > const_reverse_iterator;
 
 	/// @brief データ型の変換を行う
 	template < class TT, class AAllocator = std::allocator< TT > > 
@@ -727,13 +727,13 @@ public:
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
 
 	/// @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
-	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
+	typedef mist_iterator1< T, ptrdiff_t, const_pointer, const_reference > const_iterator;
 
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
 
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
-	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, const_pointer, const_reference > > const_reverse_iterator;
 
 	/// @brief データ型の変換を行う
 	template < class TT, class AAllocator = std::allocator< TT > > 
@@ -979,13 +979,13 @@ public:
 	typedef mist_iterator1< T, ptrdiff_t, pointer, reference > iterator;
 
 	/// @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
-	typedef mist_iterator1< T, ptrdiff_t, pointer, const_reference > const_iterator;
+	typedef mist_iterator1< T, ptrdiff_t, const_pointer, const_reference > const_iterator;
 
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
 	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, reference > > reverse_iterator;
 
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
-	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator1< T, ptrdiff_t, const_pointer, const_reference > > const_reverse_iterator;
 
 	/// @brief データ型の変換を行う
 	template < class TT, class AAllocator = std::allocator< TT > > 
@@ -1555,13 +1555,13 @@ public:
 	typedef mist_iterator2< T, ptrdiff_t, pointer, reference > iterator;
 
 	/// @brief MISTのコンテナ内を操作する，順方向のランダムアクセスイテレータのコンスト版
-	typedef mist_iterator2< T, ptrdiff_t, pointer, const_reference > const_iterator;
+	typedef mist_iterator2< T, ptrdiff_t, const_pointer, const_reference > const_iterator;
 
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータ
 	typedef mist_reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, reference > > reverse_iterator;
 
 	/// @brief MISTのコンテナ内を操作する，逆方向のランダムアクセスイテレータのコンスト版
-	typedef mist_reverse_iterator< mist_iterator2< T, ptrdiff_t, pointer, const_reference > > const_reverse_iterator;
+	typedef mist_reverse_iterator< mist_iterator2< T, ptrdiff_t, const_pointer, const_reference > > const_reverse_iterator;
 
 	/// @brief データ型の変換を行う
 	template < class TT, class AAllocator = std::allocator< TT > > 
