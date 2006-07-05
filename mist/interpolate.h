@@ -1846,7 +1846,7 @@ namespace nearest
 
 		delete [] thread;
 
-		return( false );
+		return( true );
 	}
 
 
@@ -2041,7 +2041,7 @@ namespace mean
 
 		delete [] thread;
 
-		return( false );
+		return( true );
 	}
 
 
@@ -2303,7 +2303,7 @@ namespace linear
 
 		delete [] thread;
 
-		return( false );
+		return( true );
 	}
 
 
