@@ -73,15 +73,12 @@ namespace __tiff_controller__
 
 		static bool read( array2< T, Allocator > &image, const std::string &filename )
 		{
-			int						cols, rows;
-			register TIFF			*tif;
-			register unsigned char*	inP;
-			register unsigned char	sample, r, g, b;
-			register int			bitsleft;
-			unsigned short			bps, spp, photomet;
-			unsigned short			*redcolormap;
-			unsigned short			*greencolormap;
-			unsigned short			*bluecolormap;
+			int				cols, rows;
+			TIFF			*tif;
+			unsigned short	bps, spp, photomet;
+			unsigned short	*redcolormap;
+			unsigned short	*greencolormap;
+			unsigned short	*bluecolormap;
 
 			tif = TIFFOpen( filename.c_str( ), "r" );
 			if( tif == NULL )
@@ -89,9 +86,19 @@ namespace __tiff_controller__
 				std::cerr << "Can't Open [" << filename << "]!!" << std::endl;
 				return( false );
 			}
-			if( !TIFFGetField( tif, TIFFTAG_BITSPERSAMPLE, &bps ) ) bps = 1;
-			if( !TIFFGetField( tif, TIFFTAG_SAMPLESPERPIXEL, &spp ) ) spp = 1;
-			if( !TIFFGetField( tif, TIFFTAG_PHOTOMETRIC, &photomet ) ) std::cerr << "error getting photometric" << std::endl;
+
+			if( !TIFFGetField( tif, TIFFTAG_BITSPERSAMPLE  , &bps ) )
+			{
+				bps = 1;
+			}
+			if( !TIFFGetField( tif, TIFFTAG_SAMPLESPERPIXEL, &spp ) )
+			{
+				spp = 1;
+			}
+			if( !TIFFGetField( tif, TIFFTAG_PHOTOMETRIC    , &photomet ) )
+			{
+				std::cerr << "error getting photometric" << std::endl;
+			}
 
 			switch( spp )
 			{
@@ -99,6 +106,7 @@ namespace __tiff_controller__
 			case 3:
 			case 4:
 				break;
+
 			default:
 				std::cerr << "can only handle 1-channel gray scale or 1- or 3-channel color" << std::endl;
 				break;
@@ -125,111 +133,170 @@ namespace __tiff_controller__
 				std::cerr << "can't allocate memory for scanline buffer" << std::endl;
 			}
 
-			unsigned int i, j;
 			size_type width = cols;
 			size_type height = rows;
 
+			bool isBigEndian = TIFFIsBigEndian( tif ) != 0;
+
 			image.resize( width, height );
 
-			for( j = 0 ; j < height ; ++j )
+			for( size_type j = 0 ; j < height ; ++j )
 			{
-				if( TIFFReadScanline( tif, buf, j, 0 ) < 0 )
+				if( TIFFReadScanline( tif, buf, static_cast< unsigned int >( j ), 0 ) < 0 )
 				{
 					std::cerr << "bad data read on line " << j << std::endl;
 				}
 
-				inP = buf;
-				bitsleft = 8;
-
 				switch( photomet )
 				{
 				case PHOTOMETRIC_MINISBLACK:
-					for( i = 0 ; i < width ; ++i )
+					if( bps == 16 )
 					{
-						if( bitsleft == 0 )
+						if( isBigEndian )
 						{
-							++inP;
-							bitsleft = 8;
+							for( size_type i = 0 ; i < width ; ++i )
+							{
+								int sample = ( ( buf[ i * 2 ] << 8 ) | ( buf[ i * 2 + 1 ] ) ) & maxval;
+								image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+							}
 						}
-						bitsleft -= bps;
-						sample = ( *inP >> bitsleft ) & maxval;
-						image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+						else
+						{
+							for( size_type i = 0 ; i < width ; ++i )
+							{
+								int sample = ( ( buf[ i * 2 ] ) | ( buf[ i * 2 + 1 ] << 8 ) ) & maxval;
+								image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+							}
+						}
+					}
+					else
+					{
+						for( size_type i = 0 ; i < width ; ++i )
+						{
+							unsigned char sample = buf[ i ] & maxval;
+							image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+						}
 					}
 					break;
 
 				case PHOTOMETRIC_MINISWHITE:
-					for( i = 0 ; i < width ; ++i )
+					if( bps == 16 )
 					{
-						if( bitsleft == 0 )
+						if( isBigEndian )
 						{
-							++inP;
-							bitsleft = 8;
+							for( size_type i = 0 ; i < width ; ++i )
+							{
+								int sample = maxval - ( ( ( buf[ i * 2 ] << 8 ) | ( buf[ i * 2 + 1 ] ) ) & maxval );
+								image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+							}
 						}
-						bitsleft -= bps;
-						sample = maxval - ( ( *inP >> bitsleft ) & maxval );
-						image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+						else
+						{
+							for( size_type i = 0 ; i < width ; ++i )
+							{
+								int sample = ( ( buf[ i * 2 ] ) | ( buf[ i * 2 + 1 ] << 8 ) ) & maxval;
+								image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+							}
+						}
+					}
+					else
+					{
+						for( size_type i = 0 ; i < width ; ++i )
+						{
+							int sample = maxval - ( buf[ i ] & maxval );
+							image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+						}
 					}
 					break;
 
 				case PHOTOMETRIC_PALETTE:
-					for( i = 0 ; i < width ; ++i )
+					for( size_type i = 0 ; i < width ; ++i )
 					{
-						if( bitsleft == 0 )
-						{
-							++inP;
-							bitsleft = 8;
-						}
-						bitsleft -= bps;
-						sample = ( *inP >> bitsleft ) & maxval;
-
-						image( i, j ) = pixel_converter::convert_to( static_cast< unsigned char >( redcolormap[sample] ),
-																			static_cast< unsigned char >( greencolormap[sample] ),
-																			static_cast< unsigned char >( bluecolormap[sample] ) );
+						unsigned char sample = buf[ i ] & maxval;
+						image( i, j ) = pixel_converter::convert_to( static_cast< unsigned char >( redcolormap[ sample ] ),
+																	 static_cast< unsigned char >( greencolormap[ sample ] ),
+																	 static_cast< unsigned char >( bluecolormap[ sample ] ) );
 					}
 					break;
 
 				case PHOTOMETRIC_RGB:
-					for( i = 0 ; i < width ; ++i )
+					if( spp == 3 )
 					{
-						// register long r, g, b;
-						if( bitsleft == 0 )
+						unsigned char *p = buf;
+						if( bps == 16 )
 						{
-							++inP;
-							bitsleft = 8;
-						}
-						bitsleft -= bps;
-						r = static_cast< unsigned char >( (*inP >> bitsleft) & maxval );
-
-						if( bitsleft == 0 )
-						{
-							++inP;
-							bitsleft = 8;
-						}
-						bitsleft -= bps;
-						g = static_cast< unsigned char >( (*inP >> bitsleft) & maxval );
-
-						if( bitsleft == 0 )
-						{
-							++inP;
-							bitsleft = 8;
-						}
-						bitsleft -= bps;
-						b = static_cast< unsigned char >( (*inP >> bitsleft) & maxval );
-
-						image( i, j ) = pixel_converter::convert_to( r, g, b );
-
-						if( spp == 4 )
-						{
-							/* skip alpha channel */
-							if( bitsleft == 0 )
+							if( isBigEndian )
 							{
-								++inP;
-								bitsleft = 8;
+								for( size_type i = 0 ; i < width ; ++i, p += 6 )
+								{
+									unsigned short r = ( ( p[ 0 ] << 8 ) | p[ 1 ] ) & maxval;
+									unsigned short g = ( ( p[ 2 ] << 8 ) | p[ 3 ] ) & maxval;
+									unsigned short b = ( ( p[ 4 ] << 8 ) | p[ 5 ] ) & maxval;
+									image( i, j ) = pixel_converter::convert_to( r, g, b );
+								}
 							}
-							bitsleft -= bps;
+							else
+							{
+								for( size_type i = 0 ; i < width ; ++i, p += 6 )
+								{
+									unsigned short r = ( p[ 0 ] | ( p[ 1 ] << 8 ) ) & maxval;
+									unsigned short g = ( p[ 2 ] | ( p[ 3 ] << 8 ) ) & maxval;
+									unsigned short b = ( p[ 4 ] | ( p[ 5 ] << 8 ) ) & maxval;
+									image( i, j ) = pixel_converter::convert_to( r, g, b );
+								}
+							}
+						}
+						else
+						{
+							for( size_type i = 0 ; i < width ; ++i )
+							{
+								unsigned char r = *p++;
+								unsigned char g = *p++;
+								unsigned char b = *p++;
+								image( i, j ) = pixel_converter::convert_to( r, g, b );
+							}
+						}
+					}
+					else
+					{
+						unsigned char *p = buf;
+						if( bps == 16 )
+						{
+							if( isBigEndian )
+							{
+								for( size_type i = 0 ; i < width ; ++i, p += 8 )
+								{
+									unsigned short r = ( ( p[ 0 ] << 8 ) | p[ 1 ] ) & maxval;
+									unsigned short g = ( ( p[ 2 ] << 8 ) | p[ 3 ] ) & maxval;
+									unsigned short b = ( ( p[ 4 ] << 8 ) | p[ 5 ] ) & maxval;
+									image( i, j ) = pixel_converter::convert_to( r, g, b );
+								}
+							}
+							else
+							{
+								for( size_type i = 0 ; i < width ; ++i, p += 8 )
+								{
+									unsigned short r = ( p[ 0 ] | ( p[ 1 ] << 8 ) ) & maxval;
+									unsigned short g = ( p[ 2 ] | ( p[ 3 ] << 8 ) ) & maxval;
+									unsigned short b = ( p[ 4 ] | ( p[ 5 ] << 8 ) ) & maxval;
+									image( i, j ) = pixel_converter::convert_to( r, g, b );
+								}
+							}
+						}
+						else
+						{
+							for( size_type i = 0 ; i < width ; ++i )
+							{
+								unsigned char r = *p++;
+								unsigned char g = *p++;
+								unsigned char b = *p++;
+								image( i, j ) = pixel_converter::convert_to( r, g, b );
+								p++;
+							}
 						}
 					}
 					break;
+
 				default:
 					break;
 				}
