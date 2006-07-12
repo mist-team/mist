@@ -366,9 +366,11 @@ namespace dicom
 		switch( tag.vr )
 		{
 		case AE:
-			// ＡＥ　応用エンティティ　１６バイト以下
-			// 意味のない先頭と末尾のSPACE（20H）を持つ文字列。
-			// “指定された応用名がない”ことを意味する１６のスペ－スでつくられる値は，使用しない
+			// Application Entity
+			// 「16バイト以下」
+			// 先頭と末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// スペースは特に意味なし
 			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
 			{
 				return( false );
@@ -376,10 +378,16 @@ namespace dicom
 			break;
 
 		case AS:
-			// ＡＳ　年齢　　　　　　　４バイト固定
-			// 次の書式の一つをもつ文字列 - nnnD, nnnW, nnnM, nnnY；
-			// ここで nnn は D に対しては日，W に対しては週，M に対しては月，Y に対しては年の数を含む。
-			// 例： "018M" は 18 月の年齢を表す。
+			// 年齢を表す文字列
+			// 「4バイト固定」
+			// 文字列の書式は nnnD, nnnW, nnnM, nnnY のいずれか
+			// 使用可能な値は，0-9, D, W, M, Y のいずれか
+			// 　D: nnn → 日
+			// 　W: nnn → 週
+			// 　M: nnn → 月
+			// 　Y: nnn → 年
+			//
+			// 例： "018M" は生後18ヶ月を表す
 			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) )
 			{
 				return( false );
@@ -387,12 +395,13 @@ namespace dicom
 			break;
 
 		case AT:
-			// ＡＴ　属性タグ　　　　　４バイト固定
-			// データ要素タグの値である１６ビット符号なし整数の順序付けられた対。
-			// 例： (0018,00FF) のデータ要素タグは，４バイトのシリーズとして
-			// リトルエンディアン転送構文では 18H, 00H, FFH, 00H として，
-			// ビッグエンディアン転送構文では 00H, 18H, 00H, FFH として符号化されるであろう。
-			// 注：ＡＴ値の符号化は節７の中で定義されるデータ要素タグの符号化と正確に同一である。
+			// Attribute Tag
+			// 「4バイト固定」
+			// 2つの16ビット符号なし整数の並び
+			//
+			// 例： (0018,00FF) のタグは，4バイトの並びで表現され，エンディアンの違いにより以下のように符号化される
+			// リトルエンディアン転送構文 → 18H, 00H, FFH, 00H
+			// ビッグエンディアン転送構文 → 00H, 18H, 00H, FFH
 			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) )
 			{
 				return( false );
@@ -400,8 +409,12 @@ namespace dicom
 			break;
 
 		case CS:
-			// ＣＳ　コード列　　　　　１６バイト以下
-			// 意味のない先頭または末尾のスペ－ス（20H）をもつ文字列。
+			// Code String
+			// 「16バイト以下」
+			// 先頭と末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// スペースは特に意味なし
+			// 大文字の A-Z, 0-9, アンダーバー（_）のみを使用可能
 			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
 			{
 				return( false );
@@ -409,13 +422,13 @@ namespace dicom
 			break;
 
 		case DA:
-			// ＤＡ　日付　　　　　　　８バイト固定
-			// 書式 yyyymmdd の文字列；
-			// ここで yyyy は年，mm は月，dd は日を含む。
-			// これはANSI HISPP MSDS Date common data typeに適合する。
-			// 例："19930822"は 1993 年 8 月 22 日を表す。
-			// 注：１．V 3.0 より前のこの規格の版との後方互換性のために，
-			// 実装は，このＶＲに対して形式yyyy.mm.dd の文字列を同様にサポートすることを推奨される。
+			// 日付を表す文字列
+			// 「8バイト固定」ただし，DICOM2.0では「10バイト固定」のためどちらも扱えるようにする必要あり
+			// yyyymmdd もしくは yyyy.mm.dd の書式で日付を符号化した文字列
+			// これは，yyyy 年 mm 月 dd 日を表す
+			// 0-9, ピリオド（.）のみを使用可能
+			//
+			// 例：19930822 は 1993 年 8 月 22 日を表す
 			if( tag.vm != -1 && ( num_bytes % 8 != 0 || (int)( num_bytes / 8 ) > tag.vm ) && ( num_bytes % 10 != 0 || (int)( num_bytes / 10 ) > tag.vm ) )
 			{
 				return( false );
@@ -423,12 +436,12 @@ namespace dicom
 			break;
 
 		case DS:
-			// ＤＳ　10進数（文字列）　１６バイト以下
-			// 固定小数点か浮動小数点数を表現する文字列。
-			// 固定小数点数は文字 0-9，任意の先頭の "+" または "-"，および小数点を示す任意の "." のみを含む。
-			// 浮動小数点数は，ANSI X3.9 の中で定義されるとおり，指数の始まりを示す "E" か "e" を持って伝達される。
-			// 10 進数列は先頭あるいは末尾スペースで充てんされることがある。
-			// 途中のスペースは許されない。
+			// 10進数を表す文字列
+			// 「16バイト以下」
+			// 固定小数点もしくは浮動小数点数を表現する文字列であり，先頭と末尾にスペース（20H）を持つ可能性のある文字列
+			// 固定小数点数の場合は 0-9 に加え，先頭に + もしくは -，さらに小数点を示す任意の . を含む
+			// 浮動小数点数は，ANSI X3.9 に従い，指数を示す E もしくは e を含む
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
 			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
 			{
 				return( false );
@@ -436,18 +449,12 @@ namespace dicom
 			break;
 
 		case DT:
-			// ＤＴ　日時　　　　　　　２６バイト以下
-			// 日時共通データタイプ。
-			// 書式 YYYYMMDDHHMMSS.FFFFFF&ZZZZ の連結日時 ASCII 列を示す。
-			// この列の構成要素は，左から右へ YYYY = 年, MM = 月, DD = 日, HH = 時間, MM = 分, SS = 秒, FFFFFF = 秒の小数部分，
-			// & = "+"または "-" ，および ZZZZ = オフセットの時間と分。
-			// &ZZZZ は 協定世界時からのプラス／マイナスオフッセットに対する任意選択の接尾辞である。
-			// 列から省かれた構成要素は空白構成要素と呼ばれる。
-			// 日時の末尾の空白構成要素は無視される。
-			// 末尾でない空白構成要素は禁止される，任意選択の接尾辞は構成要素と考えられない。
-			// 注：	V 3.0 より前のこの規格の版との後方互換性のために，
-			// 多くの存在するＤＩＣＯＭデータ要素は分離したＤＡおよびＴＭのＶＲを使用する。
-			// 将来制定される標準および私的データ要素は ANSI HISPP MSDS により適合するために可能ならＤＴを使用する。
+			// 日時を表す文字列
+			// 「26バイト以下」
+			// YYYYMMDDHHMMSS.FFFFFF&ZZZZ の書式に従って日時を表し，先頭と末尾にスペース（20H）を持つ可能性のある文字列
+			// これは，YYYY 年 MM 月 DD 日 HH 時 MM 分 SS.FFFFFF 秒（FFFFFFは病の小数部分）を表す
+			// また，& は + もしくは - のどちらかであり，ZZZZ は時間と分のオフセットを表す
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
 			if( tag.vm != -1 && num_bytes > 26 * tag.vm )
 			{
 				return( false );
@@ -455,8 +462,8 @@ namespace dicom
 			break;
 
 		case FL:
-			// ＦＬ　４バイト実数　　　４バイト固定
-			// 単精度の２進浮動小数点の数字で，IEEE 754: 1985, 32 ビット浮動小数点数形式で表現される。
+			// 単精度浮動小数
+			// 「4バイト固定」
 			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) )
 			{
 				return( false );
@@ -472,8 +479,8 @@ namespace dicom
 			break;
 
 		case FD:
-			// ＦＤ　８バイト実質　　　８バイト固定
-			// 倍精度の２進浮動小数点の数字で，IEEE 754: 1985, 64 ビット浮動小数点数形式で表現される。
+			// 倍精度浮動小数
+			// 「8バイト固定」
 			if( tag.vm != -1 && ( num_bytes % 8 != 0 || (int)( num_bytes / 8 ) > tag.vm ) )
 			{
 				return( false );
@@ -493,12 +500,11 @@ namespace dicom
 			break;
 
 		case IS:
-			// ＩＳ　整数（文字列）　　１６バイト以下
-			// 10 を底とする整数（10 進数）を表わす文字列で，
-			// 任意選択の先頭の "+", "-" をもつ文字 0-9 のみを含む。
-			// これは先頭そして末尾のスペ－スで埋められることがある。
-			// 途中のスペ－スは許されない。表現される整数 n は，下記の範囲である。
-			// -231 ≦ n ≦ (231-1) 
+			// 整数を表す文字列
+			// 「16バイト以下」
+			// 10 を底とする整数（10進数）を表わす文字列で，先頭に + もしくは - を含んでも良く，先頭と末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// -2^31 ≦ n ≦ (2^31-1) の範囲を表現することが可能
 			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
 			{
 				return( false );
@@ -506,11 +512,11 @@ namespace dicom
 			break;
 
 		case LO:
-			// ＬＯ　長列　　　　　　　６４バイト以下
-			// 先頭および／または末尾のスペ－スで埋められることがある文字列。
-			// 文字符号 5CH （ISO-IR 6 の中のバックスラッシュ "\" ）は，
-			// 複数値デ－タ要素の中の値の間の区切り記号として使用されるので，存在しない。
-			// この列は， ESC を除き，制御文字を持たない。
+			// 長文字列
+			// 「64バイト以下」
+			// 先頭と末尾にスペース（20H）を持つ文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 制御文字列は含まない
 			if( tag.vm != -1 && num_bytes > 64 * tag.vm )
 			{
 				return( false );
@@ -518,37 +524,53 @@ namespace dicom
 			break;
 
 		case LT:
-			// ＬＴ　テキスト　　　　　１０２４バイト以下
-			// 一つ以上の段落を含むことがある文字列。
-			// 図形文字集合と制御文字 CR, LF, FF, および ESC を含むことがある。
-			// 無視されることがある末尾のスペース文字で埋められることがある，
-			// しかし先頭のスペース文字は意味があると考えられる。
-			// このＶＲを持つデ－タ要素は複数値ではない，
-			// 従って文字符号 5CH （ISO-IR 6 の中のバックスラッシュ "\" ）は使用されることがある。
-			if( tag.vm != -1 && num_bytes > 1024 * tag.vm )
+			// 長テキスト文字列
+			// 「10240バイト以下」
+			// 末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 制御文字コードを含む
+			if( tag.vm != -1 && num_bytes > 10240 * tag.vm )
 			{
 				return( false );
 			}
 			break;
 
 		case OB:
-			// ＯＢ　バイト列　　　　　無制限
-			// 内容の符号化が折衝転送構文によって指定されるバイト列。
-			// ＯＢはリトルエンディアン／ビッグエンディアンバイト順に影響されないＶＲである。
-			// バイト列は偶数長にするために必要なとき，単一の末尾のNULLバイト値（00H）で埋められる。
+			// バイト列
+			// 「無制限」
+			// 転送構文のエンディアン形式に依存しないデータ列
+			// バイト列の長さを偶数に保つために，末尾にNULL値（00H）で埋められる可能性あり
+			break;
+
+		case OF:
+			// 4バイト浮動小数のバイト列の並びワード列
+			// 「無制限」
+			// 転送構文のエンディアン形式に依存して，バイトの並びが変化するデータ列
+			if( _is_big_endian_( ) )
+			{
+				for( long i = 0 ; i < num_bytes / 2 ; i += 2 )
+				{
+					unsigned char v1 = byte[ 2 * i + 0 ];
+					unsigned char v2 = byte[ 2 * i + 1 ];
+					unsigned char v3 = byte[ 2 * i + 2 ];
+					unsigned char v4 = byte[ 2 * i + 3 ];
+					byte[ 2 * i + 0 ] = v4;
+					byte[ 2 * i + 1 ] = v3;
+					byte[ 2 * i + 2 ] = v2;
+					byte[ 2 * i + 3 ] = v1;
+				}
+			}
 			break;
 
 		case OW:
-			// ＯＷ　ワード列　　　　　無制限
-			// 内容の符号化が折衝転送構文によって指定された１６ビットワード列。
-			// ＯＷはリトルエンディアンおよびビッグエンディアンバイト順の間で変更するとき，
-			// 各ワード内でバイトスワッピングを必要とするＶＲである。
+			// ワード列
+			// 「無制限」
+			// 転送構文のエンディアン形式に依存して，バイトの並びが変化するデータ列
 			if( _is_big_endian_( ) )
 			{
-				char tmp;
 				for( long i = 0 ; i < num_bytes / 2 ; i += 2 )
 				{
-					tmp = byte[ 2 * i ];
+					unsigned char tmp = byte[ 2 * i ];
 					byte[ 2 * i ] = byte[ 2 * i + 1 ];
 					byte[ 2 * i + 1 ] = tmp;
 				}
@@ -556,48 +578,11 @@ namespace dicom
 			break;
 
 		case PN:
-			// ＰＮ　患者名　　　　　　６４バイト以下
-			// ５構成要素規約を用いて符号化される文字列。
-			// 文字符号 5CH （ISO-IR 6 の中のバックスラッシュ "\" ）は，複数値デ－タ要素の中の値の間の区切り記号として使用されるので，存在しない。
-			// 列は，末尾スペースで埋められることがある。
-			// ５構成要素はその発生順に：
-			//       family name（姓）複合体，
-			//       given name（名）複合体，
-			//       middle name，name prefix（名前接頭辞），
-			//       name suffix（名前接尾辞）。
-			// ５構成要素の何れかが空の列のことがある。
-			// 構成要素の区切り記号はキャラット文字 "^" (5EH) である。
-			// 区切り記号は内部が空白の構成要素にも必要である。
-			// 末尾の空白構成要素グループおよびそれらの区切り記号は省略されることがある。
-			// 複数登録が，各構成要素の中で許され，そして自然文列として，その名前の人によって好まれる書式の中で符号化される。
-			// これは ANSI HISPP MSDS 人名共通データタイプに適合する。
-			// この５構成要素のグループは，人名構成要素グループとして参照される。
-			// 名前を表意文字および表音文字で書く目的で，三つまでの構成要素グループが使用されることがある（付属書Ｈ例１および例２を参照）。
-			// 構成要素グループのための区切り記号は，等号文字 "=" (3DH) である。三つの構成要素グループは出現順に，
-			// １バイト文字表現，表意文字表現，表音文字表現である。
-			//
-			// 構成要素グループの何れもが，最初の構成要素グループを含んで，不在であることがある。
-			// この場合，人の名前は，一つ以上の "=" 区切り記号から始まる。
-			// 区切り記号は，内部の零の構成要素グループに対して必要である。
-			// 末尾の零の構成要素グループおよびその区切り記号は，省略されることがある。
-			// 詳細な意味が，各構成要素グループのために定義されている。
-			// 例：Rev. John Robert Quincy Adams, B.A. M.Div."Adams^John Robert Quincy^^Rev.^B.A. M.Div."
-			//      ［family name  1，given name  3，middle name 無，name prefix  1，name suffix  2］
-			//     Susan Morrison-Jones, Ph.D., Chief Executive Officer"Morrison-Jones^Susan^^^Ph.D., Chief Executive Officer"
-			//      ［family name  2，given name  1，middle name 無，name prefix 無，name suffix  2］
-			//     John Doe"Doe^John"
-			//      ［family name  1，given name  1，middle name 無，name prefix 無，name suffix 無。
-			//           区切り記号は三つの末尾の零構成要素については省略されている。］
-			//   （複数バイト文字集合を使用した人名の符号化の例については，付属書Ｈを参照。）
-			// 注：	１．この５構成要素の規約は， ASTM E-1238-91の中で定義されANSI MSDSによってさらに特殊化され， HL7 によって同様に使用されている。
-			//      ２．典型的なアメリカや欧州での使用法では"given name"の最初の部分が"first name"を表す。
-			//          "given name"の二番目とそれに続く部分は普通"middle name"として扱われる。
-			//          この"middle name"構成要素は，現存する規格との後方互換性の目的のために残されている。
-			//      ３．ASTM E-1238-91の中に存在する「学位」構成要素は"suffix"構成要素の中に吸収された。
-			//      ４．実装者は，"given name"を"first name"および"middle name"として表現する初期の使用形式と，
-			//          そしてこの初期の典型的使用法への，またそれからの変換が必要とされることがあることに留意しなければならない。
-			//      ５．版３．０より前のこの規格の版との後方互換性の理由のために，人名は，単一のfamily name（姓）複合体
-			//         （区切り記号 "^" なしの単一の構成要素）と考えられることがある。
+			// 患者名を表す文字列
+			// 「64バイト以下」
+			// 制御文字列を一切含まず，末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 姓と名の区切りには，^ (5EH) が用いられる
 			if( tag.vm != -1 && num_bytes > 64 * tag.vm )
 			{
 				return( false );
@@ -605,10 +590,11 @@ namespace dicom
 			break;
 
 		case SH:
-			// ＳＨ　短列　　　　　　　１６バイト以下
-			// 先頭および／または末尾のスペ－スで埋められることがある文字列。
-			// 文字符号 5CH （ISO-IR 6 の中のバックスラッシュ "\" ）は，複数値デ－タ要素のための値の間の区切り記号として使用されるので，存在しない。
-			// この列は ESC を除き制御文字を持たない。
+			// 短文字列
+			// 「16バイト以下」
+			// 先頭と末尾にスペース（20H）を持つ文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 制御文字列は含まない
 			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
 			{
 				return( false );
@@ -616,9 +602,8 @@ namespace dicom
 			break;
 
 		case SL:
-			// ＳＬ　符号つき長　　　　４バイト固定
-			// ２の補数形式の３２ビット長符号付き２進整数。
-			// 次の範囲の整数 n を表す： -2^31 ≦ n ≦ (2^31-1） 
+			// 符号付き4バイト整数
+			// 「4バイト固定」
 			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) )
 			{
 				return( false );
@@ -634,14 +619,14 @@ namespace dicom
 			break;
 
 		case SQ:
-			// ＳＱ　項目シーケンス　　無制限
-			// 値は，節７．５で定義される１つ以上の項目のシーケンスである。
+			// シーケンスを表すタグ
+			// 「無制限」
+			// DICOMタグのシーケンスを格納するタグ
 			break;
 
 		case SS:
-			// ＳＳ　符号つき短　　　　２バイト固定
-			// ２の補数形式の１６ビット長符号付き２進整。
-			// 範囲 -2^15 ≦n≦ (2^15-1) の中の整数 n を表す。
+			// 符号付き2バイト整数
+			// 「2バイト固定」
 			if( tag.vm != -1 && ( num_bytes % 2 != 0 || (int)( num_bytes / 2 ) > tag.vm ) )
 			{
 				return( false );
@@ -655,11 +640,10 @@ namespace dicom
 			break;
 
 		case ST:
-			// ＳＴ　短テキスト　　　　１０２４バイト以下
-			// 一つ以上の段落を含むことがある文字列。
-			// 図形文字集合と制御文字 CR, LF, FF, および ESC を含むことがある。
-			// 無視されることがある末尾のスペースで埋められることがある，しかし先頭のスペースは意味があると考えられる。
-			// このＶＲを持つデ－タ要素は，複数値ではない，従って文字符号 5CH （ISO-IR 6 の中のバックスラッシュ "\" ）は使用されることがある。
+			// 短テキスト文字列
+			// 末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 制御文字コードを含む
 			if( tag.vm != -1 && num_bytes > 1024 * tag.vm )
 			{
 				return( false );
@@ -667,22 +651,12 @@ namespace dicom
 			break;
 
 		case TM:
-			// ＴＭ　時間　　　　　　　１６バイト以下
-			// 書式 hhmmss.frac の文字列；
-			//    hh は時間を含み（範囲 "00" - "23"），
-			//    mm は分を含み（範囲 "00" - "59"），
-			//    ss は秒を含み（範囲 "00" - "59"），
-			//    frac は秒の１億分の１の単位の秒の部分を含む（範囲 "000000" - "999999"）。
-			// ２４時間時刻が用いられる。真夜中は "2400" は時間の範囲を超すので， "0000" のみで表す。
-			// 列は末尾のスペースで詰められることがある。
-			// 先頭および途中のスペースは許されない。
-			// 構成要素 mm, ss, frac の一つ以上は，明記されない構成要素の右側の何れの構成要素も同様に明記されない場合は，明記されないことがある。
-			// そのフォーマットが ANSI HISPP MSDS 時間共通データタイプに適合するために，frac は，小数第６位またはそれ以下を持つ。
-			// 例：１． "070907.0705"は7時9分7.0705秒の時間を表す。
-			//     ２． "1010"は，10時と10分の時間を表す。
-			//     ３． "021"は違反の値である。
-			// 注：１．V 3.0 より前のこの規格の版との後方互換性のために実装は，このＶＲに書式 hh:mm:ss.frac の文字列をサポートすることを勧められる。
-			//     ２．この表のＤＴ ＶＲを同様に参照。
+			// 時刻を表す文字列
+			// 「16バイト以下」
+			// hhmmss.frac の書式で時刻を符号化した文字列
+			// これは，hh 時 mm 分 ss 秒 (frac は1億分の1秒単位) を表す
+			// 24時間形式の時刻表記が用いられ，深夜24時は0時として扱われる
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
 			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
 			{
 				return( false );
@@ -690,11 +664,9 @@ namespace dicom
 			break;
 
 		case UI:
-			// ＵＩ　ＵＩＤ　　　　　　６４バイト以下
-			// 項目の広い種類を唯一に識別するために用いられるＵＩＤを含む文字列。
-			// ＵＩＤはピリオド "." 文字で分けられた数字構成要素のシリーズである。
-			// 一つ以上のＵＩＤを含む値領域の長さが奇数バイト数の場合，値領域が偶数バイトの長さであることを確保するために
-			// 一つの末尾のNULL （00H）で埋められる。完全な仕様と例は節９と付属書Ｂを参照。
+			// UIDを表す文字列
+			// 「64バイト以下」
+			// 文字列の長さを偶数に保つために，末尾にNULL (00H) を挿入する必要あり
 			if( tag.vm != -1 && num_bytes > 64 * tag.vm )
 			{
 				return( false );
@@ -702,9 +674,8 @@ namespace dicom
 			break;
 
 		case UL:
-			// ＵＬ　符号なし長　　　　４バイト固定
-			// 符号無し３２ビット長２進整数。
-			// 下記の範囲の整数 n を表す： 0 ≦n＜ 2^32 
+			// 符号無し4バイト整数
+			// 「4バイト固定」
 			if( tag.vm != -1 && ( num_bytes % 4 != 0 || (int)( num_bytes / 4 ) > tag.vm ) )
 			{
 				return( false );
@@ -720,14 +691,12 @@ namespace dicom
 			break;
 
 		case UN:
-			// 未知
-			// 内容の符号化が不明であるバイトの列。（節６．２．２参照）
+			// 不明なタグ
 			break;
 
 		case US:
-			// ＵＳ　符号なし短　　　　２バイト固定
-			// 符号無し１６ビット長２進整数。
-			// 下記の範囲の整数 n を表す： 0 ≦n＜ 2^16 
+			// 符号無し2バイト整数
+			// 「2バイト固定」
 			if( tag.vm != -1 && ( num_bytes % 2 != 0 || (int)( num_bytes / 2 ) > tag.vm ) )
 			{
 				return( false );
@@ -741,12 +710,10 @@ namespace dicom
 			break;
 
 		case UT:
-			// ＵＴ　無制限テキスト
-			// 一以上の段落を含んでいることがある文字列。
-			// それは図形文字集合および制御文字 CR, LF, FF および ESC を含むことがある。
-			// それは，無視されることがある末尾のスペースで埋められることがある。
-			// しかし先頭のスペースは意味があると考えられる。
-			// このＶＲをもつデータ要素は複数値ではない，したがって，文字コード 5CH （ISO-IR 6 におけるバックスラッシュ "\"）は使用されることがある。 
+			// 無制限のテキスト文字列
+			// 末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 制御文字コードを含む
 			break;
 
 		default:
@@ -1561,6 +1528,9 @@ namespace dicom
 		// Group Length を正しく設定する
 		compute_group_length( dicm, implicitVR );
 
+		// DICOM のタグが使用に準拠するようにする
+		dicm.update( );
+
 		// すべて明示的VRで記述する
 		dicom_tag_container::const_iterator ite = dicm.begin( );
 		for( ; ite != dicm.end( ) ; ++ite )
@@ -1621,7 +1591,16 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 
 	if( dicm.contain( 0x7fe0, 0x0010 ) )
 	{
-		dicom::dicom_element &element = dicm( 0x7fe0, 0x0010 );
+		switch( info.compression_type )
+		{
+		case dicom::JPEG:
+		case dicom::JPEGLS:
+		case dicom::JPEG2000:
+			// 今のところ未サポート
+			return( false );
+		}
+
+		dicom::dicom_element element = dicm( 0x7fe0, 0x0010 );
 		if( !dicom::decode( element, info ) )
 		{
 			// 圧縮の解凍もしくはデータがおかしい
@@ -1631,37 +1610,179 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 		image.resize( info.cols, info.rows );
 		image.reso1( info.pixel_spacing_x );
 		image.reso2( info.pixel_spacing_y );
-		if( info.bits_allocated == 8 )
+
+		switch( info.photometric_type )
 		{
-			unsigned char *data = element.data;
-			double pix;
-			unsigned char pixel;
-			for( size_type i = 0 ; i < image.size( ) ; i++ )
+		case dicom::RGB:
+			if( info.compression_type == dicom::RLE )
 			{
-				pix = byte_array< short >( data[ i ] ).get_value( );
-				pix = ( ( pix - window_level ) / window_width + 0.5 ) * 255.0;
-				pix = pix > 255.0 ? 255.0 : pix;
-				pix = pix <   0.0 ?   0.0 : pix;
-				pixel = static_cast< unsigned char >( pix );
-				image[ i ] = pixel_converter::convert_to( pixel, pixel, pixel );
+				// RLEで圧縮する際は，色ごとに圧縮されるみたい
+				for( size_type j = 0 ; j < image.height( ) ; j++ )
+				{
+					unsigned char *r = element.data + j * info.cols;
+					unsigned char *g = element.data + j * info.cols + info.cols * info.rows;
+					unsigned char *b = element.data + j * info.cols + info.cols * info.rows * 2;
+					for( size_type i = 0 ; i < image.width( ) ; i++ )
+					{
+						image( i, j ) = pixel_converter::convert_to( r[ i ], g[ i ], b[ i ] );
+					}
+				}
 			}
-		}
-		else if( info.bits_allocated == 16 )
-		{
-			short *data = reinterpret_cast< short * >( element.data );
-			double pix;
-			unsigned char pixel;
-			for( size_type i = 0 ; i < image.size( ) ; i++ )
+			else
 			{
-				pix = byte_array< short >( data[ i ] ).get_value( );
-				pix = ( ( pix - window_level ) / window_width + 0.5 ) * 255.0;
-				pix = pix > 255.0 ? 255.0 : pix;
-				pix = pix <   0.0 ?   0.0 : pix;
-				pixel = static_cast< unsigned char >( pix );
-				image[ i ] = pixel_converter::convert_to( pixel, pixel, pixel );
+				for( size_type j = 0 ; j < image.height( ) ; j++ )
+				{
+					unsigned char *data = element.data + j * image.width( ) * 3;
+					for( size_type i = 0 ; i < image.width( ) ; i++ )
+					{
+						size_type ii = i * 3;
+						image( i, j ) = pixel_converter::convert_to( data[ ii + 2 ], data[ ii + 1 ], data[ ii + 0 ] );
+					}
+				}
 			}
+			break;
+
+		case dicom::PALETTE_COLOR:
+			if( dicm.contain( 0x0028, 0x1201 ) && dicm.contain( 0x0028, 0x1202 ) && dicm.contain( 0x0028, 0x1203 ) )
+			{
+				const dicom::dicom_element &red   = dicm( 0x0028, 0x1201 );
+				const dicom::dicom_element &green = dicm( 0x0028, 0x1202 );
+				const dicom::dicom_element &blue  = dicm( 0x0028, 0x1203 );
+
+				const short *r = reinterpret_cast< const short * >( red.data );
+				const short *g = reinterpret_cast< const short * >( green.data );
+				const short *b = reinterpret_cast< const short * >( blue.data );
+
+				bool is_big_endian = false;
+
+				int max_value = ( 2 << info.bits_stored ) - 1;
+				for( size_t i = 0 ; i < red.num_bytes / 2 ; i++ )
+				{
+					if( r[ i ] > max_value || g[ i ] > max_value || b[ i ] > max_value )
+					{
+						is_big_endian = true;
+						break;
+					}
+				}
+
+				if( is_big_endian )
+				{
+					// パレットのデータは，必ずビッグエンディアンでインプリメントされている
+					for( size_type j = 0 ; j < image.height( ) ; j++ )
+					{
+						unsigned char *data = element.data + j * image.width( );
+						for( size_type i = 0 ; i < image.width( ) ; i++ )
+						{
+							unsigned char R = static_cast< unsigned char >( from_current_endian( byte_array< short >( r[ data[ i ] ] ), false ).get_value( ) );
+							unsigned char G = static_cast< unsigned char >( from_current_endian( byte_array< short >( g[ data[ i ] ] ), false ).get_value( ) );
+							unsigned char B = static_cast< unsigned char >( from_current_endian( byte_array< short >( b[ data[ i ] ] ), false ).get_value( ) );
+							image( i, j ) = pixel_converter::convert_to( R, G, B );
+						}
+					}
+				}
+				else
+				{
+					// パレットのデータは，必ずビッグエンディアンでインプリメントされている
+					for( size_type j = 0 ; j < image.height( ) ; j++ )
+					{
+						unsigned char *data = element.data + j * image.width( );
+						for( size_type i = 0 ; i < image.width( ) ; i++ )
+						{
+							unsigned char R = static_cast< unsigned char >( r[ data[ i ] ] );
+							unsigned char G = static_cast< unsigned char >( g[ data[ i ] ] );
+							unsigned char B = static_cast< unsigned char >( b[ data[ i ] ] );
+							image( i, j ) = pixel_converter::convert_to( R, G, B );
+						}
+					}
+				}
+			}
+			break;
+
+		case dicom::MONOCHROME1:
+		case dicom::MONOCHROME2:
+		default:
+			if( info.bits_allocated == 8 )
+			{
+				for( size_type j = 0 ; j < image.height( ) ; j++ )
+				{
+					unsigned char *data = element.data + j * image.width( );
+					for( size_type i = 0 ; i < image.width( ) ; i++ )
+					{
+						image( i, j ) = data[ i ];
+					}
+				}
+			}
+			else if( info.bits_allocated == 16 )
+			{
+				// MONOCHROME1 では背景が白がデフォルト
+				// MONOCHROME2 では背景が黒がデフォルト
+				if( info.photometric_type == dicom::MONOCHROME1 )
+				{
+					window_width = -window_width;
+				}
+
+				double offset = info.rescale_intercept;
+				if( dicm.contain( 0x0028, 0x1050 ) && dicm.contain( 0x0028, 0x1051 ) && dicm( 0x0028, 0x1050 ).num_bytes > 0 && dicm( 0x0028, 0x1051 ).num_bytes > 0 )
+				{
+					const short *bytes = reinterpret_cast< const short * >( element.data );
+					for( size_type j = 0 ; j < image.height( ) ; j++ )
+					{
+						const short *data = bytes + j * image.width( );
+						for( size_type i = 0 ; i < image.width( ) ; i++ )
+						{
+							double pix = ( ( data[ i ] + offset - window_level ) / window_width + 0.5 ) * 255.0;
+							pix = pix > 255.0 ? 255.0 : pix;
+							pix = pix <   0.0 ?   0.0 : pix;
+							image( i, j ) = static_cast< unsigned char >( pix );
+						}
+					}
+				}
+				else
+				{
+					// まず，描画に用いる範囲を決定する
+					const unsigned short *bytes = reinterpret_cast< const unsigned short * >( element.data );
+					double min = bytes[ 0 ], max = bytes[ 0 ];
+					for( size_t l = 1 ; l < element.num_bytes / 2 ; l++ )
+					{
+						if( bytes[ l ] < min )
+						{
+							min = bytes[ l ];
+						}
+						else if( max < bytes[ l ] )
+						{
+							max = bytes[ l ];
+						}
+					}
+
+					double ww = max - min + 1;
+					double wl = ( max + min ) / 2.0;
+
+					// MONOCHROME1 では背景が白がデフォルト
+					// MONOCHROME2 では背景が黒がデフォルト
+					if( info.photometric_type == dicom::MONOCHROME1 )
+					{
+						ww = -ww;
+					}
+
+					for( size_type j = 0 ; j < image.height( ) ; j++ )
+					{
+						const unsigned short *data = bytes + j * image.width( );
+						for( size_type i = 0 ; i < image.width( ) ; i++ )
+						{
+							double pix = ( ( data[ i ] - wl ) / ww + 0.5 ) * 255.0;
+							pix = pix > 255.0 ? 255.0 : pix;
+							pix = pix <   0.0 ?   0.0 : pix;
+							image( i, j ) = static_cast< unsigned char >( pix );
+						}
+					}
+				}
+			}
+			else
+			{
+				return( false );
+			}
+			break;
 		}
-		element.release( );
 	}
 	else
 	{

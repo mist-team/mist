@@ -127,6 +127,356 @@ namespace dicom
 		return( get_uid( std::string( reinterpret_cast< const char * >( str ), str[ numBytes - 1 ] == 0 ? numBytes - 1 : numBytes ) ) );
 	}
 
+	inline size_t compute_need_bytes( const dicom_tag &tag, size_t max_bytes, size_t num_bytes, bool align_max_bytes )
+	{
+		size_t rest = num_bytes % max_bytes;
+
+		if( rest > 0 && align_max_bytes )
+		{
+			num_bytes += max_bytes - rest;
+		}
+
+		if( tag.vm != -1 && num_bytes > max_bytes * tag.vm )
+		{
+			num_bytes = max_bytes * tag.vm;
+		}
+
+		return( num_bytes );
+	}
+
+	inline size_t compute_need_bytes( const dicom_tag &tag, size_t num_bytes )
+	{
+		bool isEven = ( num_bytes % 2 ) == 0;
+
+		switch( tag.vr )
+		{
+		case AE:
+			// Application Entity
+			// 「16バイト以下」
+			// 先頭と末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// スペースは特に意味なし
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 16, num_bytes, false );
+			break;
+
+		case AS:
+			// 年齢を表す文字列
+			// 「4バイト固定」
+			// 文字列の書式は nnnD, nnnW, nnnM, nnnY のいずれか
+			// 使用可能な値は，0-9, D, W, M, Y のいずれか
+			// 　D: nnn → 日
+			// 　W: nnn → 週
+			// 　M: nnn → 月
+			// 　Y: nnn → 年
+			//
+			// 例： "018M" は生後18ヶ月を表す
+			num_bytes = compute_need_bytes( tag, 4, num_bytes, true );
+			break;
+
+		case AT:
+			// Attribute Tag
+			// 「4バイト固定」
+			// 2つの16ビット符号なし整数の並び
+			//
+			// 例： (0018,00FF) のタグは，4バイトの並びで表現され，エンディアンの違いにより以下のように符号化される
+			// リトルエンディアン転送構文 → 18H, 00H, FFH, 00H
+			// ビッグエンディアン転送構文 → 00H, 18H, 00H, FFH
+			num_bytes = compute_need_bytes( tag, 4, num_bytes, true );
+			break;
+
+		case CS:
+			// Code String
+			// 「16バイト以下」
+			// 先頭と末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// スペースは特に意味なし
+			// 大文字の A-Z, 0-9, アンダーバー（_）のみを使用可能
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 16, num_bytes, false );
+			break;
+
+		case DA:
+			// 日付を表す文字列
+			// 「8バイト固定」ただし，DICOM2.0では「10バイト固定」のためどちらも扱えるようにする必要あり
+			// yyyymmdd もしくは yyyy.mm.dd の書式で日付を符号化した文字列
+			// これは，yyyy 年 mm 月 dd 日を表す
+			// 0-9, ピリオド（.）のみを使用可能
+			//
+			// 例：19930822 は 1993 年 8 月 22 日を表す
+			num_bytes = compute_need_bytes( tag, 8, num_bytes, true );
+			break;
+
+		case DS:
+			// 10進数を表す文字列
+			// 「16バイト以下」
+			// 固定小数点もしくは浮動小数点数を表現する文字列であり，先頭と末尾にスペース（20H）を持つ可能性のある文字列
+			// 固定小数点数の場合は 0-9 に加え，先頭に + もしくは -，さらに小数点を示す任意の . を含む
+			// 浮動小数点数は，ANSI X3.9 に従い，指数を示す E もしくは e を含む
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 16, num_bytes, false );
+			break;
+
+		case DT:
+			// 日時を表す文字列
+			// 「26バイト以下」
+			// YYYYMMDDHHMMSS.FFFFFF&ZZZZ の書式に従って日時を表し，先頭と末尾にスペース（20H）を持つ可能性のある文字列
+			// これは，YYYY 年 MM 月 DD 日 HH 時 MM 分 SS.FFFFFF 秒（FFFFFFは病の小数部分）を表す
+			// また，& は + もしくは - のどちらかであり，ZZZZ は時間と分のオフセットを表す
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 26, num_bytes, false );
+			break;
+
+		case FL:
+			// 単精度浮動小数
+			// 「4バイト固定」
+			num_bytes = compute_need_bytes( tag, 4, num_bytes, true );
+			break;
+
+		case FD:
+			// 倍精度浮動小数
+			// 「8バイト固定」
+			num_bytes = compute_need_bytes( tag, 8, num_bytes, true );
+			break;
+
+		case IS:
+			// 整数を表す文字列
+			// 「16バイト以下」
+			// 10 を底とする整数（10進数）を表わす文字列で，先頭に + もしくは - を含んでも良く，先頭と末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// -2^31 ≦ n ≦ (2^31-1) の範囲を表現することが可能
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 16, num_bytes, false );
+			break;
+
+		case LO:
+			// 長文字列
+			// 「64バイト以下」
+			// 先頭と末尾にスペース（20H）を持つ文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 制御文字列は含まない
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 64, num_bytes, false );
+			break;
+
+		case LT:
+			// 長テキスト文字列
+			// 「10240バイト以下」
+			// 末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 制御文字コードを含む
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 10240, num_bytes, false );
+			break;
+
+		case OB:
+			// バイト列
+			// 「無制限」
+			// 転送構文のエンディアン形式に依存しないデータ列
+			// バイト列の長さを偶数に保つために，末尾にNULL値（00H）で埋められる可能性あり
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+			break;
+
+		case OF:
+			// 4バイト浮動小数のバイト列の並びワード列
+			// 「無制限」
+			// 転送構文のエンディアン形式に依存して，バイトの並びが変化するデータ列
+			break;
+
+		case OW:
+			// ワード列
+			// 「無制限」
+			// 転送構文のエンディアン形式に依存して，バイトの並びが変化するデータ列
+			break;
+
+		case PN:
+			// 患者名を表す文字列
+			// 「64バイト以下」
+			// 制御文字列を一切含まず，末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 姓と名の区切りには，^ (5EH) が用いられる
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 64, num_bytes, false );
+			break;
+
+		case SH:
+			// 短文字列
+			// 「16バイト以下」
+			// 先頭と末尾にスペース（20H）を持つ文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 制御文字列は含まない
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 16, num_bytes, false );
+			break;
+
+		case SL:
+			// 符号付き4バイト整数
+			// 「4バイト固定」
+			num_bytes = compute_need_bytes( tag, 4, num_bytes, true );
+			break;
+
+		case SQ:
+			// シーケンスを表すタグ
+			// 「無制限」
+			// DICOMタグのシーケンスを格納するタグ
+			break;
+
+		case SS:
+			// 符号付き2バイト整数
+			// 「2バイト固定」
+			num_bytes = compute_need_bytes( tag, 2, num_bytes, true );
+			break;
+
+		case ST:
+			// 短テキスト文字列
+			// 末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 制御文字コードを含む
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 1024, num_bytes, false );
+			break;
+
+		case TM:
+			// 時刻を表す文字列
+			// 「16バイト以下」
+			// hhmmss.frac の書式で時刻を符号化した文字列
+			// これは，hh 時 mm 分 ss 秒 (frac は1億分の1秒単位) を表す
+			// 24時間形式の時刻表記が用いられ，深夜24時は0時として扱われる
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 16, num_bytes, false );
+			break;
+
+		case UI:
+			// UIDを表す文字列
+			// 「64バイト以下」
+			// 文字列の長さを偶数に保つために，末尾にNULL (00H) を挿入する必要あり
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+
+			num_bytes = compute_need_bytes( tag, 64, num_bytes, false );
+			break;
+
+		case UL:
+			// 符号無し4バイト整数
+			// 「4バイト固定」
+			num_bytes = compute_need_bytes( tag, 4, num_bytes, true );
+			break;
+
+		case UN:
+			// 不明なタグ
+			break;
+
+		case US:
+			// 符号無し2バイト整数
+			// 「2バイト固定」
+			num_bytes = compute_need_bytes( tag, 2, num_bytes, true );
+			break;
+
+		case UT:
+			// 無制限のテキスト文字列
+			// 末尾にスペース（20H）を持つ可能性のある文字列
+			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
+			// 制御文字コードを含む
+			if( !isEven )
+			{
+				num_bytes++;
+			}
+			break;
+
+		default:
+			// VRがわかんないからとりあえず良しとする
+			break;
+		}
+
+		return( num_bytes );
+	}
+
+	inline void padding_bytes( const dicom_tag &tag, unsigned char *from, unsigned char *to )
+	{
+		switch( tag.vr )
+		{
+		case AE:
+		case CS:
+		case DS:
+		case DT:
+		case IS:
+		case LO:
+		case LT:
+		case PN:
+		case SH:
+		case ST:
+		case TM:
+		case UT:
+			while( from != to )
+			{
+				*from++ = 0x20;
+			}
+			break;
+
+		case OB:
+		case UI:
+			while( from != to )
+			{
+				*from++ = 0x00;
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
 
 	/// @brief DICOMのタグとその要素を管理するクラス
 	class dicom_element : public dicom_tag
@@ -138,16 +488,17 @@ namespace dicom
 		unsigned char *data;	///< @brief DICOMタグの内容を指すポインタ
 		size_type num_bytes;	///< @brief DICOMタグの内容に必要なバイト数
 
-
 		/// @brief nbytes バイト分のメモリ領域を確保する
-		void create( size_type nbytes )
+		void create( const size_type nbytes )
 		{
 			if( num_bytes != nbytes )
 			{
-				release();
+				release( );
 			}
+
 			num_bytes = nbytes;
-			if( num_bytes != 0 )
+
+			if( num_bytes != 0 && data == NULL )
 			{
 				data = new unsigned char[ num_bytes + 1 ];
 				data[ num_bytes ] = '\0';
@@ -156,24 +507,45 @@ namespace dicom
 
 
 		/// @brief p から nbytes バイト分だけデータをコピーする
-		void copy( const unsigned char *p, size_type nbytes )
+		void copy( const unsigned char *p, const size_type nbytes )
 		{
-			if( num_bytes != nbytes )
-			{
-				release();
-			}
-			num_bytes = nbytes;
+			create( nbytes );
+
 			if( num_bytes != 0 )
 			{
-				data = new unsigned char[ num_bytes + 1 ];
-				data[ num_bytes ] = '\0';
-				memcpy( data, p, num_bytes );
+				memcpy( data, p, nbytes );
+			}
+		}
+
+
+		/// @brief DICOM タグの条件に合うようにデータを更新する
+		void update( )
+		{
+			size_type need_bytes = compute_need_bytes( *this, num_bytes );
+
+			if( num_bytes != need_bytes && need_bytes > 0 )
+			{
+				size_t nbytes = num_bytes;
+				unsigned char *tmp = data;
+				data = NULL;
+				num_bytes = 0;
+
+				create( need_bytes );
+
+				// タグのデータが仕様で定められた長さを超えている
+				if( nbytes > need_bytes )
+				{
+					nbytes = need_bytes;
+				}
+
+				memcpy( data, tmp, nbytes );
+				padding_bytes( *this, data + nbytes, data + num_bytes );
 			}
 		}
 
 
 		/// @brief 確保しているメモリ領域を開放する
-		void release()
+		void release( )
 		{
 			delete [] data;
 			data = NULL;
@@ -199,49 +571,49 @@ namespace dicom
 
 
 		/// @brief 他のDICOM要素を代入する
-		void modify( const std::string &data )
+		void modify( const std::string &value )
 		{
 			switch( vr )
 			{
 			case FL:
 				{
-					float val = ( float )atof( data.c_str( ) );
+					float val = ( float )atof( value.c_str( ) );
 					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( float ) );
 				}
 				break;
 			case FD:
 				{
-					double val = atof( data.c_str( ) );
+					double val = atof( value.c_str( ) );
 					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( double ) );
 				}
 				break;
 			case SL:
 				{
-					long val = atoi( data.c_str( ) );
+					long val = atoi( value.c_str( ) );
 					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( long ) );
 				}
 				break;
 			case SS:
 				{
-					short val = ( short )atoi( data.c_str( ) );
+					short val = ( short )atoi( value.c_str( ) );
 					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( short ) );
 				}
 				break;
 			case UL:
 				{
-					unsigned long val = atoi( data.c_str( ) );
+					unsigned long val = atoi( value.c_str( ) );
 					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( unsigned long ) );
 				}
 				break;
 			case US:
 				{
-					unsigned short val = ( unsigned short )atoi( data.c_str( ) );
+					unsigned short val = ( unsigned short )atoi( value.c_str( ) );
 					*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< unsigned char * >( &val ), sizeof( unsigned short ) );
 				}
 				break;
 
 			default:
-				*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< const unsigned char * >( data.c_str( ) ), data.size( ) );
+				*this = dicom_element( get_group( ), get_element( ), reinterpret_cast< const unsigned char * >( value.c_str( ) ), value.size( ) );
 				break;
 			}
 		}
@@ -321,7 +693,7 @@ namespace dicom
 			else if( vr == UI )
 			{
 				// DICOMのUIDを変換する
-				dicom_uid uid = get_uid( std::string( reinterpret_cast< char * >( data ) ) );
+				dicom_uid uid = get_uid( std::string( reinterpret_cast< char * >( data ), num_bytes ) );
 				printf( "( %04x, %04x, %s, % 8d, %s ) = %s\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), uid.name.c_str( ) );
 			}
 			else
@@ -355,7 +727,7 @@ namespace dicom
 					break;
 
 				default:
-					printf( "( %04x, %04x, %s, % 8d, %s ) = %s\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), data );
+					printf( "( %04x, %04x, %s, % 8d, %s ) = %s\n", get_group( ), get_element( ), get_dicom_vr( vr ).c_str(), static_cast< unsigned int >( num_bytes ), comment.c_str(), reinterpret_cast< char * >( data ) );
 					break;
 				}
 			}
@@ -488,6 +860,15 @@ namespace dicom
 			return( find( group, element ) != base::end( ) );
 		}
 
+		/// @brief 含まれているすべてのタグが，DICOMの使用に準拠するように調整する
+		void update( )
+		{
+			for( iterator ite = base::begin( ) ; ite != base::end( ) ; ++ite )
+			{
+				ite->second.update( );
+			}
+		}
+
 		dicom_tag_container( )
 		{
 		}
@@ -618,6 +999,36 @@ namespace dicom
 		compress_type type;
 	} __dicom_compress_type__;
 
+	inline std::string trim( const std::string &str )
+	{
+		std::string::difference_type sindx = 0;
+		std::string::difference_type eindx = str.length( ) - 1;
+
+		for( ; sindx <= eindx ; sindx++ )
+		{
+			if( str[ sindx ] != 0x20 )
+			{
+				break;
+			}
+		}
+
+		for( ; sindx <= eindx ; eindx-- )
+		{
+			if( str[ eindx ] != 0x20 )
+			{
+				break;
+			}
+		}
+
+		if( sindx <= eindx )
+		{
+			return( str.substr( sindx, eindx - sindx + 1 ) );
+		}
+		else
+		{
+			return( "" );
+		}
+	}
 
 	/// @brief UIDを元に圧縮タイプを取得する
 	compress_type get_compress_type( const std::string &uid )
