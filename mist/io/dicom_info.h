@@ -540,6 +540,8 @@ namespace dicom
 
 				memcpy( data, tmp, nbytes );
 				padding_bytes( *this, data + nbytes, data + num_bytes );
+
+				delete [] tmp;
 			}
 		}
 
