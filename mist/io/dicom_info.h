@@ -114,10 +114,24 @@ namespace dicom
 	};
 
 	/// @brief DICOM‚ÌUID‚É•ÏŠ·‚·‚é
-	inline dicom_uid get_uid( const std::string &uid )
+	inline dicom_uid_table & get_dicom_uid_table( )
 	{
 		static dicom_uid_table uid_table;
+		return( uid_table );
+	}
+
+	/// @brief DICOM‚ÌUID‚É•ÏŠ·‚·‚é
+	inline dicom_uid get_uid( const std::string &uid )
+	{
+		dicom_uid_table &uid_table = get_dicom_uid_table( );
 		return( uid_table.get_uid( uid ) );
+	}
+
+	/// @brief DICOM‚ÌUIDƒe[ƒuƒ‹‚É‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğ’²‚×‚é
+	inline bool is_dicom_class_uid( const std::string &uid )
+	{
+		const dicom_uid_table &uid_table = get_dicom_uid_table( );
+		return( uid_table.contain_uid( uid ) );
 	}
 
 

@@ -1103,9 +1103,9 @@ namespace dicom
 
 	public:
 		/// @brief uid ‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ð’²‚×‚é
-		bool contain_uid( const std::string &uid )
+		bool contain_uid( const std::string &uid ) const
 		{
-			baseclass::iterator ite = baseclass::find( dicom_uid( uid ) );
+			baseclass::const_iterator ite = baseclass::find( dicom_uid( uid ) );
 			return( ite != baseclass::end( ) );
 		}
 
