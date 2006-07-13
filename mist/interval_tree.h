@@ -305,8 +305,8 @@ private:
 
 /// @brief タグ付き区間オブジェクトの出力演算子
 //!
-//! @param[io] out   … 出力ストリーム
-//! @param[in] in    … 区間
+//! @param[in,out] out   … 出力ストリーム
+//! @param[in]     in    … 区間
 //! @return 出力ストリーム
 //!
 template< typename M, typename T >
