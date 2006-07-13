@@ -79,14 +79,16 @@ public:
 	mist_iterator1( pointer p = NULL, size_type diff = 1 ) : data_( p ), diff_pointer_( diff ){ }
 
 	/// @brief 他のイテレータを用いて初期化する
-	mist_iterator1( const mist_iterator1 &ite ) : data_( ite.data_ ), diff_pointer_( ite.diff_pointer_ ){ }
+	template< class TT, class DD, class PP, class RR >
+	mist_iterator1( const mist_iterator1< TT, DD, PP, RR > &ite ) : data_( ite.data( ) ), diff_pointer_( ite.diff( ) ){ }
 
 
 	/// @brief 他のイテレータを代入する
-	const mist_iterator1& operator =( const mist_iterator1 &ite )
+	template< class TT, class DD, class PP, class RR >
+	const mist_iterator1& operator =( const mist_iterator1< TT, DD, PP, RR > &ite )
 	{
-		data_ = ite.data_;
-		diff_pointer_ = ite.diff_pointer_;
+		data_ = ite.data( );
+		diff_pointer_ = ite.diff( );
 		return( *this );
 	}
 
@@ -109,6 +111,23 @@ public:
 	/// @brief dist で指定した位置の要素の const 参照
 	const_reference operator []( difference_type dist ) const { return( data_[ dist * diff_pointer_ ] ); }
 
+	///< @brief 現在の要素を指すポインタ
+	pointer data( )
+	{
+		return( data_ );
+	}
+
+	///< @brief 現在の要素を指すポインタ
+	const pointer data( ) const
+	{
+		return( data_ );
+	}
+
+	///< @brief 要素間のポインタの差
+	size_type diff( ) const
+	{
+		return( diff_pointer_ );
+	}
 
 	/// @brief 前置型のインクリメント演算子
 	mist_iterator1& operator ++( )
@@ -157,29 +176,36 @@ public:
 
 
 	/// @brief 要素間のポインタの差を計算する
-	const difference_type operator -( const mist_iterator1 &ite ) const
+	template< class TT, class DD, class PP, class RR >
+	const difference_type operator -( const mist_iterator1< TT, DD, PP, RR > &ite ) const
 	{
-		return( ( data_ - ite.data_ ) / diff_pointer_ );
+		return( ( data_ - ite.data( ) ) / diff_pointer_ );
 	}
 
 
 	/// @brief 二つのイテレータが同じ要素をさしているかどうか
-	bool operator ==( const mist_iterator1 &ite ) const { return( data_ == ite.data_ ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator ==( const mist_iterator1< TT, DD, PP, RR > &ite ) const { return( data_ == ite.data( ) ); }
 
 	/// @brief 二つのイテレータが同じ要素をさしていないかどうか
-	bool operator !=( const mist_iterator1 &ite ) const { return( !( *this == ite )  ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator !=( const mist_iterator1< TT, DD, PP, RR > &ite ) const { return( !( *this == ite )  ); }
 
 	/// @brief 二つのイテレータの < の関係を調べる
-	bool operator < ( const mist_iterator1 &ite ) const { return( data_ <  ite.data_ ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator < ( const mist_iterator1< TT, DD, PP, RR > &ite ) const { return( data_ <  ite.data( ) ); }
 
 	/// @brief 二つのイテレータの <= の関係を調べる
-	bool operator <=( const mist_iterator1 &ite ) const { return( data_ <= ite.data_ ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator <=( const mist_iterator1< TT, DD, PP, RR > &ite ) const { return( data_ <= ite.data( ) ); }
 
 	/// @brief 二つのイテレータの > の関係を調べる
-	bool operator > ( const mist_iterator1 &ite ) const { return( data_ >  ite.data_ ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator > ( const mist_iterator1< TT, DD, PP, RR > &ite ) const { return( data_ >  ite.data( ) ); }
 
 	/// @brief 二つのイテレータの >= の関係を調べる
-	bool operator >=( const mist_iterator1 &ite ) const { return( data_ >= ite.data_ ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator >=( const mist_iterator1< TT, DD, PP, RR > &ite ) const { return( data_ >= ite.data( ) ); }
 };
 
 
@@ -231,10 +257,10 @@ public:
 	typedef Reference const_reference;		///< @brief データ型の const 参照．data の場合，const data & となる
 
 private:
-	pointer data_;				///< @brief 変数の説明を書く
-	difference_type index_;		///< @brief 変数の説明を書く
-	difference_type width_;		///< @brief 変数の説明を書く
-	difference_type step_;		///< @brief 変数の説明を書く
+	pointer data_;				///< @brief 現在のイテレーターが指している領域の先頭位置
+	difference_type index_;		///< @brief 現在のイテレーターが指しているインデックス
+	difference_type width_;		///< @brief 1行あたりのデータ数
+	difference_type step_;		///< @brief インクリメント時のスキップ数
 
 public:
 	/// @brief デフォルトコンストラクタ
@@ -244,27 +270,58 @@ public:
 	}
 
 	/// @brief 他のイテレータを用いて初期化する
-	mist_iterator2( const mist_iterator2 &ite ) : data_( ite.data_ ), index_( ite.index_ ), width_( ite.width_ ), step_( ite.step_ )
+	template< class TT, class DD, class PP, class RR >
+	mist_iterator2( const mist_iterator2< TT, DD, PP, RR > &ite ) : data_( ite.data( ) ), index_( ite.index( ) ), width_( ite.width( ) ), step_( ite.step( ) )
 	{
 	}
 
 
 	/// @brief 他のイテレータを代入する
-	const mist_iterator2& operator =( const mist_iterator2 &ite )
+	template< class TT, class DD, class PP, class RR >
+	const mist_iterator2& operator =( const mist_iterator2< TT, DD, PP, RR > &ite )
 	{
 		if( &ite != this )
 		{
-			data_  = ite.data_;
-			index_ = ite.index_;
-			width_ = ite.width_;
-			step_  = ite.step_;
+			data_  = ite.data( );
+			index_ = ite.index( );
+			width_ = ite.width( );
+			step_  = ite.step( );
 		}
 		return( *this );
 	}
 
+	///< @brief 現在のイテレーターが指している領域の先頭位置
+	pointer data( )
+	{
+		return( data_ );
+	}
+
+	///< @brief 現在のイテレーターが指している領域の先頭位置
+	const pointer data( ) const
+	{
+		return( data_ );
+	}
+
+	///< @brief 現在のイテレーターが指しているインデックス
+	difference_type index( ) const
+	{
+		return( index_ );
+	}
+
+	///< @brief 1行あたりのデータ数
+	difference_type width( ) const
+	{
+		return( width_ );
+	}
+
+	///< @brief インクリメント時のスキップ数
+	difference_type step( ) const
+	{
+		return( step_ );
+	}
 
 	/// @brief 要素の参照
-	reference operator *()
+	reference operator *( )
 	{
 		difference_type step = index_ / width_;
 		difference_type rest = index_ - step * width_;
@@ -272,7 +329,7 @@ public:
 	}
 
 	/// @brief 要素の const 参照
-	const_reference operator *() const
+	const_reference operator *( ) const
 	{
 		difference_type step = index_ / width_;
 		difference_type rest = index_ - step * width_;
@@ -338,28 +395,35 @@ public:
 
 
 	/// @brief 要素間のポインタの差を計算する
-	const difference_type operator -( const mist_iterator2 &ite ) const
+	template< class TT, class DD, class PP, class RR >
+	const difference_type operator -( const mist_iterator2< TT, DD, PP, RR > &ite ) const
 	{
-		return( index_ - ite.index_ );
+		return( index_ - ite.index( ) );
 	}
 
 	/// @brief 二つのイテレータが同じ要素をさしているかどうか
-	bool operator ==( const mist_iterator2 &ite ) const { return( *this - ite == 0 ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator ==( const mist_iterator2< TT, DD, PP, RR > &ite ) const { return( *this - ite == 0 ); }
 
 	/// @brief 二つのイテレータが同じ要素をさしていないかどうか
-	bool operator !=( const mist_iterator2 &ite ) const { return( !( *this == ite ) ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator !=( const mist_iterator2< TT, DD, PP, RR > &ite ) const { return( !( *this == ite ) ); }
 
 	/// @brief 二つのイテレータの < の関係を調べる
-	bool operator < ( const mist_iterator2 &ite ) const { return( *this - ite < 0 ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator < ( const mist_iterator2< TT, DD, PP, RR > &ite ) const { return( *this - ite < 0 ); }
 
 	/// @brief 二つのイテレータの <= の関係を調べる
-	bool operator <=( const mist_iterator2 &ite ) const { return( !( *this > ite ) ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator <=( const mist_iterator2< TT, DD, PP, RR > &ite ) const { return( !( *this > ite ) ); }
 
 	/// @brief 二つのイテレータの > の関係を調べる
-	bool operator > ( const mist_iterator2 &ite ) const { return( ite < *this ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator > ( const mist_iterator2< TT, DD, PP, RR > &ite ) const { return( ite < *this ); }
 
 	/// @brief 二つのイテレータの >= の関係を調べる
-	bool operator >=( const mist_iterator2 &ite ) const { return( !( *this < ite ) ); }
+	template< class TT, class DD, class PP, class RR >
+	bool operator >=( const mist_iterator2< TT, DD, PP, RR > &ite ) const { return( !( *this < ite ) ); }
 };
 
 
