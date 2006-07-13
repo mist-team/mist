@@ -531,6 +531,21 @@ namespace dicom
 			}
 		}
 
+		/// @brief タグのデータの中身を交換する
+		void swap( dicom_element &dicm )
+		{
+			if( &dicm != this )
+			{
+				unsigned char *tmp = data;
+				data = dicm.data;
+				dicm.data = tmp;
+
+				size_type nbytes = num_bytes;
+				num_bytes = dicm.num_bytes;
+				dicm.num_bytes = nbytes;
+			}
+		}
+
 
 		/// @brief DICOM タグの条件に合うようにデータを更新する
 		void update( )
@@ -1047,7 +1062,7 @@ namespace dicom
 	}
 
 	/// @brief UIDを元に圧縮タイプを取得する
-	compress_type get_compress_type( const std::string &uid )
+	inline compress_type get_compress_type( const std::string &uid )
 	{
 		static __dicom_compress_type__ compress_type_list[] = {
 			{ "1.2.840.10008.1.2.4.50", JPEG, }, // JPEG 基準（処理 1）：非可逆 JPEG 8 ビット画像圧縮用デフォルト転送構文
@@ -1091,62 +1106,62 @@ namespace dicom
 
 
 	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	double find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, double default_value )
+	inline double find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, double default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicm.find( group, element );
 		return( cite == dicm.end( ) ? default_value : cite->second.to_double( ) );
 	}
 
 	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	float find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, float default_value )
+	inline float find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, float default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicm.find( group, element );
 		return( cite == dicm.end( ) ? default_value : cite->second.to_float( ) );
 	}
 
 	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	signed int find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, signed int default_value )
+	inline signed int find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, signed int default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicm.find( group, element );
 		return( cite == dicm.end( ) ? default_value : cite->second.to_int( ) );
 	}
 
 	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	unsigned int find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, unsigned int default_value )
+	inline unsigned int find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, unsigned int default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicm.find( group, element );
 		return( cite == dicm.end( ) ? default_value : cite->second.to_uint( ) );
 	}
 
 	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	signed short find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, signed short default_value )
+	inline signed short find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, signed short default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicm.find( group, element );
 		return( cite == dicm.end( ) ? default_value : cite->second.to_short( ) );
 	}
 
 	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	unsigned short find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, unsigned short default_value )
+	inline unsigned short find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, unsigned short default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicm.find( group, element );
 		return( cite == dicm.end( ) ? default_value : cite->second.to_ushort( ) );
 	}
 
 	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	std::string find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, const std::string &default_value )
+	inline std::string find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, const std::string &default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicm.find( group, element );
 		return( cite == dicm.end( ) ? default_value : cite->second.to_string( ) );
 	}
 
 	/// @brief dicmコンテナ内に (group, element)のデータが存在するか調査してその値を返す（見つからない時は default_value を返す）
-	std::string find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, const char *default_value )
+	inline std::string find_tag( const dicom_tag_container &dicm, unsigned short group, unsigned short element, const char *default_value )
 	{
 		dicom_tag_container::const_iterator cite = dicm.find( group, element );
 		return( cite == dicm.end( ) ? default_value : cite->second.to_string( ) );
 	}
 
-	bool begin_with( const std::string &str1, const std::string &str2 )
+	inline bool begin_with( const std::string &str1, const std::string &str2 )
 	{
 		if( str1.size( ) < str2.size( ) )
 		{
@@ -1165,7 +1180,7 @@ namespace dicom
 	}
 
 	/// @brief DICOMコンテナからDICOMの情報を取得する
-	bool get_dicom_info( const dicom_tag_container &dicm, dicom_info &info )
+	inline bool get_dicom_info( const dicom_tag_container &dicm, dicom_info &info )
 	{
 		info.little_endian_encoding	= find_tag( dicm, 0x0002, 0x0010, "" ) != "1.2.840.10008.1.2.2";
 
