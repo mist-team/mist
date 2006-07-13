@@ -26,7 +26,7 @@
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-/// @file mist/dp_matching.h
+/// @file mist/integral_image.h
 //!
 //! @brief Integral Image ‚Ì‚½‚ß‚Ìƒ‰ƒCƒuƒ‰ƒŠ
 //!

@@ -939,8 +939,10 @@ namespace dicom
 
 	/// @brief DICOMファイルを読み込んで，全てのDICOMタグを処理しテーブルに登録する
 	//! 
-	//! @param[out] dicm  … DICOMタグ毎にデータを登録するテーブル
-	//! @param[in]  filename … 入力DICOM]ファイル名
+	//! @param[out] dicm             … DICOMタグ毎にデータを登録するテーブル
+	//! @param[in]  buff             … DICOMのデータが入ったバッファの先頭ポインタ
+	//! @param[in]  numBytes         … バッファ内のデータのバイト数
+	//! @param[in]  is_little_endian … データの中身をリトルエンディアンとして処理するかどうか
 	//! 
 	//! @retval true  … DICOMファイルの処理に成功
 	//! @retval false … DICOMファイルではないか，処理できないタグ・データが存在する場合

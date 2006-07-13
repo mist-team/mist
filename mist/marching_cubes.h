@@ -396,9 +396,9 @@ public:
 	
 	/// @brief スケールパラメータを設定
 	//!
-	//! @param[in]  ox   … x 方向スケール
-	//! @param[in]  oy   … y 方向スケール
-	//! @param[in]  oz   … z 方向スケール
+	//! @param[in]  sx   … x 方向スケール
+	//! @param[in]  sy   … y 方向スケール
+	//! @param[in]  sz   … z 方向スケール
 	//!
 	void scale(  const scale_type::value_type  &sx, const scale_type::value_type  &sy, const scale_type::value_type  &sz ) { s_.x( ) = sx; s_.y( ) = sy; s_.z( ) = sz; }
 

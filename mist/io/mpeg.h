@@ -837,9 +837,6 @@ namespace mpeg
 		}
 
 		/// @brief フレームバッファに格納された画像のインターレス除去
-		//! 
-		//! @param[in] encode_buf_size … エンコードバッファサイズ
-		//!
 		bool deinterlace( )
 		{
 			AVCodecContext *p_cctx = &p_fctx_->streams[ video_stream_index_ ]->codec;

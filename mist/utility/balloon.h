@@ -26,7 +26,7 @@
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-/// @file mist/utility/mesh.h
+/// @file mist/utility/balloon.h
 //!
 //! @brief キャリブレーションチャートから点を切り出す
 //!
