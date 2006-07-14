@@ -196,7 +196,7 @@ namespace dicom
 	//! 
 	inline unsigned char *read_dicom_tag( unsigned char *p, unsigned char *e, dicom_tag &tag, difference_type &numBytes, bool from_little_endian = true )
 	{
-		if( p == NULL || p + 8 >= e )
+		if( p == NULL || p + 8 > e )
 		{
 			numBytes = -1;
 			return( e );
