@@ -104,16 +104,22 @@ namespace dicom
 	//! 
 	inline unsigned char *check_dicom_file( unsigned char *p, unsigned char *e )
 	{
-		if( p == NULL || p + 128 + 4 >= e )
+		if( p == NULL || p + 4 >= e )
 		{
 			return( NULL );
 		}
 
-
 		char *dicm = reinterpret_cast< char * >( p ) + 128;
 		if( dicm[ 0 ] == 'D' && dicm[ 1 ] == 'I' && dicm[ 2 ] == 'C' && dicm[ 3 ] == 'M' )
 		{
-			return( p + 128 + 4 );
+			if( p + 4 + 128 >= e )
+			{
+				return( NULL );
+			}
+			else
+			{
+				return( p + 128 + 4 );
+			}
 		}
 
 		// DICOM用のプリアンブルが存在しないため，先頭のポインタを返す
