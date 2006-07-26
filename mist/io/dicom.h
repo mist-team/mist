@@ -420,7 +420,7 @@ namespace dicom
 			// 先頭と末尾にスペース（20H）を持つ可能性のある文字列
 			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
 			// スペースは特に意味なし
-			// 大文字の A-Z, 0-9, アンダーバー（_）のみを使用可能
+			// 大文字の A-Z, 0-9, アンダーバー（_）のみを使用可能．
 			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
 			{
 				return( false );
@@ -432,7 +432,7 @@ namespace dicom
 			// 「8バイト固定」ただし，DICOM2.0では「10バイト固定」のためどちらも扱えるようにする必要あり
 			// yyyymmdd もしくは yyyy.mm.dd の書式で日付を符号化した文字列
 			// これは，yyyy 年 mm 月 dd 日を表す
-			// 0-9, ピリオド（.）のみを使用可能
+			// 0-9, ピリオド（.）のみを使用可能．
 			//
 			// 例：19930822 は 1993 年 8 月 22 日を表す
 			if( tag.vm != -1 && ( num_bytes % 8 != 0 || (int)( num_bytes / 8 ) > tag.vm ) && ( num_bytes % 10 != 0 || (int)( num_bytes / 10 ) > tag.vm ) )
@@ -510,7 +510,7 @@ namespace dicom
 			// 「16バイト以下」
 			// 10 を底とする整数（10進数）を表わす文字列で，先頭に + もしくは - を含んでも良く，先頭と末尾にスペース（20H）を持つ可能性のある文字列
 			// 文字列の長さを偶数に保つために，末尾にスペースを挿入する必要あり
-			// -2^31 ≦ n ≦ (2^31-1) の範囲を表現することが可能
+			// -2^31 ≦ n ≦ (2^31-1) の範囲を表現することが可能．
 			if( tag.vm != -1 && num_bytes > 16 * tag.vm )
 			{
 				return( false );
@@ -1606,6 +1606,9 @@ bool read_dicom( array2< T, Allocator > &image, const std::string &filename )
 		case dicom::JPEG2000:
 			// 今のところ未サポート
 			return( false );
+
+		default:
+			break;
 		}
 
 		dicom::dicom_element element = dicm( 0x7fe0, 0x0010 );
