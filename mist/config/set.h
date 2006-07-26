@@ -119,9 +119,7 @@ public:
 public:
 	/// @brief W‡˜a
 	//! 
-	//! \f[
-	//!     a = a \bigcup b
-	//! \f]
+	//! \f[ a = a \bigcup b \f]
 	//! 
 	set_base &operator +=( const set_base &s )
 	{
@@ -145,9 +143,7 @@ public:
 
 	/// @brief ·W‡‚ğŒvZ‚·‚é
 	//! 
-	//! \f[
-	//!     a = a - \left( a \bigcap b \right)
-	//! \f]
+	//! \f[ a = a - \left( a \bigcap b \right) \f]
 	//! 
 	set_base &operator -=( const set_base &s )
 	{
@@ -207,9 +203,7 @@ public:
 
 	/// @brief ÏW‡‚ğŒvZ‚·‚é
 	//! 
-	//! \f[
-	//!     a = a \bigcap b
-	//! \f]
+	//! \f[ a = a \bigcap b \f]
 	//! 
 	set_base &operator *=( const set_base &s )
 	{

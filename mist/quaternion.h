@@ -173,9 +173,7 @@ public:
 
 	/// @brief クォータニオンの足し算
 	//! 
-	//! \f[
-	//!     \mbox{\boldmath p} + \mbox{\boldmath q} = \left( p_w + q_w \;,\; p_x + q_x \;,\; p_y + q_y \;,\; p_z + q_z \right)^T
-	//! \f]
+	//! \f[ \mbox{\boldmath p} + \mbox{\boldmath q} = \left( p_w + q_w \;,\; p_x + q_x \;,\; p_y + q_y \;,\; p_z + q_z \right)^T \f]
 	//! 
 	//! @param[in] q … 右辺値
 	//! 
@@ -193,9 +191,7 @@ public:
 
 	/// @brief クォータニオンへの実数成分の足し算
 	//! 
-	//! \f[
-	//!     \mbox{\boldmath p} + a = \left( p_w + a \;,\; p_x \;,\; p_y \;,\; p_z \right)^T
-	//! \f]
+	//! \f[ \mbox{\boldmath p} + a = \left( p_w + a \;,\; p_x \;,\; p_y \;,\; p_z \right)^T \f]
 	//! 
 	//! @param[in] a … 実数成分
 	//! 
@@ -214,9 +210,7 @@ public:
 
 	/// @brief クォータニオンの引き算
 	//! 
-	//! \f[
-	//!     \mbox{\boldmath p} - \mbox{\boldmath q} = \left( p_w - q_w \;,\; p_x - q_x \;,\; p_y - q_y \;,\; p_z - q_z \right)^T
-	//! \f]
+	//! \f[ \mbox{\boldmath p} - \mbox{\boldmath q} = \left( p_w - q_w \;,\; p_x - q_x \;,\; p_y - q_y \;,\; p_z - q_z \right)^T \f]
 	//! 
 	//! @param[in] q … 右辺値
 	//! 
@@ -234,9 +228,7 @@ public:
 
 	/// @brief クォータニオンへの実数成分の引き算
 	//! 
-	//! \f[
-	//!     \mbox{\boldmath p} - a = \left( p_w - a \;,\; p_x \;,\; p_y \;,\; p_z \right)^T
-	//! \f]
+	//! \f[ \mbox{\boldmath p} - a = \left( p_w - a \;,\; p_x \;,\; p_y \;,\; p_z \right)^T \f]
 	//! 
 	//! @param[in] a … 実数成分
 	//! 
@@ -253,22 +245,22 @@ public:
 		return( *this );
 	}
 
-	/// @brief クォータニオンの掛け算
-	//! 
-	//! \f[
-	//!     \mbox{\boldmath p} \times \mbox{\boldmath q} =
-	//!         \left(
-	//!            p_w \times q_w - p_x \times q_x - p_y \times q_y - p_z \times q_z \;,\;
-	//!            p_w \times q_x + p_x \times q_w + p_y \times q_z - p_z \times q_y \;,\;
-	//!            p_w \times q_y + p_y \times q_w + p_z \times q_x - p_x \times q_z \;,\;
-	//!            p_w \times q_z + p_z \times q_w + p_x \times q_y - p_y \times q_x
-	//!         \right)^T
-	//! \f]
-	//! 
-	//! @param[in] q … 右辺値
-	//! 
-	//! @return 掛け算結果
-	//! 
+	/** @brief クォータニオンの掛け算
+	 *  
+	 *  \f[
+	 *      \mbox{\boldmath p} \times \mbox{\boldmath q} =
+	 *          \left(
+	 *             p_w \times q_w - p_x \times q_x - p_y \times q_y - p_z \times q_z \;,\;
+	 *             p_w \times q_x + p_x \times q_w + p_y \times q_z - p_z \times q_y \;,\;
+	 *             p_w \times q_y + p_y \times q_w + p_z \times q_x - p_x \times q_z \;,\;
+	 *             p_w \times q_z + p_z \times q_w + p_x \times q_y - p_y \times q_x
+	 *          \right)^T
+	 *  \f]
+	 *  
+	 *  @param[in] q … 右辺値
+	 *  
+	 *  @return 掛け算結果
+	 */
 	template < class TT >
 	const quaternion &operator *=( const quaternion< TT > &q )
 	{
@@ -285,9 +277,7 @@ public:
 
 	/// @brief クォータニオンへの実数成分の掛け算
 	//! 
-	//! \f[
-	//!     \mbox{\boldmath p} \times a = \left( p_w \times a \;,\; p_x \times a \;,\; p_y \times a \;,\; p_z \times a \right)^T
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \times a = \left( p_w \times a \;,\; p_x \times a \;,\; p_y \times a \;,\; p_z \times a \right)^T \f]
 	//! 
 	//! @param[in] a … 実数成分
 	//! 
@@ -309,9 +299,7 @@ public:
 
 	/// @brief クォータニオンの割り算
 	//! 
-	//! \f[
-	//!     \frac{ \mbox{\boldmath p} }{ \mbox{\boldmath q} } = \mbox{\boldmath p} \times \mbox{\boldmath q}^{-1}
-	//! \f]
+	//! \f[ \frac{ \mbox{\boldmath p} }{ \mbox{\boldmath q} } = \mbox{\boldmath p} \times \mbox{\boldmath q}^{-1} \f]
 	//! 
 	//! @param[in] q … 右辺値
 	//! 
@@ -325,9 +313,7 @@ public:
 
 	/// @brief クォータニオンを実数成分で割る
 	//! 
-	//! \f[
-	//!     \mbox{\boldmath p} \div a = \left( p_w \div a \;,\; p_x \div a \;,\; p_y \div a \;,\; p_z \div a \right)^T
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \div a = \left( p_w \div a \;,\; p_x \div a \;,\; p_y \div a \;,\; p_z \div a \right)^T \f]
 	//! 
 	//! @param[in] a … 実数成分
 	//! 
@@ -350,9 +336,7 @@ public:
 
 	/// @brief 2つのクォータニオンが同一かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} == \mbox{\boldmath q} \rightarrow p_w == q_w \; \wedge \; p_x == q_x \; \wedge \; p_y == q_y \; \wedge \; p_z == q_z
-	//! \f]
+	//! \f[ \mbox{\boldmath p} == \mbox{\boldmath q} \rightarrow p_w == q_w \; \wedge \; p_x == q_x \; \wedge \; p_y == q_y \; \wedge \; p_z == q_z \f]
 	//! 
 	//! @param[in] q … 右辺値
 	//! 
@@ -363,9 +347,7 @@ public:
 
 	/// @brief 2つのクォータニオンが等しくないどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_w = q_w \; \wedge \; p_x = q_x \; \wedge \; p_y = q_y \; \wedge \; p_z = q_z }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_w = q_w \; \wedge \; p_x = q_x \; \wedge \; p_y = q_y \; \wedge \; p_z = q_z } \f]
 	//! 
 	//! @param[in] q … 右辺値
 	//! 
@@ -376,9 +358,7 @@ public:
 
 	/// @brief 2つのベクトルの < を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} < \mbox{\boldmath q} \rightarrow \overline{ p_w \ge q_w \; \wedge \; p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} < \mbox{\boldmath q} \rightarrow \overline{ p_w \ge q_w \; \wedge \; p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z } \f]
 	//! 
 	//! @param[in] q … 右辺値
 	//! 
@@ -413,9 +393,7 @@ public:
 
 	/// @brief 2つのベクトルの <= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_w \le q_w \; \wedge \; p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_w \le q_w \; \wedge \; p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z \f]
 	//! 
 	//! @param[in] q … 右辺値
 	//! 
@@ -426,9 +404,7 @@ public:
 
 	/// @brief 2つのベクトルの > を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} > \mbox{\boldmath q} \rightarrow \overline{ p_w \le q_w \; \wedge \; p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} > \mbox{\boldmath q} \rightarrow \overline{ p_w \le q_w \; \wedge \; p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z } \f]
 	//! 
 	//! @param[in] q … 右辺値
 	//! 
@@ -439,9 +415,7 @@ public:
 
 	/// @brief 2つのベクトルの >= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_w \ge q_w \; \wedge \; p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_w \ge q_w \; \wedge \; p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z \f]
 	//! 
 	//! @param[in] q … 右辺値
 	//! 
@@ -455,9 +429,7 @@ public:	// その他の関数
 
 	/// @brief 共役クォータニオン
 	//! 
-	//! \f[
-	//! 	\overline{ \mbox{\boldmath p} } = \left( p_w \;,\; -p_x \;,\; -p_y \;,\; -p_z \right)^T
-	//! \f]
+	//! \f[ \overline{ \mbox{\boldmath p} } = \left( p_w \;,\; -p_x \;,\; -p_y \;,\; -p_z \right)^T \f]
 	//! 
 	const quaternion conjugate( ) const 
 	{
@@ -466,9 +438,7 @@ public:	// その他の関数
 
 	/// @brief 逆クォータニオン
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p}^{-1} = \frac{ \overline{ \mbox{\boldmath p} } }{ \left\| \mbox{\boldmath p} \right\|^2 }
-	//! \f]
+	//! \f[ \mbox{\boldmath p}^{-1} = \frac{ \overline{ \mbox{\boldmath p} } }{ \left\| \mbox{\boldmath p} \right\|^2 } \f]
 	//! 
 	const quaternion< double > inv( ) const
 	{
@@ -478,9 +448,7 @@ public:	// その他の関数
 
 	/// @brief 単位クォータニオン
 	//! 
-	//! \f[
-	//! 	\frac{ \mbox{\boldmath p} }{ \left\| \mbox{\boldmath p} \right\|^2 }
-	//! \f]
+	//! \f[ \frac{ \mbox{\boldmath p} }{ \left\| \mbox{\boldmath p} \right\|^2 } \f]
 	//! 
 	const quaternion< double > unit( ) const
 	{
@@ -492,9 +460,7 @@ public:	// その他の関数
 	//! 
 	//! @param[in] q … 右辺値
 	//! 
-	//! \f[
-	//! 	p_w \times q_w + p_x \times q_x + p_y \times q_y + p_z \times q_z
-	//! \f]
+	//! \f[ p_w \times q_w + p_x \times q_x + p_y \times q_y + p_z \times q_z \f]
 	//! 
 	template < class TT >
 	double inner( const quaternion< TT > &q ) const
@@ -504,9 +470,7 @@ public:	// その他の関数
 
 	/// @brief クォータニオンのノルム
 	//! 
-	//! \f[
-	//! 	\left\| \mbox{\boldmath p} \right\| = \sqrt{ p_w^2 + p_x^2 + p_y^2 + p_z^2 }
-	//! \f]
+	//! \f[ \left\| \mbox{\boldmath p} \right\| = \sqrt{ p_w^2 + p_x^2 + p_y^2 + p_z^2 } \f]
 	//! 
 	double length( ) const { return (  std::sqrt( static_cast< double >( w * w + x * x + y * y + z * z ) ) ); }
 

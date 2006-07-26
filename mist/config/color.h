@@ -241,9 +241,7 @@ public:
 
 	/// @brief 2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -254,9 +252,7 @@ public:
 
 	/// @brief 2つのカラー画素が等しくない（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -267,9 +263,7 @@ public:
 
 	/// @brief 2つのカラー画素の < を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -297,9 +291,7 @@ public:
 
 	/// @brief 2つのカラー画素の <= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -310,9 +302,7 @@ public:
 
 	/// @brief 2つのカラー画素の > を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -323,9 +313,7 @@ public:
 
 	/// @brief 2つのカラー画素の >= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -576,9 +564,7 @@ public:
 
 	/// @brief 2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -589,9 +575,7 @@ public:
 
 	/// @brief 2つのカラー画素が等しくない（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -602,9 +586,7 @@ public:
 
 	/// @brief 2つのカラー画素の < を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -632,9 +614,7 @@ public:
 
 	/// @brief 2つのカラー画素の <= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -645,9 +625,7 @@ public:
 
 	/// @brief 2つのカラー画素の > を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -658,9 +636,7 @@ public:
 
 	/// @brief 2つのカラー画素の >= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -893,9 +869,7 @@ public:
 
 	/// @brief 2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -906,9 +880,7 @@ public:
 
 	/// @brief 2つのカラー画素が等しくない（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -919,9 +891,7 @@ public:
 
 	/// @brief 2つのカラー画素の < を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -942,9 +912,7 @@ public:
 
 	/// @brief 2つのカラー画素の <= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -955,9 +923,7 @@ public:
 
 	/// @brief 2つのカラー画素の > を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -968,9 +934,7 @@ public:
 
 	/// @brief 2つのカラー画素の >= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -1211,9 +1175,7 @@ public:
 
 	/// @brief 2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -1224,9 +1186,7 @@ public:
 
 	/// @brief 2つのカラー画素が等しくない（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -1237,9 +1197,7 @@ public:
 
 	/// @brief 2つのカラー画素の < を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -1261,9 +1219,7 @@ public:
 
 	/// @brief 2つのカラー画素の <= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -1274,9 +1230,7 @@ public:
 
 	/// @brief 2つのカラー画素の > を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b } \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 
@@ -1287,9 +1241,7 @@ public:
 
 	/// @brief 2つのカラー画素の >= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b \f]
 	//! 
 	//! @param[in] c … 右辺値
 	//! 

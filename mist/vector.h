@@ -204,9 +204,7 @@ public:
 
 	/// @brief 2つのベクトルが等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_x = q_x \; \wedge \; p_y = q_y \; \wedge \; p_z = q_z
-	//! \f]
+	//! \f[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_x = q_x \; \wedge \; p_y = q_y \; \wedge \; p_z = q_z \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -217,9 +215,7 @@ public:
 
 	/// @brief 2つのベクトルが等しくない（どれか１つでも異なる要素を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_x = q_x \; \wedge \; p_y = q_y \; \wedge \; p_z = q_z}
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_x = q_x \; \wedge \; p_y = q_y \; \wedge \; p_z = q_z} \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -230,9 +226,7 @@ public:
 
 	/// @brief 2つのベクトルの < を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z } \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -260,9 +254,7 @@ public:
 
 	/// @brief 2つのベクトルの <= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -273,9 +265,7 @@ public:
 
 	/// @brief 2つのベクトルの > を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_x \le q_x \; \wedge \; p_y \le q_y \; \wedge \; p_z \le q_z } \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -286,9 +276,7 @@ public:
 
 	/// @brief 2つのベクトルの >= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_x \ge q_x \; \wedge \; p_y \ge q_y \; \wedge \; p_z \ge q_z \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -300,9 +288,7 @@ public:
 
 	/// @brief 単位ベクトルを計算する
 	//! 
-	//! \f[
-	//! 	\frac{\mbox{\boldmath v}}{\left\|{\mbox{\boldmath v}}\right\|}
-	//! \f]
+	//! \f[ \frac{\mbox{\boldmath v}}{\left\|{\mbox{\boldmath v}}\right\|} \f]
 	//! 
 	vector3 unit( ) const
 	{
@@ -313,9 +299,7 @@ public:
 
 	/// @brief ベクトルの内積を計算する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \cdot \mbox{\boldmath q} = p_x \times q_x + p_y \times q_y + p_z \times q_z
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \cdot \mbox{\boldmath q} = p_x \times q_x + p_y \times q_y + p_z \times q_z \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -328,9 +312,7 @@ public:
 
 	/// @brief ベクトルの外積を計算する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \times \mbox{\boldmath q} = \left( p_y \times q_z - p_z \times q_y \;,\; p_z \times q_x - p_x \times q_z \;,\; p_x \times q_y - p_y \times q_x \right)^T
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \times \mbox{\boldmath q} = \left( p_y \times q_z - p_z \times q_y \;,\; p_z \times q_x - p_x \times q_z \;,\; p_x \times q_y - p_y \times q_x \right)^T \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -343,9 +325,7 @@ public:
 
 	/// @brief ベクトルの大きさを計算する
 	//! 
-	//! \f[
-	//! 	\left\|\mbox{\boldmath v}\right\| = \sqrt{v_x^2 + v_y^2 + v_z^2}
-	//! \f]
+	//! \f[ \left\|\mbox{\boldmath v}\right\| = \sqrt{v_x^2 + v_y^2 + v_z^2} \f]
 	//! 
 	//! @return ベクトルの大きさ
 	//! 
@@ -539,9 +519,7 @@ public:
 
 	/// @brief 2つのベクトルが等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_x = q_x \; \wedge \; p_y = q_y
-	//! \f]
+	//! \f[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_x = q_x \; \wedge \; p_y = q_y \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -552,9 +530,7 @@ public:
 
 	/// @brief 2つのベクトルが等しくない（どれか１つでも異なる要素を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_x = q_x \; \wedge \; p_y = q_y }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_x = q_x \; \wedge \; p_y = q_y } \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -565,9 +541,7 @@ public:
 
 	/// @brief 2つのベクトルの < を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_x \ge q_x \; \wedge \; p_y \ge q_y }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_x \ge q_x \; \wedge \; p_y \ge q_y } \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -588,9 +562,7 @@ public:
 
 	/// @brief 2つのベクトルの <= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_x \le q_x \; \wedge \; p_y \le q_y
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_x \le q_x \; \wedge \; p_y \le q_y \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -601,9 +573,7 @@ public:
 
 	/// @brief 2つのベクトルの > を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_x \le q_x \; \wedge \; p_y \le q_y }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_x \le q_x \; \wedge \; p_y \le q_y } \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -614,9 +584,7 @@ public:
 
 	/// @brief 2つのベクトルの >= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_x \ge q_x \; \wedge \; p_y \ge q_y
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_x \ge q_x \; \wedge \; p_y \ge q_y \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -628,9 +596,7 @@ public:
 
 	/// @brief 単位ベクトルを計算する
 	//! 
-	//! \f[
-	//! 	\frac{\mbox{\boldmath v}}{\left\|\mbox{\boldmath v}\right\|}
-	//! \f]
+	//! \f[ \frac{\mbox{\boldmath v}}{\left\|\mbox{\boldmath v}\right\|} \f]
 	//! 
 	vector2 unit( ) const
 	{
@@ -641,9 +607,7 @@ public:
 
 	/// @brief ベクトルの内積を計算する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \cdot \mbox{\boldmath q} = p_x \times q_x + p_y \times q_y
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \cdot \mbox{\boldmath q} = p_x \times q_x + p_y \times q_y \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -653,9 +617,7 @@ public:
 
 	/// @brief ベクトルの外積を計算する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \times \mbox{\boldmath q} = p_x \times q_y - p_y \times q_x
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \times \mbox{\boldmath q} = p_x \times q_y - p_y \times q_x \f]
 	//! 
 	//! @param[in] v … 右辺値
 	//! 
@@ -665,9 +627,7 @@ public:
 
 	/// @brief ベクトルの大きさを計算する
 	//! 
-	//! \f[
-	//! 	\left\|\mbox{\boldmath v}\right\| = \sqrt{v_x^2+v_y^2}
-	//! \f]
+	//! \f[ \left\|\mbox{\boldmath v}\right\| = \sqrt{v_x^2+v_y^2} \f]
 	//! 
 	//! @return ベクトルの大きさ
 	//! 

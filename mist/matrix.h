@@ -874,27 +874,27 @@ public:
 
 
 public:
-	/// @brief 3×3 の対角行列を計算する
-	//! 
-	//! 3つの入力成分の大きいものから順番に並べ替えて，対角行列を作成する
-	//! 
-	//! \f[
-	//!     \left(
-	//!          \begin{array}{ccc}
-	//!            \sigma_1 &    0     &    0     \\ //
-	//!               0     & \sigma_2 &    0     \\ //
-	//!               0     &    0     & \sigma_3
-	//!          \end{array}
-	//!     \right)
-	//! \f]
-	//! ただし，\f$ \sigma_1 \ge \sigma_2 \ge \sigma_3 \f$
-	//! 
-	//! @param[in] s1 … 成分1
-	//! @param[in] s2 … 成分2
-	//! @param[in] s3 … 成分3
-	//!
-	//! @return 対角行列
-	//! 
+	/**  @brief 3×3 の対角行列を計算する
+	 *  
+	 *  3つの入力成分の大きいものから順番に並べ替えて，対角行列を作成する
+	 *  
+	 *  \f[
+	 *      \left(
+	 *           \begin{array}{ccc}
+	 *             \sigma_1 &    0     &    0     \\
+	 *                0     & \sigma_2 &    0     \\
+	 *                0     &    0     & \sigma_3
+	 *           \end{array}
+	 *      \right)
+	 *  \f]
+	 *  ただし，\f$ \sigma_1 \ge \sigma_2 \ge \sigma_3 \f$
+	 *  
+	 *  @param[in] s1 … 成分1
+	 *  @param[in] s2 … 成分2
+	 *  @param[in] s3 … 成分3
+	 * 
+	 *  @return 対角行列
+	 */
 	static const matrix diag( const value_type &s1, const value_type &s2, const value_type &s3 )
 	{
 		typedef __numeric__::value_compare< __numeric__::is_complex< value_type >::value > value_compare;
@@ -1136,9 +1136,7 @@ public:
 
 	/// @brief 行列の足し算
 	//! 
-	//! \f[
-	//! 	{\bf A} = {\bf A} + {\bf B}
-	//! \f]
+	//! \f[ {\bf A} = {\bf A} + {\bf B} \f]
 	//! 
 	//! @param[in] m2 … 足し算を行う行列
 	//! 
@@ -1163,9 +1161,7 @@ public:
 
 	/// @brief 行列の引き算
 	//! 
-	//! \f[
-	//! 	{\bf A} = {\bf A} - {\bf B}
-	//! \f]
+	//! \f[ {\bf A} = {\bf A} - {\bf B} \f]
 	//! 
 	//! @param[in] m2 … 引き算を行う行列
 	//! 
@@ -1190,9 +1186,7 @@ public:
 
 	/// @brief 行列の掛け算
 	//! 
-	//! \f[
-	//! 	{\bf A} = {\bf A} * {\bf B}
-	//! \f]
+	//! \f[ {\bf A} = {\bf A} * {\bf B} \f]
 	//! 
 	//! @param[in] m2 … 右から掛ける行列
 	//! 
@@ -1234,9 +1228,7 @@ public:
 
 	/// @brief 行列への定数（単位行列の定数倍）の足し算
 	//! 
-	//! \f[
-	//! 	{\bf A} = {\bf A} + val * {\bf I}
-	//! \f]
+	//! \f[ {\bf A} = {\bf A} + val * {\bf I} \f]
 	//! 
 	//! @param[in] val … 単位行列の定数倍を表す数
 	//! 
@@ -1253,9 +1245,7 @@ public:
 
 	/// @brief 行列への定数（単位行列の定数倍）の引き算
 	//! 
-	//! \f[
-	//! 	{\bf A} = {\bf A} - val * {\bf I}
-	//! \f]
+	//! \f[ {\bf A} = {\bf A} - val * {\bf I} \f]
 	//! 
 	//! @param[in] val … 単位行列の定数倍を表す数
 	//! 
@@ -1272,9 +1262,7 @@ public:
 
 	/// @brief 行列への定数（単位行列の定数倍）の掛け算
 	//! 
-	//! \f[
-	//! 	{\bf A} = {\bf A} * val
-	//! \f]
+	//! \f[ {\bf A} = {\bf A} * val \f]
 	//! 
 	//! @param[in] val … 行列を定数倍する数
 	//! 
@@ -1290,9 +1278,7 @@ public:
 
 	/// @brief 行列への定数（単位行列の定数倍）の割り算
 	//! 
-	//! \f[
-	//! 	{\bf A} = {\bf A} / val
-	//! \f]
+	//! \f[ {\bf A} = {\bf A} / val \f]
 	//! 
 	//! @param[in] val … 行列を割る定数
 	//! 
@@ -1318,9 +1304,7 @@ public:
 
 	/// @brief 行列と数式の足し算
 	//! 
-	//! \f[
-	//! 	{\bf A} = {\bf A} + Expression
-	//! \f]
+	//! \f[ {\bf A} = {\bf A} + Expression \f]
 	//! 
 	//! @param[in] m2 … 複数の行列演算を含む式
 	//! 
@@ -1351,9 +1335,7 @@ public:
 
 	/// @brief 行列と数式の引き算
 	//! 
-	//! \f[
-	//! 	{\bf A} = {\bf A} - Expression
-	//! \f]
+	//! \f[ {\bf A} = {\bf A} - Expression \f]
 	//! 
 	//! @param[in] m2 … 複数の行列演算を含む式
 	//! 
@@ -1384,9 +1366,7 @@ public:
 
 	/// @brief 行列と数式の積
 	//! 
-	//! \f[
-	//! 	{\bf A} = {\bf A} * Expression
-	//! \f]
+	//! \f[ {\bf A} = {\bf A} * Expression \f]
 	//! 
 	//! @param[in] m2 … 複数の行列演算を含む式
 	//! 

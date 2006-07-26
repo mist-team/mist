@@ -209,9 +209,7 @@ public:
 
 	/// @brief 2つの音声成分が等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_l = q_l \; \wedge \; p_r = q_r
-	//! \f]
+	//! \f[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_l = q_l \; \wedge \; p_r = q_r \f]
 	//! 
 	//! @param[in] s … 右辺値
 	//! 
@@ -222,9 +220,7 @@ public:
 
 	/// @brief 2つの音声成分が等しくない（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_l = q_l \; \wedge \; p_r = q_r }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_l = q_l \; \wedge \; p_r = q_r } \f]
 	//! 
 	//! @param[in] s … 右辺値
 	//! 
@@ -235,9 +231,7 @@ public:
 
 	/// @brief 2つの音声成分の < を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_l \ge q_l \; \wedge \; p_r \ge q_r }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_l \ge q_l \; \wedge \; p_r \ge q_r } \f]
 	//! 
 	//! @param[in] s … 右辺値
 	//! 
@@ -258,9 +252,7 @@ public:
 
 	/// @brief 2つの音声成分の <= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_l \le q_l \; \wedge \; p_r \le q_r
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_l \le q_l \; \wedge \; p_r \le q_r \f]
 	//! 
 	//! @param[in] s … 右辺値
 	//! 
@@ -271,9 +263,7 @@ public:
 
 	/// @brief 2つの音声成分の > を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_l \le q_l \; \wedge \; p_r \le q_r }
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_l \le q_l \; \wedge \; p_r \le q_r } \f]
 	//! 
 	//! @param[in] s … 右辺値
 	//! 
@@ -284,9 +274,7 @@ public:
 
 	/// @brief 2つの音声成分の >= を判定する
 	//! 
-	//! \f[
-	//! 	\mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_l \ge q_l \; \wedge \; p_r \ge q_r
-	//! \f]
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_l \ge q_l \; \wedge \; p_r \ge q_r \f]
 	//! 
 	//! @param[in] s … 右辺値
 	//! 

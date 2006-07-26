@@ -2384,9 +2384,7 @@ namespace __svd__
 
 /// @brief 行列×行列の演算を行う
 //! 
-//! \f[
-//! 	{\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
-//! \f]
+//! \f[ {\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C} \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
 //! @param[in]  b … 入力行列 \f${\bf B}\f$
@@ -2446,9 +2444,7 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 
 /// @brief 行列×行列の演算を行う
 //! 
-//! \f[
-//! 	{\bf C} = {\bf A} \times {\bf B}
-//! \f]
+//! \f[ {\bf C} = {\bf A} \times {\bf B} \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
 //! @param[in]  b … 入力行列 \f${\bf B}\f$
@@ -2469,9 +2465,7 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 
 /// @brief 行列×行列の演算を行う
 //! 
-//! \f[
-//! 	{\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
-//! \f]
+//! \f[ {\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C} \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
 //! @param[in]  b … 入力行列 \f${\bf B}\f$
@@ -2497,9 +2491,7 @@ inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_ex
 
 /// @brief 行列×行列の演算を行う
 //! 
-//! \f[
-//! 	{\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
-//! \f]
+//! \f[ {\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C} \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
 //! @param[in]  b … 入力行列 \f${\bf B}\f$
@@ -2522,9 +2514,7 @@ inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression
 
 /// @brief 行列×行列の演算を行う
 //! 
-//! \f[
-//! 	{\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C}
-//! \f]
+//! \f[ {\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C} \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
 //! @param[in]  b … 入力行列 \f${\bf B}\f$
@@ -2548,9 +2538,7 @@ inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1
 
 /// @brief 行列×行列の演算を行う
 //! 
-//! \f[
-//! 	{\bf C} = {\bf A} \times {\bf B}
-//! \f]
+//! \f[ {\bf C} = {\bf A} \times {\bf B} \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
 //! @param[in]  b … 入力行列 \f${\bf B}\f$
@@ -2574,9 +2562,7 @@ inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_ex
 
 /// @brief 行列×行列の演算を行う
 //! 
-//! \f[
-//! 	{\bf C} = {\bf A} \times {\bf B}
-//! \f]
+//! \f[ {\bf C} = {\bf A} \times {\bf B} \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
 //! @param[in]  b … 入力行列 \f${\bf B}\f$
@@ -2597,9 +2583,7 @@ inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression
 
 /// @brief 行列×行列の演算を行う
 //! 
-//! \f[
-//! 	{\bf C} = {\bf A} \times {\bf B}
-//! \f]
+//! \f[ {\bf C} = {\bf A} \times {\bf B} \f]
 //! 
 //! @param[in]  a … 入力行列 \f${\bf A}\f$
 //! @param[in]  b … 入力行列 \f${\bf B}\f$
@@ -2662,9 +2646,7 @@ inline void permutation_matrix( const matrix< T1, Allocator1 > &pivot, matrix< T
 
 /// @brief トレースの計算（対角成分の和）
 //! 
-//! \f[
-//! 	tr\left( {\bf A} \right) = \sum^{n}_{i=1}{ a_{ii} }
-//! \f]
+//! \f[ tr\left( {\bf A} \right) = \sum^{n}_{i=1}{ a_{ii} } \f]
 //! 
 //! @param[in] a … 入力行列
 //!
@@ -2688,9 +2670,7 @@ inline const typename matrix< T, Allocator >::value_type trace( const matrix< T,
 
 /// @brief トレースの計算（対角成分の和）
 //! 
-//! \f[
-//! 	tr\left( {\bf A} \right) = \sum^{n}_{i=1}{ a_{ii} }
-//! \f]
+//! \f[ tr\left( {\bf A} \right) = \sum^{n}_{i=1}{ a_{ii} } \f]
 //! 
 //! @param[in] expression … 複数の行列演算を表す式
 //!
@@ -2717,37 +2697,37 @@ inline const typename matrix_expression< Expression >::value_type trace( const m
 #endif
 
 
-/// @brief 行列式の計算
-//! 
-//! \f[
-//! 	\left| {\bf A} \right|
-//!     =
-//!     \left|
-//!          \begin{array}{ccccc}
-//!            a_{11} & \cdots & a_{1j} & \cdots & a_{1n} \\{}
-//!            a_{21} & \cdots & a_{2j} & \cdots & a_{2n} \\{}
-//!            \vdots & \cdots & \vdots & \cdots & \vdots \\{}
-//!            a_{n1} & \cdots & a_{nj} & \cdots & a_{nn}
-//!          \end{array}
-//!     \right|
-//!     =
-//!     \sum^{n}_{j=1}{
-//!       \left( -1 \right)^{j+1} a_{1j}
-//!       \left|
-//!            \begin{array}{cccccc}
-//!              a_{21} & \cdots & a_{2,j-1} & a_{2,j+1} & \cdots & a_{2n} \\{}
-//!              \vdots & \cdots & \vdots    & \vdots    & \cdots & \vdots \\{}
-//!              a_{n1} & \cdots & a_{n,j-1} & a_{n,j+1} & \cdots & a_{nn}
-//!            \end{array}
-//!       \right|
-//!    }
-//! \f]
-//! 
-//! @param[in] a     … 入力行列
-//! @param[in] style … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return \f$\left| {\bf A} \right|\f$
-//! 
+/** @brief 行列式の計算
+ *  
+ *  \f[
+ *  	\left| {\bf A} \right|
+ *      =
+ *      \left|
+ *           \begin{array}{ccccc}
+ *             a_{11} & \cdots & a_{1j} & \cdots & a_{1n} \\{}
+ *             a_{21} & \cdots & a_{2j} & \cdots & a_{2n} \\{}
+ *             \vdots & \cdots & \vdots & \cdots & \vdots \\{}
+ *             a_{n1} & \cdots & a_{nj} & \cdots & a_{nn}
+ *           \end{array}
+ *      \right|
+ *      =
+ *      \sum^{n}_{j=1}{
+ *        \left( -1 \right)^{j+1} a_{1j}
+ *        \left|
+ *             \begin{array}{cccccc}
+ *               a_{21} & \cdots & a_{2,j-1} & a_{2,j+1} & \cdots & a_{2n} \\{}
+ *               \vdots & \cdots & \vdots    & \vdots    & \cdots & \vdots \\{}
+ *               a_{n1} & \cdots & a_{n,j-1} & a_{n,j+1} & \cdots & a_{nn}
+ *             \end{array}
+ *        \right|
+ *     }
+ *  \f]
+ *  
+ *  @param[in] a     … 入力行列
+ *  @param[in] style … 入力行列の形式（デフォルトは一般行列を指定）
+ * 
+ *  @return \f$\left| {\bf A} \right|\f$
+ */
 template < class T, class Allocator >
 inline const typename matrix< T, Allocator >::value_type det( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
@@ -2948,9 +2928,7 @@ const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a
 
 /// @brief 行列のLU分解を行う
 //! 
-//! \f[
-//!		{\bf A} = {\bf P} \; \times \; {\bf L} \; \times \; {\bf U}
-//! \f]
+//! \f[ {\bf A} = {\bf P} \; \times \; {\bf L} \; \times \; {\bf U} \f]
 //! 
 //! @param[in]  a     … 入力行列 \f$\mbox{\bf A}\f$
 //! @param[out] L     … 下三角行列 \f$\mbox{\bf L}\f$
