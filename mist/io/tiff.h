@@ -69,6 +69,7 @@ namespace __tiff_controller__
 	{
 		typedef _pixel_converter_< T > pixel_converter;
 		typedef typename pixel_converter::color_type color_type;
+		typedef typename pixel_converter::value_type value_type;
 		typedef typename array2< T, Allocator >::size_type size_type;
 
 		static bool read( array2< T, Allocator > &image, const std::string &filename )
@@ -157,7 +158,7 @@ namespace __tiff_controller__
 							for( size_type i = 0 ; i < width ; ++i )
 							{
 								int sample = ( ( buf[ i * 2 ] << 8 ) | ( buf[ i * 2 + 1 ] ) ) & maxval;
-								image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+								image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( sample ), static_cast< value_type >( sample ), static_cast< value_type >( sample ) );
 							}
 						}
 						else
@@ -165,7 +166,7 @@ namespace __tiff_controller__
 							for( size_type i = 0 ; i < width ; ++i )
 							{
 								int sample = ( ( buf[ i * 2 ] ) | ( buf[ i * 2 + 1 ] << 8 ) ) & maxval;
-								image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+								image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( sample ), static_cast< value_type >( sample ), static_cast< value_type >( sample ) );
 							}
 						}
 					}
@@ -174,7 +175,7 @@ namespace __tiff_controller__
 						for( size_type i = 0 ; i < width ; ++i )
 						{
 							unsigned char sample = buf[ i ] & maxval;
-							image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+							image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( sample ), static_cast< value_type >( sample ), static_cast< value_type >( sample ) );
 						}
 					}
 					break;
@@ -187,7 +188,7 @@ namespace __tiff_controller__
 							for( size_type i = 0 ; i < width ; ++i )
 							{
 								int sample = maxval - ( ( ( buf[ i * 2 ] << 8 ) | ( buf[ i * 2 + 1 ] ) ) & maxval );
-								image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+								image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( sample ), static_cast< value_type >( sample ), static_cast< value_type >( sample ) );
 							}
 						}
 						else
@@ -195,7 +196,7 @@ namespace __tiff_controller__
 							for( size_type i = 0 ; i < width ; ++i )
 							{
 								int sample = ( ( buf[ i * 2 ] ) | ( buf[ i * 2 + 1 ] << 8 ) ) & maxval;
-								image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+								image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( sample ), static_cast< value_type >( sample ), static_cast< value_type >( sample ) );
 							}
 						}
 					}
@@ -204,7 +205,7 @@ namespace __tiff_controller__
 						for( size_type i = 0 ; i < width ; ++i )
 						{
 							int sample = maxval - ( buf[ i ] & maxval );
-							image( i, j ) = pixel_converter::convert_to( sample, sample, sample );
+							image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( sample ), static_cast< value_type >( sample ), static_cast< value_type >( sample ) );
 						}
 					}
 					break;
@@ -213,9 +214,9 @@ namespace __tiff_controller__
 					for( size_type i = 0 ; i < width ; ++i )
 					{
 						unsigned char sample = buf[ i ] & maxval;
-						image( i, j ) = pixel_converter::convert_to( static_cast< unsigned char >( redcolormap[ sample ] ),
-																	 static_cast< unsigned char >( greencolormap[ sample ] ),
-																	 static_cast< unsigned char >( bluecolormap[ sample ] ) );
+						image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( redcolormap[ sample ] ),
+																	 static_cast< value_type >( greencolormap[ sample ] ),
+																	 static_cast< value_type >( bluecolormap[ sample ] ) );
 					}
 					break;
 
@@ -232,7 +233,7 @@ namespace __tiff_controller__
 									unsigned short r = ( ( p[ 0 ] << 8 ) | p[ 1 ] ) & maxval;
 									unsigned short g = ( ( p[ 2 ] << 8 ) | p[ 3 ] ) & maxval;
 									unsigned short b = ( ( p[ 4 ] << 8 ) | p[ 5 ] ) & maxval;
-									image( i, j ) = pixel_converter::convert_to( r, g, b );
+									image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) );
 								}
 							}
 							else
@@ -242,7 +243,7 @@ namespace __tiff_controller__
 									unsigned short r = ( p[ 0 ] | ( p[ 1 ] << 8 ) ) & maxval;
 									unsigned short g = ( p[ 2 ] | ( p[ 3 ] << 8 ) ) & maxval;
 									unsigned short b = ( p[ 4 ] | ( p[ 5 ] << 8 ) ) & maxval;
-									image( i, j ) = pixel_converter::convert_to( r, g, b );
+									image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) );
 								}
 							}
 						}
@@ -253,7 +254,7 @@ namespace __tiff_controller__
 								unsigned char r = *p++;
 								unsigned char g = *p++;
 								unsigned char b = *p++;
-								image( i, j ) = pixel_converter::convert_to( r, g, b );
+								image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) );
 							}
 						}
 					}
@@ -269,7 +270,7 @@ namespace __tiff_controller__
 									unsigned short r = ( ( p[ 0 ] << 8 ) | p[ 1 ] ) & maxval;
 									unsigned short g = ( ( p[ 2 ] << 8 ) | p[ 3 ] ) & maxval;
 									unsigned short b = ( ( p[ 4 ] << 8 ) | p[ 5 ] ) & maxval;
-									image( i, j ) = pixel_converter::convert_to( r, g, b );
+									image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) );
 								}
 							}
 							else
@@ -279,7 +280,7 @@ namespace __tiff_controller__
 									unsigned short r = ( p[ 0 ] | ( p[ 1 ] << 8 ) ) & maxval;
 									unsigned short g = ( p[ 2 ] | ( p[ 3 ] << 8 ) ) & maxval;
 									unsigned short b = ( p[ 4 ] | ( p[ 5 ] << 8 ) ) & maxval;
-									image( i, j ) = pixel_converter::convert_to( r, g, b );
+									image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) );
 								}
 							}
 						}
@@ -290,7 +291,7 @@ namespace __tiff_controller__
 								unsigned char r = *p++;
 								unsigned char g = *p++;
 								unsigned char b = *p++;
-								image( i, j ) = pixel_converter::convert_to( r, g, b );
+								image( i, j ) = pixel_converter::convert_to( static_cast< value_type >( r ), static_cast< value_type >( g ), static_cast< value_type >( b ) );
 								p++;
 							}
 						}
