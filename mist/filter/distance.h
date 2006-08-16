@@ -34,6 +34,7 @@
 //!   - ユークリッド距離変換
 //!     - 齋藤豊文, 鳥脇純一郎, "3次元ディジタル画像に対するユークリッド距離変換," 電子情報通信学会論文誌, J76-D-II, No. 3, pp.445-453, 1993
 //!     - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
+//!     - A. Meijster, J. Roerdink, and W. Hesselink, "A general algorithm for computing distance transforms in linear time," In: Mathematical Morphology and its Applications to Image and Signal Processing, J. Goutsias, L. Vincent, and D.S. Bloomberg (eds.), Kluwer, 2000, pp. 331-340
 //!
 
 #ifndef __INCLUDE_MIST_DISTANCE_TRANSFORM__
@@ -1026,6 +1027,312 @@ namespace __calvin__
 }
 
 
+namespace _meijster_distance_transform_
+{
+	struct MDT
+	{
+		template < class T, class Val >
+		static T Func( const T &x, const T &i, const Val &gi )
+		{
+			return( static_cast< T >( std::abs( static_cast< int >( x - i ) ) + gi ) );
+		}
+
+		template < class T, class Val >
+		static T Sep( const T &i, const T &u, const Val &gi, const Val &gu )
+		{
+			if( gu >= gi + u - i )
+			{
+				return( type_limits< T >::maximum( ) );
+			}
+			else if( gi > gu + u - i )
+			{
+				return( type_limits< T >::minimum( ) );
+			}
+			else
+			{
+				return( ( gu - gi + u + i ) / 2 );
+			}
+		}
+	};
+
+	struct CDT
+	{
+		template < class T, class Val >
+		static T Func( const T &x, const T &i, const Val &gi )
+		{
+			T v = std::abs( static_cast< int >( x - i ) );
+			return( static_cast< T >( v > gi ? v : gi ) );
+		}
+
+		template < class T, class Val >
+		static T Sep( const T &i, const T &u, const Val &gi, const Val &gu )
+		{
+			if( gi <= gu )
+			{
+				T igu = static_cast< T >( i + gu );
+				T iu = static_cast< T >( ( i + u ) / 2 );
+				return( igu > iu ? igu : iu );
+			}
+			else
+			{
+				T ugi = static_cast< T >( u - gi );
+				T iu = static_cast< T >( ( i + u ) / 2 );
+				return( ugi < iu ? ugi : iu );
+			}
+		}
+	};
+
+	template < class Array >
+	void distance_transform_x( Array &in, typename Array::size_type thread_id = 0, typename Array::size_type thread_num = 1 )
+	{
+		typedef typename Array::difference_type difference_type;
+		typedef typename Array::value_type value_type;
+
+		difference_type i, j, k;
+
+		const difference_type w = in.width( );
+		const difference_type h = in.height( );
+		const difference_type d = in.depth( );
+
+		value_type max = type_limits< value_type >::maximum( );
+
+		for( k = 0 ; k < d ; k++ )
+		{
+			for( i = thread_id ; i < w ; i += thread_num )
+			{
+				if( in( i, 0, k ) != 0 )
+				{
+					in( i, 0, k ) = max;
+				}
+
+				for( j = 1 ; j < h ; j++ )
+				{
+					if( in( i, j, k ) != 0 )
+					{
+						in( i, j, k ) = in( i, j - 1, k ) + 1;
+					}
+				}
+
+				for( j = h - 2 ; j >= 0 ; j-- )
+				{
+					if( in( i, j + 1, k ) < in( i, j, k ) )
+					{
+						in( i, j, k ) = in( i, j + 1, k ) + 1;
+					}
+				}
+			}
+		}
+	}
+
+	template < class Array, class Metric >
+	void distance_transform_y( Array &in, Metric __dmy__, typename Array::size_type thread_id = 0, typename Array::size_type thread_num = 1 )
+	{
+		typedef typename Array::pointer pointer;
+		typedef typename Array::difference_type difference_type;
+		typedef typename Array::value_type value_type;
+
+		const difference_type w = in.width( );
+		const difference_type h = in.height( );
+		const difference_type d = in.depth( );
+
+		difference_type i, j, k, q;
+		difference_type *s = new difference_type[ w ];
+		difference_type *t = new difference_type[ w ];
+
+		for( k = 0 ; k < d ; k++ )
+		{
+			for( j = thread_id ; j < h ; j += thread_num )
+			{
+				q = s[ 0 ] = t[ 0 ] = 0;
+
+				pointer pin = &in( 0, j, k );
+
+				for( i = 1 ; i < w ; i++ )
+				{
+					value_type val = in( i, j, k );
+
+					while( q >= 0 && Metric::Func( t[ q ], s[ q ], pin[ s[ q ] ] ) > Metric::Func( t[ q ], i, val ) )
+					{
+						q--;
+					}
+
+					if( q < 0 )
+					{
+						q = 0;
+						s[ 0 ] = i;
+					}
+					else
+					{
+						difference_type tmp = Metric::Sep( s[ q ], i, pin[ s[ q ] ], val );
+
+						if( tmp < w - 1 )
+						{
+							q++;
+							s[ q ] = i;
+							t[ q ] = tmp + 1;
+						}
+					}
+				}
+
+				for( i = w - 1 ; i >= 0 ; i-- )
+				{
+					pin[ i ] = static_cast< value_type >( Metric::Func( i, s[ q ], pin[ s[ q ] ] ) );
+					if( i == t[ q ] )
+					{
+						q--;
+					}
+				}
+			}
+		}
+
+		delete [] s;
+		delete [] t;
+	}
+
+	template < class Array, class Metric >
+	void distance_transform_z( Array &in, Metric __dmy__, typename Array::size_type thread_id = 0, typename Array::size_type thread_num = 1 )
+	{
+		typedef typename Array::pointer pointer;
+		typedef typename Array::difference_type difference_type;
+		typedef typename Array::value_type value_type;
+
+		const difference_type w = in.width( );
+		const difference_type h = in.height( );
+		const difference_type d = in.depth( );
+
+		difference_type i, j, k, q;
+		difference_type *s = new difference_type[ d ];
+		difference_type *t = new difference_type[ d ];
+		difference_type diff = &in( 0, 0, 1 ) - &in( 0, 0, 0 );
+
+		for( j = 0 ; j < h ; j++ )
+		{
+			for( i = thread_id ; i < w ; i += thread_num )
+			{
+				q = s[ 0 ] = t[ 0 ] = 0;
+
+				pointer pin = &in( i, j, 0 );
+
+				for( k = 1 ; k < d ; k++ )
+				{
+					value_type val = in( i, j, k );
+
+					while( q >= 0 && Metric::Func( t[ q ], s[ q ], pin[ s[ q ] * diff ] ) > Metric::Func( t[ q ], k, val ) )
+					{
+						q--;
+					}
+
+					if( q < 0 )
+					{
+						q = 0;
+						s[ 0 ] = k;
+					}
+					else
+					{
+						difference_type tmp = Metric::Sep( s[ q ], k, pin[ s[ q ] * diff ], val );
+
+						if( tmp < d - 1 )
+						{
+							q++;
+							s[ q ] = k;
+							t[ q ] = tmp + 1;
+						}
+					}
+				}
+
+				for( k = d - 1 ; k >= 0 ; k-- )
+				{
+					pin[ k * diff ] = static_cast< value_type >( Metric::Func( k, s[ q ], pin[ s[ q ] * diff ] ) );
+					if( k == t[ q ] )
+					{
+						q--;
+					}
+				}
+			}
+		}
+
+		delete [] s;
+		delete [] t;
+	}
+
+
+	template < class T, class Metric >
+	class distance_transform_thread : public mist::thread< distance_transform_thread< T, Metric > >
+	{
+	public:
+		typedef mist::thread< distance_transform_thread< T, Metric > > base;
+		typedef typename base::thread_exit_type thread_exit_type;
+		typedef typename T::size_type size_type;
+		typedef typename T::value_type value_type;
+
+	private:
+		size_t thread_id_;
+		size_t thread_num_;
+
+		// 入出力用の画像へのポインタ
+		T *in_;
+		size_type axis_;
+		Metric dmy_;
+
+	public:
+		void setup_parameters( T &in, size_type axis, size_type thread_id, size_type thread_num )
+		{
+			in_  = &in;
+			axis_ = axis;
+			thread_id_ = thread_id;
+			thread_num_ = thread_num;
+		}
+
+		void setup_axis( size_type axis )
+		{
+			axis_ = axis;
+		}
+
+		const distance_transform_thread& operator =( const distance_transform_thread &p )
+		{
+			if( &p != this )
+			{
+				base::operator =( p );
+				thread_id_ = p.thread_id_;
+				thread_num_ = p.thread_num_;
+				in_ = p.in_;
+				axis_ = p.axis_;
+			}
+			return( *this );
+		}
+
+		distance_transform_thread( size_type id = 0, size_type num = 1 )
+			: thread_id_( id ), thread_num_( num ), in_( NULL ), axis_( 0 )
+		{
+		}
+		distance_transform_thread( const distance_transform_thread &p )
+			: base( p ), thread_id_( p.thread_id_ ), thread_num_( p.thread_num_ ), in_( NULL ), axis_( p.axis_ )
+		{
+		}
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( )
+		{
+			switch( axis_ )
+			{
+			case 1:
+				distance_transform_y( *in_, dmy_, thread_id_, thread_num_ );
+				break;
+
+			case 2:
+				distance_transform_z( *in_, dmy_, thread_id_, thread_num_ );
+				break;
+
+			case 0:
+			default:
+				distance_transform_x( *in_, thread_id_, thread_num_ );
+				break;
+			}
+			return( true );
+		}
+	};
+}
 
 
 
@@ -1218,10 +1525,93 @@ namespace calvin
 
 		if( in.depth( ) > 1 )
 		{
-			// Y軸方向の処理
+			// Z軸方向の処理
 			for( i = 0 ; i < thread_num ; i++ )
 			{
 				thread[ i ].setup_parameters( out, object_range, 2, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		delete [] thread;
+	}
+}
+
+
+/// @brief A. Meijster による距離変換（CDT, MDT）
+namespace meijster
+{
+	/// @brief A. Meijster による距離変換（CDT, MDT）
+	//! 
+	//! 計算される距離は，マンハッタン距離（シティーブロック距離），チェスボード距離，のいずれかになります．
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! - 参考文献
+	//!     - A. Meijster, J. Roerdink, and W. Hesselink, "A general algorithm for computing distance transforms in linear time," In: Mathematical Morphology and its Applications to Image and Signal Processing, J. Goutsias, L. Vincent, and D.S. Bloomberg (eds.), Kluwer, 2000, pp. 331-340
+	//! 
+	//! @param[in]  in         … 入力画像
+	//! @param[out] out        … 出力画像
+	//! @param[in]  __metric__ … 距離関数
+	//! @param[in]  max_length … 伝播させる距離の最大値
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	template < class Array1, class Array2, class Metric >
+	void distance_transform( const Array1 &in, Array2 &out, Metric __metric__, typename Array1::size_type thread_num = 0 )
+	{
+		typedef typename Array2::size_type  size_type;
+		typedef typename Array2::value_type value_type;
+		typedef _meijster_distance_transform_::distance_transform_thread< Array2, Metric > meijster_distance_transform_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+		out.reso3( in.reso3( ) );
+
+		size_type i;
+
+		for( i = 0 ; i < in.size( ) ; i++ )
+		{
+			out[ i ] = static_cast< value_type >( in[ i ] != 0 ? 1 : 0 );
+		}
+
+		meijster_distance_transform_thread *thread = new meijster_distance_transform_thread[ thread_num ];
+
+		if( in.width( ) > 1 )
+		{
+			// X軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( out, 0, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		if( in.height( ) > 1 )
+		{
+			// Y軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( out, 1, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		if( in.depth( ) > 1 )
+		{
+			// Z軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( out, 2, i, thread_num );
 			}
 
 			do_threads_( thread, thread_num );
@@ -1257,6 +1647,75 @@ namespace euclidean
 	void distance_transform( const Array1 &in, Array2 &out, typename Array1::size_type thread_num = 0 )
 	{
 		calvin::distance_transform( in, out, thread_num );
+	}
+}
+
+
+/// @brief マンハッタン距離（シティーブロック距離）変換
+namespace manhattan
+{
+	/// @brief マンハッタン距離（シティーブロック距離）変換
+	//! 
+	//! 計算される距離は，マンハッタン距離（シティーブロック距離）となります．
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! 
+	//! @param[in]  in         … 入力画像
+	//! @param[out] out        … 出力画像
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	template < class Array1, class Array2 >
+	void distance_transform( const Array1 &in, Array2 &out, typename Array1::size_type thread_num = 0 )
+	{
+		_meijster_distance_transform_::MDT metric;
+		meijster::distance_transform( in, out, metric, thread_num );
+	}
+}
+
+
+/// @brief マンハッタン距離（シティーブロック距離）変換
+namespace cityblock
+{
+	/// @brief マンハッタン距離（シティーブロック距離）変換
+	//! 
+	//! 計算される距離は，マンハッタン距離（シティーブロック距離）となります．
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! 
+	//! @param[in]  in         … 入力画像
+	//! @param[out] out        … 出力画像
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	template < class Array1, class Array2 >
+	void distance_transform( const Array1 &in, Array2 &out, typename Array1::size_type thread_num = 0 )
+	{
+		_meijster_distance_transform_::MDT metric;
+		meijster::distance_transform( in, out, metric, thread_num );
+	}
+}
+
+
+/// @brief チェスボード距離変換
+namespace chessboard
+{
+	/// @brief チェスボード距離変換
+	//! 
+	//! 計算される距離は，チェスボード距離となります．
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! 
+	//! @param[in]  in         … 入力画像
+	//! @param[out] out        … 出力画像
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	template < class Array1, class Array2 >
+	void distance_transform( const Array1 &in, Array2 &out, typename Array1::size_type thread_num = 0 )
+	{
+		_meijster_distance_transform_::CDT metric;
+		meijster::distance_transform( in, out, metric, thread_num );
 	}
 }
 
