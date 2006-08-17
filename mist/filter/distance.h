@@ -108,7 +108,7 @@ namespace __euclidean_distance_transform__
 				if( in( w - 1, j, k ) != 0 )
 				{
 					nd = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
-					in( w - 1, j, k ) = nd * nd;
+					in( w - 1, j, k ) = in( w - 1, j, k ) < nd * nd ? in( w - 1, j, k ) : nd * nd;
 				}
 				else
 				{
@@ -720,7 +720,7 @@ namespace __calvin__
 					if( ep[ 0 ] != 0 )
 					{
 						len = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
-						ep[ 0 ] = len * len;
+						ep[ 0 ] = ep[ 0 ] < len * len ? ep[ 0 ] : len * len;
 					}
 					else
 					{
