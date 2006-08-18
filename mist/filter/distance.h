@@ -744,6 +744,254 @@ namespace __calvin__
 		}
 	};
 
+
+
+	/// @brief Y,Z軸方向用の距離伝播関数（1次以外の全ての次元）
+	template < int DIMENSION >
+	struct __voronoi_distance_transform__
+	{
+		template < class Array1, class Array2 >
+		static void distance_transform( Array1 &voronoi, Array2 &dist, const __range__< DIMENSION > &range, typename Array2::size_type thread_id = 0, typename Array2::size_type thread_num = 1 )
+		{
+			typedef typename Array2::size_type			size_type;
+			typedef typename Array2::value_type			value_type;
+			typedef typename Array1::pointer			ipointer;
+			typedef typename Array2::pointer			pointer;
+			typedef typename Array2::difference_type	difference_type;
+			typedef __access__< DIMENSION > access;
+
+			size_type _1s = range.begin1( );
+			size_type _2s = range.begin2( );
+			size_type _3s = range.begin3( );
+			size_type _1e = range.end1( );
+			size_type _2e = range.end2( );
+			size_type _3e = range.end3( );
+
+			double as = access::aspect( dist );
+			difference_type diff = &access::at( dist, 1, 0, 0 ) - &access::at( dist, 0, 0, 0 );
+
+			difference_type *idx = new difference_type[ _1e - _1s + 2 ];
+			double *g = new double[ _1e - _1s + 2 ];
+			double *h = new double[ _1e - _1s + 2 ];
+
+			for( size_type i3 = _3s + thread_id ; i3 <= _3e ; i3 += thread_num )
+			{
+				for( size_type i2 = _2s ; i2 <= _2e ; i2++ )
+				{
+					ipointer vp = &access::at( voronoi, 0, i2, i3 );
+					pointer  p  = &access::at( dist, 0, i2, i3 );
+					for( size_type _i1s = _1s ; _i1s <= _1e ; )
+					{
+						// 最初に画素が始まる位置を検索する
+						for( ; _i1s <= _1e ; _i1s++ )
+						{
+							if( p[ _i1s * diff ] != 0 )
+							{
+								break;
+							}
+						}
+
+						if( _i1s > _1e )
+						{
+							// 処理対象が存在しないのでスキップ
+							break;
+						}
+
+						// 連続する画素の終端を検索する
+						size_type _i1e;
+						for( _i1e = _i1s ; _i1e <= _1e ; _i1e++ )
+						{
+							if( p[ _i1e * diff ] == 0 )
+							{
+								break;
+							}
+						}
+
+						if( _i1s > 0 )
+						{
+							_i1s--;
+						}
+						if( _i1e > _1e )
+						{
+							_i1e = _1e;
+						}
+
+						difference_type l = 0;
+
+						for( size_type i1 = _i1s ; i1 <= _i1e ; i1++ )
+						{
+							double nd = static_cast< double >( i1 - _i1s + 1 ) * as;
+							double fn = static_cast< double >( p[ i1 * diff ] );
+
+							if( l < 2 )
+							{
+								l++;
+								g[ l ] = fn;
+								h[ l ] = nd;
+								idx[ l ] = i1;
+							}
+							else
+							{
+								while( l >= 2 && remove_edt( g[ l - 1 ], g[ l ], fn, h[ l - 1 ], h[ l ], nd ) )
+								{
+									l--;
+								}
+								l++;
+								g[ l ] = fn;
+								h[ l ] = nd;
+								idx[ l ] = i1;
+							}
+						}
+
+						if( l == 0 )
+						{
+							break;
+						}
+
+						difference_type ns = l;
+						l = 1;
+
+						for( size_type i1 = _i1s ; i1 <= _i1e ; i1++ )
+						{
+							double nd = ( i1 - _i1s + 1 ) * as;
+							double len = h[ l ] - nd;
+							
+							len = g[ l ] + len * len;
+							for( ; l < ns ; l++ )
+							{
+								double len_ = h[ l + 1 ] - nd;
+								len_ = g[ l + 1 ] + len_ * len_;
+								if( len > len_ )
+								{
+									len = len_;
+								}
+								else
+								{
+									break;
+								}
+							}
+							p[ i1 * diff ]  = static_cast< value_type >( len );
+							vp[ i1 * diff ] = vp[ idx[ l ] * diff ];
+						}
+
+						// 次の位置に設定する
+						_i1s = _i1e + 1;
+					}
+				}
+			}
+
+			delete [] idx;
+			delete [] g;
+			delete [] h;
+		}
+	};
+
+
+	/// @brief X軸方向専用の距離伝播関数
+	template < >
+	struct __voronoi_distance_transform__< 1 >
+	{
+		template < class Array1, class Array2 >
+		static void distance_transform( Array1 &voronoi, Array2 &dist, const __range__< 1 > &range, typename Array2::size_type thread_id = 0, typename Array2::size_type thread_num = 1 )
+		{
+			typedef typename Array2::size_type			size_type;
+			typedef typename Array1::value_type			ivalue_type;
+			typedef typename Array2::value_type			value_type;
+			typedef typename Array1::pointer			ipointer;
+			typedef typename Array2::pointer			pointer;
+			typedef typename Array2::difference_type	difference_type;
+
+			const difference_type w = dist.width( );
+			const value_type max = type_limits< value_type >::maximum( );
+			ivalue_type *val = new ivalue_type[ w ];
+			value_type len;
+
+			size_type sx = range.begin1( );
+			size_type sy = range.begin2( );
+			size_type sz = range.begin3( );
+			size_type ex = range.end1( );
+			size_type ey = range.end2( );
+			size_type ez = range.end3( );
+
+			for( size_type k = sz ; k <= ez ; k++ )
+			{
+				for( size_type j = sy + thread_id ; j <= ey ; j += thread_num )
+				{
+					ivalue_type *vp = val;
+					ipointer    ip = &voronoi( sx, j, k );
+					pointer     sp = &dist( sx, j, k );
+					pointer     ep = &dist( ex, j, k );
+
+					*vp++ = *ip;
+					if( *ip++ == 0 )
+					{
+						len = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
+						sp[ 0 ] = len * len;
+					}
+					else
+					{
+						len = 0;
+					}
+
+					for( pointer p = sp + 1 ; p <= ep ; p++, ip++ )
+					{
+						*vp++ = *ip;
+						if( *ip == 0 )
+						{
+							len = len + 1 < max ? len + 1 : len;
+							*p = len * len;
+							*ip = *( ip - 1 );
+						}
+						else
+						{
+							len = 0;
+						}
+					}
+
+					vp--;
+					ip -= 2;
+
+					if( *vp-- == 0 )
+					{
+						len = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
+						value_type len2 = len * len;
+
+						if( ep[ 0 ] > len2 )
+						{
+							ep[ 0 ] = len2;
+						}
+					}
+					else
+					{
+						len = 0;
+					}
+
+					for( pointer p = ep - 1 ; p >= sp ; p--, ip--, vp-- )
+					{
+						if( *vp == 0 )
+						{
+							len = len + 1 < max ? len + 1 : len;
+							value_type len2 = len * len;
+
+							if( *p > len2 )
+							{
+								*p = len2;
+								*ip = *( ip + 1 );
+							}
+						}
+						else
+						{
+							len = 0;
+						}
+					}
+				}
+			}
+
+			delete [] val;
+		}
+	};
+
+
 	template < class Array, int DIMENSION >
 	bool compute_object_range( const Array &in, __range__< DIMENSION > &range )
 	{
@@ -1019,6 +1267,88 @@ namespace __calvin__
 			case 2:
 			default:
 				__distance_transform__< 3 >::distance_transform( *in_, __range__< 3 >( range_ ), thread_id_, thread_num_ );
+				break;
+			}
+			return( true );
+		}
+	};
+
+	template < class T1, class T2 >
+	class calvin_voronoi_distance_transform_thread : public mist::thread< calvin_voronoi_distance_transform_thread< T1, T2 > >
+	{
+	public:
+		typedef mist::thread< calvin_voronoi_distance_transform_thread< T1, T2 > > base;
+		typedef typename base::thread_exit_type thread_exit_type;
+		typedef typename T1::size_type size_type;
+		typedef typename T1::value_type value_type;
+
+	private:
+		size_t thread_id_;
+		size_t thread_num_;
+
+		// 入出力用の画像へのポインタ
+		T1 *voronoi_;
+		T2 *dist_;
+		size_type axis_;
+		__range__< 1 > range_;
+
+	public:
+		void setup_parameters( T1 &voronoi, T2 &dist, const __range__< 1 > &range, size_type axis, size_type thread_id, size_type thread_num )
+		{
+			voronoi_  = &voronoi;
+			dist_  = &dist;
+			range_ = range;
+			axis_ = axis;
+			thread_id_ = thread_id;
+			thread_num_ = thread_num;
+		}
+
+		void setup_axis( size_type axis )
+		{
+			axis_ = axis;
+		}
+
+		const calvin_voronoi_distance_transform_thread& operator =( const calvin_voronoi_distance_transform_thread &p )
+		{
+			if( &p != this )
+			{
+				base::operator =( p );
+				thread_id_ = p.thread_id_;
+				thread_num_ = p.thread_num_;
+				voronoi_ = p.voronoi_;
+				dist_    = p.dist_;
+				range_   = p.range_;
+				axis_    = p.axis_;
+			}
+			return( *this );
+		}
+
+		calvin_voronoi_distance_transform_thread( size_type id = 0, size_type num = 1 )
+			: thread_id_( id ), thread_num_( num ), voronoi_( NULL ), dist_( NULL ), axis_( 0 )
+		{
+		}
+		calvin_voronoi_distance_transform_thread( const calvin_voronoi_distance_transform_thread &p )
+			: base( p ), thread_id_( p.thread_id_ ), thread_num_( p.thread_num_ ), voronoi_( NULL ), dist_( NULL ), axis_( p.axis_ )
+		{
+		}
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( )
+		{
+			switch( axis_ )
+			{
+			case 0:
+				__voronoi_distance_transform__< 1 >::distance_transform( *voronoi_, *dist_, __range__< 1 >( range_ ), thread_id_, thread_num_ );
+				break;
+
+			case 1:
+				__voronoi_distance_transform__< 2 >::distance_transform( *voronoi_, *dist_, __range__< 2 >( range_ ), thread_id_, thread_num_ );
+				break;
+
+			case 2:
+			default:
+				__voronoi_distance_transform__< 3 >::distance_transform( *voronoi_, *dist_, __range__< 3 >( range_ ), thread_id_, thread_num_ );
 				break;
 			}
 			return( true );
@@ -1536,6 +1866,123 @@ namespace calvin
 
 		delete [] thread;
 	}
+
+	/// @brief ユークリッド距離を用いたボロノイ分割
+	//! 
+	//! ユークリッド2乗距離変換とボロノイ分割を同時に行うアルゴリズムになります．
+	//! 計算されるユークリッド2乗距離は，最も近い母点までの２乗ユークリッド距離を表します．
+	//! 画素のアスペクトを考慮したボロノイ分割が可能です．
+	//! アルゴリズム自体は，参考文献の Calvin R. Maurer, Jr. の論文を改良したものである．
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでは動作しません
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! @attention 正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．
+	//! 
+	//! - 参考文献
+	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
+	//! 
+	//! @param[in,out] voronoi    … 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される．
+	//! @param[out]    dist       … 出力ユークリッド２乗距離画像
+	//! @param[in]     thread_num … 使用するスレッド数
+	//! 
+	template < class Array1, class Array2 >
+	void voronoi_distance_transform( Array1 &voronoi, Array2 &dist, typename Array1::size_type thread_num = 0 )
+	{
+		typedef typename Array2::size_type  size_type;
+		typedef typename Array2::value_type value_type;
+		typedef __calvin__::calvin_voronoi_distance_transform_thread< Array1, Array2 > calvin_voronoi_distance_transform_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		dist.resize( voronoi.size1( ), voronoi.size2( ), voronoi.size3( ) );
+		dist.reso1( voronoi.reso1( ) );
+		dist.reso2( voronoi.reso2( ) );
+		dist.reso3( voronoi.reso3( ) );
+
+		size_type i;
+
+		__calvin__::__range__< 0 > object_range;
+		object_range.sx = 0;
+		object_range.ex = voronoi.size1( ) - 1;
+		object_range.sy = 0;
+		object_range.ey = voronoi.size2( ) - 1;
+		object_range.sz = 0;
+		object_range.ez = voronoi.size3( ) - 1;
+
+		calvin_voronoi_distance_transform_thread *thread = new calvin_voronoi_distance_transform_thread[ thread_num ];
+
+		if( voronoi.width( ) > 1 )
+		{
+			// X軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( voronoi, dist, object_range, 0, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		if( voronoi.height( ) > 1 )
+		{
+			// Y軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( voronoi, dist, object_range, 1, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		if( voronoi.depth( ) > 1 )
+		{
+			// Z軸方向の処理
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( voronoi, dist, object_range, 2, i, thread_num );
+			}
+
+			do_threads_( thread, thread_num );
+		}
+
+		delete [] thread;
+	}
+
+	/// @brief ユークリッド距離を用いたボロノイ分割
+	//! 
+	//! ユークリッド距離に基づくボロノイ分割を行い，画素のアスペクトを考慮したボロノイ分割が可能です．
+	//! 内部では，ユークリッド2乗距離を計算するための一時画像を作成します．
+	//! アルゴリズム自体は，参考文献の Calvin R. Maurer, Jr. の論文を改良したものである．
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでは動作しません
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! @attention 正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．
+	//! 
+	//! - 参考文献
+	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
+	//! 
+	//! @param[in,out] voronoi    … 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される．
+	//! @param[in]     thread_num … 使用するスレッド数
+	//! 
+	template < class Array >
+	void voronoi_transform( Array &voronoi, typename Array::size_type thread_num = 0 )
+	{
+		double ax = voronoi.reso1( );
+		double ay = voronoi.reso2( );
+		double az = voronoi.reso3( );
+		if( ax == ay && ay == az )
+		{
+			typename Array::template rebind< unsigned int >::other dist;
+			voronoi_distance_transform( voronoi, dist, thread_num );
+		}
+		else
+		{
+			typename Array::template rebind< float >::other dist;
+			voronoi_distance_transform( voronoi, dist, thread_num );
+		}
+	}
 }
 
 
@@ -1647,6 +2094,53 @@ namespace euclidean
 	void distance_transform( const Array1 &in, Array2 &out, typename Array1::size_type thread_num = 0 )
 	{
 		calvin::distance_transform( in, out, thread_num );
+	}
+
+
+	/// @brief ユークリッド距離を用いたボロノイ分割
+	//! 
+	//! ユークリッド2乗距離変換とボロノイ分割を同時に行うアルゴリズムになります．
+	//! 計算されるユークリッド２乗距離は，最も近い母点までの２乗ユークリッド距離を表します．
+	//! 画素のアスペクトを考慮したボロノイ分割が可能です．
+	//! アルゴリズム自体は，参考文献の Calvin R. Maurer, Jr. の論文を改良したものである．
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! @attention 正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．
+	//! 
+	//! - 参考文献
+	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
+	//! 
+	//! @param[in,out] voronoi    … 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される．
+	//! @param[out]    dist       … 出力ユークリッド２乗距離画像
+	//! @param[in]     thread_num … 使用するスレッド数
+	//! 
+	template < class Array1, class Array2 >
+	void voronoi_distance_transform( Array1 &voronoi, Array2 &dist, typename Array1::size_type thread_num = 0 )
+	{
+		calvin::voronoi_distance_transform( voronoi, dist, thread_num );
+	}
+
+	/// @brief ユークリッド距離を用いたボロノイ分割
+	//! 
+	//! ユークリッド距離に基づくボロノイ分割を行い，画素のアスペクトを考慮したボロノイ分割が可能です．
+	//! 内部では，ユークリッド2乗距離を計算するための一時画像を作成します．
+	//! アルゴリズム自体は，参考文献の Calvin R. Maurer, Jr. の論文を改良したものである．
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでは動作しません
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! @attention 正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．
+	//! 
+	//! - 参考文献
+	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
+	//! 
+	//! @param[in,out] voronoi    … 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される．
+	//! @param[in]     thread_num … 使用するスレッド数
+	//! 
+	template < class Array >
+	void voronoi_transform( Array &voronoi, typename Array::size_type thread_num = 0 )
+	{
+		calvin::voronoi_transform( voronoi, thread_num );
 	}
 }
 
