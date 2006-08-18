@@ -112,7 +112,7 @@ inline void divide_triangle( std::vector< vector3< T > > &list, std::vector< vec
 	}
 }
 
-//! @addtogroup balloon_group メッシュ抽出
+//! @addtogroup balloon_group 球面上の方向集合を取得
 //!
 //! @code 次のヘッダをインクルードする
 //! #include <mist/utility/balloon.h>

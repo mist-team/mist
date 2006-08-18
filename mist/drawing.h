@@ -89,8 +89,8 @@ void draw_line( array2< T, Allocator > &image,
 
 	dx = std::abs( static_cast< int >( x2 - x1 ) );
 	dy = std::abs( static_cast< int >( y2 - y1 ) );
-	sx = ( x2 - x1 >=0 ) ? 1 : -1;
-	sy = ( y2 - y1 >=0 ) ? 1 : -1;
+	sx = ( x2 - x1 >= 0 ) ? 1 : -1;
+	sy = ( y2 - y1 >= 0 ) ? 1 : -1;
 	x = x1;
 	y = y1;
 	if( dx >= dy )
@@ -162,8 +162,8 @@ void draw_line( bitmap< BITS > &image,
 
 	dx = std::abs( static_cast< int >( x2 - x1 ) );
 	dy = std::abs( static_cast< int >( y2 - y1 ) );
-	sx = ( x2 - x1 >=0 ) ? 1 : -1;
-	sy = ( y2 - y1 >=0 ) ? 1 : -1;
+	sx = ( x2 - x1 >= 0 ) ? 1 : -1;
+	sy = ( y2 - y1 >= 0 ) ? 1 : -1;
 	x = x1;
 	y = y1;
 	if( dx >= dy )
@@ -241,9 +241,9 @@ void draw_line( array3< T, Allocator > &image,
 	dx = std::abs( static_cast< int >( x2 - x1 ) );
 	dy = std::abs( static_cast< int >( y2 - y1 ) );
 	dz = std::abs( static_cast< int >( z2 - z1 ) );
-	sx = ( x2 - x1 >=0 ) ? 1 : -1;
-	sy = ( y2 - y1 >=0 ) ? 1 : -1;
-	sz = ( z2 - z1 >=0 ) ? 1 : -1;
+	sx = ( x2 - x1 >= 0 ) ? 1 : -1;
+	sy = ( y2 - y1 >= 0 ) ? 1 : -1;
+	sz = ( z2 - z1 >= 0 ) ? 1 : -1;
 	x = x1;
 	y = y1;
 	z = z1;
