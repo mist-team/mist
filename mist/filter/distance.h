@@ -780,102 +780,63 @@ namespace __calvin__
 				{
 					ipointer vp = &access::at( voronoi, 0, i2, i3 );
 					pointer  p  = &access::at( dist, 0, i2, i3 );
-					for( size_type _i1s = _1s ; _i1s <= _1e ; )
+
+					difference_type l = 0;
+
+					for( size_type i1 = _1s ; i1 <= _1e ; i1++ )
 					{
-						// 最初に画素が始まる位置を検索する
-						for( ; _i1s <= _1e ; _i1s++ )
+						double nd = static_cast< double >( i1 - _1s + 1 ) * as;
+						double fn = static_cast< double >( p[ i1 * diff ] );
+
+						if( l < 2 )
 						{
-							if( p[ _i1s * diff ] != 0 )
+							l++;
+							g[ l ] = fn;
+							h[ l ] = nd;
+							idx[ l ] = i1;
+						}
+						else
+						{
+							while( l >= 2 && remove_edt( g[ l - 1 ], g[ l ], fn, h[ l - 1 ], h[ l ], nd ) )
 							{
-								break;
+								l--;
 							}
+							l++;
+							g[ l ] = fn;
+							h[ l ] = nd;
+							idx[ l ] = i1;
 						}
+					}
 
-						if( _i1s > _1e )
-						{
-							// 処理対象が存在しないのでスキップ
-							break;
-						}
+					if( l == 0 )
+					{
+						break;
+					}
 
-						// 連続する画素の終端を検索する
-						size_type _i1e;
-						for( _i1e = _i1s ; _i1e <= _1e ; _i1e++ )
+					difference_type ns = l;
+					l = 1;
+
+					for( size_type i1 = _1s ; i1 <= _1e ; i1++ )
+					{
+						double nd = ( i1 - _1s + 1 ) * as;
+						double len = h[ l ] - nd;
+						
+						len = g[ l ] + len * len;
+						for( ; l < ns ; l++ )
 						{
-							if( p[ _i1e * diff ] == 0 )
+							double len_ = h[ l + 1 ] - nd;
+							len_ = g[ l + 1 ] + len_ * len_;
+							if( len > len_ )
 							{
-								break;
-							}
-						}
-
-						if( _i1s > 0 )
-						{
-							_i1s--;
-						}
-						if( _i1e > _1e )
-						{
-							_i1e = _1e;
-						}
-
-						difference_type l = 0;
-
-						for( size_type i1 = _i1s ; i1 <= _i1e ; i1++ )
-						{
-							double nd = static_cast< double >( i1 - _i1s + 1 ) * as;
-							double fn = static_cast< double >( p[ i1 * diff ] );
-
-							if( l < 2 )
-							{
-								l++;
-								g[ l ] = fn;
-								h[ l ] = nd;
-								idx[ l ] = i1;
+								len = len_;
 							}
 							else
 							{
-								while( l >= 2 && remove_edt( g[ l - 1 ], g[ l ], fn, h[ l - 1 ], h[ l ], nd ) )
-								{
-									l--;
-								}
-								l++;
-								g[ l ] = fn;
-								h[ l ] = nd;
-								idx[ l ] = i1;
+								break;
 							}
 						}
-
-						if( l == 0 )
-						{
-							break;
-						}
-
-						difference_type ns = l;
-						l = 1;
-
-						for( size_type i1 = _i1s ; i1 <= _i1e ; i1++ )
-						{
-							double nd = ( i1 - _i1s + 1 ) * as;
-							double len = h[ l ] - nd;
-							
-							len = g[ l ] + len * len;
-							for( ; l < ns ; l++ )
-							{
-								double len_ = h[ l + 1 ] - nd;
-								len_ = g[ l + 1 ] + len_ * len_;
-								if( len > len_ )
-								{
-									len = len_;
-								}
-								else
-								{
-									break;
-								}
-							}
-							p[ i1 * diff ]  = static_cast< value_type >( len );
-							vp[ i1 * diff ] = vp[ idx[ l ] * diff ];
-						}
-
-						// 次の位置に設定する
-						_i1s = _i1e + 1;
+						p[ i1 * diff ]  = static_cast< value_type >( len );
+						vp[ i1 * diff ] = vp[ idx[ l ] * diff ];
 					}
 				}
 			}
