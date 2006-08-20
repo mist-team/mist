@@ -46,7 +46,7 @@ _MIST_BEGIN
 /// @brief Singleton を扱うクラス
 //! 
 //! singleton< int, 0 > と singleton< int, 1 > を別物として扱うことができる．
-//! ２つ目の引数を省略し，singleton< int > とすると ID が 0 のシングルトンガ作成される．
+//! ２つ目の引数を省略し，singleton< int > とすると ID が 0 のシングルトンが作成される．
 //! 
 //! @attention 実行時の初期化順序は正しく扱えないので注意が必要
 //! @attention そのため，大域的な変数を本Singletonクラスのインスタンスで初期化することはできない
