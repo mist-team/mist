@@ -134,7 +134,7 @@ namespace __thinning_controller__
 	// C. J. Hilditch, ``Linear Skeleton from Square Cupboards,'' In: Machine Intelligence 6, B. Meltzer and D. Michie eds., Edinburgh Univ. Press, pp.403?420, 1969
 	// 鳥脇純一郎, ``画像理解のためのディジタル画像処理〔II〕，'' 昭晃堂，pp.56-59，1988
 	template < class T, class Allocator >
-	void thinning_( array2< T, Allocator > &ia )
+	void thinning( array2< T, Allocator > &ia )
 	{
 		typedef typename array2< T, Allocator >::size_type size_type;
 		typedef typename array2< T, Allocator >::value_type value_type;
@@ -365,7 +365,7 @@ namespace __euclidean_utility__
 	//   - 鈴木智, 阿部圭一, ``距離変換の結果を利用した二値画像の逐次細線化,'' 電子情報通信学会論文誌D, vol.68-D, no.4, pp.473-480, 1985.
 	//
 	template < class T, class Allocator >
-	void thinning_( array2< T, Allocator > &ia )
+	void thinning( array2< T, Allocator > &ia )
 	{
 		typedef typename array2< T, Allocator >::size_type size_type;
 		typedef typename array2< T, Allocator >::value_type value_type;
@@ -1317,7 +1317,7 @@ namespace __euclidean_utility__
 	}
 
 	template < class T, class Allocator, class Neighbor >
-	void thinning_( array3< T, Allocator > &in, Neighbor __dmy__ )
+	void thinning( array3< T, Allocator > &in, Neighbor __dmy__ )
 	{
 		typedef typename array3< T, Allocator >::size_type size_type;
 		typedef typename array3< T, Allocator >::difference_type difference_type;
@@ -1987,6 +1987,9 @@ namespace hilditch
 	//!
 	//! 細線化結果は8連結となる
 	//!
+	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化を行うことが可能です
+	//! @attention 3次元画像に対して適用した場合の結果は正しくないので注意が必要です
+	//!
 	//! - 参考文献
 	//!   - C. J. Hilditch, ``Linear Skeleton from Square Cupboards,'' In: Machine Intelligence 6, B. Meltzer and D. Michie eds., Edinburgh Univ. Press, pp.403?420, 1969
 	//!   - 鳥脇純一郎, ``画像理解のためのディジタル画像処理〔II〕，'' 昭晃堂，pp.56-59，1988
@@ -2009,7 +2012,7 @@ namespace hilditch
 			out[ i ] = in[ i ] > 0 ? 1 : 0;
 		}
 
-		__thinning_controller__::thinning_( out );
+		__thinning_controller__::thinning( out );
 	}
 
 	/// @}
@@ -2041,7 +2044,7 @@ namespace euclidean
 	//! @param[out] out … 出力画像
 	//!
 	template < class T1, class T2, class Allocator1, class Allocator2 >
-	void thinning( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
+	void thinning8( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 	{
 		typedef typename array2< T2, Allocator2 >::size_type size_type;
 		typedef typename array2< T2, Allocator2 >::value_type value_type;
@@ -2055,7 +2058,7 @@ namespace euclidean
 			out[ i ] = in[ i ] > 0 ? 1 : 0;
 		}
 
-		__euclidean_utility__::thinning_( out );
+		__euclidean_utility__::thinning( out );
 	}
 
 
@@ -2144,7 +2147,7 @@ namespace euclidean
 		{
 			out[ i ] = in[ i ] > 0 ? 1 : 0;
 		}
-		__euclidean_utility__::thinning_( out, __euclidean_utility__::neighbor< 6 >( ) );
+		__euclidean_utility__::thinning( out, __euclidean_utility__::neighbor< 6 >( ) );
 	}
 
 
@@ -2179,7 +2182,7 @@ namespace euclidean
 		{
 			out[ i ] = in[ i ] > 0 ? 1 : 0;
 		}
-		__euclidean_utility__::thinning_( out, __euclidean_utility__::neighbor< 26 >( ) );
+		__euclidean_utility__::thinning( out, __euclidean_utility__::neighbor< 26 >( ) );
 	}
 
 	/// @brief ユークリッド距離を用いた3次元画像に対する薄面化アルゴリズム
