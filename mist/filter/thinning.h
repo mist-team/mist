@@ -131,6 +131,8 @@ namespace __thinning_controller__
 		return ( ret );
 	}
 
+	// C. J. Hilditch, ``Linear Skeleton from Square Cupboards,'' In: Machine Intelligence 6, B. Meltzer and D. Michie eds., Edinburgh Univ. Press, pp.403?420, 1969
+	// 鳥脇純一郎, ``画像理解のためのディジタル画像処理〔II〕，'' 昭晃堂，pp.56-59，1988
 	template < class T, class Allocator >
 	void thinning( array2< T, Allocator > &ia )
 	{
@@ -1970,42 +1972,49 @@ namespace __euclidean_utility__
 
 
 
-//! @addtogroup thinning_group 細線化
-//!
-//! @code 次のヘッダをインクルードする
-//! #include <mist/filter/thinning.h>
-//! @endcode
-//!
-//!  @{
-
-
-/// @brief 2次元画像に対する細線化アルゴリズム
-//!
-//! 細線化結果は8連結となる
-//!
-//! @param[in]  in  … 入力画像
-//! @param[out] out … 出力画像
-//!
-template < class T1, class T2, class Allocator1, class Allocator2 >
-void thinning( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
+/// @brief C. J. Hilditch の細線化アルゴリズム
+namespace hilditch
 {
-	typedef typename array2< T2, Allocator2 >::size_type size_type;
-	typedef typename array2< T2, Allocator2 >::value_type value_type;
+	//! @addtogroup thinning_group 細線化
+	//!
+	//! @code 次のヘッダをインクルードする
+	//! #include <mist/filter/thinning.h>
+	//! @endcode
+	//!
+	//!  @{
 
-	out.resize( in.size1( ), in.size2( ) );
-	out.reso1( in.reso1( ) );
-	out.reso2( in.reso2( ) );
-
-	for( size_type i = 0 ; i < in.size( ) ; i++ )
+	/// @brief 2次元画像に対する細線化アルゴリズム
+	//!
+	//! 細線化結果は8連結となる
+	//!
+	//! - 参考文献
+	//!   - C. J. Hilditch, ``Linear Skeleton from Square Cupboards,'' In: Machine Intelligence 6, B. Meltzer and D. Michie eds., Edinburgh Univ. Press, pp.403?420, 1969
+	//!   - 鳥脇純一郎, ``画像理解のためのディジタル画像処理〔II〕，'' 昭晃堂，pp.56-59，1988
+	//! 
+	//! @param[in]  in  … 入力画像
+	//! @param[out] out … 出力画像
+	//!
+	template < class T1, class T2, class Allocator1, class Allocator2 >
+	void thinning( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 	{
-		out[ i ] = in[ i ] > 0 ? 1 : 0;
+		typedef typename array2< T2, Allocator2 >::size_type size_type;
+		typedef typename array2< T2, Allocator2 >::value_type value_type;
+
+		out.resize( in.size1( ), in.size2( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+
+		for( size_type i = 0 ; i < in.size( ) ; i++ )
+		{
+			out[ i ] = in[ i ] > 0 ? 1 : 0;
+		}
+
+		__thinning_controller__::thinning( out );
 	}
 
-	__thinning_controller__::thinning( out );
+	/// @}
+	//  細線化グループの終わり
 }
-
-/// @}
-//  細線化グループの終わり
 
 
 /// @brief ユークリッド距離変換を用いた細線化アルゴリズム

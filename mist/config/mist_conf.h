@@ -622,6 +622,7 @@ struct __mist_progress_callback__
 *   - @ref thinning_group							"細線化"
 *   - @ref skeleton_group							"スケルトン抽出"
 *   - @ref distance_group							"距離変換"
+*     - @ref voronoi_distance_group					"ボロノイ分割"
 *     - @ref euclidean_distance_group				"ユークリッド距離変換"
 *     - @ref mist::manhattan::distance_transform	"マンハッタン距離（シティーブロック距離）変換"
 *     - @ref mist::chessboard::distance_transform	"チェスボード距離変換"

@@ -1981,6 +1981,15 @@ namespace euclidean
 	}
 
 
+	//! @addtogroup voronoi_distance_group ボロノイ分割
+	//!
+	//! @code 次のヘッダをインクルードする
+	//! #include <mist/filter/distance.h>
+	//! @endcode
+	//!
+	//!  @{
+
+
 	/// @brief ユークリッド距離を用いたボロノイ分割
 	//! 
 	//! ユークリッド2乗距離変換とボロノイ分割を同時に行うアルゴリズムになります．
@@ -2028,6 +2037,9 @@ namespace euclidean
 	{
 		calvin::voronoi_transform( voronoi, thread_num );
 	}
+
+	/// @}
+	//  ボロノイ分割グループの終わり
 }
 
 /// @}
@@ -2058,7 +2070,6 @@ namespace meijster
 	//! @param[in]  in         … 入力画像
 	//! @param[out] out        … 出力画像
 	//! @param[in]  __metric__ … 距離関数
-	//! @param[in]  max_length … 伝播させる距離の最大値
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	template < class Array1, class Array2, class Metric >
