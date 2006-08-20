@@ -32,6 +32,7 @@
 //!
 //! - 参考文献
 //!   - ユークリッド距離変換
+//!     - 齋藤豊文, 鳥脇純一郎, "3次元ユークリッド距離変換および拡張ボロノイ分割のアルゴリズムと肝組織標本画像の解析," 画像電子学会誌, 第21巻，第5号, pp.468-474, 1992
 //!     - 齋藤豊文, 鳥脇純一郎, "3次元ディジタル画像に対するユークリッド距離変換," 電子情報通信学会論文誌, J76-D-II, No. 3, pp.445-453, 1993
 //!     - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
 //!     - A. Meijster, J. Roerdink, and W. Hesselink, "A general algorithm for computing distance transforms in linear time," In: Mathematical Morphology and its Applications to Image and Signal Processing, J. Goutsias, L. Vincent, and D.S. Bloomberg (eds.), Kluwer, 2000, pp. 331-340
@@ -1840,6 +1841,7 @@ namespace calvin
 	//! @attention 正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．
 	//! 
 	//! - 参考文献
+	//!   - 齋藤豊文, 鳥脇純一郎, "3次元ユークリッド距離変換および拡張ボロノイ分割のアルゴリズムと肝組織標本画像の解析," 画像電子学会誌, 第21巻，第5号, pp.468-474, 1992
 	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
 	//! 
 	//! @param[in,out] voronoi    … 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される．
@@ -1922,6 +1924,7 @@ namespace calvin
 	//! @attention 正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．
 	//! 
 	//! - 参考文献
+	//!   - 齋藤豊文, 鳥脇純一郎, "3次元ユークリッド距離変換および拡張ボロノイ分割のアルゴリズムと肝組織標本画像の解析," 画像電子学会誌, 第21巻，第5号, pp.468-474, 1992
 	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
 	//! 
 	//! @param[in,out] voronoi    … 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される．
@@ -1946,6 +1949,98 @@ namespace calvin
 	}
 }
 
+
+/// @brief ユークリッド距離変換
+namespace euclidean
+{
+	/// @brief ユークリッド距離変換
+	//! 
+	//! 計算される距離は，ユークリッド2乗距離となります．
+	//! ユークリッド距離に変換するためには，計算結果の各値の平方根を求めてください．
+	//! ただし，計算に用いる画素が立方体ではなく直方体の場合には，計算されるユークリッド2距離も画素のアスペクトを考慮して計算されます．
+	//! 立方体画素を用いている場合には以下を考慮する必要はありません．
+	//!
+	//! 本関数で計算されるユークリッド2乗距離は，X軸方向の画素の大きさを1としたときの比を用いて計算されます．
+	//! ここで，本関数のある画素の出力が @f$l^2@f$ で，画素のX軸方向の解像度（大きさ）が @f$a_x@f$ の場合， @f$l a_x@f$ が画素の大きさを考慮したユークリッド距離値になります．
+	//! 
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! 
+	//! - 参考文献
+	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
+	//! 
+	//! @param[in]  in         … 入力画像
+	//! @param[out] out        … 出力画像
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	template < class Array1, class Array2 >
+	void distance_transform( const Array1 &in, Array2 &out, typename Array1::size_type thread_num = 0 )
+	{
+		calvin::distance_transform( in, out, thread_num );
+	}
+
+
+	/// @brief ユークリッド距離を用いたボロノイ分割
+	//! 
+	//! ユークリッド2乗距離変換とボロノイ分割を同時に行うアルゴリズムになります．
+	//! 計算されるユークリッド２乗距離は，最も近い母点までの２乗ユークリッド距離を表します．
+	//! 画素のアスペクトを考慮したボロノイ分割が可能です．
+	//! アルゴリズム自体は，参考文献の Calvin R. Maurer, Jr. の論文を改良したものである．
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! @attention 正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．
+	//! 
+	//! - 参考文献
+	//!   - 齋藤豊文, 鳥脇純一郎, "3次元ユークリッド距離変換および拡張ボロノイ分割のアルゴリズムと肝組織標本画像の解析," 画像電子学会誌, 第21巻，第5号, pp.468-474, 1992
+	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
+	//! 
+	//! @param[in,out] voronoi    … 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される．
+	//! @param[out]    dist       … 出力ユークリッド２乗距離画像
+	//! @param[in]     thread_num … 使用するスレッド数
+	//! 
+	template < class Array1, class Array2 >
+	void voronoi_distance_transform( Array1 &voronoi, Array2 &dist, typename Array1::size_type thread_num = 0 )
+	{
+		calvin::voronoi_distance_transform( voronoi, dist, thread_num );
+	}
+
+	/// @brief ユークリッド距離を用いたボロノイ分割
+	//! 
+	//! ユークリッド距離に基づくボロノイ分割を行い，画素のアスペクトを考慮したボロノイ分割が可能です．
+	//! 内部では，ユークリッド2乗距離を計算するための一時画像を作成します．
+	//! アルゴリズム自体は，参考文献の Calvin R. Maurer, Jr. の論文を改良したものである．
+	//! 
+	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでは動作しません
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! @attention 正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．
+	//! 
+	//! - 参考文献
+	//!   - 齋藤豊文, 鳥脇純一郎, "3次元ユークリッド距離変換および拡張ボロノイ分割のアルゴリズムと肝組織標本画像の解析," 画像電子学会誌, 第21巻，第5号, pp.468-474, 1992
+	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
+	//! 
+	//! @param[in,out] voronoi    … 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される．
+	//! @param[in]     thread_num … 使用するスレッド数
+	//! 
+	template < class Array >
+	void voronoi_transform( Array &voronoi, typename Array::size_type thread_num = 0 )
+	{
+		calvin::voronoi_transform( voronoi, thread_num );
+	}
+}
+
+/// @}
+//  ユークリッド距離変換グループの終わり
+
+
+//! @addtogroup meijster_distance_group A. Meijster による距離変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/distance.h>
+//! @endcode
+//!
+//!  @{
 
 /// @brief A. Meijster による距離変換（CDT, MDT）
 namespace meijster
@@ -2029,81 +2124,18 @@ namespace meijster
 	}
 }
 
-
-/// @brief ユークリッド距離変換
-namespace euclidean
-{
-	/// @brief ユークリッド距離変換
-	//! 
-	//! 計算される距離は，ユークリッド2乗距離となります．
-	//! ユークリッド距離に変換するためには，計算結果の各値の平方根を求めてください．
-	//! ただし，計算に用いる画素が立方体ではなく直方体の場合には，計算されるユークリッド2距離も画素のアスペクトを考慮して計算されます．
-	//! 立方体画素を用いている場合には以下を考慮する必要はありません．
-	//!
-	//! 本関数で計算されるユークリッド2乗距離は，X軸方向の画素の大きさを1としたときの比を用いて計算されます．
-	//! ここで，本関数のある画素の出力が @f$l^2@f$ で，画素のX軸方向の解像度（大きさ）が @f$a_x@f$ の場合， @f$l a_x@f$ が画素の大きさを考慮したユークリッド距離値になります．
-	//! 
-	//! 
-	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
-	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-	//! 
-	//! @param[in]  in         … 入力画像
-	//! @param[out] out        … 出力画像
-	//! @param[in]  thread_num … 使用するスレッド数
-	//! 
-	template < class Array1, class Array2 >
-	void distance_transform( const Array1 &in, Array2 &out, typename Array1::size_type thread_num = 0 )
-	{
-		calvin::distance_transform( in, out, thread_num );
-	}
+/// @}
+//  A. Meijster による距離変換グループの終わり
 
 
-	/// @brief ユークリッド距離を用いたボロノイ分割
-	//! 
-	//! ユークリッド2乗距離変換とボロノイ分割を同時に行うアルゴリズムになります．
-	//! 計算されるユークリッド２乗距離は，最も近い母点までの２乗ユークリッド距離を表します．
-	//! 画素のアスペクトを考慮したボロノイ分割が可能です．
-	//! アルゴリズム自体は，参考文献の Calvin R. Maurer, Jr. の論文を改良したものである．
-	//! 
-	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
-	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-	//! @attention 正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．
-	//! 
-	//! - 参考文献
-	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
-	//! 
-	//! @param[in,out] voronoi    … 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される．
-	//! @param[out]    dist       … 出力ユークリッド２乗距離画像
-	//! @param[in]     thread_num … 使用するスレッド数
-	//! 
-	template < class Array1, class Array2 >
-	void voronoi_distance_transform( Array1 &voronoi, Array2 &dist, typename Array1::size_type thread_num = 0 )
-	{
-		calvin::voronoi_distance_transform( voronoi, dist, thread_num );
-	}
 
-	/// @brief ユークリッド距離を用いたボロノイ分割
-	//! 
-	//! ユークリッド距離に基づくボロノイ分割を行い，画素のアスペクトを考慮したボロノイ分割が可能です．
-	//! 内部では，ユークリッド2乗距離を計算するための一時画像を作成します．
-	//! アルゴリズム自体は，参考文献の Calvin R. Maurer, Jr. の論文を改良したものである．
-	//! 
-	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでは動作しません
-	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-	//! @attention 正しくボロノイ分割を行うために，入力画像内の各母点に対してラベリングを施しておく必要があります．
-	//! 
-	//! - 参考文献
-	//!   - Calvin R. Maurer, Jr., Rensheng Qi, and Vijay Raghavan, "A Linear Time Algorithm for Computing Exact Euclidean Distance Transforms of Binary Images in Arbitrary Dimensions", IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol. 25, No. 2, February 2003
-	//! 
-	//! @param[in,out] voronoi    … 母点毎に別々のラベルが割り当てられた画像．ボロノイ分割結果のラベル画像が出力される．
-	//! @param[in]     thread_num … 使用するスレッド数
-	//! 
-	template < class Array >
-	void voronoi_transform( Array &voronoi, typename Array::size_type thread_num = 0 )
-	{
-		calvin::voronoi_transform( voronoi, thread_num );
-	}
-}
+//! @addtogroup manhattan_distance_group マンハッタン距離（シティーブロック距離）変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/distance.h>
+//! @endcode
+//!
+//!  @{
 
 
 /// @brief マンハッタン距離（シティーブロック距離）変換
@@ -2115,6 +2147,9 @@ namespace manhattan
 	//! 
 	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! - 参考文献
+	//!     - A. Meijster, J. Roerdink, and W. Hesselink, "A general algorithm for computing distance transforms in linear time," In: Mathematical Morphology and its Applications to Image and Signal Processing, J. Goutsias, L. Vincent, and D.S. Bloomberg (eds.), Kluwer, 2000, pp. 331-340
 	//! 
 	//! @param[in]  in         … 入力画像
 	//! @param[out] out        … 出力画像
@@ -2138,6 +2173,9 @@ namespace cityblock
 	//! 
 	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! - 参考文献
+	//!     - A. Meijster, J. Roerdink, and W. Hesselink, "A general algorithm for computing distance transforms in linear time," In: Mathematical Morphology and its Applications to Image and Signal Processing, J. Goutsias, L. Vincent, and D.S. Bloomberg (eds.), Kluwer, 2000, pp. 331-340
 	//! 
 	//! @param[in]  in         … 入力画像
 	//! @param[out] out        … 出力画像
@@ -2151,6 +2189,18 @@ namespace cityblock
 	}
 }
 
+/// @}
+//  マンハッタン距離（シティーブロック距離）変換
+
+
+
+//! @addtogroup chessboard_distance_group チェスボード距離距離変換
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/distance.h>
+//! @endcode
+//!
+//!  @{
 
 /// @brief チェスボード距離変換
 namespace chessboard
@@ -2161,6 +2211,9 @@ namespace chessboard
 	//! 
 	//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! - 参考文献
+	//!     - A. Meijster, J. Roerdink, and W. Hesselink, "A general algorithm for computing distance transforms in linear time," In: Mathematical Morphology and its Applications to Image and Signal Processing, J. Goutsias, L. Vincent, and D.S. Bloomberg (eds.), Kluwer, 2000, pp. 331-340
 	//! 
 	//! @param[in]  in         … 入力画像
 	//! @param[out] out        … 出力画像
@@ -2175,7 +2228,7 @@ namespace chessboard
 }
 
 /// @}
-//  ユークリッド距離変換グループの終わり
+//  チェスボード距離距離変換
 
 
 
