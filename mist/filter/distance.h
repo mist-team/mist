@@ -465,6 +465,8 @@ namespace __saito__
 			value_type *g = new value_type[ inum + 1 ];
 
 			double as = access::aspect( in );
+			double as2 = as * as;
+			double _2as = 1.0 / ( 2.0 * as2 );
 			difference_type diff = &access::at( in, 1, 0, 0 ) - &access::at( in, 0, 0, 0 );
 
 			for( size_type i3 = _3s + thread_id ; i3 <= _3e ; i3 += thread_num )
@@ -484,11 +486,11 @@ namespace __saito__
 						{
 							if( *p < *op )
 							{
-								difference_type num = static_cast< difference_type >( ( *op - *p - 1 ) / 2 );
+								difference_type num = static_cast< difference_type >( ( *op - *p - 1 ) * _2as );
 								pointer pp = p;
 								for( difference_type n = 0 ; n <= num && pp <= ep ; n++, pp += diff )
 								{
-									value_type nn = static_cast< value_type >( *op - ( n + 1 ) * ( n + 1 ) );
+									value_type nn = static_cast< value_type >( *op - ( n + 1 ) * ( n + 1 ) * as2 );
 									if( *pp >= nn )
 									{
 										break;
@@ -514,11 +516,11 @@ namespace __saito__
 						{
 							if( g[ i1 ] < g[ i1 + 1 ] )
 							{
-								difference_type num = static_cast< difference_type >( ( g[ i1 + 1 ] - g[ i1 ] - 1 ) / 2 );
+								difference_type num = static_cast< difference_type >( ( g[ i1 + 1 ] - g[ i1 ] - 1 ) * _2as );
 								pointer pp = p;
 								for( difference_type n = 0 ; n <= num && pp >= sp ; n++, pp -= diff )
 								{
-									value_type nn = static_cast< value_type >( g[ i1 + 1 ] - ( n + 1 ) * ( n + 1 ) );
+									value_type nn = static_cast< value_type >( g[ i1 + 1 ] - ( n + 1 ) * ( n + 1 ) * as2 );
 									if( g[ i1 - n ] >= nn )
 									{
 										break;
@@ -1970,10 +1972,6 @@ namespace saito
 		out.reso2( in.reso2( ) );
 		out.reso3( in.reso3( ) );
 
-		size_type i;
-
-		value_type max = type_limits< value_type >::maximum( );
-
 		_distance_utility_::__range__< 0 > object_range;
 		object_range.sx = 0;
 		object_range.ex = in.size1( ) - 1;
@@ -1987,7 +1985,7 @@ namespace saito
 		if( in.width( ) > 1 )
 		{
 			// X軸方向の処理
-			for( i = 0 ; i < thread_num ; i++ )
+			for( size_type i = 0 ; i < thread_num ; i++ )
 			{
 				thread[ i ].setup_parameters( out, object_range, 0, i, thread_num );
 			}
@@ -1998,7 +1996,7 @@ namespace saito
 		if( in.height( ) > 1 )
 		{
 			// Y軸方向の処理
-			for( i = 0 ; i < thread_num ; i++ )
+			for( size_type i = 0 ; i < thread_num ; i++ )
 			{
 				thread[ i ].setup_parameters( out, object_range, 1, i, thread_num );
 			}
@@ -2009,7 +2007,7 @@ namespace saito
 		if( in.depth( ) > 1 )
 		{
 			// Z軸方向の処理
-			for( i = 0 ; i < thread_num ; i++ )
+			for( size_type i = 0 ; i < thread_num ; i++ )
 			{
 				thread[ i ].setup_parameters( out, object_range, 2, i, thread_num );
 			}
@@ -2018,6 +2016,12 @@ namespace saito
 		}
 
 		delete [] thread;
+
+		// 逆距離変換の結果得られる距離値は正しいユークリッド2乗距離ではないため，結果をもとに2値図形に直す．
+		for( size_type i = 0 ; i < out.size( ) ; i++ )
+		{
+			out[ i ] = out[ i ] != 0 ? 1 : 0;
+		}
 	}
 }
 

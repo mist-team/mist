@@ -621,13 +621,14 @@ struct __mist_progress_callback__
 *   - @ref mode_group								"最頻値フィルタ"
 *   - @ref thinning_group							"細線化"
 *   - @ref skeleton_group							"スケルトン抽出"
-*   - @ref distance_group							"距離変換"
-*     - @ref voronoi_distance_group					"ボロノイ分割"
-*     - @ref euclidean_distance_group				"ユークリッド距離変換"
-*     - @ref mist::manhattan::distance_transform	"マンハッタン距離（シティーブロック距離）変換"
-*     - @ref mist::chessboard::distance_transform	"チェスボード距離変換"
-*   - @ref fusion_group								"図形融合"
-*     - @ref fusion_mdt_group						"マンハッタン距離（L1ノルム，シティーブロック距離）"
+*   - @ref distance_group									"距離変換"
+*     - @ref voronoi_distance_group							"ボロノイ分割"
+*     - @ref euclidean_distance_group						"ユークリッド2乗距離変換"
+*     - @ref mist::euclidean::inverse_distance_transform	"ユークリッド2乗逆距離変換"
+*     - @ref mist::manhattan::distance_transform			"マンハッタン距離（シティーブロック距離）変換"
+*     - @ref mist::chessboard::distance_transform			"チェスボード距離変換"
+*   - @ref fusion_group										"図形融合"
+*     - @ref fusion_mdt_group								"マンハッタン距離（L1ノルム，シティーブロック距離）"
 *
 *
 * @subsection audio 主に音声に対して適用される処理
