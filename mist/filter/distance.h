@@ -865,15 +865,11 @@ namespace __calvin__
 			typedef typename Array::pointer			pointer;
 			typedef typename Array::difference_type	difference_type;
 
-			typedef typename promote_trait< difference_type, value_type >::value_type compare_type;
 			const difference_type w = in.width( );
 			value_type max = type_limits< value_type >::maximum( );
 			value_type len;
 
-			if( static_cast< compare_type>( w ) < static_cast< compare_type >( max ) )
-			{
-				max = static_cast< value_type >( w );
-			}
+			max = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
 
 			size_type sx = range.begin1( );
 			size_type sy = range.begin2( );
@@ -1056,14 +1052,9 @@ namespace __calvin__
 			typedef typename Array2::pointer			pointer;
 			typedef typename Array2::difference_type	difference_type;
 
-			typedef typename promote_trait< difference_type, value_type >::value_type compare_type;
 			const difference_type w = dist.width( );
 			value_type max = type_limits< value_type >::maximum( );
-
-			if( static_cast< compare_type>( w ) < static_cast< compare_type >( max ) )
-			{
-				max = static_cast< value_type >( w );
-			}
+			max = static_cast< value_type >( w ) < max ? static_cast< value_type >( w ) : max;
 
 			ivalue_type *val = new ivalue_type[ w ];
 			value_type len;
