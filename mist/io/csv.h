@@ -47,6 +47,8 @@
 #include <string>
 #include <vector>
 
+#include <zlib.h>
+
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -132,7 +134,7 @@ namespace __csv_controller__
 		typedef typename Array::size_type			size_type;
 		typedef csv_data_converter< value_type >	converter;
 
-		static const unsigned char *get_line( const unsigned char *s, const unsigned char *e )
+		static const unsigned char *get_line( const unsigned char *s, const unsigned char *e, bool &is_empty_line )
 		{
 			const unsigned char *sp = s;
 			const unsigned char *ep = s;
@@ -163,10 +165,11 @@ namespace __csv_controller__
 			// 空行はスキップする
 			if( s < e && sp == ep )
 			{
-				return( get_line( s, e ) );
+				return( get_line( s, e, is_empty_line ) );
 			}
 			else
 			{
+				is_empty_line = sp == ep;
 				return( s > e ? e : s );
 			}
 		}
@@ -182,7 +185,10 @@ namespace __csv_controller__
 					{
 						s = s + 2;
 					}
-					s = s + 1;
+					else
+					{
+						s++;
+					}
 				}
 				else if( s[ 0 ] == '\n' )
 				{
@@ -246,29 +252,32 @@ namespace __csv_controller__
 
 			while( p < e )
 			{
-				const unsigned char *np = get_line( p, e );
+				bool is_empty_line = false;
+				const unsigned char *np = get_line( p, e, is_empty_line );
 
-				if( e <= np )
+				if( is_empty_line )
 				{
-					// 末尾の空行をスキップする
-					break;
+					p = np;
+					continue;
 				}
 
-				element_type e;
-				value_type val;
+				element_type element;
 				while( p < np )
 				{
+					value_type val;
 					p = get_value( p, np, val );
-					e.push_back( val );
+					element.push_back( val );
 				}
+
+				p = np;
 
 				if( csv.size( ) == 0 )
 				{
-					csv.push_back( e );
+					csv.push_back( element );
 				}
-				else if( csv[ csv.size( ) - 1 ].size( ) == e.size( ) )
+				else if( csv[ csv.size( ) - 1 ].size( ) == element.size( ) )
 				{
-					csv.push_back( e );
+					csv.push_back( element );
 				}
 				else
 				{
@@ -281,29 +290,89 @@ namespace __csv_controller__
 
 		static bool read( Array &csv, const std::string &filename )
 		{
-			size_type filesize;
-			FILE *fp;
-			if( ( fp = fopen( filename.c_str( ), "rb" ) ) == NULL ) return( false );
-			// ファイルサイズを取得
-			fseek( fp, 0, SEEK_END );
-			filesize = ftell( fp );
-			fseek( fp, 0, SEEK_SET );
-
-			unsigned char *buff = new unsigned char[ filesize + 1 ];
-			unsigned char *pointer = buff;
-			size_type read_size = 0;
-			while( feof( fp ) == 0 )
+			gzFile fp;
+			if( ( fp = gzopen( filename.c_str( ), "rb" ) ) == NULL )
 			{
-				read_size = fread( pointer, sizeof( unsigned char ), 1024, fp );
-				if( read_size < 1024 )
+				return( false );
+			}
+
+			size_type numBytes = 4096;
+			unsigned char *buff = new unsigned char[ numBytes ];
+			unsigned char *sp = buff;
+			ptrdiff_t read_size = 0;
+
+			bool ret = true;
+			while( gzeof( fp ) == 0 )
+			{
+				ptrdiff_t restBytes = ( buff + numBytes ) - sp;
+				read_size = gzread( fp, ( void * )sp, static_cast< unsigned int >( sizeof( unsigned char ) * restBytes ) );
+
+				unsigned char *eep = sp + read_size;
+				if( eep < buff + numBytes )
 				{
+					ret = convert_from_csv_data( csv, buff, sp + read_size - buff );
 					break;
 				}
-				pointer += read_size;
-			}
-			fclose( fp );
 
-			bool ret = convert_from_csv_data( csv, buff, filesize );
+				unsigned char *e = sp;
+				unsigned char *ep = eep + 1;
+				for( ; e < eep ; e++ )
+				{
+					if( e[ 0 ] == '\r' )
+					{
+						if( e < e && e[ 1 ] == '\n' )
+						{
+							e += 2;
+							ep = e;
+						}
+						else
+						{
+							e++;
+							ep = e;
+						}
+					}
+					else if( e[ 0 ] == '\n' )
+					{
+						e++;
+						ep = e;
+					}
+					else
+					{
+						e++;
+					}
+				}
+
+				if( ep > eep )
+				{
+					// 一行分のデータを読み込めなかったのでテンポラリ領域を拡張する
+					unsigned char *tmp = new unsigned char[ numBytes * 2 ];
+					memcpy( tmp, buff, sizeof( unsigned char ) * numBytes );
+					delete [] buff;
+					buff = tmp;
+					sp = buff + numBytes;
+					numBytes *= 2;
+				}
+				else
+				{
+					if( !convert_from_csv_data( csv, buff, ep - buff ) )
+					{
+						ret = false;
+						break;
+					}
+
+					unsigned char *s1 = buff;
+					unsigned char *s2 = ep;
+					while( s2 < eep )
+					{
+						*s1++ = *s2++;
+					}
+
+					sp = buff + ( eep - ep );
+				}
+			}
+
+			gzclose( fp );
+
 			delete [] buff;
 			return( ret );
 		}
@@ -334,6 +403,8 @@ namespace __csv_controller__
 template < class Array >
 bool read_csv( Array &csv, const std::string &filename )
 {
+	// データをクリアする
+	csv.clear( );
 	return( __csv_controller__::csv_controller< Array >::read( csv, filename ) );
 }
 
