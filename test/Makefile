@@ -3,6 +3,7 @@ include ../build/makeinclude
 
 ALL = \
 	array_test \
+	type_test \
 	memory_test \
 	hash_test \
 	callback_test \
@@ -41,6 +42,9 @@ ALL = \
 all: $(ALL)
 
 array_test : array_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+type_test : type_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 memory_test : memory_test.o
