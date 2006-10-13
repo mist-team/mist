@@ -90,13 +90,22 @@ _MIST_BEGIN
 #endif
 
 // Microsoft Windows かどうかをチェック
-#if defined( WIN32 )
-	// 32bit Windows
-	#define __MIST_WINDOWS__	1
-#elif defined( WIN64 )
+#if defined( WIN64 ) || defined( _WIN64 )
 	// 64bit Windows
 	#define __MIST_WINDOWS__	2
+#elif defined( WIN32 ) || defined( _WIN32 )
+	// 32bit Windows
+	#define __MIST_WINDOWS__	1
 #endif
+
+#if defined( _WIN64 )
+	// 64bit OS
+	#define __MIST64__	64
+#else
+	// 32bit OS
+	#define __MIST32__	32
+#endif
+
 
 
 // Microsoft Visual C++ 6.0 では，static const を見サポートのための enum による代用
