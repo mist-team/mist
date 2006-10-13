@@ -68,9 +68,7 @@ public:
 		inside_mode_ = false;
 		high_reso_ = 256;
 		low_reso_  = 128;
-		left_to_right = true;
-		top_to_bottom = false;
-		front_to_back = true;
+		mirror_view = true;
 	}
 	volr_draw_area( int x, int y, int w, int h ) : Fl_Gl_Window( x, y, w, h ), zoom_( 300.0 ), fps_( 1.0 )
 	{
@@ -79,9 +77,7 @@ public:
 		inside_mode_ = false;
 		high_reso_ = 256;
 		low_reso_  = 128;
-		left_to_right = true;
-		top_to_bottom = false;
-		front_to_back = true;
+		mirror_view = true;
 	}
 	virtual ~volr_draw_area(){ }
 
@@ -98,9 +94,7 @@ private:
 	int drag_beg_x;
 	int drag_beg_y;
 
-	bool left_to_right;
-	bool top_to_bottom;
-	bool front_to_back;
+	bool mirror_view;
 
 	size_type high_reso_;
 	size_type low_reso_;
@@ -201,6 +195,8 @@ public:
 public:
 	void read_image( volr_image_window *wnd );
 	void write_image( volr_image_window *wnd  );
+	void render_test( volr_image_window *wnd );
+
 	void rotate_camera( int sx, int sy, int x, int y );
 	void rotate_camera( int x, int y, double step );
 	void move_camera( double x, double y, double z );

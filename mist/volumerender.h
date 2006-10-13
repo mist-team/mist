@@ -387,28 +387,26 @@ namespace volumerender
 	{
 		typedef vector3< double > vector_type;
 
-		vector_type	pos;
-		vector_type	dir;
-		vector_type	up;
-		vector_type	offset;
-		bool	perspective_view;
-		bool	value_interpolation;
-		double	fovy;
-		double	ambient_ratio;
-		double	diffuse_ratio;
-		double	light_attenuation;
-		double	sampling_step;
-		double	termination;
-		double	specular;
+		vector_type	pos;				// 画像座標系でのカメラ位置
+		vector_type	dir;				// 画像座標系でのカメラ視線方向
+		vector_type	up;					// 画像座標系でのカメラ上向き方向
 
-		bool left_to_right;
-		bool top_to_bottom;
-		bool front_to_back;
+		bool	perspective_view;		// 透視投影で描画するかどうか
+		bool	mirror_view;			// 鏡に映った画像として描画するかどうか
+		bool	value_interpolation;	// 値補間を利用して描画するかどうか（false の場合は色補間を利用）
+		double	fovy;					// 投影面のY軸方向の視野角
+		double	ambient_ratio;			// 環境光の強さ（最大1）
+		double	diffuse_ratio;			// 拡散反射光の強さ（最大1）
+		double	light_attenuation;		// 光の減衰係数
+		double	sampling_step;			// レイキャスティング時のサンプリング間隔
+		double	termination;			// レイキャスティングの終了条件（積算不透明度が個の値未満になるとキャスティングを打ち切り）
+		double	specular;				// 鏡面反射光の強さ（最大1）
 
-		boundingbox box[ 6 ];
+		vector_type	offset;				// バウンディングボックスの中心座標
+		boundingbox box[ 6 ];			// バウンディングボックス
 
-		parameter( ) : perspective_view( true ), value_interpolation( true ), fovy( 80.0 ), ambient_ratio( 0.4 ), diffuse_ratio( 0.6 ), light_attenuation( 0.0 ),
-						sampling_step( 1.0 ), termination( 0.01 ), specular( 1.0 ), left_to_right( true ), top_to_bottom( true ), front_to_back( true )
+		parameter( ) : perspective_view( true ), mirror_view( false ), value_interpolation( true ), fovy( 80.0 ), ambient_ratio( 0.4 ), diffuse_ratio( 0.6 ),
+						light_attenuation( 0.0 ), sampling_step( 1.0 ), termination( 0.01 ), specular( 1.0 )
 		{
 		}
 	};
@@ -419,9 +417,10 @@ namespace volumerender
 		out << "Dir = ( " << p.dir << " )" << std::endl;
 		out << "Up  = ( " << p.up  << " )" << std::endl;
 
-		out << "Center = ( " << p.offset  << " )" << std::endl;
+		out << "BOX Center = ( " << p.offset  << " )" << std::endl;
 
 		out << "Perspective = " << p.perspective_view << std::endl;
+		out << "Mirror View = " << p.mirror_view << std::endl;
 		out << "ValueInterpolation = " << p.value_interpolation << std::endl;
 		out << "Fovy = " << p.fovy << std::endl;
 		out << "Ambient = " << p.ambient_ratio << std::endl;
@@ -430,11 +429,6 @@ namespace volumerender
 		out << "LightAtten = " << p.light_attenuation << std::endl;
 		out << "SamplingStep = " << p.sampling_step << std::endl;
 		out << "Termination = " << p.termination << std::endl;
-
-		int left_to_right = p.left_to_right ? 1 : -1;
-		int top_to_bottom = p.top_to_bottom ? 1 : -1;
-		int front_to_back = p.front_to_back ? 1 : -1;
-		out << "Orientation = ( " << left_to_right << ", " << top_to_bottom << ", " << front_to_back << " )" << std::endl;
 
 		return( out );
 	}
@@ -1474,8 +1468,6 @@ namespace __volumerendering_specialized__
 		vector_type offset  = param.offset;
 		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
 		vector_type pos     = param.pos - offset;
-		vector_type dir     = param.dir.unit( );
-		vector_type up      = param.up.unit( );
 		const  volumerender::boundingbox *box = param.box;
 		double fovy          = param.fovy;
 		double ambient_ratio = param.ambient_ratio;
@@ -1523,35 +1515,34 @@ namespace __volumerendering_specialized__
 
 		double cx = static_cast< double >( image_width ) / 2.0;
 		double cy = static_cast< double >( image_height ) / 2.0;
-		double left_to_right = param.left_to_right ? 1.0 : -1.0;
-		double top_to_bottom = param.top_to_bottom ? 1.0 : -1.0;
-		double front_to_back = param.front_to_back ? 1.0 : -1.0;
 		double ax = in.reso1( );
 		double ay = in.reso2( );
 		double az = in.reso3( );
 		double _1_ax = 1.0 / ax;
 		double _1_ay = 1.0 / ay;
 		double _1_az = 1.0 / az;
-		double asx = ax * left_to_right;
-		double asy = ay * top_to_bottom;
-		double asz = az * front_to_back;
 
 		double masp = ax < ay ? ax : ay;
 		masp = masp < az ? masp : az;
 
-		pos.x *= left_to_right;
-		pos.y *= top_to_bottom;
-		pos.z *= front_to_back;
+		vector_type eZ = -param.dir.unit( );	// カメラ座標系のZ軸方向ベクトル
+		vector_type eY = param.up.unit( );		// カメラ座標系のY軸方向ベクトル
+		vector_type eX = ( eY * eZ ).unit( );	// カメラ座標系のX軸方向ベクトル
 
-		vector_type yoko = ( dir * up ).unit( );
+		if( param.mirror_view )
+		{
+			// 鏡に映ったように描画する
+			// データの軸等に反転が必要な描画を行う際に利用する
+			eX = -eX;
+		}
 
 		if( out.reso1( ) < out.reso2( ) )
 		{
-			yoko *= out.reso1( ) / out.reso2( );
+			eX *= out.reso1( ) / out.reso2( );
 		}
 		else
 		{
-			up *= out.reso2( ) / out.reso1( );
+			eY *= out.reso2( ) / out.reso1( );
 			focal *= out.reso2( ) / out.reso1( );
 		}
 
@@ -1562,18 +1553,18 @@ namespace __volumerendering_specialized__
 			for( size_type i = 0 ; i < image_width ; i++ )
 			{
 				// 投影面上の点をカメラ座標系に変換
-				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
+				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), -focal );
 
 				// レイ方向をカメラ座標系からワールド座標系に変換
 				vector_type light;
 				if( bperspective )
 				{
-					light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
+					light = ( eX * Pos.x + eY * Pos.y + eZ * Pos.z ).unit( );
 				}
 				else
 				{
-					pos = param.pos + yoko * Pos.x + up * Pos.y;
-					light = dir;
+					pos = param.pos + eX * Pos.x + eY * Pos.y;
+					light = -eZ;
 				}
 
 				pixel_type add_intensity( 0 );
@@ -1591,22 +1582,19 @@ namespace __volumerendering_specialized__
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ], normal )
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ], normal ) )
 				{
-					// 光の減衰を実現するために，カメラからの距離を測る
-					Pos.x = pos.x / asx + osffset.x;
-					Pos.y = pos.y / asy + osffset.y;
-					Pos.z = pos.z / asz + osffset.z;
+					// 光の減衰を実現するために、カメラからの距離を測る
+					Pos.x = pos.x * _1_ax + osffset.x;
+					Pos.y = pos.y * _1_ay + osffset.y;
+					Pos.z = pos.z * _1_az + osffset.z;
 
-					// ワールド座標系（左手）からスライス座標系（右手）に変換
-					// 以降は，全てスライス座標系で計算する
-					casting_start.x = casting_start.x / asx + osffset.x;
-					casting_start.y = casting_start.y / asy + osffset.y;
-					casting_start.z = casting_start.z / asz + osffset.z;
-					casting_end.x   = casting_end.x   / asx + osffset.x;
-					casting_end.y   = casting_end.y   / asy + osffset.y;
-					casting_end.z   = casting_end.z   / asz + osffset.z;
-
-					// 光源の向きもスライス座標にあわせる
-					vector_type slight = vector_type( light.x * left_to_right, light.y * top_to_bottom, light.z * front_to_back );
+					// ワールド座標系からスライス座標系に変換する
+					// 以降は、全てスライス座標系で計算する
+					casting_start.x = casting_start.x * _1_ax + osffset.x;
+					casting_start.y = casting_start.y * _1_ay + osffset.y;
+					casting_start.z = casting_start.z * _1_az + osffset.z;
+					casting_end.x   = casting_end.x   * _1_ax + osffset.x;
+					casting_end.y   = casting_end.y   * _1_ay + osffset.y;
+					casting_end.z   = casting_end.z   * _1_az + osffset.z;
 
 					vector_type spos = casting_start;
 					vector_type ray = ( casting_end - casting_start ).unit( );
@@ -1777,7 +1765,7 @@ namespace __volumerendering_specialized__
 							nz *= _1_az;
 
 							// 法線が反転している場合への対応
-							double c = fabs( ( slight.x * nx + slight.y * ny + slight.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) ) );
+							double c = fabs( ( light.x * nx + light.y * ny + light.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) ) );
 
 							double spec = 0.0;
 							if( bSpecular )
@@ -1978,9 +1966,7 @@ namespace __volumerendering_specialized__
 							nz *= _1_az;
 
 							// 法線が反転している場合への対応
-							double c = fabs( ( slight.x * nx + slight.y * ny + slight.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) ) );
-							//double c = slight.x * nx + slight.y * ny + slight.z * nz;
-							//c = c < 0.0 ? -c : c;
+							double c = fabs( ( light.x * nx + light.y * ny + light.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) ) );
 
 							double spec = 0.0;
 							if( bSpecular )
@@ -2151,8 +2137,6 @@ namespace __volumerendering_controller__
 		vector_type offset  = param.offset;
 		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
 		vector_type pos     = param.pos - offset;
-		vector_type dir     = param.dir.unit( );
-		vector_type up      = param.up.unit( );
 		const  volumerender::boundingbox *box = param.box;
 		double fovy          = param.fovy;
 		double ambient_ratio = param.ambient_ratio;
@@ -2179,32 +2163,34 @@ namespace __volumerendering_controller__
 
 		double cx = static_cast< double >( image_width ) / 2.0;
 		double cy = static_cast< double >( image_height ) / 2.0;
-		double left_to_right = param.left_to_right ? 1.0 : -1.0;
-		double top_to_bottom = param.top_to_bottom ? 1.0 : -1.0;
-		double front_to_back = param.front_to_back ? 1.0 : -1.0;
 		double ax = in.reso1( );
 		double ay = in.reso2( );
 		double az = in.reso3( );
-		double asx = ax * left_to_right;
-		double asy = ay * top_to_bottom;
-		double asz = az * front_to_back;
+		double _1_ax = 1.0 / ax;
+		double _1_ay = 1.0 / ay;
+		double _1_az = 1.0 / az;
 
 		double masp = ax < ay ? ax : ay;
 		masp = masp < az ? masp : az;
 
-		pos.x *= left_to_right;
-		pos.y *= top_to_bottom;
-		pos.z *= front_to_back;
+		vector_type eZ = -param.dir.unit( );	// カメラ座標系のZ軸方向ベクトル
+		vector_type eY = param.up.unit( );		// カメラ座標系のY軸方向ベクトル
+		vector_type eX = ( eY * eZ ).unit( );	// カメラ座標系のX軸方向ベクトル
 
-		vector_type yoko = ( dir * up ).unit( );
+		if( param.mirror_view )
+		{
+			// 鏡に映ったように描画する
+			// データの軸等に反転が必要な描画を行う際に利用する
+			eX = -eX;
+		}
 
 		if( out.reso1( ) < out.reso2( ) )
 		{
-			yoko *= out.reso1( ) / out.reso2( );
+			eX *= out.reso1( ) / out.reso2( );
 		}
 		else
 		{
-			up *= out.reso2( ) / out.reso1( );
+			eY *= out.reso2( ) / out.reso1( );
 			focal *= out.reso2( ) / out.reso1( );
 		}
 
@@ -2215,18 +2201,18 @@ namespace __volumerendering_controller__
 			for( size_type i = 0 ; i < image_width ; i++ )
 			{
 				// 投影面上の点をカメラ座標系に変換
-				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
+				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), -focal );
 
 				// レイ方向をカメラ座標系からワールド座標系に変換
 				vector_type light;
 				if( bperspective )
 				{
-					light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
+					light = ( eX * Pos.x + eY * Pos.y + eZ * Pos.z ).unit( );
 				}
 				else
 				{
-					pos = param.pos + yoko * Pos.x + up * Pos.y;
-					light = dir;
+					pos = param.pos + eX * Pos.x + eY * Pos.y;
+					light = -eZ;
 				}
 
 				pixel_type add_intensity( 0 );
@@ -2234,31 +2220,29 @@ namespace __volumerendering_controller__
 
 				casting_start = pos;
 				casting_end = pos + light * max_distance;
+				vector_type normal;
 
 				// 物体との衝突判定
-				if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
+				if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ], normal )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ], normal )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ], normal )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ], normal )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ], normal )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ], normal ) )
 				{
-					// 光の減衰を実現するために，カメラからの距離を測る
-					Pos.x = pos.x / asx + osffset.x;
-					Pos.y = pos.y / asy + osffset.y;
-					Pos.z = pos.z / asz + osffset.z;
+					// 光の減衰を実現するために、カメラからの距離を測る
+					Pos.x = pos.x * _1_ax + osffset.x;
+					Pos.y = pos.y * _1_ay + osffset.y;
+					Pos.z = pos.z * _1_az + osffset.z;
 
-					// ワールド座標系（左手）からスライス座標系（右手）に変換
-					// 以降は，全てスライス座標系で計算する
-					casting_start.x = casting_start.x / asx + osffset.x;
-					casting_start.y = casting_start.y / asy + osffset.y;
-					casting_start.z = casting_start.z / asz + osffset.z;
-					casting_end.x   = casting_end.x   / asx + osffset.x;
-					casting_end.y   = casting_end.y   / asy + osffset.y;
-					casting_end.z   = casting_end.z   / asz + osffset.z;
-
-					// 光源の向きもスライス座標にあわせる
-					vector_type slight = vector_type( light.x * left_to_right, light.y * top_to_bottom, light.z * front_to_back );
+					// ワールド座標系からスライス座標系に変換する
+					// 以降は、全てスライス座標系で計算する
+					casting_start.x = casting_start.x * _1_ax + osffset.x;
+					casting_start.y = casting_start.y * _1_ay + osffset.y;
+					casting_start.z = casting_start.z * _1_az + osffset.z;
+					casting_end.x   = casting_end.x   * _1_ax + osffset.x;
+					casting_end.y   = casting_end.y   * _1_ay + osffset.y;
+					casting_end.z   = casting_end.z   * _1_az + osffset.z;
 
 					vector_type spos = casting_start;
 					vector_type ray = ( casting_end - casting_start ).unit( );
@@ -2300,6 +2284,13 @@ namespace __volumerendering_controller__
 						spos.z += ray.z * current_step;
 					}
 
+					// 端まで到達した場合は何もしない
+					if( l >= n )
+					{
+						out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
+						continue;
+					}
+
 					while( l < n )
 					{
 						difference_type si = volumerender::to_integer( spos.x );
@@ -2321,7 +2312,7 @@ namespace __volumerendering_controller__
 								lAtten /= 1.0 + lightAtten * ( len * len );
 							}
 
-							double c = slight.inner( renderer.normal( si, sj, sk, xx, yy, zz ) );
+							double c = light.inner( renderer.normal( si, sj, sk, xx, yy, zz ) );
 							c = c < 0.0 ? -c : c;
 
 							double spec = 0.0;
@@ -2407,6 +2398,7 @@ namespace __volumerendering_controller__
 				}
 			}
 		}
+
 		return( true );
 	}
 
@@ -2426,8 +2418,6 @@ namespace __volumerendering_controller__
 		vector_type offset  = param.offset;
 		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
 		vector_type pos     = param.pos - offset;
-		vector_type dir = param.dir.unit( );
-		vector_type up = param.up.unit( );
 		double fovy = param.fovy;
 		double ambient_ratio = param.ambient_ratio;
 		double diffuse_ratio = param.diffuse_ratio;
@@ -2437,7 +2427,7 @@ namespace __volumerendering_controller__
 		double lightAtten = param.light_attenuation;
 		double sampling_step = param.sampling_step;
 		double termination = param.termination;
-		bool   bperspective = param.perspective_view;
+		bool   bperspective  = param.perspective_view;
 
 		const size_type w = in.width( );
 		const size_type h = in.height( );
@@ -2451,34 +2441,36 @@ namespace __volumerendering_controller__
 
 		double cx = static_cast< double >( image_width ) / 2.0;
 		double cy = static_cast< double >( image_height ) / 2.0;
-		double left_to_right = param.left_to_right ? 1.0 : -1.0;
-		double top_to_bottom = param.top_to_bottom ? 1.0 : -1.0;
-		double front_to_back = param.front_to_back ? 1.0 : -1.0;
 		double ax = in.reso1( );
 		double ay = in.reso2( );
 		double az = in.reso3( );
-		double asx = ax * left_to_right;
-		double asy = ay * top_to_bottom;
-		double asz = az * front_to_back;
+		double _1_ax = 1.0 / ax;
+		double _1_ay = 1.0 / ay;
+		double _1_az = 1.0 / az;
 
 		double asp = resoY / resoX;
 
 		double masp = ax < ay ? ax : ay;
 		masp = masp < az ? masp : az;
 
-		pos.x *= left_to_right;
-		pos.y *= top_to_bottom;
-		pos.z *= front_to_back;
+		vector_type eZ = -param.dir.unit( );	// カメラ座標系のZ軸方向ベクトル
+		vector_type eY = param.up.unit( );		// カメラ座標系のY軸方向ベクトル
+		vector_type eX = ( eY * eZ ).unit( );	// カメラ座標系のX軸方向ベクトル
 
-		vector_type yoko = ( dir * up ).unit( );
+		if( param.mirror_view )
+		{
+			// 鏡に映ったように描画する
+			// データの軸等に反転が必要な描画を行う際に利用する
+			eX = -eX;
+		}
 
 		if( resoX < resoY )
 		{
-			yoko *= resoX / resoY;
+			eX *= resoX / resoY;
 		}
 		else
 		{
-			up *= resoY / resoX;
+			eY *= resoY / resoX;
 			focal *= resoY / resoX;
 		}
 
@@ -2486,18 +2478,18 @@ namespace __volumerendering_controller__
 
 		{
 			// 投影面上の点をカメラ座標系に変換
-			vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), focal );
+			vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), -focal );
 
 			// レイ方向をカメラ座標系からワールド座標系に変換
 			vector_type light;
 			if( bperspective )
 			{
-				light = ( yoko * Pos.x + up * Pos.y + dir * Pos.z ).unit( );
+				light = ( eX * Pos.x + eY * Pos.y + eZ * Pos.z ).unit( );
 			}
 			else
 			{
-				pos = param.pos + yoko * Pos.x + up * Pos.y;
-				light = dir;
+				pos = param.pos + eX * Pos.x + eY * Pos.y;
+				light = -eZ;
 			}
 
 			double add_opacity = 1;
@@ -2514,19 +2506,14 @@ namespace __volumerendering_controller__
 				&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
 				&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
 			{
-				// 光の減衰を実現するために，カメラからの距離を測る
-				Pos.x = pos.x / asx + osffset.x;
-				Pos.y = pos.y / asy + osffset.y;
-				Pos.z = pos.z / asz + osffset.z;
-
-				// ワールド座標系（左手）からスライス座標系（右手）に変換
-				// 以降は，全てスライス座標系で計算する
-				casting_start.x = casting_start.x / asx + osffset.x;
-				casting_start.y = casting_start.y / asy + osffset.y;
-				casting_start.z = casting_start.z / asz + osffset.z;
-				casting_end.x   = casting_end.x   / asx + osffset.x;
-				casting_end.y   = casting_end.y   / asy + osffset.y;
-				casting_end.z   = casting_end.z   / asz + osffset.z;
+				// ワールド座標系からスライス座標系に変換
+				// 以降は、全てスライス座標系で計算する
+				casting_start.x = casting_start.x * _1_ax + osffset.x;
+				casting_start.y = casting_start.y * _1_ay + osffset.y;
+				casting_start.z = casting_start.z * _1_az + osffset.z;
+				casting_end.x   = casting_end.x   * _1_ax + osffset.x;
+				casting_end.y   = casting_end.y   * _1_ay + osffset.y;
+				casting_end.z   = casting_end.z   * _1_az + osffset.z;
 
 				vector_type opos = casting_start;
 				vector_type spos = casting_start;
@@ -2658,6 +2645,7 @@ namespace __volumerendering_controller__
 	}
 
 
+
 	template < class Array1, class Array2, class DepthMap, class Renderer, class T >
 	class volumerendering_thread : public mist::thread< volumerendering_thread< Array1, Array2, DepthMap, Renderer, T > >
 	{
@@ -2720,12 +2708,13 @@ namespace __mip_controller__
 		typedef typename Array1::const_pointer const_pointer;
 		typedef typename Array2::value_type out_value_type;
 
-		vector_type pos = p.pos;
-		vector_type dir = p.dir.unit( );
-		vector_type up = p.up.unit( );
-		vector_type offset = p.offset;
-		const volumerender::boundingbox *box = p.box;
-		double sampling_step = p.sampling_step;
+		vector_type offset  = param.offset;
+		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
+		vector_type pos     = param.pos - offset;
+		vector_type dir     = param.dir.unit( );
+		vector_type up      = param.up.unit( );
+		const  volr::boundingbox *box = param.box;
+		const double sampling_step = param.sampling_step;
 
 		const size_type w = in.width( );
 		const size_type h = in.height( );
@@ -2734,6 +2723,7 @@ namespace __mip_controller__
 		const size_type image_width  = out.width( );
 		const size_type image_height = out.height( );
 
+		// 高速にアドレス計算を行うためのポインタの差分
 		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
 		{
 			difference_type cx = in.width( ) / 2;
@@ -2756,18 +2746,27 @@ namespace __mip_controller__
 		// スライス座標系の実寸をワールドと考える
 		vector_type casting_start, casting_end;
 
+		double iasp = 1.0;
 		double cx = static_cast< double >( image_width ) / 2.0;
 		double cy = static_cast< double >( image_height ) / 2.0;
 		double ax = in.reso1( );
 		double ay = in.reso2( );
 		double az = in.reso3( );
-
-		double asp = out.reso2( ) / out.reso1( );
+		double _1_ax = 1.0 / ax;
+		double _1_ay = 1.0 / ay;
+		double _1_az = 1.0 / az;
 
 		double masp = ax < ay ? ax : ay;
 		masp = masp < az ? masp : az;
 
-		vector_type yoko = ( dir * up ).unit( );
+		vector_type yoko = ( up * dir ).unit( );
+
+		if( param.mirror_view )
+		{
+			// 鏡面に映ったように描画する
+			// データの軸等に反転が必要な描画を行う際に利用
+			yoko = -yoko;
+		}
 
 		if( out.reso1( ) < out.reso2( ) )
 		{
@@ -2778,88 +2777,95 @@ namespace __mip_controller__
 			up *= out.reso2( ) / out.reso1( );
 		}
 
+		if( out.reso1( ) * image_width >= out.reso2( ) * image_height )
+		{
+			iasp = out.reso1( );
+		}
+		else
+		{
+			iasp = out.reso2( );
+		}
+
 		double max_distance = pos.length( ) + std::sqrt( static_cast< double >( w * w + h * h + d * d ) );
 
 		for( size_type j = thread_id ; j < image_height ; j += thread_num )
 		{
 			for( size_type i = 0 ; i < image_width ; i++ )
 			{
-				// 投影面上の点をカメラ座標系に変換
-				vector_type Pos( static_cast< double >( i ) - cx, cy - static_cast< double >( j ), 0 );
-
-				// 平行投影にする
-				vector_type light;
-				pos = p.pos + yoko * Pos.x + up * Pos.y;
-				light = dir;
-
-				double maximum_intensity = type_limits< double >::tiny( );
-
-				casting_start = pos;
-				casting_end = pos + light * max_distance;
+				casting_start = pos - dir * max_distance + ( static_cast< double >( i ) - cx ) * iasp * yoko + ( cy - static_cast< double >( j ) ) * iasp * up;
+				casting_end = casting_start + dir * max_distance * 2.0;
 
 				// 物体との衝突判定
-				if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
-					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
+				if( volr::check_intersection( casting_start, casting_end, box[ 0 ] )
+					&& volr::check_intersection( casting_start, casting_end, box[ 1 ] )
+					&& volr::check_intersection( casting_start, casting_end, box[ 2 ] )
+					&& volr::check_intersection( casting_start, casting_end, box[ 3 ] )
+					&& volr::check_intersection( casting_start, casting_end, box[ 4 ] )
+					&& volr::check_intersection( casting_start, casting_end, box[ 5 ] ) )
 				{
-					// ワールド座標系（左手）からスライス座標系（右手）に変換
-					// 以降は，全てスライス座標系で計算する
-					casting_start.x = (  casting_start.x + offset.x ) / ax;
-					casting_start.y = ( -casting_start.y + offset.y ) / ay;
-					casting_start.z = (  casting_start.z + offset.z ) / az;
-					casting_end.x   = (  casting_end.x   + offset.x ) / ax;
-					casting_end.y   = ( -casting_end.y   + offset.y ) / ay;
-					casting_end.z   = (  casting_end.z   + offset.z ) / az;
+					// ワールド座標系からスライス座標系に変換
+					// 以降は、全てスライス座標系で計算する
+					casting_start.x = casting_start.x * _1_ax + osffset.x;
+					casting_start.y = casting_start.y * _1_ay + osffset.y;
+					casting_start.z = casting_start.z * _1_az + osffset.z;
+					casting_end.x   = casting_end.x   * _1_ax + osffset.x;
+					casting_end.y   = casting_end.y   * _1_ay + osffset.y;
+					casting_end.z   = casting_end.z   * _1_az + osffset.z;
 
 					vector_type spos = casting_start;
 					vector_type ray = ( casting_end - casting_start ).unit( );
 
-					// 光の減衰の距離を実測に直すためのパラメータ
-					double dlen = vector_type( ray.x * ax, ray.y * ay, ray.z * az ).length( );
-
-					// 直方体画素の画像上では方向によってサンプリング間隔が変わってしまう問題に対応
-					double ray_sampling_step = sampling_step * masp / dlen;
-
-					vector_type ray_step = ray * ray_sampling_step;
+					vector_type ray_step = ray * sampling_step;
 
 					double n = ( casting_end - casting_start ).length( );
-					double l = 0;
+					double l = 0, maxct = mist::type_limits< double >::minimum( );
 
 					while( l < n )
 					{
-						difference_type si = volumerender::to_integer( spos.x );
-						difference_type sj = volumerender::to_integer( spos.y );
-						difference_type sk = volumerender::to_integer( spos.z );
+						difference_type si = volr::to_integer( spos.x );
+						difference_type sj = volr::to_integer( spos.y );
+						difference_type sk = volr::to_integer( spos.z );
 
 						double xx = spos.x - si;
 						double yy = spos.y - sj;
 						double zz = spos.z - sk;
 
 						const_pointer p = &in( si, sj, sk );
-						double ct;
 
-						// CT値に対応する色と不透明度を取得
-						ct = ( p[ d0 ] + ( p[ d3 ] - p[ d0 ] ) * xx ) + ( p[ d1 ] - p[ d0 ] + ( p[ d0 ] - p[ d1 ] + p[ d2 ] - p[ d3 ] ) * xx ) * yy;
-						ct += ( ( p[ d4 ] + ( p[ d7 ] - p[ d4 ] ) * xx ) + ( p[ d5 ] - p[ d4 ] + ( p[ d4 ] - p[ d5 ] + p[ d6 ] - p[ d7 ] ) * xx ) * yy - ct ) * zz;
+						double nct0 = p[ d0 ];
+						double nct1 = p[ d3 ] - p[ d0 ];
+						double nct2 = p[ d1 ] - p[ d0 ];
+						double nct3 = p[ d2 ] - p[ d3 ] - nct2;
+						double nct4 = p[ d4 ];
+						double nct5 = p[ d7 ] - p[ d4 ];
+						double nct6 = p[ d5 ] - p[ d4 ];
+						double nct7 = p[ d6 ] - p[ d7 ] - nct6;
 
-						if( maximum_intensity < ct )
+						// CT値に線形補間を用いて取得
+						double ct = ( nct0 + nct1 * xx ) + ( nct2 + nct3 * xx ) * yy;
+						ct += ( ( nct4 + nct5 * xx ) + ( nct6 + nct7 * xx ) * yy - ct ) * zz;
+
+						if( maxct < ct )
 						{
-							maximum_intensity = ct;
+							maxct = ct;
 						}
 
 						spos.x += ray_step.x;
 						spos.y += ray_step.y;
 						spos.z += ray_step.z;
-						l += ray_sampling_step;
+						l += sampling_step;
 					}
-				}
 
-				out( i, j ) = static_cast< out_value_type >( maximum_intensity );
+					out( i, j ) = static_cast< out_value_type >( maxct + offset_value );
+				}
+				else
+				{
+					out( i, j ) = 0;
+				}
 			}
 		}
+
+
 		return( true );
 	}
 

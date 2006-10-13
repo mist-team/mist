@@ -73,7 +73,7 @@ class volr_image_window {open
 } {
   Function {volr_image_window( )} {open
   } {
-    Fl_Window image_window {open selected
+    Fl_Window image_window {open
       xywh {514 188 421 561} type Double resizable visible
     } {
       Fl_Group {} {
@@ -87,7 +87,7 @@ class volr_image_window {open
           class volr_draw_area
         }
       }
-      Fl_Menu_Bar {} {
+      Fl_Menu_Bar {} {open selected
         xywh {0 0 100 25} box FLAT_BOX
       } {
         submenu {} {
@@ -108,7 +108,13 @@ class volr_image_window {open
         submenu {} {
           label {&Edit} open
           xywh {0 0 100 20}
-        } {}
+        } {
+          menuitem {} {
+            label {&Render Test}
+            callback {volr_image->render_test( this );}
+            xywh {0 0 100 20}
+          }
+        }
       }
       Fl_Progress progress_bar {
         xywh {90 5 295 20} box PLASTIC_THIN_UP_BOX selection_color 1 hide

@@ -198,8 +198,9 @@ void volr_draw_area::draw_image( )
 	{
 		mist::timer t;
 //		mist::volumerendering( ct, image_, mist::volumerender::no_depth_map( ), p, table );
-//		mist::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table );
-		mist::specialized::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table );
+		mist::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table );
+//		mist::specialized::volumerendering( ct, image_, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table );
+//		mist::specialized::volumerendering( ct, image_, mist::volumerender::no_depth_map( ), p, table, 1 );
 		fps_ = 1.0 / t.elapse( );
 	}
 }
@@ -278,6 +279,9 @@ void volr_draw_area::initialize( )
 	// ãóó£É}ÉbÉvÇçÏê¨Ç∑ÇÈ
 	mist::generate_depth_map( ct, depth_map, volr_table );
 
+	volr_parameter.perspective_view		= true;
+	volr_parameter.mirror_view			= mirror_view;
+	volr_parameter.value_interpolation	= true;
 	volr_parameter.fovy					= 80.0;
 	volr_parameter.ambient_ratio		= 0.3;
 	volr_parameter.diffuse_ratio		= 0.7;
@@ -285,11 +289,6 @@ void volr_draw_area::initialize( )
 	volr_parameter.sampling_step		= 1.0;
 	volr_parameter.termination			= 0.01;
 	volr_parameter.specular				= 0.8;
-	volr_parameter.perspective_view		= true;
-	volr_parameter.value_interpolation	= true;
-	volr_parameter.left_to_right		= left_to_right;
-	volr_parameter.top_to_bottom		= top_to_bottom;
-	volr_parameter.front_to_back		= front_to_back;
 
 	
 	//	image_.resize( 512, 512 );
@@ -304,7 +303,7 @@ void volr_draw_area::initialize( )
 	camera_.dir.y = 0.0;
 	camera_.dir.z = 1.0;
 	camera_.up.x  = 0.0;
-	camera_.up.y  = 1.0;
+	camera_.up.y  = -1.0;
 	camera_.up.z  = 0.0;
 
 	old_camera_ = camera_;
@@ -324,19 +323,22 @@ void volr_draw_area::rotate_camera( int sx, int sy, int x, int y )
 
 	double cx = w( ) / 2.0, cy = h( ) / 2.0;
 	point2 p1( sx / cx - 1.0, 1.0 - sy / cy ), p2( x / cx - 1.0, 1.0 - y / cy );
+
+	if( mirror_view )
+	{
+		p1.x = -p1.x;
+		p2.x = -p2.x;
+	}
+
 	point3 tdir  = old_camera_.dir;
 	point3 tup   = old_camera_.up;
 	point3 tyoko = old_camera_.dir * old_camera_.up;
 	mist::quaternion< double > q = mist::track_ball( p1, p2, tyoko, tup, tdir );
 
-	int __left_to_right__ = left_to_right ? 1 : -1;
-	int __top_to_bottom__ = top_to_bottom ? 1 : -1;
-	int __front_to_back__ = front_to_back ? 1 : -1;
-
 	point3 pos = q.rotate( old_camera_.dir ) * ( - zoom_ );
-	camera_.pos.x = pos.x * __left_to_right__ + p.offset.x;
-	camera_.pos.y = pos.y * __top_to_bottom__ + p.offset.y;
-	camera_.pos.z = pos.z * __front_to_back__ + p.offset.z;
+	camera_.pos.x = pos.x + p.offset.x;
+	camera_.pos.y = pos.y + p.offset.y;
+	camera_.pos.z = pos.z + p.offset.z;
 	camera_.dir = - pos.unit( );
 	camera_.up  = q.rotate( old_camera_.up ).unit( );
 }
@@ -345,19 +347,22 @@ void volr_draw_area::rotate_camera( int x, int y, double step )
 {
 	double cx = w( ) / 2.0, cy = h( ) / 2.0;
 	point2 p1( 0, 0 ), p2( x / cx - 1.0, 1.0 - y / cy );
+
+	if( mirror_view )
+	{
+		p1.x = -p1.x;
+		p2.x = -p2.x;
+	}
+
 	point3 tdir  = old_camera_.dir;
 	point3 tup   = old_camera_.up;
 	point3 tyoko = old_camera_.dir * old_camera_.up;
 	mist::quaternion< double > q = mist::track_ball( p1, p2, tyoko, tup, tdir, 5.0 );
 
-	int __left_to_right__ = left_to_right ? 1 : -1;
-	int __top_to_bottom__ = top_to_bottom ? 1 : -1;
-	int __front_to_back__ = front_to_back ? 1 : -1;
-
 	camera_.dir    = q.rotate( old_camera_.dir ).unit( );
-	camera_.pos.x += old_camera_.dir.x * step * __left_to_right__;
-	camera_.pos.y += old_camera_.dir.y * step * __top_to_bottom__;
-	camera_.pos.z += old_camera_.dir.z * step * __front_to_back__;
+	camera_.pos.x += old_camera_.dir.x * step;
+	camera_.pos.y += old_camera_.dir.y * step;
+	camera_.pos.z += old_camera_.dir.z * step;
 	camera_.up     = q.rotate( old_camera_.up ).unit( );
 }
 
@@ -366,6 +371,11 @@ void volr_draw_area::move_camera( double x, double y, double z )
 	point3 tdir  = camera_.dir;
 	point3 tup   = camera_.up;
 	point3 tyoko = camera_.dir * camera_.up;
+
+	if( mirror_view )
+	{
+		tyoko = -tyoko;
+	}
 
 	point3 pos = tyoko * x + tup * y + tdir * z;
 	camera_.pos += pos;
@@ -496,7 +506,7 @@ void volr_draw_area::onInsideViewCallBack( )
 {
 	old_camera_ = camera_;
 
-	std::cout << camera_.dir << ", " << camera_.up << std::endl;
+//	std::cout << camera_.dir << ", " << camera_.up << std::endl;
 
 	int state = Fl::event_state( );
 
@@ -538,6 +548,41 @@ void volr_draw_area::write_image( volr_image_window *w )
 	if( filename == NULL ) return;
 
 	mist::write_raw_gz( ct, filename, 0, false, progress_callback( w->progress_bar ) );
+}
+
+void volr_draw_area::render_test( volr_image_window *w )
+{
+	volr_parameter_type p( volr_parameter );
+	volr_table_type &table = volr_table;
+	mist::array2< mist::rgb< unsigned char > > timage( 32, 32 );
+
+	p.pos = camera_.pos;
+	p.dir = camera_.dir;
+	p.up  = camera_.up;
+
+	{
+		mist::timer t;
+	
+		for( int i = 0 ; i < 100 ; i++ )
+		{
+			mist::specialized::volumerendering( ct, timage, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table, 1 );
+		}
+
+		std::cout << "Rendering Test [1CPU] : " << t.elapse( ) * 10.0 << " msec." << std::endl;
+	}
+
+	int cpunum = mist::get_cpu_num( );
+
+	{
+		mist::timer t;
+	
+		for( int i = 0 ; i < 100 ; i++ )
+		{
+			mist::specialized::volumerendering( ct, timage, mist::volumerender::depth_map< mist::array3< double > >( depth_map ), p, table, cpunum );
+		}
+
+		std::cout << "Rendering Test [" << cpunum << "CPU] : " << t.elapse( ) * 10.0 << " msec." << std::endl;
+	}
 }
 
 int main( int argc, char *argv[] )
