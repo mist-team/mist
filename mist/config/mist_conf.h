@@ -98,7 +98,7 @@ _MIST_BEGIN
 	#define __MIST_WINDOWS__	1
 #endif
 
-#if defined( _WIN64 )
+#if defined( _WIN64 ) || defined( __x86_64__ ) || defined( __AMD64__ )
 	// 64bit OS
 	#define __MIST64__	64
 #else
