@@ -1466,7 +1466,6 @@ namespace __volumerendering_specialized__
 		typedef typename Array2::value_type out_value_type;
 
 		vector_type offset  = param.offset;
-		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
 		vector_type pos     = param.pos - offset;
 		const  volumerender::boundingbox *box = param.box;
 		double fovy          = param.fovy;
@@ -1583,18 +1582,18 @@ namespace __volumerendering_specialized__
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ], normal ) )
 				{
 					// 光の減衰を実現するために、カメラからの距離を測る
-					Pos.x = pos.x * _1_ax + osffset.x;
-					Pos.y = pos.y * _1_ay + osffset.y;
-					Pos.z = pos.z * _1_az + osffset.z;
+					Pos.x = ( pos.x + offset.x ) * _1_ax;
+					Pos.y = ( pos.y + offset.y ) * _1_ay;
+					Pos.z = ( pos.z + offset.z ) * _1_az;
 
 					// ワールド座標系からスライス座標系に変換する
 					// 以降は、全てスライス座標系で計算する
-					casting_start.x = casting_start.x * _1_ax + osffset.x;
-					casting_start.y = casting_start.y * _1_ay + osffset.y;
-					casting_start.z = casting_start.z * _1_az + osffset.z;
-					casting_end.x   = casting_end.x   * _1_ax + osffset.x;
-					casting_end.y   = casting_end.y   * _1_ay + osffset.y;
-					casting_end.z   = casting_end.z   * _1_az + osffset.z;
+					casting_start.x = ( casting_start.x + offset.x ) * _1_ax;
+					casting_start.y = ( casting_start.y + offset.y ) * _1_ay;
+					casting_start.z = ( casting_start.z + offset.z ) * _1_az;
+					casting_end.x   = ( casting_end.x   + offset.x ) * _1_ax;
+					casting_end.y   = ( casting_end.y   + offset.y ) * _1_ay;
+					casting_end.z   = ( casting_end.z   + offset.z ) * _1_az;
 
 					vector_type spos = casting_start;
 					vector_type ray = ( casting_end - casting_start ).unit( );
@@ -2135,7 +2134,6 @@ namespace __volumerendering_controller__
 		typedef typename Array2::value_type out_value_type;
 
 		vector_type offset  = param.offset;
-		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
 		vector_type pos     = param.pos - offset;
 		const  volumerender::boundingbox *box = param.box;
 		double fovy          = param.fovy;
@@ -2231,18 +2229,18 @@ namespace __volumerendering_controller__
 					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ], normal ) )
 				{
 					// 光の減衰を実現するために、カメラからの距離を測る
-					Pos.x = pos.x * _1_ax + osffset.x;
-					Pos.y = pos.y * _1_ay + osffset.y;
-					Pos.z = pos.z * _1_az + osffset.z;
+					Pos.x = ( pos.x + offset.x ) * _1_ax;
+					Pos.y = ( pos.y + offset.y ) * _1_ay;
+					Pos.z = ( pos.z + offset.z ) * _1_az;
 
 					// ワールド座標系からスライス座標系に変換する
 					// 以降は、全てスライス座標系で計算する
-					casting_start.x = casting_start.x * _1_ax + osffset.x;
-					casting_start.y = casting_start.y * _1_ay + osffset.y;
-					casting_start.z = casting_start.z * _1_az + osffset.z;
-					casting_end.x   = casting_end.x   * _1_ax + osffset.x;
-					casting_end.y   = casting_end.y   * _1_ay + osffset.y;
-					casting_end.z   = casting_end.z   * _1_az + osffset.z;
+					casting_start.x = ( casting_start.x + offset.x ) * _1_ax;
+					casting_start.y = ( casting_start.y + offset.y ) * _1_ay;
+					casting_start.z = ( casting_start.z + offset.z ) * _1_az;
+					casting_end.x   = ( casting_end.x   + offset.x ) * _1_ax;
+					casting_end.y   = ( casting_end.y   + offset.y ) * _1_ay;
+					casting_end.z   = ( casting_end.z   + offset.z ) * _1_az;
 
 					vector_type spos = casting_start;
 					vector_type ray = ( casting_end - casting_start ).unit( );
@@ -2416,7 +2414,6 @@ namespace __volumerendering_controller__
 		typedef typename Array::const_pointer const_pointer;
 
 		vector_type offset  = param.offset;
-		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
 		vector_type pos     = param.pos - offset;
 		double fovy = param.fovy;
 		double ambient_ratio = param.ambient_ratio;
@@ -2506,14 +2503,14 @@ namespace __volumerendering_controller__
 				&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
 				&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
 			{
-				// ワールド座標系からスライス座標系に変換
+				// ワールド座標系からスライス座標系に変換する
 				// 以降は、全てスライス座標系で計算する
-				casting_start.x = casting_start.x * _1_ax + osffset.x;
-				casting_start.y = casting_start.y * _1_ay + osffset.y;
-				casting_start.z = casting_start.z * _1_az + osffset.z;
-				casting_end.x   = casting_end.x   * _1_ax + osffset.x;
-				casting_end.y   = casting_end.y   * _1_ay + osffset.y;
-				casting_end.z   = casting_end.z   * _1_az + osffset.z;
+				casting_start.x = ( casting_start.x + offset.x ) * _1_ax;
+				casting_start.y = ( casting_start.y + offset.y ) * _1_ay;
+				casting_start.z = ( casting_start.z + offset.z ) * _1_az;
+				casting_end.x   = ( casting_end.x   + offset.x ) * _1_ax;
+				casting_end.y   = ( casting_end.y   + offset.y ) * _1_ay;
+				casting_end.z   = ( casting_end.z   + offset.z ) * _1_az;
 
 				vector_type opos = casting_start;
 				vector_type spos = casting_start;
@@ -2709,7 +2706,6 @@ namespace __mip_controller__
 		typedef typename Array2::value_type out_value_type;
 
 		vector_type offset  = param.offset;
-		vector_type osffset = vector_type( offset.x / in.reso1( ), offset.y / in.reso2( ), offset.z / in.reso3( ) );
 		vector_type pos     = param.pos - offset;
 		vector_type dir     = param.dir.unit( );
 		vector_type up      = param.up.unit( );
@@ -2803,14 +2799,14 @@ namespace __mip_controller__
 					&& volr::check_intersection( casting_start, casting_end, box[ 4 ] )
 					&& volr::check_intersection( casting_start, casting_end, box[ 5 ] ) )
 				{
-					// ワールド座標系からスライス座標系に変換
+					// ワールド座標系からスライス座標系に変換する
 					// 以降は、全てスライス座標系で計算する
-					casting_start.x = casting_start.x * _1_ax + osffset.x;
-					casting_start.y = casting_start.y * _1_ay + osffset.y;
-					casting_start.z = casting_start.z * _1_az + osffset.z;
-					casting_end.x   = casting_end.x   * _1_ax + osffset.x;
-					casting_end.y   = casting_end.y   * _1_ay + osffset.y;
-					casting_end.z   = casting_end.z   * _1_az + osffset.z;
+					casting_start.x = ( casting_start.x + offset.x ) * _1_ax;
+					casting_start.y = ( casting_start.y + offset.y ) * _1_ay;
+					casting_start.z = ( casting_start.z + offset.z ) * _1_az;
+					casting_end.x   = ( casting_end.x   + offset.x ) * _1_ax;
+					casting_end.y   = ( casting_end.y   + offset.y ) * _1_ay;
+					casting_end.z   = ( casting_end.z   + offset.z ) * _1_az;
 
 					vector_type spos = casting_start;
 					vector_type ray = ( casting_end - casting_start ).unit( );
