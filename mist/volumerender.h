@@ -1817,7 +1817,7 @@ namespace __volumerendering_specialized__
 							spos += ray_step;
 							l += ray_sampling_step;
 
-							size_t count = 0;
+							double ol = l;
 							while( l < n )
 							{
 								difference_type si = volumerender::to_integer( spos.x );
@@ -1832,7 +1832,7 @@ namespace __volumerendering_specialized__
 									table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
 									table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) )
 								{
-									if( count > 0 )
+									if( l > ol )
 									{
 										spos.x -= ray.x;
 										spos.y -= ray.y;
@@ -1847,8 +1847,6 @@ namespace __volumerendering_specialized__
 								spos.x += ray.x * current_step;
 								spos.y += ray.y * current_step;
 								spos.z += ray.z * current_step;
-
-								count++;
 							}
 						}
 					}
@@ -2017,7 +2015,7 @@ namespace __volumerendering_specialized__
 							spos += ray_step;
 							l += ray_sampling_step;
 
-							size_t count = 0;
+							double ol = l;
 							while( l < n )
 							{
 								difference_type si = volumerender::to_integer( spos.x );
@@ -2032,7 +2030,7 @@ namespace __volumerendering_specialized__
 									table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
 									table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) )
 								{
-									if( count > 0 )
+									if( l > ol )
 									{
 										spos.x -= ray.x;
 										spos.y -= ray.y;
@@ -2047,8 +2045,6 @@ namespace __volumerendering_specialized__
 								spos.x += ray.x * current_step;
 								spos.y += ray.y * current_step;
 								spos.z += ray.z * current_step;
-
-								count++;
 							}
 						}
 					}
@@ -2358,7 +2354,7 @@ namespace __volumerendering_controller__
 							spos += ray_step;
 							l += ray_sampling_step;
 
-							size_t count = 0;
+							double ol = l;
 							while( l < n )
 							{
 								difference_type si = volumerender::to_integer( spos.x );
@@ -2368,7 +2364,7 @@ namespace __volumerendering_controller__
 								// この位置における物体が不透明の場合は次のステップへ移行する
 								if( renderer.check( si, sj, sk ) )
 								{
-									if( count > 0 )
+									if( l > ol )
 									{
 										spos.x -= ray.x;
 										spos.y -= ray.y;
@@ -2383,8 +2379,6 @@ namespace __volumerendering_controller__
 								spos.x += ray.x * current_step;
 								spos.y += ray.y * current_step;
 								spos.z += ray.z * current_step;
-
-								count++;
 							}
 						}
 					}
@@ -2597,7 +2591,7 @@ namespace __volumerendering_controller__
 						spos += ray_step;
 						l += ray_sampling_step;
 
-						size_t count = 0;
+						double ol = l;
 						while( l < n )
 						{
 							difference_type si = volumerender::to_integer( spos.x );
@@ -2607,7 +2601,7 @@ namespace __volumerendering_controller__
 							// この位置における物体が不透明の場合は次のステップへ移行する
 							if( renderer.check( si, sj, sk ) )
 							{
-								if( count > 0 )
+								if( l > ol )
 								{
 									spos.x -= ray.x;
 									spos.y -= ray.y;
@@ -2622,8 +2616,6 @@ namespace __volumerendering_controller__
 							spos.x += ray.x * current_step;
 							spos.y += ray.y * current_step;
 							spos.z += ray.z * current_step;
-
-							count++;
 						}
 					}
 				}
