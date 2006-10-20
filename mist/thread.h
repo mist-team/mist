@@ -944,6 +944,17 @@ public:
 	//! 
 	bool lock( )
 	{
+		static bool isFirst = true;
+		static lock_object_type __double_lock__;
+		if( isFirst )
+		{
+			isFirst = false;
+			initialize( __double_lock__ );
+		}
+
+		// テーブルの検索でスレッドが衝突しないようにロックする
+		lock( __double_lock__ );
+
 		lock_table &table = singleton< lock_table >::get_instance( );
 		lock_table::iterator ite = table.find( lock_name_ );
 		if( ite == table.end( ) )
@@ -954,19 +965,30 @@ public:
 			{
 				lock_object_type &obj = p.first->second;
 				initialize( obj );
+
+				// テーブル検索用のロックを開放する
+				unlock( __double_lock__ );
+
 				lock( obj );
 			}
 			else
 			{
+				// テーブル検索用のロックを開放する
+				unlock( __double_lock__ );
+
 				// ロックオブジェクトをテーブルに追加することができませんでした・・・
 				return( false );
 			}
 		}
 		else
 		{
+			// テーブル検索用のロックを開放する
+			unlock( __double_lock__ );
+
 			// すでに同名のロックオブジェクトが存在するのでそちらをロックする
 			lock( ite->second );
 		}
+
 		return( true );
 	}
 
