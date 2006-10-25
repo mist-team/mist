@@ -1250,15 +1250,16 @@ namespace __inverse__
 							double A32 = a12 * a31 - a11 * a32;
 							double A33 = a11 * a22 - a12 * a21;
 
-							a( 0, 0 ) = A11 / detA;
-							a( 0, 1 ) = A12 / detA;
-							a( 0, 2 ) = A13 / detA;
-							a( 1, 0 ) = A21 / detA;
-							a( 1, 1 ) = A22 / detA;
-							a( 1, 2 ) = A23 / detA;
-							a( 2, 0 ) = A31 / detA;
-							a( 2, 1 ) = A32 / detA;
-							a( 2, 2 ) = A33 / detA;
+							double _1_detA = 1.0 / detA;
+							a( 0, 0 ) = A11 * _1_detA;
+							a( 0, 1 ) = A12 * _1_detA;
+							a( 0, 2 ) = A13 * _1_detA;
+							a( 1, 0 ) = A21 * _1_detA;
+							a( 1, 1 ) = A22 * _1_detA;
+							a( 1, 2 ) = A23 * _1_detA;
+							a( 2, 0 ) = A31 * _1_detA;
+							a( 2, 1 ) = A32 * _1_detA;
+							a( 2, 2 ) = A33 * _1_detA;
 
 							return( a );
 						}
@@ -1325,22 +1326,23 @@ namespace __inverse__
 							double A43 = -a11 * _22x43_23x42_ - a12 * _23x41_21x43_ - a13 * _21x42_22x41_;
 							double A44 = -a11 * _23x32_22x33_ - a12 * _21x33_23x31_ - a13 * _22x31_21x32_;
 
-							a( 0, 0 ) = A11 / detA;
-							a( 0, 1 ) = A12 / detA;
-							a( 0, 2 ) = A13 / detA;
-							a( 0, 3 ) = A14 / detA;
-							a( 1, 0 ) = A21 / detA;
-							a( 1, 1 ) = A22 / detA;
-							a( 1, 2 ) = A23 / detA;
-							a( 1, 3 ) = A24 / detA;
-							a( 2, 0 ) = A31 / detA;
-							a( 2, 1 ) = A32 / detA;
-							a( 2, 2 ) = A33 / detA;
-							a( 2, 3 ) = A34 / detA;
-							a( 3, 0 ) = A41 / detA;
-							a( 3, 1 ) = A42 / detA;
-							a( 3, 2 ) = A43 / detA;
-							a( 3, 3 ) = A44 / detA;
+							double _1_detA = 1.0 / detA;
+							a( 0, 0 ) = A11 * _1_detA;
+							a( 0, 1 ) = A12 * _1_detA;
+							a( 0, 2 ) = A13 * _1_detA;
+							a( 0, 3 ) = A14 * _1_detA;
+							a( 1, 0 ) = A21 * _1_detA;
+							a( 1, 1 ) = A22 * _1_detA;
+							a( 1, 2 ) = A23 * _1_detA;
+							a( 1, 3 ) = A24 * _1_detA;
+							a( 2, 0 ) = A31 * _1_detA;
+							a( 2, 1 ) = A32 * _1_detA;
+							a( 2, 2 ) = A33 * _1_detA;
+							a( 2, 3 ) = A34 * _1_detA;
+							a( 3, 0 ) = A41 * _1_detA;
+							a( 3, 1 ) = A42 * _1_detA;
+							a( 3, 2 ) = A43 * _1_detA;
+							a( 3, 3 ) = A44 * _1_detA;
 							return( a );
 						}
 						else
