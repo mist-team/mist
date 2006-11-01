@@ -43,6 +43,9 @@
 #include "matrix.h"
 #endif
 
+#include <vector>
+#include <algorithm>
+
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -785,8 +788,80 @@ namespace __clapack__
 
 	// インテルのMKLとの互換性を保つための，関数名の変換マクロ
 	#undef LPFNAME
-}
 
+
+	template < class T >
+	class __value_index_pair__
+	{
+	public:
+		typedef size_t size_type;
+		typedef T value_type;
+
+		value_type value;
+		size_type  index;
+
+		__value_index_pair__( ){ }
+
+		__value_index_pair__( value_type v, size_type indx ) : value( v ), index( indx ){ }
+
+		static bool ascending( const __value_index_pair__ &a, const __value_index_pair__ &b )
+		{
+			return( a.value < b.value );
+		}
+
+		static bool descending( const __value_index_pair__ &a, const __value_index_pair__ &b )
+		{
+			return( a.value > b.value );
+		}
+	};
+
+	template < class T >
+	class __value_index_pair__< std::complex< T > >
+	{
+	public:
+		typedef size_t size_type;
+		typedef std::complex< T > value_type;
+
+		value_type value;
+		size_type  index;
+
+		__value_index_pair__( ){ }
+
+		__value_index_pair__( value_type v, size_type indx ) : value( v ), index( indx ){ }
+
+		static bool ascending( const __value_index_pair__ &a, const __value_index_pair__ &b )
+		{
+			if( a.value.real( ) < b.value.real( ) )
+			{
+				return( true );
+			}
+			else if( a.value.real( ) > b.value.real( ) )
+			{
+				return( false );
+			}
+			else
+			{
+				return( a.value.imag( ) < b.value.imag( ) );
+			}
+		}
+
+		static bool descending( const __value_index_pair__ &a, const __value_index_pair__ &b )
+		{
+			if( a.value.real( ) > b.value.real( ) )
+			{
+				return( true );
+			}
+			else if( a.value.real( ) < b.value.real( ) )
+			{
+				return( false );
+			}
+			else
+			{
+				return( a.value.imag( ) > b.value.imag( ) );
+			}
+		}
+	};
+}
 
 
 namespace __solve__
@@ -3241,9 +3316,9 @@ matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::s
 		size_type num = s.rows( ) < s.cols( ) ? s.rows( ) : s.cols( );
 		for( size_type i = 0 ; i < num ; i++ )
 		{
-			if( s( i, i ) != 0 )
+			if( __clapack__::get_real( s( i, i ) ) != 0 )
 			{
-				s( i, i ) = 1 / s( i, i );
+				s( i, i ) = 1 / __clapack__::get_real( s( i, i ) );
 			}
 		}
 		return( ( u * s * vt ).t( ) );
@@ -3299,37 +3374,41 @@ inline matrix< typename matrix_expression< Expression >::value_type, typename ma
 template < class T, class Allocator >
 const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T, Allocator > &eigen_value, matrix< T, Allocator > &eigen_vector, matrix_style::style style = matrix_style::ge )
 {
+	typedef typename matrix< T, Allocator >::size_type size_type;
+
 	matrix< T, Allocator > a_( a );
 	__eigen__::__eigen__< __numeric__::is_complex< T >::value >::eigen( a_, eigen_value, eigen_vector, style );
 
-#if defined( _DESCENDING_ORDER_EIGEN_VALUE_ ) && _DESCENDING_ORDER_EIGEN_VALUE_ == 1
-	// 固有値が大きい順に並んでいない場合は，並び替える
-	if( __clapack__::get_real( eigen_value[ 0 ] ) < __clapack__::get_real( eigen_value[ eigen_value.size( ) - 1 ] ) )
-#else
-	// 固有値が小さい順に並んでいない場合は，並び替える
-	if( __clapack__::get_real( eigen_value[ 0 ] ) > __clapack__::get_real( eigen_value[ eigen_value.size( ) - 1 ] ) )
-#endif
+	typedef __clapack__::__value_index_pair__< T > value_index_pair;
+
+	std::vector< value_index_pair > vips( eigen_value.size( ) );
+
+	for( size_type i = 0 ; i < eigen_value.size( ) ; i++ )
 	{
-		typedef typename matrix< T, Allocator >::difference_type difference_type;
-		typedef typename matrix< T, Allocator >::size_type size_type;
-		typedef typename matrix< T, Allocator >::value_type value_type;
+		value_index_pair &vi = vips[ i ];
+		vi.value = eigen_value[ i ];
+		vi.index = i;
+	}
 
-		difference_type i = 0, j = eigen_value.size( ) - 1;
-		value_type v;
-		while( i < j )
+
+#if defined( _DESCENDING_ORDER_EIGEN_VALUE_ ) && _DESCENDING_ORDER_EIGEN_VALUE_ == 1
+	// 固有値と固有ベクトルを降順に並び替える
+	std::sort( vips.begin( ), vips.end( ), value_index_pair::descending );
+#else
+	// 固有値と固有ベクトルを昇順に並び替える
+	std::sort( vips.begin( ), vips.end( ), value_index_pair::ascending );
+#endif
+
+	a_ = eigen_vector;
+
+	for( size_type i = 0 ; i < vips.size( ) ; i++ )
+	{
+		const value_index_pair &vi = vips[ i ];
+		eigen_value[ i ] = vi.value;
+
+		for( size_type j = 0 ; j < eigen_vector.rows( ) ; j++ )
 		{
-			v = eigen_value[ i ];
-			eigen_value[ i ] = eigen_value[ j ];
-			eigen_value[ j ] = v;
-
-			for( size_type r = 0 ; r < eigen_vector.rows( ) ; r++ )
-			{
-				v = eigen_vector( r, i );
-				eigen_vector( r, i ) = eigen_vector( r, j );
-				eigen_vector( r, j ) = v;
-			}
-			i++;
-			j--;
+			eigen_vector( j, i ) = a_( j, vi.index );
 		}
 	}
 
@@ -3358,11 +3437,49 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &eigen_vector,
 						matrix_style::style style = matrix_style::ge )
 {
+	typedef typename matrix_expression< Expression >::size_type size_type;
 	typedef typename matrix_expression< Expression >::value_type value_type;
 	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
 	typedef matrix< value_type, allocator_type > matrix_type;
+
 	matrix_type a_( expression );
-	return( __eigen__::__eigen__< __numeric__::is_complex< value_type >::value >::eigen( a_, eigen_value, eigen_vector, style ) );
+	
+	__eigen__::__eigen__< __numeric__::is_complex< value_type >::value >::eigen( a_, eigen_value, eigen_vector, style );
+
+	typedef __clapack__::__value_index_pair__< value_type > value_index_pair;
+
+	std::vector< value_index_pair > vips( eigen_value.size( ) );
+
+	for( size_type i = 0 ; i < eigen_value.size( ) ; i++ )
+	{
+		value_index_pair &vi = vips[ i ];
+		vi.value = eigen_value[ i ];
+		vi.index = i;
+	}
+
+
+#if defined( _DESCENDING_ORDER_EIGEN_VALUE_ ) && _DESCENDING_ORDER_EIGEN_VALUE_ == 1
+	// 固有値と固有ベクトルを降順に並び替える
+	std::sort( vips.begin( ), vips.end( ), value_index_pair::descending );
+#else
+	// 固有値と固有ベクトルを昇順に並び替える
+	std::sort( vips.begin( ), vips.end( ), value_index_pair::ascending );
+#endif
+
+	a_ = eigen_vector;
+
+	for( size_type i = 0 ; i < vips.size( ) ; i++ )
+	{
+		const value_index_pair &vi = vips[ i ];
+		eigen_value[ i ] = vi.value;
+
+		for( size_type j = 0 ; j < eigen_vector.rows( ) ; j++ )
+		{
+			eigen_vector( j, i ) = a_( j, vi.index );
+		}
+	}
+
+	return( eigen_value );
 }
 
 #endif
