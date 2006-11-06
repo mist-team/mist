@@ -55,6 +55,7 @@ image_draw_area *draw_area;
 #define __INCLUDE_DICOM_TAG_ALL__	// 全てのDICOMタグをインポートする
 #define __SHOW_DICOM_TAG__			// コンソールにインクルードしたタグを表示する
 #define __SHOW_DICOM_UNKNOWN_TAG__	// コンソールに認識出来なかったタグを表示する
+#define __SHOW_DICOM_ZEROBYTE_TAG__
 #include <mist/io/dicom.h>
 
 
@@ -462,7 +463,7 @@ void thinning_test( )
 
 	mist::convert( image_object, label );
 
-	mist::euclidean::thinning( label, label );
+	mist::euclidean::thinning8( label, label );
 //	mist::thinning( label, label );
 
 	for( image_type::size_type i = 0 ; i < image_object.size( ) ; i++ )
