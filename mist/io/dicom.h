@@ -46,6 +46,10 @@
 #include "../config/endian.h"
 #endif
 
+#ifndef __INCLUDE_MIST_LIMITS__
+#include "../limits.h"
+#endif
+
 // ƒJƒ‰[‰æ‘œ‚Ìİ’è‚ğ“Ç‚İ‚Ş
 #ifndef __INCLUDE_MIST_COLOR_H__
 #include "../config/color.h"
