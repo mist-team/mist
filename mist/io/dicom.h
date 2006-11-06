@@ -178,6 +178,38 @@ namespace dicom
 		return( p[ 0 ] == 0xfe && p[ 1 ] == 0xff && p[ 2 ] == 0xdd && p[ 3 ] == 0xe0 && p[ 4 ] == 0x00 && p[ 5 ] == 0x00 && p[ 6 ] == 0x00 && p[ 7 ] == 0x00 );
 	}
 
+	template < bool _IS_SIGNED_ >
+	struct __check_num_bytes_function__
+	{
+		template < class T >
+		static ptrdiff_t check( const T &nbytes ) 
+		{
+			if( nbytes == type_limits< T >::maximum( ) )
+			{
+				return( -1 );
+			}
+			else
+			{
+				return( nbytes );
+			}
+		}
+	};
+
+	template < >
+	struct __check_num_bytes_function__< true >
+	{
+		template < class T >
+		static ptrdiff_t check( const T &nbytes ) 
+		{
+			return( nbytes );
+		}
+	};
+
+	template < class T >
+	inline ptrdiff_t __check_num_bytes__( const T &nbytes )
+	{
+		return( __check_num_bytes_function__< std::numeric_limits< T >::is_signed >::check( nbytes ) );
+	}
 
 	/// @brief DICOMのタグを読み込み，テーブルに登録されているものと照合する
 	//! 
@@ -231,11 +263,11 @@ namespace dicom
 				case OF:
 				case UT:
 					data += 4;
-					num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
+					num_bytes = __check_num_bytes__( to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( ) );
 					break;
 
 				default:
-					num_bytes = to_current_endian( byte_array< unsigned short >( data + 2 ), from_little_endian ).get_value( );
+					num_bytes = __check_num_bytes__( to_current_endian( byte_array< unsigned short >( data + 2 ), from_little_endian ).get_value( ) );
 					break;
 				}
 			}
@@ -252,18 +284,19 @@ namespace dicom
 				case OF:
 				case UT:
 					data += 4;
-					num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
+					num_bytes = __check_num_bytes__( to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( ) );
 					break;
 
 				default:
-					num_bytes = to_current_endian( byte_array< unsigned short >( data + 2 ), from_little_endian ).get_value( );
+					num_bytes = __check_num_bytes__( to_current_endian( byte_array< unsigned short >( data + 2 ), from_little_endian ).get_value( ) );
 				}
 			}
 			else
 			{
 				// 暗示的VR
-				num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
+				num_bytes = __check_num_bytes__( to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( ) );
 			}
+
 			numBytes = num_bytes;
 			return( reinterpret_cast< unsigned char * >( data + 4 ) );
 		}
@@ -293,9 +326,7 @@ namespace dicom
 			case UI:
 			case UL:
 			case US:
-				{
-					num_bytes = to_current_endian( byte_array< unsigned short >( data + 2 ), from_little_endian ).get_value( );
-				}
+				num_bytes = __check_num_bytes__( to_current_endian( byte_array< unsigned short >( data + 2 ), from_little_endian ).get_value( ) );
 				break;
 
 			case OB:
@@ -305,11 +336,11 @@ namespace dicom
 			case OF:
 			case UT:
 				data += 4;
-				num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
+				num_bytes = __check_num_bytes__( to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( ) );
 				break;
 
 			default:
-				num_bytes = to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( );
+				num_bytes = __check_num_bytes__( to_current_endian( byte_array< unsigned int >( data ), from_little_endian ).get_value( ) );
 				break;
 			}
 
@@ -780,7 +811,7 @@ namespace dicom
 						}
 
 						pointer += 4;
-						numBytes = to_current_endian( byte_array< unsigned int >( pointer ), from_little_endian ).get_value( );
+						numBytes = __check_num_bytes__( to_current_endian( byte_array< unsigned int >( pointer ), from_little_endian ).get_value( ) );
 						pointer += 4;
 
 						unsigned char *epp = numBytes == -1 ? ep : pointer + numBytes;
@@ -850,7 +881,7 @@ namespace dicom
 							}
 
 							p += 4;
-							numBytes = to_current_endian( byte_array< unsigned int >( p ), from_little_endian ).get_value( );
+							numBytes = __check_num_bytes__( to_current_endian( byte_array< unsigned int >( p ), from_little_endian ).get_value( ) );
 							p += 4 + numBytes;
 
 							if( numBytes < 0 || p > end_pointer )
