@@ -316,10 +316,9 @@ namespace _active_search_
 	{
 		//std::cout << "speed" << std::endl;
 		typedef typename Functor::result_type		value_type;
-		typedef typename array< value_type >		array_type;
-		array_type in( in2.size( ) );
+		array< value_type > in( in2.size( ) );
 		_quantize( in2, in, f );
-		array_type ref( ref2.size( ) );
+		array< value_type > ref( ref2.size( ) );
 		_quantize( ref2, ref, f );
 		return __search( in, ref, x, scale, similarity, num_of_bins, _functor< value_type, value_type >( ), b_scale, e_scale, scale_factor );
 	}
@@ -575,10 +574,9 @@ namespace _active_search_
 	{
 		//std::cout << "speed" << std::endl;
 		typedef typename Functor::result_type		value_type;
-		typedef typename array2< value_type >		array_type;
-		array_type in( in2.width( ), in2.height( ) );
+		array2< value_type > in( in2.width( ), in2.height( ) );
 		_quantize( in2, in, f );
-		array_type ref( ref2.width( ), ref2.height( ) );
+		array2< value_type > ref( ref2.width( ), ref2.height( ) );
 		_quantize( ref2, ref, f );
 		return __search( in, ref, x, y, scale, similarity, num_of_bins, _functor< value_type, value_type >( ), b_scale, e_scale, scale_factor );
 	}
@@ -888,10 +886,9 @@ namespace _active_search_
 	{
 		//std::cout << "speed" << std::endl;
 		typedef typename Functor::result_type		value_type;
-		typedef typename array3< value_type >		array_type;
-		array_type in( in2.width( ), in2.height( ), in2.depth( ) );
+		array3< value_type > in( in2.width( ), in2.height( ), in2.depth( ) );
 		_quantize( in2, in, f );
-		array_type ref( ref2.width( ), ref2.height( ), ref2.depth( ) );
+		array3< value_type > ref( ref2.width( ), ref2.height( ), ref2.depth( ) );
 		_quantize( ref2, ref, f );
 		return __search( in, ref, x, y, z, scale, similarity, num_of_bins, _functor< value_type, value_type >( ), b_scale, e_scale, scale_factor );
 	}
