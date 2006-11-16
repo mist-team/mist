@@ -52,7 +52,7 @@ _MIST_BEGIN
 
 namespace __libavcodec__
 {
-	bool is_libavcodec_initialized = false;		///< @brief libavcodecの初期化フラグ
+	static bool is_libavcodec_initialized = false;		///< @brief libavcodecの初期化フラグ
 }
 
 
