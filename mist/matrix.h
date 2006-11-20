@@ -562,6 +562,12 @@ private:
 	size_type size1_;
 	size_type size2_;
 
+private:
+	// rows や cols との混乱を避けるため，matrix では使えないようにする
+	size_type width( ) const;	///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type height( ) const;	///< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type depth( ) const;	///< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+
 public:
 	/// @brief 行列のサイズを num 行 1 列に変更する
 	//! 
