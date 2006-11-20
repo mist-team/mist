@@ -178,10 +178,15 @@ namespace region_growing_utility
 		/// @brief 次の注目点の定め方
 		expand_mode_type expand_mode( ) const { return( NC4 ); }
 
-		/// @brief 半径と解像度を指定して球を初期化（楕円の作成も可能）
-		circle( double radius, double resoX = 1.0, double resoY = 1.0 ) : radius_( radius ), resoX_( resoX ), resoY_( resoY ),
-			width_( static_cast< size_type >( std::ceil( radius_ / resoX_ ) ) * 2 + 1 ), height_( static_cast< size_type >( std::ceil( radius_ / resoY_ ) ) * 2 + 1 )
+		/// @brief 半径と解像度を指定して球を初期化（楕円の作成も可能，ただし，単位は画素）
+		circle( double radius, double resoX = 1.0, double resoY = 1.0 ) : radius_( radius )
 		{
+			double max_reso = resoX > resoY ? resoX: resoY;
+
+			resoX_ = resoX / max_reso;
+			resoY_ = resoY / max_reso;
+			width_  = static_cast< size_type >( std::ceil( radius_ / resoX_ ) ) * 2 + 1;
+			height_ = static_cast< size_type >( std::ceil( radius_ / resoY_ ) ) * 2 + 1;
 		}
 	};
 
@@ -216,13 +221,18 @@ namespace region_growing_utility
 		/// @brief 次の注目点の定め方
 		expand_mode_type expand_mode( ) const { return( NC6 ); }
 
-		/// @brief 半径と解像度を指定して球を初期化（楕円体の作成も可能）
-		sphere( double radius, double resoX = 1.0, double resoY = 1.0, double resoZ = 1.0 ) :
-						radius_( radius ), resoX_( resoX ), resoY_( resoY ), resoZ_( resoZ ),
-						width_( static_cast< size_type >( std::ceil( radius_ / resoX_ ) ) * 2 + 1 ),
-						height_( static_cast< size_type >( std::ceil( radius_ / resoY_ ) ) * 2 + 1 ),
-						depth_( static_cast< size_type >( std::ceil( radius_ / resoZ_ ) ) * 2 + 1 )
+		/// @brief 半径と解像度を指定して球を初期化（楕円体の作成も可能，ただし，単位は画素）
+		sphere( double radius, double resoX = 1.0, double resoY = 1.0, double resoZ = 1.0 ) : radius_( radius )
 		{
+			double max_reso = resoX > resoY ? resoX: resoY;
+			max_reso = max_reso > resoZ ? max_reso : resoZ;
+
+			resoX_ = resoX / max_reso;
+			resoY_ = resoY / max_reso;
+			resoZ_ = resoZ / max_reso;
+			width_  = static_cast< size_type >( std::ceil( radius_ / resoX_ ) ) * 2 + 1;
+			height_ = static_cast< size_type >( std::ceil( radius_ / resoY_ ) ) * 2 + 1;
+			depth_  = static_cast< size_type >( std::ceil( radius_ / resoZ_ ) ) * 2 + 1;
 		}
 	};
 

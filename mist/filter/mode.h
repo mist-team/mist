@@ -126,10 +126,10 @@ namespace mode_filter
 		typedef array2< bool >::size_type size_type;
 		typedef array2< bool >::difference_type difference_type;
 
-		double min_reso = resoX < resoY ? resoX: resoY;
+		double max_reso = resoX > resoY ? resoX: resoY;
 
-		double ax = resoX / min_reso;
-		double ay = resoY / min_reso;
+		double ax = resoX / max_reso;
+		double ay = resoY / max_reso;
 		double xx, yy, rr = radius * radius;
 		difference_type rx = static_cast< size_type >( ceil( radius / ax ) );
 		difference_type ry = static_cast< size_type >( ceil( radius / ay ) );
@@ -203,12 +203,12 @@ namespace mode_filter
 		typedef array3< bool >::size_type size_type;
 		typedef array3< bool >::difference_type difference_type;
 
-		double min_reso = resoX < resoY ? resoX: resoY;
-		min_reso = min_reso < resoZ ? min_reso : resoZ;
+		double max_reso = resoX > resoY ? resoX: resoY;
+		max_reso = max_reso > resoZ ? max_reso : resoZ;
 
-		double ax = resoX / min_reso;
-		double ay = resoY / min_reso;
-		double az = resoZ / min_reso;
+		double ax = resoX / max_reso;
+		double ay = resoY / max_reso;
+		double az = resoZ / max_reso;
 		double xx, yy, zz, rr = radius * radius;
 		difference_type rx = static_cast< size_type >( ceil( radius / ax ) );
 		difference_type ry = static_cast< size_type >( ceil( radius / ay ) );
@@ -292,10 +292,10 @@ namespace mode_filter
 		typedef array2< bool >::size_type size_type;
 		typedef array2< bool >::difference_type difference_type;
 
-		double min_reso = resoX < resoY ? resoX: resoY;
+		double max_reso = resoX > resoY ? resoX: resoY;
 
-		double ax = resoX / min_reso;
-		double ay = resoY / min_reso;
+		double ax = resoX / max_reso;
+		double ay = resoY / max_reso;
 		double xx, yy;
 		difference_type rx = static_cast< size_type >( ceil( radius / ax ) );
 		difference_type ry = static_cast< size_type >( ceil( radius / ay ) );
@@ -369,12 +369,12 @@ namespace mode_filter
 		typedef array3< bool >::size_type size_type;
 		typedef array3< bool >::difference_type difference_type;
 
-		double min_reso = resoX < resoY ? resoX: resoY;
-		min_reso = min_reso < resoZ ? min_reso : resoZ;
+		double max_reso = resoX > resoY ? resoX: resoY;
+		max_reso = max_reso > resoZ ? max_reso : resoZ;
 
-		double ax = resoX / min_reso;
-		double ay = resoY / min_reso;
-		double az = resoZ / min_reso;
+		double ax = resoX / max_reso;
+		double ay = resoY / max_reso;
+		double az = resoZ / max_reso;
 		double xx, yy, zz;
 		difference_type rx = static_cast< size_type >( ceil( radius / ax ) );
 		difference_type ry = static_cast< size_type >( ceil( radius / ay ) );
