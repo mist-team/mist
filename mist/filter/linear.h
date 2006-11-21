@@ -74,7 +74,7 @@ namespace __linear__
 
 		static value_type convert_from( const promote_type &pixel )
 		{
-			return( pixel );
+			return( static_cast< value_type >( pixel ) );
 		}
 	};
 
