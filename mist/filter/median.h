@@ -400,7 +400,7 @@ namespace __median_filter_divide_conquer__
 					c = 0;
 					for( z = k < bd ? 0 : k - bd ; z <= k + bd && z < d ; z++ )
 					{
-						for(y = j < bh ? 0 : j - bh ; y <= j + bh && y < h ; y++ )
+						for( y = j < bh ? 0 : j - bh ; y <= j + bh && y < h ; y++ )
 						{
 							sort[ windex ][ c++ ] = in( x, y, z );
 						}

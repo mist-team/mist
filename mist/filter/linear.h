@@ -42,217 +42,386 @@
 #include "../mist.h"
 #endif
 
-#include <algorithm>
-#include <cmath>
-#include <mist/config/color.h>
+#ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
+#include "../config/type_trait.h"
+#endif
 
+#ifndef __INCLUDE_MIST_THREAD__
+#include "../thread.h"
+#endif
+
+
+#include <cmath>
 
 
 // mist名前空間の始まり
 _MIST_BEGIN
 
 
-
+// メディアンフィルタ
 namespace __linear__
 {
-	inline void pointer_differences( mist::array< int > &p_diff, const int o, const int inc )
+	template < class T >
+	struct __promote_pixel_converter_
 	{
-		for( size_t i = 0 ; i < p_diff.size( ) ; i ++ )
-		{
-			const int di = static_cast< int >( i );
-			p_diff[ i ] = ( di - o ) * inc;
-		}
-	}
+		typedef T value_type;
+		typedef double promote_type;
 
-	inline void pointer_differences_2( mist::array2< int > &p_diff, const int o1, const int o2, const int inc1, const int inc2 )
-	{
-		for( size_t j = 0 ; j < p_diff.height( ) ; j ++ )
+		static promote_type convert_to( const value_type &pixel )
 		{
-			const int dj = static_cast< int >( j );
-			for( size_t i = 0 ; i < p_diff.width( ) ; i ++ )
+			return( pixel );
+		}
+
+		static value_type convert_from( const promote_type &pixel )
+		{
+			return( pixel );
+		}
+	};
+
+	template < class T >
+	struct __promote_pixel_converter_< rgb< T > >
+	{
+		typedef rgb< T > value_type;
+		typedef rgb< double > promote_type;
+
+		static promote_type convert_to( const value_type &pixel )
+		{
+			return( promote_type( pixel.r, pixel.g, pixel.b ) );
+		}
+
+		static value_type convert_from( const promote_type &pixel )
+		{
+			return( value_type( static_cast< T >( pixel.r ), static_cast< T >( pixel.g ), static_cast< T >( pixel.b ) ) );
+		}
+	};
+
+	template < class T >
+	struct __promote_pixel_converter_< bgr< T > >
+	{
+		typedef bgr< T > value_type;
+		typedef bgr< double > promote_type;
+
+		static promote_type convert_to( const value_type &pixel )
+		{
+			return( promote_type( pixel.r, pixel.g, pixel.b ) );
+		}
+
+		static value_type convert_from( const promote_type &pixel )
+		{
+			return( value_type( static_cast< T >( pixel.r ), static_cast< T >( pixel.g ), static_cast< T >( pixel.b ) ) );
+		}
+	};
+
+	template < class T >
+	struct __promote_pixel_converter_< rgba< T > >
+	{
+		typedef rgba< T > value_type;
+		typedef rgba< double > promote_type;
+
+		static promote_type convert_to( const value_type &pixel )
+		{
+			return( promote_type( pixel.r, pixel.g, pixel.b ) );
+		}
+
+		static value_type convert_from( const promote_type &pixel )
+		{
+			return( value_type( static_cast< T >( pixel.r ), static_cast< T >( pixel.g ), static_cast< T >( pixel.b ) ) );
+		}
+	};
+
+	template < class T >
+	struct __promote_pixel_converter_< bgra< T > >
+	{
+		typedef bgra< T > value_type;
+		typedef bgra< double > promote_type;
+
+		static promote_type convert_to( const value_type &pixel )
+		{
+			return( promote_type( pixel.r, pixel.g, pixel.b ) );
+		}
+
+		static value_type convert_from( const promote_type &pixel )
+		{
+			return( value_type( static_cast< T >( pixel.r ), static_cast< T >( pixel.g ), static_cast< T >( pixel.b ) ) );
+		}
+	};
+
+
+	// in  : 入力画像. 入力画像の画素値は min と max の間とする
+	// out : 出力画像. 出力画像のメモリはあらかじめ割り当てられているものとする
+	// fw, fh, fd : フィルタサイズ
+	template < class Array1, class Array2, class Kernel, class Functor >
+	void linear_filter( const Array1 &in, Array2 &out, const Kernel &kernel,
+						typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
+						typename Array1::size_type thread_idz, typename Array1::size_type thread_numz, Functor f )
+	{
+		typedef typename Array1::size_type  size_type;
+		typedef typename Array1::difference_type  difference_type;
+		typedef __promote_pixel_converter_< typename Array1::value_type > promote_pixel_converter;
+		typedef typename promote_pixel_converter::promote_type promote_type;
+		typedef typename Array2::value_type out_value_type;
+		typedef typename Array1::const_pointer ipointer_type;
+		typedef typename Array2::pointer opointer_type;
+
+		difference_type w = in.width( );
+		difference_type h = in.height( );
+		difference_type d = in.depth( );
+
+		difference_type fw = kernel.width( );
+		difference_type fh = kernel.height( );
+		difference_type fd = kernel.depth( );
+
+		const bool bprogress1 = thread_idy == 0 && d == 1;
+		const bool bprogress2 = thread_idz == 0 && d > 1;
+
+		difference_type rw = fw / 2;
+		difference_type rh = fh / 2;
+		difference_type rd = fd / 2;
+
+		difference_type i, j, k;
+
+		for( k = thread_idz ; k < rd ; k += thread_numz )
+		{
+			for( j = thread_idy ; j < h ; j += thread_numy )
 			{
-				const int di = static_cast< int >( i );
-				p_diff( i, j ) = ( dj - o2 ) * inc2 + ( di - o1 ) * inc1;
+				ipointer_type ip = &in( 0, j, k );
+				opointer_type op = &out( 0, j, k );
+				for( i = 0 ; i < w ; i++ )
+				{
+					op[ i ] = ip[ i ];
+				}
 			}
 		}
-	}
 
-	inline void pointer_differences_3( mist::array3< int > &p_diff, const int o1, const int o2, const int o3, const int inc1, const int inc2, const int inc3 )
-	{
-		for( size_t k = 0 ; k < p_diff.depth( ) ; k ++ )
+		for( ; k + rd < d ; k += thread_numz )
 		{
-			const int dk = static_cast< int >( k );
-			for( size_t j = 0 ; j < p_diff.height( ) ; j ++ )
+			difference_type sz = k - rd;
+			difference_type ez = k + rd;
+
+			for( j = thread_idy ; j < rh ; j += thread_numy )
 			{
-				const int dj = static_cast< int >( j );
-				for( size_t i = 0 ; i < p_diff.width( ) ; i ++ )
+				ipointer_type ip = &in( 0, j, k );
+				opointer_type op = &out( 0, j, k );
+				for( i = 0 ; i < w ; i++ )
 				{
-					const int di = static_cast< int >( i );
-					p_diff( i, j, k ) = ( dk - o3 ) * inc3 + ( dj - o2 ) * inc2 + ( di - o1 ) * inc1;
+					op[ i ] = ip[ i ];
+				}
+			}
+
+			for( ; j + rh < h ; j += thread_numy )
+			{
+				difference_type sy = j - rh;
+				difference_type ey = j + rh;
+
+				ipointer_type ip = &in( 0, j, k );
+				opointer_type op = &out( 0, j, k );
+				for( i = 0 ; i < rw ; i++ )
+				{
+					op[ i ] = ip[ i ];
+				}
+
+				for( ; i + rw < w ; i++ )
+				{
+					difference_type sx = i - rw;
+					difference_type ex = i + rw;
+
+					promote_type value = promote_type( );
+					for( difference_type z = 0 ; z < fd ; z++ )
+					{
+						for( difference_type y = 0 ; y < fh ; y++ )
+						{
+							for( difference_type x = 0 ; x < fw ; x++ )
+							{
+								value += kernel( x, y, z ) * in( x + sx, y + sy, z + sz );
+							}
+						}
+					}
+
+					op[ i ] = promote_pixel_converter::convert_from( value );
+				}
+
+				for( ; i < w ; i++ )
+				{
+					op[ i ] = ip[ i ];
+				}
+
+				if( bprogress1 )
+				{
+					f( static_cast< double >( j + 1 ) / static_cast< double >( h ) * 100.0 );
+				}
+			}
+
+			for( ; j < h ; j += thread_numy )
+			{
+				ipointer_type ip = &in( 0, j, k );
+				opointer_type op = &out( 0, j, k );
+				for( i = 0 ; i < w ; i++ )
+				{
+					op[ i ] = ip[ i ];
+				}
+			}
+
+			if( bprogress2 )
+			{
+				f( static_cast< double >( k + 1 ) / static_cast< double >( d ) * 100.0 );
+			}
+		}
+
+		for( ; k < d ; k += thread_numz )
+		{
+			for( j = thread_idy ; j < h ; j += thread_numy )
+			{
+				ipointer_type ip = &in( 0, j, k );
+				opointer_type op = &out( 0, j, k );
+				for( i = 0 ; i < w ; i++ )
+				{
+					op[ i ] = ip[ i ];
 				}
 			}
 		}
 	}
 
 
-
-	template< bool Is_color >
-	struct calc_type
+	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+	static void __linear_filter__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const Kernel &kernel,
+						typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num, Functor f )
 	{
-		typedef double type;
-	};
+		linear_filter( in, out, kernel, 0, 1, thread_id, thread_num, f );
+	}
 
-	template< >
-	struct calc_type< true >
+	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+	static void __linear_filter__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const Kernel &kernel,
+						typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num, Functor f )
 	{
-		typedef mist::rgb< double > type;
-	};
+		linear_filter( in, out, kernel, thread_id, thread_num, 0, 1, f );
+	}
 
-
-	
-	template< class T > struct is_unsigned         { _MIST_CONST( bool, value, false ); };
-	template<> struct is_unsigned< unsigned char > { _MIST_CONST( bool, value, true  ); };
-	template<> struct is_unsigned< unsigned short >{ _MIST_CONST( bool, value, true  ); };
-	template<> struct is_unsigned< unsigned int >  { _MIST_CONST( bool, value, true  ); };
-	template<> struct is_unsigned< unsigned long > { _MIST_CONST( bool, value, true  ); };
-
-	template< bool Is_unsigned >
-	struct abs_type
+	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+	static void __linear_filter__( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const Kernel &kernel,
+						typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num, Functor f )
 	{
-		static double func( double val )
+		linear_filter( in, out, kernel, 0, 1, thread_id, thread_num, f );
+	}
+
+	template < class T1, class T2, class Kernel, class Functor >
+	class linear_thread : public mist::thread< linear_thread< T1, T2, Kernel, Functor > >
+	{
+	public:
+		typedef mist::thread< linear_thread< T1, T2, Kernel, Functor > > base;
+		typedef typename base::thread_exit_type thread_exit_type;
+		typedef typename T1::size_type size_type;
+		typedef typename T1::value_type value_type;
+
+	private:
+		size_t thread_id_;
+		size_t thread_num_;
+
+		// 入出力用の画像へのポインタ
+		const T1 *in_;
+		T2 *out_;
+		const Kernel *kernel_;
+
+		Functor f_;
+
+	public:
+		void setup_parameters( const T1 &in, T2 &out, const Kernel &kernel, size_type thread_id, size_type thread_num, Functor f )
 		{
-			return val; 
+			in_  = &in;
+			out_ = &out;
+			kernel_ = &kernel;
+			thread_id_ = thread_id;
+			thread_num_ = thread_num;
+			f_ = f;
+		}
+
+		linear_thread( size_type id = 0, size_type num = 1 ) : thread_id_( id ), thread_num_( num ),
+													in_( NULL ), out_( NULL ), kernel_( NULL )
+		{
+		}
+
+		linear_thread( const linear_thread &p ) : base( p ), thread_id_( p.thread_id_ ), thread_num_( p.thread_num_ ),
+													in_( p.in_ ), out_( p.out_ ), kernel_( p.kernel_ )
+		{
+		}
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( )
+		{
+			__linear_filter__( *in_, *out_, *kernel_, thread_id_, thread_num_, f_ );
+			return( true );
 		}
 	};
 
-	template< >
-	struct abs_type< true >
-	{
-		static double func( double val )
-		{
-			return std::fabs( val );
-		}
-	};
 
-
-	template< typename Kernel_type >
-	inline void kernel_culling( const mist::array< Kernel_type > &k1, const mist::array< int > &p1, mist::array< Kernel_type > &k2, mist::array< int > &p2 )
+	template < class Array >
+	inline void compute_normalized_kernel( Array &kernel )
 	{
-		size_t size = 0;
-		for( size_t i = 0 ; i < k1.size( ) ; i ++ )
+		typedef typename Array::value_type value_type;
+		typedef typename Array::size_type size_type;
+
+		value_type sum = value_type( );
+		for( size_type i = 0 ; i < kernel.size( ) ; i++ )
 		{
-			if( k1[ i ] != 0 )
-			{
-				size ++;
-			}
+			sum += kernel[ i ];
 		}
-		k2.resize( size );
-		p2.resize( size );
-		size_t m = 0;
-		for( size_t i = 0 ; i < k1.size( ) ; i ++ )
+
+		for( size_type i = 0 ; i < kernel.size( ) ; i++ )
 		{
-			if( k1[ i ] != 0 )
-			{
-				k2[ m ] = k1[ i ];
-				p2[ m ] = p1[ i ];
-				m ++;
-			}
+			kernel[ i ] /= sum;
 		}
 	}
 
-
-	template< typename Calc_type >
-	struct filter_type
+	template < class Array >
+	inline void compute_gaussian_kernel( Array &kernel, const double radius, double sigma )
 	{
-		template< typename In_type, typename Out_type, typename Kernel_type >
-		static void filtering( const mist::array< In_type > &in, mist::array< Out_type > &out, const size_t begin, const size_t end, const mist::array< Kernel_type > &kernel, const mist::array< int > &p_diff )
-		{
+		typedef typename Array::size_type  size_type;
+		typedef typename Array::difference_type  difference_type;
+		typedef typename Array::value_type  value_type;
 
-			mist::array< Kernel_type > kernel2;
-			mist::array< int > p_diff2;
-			kernel_culling( kernel, p_diff, kernel2, p_diff2 );
-			Calc_type val;
-			for( size_t i = begin ; i < end ; i ++ )
+		if( sigma == 0.0 )
+		{
+			sigma = radius * 0.5;
+		}
+
+		difference_type R = static_cast< difference_type >( std::ceil( radius ) );
+
+		kernel.resize( R * 2 + 1, R * 2 + 1, R * 2 + 1 );
+
+		difference_type fw = kernel.width( );
+		difference_type fh = kernel.height( );
+		difference_type fd = kernel.depth( );
+
+		difference_type rw = fw / 2;
+		difference_type rh = fh / 2;
+		difference_type rd = fd / 2;
+
+		double _1_sig2 = 1.0 / ( sigma * sigma * 2.0 );
+		double sum = 0.0;
+		for( difference_type z = -rd ; z <= rd ; z++ )
+		{
+			double zz = z * z;
+			for( difference_type y = -rh ; y <= rh ; y++ )
 			{
-				val = Calc_type( );
-				int di = static_cast< int >( i );
-				for( size_t m = 0 ; m < kernel2.size( ) ; m ++ )
+				double yy = y * y;
+				for( difference_type x = -rw ; x <= rw ; x++ )
 				{
-					val += in[ static_cast< size_t >( di + p_diff2[ m ] ) ] * kernel2[ m ];
+					double xx = x * x;
+					double g = std::exp( -( xx + yy + zz ) * _1_sig2 );
+					sum += g;
+					kernel( x + rw, y + rh, z + rd ) = static_cast< value_type >( g );
 				}
-				out[ i ] = static_cast< Out_type >( abs_type< is_unsigned< Out_type >::value >::func( val ) );
 			}
 		}
-	};
 
-	template<  >
-	struct filter_type< mist::rgb< double > >
-	{
-		template< typename In_type, typename Out_type, typename Kernel_type >
-		static void filtering( const mist::array< In_type > &in, mist::array< mist::rgb< Out_type > > &out, const size_t begin, const size_t end, const mist::array< Kernel_type > &kernel, const mist::array< int > &p_diff )
+		for( size_type i = 0 ; i < kernel.size( ) ; i++ )
 		{
-			mist::array< Kernel_type > kernel2;
-			mist::array< int > p_diff2;
-			kernel_culling( kernel, p_diff, kernel2, p_diff2 );
-			mist::rgb< double > val;
-			for( size_t i = begin ; i < end ; i ++ )
-			{
-				val = mist::rgb< double >( );
-				int di = static_cast< int >( i );
-				for( size_t m = 0 ; m < kernel2.size( ) ; m ++ )
-				{
-					val += in[ static_cast< size_t >( di + p_diff2[ m ] ) ] * kernel2[ m ];
-				}
-				out[ i ].r = static_cast< Out_type >( abs_type< is_unsigned< Out_type >::value >::func( val.r ) );
-				out[ i ].g = static_cast< Out_type >( abs_type< is_unsigned< Out_type >::value >::func( val.g ) );
-				out[ i ].b = static_cast< Out_type >( abs_type< is_unsigned< Out_type >::value >::func( val.b ) );
-
-			}
+			kernel[ i ] /= sum;
 		}
-	};	
-
-	
-
-	struct lapl_1
-	{
-		mist::array< double > a;
-		lapl_1( )
-		{
-			a.resize( 3 );
-			a[ 0 ] = 1.0;  a[ 1 ] = -2.0;  a[ 2 ] = 1.0;
-		}
-	};
-
-	struct lapl_2
-	{
-		mist::array2< double > a;
-		lapl_2( )
-		{
-			a.resize( 3, 3 );
-			a( 0, 0 ) = 1.0;  a( 1, 0 ) = 1.0;  a( 2, 0 ) = 1.0;
-			a( 0, 1 ) = 1.0;  a( 1, 1 ) = -8.0;  a( 2, 1 ) = 1.0;
-			a( 0, 2 ) = 1.0;  a( 1, 2 ) = 1.0;  a( 2, 2 ) = 1.0;
-		}
-	};
-
-	struct lapl_3
-	{
-		mist::array3< double > a;
-		lapl_3( )
-		{
-			a.resize( 3, 3, 3 );
-			a( 0, 0, 0 ) = 1.0;  a( 1, 0, 0 ) = 1.0;  a( 2, 0, 0 ) = 1.0;
-			a( 0, 1, 0 ) = 1.0;  a( 1, 1, 0 ) = 1.0;  a( 2, 1, 0 ) = 1.0;
-			a( 0, 2, 0 ) = 1.0;  a( 1, 2, 0 ) = 1.0;  a( 2, 2, 0 ) = 1.0;
-			a( 0, 0, 1 ) = 1.0;  a( 1, 0, 1 ) = 1.0;  a( 2, 0, 1 ) = 1.0;
-			a( 0, 1, 1 ) = 1.0;  a( 1, 1, 1 ) = -26.0;  a( 2, 1, 1 ) = 1.0;
-			a( 0, 2, 1 ) = 1.0;  a( 1, 2, 1 ) = 1.0;  a( 2, 2, 1 ) = 1.0;
-			a( 0, 0, 2 ) = 1.0;  a( 1, 0, 2 ) = 1.0;  a( 2, 0, 2 ) = 1.0;
-			a( 0, 1, 2 ) = 1.0;  a( 1, 1, 2 ) = 1.0;  a( 2, 1, 2 ) = 1.0;
-			a( 0, 2, 2 ) = 1.0;  a( 1, 2, 2 ) = 1.0;  a( 2, 2, 2 ) = 1.0;
-		}
-	};
+	}
 }
+
+
 
 
 
@@ -267,7 +436,6 @@ namespace __linear__
 //! 使用可能な要素型は，算術型か mist::rgb< 算術型 > に限ります．
 //! 内部の計算は，出力配列の要素型が算術型の場合は double 型，
 //! mist::rgb< 算術型 > の場合は mist::rgb< double > で行います．
-//! 出力の型がunsignedの場合は，処理結果の絶対値を返します．
 //!
 //! 自分で定義した線形フィルタ用カーネルを各次元の画像に適用できます．
 //! 
@@ -287,223 +455,948 @@ namespace __linear__
 //!  @{
 
 
-
-/// @brief 一般の線形フィルタ( array )
-//! 
-//! カーネル配列とその中心位置を指定する
-//!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//! @param[in]  kernel …カーネル配列
-//! @param[in]  offset …カーネル中心位置
-//!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline void linear_filter(
-						  const array< In_value, In_alloc > &in,
-						  array< Out_value, Out_alloc > &out,
-						  const array< Kernel_value, Kernel_alloc > &kernel,
-						  const size_t offset )
-{
-	typedef typename __linear__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
-	mist::array< int > p_diff( kernel.size( ) );
-	__linear__::pointer_differences( p_diff, offset, 1 );
-	out.resize( in.size( ) );
-	const size_t begin = offset;
-	const size_t end = in.size( ) - ( kernel.width( ) - offset - 1 );
-	__linear__::filter_type< calc_type >::filtering( in, out, begin, end, kernel, p_diff );
-}
-
 /// @brief 一般の線形フィルタ( array )
 //! 
 //! カーネル配列を指定する(中心はカーネルのサイズから計算)
 //!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//!
+//! @note マスクの一辺のサイズは奇数でなくてはならない
+//! 
 //! @param[in]  in       … 入力配列
 //! @param[out] out      … 出力配列
 //! @param[in]  kernel   …カーネル配列
-//!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline void linear_filter(
-						  const array< In_value, In_alloc > &in,
-						  array< Out_value, Out_alloc > &out,
-						  const array< Kernel_value, Kernel_alloc > &kernel )
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Kernel >
+bool linear_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const Kernel &kernel, typename array< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	linear_filter( in, out, kernel, kernel.size( ) / 2 );
+	if( is_same_object( in, out ) || in.empty( ) )
+	{
+		return( false );
+	}
+
+	out.resize( in.size( ) );
+
+	__linear__::__linear_filter__( in, out, kernel, 0, thread_num, __mist_dmy_callback__( ) );
+	
+	return( true );
 }
 
-/// @brief 一般の線形フィルタ( array1 )
-//! 
-//! カーネル配列とその中心位置を指定する
-//!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//! @param[in]  kernel …カーネル配列
-//! @param[in]  offset …カーネル中心位置
-//!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline void linear_filter(
-						  const array1< In_value, In_alloc > &in,
-						  array1< Out_value, Out_alloc > &out,
-						  const array1< Kernel_value, Kernel_alloc > &kernel,
-						  const size_t offset )
-{
-	typedef typename __linear__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
-	mist::array< int > p_diff( kernel.size( ) );
-	__linear__::pointer_differences( p_diff, offset, 1 );
-	out.resize( in.size( ) );
-	out.reso1( in.reso1( ) );
-	const size_t begin = offset;
-	const size_t end = in.size( ) - ( kernel.size( ) - offset - 1 );
-	__linear__::filter_type< calc_type >::filtering( in, out, begin, end, kernel, p_diff );
-}
+
+
 
 /// @brief 一般の線形フィルタ( array1 )
 //! 
 //! カーネル配列を指定する(中心はカーネルのサイズから計算)
 //!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//!
+//! @note マスクの一辺のサイズは奇数でなくてはならない
+//! 
 //! @param[in]  in       … 入力配列
 //! @param[out] out      … 出力配列
 //! @param[in]  kernel   …カーネル配列
-//!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline void linear_filter(
-						  const array1< In_value, In_alloc > &in,
-						  array1< Out_value, Out_alloc > &out,
-						  const array1< Kernel_value, Kernel_alloc > &kernel )
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Kernel >
+bool linear_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, const Kernel &kernel, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	linear_filter( in, out, kernel, kernel.width( ) / 2 );
+	if( is_same_object( in, out ) || in.empty( ) )
+	{
+		return( false );
+	}
+
+	out.resize( in.size( ) );
+
+	__linear__::__linear_filter__( in, out, kernel, 0, thread_num, __mist_dmy_callback__( ) );
+	
+	return( true );
 }
+
 
 /// @brief 一般の線形フィルタ( array2 )
 //! 
-//! カーネル配列とその中心位置を指定する
+//! カーネル配列を指定する(中心はカーネルのサイズから計算)
 //!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @note マスクの一辺のサイズは奇数でなくてはならない
+//! 
 //! @param[in]  in       … 入力配列
 //! @param[out] out      … 出力配列
 //! @param[in]  kernel   …カーネル配列
-//! @param[in]  offset_i …i方向のカーネル中心位置
-//! @param[in]  offset_j …j方向のカーネル中心位置
-//!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline void linear_filter(
-						  const array2< In_value, In_alloc > &in,
-						  array2< Out_value, Out_alloc > &out,
-						  const array2< Kernel_value, Kernel_alloc > &kernel,
-						  const size_t offset_i,
-						  const size_t offset_j )
+//! @param[in]  f        …コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+bool linear_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const Kernel &kernel, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
 {
-	typedef typename __linear__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
-	mist::array2< int > p_diff( kernel.width( ), kernel.height( ) );
-	__linear__::pointer_differences_2( p_diff, offset_i, offset_j, 1, in.width( ) );
-	out.resize( in.width( ), in.height( ) );
+	if( is_same_object( in, out ) || in.empty( ) )
+	{
+		return( false );
+	}
+
+	typedef typename array2< T1, Allocator1 >::size_type  size_type;
+	typedef __linear__::linear_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 >, Kernel, Functor > linear_thread;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	out.resize( in.size1( ), in.size2( ) );
 	out.reso1( in.reso1( ) );
 	out.reso2( in.reso2( ) );
-	const size_t begin = offset_j * in.width( ) + offset_i;
-	const size_t end = in.size( ) - ( ( kernel.height( ) - offset_j - 1 ) * in.width( ) + kernel.width( ) - offset_i - 1 );
-	__linear__::filter_type< calc_type >::filtering( in, out, begin, end, kernel, p_diff );
+
+	linear_thread *thread = new linear_thread[ thread_num ];
+
+	size_type i;
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].setup_parameters( in, out, kernel, i, thread_num, f );
+	}
+
+	f( 0.0 );
+
+	// スレッドを実行して，終了まで待機する
+	do_threads_( thread, thread_num );
+
+	f( 100.1 );
+
+	delete [] thread;
+	
+	return( true );
 }
 
-/// @brief 一般の線形フィルタ( array2 )
-//! 
-//! カーネル配列を指定する(中心はカーネルのサイズから計算)
-//!
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   …カーネル配列
-//!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline void linear_filter(
-						  const array2< In_value, In_alloc > &in,
-						  array2< Out_value, Out_alloc > &out,
-						  const array2< Kernel_value, Kernel_alloc > &kernel )
-{
-	linear_filter( in, out, kernel, kernel.width( ) / 2, kernel.height( ) / 2 );
-}
 
 /// @brief 一般の線形フィルタ( array3 )
 //! 
-//! カーネル配列とその中心位置を指定する
+//! カーネル配列を指定する(中心はカーネルのサイズから計算)
 //!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//!
+//! @note マスクの一辺のサイズは奇数でなくてはならない
+//! 
 //! @param[in]  in       … 入力配列
 //! @param[out] out      … 出力配列
 //! @param[in]  kernel   …カーネル配列
-//! @param[in]  offset_i …i方向のカーネル中心位置
-//! @param[in]  offset_j …j方向のカーネル中心位置
-//! @param[in]  offset_k …k方向のカーネル中心位置
-//!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline void linear_filter(
-						  const array3< In_value, In_alloc > &in,
-						  array3< Out_value, Out_alloc > &out,
-						  const array3< Kernel_value, Kernel_alloc > &kernel,
-						  const size_t offset_i,
-						  const size_t offset_j,
-						  const size_t offset_k )
+//! @param[in]  f        …コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+bool linear_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const Kernel &kernel, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
 {
-	typedef typename __linear__::calc_type< is_color< typename Out_alloc::value_type >::value >::type calc_type;
-	mist::array3< int > p_diff( kernel.width( ), kernel.height( ), kernel.depth( ) );
-	__linear__::pointer_differences_3( p_diff, offset_i, offset_j, offset_k, 1, in.width( ), in.width( ) * in.height( ) );
-	out.resize( in.width( ), in.height( ), in.depth( ) );
+	if( is_same_object( in, out ) || in.empty( ) )
+	{
+		return( false );
+	}
+
+	typedef typename array3< T1, Allocator1 >::size_type  size_type;
+	typedef __linear__::linear_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 >, Kernel, Functor > linear_thread;
+
+	if( thread_num == 0 )
+	{
+		thread_num = static_cast< size_type >( get_cpu_num( ) );
+	}
+
+	out.resize( in.size1( ), in.size2( ), in.size3( ) );
 	out.reso1( in.reso1( ) );
 	out.reso2( in.reso2( ) );
 	out.reso3( in.reso3( ) );
-	const size_t begin = offset_k * in.height( ) * in.width( ) + offset_j * in.width( ) + offset_i;
-	const size_t end = in.size( ) - ( ( kernel.depth( ) - offset_k - 1 ) * in.height( ) * in.width( ) + ( kernel.height( ) - offset_j - 1 ) * in.width( ) + kernel.width( ) - offset_i - 1 );
-	__linear__::filter_type< calc_type >::filtering( in, out, begin, end, kernel, p_diff );
+
+	linear_thread *thread = new linear_thread[ thread_num ];
+
+	size_type i;
+	for( i = 0 ; i < thread_num ; i++ )
+	{
+		thread[ i ].setup_parameters( in, out, kernel, i, thread_num, f );
+	}
+
+	f( 0.0 );
+
+	// スレッドを実行して，終了まで待機する
+	do_threads_( thread, thread_num );
+
+	f( 100.1 );
+
+	delete [] thread;
+	
+	return( true );
 }
 
-/// @brief 一般の線形フィルタ( array3 )
-//! 
-//! カーネル配列を指定する(中心はカーネルのサイズから計算)
-//!
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   …カーネル配列
-//!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc, typename Kernel_value, typename Kernel_alloc >
-inline void linear_filter(
-						  const array3< In_value, In_alloc > &in,
-						  array3< Out_value, Out_alloc > &out,
-						  const array3< Kernel_value, Kernel_alloc > &kernel )
-{
-	linear_filter( in, out, kernel, kernel.width( ) / 2, kernel.height( ) / 2, kernel.depth( ) / 2 );
-}
 
 
-/// @brief ラプラシアン( array, array1, array2, array3 )
+
+
+//! @addtogroup laplacian_group ラプラシアンフィルタ
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/linear.h>
+//! @endcode
+//!
+//! 配列の端（カーネルがはみ出すところ）の要素の計算は行いません．
+//!
+//! 使用可能な要素型は，算術型か mist::rgb< 算術型 > に限ります．
+//! 内部の計算は，出力配列の要素型が算術型の場合は double 型，
+//! mist::rgb< 算術型 > の場合は mist::rgb< double > で行います．
+//!
+//!  @{
+
+
+/// @brief ラプラシアン( array )
 //! 
-//! サイズ3のラプラシアン
+//! サイズ 3 のラプラシアン
 //!
 //! @param[in]  in     … 入力配列
 //! @param[out] out    … 出力配列
 //!
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline void laplacian( const mist::array< In_value, In_alloc > &in, mist::array< Out_value, Out_alloc > &out )
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void laplacian_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, Functor f, typename array< T1, Allocator1 >::size_type thread_num )
 {
-	linear_filter( in, out, __linear__::lapl_1( ).a );
+	array< double > a( 3 );
+	a[ 0 ] = 1.0;  a[ 1 ] = -2.0;  a[ 2 ] = 1.0;
+
+	linear_filter( in, out, a, f, thread_num );
 }
 
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline void laplacian( const mist::array1< In_value, In_alloc > &in, mist::array1< Out_value, Out_alloc > &out )
+/// @brief ラプラシアン( array1 )
+//! 
+//! サイズ 3 のラプラシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void laplacian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, Functor f, typename array1< T1, Allocator1 >::size_type thread_num )
 {
-	linear_filter( in, out, __linear__::lapl_1( ).a );
+	array< double > a( 3 );
+	a[ 0 ] = 1.0;  a[ 1 ] = -2.0;  a[ 2 ] = 1.0;
+
+	linear_filter( in, out, a, f, thread_num );
 }
 
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline void laplacian( const mist::array2< In_value, In_alloc > &in, mist::array2< Out_value, Out_alloc > &out )
+/// @brief ラプラシアン( array2 )
+//! 
+//! サイズ 3×3 のラプラシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void laplacian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
 {
-	linear_filter( in, out, __linear__::lapl_2( ).a );
+	array2< double > a( 3, 3 );
+
+	a( 0, 0 ) = 1.0;  a( 1, 0 ) = 1.0;  a( 2, 0 ) = 1.0;
+	a( 0, 1 ) = 1.0;  a( 1, 1 ) = -8.0;  a( 2, 1 ) = 1.0;
+	a( 0, 2 ) = 1.0;  a( 1, 2 ) = 1.0;  a( 2, 2 ) = 1.0;
+
+	linear_filter( in, out, a, f, thread_num );
 }
 
-template< typename In_value, typename In_alloc, typename Out_value, typename Out_alloc >
-inline void laplacian( const mist::array3< In_value, In_alloc > &in, mist::array3< Out_value, Out_alloc > &out )
+/// @brief ラプラシアン( array3 )
+//! 
+//! サイズ 3×3×3 のラプラシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void laplacian_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
 {
-	linear_filter( in, out, __linear__::lapl_3( ).a );
+	array3< double > a( 3, 3, 3 );
+
+	a( 0, 0, 0 ) = 1.0;  a( 1, 0, 0 ) =   1.0;  a( 2, 0, 0 ) = 1.0;
+	a( 0, 1, 0 ) = 1.0;  a( 1, 1, 0 ) =   1.0;  a( 2, 1, 0 ) = 1.0;
+	a( 0, 2, 0 ) = 1.0;  a( 1, 2, 0 ) =   1.0;  a( 2, 2, 0 ) = 1.0;
+	a( 0, 0, 1 ) = 1.0;  a( 1, 0, 1 ) =   1.0;  a( 2, 0, 1 ) = 1.0;
+	a( 0, 1, 1 ) = 1.0;  a( 1, 1, 1 ) = -26.0;  a( 2, 1, 1 ) = 1.0;
+	a( 0, 2, 1 ) = 1.0;  a( 1, 2, 1 ) =   1.0;  a( 2, 2, 1 ) = 1.0;
+	a( 0, 0, 2 ) = 1.0;  a( 1, 0, 2 ) =   1.0;  a( 2, 0, 2 ) = 1.0;
+	a( 0, 1, 2 ) = 1.0;  a( 1, 1, 2 ) =   1.0;  a( 2, 1, 2 ) = 1.0;
+	a( 0, 2, 2 ) = 1.0;  a( 1, 2, 2 ) =   1.0;  a( 2, 2, 2 ) = 1.0;
+
+	linear_filter( in, out, a, f, thread_num );
 }
+
+
+/// @brief ラプラシアン( array )
+//! 
+//! サイズ 3 のラプラシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void laplacian_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	laplacian_filter( in, out, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @brief ラプラシアン( array1 )
+//! 
+//! サイズ 3 のラプラシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void laplacian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	laplacian_filter( in, out, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @brief ラプラシアン( array2 )
+//! 
+//! サイズ 3×3 のラプラシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void laplacian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	laplacian_filter( in, out, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @brief ラプラシアン( array3 )
+//! 
+//! サイズ 3×3×3 のラプラシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void laplacian_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	laplacian_filter( in, out, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @}
+//  ラプラシアングループの終わり
+
+
+
+
+
+//! @addtogroup gaussian_group ガウシアンフィルタ
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/linear.h>
+//! @endcode
+//!
+//! 配列の端（カーネルがはみ出すところ）の要素の計算値は保障しません．
+//! 使用可能な要素型は，算術型か mist::rgb< 算術型 > に限ります．
+//! 内部の計算は，出力配列の要素型が算術型の場合は double 型，
+//! mist::rgb< 算術型 > の場合は mist::rgb< double > で行います．
+//! 
+//!  @{
+
+
+/// @brief ガウシアン( array )
+//! 
+//! サイズ 3 のガウシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  radius   … フィルタ半径
+//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void gaussian_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const double radius, const double sigma, Functor f, typename array< T1, Allocator1 >::size_type thread_num )
+{
+	array< double > a( 3 );
+
+	__linear__::compute_gaussian_kernel( a, radius, sigma );
+
+	linear_filter( in, out, a, f, thread_num );
+}
+
+/// @brief ガウシアン( array1 )
+//! 
+//! サイズ 3 のガウシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  radius   … フィルタ半径
+//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void gaussian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, const double radius, const double sigma, Functor f, typename array1< T1, Allocator1 >::size_type thread_num )
+{
+	array< double > a( 3 );
+
+	__linear__::compute_gaussian_kernel( a, radius, sigma );
+
+	linear_filter( in, out, a, f, thread_num );
+}
+
+/// @brief ガウシアン( array2 )
+//! 
+//! サイズ 3×3 のガウシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  radius   … フィルタ半径
+//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void gaussian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const double radius, const double sigma, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
+{
+	array2< double > a( 3, 3 );
+
+	__linear__::compute_gaussian_kernel( a, radius, sigma );
+
+	linear_filter( in, out, a, f, thread_num );
+}
+
+/// @brief ガウシアン( array3 )
+//! 
+//! サイズ 3×3×3 のガウシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  radius   … フィルタ半径
+//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void gaussian_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double radius, const double sigma, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
+{
+	array3< double > a( 3, 3, 3 );
+
+	__linear__::compute_gaussian_kernel( a, radius, sigma );
+
+	linear_filter( in, out, a, f, thread_num );
+}
+
+
+/// @brief ガウシアン( array )
+//! 
+//! サイズ 3 のガウシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  radius   … フィルタ半径
+//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void gaussian_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const double radius = 2.0, const double sigma = 0.0, typename array< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	gaussian_filter( in, out, radius, sigma, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @brief ガウシアン( array1 )
+//! 
+//! サイズ 3 のガウシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  radius   … フィルタ半径
+//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void gaussian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, const double radius = 2.0, const double sigma = 0.0, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	gaussian_filter( in, out, radius, sigma, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @brief ガウシアン( array2 )
+//! 
+//! サイズ 3×3 のガウシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  radius   … フィルタ半径
+//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void gaussian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const double radius = 2.0, const double sigma = 0.0, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	gaussian_filter( in, out, radius, sigma, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @brief ガウシアン( array3 )
+//! 
+//! サイズ 3×3×3 のガウシアン
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  radius   … フィルタ半径
+//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void gaussian_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double radius = 2.0, const double sigma = 0.0, typename array3< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	gaussian_filter( in, out, radius, sigma, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @}
+//  ガウシアングループの終わり
+
+
+
+//! @addtogroup average_group 一様重みフィルタ
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/filter/linear.h>
+//! @endcode
+//!
+//! 配列の端（カーネルがはみ出すところ）の要素の計算値は保障しません．
+//! 使用可能な要素型は，算術型か mist::rgb< 算術型 > に限ります．
+//! 内部の計算は，出力配列の要素型が算術型の場合は double 型，
+//! mist::rgb< 算術型 > の場合は mist::rgb< double > で行います．
+//! 
+//!  @{
+
+
+/// @brief 一様重み( array )
+//! 
+//! サイズ 3 の一様重み
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  fw       … X軸方向のフィルタサイズ
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void average_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+					 typename array< T1, Allocator1 >::size_type fw, Functor f, typename array< T1, Allocator1 >::size_type thread_num )
+{
+	array< double > a( fw );
+
+	a.fill( 1 );
+	__linear__::compute_normalized_kernel( a );
+
+	linear_filter( in, out, a, thread_num );
+}
+
+/// @brief 一様重み( array1 )
+//! 
+//! サイズ 3 の一様重み
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  fw       … X軸方向のフィルタサイズ
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void average_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
+					 typename array1< T1, Allocator1 >::size_type fw, Functor f, typename array1< T1, Allocator1 >::size_type thread_num )
+{
+	array< double > a( fw );
+
+	a.fill( 1 );
+	__linear__::compute_normalized_kernel( a );
+
+	linear_filter( in, out, a, thread_num );
+}
+
+/// @brief 一様重み( array2 )
+//! 
+//! サイズ 3×3 の一様重み
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  fw       … X軸方向のフィルタサイズ
+//! @param[in]  fh       … Y軸方向のフィルタサイズ
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void average_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+					   typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh,
+					   Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
+{
+	array2< double > a( fw, fh );
+
+	a.fill( 1 );
+	__linear__::compute_normalized_kernel( a );
+
+	linear_filter( in, out, a, f, thread_num );
+}
+
+/// @brief 一様重み( array3 )
+//! 
+//! サイズ 3×3×3 の一様重み
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  fw       … X軸方向のフィルタサイズ
+//! @param[in]  fh       … Y軸方向のフィルタサイズ
+//! @param[in]  fd       … Z軸方向のフィルタサイズ
+//! @param[in]  f        … コールバック関数
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+void average_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+					   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
+					   Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
+{
+	array3< double > a( fw, fh, fd );
+
+	a.fill( 1 );
+	__linear__::compute_normalized_kernel( a );
+
+	linear_filter( in, out, a, f, thread_num );
+}
+
+
+/// @brief 一様重み( array )
+//! 
+//! サイズ 3 の一様重み
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  fw       … X軸方向のフィルタサイズ
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void average_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	average_filter( in, out, fw, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @brief 一様重み( array1 )
+//! 
+//! サイズ 3 の一様重み
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数は無視され，常にシングルスレッドで動作する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  fw       … X軸方向のフィルタサイズ
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void average_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, typename array1< T1, Allocator1 >::size_type fw, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	average_filter( in, out, fw, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @brief 一様重み( array2 )
+//! 
+//! サイズ 3×3 の一様重み
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  fw       … X軸方向のフィルタサイズ
+//! @param[in]  fh       … Y軸方向のフィルタサイズ
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void average_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+					 typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	average_filter( in, out, fw, fh, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @brief 一様重み( array3 )
+//! 
+//! サイズ 3×3×3 の一様重み
+//!
+//! @param[in]  in     … 入力配列
+//! @param[out] out    … 出力配列
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in]  in       … 入力配列
+//! @param[out] out      … 出力配列
+//! @param[in]  kernel   … カーネル配列
+//! @param[in]  fw       … X軸方向のフィルタサイズ
+//! @param[in]  fh       … Y軸方向のフィルタサイズ
+//! @param[in]  fd       … Z軸方向のフィルタサイズ
+//! @param[in]  thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T1, class Allocator1, class T2, class Allocator2 >
+void average_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+					 typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
+					 typename array3< T1, Allocator1 >::size_type thread_num = 0 )
+{
+	average_filter( in, out, fw, fh, fd, __mist_dmy_callback__( ), thread_num );
+}
+
+/// @}
+//  一様重みグループの終わり
+
 
 
 /// @}
 //  線形グループの終わり
-
 
 
 // mist名前空間の終わり
@@ -511,4 +1404,4 @@ _MIST_END
 
 
 
-#endif // __INCLUDE_FILTER_LINEAR_FILTER_H__
+#endif // __INCLUDE_FILTER_LINEAR_FILTER__
