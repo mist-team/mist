@@ -448,7 +448,7 @@ namespace __linear__
 					sum[ i ] = value;
 				}
 
-				double fsize = fhh * fdd;
+				double fsize = static_cast< double >( fhh * fdd );
 				opointer_type op = &out( 0, j, k );
 				size_type indx = rrw - 1;
 
@@ -647,13 +647,13 @@ namespace __linear__
 		double sum = 0.0;
 		for( difference_type z = -rd ; z <= rd ; z++ )
 		{
-			double zz = z * z;
+			double zz = static_cast< double >( z * z );
 			for( difference_type y = -rh ; y <= rh ; y++ )
 			{
-				double yy = y * y;
+				double yy = static_cast< double >( y * y );
 				for( difference_type x = -rw ; x <= rw ; x++ )
 				{
-					double xx = x * x;
+					double xx = static_cast< double >( x * x );
 					double g = std::exp( -( xx + yy + zz ) * _1_sig2 );
 					sum += g;
 					kernel( x + rw, y + rh, z + rd ) = static_cast< value_type >( g );
