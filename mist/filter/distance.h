@@ -1958,10 +1958,16 @@ namespace saito
 			thread_num = static_cast< size_type >( get_cpu_num( ) );
 		}
 
-		out.resize( in.size1( ), in.size2( ), in.size3( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-		out.reso3( in.reso3( ) );
+		out = in;
+		//out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		//out.reso1( in.reso1( ) );
+		//out.reso2( in.reso2( ) );
+		//out.reso3( in.reso3( ) );
+
+		//for( size_type i = 0 ; i < in.size( ) ; i++ )
+		//{
+		//	out[ i ] = static_cast< value_type >( in[ i ] );
+		//}
 
 		_distance_utility_::__range__< 0 > object_range;
 		object_range.sx = 0;
