@@ -2561,7 +2561,6 @@ namespace __volumerendering_controller__
 
 					if( renderer.render( si, sj, sk, xx, yy, zz, oc ) )
 					{
-
 						double alpha = oc.alpha * sampling_step;
 						double aopacity = alpha * add_opacity;
 
@@ -2620,10 +2619,10 @@ namespace __volumerendering_controller__
 					}
 				}
 
-				spos.x *= ax;
-				spos.y *= ay;
-				spos.z *= az;
-				return( spos );
+				opos.x *= ax;
+				opos.y *= ay;
+				opos.z *= az;
+				return( opos );
 			}
 			else
 			{
