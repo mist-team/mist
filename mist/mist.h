@@ -1156,7 +1156,7 @@ public:
 	double reso2( double r2 ){ return( reso2_ = r2 ); }		///< @brief Y軸方向の解像度を r2 に設定し，設定後の値を返す
 	double reso2( ) const { return( reso2_ ); }				///< @brief Y軸方向の解像度を返す
 
-	///< @brief X軸とY軸方向の解像度を1度に設定する
+	/// @brief X軸とY軸方向の解像度を1度に設定する
 	//!
 	//! @param[in] r1  … 新しいX軸方向の解像度
 	//! @param[in] r2  … 新しいY軸方向の解像度
@@ -1758,7 +1758,7 @@ public:
 	double reso3( double r3 ){ return( reso3_ = r3 ); }		///< @brief Z軸方向の解像度を r3 に設定し，設定後の値を返す
 	double reso3( ) const { return( reso3_ ); }				///< @brief Z軸方向の解像度を返す
 
-	///< @brief X軸とY軸とZ軸方向の解像度を1度に設定する
+	/// @brief X軸とY軸とZ軸方向の解像度を1度に設定する
 	//!
 	//! @param[in] r1 … 新しいX軸方向の解像度
 	//! @param[in] r2 … 新しいY軸方向の解像度

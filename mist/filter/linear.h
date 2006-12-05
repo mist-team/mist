@@ -715,9 +715,10 @@ namespace linear
 	//!
 	//! @note マスクの一辺のサイズは奇数でなくてはならない
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   …カーネル配列
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  kernel     … カーネル配列
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -748,9 +749,10 @@ namespace linear
 	//!
 	//! @note マスクの一辺のサイズは奇数でなくてはならない
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   …カーネル配列
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  kernel     … カーネル配列
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -782,10 +784,10 @@ namespace linear
 	//!
 	//! @note マスクの一辺のサイズは奇数でなくてはならない
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   …カーネル配列
-	//! @param[in]  f        …コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  kernel     … カーネル配列
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -841,10 +843,10 @@ namespace linear
 	//!
 	//! @note マスクの一辺のサイズは奇数でなくてはならない
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   …カーネル配列
-	//! @param[in]  f        …コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  kernel     … カーネル配列
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -902,9 +904,9 @@ namespace linear
 //!
 //! @note マスクの一辺のサイズは奇数でなくてはならない
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   …カーネル配列
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  kernel     … カーネル配列
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -928,9 +930,9 @@ bool linear_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &
 //!
 //! @note マスクの一辺のサイズは奇数でなくてはならない
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   …カーネル配列
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  kernel     … カーネル配列
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -952,10 +954,9 @@ bool linear_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 >
 //!
 //! @note マスクの一辺のサイズは奇数でなくてはならない
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   …カーネル配列
-//! @param[in]  f        …コールバック関数
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  kernel     … カーネル配列
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -977,10 +978,9 @@ bool linear_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 >
 //!
 //! @note マスクの一辺のサイズは奇数でなくてはならない
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   …カーネル配列
-//! @param[in]  f        …コールバック関数
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  kernel     … カーネル配列
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1015,16 +1015,12 @@ namespace laplacian
 	//! 
 	//! サイズ 3 のラプラシアン
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数は無視され，常にシングルスレッドで動作する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1043,16 +1039,12 @@ namespace laplacian
 	//! 
 	//! サイズ 3 のラプラシアン
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数は無視され，常にシングルスレッドで動作する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1071,16 +1063,12 @@ namespace laplacian
 	//! 
 	//! サイズ 3×3 のラプラシアン
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1102,16 +1090,12 @@ namespace laplacian
 	//! 
 	//! サイズ 3×3×3 のラプラシアン
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1141,15 +1125,11 @@ namespace laplacian
 //! 
 //! サイズ 3 のラプラシアン
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数は無視され，常にシングルスレッドで動作する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1165,15 +1145,11 @@ bool laplacian_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 
 //! 
 //! サイズ 3 のラプラシアン
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数は無視され，常にシングルスレッドで動作する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1189,15 +1165,11 @@ bool laplacian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator
 //! 
 //! サイズ 3×3 のラプラシアン
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1213,15 +1185,11 @@ bool laplacian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator
 //! 
 //! サイズ 3×3×3 のラプラシアン
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1260,18 +1228,14 @@ namespace gaussian
 	//! 
 	//! 任意サイズのガウシアンフィルタ
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数は無視され，常にシングルスレッドで動作する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  radius   … フィルタ半径
-	//! @param[in]  sigma    … フィルタの標準偏差
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  radius     … フィルタ半径
+	//! @param[in]  sigma      … フィルタの標準偏差
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1291,18 +1255,14 @@ namespace gaussian
 	//! 
 	//! 任意サイズのガウシアンフィルタ
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数は無視され，常にシングルスレッドで動作する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  radius   … フィルタ半径
-	//! @param[in]  sigma    … フィルタの標準偏差
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  radius     … フィルタ半径
+	//! @param[in]  sigma      … フィルタの標準偏差
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1322,18 +1282,14 @@ namespace gaussian
 	//! 
 	//! 任意サイズのガウシアンフィルタ
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  radius   … フィルタ半径
-	//! @param[in]  sigma    … フィルタの標準偏差
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  radius     … フィルタ半径
+	//! @param[in]  sigma      … フィルタの標準偏差
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1353,18 +1309,14 @@ namespace gaussian
 	//! 
 	//! 任意サイズのガウシアンフィルタ
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  radius   … フィルタ半径
-	//! @param[in]  sigma    … フィルタの標準偏差
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  radius     … フィルタ半径
+	//! @param[in]  sigma      … フィルタの標準偏差
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1386,17 +1338,13 @@ namespace gaussian
 //! 
 //! 任意サイズのガウシアンフィルタ
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数は無視され，常にシングルスレッドで動作する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
-//! @param[in]  radius   … フィルタ半径
-//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  radius     … フィルタ半径
+//! @param[in]  sigma      … フィルタの標準偏差
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1412,17 +1360,13 @@ bool gaussian_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 >
 //! 
 //! 任意サイズのガウシアンフィルタ
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数は無視され，常にシングルスレッドで動作する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
-//! @param[in]  radius   … フィルタ半径
-//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  radius     … フィルタ半径
+//! @param[in]  sigma      … フィルタの標準偏差
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1438,17 +1382,13 @@ bool gaussian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2
 //! 
 //! 任意サイズのガウシアンフィルタ
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
-//! @param[in]  radius   … フィルタ半径
-//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  radius     … フィルタ半径
+//! @param[in]  sigma      … フィルタの標準偏差
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1464,17 +1404,13 @@ bool gaussian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2
 //! 
 //! 任意サイズのガウシアンフィルタ
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
-//! @param[in]  radius   … フィルタ半径
-//! @param[in]  sigma    … フィルタの標準偏差
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  radius     … フィルタ半径
+//! @param[in]  sigma      … フィルタの標準偏差
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1511,17 +1447,13 @@ namespace average
 	//! 
 	//! サイズ fw の一様重み
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数は無視され，常にシングルスレッドで動作する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  fw       … X軸方向のフィルタサイズ
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  fw         … X軸方向のフィルタサイズ
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1547,17 +1479,13 @@ namespace average
 	//! 
 	//! サイズ fw の一様重み
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数は無視され，常にシングルスレッドで動作する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  fw       … X軸方向のフィルタサイズ
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  fw         … X軸方向のフィルタサイズ
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1584,18 +1512,14 @@ namespace average
 	//! 
 	//! サイズ fw × fh の一様重み
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  fw       … X軸方向のフィルタサイズ
-	//! @param[in]  fh       … Y軸方向のフィルタサイズ
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  fw         … X軸方向のフィルタサイズ
+	//! @param[in]  fh         … Y軸方向のフィルタサイズ
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1647,19 +1571,15 @@ namespace average
 	//! 
 	//! サイズ fw × fh × fd の一様重み
 	//!
-	//! @param[in]  in     … 入力配列
-	//! @param[out] out    … 出力配列
-	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 	//! 
-	//! @param[in]  in       … 入力配列
-	//! @param[out] out      … 出力配列
-	//! @param[in]  kernel   … カーネル配列
-	//! @param[in]  fw       … X軸方向のフィルタサイズ
-	//! @param[in]  fh       … Y軸方向のフィルタサイズ
-	//! @param[in]  fd       … Z軸方向のフィルタサイズ
-	//! @param[in]  f        … コールバック関数
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  fw         … X軸方向のフィルタサイズ
+	//! @param[in]  fh         … Y軸方向のフィルタサイズ
+	//! @param[in]  fd         … Z軸方向のフィルタサイズ
+	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … フィルタリングに成功
@@ -1714,16 +1634,12 @@ namespace average
 //! 
 //! サイズ fw の一様重み
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数は無視され，常にシングルスレッドで動作する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
-//! @param[in]  fw       … X軸方向のフィルタサイズ
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  fw         … X軸方向のフィルタサイズ
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1739,16 +1655,12 @@ bool average_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > 
 //! 
 //! サイズ fw の一様重み
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数は無視され，常にシングルスレッドで動作する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
-//! @param[in]  fw       … X軸方向のフィルタサイズ
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  fw         … X軸方向のフィルタサイズ
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1764,17 +1676,13 @@ bool average_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 
 //! 
 //! サイズ fw × fh の一様重み
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
-//! @param[in]  fw       … X軸方向のフィルタサイズ
-//! @param[in]  fh       … Y軸方向のフィルタサイズ
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  fw         … X軸方向のフィルタサイズ
+//! @param[in]  fh         … Y軸方向のフィルタサイズ
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
@@ -1791,18 +1699,14 @@ bool average_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 
 //! 
 //! サイズ fw × fh × fd の一様重み
 //!
-//! @param[in]  in     … 入力配列
-//! @param[out] out    … 出力配列
-//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
-//! @param[in]  in       … 入力配列
-//! @param[out] out      … 出力配列
-//! @param[in]  kernel   … カーネル配列
-//! @param[in]  fw       … X軸方向のフィルタサイズ
-//! @param[in]  fh       … Y軸方向のフィルタサイズ
-//! @param[in]  fd       … Z軸方向のフィルタサイズ
+//! @param[in]  in         … 入力配列
+//! @param[out] out        … 出力配列
+//! @param[in]  fw         … X軸方向のフィルタサイズ
+//! @param[in]  fh         … Y軸方向のフィルタサイズ
+//! @param[in]  fd         … Z軸方向のフィルタサイズ
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
