@@ -2687,7 +2687,7 @@ namespace __volumerendering_controller__
 namespace __mip_controller__
 {
 	template < class Array1, class Array2 >
-	bool mip( const Array1 &in, Array2 &out, const volumerender::parameter &p, typename Array1::size_type thread_id, typename Array1::size_type thread_num )
+	bool mip( const Array1 &in, Array2 &out, const volumerender::parameter &param, typename Array1::size_type thread_id, typename Array1::size_type thread_num )
 	{
 		typedef typename volumerender::parameter::vector_type vector_type;
 		typedef typename Array1::size_type size_type;
@@ -2698,9 +2698,7 @@ namespace __mip_controller__
 
 		vector_type offset  = param.offset;
 		vector_type pos     = param.pos - offset;
-		vector_type dir     = param.dir.unit( );
-		vector_type up      = param.up.unit( );
-		const  volr::boundingbox *box = param.box;
+		const volumerender::boundingbox *box = param.box;
 		const double sampling_step = param.sampling_step;
 
 		const size_type w = in.width( );
@@ -2746,22 +2744,24 @@ namespace __mip_controller__
 		double masp = ax < ay ? ax : ay;
 		masp = masp < az ? masp : az;
 
-		vector_type yoko = ( up * dir ).unit( );
+		vector_type eZ = -param.dir.unit( );	// カメラ座標系のZ軸方向ベクトル
+		vector_type eY = param.up.unit( );		// カメラ座標系のY軸方向ベクトル
+		vector_type eX = ( eY * eZ ).unit( );	// カメラ座標系のX軸方向ベクトル
 
 		if( param.mirror_view )
 		{
-			// 鏡面に映ったように描画する
-			// データの軸等に反転が必要な描画を行う際に利用
-			yoko = -yoko;
+			// 鏡に映ったように描画する
+			// データの軸等に反転が必要な描画を行う際に利用する
+			eX = -eX;
 		}
 
 		if( out.reso1( ) < out.reso2( ) )
 		{
-			yoko *= out.reso1( ) / out.reso2( );
+			eX *= out.reso1( ) / out.reso2( );
 		}
 		else
 		{
-			up *= out.reso2( ) / out.reso1( );
+			eY *= out.reso2( ) / out.reso1( );
 		}
 
 		if( out.reso1( ) * image_width >= out.reso2( ) * image_height )
@@ -2779,16 +2779,16 @@ namespace __mip_controller__
 		{
 			for( size_type i = 0 ; i < image_width ; i++ )
 			{
-				casting_start = pos - dir * max_distance + ( static_cast< double >( i ) - cx ) * iasp * yoko + ( cy - static_cast< double >( j ) ) * iasp * up;
-				casting_end = casting_start + dir * max_distance * 2.0;
+				casting_start = pos + eZ * max_distance + ( static_cast< double >( i ) - cx ) * iasp * eX + ( cy - static_cast< double >( j ) ) * iasp * eY;
+				casting_end = casting_start - eZ * max_distance * 2.0;
 
 				// 物体との衝突判定
-				if( volr::check_intersection( casting_start, casting_end, box[ 0 ] )
-					&& volr::check_intersection( casting_start, casting_end, box[ 1 ] )
-					&& volr::check_intersection( casting_start, casting_end, box[ 2 ] )
-					&& volr::check_intersection( casting_start, casting_end, box[ 3 ] )
-					&& volr::check_intersection( casting_start, casting_end, box[ 4 ] )
-					&& volr::check_intersection( casting_start, casting_end, box[ 5 ] ) )
+				if( volumerender::check_intersection( casting_start, casting_end, box[ 0 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 1 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 2 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 3 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 4 ] )
+					&& volumerender::check_intersection( casting_start, casting_end, box[ 5 ] ) )
 				{
 					// ワールド座標系からスライス座標系に変換する
 					// 以降は、全てスライス座標系で計算する
@@ -2809,9 +2809,9 @@ namespace __mip_controller__
 
 					while( l < n )
 					{
-						difference_type si = volr::to_integer( spos.x );
-						difference_type sj = volr::to_integer( spos.y );
-						difference_type sk = volr::to_integer( spos.z );
+						difference_type si = volumerender::to_integer( spos.x );
+						difference_type sj = volumerender::to_integer( spos.y );
+						difference_type sk = volumerender::to_integer( spos.z );
 
 						double xx = spos.x - si;
 						double yy = spos.y - sj;
@@ -2843,7 +2843,7 @@ namespace __mip_controller__
 						l += sampling_step;
 					}
 
-					out( i, j ) = static_cast< out_value_type >( maxct + offset_value );
+					out( i, j ) = static_cast< out_value_type >( maxct );
 				}
 				else
 				{
@@ -2851,7 +2851,6 @@ namespace __mip_controller__
 				}
 			}
 		}
-
 
 		return( true );
 	}

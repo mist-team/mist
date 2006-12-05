@@ -95,7 +95,5 @@ int main( int argc, char *argv[] )
 	cout << " 13. sizeof(         size_t ) = "; cout << (int)sizeof( size_t ) << endl;
 	cout << " 14. sizeof(      ptrdiff_t ) = "; cout << (int)sizeof( ptrdiff_t ) << endl;
 
-
-	cout << _INTEGRAL_MAX_BITS << endl;
 	return( 0 );
 }

@@ -1031,7 +1031,7 @@ namespace laplacian
 	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
-	bool laplacian_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, Functor f, typename array< T1, Allocator1 >::size_type thread_num )
+	bool filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, Functor f, typename array< T1, Allocator1 >::size_type thread_num )
 	{
 		array< double > a( 3 );
 		a[ 0 ] = 1.0;  a[ 1 ] = -2.0;  a[ 2 ] = 1.0;
@@ -1059,7 +1059,7 @@ namespace laplacian
 	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
-	bool laplacian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, Functor f, typename array1< T1, Allocator1 >::size_type thread_num )
+	bool filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, Functor f, typename array1< T1, Allocator1 >::size_type thread_num )
 	{
 		array< double > a( 3 );
 		a[ 0 ] = 1.0;  a[ 1 ] = -2.0;  a[ 2 ] = 1.0;
@@ -1087,7 +1087,7 @@ namespace laplacian
 	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
-	bool laplacian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
+	bool filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
 	{
 		array2< double > a( 3, 3 );
 
@@ -1118,7 +1118,7 @@ namespace laplacian
 	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
-	bool laplacian_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
+	bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
 	{
 		array3< double > a( 3, 3, 3 );
 
