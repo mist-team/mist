@@ -41,13 +41,13 @@ int main( int argc, char *argv[] )
 
 	cout << " ( A, B ) = ( " << v1 << ", " << v2 << " )" << endl;
 	cout << " 1. Operator A   + B   = \t"; cout << ( v1  + v2  ) << endl;
-	cout << " 2. Operator A   + 3.5 = \t"; cout << ( v1  + 3   ) << endl;
+	cout << " 2. Operator A   + 3   = \t"; cout << ( v1  + 3   ) << endl;
 	cout << " 3. Operator 3.5 + B   = \t"; cout << ( 3.5 + v2  ) << endl;
 	cout << " 4. Operator A   - B   = \t"; cout << ( v1  - v2  ) << endl;
 	cout << " 5. Operator A   - 3.5 = \t"; cout << ( v1  - 3.5 ) << endl;
 	cout << " 6. Operator 3.5 - B   = \t"; cout << ( 3.5 - v2  ) << endl;
 	cout << " 7. Operator A   * B   = \t"; cout << ( v1  * v2  ) << endl;
-	cout << " 8. Operator A   * 2.5 = \t"; cout << ( v1  *  2  ) << endl;
+	cout << " 8. Operator A   * 2   = \t"; cout << ( v1  *  2  ) << endl;
 	cout << " 9. Operator 2   * B   = \t"; cout << ( 2.5 * v2  ) << endl;
 	cout << "10. Operator A   / B   = \t"; cout << ( v1  / v2  ) << endl;
 	cout << "11. Operator A   / 2.5 = \t"; cout << ( v1  / 2.5 ) << endl;

@@ -315,7 +315,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="lapack.lib blas.lib libF77.lib"
+				AdditionalDependencies="lapack.lib blas.lib libF77.lib libI77.lib"
 				OutputFile="$(OutDir)/matrix_test.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"

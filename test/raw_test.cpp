@@ -38,8 +38,6 @@
 #include <mist/filter/labeling.h>
 #include <mist/filter/morphology.h>
 #include <mist/filter/linear.h>
-#include <mist/filter/gaussian.h>
-#include <mist/filter/uniform_weight.h>
 #include <mist/filter/decomposition.h>
 #include <mist/filter/thinning.h>
 #include <mist/timer.h>
@@ -271,7 +269,7 @@ void ct_draw_area::normalization_filter3D( ct_image_window *wnd )
 	mist::array3< short > tmp = ct;
 	{
 		mist::timer t;
-		mist::gaussian( tmp, ct );
+		mist::gaussian_filter( tmp, ct );
 		std::cout << "Computation Time: " << t.elapse( ) << std::endl;
 	}
 	redraw( );

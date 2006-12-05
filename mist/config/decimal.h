@@ -97,8 +97,8 @@ template < unsigned int MAX_KETA >
 class decimal
 {
 public:
-	typedef size_t size_type;
-	typedef ptrdiff_t difference_type;
+	typedef unsigned int size_type;
+	typedef int difference_type;
 	typedef unsigned short value_type;
 
 private:
@@ -182,7 +182,7 @@ public:
 			{
 				a *= 10;
 				b *= 10;
-				b += static_cast< difference_type >( a );
+				b += decimal( static_cast< difference_type >( a ) );
 				a -= static_cast< difference_type >( a );
 				x *= 10;
 			}
@@ -969,6 +969,7 @@ public:	// íËêî
 			b0 = b1;
 			t0 = t1;
 		}
+
 		return( ( a0 + b0 ) * ( a0 + b0 ) / ( t0 * 4 ) );
 	}
 
