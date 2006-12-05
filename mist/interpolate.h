@@ -228,7 +228,7 @@ namespace __mean__
 	}
 }
 
-// Å‹ß–TŒ^•âŠÔ
+// üŒ`•âŠÔ
 namespace __linear__
 {
 	template < bool b >
