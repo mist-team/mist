@@ -292,8 +292,15 @@ public:
 	//! 
 	vector3 unit( ) const
 	{
-		value_type length_ = length( );
-		return( vector3( x / length_, y / length_, z / length_ ) );
+		double length_ = length( );
+		if( length_ > 0 )
+		{
+			return( vector3( static_cast< value_type >( x / length_ ), static_cast< value_type >( y / length_ ), static_cast< value_type >( z / length_ ) ) );
+		}
+		else
+		{
+			return( *this );
+		}
 	}
 
 
@@ -329,7 +336,7 @@ public:
 	//! 
 	//! @return ベクトルの大きさ
 	//! 
-	value_type length( ) const { return ( value_type( std::sqrt( (double)( x * x + y * y + z * z ) ) ) ); }
+	double length( ) const { return ( std::sqrt( static_cast< double >( x * x + y * y + z * z ) ) ); }
 
 	/// @brief 任意軸周りのベクトルの回転
 	//! 
@@ -600,8 +607,15 @@ public:
 	//! 
 	vector2 unit( ) const
 	{
-		value_type length_ = length( );
-		return vector2( x / length_, y / length_ );
+		double length_ = length( );
+		if( length_ > 0 )
+		{
+			return( vector2( static_cast< value_type >( x / length_ ), static_cast< value_type >( y / length_ ) ) );
+		}
+		else
+		{
+			return( *this );
+		}
 	}
 
 
@@ -631,7 +645,7 @@ public:
 	//! 
 	//! @return ベクトルの大きさ
 	//! 
-	value_type length( ) const { return ( value_type( std::sqrt( (double)( x * x + y * y ) ) ) ); }
+	double length( ) const { return ( std::sqrt( static_cast< double >( x * x + y * y ) ) ); }
 
 	//// ベクトルの回転
 	//vector2 rotate( const vector2 &a, double theta ) const
