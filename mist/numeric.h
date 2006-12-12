@@ -1259,6 +1259,7 @@ namespace __inverse__
 		static matrix< T, Allocator >& inverse( matrix< T, Allocator > &a, matrix_style::style style )
 		{
 			typedef matrix< T, Allocator > matrix_type;
+			typedef typename matrix< T, Allocator >::value_type value_type;
 			typedef __clapack__::integer integer;
 
 			if( a.empty( ) )
@@ -1283,10 +1284,10 @@ namespace __inverse__
 						double detA = a11 * a22 - a12 * a21;
 						if( detA != 0 )
 						{
-							a( 0, 0 ) =  a22 / detA;
-							a( 0, 1 ) = -a12 / detA;
-							a( 1, 0 ) = -a21 / detA;
-							a( 1, 1 ) =  a11 / detA;
+							a( 0, 0 ) = static_cast< value_type >(  a22 / detA );
+							a( 0, 1 ) = static_cast< value_type >( -a12 / detA );
+							a( 1, 0 ) = static_cast< value_type >( -a21 / detA );
+							a( 1, 1 ) = static_cast< value_type >(  a11 / detA );
 							return( a );
 						}
 						else
@@ -1326,15 +1327,15 @@ namespace __inverse__
 							double A33 = a11 * a22 - a12 * a21;
 
 							double _1_detA = 1.0 / detA;
-							a( 0, 0 ) = A11 * _1_detA;
-							a( 0, 1 ) = A12 * _1_detA;
-							a( 0, 2 ) = A13 * _1_detA;
-							a( 1, 0 ) = A21 * _1_detA;
-							a( 1, 1 ) = A22 * _1_detA;
-							a( 1, 2 ) = A23 * _1_detA;
-							a( 2, 0 ) = A31 * _1_detA;
-							a( 2, 1 ) = A32 * _1_detA;
-							a( 2, 2 ) = A33 * _1_detA;
+							a( 0, 0 ) = static_cast< value_type >( A11 * _1_detA );
+							a( 0, 1 ) = static_cast< value_type >( A12 * _1_detA );
+							a( 0, 2 ) = static_cast< value_type >( A13 * _1_detA );
+							a( 1, 0 ) = static_cast< value_type >( A21 * _1_detA );
+							a( 1, 1 ) = static_cast< value_type >( A22 * _1_detA );
+							a( 1, 2 ) = static_cast< value_type >( A23 * _1_detA );
+							a( 2, 0 ) = static_cast< value_type >( A31 * _1_detA );
+							a( 2, 1 ) = static_cast< value_type >( A32 * _1_detA );
+							a( 2, 2 ) = static_cast< value_type >( A33 * _1_detA );
 
 							return( a );
 						}
@@ -1402,22 +1403,22 @@ namespace __inverse__
 							double A44 = -a11 * _23x32_22x33_ - a12 * _21x33_23x31_ - a13 * _22x31_21x32_;
 
 							double _1_detA = 1.0 / detA;
-							a( 0, 0 ) = A11 * _1_detA;
-							a( 0, 1 ) = A12 * _1_detA;
-							a( 0, 2 ) = A13 * _1_detA;
-							a( 0, 3 ) = A14 * _1_detA;
-							a( 1, 0 ) = A21 * _1_detA;
-							a( 1, 1 ) = A22 * _1_detA;
-							a( 1, 2 ) = A23 * _1_detA;
-							a( 1, 3 ) = A24 * _1_detA;
-							a( 2, 0 ) = A31 * _1_detA;
-							a( 2, 1 ) = A32 * _1_detA;
-							a( 2, 2 ) = A33 * _1_detA;
-							a( 2, 3 ) = A34 * _1_detA;
-							a( 3, 0 ) = A41 * _1_detA;
-							a( 3, 1 ) = A42 * _1_detA;
-							a( 3, 2 ) = A43 * _1_detA;
-							a( 3, 3 ) = A44 * _1_detA;
+							a( 0, 0 ) = static_cast< value_type >( A11 * _1_detA );
+							a( 0, 1 ) = static_cast< value_type >( A12 * _1_detA );
+							a( 0, 2 ) = static_cast< value_type >( A13 * _1_detA );
+							a( 0, 3 ) = static_cast< value_type >( A14 * _1_detA );
+							a( 1, 0 ) = static_cast< value_type >( A21 * _1_detA );
+							a( 1, 1 ) = static_cast< value_type >( A22 * _1_detA );
+							a( 1, 2 ) = static_cast< value_type >( A23 * _1_detA );
+							a( 1, 3 ) = static_cast< value_type >( A24 * _1_detA );
+							a( 2, 0 ) = static_cast< value_type >( A31 * _1_detA );
+							a( 2, 1 ) = static_cast< value_type >( A32 * _1_detA );
+							a( 2, 2 ) = static_cast< value_type >( A33 * _1_detA );
+							a( 2, 3 ) = static_cast< value_type >( A34 * _1_detA );
+							a( 3, 0 ) = static_cast< value_type >( A41 * _1_detA );
+							a( 3, 1 ) = static_cast< value_type >( A42 * _1_detA );
+							a( 3, 2 ) = static_cast< value_type >( A43 * _1_detA );
+							a( 3, 3 ) = static_cast< value_type >( A44 * _1_detA );
 							return( a );
 						}
 						else

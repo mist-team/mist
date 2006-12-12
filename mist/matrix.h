@@ -133,6 +133,8 @@ namespace __numeric__
 		template < class T > static bool ge( const T &v1, const T &v2 ){ return( v1 >= v2 ); }
 		template < class T > static bool lt( const T &v1, const T &v2 ){ return( v1 <  v2 ); }
 		template < class T > static bool gt( const T &v1, const T &v2 ){ return( v1 >  v2 ); }
+		template < class T > static bool eq( const T &v1, const T &v2 ){ return( v1 == v2 ); }
+		template < class T > static bool eq( const T &v1, const T &v2, const double delta ){ return( std::abs( v1 - v2 ) < delta ); }
 	};
 
 	template< >
@@ -161,6 +163,14 @@ namespace __numeric__
 		template < class T > static bool ge( const T &v1, const T &v2 ){ return( !lt( v1, v2 ) ); }
 		template < class T > static bool le( const T &v1, const T &v2 ){ return( !lt( v2, v1 ) ); }
 		template < class T > static bool gt( const T &v1, const T &v2 ){ return( lt( v2, v1 ) ); }
+		template < class T > static bool eq( const T &v1, const T &v2 )
+		{
+			return( v1.real( ) == v2.real( ) && v1.imag( ) == v2.imag( ) );
+		}
+		template < class T > static bool eq( const T &v1, const T &v2, const double delta )
+		{
+			return( std::abs( v1.real( ) - v2.real( ) ) < delta && std::abs( v1.imag( ) - v2.imag( ) ) < delta );
+		}
 	};
 }
 
@@ -498,7 +508,7 @@ struct matrix_div_const : public matrix_bind_operation< T1, T2 >
 	matrix_div_const( const T1 &lhs, const T2 &rhs ) : base( lhs, rhs )
 	{
 #ifdef _CHECK_MATRIX_OPERATION_
-		if( rhs == 0 )
+		if( rhs == value_type( 0 ) )
 		{
 			// ゼロ除算を行おうとしている例外
 			::std::cerr << "ゼロ除算を行おうとしています．" << ::std::endl;
@@ -555,7 +565,6 @@ public:
 	{
 		typedef matrix< TT, AAllocator > other;
 	};
-
 
 private:
 	typedef array< T, Allocator > base;
@@ -1294,7 +1303,7 @@ public:
 	{
 		matrix &m = *this;
 #ifdef _CHECK_ARRAY_OPERATION_
-		if( val == 0 )
+		if( val == value_type( 0 ) )
 		{
 			// ゼロ除算発生
 			::std::cerr << "zero division occured." << ::std::endl;
@@ -1410,6 +1419,68 @@ public:
 	}
 
 #endif
+
+	/// @brief 2つの行列が等しい（全要素の差が delta 未満）かどうかを判定する
+	//! 
+	//! @param[in] v     … 比較対象の行列
+	//! @param[in] delta … 許容誤差
+	//! 
+	//! @retval true  … 2つの行列が等しい場合
+	//! @retval false … 2つの行列が異なる場合
+	//! 
+	bool is_equal( const matrix &a, const double delta )
+	{
+		typedef __numeric__::value_compare< __numeric__::is_complex< value_type >::value > value_compare;
+
+		if( rows( ) != a.rows( ) || cols( ) != a.cols( ) )
+		{
+			return( false );
+		}
+
+		for( size_type i = 0 ; i < size( ) ; i++ )
+		{
+			if( !value_compare::eq( operator []( i ), a[ i ], delta ) )
+			{
+				return( false );
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 2つの行列が等しい（全要素が同じ値を持つ）かどうかを判定する
+	//! 
+	//! @param[in] v … 右辺値
+	//! 
+	//! @retval true  … 2つの行列が等しい場合
+	//! @retval false … 2つの行列が異なる場合
+	//! 
+	bool operator ==( const matrix &a ) const
+	{
+		if( rows( ) != a.rows( ) || cols( ) != a.cols( ) )
+		{
+			return( false );
+		}
+
+		for( size_type i = 0 ; i < size( ) ; i++ )
+		{
+			if( operator []( i ) != a[ i ] )
+			{
+				return( false );
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 2つの行列が等しくない（どれか１つでも異なる要素を持つ）かどうかを判定する
+	//! 
+	//! @param[in] v … 右辺値
+	//! 
+	//! @retval true  … 2つの行列が異なる場合
+	//! @retval false … 2つの行列が等しい場合
+	//! 
+	bool operator !=( const matrix &a ) const { return( !( *this == a ) ); }
 
 
 public:
