@@ -66,27 +66,27 @@ protected:
 	{
 		vector_type v;
 
-		CPPUNIT_ASSERT_EQUAL( v.x, value_type( 0 ) );
-		CPPUNIT_ASSERT_EQUAL( v.y, value_type( 0 ) );
-		CPPUNIT_ASSERT_EQUAL( v.z, value_type( 0 ) );
+		CPPUNIT_ASSERTION_EQUAL( v.x, value_type( 0 ) );
+		CPPUNIT_ASSERTION_EQUAL( v.y, value_type( 0 ) );
+		CPPUNIT_ASSERTION_EQUAL( v.z, value_type( 0 ) );
 	}
 
 	void Constructor_002( )
 	{
 		vector_type v( 1, 2, 3 );
 
-		CPPUNIT_ASSERT_EQUAL( v.x, value_type( 1 ) );
-		CPPUNIT_ASSERT_EQUAL( v.y, value_type( 2 ) );
-		CPPUNIT_ASSERT_EQUAL( v.z, value_type( 3 ) );
+		CPPUNIT_ASSERTION_EQUAL( v.x, value_type( 1 ) );
+		CPPUNIT_ASSERTION_EQUAL( v.y, value_type( 2 ) );
+		CPPUNIT_ASSERTION_EQUAL( v.z, value_type( 3 ) );
 	}
 
 	void Constructor_003( )
 	{
 		vector_type v( -1, -2, -3 );
 
-		CPPUNIT_ASSERT_EQUAL( v.x, value_type( -1 ) );
-		CPPUNIT_ASSERT_EQUAL( v.y, value_type( -2 ) );
-		CPPUNIT_ASSERT_EQUAL( v.z, value_type( -3 ) );
+		CPPUNIT_ASSERTION_EQUAL( v.x, value_type( -1 ) );
+		CPPUNIT_ASSERTION_EQUAL( v.y, value_type( -2 ) );
+		CPPUNIT_ASSERTION_EQUAL( v.z, value_type( -3 ) );
 	}
 
 	void Op_Equal_001( )
@@ -95,9 +95,9 @@ protected:
 		vector_type v2( 1, 2, 3 );
 		vector_type v3( 3, 2, 3 );
 
-		CPPUNIT_ASSERT( v1 == v2 );
-		CPPUNIT_ASSERT( !( v1 == v3 ) );
-		CPPUNIT_ASSERT( !( v2 == v3 ) );
+		CPPUNIT_ASSERTION( v1 == v2 );
+		CPPUNIT_ASSERTION( !( v1 == v3 ) );
+		CPPUNIT_ASSERTION( !( v2 == v3 ) );
 	}
 
 	void Op_NotEqual_001( )
@@ -106,9 +106,9 @@ protected:
 		vector_type v2( 2, 1, 4 );
 		vector_type v3( 1, 2, 3 );
 
-		CPPUNIT_ASSERT( v1 != v2 );
-		CPPUNIT_ASSERT( v2 != v3 );
-		CPPUNIT_ASSERT( !( v1 != v3 ) );
+		CPPUNIT_ASSERTION( v1 != v2 );
+		CPPUNIT_ASSERTION( v2 != v3 );
+		CPPUNIT_ASSERTION( !( v1 != v3 ) );
 	}
 
 	void Op_LT_001( )
@@ -116,7 +116,7 @@ protected:
 		vector_type v1( 1, 2, 3 );
 		vector_type v2( 2, 3, 3 );
 
-		CPPUNIT_ASSERT( v1 < v2 );
+		CPPUNIT_ASSERTION( v1 < v2 );
 	}
 
 	void Op_LT_002( )
@@ -124,7 +124,7 @@ protected:
 		vector_type v1( 1, 2, 3 );
 		vector_type v2( 1, 3, 3 );
 
-		CPPUNIT_ASSERT( v1 < v2 );
+		CPPUNIT_ASSERTION( v1 < v2 );
 	}
 
 	void Op_LT_003( )
@@ -132,7 +132,7 @@ protected:
 		vector_type v1( 1, 2, 3 );
 		vector_type v2( 1, 2, 4 );
 
-		CPPUNIT_ASSERT( v1 < v2 );
+		CPPUNIT_ASSERTION( v1 < v2 );
 	}
 
 	void Op_LE_001( )
@@ -140,7 +140,7 @@ protected:
 		vector_type v1( 1, 2, 3 );
 		vector_type v2( 2, 3, 3 );
 
-		CPPUNIT_ASSERT( v1 <= v2 );
+		CPPUNIT_ASSERTION( v1 <= v2 );
 	}
 
 	void Op_LE_002( )
@@ -148,7 +148,7 @@ protected:
 		vector_type v1( 1, 2, 3 );
 		vector_type v2( 1, 3, 3 );
 
-		CPPUNIT_ASSERT( v1 <= v2 );
+		CPPUNIT_ASSERTION( v1 <= v2 );
 	}
 
 	void Op_LE_003( )
@@ -156,7 +156,7 @@ protected:
 		vector_type v1( 1, 2, 3 );
 		vector_type v2( 1, 2, 3 );
 
-		CPPUNIT_ASSERT( v1 <= v2 );
+		CPPUNIT_ASSERTION( v1 <= v2 );
 	}
 
 	void Op_LE_004( )
@@ -164,7 +164,7 @@ protected:
 		vector_type v1( 1, 2, 3 );
 		vector_type v2( 1, 2, 4 );
 
-		CPPUNIT_ASSERT( v1 <= v2 );
+		CPPUNIT_ASSERTION( v1 <= v2 );
 	}
 
 	void Op_GT_001( )
@@ -172,7 +172,7 @@ protected:
 		vector_type v1( 2, 3, 3 );
 		vector_type v2( 1, 2, 3 );
 
-		CPPUNIT_ASSERT( v1 > v2 );
+		CPPUNIT_ASSERTION( v1 > v2 );
 	}
 
 	void Op_GT_002( )
@@ -180,7 +180,7 @@ protected:
 		vector_type v1( 1, 3, 3 );
 		vector_type v2( 1, 2, 3 );
 
-		CPPUNIT_ASSERT( v1 > v2 );
+		CPPUNIT_ASSERTION( v1 > v2 );
 	}
 
 	void Op_GT_003( )
@@ -188,7 +188,7 @@ protected:
 		vector_type v1( 1, 2, 4 );
 		vector_type v2( 1, 2, 3 );
 
-		CPPUNIT_ASSERT( v1 > v2 );
+		CPPUNIT_ASSERTION( v1 > v2 );
 	}
 
 	void Op_GE_001( )
@@ -196,7 +196,7 @@ protected:
 		vector_type v1( 2, 3, 3 );
 		vector_type v2( 1, 2, 3 );
 
-		CPPUNIT_ASSERT( v1 > v2 );
+		CPPUNIT_ASSERTION( v1 > v2 );
 	}
 
 	void Op_GE_002( )
@@ -204,7 +204,7 @@ protected:
 		vector_type v1( 1, 2, 3 );
 		vector_type v2( 1, 2, 3 );
 
-		CPPUNIT_ASSERT( v1 >= v2 );
+		CPPUNIT_ASSERTION( v1 >= v2 );
 	}
 
 	void Op_GE_003( )
@@ -212,7 +212,7 @@ protected:
 		vector_type v1( 1, 3, 3 );
 		vector_type v2( 1, 2, 3 );
 
-		CPPUNIT_ASSERT( v1 >= v2 );
+		CPPUNIT_ASSERTION( v1 >= v2 );
 	}
 
 	void Op_GE_004( )
@@ -220,7 +220,7 @@ protected:
 		vector_type v1( 1, 2, 4 );
 		vector_type v2( 1, 2, 3 );
 
-		CPPUNIT_ASSERT( v1 >= v2 );
+		CPPUNIT_ASSERTION( v1 >= v2 );
 	}
 
 	void Op_Add_001( )
@@ -230,7 +230,7 @@ protected:
 		vector_type v3( 2, 4, 6 );
 		vector_type v4 = v1 + v2;
 
-		CPPUNIT_ASSERT_EQUAL( v3, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v3, v4 );
 	}
 
 	void Op_Add_002( )
@@ -240,7 +240,7 @@ protected:
 		vector_type v3( 0, 0, 0 );
 		vector_type v4 = v1 + v2;
 
-		CPPUNIT_ASSERT_EQUAL( v3, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v3, v4 );
 	}
 
 	void Op_Subtract_001( )
@@ -250,7 +250,7 @@ protected:
 		vector_type v3( 0, 0, 0 );
 		vector_type v4 = v1 - v2;
 
-		CPPUNIT_ASSERT_EQUAL( v3, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v3, v4 );
 	}
 
 	void Op_Subtract_002( )
@@ -260,7 +260,7 @@ protected:
 		vector_type v3( 2, 4, 6 );
 		vector_type v4 = v1 - v2;
 
-		CPPUNIT_ASSERT_EQUAL( v3, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v3, v4 );
 	}
 
 	void Op_Negative_001( )
@@ -269,7 +269,7 @@ protected:
 		vector_type v2( -1, -2, -3 );
 		vector_type v3 = -v1;
 
-		CPPUNIT_ASSERT_EQUAL( v2, v3 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v3 );
 	}
 
 	void Op_Negative_002( )
@@ -278,7 +278,7 @@ protected:
 		vector_type v2( 1, 2, 3 );
 		vector_type v3 = -v1;
 
-		CPPUNIT_ASSERT_EQUAL( v2, v3 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v3 );
 	}
 
 	void Op_Negative_003( )
@@ -287,7 +287,7 @@ protected:
 		vector_type v2( 0, 0, 0 );
 		vector_type v3 = -v1;
 
-		CPPUNIT_ASSERT_EQUAL( v2, v3 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v3 );
 	}
 
 	void Op_Multiply_001( )
@@ -296,7 +296,7 @@ protected:
 		vector_type v2( 2, 4, 6 );
 		vector_type v3 = v1 * 2;
 
-		CPPUNIT_ASSERT_EQUAL( v2, v3 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v3 );
 	}
 
 	void Op_Multiply_002( )
@@ -305,7 +305,7 @@ protected:
 		vector_type v2( 2, 4, 6 );
 		vector_type v3 = 2 * v1;
 
-		CPPUNIT_ASSERT_EQUAL( v2, v3 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v3 );
 	}
 
 	void Op_Multiply_003( )
@@ -314,16 +314,16 @@ protected:
 		vector_type v2( -2, -4, -6 );
 		vector_type v3 = v1 * -2;
 
-		CPPUNIT_ASSERT_EQUAL( v2, v3 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v3 );
 	}
 
 	void Op_Multiply_004( )
 	{
 		vector_type v1( 1, 2, 3 );
-		vector_type v2( -2, -4, -6);
+		vector_type v2( -2, -4, -6 );
 		vector_type v3 = -2 * v1;
 
-		CPPUNIT_ASSERT_EQUAL( v2, v3 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v3 );
 	}
 
 	void Op_Divide_001( )
@@ -332,7 +332,7 @@ protected:
 		vector_type v2( value_type( 0.5 ), 1, value_type( 1.5 ) );
 		vector_type v3 = v1 / value_type( 2 );
 
-		CPPUNIT_ASSERT_EQUAL( v2, v3 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v3 );
 	}
 
 	void Op_Divide_002( )
@@ -341,7 +341,7 @@ protected:
 		vector_type v2( value_type( -0.5 ), -1, value_type( -1.5 ) );
 		vector_type v3 = v1 / value_type( -2 );
 
-		CPPUNIT_ASSERT_EQUAL( v2, v3 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v3 );
 	}
 
 	void Op_Inner_001( )
@@ -350,7 +350,7 @@ protected:
 		vector_type v2( 1, 2, 3 );
 		value_type s  = v1 ^ v2;
 
-		CPPUNIT_ASSERT_EQUAL( s, value_type( 14 ) );
+		CPPUNIT_ASSERTION_EQUAL( s, value_type( 14 ) );
 	}
 
 	void Op_Inner_002( )
@@ -359,7 +359,7 @@ protected:
 		vector_type v2( 0, 1, 0 );
 		value_type s  = v1 ^ v2;
 
-		CPPUNIT_ASSERT_EQUAL( s, value_type( 0 ) );
+		CPPUNIT_ASSERTION_EQUAL( s, value_type( 0 ) );
 	}
 
 	void Op_Inner_003( )
@@ -368,7 +368,7 @@ protected:
 		vector_type v2( 1, 0, 1 );
 		value_type s = v1 ^ v2;
 
-		CPPUNIT_ASSERT_EQUAL( s, value_type( 0 ) );
+		CPPUNIT_ASSERTION_EQUAL( s, value_type( 0 ) );
 	}
 
 	void Op_Outer_001( )
@@ -378,7 +378,7 @@ protected:
 		vector_type v3( 0, 0, 1 );
 		vector_type v4 = v1 * v2;
 
-		CPPUNIT_ASSERT_EQUAL( v3, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v3, v4 );
 	}
 
 	void Op_Outer_002( )
@@ -388,7 +388,7 @@ protected:
 		vector_type v3( 0, 0, 1 );
 		vector_type v4 = v2 * v3;
 
-		CPPUNIT_ASSERT_EQUAL( v1, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v1, v4 );
 	}
 
 	void Op_Outer_003( )
@@ -398,7 +398,7 @@ protected:
 		vector_type v3( 0, 0, 1 );
 		vector_type v4 = v3 * v1;
 
-		CPPUNIT_ASSERT_EQUAL( v2, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v4 );
 	}
 
 	void Op_Outer_004( )
@@ -408,7 +408,7 @@ protected:
 		vector_type v3( 0, 0, 0 );
 		vector_type v4 = v1 * v2;
 
-		CPPUNIT_ASSERT_EQUAL( v3, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v3, v4 );
 	}
 
 	void Inner_001( )
@@ -417,7 +417,7 @@ protected:
 		vector_type v2( 1, 2, 3 );
 		value_type s = v1.inner( v2 );
 
-		CPPUNIT_ASSERT_EQUAL( s, value_type( 14 ) );
+		CPPUNIT_ASSERTION_EQUAL( s, value_type( 14 ) );
 	}
 
 	void Inner_002( )
@@ -426,7 +426,7 @@ protected:
 		vector_type v2( 0, 1, 0 );
 		value_type s = v1.inner( v2 );
 
-		CPPUNIT_ASSERT_EQUAL( s, value_type( 0 ) );
+		CPPUNIT_ASSERTION_EQUAL( s, value_type( 0 ) );
 	}
 
 	void Inner_003( )
@@ -435,7 +435,7 @@ protected:
 		vector_type v2( 1, 0, 1 );
 		value_type s = v1.inner( v2 );
 
-		CPPUNIT_ASSERT_EQUAL( s, value_type( 0 ) );
+		CPPUNIT_ASSERTION_EQUAL( s, value_type( 0 ) );
 	}
 
 	void Outer_001( )
@@ -445,7 +445,7 @@ protected:
 		vector_type v3( 0, 0, 1 );
 		vector_type v4 = v1.outer( v2 );
 
-		CPPUNIT_ASSERT_EQUAL( v3, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v3, v4 );
 	}
 
 	void Outer_002( )
@@ -455,7 +455,7 @@ protected:
 		vector_type v3( 0, 0, 1 );
 		vector_type v4 = v2.outer( v3 );
 
-		CPPUNIT_ASSERT_EQUAL( v1, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v1, v4 );
 	}
 
 	void Outer_003( )
@@ -465,7 +465,7 @@ protected:
 		vector_type v3( 0, 0, 1 );
 		vector_type v4 = v3.outer( v1 );
 
-		CPPUNIT_ASSERT_EQUAL( v2, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v2, v4 );
 	}
 
 	void Outer_004( )
@@ -475,7 +475,7 @@ protected:
 		vector_type v3( 0, 0, 0 );
 		vector_type v4 = v1.outer( v2 );
 
-		CPPUNIT_ASSERT_EQUAL( v3, v4 );
+		CPPUNIT_ASSERTION_EQUAL( v3, v4 );
 	}
 
 	void Unit_001( )
@@ -484,7 +484,7 @@ protected:
 		vector_type v1( 1, 1, 1 );
 		vector_type v2( len, len, len );
 
-		CPPUNIT_ASSERT_EQUAL( v1.unit( ), v2 );
+		CPPUNIT_ASSERTION_EQUAL( v1.unit( ), v2 );
 	}
 
 	void Unit_002( )
@@ -493,7 +493,7 @@ protected:
 		vector_type v1( -1, -1, -1 );
 		vector_type v2( -len, -len, -len );
 
-		CPPUNIT_ASSERT_EQUAL( v1.unit( ), v2 );
+		CPPUNIT_ASSERTION_EQUAL( v1.unit( ), v2 );
 	}
 
 	void Unit_003( )
@@ -501,8 +501,8 @@ protected:
 		vector_type v1( 0, 0, 0 );
 		vector_type v2( 0, 0, 0 );
 
-		CPPUNIT_ASSERT_NO_THROW( v1.unit( ) );
-		CPPUNIT_ASSERT_EQUAL( v1.unit( ), v2 );
+		CPPUNIT_ASSERTION_NO_THROW( v1.unit( ) );
+		CPPUNIT_ASSERTION_EQUAL( v1.unit( ), v2 );
 	}
 };
 

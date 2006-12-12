@@ -57,30 +57,17 @@
 // CPPUNIT_ASSERT_ASSERTION_PASS_MESSAGE( message, assertion )
 
 
+// condition が true の場合にテスト成功
+#define CPPUNIT_ASSERTION( condition ) CPPUNIT_ASSERT( condition )
 
+// expected と actual が等しい場合にテスト成功
+#define CPPUNIT_ASSERTION_EQUAL( actual, expected ) CPPUNIT_ASSERT_EQUAL( expected, actual )
 
-// condition が true の場合に message を表示し，false の場合にテスト失敗
-#define CPPUNIT_ASSERTION_MESSAGE( condition, message ) CPPUNIT_ASSERT_MESSAGE( message, condition )
+// | expected - actual | < delta の場合にテスト成功
+#define CPPUNIT_ASSERTION_DOUBLES_EQUAL( actual, expected, delta ) CPPUNIT_ASSERT_DOUBLES_EQUAL( expected, actual, delta )
 
-// expected と actual が等しい場合でテストに成功し message を表示する
-#define CPPUNIT_ASSERTION_EQUAL_MESSAGE( expected, actual, message ) CPPUNIT_ASSERT_EQUAL_MESSAGE( message, expected, actual ) 
+// 指定した expression が例外を送出しない場合にテスト成功
+#define CPPUNIT_ASSERTION_NO_THROW( expression ) CPPUNIT_ASSERT_NO_THROW( expression )
 
-// | expected - actual | < delta でテストに成功し message を表示する
-#define CPPUNIT_ASSERTION_DOUBLES_EQUAL_MESSAGE( expected, actual, delta, message ) CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE( message, expected, actual, delta )
-
-// 指定した expression が ExceptionType 型の例外を送出した場合にテスト成功で message を表示する
-// 例： CPPUNIT_ASSERT_THROW_MESSAGE( v.at( 50 ), std::out_of_range, "- std::vector<int> v;" );
-#define CPPUNIT_ASSERTION_THROW_MESSAGE( expression, ExceptionType, message ) CPPUNIT_ASSERT_THROW_MESSAGE( message, expression, ExceptionType )
-
-// 指定した expression が例外を送出しない場合にテスト成功し message を表示
-#define CPPUNIT_ASSERTION_NO_THROW_MESSAGE( expression, message ) CPPUNIT_ASSERT_NO_THROW_MESSAGE( message, expression ) 
-
-// テスト assertion に失敗した場合にテスト成功し message を表示
-// 例： CPPUNIT_ASSERT_ASSERTION_FAIL_MESSAGE( CPPUNIT_ASSERT( 1 == 2 ), "1 == 2" );
-#define CPPUNIT_ASSERTION_ASSERT_FAIL_MESSAGE( assertion, message ) CPPUNIT_ASSERT_ASSERTION_FAIL_MESSAGE( message, assertion )
-
-// テスト assertion に成功した場合にテスト成功し message を表示
-// 例： CPPUNIT_ASSERT_ASSERTION_PASS_MESSAGE( CPPUNIT_ASSERT( 1 == 1 ), "1 != 1" );
-#define CPPUNIT_ASSERTION_ASSERT_PASS_MESSAGE( assertion, message ) CPPUNIT_ASSERT_ASSERTION_PASS_MESSAGE( message, assertion )
 
 #endif

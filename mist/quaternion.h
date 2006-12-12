@@ -61,9 +61,10 @@ template < class T >
 class quaternion
 {
 public:
-	typedef T value_type;					///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
-	typedef size_t size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
-	typedef ptrdiff_t difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef T value_type;										///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef size_t size_type;									///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;							///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename float_type< T >::value_type float_type;	///< @brief 長さなどを計算するときに用いる浮動小数点型
 
 public:
 	value_type w;		///< @brief 実数成分
@@ -440,9 +441,9 @@ public:	// その他の関数
 	//! 
 	//! \f[ \mbox{\boldmath p}^{-1} = \frac{ \overline{ \mbox{\boldmath p} } }{ \left\| \mbox{\boldmath p} \right\|^2 } \f]
 	//! 
-	const quaternion< double > inv( ) const
+	const quaternion inv( ) const
 	{
-		double length_ = length( );
+		float_type length_ = length( );
 		return( conjugate( ) / ( length_ * length_ ) );
 	}
 
@@ -450,10 +451,17 @@ public:	// その他の関数
 	//! 
 	//! \f[ \frac{ \mbox{\boldmath p} }{ \left\| \mbox{\boldmath p} \right\|^2 } \f]
 	//! 
-	const quaternion< double > unit( ) const
+	const quaternion unit( ) const
 	{
-		double length_ = length( );
-		return( quaternion< double >( w / length_, x / length_, y / length_, z / length_ ) );
+		float_type length_ = length( );
+		if( length_ > 0 )
+		{
+			return( quaternion( static_cast< value_type >( w / length_ ), static_cast< value_type >( x / length_ ), static_cast< value_type >( y / length_ ), static_cast< value_type >( z / length_ ) ) );
+		}
+		else
+		{
+			return( *this );
+		}
 	}
 
 	/// @brief クォータニオンの内積
@@ -463,7 +471,7 @@ public:	// その他の関数
 	//! \f[ p_w \times q_w + p_x \times q_x + p_y \times q_y + p_z \times q_z \f]
 	//! 
 	template < class TT >
-	double inner( const quaternion< TT > &q ) const
+	value_type inner( const quaternion< TT > &q ) const
 	{
 		return( w * q.w + x * q.x + y * q.y + z * q.z );
 	}
@@ -472,7 +480,7 @@ public:	// その他の関数
 	//! 
 	//! \f[ \left\| \mbox{\boldmath p} \right\| = \sqrt{ p_w^2 + p_x^2 + p_y^2 + p_z^2 } \f]
 	//! 
-	double length( ) const { return (  std::sqrt( static_cast< double >( w * w + x * x + y * y + z * z ) ) ); }
+	float_type length( ) const { return ( static_cast< float_type >( std::sqrt( static_cast< double >( w * w + x * x + y * y + z * z ) ) ) ); }
 
 
 	/// @brief クォータニオンを用いたベクトルの回転
@@ -522,7 +530,7 @@ public:	// その他の関数
 			return( quaternion( -1, 0, 0, 0 ) );
 		}
 
-		return( quaternion( c, std::sqrt( 1.0 - c * c ) * v1.outer( v2 ).unit( ) ) );
+		return( quaternion( value_type( c ), std::sqrt( 1.0 - c * c ) * v1.outer( v2 ).unit( ) ) );
 	}
 
 	/// @brief 指定した回転軸を用いてベクトル1からベクトル2への回転を表すクォータニオンを作成する
@@ -565,7 +573,7 @@ public:	// その他の関数
 			s = -s;
 		}
 
-		return( quaternion( c, s * axis ) );
+		return( quaternion( value_type( c ), s * axis ) );
 	}
 };
 
