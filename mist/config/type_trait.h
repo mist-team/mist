@@ -123,6 +123,17 @@ template<>          struct is_arithmetic< ptrdiff_t >     { _MIST_CONST( bool, v
 #endif
 
 
+/// @brief ‘Î‰‚·‚é float Œ^‚ğ•Ô‚·
+//! 
+//! T ‚ª float ‚Ìê‡‚Í float ‚ğ•Ô‚µC‚»‚êˆÈŠO‚Í double i‚à‚µ‚­‚Í long doublej‚Æ‚·‚é
+//! 
+//! @param T  c ’²¸‚·‚éŒ^
+//! 
+template< class T > struct float_type       { typedef double value_type; };
+template<> struct float_type< float >       { typedef float value_type; };
+template<> struct float_type< long double > { typedef long double value_type; };
+
+
 
 
 /// @brief Œ^‚Ì¸ŠiŒ^‚ğ•Ô‚·

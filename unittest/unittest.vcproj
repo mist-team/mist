@@ -184,6 +184,10 @@
 				RelativePath=".\vector2.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\vector3.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="ヘッダー ファイル"

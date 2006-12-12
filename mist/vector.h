@@ -47,6 +47,7 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
+
 //! @addtogroup vector_group ベクトルライブラリ
 //!
 //! @code 次のヘッダをインクルードする
@@ -67,9 +68,10 @@ template < class T >
 class vector3
 {
 public:
-	typedef T value_type;					///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
-	typedef size_t size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
-	typedef ptrdiff_t difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef T value_type;										///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef size_t size_type;									///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;							///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename float_type< T >::value_type float_type;	///< @brief 長さなどを計算するときに用いる浮動小数点型
 
 public:
 	value_type x;		///< @brief X座標値
@@ -292,7 +294,7 @@ public:
 	//! 
 	vector3 unit( ) const
 	{
-		double length_ = length( );
+		float_type length_ = length( );
 		if( length_ > 0 )
 		{
 			return( vector3( static_cast< value_type >( x / length_ ), static_cast< value_type >( y / length_ ), static_cast< value_type >( z / length_ ) ) );
@@ -336,7 +338,7 @@ public:
 	//! 
 	//! @return ベクトルの大きさ
 	//! 
-	double length( ) const { return ( std::sqrt( static_cast< double >( x * x + y * y + z * z ) ) ); }
+	float_type length( ) const { return ( static_cast< float_type >( std::sqrt( static_cast< double >( x * x + y * y + z * z ) ) ) ); }
 
 	/// @brief 任意軸周りのベクトルの回転
 	//! 
@@ -418,9 +420,10 @@ template < class T >
 class vector2
 {
 public:
-	typedef T value_type;					///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
-	typedef size_t size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
-	typedef ptrdiff_t difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef T value_type;										///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+	typedef size_t size_type;									///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;							///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename float_type< T >::value_type float_type;	///< @brief 長さなどを計算するときに用いる浮動小数点型
 
 public:
 	value_type x;		///< @brief X軸座標値
@@ -607,7 +610,7 @@ public:
 	//! 
 	vector2 unit( ) const
 	{
-		double length_ = length( );
+		float_type length_ = length( );
 		if( length_ > 0 )
 		{
 			return( vector2( static_cast< value_type >( x / length_ ), static_cast< value_type >( y / length_ ) ) );
@@ -645,7 +648,7 @@ public:
 	//! 
 	//! @return ベクトルの大きさ
 	//! 
-	double length( ) const { return ( std::sqrt( static_cast< double >( x * x + y * y ) ) ); }
+	float_type length( ) const { return ( static_cast< float_type >( std::sqrt( static_cast< double >( x * x + y * y ) ) ) ); }
 
 	//// ベクトルの回転
 	//vector2 rotate( const vector2 &a, double theta ) const
