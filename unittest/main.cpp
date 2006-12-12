@@ -27,8 +27,8 @@ int main( int argc, char **argv )
 	runner.run( controller );
 
 	// テスト結果を出力する
-	CPPUNIT_NS::TextOutputter *outputter = new CPPUNIT_NS::TextOutputter( &result, std::cout );
-	outputter->write( );
+	CPPUNIT_NS::TextOutputter outputter( &result, std::cout );
+	outputter.write( );
 
 	// テストに成功した場合に 0 を返し，失敗したら 1 を返す
 	return( result.wasSuccessful( ) ? 0 : 1 );
