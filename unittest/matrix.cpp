@@ -2,12 +2,14 @@
 #include "macros.h"
 #include <mist/matrix.h>
 #include <mist/numeric.h>
+#include <mist/vector.h>
 
 template < class T >
 class TestMatrix : public CPPUNIT_NS::TestCase
 {
 private:
 	typedef mist::matrix< T > matrix_type;
+	typedef mist::vector3< float > vector_type;
 	typedef T value_type;
 
 	CPPUNIT_TEST_SUITE( TestMatrix< T > );
@@ -32,8 +34,13 @@ private:
 	CPPUNIT_TEST( Op_Divide_001 );
 	CPPUNIT_TEST( Invert_001 );
 	CPPUNIT_TEST( Invert_002 );
+	CPPUNIT_TEST( Invert_003 );
+	CPPUNIT_TEST( Invert_004 );
 	CPPUNIT_TEST( Transpose_001 );
 	CPPUNIT_TEST( Determinant_001 );
+	CPPUNIT_TEST( Determinant_002 );
+	CPPUNIT_TEST( Eigen_001 );
+	CPPUNIT_TEST( Eigen_002 );
 	CPPUNIT_TEST_SUITE_END( );
 
 protected:
@@ -238,18 +245,44 @@ protected:
 	
 	void Invert_001( )
 	{
+		matrix_type m   = matrix_type::_33( 1, 2, 3, 2, 4, 1, 4, 1, 2 );
+		matrix_type ans = matrix_type::_33( -7, 1, 10, 0, 10, -5, 14, -7, 0 ) / 35.0;
+
+		CPPUNIT_ASSERT( mist::inverse( m ).is_equal( ans, 1.0e-4 ) );
+	}
+	
+	void Invert_002( )
+	{
 		matrix_type m   = matrix_type::_44( 1, 0, 2, -1, 8, 3, -1, -1, 3, 0, 3, -1, 0, -2, 3, 1 );
 		matrix_type ans = matrix_type::_44( -10, -2, 9, -3, 42, 9, -38, 13, 19, 4, -17, 6, 27, 6, -25, 9 );
 
 		CPPUNIT_ASSERT( mist::inverse( m ).is_equal( ans, 1.0e-4 ) );
 	}
 
-	void Invert_002( )
+	void Invert_003( )
 	{
 		matrix_type m   = matrix_type::_44( 1, -1, 0, 0, 0, 1, -1, 0, 0, 0, 1, -1, 0, 0, 0, 1 );
 		matrix_type ans = matrix_type::_44( 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1 );
 
 		CPPUNIT_ASSERT_EQUAL( mist::inverse( m ), ans );
+	}
+
+	void Invert_004( )
+	{
+		matrix_type m0   = matrix_type::_44( 1, 0, 2, -1, 8, 3, -1, -1, 3, 0, 3, -1, 0, -2, 3, 1 );
+		matrix_type m( 5, 5 );
+
+		for( size_t r = 0 ; r < m0.rows( ) ; r++ )
+		{
+			for( size_t c = 0 ; c < m0.rows( ) ; c++ )
+			{
+				m( r, c ) = m0( r, c );
+			}
+		}
+
+		m( 4, 4 ) = value_type( 1 );
+
+		CPPUNIT_ASSERT( ( m * mist::inverse( m ) ).is_equal( matrix_type::identity( 5, 5 ), 1.0e-4 ) );
 	}
 
 	void Transpose_001( )
@@ -262,10 +295,107 @@ protected:
 
 	void Determinant_001( )
 	{
+		matrix_type m   = matrix_type::_33( 32, 2, 5, 2, 3, -2, 14, 5, -1 );
+		value_type ans = 12;
+
+		CPPUNIT_ASSERT_EQUAL( mist::det( m ), ans );
+	}
+
+	void Determinant_002( )
+	{
 		matrix_type m   = matrix_type::_44( 1, 3, 6, 3, 4, 7, 1, 3, 0, 9, 4, 7, 3, 8, 9, 2 );
 		value_type ans = -770;
 
 		CPPUNIT_ASSERT_EQUAL( mist::det( m ), ans );
+	}
+
+	template < class T >
+	bool different_sign( const T &v1, const vector_type::value_type &v2 )
+	{
+		return( v1 * v2 < 0 );
+	}
+
+	template < class T >
+	bool different_sign( const std::complex< T > &v1, const vector_type::value_type &v2 )
+	{
+		return( v1.real( ) * v2 < 0 );
+	}
+
+	void CheckEigen( const matrix_type &m, const matrix_type &aeval, vector_type aevec0, vector_type aevec1, vector_type aevec2 )
+	{
+		matrix_type eval, evec;
+		mist::eigen( m, eval, evec );
+
+		if( different_sign( evec( 0, 0 ), aevec0.x ) )
+		{
+			aevec0 = -aevec0;
+		}
+		if( different_sign( evec( 0, 1 ), aevec1.x ) )
+		{
+			aevec1 = -aevec1;
+		}
+		if( different_sign( evec( 0, 2 ), aevec2.x ) )
+		{
+			aevec2 = -aevec2;
+		}
+
+		matrix_type aevec( 3, 3 );
+		aevec( 0, 0 ) = value_type( aevec0.x );
+		aevec( 1, 0 ) = value_type( aevec0.y );
+		aevec( 2, 0 ) = value_type( aevec0.z );
+		aevec( 0, 1 ) = value_type( aevec1.x );
+		aevec( 1, 1 ) = value_type( aevec1.y );
+		aevec( 2, 1 ) = value_type( aevec1.z );
+		aevec( 0, 2 ) = value_type( aevec2.x );
+		aevec( 1, 2 ) = value_type( aevec2.y );
+		aevec( 2, 2 ) = value_type( aevec2.z );
+
+		CPPUNIT_ASSERT( eval.is_equal( aeval, 1.0e-2 ) );
+		CPPUNIT_ASSERT( evec.is_equal( aevec, 1.0e-4 ) );
+		//CPPUNIT_ASSERTION_EQUAL( eval, aeval );
+		//CPPUNIT_ASSERTION_EQUAL( evec, aevec );
+	}
+
+	void Eigen_001( )
+	{
+		matrix_type m    = matrix_type::_33( 5, -1, -1, 4, -9, 8, 4, -7, 6 );
+
+#if defined( _DESCENDING_ORDER_EIGEN_VALUE_ ) && _DESCENDING_ORDER_EIGEN_VALUE_ != 0
+		matrix_type aeval = matrix_type::_31( 3, 1, -2 );
+
+		vector_type aevec0 = vector_type( 1, 1, 1 ).unit( );
+		vector_type aevec1 = vector_type( 1, 2, 2 ).unit( );
+		vector_type aevec2 = vector_type( 1, 4, 3 ).unit( );
+#else
+		matrix_type aeval = matrix_type::_31( -2, 1, 3 );
+
+		vector_type aevec2 = vector_type( 1, 1, 1 ).unit( );
+		vector_type aevec1 = vector_type( 1, 2, 2 ).unit( );
+		vector_type aevec0 = vector_type( 1, 4, 3 ).unit( );
+#endif
+
+		CheckEigen( m, aeval, aevec0, aevec1, aevec2 );
+	}
+
+	void Eigen_002( )
+	{
+		matrix_type m    = matrix_type::_33( 3, 1, -3, 4, 5, -10, 2, 1, -2 );
+
+#if defined( _DESCENDING_ORDER_EIGEN_VALUE_ ) && _DESCENDING_ORDER_EIGEN_VALUE_ != 0
+		matrix_type aeval = matrix_type::_31( 3, 2, 1 );
+
+		vector_type aevec0 = vector_type( 1, 3, 1 ).unit( );
+		vector_type aevec1 = vector_type( 1, 2, 1 ).unit( );
+		vector_type aevec2 = vector_type( 1, 4, 2 ).unit( );
+#else
+		matrix_type aeval = matrix_type::_31( 1, 2, 3 );
+
+		vector_type aevec2 = vector_type( 1, 3, 1 ).unit( );
+		vector_type aevec1 = vector_type( 1, 2, 1 ).unit( );
+		vector_type aevec0 = vector_type( 1, 4, 2 ).unit( );
+#endif
+
+		CheckEigen( m, aeval, aevec0, aevec1, aevec2 );
 	}
 };
 
