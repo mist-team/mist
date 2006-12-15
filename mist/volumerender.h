@@ -1454,7 +1454,7 @@ namespace __volumerendering_specialized__
 {
 	// CT値補間タイプのレンダリングに特化したボリュームレンダリングエンジン
 	template < class Array1, class Array2, class DepthMap, class T >
-	bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &depth_map, const volumerender::parameter &param, const volumerender::attribute_table< T > &table, typename Array1::size_type thread_id, typename Array1::size_type thread_num )
+	bool volumerendering( const Array1 &in, Array2 &out, const DepthMap &depth_map, const volumerender::parameter &param, const volumerender::attribute_table< T > &volrtable, typename Array1::size_type thread_id, typename Array1::size_type thread_num )
 	{
 		typedef typename volumerender::parameter::vector_type vector_type;
 		typedef typename volumerender::attribute_table< T >::attribute_type attribute_type;
@@ -1485,6 +1485,8 @@ namespace __volumerendering_specialized__
 
 		const size_type image_width  = out.width( );
 		const size_type image_height = out.height( );
+
+		const attribute_type *table = &volrtable[ 0 ];
 
 		// 高速にアドレス計算を行うためのポインタの差分
 		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
@@ -1619,10 +1621,10 @@ namespace __volumerendering_specialized__
 						const_pointer p = &in( si, sj, sk );
 
 						// この位置における物体が不透明の場合は次のステップへ移行する
-						if( table.has_alpha( p[ d0 ] ) || table.has_alpha( p[ d1 ] ) ||
-							table.has_alpha( p[ d2 ] ) || table.has_alpha( p[ d3 ] ) ||
-							table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
-							table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) )
+						if( table[ p[ d0 ] ].has_alpha || table[ p[ d1 ] ].has_alpha ||
+							table[ p[ d2 ] ].has_alpha || table[ p[ d3 ] ].has_alpha ||
+							table[ p[ d4 ] ].has_alpha || table[ p[ d5 ] ].has_alpha ||
+							table[ p[ d6 ] ].has_alpha || table[ p[ d7 ] ].has_alpha )
 						{
 							if( l > 0 )
 							{
@@ -1639,6 +1641,25 @@ namespace __volumerendering_specialized__
 						spos.x += ray.x * current_step;
 						spos.y += ray.y * current_step;
 						spos.z += ray.z * current_step;
+
+						while( l < n )
+						{
+							si = volumerender::to_integer( spos.x );
+							sj = volumerender::to_integer( spos.y );
+							sk = volumerender::to_integer( spos.z );
+
+							current_step = depth_map( si, sj, sk );
+
+							if( current_step <= 2.0 )
+							{
+								break;
+							}
+
+							l += current_step;
+							spos.x += ray.x * current_step;
+							spos.y += ray.y * current_step;
+							spos.z += ray.z * current_step;
+						}
 					}
 
 					// 端まで到達した場合は何もしない
@@ -1754,17 +1775,14 @@ namespace __volumerendering_specialized__
 							nz += ( ( ndz[ 4 ] + ndz[ 5 ] * xx ) + ( ndz[ 6 ] + ndz[ 7 ] * xx ) * yy - nz ) * zz;
 
 							// 切断面の法線を反映させる
-							double _1_len = 1.0 / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) ) * 0.5; 
-							nx = nx * _1_len + normal.x;
-							ny = ny * _1_len + normal.y;
-							nz = nz * _1_len + normal.z;
-
-							nx *= _1_ax;
-							ny *= _1_ay;
-							nz *= _1_az;
+							double _1_len = 0.5 / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) );
+							nx = ( nx * _1_len + normal.x ) * _1_ax;
+							ny = ( ny * _1_len + normal.y ) * _1_ay;
+							nz = ( nz * _1_len + normal.z ) * _1_az;
 
 							// 法線が反転している場合への対応
-							double c = fabs( ( light.x * nx + light.y * ny + light.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) ) );
+							double c = light.x * nx + light.y * ny + light.z * nz;
+							c = std::sqrt( ( c * c ) / ( nx * nx + ny * ny + nz * nz + type_limits< double >::tiny( ) ) );
 
 							double spec = 0.0;
 							if( bSpecular )
@@ -1827,10 +1845,10 @@ namespace __volumerendering_specialized__
 								const_pointer p = &in( si, sj, sk );
 
 								// この位置における物体が不透明の場合は次のステップへ移行する
-								if( table.has_alpha( p[ d0 ] ) || table.has_alpha( p[ d1 ] ) ||
-									table.has_alpha( p[ d2 ] ) || table.has_alpha( p[ d3 ] ) ||
-									table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
-									table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) )
+								if( table[ p[ d0 ] ].has_alpha || table[ p[ d1 ] ].has_alpha ||
+									table[ p[ d2 ] ].has_alpha || table[ p[ d3 ] ].has_alpha ||
+									table[ p[ d4 ] ].has_alpha || table[ p[ d5 ] ].has_alpha ||
+									table[ p[ d6 ] ].has_alpha || table[ p[ d7 ] ].has_alpha )
 								{
 									if( l > ol )
 									{
@@ -1847,6 +1865,25 @@ namespace __volumerendering_specialized__
 								spos.x += ray.x * current_step;
 								spos.y += ray.y * current_step;
 								spos.z += ray.z * current_step;
+
+								while( l < n )
+								{
+									si = volumerender::to_integer( spos.x );
+									sj = volumerender::to_integer( spos.y );
+									sk = volumerender::to_integer( spos.z );
+
+									current_step = depth_map( si, sj, sk );
+
+									if( current_step <= 2.0 )
+									{
+										break;
+									}
+
+									l += current_step;
+									spos.x += ray.x * current_step;
+									spos.y += ray.y * current_step;
+									spos.z += ray.z * current_step;
+								}
 							}
 						}
 					}
@@ -1952,18 +1989,15 @@ namespace __volumerendering_specialized__
 							}
 
 							double nx  = ( ndx[ 0 ] + ndx[ 1 ] * xx ) + ( ndx[ 2 ] + ndx[ 3 ] * xx ) * yy;
-							nx += ( ( ndx[ 4 ] + ndx[ 5 ] * xx ) + ( ndx[ 6 ] + ndx[ 7 ] * xx ) * yy - nx ) * zz;
+							nx = ( nx + ( ( ndx[ 4 ] + ndx[ 5 ] * xx ) + ( ndx[ 6 ] + ndx[ 7 ] * xx ) * yy - nx ) * zz ) * _1_ax;
 							double ny  = ( ndy[ 0 ] + ndy[ 1 ] * xx ) + ( ndy[ 2 ] + ndy[ 3 ] * xx ) * yy;
-							ny += ( ( ndy[ 4 ] + ndy[ 5 ] * xx ) + ( ndy[ 6 ] + ndy[ 7 ] * xx ) * yy - ny ) * zz;
+							ny = ( ny + ( ( ndy[ 4 ] + ndy[ 5 ] * xx ) + ( ndy[ 6 ] + ndy[ 7 ] * xx ) * yy - ny ) * zz ) * _1_ay;
 							double nz  = ( ndz[ 0 ] + ndz[ 1 ] * xx ) + ( ndz[ 2 ] + ndz[ 3 ] * xx ) * yy;
-							nz += ( ( ndz[ 4 ] + ndz[ 5 ] * xx ) + ( ndz[ 6 ] + ndz[ 7 ] * xx ) * yy - nz ) * zz;
-
-							nx *= _1_ax;
-							ny *= _1_ay;
-							nz *= _1_az;
+							nz = ( nz + ( ( ndz[ 4 ] + ndz[ 5 ] * xx ) + ( ndz[ 6 ] + ndz[ 7 ] * xx ) * yy - nz ) * zz ) * _1_az;
 
 							// 法線が反転している場合への対応
-							double c = fabs( ( light.x * nx + light.y * ny + light.z * nz ) / ( std::sqrt( nx * nx + ny * ny + nz * nz ) + type_limits< double >::tiny( ) ) );
+							double c = light.x * nx + light.y * ny + light.z * nz;
+							c = std::sqrt( ( c * c ) / ( nx * nx + ny * ny + nz * nz + type_limits< double >::tiny( ) ) );
 
 							double spec = 0.0;
 							if( bSpecular )
@@ -2025,10 +2059,10 @@ namespace __volumerendering_specialized__
 								const_pointer p = &in( si, sj, sk );
 
 								// この位置における物体が不透明の場合は次のステップへ移行する
-								if( table.has_alpha( p[ d0 ] ) || table.has_alpha( p[ d1 ] ) ||
-									table.has_alpha( p[ d2 ] ) || table.has_alpha( p[ d3 ] ) ||
-									table.has_alpha( p[ d4 ] ) || table.has_alpha( p[ d5 ] ) ||
-									table.has_alpha( p[ d6 ] ) || table.has_alpha( p[ d7 ] ) )
+								if( table[ p[ d0 ] ].has_alpha || table[ p[ d1 ] ].has_alpha ||
+									table[ p[ d2 ] ].has_alpha || table[ p[ d3 ] ].has_alpha ||
+									table[ p[ d4 ] ].has_alpha || table[ p[ d5 ] ].has_alpha ||
+									table[ p[ d6 ] ].has_alpha || table[ p[ d7 ] ].has_alpha )
 								{
 									if( l > ol )
 									{
@@ -2045,6 +2079,25 @@ namespace __volumerendering_specialized__
 								spos.x += ray.x * current_step;
 								spos.y += ray.y * current_step;
 								spos.z += ray.z * current_step;
+
+								while( l < n )
+								{
+									si = volumerender::to_integer( spos.x );
+									sj = volumerender::to_integer( spos.y );
+									sk = volumerender::to_integer( spos.z );
+
+									current_step = depth_map( si, sj, sk );
+
+									if( current_step <= 2.0 )
+									{
+										break;
+									}
+
+									l += current_step;
+									spos.x += ray.x * current_step;
+									spos.y += ray.y * current_step;
+									spos.z += ray.z * current_step;
+								}
 							}
 						}
 					}
