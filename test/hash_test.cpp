@@ -47,7 +47,7 @@ int main( int argc, char *argv[] )
 {
 	using namespace std;
 
-	std::string str =	"Copyright (c) 2003-2006, MIST Project, Intelligent Media Integration COE, Nagoya University\n"
+	std::string str =	"Copyright (c) 2003-2005, MIST Project, Intelligent Media Integration COE, Nagoya University\n"
 						"All rights reserved.\n"
 						"\n"
 						"Redistribution and use in source and binary forms, with or without modification,\n"

@@ -282,7 +282,7 @@ protected:
 
 		m( 4, 4 ) = value_type( 1 );
 
-		CPPUNIT_ASSERT( ( m * mist::inverse( m ) ).is_equal( matrix_type::identity( 5, 5 ), 1.0e-4 ) );
+		CPPUNIT_ASSERT( matrix_type( m * mist::inverse( m ) ).is_equal( matrix_type::identity( 5, 5 ), 1.0e-4 ) );
 	}
 
 	void Transpose_001( )
