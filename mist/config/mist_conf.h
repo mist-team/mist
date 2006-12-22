@@ -146,8 +146,8 @@ _MIST_END
 	#include <cmath>
 
 	// VC6‚Å‚ÍASTD–¼‘O‹óŠÔ‚ÉABSŠÖ”“™‚ª“ü‚Á‚Ä‚¢‚È‚¢–â‘è‚ğC³
-	#define STD_CMATH_FUNC1( name, func, value ) inline value name ( value v ){ return( func( v ) ); }
-	#define STD_CMATH_FUNC2( name, func, value ) inline value name ( value v1, value v2 ){ return( func( v1, v2 ) ); }
+	#define STD_CMATH_FUNC1( name, func, value ) inline value name ( value v ){ return( ::func( v ) ); }
+	#define STD_CMATH_FUNC2( name, func, value ) inline value name ( value v1, value v2 ){ return( ::func( v1, v2 ) ); }
 	namespace std
 	{
 		STD_CMATH_FUNC1(   abs,    abs, int )
