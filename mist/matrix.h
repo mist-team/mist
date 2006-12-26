@@ -172,13 +172,17 @@ namespace __numeric__
 			return( std::abs( v1.real( ) - v2.real( ) ) < delta && std::abs( v1.imag( ) - v2.imag( ) ) < delta );
 		}
 	};
-}
 
+	// 共役複素数を返す関数
+	template< class T > std::complex< T > conjugate( const std::complex< T > &c ) { return std::conj( c ); }
+	template< class T > const T &conjugate( const T &c ) { return c; }
+}
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
 
 template < class T > struct matrix_minus;
 template < class T > struct matrix_transpose;
+template < class T > struct matrix_conjugate_transpose;
 template < class T, class Allocator > class matrix;
 
 template< class T >
@@ -205,6 +209,10 @@ struct matrix_expression
 	matrix_expression< matrix_transpose< matrix_expression< T > > > t( ) const
 	{
 		return( matrix_expression< matrix_transpose< matrix_expression< T > > >( matrix_transpose< matrix_expression< T > >( *this ) ) );
+	}
+	matrix_expression< matrix_conjugate_transpose< matrix_expression< T > > > dagger( ) const
+	{
+		return( matrix_expression< matrix_conjugate_transpose< matrix_expression< T > > >( matrix_conjugate_transpose< matrix_expression< T > >( *this ) ) );
 	}
 };
 
@@ -289,6 +297,22 @@ struct matrix_transpose : public matrix_single_operation< T >
 	value_type operator[]( size_type indx ) const { return( base::middle_[ indx ] ); }
 };
 
+// 共役転置オペレータ
+template< class T >
+struct matrix_conjugate_transpose : public matrix_single_operation< T >
+{
+	typedef typename T::value_type		value_type;
+	typedef typename T::size_type		size_type;
+	typedef typename T::allocator_type	allocator_type;
+	typedef matrix_single_operation< T > base;
+
+	explicit matrix_conjugate_transpose( const T &mhs ) : base( mhs ){}
+	size_type size( ) const { return( base::middle_.size( ) ); };
+	size_type rows( ) const { return( base::middle_.cols( ) ); }
+	size_type cols( ) const { return( base::middle_.rows( ) ); }
+	value_type operator()( size_type r, size_type c ) const { return( __numeric__::conjugate( base::middle_( c, r ) ) ); }
+	value_type operator[]( size_type indx ) const { return( __numeric__::conjugate( base::middle_[ indx ] ) ); }
+};
 
 // 値指定行列オペレータ
 template< class T, size_t ROWS, size_t COLS >
@@ -1108,6 +1132,12 @@ public:
 		return( matrix_expression< matrix_transpose< matrix > >( matrix_transpose< matrix >( *this ) ) );
 	}
 
+	/// @brief 共役転置行列を返す
+	matrix_expression< matrix_conjugate_transpose< matrix > > dagger( ) const
+	{
+		return( matrix_expression< matrix_conjugate_transpose< matrix > >( matrix_conjugate_transpose< matrix >( *this ) ) );
+	}
+
 #else
 
 	/// @brief 符号反転した行列を返す
@@ -1132,6 +1162,21 @@ public:
 			for( size_type c = 0 ; c < o.cols( ) ; c++ )
 			{
 				o( r, c ) = m( c, r );
+			}
+		}
+		return( o );
+	}
+
+	/// @brief 共役転置行列を返す
+	matrix dagger( ) const
+	{
+		const matrix &m = *this;
+		matrix o( size2_, size1_ );
+		for( size_type r = 0 ; r < o.rows( ) ; r++ )
+		{
+			for( size_type c = 0 ; c < o.cols( ) ; c++ )
+			{
+				o( r, c ) = __numeric__::conjugate( m( c, r ) );
 			}
 		}
 		return( o );
