@@ -186,7 +186,10 @@ namespace __pnm_controller__
 					{
 						s = s + 2;
 					}
-					s = s + 1;
+					else
+					{
+						s = s + 1;
+					}
 					flag = true;
 				}
 				else if( s[ 0 ] == '\n' )
