@@ -1564,7 +1564,7 @@ namespace __volumerendering_specialized__
 				}
 				else
 				{
-					pos = param.pos + eX * Pos.x + eY * Pos.y;
+					pos = param.pos - offset + eX * Pos.x + eY * Pos.y;
 					light = -eZ;
 				}
 
@@ -2258,7 +2258,7 @@ namespace __volumerendering_controller__
 				}
 				else
 				{
-					pos = param.pos + eX * Pos.x + eY * Pos.y;
+					pos = param.pos - offset + eX * Pos.x + eY * Pos.y;
 					light = -eZ;
 				}
 
@@ -2532,7 +2532,7 @@ namespace __volumerendering_controller__
 			}
 			else
 			{
-				pos = param.pos + eX * Pos.x + eY * Pos.y;
+				pos = param.pos - offset + eX * Pos.x + eY * Pos.y;
 				light = -eZ;
 			}
 
