@@ -77,7 +77,7 @@ int main( int argc, char *argv[] )
 		}
 
 		// ヒストグラムを作成
-		generate_histogram( data, hist, minimum, maximum, 3 );
+		statistics::generate_histogram( data, hist, minimum, maximum, 3 );
 
 		mixture::distribution dp[ 2 ];
 
@@ -171,7 +171,7 @@ int main( int argc, char *argv[] )
 		}
 
 		// ヒストグラムを作成
-		generate_histogram( data1, data2, hist, minimum, maximum, minimum, maximum, 3 );
+		statistics::generate_histogram( data1, data2, hist, minimum, maximum, minimum, maximum, 3 );
 
 		mixture::distribution2 dp[ 2 ];
 

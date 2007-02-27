@@ -48,8 +48,8 @@ int main( int argc, char *argv[] )
 		data[ i ] = rnd.real1( );
 	}
 
-	std::cout << "Average: " << mist::average( data ) << std::endl;
-	std::cout << "SD:      " << std::sqrt( mist::variance( data ) ) << std::endl;
+	std::cout << "Average: " << mist::statistics::average( data ) << std::endl;
+	std::cout << "SD:      " << std::sqrt( mist::statistics::variance( data ) ) << std::endl;
 
 	return( 0 );
 }
