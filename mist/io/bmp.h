@@ -96,13 +96,6 @@ namespace __bmp_controller__
 			unsigned int	biClrImportant;
 		} _MIST_PACKED;
 
-		struct _bitmapinfo_
-		{
-			enum{ bytes = _rgbquad_::bytes + _bitmapinfoheader_::bytes };
-			_bitmapinfoheader_	bmiHeader;
-			_rgbquad_			bmiColors[1];
-		} _MIST_PACKED;
-
 		struct _bitmapfileheader_
 		{
 			enum{ bytes = 14 };
@@ -225,7 +218,7 @@ namespace __bmp_controller__
 
 		static size_type get_bmp_bytes( const array2< T, Allocator > &image, size_type bmp_bits )
 		{
-			return( _bitmapfileheader_::bytes + _bitmapinfo_::bytes + _rgbquad_::bytes * get_bmp_palette_num( bmp_bits ) + image.height( ) * get_bmp_line_strip( image.width( ), bmp_bits ) );
+			return( _bitmapfileheader_::bytes + _bitmapinfoheader_::bytes + _rgbquad_::bytes * get_bmp_palette_num( bmp_bits ) + image.height( ) * get_bmp_line_strip( image.width( ), bmp_bits ) );
 		}
 
 
