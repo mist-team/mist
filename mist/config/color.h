@@ -44,6 +44,7 @@
 #endif
 
 #include <iostream>
+#include <cmath>
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -1365,12 +1366,12 @@ namespace __color_utility__
 //! 
 //! @attention 入力と出力の値の範囲に注意！！
 //! 
-//! @param[in]  r … RGB色空間のR(赤)成分（０～２５５）
-//! @param[in]  g … RGB色空間のG(緑)成分（０～２５５）
-//! @param[in]  b … RGB色空間のB(青)成分（０～２５５）
-//! @param[out] h … HSV色空間のH(色相)成分（０～３６０）
-//! @param[out] s … HSV色空間のS(彩度)成分（０～１）
-//! @param[out] v … HSV色空間のV(明度青)成分（０～１）
+//! @param[in]  r … RGB色空間のR(赤)成分(0～255)
+//! @param[in]  g … RGB色空間のG(緑)成分(0～255)
+//! @param[in]  b … RGB色空間のB(青)成分(0～255)
+//! @param[out] h … HSV色空間のH(色相)成分(0～360)
+//! @param[out] s … HSV色空間のS(彩度)成分(0～１)
+//! @param[out] v … HSV色空間のV(明度)成分(0～１)
 //! 
 inline void rgb2hsv( double r, double g, double b, double &h, double &s, double &v )
 {
@@ -1424,12 +1425,12 @@ inline void rgb2hsv( double r, double g, double b, double &h, double &s, double 
 //! 
 //! @attention 入力と出力の値の範囲に注意！！
 //! 
-//! @param[in]  h … HSV色空間のH(色相)成分（０～３６０）
-//! @param[in]  s … HSV色空間のS(彩度)成分（０～１）
-//! @param[in]  v … HSV色空間のV(明度青)成分（０～１）
-//! @param[out] r … RGB色空間のR(赤)成分（０～２５５）
-//! @param[out] g … RGB色空間のG(緑)成分（０～２５５）
-//! @param[out] b … RGB色空間のB(青)成分（０～２５５）
+//! @param[in]  h … HSV色空間のH(色相)成分(0～360)
+//! @param[in]  s … HSV色空間のS(彩度)成分(0～１)
+//! @param[in]  v … HSV色空間のV(明度)成分(0～１)
+//! @param[out] r … RGB色空間のR(赤)成分(0～255)
+//! @param[out] g … RGB色空間のG(緑)成分(0～255)
+//! @param[out] b … RGB色空間のB(青)成分(0～255)
 //! 
 inline void hsv2rgb( double h, double s, double v, double &r, double &g, double &b )
 {
@@ -1493,6 +1494,113 @@ inline void hsv2rgb( double h, double s, double v, double &r, double &g, double 
 	}
 }
 
+
+
+
+/// @brief RGB色空間をXYZ色空間に変換する
+//! 
+//! @attention 入力と出力の値の範囲に注意！！
+//! 
+//! @param[in]  r … RGB色空間のR(赤)成分(0～255)
+//! @param[in]  g … RGB色空間のG(緑)成分(0～255)
+//! @param[in]  b … RGB色空間のB(青)成分(0～255)
+//! @param[out] x … XYZ色空間のX成分(0～１)
+//! @param[out] y … XYZ色空間のY成分(0～１)
+//! @param[out] z … XYZ色空間のZ成分(0～１)
+//! 
+inline void rgb2xyz( double r, double g, double b, double &x, double &y, double &z )
+{
+	x = ( 0.412453 * r + 0.357580 * g + 0.180423 * b ) / 255.0;
+	y = ( 0.212671 * r + 0.715160 * g + 0.072169 * b ) / 255.0;
+	z = ( 0.019334 * r + 0.119193 * g + 0.950227 * b ) / 255.0;
+}
+
+
+/// @brief XYZ色空間をRGB色空間に変換する
+//! 
+//! @attention 入力と出力の値の範囲に注意！！
+//! 
+//! @param[in]  x … XYZ色空間のX成分(0～１)
+//! @param[in]  y … XYZ色空間のY成分(0～１)
+//! @param[in]  z … XYZ色空間のZ成分(0～１)
+//! @param[out] r … RGB色空間のR(赤)成分(0～255)
+//! @param[out] g … RGB色空間のG(緑)成分(0～255)
+//! @param[out] b … RGB色空間のB(青)成分(0～255)
+//! 
+inline void xyz2rgb( double x, double y, double z, double &r, double &g, double &b )
+{
+	r = (  3.240479 * x - 1.537150 * y - 0.498535 * z ) * 255.0;
+	g = ( -0.969256 * x + 1.875991 * y + 0.041556 * z ) * 255.0;
+	b = (  0.055648 * x - 0.204043 * y + 1.057311 * z ) * 255.0;
+}
+
+
+/// @brief RGB色空間をL*a*b*色空間に変換する
+//! 
+//! @attention 入力と出力の値の範囲に注意！！
+//! 
+//! @param[in]  r … RGB色空間のR(赤)成分(0～255)
+//! @param[in]  g … RGB色空間のG(緑)成分(0～255)
+//! @param[in]  b … RGB色空間のB(青)成分(0～255)
+//! @param[out] l_ … L*a*b*色空間のL(明度指数)成分(0～100)
+//! @param[out] a_ … L*a*b*色空間のa(知覚色度)成分(-134～220)
+//! @param[out] b_ … L*a*b*色空間のb(知覚色度)成分(-140～122)
+//! 
+inline void rgb2lab( double r, double g, double b, double &l_, double &a_, double &b_ )
+{
+	double x, y, z;
+
+	// XYZ表色系からRGB表色系へ変換
+	rgb2xyz( r, g, b, x, y, z );
+
+	static const double Xr = 0.9504;
+	static const double Yr = 1.0;
+	static const double Zr = 1.0889;
+
+	x /= Xr;
+	y /= Yr;
+	z /= Zr;
+
+	static const double coef = 16.0 / 116.0;
+	x = x > 0.008856 ? std::pow( x, 0.33333333333333333333333333333333333 ) : 7.787 * x + coef;
+	y = y > 0.008856 ? std::pow( y, 0.33333333333333333333333333333333333 ) : 7.787 * y + coef;
+	z = z > 0.008856 ? std::pow( z, 0.33333333333333333333333333333333333 ) : 7.787 * z + coef;
+
+	l_ = 116.0 * y - 16.0;
+	a_ = 500.0 * ( x - y );
+	b_ = 200.0 * ( y - z );
+}
+
+/// @brief L*a*b*色空間をRGB色空間に変換する
+//! 
+//! @attention 入力と出力の値の範囲に注意！！
+//! 
+//! @param[in]  l_ … L*a*b*色空間のL(明度指数)成分(0～100)
+//! @param[in]  a_ … L*a*b*色空間のa(知覚色度)成分(-134～220)
+//! @param[in]  b_ … L*a*b*色空間のb(知覚色度)成分(-140～122)
+//! @param[out] r … RGB色空間のR(赤)成分(0～255)
+//! @param[out] g … RGB色空間のG(緑)成分(0～255)
+//! @param[out] b … RGB色空間のB(青)成分(0～255)
+//! 
+inline void lab2rgb( double l_, double a_, double b_, double &r, double &g, double &b )
+{
+	double fy = ( l_ + 16.0 ) / 116.0;
+	double fx = fy + a_ / 500.0 ;
+	double fz = fy - b_ / 200.0;
+
+	static const double Xr = 0.9504;
+	static const double Yr = 1.0;
+	static const double Zr = 1.0889;
+
+	static const double delta = 6.0 / 29.0;
+	static const double delta3 = 3.0 * delta * delta * delta;
+	double y = fy > delta ? Yr * fy * fy * fy : ( fy - 16.0 / 116.0 ) * delta3 * Yr;
+	double x = fx > delta ? Yr * fx * fx * fx : ( fx - 16.0 / 116.0 ) * delta3 * Xr;
+	double z = fz > delta ? Yr * fz * fz * fz : ( fz - 16.0 / 116.0 ) * delta3 * Zr;
+
+	// XYZ表色系からRGB表色系へ変換
+	xyz2rgb( x, y, z, r, g, b );
+}
 
 /// @brief 入力された型がカラー画像かどうか調べる
 template < class T >
