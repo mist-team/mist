@@ -1162,7 +1162,7 @@ bool median( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 	median_thread *thread = new median_thread[ thread_num ];
 
 	fw = static_cast< size_type >( fw / 2 ) * 2 + 1;
-	fh = static_cast< size_type >( fw / 2 ) * 2 + 1;
+	fh = static_cast< size_type >( fh / 2 ) * 2 + 1;
 
 	size_type i;
 	for( i = 0 ; i < thread_num ; i++ )
@@ -1281,8 +1281,8 @@ bool median( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 	median_thread *thread = new median_thread[ thread_num ];
 
 	fw = static_cast< size_type >( fw / 2 ) * 2 + 1;
-	fh = static_cast< size_type >( fw / 2 ) * 2 + 1;
-	fd = static_cast< size_type >( fw / 2 ) * 2 + 1;
+	fh = static_cast< size_type >( fh / 2 ) * 2 + 1;
+	fd = static_cast< size_type >( fd / 2 ) * 2 + 1;
 
 	size_type i;
 	for( i = 0 ; i < thread_num ; i++ )
