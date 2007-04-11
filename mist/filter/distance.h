@@ -490,14 +490,14 @@ namespace __saito__
 								pointer pp = p;
 								for( difference_type n = 0 ; n <= num && pp <= ep ; n++, pp += diff )
 								{
-									value_type nn = static_cast< value_type >( *op - ( n + 1 ) * ( n + 1 ) * as2 );
+									double nn = *op - ( n + 1 ) * ( n + 1 ) * as2;
 									if( *pp >= nn )
 									{
 										break;
 									}
 									else if( g[ i1 + n ] < nn )
 									{
-										g[ i1 + n ] = nn;
+										g[ i1 + n ] = static_cast< value_type >( nn );
 									}
 								}
 							}
@@ -520,14 +520,14 @@ namespace __saito__
 								pointer pp = p;
 								for( difference_type n = 0 ; n <= num && pp >= sp ; n++, pp -= diff )
 								{
-									value_type nn = static_cast< value_type >( g[ i1 + 1 ] - ( n + 1 ) * ( n + 1 ) * as2 );
+									double nn = g[ i1 + 1 ] - ( n + 1 ) * ( n + 1 ) * as2;
 									if( g[ i1 - n ] >= nn )
 									{
 										break;
 									}
 									else if( *pp < nn )
 									{
-										*pp = nn;
+										*pp = static_cast< value_type >( nn );
 									}
 								}
 							}
