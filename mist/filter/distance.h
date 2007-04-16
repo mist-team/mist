@@ -2588,7 +2588,7 @@ void skeleton( const Array1 &in, Array2 &out )
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		temp[ i ] = static_cast< typename array3< difference_type >::value_type >( i );
+		temp[ i ] = -1;
 	}
 
 	difference_type w = in.width( );
@@ -2619,6 +2619,7 @@ void skeleton( const Array1 &in, Array2 &out )
 					{
 						continue;
 					}
+
 					difference_type zz = z * z;
 
 					for( difference_type y = -ry ; y <= ry ; y++ )
@@ -2628,6 +2629,7 @@ void skeleton( const Array1 &in, Array2 &out )
 						{
 							continue;
 						}
+
 						difference_type yy = y * y;
 
 						for( difference_type x = -rx ; x <= rx ; x++ )
@@ -2637,12 +2639,13 @@ void skeleton( const Array1 &in, Array2 &out )
 							{
 								continue;
 							}
+
 							difference_type xx = x * x;
 
 							if( xx + yy + zz < rr )
 							{
 								difference_type &p = temp( px, py, pz );
-								if( in[ p ] < rr )
+								if( p < 0 || in[ p ] < rr )
 								{
 									p = index;
 								}
@@ -2659,7 +2662,6 @@ void skeleton( const Array1 &in, Array2 &out )
 		if( temp[ i ] > 0 )
 		{
 			temp[ temp[ i ] ] = -2;
-			temp[ i ] = -1;
 		}
 	}
 
