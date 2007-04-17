@@ -49,6 +49,7 @@
 	// スレッドサポートはしないので特に必要なインクルードファイルは無し
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	#include <windows.h>
+	#include <process.h>
 #else
 	#include <pthread.h>
 	#include <unistd.h>
@@ -155,8 +156,8 @@ private:
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしないので特に必要な変数は無し
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-	HANDLE    thread_handle_;			// Windows用のスレッドを識別するハンドル
-	DWORD     thread_id_;				// Windows用のスレッドを識別するID
+	HANDLE       thread_handle_;		// Windows用のスレッドを識別するハンドル
+	unsigned int thread_id_;			// Windows用のスレッドを識別するID
 #else
 	pthread_t thread_id_;				// pthreadライブラリでスレッドを識別するID
 	bool      thread_finished_;			// スレッドが終了したかどうかを保持
@@ -249,7 +250,7 @@ public:
 		thread_exit_code_ = thread_function( );
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		if( thread_handle_ != NULL ) return( false );
-		thread_handle_ = CreateThread( NULL, 0, map_thread_function, ( void * )this, 0, &( thread_id_ ) );
+		thread_handle_ = ( HANDLE )_beginthreadex( NULL, 0, map_thread_function, ( void * )this, 0, &thread_id_ );
 		bool ret = thread_handle_ != NULL ? true : false;
 #else
 		if( thread_id_ != ( pthread_t ) ( -1 ) ) return( false );
@@ -402,7 +403,7 @@ protected:
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしないので何もしない
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-	static DWORD WINAPI map_thread_function( void *p )
+	static unsigned int __stdcall map_thread_function( void *p )
 	{
 		thread *obj = static_cast< thread * >( p );
 		obj->thread_exit_code_ = obj->thread_function( );
