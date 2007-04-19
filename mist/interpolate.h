@@ -235,7 +235,7 @@ namespace __linear__
 	struct _linear_
 	{
 		template < class T, class Allocator >
-		static double linear___( const array< T, Allocator > &in,
+		static double interpolate( const array< T, Allocator > &in,
 									typename array< T, Allocator >::size_type i1,
 									typename array< T, Allocator >::size_type i2,
 									typename array< T, Allocator >::size_type j1,
@@ -254,7 +254,7 @@ namespace __linear__
 		}
 
 		template < class T, class Allocator >
-		static double linear___( const array2< T, Allocator > &in,
+		static double interpolate( const array2< T, Allocator > &in,
 									typename array2< T, Allocator >::size_type i1,
 									typename array2< T, Allocator >::size_type i2,
 									typename array2< T, Allocator >::size_type j1,
@@ -273,7 +273,7 @@ namespace __linear__
 		}
 
 		template < class T, class Allocator >
-		static double linear___( const array3< T, Allocator > &in,
+		static double interpolate( const array3< T, Allocator > &in,
 									typename array3< T, Allocator >::size_type i1,
 									typename array3< T, Allocator >::size_type i2,
 									typename array3< T, Allocator >::size_type j1,
@@ -297,7 +297,7 @@ namespace __linear__
 	struct _linear_< true >
 	{
 		template < class T, class Allocator >
-		static const rgb< double > linear___( const array< T, Allocator > &in,
+		static const rgb< double > interpolate( const array< T, Allocator > &in,
 												typename array< T, Allocator >::size_type i1,
 												typename array< T, Allocator >::size_type i2,
 												typename array< T, Allocator >::size_type j1,
@@ -323,7 +323,7 @@ namespace __linear__
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double > linear___( const array2< T, Allocator > &in,
+		static const rgb< double > interpolate( const array2< T, Allocator > &in,
 												typename array2< T, Allocator >::size_type i1,
 												typename array2< T, Allocator >::size_type i2,
 												typename array2< T, Allocator >::size_type j1,
@@ -349,7 +349,7 @@ namespace __linear__
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double > linear___( const array3< T, Allocator > &in,
+		static const rgb< double > interpolate( const array3< T, Allocator > &in,
 												typename array3< T, Allocator >::size_type i1,
 												typename array3< T, Allocator >::size_type i2,
 												typename array3< T, Allocator >::size_type j1,
@@ -419,7 +419,7 @@ namespace __linear__
 					i1 = static_cast< size_type >( x );
 					x -= i1;
 					i2 = i1 < iw - 1 ? i1 + 1 : i1;
-					out( i, j, k ) = static_cast< out_value_type >( _linear_< is_color< value_type >::value >::linear___( in, i1, i2, j1, j2, k1, k2, x, y, z ) );
+					out( i, j, k ) = static_cast< out_value_type >( _linear_< is_color< value_type >::value >::interpolate( in, i1, i2, j1, j2, k1, k2, x, y, z ) );
 				}
 			}
 		}
@@ -442,7 +442,7 @@ namespace __cubic__
 	struct _cubic_
 	{
 		template < class T, class Allocator >
-		static double cubic___( const array< T, Allocator > &in,
+		static double interpolate( const array< T, Allocator > &in,
 								typename array< T, Allocator >::size_type i[4],
 								typename array< T, Allocator >::size_type j[4],
 								typename array< T, Allocator >::size_type k[4],
@@ -465,7 +465,7 @@ namespace __cubic__
 		}
 
 		template < class T, class Allocator >
-		static double cubic___( const array2< T, Allocator > &in,
+		static double interpolate( const array2< T, Allocator > &in,
 								typename array2< T, Allocator >::size_type i[4],
 								typename array2< T, Allocator >::size_type j[4],
 								typename array2< T, Allocator >::size_type k[4],
@@ -495,7 +495,7 @@ namespace __cubic__
 		}
 
 		template < class T, class Allocator >
-		static double cubic___( const array3< T, Allocator > &in,
+		static double interpolate( const array3< T, Allocator > &in,
 								typename array3< T, Allocator >::size_type i[4],
 								typename array3< T, Allocator >::size_type j[4],
 								typename array3< T, Allocator >::size_type k[4],
@@ -547,7 +547,7 @@ namespace __cubic__
 	struct _cubic_< true >
 	{
 		template < class T, class Allocator >
-		static const rgb< double >  cubic___( const array< T, Allocator > &in,
+		static const rgb< double >  interpolate( const array< T, Allocator > &in,
 												typename array< T, Allocator >::size_type i[4],
 												typename array< T, Allocator >::size_type j[4],
 												typename array< T, Allocator >::size_type k[4],
@@ -578,7 +578,7 @@ namespace __cubic__
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double >  cubic___( const array2< T, Allocator > &in,
+		static const rgb< double >  interpolate( const array2< T, Allocator > &in,
 												typename array2< T, Allocator >::size_type i[4],
 												typename array2< T, Allocator >::size_type j[4],
 												typename array2< T, Allocator >::size_type k[4],
@@ -623,7 +623,7 @@ namespace __cubic__
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double >  cubic___( const array3< T, Allocator > &in,
+		static const rgb< double >  interpolate( const array3< T, Allocator > &in,
 												typename array3< T, Allocator >::size_type i[4],
 												typename array3< T, Allocator >::size_type j[4],
 												typename array3< T, Allocator >::size_type k[4],
@@ -762,7 +762,7 @@ namespace __cubic__
 					ii[ 3 ] = ii[ 2 ] < iw - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
 					x -= ii[ 1 ];
 
-					out( i, j, k ) = static_cast< out_value_type >( _cubic_< is_color< value_type >::value >::cubic___( in, ii, jj, kk, x, y, z ) );
+					out( i, j, k ) = static_cast< out_value_type >( _cubic_< is_color< value_type >::value >::interpolate( in, ii, jj, kk, x, y, z ) );
 				}
 			}
 		}
@@ -788,7 +788,7 @@ namespace __bspline__
 	struct _bspline_
 	{
 		template < class T, class Allocator >
-		static double bspline___( const array< T, Allocator > &in,
+		static double interpolate( const array< T, Allocator > &in,
 								typename array< T, Allocator >::size_type i[4],
 								typename array< T, Allocator >::size_type j[4],
 								typename array< T, Allocator >::size_type k[4],
@@ -811,7 +811,7 @@ namespace __bspline__
 		}
 
 		template < class T, class Allocator >
-		static double bspline___( const array2< T, Allocator > &in,
+		static double interpolate( const array2< T, Allocator > &in,
 								typename array2< T, Allocator >::size_type i[4],
 								typename array2< T, Allocator >::size_type j[4],
 								typename array2< T, Allocator >::size_type k[4],
@@ -841,7 +841,7 @@ namespace __bspline__
 		}
 
 		template < class T, class Allocator >
-		static double bspline___( const array3< T, Allocator > &in,
+		static double interpolate( const array3< T, Allocator > &in,
 								typename array3< T, Allocator >::size_type i[4],
 								typename array3< T, Allocator >::size_type j[4],
 								typename array3< T, Allocator >::size_type k[4],
@@ -893,7 +893,7 @@ namespace __bspline__
 	struct _bspline_< true >
 	{
 		template < class T, class Allocator >
-		static const rgb< double >  bspline___( const array< T, Allocator > &in,
+		static const rgb< double >  interpolate( const array< T, Allocator > &in,
 												typename array< T, Allocator >::size_type i[4],
 												typename array< T, Allocator >::size_type j[4],
 												typename array< T, Allocator >::size_type k[4],
@@ -924,7 +924,7 @@ namespace __bspline__
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double >  bspline___( const array2< T, Allocator > &in,
+		static const rgb< double >  interpolate( const array2< T, Allocator > &in,
 												typename array2< T, Allocator >::size_type i[4],
 												typename array2< T, Allocator >::size_type j[4],
 												typename array2< T, Allocator >::size_type k[4],
@@ -969,7 +969,7 @@ namespace __bspline__
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double >  bspline___( const array3< T, Allocator > &in,
+		static const rgb< double >  interpolate( const array3< T, Allocator > &in,
 												typename array3< T, Allocator >::size_type i[4],
 												typename array3< T, Allocator >::size_type j[4],
 												typename array3< T, Allocator >::size_type k[4],
@@ -1108,7 +1108,7 @@ namespace __bspline__
 					ii[ 3 ] = ii[ 2 ] < iw - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
 					x -= ii[ 1 ];
 
-					out( i, j, k ) = static_cast< out_value_type >( _bspline_< is_color< value_type >::value >::bspline___( in, ii, jj, kk, x, y, z ) );
+					out( i, j, k ) = static_cast< out_value_type >( _bspline_< is_color< value_type >::value >::interpolate( in, ii, jj, kk, x, y, z ) );
 				}
 			}
 		}
@@ -1130,7 +1130,7 @@ namespace __sinc__
 	struct _sinc_
 	{
 		template < class T, class Allocator >
-		static double sinc___( const array< T, Allocator > &in,
+		static double interpolate( const array< T, Allocator > &in,
 								typename array< T, Allocator >::difference_type ix,
 								typename array< T, Allocator >::difference_type iy,
 								typename array< T, Allocator >::difference_type iz,
@@ -1159,7 +1159,7 @@ namespace __sinc__
 		}
 
 		template < class T, class Allocator >
-		static double sinc___( const array2< T, Allocator > &in,
+		static double interpolate( const array2< T, Allocator > &in,
 								typename array2< T, Allocator >::difference_type ix,
 								typename array2< T, Allocator >::difference_type iy,
 								typename array2< T, Allocator >::difference_type iz,
@@ -1216,7 +1216,7 @@ namespace __sinc__
 		}
 
 		template < class T, class Allocator >
-		static double sinc___( const array3< T, Allocator > &in,
+		static double interpolate( const array3< T, Allocator > &in,
 								typename array3< T, Allocator >::difference_type ix,
 								typename array3< T, Allocator >::difference_type iy,
 								typename array3< T, Allocator >::difference_type iz,
@@ -1325,7 +1325,7 @@ namespace __sinc__
 	struct _sinc_< true >
 	{
 		template < class T, class Allocator >
-		static rgb< double > sinc___( const array< T, Allocator > &in,
+		static rgb< double > interpolate( const array< T, Allocator > &in,
 								typename array< T, Allocator >::difference_type ix,
 								typename array< T, Allocator >::difference_type iy,
 								typename array< T, Allocator >::difference_type iz,
@@ -1335,7 +1335,7 @@ namespace __sinc__
 		}
 
 		template < class T, class Allocator >
-		static rgb< double > sinc___( const array2< T, Allocator > &in,
+		static rgb< double > interpolate( const array2< T, Allocator > &in,
 								typename array2< T, Allocator >::difference_type ix,
 								typename array2< T, Allocator >::difference_type iy,
 								typename array2< T, Allocator >::difference_type iz,
@@ -1345,7 +1345,7 @@ namespace __sinc__
 		}
 
 		template < class T, class Allocator >
-		static rgb< double > sinc___( const array3< T, Allocator > &in,
+		static rgb< double > interpolate( const array3< T, Allocator > &in,
 								typename array3< T, Allocator >::difference_type ix,
 								typename array3< T, Allocator >::difference_type iy,
 								typename array3< T, Allocator >::difference_type iz,
@@ -1399,7 +1399,7 @@ namespace __sinc__
 					ii = static_cast< difference_type >( x );
 					x -= ii;
 
-					out( i, j, k ) = static_cast< out_value_type >( _sinc_< is_color< value_type >::value >::sinc___( in, ii, jj, kk, x, y, z ) );
+					out( i, j, k ) = static_cast< out_value_type >( _sinc_< is_color< value_type >::value >::interpolate( in, ii, jj, kk, x, y, z ) );
 				}
 			}
 		}
