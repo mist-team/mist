@@ -42,6 +42,10 @@
 #include "../mist.h"
 #endif
 
+#ifndef __INCLUDE_MIST_COLOR_H__
+#include "../config/color.h"
+#endif
+
 #ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
 #include "../config/type_trait.h"
 #endif
