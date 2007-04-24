@@ -2902,6 +2902,15 @@ public:
 		copy( o );
 	}
 
+	/// @brief array2 配列 o の配列の大きさと，X軸方向のマージン margin1，Y軸方向のマージン margin2 を用いて初期化し，全要素を val で初期化する
+	template < class T, class Allocator >
+	marray( const array2< T, Allocator > &o, size_type margin1, size_type margin2, size_type margin3, const value_type &val )
+		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin2 * 2, o.reso1( ), o.reso2( ) ), margin1_( margin1 ), margin2_( margin2 ), margin3_( 0 )
+	{
+		fill_margin( val );
+		copy( o );
+	}
+
 
 	/// @brief array3 配列 o の配列の大きさと，X軸方向のマージン margin1，Y軸方向のマージン margin2，Z軸方向のマージン margin3 を用いて初期化し，全要素を val で初期化する
 	//! 

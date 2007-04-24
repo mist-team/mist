@@ -945,17 +945,17 @@ namespace __morphology_controller__
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator, class Functor >
-bool erosion( array2< T, Allocator > &in, const morphology::morphology_structure &s, Functor f, typename array2< T, Allocator >::size_type thread_num )
+template < class Array, class Functor >
+bool erosion( Array &in, const morphology::morphology_structure &s, Functor f, typename Array::size_type thread_num )
 {
 	if( in.empty( ) )
 	{
 		return( false );
 	}
 
-	typedef typename array2< T, Allocator >::value_type value_type;
-	typedef typename array2< T, Allocator >::size_type  size_type;
-	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator >, Functor > morphology_thread;
+	typedef typename Array::value_type value_type;
+	typedef typename Array::size_type  size_type;
+	typedef __morphology_controller__::morphology_thread< marray< Array >, Array, Functor > morphology_thread;
 	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
@@ -966,7 +966,7 @@ bool erosion( array2< T, Allocator > &in, const morphology::morphology_structure
 
 	value_type max = type_limits< value_type >::maximum( );
 
-	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, max );
+	marray< Array > out( in, s.margin_x, s.margin_y, s.margin_z, max );
 
 	list_type object = morphology::create_pointer_diff_list( out, s.object );
 	list_type update = morphology::create_pointer_diff_list( out, s.update );
@@ -1004,8 +1004,8 @@ bool erosion( array2< T, Allocator > &in, const morphology::morphology_structure
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator >
-bool erosion( array2< T, Allocator > &in, const morphology::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+template < class Array >
+bool erosion( Array &in, const morphology::morphology_structure &s, typename Array::size_type thread_num = 0 )
 {
 	return( erosion( in, s, __mist_dmy_callback__( ), thread_num ) );
 }
@@ -1024,17 +1024,17 @@ bool erosion( array2< T, Allocator > &in, const morphology::morphology_structure
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator, class Functor >
-bool dilation( array2< T, Allocator > &in, const morphology::morphology_structure &s, Functor f, typename array2< T, Allocator >::size_type thread_num )
+template < class Array, class Functor >
+bool dilation( Array &in, const morphology::morphology_structure &s, Functor f, typename Array::size_type thread_num )
 {
 	if( in.empty( ) )
 	{
 		return( false );
 	}
 
-	typedef typename array2< T, Allocator >::value_type value_type;
-	typedef typename array2< T, Allocator >::size_type  size_type;
-	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator >, Functor > morphology_thread;
+	typedef typename Array::value_type value_type;
+	typedef typename Array::size_type  size_type;
+	typedef __morphology_controller__::morphology_thread< marray< Array >, Array, Functor > morphology_thread;
 	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
@@ -1045,7 +1045,7 @@ bool dilation( array2< T, Allocator > &in, const morphology::morphology_structur
 
 	value_type min = type_limits< value_type >::minimum( );
 
-	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, min );
+	marray< Array > out( in, s.margin_x, s.margin_y, s.margin_z, min );
 
 	list_type object = morphology::create_pointer_diff_list( out, s.object );
 	list_type update = morphology::create_pointer_diff_list( out, s.update );
@@ -1083,8 +1083,8 @@ bool dilation( array2< T, Allocator > &in, const morphology::morphology_structur
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator >
-bool dilation( array2< T, Allocator > &in, const morphology::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+template < class Array >
+bool dilation( Array &in, const morphology::morphology_structure &s, typename Array::size_type thread_num = 0 )
 {
 	return( dilation( in, s, __mist_dmy_callback__( ), thread_num ) );
 }
@@ -1103,18 +1103,18 @@ bool dilation( array2< T, Allocator > &in, const morphology::morphology_structur
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator, class Functor >
-bool opening( array2< T, Allocator > &in, const morphology::morphology_structure &s, Functor f, typename array2< T, Allocator >::size_type thread_num )
+template < class Array, class Functor >
+bool opening( Array &in, const morphology::morphology_structure &s, Functor f, typename Array::size_type thread_num )
 {
 	if( in.empty( ) )
 	{
 		return( false );
 	}
 
-	typedef typename array2< T, Allocator >::value_type value_type;
-	typedef typename array2< T, Allocator >::size_type  size_type;
+	typedef typename Array::value_type value_type;
+	typedef typename Array::size_type  size_type;
 	typedef __mist_convert_callback__< Functor > CallBack;
-	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator >, CallBack > morphology_thread;
+	typedef __morphology_controller__::morphology_thread< marray< Array >, Array, CallBack > morphology_thread;
 	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
@@ -1126,7 +1126,7 @@ bool opening( array2< T, Allocator > &in, const morphology::morphology_structure
 	value_type max = type_limits< value_type >::maximum( );
 	value_type min = type_limits< value_type >::minimum( );
 
-	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, max );
+	marray< Array > out( in, s.margin_x, s.margin_y, s.margin_z, max );
 
 	list_type object = morphology::create_pointer_diff_list( out, s.object );
 	list_type update = morphology::create_pointer_diff_list( out, s.update );
@@ -1181,8 +1181,8 @@ bool opening( array2< T, Allocator > &in, const morphology::morphology_structure
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator >
-bool opening( array2< T, Allocator > &in, const morphology::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+template < class Array >
+bool opening( Array &in, const morphology::morphology_structure &s, typename Array::size_type thread_num = 0 )
 {
 	return( opening( in, s, __mist_dmy_callback__( ), thread_num ) );
 }
@@ -1201,18 +1201,18 @@ bool opening( array2< T, Allocator > &in, const morphology::morphology_structure
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator, class Functor >
-bool closing( array2< T, Allocator > &in, const morphology::morphology_structure &s, Functor f, typename array2< T, Allocator >::size_type thread_num )
+template < class Array, class Functor >
+bool closing( Array &in, const morphology::morphology_structure &s, Functor f, typename Array::size_type thread_num )
 {
 	if( in.empty( ) )
 	{
 		return( false );
 	}
 
-	typedef typename array2< T, Allocator >::value_type value_type;
-	typedef typename array2< T, Allocator >::size_type  size_type;
+	typedef typename Array::value_type value_type;
+	typedef typename Array::size_type  size_type;
 	typedef __mist_convert_callback__< Functor > CallBack;
-	typedef __morphology_controller__::morphology_thread< marray< array2< T, Allocator > >, array2< T, Allocator >, CallBack > morphology_thread;
+	typedef __morphology_controller__::morphology_thread< marray< Array >, Array, CallBack > morphology_thread;
 	typedef morphology::pointer_diff pointer_diff;
 	typedef std::vector< pointer_diff >  list_type;
 
@@ -1224,7 +1224,7 @@ bool closing( array2< T, Allocator > &in, const morphology::morphology_structure
 	value_type max = type_limits< value_type >::maximum( );
 	value_type min = type_limits< value_type >::minimum( );
 
-	marray< array2< T, Allocator > > out( in, s.margin_x, s.margin_y, min );
+	marray< Array > out( in, s.margin_x, s.margin_y, s.margin_z, min );
 
 	list_type object = morphology::create_pointer_diff_list( out, s.object );
 	list_type update = morphology::create_pointer_diff_list( out, s.update );
@@ -1279,529 +1279,11 @@ bool closing( array2< T, Allocator > &in, const morphology::morphology_structure
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator >
-bool closing( array2< T, Allocator > &in, const morphology::morphology_structure &s, typename array2< T, Allocator >::size_type thread_num = 0 )
+template < class Array >
+bool closing( Array &in, const morphology::morphology_structure &s, typename Array::size_type thread_num = 0 )
 {
 	return( closing( in, s, __mist_dmy_callback__( ), thread_num ) );
 }
-
-
-
-/// @brief 円を構造要素とするErosion演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径（単位は画素）
-//! @param[in] f          … 進行状況を返すコールバック関数
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator, class Functor >
-inline bool erosion( array2< T, Allocator > &in, double radius, Functor f, typename array2< T, Allocator >::size_type thread_num )
-{
-	return( erosion( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), f, thread_num ) );
-}
-
-
-/// @brief 円を構造要素とするDilation演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径（単位は画素）
-//! @param[in] f          … 進行状況を返すコールバック関数
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator, class Functor >
-inline bool dilation( array2< T, Allocator > &in, double radius, Functor f, typename array2< T, Allocator >::size_type thread_num )
-{
-	return( dilation( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), f, thread_num ) );
-}
-
-
-/// @brief 円を構造要素とするOpening演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径（単位は画素）
-//! @param[in] thread_num … 使用するスレッド数
-//! @param[in] f          … 進行状況を返すコールバック関数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator, class Functor >
-inline bool opening( array2< T, Allocator > &in, double radius, Functor f, typename array2< T, Allocator >::size_type thread_num )
-{
-	return( opening( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), f, thread_num ) );
-}
-
-
-/// @brief 円を構造要素とするClosing演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径（単位は画素）
-//! @param[in] thread_num … 使用するスレッド数
-//! @param[in] f          … 進行状況を返すコールバック関数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator, class Functor >
-inline bool closing( array2< T, Allocator > &in, double radius, Functor f, typename array2< T, Allocator >::size_type thread_num )
-{
-	return( closing( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), f, thread_num ) );
-}
-
-
-
-
-
-/// @brief 円を構造要素とするErosion演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径（単位は画素）
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator >
-inline bool erosion( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
-{
-	return( erosion( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), __mist_dmy_callback__( ), thread_num ) );
-}
-
-
-/// @brief 円を構造要素とするDilation演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径（単位は画素）
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator >
-inline bool dilation( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
-{
-	return( dilation( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), __mist_dmy_callback__( ), thread_num ) );
-}
-
-
-/// @brief 円を構造要素とするOpening演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径（単位は画素）
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator >
-inline bool opening( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
-{
-	return( opening( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), __mist_dmy_callback__( ), thread_num ) );
-}
-
-
-/// @brief 円を構造要素とするClosing演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] radius     … 円の半径（単位は画素）
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator >
-inline bool closing( array2< T, Allocator > &in, double radius, typename array2< T, Allocator >::size_type thread_num = 0 )
-{
-	return( closing( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), __mist_dmy_callback__( ), thread_num ) );
-}
-
-
-
-
-
-
-
-/// @brief 任意の構造要素に対応したErosion演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] s          … モルフォロジ演算に用いる構造要素
-//! @param[in] f          … 進行状況を返すコールバック関数
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator, class Functor >
-bool erosion( array3< T, Allocator > &in, const morphology::morphology_structure &s, Functor f, typename array3< T, Allocator >::size_type thread_num )
-{
-	if( in.empty( ) )
-	{
-		return( false );
-	}
-
-	typedef typename array3< T, Allocator >::value_type value_type;
-	typedef typename array3< T, Allocator >::size_type  size_type;
-	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator >, Functor > morphology_thread;
-	typedef morphology::pointer_diff pointer_diff;
-	typedef std::vector< pointer_diff >  list_type;
-
-	if( thread_num == 0 )
-	{
-		thread_num = static_cast< size_type >( get_cpu_num( ) );
-	}
-
-	value_type max = type_limits< value_type >::maximum( );
-
-	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, max );
-
-	list_type object = morphology::create_pointer_diff_list( out, s.object );
-	list_type update = morphology::create_pointer_diff_list( out, s.update );
-
-	morphology_thread *thread = new morphology_thread[ thread_num ];
-
-	size_type i;
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num, f );
-	}
-
-	f( 0.0 );
-
-	// スレッドを実行して，終了まで待機する
-	do_threads_( thread, thread_num );
-
-	f( 100.1 );
-
-	delete [] thread;
-
-	return( true );
-}
-
-
-/// @brief 任意の構造要素に対応したErosion演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] s          … モルフォロジ演算に用いる構造要素
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator >
-bool erosion( array3< T, Allocator > &in, const morphology::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
-{
-	return( erosion( in, s, __mist_dmy_callback__( ), thread_num ) );
-}
-
-
-/// @brief 任意の構造要素に対応したDilation演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] s          … モルフォロジ演算に用いる構造要素
-//! @param[in] f          … 進行状況を返すコールバック関数
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator, class Functor >
-bool dilation( array3< T, Allocator > &in, const morphology::morphology_structure &s, Functor f, typename array3< T, Allocator >::size_type thread_num )
-{
-	if( in.empty( ) )
-	{
-		return( false );
-	}
-
-	typedef typename array3< T, Allocator >::value_type value_type;
-	typedef typename array3< T, Allocator >::size_type  size_type;
-	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator >, Functor > morphology_thread;
-	typedef morphology::pointer_diff pointer_diff;
-	typedef std::vector< pointer_diff >  list_type;
-
-	if( thread_num == 0 )
-	{
-		thread_num = static_cast< size_type >( get_cpu_num( ) );
-	}
-
-	value_type min = type_limits< value_type >::minimum( );
-
-	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, min );
-
-	list_type object = morphology::create_pointer_diff_list( out, s.object );
-	list_type update = morphology::create_pointer_diff_list( out, s.update );
-
-	morphology_thread *thread = new morphology_thread[ thread_num ];
-
-	size_type i;
-	for( i = 0 ; i < thread_num ; i++ )
-	{
-		thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num, f );
-	}
-
-	f( 0.0 );
-
-	// スレッドを実行して，終了まで待機する
-	do_threads_( thread, thread_num );
-
-	f( 100.1 );
-
-	delete [] thread;
-
-	return( true );
-}
-
-
-/// @brief 任意の構造要素に対応したDilation演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] s          … モルフォロジ演算に用いる構造要素
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator >
-bool dilation( array3< T, Allocator > &in, const morphology::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
-{
-	return( dilation( in, s, __mist_dmy_callback__( ), thread_num ) );
-}
-
-
-/// @brief 任意の構造要素に対応したOpening演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] s          … モルフォロジ演算に用いる構造要素
-//! @param[in] f          … 進行状況を返すコールバック関数
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator, class Functor >
-bool opening( array3< T, Allocator > &in, const morphology::morphology_structure &s, Functor f, typename array3< T, Allocator >::size_type thread_num )
-{
-	if( in.empty( ) )
-	{
-		return( false );
-	}
-
-	typedef typename array3< T, Allocator >::value_type value_type;
-	typedef typename array3< T, Allocator >::size_type  size_type;
-	typedef __mist_convert_callback__< Functor > CallBack;
-	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator >, CallBack > morphology_thread;
-	typedef morphology::pointer_diff pointer_diff;
-	typedef std::vector< pointer_diff >  list_type;
-
-	if( thread_num == 0 )
-	{
-		thread_num = static_cast< size_type >( get_cpu_num( ) );
-	}
-
-	value_type max = type_limits< value_type >::maximum( );
-	value_type min = type_limits< value_type >::minimum( );
-
-	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, max );
-
-	list_type object = morphology::create_pointer_diff_list( out, s.object );
-	list_type update = morphology::create_pointer_diff_list( out, s.update );
-
-	morphology_thread *thread = new morphology_thread[ thread_num ];
-
-	f( 0.0 );
-
-	size_type i;
-	{
-		// Erosion 演算
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num, CallBack( f, 0, 50 ) );
-		}
-
-		// スレッドを実行して，終了まで待機する
-		do_threads_( thread, thread_num );
-	}
-
-	out = in;
-	out.fill_margin( min );
-
-	{
-		// Dilation 演算
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num, CallBack( f, 50, 100 ) );
-		}
-
-		// スレッドを実行して，終了まで待機する
-		do_threads_( thread, thread_num );
-	}
-
-	f( 100.1 );
-
-	delete [] thread;
-
-	return( true );
-}
-
-/// @brief 任意の構造要素に対応したOpening演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] s          … モルフォロジ演算に用いる構造要素
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator >
-bool opening( array3< T, Allocator > &in, const morphology::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
-{
-	return( opening( in, s, __mist_dmy_callback__( ), thread_num ) );
-}
-
-
-/// @brief 任意の構造要素に対応したClosing演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] s          … モルフォロジ演算に用いる構造要素
-//! @param[in] f          … 進行状況を返すコールバック関数
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator, class Functor >
-bool closing( array3< T, Allocator > &in, const morphology::morphology_structure &s, Functor f, typename array3< T, Allocator >::size_type thread_num )
-{
-	if( in.empty( ) )
-	{
-		return( false );
-	}
-
-	typedef typename array3< T, Allocator >::value_type value_type;
-	typedef typename array3< T, Allocator >::size_type  size_type;
-	typedef __mist_convert_callback__< Functor > CallBack;
-	typedef __morphology_controller__::morphology_thread< marray< array3< T, Allocator > >, array3< T, Allocator >, CallBack > morphology_thread;
-	typedef morphology::pointer_diff pointer_diff;
-	typedef std::vector< pointer_diff >  list_type;
-
-	if( thread_num == 0 )
-	{
-		thread_num = static_cast< size_type >( get_cpu_num( ) );
-	}
-
-	value_type max = type_limits< value_type >::maximum( );
-	value_type min = type_limits< value_type >::minimum( );
-
-	marray< array3< T, Allocator > > out( in, s.margin_x, s.margin_y, s.margin_z, min );
-
-	list_type object = morphology::create_pointer_diff_list( out, s.object );
-	list_type update = morphology::create_pointer_diff_list( out, s.update );
-
-	morphology_thread *thread = new morphology_thread[ thread_num ];
-
-	f( 0.0 );
-
-	size_type i;
-	{
-		// Dilation 演算
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].setup_parameters( out, in, object, update, false, i, thread_num, CallBack( f, 0, 50 ) );
-		}
-
-		// スレッドを実行して，終了まで待機する
-		do_threads_( thread, thread_num );
-	}
-
-	out = in;
-	out.fill_margin( max );
-
-	{
-		// Erosion 演算
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].setup_parameters( out, in, object, update, true, i, thread_num, CallBack( f, 50, 100 ) );
-		}
-
-		// スレッドを実行して，終了まで待機する
-		do_threads_( thread, thread_num );
-	}
-
-	f( 100.1 );
-
-	delete [] thread;
-
-	return( true );
-}
-
-/// @brief 任意の構造要素に対応したClosing演算
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトを使用する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
-//! 
-//! @param[in,out] in     … 入出力画像
-//! @param[in] s          … モルフォロジ演算に用いる構造要素
-//! @param[in] thread_num … 使用するスレッド数
-//! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
-//! 
-template < class T, class Allocator >
-bool closing( array3< T, Allocator > &in, const morphology::morphology_structure &s, typename array3< T, Allocator >::size_type thread_num = 0 )
-{
-	return( closing( in, s, __mist_dmy_callback__( ), thread_num ) );
-}
-
 
 
 
@@ -1818,10 +1300,17 @@ bool closing( array3< T, Allocator > &in, const morphology::morphology_structure
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator, class Functor >
-inline bool erosion( array3< T, Allocator > &in, double radius, Functor f, typename array3< T, Allocator >::size_type thread_num )
+template < class Array, class Functor >
+inline bool erosion( Array &in, double radius, Functor f, typename Array::size_type thread_num )
 {
-	return( erosion( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), f, thread_num ) );
+	if( in.depth( ) == 1 )
+	{
+		return( erosion( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), f, thread_num ) );
+	}
+	else
+	{
+		return( erosion( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), f, thread_num ) );
+	}
 }
 
 
@@ -1838,10 +1327,17 @@ inline bool erosion( array3< T, Allocator > &in, double radius, Functor f, typen
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator, class Functor >
-inline bool dilation( array3< T, Allocator > &in, double radius, Functor f, typename array3< T, Allocator >::size_type thread_num )
+template < class Array, class Functor >
+inline bool dilation( Array &in, double radius, Functor f, typename Array::size_type thread_num )
 {
-	return( dilation( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), f, thread_num ) );
+	if( in.depth( ) == 1 )
+	{
+		return( dilation( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), f, thread_num ) );
+	}
+	else
+	{
+		return( dilation( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), f, thread_num ) );
+	}
 }
 
 
@@ -1858,10 +1354,17 @@ inline bool dilation( array3< T, Allocator > &in, double radius, Functor f, type
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator, class Functor >
-inline bool opening( array3< T, Allocator > &in, double radius, Functor f, typename array3< T, Allocator >::size_type thread_num )
+template < class Array, class Functor >
+inline bool opening( Array &in, double radius, Functor f, typename Array::size_type thread_num )
 {
-	return( opening( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), f, thread_num ) );
+	if( in.depth( ) == 1 )
+	{
+		return( opening( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), f, thread_num ) );
+	}
+	else
+	{
+		return( opening( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), f, thread_num ) );
+	}
 }
 
 
@@ -1878,10 +1381,17 @@ inline bool opening( array3< T, Allocator > &in, double radius, Functor f, typen
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator, class Functor >
-inline bool closing( array3< T, Allocator > &in, double radius, Functor f, typename array3< T, Allocator >::size_type thread_num )
+template < class Array, class Functor >
+inline bool closing( Array &in, double radius, Functor f, typename Array::size_type thread_num )
 {
-	return( closing( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), f, thread_num ) );
+	if( in.depth( ) == 1 )
+	{
+		return( closing( in, morphology::circle( radius, in.reso1( ), in.reso2( ) ), f, thread_num ) );
+	}
+	else
+	{
+		return( closing( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), f, thread_num ) );
+	}
 }
 
 
@@ -1898,10 +1408,10 @@ inline bool closing( array3< T, Allocator > &in, double radius, Functor f, typen
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator >
-inline bool erosion( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+template < class Array >
+inline bool erosion( Array &in, double radius, typename Array::size_type thread_num = 0 )
 {
-	return( erosion( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), __mist_dmy_callback__( ), thread_num ) );
+	return( erosion( in, radius, __mist_dmy_callback__( ), thread_num ) );
 }
 
 
@@ -1917,10 +1427,10 @@ inline bool erosion( array3< T, Allocator > &in, double radius, typename array3<
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator >
-inline bool dilation( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+template < class Array >
+inline bool dilation( Array &in, double radius, typename Array::size_type thread_num = 0 )
 {
-	return( dilation( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), __mist_dmy_callback__( ), thread_num ) );
+	return( dilation( in, radius, __mist_dmy_callback__( ), thread_num ) );
 }
 
 
@@ -1936,10 +1446,10 @@ inline bool dilation( array3< T, Allocator > &in, double radius, typename array3
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator >
-inline bool opening( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+template < class Array >
+inline bool opening( Array &in, double radius, typename Array::size_type thread_num = 0 )
 {
-	return( opening( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), __mist_dmy_callback__( ), thread_num ) );
+	return( opening( in, radius, __mist_dmy_callback__( ), thread_num ) );
 }
 
 
@@ -1955,10 +1465,10 @@ inline bool opening( array3< T, Allocator > &in, double radius, typename array3<
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
-template < class T, class Allocator >
-inline bool closing( array3< T, Allocator > &in, double radius, typename array3< T, Allocator >::size_type thread_num = 0 )
+template < class Array >
+inline bool closing( Array &in, double radius, typename Array::size_type thread_num = 0 )
 {
-	return( closing( in, morphology::sphere( radius, in.reso1( ), in.reso2( ), in.reso3( ) ), __mist_dmy_callback__( ), thread_num ) );
+	return( closing( in, radius, __mist_dmy_callback__( ), thread_num ) );
 }
 
 
