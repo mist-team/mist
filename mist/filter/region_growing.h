@@ -711,6 +711,8 @@ namespace __region_growing_utility__
 
 /// @brief 任意の構造要素と条件を用いて領域拡張を行う関数
 //!
+//! @attention 処理の都合上，max_paint で指定した画素数より若干多めに領域が拡張される可能性があります．
+//!
 //! @param[in]  in           … 入力画像
 //! @param[out] out          … 出力マークデータ
 //! @param[in]  mask         … 処理対象外マスク
@@ -718,17 +720,17 @@ namespace __region_growing_utility__
 //! @param[in]  output_value … 出力マークデータに書き込む値
 //! @param[in]  components   … 領域拡張に用いる構造要素
 //! @param[in]  condition    … 構造要素内の画素が満たすべき条件
-//! @param[in]  max_loop     … 最大反復回数
+//! @param[in]  max_paint    … 最大で塗りつぶす画素数
 //!
-//! @return 入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に false を返す
+//! @return 入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に -1 を返す．それ以外の場合は，塗りつぶした画素数を返す．
 //! 
 template < class Array1, class Array2, class MaskType, class PointList, class Component, class Condition >
-bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const PointList &start_points, typename Array2::value_type output_value,
-														const Component &components, const Condition &condition, typename Array1::size_type max_loop )
+typename Array1::difference_type region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const PointList &start_points, typename Array2::value_type output_value,
+														const Component &components, const Condition &condition, typename Array1::size_type max_paint )
 {
 	if( in.empty( ) || is_same_object( in, out ) )
 	{
-		return( false );
+		return( -1 );
 	}
 
 	typedef typename Array1::template rebind< unsigned char >::other mask_type;
@@ -804,7 +806,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 	}
 
 	
-	size_type loop = 0;	// 反復回数の計測用カウンタ
+	size_type num_painted = 0;	// 塗りつぶした画素数のカウンタ
 
 
 	// 領域拡張の条件によって，構造要素内の全要素を判定に用いるかどうかを決める
@@ -814,9 +816,9 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 		// 構造要素内のすべての点を用いて評価を行う
 		while( !que.empty( ) )
 		{
-			if( ++loop > max_loop )
+			if( num_painted >= max_paint )
 			{
-				return( false );
+				return( num_painted );
 			}
 
 			// リストの先頭画素を取り出す
@@ -851,6 +853,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 				for( size_type i = 0 ; i < num ; i++ )
 				{
 					const pointer_diff_type &d = elist[ i ];
+					num_painted += po[ d.diff1 ] != output_value ? 1 : 0;
 					po[ d.diff1 ] = output_value;
 				}
 
@@ -872,9 +875,9 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 		// すでに判定された画素については評価を行わない
 		while( !que.empty( ) )
 		{
-			if( ++loop > max_loop )
+			if( num_painted >= max_paint )
 			{
-				return( false );
+				return( num_painted );
 			}
 
 			// リストの先頭画素を取り出す
@@ -911,6 +914,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 				for( size_type i = 0 ; i < num ; i++ )
 				{
 					const pointer_diff_type &d = elist[ i ];
+					num_painted += po[ d.diff1 ] != output_value ? 1 : 0;
 					pw[ d.diff2 ] |= 1;
 					po[ d.diff1 ] = output_value;
 				}
@@ -929,7 +933,7 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 		}
 	}
 
-	return( true );
+	return( num_painted );
 }
 
 
@@ -938,21 +942,23 @@ bool region_growing( const Array1 &in, Array2 &out, const MaskType &mask, const 
 //!
 //! 処理対象外マスクを設定しない領域拡張法
 //!
+//! @attention 処理の都合上，max_paint で指定した画素数より若干多めに領域が拡張される可能性があります．
+//!
 //! @param[in]  in           … 入力画像
 //! @param[out] out          … 出力マークデータ
 //! @param[in]  start_points … 領域拡張の開始点のリスト（複数指定する場合は，std::vectorなどのリストに代入すること）
 //! @param[in]  output_value … 出力マークデータに書き込む値
 //! @param[in]  components   … 領域拡張に用いる構造要素
 //! @param[in]  condition    … 構造要素内の画素が満たすべき条件
-//! @param[in]  max_loop     … 最大反復回数（省略した場合は条件を満たす点が存在しなくなるまで実行する）
+//! @param[in]  max_paint    … 最大で塗りつぶす画素数（省略した場合は条件を満たす点が存在しなくなるまで実行する）
 //!
-//! @return 入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に false を返す
+//! @return 入力画像が不適切な場合や，最大反復回数を試行しても終了条件を満たさなかった場合に -1 を返す．それ以外の場合は，塗りつぶした画素数を返す．
 //!
 template < class Array1, class Array2, class PointList, class Component, class Condition >
-bool region_growing( const Array1 &in, Array2 &out, const PointList &start_points, typename Array2::value_type output_value,
-										const Component &components, const Condition &condition, typename Array1::size_type max_loop = type_limits< typename Array1::size_type >::maximum( ) )
+typename Array1::difference_type region_growing( const Array1 &in, Array2 &out, const PointList &start_points, typename Array2::value_type output_value,
+										const Component &components, const Condition &condition, typename Array1::size_type max_paint = type_limits< typename Array1::size_type >::maximum( ) )
 {
-	return( region_growing( in, out, __region_growing_utility__::no_mask( ), start_points, output_value, components, condition, max_loop ) );
+	return( region_growing( in, out, __region_growing_utility__::no_mask( ), start_points, output_value, components, condition, max_paint ) );
 }
 
 
