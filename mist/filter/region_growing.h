@@ -109,11 +109,19 @@ namespace region_growing_utility
 		size_type height( ) const { return( 1 ); }	///< @brief 構造要素の高さを返す
 		size_type depth( ) const { return( 1 ); }	///< @brief 構造要素の深さを返す
 
+		expand_mode_type __expand_mode__;
+
 		/// @brief 任意の位置が構造要素内かどうかを判定する関数
 		bool operator ()( difference_type i, difference_type j, difference_type k ) const { return( true ); }
 
 		/// @brief 次の注目点の定め方
-		expand_mode_type expand_mode( ) const { return( NC4 ); }
+		expand_mode_type expand_mode( ) const { return( __expand_mode__ ); }
+
+		/// @brief NC4 近傍型のボクセル
+		pixel( ) : __expand_mode__( NC4 ){ }
+
+		/// @brief 指定した近傍のボクセルとして初期化する
+		pixel( expand_mode_type mode ) : __expand_mode__( mode ){ }
 	};
 
 
@@ -133,7 +141,7 @@ namespace region_growing_utility
 		bool operator ()( difference_type i, difference_type j, difference_type k ) const { return( true ); }
 
 		/// @brief 次の注目点の定め方
-		expand_mode_type expand_mode( ) const { return( NC6 ); }
+		expand_mode_type expand_mode( ) const { return( __expand_mode__ ); }
 
 		/// @brief NC6 近傍型のボクセル
 		voxel( ) : __expand_mode__( NC6 ){ }
