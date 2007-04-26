@@ -62,7 +62,7 @@
 _MIST_BEGIN
 
 
-// メディアンフィルタ
+// 線形フィルタ
 namespace __linear__
 {
 	template < class T >

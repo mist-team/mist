@@ -329,6 +329,107 @@ void draw_line( array3< T, Allocator > &image,
 
 
 
+/// @brief 3次元画像に直線を描画する
+//! 
+//! 手法について何か書く
+//! 
+//! @param[in,out] image  … 入出力画像
+//! @param[in]     x      … 描画する点のX座標
+//! @param[in]     y      … 描画する点のY座標
+//! @param[in]     z      … 描画する点のZ座標
+//! @param[in]     radius … 描画する点の半径
+//! @param[in]     value  … 描画する色もしくは値
+//!
+template < class T, class Allocator >
+void draw_point( array3< T, Allocator > &image,
+				 typename array3< T, Allocator >::difference_type x,
+				 typename array3< T, Allocator >::difference_type y,
+				 typename array3< T, Allocator >::difference_type z,
+				 typename array3< T, Allocator >::difference_type radius,
+				 typename array3< T, Allocator >::value_type value = typename array3< T, Allocator >::value_type( ) )
+{
+	typedef typename array3< T, Allocator >::difference_type difference_type;
+
+	difference_type is = x - radius;
+	difference_type ie = x + radius;
+	difference_type js = y - radius;
+	difference_type je = y + radius;
+	difference_type ks = z - radius;
+	difference_type ke = z + radius;
+
+	difference_type w = static_cast< difference_type >( image.width( ) );
+	difference_type h = static_cast< difference_type >( image.height( ) );
+	difference_type d = static_cast< difference_type >( image.depth( ) );
+
+	if( is < 0 )
+	{
+		is = 0;
+	}
+	if( is >= w )
+	{
+		is = w;
+		ie = w - 1;
+	}
+	if( ie < 0 )
+	{
+		is = 0;
+		ie = -1;
+	}
+	if( ie >= w )
+	{
+		ie = w - 1;
+	}
+
+	if( js < 0 )
+	{
+		js = 0;
+	}
+	if( js >= h )
+	{
+		js = h;
+		je = h - 1;
+	}
+	if( je < 0 )
+	{
+		js = 0;
+		je = -1;
+	}
+	if( je >= h )
+	{
+		je = h - 1;
+	}
+
+	if( ks < 0 )
+	{
+		ks = 0;
+	}
+	if( ks >= d )
+	{
+		ks = d;
+		ke = d - 1;
+	}
+	if( ke < 0 )
+	{
+		ks = 0;
+		ke = -1;
+	}
+	if( ke >= d )
+	{
+		ke = d - 1;
+	}
+
+	for( difference_type k = ks ; k <= ke ; k++ )
+	{
+		for( difference_type j = js ; j <= je ; j++ )
+		{
+			for( difference_type i = is ; i <= ie ; i++ )
+			{
+				image( i, j, k ) = value;
+			}
+		}
+	}
+}
+
 /// @}
 //  直線や円の描画グループの終わり
 
