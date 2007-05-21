@@ -93,33 +93,6 @@ public:
 	template < class TT >
 	quaternion( value_type ww, const vector3< TT > &v ) : w( ww ), x( static_cast< value_type >( v.x ) ), y( static_cast< value_type >( v.y ) ), z( static_cast< value_type >( v.z ) ){ }
 
-	/// @brief カメラの視線方向と上向きベクトルを用いてクォータオンを初期化する
-	template < class TT >
-	quaternion( mist::vector3< TT > dir, mist::vector3< TT > up )
-	{
-		typedef vector3< TT > vector_type;
-
-		// ワールド座標の単位ベクトル
-		vector_type e2( 0, 1, 0 );
-		vector_type e3( 0, 0, 1 );
-
-		// 単位ベクトルにする
-		dir = dir.unit( );
-		up  = up.unit( );
-
-		// 視線方向を合わせるクォータニオンを作成
-		quaternion_type q1 = quaternion_type::rotate( e3, dir );
-
-		// Y軸を回転させる
-		e2 = q1.rotate( e2 );
-
-		// 上向き方向を合わせるクォータニオンを作成
-		quaternion_type q2 = quaternion_type::rotate( e2, up, dir );
-
-		// 回転を合成する
-		*this = q2 * q1;
-	}
-
 
 	/// @brief クォータニオンを用いた任意軸周りの回転
 	//! 
