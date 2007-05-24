@@ -226,7 +226,10 @@ namespace dicom
 			// 0-9, ピリオド（.）のみが利用可能．
 			//
 			// 例：19930822 は 1993 年 8 月 22 日を表す
-			num_bytes = compute_need_bytes( tag, 8, num_bytes, true );
+			if( num_bytes != 8 || num_bytes != 10 )
+			{
+				num_bytes = compute_need_bytes( tag, 10, num_bytes, true );
+			}
 			break;
 
 		case DS:

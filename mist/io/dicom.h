@@ -1441,7 +1441,8 @@ namespace dicom
 			{
 				unsigned short group     = e.get_group( );
 				unsigned short element   = e.get_element( );
-				size_t num_bytes = get_write_dicom_tag_size( e, implicitVR );
+				// Group 0002 だけは Explicit VR Little Endian Transfer Syntax でエンコードする必要あり
+				size_t num_bytes = get_write_dicom_tag_size( e, group == 0x0002 ? false : implicitVR );
 
 				if( element != 0x0000 )
 				{
@@ -1549,15 +1550,20 @@ namespace dicom
 			}
 			else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2.1" )
 			{
-				// 「Explicit VR Little Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
+				// 「Explicit VR Little Endian」が指定されている場合は，「Explicit VR Little Endian」に変更する
 				implicitVR = false;
 			}
 			else if( find_tag( dicm, 0x0002, 0x0010, "" ) == "1.2.840.10008.1.2.2" )
 			{
-				// 「Implicit VR Big Endian」が指定されている場合は，「Explicit VR Little Endian」に変更するする
+				// 「Implicit VR Big Endian」が指定されている場合は，「Explicit VR Little Endian」に変更する
 				implicitVR = false;
 				std::string syntax = "1.2.840.10008.1.2.1";
 				dicm( 0x0002, 0x0010 ).copy( reinterpret_cast< const unsigned char * >( syntax.c_str( ) ), syntax.length( ) );
+			}
+			else if( get_compress_type( find_tag( dicm, 0x0002, 0x0010, "" ) ) != RAW )
+			{
+				// 圧縮されている場合は「Explicit VR Little Endian」に変更する
+				implicitVR = false;
 			}
 
 			// Group 0002 の長さが挿入されていない場合は挿入する
@@ -1568,11 +1574,11 @@ namespace dicom
 			}
 		}
 
-		// Group Length を正しく設定する
-		compute_group_length( dicm, implicitVR );
-
 		// DICOM のタグが使用に準拠するようにする
 		dicm.update( );
+
+		// Group Length を正しく設定する
+		compute_group_length( dicm, implicitVR );
 
 		// すべて明示的VRで記述する
 		dicom_tag_container::const_iterator ite = dicm.begin( );
