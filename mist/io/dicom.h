@@ -875,6 +875,7 @@ namespace dicom
 					{
 						if( is_sequence_tag_end( p, end_pointer ) )
 						{
+							p += 8;
 							break;
 						}
 						else
@@ -1140,7 +1141,17 @@ namespace dicom
 			fwrite( from_current_endian( byte_array< unsigned short >( element ), to_little_endian ).get_bytes( ), 1, 2, fp );
 			fwrite( get_dicom_vr( vr ).c_str( ), 1, 2, fp );
 			fwrite( ZERO, 1, 2, fp );
-			fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
+
+			// データがシーケンスになっているかを調べ，出力方法を切り替える
+			if( num_bytes > 4 + 8 && is_sequence_separate_tag( data, data + num_bytes ) && is_sequence_tag_end( data + num_bytes - 8, data + num_bytes ) )
+			{
+				fwrite( FFFF, 1, 4, fp );
+			}
+			else
+			{
+				fwrite( from_current_endian( byte_array< unsigned int >( static_cast< unsigned int >( num_bytes ) ), to_little_endian ).get_bytes( ), 1, 4, fp );
+			}
+
 			if( _is_little_endian_( ) == to_little_endian )
 			{
 				fwrite( data, 1, num_bytes, fp );
@@ -1580,7 +1591,7 @@ namespace dicom
 		// Group Length を正しく設定する
 		compute_group_length( dicm, implicitVR );
 
-		// すべて明示的VRで記述する
+		// VRに応じて出力する
 		dicom_tag_container::const_iterator ite = dicm.begin( );
 		for( ; ite != dicm.end( ) ; ++ite )
 		{
