@@ -357,7 +357,7 @@ namespace gauss
 	//! 
 	class random 
 	{
-		uniform::random u_rand_;	///< @brief 一様乱数ジェネレータ >
+		uniform::random u_rand_;	///< @brief 一様乱数ジェネレータ
 
 		double mean_;					///< @brief 生成する正規乱数の平均値
 		double standard_deviation_;		///< @brief 生成する正規乱数の標準偏差

@@ -169,6 +169,11 @@ namespace __clapack__
 		int LPFNAME( chetrf ) ( char *uplo, integer *n, complex *a, integer *lda, integer *ipiv, complex *work, integer *lwork, integer *info );
 		int LPFNAME( zhetrf ) ( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *work, integer *lwork, integer *info );
 
+		// 実対称行列のコレスキー分解
+		int LPFNAME( spotrf ) ( char *uplo, integer *n, real *a, integer *lda, integer *info );
+		int LPFNAME( dpotrf ) ( char *uplo, integer *n, doublereal *a, integer *lda, integer *info );
+		int LPFNAME( cpotrf ) ( char *uplo, integer *n, complex *a, integer *lda, integer *info );
+		int LPFNAME( zpotrf ) ( char *uplo, integer *n, doublecomplex *a, integer *lda, integer *info );
 
 		// 一般行列のQR分解
 		int LPFNAME( sgeqrf ) ( integer *m, integer *n, real *a, integer *lda, real *tau, real *work, integer *lwork, integer *info );
@@ -474,6 +479,23 @@ namespace __clapack__
 		return( LPFNAME( zhetrf ) ( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
 
+	// 対称行列のコレスキー分解
+	inline int potrf( char *uplo, integer &n, real *a, integer &lda, integer &info )
+	{
+		return( LPFNAME( spotrf ) ( uplo, &n, a, &lda, &info ) );
+	}
+	inline int potrf( char *uplo, integer &n, doublereal *a, integer &lda, integer &info )
+	{
+		return( LPFNAME( dpotrf ) ( uplo, &n, a, &lda, &info ) );
+	}
+	inline int potrf( char *uplo, integer &n, std::complex< real > *a, integer &lda, integer &info )
+	{
+		return( LPFNAME( cpotrf ) ( uplo, &n, reinterpret_cast< complex* >( a ), &lda, &info ) );
+	}
+	inline int potrf( char *uplo, integer &n, std::complex< doublereal > *a, integer &lda, integer &info )
+	{
+		return( LPFNAME( zpotrf ) ( uplo, &n, reinterpret_cast< doublecomplex* >( a ), &lda, &info ) );
+	}
 
 	// QR分解
 	inline int geqrf( integer &m, integer &n, real *a, integer &lda, real *tau, real *work, integer &lwork, integer &info )
@@ -1247,6 +1269,61 @@ namespace __qr__
 }
 
 
+namespace __cholesky__
+{
+	// コレスキー分解を行う
+	template < class T, class Allocator >
+	static matrix< T, Allocator >& cholesky_factorization( matrix< T, Allocator > &a, matrix_style::style style )
+	{
+		typedef matrix< T, Allocator > matrix_type;
+		typedef typename matrix_type::value_type value_type;
+		typedef typename matrix_type::size_type size_type;
+		typedef __clapack__::integer integer;
+
+		if( a.empty( ) || a.rows( ) != a.cols( ) )
+		{
+			// 行列のサイズが正しくないので例外をスローする
+			throw;
+		}
+
+		integer info = 0;
+
+		// コレスキー分解で上三角は参照しないので，下三角行列にしておく
+		for( size_type r = 0 ; r < a.rows( ) ; r++ )
+		{
+			for( size_type c = r + 1 ; c < a.cols( ) ; c++ )
+			{
+				a( r, c ) = static_cast< value_type >( 0 );
+			}
+		}
+
+		switch( style )
+		{
+		case matrix_style::sy:
+		//case matrix_style::ge:
+		default:
+			{
+				// LAPACK関数の引数
+				integer n     = static_cast< integer >( a.cols( ) );
+				integer lda   = static_cast< integer >( a.rows( ) );
+				char *uplo    = "L";
+
+				// まず最適な作業用配列のサイズを取得する
+				__clapack__::potrf( uplo, n, &( a[0] ), lda, info );
+			}
+			break;
+		}
+
+		if( info != 0 )
+		{
+			// 行列計算が正しく終了しなかったので例外をスローする
+			throw;
+		}
+
+		return( a );
+	}
+}
+
 
 namespace __inverse__
 {
@@ -1625,6 +1702,7 @@ namespace __inverse__
 		}
 	};
 }
+
 
 
 namespace __eigen__
@@ -3209,6 +3287,43 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 	return( __lu__::__lu__< __numeric__::is_complex< value_type >::value >::lu_factorization( a_, pivot, style ) );
 }
 
+#endif
+
+
+/// @brief 対称行列のコレスキー分解を行う
+//! 
+//! @param[in]  a     … 入力対称行列
+//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
+//!
+//! @return コレスキー分解された結果
+//! 
+template < class T, class Allocator >
+const matrix< T, Allocator > cholesky_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::sy )
+{
+	matrix< T, Allocator > a_( a );
+	return( __cholesky__::cholesky_factorization( a_, style ) );
+}
+
+
+
+#if _USE_EXPRESSION_TEMPLATE_ != 0
+/// @brief 対称行列のコレスキー分解を行う
+//! 
+//! @param[in]  a     … 入力対称行列
+//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
+//!
+//! @return コレスキー分解された結果
+//! 
+template < class Expression, class Allocator2 >
+inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
+					cholesky_factorization( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::sy )
+{
+	typedef typename matrix_expression< Expression >::value_type value_type;
+	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
+	typedef matrix< value_type, allocator_type > matrix_type;
+	matrix_type a_( expression );
+	return( __cholesky__::cholesky_factorization( a_, style ) );
+}
 #endif
 
 
