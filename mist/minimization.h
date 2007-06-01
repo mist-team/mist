@@ -32,7 +32,8 @@
 //!
 //! - 関数の最小化
 //!   - W. H. Press, S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery, ``Numerical Recipes in C, The Art of Scientific Computing Second Edition,'' Cambridge University Press, pp. 321--336, 1999.
-//!   - Richard P. Brent, "Algorithms for Minimization Without Derivatives", DOVER PUBLICATIONS, Mineola, New York.
+//!   - Richard P. Brent, ``Algorithms for Minimization Without Derivatives", DOVER PUBLICATIONS, Mineola, New York.
+//!   - F. V. Berghen, H. Bersini, ``CONDOR, a new parallel, constrained extension of Powell's UOBYQA algorithm: Experimental results and comparison with the DFO algorithm,'' Journal of Computational and Applied Mathematics, Elsevier, Volume 181, Issue 1, September 2005, pp. 157--175 
 //!
 
 #ifndef __INCLUDE_MIST_MINIMIZATION__
@@ -55,6 +56,8 @@
 
 
 #include <cmath>
+#include <vector>
+#include <algorithm>
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -1712,6 +1715,1694 @@ namespace lucidi
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
 		return( minimization( p, dirs, __no_copy_constructor_functor__( f ), tolerance, itenum, max_iterations ) );
+	}
+}
+
+
+
+
+/// @brief CONDOR法（多変数関数の極小値の探索）
+//!
+//! - 参考文献
+//!   - F. V. Berghen, H. Bersini, ``CONDOR, a new parallel, constrained extension of Powell's UOBYQA algorithm: Experimental results and comparison with the DFO algorithm,'' Journal of Computational and Applied Mathematics, Elsevier, Volume 181, Issue 1, September 2005, pp. 157--175 
+//!
+namespace condor
+{
+	// CONDORアルゴリズム内部で利用する関数など
+	namespace __condor_utility__
+	{
+		inline double minimum( double v1, double v2 )
+		{
+			return( v1 < v2 ? v1 : v2 );
+		}
+
+		inline double maximum( double v1, double v2 )
+		{
+			return( v1 > v2 ? v1 : v2 );
+		}
+
+		inline double minimum( double v1, double v2, double v3 )
+		{
+			if( v1 < v2 )
+			{
+				if( v1 < v3 )
+				{
+					return( v1 );
+				}
+				else
+				{
+					return( v3 );
+				}
+			}
+			else if( v2 < v3 )
+			{
+				return( v2 );
+			}
+			else
+			{
+				return( v3 );
+			}
+		}
+
+		inline double minimum( double v1, double v2, double v3, double v4 )
+		{
+			return( minimum( minimum( v1, v2 ), minimum( v3, v4 ) ) );
+		}
+
+		inline double maximum( double v1, double v2, double v3 )
+		{
+			if( v1 > v2 )
+			{
+				if( v1 > v3 )
+				{
+					return( v1 );
+				}
+				else
+				{
+					return( v3 );
+				}
+			}
+			else if( v2 > v3 )
+			{
+				return( v2 );
+			}
+			else
+			{
+				return( v3 );
+			}
+		}
+
+		inline double maximum( double v1, double v2, double v3, double v4 )
+		{
+			return( maximum( maximum( v1, v2 ), maximum( v3, v4 ) ) );
+		}
+
+		template < class Matrix >
+		inline double frobenius_norm( const Matrix &H )
+		{
+			typedef Matrix matrix_type;
+			typedef typename matrix_type::size_type size_type;
+
+			double val = 0.0;
+			for( size_type r = 0 ; r < H.rows( ) ; r++ )
+			{
+				for( size_type c = 0 ; c < H.cols( ) ; c++ )
+				{
+					val += H( r, c ) * H( r, c );
+				}
+			}
+
+			return( std::sqrt( val ) );
+		}
+
+		template < class Matrix >
+		inline double infinitum_norm( const Matrix &H )
+		{
+			typedef Matrix matrix_type;
+			typedef typename matrix_type::size_type size_type;
+
+			double max = 0.0;
+			for( size_type r = 0 ; r < H.rows( ) ; r++ )
+			{
+				double val = 0.0;
+				for( size_type c = 0 ; c < H.cols( ) ; c++ )
+				{
+					val += std::abs( H( r, c ) );
+				}
+
+				if( max < val )
+				{
+					max = val;
+				}
+			}
+
+			return( max );
+		}
+
+		template < class Matrix >
+		double inner_product( const Matrix &m1, const Matrix &m2 )
+		{
+			typedef Matrix matrix_type;
+			typedef typename matrix_type::value_type value_type;
+			typedef typename matrix_type::size_type size_type;
+			typedef typename matrix_type::difference_type difference_type;
+
+			double sum = 0.0;
+			for( size_type i = 0 ; i < m1.size( ) ; i++ )
+			{
+				sum += m1[ i ] * m2[ i ];
+			}
+
+			return( sum );
+		}
+
+		template < class Matrix >
+		double inner_product( const Matrix &m1, const Matrix &H, const Matrix &m2 )
+		{
+			typedef Matrix matrix_type;
+			return( inner_product( m1, matrix_type( H * m2 ) ) );
+		}
+
+		struct __index_value_pair__
+		{
+			size_t index;
+			double value;
+
+			__index_value_pair__( size_t indx, double val ) : index( indx ), value( val ){ }
+
+			bool operator <( const __index_value_pair__ &v ) const
+			{
+				// 距離値の大きい順に並ぶようにする
+				return( value > v.value );
+			}
+		};
+
+		template < class Matrix >
+		inline void solve( const Matrix &A, Matrix &b )
+		{
+			typedef Matrix matrix_type;
+			typedef typename matrix_type::size_type size_type;
+			typedef typename matrix_type::difference_type difference_type;
+
+			for( size_type r = 0 ; r < A.rows( ) ; r++ )
+			{
+				double sum = b[ r ];
+				for( difference_type c = r - 1 ; c >= 0 ; c-- )
+				{
+					sum -= A( r, c ) * b[ c ];
+				}
+				b[ r ] = sum / A( r, r );
+			}
+		}
+
+		template < class Matrix >
+		inline void solve_( const Matrix &A, Matrix &b )
+		{
+			typedef Matrix matrix_type;
+			typedef typename matrix_type::size_type size_type;
+			typedef typename matrix_type::difference_type difference_type;
+
+			for( difference_type c = A.cols( ) - 1 ; c >= 0 ; c-- )
+			{
+				double sum = b[ c ];
+				for( size_type r = c + 1 ; r < A.rows( ) ; r++ )
+				{
+					sum -= A( r, c ) * b[ r ];
+				}
+				b[ c ] = sum / A( c, c );
+			}
+		}
+
+
+		template < class Matrix >
+		bool cholesky_factorization( const Matrix &H, Matrix &L, double lambda, double &lambda_modified )
+		{
+			typedef Matrix matrix_type;
+			typedef typename matrix_type::value_type value_type;
+			typedef typename matrix_type::size_type size_type;
+			typedef typename matrix_type::difference_type difference_type;
+
+			L.fill( 0 );
+			for( size_type r = 0 ; r < H.rows( ) ; r++ )
+			{
+				double scale = H( r, r ) + lambda;
+
+				for( size_type c = 0 ; c < r ; c++ )
+				{
+					scale -= L( r, c ) * L( r, c );
+				}
+
+				if( scale <= 0 ) 
+				{
+					// Rayleigh quotient trick を使ってλの補正値を計算する
+					// CONDORの論文の 4.8 章
+					matrix_type v( L.rows( ), 1 );
+					v[ r ] = 1.0;
+					for( difference_type j = r - 1 ; j >= 0 ; j-- )
+					{
+						double sum = 0.0;
+						for( size_type i = j + 1 ; i <= r ; i++ )
+						{
+							sum += L( i, j ) * v[ i ];
+						}
+						v[ j ] = - sum / L( j, j );
+					}
+
+					double norm = frobenius_norm( v );
+					lambda_modified = - scale / norm;
+
+					return( false );
+				}
+
+				scale = std::sqrt( scale );
+				L( r, r ) = scale;
+
+				for( size_type c = r + 1 ; c < H.cols( ) ; c++ )
+				{
+					double val = H( r, c );
+					for( size_type l = 0 ; l < r ; l++ )
+					{
+						val -= L( c, l ) * L( r, l );
+					}
+
+					L( c, r ) = val / scale;
+				}
+			}
+
+			return( true );
+		}
+
+		template < class Matrix >
+		bool cholesky_factorization( const Matrix &H, Matrix &L, double lambda )
+		{
+			double dmy;
+			return( cholesky_factorization( H, L, lambda, dmy ) );
+		}
+
+		template < class Matrix >
+		bool compute_eigen_vector( const Matrix &L, Matrix &w, double lambda )
+		{
+			typedef Matrix matrix_type;
+			typedef typename matrix_type::value_type value_type;
+			typedef typename matrix_type::size_type size_type;
+			typedef typename matrix_type::difference_type difference_type;
+
+			w.resize( L.rows( ), 1 );
+			for( size_type r = 0 ; r < L.rows( ) ; r++ )
+			{
+				if( L( r, r ) == 0.0 )
+				{
+					w[ r ] = 1.0;
+				}
+
+				double sum = 0.0;
+				if( r > 0 )
+				{
+					for( size_type c = 0 ; c < r - 1 ; c++ )
+					{
+						sum += L( r, c ) * w[ c ];
+					}
+				}
+
+				if( ( 1.0 - sum ) / L( r, r ) > - ( 1.0 + sum ) / L( r, r ) )
+				{
+					w[ r ] = 1.0;
+				}
+				else
+				{
+					w[ r ] = -1.0;
+				}
+			}
+
+			solve_( L, w );
+			w *= 1.0 / frobenius_norm( w );
+
+			return( true );
+		}
+
+		class polynomial : public matrix< double >
+		{
+		public:
+			typedef matrix< double > base;
+			typedef matrix< double > matrix_type;
+			typedef matrix_type::value_type value_type;
+			typedef matrix_type::size_type size_type;
+			typedef matrix_type::difference_type difference_type;
+			typedef matrix< difference_type > imatrix_type;
+
+		private:
+			size_type dimension;
+			size_type N;
+			imatrix_type alpha;
+			imatrix_type alpha_;
+			imatrix_type tr;
+			imatrix_type tc;
+
+		public:
+			polynomial( ) : dimension( 0 ), N( 1 )
+			{
+			}
+
+			polynomial( size_type ndim ) : base( ( ndim + 1 ) * ( ndim + 2 ) / 2, 1 ), dimension( ndim ), N( ( ndim + 1 ) * ( ndim + 2 ) / 2 ), alpha( N, ndim ), alpha_( N, ndim ), tr( N, 1 ), tc( N, 1 )
+			{
+				// 多項式補間を行うためのデータを生成する
+				compute_polynomial_indeces( );
+			}
+
+			polynomial( const polynomial &poly ) : base( poly ), dimension( poly.dimension ), N( poly.N ), alpha( poly.alpha ), alpha_( poly.alpha_ ), tr( poly.tr ), tc( poly.tc )
+			{
+			}
+
+			void reinitialize_polynomial( size_type ndim )
+			{
+				// 多項式を計算するためのデータをコピーする
+				dimension = ndim;
+				N = ( ndim + 1 ) * ( ndim + 2 ) / 2;
+				alpha.resize( N, ndim );
+				alpha_.resize( N, ndim );
+				tr.resize( N, 1 );
+				tc.resize( N, 1 );
+
+				base::resize( N, 1 );
+
+				// 多項式補間を行うためのデータを生成する
+				compute_polynomial_indeces( );
+			}
+
+			const polynomial & operator =( const polynomial &poly )
+			{
+				if( &poly == this )
+				{
+					return( *this );
+				}
+
+				// 基底クラスのデータをコピーする
+				base::operator =( poly );
+
+				// 多項式を計算するためのデータをコピーする
+				dimension = poly.dimension;
+				N = poly.N;
+				alpha = poly.alpha;
+				alpha_ = poly.alpha_;
+				tr = poly.tr;
+				tc = poly.tc;
+
+				return( *this );
+			}
+
+			const polynomial & operator =( const matrix_type &mat )
+			{
+				// 基底クラスのデータをコピーする
+				base::operator =( mat );
+
+				return( *this );
+			}
+
+			template < class Matrix >
+			double operator ()( const Matrix &x, double shift )
+			{
+				polynomial &c = *this;
+				double tmp = c[ 0 ];
+				c[ 0 ] -= shift;
+				double ret = c( x );
+				c[ 0 ] = tmp;
+				return( ret );
+			}
+
+			template < class Matrix >
+			double operator ()( const Matrix &x )
+			{
+				if( x.rows( ) != dimension )
+				{
+					// エラー
+					return( 0.0 );
+				}
+
+				difference_type n = dimension;
+				std::vector< double > r( n );
+				const matrix_type &c = *this;	// 多項式の係数ベクトル
+
+				double r0 = c[ tr[ 0 ] ];
+				for( difference_type j = 0 ; j < n ; j++ )
+				{
+					r[ j ] = 0.0;
+				}
+
+				for( size_type i = 1 ; i < N ; i++ )
+				{
+					difference_type k = tc[ i - 1 ];
+					double rsum = r0;
+					for( difference_type j = k ; j < n ; j++ )
+					{
+						rsum += r[ j ];
+						r[ j ] = 0.0;
+					}
+
+					r0 = c[ tr[ i ] ];
+					r[ k ] = x[ k ] * rsum;
+				}
+
+				double rsum = r0;
+				for( difference_type j = 0 ; j < n ; j++ )
+				{
+					rsum += r[ j ];
+				}
+
+				return( rsum );
+			}
+
+			matrix_type compute_hessian_matrix( ) const
+			{
+				matrix_type H( dimension, dimension );
+				const matrix_type &coeff = *this;	// 多項式の係数ベクトル
+
+				size_type indx = dimension + 1;
+				for( size_type r = 0 ; r < H.rows( ) ; r++ )
+				{
+					H( r, r ) = coeff[ indx++ ] * 2.0;
+					for( size_type c = r + 1 ; c < H.cols( ) ; c++ )
+					{
+						H( r, c ) = H( c, r ) = coeff[ indx++ ];
+					}
+				}
+
+				return( H );
+			}
+
+			// 多項式の原点を平行移動する
+			void translate( const matrix_type &x )
+			{
+				// 3.4.6 章参照
+				polynomial &c = *this;
+				matrix_type Hx = compute_hessian_matrix( ) * x;
+
+				c[ 0 ] = c( x );
+				for( size_type r = 0 ; r < Hx.rows( ) ; r++ )
+				{
+					c[ r + 1 ] += Hx[ r ];
+				}
+			}
+
+
+		protected:
+			void compute_polynomial_indeces( )
+			{
+				difference_type n = dimension;
+				difference_type R = N;
+				difference_type C = n;
+				imatrix_type &lex = alpha_;
+				imatrix_type &deg = alpha;
+
+				lex.fill( 0 );
+				deg.fill( 0 );
+
+				{
+					difference_type row = 1;
+					for( difference_type c = 0 ; c < C ; c++ )
+					{
+						deg( row, c ) = 1;
+						row++;
+					}
+
+					difference_type col = 0;
+					difference_type val = 2;
+					for( ; row < R && col < C ; )
+					{
+						switch( val )
+						{
+						case 2:
+							deg( row, col ) = val;
+							val--;
+							row++;
+							break;
+
+						case 1:
+							for( difference_type c = 1 ; c < C - col ; c++ )
+							{
+								deg( row, col ) = val;
+								deg( row, col + c ) = val;
+								row++;
+							}
+							val--;
+							col++;
+							break;
+
+						case 0:
+						default:
+							val = 2;
+							break;
+						}
+					}
+				}
+
+				{
+					difference_type col = 0;
+					difference_type val = 2;
+					for( difference_type row = 0 ; row < R - 1 ; )
+					{
+						switch( val )
+						{
+						case 2:
+							lex( row, col ) = val;
+							val--;
+							row++;
+							break;
+
+						case 1:
+							for( difference_type c = 1 ; c < C - col ; c++ )
+							{
+								lex( row, col ) = val;
+								lex( row, col + c ) = val;
+								row++;
+							}
+							lex( row, col ) = val;
+							row++;
+							val--;
+							col++;
+							break;
+
+						case 0:
+						default:
+							val = 2;
+							break;
+						}
+					}
+
+					for( difference_type r = 0 ; r < R ; r++ )
+					{
+						difference_type c = C - 1;
+						for( ; c >= 0 ; c-- )
+						{
+							if( lex( r, c ) != 0 )
+							{
+								break;
+							}
+						}
+						tc[ r ] = c;
+					}
+				}
+
+				for( difference_type r = 0 ; r < R ; r++ )
+				{
+					difference_type indx = 0;
+					for( ; indx < R ; indx++ )
+					{
+						difference_type c = 0;
+						for( ; c < C ; c++ )
+						{
+							if( lex( r, c ) != deg( indx, c ) )
+							{
+								// 不一致
+								break;
+							}
+						}
+
+						if( c == C )
+						{
+							// 一致しているものを発見
+							break;
+						}
+					}
+
+					tr[ r ] = indx;
+				}
+			}
+		};
+	}
+
+
+	/// @brief CONDOR アルゴリズムの初期パラメータ群を求める関数
+	//! 
+	//! @param[in]  xbase … 探索開始パラメータ
+	//! @param[out] x     … 評価値を計算したパラメータ群
+	//! @param[out] f     … パラメータに対応した評価値
+	//! @param[in]  func  … 評価関数
+	//! @param[in]  rho   … 探索ステップ
+	//!
+	//! @return 最も評価値の良いパラメータのインデックスを返す
+	//! 
+	template < class Matrix, class Functor >
+	size_t generate_first_point_set( const Matrix &xbase, std::vector< Matrix > &x, Matrix &f, Functor func, double rho )
+	{
+		typedef Matrix matrix_type;
+		typedef typename matrix_type::value_type value_type;
+		typedef typename matrix_type::size_type size_type;
+		typedef typename matrix_type::difference_type difference_type;
+
+		difference_type n = xbase.rows( );
+		difference_type N = ( n + 1 ) * ( n + 2 ) / 2;
+
+		// データの格納先を用意する
+		f.resize( N, 1 );
+		x.resize( N );
+		for( difference_type i = 0 ; i < N ; i++ )
+		{
+			x[ i ].resize( n, 1 );
+		}
+
+		x[ 0 ] = xbase;
+		f[ 0 ] = func( x[ 0 ] );
+
+		for( difference_type j = 0 ; j < n ; j++ )
+		{
+			size_type k = j + 1;
+			x[ k ] = xbase;
+			x[ k ][ j ] += rho;
+			f[ k ] = func( x[ k ] );
+		}
+
+		matrix_type s( n, 1 );
+		for( difference_type j = 0 ; j < n ; j++ )
+		{
+			if( f[ j + 1 ] > f[ 0 ] )
+			{
+				s[ j ] = -1.0;
+			}
+			else
+			{
+				s[ j ] = +1.0;
+			}
+		}
+
+		for( difference_type j = 0 ; j < n ; j++ )
+		{
+			difference_type k = j + 1 + n;
+			if( s[ j ] < 0.0 )
+			{
+				x[ k ] = xbase;
+				x[ k ][ j ] -= rho;
+			}
+			else
+			{
+				x[ k ] = xbase;
+				x[ k ][ j ] += rho + rho;
+			}
+			f[ k ] = func( x[ k ] );
+		}
+
+		difference_type k = 2 * n + 1;
+		for( difference_type j = 0 ; j < n ; j++ )
+		{
+			for( difference_type i = 0 ; i < j ; i++ )
+			{
+				x[ k ] = xbase;
+				x[ k ][ i ] += rho * s[ i ];
+				x[ k ][ j ] += rho * s[ j ];
+				f[ k ] = func( x[ k ] );
+				k++;
+			}
+		}
+
+		// 評価関数値の小さい順に並べ替える
+		for( size_type i = 0 ; i < x.size( ) ; i++ )
+		{
+			for( size_type j = 0 ; j < x.size( ) ; j++ )
+			{
+				if( f[ i ] < f[ j ] )
+				{
+					double tmp = f[ i ];
+					f[ i ] = f[ j ];
+					f[ j ] = tmp;
+					x[ i ].swap( x[ j ] );
+				}
+			}
+		}
+
+		return( 0 );
+	}
+
+	/// @brief 指定したパラメータと評価値からラグランジェ多項式を構成する
+	//! 
+	//! @param[in]     x          … 評価値を計算したパラメータ群
+	//! @param[in]     f          … パラメータに対応した評価値
+	//! @param[in,out] poly_bases … Trust Region を構成するラグランジェ多項式の基底
+	//! @param[out]    poly       … Trust Region を構成するラグランジェ多項式
+	//!
+	//! @return ラグランジェ多項式が正しくもとまったかどうか
+	//! 
+	template < class Matrix >
+	bool compute_polynomial_basis( std::vector< Matrix > &x, Matrix &f, std::vector< __condor_utility__::polynomial > &poly_bases, __condor_utility__::polynomial &poly )
+	{
+		typedef Matrix matrix_type;
+		typedef typename matrix_type::value_type value_type;
+		typedef typename matrix_type::size_type size_type;
+		typedef typename matrix_type::difference_type difference_type;
+		typedef __condor_utility__::polynomial polynomial_type;
+
+		if( x.size( ) != poly_bases.size( ) )
+		{
+			// 入力データと多項式の数が一致しない
+			return( false );
+		}
+
+		size_type N = poly.size( );
+		for( size_type k = 0 ; k < N ; k++ )
+		{
+			polynomial_type &pk = poly_bases[ k ];
+
+			{
+				// 多項式の正規化
+				size_type index = k;
+				double max = 0.0;
+				if( k == 0 )
+				{
+					max = pk( x[ k ] );
+				}
+				else
+				{
+					for( size_type i = k ; i < N ; i++ )
+					{
+						double val = pk( x[ i ] );
+						if( std::abs( val ) > std::abs( max ) )
+						{
+							max = val;
+							index = i;
+						}
+
+						if( std::abs( max ) > 1.0 )
+						{
+							break;
+						}
+					}
+				}
+
+				// 分母が最大となるデータを用いる
+				if( index != k )
+				{
+					// データを入れ替える
+					x[ k ].swap( x[ index ] );
+
+					double tmp = f[ k ];
+					f[ k ] = f[ index ];
+					f[ index ] = tmp;
+				}
+
+				pk /= max;
+			}
+
+			for( size_type j = 0 ; j < N ; j++ )
+			{
+				if( j != k )
+				{
+					polynomial_type &pj = poly_bases[ j ];
+					pj -= pj( x[ k ] ) * pk;
+				}
+			}
+		}
+
+
+		// 最終的な多項式を求める
+		poly.fill( 0 );
+		for( size_type i = 0 ; i < poly_bases.size( ) ; i++ )
+		{
+			poly += f[ i ] * poly_bases[ i ];
+		}
+
+		return( true );
+	}
+
+	/// @brief Trust Region を求める際のλの上下限の計算に用いる補助関数
+	//! 
+	//! @param[in] H     … ラグランジェ多項式から求めたヘッセ行列
+	//!
+	//! @return \f$\displaystyle-\min_{i} \left\{ -H_{ii} \right\}\f$
+	//! 
+	template < class Matrix >
+	inline double compute_lambda_function1( const Matrix &H )
+	{
+		typedef Matrix matrix_type;
+		typedef typename matrix_type::size_type size_type;
+
+		double Hmin = H( 0, 0 );
+		for( size_type i = 1 ; i < H.rows( ) ; i++ )
+		{
+			if( Hmin > H( i, i ) )
+			{
+				Hmin = H( i, i );
+			}
+		}
+
+		return( -Hmin );
+	}
+
+	/// @brief Trust Region を求める際のλの上下限の計算に用いる補助関数
+	//! 
+	//! @param[in] H     … ラグランジェ多項式から求めたヘッセ行列
+	//! @param[in] alpha … H( i, i ) の符号
+	//!
+	//! @return \f$\displaystyle\max_{i} \left\{ -H_{ii} + \sum_{i \ne j}{\|H_{ij}\|} \right\}\f$
+	//! 
+	template < class Matrix >
+	inline double compute_lambda_function2( const Matrix &H, double alpha = 1.0 )
+	{
+		typedef Matrix matrix_type;
+		typedef typename matrix_type::size_type size_type;
+
+		double max = -1.0e100;
+		for( size_type i = 0 ; i < H.rows( ) ; i++ )
+		{
+			double val = H( i, i ) * alpha;
+			for( size_type j = 0 ; j < i ; j++ )
+			{
+				val += std::abs( H( i, j ) );
+			}
+			for( size_type j = i + 1 ; j < H.cols( ) ; j++ )
+			{
+				val += std::abs( H( i, j ) );
+			}
+
+			if( max < val )
+			{
+				max = val;
+			}
+		}
+
+		return( max );
+	}
+
+
+	/// @brief Trust Region を求める際のλの下限の初期値
+	//! 
+	//! @param[in] H        … ラグランジェ多項式から求めたヘッセ行列
+	//! @param[in] dg_delta … ||g|| / delta
+	//!
+	//! @return λの下限の初期値
+	//! 
+	template < class Matrix >
+	inline double compute_lambda_lower_bound( const Matrix &H, double dg_delta )
+	{
+		double Hm = compute_lambda_function1( H );
+		double Hg = compute_lambda_function2( H, +1.0 );
+		double Hf = __condor_utility__::frobenius_norm( H );
+		double Hi = __condor_utility__::infinitum_norm( H );
+
+		return( __condor_utility__::maximum( 0, Hm, dg_delta - __condor_utility__::minimum( Hg, Hf, Hi ) ) );
+	}
+
+
+	/// @brief Trust Region を求める際のλの上限の初期値
+	//! 
+	//! @param[in] H        … ラグランジェ多項式から求めたヘッセ行列
+	//! @param[in] dg_delta … ||g|| / delta
+	//!
+	//! @return λの上限の初期値
+	//! 
+	template < class Matrix >
+	inline double compute_lambda_upper_bound( const Matrix &H, double dg_delta )
+	{
+		double Hg = compute_lambda_function2( H, -1.0 );
+		double Hf = __condor_utility__::frobenius_norm( H );
+		double Hi = __condor_utility__::infinitum_norm( H );
+
+		return( __condor_utility__::maximum( 0, dg_delta + __condor_utility__::minimum( Hg, Hf, Hi ) ) );
+	}
+
+
+	/// @brief CONDOR アルゴリズム内で使用する Trust Region 内の最小値を与える方向を求める関数
+	//! 
+	//! @param[in] xbest … 現時点での最も良い評価値を与えるパラメータ
+	//! @param[in] s     … Trust Region を探索した結果，評価値を減少させるであろう方向
+	//! @param[in] poly  … Trust Region を構成するラグランジェ多項式
+	//! @param[in] delta … Trust Region の半径
+	//! 
+	template < class Matrix >
+	void compute_trust_region_step( const Matrix &xbest, Matrix &s, __condor_utility__::polynomial &poly, double delta )
+	{
+		typedef Matrix matrix_type;
+		typedef typename matrix_type::value_type value_type;
+		typedef typename matrix_type::size_type size_type;
+		typedef typename matrix_type::difference_type difference_type;
+		typedef __condor_utility__::polynomial polynomial_type;
+
+		const double kappa1 = 0.01, kappa2 = 0.02;
+		matrix_type H = poly.compute_hessian_matrix( );
+		matrix_type g = H * xbest;
+		for( size_type i = 0 ; i < g.rows( ) ; i++ )
+		{
+			g[ i ] += poly[ i + 1 ];
+		}
+
+		double gnorm = __condor_utility__::frobenius_norm( g );
+		double lambda  = gnorm / delta;
+		double lambdaL = compute_lambda_lower_bound( H, gnorm / delta );
+		double lambdaU = compute_lambda_upper_bound( H, gnorm / delta );
+
+		// lambdaL <= lambda <= lambdaU となるようにする
+		lambda = __condor_utility__::maximum( lambdaL, __condor_utility__::minimum( lambda, lambdaU ) );
+
+		bool cholesky_factorization_finished = false;
+		size_type max_loop = 1000, loop;
+		matrix_type L( H.rows( ), H.cols( ) ), w( g.rows( ), g.cols( ) );
+
+		// Trust Region step のベクトルを初期化する
+		s.resize( g.rows( ), 1 );
+		s.fill( 0 );
+
+		for( loop = 0 ; loop < max_loop ; loop++ )
+		{
+			if( !cholesky_factorization_finished )
+			{
+				double lambdaM = 0.0;
+				if( !__condor_utility__::cholesky_factorization( H, L, lambda, lambdaM ) )
+				{
+					lambdaL = __condor_utility__::maximum( lambdaL, lambda + lambdaM );
+					lambda  = __condor_utility__::maximum( std::sqrt( lambdaL * lambdaU ), lambdaL + 0.01 * ( lambdaU - lambdaL ) );
+					continue;
+				}
+			}
+			else
+			{
+				cholesky_factorization_finished = false;
+			}
+
+			s = -g;
+			__condor_utility__::solve( L, s );
+			__condor_utility__::solve_( L, s );
+			double snorm = __condor_utility__::frobenius_norm( s );
+
+			if( std::abs( snorm - delta ) < kappa1 * delta )
+			{
+				// 十分良い値が求まったと判定する
+				s *= delta / snorm;
+				break; 
+			}
+			else if( snorm < delta )
+			{
+				if( lambda == 0.0 )
+				{
+					// 十分良い値が求まったと判定する
+					break;
+				}
+
+				lambdaU = __condor_utility__::minimum( lambdaU, lambda );
+
+				// 複雑な場合かをチェックする
+				matrix_type u;
+				__condor_utility__::compute_eigen_vector( L, u, lambda );
+
+				double a = 0.0;
+				double b = 0.0;
+				double c = - delta * delta;
+				for( size_type i = 0 ; i < u.rows( ) ; i++ )
+				{
+					a += u[ i ] * u[ i ];
+					b += s[ i ] * u[ i ];
+					c += s[ i ] * s[ i ];
+				}
+
+				matrix_type sf( s );
+				double alpha = 0.0;
+				double bac = std::sqrt( b * b - a * c );
+
+				if( bac < 0.0 )
+				{
+					// なんか変？
+				}
+				else
+				{
+					double alpha1 = ( -b - bac ) / a;
+					double alpha2 = ( -b + bac ) / a;
+
+					matrix_type s1 = s + alpha1 * u;
+					matrix_type s2 = s + alpha2 * u;
+					double f1 = poly( xbest + s1 );
+					double f2 = poly( xbest + s2 );
+
+					// ここの不等号はあやしい
+					if( f1 >= f2 )
+					{
+						alpha = alpha1;
+						sf = s1;
+					}
+					else
+					{
+						alpha = alpha2;
+						sf = s2;
+					}
+				}
+
+				matrix_type Hl = H + matrix_type::identity( H.rows( ), H.cols( ) ) * lambda;
+				double uHu = __condor_utility__::inner_product( u, Hl, u );
+				double sHs = __condor_utility__::inner_product( s, Hl, s );
+
+				lambdaL = __condor_utility__::maximum( lambdaL, lambda - uHu );
+
+				if( alpha * alpha * uHu < kappa2 * sHs )
+				{
+					s = sf;
+					break;
+				}
+			}
+			else// if( snorm > delta )
+			{
+				lambdaL = __condor_utility__::maximum( lambdaL, lambda );
+			}
+
+			w = s;
+			__condor_utility__::solve( L, w );
+
+			double wnorm = __condor_utility__::frobenius_norm( w );
+			double lambdaN = lambda + ( snorm - delta ) / delta * snorm * snorm / ( wnorm * wnorm );
+			lambdaN = __condor_utility__::maximum( lambdaL, __condor_utility__::minimum( lambdaN, lambdaU ) );	// 新しく求めたλの範囲をチェックする
+
+			// 新しく求めたλを使ってコレスキー分解を再度行う
+			if( __condor_utility__::cholesky_factorization( H, L, lambdaN ) )
+			{
+				lambda = lambdaN;
+				cholesky_factorization_finished = true;
+			}
+			else
+			{
+				lambdaL = __condor_utility__::maximum( lambdaL, lambdaN );
+				lambda  = __condor_utility__::maximum( std::sqrt( lambdaL * lambdaU ), lambdaL + 0.01 * ( lambdaU - lambdaL ) );
+			}
+		}
+	}
+
+
+	/// @brief CONDOR アルゴリズムを用いて評価関数の最小値を探索する
+	//! 
+	//! 探索の開始点を指定し，その近傍点を評価しながら最小値を探索する．
+	//! 関数の導関数が不要であり，値の範囲に制限が無いバージョン．
+	//! 
+	//! - 参考文献
+	//!   - F. V. Berghen, H. Bersini, ``CONDOR, a new parallel, constrained extension of Powell's UOBYQA algorithm: Experimental results and comparison with the DFO algorithm,'' Journal of Computational and Applied Mathematics, Elsevier, Volume 181, Issue 1, September 2005, pp. 157--175 
+	//!
+	//! @attention 本プログラムはMISTチームが独自に実装したCONDORアルゴリズムのため，Berghen 氏が公開されているプログラムとは同じ結果とならない可能性があります．
+	//!
+	//! @param[in,out] p              … 探索の開始ベクトル，探索終了後に最小値を与えるベクトルが代入される
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     rho            … 探索初期のステップ幅
+	//! @param[in]     rho_end        … 探索終了時のステップ幅
+	//! @param[out]    iterations     … 反復回数の結果が代入される
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor >
+	double minimization( matrix< T, Allocator > &p, Functor func, double rho, double rho_end, size_t &iterations, size_t max_iterations = 200 )
+	{
+		typedef matrix< T, Allocator > matrix_type;
+		typedef typename matrix_type::value_type value_type;
+		typedef typename matrix_type::size_type size_type;
+		typedef typename matrix_type::difference_type difference_type;
+		typedef matrix< difference_type > imatrix_type;
+		typedef __condor_utility__::polynomial polynomial_type;
+
+		matrix_type f;
+		std::vector< matrix_type > x;
+
+		difference_type n = p.rows( );
+		difference_type N = ( n + 1 ) * ( n + 2 ) / 2;
+
+		// [Step 1] 2次のラグランジェ補間（超曲面）を計算するための初期点列を求める
+		difference_type best_index = generate_first_point_set( p, x, f, func, rho );
+
+
+		// [Step 2] ラグランジェ補間の基準となる点を決め，ラグランジェ多項式の係数を求める
+		// 多項式を扱うオブジェクトを生成する
+		// 最初のひとつを生成した後はすべてコピーする
+		matrix_type xbase = x[ best_index ];
+		polynomial_type poly;
+		std::vector< polynomial_type > poly_bases( N );
+		poly.reinitialize_polynomial( n );
+
+		for( difference_type i = 0 ; i < N ; i++ )
+		{
+			poly_bases[ i ] = poly;
+		}
+		for( difference_type i = 0 ; i < N ; i++ )
+		{
+			poly_bases[ i ].fill( 0 );
+			poly_bases[ i ][ i ] = 1.0;
+
+			x[ i ] -= xbase;
+		}
+
+		// 多項式の基底を初期化する
+		compute_polynomial_basis( x, f, poly_bases, poly );
+
+
+		double M     = 0.0;						// 多項式補間のモデル評価値
+		double delta = rho;						// Trust Region の半径
+		matrix_type tstep;						// Trust Region 問題を解いた結果得られた関数値の減少方向
+		double snorm = 0.0;						// Trust Region 問題を解いた結果得られた関数値の減少方向の大きさ
+		double Fold  = f[ best_index ];			// 前回の反復操作で得られた関数値の最小値
+		double Fnew  = 1.0e100;					// 新規に評価した関数値
+		bool   is_function_evaluated = false;	// アルゴリズムの途中で，[Step 6]～[Step 8]のスキップが発生したかどうか
+		size_type number_of_updateM = 0;
+
+		// 反復回数を初期化する
+		iterations = 0;
+
+		while( iterations < max_iterations )
+		{
+			is_function_evaluated = false;
+			for( size_type loop = 0 ; iterations++ < max_iterations ; loop++ )
+			{
+				double Fbest = f[ best_index ];
+				const matrix_type &xbest = x[ best_index ];
+
+				// [Step 5] Trust Region を求める
+				compute_trust_region_step( xbest, tstep, poly, delta );
+
+				// Trust Region から得られた新しい探索点を求める
+				snorm = __condor_utility__::frobenius_norm( tstep );
+				matrix_type xnew = xbest + tstep;
+
+
+				// [Step 6] Trust Region ステップを終了し，モデルの再検証を行う
+				// 1回は必ず以降の処理を実行するようにするため、初回はスキップする
+				if( snorm < rho * 0.5 && loop > 0 )
+				{
+					break;
+				}
+
+
+				// [Step 7]
+				// fbest を中心にラグランジェ多項式を当てはめるので，poly( xbest ) == fbest のはず
+				double R = Fold - poly( xnew );
+				//double R = - poly( xnew, Fold );
+
+
+				// [Step 8] ノイズを付加して正しく最適化できているかを調べる？
+				double na = 0.0, nr = 0.0;
+				double noise = 0.5 * __condor_utility__::maximum( na * ( 1.0 + nr ), nr * std::abs( Fbest ) );
+				if( R < noise )
+				{
+					// 今のところここにくることは無い
+					break;
+				}
+
+
+				// [Step 9] 新しい位置で関数値を評価する
+				{
+					matrix_type ppp( xbase + xnew );
+					Fnew = func( ppp );
+					is_function_evaluated = true;
+				}
+
+
+				// [Step 10] モデルとの整合性を表す指標を計算する
+				double r = ( Fold - Fnew ) / R;
+
+
+				// [Step 11] Trust Region の半径を更新する
+				if( 0.7 <= r )
+				{
+					delta = __condor_utility__::maximum( delta, snorm * 5.0 / 4.0, rho + snorm );
+				}
+				else if( 0.1 <= r )
+				{
+					delta = __condor_utility__::maximum( 0.5 * delta, snorm );
+				}
+				else
+				{
+					delta = 0.5 * snorm;
+				}
+
+				if( delta < 1.5 * rho )
+				{
+					delta = rho;
+				}
+
+
+				// [Step 12] 新しい点を補間点群に含め，多項式の係数を更新する
+				// 3.4.3 と 3.4.4 を参照
+				double model_step = 0.0;
+				bool has_reduction = Fnew < Fbest;
+				{
+					difference_type index = 0;
+					double max = -1.0e10;
+					double Pnew = 0.0;
+					if( Fnew < Fbest )
+					{
+						for( difference_type i = 0 ; i < N ; i++ )
+						{
+							double pnew = poly_bases[ i ]( xnew );
+							double norm = __condor_utility__::frobenius_norm( x[ i ] - xnew ) / rho;
+							double val  = __condor_utility__::maximum( 1.0, norm * norm * norm ) * std::abs( pnew );
+
+							if( val > max )
+							{
+								max = val;
+								Pnew = pnew;
+								index = i;
+							}
+						}
+					}
+					else
+					{
+						for( difference_type i = 0 ; i < N ; i++ )
+						{
+							if( i != best_index )
+							{
+								double pnew = poly_bases[ i ]( xnew );
+								double norm = __condor_utility__::frobenius_norm( x[ i ] - xbest ) / rho;
+								double val  = __condor_utility__::maximum( 1.0, norm * norm * norm ) * std::abs( pnew );
+
+								if( val > max )
+								{
+									max = val;
+									Pnew = pnew;
+									index = i;
+								}
+							}
+						}
+					}
+
+					// 変化が無かったので終了
+					if( index == best_index )
+					{
+						break;
+					}
+
+					// Model Step を計算する
+					model_step = __condor_utility__::frobenius_norm( x[ index ] - xnew );
+
+					// 多項式を更新する
+					poly_bases[ index ] /= Pnew;
+					for( difference_type i = 0 ; i < N ; i++ )
+					{
+						if( i != index )
+						{
+							poly_bases[ i ] -= poly_bases[ i ]( xnew ) * poly_bases[ index ];
+						}
+					}
+
+
+					// データの置き換えを行う
+					x[ index ] = xnew;
+					f[ index ] = Fnew;
+
+
+					// [Step 13] 最も良い値を持つものを更新する
+					Fold = __condor_utility__::minimum( Fnew, Fold );
+					if( f[ best_index ] > Fnew )
+					{
+						best_index = index;
+					}
+
+					// 最終的な多項式を求める
+					poly.fill( 0 );
+					for( size_type i = 0 ; i < poly_bases.size( ) ; i++ )
+					{
+						poly += f[ i ] * poly_bases[ i ];
+					}
+				}
+
+
+				// [Step 14] モデルの評価に用いる値 M を計算する
+				{
+					double sum = 0.0;
+					for( size_type i = 0 ; i < poly_bases.size( ) ; i++ )
+					{
+						double len = __condor_utility__::frobenius_norm( xnew - x[ i ] );
+						sum += std::abs( poly_bases[ i ]( xnew ) * len * len * len );
+					}
+
+					M = __condor_utility__::maximum( M, std::abs( poly( xnew ) - Fnew ) * 6.0 / sum );
+					number_of_updateM++;
+				}
+
+
+				// [Step 15] 関数の最小化に効果があったかどうかを判定する
+				if( model_step > 2.0 * rho || snorm > 2.0 * rho || has_reduction )
+				{
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			if( iterations >= max_iterations )
+			{
+				// 最大反復回数を経過した
+				break;
+			}
+
+			// [Step 17.1] モデルチェックに使う評価基準値を求める
+			double eps = 0.0;
+			if( number_of_updateM < 10 )
+			{
+				eps = 0.0;
+			}
+			else if( snorm >= rho * 0.5 )
+			{
+				eps = 0.0;
+			}
+			else
+			{
+				// 4.10 章を参照
+				// 多項式モデルの最も良い評価地の点付近の傾きを計算する
+				matrix_type H = poly.compute_hessian_matrix( );
+				matrix_type L( H.rows( ), H.cols( ) );
+				double Hg = compute_lambda_function2( H, +1.0 );
+				double Hf = __condor_utility__::frobenius_norm( H );
+				double Hi = __condor_utility__::infinitum_norm( H );
+
+				double lambdaL = 0.0;
+				double lambdaU = __condor_utility__::minimum( Hg, Hf, Hi );
+				while( lambdaL < 0.99 * lambdaU )
+				{
+					double lambda = ( lambdaL + lambdaU ) * 0.5;
+
+					if( __condor_utility__::cholesky_factorization( H, L, -lambda ) )
+					{
+						lambdaL = lambda;
+					}
+					else
+					{
+						lambdaU = lambda;
+					}
+				}
+
+				eps = 0.5 * rho * rho * ( lambdaL + lambdaU ) * 0.5;
+			}
+
+
+			// [17.2] モデルチェックに用いる点を求める（3.4.2章）
+			{
+				// まず，モデル評価に用いる点の集合Jを求める
+				std::vector< __condor_utility__::__index_value_pair__ > J;
+				J.reserve( N );
+				for( difference_type i = 0 ; i < N ; i++ )
+				{
+					if( i != best_index )
+					{
+						double len = __condor_utility__::frobenius_norm( x[ i ] - x[ best_index ] );
+						if( len > 2.0 * rho )
+						{
+							J.push_back( __condor_utility__::__index_value_pair__( i, len ) );
+						}
+					}
+				}
+
+				// モデルに悪影響を与える点の判定と多項式の更新を行う
+				if( !J.empty( ) )
+				{
+					// 最も良い点からの距離値が大きい順に並べる
+					std::sort( J.begin( ), J.end( ) );
+
+					size_type index = 0;
+					matrix_type d;
+					for( ; index < J.size( ) ; index++ )
+					{
+						__condor_utility__::__index_value_pair__ &ivpair = J[ index ];
+						polynomial_type &p = poly_bases[ ivpair.index ];
+						matrix_type H = p.compute_hessian_matrix( );
+						matrix_type w( H.rows( ), 1 );
+
+						{
+							// ヘッセ行列 H の列ベクトルの乗る無が最大となるものを見つける
+							// 式(5.5)と(5.6)を参照
+							double max = -1.0e10;
+							size_type col = 0;
+							for( size_type c = 0 ; c < H.cols( ) ; c++ )
+							{
+								double sum = 0.0;
+								for( size_type r = 0 ; r < H.rows( ) ; r++ )
+								{
+									sum += H( r, c ) * H( r, c );
+								}
+
+								if( max < sum )
+								{
+									max = sum;
+									col = c;
+								}
+							}
+
+							for( size_type r = 0 ; r < H.rows( ) ; r++ )
+							{
+								w[ r ] = H( r, col );
+							}
+						}
+
+						matrix_type V = w;
+						matrix_type D = H * w;
+						matrix_type HD = H * D;
+						matrix_type HV = H * V;
+						double VHD = __condor_utility__::inner_product( V, HD );
+						double VHV = __condor_utility__::inner_product( V, HV );
+						double DHD = __condor_utility__::inner_product( D, HD );
+						double VD  = __condor_utility__::inner_product( V, D );
+						double DD  = __condor_utility__::inner_product( D, D );
+						double VV  = __condor_utility__::inner_product( V, V );
+
+						// 多項式を計算する際に、定数項が非常に小さくなる場合を除く
+						if( VD * VD < 0.9999 * DD * VV )
+						{
+							double a = DHD * VD - DD * DD;
+							double b = ( DHD * VV - DD * VD ) * 0.5;
+							double c = DD * VV - VD * VD;
+							double bac = std::sqrt( b * b - a * c );
+							double r = 0.0;
+							if( bac < 0.0 )
+							{
+								// なんか変？
+							}
+							else
+							{
+								double r1 = ( -b - bac ) / a;
+								double r2 = ( -b + bac ) / a;
+
+								double f1 = ( r1 * r1 * DHD + 2.0 * r1 * VHD + VHV ) / ( VV + 2.0 * r1 * VD + r1 * r1 * DD );
+								double f2 = ( r2 * r2 * DHD + 2.0 * r2 * VHD + VHV ) / ( VV + 2.0 * r2 * VD + r2 * r2 * DD );
+
+								if( f1 > f2 )
+								{
+									r = r1;
+								}
+								else
+								{
+									r = r2;
+								}
+							}
+
+							// D を更新する
+							D = V + r * D;
+						}
+
+						matrix_type g = H * x[ best_index ];
+						for( size_type i = 0 ; i < g.rows( ) ; i++ )
+						{
+							g[ i ] += p[ i + 1 ];
+						}
+
+						double gnorm = __condor_utility__::frobenius_norm( g );
+						double GD = ( g.t( ) * D )[ 0 ];
+						V = D - ( GD / ( gnorm * gnorm ) ) * g;
+						DD = __condor_utility__::inner_product( D, D );
+						VV = __condor_utility__::inner_product( V, V );
+						if( gnorm * DD < 0.5 - 2.0 * rho * std::abs( DHD ) || VV / DD < 1.0e-4 )
+						{
+							double scale = std::abs( rho / std::sqrt( DD ) );
+							if( GD * DHD < 0.0 )
+							{
+								d = - D * scale;
+							}
+							else
+							{
+								d = D * scale;
+							}
+						}
+						else
+						{
+							// 5.2 章の u の組を作る
+							// 大きさが1になるように正規化する
+							matrix_type sh = D / __condor_utility__::frobenius_norm( D );
+							matrix_type st = rho * g / gnorm;
+
+							// 式(5.10) からθを計算する
+							matrix_type G = st;
+							matrix_type V = sh;
+							matrix_type HG = H * G;
+							matrix_type HV = H * V;
+							double VHG = __condor_utility__::inner_product( V, HG );
+							double VHV = __condor_utility__::inner_product( V, HV );
+							double GHG = __condor_utility__::inner_product( G, HG );
+							double theta = std::atan2( 2.0 * VHG, VHV - GHG ) * 0.5;
+		
+							// 式(5.9) を元に u を計算する
+							double s_ = std::sin( theta );
+							double c_ = std::cos( theta );
+							matrix_type ut = c_ * G + s_ * V;
+							matrix_type uh = -s_ * G + c_ * V;
+
+							// 式(3.38)を最大にする d を得る
+							// 5.3 章参照
+							const double pai = 3.1415926535897932384626433832795;
+							const double phi[ 8 ] = { 0.0, pai * 0.25, pai * 0.5, pai * 0.75, pai, -pai * 0.25, -pai * 0.5, -pai * 0.75 };
+
+							d = rho * ( std::cos( phi[ 0 ] ) * uh + std::sin( phi[ 0 ] ) * ut );
+
+							double max = std::abs( __condor_utility__::inner_product( g, d ) ) + 0.5 * std::abs( __condor_utility__::inner_product( d, H, d ) );
+							for( size_type i = 1 ; i < 8 ; i++ )
+							{
+								matrix_type tmp = rho * ( std::cos( phi[ i ] ) * uh + std::sin( phi[ i ] ) * ut );
+								double val = std::abs( __condor_utility__::inner_product( g, tmp ) ) + 0.5 * std::abs( __condor_utility__::inner_product( tmp, H, tmp ) );
+								if( val > max )
+								{
+									d = tmp;
+								}
+							}
+						}
+
+						// 式(3.37)の評価
+						double len = ivpair.value;
+						double val = M * len * len * len * p( x[ best_index ] + d ) / 6.0;
+
+						if( val > eps )
+						{
+							break;
+						}
+					}
+
+
+					// [17.3] 最もモデルに悪影響を与えると思われる点を入れ替える（3.4.4章）
+					if( index < J.size( ) )
+					{
+						// 補間多項式の条件を満たさない点を発見
+						difference_type outindex = J[ index ].index;
+
+						matrix_type xnew = x[ best_index ] + d;
+						matrix_type ppp = xbase + xnew;
+						double fnew = func( ppp );
+
+						// 多項式を更新する
+						poly_bases[ outindex ] /= poly_bases[ outindex ]( xnew );
+						for( difference_type i = 0 ; i < N ; i++ )
+						{
+							if( i != outindex )
+							{
+								poly_bases[ i ] -= poly_bases[ i ]( xnew ) * poly_bases[ outindex ];
+							}
+						}
+
+						// データの置き換えを行う
+						x[ outindex ] = xnew;
+						f[ outindex ] = fnew;
+
+						// 最終的な多項式を求める
+						poly.fill( 0 );
+						for( size_type i = 0 ; i < poly_bases.size( ) ; i++ )
+						{
+							poly += f[ i ] * poly_bases[ i ];
+						}
+
+						// [Step 17.4] 最も良い値を持つものを更新する
+						Fold = __condor_utility__::minimum( Fnew, Fold );
+						if( f[ best_index ] > fnew )
+						{
+							best_index = outindex;
+						}
+
+						// [Step 17.5] モデルが不適切と判断されたので値 M を再計算する
+						{
+							double sum = 0.0;
+							for( size_type i = 0 ; i < poly_bases.size( ) ; i++ )
+							{
+								double len = __condor_utility__::frobenius_norm( xnew - x[ i ] );
+								sum += std::abs( poly_bases[ i ]( xnew ) * len * len * len );
+							}
+
+							M = __condor_utility__::maximum( M, std::abs( poly( xnew ) - Fnew ) * 6.0 / sum );
+							number_of_updateM++;
+						}
+
+
+						// [Step 17.6] Step 4 へ戻る
+						continue;
+					}
+				} // <- モデルに悪影響を与える点の判定と多項式の更新はここまで
+
+				// [Step 17.7] モデルが正しく求まっている場合の判定
+				if( snorm > rho )
+				{
+					continue;
+				}
+			}
+
+
+			// [Step 18] ループの終了判定
+			if( rho <= rho_end )
+			{
+				break;
+			}
+
+
+			// [Step 19] Trust Region の半径を更新
+			{
+				double rho_old = rho;
+				if( rho_end < rho && rho <= 16.0 * rho_end )
+				{
+					rho = rho_end;
+				}
+				else if( rho <= 250.0 * rho_end )
+				{
+					rho = std::sqrt( rho_end * rho );
+				}
+				else
+				{
+					rho *= 0.1;
+				}
+
+				delta = __condor_utility__::maximum( rho_old * 0.5, rho );
+			}
+
+
+			// [Step 20] 多項式の原点を平行移動する
+			{
+				matrix_type shift = x[ best_index ];
+				xbase += x[ best_index ];
+				poly.translate( shift );
+				for( difference_type i = 0 ; i < N ; i++ )
+				{
+					poly_bases[ i ].translate( shift );
+					if( i == best_index )
+					{
+						// 最も良い値を持つ者だけは 0 となるようにする
+						x[ i ] *= 0.0;
+					}
+					else
+					{
+						x[ i ] -= shift;
+					}
+				}
+			}
+		}
+
+
+		// [Step 21] 
+		{
+			matrix_type xnew = xbase + x[ best_index ] + tstep;
+
+			// 新しい位置で関数値を評価していない場合は評価を行う
+			if( !is_function_evaluated )
+			{
+				Fnew = func( xnew );
+			}
+
+			if( Fold < Fnew )
+			{
+				p = xbase + x[ best_index ];
+			}
+			else
+			{
+				p = xnew;
+				Fold = Fnew;
+			}
+		}
+
+		return( Fold );
+	}
+
+	/// @brief CONDOR アルゴリズムを用いて評価関数の最小値を探索する
+	//! 
+	//! 探索の開始点を指定し，その近傍点を評価しながら最小値を探索する．
+	//! 関数の導関数が不要であり，値の範囲に制限が無いバージョン．
+	//! 
+	//! - 参考文献
+	//!   - F. V. Berghen, H. Bersini, ``CONDOR, a new parallel, constrained extension of Powell's UOBYQA algorithm: Experimental results and comparison with the DFO algorithm,'' Journal of Computational and Applied Mathematics, Elsevier, Volume 181, Issue 1, September 2005, pp. 157--175 
+	//!
+	//! @attention 本プログラムはMISTチームが独自に実装したCONDORアルゴリズムのため，Berghen 氏が公開されているプログラムとは同じ結果とならない可能性があります．
+	//!
+	//! @param[in,out] p              … 探索の開始ベクトル，探索終了後に最小値を与えるベクトルが代入される
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     rho            … 探索初期のステップ幅
+	//! @param[in]     rho_end        … 探索終了時のステップ幅
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor >
+	double minimization( matrix< T, Allocator > &p, Functor f, double rho, double rho_end, size_t max_iterations = 200 )
+	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
+		size_t itenum = 0;
+		return( minimization( p, __no_copy_constructor_functor__( f ), rho, rho_end, itenum, max_iterations ) );
 	}
 }
 
