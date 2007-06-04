@@ -74,6 +74,12 @@ struct f2
 		return( std::sin( x * pai / 180.0 ) );
 		//	return( std::sin( x ) + x / 5.0 );
 	}
+
+	template < class Matrix >
+	double operator ()( const Matrix &x )
+	{
+		return( this->operator ()( x[ 0 ] ) );
+	}
 };
 
 
@@ -83,14 +89,14 @@ int main( int argc, char *argv[] )
 
 	typedef mist::matrix< double > matrix_type;
 
-	double ftol = 1.0e-16;
+	double ftol = 1.0e-8;
 
 	{
 		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f1 > functor_reference;
 		matrix_type p( 2, 1 );
 		f1 func;
-		p[ 0 ] = 100;
-		p[ 1 ] = 200;
+		p[ 0 ] = 1000;
+		p[ 1 ] = 2000;
 		double err = mist::gradient::minimization( p, functor_reference( func ), ftol );
 		cout << "Gradient descent" << endl;
 		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
@@ -100,8 +106,8 @@ int main( int argc, char *argv[] )
 		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f1 > functor_reference;
 		matrix_type p( 2, 1 ), d = mist::matrix< double >::identity( 2, 2 );
 		f1 func;
-		p[ 0 ] = 100;
-		p[ 1 ] = 200;
+		p[ 0 ] = 1000;
+		p[ 1 ] = 2000;
 		double err = mist::powell::minimization( p, d, functor_reference( func ), ftol );
 		cout << "Powell's method" << endl;
 		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
@@ -111,10 +117,21 @@ int main( int argc, char *argv[] )
 		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f1 > functor_reference;
 		matrix_type p( 2, 1 ), d = mist::matrix< double >::identity( 2, 2 );
 		f1 func;
-		p[ 0 ] = 100;
-		p[ 1 ] = 200;
+		p[ 0 ] = 1000;
+		p[ 1 ] = 2000;
 		double err = mist::lucidi::minimization( p, d, functor_reference( func ), ftol );
 		cout << "Lucidi's method" << endl;
+		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
+	}
+
+	{
+		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f1 > functor_reference;
+		matrix_type p( 2, 1 );
+		f1 func;
+		p[ 0 ] = 1000;
+		p[ 1 ] = 2000;
+		double err = mist::condor::minimization( p, functor_reference( func ), 1.0, 1.0e-16 );
+		cout << "CONDOR algorithm" << endl;
 		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
 
@@ -133,6 +150,15 @@ int main( int argc, char *argv[] )
 		double err = mist::brent::minimization( -90, 270, x, functor_reference( func ), 0.00001, 100, true );
 		cout << "Brent's method" << endl;
 		cout << "f( " << x << " ) = " << err << " , count= " << func.count << endl << endl;
+	}
+	{
+		typedef mist::__minimization_utility__::__no_copy_constructor_functor__< f2 > functor_reference;
+		matrix_type p( 1, 1 ), d = mist::matrix< double >::identity( 2, 2 );
+		f2 func;
+		p[ 0 ] = 0;
+		double err = mist::condor::minimization( p, functor_reference( func ), 1.0, 1.0e-16 );
+		cout << "CONDOR algorithm" << endl;
+		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
 
 	{

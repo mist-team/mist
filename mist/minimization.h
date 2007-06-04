@@ -1925,12 +1925,14 @@ namespace condor
 			L.fill( 0 );
 			for( size_type r = 0 ; r < H.rows( ) ; r++ )
 			{
-				double scale = H( r, r ) + lambda;
+				double scale = H( r, r );
 
 				for( size_type c = 0 ; c < r ; c++ )
 				{
 					scale -= L( r, c ) * L( r, c );
 				}
+
+				scale += lambda;
 
 				if( scale <= 0 ) 
 				{
@@ -2656,8 +2658,11 @@ namespace condor
 			}
 
 			s = -g;
-			__condor_utility__::solve( L, s );
-			__condor_utility__::solve_( L, s );
+
+			// L * L.t( ) * s = -g を解く
+			// L が下三角行列であるということを利用して以下の手順で s を求める
+			__condor_utility__::solve( L, s );		// まず L * ( L.t( ) * s' ) = -g を解く
+			__condor_utility__::solve_( L, s );		// 次に L.t( ) * s = s' を解く
 			double snorm = __condor_utility__::frobenius_norm( s );
 
 			if( std::abs( snorm - delta ) < kappa1 * delta )
@@ -2774,13 +2779,14 @@ namespace condor
 	//! @param[in]     f              … 評価関数
 	//! @param[in]     rho            … 探索初期のステップ幅
 	//! @param[in]     rho_end        … 探索終了時のステップ幅
+	//! @param[in]     tolerance      … 探索終了時の許容相対誤差
 	//! @param[out]    iterations     … 反復回数の結果が代入される
 	//! @param[in]     max_iterations … 最大反復回数
 	//!
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, Functor func, double rho, double rho_end, size_t &iterations, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor func, double rho, double rho_end, double tolerance, size_t &iterations, size_t max_iterations = 200 )
 	{
 		typedef matrix< T, Allocator > matrix_type;
 		typedef typename matrix_type::value_type value_type;
@@ -2828,6 +2834,7 @@ namespace condor
 		matrix_type tstep;						// Trust Region 問題を解いた結果得られた関数値の減少方向
 		double snorm = 0.0;						// Trust Region 問題を解いた結果得られた関数値の減少方向の大きさ
 		double Fold  = f[ best_index ];			// 前回の反復操作で得られた関数値の最小値
+		double Fold_ = Fold;					// 許容相対誤差での終了判定用
 		double Fnew  = 1.0e100;					// 新規に評価した関数値
 		bool   is_function_evaluated = false;	// アルゴリズムの途中で，[Step 6]～[Step 8]のスキップが発生したかどうか
 		size_type number_of_updateM = 0;
@@ -2837,6 +2844,7 @@ namespace condor
 
 		while( iterations < max_iterations )
 		{
+			Fold_ = Fold = __condor_utility__::minimum( Fnew, Fold );
 			is_function_evaluated = false;
 			for( size_type loop = 0 ; iterations++ < max_iterations ; loop++ )
 			{
@@ -2866,9 +2874,10 @@ namespace condor
 
 
 				// [Step 8] ノイズを付加して正しく最適化できているかを調べる？
+				// 1回は必ず以降の処理を実行するようにするため、初回はスキップする
 				double na = 0.0, nr = 0.0;
 				double noise = 0.5 * __condor_utility__::maximum( na * ( 1.0 + nr ), nr * std::abs( Fbest ) );
-				if( R < noise )
+				if( R < noise && loop > 0 )
 				{
 					// 今のところここにくることは無い
 					break;
@@ -2890,7 +2899,7 @@ namespace condor
 				// [Step 11] Trust Region の半径を更新する
 				if( 0.7 <= r )
 				{
-					delta = __condor_utility__::maximum( delta, snorm * 5.0 / 4.0, rho + snorm );
+					delta = __condor_utility__::maximum( delta, snorm * 1.25, rho + snorm );
 				}
 				else if( 0.1 <= r )
 				{
@@ -2951,12 +2960,6 @@ namespace condor
 						}
 					}
 
-					// 変化が無かったので終了
-					if( index == best_index )
-					{
-						break;
-					}
-
 					// Model Step を計算する
 					model_step = __condor_utility__::frobenius_norm( x[ index ] - xnew );
 
@@ -2977,9 +2980,9 @@ namespace condor
 
 
 					// [Step 13] 最も良い値を持つものを更新する
-					Fold = __condor_utility__::minimum( Fnew, Fold );
 					if( f[ best_index ] > Fnew )
 					{
+						Fold = __condor_utility__::minimum( Fnew, Fold );
 						best_index = index;
 					}
 
@@ -3001,13 +3004,13 @@ namespace condor
 						sum += std::abs( poly_bases[ i ]( xnew ) * len * len * len );
 					}
 
-					M = __condor_utility__::maximum( M, std::abs( poly( xnew ) - Fnew ) * 6.0 / sum );
+					M = __condor_utility__::maximum( M, std::abs( poly( xnew ) - Fnew ) / sum );
 					number_of_updateM++;
 				}
 
 
 				// [Step 15] 関数の最小化に効果があったかどうかを判定する
-				if( model_step > 2.0 * rho || snorm > 2.0 * rho || has_reduction )
+				if(  ( model_step > 2.0 * rho || snorm > 2.0 * rho || has_reduction ) )
 				{
 				}
 				else
@@ -3172,7 +3175,7 @@ namespace condor
 						}
 
 						double gnorm = __condor_utility__::frobenius_norm( g );
-						double GD = ( g.t( ) * D )[ 0 ];
+						double GD = __condor_utility__::inner_product( g, D );
 						V = D - ( GD / ( gnorm * gnorm ) ) * g;
 						DD = __condor_utility__::inner_product( D, D );
 						VV = __condor_utility__::inner_product( V, V );
@@ -3232,7 +3235,7 @@ namespace condor
 
 						// 式(3.37)の評価
 						double len = ivpair.value;
-						double val = M * len * len * len * p( x[ best_index ] + d ) / 6.0;
+						double val = M * len * len * len * p( x[ best_index ] + d );
 
 						if( val > eps )
 						{
@@ -3250,6 +3253,7 @@ namespace condor
 						matrix_type xnew = x[ best_index ] + d;
 						matrix_type ppp = xbase + xnew;
 						double fnew = func( ppp );
+						is_function_evaluated = true;
 
 						// 多項式を更新する
 						poly_bases[ outindex ] /= poly_bases[ outindex ]( xnew );
@@ -3273,7 +3277,7 @@ namespace condor
 						}
 
 						// [Step 17.4] 最も良い値を持つものを更新する
-						Fold = __condor_utility__::minimum( Fnew, Fold );
+						Fold = __condor_utility__::minimum( fnew, Fold );
 						if( f[ best_index ] > fnew )
 						{
 							best_index = outindex;
@@ -3288,7 +3292,7 @@ namespace condor
 								sum += std::abs( poly_bases[ i ]( xnew ) * len * len * len );
 							}
 
-							M = __condor_utility__::maximum( M, std::abs( poly( xnew ) - Fnew ) * 6.0 / sum );
+							M = __condor_utility__::maximum( M, std::abs( poly( xnew ) - Fnew ) / sum );
 							number_of_updateM++;
 						}
 
@@ -3307,9 +3311,12 @@ namespace condor
 
 
 			// [Step 18] ループの終了判定
-			if( rho <= rho_end )
 			{
-				break;
+				double fnew = __condor_utility__::minimum( Fnew, Fold );
+				if( rho <= rho_end || 2.0 * std::abs( Fold_ - fnew ) < tolerance * ( std::abs( Fold_ ) + std::abs( fnew ) ) )
+				{
+					break;
+				}
 			}
 
 
@@ -3398,11 +3405,37 @@ namespace condor
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, Functor f, double rho, double rho_end, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor f, double rho, double rho_end, size_t max_iterations )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
-		return( minimization( p, __no_copy_constructor_functor__( f ), rho, rho_end, itenum, max_iterations ) );
+		return( minimization( p, __no_copy_constructor_functor__( f ), rho, rho_end, 0.0, itenum, max_iterations ) );
+	}
+
+	/// @brief CONDOR アルゴリズムを用いて評価関数の最小値を探索する
+	//! 
+	//! 探索の開始点を指定し，その近傍点を評価しながら最小値を探索する．
+	//! 関数の導関数が不要であり，値の範囲に制限が無いバージョン．
+	//! 許容相対誤差のみで終了判定を行うバージョンであり，初期探索ステップ幅は 1.0 である．
+	//! 
+	//! - 参考文献
+	//!   - F. V. Berghen, H. Bersini, ``CONDOR, a new parallel, constrained extension of Powell's UOBYQA algorithm: Experimental results and comparison with the DFO algorithm,'' Journal of Computational and Applied Mathematics, Elsevier, Volume 181, Issue 1, September 2005, pp. 157--175 
+	//!
+	//! @attention 本プログラムはMISTチームが独自に実装したCONDORアルゴリズムのため，Berghen 氏が公開されているプログラムとは同じ結果とならない可能性があります．
+	//!
+	//! @param[in,out] p              … 探索の開始ベクトル，探索終了後に最小値を与えるベクトルが代入される
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     tolerance      … 探索終了時の許容相対誤差
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor >
+	double minimization( matrix< T, Allocator > &p, Functor f, double tolerance, size_t max_iterations )
+	{
+		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
+		size_t itenum = 0;
+		return( minimization( p, __no_copy_constructor_functor__( f ), 1.0, 1.0e-8, tolerance, itenum, max_iterations ) );
 	}
 }
 
