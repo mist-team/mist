@@ -2844,7 +2844,7 @@ namespace condor
 
 		while( iterations < max_iterations )
 		{
-			Fold_ = Fold = __condor_utility__::minimum( Fnew, Fold );
+			Fold = __condor_utility__::minimum( Fnew, Fold );
 			is_function_evaluated = false;
 			for( size_type loop = 0 ; iterations++ < max_iterations ; loop++ )
 			{
@@ -3312,10 +3312,13 @@ namespace condor
 
 			// [Step 18] ƒ‹[ƒv‚ÌI—¹”»’è
 			{
-				double fnew = __condor_utility__::minimum( Fnew, Fold );
-				if( rho <= rho_end || 2.0 * std::abs( Fold_ - fnew ) < tolerance * ( std::abs( Fold_ ) + std::abs( fnew ) ) )
+				if( rho <= rho_end || 2.0 * std::abs( Fold_ - Fold ) < tolerance * ( std::abs( Fold_ ) + std::abs( Fold ) ) )
 				{
 					break;
+				}
+				else
+				{
+					Fold_ = Fold;
 				}
 			}
 

@@ -105,8 +105,10 @@ namespace __clapack__
 		typedef long int integer;
 		typedef float real;
 		typedef double doublereal;
-		typedef struct { real r, i; } complex;
-		typedef struct { doublereal r, i; } doublecomplex;
+		struct complex { real r, i; };
+		struct doublecomplex { doublereal r, i; };
+		//typedef struct { real r, i; } complex;
+		//typedef struct { doublereal r, i; } doublecomplex;
 
 		// 一般行列同士の掛け算を行う
 		int BLFNAME( sgemm ) ( char *transa, char *transb, integer *m, integer *n, integer *k, real *alpha, real *a, integer *lda, real *b, integer *ldb, real *beta, real *c__, integer *ldc );
@@ -2683,7 +2685,7 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 	c.fill( );
 
 	// BLASルーチンでは，入力行列AとBの内容は変化しないが，
-	// インターフェースは const 就職を受けていないのでキャストを行う
+	// インターフェースは const 修飾を受けていないのでキャストを行う
 	__clapack__::gemm( transa, transb, m, n, k, alpha, const_cast< value_type * >( &( a[ 0 ] ) ), lda, const_cast< value_type * >( &( b[ 0 ] ) ), ldb, beta, &( c[ 0 ] ), ldc );
 
 	return( true );

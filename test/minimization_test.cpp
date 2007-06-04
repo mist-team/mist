@@ -96,7 +96,7 @@ int main( int argc, char *argv[] )
 		matrix_type p( 2, 1 );
 		f1 func;
 		p[ 0 ] = 1000;
-		p[ 1 ] = 2000;
+		p[ 1 ] = -2000;
 		double err = mist::gradient::minimization( p, functor_reference( func ), ftol );
 		cout << "Gradient descent" << endl;
 		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
@@ -107,7 +107,7 @@ int main( int argc, char *argv[] )
 		matrix_type p( 2, 1 ), d = mist::matrix< double >::identity( 2, 2 );
 		f1 func;
 		p[ 0 ] = 1000;
-		p[ 1 ] = 2000;
+		p[ 1 ] = -2000;
 		double err = mist::powell::minimization( p, d, functor_reference( func ), ftol );
 		cout << "Powell's method" << endl;
 		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
@@ -118,7 +118,7 @@ int main( int argc, char *argv[] )
 		matrix_type p( 2, 1 ), d = mist::matrix< double >::identity( 2, 2 );
 		f1 func;
 		p[ 0 ] = 1000;
-		p[ 1 ] = 2000;
+		p[ 1 ] = -2000;
 		double err = mist::lucidi::minimization( p, d, functor_reference( func ), ftol );
 		cout << "Lucidi's method" << endl;
 		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
@@ -129,8 +129,8 @@ int main( int argc, char *argv[] )
 		matrix_type p( 2, 1 );
 		f1 func;
 		p[ 0 ] = 1000;
-		p[ 1 ] = 2000;
-		double err = mist::condor::minimization( p, functor_reference( func ), 1.0, 1.0e-16 );
+		p[ 1 ] = -2000;
+		double err = mist::condor::minimization( p, functor_reference( func ), ftol, 1000 );
 		cout << "CONDOR algorithm" << endl;
 		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
@@ -156,7 +156,7 @@ int main( int argc, char *argv[] )
 		matrix_type p( 1, 1 ), d = mist::matrix< double >::identity( 2, 2 );
 		f2 func;
 		p[ 0 ] = 0;
-		double err = mist::condor::minimization( p, functor_reference( func ), 1.0, 1.0e-16 );
+		double err = mist::condor::minimization( p, functor_reference( func ), ftol, 1000 );
 		cout << "CONDOR algorithm" << endl;
 		cout << "f( " << p.t( ) << " ) = " << err << " , count= " << func.count << endl << endl;
 	}
