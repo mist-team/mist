@@ -373,7 +373,7 @@ struct matrix_add : public matrix_bind_operation< T1, T2 >
 
 	matrix_add( const T1 &lhs, const T2 &rhs ) : base( lhs, rhs )
 	{
-#ifdef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( lhs.rows( ) != rhs.rows( ) || lhs.cols( ) != rhs.cols( ) )
 		{
 			// ë´ÇµéZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -400,7 +400,7 @@ struct matrix_sub : public matrix_bind_operation< T1, T2 >
 
 	matrix_sub( const T1 &lhs, const T2 &rhs ) : base( lhs, rhs )
 	{
-#ifdef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( lhs.rows( ) != rhs.rows( ) || lhs.cols( ) != rhs.cols( ) )
 		{
 			// à¯Ç´éZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -427,7 +427,7 @@ struct matrix_mul : public matrix_bind_operation< T1, T2 >
 
 	matrix_mul( const T1 &lhs, const T2 &rhs ) : base( lhs, rhs )
 	{
-#ifdef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( lhs.cols( ) != rhs.rows( ) )
 		{
 			// ä|ÇØéZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -531,7 +531,7 @@ struct matrix_div_const : public matrix_bind_operation< T1, T2 >
 
 	matrix_div_const( const T1 &lhs, const T2 &rhs ) : base( lhs, rhs )
 	{
-#ifdef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( rhs == value_type( 0 ) )
 		{
 			// É[ÉçèúéZÇçsÇ®Ç§Ç∆ÇµÇƒÇ¢ÇÈó·äO
@@ -1257,7 +1257,7 @@ public:
 	{
 		matrix &m1 = *this;
 		typedef typename matrix< T, Allocator >::size_type size_type;
-#ifdef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( m1.cols( ) != m2.rows( ) )
 		{
 			// ä|ÇØéZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -1347,7 +1347,7 @@ public:
 	const matrix& operator /=( typename type_trait< T >::value_type val )
 	{
 		matrix &m = *this;
-#ifdef _CHECK_ARRAY_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( val == value_type( 0 ) )
 		{
 			// É[ÉçèúéZî≠ê∂
@@ -1374,7 +1374,7 @@ public:
 	matrix& operator +=( const matrix_expression< Expression > &m2 )
 	{
 		matrix &m1 = *this;
-#ifndef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( m1.cols( ) != m2.cols( ) || m1.rows( ) != m2.rows( ) )
 		{
 			// ë´ÇµéZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -1405,7 +1405,7 @@ public:
 	matrix& operator -=( const matrix_expression< Expression > &m2 )
 	{
 		matrix &m1 = *this;
-#ifndef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( m1.cols( ) != m2.cols( ) || m1.rows( ) != m2.rows( ) )
 		{
 			// à¯Ç´éZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -1436,7 +1436,7 @@ public:
 	matrix& operator *=( const matrix_expression< Expression > &m2 )
 	{
 		matrix &m1 = *this;
-#ifndef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( m1.cols( ) != m2.rows( ) )
 		{
 			// ä|ÇØéZÇ≈Ç´Ç‹ÇπÇÒó·äO
@@ -2131,7 +2131,7 @@ inline matrix< T, Allocator > operator -( const matrix< T, Allocator > &m1, cons
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m1, const matrix< T, Allocator > &m2 )
 {
-#ifdef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 	if( m1.cols( ) != m2.rows( ) )
 	{
 		// ä|ÇØéZÇ≈Ç´Ç‹ÇπÇÒó·äO

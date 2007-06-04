@@ -2893,7 +2893,7 @@ namespace condor
 
 
 				// [Step 10] モデルとの整合性を表す指標を計算する
-				double r = ( Fold - Fnew ) / R;
+				double r = R != 0.0 ? ( Fold - Fnew ) / R : Fold - Fnew;
 
 
 				// [Step 11] Trust Region の半径を更新する
@@ -2921,7 +2921,7 @@ namespace condor
 				double model_step = 0.0;
 				bool has_reduction = Fnew < Fbest;
 				{
-					difference_type index = 0;
+					difference_type index = -1;
 					double max = -1.0e10;
 					double Pnew = 0.0;
 					if( Fnew < Fbest )
@@ -2960,37 +2960,40 @@ namespace condor
 						}
 					}
 
-					// Model Step を計算する
-					model_step = __condor_utility__::frobenius_norm( x[ index ] - xnew );
-
-					// 多項式を更新する
-					poly_bases[ index ] /= Pnew;
-					for( difference_type i = 0 ; i < N ; i++ )
+					if( index >= 0 && Pnew != 0.0 )
 					{
-						if( i != index )
+						// Model Step を計算する
+						model_step = __condor_utility__::frobenius_norm( x[ index ] - xnew );
+
+						// 多項式を更新する
+						poly_bases[ index ] /= Pnew;
+						for( difference_type i = 0 ; i < N ; i++ )
 						{
-							poly_bases[ i ] -= poly_bases[ i ]( xnew ) * poly_bases[ index ];
+							if( i != index )
+							{
+								poly_bases[ i ] -= poly_bases[ i ]( xnew ) * poly_bases[ index ];
+							}
 						}
-					}
 
 
-					// データの置き換えを行う
-					x[ index ] = xnew;
-					f[ index ] = Fnew;
+						// データの置き換えを行う
+						x[ index ] = xnew;
+						f[ index ] = Fnew;
 
 
-					// [Step 13] 最も良い値を持つものを更新する
-					if( f[ best_index ] > Fnew )
-					{
-						Fold = __condor_utility__::minimum( Fnew, Fold );
-						best_index = index;
-					}
+						// [Step 13] 最も良い値を持つものを更新する
+						if( f[ best_index ] > Fnew )
+						{
+							Fold = __condor_utility__::minimum( Fnew, Fold );
+							best_index = index;
+						}
 
-					// 最終的な多項式を求める
-					poly.fill( 0 );
-					for( size_type i = 0 ; i < poly_bases.size( ) ; i++ )
-					{
-						poly += f[ i ] * poly_bases[ i ];
+						// 最終的な多項式を求める
+						poly.fill( 0 );
+						for( size_type i = 0 ; i < poly_bases.size( ) ; i++ )
+						{
+							poly += f[ i ] * poly_bases[ i ];
+						}
 					}
 				}
 
@@ -3097,6 +3100,19 @@ namespace condor
 						matrix_type H = p.compute_hessian_matrix( );
 						matrix_type w( H.rows( ), 1 );
 
+						matrix_type g = H * x[ best_index ];
+						for( size_type i = 0 ; i < g.rows( ) ; i++ )
+						{
+							g[ i ] += p[ i + 1 ];
+						}
+
+						double gnorm = __condor_utility__::frobenius_norm( g );
+						if( gnorm == 0.0 )
+						{
+							continue;
+						}
+
+
 						{
 							// ヘッセ行列 H の列ベクトルの乗る無が最大となるものを見つける
 							// 式(5.5)と(5.6)を参照
@@ -3168,13 +3184,6 @@ namespace condor
 							D = V + r * D;
 						}
 
-						matrix_type g = H * x[ best_index ];
-						for( size_type i = 0 ; i < g.rows( ) ; i++ )
-						{
-							g[ i ] += p[ i + 1 ];
-						}
-
-						double gnorm = __condor_utility__::frobenius_norm( g );
 						double GD = __condor_utility__::inner_product( g, D );
 						V = D - ( GD / ( gnorm * gnorm ) ) * g;
 						DD = __condor_utility__::inner_product( D, D );

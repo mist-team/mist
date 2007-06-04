@@ -785,7 +785,7 @@ public:
 	template < class TT, class AAlocator >
 	const vector& operator *=( const vector< TT, AAlocator > &v2 )
 	{
-#ifdef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( base::size( ) != v2.size( ) || base::size( ) < 3 )
 		{
 			// 外積の計算ができません例外
@@ -834,7 +834,7 @@ public:
 	//! 
 	value_type inner( const vector &v2 ) const
 	{
-#ifdef _CHECK_MATRIX_OPERATION_
+#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( base::size( ) != v2.size( ) )
 		{
 			// 内積の計算ができません例外
