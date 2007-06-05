@@ -1263,7 +1263,7 @@ namespace powell
 		typedef typename matrix< T, Allocator >::difference_type difference_type;
 		typedef matrix< T, Allocator > matrix_type;
 
-		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 ), p0( p ), pn( p );
+		matrix_type odirs( dirs ), dir( p.size( ), 1 ), tmp( p.size( ), 1 ), p0( p ), pn( p );
 		double x, fp0 = 1.0e100, fp = f( p ), delta;
 
 		// 他変数関数を１変数関数に変換する
@@ -1271,7 +1271,7 @@ namespace powell
 
 		size_t ite;
 		size_type r, c;
-		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		for( ite = 0 ; ite < max_iterations ; ite++ )
 		{
 			// 探索開始前の評価値を覚えておく
 			fp0 = fp;
@@ -1311,7 +1311,7 @@ namespace powell
 			}
 
 			// Acton の方法を用いて，新しい方向集合を求める
-			if( ite <= max_iterations )
+			if( ite < max_iterations )
 			{
 				// 新しい方向を求める
 				for( r = 0 ; r < p.size( ) ; r++ )
@@ -1362,7 +1362,6 @@ namespace powell
 				{
 					p0[ r ]  = p[ r ];
 				}
-
 			}
 		}
 
@@ -1804,12 +1803,9 @@ namespace condor
 			typedef typename matrix_type::size_type size_type;
 
 			double val = 0.0;
-			for( size_type r = 0 ; r < H.rows( ) ; r++ )
+			for( size_type r = 0 ; r < H.size( ) ; r++ )
 			{
-				for( size_type c = 0 ; c < H.cols( ) ; c++ )
-				{
-					val += H( r, c ) * H( r, c );
-				}
+				val += H[ r ] * H[ r ];
 			}
 
 			return( std::sqrt( val ) );
@@ -1822,10 +1818,10 @@ namespace condor
 			typedef typename matrix_type::size_type size_type;
 
 			double max = 0.0;
-			for( size_type r = 0 ; r < H.rows( ) ; r++ )
+			for( size_type c = 0 ; c < H.cols( ) ; c++ )
 			{
 				double val = 0.0;
-				for( size_type c = 0 ; c < H.cols( ) ; c++ )
+				for( size_type r = 0 ; r < H.rows( ) ; r++ )
 				{
 					val += std::abs( H( r, c ) );
 				}
@@ -1863,15 +1859,15 @@ namespace condor
 			typedef typename matrix_type::size_type size_type;
 
 			double sum = 0.0;
-			for( size_type r = 0 ; r < H.rows( ) ; r++ )
+			for( size_type c = 0 ; c < H.cols( ) ; c++ )
 			{
 				double val = 0.0;
-				for( size_type c = 0 ; c < H.cols( ) ; c++ )
+				for( size_type r = 0 ; r < H.rows( ) ; r++ )
 				{
-					val += H( r, c ) * m2[ c ];
+					val += m1[ r ] * H( r, c );
 				}
 
-				sum += m1[ r ] * val;
+				sum += val * m2[ c ];
 			}
 			return( sum );
 		}
@@ -1883,15 +1879,15 @@ namespace condor
 			typedef typename matrix_type::size_type size_type;
 
 			double sum = 0.0;
-			for( size_type r = 0 ; r < H.rows( ) ; r++ )
+			for( size_type c = 0 ; c < H.cols( ) ; c++ )
 			{
-				double val = lambda * m2[ r ];
-				for( size_type c = 0 ; c < H.cols( ) ; c++ )
+				double val = lambda * m1[ c ];
+				for( size_type r = 0 ; r < H.rows( ) ; r++ )
 				{
-					val += H( r, c ) * m2[ c ];
+					val += m1[ r ] * H( r, c );
 				}
 
-				sum += m1[ r ] * val;
+				sum += val * m2[ c ];
 			}
 			return( sum );
 		}
@@ -2024,21 +2020,9 @@ namespace condor
 			typedef typename matrix_type::difference_type difference_type;
 
 			w.resize( L.rows( ), 1 );
-			w[ 0 ] = 1.0;
-			for( size_type r = 1 ; r < L.rows( ) ; r++ )
+			for( size_type r = 0 ; r < L.rows( ) ; r++ )
 			{
-				if( L( r, r ) == 0.0 )
-				{
-					w[ r ] = 1.0;
-				}
-
-				double sum = 0.0;
-				for( size_type c = 0 ; c < r - 1 ; c++ )
-				{
-					sum += L( r, c ) * w[ c ];
-				}
-
-				if( ( 1.0 - sum ) / L( r, r ) > - ( 1.0 + sum ) / L( r, r ) )
+				if( L( r, r ) >= 0.0 )
 				{
 					w[ r ] = 1.0;
 				}
@@ -2136,25 +2120,8 @@ namespace condor
 			}
 
 			template < class Matrix >
-			double operator ()( const Matrix &x, double shift )
-			{
-				polynomial &c = *this;
-				double tmp = c[ 0 ];
-				c[ 0 ] -= shift;
-				double ret = c( x );
-				c[ 0 ] = tmp;
-				return( ret );
-			}
-
-			template < class Matrix >
 			double operator ()( const Matrix &x )
 			{
-				if( x.rows( ) != dimension )
-				{
-					// エラー
-					return( 0.0 );
-				}
-
 				difference_type n = dimension;
 				const matrix_type &c = *this;	// 多項式の係数ベクトル
 
@@ -2911,7 +2878,6 @@ namespace condor
 				// [Step 7]
 				// fbest を中心にラグランジェ多項式を当てはめるので，poly( xbest ) == fbest のはず
 				double R = Fold - poly( xnew );
-				//double R = - poly( xnew, Fold );
 
 
 				// [Step 8] ノイズを付加して正しく最適化できているかを調べる？
@@ -3054,7 +3020,7 @@ namespace condor
 
 
 				// [Step 15] 関数の最小化に効果があったかどうかを判定する
-				if( ( model_step > 2.0 * rho || snorm > 2.0 * rho || has_reduction ) )
+				if( model_step > 2.0 * rho || snorm > 2.0 * rho || has_reduction )
 				{
 				}
 				else
@@ -3223,7 +3189,7 @@ namespace condor
 						V = D - ( GD / ( gnorm * gnorm ) ) * g;
 						DD = __condor_utility__::inner_product( D, D );
 						VV = __condor_utility__::inner_product( V, V );
-						if( gnorm * DD < 0.5 - 2.0 * rho * std::abs( DHD ) || VV / DD < 1.0e-4 )
+						if( gnorm * DD < 0.5 - 2.0 * rho * std::abs( DHD ) || VV < 1.0e-4 * DD )
 						{
 							double scale = std::abs( rho / std::sqrt( DD ) );
 							if( GD * DHD < 0.0 )
