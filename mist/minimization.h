@@ -3148,17 +3148,14 @@ namespace condor
 
 						matrix_type V = w;
 						matrix_type D = H * w;
-						matrix_type HD = H * D;
-						matrix_type HV = H * V;
-						double VHD = __condor_utility__::inner_product( V, HD );
-						double VHV = __condor_utility__::inner_product( V, HV );
-						double DHD = __condor_utility__::inner_product( D, HD );
+						double DHD = __condor_utility__::inner_product( D, H, D );
 						double VD  = __condor_utility__::inner_product( V, D );
 						double DD  = __condor_utility__::inner_product( D, D );
+						double VHD = __condor_utility__::inner_product( V, H, D );
+						double VHV = __condor_utility__::inner_product( V, H, V );
 						double VV  = __condor_utility__::inner_product( V, V );
 
 						// 多項式を計算する際に、定数項が非常に小さくなる場合を除く
-						if( VD * VD < 0.9999 * DD * VV )
 						{
 							double a = DHD * VD - DD * DD;
 							double b = ( DHD * VV - DD * VD ) * 0.5;
@@ -3185,12 +3182,10 @@ namespace condor
 							D = V + r * D;
 						}
 
-						double GD = __condor_utility__::inner_product( g, D );
-						V = D - ( GD / ( gnorm * gnorm ) ) * g;
 						DD = __condor_utility__::inner_product( D, D );
-						VV = __condor_utility__::inner_product( V, V );
-						if( gnorm * DD < 0.5 - 2.0 * rho * std::abs( DHD ) || VV < 1.0e-4 * DD )
+						if( gnorm * DD + 2.0 * rho * std::abs( DHD ) < 0.5 )
 						{
+							double GD = __condor_utility__::inner_product( g, D );
 							double scale = std::abs( rho / std::sqrt( DD ) );
 							if( GD * DHD < 0.0 )
 							{
@@ -3205,17 +3200,12 @@ namespace condor
 						{
 							// 5.2 章の u の組を作る
 							// 大きさが1になるように正規化する
-							matrix_type sh = D / __condor_utility__::frobenius_norm( D );
-							matrix_type st = rho * g / gnorm;
-
 							// 式(5.10) からθを計算する
-							matrix_type G = st;
-							matrix_type V = sh;
-							matrix_type HG = H * G;
-							matrix_type HV = H * V;
-							double VHG = __condor_utility__::inner_product( V, HG );
-							double VHV = __condor_utility__::inner_product( V, HV );
-							double GHG = __condor_utility__::inner_product( G, HG );
+							matrix_type G = D / __condor_utility__::frobenius_norm( D );
+							matrix_type V = g / gnorm;
+							double VHG = __condor_utility__::inner_product( V, H, G );
+							double VHV = __condor_utility__::inner_product( V, H, V );
+							double GHG = __condor_utility__::inner_product( G, H, G );
 							double theta = std::atan2( 2.0 * VHG, VHV - GHG ) * 0.5;
 		
 							// 式(5.9) を元に u を計算する
@@ -3229,8 +3219,10 @@ namespace condor
 							const double pai = 3.1415926535897932384626433832795;
 							const double phi[ 8 ] = { 0.0, pai * 0.25, pai * 0.5, pai * 0.75, pai, -pai * 0.25, -pai * 0.5, -pai * 0.75 };
 
+							// d の初期方向を設定する
 							d = rho * ( std::cos( phi[ 0 ] ) * uh + std::sin( phi[ 0 ] ) * ut );
 
+							// 式(5.2)を最大にする d を選ぶ
 							double max = std::abs( __condor_utility__::inner_product( g, d ) ) + 0.5 * std::abs( __condor_utility__::inner_product( d, H, d ) );
 							for( size_type i = 1 ; i < 8 ; i++ )
 							{
@@ -3238,6 +3230,7 @@ namespace condor
 								double val = std::abs( __condor_utility__::inner_product( g, tmp ) ) + 0.5 * std::abs( __condor_utility__::inner_product( tmp, H, tmp ) );
 								if( val > max )
 								{
+									max = val;
 									d = tmp;
 								}
 							}
