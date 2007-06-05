@@ -203,10 +203,12 @@ _MIST_BEGIN
 	#define _CHECK_ARRAY3_OPERATION_		0	///< 3次元画像の演算の整合性をチェックするかどうか
 
 	#define _CHECK_MATRIX_OPERATION_		0	/// <行列演算の整合性をチェックするかどうか
-	#define _USE_EXPRESSION_TEMPLATE_		1	///< Expression Templateを利用するかどうか
+	#define _USE_EXPRESSION_TEMPLATE_		0	///< Expression Templateを利用するかどうか
 
 #endif
 
+
+#define __CHECK_HARD_CASE__					0	///< CONDOR アルゴリズムにおいて，Trust Region を解く際に Hard Case のチェックをするかどうか．チェックをするほうが安定した最適化が可能になる場合があります．
 
 #define _ARRAY_BIND_OPERATION_SUPPORT_		0	///< MISTの array  コンテナ同士の四則演算を有効にするかどうか
 #define _ARRAY1_BIND_OPERATION_SUPPORT_		0	///< MISTの array1 コンテナ同士の四則演算を有効にするかどうか
@@ -298,7 +300,7 @@ struct __mist_convert_callback__
 	//! @return true  … アルゴリズムの実行を継続
 	//! @return false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止
 	//!
-	bool operator()( long double percent ) const
+	bool operator()( long double percent )
 	{
 		percent = lower_ + percent / 100.0 * ( upper_ - lower_ );
 		return( f_( percent ) );
@@ -317,6 +319,15 @@ struct __mist_convert_callback__
 //!
 struct __mist_console_callback__
 {
+private:
+	int __percent__;
+
+public:
+	/// @brief 標準出力型コールバックファンクタのデフォルトコンストラクタ．
+	__mist_console_callback__( ) : __percent__( -1 )
+	{
+	}
+
 	/// @brief MISTのアルゴリズムの進行状況を，0～100パーセントで受け取り，標準出力へ出力する．
 	//!
 	//! @param[in] percent … アルゴリズムの進行状況
@@ -324,38 +335,44 @@ struct __mist_console_callback__
 	//! @return true  … アルゴリズムの実行を継続
 	//! @return false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止
 	//!
-	bool operator()( long double percent ) const
+	bool operator()( long double percent )
 	{
-		int k3 = static_cast< int >( percent / 100.0 );
-		percent -= k3 * 100.0;
-		int k2 = static_cast< int >( percent / 10.0 );
-		percent -= k2 * 10.0;
-		int k1 = static_cast< int >( percent );
-
-		std::cerr << "busy... ";
-		if( k3 == 0 )
+		int ppp = static_cast< int >( percent );
+		if( __percent__ != ppp )
 		{
-			std::cerr << " ";
-			if( k2 == 0 )
+			__percent__ = ppp;
+
+			int k3 = static_cast< int >( percent / 100.0 );
+			percent -= k3 * 100.0;
+			int k2 = static_cast< int >( percent / 10.0 );
+			percent -= k2 * 10.0;
+			int k1 = static_cast< int >( percent );
+
+			std::cerr << "busy... ";
+			if( k3 == 0 )
 			{
-				std::cerr << " " << k1;
+				std::cerr << " ";
+				if( k2 == 0 )
+				{
+					std::cerr << " " << k1;
+				}
+				else
+				{
+					std::cerr << k2 << k1;
+				}
 			}
 			else
 			{
-				std::cerr << k2 << k1;
+				std::cerr << 1 << k2 << k1;
 			}
-		}
-		else
-		{
-			std::cerr << 1 << k2 << k1;
-		}
-		if( percent > 100.0 )
-		{
-			std::cerr << "%" << std::endl;
-		}
-		else
-		{
-			std::cerr << "%\r";
+			if( percent > 100.0 )
+			{
+				std::cerr << "%" << std::endl;
+			}
+			else
+			{
+				std::cerr << "%\r";
+			}
 		}
 		return( true );
 	}

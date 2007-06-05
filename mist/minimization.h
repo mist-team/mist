@@ -1840,7 +1840,7 @@ namespace condor
 		}
 
 		template < class Matrix >
-		double inner_product( const Matrix &m1, const Matrix &m2 )
+		inline double inner_product( const Matrix &m1, const Matrix &m2 )
 		{
 			typedef Matrix matrix_type;
 			typedef typename matrix_type::value_type value_type;
@@ -1857,10 +1857,43 @@ namespace condor
 		}
 
 		template < class Matrix >
-		double inner_product( const Matrix &m1, const Matrix &H, const Matrix &m2 )
+		inline double inner_product( const Matrix &m1, const Matrix &H, const Matrix &m2 )
 		{
 			typedef Matrix matrix_type;
-			return( inner_product( m1, matrix_type( H * m2 ) ) );
+			typedef typename matrix_type::size_type size_type;
+
+			double sum = 0.0;
+			for( size_type r = 0 ; r < H.rows( ) ; r++ )
+			{
+				double val = 0.0;
+				for( size_type c = 0 ; c < H.cols( ) ; c++ )
+				{
+					val += H( r, c ) * m2[ c ];
+				}
+
+				sum += m1[ r ] * val;
+			}
+			return( sum );
+		}
+
+		template < class Matrix >
+		inline double inner_product( const Matrix &m1, const Matrix &H, const Matrix &m2, double lambda )
+		{
+			typedef Matrix matrix_type;
+			typedef typename matrix_type::size_type size_type;
+
+			double sum = 0.0;
+			for( size_type r = 0 ; r < H.rows( ) ; r++ )
+			{
+				double val = lambda * m2[ r ];
+				for( size_type c = 0 ; c < H.cols( ) ; c++ )
+				{
+					val += H( r, c ) * m2[ c ];
+				}
+
+				sum += m1[ r ] * val;
+			}
+			return( sum );
 		}
 
 		struct __index_value_pair__
@@ -1891,6 +1924,7 @@ namespace condor
 				{
 					sum -= A( r, c ) * b[ c ];
 				}
+
 				b[ r ] = sum / A( r, r );
 			}
 		}
@@ -1909,13 +1943,14 @@ namespace condor
 				{
 					sum -= A( r, c ) * b[ r ];
 				}
+
 				b[ c ] = sum / A( c, c );
 			}
 		}
 
 
 		template < class Matrix >
-		bool cholesky_factorization( const Matrix &H, Matrix &L, double lambda, double &lambda_modified )
+		inline bool cholesky_factorization( const Matrix &H, Matrix &L, double lambda, double &lambda_modified )
 		{
 			typedef Matrix matrix_type;
 			typedef typename matrix_type::value_type value_type;
@@ -1950,8 +1985,7 @@ namespace condor
 						v[ j ] = - sum / L( j, j );
 					}
 
-					double norm = frobenius_norm( v );
-					lambda_modified = - scale / norm;
+					lambda_modified = - scale / frobenius_norm( v );
 
 					return( false );
 				}
@@ -1975,14 +2009,14 @@ namespace condor
 		}
 
 		template < class Matrix >
-		bool cholesky_factorization( const Matrix &H, Matrix &L, double lambda )
+		inline bool cholesky_factorization( const Matrix &H, Matrix &L, double lambda )
 		{
 			double dmy;
 			return( cholesky_factorization( H, L, lambda, dmy ) );
 		}
 
 		template < class Matrix >
-		bool compute_eigen_vector( const Matrix &L, Matrix &w, double lambda )
+		inline bool compute_eigen_vector( const Matrix &L, Matrix &w, double lambda )
 		{
 			typedef Matrix matrix_type;
 			typedef typename matrix_type::value_type value_type;
@@ -1990,7 +2024,8 @@ namespace condor
 			typedef typename matrix_type::difference_type difference_type;
 
 			w.resize( L.rows( ), 1 );
-			for( size_type r = 0 ; r < L.rows( ) ; r++ )
+			w[ 0 ] = 1.0;
+			for( size_type r = 1 ; r < L.rows( ) ; r++ )
 			{
 				if( L( r, r ) == 0.0 )
 				{
@@ -1998,12 +2033,9 @@ namespace condor
 				}
 
 				double sum = 0.0;
-				if( r > 0 )
+				for( size_type c = 0 ; c < r - 1 ; c++ )
 				{
-					for( size_type c = 0 ; c < r - 1 ; c++ )
-					{
-						sum += L( r, c ) * w[ c ];
-					}
+					sum += L( r, c ) * w[ c ];
 				}
 
 				if( ( 1.0 - sum ) / L( r, r ) > - ( 1.0 + sum ) / L( r, r ) )
@@ -2039,19 +2071,20 @@ namespace condor
 			imatrix_type alpha_;
 			imatrix_type tr;
 			imatrix_type tc;
+			std::vector< double > r;
 
 		public:
 			polynomial( ) : dimension( 0 ), N( 1 )
 			{
 			}
 
-			polynomial( size_type ndim ) : base( ( ndim + 1 ) * ( ndim + 2 ) / 2, 1 ), dimension( ndim ), N( ( ndim + 1 ) * ( ndim + 2 ) / 2 ), alpha( N, ndim ), alpha_( N, ndim ), tr( N, 1 ), tc( N, 1 )
+			polynomial( size_type ndim ) : base( ( ndim + 1 ) * ( ndim + 2 ) / 2, 1 ), dimension( ndim ), N( ( ndim + 1 ) * ( ndim + 2 ) / 2 ), alpha( N, ndim ), alpha_( N, ndim ), tr( N, 1 ), tc( N, 1 ), r( ndim )
 			{
 				// 多項式補間を行うためのデータを生成する
 				compute_polynomial_indeces( );
 			}
 
-			polynomial( const polynomial &poly ) : base( poly ), dimension( poly.dimension ), N( poly.N ), alpha( poly.alpha ), alpha_( poly.alpha_ ), tr( poly.tr ), tc( poly.tc )
+			polynomial( const polynomial &poly ) : base( poly ), dimension( poly.dimension ), N( poly.N ), alpha( poly.alpha ), alpha_( poly.alpha_ ), tr( poly.tr ), tc( poly.tc ), r( poly.r )
 			{
 			}
 
@@ -2064,6 +2097,7 @@ namespace condor
 				alpha_.resize( N, ndim );
 				tr.resize( N, 1 );
 				tc.resize( N, 1 );
+				r.resize( ndim );
 
 				base::resize( N, 1 );
 
@@ -2088,6 +2122,7 @@ namespace condor
 				alpha_ = poly.alpha_;
 				tr = poly.tr;
 				tc = poly.tc;
+				r = poly.r;
 
 				return( *this );
 			}
@@ -2121,7 +2156,6 @@ namespace condor
 				}
 
 				difference_type n = dimension;
-				std::vector< double > r( n );
 				const matrix_type &c = *this;	// 多項式の係数ベクトル
 
 				double r0 = c[ tr[ 0 ] ];
@@ -2608,7 +2642,7 @@ namespace condor
 	//! @param[in] delta … Trust Region の半径
 	//! 
 	template < class Matrix >
-	void compute_trust_region_step( const Matrix &xbest, Matrix &s, __condor_utility__::polynomial &poly, double delta )
+	void compute_trust_region_step( const Matrix &xbest, Matrix &s, __condor_utility__::polynomial &poly, double delta, size_t max_loop = 1000 )
 	{
 		typedef Matrix matrix_type;
 		typedef typename matrix_type::value_type value_type;
@@ -2616,7 +2650,6 @@ namespace condor
 		typedef typename matrix_type::difference_type difference_type;
 		typedef __condor_utility__::polynomial polynomial_type;
 
-		const double kappa1 = 0.01, kappa2 = 0.02;
 		matrix_type H = poly.compute_hessian_matrix( );
 		matrix_type g = H * xbest;
 		for( size_type i = 0 ; i < g.rows( ) ; i++ )
@@ -2626,20 +2659,20 @@ namespace condor
 
 		double gnorm = __condor_utility__::frobenius_norm( g );
 		double lambda  = gnorm / delta;
-		double lambdaL = compute_lambda_lower_bound( H, gnorm / delta );
-		double lambdaU = compute_lambda_upper_bound( H, gnorm / delta );
+		double lambdaL = compute_lambda_lower_bound( H, lambda );
+		double lambdaU = compute_lambda_upper_bound( H, lambda );
 
 		// lambdaL <= lambda <= lambdaU となるようにする
 		lambda = __condor_utility__::maximum( lambdaL, __condor_utility__::minimum( lambda, lambdaU ) );
 
 		bool cholesky_factorization_finished = false;
-		size_type max_loop = 1000, loop;
 		matrix_type L( H.rows( ), H.cols( ) ), w( g.rows( ), g.cols( ) );
 
 		// Trust Region step のベクトルを初期化する
 		s.resize( g.rows( ), 1 );
 		s.fill( 0 );
 
+		size_type loop;
 		for( loop = 0 ; loop < max_loop ; loop++ )
 		{
 			if( !cholesky_factorization_finished )
@@ -2665,7 +2698,8 @@ namespace condor
 			__condor_utility__::solve_( L, s );		// 次に L.t( ) * s = s' を解く
 			double snorm = __condor_utility__::frobenius_norm( s );
 
-			if( std::abs( snorm - delta ) < kappa1 * delta )
+			// 4.9.1 節の終了判定
+			if( std::abs( snorm - delta ) < 0.01 * delta )
 			{
 				// 十分良い値が求まったと判定する
 				s *= delta / snorm;
@@ -2681,62 +2715,59 @@ namespace condor
 
 				lambdaU = __condor_utility__::minimum( lambdaU, lambda );
 
+#if defined( __CHECK_HARD_CASE__ ) && __CHECK_HARD_CASE__ != 0
 				// 複雑な場合かをチェックする
 				matrix_type u;
 				__condor_utility__::compute_eigen_vector( L, u, lambda );
 
-				double a = 0.0;
-				double b = 0.0;
-				double c = - delta * delta;
-				for( size_type i = 0 ; i < u.rows( ) ; i++ )
-				{
-					a += u[ i ] * u[ i ];
-					b += s[ i ] * u[ i ];
-					c += s[ i ] * s[ i ];
-				}
+				double uHu = __condor_utility__::inner_product( u, H, u, lambda );
 
-				matrix_type sf( s );
-				double alpha = 0.0;
-				double bac = std::sqrt( b * b - a * c );
+				// Powell の UOBYQA アルゴリズムでの Hard Case 判定条件
+				if( uHu <= 0.01 * ( uHu + lambda * delta * delta ) )
+				{
+					double a = 0.0;
+					double b = 0.0;
+					double c = - delta * delta;
+					for( size_type i = 0 ; i < u.rows( ) ; i++ )
+					{
+						a += u[ i ] * u[ i ];
+						b += s[ i ] * u[ i ];
+						c += s[ i ] * s[ i ];
+					}
 
-				if( bac < 0.0 )
-				{
-					// なんか変？
-				}
-				else
-				{
+					double alpha = 0.0;
+					double bac = std::sqrt( b * b - a * c );
+
 					double alpha1 = ( -b - bac ) / a;
 					double alpha2 = ( -b + bac ) / a;
 
-					matrix_type s1 = s + alpha1 * u;
-					matrix_type s2 = s + alpha2 * u;
-					double f1 = poly( xbest + s1 );
-					double f2 = poly( xbest + s2 );
+					matrix_type s1( s ), s2( s ), x1( xbest ), x2( xbest );
+					for( size_type r = 0 ; r < s.rows( ) ; r++ )
+					{
+						s1[ r ] += alpha1 * u[ r ];
+						s2[ r ] += alpha2 * u[ r ];
+						x1[ r ] += s1[ r ];
+						x2[ r ] += s2[ r ];
+					}
 
-					// ここの不等号はあやしい
+					double f1 = poly( x1 );
+					double f2 = poly( x2 );
+
 					if( f1 >= f2 )
 					{
 						alpha = alpha1;
-						sf = s1;
+						s = s1;
 					}
 					else
 					{
 						alpha = alpha2;
-						sf = s2;
+						s = s2;
 					}
-				}
 
-				matrix_type Hl = H + matrix_type::identity( H.rows( ), H.cols( ) ) * lambda;
-				double uHu = __condor_utility__::inner_product( u, Hl, u );
-				double sHs = __condor_utility__::inner_product( s, Hl, s );
-
-				lambdaL = __condor_utility__::maximum( lambdaL, lambda - uHu );
-
-				if( alpha * alpha * uHu < kappa2 * sHs )
-				{
-					s = sf;
+					// Hard Case なので終了する
 					break;
 				}
+#endif
 			}
 			else// if( snorm > delta )
 			{
@@ -2747,8 +2778,18 @@ namespace condor
 			__condor_utility__::solve( L, w );
 
 			double wnorm = __condor_utility__::frobenius_norm( w );
-			double lambdaN = lambda + ( snorm - delta ) / delta * snorm * snorm / ( wnorm * wnorm );
-			lambdaN = __condor_utility__::maximum( lambdaL, __condor_utility__::minimum( lambdaN, lambdaU ) );	// 新しく求めたλの範囲をチェックする
+			double lambdaN = lambdaL;
+			
+			// wnorm が限りなくゼロに近い場合への対処
+			if( wnorm > 1.0e-20 )
+			{
+				lambdaN = lambda + ( snorm - delta ) * snorm * snorm / ( delta * wnorm * wnorm );
+				lambdaN = __condor_utility__::maximum( lambdaL, __condor_utility__::minimum( lambdaN, lambdaU ) );	// 新しく求めたλの範囲をチェックする
+			}
+			else
+			{
+				lambdaN = __condor_utility__::maximum( lambdaL, lambdaU );	// 新しく求めたλの範囲をチェックする
+			}
 
 			// 新しく求めたλを使ってコレスキー分解を再度行う
 			if( __condor_utility__::cholesky_factorization( H, L, lambdaN ) )
@@ -3013,7 +3054,7 @@ namespace condor
 
 
 				// [Step 15] 関数の最小化に効果があったかどうかを判定する
-				if(  ( model_step > 2.0 * rho || snorm > 2.0 * rho || has_reduction ) )
+				if( ( model_step > 2.0 * rho || snorm > 2.0 * rho || has_reduction ) )
 				{
 				}
 				else
@@ -3027,6 +3068,7 @@ namespace condor
 				// 最大反復回数を経過した
 				break;
 			}
+
 
 			// [Step 17.1] モデルチェックに使う評価基準値を求める
 			double eps = 0.0;
@@ -3098,8 +3140,6 @@ namespace condor
 						__condor_utility__::__index_value_pair__ &ivpair = J[ index ];
 						polynomial_type &p = poly_bases[ ivpair.index ];
 						matrix_type H = p.compute_hessian_matrix( );
-						matrix_type w( H.rows( ), 1 );
-
 						matrix_type g = H * x[ best_index ];
 						for( size_type i = 0 ; i < g.rows( ) ; i++ )
 						{
@@ -3112,6 +3152,7 @@ namespace condor
 							continue;
 						}
 
+						matrix_type w( H.rows( ), 1 );
 
 						{
 							// ヘッセ行列 H の列ベクトルの乗る無が最大となるものを見つける
@@ -3158,26 +3199,20 @@ namespace condor
 							double c = DD * VV - VD * VD;
 							double bac = std::sqrt( b * b - a * c );
 							double r = 0.0;
-							if( bac < 0.0 )
+
+							double r1 = ( -b - bac ) / a;
+							double r2 = ( -b + bac ) / a;
+
+							double f1 = ( r1 * r1 * DHD + 2.0 * r1 * VHD + VHV ) / ( VV + 2.0 * r1 * VD + r1 * r1 * DD );
+							double f2 = ( r2 * r2 * DHD + 2.0 * r2 * VHD + VHV ) / ( VV + 2.0 * r2 * VD + r2 * r2 * DD );
+
+							if( f1 > f2 )
 							{
-								// なんか変？
+								r = r1;
 							}
 							else
 							{
-								double r1 = ( -b - bac ) / a;
-								double r2 = ( -b + bac ) / a;
-
-								double f1 = ( r1 * r1 * DHD + 2.0 * r1 * VHD + VHV ) / ( VV + 2.0 * r1 * VD + r1 * r1 * DD );
-								double f2 = ( r2 * r2 * DHD + 2.0 * r2 * VHD + VHV ) / ( VV + 2.0 * r2 * VD + r2 * r2 * DD );
-
-								if( f1 > f2 )
-								{
-									r = r1;
-								}
-								else
-								{
-									r = r2;
-								}
+								r = r2;
 							}
 
 							// D を更新する
