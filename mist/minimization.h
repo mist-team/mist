@@ -3014,8 +3014,11 @@ namespace condor
 						sum += std::abs( poly_bases[ i ]( xnew ) * len * len * len );
 					}
 
-					M = __condor_utility__::maximum( M, std::abs( poly( xnew ) - Fnew ) / sum );
-					number_of_updateM++;
+					if( sum != 0.0 )
+					{
+						M = __condor_utility__::maximum( M, std::abs( poly( xnew ) - Fnew ) / sum );
+						number_of_updateM++;
+					}
 				}
 
 
@@ -3155,7 +3158,6 @@ namespace condor
 						double VHV = __condor_utility__::inner_product( V, H, V );
 						double VV  = __condor_utility__::inner_product( V, V );
 
-						// ‘½€®‚ğŒvZ‚·‚éÛ‚ÉA’è”€‚ª”ñí‚É¬‚³‚­‚È‚éê‡‚ğœ‚­
 						{
 							double a = DHD * VD - DD * DD;
 							double b = ( DHD * VV - DD * VD ) * 0.5;
@@ -3223,11 +3225,11 @@ namespace condor
 							d = rho * ( std::cos( phi[ 0 ] ) * uh + std::sin( phi[ 0 ] ) * ut );
 
 							// ®(5.2)‚ğÅ‘å‚É‚·‚é d ‚ğ‘I‚Ô
-							double max = std::abs( __condor_utility__::inner_product( g, d ) ) + 0.5 * std::abs( __condor_utility__::inner_product( d, H, d ) );
+							double max = std::abs( __condor_utility__::inner_product( g, d ) + 0.5 * __condor_utility__::inner_product( d, H, d ) );
 							for( size_type i = 1 ; i < 8 ; i++ )
 							{
 								matrix_type tmp = rho * ( std::cos( phi[ i ] ) * uh + std::sin( phi[ i ] ) * ut );
-								double val = std::abs( __condor_utility__::inner_product( g, tmp ) ) + 0.5 * std::abs( __condor_utility__::inner_product( tmp, H, tmp ) );
+								double val = std::abs( __condor_utility__::inner_product( g, tmp ) + 0.5 * __condor_utility__::inner_product( tmp, H, tmp ) );
 								if( val > max )
 								{
 									max = val;
@@ -3295,8 +3297,11 @@ namespace condor
 								sum += std::abs( poly_bases[ i ]( xnew ) * len * len * len );
 							}
 
-							M = __condor_utility__::maximum( M, std::abs( poly( xnew ) - Fnew ) / sum );
-							number_of_updateM++;
+							if( sum != 0.0 )
+							{
+								M = __condor_utility__::maximum( M, std::abs( poly( xnew ) - Fnew ) / sum );
+								number_of_updateM++;
+							}
 						}
 
 
