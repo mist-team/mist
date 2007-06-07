@@ -558,7 +558,7 @@ namespace gold
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 200, bool use_enclose = true )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 1000, bool use_enclose = true )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
@@ -770,7 +770,7 @@ namespace brent
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class Functor >
-	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 200, bool use_enclose = true )
+	double minimization( double a, double b, double &x, Functor f, double tolerance, size_t max_iterations = 1000, bool use_enclose = true )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
@@ -796,7 +796,7 @@ namespace gradient_with_vector
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor1, class Functor2 >
-	double minimization( matrix< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t &iterations, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t &iterations, size_t max_iterations = 1000 )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -837,11 +837,11 @@ namespace gradient_with_vector
 			}
 
 			// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
+			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, 1000, true );
 
 			//std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
 
-			if( old_err - err < tolerance )
+			if( 2.0 * std::abs( err - old_err ) <= tolerance * ( std::abs( err ) + std::abs( old_err ) ) || old_err <= err )
 			{
 				// 前回の最小化の結果からの変化量が、許容誤差内であったので終了する
 				if( err < old_err )
@@ -880,7 +880,7 @@ namespace gradient_with_vector
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor1, class Functor2 >
-	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor1 f, Functor2 g, double tolerance, size_t &iterations, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor1 f, Functor2 g, double tolerance, size_t &iterations, size_t max_iterations = 1000 )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -924,12 +924,14 @@ namespace gradient_with_vector
 			if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
 			{
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-				err = brent::minimization( l1, l2, x, functor, tolerance, 200, false );
+				err = brent::minimization( l1, l2, x, functor, tolerance, 1000, false );
 			}
 
 			//std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
 
-			if( old_err - err < tolerance )
+
+			// 相対誤差を用いた収束判定
+			if( 2.0 * std::abs( err - old_err ) <= tolerance * ( std::abs( err ) + std::abs( old_err ) ) || old_err <= err )
 			{
 				// 前回の最小化の結果からの変化量が、許容誤差内であったので終了する
 				if( err < old_err )
@@ -967,7 +969,7 @@ namespace gradient_with_vector
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor1, class Functor2 >
-	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor1 f, Functor2 g, double tolerance, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor1 f, Functor2 g, double tolerance, size_t max_iterations = 1000 )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor1 > __no_copy_constructor_functor1__;
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor2 > __no_copy_constructor_functor2__;
@@ -989,7 +991,7 @@ namespace gradient_with_vector
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor1, class Functor2 >
-	double minimization( matrix< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t max_iterations = 1000 )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor1 > __no_copy_constructor_functor1__;
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor2 > __no_copy_constructor_functor2__;
@@ -1017,7 +1019,7 @@ namespace gradient
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, Functor f, double tolerance, double distance, size_t &iterations, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor f, double tolerance, double distance, size_t &iterations, size_t max_iterations = 1000 )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -1067,13 +1069,13 @@ namespace gradient
 			}
 
 			// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
+			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, 1000, true );
 
 			//std::cout << err << ", " << p.t( ) << ", " << dir.t( ) << std::endl;
 
 			ite++;
 
-			if( ite > max_iterations || 2.0 * std::abs( old_err - err ) < tolerance * ( std::abs( old_err ) + std::abs( err ) ) )
+			if( ite > max_iterations || 2.0 * std::abs( old_err - err ) < tolerance * ( std::abs( old_err ) + std::abs( err ) ) || err >= old_err )
 			{
 				// 前回の最小化の結果からの変化量が、許容誤差内であったので終了する
 				if( err < old_err )
@@ -1111,7 +1113,7 @@ namespace gradient
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor f, double tolerance, double distance, size_t &iterations, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor f, double tolerance, double distance, size_t &iterations, size_t max_iterations = 1000 )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -1164,7 +1166,7 @@ namespace gradient
 			if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
 			{
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-				err = brent::minimization( l1, l2, x, functor, tolerance, 200, false );
+				err = brent::minimization( l1, l2, x, functor, tolerance, 1000, false );
 			}
 
 			//std::cout << err << ", " << p.t( ) << ", " << dir.t( ) << std::endl;
@@ -1208,7 +1210,7 @@ namespace gradient
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, Functor f, double tolerance, double distance = 1.0, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor f, double tolerance, double distance = 1.0, size_t max_iterations = 1000 )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
@@ -1230,7 +1232,7 @@ namespace gradient
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor f, double tolerance, double distance = 1.0, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, const matrix< T, Allocator > &bound, Functor f, double tolerance, double distance = 1.0, size_t max_iterations = 1000 )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
@@ -1256,7 +1258,7 @@ namespace powell
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 1000 )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -1264,7 +1266,7 @@ namespace powell
 		typedef matrix< T, Allocator > matrix_type;
 
 		matrix_type odirs( dirs ), dir( p.size( ), 1 ), tmp( p.size( ), 1 ), p0( p ), pn( p );
-		double x, fp0 = 1.0e100, fp = f( p ), delta;
+		double x, fp = f( p ), fp0 = fp, delta;
 
 		// 他変数関数を１変数関数に変換する
 		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );
@@ -1275,7 +1277,7 @@ namespace powell
 		{
 			// 探索開始前の評価値を覚えておく
 			fp0 = fp;
-			delta = 0.0;
+			delta = -1.0;
 			size_type index = 0;
 
 			for( c = 0 ; c < dirs.cols( ) ; c++ )
@@ -1289,23 +1291,28 @@ namespace powell
 				double old_fp = fp;
 
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-				fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
+				double nfp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 1000, true );
 
-				for( r = 0 ; r < p.size( ) ; r++ )
+				// 関数値が減少した場合のみ値を更新する
+				if( nfp < fp )
 				{
-					p[ r ] += dir[ r ] * x;
-				}
+					fp = nfp;
+					for( r = 0 ; r < p.size( ) ; r++ )
+					{
+						p[ r ] += dir[ r ] * x;
+					}
 
-				double d = std::abs( fp - old_fp );
-				if( d > delta )
-				{
-					index = c;
-					delta = d;
+					double d = std::abs( fp - old_fp );
+					if( d > delta )
+					{
+						index = c;
+						delta = d;
+					}
 				}
 			}
 
 			// 相対誤差を用いた収束判定
-			if( 2.0 * std::abs( fp - fp0 ) <= tolerance * ( std::abs( fp ) + std::abs( fp0 ) ) )
+			if( 2.0 * std::abs( fp - fp0 ) <= tolerance * ( std::abs( fp ) + std::abs( fp0 ) ) || fp0 <= fp )
 			{
 				break;
 			}
@@ -1330,145 +1337,14 @@ namespace powell
 					if( ttt < 0 )
 					{
 						// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
-						fp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 200, true );
+						double nfp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 1000, true );
 
-						// 現在のパラメータ更新
-						for( r = 0 ; r < p.size( ) ; r++ )
+						// 関数値が減少した場合のみ値を更新する
+						if( nfp < fp )
 						{
-							p[ r ] += dir[ r ] * x;
-						}
+							fp = nfp;
 
-						// 方向集合の一番最後に，新しい方向を追加する
-						if( index < dirs.rows( ) - 1 )
-						{
-							for( r = 0 ; r < dirs.rows( ) ; r++ )
-							{
-								dirs( r, index ) = dirs( r, dirs.rows( ) - 1 );
-								dirs( r, dirs.rows( ) - 1 ) = dir[ r ];
-							}
-						}
-						else
-						{
-							for( r = 0 ; r < dirs.rows( ) ; r++ )
-							{
-								dirs( r, index ) = dir[ r ];
-							}
-						}
-					}
-				}
-
-				// 新しい方向を求める
-				for( r = 0 ; r < p.size( ) ; r++ )
-				{
-					p0[ r ]  = p[ r ];
-				}
-			}
-		}
-
-		iterations = ite;
-
-		return( fp );
-	}
-
-
-	/// @brief Powell 法による多次元変数による極小値の探索を行う
-	//! 
-	//! 手法について何か書く
-	//! 
-	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
-	//! @param[in,out] dirs           … 探索に用いる方向集合
-	//! @param[in,out] bound          … 探索に用いる各要素の探索範囲
-	//! @param[in]     f              … 評価関数
-	//! @param[in]     tolerance      … 許容誤差
-	//! @param[out]    iterations     … 実際の反復回数
-	//! @param[in]     max_iterations … 最大反復回数
-	//!
-	//! @return 極小を与える座標値における評価値
-	//! 
-	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, matrix< T, Allocator > &bound, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 200 )
-	{
-		typedef typename matrix< T, Allocator >::value_type value_type;
-		typedef typename matrix< T, Allocator >::size_type size_type;
-		typedef typename matrix< T, Allocator >::difference_type difference_type;
-		typedef matrix< T, Allocator > matrix_type;
-
-		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 ), p0( p ), pn( p );
-		double x = 0.0, fp0 = 1.0e100, fp = f( p ), delta;
-		double l1, l2;
-
-		// 他変数関数を１変数関数に変換する
-		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );
-
-		size_t ite;
-		size_type r, c;
-		for( ite = 1 ; ite <= max_iterations ; ite++ )
-		{
-			// 探索開始前の評価値を覚えておく
-			fp0 = fp;
-			delta = 0.0;
-			size_type index = 0;
-
-			for( c = 0 ; c < dirs.cols( ) ; c++ )
-			{
-				// 探索に用いる方向集合をコピーする
-				for( r = 0 ; r < dirs.rows( ) ; r++ )
-				{
-					dir[ r ] = dirs( r, c );
-				}
-
-				double old_fp = fp;
-
-
-				if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
-				{
-					// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-					fp = brent::minimization( l1, l2, x, functor, tolerance, 200, false );
-
-					for( r = 0 ; r < p.size( ) ; r++ )
-					{
-						p[ r ] += dir[ r ] * x;
-					}
-
-					double d = std::abs( fp - old_fp );
-					if( d > delta )
-					{
-						index = c;
-						delta = d;
-					}
-				}
-			}
-
-			// 相対誤差を用いた収束判定
-			if( 2.0 * std::abs( fp - fp0 ) <= tolerance * ( std::abs( fp ) + std::abs( fp0 ) ) )
-			{
-				break;
-			}
-
-			// Acton の方法を用いて，新しい方向集合を求める
-			if( ite <= max_iterations )
-			{
-				// 新しい方向を求める
-				for( r = 0 ; r < p.size( ) ; r++ )
-				{
-					dir[ r ] = p[ r ] - p0[ r ];
-					pn[ r ]  = 2.0 * p[ r ] - p0[ r ];
-				}
-
-				double fe = f( pn );
-
-				if( fe < fp0 )
-				{
-					// 現在の方向集合を更新する
-					double tmp = fp0 - fp - delta;
-					double ttt = 2.0 * ( fp0 - 2.0 * fp + fe ) * tmp * tmp - delta * ( fp0 - fe ) * ( fp0 - fe );
-					if( ttt < 0 )
-					{
-						if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
-						{
-							// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
-							fp = brent::minimization( l1, l2, x, functor, tolerance, 200, false );
-
+							// 現在のパラメータ更新
 							for( r = 0 ; r < p.size( ) ; r++ )
 							{
 								p[ r ] += dir[ r ] * x;
@@ -1507,6 +1383,154 @@ namespace powell
 		return( fp );
 	}
 
+
+	/// @brief Powell 法による多次元変数による極小値の探索を行う
+	//! 
+	//! 手法について何か書く
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in,out] dirs           … 探索に用いる方向集合
+	//! @param[in,out] bound          … 探索に用いる各要素の探索範囲
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[out]    iterations     … 実際の反復回数
+	//! @param[in]     max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator, class Functor >
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, matrix< T, Allocator > &bound, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 1000 )
+	{
+		typedef typename matrix< T, Allocator >::value_type value_type;
+		typedef typename matrix< T, Allocator >::size_type size_type;
+		typedef typename matrix< T, Allocator >::difference_type difference_type;
+		typedef matrix< T, Allocator > matrix_type;
+
+		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 ), p0( p ), pn( p );
+		double x = 0.0, fp0 = 1.0e100, fp = f( p ), delta;
+		double l1, l2;
+
+		// 他変数関数を１変数関数に変換する
+		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );
+
+		size_t ite;
+		size_type r, c;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		{
+			// 探索開始前の評価値を覚えておく
+			fp0 = fp;
+			delta = 0.0;
+			size_type index = 0;
+
+			for( c = 0 ; c < dirs.cols( ) ; c++ )
+			{
+				// 探索に用いる方向集合をコピーする
+				for( r = 0 ; r < dirs.rows( ) ; r++ )
+				{
+					dir[ r ] = dirs( r, c );
+				}
+
+				double old_fp = fp;
+
+
+				if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
+				{
+					// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
+					double nfp = brent::minimization( l1, l2, x, functor, tolerance, 1000, false );
+
+					// 関数値が減少した場合のみ値を更新する
+					if( nfp < fp )
+					{
+						fp = nfp;
+
+						for( r = 0 ; r < p.size( ) ; r++ )
+						{
+							p[ r ] += dir[ r ] * x;
+						}
+
+						double d = std::abs( fp - old_fp );
+						if( d > delta )
+						{
+							index = c;
+							delta = d;
+						}
+					}
+				}
+			}
+
+			// 相対誤差を用いた収束判定
+			if( 2.0 * std::abs( fp - fp0 ) <= tolerance * ( std::abs( fp ) + std::abs( fp0 ) ) )
+			{
+				break;
+			}
+
+			// Acton の方法を用いて，新しい方向集合を求める
+			if( ite <= max_iterations )
+			{
+				// 新しい方向を求める
+				for( r = 0 ; r < p.size( ) ; r++ )
+				{
+					dir[ r ] = p[ r ] - p0[ r ];
+					pn[ r ]  = 2.0 * p[ r ] - p0[ r ];
+				}
+
+				double fe = f( pn );
+
+				if( fe < fp0 )
+				{
+					// 現在の方向集合を更新する
+					double tmp = fp0 - fp - delta;
+					double ttt = 2.0 * ( fp0 - 2.0 * fp + fe ) * tmp * tmp - delta * ( fp0 - fe ) * ( fp0 - fe );
+					if( ttt < 0 )
+					{
+						if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
+						{
+							// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
+							double nfp = brent::minimization( l1, l2, x, functor, tolerance, 1000, false );
+
+							// 関数値が減少した場合のみ値を更新する
+							if( nfp < fp )
+							{
+								fp = nfp;
+								for( r = 0 ; r < p.size( ) ; r++ )
+								{
+									p[ r ] += dir[ r ] * x;
+								}
+							}
+						}
+
+						// 方向集合の一番最後に，新しい方向を追加する
+						if( index < dirs.rows( ) - 1 )
+						{
+							for( r = 0 ; r < dirs.rows( ) ; r++ )
+							{
+								dirs( r, index ) = dirs( r, dirs.rows( ) - 1 );
+								dirs( r, dirs.rows( ) - 1 ) = dir[ r ];
+							}
+						}
+						else
+						{
+							for( r = 0 ; r < dirs.rows( ) ; r++ )
+							{
+								dirs( r, index ) = dir[ r ];
+							}
+						}
+					}
+				}
+
+				// 新しい方向を求める
+				for( r = 0 ; r < p.size( ) ; r++ )
+				{
+					p0[ r ]  = p[ r ];
+				}
+			}
+		}
+
+		iterations = ite;
+
+		return( fp );
+	}
+
 	/// @brief Powell 法による多次元変数による極小値の探索を行う
 	//! 
 	//! 手法について何か書く
@@ -1520,7 +1544,7 @@ namespace powell
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t max_iterations = 1000 )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
@@ -1541,7 +1565,7 @@ namespace powell
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, matrix< T, Allocator > &bound, Functor f, double tolerance, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, matrix< T, Allocator > &bound, Functor f, double tolerance, size_t max_iterations = 1000 )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
@@ -1590,7 +1614,7 @@ namespace lucidi
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t &iterations, size_t max_iterations = 1000 )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 		typedef typename matrix< T, Allocator >::size_type size_type;
@@ -1709,7 +1733,7 @@ namespace lucidi
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, matrix< T, Allocator > &dirs, Functor f, double tolerance, size_t max_iterations = 1000 )
 	{
 		typedef __minimization_utility__::__no_copy_constructor_functor__< Functor > __no_copy_constructor_functor__;
 		size_t itenum = 0;
@@ -2794,7 +2818,7 @@ namespace condor
 	//! @return 極小を与える座標値における評価値
 	//! 
 	template < class T, class Allocator, class Functor >
-	double minimization( matrix< T, Allocator > &p, Functor func, double rho, double rho_end, double tolerance, size_t &iterations, size_t max_iterations = 200 )
+	double minimization( matrix< T, Allocator > &p, Functor func, double rho, double rho_end, double tolerance, size_t &iterations, size_t max_iterations = 1000 )
 	{
 		typedef matrix< T, Allocator > matrix_type;
 		typedef typename matrix_type::value_type value_type;
