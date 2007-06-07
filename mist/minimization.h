@@ -837,7 +837,7 @@ namespace gradient_with_vector
 			}
 
 			// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, 1000, true );
+			err = brent::minimization( 0.0, 1.0, x, functor, tolerance, 1000, true );
 
 			//std::cout << p.t( ) << ", " << dir.t( ) << std::endl;
 
@@ -1069,7 +1069,7 @@ namespace gradient
 			}
 
 			// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-			err = brent::minimization( -0.5, 0.5, x, functor, tolerance, 1000, true );
+			err = brent::minimization( 0.0, 1.0, x, functor, tolerance, 1000, true );
 
 			//std::cout << err << ", " << p.t( ) << ", " << dir.t( ) << std::endl;
 
@@ -1291,23 +1291,18 @@ namespace powell
 				double old_fp = fp;
 
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
-				double nfp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 1000, true );
+				fp = brent::minimization( 0.0, 1.0, x, functor, tolerance, 1000, true );
 
-				// 関数値が減少した場合のみ値を更新する
-				if( nfp < fp )
+				for( r = 0 ; r < p.size( ) ; r++ )
 				{
-					fp = nfp;
-					for( r = 0 ; r < p.size( ) ; r++ )
-					{
-						p[ r ] += dir[ r ] * x;
-					}
+					p[ r ] += dir[ r ] * x;
+				}
 
-					double d = std::abs( fp - old_fp );
-					if( d > delta )
-					{
-						index = c;
-						delta = d;
-					}
+				double d = std::abs( fp - old_fp );
+				if( d > delta )
+				{
+					index = c;
+					delta = d;
 				}
 			}
 
@@ -1337,18 +1332,12 @@ namespace powell
 					if( ttt < 0 )
 					{
 						// Brent の2次収束アルゴリズムを用いて，新しい dir 方向への最小化を行う
-						double nfp = brent::minimization( -0.5, 0.5, x, functor, tolerance, 1000, true );
+						fp = brent::minimization( 0.0, 1.0, x, functor, tolerance, 1000, true );
 
-						// 関数値が減少した場合のみ値を更新する
-						if( nfp < fp )
+						// 現在のパラメータ更新
+						for( r = 0 ; r < p.size( ) ; r++ )
 						{
-							fp = nfp;
-
-							// 現在のパラメータ更新
-							for( r = 0 ; r < p.size( ) ; r++ )
-							{
-								p[ r ] += dir[ r ] * x;
-							}
+							p[ r ] += dir[ r ] * x;
 						}
 
 						// 方向集合の一番最後に，新しい方向を追加する
