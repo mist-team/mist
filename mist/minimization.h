@@ -1969,14 +1969,12 @@ namespace condor
 			L.fill( 0 );
 			for( size_type r = 0 ; r < H.rows( ) ; r++ )
 			{
-				double scale = H( r, r );
+				double scale = H( r, r ) + lambda;
 
 				for( size_type c = 0 ; c < r ; c++ )
 				{
 					scale -= L( r, c ) * L( r, c );
 				}
-
-				scale += lambda;
 
 				if( scale <= 0 ) 
 				{
@@ -2763,7 +2761,7 @@ namespace condor
 			// wnorm が限りなくゼロに近い場合への対処
 			if( wnorm > 1.0e-20 )
 			{
-				lambdaN = lambda + ( snorm - delta ) * snorm * snorm / ( delta * wnorm * wnorm );
+				lambdaN = lambda + ( ( snorm - delta ) / delta ) * ( ( snorm * snorm ) / ( wnorm * wnorm ) );
 				lambdaN = __condor_utility__::maximum( lambdaL, __condor_utility__::minimum( lambdaN, lambdaU ) );	// 新しく求めたλの範囲をチェックする
 			}
 			else
@@ -2942,7 +2940,7 @@ namespace condor
 				bool has_reduction = Fnew < Fbest;
 				{
 					difference_type index = -1;
-					double max = -1.0e10;
+					double max = -1.0e100;
 					double Pnew = 0.0;
 					if( Fnew < Fbest )
 					{
@@ -3024,7 +3022,7 @@ namespace condor
 					for( size_type i = 0 ; i < poly_bases.size( ) ; i++ )
 					{
 						double len = __condor_utility__::frobenius_norm( xnew - x[ i ] );
-						sum += std::abs( poly_bases[ i ]( xnew ) * len * len * len );
+						sum += std::abs( poly_bases[ i ]( xnew ) ) * len * len * len;
 					}
 
 					if( sum != 0.0 )
@@ -3201,7 +3199,7 @@ namespace condor
 						if( gnorm * DD + 2.0 * rho * std::abs( DHD ) < 0.5 )
 						{
 							double GD = __condor_utility__::inner_product( g, D );
-							double scale = std::abs( rho / std::sqrt( DD ) );
+							double scale = rho / std::sqrt( DD );
 							if( GD * DHD < 0.0 )
 							{
 								d = - D * scale;
@@ -3232,22 +3230,31 @@ namespace condor
 							// 式(3.38)を最大にする d を得る
 							// 5.3 章参照
 							const double pai = 3.1415926535897932384626433832795;
-							const double phi[ 8 ] = { 0.0, pai * 0.25, pai * 0.5, pai * 0.75, pai, -pai * 0.25, -pai * 0.5, -pai * 0.75 };
+							const double phi[ 4 ] = { 0.0, pai * 0.25, pai * 0.5, pai * 0.75 };
 
 							// d の初期方向を設定する
-							d = rho * ( std::cos( phi[ 0 ] ) * uh + std::sin( phi[ 0 ] ) * ut );
+							d = ( std::cos( phi[ 0 ] ) * uh + std::sin( phi[ 0 ] ) * ut );
+							d = rho * d / __condor_utility__::frobenius_norm( d );	// 大きさを rho にする
 
 							// 式(5.2)を最大にする d を選ぶ
 							double max = std::abs( __condor_utility__::inner_product( g, d ) ) + 0.5 * std::abs( __condor_utility__::inner_product( d, H, d ) );
-							for( size_type i = 1 ; i < 8 ; i++ )
+							for( size_type i = 1 ; i < 4 ; i++ )
 							{
-								matrix_type tmp = rho * ( std::cos( phi[ i ] ) * uh + std::sin( phi[ i ] ) * ut );
+								matrix_type tmp = ( std::cos( phi[ i ] ) * uh + std::sin( phi[ i ] ) * ut );
+								tmp = rho * tmp / __condor_utility__::frobenius_norm( tmp );	// 大きさを rho にする
 								double val = std::abs( __condor_utility__::inner_product( g, tmp ) ) + 0.5 * std::abs( __condor_utility__::inner_product( tmp, H, tmp ) );
 								if( val > max )
 								{
 									max = val;
 									d = tmp;
 								}
+							}
+
+							double GD = __condor_utility__::inner_product( g, d );
+							double DHD = __condor_utility__::inner_product( d, H, d );
+							if( GD * DHD < 0.0 )
+							{
+								d = - d;
 							}
 						}
 
@@ -3307,7 +3314,7 @@ namespace condor
 							for( size_type i = 0 ; i < poly_bases.size( ) ; i++ )
 							{
 								double len = __condor_utility__::frobenius_norm( xnew - x[ i ] );
-								sum += std::abs( poly_bases[ i ]( xnew ) * len * len * len );
+								sum += std::abs( poly_bases[ i ]( xnew ) ) * len * len * len;
 							}
 
 							if( sum != 0.0 )
@@ -3316,7 +3323,6 @@ namespace condor
 								number_of_updateM++;
 							}
 						}
-
 
 						// [Step 17.6] Step 4 へ戻る
 						continue;
@@ -3330,7 +3336,6 @@ namespace condor
 				}
 			}
 
-
 			// [Step 18] ループの終了判定
 			{
 				if( rho <= rho_end || 2.0 * std::abs( Fold_ - Fold ) < tolerance * ( std::abs( Fold_ ) + std::abs( Fold ) ) )
@@ -3343,11 +3348,10 @@ namespace condor
 				}
 			}
 
-
 			// [Step 19] Trust Region の半径を更新
 			{
 				double rho_old = rho;
-				if( rho_end < rho && rho <= 16.0 * rho_end )
+				if( rho <= 16.0 * rho_end )
 				{
 					rho = rho_end;
 				}
