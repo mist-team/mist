@@ -325,17 +325,20 @@ namespace machine_learning
 			}
 
 		public:
-			bool operator ()( const feature_type &f ) const
+			template < class FEATURE >
+			bool operator ()( const FEATURE &f ) const
 			{
 				return( evaluate( f ) );
 			}
 
-			bool evaluate( const feature_type &f ) const
+			template < class FEATURE >
+			bool evaluate( const FEATURE &f ) const
 			{
 				return( evaluate( f, index_, sign_, threshold_ ) );
 			}
 
-			bool evaluate( const feature_type &f, size_type indx, double sgn, double th ) const
+			template < class FEATURE >
+			bool evaluate( const FEATURE &f, size_type indx, double sgn, double th ) const
 			{
 				return( sgn * f[ indx ] <= sgn * th );
 			}
@@ -728,12 +731,14 @@ namespace machine_learning
 			}
 
 		public:
-			const std::string operator ()( const feature &f ) const
+			template < class FEATURE >
+			const std::string operator ()( const FEATURE &f ) const
 			{
 				return( evaluate( f ) );
 			}
 
-			const std::string evaluate( const feature &f ) const
+			template < class FEATURE >
+			const std::string evaluate( const FEATURE &f ) const
 			{
 #if 1
 				std::vector< double > values( categories_.size( ), 0.0 );
