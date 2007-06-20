@@ -234,10 +234,11 @@ namespace machine_learning
 					}
 				}
 
-				std::vector< double > errors( features.size( ) );
+				int nfeatures = static_cast< int >( features[ 0 ].size( ) );
 
 				// 特徴量のリストを作成する
-				for( size_type index = 0 ; index < features[ 0 ].size( ) ; index++ )
+				#pragma omp parallel for firstprivate( nfeatures ) schedule( guided )
+				for( int index = 0 ; index < nfeatures ; index++ )
 				{
 					std::vector< feature_one > flist;
 					for( size_type i = 0 ; i < features.size( ) ; i++ )
@@ -254,10 +255,10 @@ namespace machine_learning
 
 					// 各しきい値での重み付き誤差を計算し，誤差最小のしきい値を求める
 					size_type mindex = 0;
-					double e1, e2, error, min_error, sgn, th;
+					double e1, e2, error, min_error = 1.0e100, sgn, th;
 					double sum_of_positive_weights = 0.0;
 					double sum_of_negative_weights = 0.0;
-					min_error = 1.0e100;
+
 					for( size_type i = 0 ; i < flist.size( ) ; i++ )
 					{
 						const feature_one &f = flist[ i ];
@@ -276,26 +277,10 @@ namespace machine_learning
 
 						if( error <= min_error )
 						{
-							errors[ i ] = error;
 							min_error = error;
 							mindex    = i;
 							th        = f.value;
 							sgn       = e1 < e2 ? -1.0 : 1.0;
-						}
-					}
-
-					if( 0 < mindex && mindex < flist.size( ) - 1 )
-					{
-						double v1 = errors[ mindex - 1 ];
-						double v2 = errors[ mindex + 1 ];
-
-						if( v1 < v2 )
-						{
-							th = ( th + flist[ mindex - 1 ].value ) * 0.5;
-						}
-						else if( v1 > v2 )
-						{
-							th = ( th + flist[ mindex + 1 ].value ) * 0.5;
 						}
 					}
 
@@ -312,6 +297,7 @@ namespace machine_learning
 						}
 					}
 
+					#pragma omp critical
 					if( _minimum_classification_error_ > e )
 					{
 						_minimum_classification_error_ = e;
@@ -697,15 +683,10 @@ namespace machine_learning
 							D[ i ] /= Zt;
 						}
 
-						double __classification_error__ = error_rate( features );
-#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 1
+#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 2
 						// この段階でAdaBoostにより学習した識別器の性能を表示する
 						std::cout << "分類誤差: " << error_rate( features ) << std::endl;
 #endif
-						if( __classification_error__ == 0.0 )
-						{
-							break;
-						}
 					}
 
 					double __classification_error__ = error_rate( features );
