@@ -807,6 +807,191 @@ namespace machine_learning
 
 				return( static_cast< double >( error ) / static_cast< double >( nfeatures ) );
 			}
+
+		private:
+			static const char *get_value( const char *s, const char *e, std::string &val )
+			{
+				// 先頭の空白（改行やタブを含む）を飛ばす
+				while( s < e )
+				{
+					if( s[ 0 ] == '\r' )
+					{
+						if( s + 1 != e && s[ 1 ] == '\n' )
+						{
+							s = s + 2;
+						}
+						else
+						{
+							s++;
+						}
+					}
+					else if( s[ 0 ] == '\n' )
+					{
+						s++;
+					}
+					else if( s[ 0 ] == ' ' || s[ 0 ] == '\t' )
+					{
+						s++;
+					}
+					else
+					{
+						break;
+					}
+				}
+
+				const char *sp = s;
+				const char *ep = sp;
+
+				// 次にコンマが来る前まで進める
+				while( s < e )
+				{
+					if( s[ 0 ] == '\r' )
+					{
+						if( s + 1 != e && s[ 1 ] == '\n' )
+						{
+							s = s + 2;
+						}
+						else
+						{
+							s++;
+						}
+						break;
+					}
+					else if( s[ 0 ] == '\n' )
+					{
+						s++;
+						break;
+					}
+					else if( s[ 0 ] == ',' )
+					{
+						s++;
+						break;
+					}
+
+					ep++;
+					s++;
+				}
+
+				if( sp < ep )
+				{
+					val = std::string( sp, ep );
+				}
+
+				return( s > e ? e : s );
+			}
+
+		public:
+			bool save( const std::string &filename ) const
+			{
+				FILE *fp = fopen( filename.c_str( ), "wt" );
+
+				if( fp == NULL )
+				{
+					return( false );
+				}
+
+				// クラス数等の基本情報を書き込む
+				fprintf( fp, "Category = %d\n", categories_.size( ) );
+				fprintf( fp, "Stage    = %d\n", weak_classifiers_.size( ) );
+
+				// クラス名を列挙する
+				for( size_type i = 0 ; i < categories_.size( ) ; i++ )
+				{
+					fprintf( fp, "Class[%d] : %s\n", i + 1, categories_[ i ].c_str( ) );
+				}
+
+				// Code Word を列挙する
+				for( size_type i = 0 ; i < code_word_.size( ) ; i++ )
+				{
+					const std::vector< bool > &code = code_word_[ i ];
+					fprintf( fp, "%d", code[ 0 ] ? 1: 0 );
+					for( size_type l = 1 ; l < code.size( ) ; l++ )
+					{
+						fprintf( fp, ",%d", code[ l ] ? 1: 0 );
+					}
+					fprintf( fp, "\n" );
+				}
+
+				// 弱識別器と Alpha と Beta を列挙する
+				for( size_type i = 0 ; i < weak_classifiers_.size( ) ; i++ )
+				{
+					const weak_classifier_type &weak = weak_classifiers_[ i ];
+					fprintf( fp, "%f,%f,%d,%f,%f\n", weak.sign( ), weak.threshold( ), weak.index( ), alpha_[ i ], beta_[ i ] );
+				}
+
+				fclose( fp );
+
+				return( true );
+			}
+
+			bool load( const std::string &filename )
+			{
+				FILE *fp = fopen( filename.c_str( ), "rt" );
+
+				if( fp == NULL )
+				{
+					return( false );
+				}
+
+				int numClasses = 0, numStages = 0, dmy;
+				char line[ 4096 ], buff[ 4096 ];
+
+				// クラス数等の基本情報を書き込む
+				fgets( line, 4096, fp );
+				sscanf( line, "Category  = %ld", &numClasses );
+				fgets( line, 4096, fp );
+				sscanf( line, "Stage     = %ld", &numStages );
+
+				// 強識別器を初期化する
+				weak_classifiers_.resize( numStages );
+				alpha_.resize( numStages );
+				beta_.resize( numStages );
+				code_word_.resize( numStages );
+				categories_.resize( numClasses );
+
+				// クラス名を読み込む
+				for( size_type i = 0 ; i < categories_.size( ) ; i++ )
+				{
+					fgets( line, 4096, fp );
+					sscanf( line, "Class[%ld] : %s", &dmy, buff );
+					categories_[ i ] = buff;
+				}
+
+				// Code Word を読み込む
+				for( size_type i = 0 ; i < code_word_.size( ) ; i++ )
+				{
+					std::vector< bool > &code = code_word_[ i ];
+					code.resize( numClasses );
+
+					fgets( line, 4096, fp );
+					const char *p = line, *ep = line + 4096;
+
+					for( size_type l = 0 ; l < code.size( ) ; l++ )
+					{
+						std::string val;
+						p = get_value( p, ep, val );
+						code[ l ] = val == "1" ? true : false;
+					}
+				}
+
+				// 弱識別器と Alpha と Beta を列挙する
+				int index;
+				double sign, th, alpha, beta;
+				for( size_type i = 0 ; i < weak_classifiers_.size( ) ; i++ )
+				{
+					fgets( line, 4096, fp );
+					sscanf( line, "%lf,%lf,%ld,%lf,%lf", &sign, &th, &index, &alpha, &beta );
+
+					weak_classifier_type &weak = weak_classifiers_[ i ];
+					weak.sign( sign );
+					weak.threshold( th );
+					weak.index( index );
+					alpha_[ i ] = alpha;
+					beta_[ i ] = beta;
+				}
+
+				return( true );
+			}
 		};
 	}
 }
