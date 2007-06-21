@@ -60,6 +60,7 @@
 #define __ASYMMETRIC_WEIGHTING__		1
 #define __ONE_PER_CLASS_CODE_WORD__		0
 #define __DEBUG_OUTPUT_LEVEL__			0
+#define __NUMBER_OF_INNER_LOOPS__		10
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -563,33 +564,6 @@ namespace machine_learning
 #else
 				// code word を ECC ベースで作る
 				size_type nhypothesis = categories_.size( ) == 2 ? 2 : __power_of_two__( categories_.size( ) - 1 ) - 1;
-				mist::matrix< bool > code_word_pool( categories_.size( ), nhypothesis );
-
-				if( nhypothesis == 2 )
-				{
-					code_word_pool( 0, 0 ) = true;
-					code_word_pool( 1, 1 ) = true;
-				}
-				else
-				{
-					for( size_type c = 0 ; c < code_word_pool.cols( ) ; c++ )
-					{
-						code_word_pool( 0, c ) = true;
-					}
-
-					for( size_type r = 1 ; r < code_word_pool.rows( ); r++ )
-					{
-						size_type d = ( code_word_pool.cols( ) + 1 ) / __power_of_two__( r );
-
-						for( size_type c = 0 ; c < code_word_pool.cols( ) ; c++ )
-						{
-							if( ( c / d ) % 2 == 1 )
-							{
-								code_word_pool( r, c ) = true;
-							}
-						}
-					}
-				}
 #endif
 
 				// AdaBoost により強識別器を学習する
@@ -602,16 +576,15 @@ namespace machine_learning
 #if defined( __ONE_PER_CLASS_CODE_WORD__ ) && __ONE_PER_CLASS_CODE_WORD__ == 1
 					myu[ t % categories_.size( ) ] = true;
 #else
-					for( size_type c = 0 ; c < code_word_pool.rows( ); c++ )
+					myu[ 0 ] = true;
+					for( size_type r = 1 ; r < myu.size( ) ; r++ )
 					{
-						myu[ c ] = code_word_pool( c, t % nhypothesis );
+						// code word を ECC ベースで動的に作る
+						size_type c = t % nhypothesis;
+						size_type d = ( nhypothesis + 1 ) / __power_of_two__( r );
+						myu[ r ] = ( c / d ) % 2 == 1;
 					}
 #endif
-					// 弱識別器の学習用カテゴリデータを作る
-					for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
-					{
-						fcategories[ i ] = myu[ fcatemap[ i ] ];
-					}
 
 #if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 3
 					// 弱識別器の学習用カテゴリデータを作る
@@ -626,8 +599,14 @@ namespace machine_learning
 					weak_classifiers_.push_back( weak_classifier_type( ) );
 					weak_classifier_type &weak = weak_classifiers_.back( );
 
-					for( size_type m = 0 ; m < 10 ; m++ )
+					for( size_type m = 0 ; m < __NUMBER_OF_INNER_LOOPS__ ; m++ )
 					{
+						// 弱識別器の学習用カテゴリデータを作る
+						for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
+						{
+							fcategories[ i ] = myu[ fcatemap[ i ] ];
+						}
+
 						// 重みを正規化する
 						double Ut = 0.0;
 						for( size_type i = 0 ; i < features.size( ) ; i++ )
@@ -669,7 +648,7 @@ namespace machine_learning
 						weak.learn( features, fcategories );
 						//std::cout << "しきい値: " << weak.threshold( ) << ", 符号: " << ( weak.sign( ) < 0.0 ? "-" : "+" ) << ", 番号: " << weak.index( ) << std::endl;
 
-						if( m < 9 )
+						if( m < __NUMBER_OF_INNER_LOOPS__ - 1 )
 						{
 							for( size_type i = 0 ; i < rpweight.size( ) ; i++ )
 							{
@@ -711,12 +690,6 @@ namespace machine_learning
 							{
 								// 前回とまったく同じなので終了する
 								break;
-							}
-
-							// 弱識別器の学習用カテゴリデータを作る
-							for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
-							{
-								fcategories[ i ] = myu[ fcatemap[ i ] ];
 							}
 						}
 					}
@@ -832,7 +805,7 @@ namespace machine_learning
 						D[ i ] /= Zt;
 					}
 
-					if( ( ( t + 1 ) % 5 ) == 0 )
+					//if( ( ( t + 1 ) % 5 ) == 0 )
 					{
 						double __classification_error__ = error_rate( features );
 
