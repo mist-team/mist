@@ -2614,10 +2614,11 @@ namespace condor
 
 	/// @brief CONDOR アルゴリズム内で使用する Trust Region 内の最小値を与える方向を求める関数
 	//! 
-	//! @param[in] xbest … 現時点での最も良い評価値を与えるパラメータ
-	//! @param[in] s     … Trust Region を探索した結果，評価値を減少させるであろう方向
-	//! @param[in] poly  … Trust Region を構成するラグランジェ多項式
-	//! @param[in] delta … Trust Region の半径
+	//! @param[in] xbest    … 現時点での最も良い評価値を与えるパラメータ
+	//! @param[in] s        … Trust Region を探索した結果，評価値を減少させるであろう方向
+	//! @param[in] poly     … Trust Region を構成するラグランジェ多項式
+	//! @param[in] delta    … Trust Region の半径
+	//! @param[in] max_loop … Trust Region 内の探索を行う最大反復回数
 	//! 
 	template < class Matrix >
 	void compute_trust_region_step( const Matrix &xbest, Matrix &s, __condor_utility__::polynomial &poly, double delta, size_t max_loop = 1000 )
@@ -2795,7 +2796,7 @@ namespace condor
 	//! @attention 本プログラムはMISTチームが独自に実装したCONDORアルゴリズムのため，Berghen 氏が公開されているプログラムとは同じ結果とならない可能性があります．
 	//!
 	//! @param[in,out] p              … 探索の開始ベクトル，探索終了後に最小値を与えるベクトルが代入される
-	//! @param[in]     f              … 評価関数
+	//! @param[in]     func           … 評価関数
 	//! @param[in]     rho            … 探索初期のステップ幅
 	//! @param[in]     rho_end        … 探索終了時のステップ幅
 	//! @param[in]     tolerance      … 探索終了時の許容相対誤差

@@ -1187,6 +1187,9 @@ namespace mpeg
 } // namespace mpeg
 
 
+/// @}
+//  mpeg1, mpeg2形式ビデオストリーム入出力のためのライブラリの終わり
+
 
 // mist名前空間の終わり
 _MIST_END

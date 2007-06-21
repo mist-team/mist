@@ -1467,7 +1467,7 @@ public:
 
 	/// @brief 2つの行列が等しい（全要素の差が delta 未満）かどうかを判定する
 	//! 
-	//! @param[in] v     … 比較対象の行列
+	//! @param[in] a     … 比較対象の行列
 	//! @param[in] delta … 許容誤差
 	//! 
 	//! @retval true  … 2つの行列が等しい場合
@@ -1495,7 +1495,7 @@ public:
 
 	/// @brief 2つの行列が等しい（全要素が同じ値を持つ）かどうかを判定する
 	//! 
-	//! @param[in] v … 右辺値
+	//! @param[in] a … 右辺値
 	//! 
 	//! @retval true  … 2つの行列が等しい場合
 	//! @retval false … 2つの行列が異なる場合
@@ -1520,7 +1520,7 @@ public:
 
 	/// @brief 2つの行列が等しくない（どれか１つでも異なる要素を持つ）かどうかを判定する
 	//! 
-	//! @param[in] v … 右辺値
+	//! @param[in] a … 右辺値
 	//! 
 	//! @retval true  … 2つの行列が異なる場合
 	//! @retval false … 2つの行列が等しい場合
