@@ -312,8 +312,7 @@ namespace machine_learning
 					std::sort( flist.begin( ), flist.end( ) );
 
 					// 各しきい値での重み付き誤差を計算し，誤差最小のしきい値を求める
-					size_type mindex = 0;
-					double e1, e2, error, min_error = 1.0e100, sgn, th;
+					double min_error = 1.0e100, sgn = 1.0, th = 0.0;
 					double sum_of_positive_weights = 0.0;
 					double sum_of_negative_weights = 0.0;
 
@@ -329,14 +328,13 @@ namespace machine_learning
 							sum_of_negative_weights += f.weight;
 						}
 
-						e1 = sum_of_positive_weights + overall_sum_of_negative_weights - sum_of_negative_weights;
-						e2 = sum_of_negative_weights + overall_sum_of_positive_weights - sum_of_positive_weights;
-						error = e1 < e2 ? e1 : e2;
+						double e1 = sum_of_positive_weights + overall_sum_of_negative_weights - sum_of_negative_weights;
+						double e2 = sum_of_negative_weights + overall_sum_of_positive_weights - sum_of_positive_weights;
+						double error = e1 < e2 ? e1 : e2;
 
 						if( error <= min_error )
 						{
 							min_error = error;
-							mindex    = i;
 							th        = f.value;
 							sgn       = e1 < e2 ? -1.0 : 1.0;
 
@@ -454,7 +452,7 @@ namespace machine_learning
 
 		public:
 			/// @brief 分類に使用する弱識別器のリストを取得する
-			const std::vector< weak_classifier_type > &weak_classifier( ) const
+			const std::vector< weak_classifier_type > &weak_classifiers( ) const
 			{
 				return( weak_classifiers_ );
 			}
@@ -1070,9 +1068,9 @@ namespace machine_learning
 
 				// クラス数等の基本情報を書き込む
 				fgets( line, 4096, fp );
-				sscanf( line, "Category  = %ld", &numClasses );
+				sscanf( line, "Category  = %d", &numClasses );
 				fgets( line, 4096, fp );
-				sscanf( line, "Stage     = %ld", &numStages );
+				sscanf( line, "Stage     = %d", &numStages );
 
 				// 強識別器を初期化する
 				weak_classifiers_.resize( numStages );
@@ -1085,7 +1083,7 @@ namespace machine_learning
 				for( size_type i = 0 ; i < categories_.size( ) ; i++ )
 				{
 					fgets( line, 4096, fp );
-					sscanf( line, "Class[%ld] : %s", &dmy, buff );
+					sscanf( line, "Class[%d] : %s", &dmy, buff );
 					categories_[ i ] = buff;
 				}
 
@@ -1112,7 +1110,7 @@ namespace machine_learning
 				for( size_type i = 0 ; i < weak_classifiers_.size( ) ; i++ )
 				{
 					fgets( line, 4096, fp );
-					sscanf( line, "%lf,%lf,%ld,%lf,%lf", &sign, &th, &index, &alpha, &beta );
+					sscanf( line, "%lf,%lf,%d,%lf,%lf", &sign, &th, &index, &alpha, &beta );
 
 					weak_classifier_type &weak = weak_classifiers_[ i ];
 					weak.sign( sign );

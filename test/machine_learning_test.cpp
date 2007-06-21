@@ -106,25 +106,24 @@ int main( int argc, char *argv[] )
 		// 学習データを用いて識別器を構築します
 		classifier.learn( train, 10 );
 
-		std::cout << "学習時間: " << t << " 秒" << std::endl;
+		std::cout << "Computation Time: " << t << " sec." << std::endl;
 	}
 
-	std::cout << "学習データに対する分類誤差   = " << classifier.error_rate( train ) << std::endl;
-	std::cout << "テストデータに対する分類誤差 = " << classifier.error_rate( test ) << std::endl;
-	std::cout << std::endl;
+	std::cout << "Classification error for training data = " << classifier.error_rate( train ) << std::endl;
+	std::cout << "Classification error for test data     = " << classifier.error_rate( test ) << std::endl;
 
 
 	// 識別器を保存する際は以下のように書きます
-	classifier.save( "ファイル名" );
+	classifier.save( "filename.dat" );
 
 
 	// 識別器を読み込む際は以下のように書きます
-	classifier.load( "ファイル名" );
+	classifier.load( "filename.dat" );
 
 
 	// 実際に分類する際は，以下のような書き方も可能です．
 	std::vector< double > feature( test[ 0 ] );
-	std::cout << classifier( feature ) << std::endl;
+	std::cout << "Result: " << classifier( feature ) << std::endl;
 
 
 	return( 0 );

@@ -16,6 +16,7 @@ ALL = \
 	iterator_test \
 	thread_test \
 	region_growing_test \
+	machine_learning_test \
 	image_test \
 	raw_test \
 	volumerender_test \
@@ -144,6 +145,9 @@ mixture_test : mixture_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 environment_test : environment_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
+
+machine_learning_test : machine_learning_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 
