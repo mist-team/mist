@@ -58,7 +58,7 @@
 
 #define __ASYMMETRIC_WEIGHTING__		1
 #define __ONE_PER_CLASS_CODE_WORD__		0
-#define __DEBUG_OUTPUT_LEVEL__			0
+#define __DEBUG_OUTPUT_LEVEL__			1
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -512,18 +512,21 @@ namespace machine_learning
 #else
 						for( size_type c = 0 ; c < code_word_pool.rows( ); c++ )
 						{
-							myu[ c ] = code_word_pool( c, t % code_word_pool.cols( ) );
+							myu[ c ] = code_word_pool( c, t % nhypothesis );
 						}
 #endif
 						// 弱識別器の学習用カテゴリデータを作る
 						for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
 						{
 							fcategories[ i ] = myu[ fcatemap[ i ] ];
-#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 2
-							std::cout << myu[ fcatemap[ i ] ];
-#endif
 						}
-#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 2
+
+#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 3
+						// 弱識別器の学習用カテゴリデータを作る
+						for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
+						{
+							std::cout << myu[ fcatemap[ i ] ];
+						}
 						std::cout << std::endl;
 #endif
 
@@ -572,7 +575,7 @@ namespace machine_learning
 						weak.learn( features, fcategories );
 
 
-#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 2
+#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 3
 						// 学習した弱識別器の分類結果を表示する
 						for( size_type i = 0 ; i < features.size( ) ; i++ )
 						{
@@ -647,7 +650,6 @@ namespace machine_learning
 
 						double alpha = 0.5 * std::log( positives / negatives );
 						double beta = -alpha;
-
 #endif
 
 						alpha_.push_back( alpha );
@@ -697,7 +699,7 @@ namespace machine_learning
 					std::cout << "分類誤差: " << __classification_error__ << std::endl << std::endl;
 #endif
 
-					if( __classification_error__ == 0.0 || __classification_error__ == __old_classification_error__ )
+					if( __classification_error__ == 0.0 )
 					{
 						// 分類器の性能に変化が無かった，もしくは，すべて分類できたので終了する
 						break;
@@ -791,17 +793,18 @@ namespace machine_learning
 					const feature_type &f = features[ i ];
 					if( f.valid )
 					{
-#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 2
-						std::cout << evaluate( f );
+						std::string ret = evaluate( f );
+#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 3
+						std::cout << ret;
 #endif
-						if( f.category != evaluate( f ) )
+						if( f.category != ret )
 						{
 							error++;
 						}
 					}
 				}
 
-#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 2
+#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 3
 				std::cout << std::endl;
 #endif
 
