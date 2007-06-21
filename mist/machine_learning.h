@@ -58,38 +58,45 @@
 
 #define __ASYMMETRIC_WEIGHTING__		1
 #define __ONE_PER_CLASS_CODE_WORD__		0
-#define __DEBUG_OUTPUT_LEVEL__			1
+#define __DEBUG_OUTPUT_LEVEL__			0
 
 // mist名前空間の始まり
 _MIST_BEGIN
 
+/// @brief 機械学習
 namespace machine_learning
 {
+	/// @brief 機械学習で利用する２カテゴリの特徴量を管理するクラス（内部でのみ使用）
 	struct feature_one
 	{
 		typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 		typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
-		double value;
-		bool   category;
-		double weight;
+		double value;		///< @brief 特徴量の値
+		bool   category;	///< @brief 学習データのカテゴリ名（true か false）
+		double weight;		///< @brief 学習データに対する重み
 
+		/// @brief デフォルトのコンストラクタ
 		feature_one( ) : value( 0.0 ), category( true ), weight( 0.0 )
 		{
 		}
 
-		feature_one( double val ) : value( val ), category( true ), weight( 0.0 )
-		{
-		}
-
+		/// @brief 次元数を指定して特長量を初期化
+		//! 
+		//! @param[in]  val  … 特徴量
+		//! @param[in]  cate … カテゴリ
+		//! @param[in]  wei  … 重み
+		//! 
 		feature_one( double val, bool cate, double wei ) : value( val ), category( cate ), weight( wei )
 		{
 		}
 
+		/// @brief コピーコンストラクタ
 		feature_one( const feature_one &f ): value( f.value ), category( f.category ), weight( f.weight )
 		{
 		}
 
+		/// @brief 他の特徴量をコピーする
 		feature_one &operator =( const feature_one &f )
 		{
 			if( &f != this )
@@ -102,12 +109,14 @@ namespace machine_learning
 			return( *this );
 		}
 
+		/// @brief 他の特徴量と値の大小を比較する
 		const bool operator <( const feature_one &f ) const
 		{
 			return( value < f.value );
 		}
 	};
 
+	/// @brief 機械学習で利用する多カテゴリの特徴量を管理するクラス
 	struct feature : public std::vector< double >
 	{
 		typedef std::vector< double > base;
@@ -115,26 +124,38 @@ namespace machine_learning
 		typedef base::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 		typedef base::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
-		std::string category;
-		double      weight;
-		bool        valid;
+		std::string category;	///< @brief 学習データのカテゴリ名
+		double      weight;		///< @brief 学習データに対する重み
+		bool        valid;		///< @brief 機械学習に利用するかどうか
 
+		/// @brief デフォルトのコンストラクタ
 		feature( ) : base( ), category( "unknown" ), weight( 0.0 ), valid( true )
 		{
 		}
 
+		/// @brief 次元数を指定して特長量を初期化
+		//! 
+		//! @param[in]  dimension … 特徴量の次元
+		//! 
 		feature( size_type dimension ) : base( dimension ), category( "unknown" ), weight( 0.0 ), valid( true )
 		{
 		}
 
+		/// @brief 次元数を指定して特長量を初期化
+		//! 
+		//! @param[in]  dimension … 特徴量の次元
+		//! @param[in]  cate      … カテゴリ名徴量の次元
+		//! 
 		feature( size_type dimension, const std::string &cate ) : base( dimension, 0.0 ), category( cate ), weight( 0.0 ), valid( true )
 		{
 		}
 
+		/// @brief コピーコンストラクタ
 		feature( const feature &f ): base( f ), category( f.category ), weight( f.weight ), valid( f.valid )
 		{
 		}
 
+		/// @brief 他の特徴量をコピーする
 		feature &operator =( const feature &f )
 		{
 			if( &f != this )
@@ -149,6 +170,16 @@ namespace machine_learning
 		}
 	};
 
+
+	//! @addtogroup machine_learning_group 機械学習を扱う
+	//!
+	//! @code 次のヘッダをインクルードする
+	//! #include <mist/machine_learning.h>
+	//! @endcode
+	//!
+	//!  @{
+
+	/// @brief AdaBoost を用いた識別器
 	namespace adaboost
 	{
 		inline size_t __power_of_two__( size_t x )
@@ -161,6 +192,7 @@ namespace machine_learning
 			return( val );
 		}
 
+		/// @brief AdaBoost で利用する弱識別器（しきい値処理）
 		class weak_classifier
 		{
 		public:
@@ -170,23 +202,32 @@ namespace machine_learning
 			typedef feature_type::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 		private:
-			double sign_;
-			double threshold_;
-			size_type index_;
+			double sign_;		///< @brief しきい値の符号
+			double threshold_;	///< @brief 分類に用いるしきい値
+			size_type index_;	///< @brief 使用する特徴量の番号
 
 		public:
+			/// @brief デフォルトのコンストラクタ
 			weak_classifier( ) : sign_( 1.0 ), threshold_( 0.0 ), index_( 0 )
 			{
 			}
 
+			/// @brief パラメータを指定して弱識別器を初期化
+			//! 
+			//! @param[in]  _sign_      … しきい値の符号
+			//! @param[in]  _threshold_ … 分類に用いるしきい値
+			//! @param[in]  indx        …  使用する特徴量の番号
+			//! 
 			weak_classifier( double _sign_, double _threshold_, size_type indx = 0 ) : sign_( _sign_ ), threshold_( _threshold_ ), index_( indx )
 			{
 			}
 
+			/// @brief コピーコンストラクタ
 			weak_classifier( const weak_classifier& w ) : sign_( w.sign_ ), threshold_( w.threshold_ ), index_( w.index_ )
 			{
 			}
 
+			/// @brief 他の識別器と同じパラメータの識別器となるようにデータをコピーする
 			weak_classifier& operator =( const weak_classifier& other )
 			{
 				if( this != &other )
@@ -200,14 +241,30 @@ namespace machine_learning
 			}
 
 		public:
+			/// @brief 識別器の符号を取得する
 			double sign( ) const { return( sign_ ); }
+
+			/// @brief 識別器の符号を設定する
 			void   sign( double s ){ sign_ = s; }
+
+			/// @brief 識別器のしきい値を取得する
 			double threshold( ) const { return( threshold_ ); }
+
+			/// @brief 識別器のしきい値を設定する
 			void   threshold( double th ){ threshold_ = th; }
+
+			/// @brief 識別器が使用する特徴量の番号符号を取得する
 			size_type index( ) const { return( index_ ); }
+
+			/// @brief 識別器が使用する特徴量の番号符号を設定する
 			void   index( size_type indx ){ index_ = indx; }
 
 		public:
+			/// @brief 教師データを用いて最適な弱識別器を構築する
+			//! 
+			//! @param[in]  features   … 学習に用いる教師データ
+			//! @param[in]  categories … 学習データのカテゴリ（true もしくは false）
+			//! 
 			template < class FEATURE_LIST, class CATEGORY_LIST >
 			bool learn( const FEATURE_LIST & features, const CATEGORY_LIST &categories )
 			{
@@ -241,6 +298,7 @@ namespace machine_learning
 				for( int index = 0 ; index < nfeatures ; index++ )
 				{
 					std::vector< feature_one > flist;
+					flist.reserve( features.size( ) );
 					for( size_type i = 0 ; i < features.size( ) ; i++ )
 					{
 						const feature_type &f = features[ i ];
@@ -281,6 +339,18 @@ namespace machine_learning
 							mindex    = i;
 							th        = f.value;
 							sgn       = e1 < e2 ? -1.0 : 1.0;
+
+							if( 0 < i && i < flist.size( ) - 1 )
+							{
+								if( sgn < 0.0 )
+								{
+									th = ( th + flist[ i - 1 ].value ) * 0.5;
+								}
+								else
+								{
+									th = ( th + flist[ i + 1 ].value ) * 0.5;
+								}
+							}
 						}
 					}
 
@@ -311,18 +381,27 @@ namespace machine_learning
 			}
 
 		public:
+			/// @brief 学習済みの弱識別器を用いて特徴量を分類する
+			//! 
+			//! @param[in]  f … 分類する特徴量
+			//! 
 			template < class FEATURE >
 			bool operator ()( const FEATURE &f ) const
 			{
 				return( evaluate( f ) );
 			}
 
+			/// @brief 学習済みの弱識別器を用いて特徴量を分類する
+			//! 
+			//! @param[in]  f … 分類する特徴量
+			//! 
 			template < class FEATURE >
 			bool evaluate( const FEATURE &f ) const
 			{
 				return( evaluate( f, index_, sign_, threshold_ ) );
 			}
 
+			/// @brief 学習済みの弱識別器を用いて特徴量を分類する
 			template < class FEATURE >
 			bool evaluate( const FEATURE &f, size_type indx, double sgn, double th ) const
 			{
@@ -330,31 +409,35 @@ namespace machine_learning
 			}
 		};
 
+		/// @brief AdaBoost を用いた識別器（マルチクラス対応）
 		class classifier
 		{
 		public:
-			typedef weak_classifier weak_classifier_type;
-			typedef feature feature_type;
+			typedef weak_classifier weak_classifier_type;			///< @brief Boosting する弱識別器のクラス
+			typedef feature feature_type;							///< @brief 学習に用いる特徴量を扱うクラス
 			typedef feature_type::value_type value_type;			///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
 			typedef feature_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 			typedef feature_type::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 		private:
-			std::vector< std::string >          categories_;
-			std::vector< weak_classifier_type > weak_classifiers_;
-			std::vector< std::vector< bool > >  code_word_;
-			std::vector< double >               alpha_;
-			std::vector< double >               beta_;
+			std::vector< std::string >          categories_;		///< @brief 分類に使用するカテゴリ名のリスト
+			std::vector< weak_classifier_type > weak_classifiers_;	///< @brief 分類に使用する弱識別器のリスト
+			std::vector< std::vector< bool > >  code_word_;			///< @brief 分類に使用する Code Word のリスト
+			std::vector< double >               alpha_;				///< @brief 分類に使用する係数リスト
+			std::vector< double >               beta_;				///< @brief 分類に使用する係数リスト
 
 		public:
+			/// @brief デフォルトのコンストラクタ
 			classifier( )
 			{
 			}
 
+			/// @brief コピーコンストラクタ
 			classifier( const classifier &cls ) : categories_( cls.categories_ ), weak_classifiers_( cls.weak_classifiers_ ), code_word_( cls.code_word_ ), alpha_( cls.alpha_ ), beta_( cls.beta_ )
 			{
 			}
 
+			/// @brief 他の識別器と同じパラメータの識別器となるようにデータをコピーする
 			classifier& operator =( const classifier& other )
 			{
 				if( this != &other )
@@ -370,32 +453,44 @@ namespace machine_learning
 			}
 
 		public:
+			/// @brief 分類に使用する弱識別器のリストを取得する
 			const std::vector< weak_classifier_type > &weak_classifier( ) const
 			{
 				return( weak_classifiers_ );
 			}
 
+			/// @brief 分類に使用するカテゴリのリストを取得する
 			const std::vector< std::string > &categories( ) const
 			{
 				return( categories_ );
 			}
 
+			/// @brief 分類に使用する Code Word のリストを取得する
 			const std::vector< std::vector< bool > > &code_word( ) const
 			{
 				return( code_word_ );
 			}
 
+			/// @brief 分類に使用する係数のリストを取得する
 			const std::vector< double > &alpha( ) const
 			{
 				return( alpha_ );
 			}
 
+			/// @brief 分類に使用する係数のリストを取得する
 			const std::vector< double > &beta( ) const
 			{
 				return( beta_ );
 			}
 
 		public:
+			/// @brief 教師データを用いて最適な弱識別器を構築する
+			//! 
+			//! 指定した number_of_iterations 回 Boosting を実行する．分類誤差が 0 となった場合は途中で終了する．
+			//! 
+			//! @param[in]  features             … 学習に用いる教師データ
+			//! @param[in]  number_of_iterations … 学習を実行する最大ステップ数
+			//! 
 			template < class FEATURE_LIST >
 			bool learn( FEATURE_LIST & features, size_type number_of_iterations )
 			{
@@ -714,12 +809,24 @@ namespace machine_learning
 			}
 
 		public:
+			/// @brief 学習済みの識別器を用いて特徴量を分類する
+			//! 
+			//! @param[in]  f … 分類する特徴量
+			//! 
+			//! @return 分類結果（学習の際に指定したカテゴリ名）
+			//! 
 			template < class FEATURE >
 			const std::string operator ()( const FEATURE &f ) const
 			{
 				return( evaluate( f ) );
 			}
 
+			/// @brief 学習済みの識別器を用いて特徴量を分類する
+			//! 
+			//! @param[in]  f … 分類する特徴量
+			//! 
+			//! @return 分類結果（学習の際に指定したカテゴリ名）
+			//! 
 			template < class FEATURE >
 			const std::string evaluate( const FEATURE &f ) const
 			{
@@ -776,6 +883,12 @@ namespace machine_learning
 				return( categories_[ category ] );
 			}
 
+			/// @brief 学習済みの識別器の分類誤差を計算する
+			//! 
+			//! @param[in] features … 分類する特徴量のリスト
+			//! 
+			//! @return 分類誤差
+			//! 
 			template < class FEATURE_LIST >
 			double error_rate( const FEATURE_LIST & features ) const
 			{
@@ -884,6 +997,14 @@ namespace machine_learning
 			}
 
 		public:
+			/// @brief 学習済みの識別器のパラメータをファイルに保存する
+			//! 
+			//! @attention save と load はペアで使用してください．
+			//! 
+			//! @param[in] filename … パラメータを保存するファイル名
+			//! 
+			//! @return 保存に成功したかどうか
+			//! 
 			bool save( const std::string &filename ) const
 			{
 				FILE *fp = fopen( filename.c_str( ), "wt" );
@@ -927,6 +1048,14 @@ namespace machine_learning
 				return( true );
 			}
 
+			/// @brief 学習済みの識別器のパラメータをファイルから読み込む
+			//! 
+			//! @attention save と load はペアで使用してください．
+			//! 
+			//! @param[in] filename … パラメータを保存してあるファイル名
+			//! 
+			//! @return 読込に成功したかどうか
+			//! 
 			bool load( const std::string &filename )
 			{
 				FILE *fp = fopen( filename.c_str( ), "rt" );
@@ -997,21 +1126,11 @@ namespace machine_learning
 			}
 		};
 	}
+
+
+	/// @}
+	//  機械学習グループの終わり
 }
-
-
-//! @addtogroup machine_learning_group 機械学習を扱う
-//!
-//! @code 次のヘッダをインクルードする
-//! #include <mist/machine_learning.h>
-//! @endcode
-//!
-//!  @{
-
-
-
-/// @}
-//  機械学習グループの終わり
 
 
 // mist名前空間の終わり

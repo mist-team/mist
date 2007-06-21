@@ -607,6 +607,8 @@ struct __mist_progress_callback__
 *   - @ref a								"等濃度面表示"
 * - キャリブレーション
 *   - @ref calibration_group				"カメラキャリブレーション"
+* - @ref machine_learning_group				"機械学習"
+*   - @ref mist::machine_learning::adaboost	"Multiclass AdaBoost"
 *
 *
 * @subsection image 主に画像に対して適用される処理
