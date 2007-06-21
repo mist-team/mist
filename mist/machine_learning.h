@@ -37,6 +37,7 @@
 //!     - Thomas G. Dietterich, Ghulum Bakiri, ``Solving Multiclass Learning Problems via Error-Correcting Output Codes,'' Journal of Artificial Intelligence Research, 2, pp. 263--286, 1995
 //!     - Venkatesan Guruswami, Amit Sahai, ``Multiclass Learning, Boosting, and Error-Correcting Codes,'' Proc. of 12th Annual Conference, Computational Learning Theory, pp. 145--155, 1999
 //!     - Robert E. Schapire, Yoram Singer, ``Improved Boosting Algorithms Using Confidence-rated Predictions,'' Machine Learning, 37, pp. 297--336, 1999
+//!     - Ling Li, ``Multiclass Boosting with Repartitioning,'' Proceedings of 23rd International Conference on Machine Learning, pp.569--576, 2006
 //!
 #ifndef __INCLUDE_MACHINE_LEARNING__
 #define __INCLUDE_MACHINE_LEARNING__
@@ -550,6 +551,7 @@ namespace machine_learning
 
 				std::vector< size_type > fcatemap( features.size( ) );
 				std::vector< bool > fcategories( features.size( ) );
+				std::vector< double > rpweight( categories_.size( ) );
 				for( size_type i = 0 ; i < fcatemap.size( ) ; i++ )
 				{
 					fcatemap[ i ] = static_cast< typename std::vector< size_type >::value_type >( category_map[ features[ i ].category ] );
@@ -620,49 +622,92 @@ namespace machine_learning
 					std::cout << std::endl;
 #endif
 
-					// 重みを正規化する
-					double Ut = 0.0;
-					for( size_type i = 0 ; i < features.size( ) ; i++ )
-					{
-						const feature_type &f = features[ i ];
-						if( f.valid )
-						{
-							bool myuY = fcategories[ i ];
-							for( size_type l = 0 ; l < categories_.size( ) ; l++ )
-							{
-								if( myuY != myu[ l ] )
-								{
-									Ut += D( i, l );
-								}
-							}
-						}
-					}
-
-					for( size_type i = 0 ; i < D.rows( ) ; i++ )
-					{
-						feature_type &f = features[ i ];
-						if( f.valid )
-						{
-							bool myuY = fcategories[ i ];
-							double sum = 0.0;
-							for( size_type l = 0 ; l < categories_.size( ) ; l++ )
-							{
-								if( myuY != myu[ l ] )
-								{
-									sum += D( i, l );
-								}
-							}
-
-							f.weight = sum / Ut;
-						}
-					}
-
 					// 学習に使う弱識別器を用意する
 					weak_classifiers_.push_back( weak_classifier_type( ) );
 					weak_classifier_type &weak = weak_classifiers_.back( );
 
-					// 弱識別器を学習する
-					weak.learn( features, fcategories );
+					for( size_type m = 0 ; m < 10 ; m++ )
+					{
+						// 重みを正規化する
+						double Ut = 0.0;
+						for( size_type i = 0 ; i < features.size( ) ; i++ )
+						{
+							const feature_type &f = features[ i ];
+							if( f.valid )
+							{
+								bool myuY = fcategories[ i ];
+								for( size_type l = 0 ; l < categories_.size( ) ; l++ )
+								{
+									if( myuY != myu[ l ] )
+									{
+										Ut += D( i, l );
+									}
+								}
+							}
+						}
+
+						for( size_type i = 0 ; i < D.rows( ) ; i++ )
+						{
+							feature_type &f = features[ i ];
+							if( f.valid )
+							{
+								bool myuY = fcategories[ i ];
+								double sum = 0.0;
+								for( size_type l = 0 ; l < categories_.size( ) ; l++ )
+								{
+									if( myuY != myu[ l ] )
+									{
+										sum += D( i, l );
+									}
+								}
+
+								f.weight = sum / Ut;
+							}
+						}
+
+						// 弱識別器を学習する
+						weak.learn( features, fcategories );
+						//std::cout << "しきい値: " << weak.threshold( ) << ", 符号: " << ( weak.sign( ) < 0.0 ? "-" : "+" ) << ", 番号: " << weak.index( ) << std::endl;
+
+						for( size_type i = 0 ; i < rpweight.size( ) ; i++ )
+						{
+							rpweight[ i ] = 0.0;
+						}
+
+						double sum = 0.0;
+						for( size_type i = 0 ; i < features.size( ) ; i++ )
+						{
+							feature_type &f = features[ i ];
+							if( f.valid )
+							{
+								double val = weak( f ) ? 1.0 : -1.0;
+
+								double tmp = 0.0;
+								for( size_type l = 0 ; l < D.cols( ) ; l++ )
+								{
+									tmp += D( i, l ) * val;
+								}
+
+								rpweight[ fcatemap[ i ] ] += tmp;
+
+								for( size_type l = 0 ; l < D.cols( ) ; l++ )
+								{
+									rpweight[ l ] -= D( i, l ) * val;
+								}
+							}
+						}
+
+						for( size_type i = 0 ; i < rpweight.size( ) ; i++ )
+						{
+							myu[ i ] = rpweight[ i ] >= 0.0;
+						}
+
+						// 弱識別器の学習用カテゴリデータを作る
+						for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
+						{
+							fcategories[ i ] = myu[ fcatemap[ i ] ];
+						}
+					}
 
 
 #if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 3
@@ -781,8 +826,8 @@ namespace machine_learning
 
 #if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 1
 						// 1ループ終了
-						std::cout << "識別器の学習ループ " << t + 1 << " / " << number_of_iterations << " が終了しました。" << std::endl;
-						std::cout << "分類誤差: " << __classification_error__ << std::endl << std::endl;
+						std::cout << "識別器の学習ループ " << t + 1 << " / " << number_of_iterations << " が終了しました。";
+						std::cout << "分類誤差: " << __classification_error__ << std::endl;
 #endif
 
 						if( __classification_error__ == 0.0 )
