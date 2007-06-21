@@ -174,7 +174,7 @@ namespace __csv_controller__
 			}
 		}
 
-		static const unsigned char *get_value( const unsigned char *s, const unsigned char *e, value_type &val )
+		static const unsigned char *get_value( const unsigned char *s, const unsigned char *e, value_type &val, const std::string &separator )
 		{
 			// 先頭の空白（改行やタブを含む）を飛ばす
 			while( s < e )
@@ -227,10 +227,23 @@ namespace __csv_controller__
 					s++;
 					break;
 				}
-				else if( s[ 0 ] == ',' )
+				else
 				{
-					s++;
-					break;
+					bool isFound = false;
+					for( size_type i = 0 ; i < separator.size( ) ; i++ )
+					{
+						if( s[ 0 ] == separator[ i ] )
+						{
+							isFound = true;
+							break;
+						}
+					}
+
+					if( isFound )
+					{
+						s++;
+						break;
+					}
 				}
 
 				ep++;
@@ -245,7 +258,7 @@ namespace __csv_controller__
 			return( s > e ? e : s );
 		}
 
-		static bool convert_from_csv_data( Array &csv, const unsigned char *buff, size_type len )
+		static bool convert_from_csv_data( Array &csv, const unsigned char *buff, size_type len, const std::string &separator )
 		{
 			const unsigned char *p = buff;
 			const unsigned char *e = buff + len;
@@ -265,7 +278,7 @@ namespace __csv_controller__
 				while( p < np )
 				{
 					value_type val;
-					p = get_value( p, np, val );
+					p = get_value( p, np, val, separator );
 					element.push_back( val );
 				}
 
@@ -288,7 +301,7 @@ namespace __csv_controller__
 			return( true );
 		}
 
-		static bool read( Array &csv, const std::string &filename )
+		static bool read( Array &csv, const std::string &filename, const std::string &separator )
 		{
 			gzFile fp;
 			if( ( fp = gzopen( filename.c_str( ), "rb" ) ) == NULL )
@@ -310,7 +323,7 @@ namespace __csv_controller__
 				unsigned char *eep = sp + read_size;
 				if( eep < buff + numBytes )
 				{
-					ret = convert_from_csv_data( csv, buff, sp + read_size - buff );
+					ret = convert_from_csv_data( csv, buff, sp + read_size - buff, separator );
 					break;
 				}
 
@@ -354,7 +367,7 @@ namespace __csv_controller__
 				}
 				else
 				{
-					if( !convert_from_csv_data( csv, buff, ep - buff ) )
+					if( !convert_from_csv_data( csv, buff, ep - buff, separator ) )
 					{
 						ret = false;
 						break;
@@ -394,36 +407,44 @@ namespace __csv_controller__
 
 /// @brief CSV形式のファイルをSTLコンテナに読み込む
 //! 
-//! @param[out] csv      … CSV形式のファイルを読み込む先のSTLコンテナ
-//! @param[in]  filename … 入力ファイル名
+//! データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている．
+//! データの区切りを変更する場合は，separator 引数を変更する．
+//! 
+//! @param[out] csv       … CSV形式のファイルを読み込む先のSTLコンテナ
+//! @param[in]  filename  … 入力ファイル名
+//! @param[in]  separator … データの区切り記号
 //!
 //! @retval true  … CSV形式データの読み込みに成功
 //! @retval false … CSV形式データの読み込みに失敗
 //! 
 template < class Array >
-bool read_csv( Array &csv, const std::string &filename )
+bool read_csv( Array &csv, const std::string &filename, const std::string &separator =", " )
 {
 	// データをクリアする
 	csv.clear( );
-	return( __csv_controller__::csv_controller< Array >::read( csv, filename ) );
+	return( __csv_controller__::csv_controller< Array >::read( csv, filename, separator ) );
 }
 
 /// @brief CSV形式のファイルをMISTコンテナ（mist::matrix）に読み込む
 //! 
-//! @param[out] csv      … CSV形式のファイルを読み込む先の行列
-//! @param[in]  filename … 入力ファイル名
+//! データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている．
+//! データの区切りを変更する場合は，separator 引数を変更する．
+//! 
+//! @param[out] csv       … CSV形式のファイルを読み込む先の行列
+//! @param[in]  filename  … 入力ファイル名
+//! @param[in]  separator … データの区切り記号
 //!
 //! @retval true  … CSV形式データの読み込みに成功
 //! @retval false … CSV形式データの読み込みに失敗
 //! 
 template < class T, class Allocator >
-bool read_csv( matrix< T, Allocator > &csv, const std::string &filename )
+bool read_csv( matrix< T, Allocator > &csv, const std::string &filename, const std::string &separator =", " )
 {
 	typedef typename matrix< T, Allocator >::size_type size_type;
 	typedef std::vector< std::vector< T > > csv_data_type;
 
 	csv_data_type csv_data;
-	if( read_csv( csv_data, filename ) && csv_data.size( ) > 0 && csv_data[ 0 ].size( ) > 0 )
+	if( read_csv( csv_data, filename, separator ) && csv_data.size( ) > 0 && csv_data[ 0 ].size( ) > 0 )
 	{
 		csv.resize( csv_data.size( ), csv_data[ 0 ].size( ) );
 
