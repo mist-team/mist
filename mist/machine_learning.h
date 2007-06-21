@@ -669,43 +669,55 @@ namespace machine_learning
 						weak.learn( features, fcategories );
 						//std::cout << "しきい値: " << weak.threshold( ) << ", 符号: " << ( weak.sign( ) < 0.0 ? "-" : "+" ) << ", 番号: " << weak.index( ) << std::endl;
 
-						for( size_type i = 0 ; i < rpweight.size( ) ; i++ )
+						if( m < 9 )
 						{
-							rpweight[ i ] = 0.0;
-						}
-
-						double sum = 0.0;
-						for( size_type i = 0 ; i < features.size( ) ; i++ )
-						{
-							feature_type &f = features[ i ];
-							if( f.valid )
+							for( size_type i = 0 ; i < rpweight.size( ) ; i++ )
 							{
-								double val = weak( f ) ? 1.0 : -1.0;
+								rpweight[ i ] = 0.0;
+							}
 
-								double tmp = 0.0;
-								for( size_type l = 0 ; l < D.cols( ) ; l++ )
+							double sum = 0.0;
+							for( size_type i = 0 ; i < features.size( ) ; i++ )
+							{
+								feature_type &f = features[ i ];
+								if( f.valid )
 								{
-									tmp += D( i, l ) * val;
-								}
+									double val = weak( f ) ? 1.0 : -1.0;
 
-								rpweight[ fcatemap[ i ] ] += tmp;
+									double tmp = 0.0;
+									for( size_type l = 0 ; l < D.cols( ) ; l++ )
+									{
+										tmp += D( i, l ) * val;
+									}
 
-								for( size_type l = 0 ; l < D.cols( ) ; l++ )
-								{
-									rpweight[ l ] -= D( i, l ) * val;
+									rpweight[ fcatemap[ i ] ] += tmp;
+
+									for( size_type l = 0 ; l < D.cols( ) ; l++ )
+									{
+										rpweight[ l ] -= D( i, l ) * val;
+									}
 								}
 							}
-						}
 
-						for( size_type i = 0 ; i < rpweight.size( ) ; i++ )
-						{
-							myu[ i ] = rpweight[ i ] >= 0.0;
-						}
+							bool isChanged = false;
+							for( size_type i = 0 ; i < rpweight.size( ) ; i++ )
+							{
+								bool nmyu = rpweight[ i ] >= 0.0;
+								isChanged = isChanged || nmyu != myu[ i ];
+								myu[ i ] = nmyu;
+							}
 
-						// 弱識別器の学習用カテゴリデータを作る
-						for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
-						{
-							fcategories[ i ] = myu[ fcatemap[ i ] ];
+							if( !isChanged )
+							{
+								// 前回とまったく同じなので終了する
+								break;
+							}
+
+							// 弱識別器の学習用カテゴリデータを作る
+							for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
+							{
+								fcategories[ i ] = myu[ fcatemap[ i ] ];
+							}
 						}
 					}
 
