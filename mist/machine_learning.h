@@ -265,8 +265,8 @@ namespace machine_learning
 			//! @param[in]  features   … 学習に用いる教師データ
 			//! @param[in]  categories … 学習データのカテゴリ（true もしくは false）
 			//! 
-			template < class FEATURE_LIST, class CATEGORY_LIST >
-			bool learn( const FEATURE_LIST & features, const CATEGORY_LIST &categories )
+			template < template < typename, typename > class FEATURE_LIST, template < typename, typename > class CATEGORY_LIST, class Allocator1, class Allocator2 >
+			bool learn( const FEATURE_LIST< feature_type, Allocator1 > & features, const CATEGORY_LIST< bool, Allocator2 > &categories )
 			{
 				if( features.empty( ) )
 				{
@@ -489,8 +489,8 @@ namespace machine_learning
 			//! @param[in]  features             … 学習に用いる教師データ
 			//! @param[in]  number_of_iterations … 学習を実行する最大ステップ数
 			//! 
-			template < class FEATURE_LIST >
-			bool learn( FEATURE_LIST & features, size_type number_of_iterations )
+			template < template < typename, typename > class FEATURE_LIST, class Allocator >
+			bool learn( FEATURE_LIST< feature_type, Allocator > & features, size_type number_of_iterations )
 			{
 				if( features.empty( ) )
 				{
@@ -590,216 +590,206 @@ namespace machine_learning
 				}
 #endif
 
-				double __old_classification_error__ = 1.0;
-				for( size_type loop = 0 ; loop < number_of_iterations ; loop++ )
+				// AdaBoost により強識別器を学習する
+				for( size_type t = 0 ; t < number_of_iterations ; t++ )
 				{
-					// AdaBoost により強識別器を学習する
-					for( size_type t = 0 ; t < nhypothesis ; t++ )
-					{
-						// カラーリングを決定する
-						code_word_.push_back( std::vector< bool >( categories_.size( ) ) );
-						std::vector< bool > &myu = code_word_.back( );
+					// カラーリングを決定する
+					code_word_.push_back( std::vector< bool >( categories_.size( ) ) );
+					std::vector< bool > &myu = code_word_.back( );
 
 #if defined( __ONE_PER_CLASS_CODE_WORD__ ) && __ONE_PER_CLASS_CODE_WORD__ == 1
-						myu[ t % categories_.size( ) ] = true;
+					myu[ t % categories_.size( ) ] = true;
 #else
-						for( size_type c = 0 ; c < code_word_pool.rows( ); c++ )
-						{
-							myu[ c ] = code_word_pool( c, t % nhypothesis );
-						}
+					for( size_type c = 0 ; c < code_word_pool.rows( ); c++ )
+					{
+						myu[ c ] = code_word_pool( c, t % nhypothesis );
+					}
 #endif
-						// 弱識別器の学習用カテゴリデータを作る
-						for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
-						{
-							fcategories[ i ] = myu[ fcatemap[ i ] ];
-						}
+					// 弱識別器の学習用カテゴリデータを作る
+					for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
+					{
+						fcategories[ i ] = myu[ fcatemap[ i ] ];
+					}
 
 #if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 3
-						// 弱識別器の学習用カテゴリデータを作る
-						for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
-						{
-							std::cout << myu[ fcatemap[ i ] ];
-						}
-						std::cout << std::endl;
+					// 弱識別器の学習用カテゴリデータを作る
+					for( size_type i = 0 ; i < fcategories.size( ) ; i++ )
+					{
+						std::cout << myu[ fcatemap[ i ] ];
+					}
+					std::cout << std::endl;
 #endif
 
-						// 重みを正規化する
-						double Ut = 0.0;
-						for( size_type i = 0 ; i < features.size( ) ; i++ )
+					// 重みを正規化する
+					double Ut = 0.0;
+					for( size_type i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						if( f.valid )
 						{
-							const feature_type &f = features[ i ];
-							if( f.valid )
+							bool myuY = fcategories[ i ];
+							for( size_type l = 0 ; l < categories_.size( ) ; l++ )
 							{
-								bool myuY = fcategories[ i ];
-								for( size_type l = 0 ; l < categories_.size( ) ; l++ )
+								if( myuY != myu[ l ] )
 								{
-									if( myuY != myu[ l ] )
-									{
-										Ut += D( i, l );
-									}
+									Ut += D( i, l );
 								}
 							}
 						}
+					}
 
-						for( size_type i = 0 ; i < D.rows( ) ; i++ )
+					for( size_type i = 0 ; i < D.rows( ) ; i++ )
+					{
+						feature_type &f = features[ i ];
+						if( f.valid )
 						{
-							feature_type &f = features[ i ];
-							if( f.valid )
+							bool myuY = fcategories[ i ];
+							double sum = 0.0;
+							for( size_type l = 0 ; l < categories_.size( ) ; l++ )
 							{
-								bool myuY = fcategories[ i ];
-								double sum = 0.0;
-								for( size_type l = 0 ; l < categories_.size( ) ; l++ )
+								if( myuY != myu[ l ] )
 								{
-									if( myuY != myu[ l ] )
-									{
-										sum += D( i, l );
-									}
+									sum += D( i, l );
 								}
-
-								f.weight = sum / Ut;
 							}
+
+							f.weight = sum / Ut;
 						}
+					}
 
-						// 学習に使う弱識別器を用意する
-						weak_classifiers_.push_back( weak_classifier_type( ) );
-						weak_classifier_type &weak = weak_classifiers_.back( );
+					// 学習に使う弱識別器を用意する
+					weak_classifiers_.push_back( weak_classifier_type( ) );
+					weak_classifier_type &weak = weak_classifiers_.back( );
 
-						// 弱識別器を学習する
-						weak.learn( features, fcategories );
+					// 弱識別器を学習する
+					weak.learn( features, fcategories );
 
 
 #if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 3
-						// 学習した弱識別器の分類結果を表示する
-						for( size_type i = 0 ; i < features.size( ) ; i++ )
+					// 学習した弱識別器の分類結果を表示する
+					for( size_type i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						if( f.valid )
 						{
-							const feature_type &f = features[ i ];
-							if( f.valid )
-							{
-								std::cout << weak.evaluate( f );
-							}
+							std::cout << weak.evaluate( f );
 						}
-						std::cout << std::endl;
+					}
+					std::cout << std::endl;
 #endif
 
 #if defined( __ASYMMETRIC_WEIGHTING__ ) && __ASYMMETRIC_WEIGHTING__ == 1
-						// 重みの更新を非対称に行う
-						const double eps = 1.0e-16;
-						double h1u1 = eps;
-						double h1u0 = eps;
-						double h0u0 = eps;
-						double h0u1 = eps;
+					// 重みの更新を非対称に行う
+					const double eps = 1.0e-16;
+					double h1u1 = eps;
+					double h1u0 = eps;
+					double h0u0 = eps;
+					double h0u1 = eps;
 
-						for( size_type i = 0 ; i < features.size( ) ; i++ )
+					for( size_type i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						if( f.valid )
 						{
-							const feature_type &f = features[ i ];
-							if( f.valid )
+							bool uY = fcategories[ i ];
+							bool hX = weak( f );
+							if( hX && uY )
 							{
-								bool uY = fcategories[ i ];
-								bool hX = weak( f );
-								if( hX && uY )
-								{
-									h1u1 += f.weight;
-								}
-								else if( hX && !uY )
-								{
-									h1u0 += f.weight;
-								}
-								else if( !hX && !uY )
-								{
-									h0u0 += f.weight;
-								}
-								else
-								{
-									h0u1 += f.weight;
-								}
+								h1u1 += f.weight;
+							}
+							else if( hX && !uY )
+							{
+								h1u0 += f.weight;
+							}
+							else if( !hX && !uY )
+							{
+								h0u0 += f.weight;
+							}
+							else
+							{
+								h0u1 += f.weight;
 							}
 						}
-
-						double alpha = 0.5 * std::log( h1u1 / h1u0 );
-						double beta = -0.5 * std::log( h0u0 / h0u1 );
-#else
-						// 重みの更新を対称にする
-						const double eps = 1.0e-16;
-						double positives = eps;
-						double negatives = eps;
-
-						for( size_type i = 0 ; i < features.size( ) ; i++ )
-						{
-							const feature_type &f = features[ i ];
-							if( f.valid )
-							{
-								bool uY = fcategories[ i ];
-								bool hX = weak( f );
-								if( hX == uY )
-								{
-									positives += f.weight;
-								}
-								else
-								{
-									negatives += f.weight;
-								}
-							}
-						}
-
-						double alpha = 0.5 * std::log( positives / negatives );
-						double beta = -alpha;
-#endif
-
-						alpha_.push_back( alpha );
-						beta_.push_back( beta );
-
-						double Zt = 0.0;
-						for( size_type i = 0 ; i < features.size( ) ; i++ )
-						{
-							const feature_type &f = features[ i ];
-							if( f.valid )
-							{
-								bool myuY = fcategories[ i ];
-								for( size_type l = 0 ; l < categories_.size( ) ; l++ )
-								{
-									double v = ( myu[ l ] - myuY ) * 0.5;
-									if( weak( f ) )
-									{
-										v *= alpha;
-									}
-									else
-									{
-										v *= beta;
-									}
-
-									D( i, l ) *= std::exp( v );
-									Zt += D( i, l );
-								}
-							}
-						}
-
-						for( size_type i = 0 ; i < D.size( ) ; i++ )
-						{
-							D[ i ] /= Zt;
-						}
-
-#if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 2
-						// この段階でAdaBoostにより学習した識別器の性能を表示する
-						std::cout << "分類誤差: " << error_rate( features ) << std::endl;
-#endif
 					}
 
-					double __classification_error__ = error_rate( features );
+					double alpha = 0.5 * std::log( h1u1 / h1u0 );
+					double beta = -0.5 * std::log( h0u0 / h0u1 );
+#else
+					// 重みの更新を対称にする
+					const double eps = 1.0e-16;
+					double positives = eps;
+					double negatives = eps;
+
+					for( size_type i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						if( f.valid )
+						{
+							bool uY = fcategories[ i ];
+							bool hX = weak( f );
+							if( hX == uY )
+							{
+								positives += f.weight;
+							}
+							else
+							{
+								negatives += f.weight;
+							}
+						}
+					}
+
+					double alpha = 0.5 * std::log( positives / negatives );
+					double beta = -alpha;
+#endif
+
+					alpha_.push_back( alpha );
+					beta_.push_back( beta );
+
+					double Zt = 0.0;
+					for( size_type i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						if( f.valid )
+						{
+							bool myuY = fcategories[ i ];
+							for( size_type l = 0 ; l < categories_.size( ) ; l++ )
+							{
+								double v = ( myu[ l ] - myuY ) * 0.5;
+								if( weak( f ) )
+								{
+									v *= alpha;
+								}
+								else
+								{
+									v *= beta;
+								}
+
+								D( i, l ) *= std::exp( v );
+								Zt += D( i, l );
+							}
+						}
+					}
+
+					for( size_type i = 0 ; i < D.size( ) ; i++ )
+					{
+						D[ i ] /= Zt;
+					}
+
+					if( ( ( t + 1 ) % 5 ) == 0 )
+					{
+						double __classification_error__ = error_rate( features );
 
 #if defined( __DEBUG_OUTPUT_LEVEL__ ) && __DEBUG_OUTPUT_LEVEL__ >= 1
-					// 1ループ終了
-					std::cout << "識別器の学習ループ " << loop + 1 << " / " << number_of_iterations << " が終了しました。" << std::endl;
-					std::cout << "分類誤差: " << __classification_error__ << std::endl << std::endl;
+						// 1ループ終了
+						std::cout << "識別器の学習ループ " << t + 1 << " / " << number_of_iterations << " が終了しました。" << std::endl;
+						std::cout << "分類誤差: " << __classification_error__ << std::endl << std::endl;
 #endif
 
-					if( __classification_error__ == 0.0 )
-					{
-						// 分類器の性能に変化が無かった，もしくは，すべて分類できたので終了する
-						break;
-					}
-					else
-					{
-						__old_classification_error__ = __classification_error__;
+						if( __classification_error__ == 0.0 )
+						{
+							// 分類器の性能に変化が無かった，もしくは，すべて分類できたので終了する
+							break;
+						}
 					}
 				}
 
@@ -887,8 +877,8 @@ namespace machine_learning
 			//! 
 			//! @return 分類誤差
 			//! 
-			template < class FEATURE_LIST >
-			double error_rate( const FEATURE_LIST & features ) const
+			template < template < typename, typename > class FEATURE_LIST, class Allocator >
+			double error_rate( const FEATURE_LIST< feature_type, Allocator > & features ) const
 			{
 				if( features.empty( ) )
 				{

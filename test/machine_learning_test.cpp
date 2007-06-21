@@ -104,7 +104,7 @@ int main( int argc, char *argv[] )
 		mist::timer t;
 
 		// 学習データを用いて識別器を構築します
-		classifier.learn( train, 10 );
+		classifier.learn( train, 50 );
 
 		std::cout << "Computation Time: " << t << " sec." << std::endl;
 	}
