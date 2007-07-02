@@ -44,26 +44,34 @@
 
 
 #ifndef __INCLUDE_MIST_H__
-#include "mist.h"
+	#include "mist.h"
+#endif
+
+#ifdef __INCLUDE_MIST_RANDOM__
+	#include "random.h"
 #endif
 
 
+#include <ctime>
 #include <vector>
 #include <map>
 #include <algorithm>
- 
+
 #ifdef _OPENMP
 	#include <omp.h>
 #endif
 
 
-#define __ASYMMETRIC_WEIGHTING__		1
-#define __ONE_PER_CLASS_CODE_WORD__		0
-#define __DEBUG_OUTPUT_LEVEL__			0
-#define __NUMBER_OF_INNER_LOOPS__		10
-
 // mist名前空間の始まり
 _MIST_BEGIN
+
+
+#define __ASYMMETRIC_WEIGHTING__		1		///< AdaBoost の弱識別器に付与する重みを非対称にするかどうか
+#define __ONE_PER_CLASS_CODE_WORD__		0		///< 1クラスに1つ一意の Code Word を割り当てるかどうか
+#define __RANDOM_CODE_WORD__			0		///< ERPを実行する際に使用する初期 Code Word をランダムに生成するかどうか
+#define __DEBUG_OUTPUT_LEVEL__			0		///< コンソールに学習の様子をデバッグ情報として出力するレベル（0は何も出力しない）
+#define __NUMBER_OF_INNER_LOOPS__		10		///< Ling Li の方法を使って Code Word を更新する最大回数
+
 
 /// @brief 機械学習
 namespace machine_learning
@@ -169,6 +177,20 @@ namespace machine_learning
 			}
 
 			return( *this );
+		}
+	};
+
+	/// @brief 機械学習で利用する２カテゴリの特徴量を管理するクラス（内部でのみ使用）
+	template < class T1, class T2 >
+	struct pair
+	{
+		T1 key;
+		T2 value;
+
+		/// @brief 他の特徴量と値の大小を比較する
+		const bool operator <( const pair &f ) const
+		{
+			return( key < f.key );
 		}
 	};
 
@@ -554,6 +576,10 @@ namespace machine_learning
 #if defined( __ONE_PER_CLASS_CODE_WORD__ ) && __ONE_PER_CLASS_CODE_WORD__ == 1
 				// 各クラス単位で code word を作る
 				size_type nhypothesis = categories_.size( );
+#elif defined( __RANDOM_CODE_WORD__ ) && __RANDOM_CODE_WORD__ == 1
+				uniform::random rnd( std::clock( ) );
+				// code word を ECC ベースで作る
+				size_type nhypothesis = categories_.size( ) == 2 ? 2 : __power_of_two__( categories_.size( ) - 1 ) - 1;
 #else
 				// code word を ECC ベースで作る
 				size_type nhypothesis = categories_.size( ) == 2 ? 2 : __power_of_two__( categories_.size( ) - 1 ) - 1;
@@ -568,6 +594,20 @@ namespace machine_learning
 
 #if defined( __ONE_PER_CLASS_CODE_WORD__ ) && __ONE_PER_CLASS_CODE_WORD__ == 1
 					myu[ t % categories_.size( ) ] = true;
+#elif defined( __RANDOM_CODE_WORD__ ) && __RANDOM_CODE_WORD__ == 1
+					{
+						std::vector< pair< double, size_type > > list( categories_.size( ) );
+						for( size_type i = 0 ; i < list.size( ) ; i++ )
+						{
+							list[ i ].key = rnd.real1( );
+							list[ i ].value = i;
+						}
+						std::sort( list.begin( ), list.end( ) );
+						for( size_type i = 0 ; i < list.size( ) ; i++ )
+						{
+							myu[ list[ i ].value ] = i < list.size( ) / 2;
+						}
+					}
 #else
 					myu[ 0 ] = true;
 					for( size_type r = 1 ; r < myu.size( ) ; r++ )
