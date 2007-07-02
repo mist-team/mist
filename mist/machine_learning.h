@@ -340,16 +340,9 @@ namespace machine_learning
 							th        = f.value;
 							sgn       = e1 < e2 ? -1.0 : 1.0;
 
-							if( 0 < i && i < flist.size( ) - 1 )
+							if( i < flist.size( ) - 1 )
 							{
-								if( sgn < 0.0 )
-								{
-									th = ( th + flist[ i - 1 ].value ) * 0.5;
-								}
-								else
-								{
-									th = ( th + flist[ i + 1 ].value ) * 0.5;
-								}
+								th = ( th + flist[ i + 1 ].value ) * 0.5;
 							}
 						}
 					}
@@ -805,7 +798,7 @@ namespace machine_learning
 						D[ i ] /= Zt;
 					}
 
-					//if( ( ( t + 1 ) % 5 ) == 0 )
+					if( ( ( t + 1 ) % 5 ) == 0 )
 					{
 						double __classification_error__ = error_rate( features );
 
