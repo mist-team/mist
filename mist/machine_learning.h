@@ -189,16 +189,23 @@ namespace machine_learning
 	};
 
 	/// @brief 機械学習で利用する２カテゴリの特徴量を管理するクラス（内部でのみ使用）
-	template < class T1, class T2 >
+	template < class KEY, class VALUE >
 	struct pair
 	{
-		T1 key;
-		T2 value;
+		KEY   key;
+		VALUE value;
+
+		pair( const KEY &k, const VALUE &val ) : key( k ), value( val ){ }
 
 		/// @brief 他の特徴量と値の大小を比較する
 		const bool operator <( const pair &f ) const
 		{
 			return( key < f.key );
+		}
+
+		static bool greater( const pair &f1, const pair &f2 )
+		{
+			return( f2 < f1 );
 		}
 	};
 
@@ -948,6 +955,38 @@ namespace machine_learning
 #endif
 
 				return( categories_[ category ] );
+			}
+
+			/// @brief 学習済みの識別器を用いて特徴量を分類し、各カテゴリの重みを列挙する
+			//! 
+			//! @param[in]  f … 分類する特徴量
+			//! 
+			//! @return 分類結果としての各カテゴリの重み
+			//! 
+			template < class FEATURE >
+			void compute_category_ranks( const FEATURE &f, std::vector< pair< double, std::string > > &ranks ) const
+			{
+				std::vector< double > values( categories_.size( ), 0.0 );
+				for( size_type t = 0 ; t < weak_classifiers_.size( ) ; t++ )
+				{
+					const std::vector< bool > &code = code_word_[ t ];
+					double weight = weak_classifiers_[ t ]( f ) ? alpha_[ t ] : beta_[ t ];
+
+					for( size_type l = 0 ; l < categories_.size( ) ; l++ )
+					{
+						values[ l ] += code[ l ] * weight;
+					}
+				}
+
+				ranks.clear( );
+				ranks.reserve( values.size( ) );
+
+				for( size_type l = 0 ; l < values.size( ) ; l++ )
+				{
+					ranks.push_back( pair< double, std::string >( values[ l ], categories_[ l ] ) );
+				}
+
+				std::sort( ranks.begin( ), ranks.end( ), pair< double, std::string >::greater );
 			}
 
 			/// @brief 学習済みの識別器の分類誤差を計算する
