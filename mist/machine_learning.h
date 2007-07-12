@@ -47,7 +47,7 @@
 	#include "mist.h"
 #endif
 
-#ifdef __INCLUDE_MIST_RANDOM__
+#ifndef __INCLUDE_MIST_RANDOM__
 	#include "random.h"
 #endif
 
@@ -68,7 +68,7 @@ _MIST_BEGIN
 
 #define __ASYMMETRIC_WEIGHTING__		1		///< AdaBoost の弱識別器に付与する重みを非対称にするかどうか
 #define __ONE_PER_CLASS_CODE_WORD__		0		///< 1クラスに1つ一意の Code Word を割り当てるかどうか
-#define __RANDOM_CODE_WORD__			0		///< ERPを実行する際に使用する初期 Code Word をランダムに生成するかどうか
+#define __RANDOM_CODE_WORD__			1		///< ERPを実行する際に使用する初期 Code Word をランダムに生成するかどうか
 #define __DEBUG_OUTPUT_LEVEL__			0		///< コンソールに学習の様子をデバッグ情報として出力するレベル（0は何も出力しない）
 #define __NUMBER_OF_INNER_LOOPS__		10		///< Ling Li の方法を使って Code Word を更新する最大回数
 
@@ -151,7 +151,15 @@ namespace machine_learning
 		{
 		}
 
-		/// @brief 次元数を指定して特長量を初期化
+		/// @brief カテゴリ名を指定して特長量を初期化
+		//! 
+		//! @param[in]  cate      … カテゴリ名徴量の次元
+		//! 
+		feature( const std::string &cate ) : base( ), category( cate ), weight( 0.0 ), valid( true )
+		{
+		}
+
+		/// @brief 次元数とカテゴリ名を指定して特長量を初期化
 		//! 
 		//! @param[in]  dimension … 特徴量の次元
 		//! @param[in]  cate      … カテゴリ名徴量の次元
@@ -579,7 +587,7 @@ namespace machine_learning
 #elif defined( __RANDOM_CODE_WORD__ ) && __RANDOM_CODE_WORD__ == 1
 				uniform::random rnd( std::clock( ) );
 				// code word を ECC ベースで作る
-				size_type nhypothesis = categories_.size( ) == 2 ? 2 : __power_of_two__( categories_.size( ) - 1 ) - 1;
+				size_type nhypothesis = categories_.size( );
 #else
 				// code word を ECC ベースで作る
 				size_type nhypothesis = categories_.size( ) == 2 ? 2 : __power_of_two__( categories_.size( ) - 1 ) - 1;
@@ -609,13 +617,21 @@ namespace machine_learning
 						}
 					}
 #else
-					myu[ 0 ] = true;
-					for( size_type r = 1 ; r < myu.size( ) ; r++ )
+					if( nhypothesis == 2 )
 					{
-						// code word を ECC ベースで動的に作る
-						size_type c = t % nhypothesis;
-						size_type d = ( nhypothesis + 1 ) / __power_of_two__( r );
-						myu[ r ] = ( c / d ) % 2 == 1;
+						myu[ 0 ] = ( t % nhypothesis ) == 0;
+						myu[ 1 ] = !myu[ 0 ];
+					}
+					else
+					{
+						myu[ 0 ] = true;
+						for( size_type r = 1 ; r < myu.size( ) ; r++ )
+						{
+							// code word を ECC ベースで動的に作る
+							size_type c = t % nhypothesis;
+							size_type d = ( nhypothesis + 1 ) / __power_of_two__( r );
+							myu[ r ] = ( ( c / d ) % 2 ) == 1;
+						}
 					}
 #endif
 
