@@ -195,6 +195,10 @@ namespace machine_learning
 		KEY   key;
 		VALUE value;
 
+		/// @brief デフォルトのコンストラクタ
+		pair( ){ }
+
+		/// @brief 指定したキーと値で初期化する
 		pair( const KEY &k, const VALUE &val ) : key( k ), value( val ){ }
 
 		/// @brief 他の特徴量と値の大小を比較する
@@ -203,6 +207,7 @@ namespace machine_learning
 			return( key < f.key );
 		}
 
+		/// @brief 昇順でデータを並べる
 		static bool greater( const pair &f1, const pair &f2 )
 		{
 			return( f2 < f1 );
