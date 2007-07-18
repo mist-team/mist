@@ -50,11 +50,21 @@ _MIST_BEGIN
 //!  @{
 
 
+namespace __random__
+{
+	static const unsigned long	n				= 624;					/// number n
+	static const unsigned long	m				= 397;					/// number m
+	static const unsigned long	vec_a			= 0x9908b0dfUL;			/// constant vector a
+	static const unsigned long	upper			= 0x80000000UL;			/// most significant w-r bits
+	static const unsigned long	lower			= 0x7fffffffUL;			/// least significant r bits
+	static const double			pai_timed_by_2	= 6.283185307179586;	/// pai timed by two
+}
+
 
 /// @brief MT(Mersenne Twister)法による一様乱数
 namespace uniform
 {
-	
+
 	/// @brief MT(Mersenne Twister)法による一様乱数ジェネレータ
 	//! 
 	//! 長周期, 高次元均等分布を持つ擬似乱数を生成する．
@@ -68,36 +78,22 @@ namespace uniform
 	class random
 	{
 		// Period parameters
-		const unsigned long number_n_;		///< @brief number n
-		const unsigned long number_m_;		///< @brief number m
-		const unsigned long matrix_a_;		///< @brief constant vector a
-		const unsigned long upper_mask_;	///< @brief most significant w-r bits
-		const unsigned long lower_mask_;	///< @brief least significant r bits
+		
+		// static unsigned long vec_[n_]; /* the array for the state vector  */
+		// static int i_=n_+1; /* i_==n_+1 means vec_[n_] is not initialized */	
 
-		// static unsigned long mt_[number_n_]; /* the array for the state vector  */
-		// static int mti_=number_n_+1; /* mti_==number_n_+1 means mt_[number_n_] is not initialized */	
-
-		array< unsigned long > mt_;			///< @brief the array for the state vector
-		unsigned long mti_;					///< @brief mti_==number_n_+1 means mt_[number_n_] is not initialized
+		array< unsigned long > vec_;		///< @brief the array for the state vector
+		unsigned long i_;					///< @brief i_== __random__::n + 1 means vec_[] is not initialized
 
 
 	public:
 
-		const double pai_timed_by_2_;		///< @brief pai timed by two
 
 		/// @brief コンストラクタ
 		//! 
 		//! デフォルトコンストラクタ
 		//! 
-		random( ) :
-			number_n_( 624 ),
-			number_m_( 397 ),
-			matrix_a_( 0x9908b0dfUL ),
-			upper_mask_( 0x80000000UL ),
-			lower_mask_( 0x7fffffffUL ),
-			mt_( number_n_ ),
-			mti_( number_n_ + 1 ),
-			pai_timed_by_2_( 6.283185307179586 )
+		random( ) : vec_( __random__::n ), i_( __random__::n + 1 )
 		{
 		}
 
@@ -108,15 +104,7 @@ namespace uniform
 		//! 
 		//! @param[in] seed … 乱数のseed(これを用いてジェネレータの状態を初期化する)
 		//! 
-		random( const unsigned long seed ) :
-			number_n_( 624 ),
-			number_m_( 397 ),
-			matrix_a_( 0x9908b0dfUL ),
-			upper_mask_( 0x80000000UL ),
-			lower_mask_( 0x7fffffffUL ),
-			mt_( number_n_ ),
-			mti_( number_n_ + 1 ),
-			pai_timed_by_2_( 6.283185307179586 )
+		explicit random( const unsigned long seed ) : vec_( __random__::n ), i_( __random__::n + 1 )
 		{
 			init( seed );
 		}
@@ -128,15 +116,7 @@ namespace uniform
 		//! 
 		//! @param[in] seed_array … 乱数のseed配列(これを用いてジェネレータの状態を初期化する)
 		//! 
-		random( const array< unsigned long >& seed_array ) :
-			number_n_( 624 ),
-			number_m_( 397 ),
-			matrix_a_( 0x9908b0dfUL ),
-			upper_mask_( 0x80000000UL ),
-			lower_mask_( 0x7fffffffUL ),
-			mt_( number_n_ ),
-			mti_( number_n_ + 1 ),
-			pai_timed_by_2_( 6.283185307179586 )
+		explicit random( const array< unsigned long >& seed_array ) : vec_( __random__::n ), i_( __random__::n + 1 )
 		{
 			init( seed_array );
 		}
@@ -144,22 +124,22 @@ namespace uniform
 
 		/// @brief seedで初期化
 		//! 
-		//! initializes mt_[number_n_] with a seed
+		//! initializes vec_[n_] with a seed
 		//! 
 		//! @param[in] seed … 乱数のseed
 		//! 
 		void init( const unsigned long& seed )
 		{
-			mt_[ 0 ] = seed & 0xffffffffUL;
+			vec_[ 0 ] = seed & 0xffffffffUL;
 
-			for( mti_ = 1 ; mti_ < number_n_ ; mti_++ )
+			for( i_ = 1 ; i_ < __random__::n ; i_ ++ )
 			{
-				mt_[ mti_ ] = ( 1812433253UL * ( mt_[ mti_ -1 ] ^ ( mt_[ mti_ -1 ] >> 30 ) ) + mti_ );
+				vec_[ i_ ] = ( 1812433253UL * ( vec_[ i_ - 1 ] ^ ( vec_[ i_ - 1 ] >> 30 ) ) + i_ );
 				/* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
 				/* In the previous versions, MSBs of the seed affect   */
-				/* only MSBs of the array mt_[].                        */
+				/* only MSBs of the array vec_[ ].                        */
 				/* 2002/01/09 modified by Makoto Matsumoto             */
-				mt_[ mti_ ] &= 0xffffffffUL;
+				vec_[ i_ ] &= 0xffffffffUL;
 				/* for >32 bit machines */
 			}
 		}
@@ -180,16 +160,16 @@ namespace uniform
 			i = 1;
 			j = 0;	
 
-			for( k = ( number_n_ > seed_array.size( ) ? number_n_ : static_cast< unsigned long >( seed_array.size( ) ) ) ; k > 0 ; k-- )
+			for( k = ( __random__::n > seed_array.size( ) ? __random__::n : static_cast< unsigned long >( seed_array.size( ) ) ) ; k > 0 ; k -- )
 			{
-				mt_[ i ] = ( mt_[ i ] ^ ( ( mt_[ i - 1 ] ^ ( mt_[ i - 1 ] >> 30 ) ) * 1664525UL ) ) + seed_array[ j ] + j;  /* non linear */
-				mt_[ i ] &= 0xffffffffUL;  /* for WORDSIZE > 32 machines */
-				i++;
-				j++;
+				vec_[ i ] = ( vec_[ i ] ^ ( ( vec_[ i - 1 ] ^ ( vec_[ i - 1 ] >> 30 ) ) * 1664525UL ) ) + seed_array[ j ] + j;  /* non linear */
+				vec_[ i ] &= 0xffffffffUL;  /* for WORDSIZE > 32 machines */
+				i ++;
+				j ++;
 
-				if( i >= number_n_ )
+				if( i >= __random__::n )
 				{
-					mt_[ 0 ] = mt_[ number_n_ -1 ];
+					vec_[ 0 ] = vec_[ __random__::n - 1 ];
 					i = 1;
 				}	
 
@@ -199,20 +179,20 @@ namespace uniform
 				}
 			}	
 
-			for( k = number_n_ -1 ; k > 0 ; k-- )
+			for( k = __random__::n - 1 ; k > 0 ; k -- )
 			{
-				mt_[ i ] = ( mt_[ i ] ^ ( ( mt_[ i - 1 ] ^ ( mt_[ i - 1 ] >> 30 ) ) * 1566083941UL ) ) - i;  /* non linear */
-				mt_[ i ] &= 0xffffffffUL;  /* for WORDSIZE > 32 machines */
+				vec_[ i ] = ( vec_[ i ] ^ ( ( vec_[ i - 1 ] ^ ( vec_[ i - 1 ] >> 30 ) ) * 1566083941UL ) ) - i;  /* non linear */
+				vec_[ i ] &= 0xffffffffUL;  /* for WORDSIZE > 32 machines */
 				i++;
 
-				if( i >= number_n_ )
+				if( i >= __random__::n )
 				{
-					mt_[ 0 ] = mt_[ number_n_ - 1 ];
+					vec_[ 0 ] = vec_[ __random__::n - 1 ];
 					i = 1;
 				}
 			}
 
-			mt_[ 0 ] = 0x80000000UL;  /* MSB is 1; assuring non-zero initial array */
+			vec_[ 0 ] = 0x80000000UL;  /* MSB is 1; assuring non-zero initial array */
 		}
 
 		/// @brief 32bit符号無し整数乱数の発生
@@ -221,39 +201,39 @@ namespace uniform
 		//! 
 		//! @return 32bit符号無し整数乱数
 		//! 
-		const unsigned long int32( )
+		unsigned long int32( )
 		{
 			unsigned long y;
-			static unsigned long mag01[ 2 ] = { 0x0UL, matrix_a_ };
-			/* mag01[x] = x * matrix_a_  for x=0,1 */
+			static unsigned long mag01[ 2 ] = { 0x0UL, __random__::vec_a };
+			/* mag01[x] = x * __random__::vec_a  for x=0,1 */
 	
-			if( mti_ >= number_n_ ) /* generate number_n_ words at one time */
+			if( i_ >= __random__::n ) /* generate __random__::n words at one time */
 			{
 				unsigned long kk;	
 
-				if( mti_ == number_n_ + 1 ) /* if init_genrand() has not been called, */
+				if( i_ == __random__::n + 1 ) /* if init_genrand() has not been called, */
 				{
 					init( 5489UL );  /* a default initial seed is used */
 				}
-				for( kk = 0 ; kk < number_n_ -number_m_ ; kk++ )
+				for( kk = 0 ; kk < __random__::n - __random__::m  ; kk ++ )
 				{
-					y = ( mt_[ kk ] & upper_mask_ ) | ( mt_[ kk + 1 ] & lower_mask_ );
-					mt_[ kk ] = mt_[ kk + number_m_ ] ^ ( y >> 1 ) ^ mag01[ y & 0x1UL ];
+					y = ( vec_[ kk ] & __random__::upper ) | ( vec_[ kk + 1 ] & __random__::lower );
+					vec_[ kk ] = vec_[ kk + __random__::m  ] ^ ( y >> 1 ) ^ mag01[ y & 0x1UL ];
 				}	
 
-				for( ; kk < number_n_ - 1 ; kk++ )
+				for( ; kk < __random__::n - 1 ; kk ++ )
 				{
-					y = ( mt_[ kk ] & upper_mask_ ) | ( mt_[ kk + 1 ] & lower_mask_ );
-					mt_[ kk ] = mt_[ kk + ( number_m_ - number_n_ ) ] ^ ( y >> 1 ) ^ mag01[ y & 0x1UL ];
+					y = ( vec_[ kk ] & __random__::upper ) | ( vec_[ kk + 1 ] & __random__::lower );
+					vec_[ kk ] = vec_[ kk + ( __random__::m  - __random__::n ) ] ^ ( y >> 1 ) ^ mag01[ y & 0x1UL ];
 				}
 
-				y = ( mt_[ number_n_ - 1 ] & upper_mask_ ) | ( mt_[ 0 ] & lower_mask_ );
-				mt_[ number_n_ - 1 ] = mt_[ number_m_ - 1 ] ^ ( y >> 1 ) ^ mag01[ y & 0x1UL ];	
+				y = ( vec_[ __random__::n - 1 ] & __random__::upper ) | ( vec_[ 0 ] & __random__::lower );
+				vec_[ __random__::n - 1 ] = vec_[ __random__::m  - 1 ] ^ ( y >> 1 ) ^ mag01[ y & 0x1UL ];	
 
-				mti_ = 0;
+				i_ = 0;
 			}
 
-			y = mt_[ mti_++ ];
+			y = vec_[ i_ ++ ];
 
 			/* Tempering */
 			y ^= ( y >> 11 );
@@ -271,7 +251,7 @@ namespace uniform
 		//! 
 		//! @return 31bit符号無し整数乱数
 		//! 
-		const unsigned long int31( )
+		unsigned long int31( )
 		{
 			return ( int32( ) >> 1 );
 		}
@@ -283,7 +263,7 @@ namespace uniform
 		//! 
 		//! @return [0,1]区間浮動小数点乱数
 		//! 
-		const double real1( )
+		double real1( )
 		{
 			return ( int32( ) * ( 1.0 / 4294967295.0 ) );
 			/* divided by 2^32-1 */
@@ -296,7 +276,7 @@ namespace uniform
 		//! 
 		//! @return [0,1)区間浮動小数点乱数
 		//! 
-		const double real2( )
+		double real2( )
 		{
 			return ( int32( ) * ( 1.0 / 4294967296.0 ) );
 			/* divided by 2^32 */
@@ -309,7 +289,7 @@ namespace uniform
 		//! 
 		//! @return (0,1)区間浮動小数点乱数
 		//! 
-		const double real3( )
+		double real3( )
 		{
 			return ( ( ( double ) int32( ) ) + 0.5 ) * ( 1.0 / 4294967296.0 );
 			/* divided by 2^32 */
@@ -322,7 +302,7 @@ namespace uniform
 		//! 
 		//! @return [0,1)区間浮動小数点乱数(53bit分解能)
 		//! 
-		const double res53( )
+		double res53( )
 		{
 			const unsigned long a = int32( ) >> 5;
 			const unsigned long b = int32( ) >> 6;
@@ -337,9 +317,21 @@ namespace uniform
 		//! 
 		//! @return 0, 1, ... N-1 の符号無し整数乱数発生
 		//! 
-		const unsigned long  operator( )( const unsigned int n )
+		unsigned long  generate( const unsigned int n = 0xffffffffUL )
 		{
 			return ( static_cast< unsigned long >( real2( ) * n ) );
+		}
+
+
+		/// @brief 0, 1, ... N-1 の符号無し整数乱数発生
+		//! 
+		//! @param[in] n … N の値
+		//! 
+		//! @return 0, 1, ... N-1 の符号無し整数乱数発生
+		//! 
+		unsigned long  operator( )( const unsigned int n = 0xffffffffUL )
+		{
+			return generate( n );
 		}
 
 	};
@@ -363,6 +355,7 @@ namespace gauss
 		double standard_deviation_;		///< @brief 生成する正規乱数の標準偏差
 
 	public:
+
 
 		/// @brief デフォルトコンストラクタ
 		//! 
@@ -414,7 +407,7 @@ namespace gauss
 
 		/// @brief seedで初期化
 		//! 
-		//! initializes mt_[number_n_] with a seed
+		//! initializes vec_[n_] with a seed
 		//! 
 		//! @param[in] seed … u_rand_のseed(これを用いてseed配列を作る)
 		//! 
@@ -436,28 +429,6 @@ namespace gauss
 		{
 			u_rand_.init( seed_array );
 		}
-		
-		/// @brief 32bit符号無し整数一様乱数の発生
-		//! 
-		//! generates a random number on [0,0xffffffff]-interval
-		//! 
-		//! @return 32bit符号無し整数一様乱数
-		//! 
-		const unsigned long int32( )
-		{
-			return( u_rand_.int32( ) );
-		}
-
-		/// @brief 0, 1, ... N-1 の符号無し整数乱数発生
-		//! 
-		//! @param[in] n … N の値
-		//! 
-		//! @return 0, 1, ... N-1 の符号無し整数乱数発生
-		//!
-		const unsigned long  operator( )( const unsigned int n )
-		{
-			return ( u_rand_.operator( )( n ) );
-		}
 
 		/// @brief 正規乱数のパラメータ指定
 		//! 
@@ -474,18 +445,18 @@ namespace gauss
 		//! 
 		//! @return 生成された正規乱数
 		//! 
-		const double generate( )
+		double generate( )
 		{
-			return( standard_deviation_ * std::sqrt( -2.0 * std::log( 1.0 - u_rand_.real2( ) ) ) * std::cos( u_rand_.pai_timed_by_2_ * ( 1.0 - u_rand_.real2( ) ) ) + mean_ );
+			return( standard_deviation_ * std::sqrt( -2.0 * std::log( 1.0 - u_rand_.real2( ) ) ) * std::cos( __random__::pai_timed_by_2 * ( 1.0 - u_rand_.real2( ) ) ) + mean_ );
 		}
 
 		/// @brief 指定された平均・分散の正規乱数を生成
 		//! 
 		//! @return 生成された正規乱数
 		//! 
-		const double operator( )( )
+		double operator( )( )
 		{
-			return( standard_deviation_ * std::sqrt( -2.0 * std::log( 1.0 - u_rand_.real2( ) ) ) * std::cos( u_rand_.pai_timed_by_2_ * ( 1.0 - u_rand_.real2( ) ) ) + mean_ );
+			return generate( );
 		}
 
 	};
@@ -547,6 +518,7 @@ namespace multivariate_gauss
 
 	public:
 
+
 		/// @brief デフォルトコンストラクタ
 		//! 
 		//! 
@@ -599,7 +571,7 @@ namespace multivariate_gauss
 		//! 
 		//! @return 生成された正規乱数
 		//! 
-		const matrix< double > generate( )
+		matrix< double > generate( )
 		{
 			matrix< double > r_vec( mean_.rows( ), mean_.cols( ) );
 			for( size_t i = 0 ; i < r_vec.size( ) ; i ++ )
@@ -613,14 +585,9 @@ namespace multivariate_gauss
 		//! 
 		//! @return 生成された正規乱数
 		//! 
-		const matrix< double > operator( )( )
+		matrix< double > operator( )( )
 		{
-			matrix< double > r_vec( mean_.rows( ), mean_.cols( ) );
-			for( size_t i = 0 ; i < r_vec.size( ) ; i ++ )
-			{
-				r_vec[ i ] = g_rand_.generate( ); 
-			}
-			return( mean_ + l_triangle_ * r_vec );
+			return generate( );
 		}
 	};
 
