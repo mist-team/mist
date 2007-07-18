@@ -30,6 +30,7 @@
 #include <ctime>
 
 #include <mist/mist.h>
+#include <mist/matrix.h>
 #include <mist/random.h>
 #include <mist/statistics.h>
 
@@ -37,19 +38,88 @@
 int main( int argc, char *argv[] )
 {
 	typedef mist::array< double >::size_type size_type;
+	size_type num = 100000;
 
-	size_type num = 10000, i;
 
+
+	
 	mist::array< double > data( num );
-	mist::uniform::random rnd( std::clock( ) );
+
+
+
+
+	std::cout << "***** mist::uniform::random test *****" << std::endl;
+
+	mist::uniform::random u_rnd( std::clock( ) );
+
+	for( size_t i = 0 ; i < num ; i++ )
+	{
+		data[ i ] = u_rnd.real1( );
+	}
+
+	std::cout << "Mean:     " << mist::statistics::average( data ) << std::endl;
+	std::cout << "Variance: " << mist::statistics::variance( data ) << std::endl << std::endl;
+
+
+
+
+	std::cout << "***** mist::gauss::random test *****" << std::endl;
+
+	double mean = 0.0;
+	double variance = 1.0;
+	mist::gauss::random g_rnd( std::clock( ), mean, variance );
+
+	for( size_t i = 0 ; i < num ; i++ )
+	{
+		data[ i ] = g_rnd.generate( );
+	}
+
+	std::cout << "Mean:     " << mist::statistics::average( data ) << std::endl;
+	std::cout << "Variance: " << std::sqrt( mist::statistics::variance( data ) ) << std::endl << std::endl;
+
+
+
+
+	mist::array< mist::matrix< double > > vec_data( num );	
+
+
+
+	std::cout << "***** mist::multivariate_gauss::random test *****" << std::endl;
+
+
+
+	mist::matrix< double > mean_vec = mist::matrix< double >::_21( 0.0, 0.0 );
+	mist::matrix< double > covariance_mat = mist::matrix< double >::_22( 1.0, 0.0, 0.0, 1.0 );
+	mist::multivariate_gauss::random mg_rnd( std::clock( ), mean_vec, covariance_mat );
 
 	for( i = 0 ; i < num ; i++ )
 	{
-		data[ i ] = rnd.real1( );
+		vec_data[ i ] = mg_rnd.generate( );
 	}
 
-	std::cout << "Average: " << mist::statistics::average( data ) << std::endl;
-	std::cout << "SD:      " << std::sqrt( mist::statistics::variance( data ) ) << std::endl;
+	mist::matrix< double > m( mean_vec.rows( ), 1 );
+	for( size_t i = 0 ; i != vec_data.size( ) ; ++ i )
+	{
+		m += vec_data[ i ];
+	}
+	m /= vec_data.size( );
+	std::cout << "Mean vector:" << std::endl << m << std::endl;
+	mist::matrix< double > cov( covariance_mat.rows( ), num );
+	
+	for( size_t i = 0 ; i != vec_data.size( ) ; ++ i )
+	{
+		vec_data[ i ] -= m;
+		for( size_t r = 0 ; r != cov.rows( ) ; ++ r )
+		{
+			cov( r, i ) = vec_data[ i ]( r, 0 );
+		}
+	}
+	cov *= cov.t( );
+	cov /= vec_data.size( );
+	std::cout << "Covariance matrix: " << std::endl << cov << std::endl;
+
+
+
 
 	return( 0 );
 }
