@@ -68,7 +68,7 @@ _MIST_BEGIN
 
 #define __ASYMMETRIC_WEIGHTING__		1		///< AdaBoost の弱識別器に付与する重みを非対称にするかどうか
 #define __ONE_PER_CLASS_CODE_WORD__		0		///< 1クラスに1つ一意の Code Word を割り当てるかどうか
-#define __RANDOM_CODE_WORD__			1		///< ERPを実行する際に使用する初期 Code Word をランダムに生成するかどうか
+#define __RANDOM_CODE_WORD__			0		///< ERPを実行する際に使用する初期 Code Word をランダムに生成するかどうか
 #define __DEBUG_OUTPUT_LEVEL__			0		///< コンソールに学習の様子をデバッグ情報として出力するレベル（0は何も出力しない）
 #define __NUMBER_OF_INNER_LOOPS__		10		///< Ling Li の方法を使って Code Word を更新する最大回数
 
@@ -602,7 +602,7 @@ namespace machine_learning
 				size_type nhypothesis = categories_.size( );
 #else
 				// code word を ECC ベースで作る
-				size_type nhypothesis = categories_.size( ) == 2 ? 2 : __power_of_two__( categories_.size( ) - 1 ) - 1;
+				size_type nhypothesis = 0;
 #endif
 
 				// AdaBoost により強識別器を学習する
@@ -613,10 +613,10 @@ namespace machine_learning
 					std::vector< bool > &myu = code_word_.back( );
 
 #if defined( __ONE_PER_CLASS_CODE_WORD__ ) && __ONE_PER_CLASS_CODE_WORD__ == 1
-					myu[ t % categories_.size( ) ] = true;
+					myu[ t % nhypothesis ] = true;
 #elif defined( __RANDOM_CODE_WORD__ ) && __RANDOM_CODE_WORD__ == 1
 					{
-						std::vector< pair< double, size_type > > list( categories_.size( ) );
+						std::vector< pair< double, size_type > > list( nhypothesis );
 						for( size_type i = 0 ; i < list.size( ) ; i++ )
 						{
 							list[ i ].key = rnd.real1( );
@@ -629,20 +629,32 @@ namespace machine_learning
 						}
 					}
 #else
-					if( nhypothesis == 2 )
+					if( categories_.size( ) == 2 )
 					{
-						myu[ 0 ] = ( t % nhypothesis ) == 0;
+						myu[ 0 ] = ( t % 2 ) == 0;
 						myu[ 1 ] = !myu[ 0 ];
 					}
 					else
 					{
 						myu[ 0 ] = true;
-						for( size_type r = 1 ; r < myu.size( ) ; r++ )
+						size_type val = nhypothesis++;
+						bool flag = true;
+						for( size_type r = categories_.size( ) - 1 ; r > 0 ; r-- )
 						{
-							// code word を ECC ベースで動的に作る
-							size_type c = t % nhypothesis;
-							size_type d = ( nhypothesis + 1 ) / __power_of_two__( r );
-							myu[ r ] = ( ( c / d ) % 2 ) == 1;
+							bool b = ( val & 1 ) != 0;
+							flag = flag && b;
+							myu[ r ] = b;
+							val >>= 1;
+						}
+
+						if( flag )
+						{
+							val = nhypothesis++;
+							for( size_type r = categories_.size( ) - 1 ; r > 0 ; r-- )
+							{
+								myu[ r ] = ( val & 1 ) != 0;
+								val >>= 1;
+							}
 						}
 					}
 #endif
