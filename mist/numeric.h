@@ -182,7 +182,16 @@ namespace __clapack__
 		int LPFNAME( dgeqrf ) ( integer *m, integer *n, doublereal *a, integer *lda, doublereal *tau, doublereal *work, integer *lwork, integer *info );
 		int LPFNAME( cgeqrf ) ( integer *m, integer *n, complex *a, integer *lda, complex *tau, complex *work, integer *lwork, integer *info );
 		int LPFNAME( zgeqrf ) ( integer *m, integer *n, doublecomplex *a, integer *lda, doublecomplex *tau, doublecomplex *work, integer *lwork, integer *info );
-
+		// 一般行列のQR分解(Level3 Blas)
+		int LPFNAME( sgeqp3 ) ( integer *m, integer *n, real *a, integer *lda, integer *jpvt, real *tau, real *work, integer *lwork, integer *info );
+		int LPFNAME( dgeqp3 ) ( integer *m, integer *n, doublereal *a, integer *lda, integer *jpvt, doublereal *tau, doublereal *work, integer *lwork, integer *info );
+		int LPFNAME( cgeqp3 ) ( integer *m, integer *n, complex *a, integer *lda, integer *jpvt, complex *tau, complex *work, integer *lwork, real *rwork, integer *info );
+		int LPFNAME( zgeqp3 ) ( integer *m, integer *n, doublecomplex *a, integer *lda, integer *jpvt, doublecomplex *tau, doublecomplex *work, integer *lwork, doublereal *rwork, integer *info );
+		// 一般行列のQR分解後のQ行列を作成するルーチン
+		int LPFNAME( sorgqr ) ( integer *m, integer *n, integer *k, real *a, integer *lda, real *tau, real *work, integer *lwork, integer *info );
+		int LPFNAME( dorgqr ) ( integer *m, integer *n, integer *k, doublereal *a, integer *lda, doublereal *tau, doublereal *work, integer *lwork, integer *info );
+		int LPFNAME( cungqr ) ( integer *m, integer *n, integer *k, complex *a, integer *lda, complex *tau, complex *work, integer *lwork, integer *info );
+		int LPFNAME( zungqr ) ( integer *m, integer *n, integer *k, doublecomplex *a, integer *lda, doublecomplex *tau, doublecomplex *work, integer *lwork, integer *info );
 
 		// LU分解の結果を用いた一般行列の逆行列の計算
 		int LPFNAME( sgetri ) ( integer *n, real *a, integer *lda, integer *ipiv, real *work, integer *lwork, integer *info );
@@ -517,6 +526,41 @@ namespace __clapack__
 		return( LPFNAME( zgeqrf ) ( &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( tau ), reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
 
+	// QR分解(Level3 Blas)
+	inline int geqp3( integer &m, integer &n, real *a, integer &lda, integer *jpvt, real *tau, real *work, integer &lwork, integer &info )
+	{
+		return( LPFNAME( sgeqp3 ) ( &m, &n, a, &lda, jpvt, tau, work, &lwork, &info ) );
+	}
+	inline int geqp3( integer &m, integer &n, doublereal *a, integer &lda, integer *jpvt, doublereal *tau, doublereal *work, integer &lwork, integer &info )
+	{
+		return( LPFNAME( dgeqp3 ) ( &m, &n, a, &lda, jpvt, tau, work, &lwork, &info ) );
+	}
+	inline int geqp3( integer &m, integer &n, std::complex< real > *a, integer &lda, integer *jpvt, std::complex< real > *tau, std::complex< real > *work, integer &lwork, real *rwork, integer &info )
+	{
+		return( LPFNAME( cgeqp3 ) ( &m, &n, reinterpret_cast< complex* >( a ), &lda, jpvt, reinterpret_cast< complex* >( tau ), reinterpret_cast< complex* >( work ), &lwork, rwork, &info ) );
+	}
+	inline int geqp3( integer &m, integer &n, std::complex< doublereal > *a, integer &lda, integer *jpvt, std::complex< doublereal > *tau, std::complex< doublereal > *work, integer &lwork, doublereal *rwork, integer &info )
+	{
+		return( LPFNAME( zgeqp3 ) ( &m, &n, reinterpret_cast< doublecomplex* >( a ), &lda, jpvt, reinterpret_cast< doublecomplex* >( tau ), reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
+	}
+
+	// 一般行列のQR分解後のQ行列を作成するルーチン
+	inline int orgqr( integer &m, integer &n, integer &k, real *a, integer &lda, real *tau, real *work, integer &lwork, integer &info )
+	{
+		return( LPFNAME( sorgqr ) ( &m, &n, &k, a, &lda, tau, work, &lwork, &info ) );
+	}
+	inline int orgqr( integer &m, integer &n, integer &k, doublereal *a, integer &lda, doublereal *tau, doublereal *work, integer &lwork, integer &info )
+	{
+		return( LPFNAME( dorgqr ) ( &m, &n, &k, a, &lda, tau, work, &lwork, &info ) );
+	}
+	inline int ungqr( integer &m, integer &n, integer &k, std::complex< real > *a, integer &lda, std::complex< real > *tau, std::complex< real > *work, integer &lwork, integer &info )
+	{
+		return( LPFNAME( cungqr ) ( &m, &n, &k, reinterpret_cast< complex* >( a ), &lda, reinterpret_cast< complex* >( tau ), reinterpret_cast< complex* >( work ), &lwork, &info ) );
+	}
+	inline int ungqr( integer &m, integer &n, integer &k, std::complex< doublereal > *a, integer &lda, std::complex< doublereal > *tau, std::complex< doublereal > *work, integer &lwork, integer &info )
+	{
+		return( LPFNAME( zungqr ) ( &m, &n, &k, reinterpret_cast< doublecomplex* >( a ), &lda, reinterpret_cast< doublecomplex* >( tau ), reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
+	}
 
 	// LU分解の結果を用いた一般行列の逆行列の計算
 	inline int getri( integer &n, real *a, integer &lda, integer *ipiv, real *work, integer &lwork, integer &info )
@@ -1166,11 +1210,13 @@ namespace __qr__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static matrix< T, Allocator >& qr_factorization( matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style )
+		static void qr_factorization( matrix< T, Allocator > &Q, matrix< T, Allocator > &R, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
+			typedef typename matrix< T, Allocator >::value_type value_type;
+			typedef typename matrix< T, Allocator >::size_type size_type;
 
-			if( a.empty( ) )
+			if( Q.empty( ) || Q.rows( ) < Q.cols( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
 				throw;
@@ -1184,11 +1230,11 @@ namespace __qr__
 			case matrix_style::ge:
 			default:
 				{
-					tau.resize( a.rows( ), a.cols( ) );
-
 					// LAPACK関数の引数
+					matrix< T, Allocator > &a = Q;
 					integer m      = static_cast< integer >( a.rows( ) );
 					integer n      = static_cast< integer >( a.cols( ) );
+					integer dim    = m < n ? m : n;
 					integer lda    = m;
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
@@ -1198,8 +1244,23 @@ namespace __qr__
 					if( info == 0 )
 					{
 						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
-						matrix< T, Allocator > work( lwork, 1 );
+						matrix< T, Allocator > work( lwork, 1 ), tau( dim, 1 );
 						__clapack__::geqrf( m, n, &( a[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
+
+						if( info == 0 )
+						{
+							// QR分解に成功したので、結果からQとRの行列を求める
+							R.resize( dim, n );
+							for( size_type c = 0 ; c < R.cols( ) ; c++ )
+							{
+								for( size_type r = 0 ; r <= c && r < R.rows( ) ; r++ )
+								{
+									R( r, c ) = a( r, c );
+								}
+							}
+
+							__clapack__::orgqr( m, n, dim, &( Q[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
+						}
 					}
 				}
 				break;
@@ -1210,8 +1271,6 @@ namespace __qr__
 				// 行列計算が正しく終了しなかったので例外をスローする
 				throw;
 			}
-
-			return( a );
 		}
 	};
 
@@ -1220,12 +1279,13 @@ namespace __qr__
 	{
 		// 複素数バージョン
 		template < class T, class Allocator >
-		static matrix< T, Allocator >& qr_factorization( matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style )
+		static void qr_factorization( matrix< T, Allocator > &Q, matrix< T, Allocator > &R, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
-			typedef typename T::value_type value_type;
+			typedef typename matrix< T, Allocator >::value_type value_type;
+			typedef typename matrix< T, Allocator >::size_type size_type;
 
-			if( a.empty( ) )
+			if( Q.empty( ) || Q.rows( ) < Q.cols( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
 				throw;
@@ -1238,11 +1298,11 @@ namespace __qr__
 			case matrix_style::ge:
 			default:
 				{
-					tau.resize( a.rows( ), a.cols( ) );
-
 					// LAPACK関数の引数
+					matrix< T, Allocator > &a = Q;
 					integer m      = static_cast< integer >( a.rows( ) );
 					integer n      = static_cast< integer >( a.cols( ) );
+					integer dim    = m < n ? m : n;
 					integer lda    = m;
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
@@ -1252,8 +1312,23 @@ namespace __qr__
 					if( info == 0 )
 					{
 						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
-						matrix< T, Allocator > work( lwork, 1 );
+						matrix< T, Allocator > work( lwork, 1 ), tau( dim, 1 );
 						__clapack__::geqrf( m, n, &( a[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
+
+						if( info == 0 )
+						{
+							// QR分解に成功したので、結果からQとRの行列を求める
+							R.resize( n, n );
+							for( size_type c = 0 ; c < R.cols( ) ; c++ )
+							{
+								for( size_type r = 0 ; r <= c && r < R.rows( ) ; r++ )
+								{
+									R( r, c ) = a( r, c );
+								}
+							}
+
+							__clapack__::ungqr( m, n, dim, &( Q[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
+						}
 					}
 				}
 				break;
@@ -1264,8 +1339,6 @@ namespace __qr__
 				// 行列計算が正しく終了しなかったので例外をスローする
 				throw;
 			}
-
-			return( a );
 		}
 	};
 }
@@ -3331,35 +3404,18 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 
 /// @brief 行列のQR分解を行う
 //! 
-//! \f[ {\bf Q} = {\bf H}_1 \; {\bf H}_2 \; \cdots \; {\bf H}_k \f]
-//! \f[ {\bf H}_i = {\bf I} - tau \cdot \mbox{\boldmath v} \mbox{\boldmath v}^T \f]
+//! \f[ {\bf A} = {\bf Q} \; {\bf R} \f]
 //! 
 //! @param[in]  a     … 入力行列
-//! @param[out] tau   … 基本反射の係数ベクトル
+//! @param[out] Q     … 行列Q
+//! @param[out] R     … 行列R
 //! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return QR分解された結果
 //! 
 template < class T, class Allocator >
-const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &tau, matrix_style::style style = matrix_style::ge )
+void qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &Q, matrix< T, Allocator > &R, matrix_style::style style = matrix_style::ge )
 {
-	matrix< T, Allocator > a_( a );
-	return( __qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a_, tau, style ) );
-}
-
-/// @brief 行列のQR分解を行う
-//! 
-//! @param[in]  a     … 入力行列
-//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return QR分解された結果
-//! 
-template < class T, class Allocator >
-const matrix< T, Allocator > qr_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
-{
-	typedef __clapack__::integer integer;
-	matrix< T, Allocator > a_( a ), tau( a.rows( ), a.cols( ) );
-	return( __qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a_, tau, style ) );
+	Q = a;
+	__qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( Q, R, style );
 }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
