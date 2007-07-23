@@ -706,13 +706,13 @@ namespace __clapack__
 								reinterpret_cast< doublecomplex* >( vr ), &ldvr, &ilo, &ihi, scale, &abnrm, rconde, rcondv, reinterpret_cast< doublecomplex* >( work ), &lwork, rwork, &info ) );
 	}
 	// 対称行列に対する固有値・固有ベクトルを計算
-	inline int geevx( char *jobz, char *range, char *uplo, integer &n, real *a, integer &lda,
+	inline int syevx( char *jobz, char *range, char *uplo, integer &n, real *a, integer &lda,
 						real &vl, real &vu, integer &il, integer &iu, real &abstol, integer &m, real *w, real *z__,
 						integer &ldz, real *work, integer &lwork, integer *iwork, integer *ifail, integer &info )
 	{
 		return( LPFNAME( ssyevx ) ( jobz, range, uplo, &n, a, &lda, &vl, &vu, &il, &iu, &abstol, &m, w, z__, &ldz, work, &lwork, iwork, ifail, &info ) );
 	}
-	inline int geevx( char *jobz, char *range, char *uplo, integer &n, doublereal *a, integer &lda,
+	inline int syevx( char *jobz, char *range, char *uplo, integer &n, doublereal *a, integer &lda,
 						doublereal &vl, doublereal &vu, integer &il, integer &iu, doublereal &abstol, integer &m, doublereal *w, doublereal *z__,
 						integer &ldz, doublereal *work, integer &lwork, integer *iwork, integer *ifail, integer &info )
 	{
@@ -1835,7 +1835,7 @@ namespace __eigen__
 					char *uplo        = "U";
 
 					// まず最適な作業用配列のサイズを取得する
-					__clapack__::geevx( jobz, range, uplo, n, NULL, lda, vl, vu, il, iu, abstol, m, NULL, NULL, ldz, &dmy, lwork, NULL, NULL, info );
+					__clapack__::syevx( jobz, range, uplo, n, NULL, lda, vl, vu, il, iu, abstol, m, NULL, NULL, ldz, &dmy, lwork, NULL, NULL, info );
 					if( info == 0 )
 					{
 						eigen_value.resize( n, 1 );
@@ -1845,7 +1845,7 @@ namespace __eigen__
 
 						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
-						__clapack__::geevx( jobz, range, uplo, n, &( a[0] ), lda, vl, vu, il, iu, abstol, m,
+						__clapack__::syevx( jobz, range, uplo, n, &( a[0] ), lda, vl, vu, il, iu, abstol, m,
 										&( eigen_value[0] ), &( eigen_vector[0] ), ldz, &( work[0] ), lwork, &( iwork[ 0 ] ), &( ifail[ 0 ] ), info );
 					}
 				}
