@@ -1210,7 +1210,7 @@ namespace __qr__
 	{
 		// 実数バージョン
 		template < class T, class Allocator >
-		static void qr_factorization( matrix< T, Allocator > &Q, matrix< T, Allocator > &R, matrix_style::style style )
+		static void qr_factorization( matrix< T, Allocator > &A, matrix< T, Allocator > &Q, matrix< T, Allocator > &R, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::value_type value_type;
@@ -1231,7 +1231,7 @@ namespace __qr__
 			default:
 				{
 					// LAPACK関数の引数
-					matrix< T, Allocator > &a = Q;
+					matrix< T, Allocator > &a = A;
 					integer m      = static_cast< integer >( a.rows( ) );
 					integer n      = static_cast< integer >( a.cols( ) );
 					integer dim    = m < n ? m : n;
@@ -1250,16 +1250,21 @@ namespace __qr__
 						if( info == 0 )
 						{
 							// QR分解に成功したので、結果からQとRの行列を求める
-							R.resize( dim, n );
+							R.resize( m, n );
+							Q.resize( m, m );
 							for( size_type c = 0 ; c < R.cols( ) ; c++ )
 							{
-								for( size_type r = 0 ; r <= c && r < R.rows( ) ; r++ )
+								for( size_type r = 0 ; r <= c ; r++ )
 								{
 									R( r, c ) = a( r, c );
 								}
+								for( size_type r = 0 ; r < R.rows( ) ; r++ )
+								{
+									Q( r, c ) = a( r, c );
+								}
 							}
 
-							__clapack__::orgqr( m, n, dim, &( Q[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
+							__clapack__::orgqr( m, m, dim, &( Q[0] ), lda, &( tau[0] ), &( work[0] ), lwork, info );
 						}
 					}
 				}
@@ -1279,7 +1284,7 @@ namespace __qr__
 	{
 		// 複素数バージョン
 		template < class T, class Allocator >
-		static void qr_factorization( matrix< T, Allocator > &Q, matrix< T, Allocator > &R, matrix_style::style style )
+		static void qr_factorization( matrix< T, Allocator > &A, matrix< T, Allocator > &Q, matrix< T, Allocator > &R, matrix_style::style style )
 		{
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::value_type value_type;
@@ -1299,7 +1304,7 @@ namespace __qr__
 			default:
 				{
 					// LAPACK関数の引数
-					matrix< T, Allocator > &a = Q;
+					matrix< T, Allocator > &a = A;
 					integer m      = static_cast< integer >( a.rows( ) );
 					integer n      = static_cast< integer >( a.cols( ) );
 					integer dim    = m < n ? m : n;
@@ -1318,12 +1323,17 @@ namespace __qr__
 						if( info == 0 )
 						{
 							// QR分解に成功したので、結果からQとRの行列を求める
-							R.resize( n, n );
+							R.resize( m, n );
+							Q.resize( m, m );
 							for( size_type c = 0 ; c < R.cols( ) ; c++ )
 							{
-								for( size_type r = 0 ; r <= c && r < R.rows( ) ; r++ )
+								for( size_type r = 0 ; r <= c ; r++ )
 								{
 									R( r, c ) = a( r, c );
+								}
+								for( size_type r = 0 ; r < R.rows( ) ; r++ )
+								{
+									Q( r, c ) = a( r, c );
 								}
 							}
 
@@ -3414,8 +3424,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 template < class T, class Allocator >
 void qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &Q, matrix< T, Allocator > &R, matrix_style::style style = matrix_style::ge )
 {
-	Q = a;
-	__qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( Q, R, style );
+	matrix< T, Allocator > a_( a );
+	__qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a_, Q, R, style );
 }
 
 #if _USE_EXPRESSION_TEMPLATE_ != 0
