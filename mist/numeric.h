@@ -1216,7 +1216,7 @@ namespace __qr__
 			typedef typename matrix< T, Allocator >::value_type value_type;
 			typedef typename matrix< T, Allocator >::size_type size_type;
 
-			if( Q.empty( ) || Q.rows( ) < Q.cols( ) )
+			if( A.empty( ) || A.rows( ) < A.cols( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
 				throw;
@@ -1290,7 +1290,7 @@ namespace __qr__
 			typedef typename matrix< T, Allocator >::value_type value_type;
 			typedef typename matrix< T, Allocator >::size_type size_type;
 
-			if( Q.empty( ) || Q.rows( ) < Q.cols( ) )
+			if( A.empty( ) || A.rows( ) < A.cols( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
 				throw;
