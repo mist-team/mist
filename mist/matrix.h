@@ -135,6 +135,7 @@ namespace __numeric__
 		template < class T > static bool gt( const T &v1, const T &v2 ){ return( v1 >  v2 ); }
 		template < class T > static bool eq( const T &v1, const T &v2 ){ return( v1 == v2 ); }
 		template < class T > static bool eq( const T &v1, const T &v2, const double delta ){ return( std::abs( v1 - v2 ) < delta ); }
+		template < class T > static bool is_zero( const T &v ){ return( v == 0 ); }
 	};
 
 	template< >
@@ -171,6 +172,7 @@ namespace __numeric__
 		{
 			return( std::abs( v1.real( ) - v2.real( ) ) < delta && std::abs( v1.imag( ) - v2.imag( ) ) < delta );
 		}
+		template < class T > static bool is_zero( const T &v ){ return( v.real( ) == 0 && v.imag( ) == 0 ); }
 	};
 
 	// ã§ñï°ëfêîÇï‘Ç∑ä÷êî
@@ -1157,9 +1159,9 @@ public:
 	{
 		const matrix &m = *this;
 		matrix o( size2_, size1_ );
-		for( size_type r = 0 ; r < o.rows( ) ; r++ )
+		for( size_type c = 0 ; c < o.cols( ) ; c++ )
 		{
-			for( size_type c = 0 ; c < o.cols( ) ; c++ )
+			for( size_type r = 0 ; r < o.rows( ) ; r++ )
 			{
 				o( r, c ) = m( c, r );
 			}
@@ -1172,9 +1174,9 @@ public:
 	{
 		const matrix &m = *this;
 		matrix o( size2_, size1_ );
-		for( size_type r = 0 ; r < o.rows( ) ; r++ )
+		for( size_type c = 0 ; c < o.cols( ) ; c++ )
 		{
-			for( size_type c = 0 ; c < o.cols( ) ; c++ )
+			for( size_type r = 0 ; r < o.rows( ) ; r++ )
 			{
 				o( r, c ) = __numeric__::conjugate( m( c, r ) );
 			}
@@ -1256,7 +1258,7 @@ public:
 	const matrix& operator *=( const matrix< TT, AAlocator > &m2 )
 	{
 		matrix &m1 = *this;
-		typedef typename matrix< T, Allocator >::size_type size_type;
+
 #if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
 		if( m1.cols( ) != m2.rows( ) )
 		{
@@ -1266,16 +1268,24 @@ public:
 		}
 #endif
 
+		typedef __numeric__::value_compare< __numeric__::is_complex< value_type >::value > value_compare;
+
 		matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
 		size_type r, c, t;
 
-		for( r = 0 ; r < mat.rows( ) ; r++ )
+		for( c = 0 ; c < mat.cols( ) ; c++ )
 		{
-			for( c = 0 ; c < mat.cols( ) ; c++ )
+			for( t = 0 ; t < m1.cols( ) ; t++ )
 			{
-				for( t = 0 ; t < m1.cols( ) ; t++ )
+				value_type val = static_cast< value_type >( m2( t, c ) );
+				if( !value_compare::is_zero( val ) )
 				{
-					mat( r, c ) += m1( r, t ) * static_cast< T >( m2( t, c ) );
+					pointer pm0 = &mat( 0, c );
+					pointer pm1 = &m1( 0, t );
+					for( r = 0 ; r < mat.rows( ) ; r++ )
+					{
+						pm0[ r ] += pm1[ r ] * val;
+					}
 				}
 			}
 		}
@@ -1382,9 +1392,9 @@ public:
 			return( m1 );
 		}
 #endif
-		for( size_type r = 0 ; r < m1.rows( ) ; r++ )
+		for( size_type c = 0 ; c < m1.cols( ) ; c++ )
 		{
-			for( size_type c = 0 ; c < m1.cols( ) ; c++ )
+			for( size_type r = 0 ; r < m1.rows( ) ; r++ )
 			{
 				m1( r, c ) += m2( r, c );
 			}
@@ -1413,9 +1423,9 @@ public:
 			return( m1 );
 		}
 #endif
-		for( size_type r = 0 ; r < m1.rows( ) ; r++ )
+		for( size_type c = 0 ; c < m1.cols( ) ; c++ )
 		{
-			for( size_type c = 0 ; c < m1.cols( ) ; c++ )
+			for( size_type r = 0 ; r < m1.rows( ) ; r++ )
 			{
 				m1( r, c ) -= m2( r, c );
 			}
@@ -1447,13 +1457,19 @@ public:
 
 		matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
 
-		for( size_type r = 0 ; r < mat.rows( ) ; r++ )
+		for( size_type c = 0 ; c < mat.cols( ) ; c++ )
 		{
-			for( size_type c = 0 ; c < mat.cols( ) ; c++ )
+			for( size_type t = 0 ; t < m1.cols( ) ; t++ )
 			{
-				for( size_type t = 0 ; t < m1.cols( ) ; t++ )
+				value_type val = static_cast< value_type >( m2( t, c ) );
+				if( !value_compare::is_zero( val ) )
 				{
-					mat( r, c ) += m1( r, t ) * m2( t, c );
+					pointer pm0 = &mat( 0, c );
+					pointer pm1 = &m1( 0, t );
+					for( size_type r = 0 ; r < mat.rows( ) ; r++ )
+					{
+						mat( r, c ) += m1( r, t ) * m2( t, c );
+					}
 				}
 			}
 		}
@@ -1604,9 +1620,9 @@ public:
 
 			if( resize( expression.rows( ), expression.cols( ) ) )
 			{
-				for( size_type r = 0 ; r < m.rows( ) ; r++ )
+				for( size_type c = 0 ; c < m.cols( ) ; c++ )
 				{
-					for( size_type c = 0 ; c < m.cols( ) ; c++ )
+					for( size_type r = 0 ; r < m.rows( ) ; r++ )
 					{
 						m( r, c ) = expression( r, c );
 					}
@@ -1616,9 +1632,9 @@ public:
 		else
 		{
 			matrix m( expression.rows( ), expression.cols( ) );
-			for( size_type r = 0 ; r < m.rows( ) ; r++ )
+			for( size_type c = 0 ; c < m.cols( ) ; c++ )
 			{
-				for( size_type c = 0 ; c < m.cols( ) ; c++ )
+				for( size_type r = 0 ; r < m.rows( ) ; r++ )
 				{
 					m( r, c ) = expression( r, c );
 				}
@@ -1798,9 +1814,9 @@ public:
 		else
 		{
 			matrix &m = *this;
-			for( size_type r = 0 ; r < m.rows( ) ; r++ )
+			for( size_type c = 0 ; c < m.cols( ) ; c++ )
 			{
-				for( size_type c = 0 ; c < m.cols( ) ; c++ )
+				for( size_type r = 0 ; r < m.rows( ) ; r++ )
 				{
 					m( r, c ) = expression( r, c );
 				}
@@ -2131,30 +2147,7 @@ inline matrix< T, Allocator > operator -( const matrix< T, Allocator > &m1, cons
 template < class T, class Allocator >
 inline matrix< T, Allocator > operator *( const matrix< T, Allocator > &m1, const matrix< T, Allocator > &m2 )
 {
-#if defined( _CHECK_MATRIX_OPERATION_ ) && _CHECK_MATRIX_OPERATION_ != 0
-	if( m1.cols( ) != m2.rows( ) )
-	{
-		// ä|ÇØéZÇ≈Ç´Ç‹ÇπÇÒó·äO
-		::std::cerr << "can't multiply matrices." << ::std::endl;
-		return( m1 );
-	}
-#endif
-
-	matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
-	typename matrix< T, Allocator >::size_type r, c, t;
-
-	for( r = 0 ; r < mat.rows( ) ; r++ )
-	{
-		for( c = 0 ; c < mat.cols( ) ; c++ )
-		{
-			for( t = 0 ; t < m1.cols( ) ; t++ )
-			{
-				mat( r, c ) += m1( r, t ) * m2( t, c );
-			}
-		}
-	}
-
-	return( mat );
+	return( matrix< T, Allocator >( m1 ) *= m2 );
 }
 
 
