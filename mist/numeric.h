@@ -2795,149 +2795,6 @@ inline bool multiply( const matrix< T, Allocator > &a, const matrix< T, Allocato
 }
 
 
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-/// @brief 行列×行列の演算を行う
-//! 
-//! \f[ {\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C} \f]
-//! 
-//! @param[in]  a … 入力行列 \f${\bf A}\f$
-//! @param[in]  b … 入力行列 \f${\bf B}\f$
-//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
-//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする
-//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする
-//! @param[in]  alpha … 行列演算の和を計算するときの係数
-//! @param[in]  beta  … 行列演算の和を計算するときの係数
-//!
-//! @return 行列の積が正しく計算できたかどうか
-//! 
-template < class Expression1, class Expression2, class T, class Allocator >
-inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_expression< Expression2 > &b, matrix< T, Allocator > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T, Allocator >::value_type alpha, typename matrix< T, Allocator >::value_type beta )
-{
-	typedef typename matrix_expression< Expression1 >::value_type value_type1;
-	typedef typename matrix_expression< Expression1 >::allocator_type allocator_type1;
-	typedef typename matrix_expression< Expression2 >::value_type value_type2;
-	typedef typename matrix_expression< Expression2 >::allocator_type allocator_type2;
-	typedef matrix< value_type1, allocator_type1 > matrix_type1;
-	typedef matrix< value_type2, allocator_type2 > matrix_type2;
-	return( multiply( matrix_type1( a ), matrix_type2( b ), c, a_is_transpose, b_is_transpose, alpha, beta ) );
-}
-
-/// @brief 行列×行列の演算を行う
-//! 
-//! \f[ {\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C} \f]
-//! 
-//! @param[in]  a … 入力行列 \f${\bf A}\f$
-//! @param[in]  b … 入力行列 \f${\bf B}\f$
-//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
-//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする
-//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする
-//! @param[in]  alpha … 行列演算の和を計算するときの係数
-//! @param[in]  beta  … 行列演算の和を計算するときの係数
-//!
-//! @return 行列の積が正しく計算できたかどうか
-//! 
-template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
-inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression< Expression > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T1, Allocator1 >::value_type alpha, typename matrix< T1, Allocator1 >::value_type beta )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	return( multiply( a, matrix_type( b ), c, a_is_transpose, b_is_transpose, alpha, beta ) );
-}
-
-/// @brief 行列×行列の演算を行う
-//! 
-//! \f[ {\bf C} = \alpha \times {\bf A} \times {\bf B} + \beta \times {\bf C} \f]
-//! 
-//! @param[in]  a … 入力行列 \f${\bf A}\f$
-//! @param[in]  b … 入力行列 \f${\bf B}\f$
-//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
-//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする
-//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする
-//! @param[in]  alpha … 行列演算の和を計算するときの係数
-//! @param[in]  beta  … 行列演算の和を計算するときの係数
-//!
-//! @return 行列の積が正しく計算できたかどうか
-//! 
-template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
-inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1, Allocator1 > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose, bool b_is_transpose, typename matrix< T1, Allocator1 >::value_type alpha, typename matrix< T1, Allocator1 >::value_type beta )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	return( multiply( matrix_type( a ), b, c, a_is_transpose, b_is_transpose, alpha, beta ) );
-}
-
-
-/// @brief 行列×行列の演算を行う
-//! 
-//! \f[ {\bf C} = {\bf A} \times {\bf B} \f]
-//! 
-//! @param[in]  a … 入力行列 \f${\bf A}\f$
-//! @param[in]  b … 入力行列 \f${\bf B}\f$
-//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
-//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
-//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
-//!
-//! @return 行列の積が正しく計算できたかどうか
-//! 
-template < class Expression1, class Expression2, class T, class Allocator >
-inline bool multiply( const matrix_expression< Expression1 > &a, const matrix_expression< Expression2 > &b, matrix< T, Allocator > &c, bool a_is_transpose = false, bool b_is_transpose = false )
-{
-	typedef typename matrix_expression< Expression1 >::value_type value_type1;
-	typedef typename matrix_expression< Expression1 >::allocator_type allocator_type1;
-	typedef typename matrix_expression< Expression2 >::value_type value_type2;
-	typedef typename matrix_expression< Expression2 >::allocator_type allocator_type2;
-	typedef matrix< value_type1, allocator_type1 > matrix_type1;
-	typedef matrix< value_type2, allocator_type2 > matrix_type2;
-	return( multiply( matrix_type1( a ), matrix_type2( b ), c, a_is_transpose, b_is_transpose, 1, 0 ) );
-}
-
-/// @brief 行列×行列の演算を行う
-//! 
-//! \f[ {\bf C} = {\bf A} \times {\bf B} \f]
-//! 
-//! @param[in]  a … 入力行列 \f${\bf A}\f$
-//! @param[in]  b … 入力行列 \f${\bf B}\f$
-//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
-//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
-//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
-//!
-//! @return 行列の積が正しく計算できたかどうか
-//! 
-template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
-inline bool multiply( const matrix< T1, Allocator1 > &a, const matrix_expression< Expression > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose = false, bool b_is_transpose = false )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	return( multiply( a, matrix_type( b ), c, a_is_transpose, b_is_transpose, 1, 0 ) );
-}
-
-/// @brief 行列×行列の演算を行う
-//! 
-//! \f[ {\bf C} = {\bf A} \times {\bf B} \f]
-//! 
-//! @param[in]  a … 入力行列 \f${\bf A}\f$
-//! @param[in]  b … 入力行列 \f${\bf B}\f$
-//! @param[out] c … 計算結果を出力する行列 \f${\bf C}\f$
-//! @param[in]  a_is_transpose … 行列 \f${\bf A}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
-//! @param[in]  b_is_transpose … 行列 \f${\bf B}\f$ を転置行列として掛け算する場合は true とする（デフォルトは false ）
-//!
-//! @return 行列の積が正しく計算できたかどうか
-//! 
-template < class Expression, class T1, class Allocator1, class T2, class Allocator2 >
-inline bool multiply( const matrix_expression< Expression > &a, const matrix< T1, Allocator1 > &b, matrix< T2, Allocator2 > &c, bool a_is_transpose = false, bool b_is_transpose = false )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	return( multiply( matrix_type( a ), b, c, a_is_transpose, b_is_transpose, 1, 0 ) );
-}
-
-#endif
-
 
 /// @brief LU分解などで得られるピボット配列からピボット行列を作成
 //! 
@@ -2999,36 +2856,6 @@ inline const typename matrix< T, Allocator >::value_type trace( const matrix< T,
 	}
 	return( v );
 }
-
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-/// @brief トレースの計算（対角成分の和）
-//! 
-//! \f[ tr\left( {\bf A} \right) = \sum^{n}_{i=1}{ a_{ii} } \f]
-//! 
-//! @param[in] expression … 複数の行列演算を表す式
-//!
-//! @return \f$tr\left( {\bf A} \right)\f$
-//! 
-template < class Expression >
-inline const typename matrix_expression< Expression >::value_type trace( const matrix_expression< Expression > &expression )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::size_type size_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-
-	value_type v = value_type( 0 );
-	size_type size = expression.rows( ) < expression.cols( ) ? expression.rows( ) : expression.cols( );
-	for( size_type i = 0 ; i < size ; ++i )
-	{
-		v += expression( i, i );
-	}
-
-	return( v );
-}
-
-#endif
 
 
 /** @brief 行列式の計算
@@ -3127,77 +2954,6 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 	}
 }
 
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-/// @brief 行列式の計算
-//! 
-//! @param[in] e     … 複数の行列演算を表す式
-//! @param[in] style … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return \f$\left| {\bf A} \right|\f$
-//! 
-template < class Expression >
-inline const typename matrix_expression< Expression >::value_type det( const matrix_expression< Expression > &e, matrix_style::style style = matrix_style::ge )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::size_type size_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-
-	if( e.rows( ) * e.cols( ) == 0 || e.rows( ) != e.cols( ) )
-	{
-		return( value_type( 0 ) );
-	}
-
-	switch( e.rows( ) )
-	{
-	case 1:
-		return( e( 0, 0 ) );
-		break;
-
-	case 2:
-		return( e( 0, 0 ) * e( 1, 1 ) - e( 0, 1 ) * e( 1, 0 ) );
-		break;
-
-	case 3:
-		return( e( 0, 0 ) * e( 1, 1 ) * e( 2, 2 ) + e( 0, 1 ) * e( 1, 2 ) * e( 2, 0 ) + e( 0, 2 ) * e( 1, 0 ) * e( 2, 1 )
-				- e( 0, 2 ) * e( 1, 1 ) * e( 2, 0 ) - e( 0, 1 ) * e( 1, 0 ) * e( 2, 2 ) - e( 0, 0 ) * e( 1, 2 ) * e( 2, 1 ) );
-		break;
-
-	default:
-		{
-#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
-			// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
-			matrix< __clapack__::integer > pivot;
-#else
-			matrix< __clapack__::integer, typename allocator_type::template rebind< __clapack__::integer >::other > pivot;
-#endif
-			matrix_type m = lu_factorization( e, pivot, style );
-
-			value_type v = m( 0, 0 );
-			size_type size = m.rows( ) < m.cols( ) ? m.rows( ) : m.cols( );
-			size_type count = 0, i;
-
-			// LU分解時に行の入れ替えが行われた回数を計算する
-			for( i = 0 ; i < pivot.size( ) ; ++i )
-			{
-				count += static_cast< size_type >( pivot[ i ] ) != i + 1 ? 1 : 0;
-			}
-
-			// 対角成分の積を計算する
-			for( i = 1 ; i < size ; ++i )
-			{
-				v *= m( i, i );
-			}
-
-			return( count % 2 == 0 ? v : -v );
-		}
-		break;
-	}
-}
-
-#endif
-
 
 
 /// @brief 行列の連立一次方程式を解く関数
@@ -3216,31 +2972,6 @@ inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, mat
 	matrix< T, Allocator > a_( a );
 	return( __solve__::__solve__< __numeric__::is_complex< T >::value >::solve( a_, b, style ) );
 }
-
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-/// @brief 行列の連立一次方程式を解く関数
-//!
-//! \f[ {\bf A}\mbox{\boldmath x} = \mbox{\boldmath b} \f]
-//! 
-//! @param[in]  expression … 複数の行列演算を表す式A
-//! @param[out] b          … ベクトル \f$\mbox{\boldmath b}\f$
-//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return ベクトル \f$\mbox{\boldmath x}\f$
-//! 
-template < class Expression >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
-			solve( const matrix_expression< Expression > &expression, matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &b, matrix_style::style style = matrix_style::ge )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	matrix_type a_( expression );
-	return( __solve__::__solve__< __numeric__::is_complex< value_type >::value >::solve( a_, b, style ) );
-}
-
-#endif
 
 
 
@@ -3326,54 +3057,6 @@ const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, 
 }
 
 
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-/// @brief 行列のLU分解を行う
-//! 
-//! @param[in]  expression … 複数の行列演算を表す式
-//! @param[out] pivot      … ピボット選択を行った結果を代入するベクトル
-//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return LU分解された結果
-//! 
-template < class Expression, class Allocator2 >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
-			lu_factorization( const matrix_expression< Expression > &expression, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	matrix_type a_( expression );
-	return( __lu__::__lu__< __numeric__::is_complex< value_type >::value >::lu_factorization( a_, pivot, style ) );
-}
-
-
-/// @brief 行列のLU分解を行う
-//! 
-//! @param[in]  expression … 複数の行列演算を表す式
-//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return LU分解された結果
-//! 
-template < class Expression >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
-						lu_factorization( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	matrix_type a_( expression );
-#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
-	// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
-	matrix< __clapack__::integer > pivot( a_.cols( ), 1 );
-#else
-	matrix< __clapack__::integer, typename allocator_type::template rebind< __clapack__::integer >::other > pivot( a_.cols( ), 1 );
-#endif
-	return( __lu__::__lu__< __numeric__::is_complex< value_type >::value >::lu_factorization( a_, pivot, style ) );
-}
-
-#endif
-
 
 /// @brief 対称行列のコレスキー分解を行う
 //! 
@@ -3385,31 +3068,9 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 template < class T, class Allocator >
 const matrix< T, Allocator > cholesky_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::sy )
 {
-	matrix< T, Allocator > a_( a );
-	return( __cholesky__::cholesky_factorization( a_, style ) );
+	return( __cholesky__::cholesky_factorization( matrix< T, Allocator >( a ), style ) );
 }
 
-
-
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-/// @brief 対称行列のコレスキー分解を行う
-//! 
-//! @param[in]  a     … 入力対称行列
-//! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return コレスキー分解された結果
-//! 
-template < class Expression, class Allocator2 >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
-					cholesky_factorization( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::sy )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	matrix_type a_( expression );
-	return( __cholesky__::cholesky_factorization( a_, style ) );
-}
-#endif
 
 
 /// @brief 行列のQR分解を行う
@@ -3424,54 +3085,8 @@ inline const matrix< typename matrix_expression< Expression >::value_type, typen
 template < class T, class Allocator >
 void qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &Q, matrix< T, Allocator > &R, matrix_style::style style = matrix_style::ge )
 {
-	matrix< T, Allocator > a_( a );
-	__qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a_, Q, R, style );
+	__qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( matrix< T, Allocator >( a ), Q, R, style );
 }
-
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-/// @brief 行列のQR分解を行う
-//! 
-//! @param[in]  expression … 複数の行列演算を表す式
-//! @param[out] tau        … 基本反射の係数ベクトル
-//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return QR分解された結果
-//! 
-template < class Expression >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
-			qr_factorization( const matrix_expression< Expression > &expression,
-								matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &tau,
-								matrix_style::style style = matrix_style::ge )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	matrix_type a_( expression );
-	return( __qr__::__qr__< __numeric__::is_complex< value_type >::value >::qr_factorization( a_, tau, style ) );
-}
-
-/// @brief 行列のQR分解を行う
-//! 
-//! @param[in]  expression … 複数の行列演算を表す式
-//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return QR分解された結果
-//! 
-template < class Expression >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
-						qr_factorization( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	matrix_type a_( expression ), tau( a_.rows( ), a_.cols( ) );
-	return( __qr__::__qr__< __numeric__::is_complex< value_type >::value >::qr_factorization( a_, tau, style ) );
-}
-
-#endif
-
-
 
 
 
@@ -3513,32 +3128,6 @@ matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::s
 		return( __inverse__::__inverse__< __numeric__::is_complex< T >::value >::inverse( a_, style ) );
 	}
 }
-
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-/// @brief 行列の逆行列をLU分解を用いて計算する
-//! 
-//! 正方行列で無い場合は，特異値分解を用いて一般化逆行列を計算する
-//! 
-//! @param[in] expression … 複数の行列演算を表す式
-//! @param[in] style      … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return 逆行列 \f$ {\bf A}^{-1} \f$
-//! 
-template < class Expression >
-inline matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >
-						inverse( const matrix_expression< Expression > &expression, matrix_style::style style = matrix_style::ge )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	matrix_type a_( expression );
-	return( __inverse__::__inverse__< __numeric__::is_complex< value_type >::value >::inverse( a_, style ) );
-}
-
-#endif
-
-
 
 
 
@@ -3599,75 +3188,6 @@ const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T,
 	return( eigen_value );
 }
 
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-/// @brief 行列の固有値・固有ベクトルを計算する
-//! 
-//! \f[ {\bf A}\mbox{\boldmath x} = \lambda\mbox{\boldmath x} \f]
-//! 
-//! 計算結果は，_DESCENDING_ORDER_EIGEN_VALUE_ の値によって，固有値が昇順・降順のどちらかで並ぶように変換される
-//! 
-//! @param[in]  expression   … 複数の行列演算を表す式 \f${\bf A}\f$
-//! @param[out] eigen_value  … 固有値が昇順・降順のどちらかで入ったベクトル \f$\lambda\f$
-//! @param[out] eigen_vector … 固有値の昇順・降順のどちらかに対応し，左から固有ベクトルが並んだ行列 \f$\mbox{\boldmath x}\f$
-//! @param[in]  style        … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return 固有値が並んだベクトル（eigen_valueと同じ） \f$\lambda\f$
-//! 
-template < class Expression >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
-						eigen( const matrix_expression< Expression > &expression,
-						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &eigen_value,
-						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &eigen_vector,
-						matrix_style::style style = matrix_style::ge )
-{
-	typedef typename matrix_expression< Expression >::size_type size_type;
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-
-	matrix_type a_( expression );
-	
-	__eigen__::__eigen__< __numeric__::is_complex< value_type >::value >::eigen( a_, eigen_value, eigen_vector, style );
-
-	typedef __clapack__::__value_index_pair__< value_type > value_index_pair;
-
-	std::vector< value_index_pair > vips( eigen_value.size( ) );
-
-	for( size_type i = 0 ; i < eigen_value.size( ) ; i++ )
-	{
-		value_index_pair &vi = vips[ i ];
-		vi.value = eigen_value[ i ];
-		vi.index = i;
-	}
-
-
-#if defined( _DESCENDING_ORDER_EIGEN_VALUE_ ) && _DESCENDING_ORDER_EIGEN_VALUE_ == 1
-	// 固有値と固有ベクトルを降順に並び替える
-	std::sort( vips.begin( ), vips.end( ), value_index_pair::descending );
-#else
-	// 固有値と固有ベクトルを昇順に並び替える
-	std::sort( vips.begin( ), vips.end( ), value_index_pair::ascending );
-#endif
-
-	a_ = eigen_vector;
-
-	for( size_type i = 0 ; i < vips.size( ) ; i++ )
-	{
-		const value_index_pair &vi = vips[ i ];
-		eigen_value[ i ] = vi.value;
-
-		for( size_type j = 0 ; j < eigen_vector.rows( ) ; j++ )
-		{
-			eigen_vector( j, i ) = a_( j, vi.index );
-		}
-	}
-
-	return( eigen_value );
-}
-
-#endif
-
 
 /// @brief 行列の特異値分解を計算する
 //! 
@@ -3712,70 +3232,6 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 	matrix< T1, Allocator1 > a_( a );
 	return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( a_, s, vt, style ) );
 }
-
-
-#if _USE_EXPRESSION_TEMPLATE_ != 0
-
-/// @brief 関数・クラスの概要を書く
-//! 
-//! \f[ {\bf A} = {\bf U}{\bf \Sigma}{\bf V}^T \f]
-//! 
-//! @note 対角行列の成分は，左上から値の大きい順に並ぶ
-//! 
-//! @param[in]  expression … 複数の行列演算を表す式 \f$ {\bf A} \f$
-//! @param[out] u          … 列直行行列 \f$ {\bf U} \f$
-//! @param[out] s          … 対角行列 \f$ {\bf \Sigma} \f$
-//! @param[out] vt         … 直行行列の転置 \f$ {\bf V}^T \f$
-//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return 対角行列 \f$ {\bf \Sigma} \f$
-//! 
-template < class Expression >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
-						svd( const matrix_expression< Expression > &expression,
-						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &u,
-						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &s,
-						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &vt,
-						matrix_style::style style = matrix_style::ge )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	matrix_type a_( expression );
-	return( __svd__::__svd__< __numeric__::is_complex< value_type >::value >::svd( a_, u, s, vt, style ) );
-}
-
-
-/// @brief 関数・クラスの概要を書く
-//! 
-//! \f[ {\bf A} = {\bf U}{\bf \Sigma}{\bf V}^T \f]
-//! 
-//! \f$ {\bf \Sigma} \f$ の体格成分と \f$ {\bf V}^T \f$ のみを計算する
-//! 
-//! @note 対角行列の成分は，左上から値の大きい順に並ぶ
-//! 
-//! @param[in]  expression … 複数の行列演算を表す式 \f$ {\bf A} \f$
-//! @param[out] s          … 対角行列 \f$ {\bf \Sigma} \f$ の体格成分のみのベクトル
-//! @param[out] vt         … 直行行列の転置 \f$ {\bf V}^T \f$
-//! @param[in]  style      … 入力行列の形式（デフォルトは一般行列を指定）
-//!
-//! @return 対角行列 \f$ {\bf \Sigma} \f$
-//! 
-template < class Expression >
-inline const matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type >&
-						svd( const matrix_expression< Expression > &expression,
-						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &s,
-						matrix< typename matrix_expression< Expression >::value_type, typename matrix_expression< Expression >::allocator_type > &vt,
-						matrix_style::style style = matrix_style::ge )
-{
-	typedef typename matrix_expression< Expression >::value_type value_type;
-	typedef typename matrix_expression< Expression >::allocator_type allocator_type;
-	typedef matrix< value_type, allocator_type > matrix_type;
-	matrix_type a_( expression );
-	return( __svd__::__svd__< __numeric__::is_complex< value_type >::value >::svd( a_, s, vt, style ) );
-}
-
-#endif
 
 
 /// @}

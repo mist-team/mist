@@ -191,7 +191,6 @@ _MIST_BEGIN
 	#define _CHECK_ARRAY3_OPERATION_		1	///< 3次元画像の演算の整合性をチェックするかどうか
 
 	#define _CHECK_MATRIX_OPERATION_		1	///< 行列演算の整合性をチェックするかどうか
-	#define _USE_EXPRESSION_TEMPLATE_		0	///< Expression Templateを利用するかどうか
 
 #else
 
@@ -203,7 +202,6 @@ _MIST_BEGIN
 	#define _CHECK_ARRAY3_OPERATION_		0	///< 3次元画像の演算の整合性をチェックするかどうか
 
 	#define _CHECK_MATRIX_OPERATION_		0	/// <行列演算の整合性をチェックするかどうか
-	#define _USE_EXPRESSION_TEMPLATE_		0	///< Expression Templateを利用するかどうか
 
 #endif
 
