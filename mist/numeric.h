@@ -1507,6 +1507,7 @@ namespace __inverse__
 							info = 1;
 						}
 					}
+					break;
 
 				case 4:
 					{
