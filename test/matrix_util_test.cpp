@@ -131,8 +131,11 @@ int main( )
 	{
 		std::cout << "QR factorization" << std::endl;
 
-		matrix aa = a;
-		std::cout << mist::qr_factorization( aa ) << std::endl << std::endl;
+		matrix aa = a, Q, R;
+		mist::qr_factorization( aa, Q, R );
+		std::cout << Q << std::endl << std::endl;
+		std::cout << R << std::endl << std::endl;
+		std::cout << Q * R << std::endl << std::endl;
 	}
 
 	{

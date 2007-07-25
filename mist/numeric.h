@@ -955,7 +955,7 @@ namespace __clapack__
 	inline const std::string to_string( integer value )
 	{
 		char buff[ 100 ];
-		sprintf( buff, "%d", value );
+		sprintf( buff, "%ld", value );
 		return( std::string( buff ) );
 	}
 }
@@ -3173,7 +3173,7 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 			}
 			catch( const numerical_exception &e )
 			{
-				// error が負の場合は根本的に計算不能
+				// error が負の場合は根本的に計算不能．
 				if( e.error < 0 )
 				{
 					throw( e );
@@ -3205,7 +3205,8 @@ inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, mat
 {
 	try
 	{
-		return( __solve__::__solve__< __numeric__::is_complex< T >::value >::solve( matrix< T, Allocator >( a ), b, style ) );
+		matrix< T, Allocator > a_( a );
+		return( __solve__::__solve__< __numeric__::is_complex< T >::value >::solve( a_, b, style ) );
 	}
 	catch( const numerical_exception &e )
 	{
@@ -3228,7 +3229,8 @@ const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a
 {
 	try
 	{
-		return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( matrix< T, Allocator1 >( a ), pivot, style ) );
+		matrix< T, Allocator1 > a_( a );
+		return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
 	}
 	catch( const numerical_exception &e )
 	{
@@ -3307,7 +3309,8 @@ const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, 
 
 	try
 	{
-		return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( matrix< T, Allocator >( a ), pivot, style ) );
+		matrix< T, Allocator > a_( a );
+		return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
 	}
 	catch( const numerical_exception &e )
 	{
@@ -3329,7 +3332,8 @@ const matrix< T, Allocator > cholesky_factorization( const matrix< T, Allocator 
 {
 	try
 	{
-		return( __cholesky__::cholesky_factorization( matrix< T, Allocator >( a ), style ) );
+		matrix< T, Allocator > a_( a );
+		return( __cholesky__::cholesky_factorization( a_, style ) );
 	}
 	catch( const numerical_exception &e )
 	{
@@ -3353,7 +3357,8 @@ void qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &
 {
 	try
 	{
-		__qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( matrix< T, Allocator >( a ), Q, R, style );
+		matrix< T, Allocator > a_( a );
+		__qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( a_, Q, R, style );
 	}
 	catch( const numerical_exception &e )
 	{
@@ -3496,7 +3501,8 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 {
 	try
 	{
-		return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( matrix< T1, Allocator1 >( a ), u, s, vt, style ) );
+		matrix< T1, Allocator1 > a_( a );
+		return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( a_, u, s, vt, style ) );
 	}
 	catch( const numerical_exception &e )
 	{
@@ -3525,7 +3531,8 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 {
 	try
 	{
-		return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( matrix< T1, Allocator1 >( a ), s, vt, style ) );
+		matrix< T1, Allocator1 > a_( a );
+		return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( a_, s, vt, style ) );
 	}
 	catch( const numerical_exception &e )
 	{

@@ -92,7 +92,7 @@ int main( int argc, char *argv[] )
 	mist::matrix< double > covariance_mat = mist::matrix< double >::_22( 1.0, 0.0, 0.0, 1.0 );
 	mist::multivariate_gauss::random mg_rnd( std::clock( ), mean_vec, covariance_mat );
 
-	for( i = 0 ; i < num ; i++ )
+	for( size_t i = 0 ; i < num ; i++ )
 	{
 		vec_data[ i ] = mg_rnd.generate( );
 	}
@@ -117,8 +117,6 @@ int main( int argc, char *argv[] )
 	cov *= cov.t( );
 	cov /= vec_data.size( );
 	std::cout << "Covariance matrix: " << std::endl << cov << std::endl;
-
-
 
 
 	return( 0 );
