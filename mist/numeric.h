@@ -86,6 +86,28 @@ struct matrix_style
 //  行列演算グループの終わり
 
 
+struct numerical_exception
+{
+	int error;
+	std::string message;
+
+	numerical_exception( ) : error( 0 ), message( )
+	{
+	}
+
+	numerical_exception( int err, const std::string &msg = "" ) : error( err ), message( msg )
+	{
+	}
+
+	numerical_exception( const std::string &msg ) : error( 0 ), message( msg )
+	{
+	}
+
+	numerical_exception( const numerical_exception &e ) : error( e.error ), message( e.message )
+	{
+	}
+};
+
 
 namespace __clapack__
 {
@@ -929,6 +951,13 @@ namespace __clapack__
 			}
 		}
 	};
+
+	inline const std::string to_string( integer value )
+	{
+		char buff[ 100 ];
+		sprintf( buff, "%d", value );
+		return( std::string( buff ) );
+	}
 }
 
 
@@ -948,7 +977,7 @@ namespace __solve__
 			if( a.rows( ) != b.rows( ) || a.empty( ) || b.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Incorrect matrix size is specified." ) );
 			}
 
 			integer info = 0;
@@ -976,6 +1005,19 @@ namespace __solve__
 						__clapack__::sysv( uplo, n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, &( work[0] ), lwork, info );
 					}
 					delete [] ipiv;
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						std::string val = __clapack__::to_string( info );
+						std::string msg = "D( " + val + ", " + val + " ) is exactly zero. The factorization has been completed, but the block diagonal matrix D is exactly singular, so the solution could not be computed.";
+						throw( numerical_exception( info, msg ) );
+					}
 				}
 				break;
 
@@ -1002,14 +1044,21 @@ namespace __solve__
 					// 最終的な結果は b に代入される
 					__clapack__::gesv( n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, info );
 					delete [] ipiv;
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						std::string val = __clapack__::to_string( info );
+						std::string msg = "U( " + val + ", " + val + " ) is exactly zero. The factorization has been completed, but the factor U is exactly singular, so the solution could not be computed";
+						throw( numerical_exception( info, msg ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( b );
@@ -1029,7 +1078,7 @@ namespace __solve__
 			if( a.rows( ) != b.rows( ) || a.empty( ) || b.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Incorrect matrix size is specified." ) );
 			}
 
 			integer info = 0;
@@ -1057,6 +1106,19 @@ namespace __solve__
 						__clapack__::sysv( uplo, n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, &( work[0] ), lwork, info );
 					}
 					delete [] ipiv;
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						std::string val = __clapack__::to_string( info );
+						std::string msg = "D( " + val + ", " + val + " ) is exactly zero. The factorization has been completed, but the block diagonal matrix D is exactly singular, so the solution could not be computed.";
+						throw( numerical_exception( info, msg ) );
+					}
 				}
 				break;
 
@@ -1083,14 +1145,21 @@ namespace __solve__
 					// 最終的な結果は b に代入される
 					__clapack__::gesv( n, nrhs, &( a[0] ), lda, ipiv, &( b[0] ), ldb, info );
 					delete [] ipiv;
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						std::string val = __clapack__::to_string( info );
+						std::string msg = "U( " + val + ", " + val + " ) is exactly zero. The factorization has been completed, but the factor U is exactly singular, so the solution could not be computed";
+						throw( numerical_exception( info, msg ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( b );
@@ -1117,7 +1186,7 @@ namespace __lu__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -1141,10 +1210,17 @@ namespace __lu__
 				break;
 			}
 
-			if( info != 0 )
+			if( info < 0 )
 			{
 				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
+				throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+			}
+			else if( info > 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				std::string val = __clapack__::to_string( info );
+				std::string msg = "U( " + val + ", " + val + " ) is exactly zero. The factorization has been completed, but the factor U is exactly singular, and division by zero will occur if it is used to solve a system of equations.";
+				throw( numerical_exception( info, msg ) );
 			}
 
 			return( a );
@@ -1164,7 +1240,7 @@ namespace __lu__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -1188,10 +1264,17 @@ namespace __lu__
 				break;
 			}
 
-			if( info != 0 )
+			if( info < 0 )
 			{
 				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
+				throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+			}
+			else if( info > 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				std::string val = __clapack__::to_string( info );
+				std::string msg = "U( " + val + ", " + val + " ) is exactly zero. The factorization has been completed, but the factor U is exactly singular, and division by zero will occur if it is used to solve a system of equations.";
+				throw( numerical_exception( info, msg ) );
 			}
 
 			return( a );
@@ -1216,10 +1299,15 @@ namespace __qr__
 			typedef typename matrix< T, Allocator >::value_type value_type;
 			typedef typename matrix< T, Allocator >::size_type size_type;
 
-			if( A.empty( ) || A.rows( ) < A.cols( ) )
+			if( A.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
+			}
+			else if( A.rows( ) < A.cols( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw( numerical_exception( 1, "The number of rows should be larger than the number of columns." ) );
 			}
 
 			integer info = 0;
@@ -1274,7 +1362,7 @@ namespace __qr__
 			if( info != 0 )
 			{
 				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
+				throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
 			}
 		}
 	};
@@ -1290,10 +1378,15 @@ namespace __qr__
 			typedef typename matrix< T, Allocator >::value_type value_type;
 			typedef typename matrix< T, Allocator >::size_type size_type;
 
-			if( A.empty( ) || A.rows( ) < A.cols( ) )
+			if( A.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
+			}
+			else if( A.rows( ) < A.cols( ) )
+			{
+				// 行列のサイズが正しくないので例外をスローする
+				throw( numerical_exception( 1, "The number of rows should be larger than the number of columns." ) );
 			}
 
 			integer info = 0;
@@ -1347,7 +1440,7 @@ namespace __qr__
 			if( info != 0 )
 			{
 				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
+				throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
 			}
 		}
 	};
@@ -1365,10 +1458,15 @@ namespace __cholesky__
 		typedef typename matrix_type::size_type size_type;
 		typedef __clapack__::integer integer;
 
-		if( a.empty( ) || a.rows( ) != a.cols( ) )
+		if( a.empty( ) )
 		{
 			// 行列のサイズが正しくないので例外をスローする
-			throw;
+			throw( numerical_exception( 1, "Empty matrix." ) );
+		}
+		else if( a.rows( ) != a.cols( ) )
+		{
+			// 行列のサイズが正しくないので例外をスローする
+			throw( numerical_exception( 1, "The number of rows should be equal to the number of columns." ) );
 		}
 
 		integer info = 0;
@@ -1399,10 +1497,17 @@ namespace __cholesky__
 			break;
 		}
 
-		if( info != 0 )
+		if( info < 0 )
 		{
 			// 行列計算が正しく終了しなかったので例外をスローする
-			throw;
+			throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+		}
+		else if( info > 0 )
+		{
+			// 行列計算が正しく終了しなかったので例外をスローする
+			std::string val = __clapack__::to_string( info );
+			std::string msg = "The leading minor of order " + val + " is not positive definite, and the factorization could not be completed.";
+			throw( numerical_exception( info, msg ) );
 		}
 
 		return( a );
@@ -1427,7 +1532,7 @@ namespace __inverse__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -1455,7 +1560,7 @@ namespace __inverse__
 						else
 						{
 							// 行列式がゼロ
-							info = 1;
+							throw( numerical_exception( 1, "Determinant of the matrix is zero." ) );
 						}
 					}
 					break;
@@ -1504,7 +1609,7 @@ namespace __inverse__
 						else
 						{
 							// 行列式がゼロ
-							info = 1;
+							throw( numerical_exception( 1, "Determinant of the matrix is zero." ) );
 						}
 					}
 					break;
@@ -1587,7 +1692,7 @@ namespace __inverse__
 						else
 						{
 							// 行列式がゼロ
-							info = 1;
+							throw( numerical_exception( 1, "Determinant of the matrix is zero." ) );
 						}
 					}
 					break;
@@ -1675,10 +1780,17 @@ namespace __inverse__
 				}
 			}
 
-			if( info != 0 )
+			if( info < 0 )
 			{
 				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
+				throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+			}
+			else if( info > 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				std::string val = __clapack__::to_string( info );
+				std::string msg = "U( " + val + ", " + val + " ) is exactly zero. the matrix is singular and its inverse could not be computed";
+				throw( numerical_exception( info, msg ) );
 			}
 
 			return( a );
@@ -1698,7 +1810,7 @@ namespace __inverse__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -1778,10 +1890,17 @@ namespace __inverse__
 				break;
 			}
 
-			if( info != 0 )
+			if( info < 0 )
 			{
 				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
+				throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+			}
+			else if( info > 0 )
+			{
+				// 行列計算が正しく終了しなかったので例外をスローする
+				std::string val = __clapack__::to_string( info );
+				std::string msg = "U( " + val + ", " + val + " ) is exactly zero. the matrix is singular and its inverse could not be computed";
+				throw( numerical_exception( info, msg ) );
 			}
 
 			return( a );
@@ -1810,7 +1929,7 @@ namespace __eigen__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -1849,6 +1968,17 @@ namespace __eigen__
 						__clapack__::syevx( jobz, range, uplo, n, &( a[0] ), lda, vl, vu, il, iu, abstol, m,
 										&( eigen_value[0] ), &( eigen_vector[0] ), ldz, &( work[0] ), lwork, &( iwork[ 0 ] ), &( ifail[ 0 ] ), info );
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + " eigenvectors failed to converge." ) );
+					}
 				}
 				break;
 
@@ -1883,14 +2013,19 @@ namespace __eigen__
 						__clapack__::geevx( balanc, jobvl, jobvr, sense, n, &( a[0] ), lda, &( eigen_value[0] ), &( tmp[0] ),
 							NULL, ldvl, &( eigen_vector[0] ), ldvr, ilo, ihi, &( scale[0] ), abnrm, NULL, NULL, &( work[0] ), lwork, NULL, info );
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "QR algorithm failed to compute all the eigenvalues, and no eigenvectors or condition numbers have been computed." ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( eigen_value );
@@ -1910,7 +2045,7 @@ namespace __eigen__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -1953,14 +2088,29 @@ namespace __eigen__
 						delete [] scale;
 						delete [] rwork;
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						if( info <= n )
+						{
+							std::string val = __clapack__::to_string( info );
+							std::string msg = "U( " + val + ", " + val + " ) is exactly zero. The factorization has been completed, but the factor U is exactly singular, so the solution and error bounds could not be computed. reciprocal condition number = 0 is returned.";
+							throw( numerical_exception( info, msg ) );
+						}
+						else
+						{
+							std::string msg = "U is nonsingular, but reciprocal condition number (RCOND) is less than machine precision, meaning that the matrix is singular to working precision.  Nevertheless, the solution and error bounds are computed because there are a number of situations where the computed solution can be more accurate than the value of RCOND would suggest.";
+							throw( numerical_exception( info, msg ) );
+						}
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( eigen_value );
@@ -1983,7 +2133,7 @@ namespace __eigen__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -2010,6 +2160,17 @@ namespace __eigen__
 						lwork = static_cast< integer >( __clapack__::get_real( dmy ) );
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::syev( jobz, uplo, n, &( eigen_vector[0] ), lda, &( eigen_value[0] ), &( work[0] ), lwork, info );
+					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "The algorithm failed to converge. " + __clapack__::to_string( info ) + "off-diagonal elements of an intermediate tridiagonal form did not converge to zero." ) );
 					}
 				}
 				break;
@@ -2040,6 +2201,17 @@ namespace __eigen__
 						__clapack__::geev( jobvl, jobvr, n, &( a[0] ), lda, &( eigen_value[0] ), &( tmp[0] ),
 							NULL, ldvl, &( eigen_vector[0] ), ldvr, &( work[0] ), lwork, info );
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "QR algorithm failed to compute all the eigenvalues, and no eigenvectors have been computed." ) );
+					}
 				}
 				break;
 			}
@@ -2047,7 +2219,7 @@ namespace __eigen__
 			if( info != 0 )
 			{
 				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
+				throw( numerical_exception( info, "Failed to compute the eigen values and vectors." ) );
 			}
 
 			return( eigen_value );
@@ -2067,7 +2239,7 @@ namespace __eigen__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -2102,14 +2274,19 @@ namespace __eigen__
 
 						delete [] rwork;
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "QR algorithm failed to compute all the eigenvalues, and no eigenvectors have been computed." ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( eigen_value );
@@ -2140,7 +2317,7 @@ namespace __svd__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -2182,14 +2359,19 @@ namespace __svd__
 							s( i, i ) = ss[ i ];
 						}
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "DBDSDC did not converge, updating process failed." ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( s );
@@ -2205,7 +2387,7 @@ namespace __svd__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -2258,14 +2440,19 @@ namespace __svd__
 
 						delete [] iwork;
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "DBDSDC did not converge, updating process failed." ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( s );
@@ -2286,7 +2473,7 @@ namespace __svd__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -2335,14 +2522,19 @@ namespace __svd__
 							s( i, i ) = ss[ i ];
 						}
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "DBDSDC did not converge, updating process failed." ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( s );
@@ -2360,7 +2552,7 @@ namespace __svd__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -2429,14 +2621,19 @@ namespace __svd__
 							s[ i ] = ss[ i ];
 						}
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "DBDSDC did not converge, updating process failed." ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( s );
@@ -2458,7 +2655,7 @@ namespace __svd__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -2497,14 +2694,19 @@ namespace __svd__
 							s( i, i ) = ss[ i ];
 						}
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "DBDSQR did not converge, INFO specifies how many superdiagonals of an intermediate bidiagonal form B did not converge to zero. See the description of WORK above for details." ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( s );
@@ -2520,7 +2722,7 @@ namespace __svd__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -2552,14 +2754,19 @@ namespace __svd__
 						matrix< T, Allocator > work( lwork, 1 );
 						__clapack__::gesvd( jobu, jobvt, m, n, &( a[0] ), lda, &( s[0] ), NULL, ldu, &( vt[0] ), ldvt, &( work[0] ), lwork, info );
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "DBDSQR did not converge, INFO specifies how many superdiagonals of an intermediate bidiagonal form B did not converge to zero. See the description of WORK above for details." ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( s );
@@ -2580,7 +2787,7 @@ namespace __svd__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -2628,14 +2835,19 @@ namespace __svd__
 
 						delete [] rwork;
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "ZBDSQR did not converge, INFO specifies how many superdiagonals of an intermediate bidiagonal form B did not converge to zero. See the description of WORK above for details." ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( s );
@@ -2652,7 +2864,7 @@ namespace __svd__
 			if( a.empty( ) )
 			{
 				// 行列のサイズが正しくないので例外をスローする
-				throw;
+				throw( numerical_exception( 1, "Empty matrix." ) );
 			}
 
 			integer info = 0;
@@ -2693,14 +2905,19 @@ namespace __svd__
 
 						delete [] rwork;
 					}
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, "ZBDSQR did not converge, INFO specifies how many superdiagonals of an intermediate bidiagonal form B did not converge to zero. See the description of WORK above for details." ) );
+					}
 				}
 				break;
-			}
-
-			if( info != 0 )
-			{
-				// 行列計算が正しく終了しなかったので例外をスローする
-				throw;
 			}
 
 			return( s );
@@ -2924,31 +3141,47 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 #else
 			matrix< __clapack__::integer, typename Allocator::template rebind< __clapack__::integer >::other > pivot;
 #endif
-			matrix< T, Allocator > m = lu_factorization( a, pivot, style );
 
-			value_type v = m( 0, 0 );
-			size_type size = a.rows( ) < a.cols( ) ? a.rows( ) : a.cols( );
-			size_type count = 0, i;
-
-			// LU分解時に行の入れ替えが行われた回数を計算する
-			for( i = 0 ; i < pivot.size( ) ; ++i )
+			try
 			{
-				count += static_cast< size_type >( pivot[ i ] ) != i + 1 ? 1 : 0;
+				matrix< T, Allocator > m = lu_factorization( a, pivot, style );
+
+				value_type v = m( 0, 0 );
+				size_type size = a.rows( ) < a.cols( ) ? a.rows( ) : a.cols( );
+				size_type count = 0, i;
+
+				// LU分解時に行の入れ替えが行われた回数を計算する
+				for( i = 0 ; i < pivot.size( ) ; ++i )
+				{
+					count += static_cast< size_type >( pivot[ i ] ) != i + 1 ? 1 : 0;
+				}
+
+				// 対角成分の積を計算する
+				for( i = 1 ; i < size ; ++i )
+				{
+					v *= m( i, i );
+				}
+
+				if( count % 2 == 0 )
+				{
+					return( v );
+				}
+				else
+				{
+					return( -v );
+				}
 			}
-
-			// 対角成分の積を計算する
-			for( i = 1 ; i < size ; ++i )
+			catch( const numerical_exception &e )
 			{
-				v *= m( i, i );
-			}
-
-			if( count % 2 == 0 )
-			{
-				return( v );
-			}
-			else
-			{
-				return( -v );
+				// error が負の場合は根本的に計算不能
+				if( e.error < 0 )
+				{
+					throw( e );
+				}
+				else
+				{
+					return( 0 );
+				}
 			}
 		}
 		break;
@@ -2970,8 +3203,14 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 template < class T, class Allocator >
 inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, matrix< T, Allocator > &b, matrix_style::style style = matrix_style::ge )
 {
-	matrix< T, Allocator > a_( a );
-	return( __solve__::__solve__< __numeric__::is_complex< T >::value >::solve( a_, b, style ) );
+	try
+	{
+		return( __solve__::__solve__< __numeric__::is_complex< T >::value >::solve( matrix< T, Allocator >( a ), b, style ) );
+	}
+	catch( const numerical_exception &e )
+	{
+		throw( e );
+	}
 }
 
 
@@ -2987,8 +3226,14 @@ inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, mat
 template < class T, class Allocator1, class Allocator2 >
 const matrix< T, Allocator1 > lu_factorization( const matrix< T, Allocator1 > &a, matrix< __clapack__::integer, Allocator2 > &pivot, matrix_style::style style = matrix_style::ge )
 {
-	matrix< T, Allocator1 > a_( a );
-	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
+	try
+	{
+		return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( matrix< T, Allocator1 >( a ), pivot, style ) );
+	}
+	catch( const numerical_exception &e )
+	{
+		throw( e );
+	}
 }
 
 
@@ -3014,23 +3259,30 @@ bool lu_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &
 	matrix< __clapack__::integer, typename Allocator::template rebind< __clapack__::integer >::other > piv( a.cols( ), 1 );
 #endif
 
-	L = a;
-	__lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( L, piv, style );
-
-	typedef typename matrix< T, Allocator >::size_type size_type;
-
-	U.resize( L.rows( ), L.cols( ) );
-	for( size_type r = 0 ; r < a.rows( ) ; r++ )
+	try
 	{
-		for( size_type c = r ; c < a.cols( ) ; c++ )
-		{
-			U( r, c ) = L( r, c );
-			L( r, c ) = 0;
-		}
-		L( r, r ) = 1;
-	}
+		L = a;
+		__lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( L, piv, style );
 
-	permutation_matrix( piv, pivot );
+		typedef typename matrix< T, Allocator >::size_type size_type;
+
+		U.resize( L.rows( ), L.cols( ) );
+		for( size_type r = 0 ; r < a.rows( ) ; r++ )
+		{
+			for( size_type c = r ; c < a.cols( ) ; c++ )
+			{
+				U( r, c ) = L( r, c );
+				L( r, c ) = 0;
+			}
+			L( r, r ) = 1;
+		}
+
+		permutation_matrix( piv, pivot );
+	}
+	catch( const numerical_exception &e )
+	{
+		throw( e );
+	}
 
 	return( true );
 }
@@ -3046,15 +3298,21 @@ bool lu_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &
 template < class T, class Allocator >
 const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::ge )
 {
-	typedef __clapack__::integer integer;
-	matrix< T, Allocator > a_( a );
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
 	// VC6ではSTLのアロケータの定義が、標準に準拠していないので、デフォルトで代用する
 	matrix< __clapack__::integer > pivot( a.cols( ), 1 );
 #else
 	matrix< __clapack__::integer, typename Allocator::template rebind< __clapack__::integer >::other > pivot( a.cols( ), 1 );
 #endif
-	return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( a_, pivot, style ) );
+
+	try
+	{
+		return( __lu__::__lu__< __numeric__::is_complex< T >::value >::lu_factorization( matrix< T, Allocator >( a ), pivot, style ) );
+	}
+	catch( const numerical_exception &e )
+	{
+		throw( e );
+	}
 }
 
 
@@ -3069,7 +3327,14 @@ const matrix< T, Allocator > lu_factorization( const matrix< T, Allocator > &a, 
 template < class T, class Allocator >
 const matrix< T, Allocator > cholesky_factorization( const matrix< T, Allocator > &a, matrix_style::style style = matrix_style::sy )
 {
-	return( __cholesky__::cholesky_factorization( matrix< T, Allocator >( a ), style ) );
+	try
+	{
+		return( __cholesky__::cholesky_factorization( matrix< T, Allocator >( a ), style ) );
+	}
+	catch( const numerical_exception &e )
+	{
+		throw( e );
+	}
 }
 
 
@@ -3086,7 +3351,14 @@ const matrix< T, Allocator > cholesky_factorization( const matrix< T, Allocator 
 template < class T, class Allocator >
 void qr_factorization( const matrix< T, Allocator > &a, matrix< T, Allocator > &Q, matrix< T, Allocator > &R, matrix_style::style style = matrix_style::ge )
 {
-	__qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( matrix< T, Allocator >( a ), Q, R, style );
+	try
+	{
+		__qr__::__qr__< __numeric__::is_complex< T >::value >::qr_factorization( matrix< T, Allocator >( a ), Q, R, style );
+	}
+	catch( const numerical_exception &e )
+	{
+		throw( e );
+	}
 }
 
 
@@ -3108,25 +3380,32 @@ matrix< T, Allocator > inverse( const matrix< T, Allocator > &a, matrix_style::s
 	typedef matrix< T, Allocator > matrix_type;
 	typedef typename matrix_type::size_type size_type;
 
-	if( a.rows( ) != a.cols( ) )
+	try
 	{
-		// 特異値分解を用いて一般化逆行列を計算する
-		matrix_type u, s, vt;
-		svd( a, u, s, vt, style );
-		size_type num = s.rows( ) < s.cols( ) ? s.rows( ) : s.cols( );
-		for( size_type i = 0 ; i < num ; i++ )
+		if( a.rows( ) != a.cols( ) )
 		{
-			if( __clapack__::get_real( s( i, i ) ) != 0 )
+			// 特異値分解を用いて一般化逆行列を計算する
+			matrix_type u, s, vt;
+			svd( a, u, s, vt, style );
+			size_type num = s.rows( ) < s.cols( ) ? s.rows( ) : s.cols( );
+			for( size_type i = 0 ; i < num ; i++ )
 			{
-				s( i, i ) = 1 / __clapack__::get_real( s( i, i ) );
+				if( __clapack__::get_real( s( i, i ) ) != 0 )
+				{
+					s( i, i ) = 1 / __clapack__::get_real( s( i, i ) );
+				}
 			}
+			return( ( u * s * vt ).t( ) );
 		}
-		return( ( u * s * vt ).t( ) );
+		else
+		{
+			matrix_type a_( a );
+			return( __inverse__::__inverse__< __numeric__::is_complex< T >::value >::inverse( a_, style ) );
+		}
 	}
-	else
+	catch( const numerical_exception &e )
 	{
-		matrix_type a_( a );
-		return( __inverse__::__inverse__< __numeric__::is_complex< T >::value >::inverse( a_, style ) );
+		throw( e );
 	}
 }
 
@@ -3151,7 +3430,15 @@ const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T,
 	typedef typename matrix< T, Allocator >::size_type size_type;
 
 	matrix< T, Allocator > a_( a );
-	__eigen__::__eigen__< __numeric__::is_complex< T >::value >::eigen( a_, eigen_value, eigen_vector, style );
+
+	try
+	{
+		__eigen__::__eigen__< __numeric__::is_complex< T >::value >::eigen( a_, eigen_value, eigen_vector, style );
+	}
+	catch( const numerical_exception &e )
+	{
+		throw( e );
+	}
 
 	typedef __clapack__::__value_index_pair__< T > value_index_pair;
 
@@ -3207,8 +3494,14 @@ const matrix< T, Allocator >& eigen( const matrix< T, Allocator > &a, matrix< T,
 template < class T1, class T2, class Allocator1, class Allocator2 >
 const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< T1, Allocator1 > &u, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
 {
-	matrix< T1, Allocator1 > a_( a );
-	return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( a_, u, s, vt, style ) );
+	try
+	{
+		return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( matrix< T1, Allocator1 >( a ), u, s, vt, style ) );
+	}
+	catch( const numerical_exception &e )
+	{
+		throw( e );
+	}
 }
 
 
@@ -3230,8 +3523,14 @@ const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< 
 template < class T1, class T2, class Allocator1, class Allocator2 >
 const matrix< T2, Allocator2 >& svd( const matrix< T1, Allocator1 > &a, matrix< T2, Allocator2 > &s, matrix< T1, Allocator1 > &vt, matrix_style::style style = matrix_style::ge )
 {
-	matrix< T1, Allocator1 > a_( a );
-	return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( a_, s, vt, style ) );
+	try
+	{
+		return( __svd__::__svd__< __numeric__::is_complex< T1 >::value >::svd( matrix< T1, Allocator1 >( a ), s, vt, style ) );
+	}
+	catch( const numerical_exception &e )
+	{
+		throw( e );
+	}
 }
 
 
