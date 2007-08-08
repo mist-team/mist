@@ -89,7 +89,7 @@ template<>          struct is_integer< signed long >   { _MIST_CONST( bool, valu
 template<>          struct is_integer< bool >          { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_integer< char >          { _MIST_CONST( bool, value, true  ); };
 
-#ifdef __MIST64__
+#if defined( __MIST64__ ) && __MIST64__ != 0
 template<>          struct is_integer< size_t >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_integer< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
 #endif
@@ -117,7 +117,7 @@ template<>          struct is_arithmetic< float >         { _MIST_CONST( bool, v
 template<>          struct is_arithmetic< double >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_arithmetic< long double >   { _MIST_CONST( bool, value, true  ); };
 
-#ifdef __MIST64__
+#if defined( __MIST64__ ) && __MIST64__ != 0
 template<>          struct is_arithmetic< size_t >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_arithmetic< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
 #endif
