@@ -494,14 +494,32 @@ namespace machine_learning
 				return( weak_classifiers_ );
 			}
 
+			/// @brief 分類に使用する弱識別器のリストを取得する
+			std::vector< weak_classifier_type > &weak_classifiers( )
+			{
+				return( weak_classifiers_ );
+			}
+
 			/// @brief 分類に使用するカテゴリのリストを取得する
 			const std::vector< std::string > &categories( ) const
 			{
 				return( categories_ );
 			}
 
+			/// @brief 分類に使用するカテゴリのリストを取得する
+			std::vector< std::string > &categories( )
+			{
+				return( categories_ );
+			}
+
 			/// @brief 分類に使用する Code Word のリストを取得する
 			const std::vector< std::vector< bool > > &code_word( ) const
+			{
+				return( code_word_ );
+			}
+
+			/// @brief 分類に使用する Code Word のリストを取得する
+			std::vector< std::vector< bool > > &code_word( )
 			{
 				return( code_word_ );
 			}
@@ -513,7 +531,19 @@ namespace machine_learning
 			}
 
 			/// @brief 分類に使用する係数のリストを取得する
+			std::vector< double > &alpha( )
+			{
+				return( alpha_ );
+			}
+
+			/// @brief 分類に使用する係数のリストを取得する
 			const std::vector< double > &beta( ) const
+			{
+				return( beta_ );
+			}
+
+			/// @brief 分類に使用する係数のリストを取得する
+			std::vector< double > &beta( )
 			{
 				return( beta_ );
 			}
@@ -1047,7 +1077,7 @@ namespace machine_learning
 				return( static_cast< double >( error ) / static_cast< double >( nfeatures ) );
 			}
 
-		private:
+		public:
 			static const char *get_value( const char *s, const char *e, std::string &val )
 			{
 				// 先頭の空白（改行やタブを含む）を飛ばす
@@ -1208,6 +1238,7 @@ namespace machine_learning
 				for( size_type i = 0 ; i < categories_.size( ) ; i++ )
 				{
 					fgets( line, 4096, fp );
+					memset( buff, '\0', 4096 );
 					sscanf( line, "Class[%d] : %s", &dmy, buff );
 					categories_[ i ] = buff;
 				}
@@ -1244,6 +1275,8 @@ namespace machine_learning
 					alpha_[ i ] = alpha;
 					beta_[ i ] = beta;
 				}
+
+				fclose( fp );
 
 				return( true );
 			}
