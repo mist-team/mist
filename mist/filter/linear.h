@@ -624,7 +624,7 @@ namespace __linear__
 	}
 
 	template < class Array >
-	inline void compute_gaussian_kernel( Array &kernel, const double radius, double sigma )
+	inline void compute_gaussian_kernel( Array &kernel, double sigma )
 	{
 		typedef typename Array::size_type  size_type;
 		typedef typename Array::difference_type  difference_type;
@@ -632,12 +632,22 @@ namespace __linear__
 
 		if( sigma == 0.0 )
 		{
-			sigma = radius * 0.5;
+			sigma = 1.0;
 		}
 
-		difference_type R = static_cast< difference_type >( std::ceil( radius ) );
+		double radius = sigma * 2.0;
+		double ax = kernel.reso1( );
+		double ay = kernel.reso2( );
+		double az = kernel.reso3( );
+		double axx = ax * ax;
+		double ayy = ay * ay;
+		double azz = az * az;
 
-		kernel.resize( R * 2 + 1, R * 2 + 1, R * 2 + 1 );
+		difference_type Rx = static_cast< difference_type >( std::ceil( radius / ax ) );
+		difference_type Ry = static_cast< difference_type >( std::ceil( radius / ay ) );
+		difference_type Rz = static_cast< difference_type >( std::ceil( radius / az ) );
+
+		kernel.resize( Rx * 2 + 1, Ry * 2 + 1, Rz * 2 + 1 );
 
 		difference_type fw = kernel.width( );
 		difference_type fh = kernel.height( );
@@ -651,13 +661,13 @@ namespace __linear__
 		double sum = 0.0;
 		for( difference_type z = -rd ; z <= rd ; z++ )
 		{
-			double zz = static_cast< double >( z * z );
+			double zz = static_cast< double >( z * z * azz );
 			for( difference_type y = -rh ; y <= rh ; y++ )
 			{
-				double yy = static_cast< double >( y * y );
+				double yy = static_cast< double >( y * y * ayy );
 				for( difference_type x = -rw ; x <= rw ; x++ )
 				{
-					double xx = static_cast< double >( x * x );
+					double xx = static_cast< double >( x * x * axx );
 					double g = std::exp( -( xx + yy + zz ) * _1_sig2 );
 					sum += g;
 					kernel( x + rw, y + rh, z + rd ) = static_cast< value_type >( g );
@@ -1237,8 +1247,7 @@ namespace gaussian
 	//! 
 	//! @param[in]  in         … 入力配列
 	//! @param[out] out        … 出力配列
-	//! @param[in]  radius     … フィルタ半径
-	//! @param[in]  sigma      … フィルタの標準偏差
+	//! @param[in]  sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
 	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
@@ -1246,11 +1255,11 @@ namespace gaussian
 	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
-	bool filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const double radius, const double sigma, Functor f, typename array< T1, Allocator1 >::size_type thread_num )
+	bool filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const double sigma, Functor f, typename array< T1, Allocator1 >::size_type thread_num )
 	{
 		array< double > a( 3 );
 
-		__linear__::compute_gaussian_kernel( a, radius, sigma );
+		__linear__::compute_gaussian_kernel( a, sigma );
 
 		return( linear::filter( in, out, a, f, thread_num ) );
 	}
@@ -1264,8 +1273,7 @@ namespace gaussian
 	//! 
 	//! @param[in]  in         … 入力配列
 	//! @param[out] out        … 出力配列
-	//! @param[in]  radius     … フィルタ半径
-	//! @param[in]  sigma      … フィルタの標準偏差
+	//! @param[in]  sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
 	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
@@ -1273,11 +1281,11 @@ namespace gaussian
 	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
-	bool filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, const double radius, const double sigma, Functor f, typename array1< T1, Allocator1 >::size_type thread_num )
+	bool filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, const double sigma, Functor f, typename array1< T1, Allocator1 >::size_type thread_num )
 	{
 		array< double > a( 3 );
 
-		__linear__::compute_gaussian_kernel( a, radius, sigma );
+		__linear__::compute_gaussian_kernel( a, sigma );
 
 		return( linear::filter( in, out, a, f, thread_num ) );
 	}
@@ -1291,8 +1299,7 @@ namespace gaussian
 	//! 
 	//! @param[in]  in         … 入力配列
 	//! @param[out] out        … 出力配列
-	//! @param[in]  radius     … フィルタ半径
-	//! @param[in]  sigma      … フィルタの標準偏差
+	//! @param[in]  sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
 	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
@@ -1300,11 +1307,11 @@ namespace gaussian
 	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
-	bool filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const double radius, const double sigma, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
+	bool filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const double sigma, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
 	{
-		array2< double > a( 3, 3 );
+		array2< double > a( 3, 3, in.reso1( ), in.reso2( ) );
 
-		__linear__::compute_gaussian_kernel( a, radius, sigma );
+		__linear__::compute_gaussian_kernel( a, sigma );
 
 		return( linear::filter( in, out, a, f, thread_num ) );
 	}
@@ -1318,8 +1325,7 @@ namespace gaussian
 	//! 
 	//! @param[in]  in         … 入力配列
 	//! @param[out] out        … 出力配列
-	//! @param[in]  radius     … フィルタ半径
-	//! @param[in]  sigma      … フィルタの標準偏差
+	//! @param[in]  sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
 	//! @param[in]  f          … コールバック関数
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
@@ -1327,11 +1333,11 @@ namespace gaussian
 	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
 	//! 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
-	bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double radius, const double sigma, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
+	bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double sigma, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
 	{
-		array3< double > a( 3, 3, 3 );
+		array3< double > a( 3, 3, 3, in.reso1( ), in.reso2( ), in.reso3( ) );
 
-		__linear__::compute_gaussian_kernel( a, radius, sigma );
+		__linear__::compute_gaussian_kernel( a, sigma );
 
 		return( linear::filter( in, out, a, f, thread_num ) );
 	}
@@ -1347,17 +1353,16 @@ namespace gaussian
 //! 
 //! @param[in]  in         … 入力配列
 //! @param[out] out        … 出力配列
-//! @param[in]  radius     … フィルタ半径
-//! @param[in]  sigma      … フィルタの標準偏差
+//! @param[in]  sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
-bool gaussian_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const double radius = 2.0, const double sigma = 0.0, typename array< T1, Allocator1 >::size_type thread_num = 0 )
+bool gaussian_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const double sigma = 1.0, typename array< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	return( gaussian::filter( in, out, radius, sigma, __mist_dmy_callback__( ), thread_num ) );
+	return( gaussian::filter( in, out, sigma, __mist_dmy_callback__( ), thread_num ) );
 }
 
 /// @brief ガウシアンフィルタ( array1 )
@@ -1369,17 +1374,16 @@ bool gaussian_filter( const array< T1, Allocator1 > &in, array< T2, Allocator2 >
 //! 
 //! @param[in]  in         … 入力配列
 //! @param[out] out        … 出力配列
-//! @param[in]  radius     … フィルタ半径
-//! @param[in]  sigma      … フィルタの標準偏差
+//! @param[in]  sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
-bool gaussian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, const double radius = 2.0, const double sigma = 0.0, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
+bool gaussian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, const double sigma = 1.0, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	return( gaussian::filter( in, out, radius, sigma, __mist_dmy_callback__( ), thread_num ) );
+	return( gaussian::filter( in, out, sigma, __mist_dmy_callback__( ), thread_num ) );
 }
 
 /// @brief ガウシアンフィルタ( array2 )
@@ -1391,17 +1395,16 @@ bool gaussian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2
 //! 
 //! @param[in]  in         … 入力配列
 //! @param[out] out        … 出力配列
-//! @param[in]  radius     … フィルタ半径
-//! @param[in]  sigma      … フィルタの標準偏差
+//! @param[in]  sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
-bool gaussian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const double radius = 2.0, const double sigma = 0.0, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
+bool gaussian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const double sigma = 1.0, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	return( gaussian::filter( in, out, radius, sigma, __mist_dmy_callback__( ), thread_num ) );
+	return( gaussian::filter( in, out, sigma, __mist_dmy_callback__( ), thread_num ) );
 }
 
 /// @brief ガウシアンフィルタ( array3 )
@@ -1413,17 +1416,16 @@ bool gaussian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2
 //! 
 //! @param[in]  in         … 入力配列
 //! @param[out] out        … 出力配列
-//! @param[in]  radius     … フィルタ半径
-//! @param[in]  sigma      … フィルタの標準偏差
+//! @param[in]  sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
 //! @param[in]  thread_num … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力と出力が同じオブジェクトを指定した場合
 //! 
 template < class T1, class Allocator1, class T2, class Allocator2 >
-bool gaussian_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double radius = 2.0, const double sigma = 0.0, typename array3< T1, Allocator1 >::size_type thread_num = 0 )
+bool gaussian_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double sigma = 1.0, typename array3< T1, Allocator1 >::size_type thread_num = 0 )
 {
-	return( gaussian::filter( in, out, radius, sigma, __mist_dmy_callback__( ), thread_num ) );
+	return( gaussian::filter( in, out, sigma, __mist_dmy_callback__( ), thread_num ) );
 }
 
 /// @}
