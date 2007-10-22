@@ -907,19 +907,21 @@ namespace histogram
 		std::vector< mixture::distribution2 > pdp( nComponents );
 
 
-#if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
-		for( m = 0 ; m < nComponents ; m++ )
-		{
-			std::cerr << pdp[ m ] << std::endl;
-		}
-#endif
-
 		// 入力データを作業データにコピーする
 		for( m = 0 ; m < nComponents ; m++ )
 		{
 			pdp[ m ] = opdp[ m ];
 		}
 
+#if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
+		for( m = 0 ; m < nComponents ; m++ )
+		{
+			mixture::distribution2 tmp = pdp[ m ];
+			tmp.av.x += minimum1;
+			tmp.av.y += minimum2;
+			std::cerr << tmp << std::endl;
+		}
+#endif
 
 		// 初期分布データの重みの和を１に正規化する
 		{
@@ -1106,10 +1108,13 @@ namespace histogram
 #if defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 1
 			for( m = 0 ; m < nComponents ; m++ )
 			{
-				std::cerr << pdp[ m ] << std::endl;
+				mixture::distribution2 tmp = pdp[ m ];
+				tmp.av.x += minimum1;
+				tmp.av.y += minimum2;
+				std::cerr << tmp << std::endl;
 			}
 #elif defined( EMALGORITHM_DEBUG ) && EMALGORITHM_DEBUG == 2
-		printf( "%f = ( %f, %f )\n", fLikelihood, pdp[ 0 ].weight, pdp[ 0 ].av );
+			printf( "%f = ( %f, %f )\n", fLikelihood, pdp[ 0 ].weight, pdp[ 0 ].av );
 #endif
 
 			if( fLastLikelihood >= fLikelihood || 2.0 * std::abs( fLastLikelihood - fLikelihood ) < tolerance * ( std::abs( fLastLikelihood ) + std::abs( fLikelihood ) ) )
