@@ -105,8 +105,8 @@ namespace dicom
 	enum photometric_interpretation_type
 	{
 		UNKNOWNTYPE,
-		MONOCHROME1,		///< @brief 1バイトのグレースケール
-		MONOCHROME2,		///< @brief 2バイトのグレースケール
+		MONOCHROME1,		///< @brief 背景白のグレースケール
+		MONOCHROME2,		///< @brief 背景黒のグレースケール
 		RGB,				///< @brief RGBの並び
 		PALETTE_COLOR,		///< @brief カラーテーブル
 		YBR_FULL_422,		///< @brief ？
@@ -226,7 +226,7 @@ namespace dicom
 			// 0-9, ピリオド（.）のみが利用可能．
 			//
 			// 例：19930822 は 1993 年 8 月 22 日を表す
-			if( num_bytes != 8 || num_bytes != 10 )
+			if( num_bytes != 8 && num_bytes != 10 )
 			{
 				num_bytes = compute_need_bytes( tag, 10, num_bytes, true );
 			}
