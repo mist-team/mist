@@ -269,7 +269,7 @@ public:
 	typedef double							threshold_type;		///< @brief 閾値パラメータの型
 	typedef typename mc::point< double >	offset_type;		///< @brief オフセットパラメータの型
 	typedef typename mc::point< double >	scale_type;			///< @brief スケールパラメータの型
-	typedef void ( *						func_type )( const mist::array< node_type > &, std::vector< out_point_type > &, std::vector< out_normal_type > &, std::vector< out_size_type > & );	///< @brief cube 単位での等値面生成関数の型
+	typedef void ( *						func_type )( const array< node_type > &, std::vector< out_point_type > &, std::vector< out_normal_type > &, std::vector< out_size_type > & );	///< @brief cube 単位での等値面生成関数の型
 	
 	typedef tagged_section< in_value_type, size_t >		section_type;	///< @brief Interval-tree 用いる区間の型
 	typedef typename section_type::min_max_type			min_max_type;	///< @brief 区間の最大値，最小値の型
@@ -283,7 +283,7 @@ public:
 	//! @param[out] nv   … 等値面ポリゴンの頂点の法線ベクトルの集合
 	//! @param[out] sv   … 等値面ポリゴンのサイズの集合
 	//!
-	void isosurfacing( const mist::array3< in_value_type > &va, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+	void isosurfacing( const array3< in_value_type > &va, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 	{
 		if( is_preprocessed_ )
 		{
@@ -302,14 +302,14 @@ public:
 	//! @param[out] nv   … 等値面ポリゴンの頂点の法線ベクトルの集合
 	//! @param[out] sv   … 等値面ポリゴンのサイズの集合
 	//!
-	void isosurfacing_with_preprocess( const mist::array3< in_value_type > &va, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+	void isosurfacing_with_preprocess( const array3< in_value_type > &va, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 	{
 		pv.resize( 0 );
 		nv.resize( 0 );
 		sv.resize( 0 );
 		it_.find( th_, active_cube_tags_ );
 		std::sort( active_cube_tags_.begin( ), active_cube_tags_.end( ) );
-		mist::array< node_type > nda( 8 );
+		array< node_type > nda( 8 );
 		const size_t begin = 0;
 		const size_t end = active_cube_tags_.size( );
 		for( size_t i = begin ; i < end ; i ++ )
@@ -326,12 +326,12 @@ public:
 	//! @param[out] nv   … 等値面ポリゴンの頂点の法線ベクトルの集合
 	//! @param[out] sv   … 等値面ポリゴンのサイズの集合
 	//!
-	void isosurfacing_without_preprocess( const mist::array3< in_value_type > &va, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+	void isosurfacing_without_preprocess( const array3< in_value_type > &va, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 	{
 		pv.resize( 0 );
 		nv.resize( 0 );
 		sv.resize( 0 );
-		mist::array< node_type > nda( 8 );
+		array< node_type > nda( 8 );
 		for( size_t k = 0 ; k < va.depth( ) - 1 ; k ++ )
 		{
 			for( size_t j = 0 ; j < va.height( ) - 1 ; j ++ )
@@ -349,7 +349,7 @@ public:
 	//!
 	//! @param[in]  va   … 等値面生成処理の対象としているボリュームデータ
 	//!
-	bool preprocess( const mist::array3< in_value_type > &va )
+	bool preprocess( const array3< in_value_type > &va )
 	{
 		if( is_preprocessed_ )
 		{
@@ -459,9 +459,9 @@ private:
 	func_type				fa_[ 256 ];
 
 	bool											is_preprocessed_;
-	mist::array< size_t >							pda_;
-	mist::array3< in_point_type >					pa_;
-	mist::array3< in_normal_type >					na_;
+	array< size_t >							pda_;
+	array3< in_point_type >					pa_;
+	array3< in_normal_type >					na_;
 	interval_tree< section_type, threshold_type >	it_;
 	std::vector< tag_type >							active_cube_tags_;
 
@@ -470,7 +470,7 @@ private:
 	static scale_type		s_;
 
 
-	void construct_cube( const mist::array3< in_value_type > &va, const size_t i, mist::array< node_type > &nda ) const
+	void construct_cube( const array3< in_value_type > &va, const size_t i, array< node_type > &nda ) const
 	{
 		nda[ 0 ].v( ) = va[ i + pda_[ 0 ] ]; nda[ 0 ].p( ) = pa_[ i + pda_[ 0 ] ]; nda[ 0 ].n( ) = na_[ i + pda_[ 0 ] ];
 		nda[ 1 ].v( ) = va[ i + pda_[ 1 ] ]; nda[ 1 ].p( ) = pa_[ i + pda_[ 1 ] ]; nda[ 1 ].n( ) = na_[ i + pda_[ 1 ] ];
@@ -482,7 +482,7 @@ private:
 		nda[ 7 ].v( ) = va[ i + pda_[ 7 ] ]; nda[ 7 ].p( ) = pa_[ i + pda_[ 7 ] ]; nda[ 7 ].n( ) = na_[ i + pda_[ 7 ] ];
 	}
 
-	void construct_cube_without_preprocessing( const mist::array3< in_value_type > &va, const size_t i, const size_t j, const size_t k, mist::array< node_type > &nda ) const
+	void construct_cube_without_preprocessing( const array3< in_value_type > &va, const size_t i, const size_t j, const size_t k, array< node_type > &nda ) const
 	{
 		nda[ 0 ].v( ) = va( i,     j,     k     ); nda[ 0 ].p( ) =  _point( i,     j,     k     ); nda[ 0 ].n( ) = _normal( va, i,     j,     k     );
 		nda[ 1 ].v( ) = va( i + 1, j,     k     ); nda[ 1 ].p( ) =  _point( i + 1, j,     k     ); nda[ 1 ].n( ) = _normal( va, i + 1, j,     k     );
@@ -494,7 +494,7 @@ private:
 		nda[ 7 ].v( ) = va( i + 1, j + 1, k + 1 ); nda[ 7 ].p( ) =  _point( i + 1, j + 1, k + 1 ); nda[ 7 ].n( ) = _normal( va, i + 1, j + 1, k + 1 );
 	}
 
-	void isosurfacing_in_cube( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv,std::vector< out_size_type > &sv )
+	void isosurfacing_in_cube( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv,std::vector< out_size_type > &sv )
 	{
 		fa_[ pattern( nda ) ]( nda, pv, nv, sv );
 	}
@@ -504,14 +504,14 @@ private:
 		return in_point_type( static_cast< typename in_point_type::value_type >( i ), static_cast< typename in_point_type::value_type >( j ), static_cast< typename in_point_type::value_type >( k ) );
 	}
 
-	in_normal_type _normal( const mist::array3< in_value_type > &va, const size_t i, const size_t j, const size_t k ) const
+	in_normal_type _normal( const array3< in_value_type > &va, const size_t i, const size_t j, const size_t k ) const
 	{
 		mc::point< double > n;
 		mc::normalize< double, double >( mc::point< double >( static_cast< double >( _value( va, i - 1, j, k ) ) - _value( va, i + 1, j , k ), static_cast< double >( _value( va, i, j - 1, k ) ) - _value( va, i, j + 1, k ), static_cast< double >( _value( va, i, j, k - 1 ) ) - _value( va, i, j, k + 1 ) ), n );
 		return in_normal_type( static_cast< typename in_normal_type::value_type >( n.x( ) * 32767 ), static_cast< typename in_normal_type::value_type >( n.y( ) * 32767 ), static_cast< typename in_normal_type::value_type >( n.z( ) * 32767 ) );
 	}
 
-	in_value_type _value( const mist::array3< in_value_type > &va, const size_t i , const size_t j, const size_t k ) const
+	in_value_type _value( const array3< in_value_type > &va, const size_t i , const size_t j, const size_t k ) const
 	{
 		return ( i < va.width( ) && j < va.height( ) && k < va.depth( ) ) ? va( i, j, k ) : in_value_type( );
 	}
@@ -533,7 +533,7 @@ private:
 		return ret;
 	}
 
-	bool construct_point_array( const mist::array3< in_value_type > &va )
+	bool construct_point_array( const array3< in_value_type > &va )
 	{
 		bool ret = pa_.resize( va.width( ), va.height( ), va.depth( ) );
 		for( size_t k = 0 ; k < pa_.depth( ) ; k ++ )
@@ -549,7 +549,7 @@ private:
 		return ret;
 	}
 
-	bool construct_normal_array( const mist::array3< in_value_type > &va )
+	bool construct_normal_array( const array3< in_value_type > &va )
 	{
 		bool ret = na_.resize( va.width( ), va.height( ), va.depth( ) );
 		for( size_t k = 0 ; k < na_.depth( ) ; k ++ )
@@ -565,7 +565,7 @@ private:
 		return ret;
 	}
 
-	bool construct_interval_tree( const mist::array3< in_value_type > &va )
+	bool construct_interval_tree( const array3< in_value_type > &va )
 	{
 		std::vector< section_type >	secs;
 		min_max_type				min, max;
@@ -611,7 +611,7 @@ private:
 		active_cube_tags_.clear( );
 	}
 
-	void get_section( const mist::array3< in_value_type > &va, const tag_type &tag, min_max_type &min, min_max_type &max ) const
+	void get_section( const array3< in_value_type > &va, const tag_type &tag, min_max_type &min, min_max_type &max ) const
 	{
 		min = va[ tag + pda_[ 0 ] ];
 		max = va[ tag + pda_[ 0 ] ];
@@ -628,7 +628,7 @@ private:
 		}
 	}
 
-	size_t pattern( const mist::array< node_type > &nda ) const
+	size_t pattern( const array< node_type > &nda ) const
 	{
 		return ( ( nda[ 0 ].v( ) >= th_ ) ? 1 : 0 ) + ( ( nda[ 1 ].v( ) >= th_ ) ? 2 : 0 ) + ( ( nda[ 2 ].v( ) >= th_ ) ? 4 : 0 ) + ( ( nda[ 3 ].v( ) >= th_ ) ? 8 : 0 ) + ( ( nda[ 4 ].v( ) >= th_ ) ? 16 : 0 ) + ( ( nda[ 5 ].v( ) >= th_ ) ? 32 : 0 ) + ( ( nda[ 6 ].v( ) >= th_ ) ? 64 : 0 ) + ( ( nda[ 7 ].v( ) >= th_ ) ? 128 : 0 );
 	}
@@ -708,262 +708,262 @@ private:
 		fa_[ 248 ] = f248; fa_[ 249 ] = f249; fa_[ 250 ] = f250; fa_[ 251 ] = f251; fa_[ 252 ] = f252; fa_[ 253 ] = f253; fa_[ 254 ] = f254; fa_[ 255 ] = f255; 
 	}
 
-	static void f000( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f001( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f002( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f003( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f004( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f005( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f006( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f007( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f008( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f009( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f010( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f011( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f012( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f013( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f014( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f015( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f016( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f017( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f018( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f019( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f020( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f021( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f022( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f023( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f024( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f025( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f026( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f027( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f028( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f029( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f030( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f031( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f032( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f033( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f034( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f035( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f036( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f037( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f038( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f039( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f040( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f041( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f042( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f043( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f044( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f045( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f046( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f047( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f048( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f049( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f050( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f051( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f052( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f053( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f054( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f055( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f056( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f057( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f058( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f059( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f060( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f061( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f062( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f063( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f064( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f065( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f066( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f067( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f068( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f069( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f070( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f071( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f072( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f073( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f074( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f075( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f076( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f077( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f078( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f079( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f080( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f081( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f082( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f083( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f084( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f085( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f086( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f087( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f088( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f089( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f090( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f091( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f092( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f093( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f094( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f095( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f096( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f097( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f098( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f099( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f100( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f101( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f102( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f103( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f104( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f105( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f106( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f107( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f108( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f109( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f110( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f111( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f112( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f113( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f114( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f115( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f116( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f117( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f118( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f119( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f120( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f121( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f122( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f123( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f124( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f125( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f126( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f127( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f128( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f129( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f130( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f131( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f132( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f133( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f134( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f135( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f136( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f137( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f138( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f139( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f140( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f141( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f142( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f143( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f144( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f145( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f146( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f147( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f148( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f149( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f150( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f151( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f152( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f153( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f154( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f155( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f156( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f157( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f158( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f159( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f160( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f161( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f162( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f163( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f164( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f165( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f166( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f167( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f168( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f169( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f170( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f171( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f172( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f173( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f174( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f175( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f176( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f177( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f178( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f179( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f180( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f181( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f182( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f183( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f184( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f185( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f186( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f187( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f188( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f189( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f190( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f191( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f192( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f193( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f194( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f195( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f196( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f197( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f198( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f199( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f200( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f201( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f202( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f203( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f204( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f205( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f206( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f207( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f208( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f209( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f210( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f211( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f212( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f213( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f214( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f215( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f216( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f217( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f218( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f219( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f220( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f221( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f222( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f223( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f224( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f225( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f226( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f227( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f228( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f229( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f230( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f231( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f232( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f233( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f234( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f235( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f236( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f237( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f238( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f239( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f240( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f241( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f242( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f243( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f244( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f245( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f246( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f247( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f248( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f249( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f250( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f251( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f252( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f253( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f254( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f255( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f000( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f001( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f002( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f003( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f004( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f005( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f006( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f007( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f008( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f009( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f010( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f011( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f012( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f013( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f014( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f015( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f016( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f017( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f018( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f019( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f020( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f021( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f022( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f023( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f024( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f025( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f026( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f027( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f028( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f029( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f030( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f031( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f032( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f033( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f034( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f035( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f036( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f037( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f038( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f039( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f040( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f041( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f042( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f043( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f044( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f045( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f046( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f047( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f048( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f049( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f050( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f051( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f052( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f053( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f054( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f055( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f056( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f057( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f058( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f059( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f060( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f061( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f062( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f063( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f064( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f065( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f066( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f067( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f068( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f069( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f070( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f071( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f072( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f073( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f074( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f075( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f076( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f077( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f078( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f079( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f080( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f081( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f082( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f083( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f084( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f085( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f086( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f087( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f088( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f089( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f090( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f091( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f092( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f093( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f094( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f095( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f096( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f097( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f098( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f099( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f100( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f101( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f102( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f103( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f104( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f105( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f106( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f107( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f108( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f109( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f110( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f111( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f112( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f113( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f114( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f115( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f116( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f117( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f118( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f119( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f120( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f121( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f122( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f123( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f124( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f125( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f126( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f127( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f128( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f129( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f130( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f131( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f132( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f133( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f134( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f135( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f136( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f137( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f138( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f139( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f140( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f141( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f142( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f143( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f144( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f145( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f146( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f147( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f148( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f149( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f150( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f151( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f152( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f153( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f154( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f155( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f156( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f157( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f158( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f159( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f160( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f161( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f162( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f163( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f164( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f165( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f166( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f167( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f168( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f169( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f170( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f171( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f172( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f173( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f174( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f175( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f176( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f177( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f178( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f179( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f180( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f181( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f182( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f183( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f184( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f185( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f186( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f187( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f188( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f189( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f190( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f191( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f192( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f193( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f194( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f195( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f196( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f197( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f198( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f199( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f200( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f201( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f202( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f203( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f204( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f205( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f206( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f207( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f208( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f209( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f210( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f211( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f212( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f213( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f214( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f215( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f216( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f217( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f218( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f219( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f220( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f221( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f222( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f223( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f224( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f225( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f226( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f227( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f228( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f229( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f230( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f231( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f232( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f233( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f234( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f235( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f236( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f237( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f238( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f239( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f240( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f241( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f242( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f243( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f244( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f245( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f246( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f247( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f248( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f249( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f250( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f251( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f252( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f253( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f254( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f255( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
 };
 
 template< typename V, typename P, typename N > double				marching_cubes< V, P, N >::th_ = 0.0;
@@ -972,18 +972,18 @@ template< typename V, typename P, typename N > mc::point< double >	marching_cube
 
 // 0, 0, 0, 0, 0, 0, 0, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f000( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f000( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f255( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f255( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 }
 
 // 1, 0, 0, 0, 0, 0, 0, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f001( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f001( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -994,7 +994,7 @@ void marching_cubes< V, P, N >::f001( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f254( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f254( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1005,7 +1005,7 @@ void marching_cubes< V, P, N >::f254( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f004( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f004( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1016,7 +1016,7 @@ void marching_cubes< V, P, N >::f004( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f251( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f251( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1027,7 +1027,7 @@ void marching_cubes< V, P, N >::f251( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f008( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f008( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1038,7 +1038,7 @@ void marching_cubes< V, P, N >::f008( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f247( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f247( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1049,7 +1049,7 @@ void marching_cubes< V, P, N >::f247( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f002( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f002( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1060,7 +1060,7 @@ void marching_cubes< V, P, N >::f002( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f253( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f253( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1071,7 +1071,7 @@ void marching_cubes< V, P, N >::f253( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f016( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f016( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1082,7 +1082,7 @@ void marching_cubes< V, P, N >::f016( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f239( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f239( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1093,7 +1093,7 @@ void marching_cubes< V, P, N >::f239( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f064( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f064( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1104,7 +1104,7 @@ void marching_cubes< V, P, N >::f064( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f191( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f191( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1115,7 +1115,7 @@ void marching_cubes< V, P, N >::f191( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f032( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f032( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1126,7 +1126,7 @@ void marching_cubes< V, P, N >::f032( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f223( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f223( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1137,7 +1137,7 @@ void marching_cubes< V, P, N >::f223( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f128( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f128( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1148,7 +1148,7 @@ void marching_cubes< V, P, N >::f128( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f127( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f127( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1160,7 +1160,7 @@ void marching_cubes< V, P, N >::f127( const mist::array< node_type > &nda, std::
 
 // 1, 1, 0, 0, 0, 0, 0, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f003( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f003( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1172,7 +1172,7 @@ void marching_cubes< V, P, N >::f003( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f252( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f252( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1184,7 +1184,7 @@ void marching_cubes< V, P, N >::f252( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f005( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f005( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1196,7 +1196,7 @@ void marching_cubes< V, P, N >::f005( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f250( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f250( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1208,7 +1208,7 @@ void marching_cubes< V, P, N >::f250( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f012( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f012( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1220,7 +1220,7 @@ void marching_cubes< V, P, N >::f012( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f243( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f243( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1232,7 +1232,7 @@ void marching_cubes< V, P, N >::f243( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f010( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f010( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1244,7 +1244,7 @@ void marching_cubes< V, P, N >::f010( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f245( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f245( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1256,7 +1256,7 @@ void marching_cubes< V, P, N >::f245( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f017( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f017( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1268,7 +1268,7 @@ void marching_cubes< V, P, N >::f017( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f238( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f238( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1280,7 +1280,7 @@ void marching_cubes< V, P, N >::f238( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f080( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f080( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1292,7 +1292,7 @@ void marching_cubes< V, P, N >::f080( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f175( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f175( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1304,7 +1304,7 @@ void marching_cubes< V, P, N >::f175( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f068( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f068( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1316,7 +1316,7 @@ void marching_cubes< V, P, N >::f068( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f187( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f187( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1328,7 +1328,7 @@ void marching_cubes< V, P, N >::f187( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f048( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f048( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1340,7 +1340,7 @@ void marching_cubes< V, P, N >::f048( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f207( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f207( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1352,7 +1352,7 @@ void marching_cubes< V, P, N >::f207( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f160( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f160( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1364,7 +1364,7 @@ void marching_cubes< V, P, N >::f160( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f095( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f095( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1376,7 +1376,7 @@ void marching_cubes< V, P, N >::f095( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f192( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f192( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1388,7 +1388,7 @@ void marching_cubes< V, P, N >::f192( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f063( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f063( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1400,7 +1400,7 @@ void marching_cubes< V, P, N >::f063( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f034( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f034( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1412,7 +1412,7 @@ void marching_cubes< V, P, N >::f034( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f221( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f221( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1424,7 +1424,7 @@ void marching_cubes< V, P, N >::f221( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f136( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f136( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1436,7 +1436,7 @@ void marching_cubes< V, P, N >::f136( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f119( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f119( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1449,7 +1449,7 @@ void marching_cubes< V, P, N >::f119( const mist::array< node_type > &nda, std::
 
 // 1, 0, 0, 1, 0, 0, 0, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f009( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f009( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1464,7 +1464,7 @@ void marching_cubes< V, P, N >::f009( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f246( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f246( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1478,7 +1478,7 @@ void marching_cubes< V, P, N >::f246( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f006( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f006( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1493,7 +1493,7 @@ void marching_cubes< V, P, N >::f006( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f249( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f249( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1507,7 +1507,7 @@ void marching_cubes< V, P, N >::f249( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f020( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f020( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1522,7 +1522,7 @@ void marching_cubes< V, P, N >::f020( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f235( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f235( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1536,7 +1536,7 @@ void marching_cubes< V, P, N >::f235( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f065( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f065( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1551,7 +1551,7 @@ void marching_cubes< V, P, N >::f065( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f190( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f190( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1565,7 +1565,7 @@ void marching_cubes< V, P, N >::f190( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f096( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f096( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1580,7 +1580,7 @@ void marching_cubes< V, P, N >::f096( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f159( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f159( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1594,7 +1594,7 @@ void marching_cubes< V, P, N >::f159( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f144( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f144( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1609,7 +1609,7 @@ void marching_cubes< V, P, N >::f144( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f111( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f111( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1623,7 +1623,7 @@ void marching_cubes< V, P, N >::f111( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f130( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f130( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1638,7 +1638,7 @@ void marching_cubes< V, P, N >::f130( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f125( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f125( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1652,7 +1652,7 @@ void marching_cubes< V, P, N >::f125( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f040( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f040( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1667,7 +1667,7 @@ void marching_cubes< V, P, N >::f040( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f215( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f215( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1681,7 +1681,7 @@ void marching_cubes< V, P, N >::f215( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f072( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f072( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1696,7 +1696,7 @@ void marching_cubes< V, P, N >::f072( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f183( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f183( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1710,7 +1710,7 @@ void marching_cubes< V, P, N >::f183( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f132( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f132( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1725,7 +1725,7 @@ void marching_cubes< V, P, N >::f132( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f123( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f123( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1739,7 +1739,7 @@ void marching_cubes< V, P, N >::f123( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f033( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f033( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1754,7 +1754,7 @@ void marching_cubes< V, P, N >::f033( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f222( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f222( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1768,7 +1768,7 @@ void marching_cubes< V, P, N >::f222( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f018( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f018( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1783,7 +1783,7 @@ void marching_cubes< V, P, N >::f018( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f237( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f237( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1798,7 +1798,7 @@ void marching_cubes< V, P, N >::f237( const mist::array< node_type > &nda, std::
 
 // 1, 0, 0, 0, 0, 0, 0, 1
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f129( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f129( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1813,7 +1813,7 @@ void marching_cubes< V, P, N >::f129( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f126( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f126( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1828,7 +1828,7 @@ void marching_cubes< V, P, N >::f126( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f036( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f036( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1843,7 +1843,7 @@ void marching_cubes< V, P, N >::f036( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f219( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f219( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1858,7 +1858,7 @@ void marching_cubes< V, P, N >::f219( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f024( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f024( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1873,7 +1873,7 @@ void marching_cubes< V, P, N >::f024( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f231( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f231( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1888,7 +1888,7 @@ void marching_cubes< V, P, N >::f231( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f066( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f066( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1903,7 +1903,7 @@ void marching_cubes< V, P, N >::f066( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f189( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f189( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1919,7 +1919,7 @@ void marching_cubes< V, P, N >::f189( const mist::array< node_type > &nda, std::
 
 // 1, 1, 1, 0, 0, 0, 0, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f007( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f007( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1932,7 +1932,7 @@ void marching_cubes< V, P, N >::f007( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f248( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f248( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1945,7 +1945,7 @@ void marching_cubes< V, P, N >::f248( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f013( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f013( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1958,7 +1958,7 @@ void marching_cubes< V, P, N >::f013( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f242( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f242( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1971,7 +1971,7 @@ void marching_cubes< V, P, N >::f242( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f014( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f014( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1984,7 +1984,7 @@ void marching_cubes< V, P, N >::f014( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f241( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f241( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -1997,7 +1997,7 @@ void marching_cubes< V, P, N >::f241( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f011( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f011( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2010,7 +2010,7 @@ void marching_cubes< V, P, N >::f011( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f244( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f244( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2023,7 +2023,7 @@ void marching_cubes< V, P, N >::f244( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f081( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f081( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2036,7 +2036,7 @@ void marching_cubes< V, P, N >::f081( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f174( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f174( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2049,7 +2049,7 @@ void marching_cubes< V, P, N >::f174( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f084( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f084( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2062,7 +2062,7 @@ void marching_cubes< V, P, N >::f084( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f171( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f171( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2075,7 +2075,7 @@ void marching_cubes< V, P, N >::f171( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f069( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f069( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2088,7 +2088,7 @@ void marching_cubes< V, P, N >::f069( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f186( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f186( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2101,7 +2101,7 @@ void marching_cubes< V, P, N >::f186( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f021( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f021( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2114,7 +2114,7 @@ void marching_cubes< V, P, N >::f021( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f234( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f234( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2127,7 +2127,7 @@ void marching_cubes< V, P, N >::f234( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f176( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f176( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2140,7 +2140,7 @@ void marching_cubes< V, P, N >::f176( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f079( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f079( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2153,7 +2153,7 @@ void marching_cubes< V, P, N >::f079( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f224( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f224( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2166,7 +2166,7 @@ void marching_cubes< V, P, N >::f224( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f031( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f031( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2179,7 +2179,7 @@ void marching_cubes< V, P, N >::f031( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f208( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f208( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2192,7 +2192,7 @@ void marching_cubes< V, P, N >::f208( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f047( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f047( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2205,7 +2205,7 @@ void marching_cubes< V, P, N >::f047( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f112( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f112( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2218,7 +2218,7 @@ void marching_cubes< V, P, N >::f112( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f143( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f143( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2231,7 +2231,7 @@ void marching_cubes< V, P, N >::f143( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f042( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f042( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2244,7 +2244,7 @@ void marching_cubes< V, P, N >::f042( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f213( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f213( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2257,7 +2257,7 @@ void marching_cubes< V, P, N >::f213( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f138( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f138( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2270,7 +2270,7 @@ void marching_cubes< V, P, N >::f138( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f117( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f117( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2283,7 +2283,7 @@ void marching_cubes< V, P, N >::f117( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f168( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f168( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2296,7 +2296,7 @@ void marching_cubes< V, P, N >::f168( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f087( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f087( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2309,7 +2309,7 @@ void marching_cubes< V, P, N >::f087( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f162( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f162( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2322,7 +2322,7 @@ void marching_cubes< V, P, N >::f162( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f093( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f093( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2335,7 +2335,7 @@ void marching_cubes< V, P, N >::f093( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f140( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f140( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2348,7 +2348,7 @@ void marching_cubes< V, P, N >::f140( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f115( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f115( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2361,7 +2361,7 @@ void marching_cubes< V, P, N >::f115( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f076( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f076( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2374,7 +2374,7 @@ void marching_cubes< V, P, N >::f076( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f179( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f179( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2387,7 +2387,7 @@ void marching_cubes< V, P, N >::f179( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f196( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f196( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2400,7 +2400,7 @@ void marching_cubes< V, P, N >::f196( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f059( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f059( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2413,7 +2413,7 @@ void marching_cubes< V, P, N >::f059( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f200( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f200( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2426,7 +2426,7 @@ void marching_cubes< V, P, N >::f200( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f055( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f055( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2439,7 +2439,7 @@ void marching_cubes< V, P, N >::f055( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f019( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f019( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2452,7 +2452,7 @@ void marching_cubes< V, P, N >::f019( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f236( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f236( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2465,7 +2465,7 @@ void marching_cubes< V, P, N >::f236( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f035( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f035( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2478,7 +2478,7 @@ void marching_cubes< V, P, N >::f035( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f220( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f220( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2491,7 +2491,7 @@ void marching_cubes< V, P, N >::f220( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f050( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f050( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2504,7 +2504,7 @@ void marching_cubes< V, P, N >::f050( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f205( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f205( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2517,7 +2517,7 @@ void marching_cubes< V, P, N >::f205( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f049( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f049( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2530,7 +2530,7 @@ void marching_cubes< V, P, N >::f049( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f206( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f206( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2544,7 +2544,7 @@ void marching_cubes< V, P, N >::f206( const mist::array< node_type > &nda, std::
 
 // 1, 1, 0, 0, 0, 0, 1, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f067( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f067( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2560,7 +2560,7 @@ void marching_cubes< V, P, N >::f067( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f188( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f188( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2575,7 +2575,7 @@ void marching_cubes< V, P, N >::f188( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f133( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f133( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2591,7 +2591,7 @@ void marching_cubes< V, P, N >::f133( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f122( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f122( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2606,7 +2606,7 @@ void marching_cubes< V, P, N >::f122( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f044( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f044( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2622,7 +2622,7 @@ void marching_cubes< V, P, N >::f044( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f211( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f211( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2637,7 +2637,7 @@ void marching_cubes< V, P, N >::f211( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f026( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f026( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2653,7 +2653,7 @@ void marching_cubes< V, P, N >::f026( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f229( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f229( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2668,7 +2668,7 @@ void marching_cubes< V, P, N >::f229( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f145( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f145( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2684,7 +2684,7 @@ void marching_cubes< V, P, N >::f145( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f110( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f110( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2699,7 +2699,7 @@ void marching_cubes< V, P, N >::f110( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f088( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f088( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2715,7 +2715,7 @@ void marching_cubes< V, P, N >::f088( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f167( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f167( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2730,7 +2730,7 @@ void marching_cubes< V, P, N >::f167( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f070( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f070( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2746,7 +2746,7 @@ void marching_cubes< V, P, N >::f070( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f185( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f185( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2761,7 +2761,7 @@ void marching_cubes< V, P, N >::f185( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f037( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f037( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2777,7 +2777,7 @@ void marching_cubes< V, P, N >::f037( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f218( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f218( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2792,7 +2792,7 @@ void marching_cubes< V, P, N >::f218( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f056( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f056( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2808,7 +2808,7 @@ void marching_cubes< V, P, N >::f056( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f199( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f199( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2823,7 +2823,7 @@ void marching_cubes< V, P, N >::f199( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f164( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f164( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2839,7 +2839,7 @@ void marching_cubes< V, P, N >::f164( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f091( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f091( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2854,7 +2854,7 @@ void marching_cubes< V, P, N >::f091( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f193( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f193( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2870,7 +2870,7 @@ void marching_cubes< V, P, N >::f193( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f062( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f062( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2885,7 +2885,7 @@ void marching_cubes< V, P, N >::f062( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f082( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f082( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2901,7 +2901,7 @@ void marching_cubes< V, P, N >::f082( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f173( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f173( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2916,7 +2916,7 @@ void marching_cubes< V, P, N >::f173( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f038( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f038( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2932,7 +2932,7 @@ void marching_cubes< V, P, N >::f038( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f217( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f217( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2947,7 +2947,7 @@ void marching_cubes< V, P, N >::f217( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f074( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f074( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2963,7 +2963,7 @@ void marching_cubes< V, P, N >::f074( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f181( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f181( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2978,7 +2978,7 @@ void marching_cubes< V, P, N >::f181( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f152( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f152( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -2994,7 +2994,7 @@ void marching_cubes< V, P, N >::f152( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f103( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f103( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3009,7 +3009,7 @@ void marching_cubes< V, P, N >::f103( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f161( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f161( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3025,7 +3025,7 @@ void marching_cubes< V, P, N >::f161( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f094( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f094( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3040,7 +3040,7 @@ void marching_cubes< V, P, N >::f094( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f137( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f137( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3056,7 +3056,7 @@ void marching_cubes< V, P, N >::f137( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f118( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f118( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3071,7 +3071,7 @@ void marching_cubes< V, P, N >::f118( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f028( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f028( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3087,7 +3087,7 @@ void marching_cubes< V, P, N >::f028( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f227( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f227( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3102,7 +3102,7 @@ void marching_cubes< V, P, N >::f227( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f100( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f100( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3118,7 +3118,7 @@ void marching_cubes< V, P, N >::f100( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f155( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f155( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3133,7 +3133,7 @@ void marching_cubes< V, P, N >::f155( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f194( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f194( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3149,7 +3149,7 @@ void marching_cubes< V, P, N >::f194( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f061( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f061( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3164,7 +3164,7 @@ void marching_cubes< V, P, N >::f061( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f025( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f025( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3180,7 +3180,7 @@ void marching_cubes< V, P, N >::f025( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f230( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f230( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3195,7 +3195,7 @@ void marching_cubes< V, P, N >::f230( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f131( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f131( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3211,7 +3211,7 @@ void marching_cubes< V, P, N >::f131( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f124( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f124( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3226,7 +3226,7 @@ void marching_cubes< V, P, N >::f124( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f098( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f098( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3242,7 +3242,7 @@ void marching_cubes< V, P, N >::f098( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f157( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f157( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3257,7 +3257,7 @@ void marching_cubes< V, P, N >::f157( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f052( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f052( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3273,7 +3273,7 @@ void marching_cubes< V, P, N >::f052( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f203( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f203( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3289,7 +3289,7 @@ void marching_cubes< V, P, N >::f203( const mist::array< node_type > &nda, std::
 
 // 1, 0, 0, 1, 0, 1, 0, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f041( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f041( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3308,7 +3308,7 @@ void marching_cubes< V, P, N >::f041( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f214( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f214( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3326,7 +3326,7 @@ void marching_cubes< V, P, N >::f214( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f022( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f022( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3345,7 +3345,7 @@ void marching_cubes< V, P, N >::f022( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f233( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f233( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3363,7 +3363,7 @@ void marching_cubes< V, P, N >::f233( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f073( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f073( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3382,7 +3382,7 @@ void marching_cubes< V, P, N >::f073( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f182( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f182( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3400,7 +3400,7 @@ void marching_cubes< V, P, N >::f182( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f134( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f134( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3419,7 +3419,7 @@ void marching_cubes< V, P, N >::f134( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f121( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f121( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3437,7 +3437,7 @@ void marching_cubes< V, P, N >::f121( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f097( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f097( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3456,7 +3456,7 @@ void marching_cubes< V, P, N >::f097( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f158( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f158( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3474,7 +3474,7 @@ void marching_cubes< V, P, N >::f158( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f148( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f148( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3493,7 +3493,7 @@ void marching_cubes< V, P, N >::f148( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f107( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f107( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3511,7 +3511,7 @@ void marching_cubes< V, P, N >::f107( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f146( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f146( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3530,7 +3530,7 @@ void marching_cubes< V, P, N >::f146( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f109( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f109( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3548,7 +3548,7 @@ void marching_cubes< V, P, N >::f109( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f104( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f104( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3567,7 +3567,7 @@ void marching_cubes< V, P, N >::f104( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f151( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f151( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3586,7 +3586,7 @@ void marching_cubes< V, P, N >::f151( const mist::array< node_type > &nda, std::
 
 // 1, 1, 1, 1, 0, 0, 0, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f015( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f015( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3598,7 +3598,7 @@ void marching_cubes< V, P, N >::f015( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f085( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f085( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3610,7 +3610,7 @@ void marching_cubes< V, P, N >::f085( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f240( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f240( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3622,7 +3622,7 @@ void marching_cubes< V, P, N >::f240( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f170( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f170( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3634,7 +3634,7 @@ void marching_cubes< V, P, N >::f170( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f204( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f204( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3646,7 +3646,7 @@ void marching_cubes< V, P, N >::f204( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f051( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f051( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3659,7 +3659,7 @@ void marching_cubes< V, P, N >::f051( const mist::array< node_type > &nda, std::
 
 // 1, 1, 1, 0, 1, 0, 0, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f023( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f023( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3673,7 +3673,7 @@ void marching_cubes< V, P, N >::f023( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f077( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f077( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3687,7 +3687,7 @@ void marching_cubes< V, P, N >::f077( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f142( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f142( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3701,7 +3701,7 @@ void marching_cubes< V, P, N >::f142( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f043( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f043( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3715,7 +3715,7 @@ void marching_cubes< V, P, N >::f043( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f113( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f113( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3729,7 +3729,7 @@ void marching_cubes< V, P, N >::f113( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f212( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f212( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3743,7 +3743,7 @@ void marching_cubes< V, P, N >::f212( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f178( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f178( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3757,7 +3757,7 @@ void marching_cubes< V, P, N >::f178( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f232( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f232( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3772,7 +3772,7 @@ void marching_cubes< V, P, N >::f232( const mist::array< node_type > &nda, std::
 
 // 1, 1, 1, 0, 0, 1, 0, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f039( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f039( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3786,7 +3786,7 @@ void marching_cubes< V, P, N >::f039( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f029( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f029( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3800,7 +3800,7 @@ void marching_cubes< V, P, N >::f029( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f078( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f078( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3814,7 +3814,7 @@ void marching_cubes< V, P, N >::f078( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f139( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f139( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3828,7 +3828,7 @@ void marching_cubes< V, P, N >::f139( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f083( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f083( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3842,7 +3842,7 @@ void marching_cubes< V, P, N >::f083( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f116( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f116( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3856,7 +3856,7 @@ void marching_cubes< V, P, N >::f116( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f197( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f197( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3870,7 +3870,7 @@ void marching_cubes< V, P, N >::f197( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f177( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f177( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3884,7 +3884,7 @@ void marching_cubes< V, P, N >::f177( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f226( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f226( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3898,7 +3898,7 @@ void marching_cubes< V, P, N >::f226( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f216( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f216( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3912,7 +3912,7 @@ void marching_cubes< V, P, N >::f216( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f058( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f058( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3926,7 +3926,7 @@ void marching_cubes< V, P, N >::f058( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f172( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f172( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3941,7 +3941,7 @@ void marching_cubes< V, P, N >::f172( const mist::array< node_type > &nda, std::
 
 // 1, 1, 1, 0, 0, 0, 1, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f071( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f071( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3955,7 +3955,7 @@ void marching_cubes< V, P, N >::f071( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f141( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f141( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3969,7 +3969,7 @@ void marching_cubes< V, P, N >::f141( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f046( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f046( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3983,7 +3983,7 @@ void marching_cubes< V, P, N >::f046( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f027( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f027( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -3997,7 +3997,7 @@ void marching_cubes< V, P, N >::f027( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f209( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f209( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4011,7 +4011,7 @@ void marching_cubes< V, P, N >::f209( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f092( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f092( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4025,7 +4025,7 @@ void marching_cubes< V, P, N >::f092( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f053( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f053( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4039,7 +4039,7 @@ void marching_cubes< V, P, N >::f053( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f184( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f184( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4053,7 +4053,7 @@ void marching_cubes< V, P, N >::f184( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f228( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f228( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4067,7 +4067,7 @@ void marching_cubes< V, P, N >::f228( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f114( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f114( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4081,7 +4081,7 @@ void marching_cubes< V, P, N >::f114( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f202( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f202( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4095,7 +4095,7 @@ void marching_cubes< V, P, N >::f202( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f163( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f163( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4110,7 +4110,7 @@ void marching_cubes< V, P, N >::f163( const mist::array< node_type > &nda, std::
 
 // 1, 1, 1, 0, 0, 0, 0, 1
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f135( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f135( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4127,7 +4127,7 @@ void marching_cubes< V, P, N >::f135( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f045( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f045( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4144,7 +4144,7 @@ void marching_cubes< V, P, N >::f045( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f030( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f030( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4161,7 +4161,7 @@ void marching_cubes< V, P, N >::f030( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f075( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f075( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4178,7 +4178,7 @@ void marching_cubes< V, P, N >::f075( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f089( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f089( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4195,7 +4195,7 @@ void marching_cubes< V, P, N >::f089( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f086( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f086( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4212,7 +4212,7 @@ void marching_cubes< V, P, N >::f086( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f101( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f101( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4229,7 +4229,7 @@ void marching_cubes< V, P, N >::f101( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f149( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f149( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4246,7 +4246,7 @@ void marching_cubes< V, P, N >::f149( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f180( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f180( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4263,7 +4263,7 @@ void marching_cubes< V, P, N >::f180( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f225( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f225( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4280,7 +4280,7 @@ void marching_cubes< V, P, N >::f225( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f210( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f210( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4297,7 +4297,7 @@ void marching_cubes< V, P, N >::f210( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f120( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f120( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4314,7 +4314,7 @@ void marching_cubes< V, P, N >::f120( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f106( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f106( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4331,7 +4331,7 @@ void marching_cubes< V, P, N >::f106( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f154( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f154( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4348,7 +4348,7 @@ void marching_cubes< V, P, N >::f154( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f169( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f169( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4365,7 +4365,7 @@ void marching_cubes< V, P, N >::f169( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f166( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f166( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4382,7 +4382,7 @@ void marching_cubes< V, P, N >::f166( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f156( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f156( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4399,7 +4399,7 @@ void marching_cubes< V, P, N >::f156( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f108( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f108( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4416,7 +4416,7 @@ void marching_cubes< V, P, N >::f108( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f198( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f198( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4433,7 +4433,7 @@ void marching_cubes< V, P, N >::f198( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f201( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f201( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4450,7 +4450,7 @@ void marching_cubes< V, P, N >::f201( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f147( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f147( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4467,7 +4467,7 @@ void marching_cubes< V, P, N >::f147( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f099( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f099( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4484,7 +4484,7 @@ void marching_cubes< V, P, N >::f099( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f054( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f054( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4501,7 +4501,7 @@ void marching_cubes< V, P, N >::f054( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f057( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f057( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4519,7 +4519,7 @@ void marching_cubes< V, P, N >::f057( const mist::array< node_type > &nda, std::
 
 // 1, 1, 0, 0, 0, 0, 1, 1
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f195( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f195( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4536,7 +4536,7 @@ void marching_cubes< V, P, N >::f195( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f165( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f165( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4553,7 +4553,7 @@ void marching_cubes< V, P, N >::f165( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f060( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f060( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4570,7 +4570,7 @@ void marching_cubes< V, P, N >::f060( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f090( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f090( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4587,7 +4587,7 @@ void marching_cubes< V, P, N >::f090( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f153( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f153( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4604,7 +4604,7 @@ void marching_cubes< V, P, N >::f153( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f102( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f102( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4622,7 +4622,7 @@ void marching_cubes< V, P, N >::f102( const mist::array< node_type > &nda, std::
 
 // 1, 0, 0, 1, 0, 1, 1, 0
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f105( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f105( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
@@ -4645,7 +4645,7 @@ void marching_cubes< V, P, N >::f105( const mist::array< node_type > &nda, std::
 }
 
 template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f150( const mist::array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+void marching_cubes< V, P, N >::f150( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
 {
 	out_point_type	p;
 	out_normal_type	n;
