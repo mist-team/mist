@@ -66,7 +66,7 @@
 _MIST_BEGIN
 
 
-#define __ASYMMETRIC_WEIGHTING__		1		///< AdaBoost の弱識別器に付与する重みを非対称にするかどうか
+#define __ASYMMETRIC_WEIGHTING__		0		///< AdaBoost の弱識別器に付与する重みを非対称にするかどうか
 #define __ONE_PER_CLASS_CODE_WORD__		0		///< 1クラスに1つ一意の Code Word を割り当てるかどうか
 #define __RANDOM_CODE_WORD__			0		///< ERPを実行する際に使用する初期 Code Word をランダムに生成するかどうか
 #define __DEBUG_OUTPUT_LEVEL__			0		///< コンソールに学習の様子をデバッグ情報として出力するレベル（0は何も出力しない）
@@ -335,6 +335,7 @@ namespace machine_learning
 					}
 				}
 
+				double max_sigma = -1.0;
 				int nfeatures = static_cast< int >( features[ 0 ].size( ) );
 
 				// 特徴量のリストを作成する
@@ -405,10 +406,54 @@ namespace machine_learning
 					#pragma omp critical
 					if( _minimum_classification_error_ > e )
 					{
-						_minimum_classification_error_ = e;
-						index_ = index;
-						sign_ = sgn;
-						threshold_ = th;
+						double M1 = 0.0;
+						double M2 = 0.0;
+						double S1 = 0.0;
+						double S2 = 0.0;
+
+						for( size_type i = 0 ; i < flist.size( ) ; i++ )
+						{
+							const feature_type &f = features[ i ];
+							if( categories[ i ] )
+							{
+								M1 += f.weight * f[ index ];
+							}
+							else
+							{
+								M2 += f.weight * f[ index ];
+							}
+						}
+
+						M1 /= sum_of_positive_weights;
+						M2 /= sum_of_negative_weights;
+
+						for( size_type i = 0 ; i < flist.size( ) ; i++ )
+						{
+							const feature_type &f = features[ i ];
+							if( categories[ i ] )
+							{
+								S1 += f.weight * ( f[ index ] - M1 ) * ( f[ index ] - M1 );
+							}
+							else
+							{
+								S2 += f.weight * ( f[ index ] - M2 ) * ( f[ index ] - M2 );
+							}
+						}
+
+						S1 /= sum_of_positive_weights;
+						S2 /= sum_of_negative_weights;
+						double V1 = sum_of_positive_weights * sum_of_negative_weights * ( M1 - M2 ) * ( M1 - M2 );
+						double V2 = ( sum_of_positive_weights + sum_of_negative_weights ) * ( sum_of_positive_weights * S1 + sum_of_negative_weights * S2 );
+						double sigma = V1 / V2;
+
+						if( sigma > max_sigma )
+						{
+							_minimum_classification_error_ = e;
+							index_ = index;
+							sign_ = sgn;
+							threshold_ = th;
+							max_sigma = sigma;
+						}
 					}
 				}
 
