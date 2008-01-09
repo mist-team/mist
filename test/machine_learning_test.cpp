@@ -42,16 +42,16 @@ int main( int argc, char *argv[] )
 
 	double cx1 = 2.0;
 	double cy1 = 2.0;
-	double cx2 = 7.0;
-	double cy2 = 7.0;
+	double cx2 = 17.0;
+	double cy2 = 17.0;
 	double r1 = 2.0;
 	double r2 = 2.0;
 
 	// 学習用サンプルデータを作成する
 	for( size_t i = 0 ; i < 1000 ; i++ )
 	{
-		double x = rnd.real1( ) * 10.0;
-		double y = rnd.real1( ) * 10.0;
+		double x = rnd.real1( ) * 50.0;
+		double y = rnd.real1( ) * 50.0;
 
 		double R1 = ( x - cx1 ) * ( x - cx1 ) + ( y - cy1 ) * ( y - cy1 );
 		double R2 = ( x - cx2 ) * ( x - cx2 ) + ( y - cy2 ) * ( y - cy2 );
@@ -98,20 +98,20 @@ int main( int argc, char *argv[] )
 	}
 
 	// AdaBoost を使用する識別器
-	mist::machine_learning::adaboost::classifier classifier;
+	//mist::machine_learning::adaboost::classifier< mist::machine_learning::adaboost::mahalanobis_classifier > classifier;
+	mist::machine_learning::adaboost::classifier< > classifier;
 
 	{
 		mist::timer t;
 
 		// 学習データを用いて識別器を構築します
-		classifier.learn( train, 50 );
+		classifier.learn( train, 5 );
 
 		std::cout << "Computation Time: " << t << " sec." << std::endl;
 	}
 
 	std::cout << "Classification error for training data = " << classifier.error_rate( train ) << std::endl;
 	std::cout << "Classification error for test data     = " << classifier.error_rate( test ) << std::endl;
-
 
 	// 識別器を保存する際は以下のように書きます
 	classifier.save( "filename.dat" );
@@ -122,8 +122,8 @@ int main( int argc, char *argv[] )
 
 
 	// 実際に分類する際は，以下のような書き方も可能です．
-	std::vector< double > feature( test[ 0 ] );
-	std::cout << "Result: " << classifier( feature ) << std::endl;
+	std::vector< double > feature( test[ 10 ] );
+	std::cout << "Result: " << classifier( feature ) << " should be " << test[ 10 ].category << std::endl;
 
 
 	return( 0 );

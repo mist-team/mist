@@ -236,8 +236,8 @@ namespace machine_learning
 			return( val );
 		}
 
-		/// @brief AdaBoost で利用する弱識別器（しきい値処理）
-		class weak_classifier
+		/// @brief AdaBoost で利用するしきい値処理を用いた弱識別器
+		class threshold_classifier
 		{
 		public:
 			typedef feature feature_type;
@@ -252,27 +252,17 @@ namespace machine_learning
 
 		public:
 			/// @brief デフォルトのコンストラクタ
-			weak_classifier( ) : sign_( 1.0 ), threshold_( 0.0 ), index_( 0 )
-			{
-			}
-
-			/// @brief パラメータを指定して弱識別器を初期化
-			//! 
-			//! @param[in]  _sign_      … しきい値の符号
-			//! @param[in]  _threshold_ … 分類に用いるしきい値
-			//! @param[in]  indx        …  使用する特徴量の番号
-			//! 
-			weak_classifier( double _sign_, double _threshold_, size_type indx = 0 ) : sign_( _sign_ ), threshold_( _threshold_ ), index_( indx )
+			threshold_classifier( ) : sign_( 1.0 ), threshold_( 0.0 ), index_( 0 )
 			{
 			}
 
 			/// @brief コピーコンストラクタ
-			weak_classifier( const weak_classifier& w ) : sign_( w.sign_ ), threshold_( w.threshold_ ), index_( w.index_ )
+			threshold_classifier( const threshold_classifier& w ) : sign_( w.sign_ ), threshold_( w.threshold_ ), index_( w.index_ )
 			{
 			}
 
 			/// @brief 他の識別器と同じパラメータの識別器となるようにデータをコピーする
-			weak_classifier& operator =( const weak_classifier& other )
+			threshold_classifier& operator =( const threshold_classifier& other )
 			{
 				if( this != &other )
 				{
@@ -283,25 +273,6 @@ namespace machine_learning
 
 				return( *this );
 			}
-
-		public:
-			/// @brief 識別器の符号を取得する
-			double sign( ) const { return( sign_ ); }
-
-			/// @brief 識別器の符号を設定する
-			void   sign( double s ){ sign_ = s; }
-
-			/// @brief 識別器のしきい値を取得する
-			double threshold( ) const { return( threshold_ ); }
-
-			/// @brief 識別器のしきい値を設定する
-			void   threshold( double th ){ threshold_ = th; }
-
-			/// @brief 識別器が使用する特徴量の番号符号を取得する
-			size_type index( ) const { return( index_ ); }
-
-			/// @brief 識別器が使用する特徴量の番号符号を設定する
-			void   index( size_type indx ){ index_ = indx; }
 
 		public:
 			/// @brief 教師データを用いて最適な弱識別器を構築する
@@ -424,10 +395,10 @@ namespace machine_learning
 							}
 						}
 
-						M1 /= sum_of_positive_weights;
-						M2 /= sum_of_negative_weights;
+						M1 /= overall_sum_of_positive_weights;
+						M2 /= overall_sum_of_negative_weights;
 
-						for( size_type i = 0 ; i < flist.size( ) ; i++ )
+						for( size_type i = 0 ; i < features.size( ) ; i++ )
 						{
 							const feature_type &f = features[ i ];
 							if( categories[ i ] )
@@ -440,10 +411,10 @@ namespace machine_learning
 							}
 						}
 
-						S1 /= sum_of_positive_weights;
-						S2 /= sum_of_negative_weights;
-						double V1 = sum_of_positive_weights * sum_of_negative_weights * ( M1 - M2 ) * ( M1 - M2 );
-						double V2 = ( sum_of_positive_weights + sum_of_negative_weights ) * ( sum_of_positive_weights * S1 + sum_of_negative_weights * S2 );
+						S1 /= overall_sum_of_positive_weights;
+						S2 /= overall_sum_of_negative_weights;
+						double V1 = overall_sum_of_positive_weights * overall_sum_of_negative_weights * ( M1 - M2 ) * ( M1 - M2 );
+						double V2 = ( overall_sum_of_positive_weights + overall_sum_of_negative_weights ) * ( overall_sum_of_positive_weights * S1 + overall_sum_of_negative_weights * S2 );
 						double sigma = V1 / V2;
 
 						if( sigma > max_sigma )
@@ -487,13 +458,259 @@ namespace machine_learning
 			{
 				return( sgn * f[ indx ] <= sgn * th );
 			}
+
+			/// @brief 識別機のパラメータを文字列形式で記録する
+			const std::string serialize( ) const
+			{
+				char buff[ 1024 ];
+				sprintf( buff, "%d,%f,%f", index_, sign_, threshold_ );
+				return( buff );
+			}
+
+			/// @brief 識別機のパラメータを記録した文字列からパラメータを復元する
+			void deserialize( const std::string &data ) const
+			{
+				sscanf( data.c_str( ), "%d,%lf,%lf", &index_, &sign_, &threshold_ );
+			}
+		};
+
+		/// @brief AdaBoost で利用するマハラノビス距離を用いた弱識別器
+		class mahalanobis_classifier
+		{
+		public:
+			typedef feature feature_type;
+			typedef feature_type::value_type value_type;			///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+			typedef feature_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+			typedef feature_type::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+
+		private:
+			double ave_[ 2 ];	///< @brief 各クラスの平均値
+			double sig_[ 2 ];	///< @brief 各クラスの分散値
+			size_type index_;	///< @brief 使用する特徴量の番号
+
+		public:
+			/// @brief デフォルトのコンストラクタ
+			mahalanobis_classifier( ) : index_( 0 )
+			{
+				ave_[ 0 ] = ave_[ 1 ] = 0.0;
+				sig_[ 0 ] = sig_[ 1 ] = 1.0;
+			}
+
+			/// @brief コピーコンストラクタ
+			mahalanobis_classifier( const mahalanobis_classifier& w ) : index_( w.index_ )
+			{
+				memcpy( ave_, w.ave_, sizeof( double ) * 2 );
+				memcpy( sig_, w.sig_, sizeof( double ) * 2 );
+			}
+
+			/// @brief 他の識別器と同じパラメータの識別器となるようにデータをコピーする
+			mahalanobis_classifier& operator =( const mahalanobis_classifier& other )
+			{
+				if( this != &other )
+				{
+					memcpy( ave_, other.ave_, sizeof( double ) * 2 );
+					memcpy( sig_, other.sig_, sizeof( double ) * 2 );
+					index_   = other.index_;
+				}
+
+				return( *this );
+			}
+
+		public:
+			/// @brief 教師データを用いて最適な弱識別器を構築する
+			//! 
+			//! @param[in]  features   … 学習に用いる教師データ
+			//! @param[in]  categories … 学習データのカテゴリ（true もしくは false）
+			//! 
+			template < template < typename, typename > class FEATURE_LIST, template < typename, typename > class CATEGORY_LIST, class Allocator1, class Allocator2 >
+			bool learn( const FEATURE_LIST< feature_type, Allocator1 > & features, const CATEGORY_LIST< bool, Allocator2 > &categories )
+			{
+				if( features.empty( ) )
+				{
+					return( false );
+				}
+
+				double _minimum_classification_error_ = 1.0e100;
+
+				// Positive と Negative それぞれの重みの合計を計算する
+				double overall_sum_of_positive_weights = 0.0;
+				double overall_sum_of_negative_weights = 0.0;
+				for( size_type i = 0 ; i < features.size( ) ; i++ )
+				{
+					const feature_type &f = features[ i ];
+					if( categories[ i ] )
+					{
+						overall_sum_of_positive_weights += f.weight;
+					}
+					else
+					{
+						overall_sum_of_negative_weights += f.weight;
+					}
+				}
+
+				double max_sigma = -1.0;
+				int nfeatures = static_cast< int >( features[ 0 ].size( ) );
+
+				// 特徴量のリストを作成する
+				#pragma omp parallel for firstprivate( nfeatures ) schedule( guided )
+				for( int index = 0 ; index < nfeatures ; index++ )
+				{
+					double ave[ 2 ] = { 0.0, 0.0 };
+					double sig[ 2 ] = { 0.0, 0.0 };
+
+					for( size_type i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						if( categories[ i ] )
+						{
+							ave[ 0 ] += f.weight * f[ index ];
+						}
+						else
+						{
+							ave[ 1 ] += f.weight * f[ index ];
+						}
+					}
+
+					ave[ 0 ] /= overall_sum_of_positive_weights;
+					ave[ 1 ] /= overall_sum_of_negative_weights;
+
+					for( size_type i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						if( categories[ i ] )
+						{
+							sig[ 0 ] += f.weight * ( f[ index ] - ave[ 0 ] ) * ( f[ index ] - ave[ 0 ] );
+						}
+						else
+						{
+							sig[ 1 ] += f.weight * ( f[ index ] - ave[ 1 ] ) * ( f[ index ] - ave[ 1 ] );
+						}
+					}
+
+					sig[ 0 ] /= overall_sum_of_positive_weights;
+					sig[ 1 ] /= overall_sum_of_negative_weights;
+
+					double e = 0.0;
+					for( size_t i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						if( f.valid )
+						{
+							if( evaluate( f, index, ave, sig ) != categories[ i ] )
+							{
+								e += f.weight;
+							}
+						}
+					}
+
+					#pragma omp critical
+					if( _minimum_classification_error_ > e )
+					{
+						double M1 = 0.0;
+						double M2 = 0.0;
+						double S1 = 0.0;
+						double S2 = 0.0;
+
+						for( size_type i = 0 ; i < features.size( ) ; i++ )
+						{
+							const feature_type &f = features[ i ];
+							if( categories[ i ] )
+							{
+								M1 += f.weight * f[ index ];
+							}
+							else
+							{
+								M2 += f.weight * f[ index ];
+							}
+						}
+
+						M1 /= overall_sum_of_positive_weights;
+						M2 /= overall_sum_of_negative_weights;
+
+						for( size_type i = 0 ; i < features.size( ) ; i++ )
+						{
+							const feature_type &f = features[ i ];
+							if( categories[ i ] )
+							{
+								S1 += f.weight * ( f[ index ] - M1 ) * ( f[ index ] - M1 );
+							}
+							else
+							{
+								S2 += f.weight * ( f[ index ] - M2 ) * ( f[ index ] - M2 );
+							}
+						}
+
+						S1 /= overall_sum_of_positive_weights;
+						S2 /= overall_sum_of_negative_weights;
+						double V1 = overall_sum_of_positive_weights * overall_sum_of_negative_weights * ( M1 - M2 ) * ( M1 - M2 );
+						double V2 = ( overall_sum_of_positive_weights + overall_sum_of_negative_weights ) * ( overall_sum_of_positive_weights * S1 + overall_sum_of_negative_weights * S2 );
+						double sigma = V2 / V1;
+
+						if( sigma > max_sigma )
+						{
+							_minimum_classification_error_ = e;
+							index_ = index;
+							max_sigma = sigma;
+							memcpy( ave_, ave, sizeof( double ) * 2 );
+							memcpy( sig_, sig, sizeof( double ) * 2 );
+						}
+					}
+				}
+
+				return( true );
+			}
+
+		public:
+			/// @brief 学習済みの弱識別器を用いて特徴量を分類する
+			//! 
+			//! @param[in]  f … 分類する特徴量
+			//! 
+			template < class FEATURE >
+			bool operator ()( const FEATURE &f ) const
+			{
+				return( evaluate( f ) );
+			}
+
+			/// @brief 学習済みの弱識別器を用いて特徴量を分類する
+			//! 
+			//! @param[in]  f … 分類する特徴量
+			//! 
+			template < class FEATURE >
+			bool evaluate( const FEATURE &f ) const
+			{
+				return( evaluate( f, index_, ave_, sig_ ) );
+			}
+
+			/// @brief 学習済みの弱識別器を用いて特徴量を分類する
+			template < class FEATURE >
+			bool evaluate( const FEATURE &f, size_type indx, const double ave[ 2 ], const double sig[ 2 ] ) const
+			{
+				double v0 = f[ indx ] - ave[ 0 ];
+				double v1 = f[ indx ] - ave[ 1 ];
+				return( v0 * v0 / sig[ 0 ] <= v1 * v1 / sig[ 1 ] );
+			}
+
+			/// @brief 識別機のパラメータを文字列形式で記録する
+			const std::string serialize( ) const
+			{
+				char buff[ 1024 ];
+				sprintf( buff, "%d,%f,%f,%f,%f", index_, ave_[ 0 ], ave_[ 1 ], sig_[ 0 ], sig_[ 1 ] );
+				return( buff );
+			}
+
+			/// @brief 識別機のパラメータを記録した文字列からパラメータを復元する
+			void deserialize( const std::string &data ) const
+			{
+				sscanf( data.c_str( ), "%d,%lf,%lf,%lf,%lf", &index_, &ave_[ 0 ], &ave_[ 1 ], &sig_[ 0 ], &sig_[ 1 ] );
+			}
 		};
 
 		/// @brief AdaBoost を用いた識別器（マルチクラス対応）
+		template < typename __WEAK_CLASSIFIER__ = threshold_classifier >
 		class classifier
 		{
 		public:
-			typedef weak_classifier weak_classifier_type;			///< @brief Boosting する弱識別器のクラス
+			typedef __WEAK_CLASSIFIER__ weak_classifier_type;		///< @brief Boosting する弱識別器のクラス
 			typedef feature feature_type;							///< @brief 学習に用いる特徴量を扱うクラス
 			typedef feature_type::value_type value_type;			///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
 			typedef feature_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
@@ -1238,7 +1455,8 @@ namespace machine_learning
 				for( size_type i = 0 ; i < weak_classifiers_.size( ) ; i++ )
 				{
 					const weak_classifier_type &weak = weak_classifiers_[ i ];
-					fprintf( fp, "%f,%f,%d,%f,%f\n", weak.sign( ), weak.threshold( ), weak.index( ), alpha_[ i ], beta_[ i ] );
+					fprintf( fp, "%s\n", weak.serialize( ).c_str( ) );
+					fprintf( fp, "%f,%f\n", alpha_[ i ], beta_[ i ] );
 				}
 
 				fclose( fp );
@@ -1306,17 +1524,14 @@ namespace machine_learning
 				}
 
 				// 弱識別器と Alpha と Beta を列挙する
-				int index;
-				double sign, th, alpha, beta;
 				for( size_type i = 0 ; i < weak_classifiers_.size( ) ; i++ )
 				{
 					fgets( line, 4096, fp );
-					sscanf( line, "%lf,%lf,%d,%lf,%lf", &sign, &th, &index, &alpha, &beta );
+					weak_classifiers_[ i ].deserialize( line );
 
-					weak_classifier_type &weak = weak_classifiers_[ i ];
-					weak.sign( sign );
-					weak.threshold( th );
-					weak.index( index );
+					fgets( line, 4096, fp );
+					double alpha, beta;
+					sscanf( line, "%lf,%lf", &alpha, &beta );
 					alpha_[ i ] = alpha;
 					beta_[ i ] = beta;
 				}
