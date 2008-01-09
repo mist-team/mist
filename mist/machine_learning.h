@@ -705,6 +705,200 @@ namespace machine_learning
 			}
 		};
 
+		/// @brief AdaBoost で利用するマハラノビス距離を用いた弱識別器
+		class rating_classifier
+		{
+		public:
+			typedef feature feature_type;
+			typedef feature_type::value_type value_type;			///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
+			typedef feature_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+			typedef feature_type::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+
+		private:
+			double hist1_[ 20 ];	///< @brief 各クラスの平均値
+			double hist2_[ 20 ];	///< @brief 各クラスの平均値
+			double min_;	///< @brief 各クラスの分散値
+			double max_;	///< @brief 各クラスの分散値
+			size_type index_;	///< @brief 使用する特徴量の番号
+
+		public:
+			/// @brief デフォルトのコンストラクタ
+			rating_classifier( ) : index_( 0 ), min_( 0 ), max_( 0 )
+			{
+				memset( hist1_, 0, sizeof( double ) * 20 );
+				memset( hist2_, 0, sizeof( double ) * 20 );
+			}
+
+			/// @brief コピーコンストラクタ
+			rating_classifier( const rating_classifier& w ) : index_( w.index_ ), min_( w.min_ ), max_( w.max_ )
+			{
+				memcpy( hist1_, w.hist1_, sizeof( double ) * 20 );
+				memcpy( hist2_, w.hist2_, sizeof( double ) * 20 );
+			}
+
+			/// @brief 他の識別器と同じパラメータの識別器となるようにデータをコピーする
+			rating_classifier& operator =( const rating_classifier& other )
+			{
+				if( this != &other )
+				{
+					memcpy( hist1_, other.hist1_, sizeof( double ) * 20 );
+					memcpy( hist2_, other.hist2_, sizeof( double ) * 20 );
+					index_  = other.index_;
+					min_    = other.min_;
+					max_    = other.max_;
+				}
+
+				return( *this );
+			}
+
+		public:
+			/// @brief 教師データを用いて最適な弱識別器を構築する
+			//! 
+			//! @param[in]  features   … 学習に用いる教師データ
+			//! @param[in]  categories … 学習データのカテゴリ（true もしくは false）
+			//! 
+			template < template < typename, typename > class FEATURE_LIST, template < typename, typename > class CATEGORY_LIST, class Allocator1, class Allocator2 >
+			bool learn( const FEATURE_LIST< feature_type, Allocator1 > & features, const CATEGORY_LIST< bool, Allocator2 > &categories )
+			{
+				if( features.empty( ) )
+				{
+					return( false );
+				}
+
+				double _minimum_classification_error_ = 1.0e100;
+				int nfeatures = static_cast< int >( features[ 0 ].size( ) );
+
+				// 特徴量のリストを作成する
+				#pragma omp parallel for firstprivate( nfeatures ) schedule( guided )
+				for( int index = 0 ; index < nfeatures ; index++ )
+				{
+					double min = 1.0e100;
+					double max = -1.0e100;
+
+					for( size_type i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						if( min > f[ index ] )
+						{
+							min = f[ index ];
+						}
+						else if( max < f[ index ] )
+						{
+							max = f[ index ];
+						}
+					}
+
+					double hist1[ 20 ];
+					double hist2[ 20 ];
+					for( size_type i = 0 ; i < 20 ; i++ )
+					{
+						hist1[ i ] = hist2[ i ] = 0.0;
+					}
+
+					for( size_type i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						int bin = ( int )( ( f[ index ] - min ) * 20 / ( max - min + 1 ) + 0.5 );
+						if( bin < 0 )
+						{
+							bin = 0;
+						}
+						else if( bin >= 20 )
+						{
+							bin = 19;
+						}
+
+						if( categories[ i ] )
+						{
+							hist1[ bin ] += f.weight;
+						}
+						else
+						{
+							hist2[ bin ] += f.weight;
+						}
+					}
+
+					double e = 0.0;
+					for( size_t i = 0 ; i < features.size( ) ; i++ )
+					{
+						const feature_type &f = features[ i ];
+						if( f.valid )
+						{
+							if( evaluate( f, index, hist1, hist2, min, max ) != categories[ i ] )
+							{
+								e += f.weight;
+							}
+						}
+					}
+
+					#pragma omp critical
+					if( _minimum_classification_error_ > e )
+					{
+						_minimum_classification_error_ = e;
+						index_ = index;
+						min_ = min;
+						max_ = max;
+						memcpy( hist1_, hist1, sizeof( double ) * 20 );
+						memcpy( hist2_, hist2, sizeof( double ) * 20 );
+					}
+				}
+
+				return( true );
+			}
+
+		public:
+			/// @brief 学習済みの弱識別器を用いて特徴量を分類する
+			//! 
+			//! @param[in]  f … 分類する特徴量
+			//! 
+			template < class FEATURE >
+			bool operator ()( const FEATURE &f ) const
+			{
+				return( evaluate( f ) );
+			}
+
+			/// @brief 学習済みの弱識別器を用いて特徴量を分類する
+			//! 
+			//! @param[in]  f … 分類する特徴量
+			//! 
+			template < class FEATURE >
+			bool evaluate( const FEATURE &f ) const
+			{
+				return( evaluate( f, index_, hist1_, hist2_, min_, max_ ) );
+			}
+
+			/// @brief 学習済みの弱識別器を用いて特徴量を分類する
+			template < class FEATURE >
+			bool evaluate( const FEATURE &f, size_type indx, const double hist1[ 20 ], const double hist2[ 20 ], double min, double max ) const
+			{
+				int bin = ( int )( ( f[ indx ] - min ) * 20 / ( max - min + 1 ) + 0.5 );
+				if( bin < 0 )
+				{
+					bin = 0;
+				}
+				else if( bin >= 20 )
+				{
+					bin = 19;
+				}
+				return( hist1[ bin ] <= hist2[ bin ] );
+			}
+
+			/// @brief 識別機のパラメータを文字列形式で記録する
+			const std::string serialize( ) const
+			{
+				//char buff[ 1024 ];
+				//sprintf( buff, "%d,%f,%f,%f,%f", index_, ave_[ 0 ], ave_[ 1 ], sig_[ 0 ], sig_[ 1 ] );
+				//return( buff );
+				return( "" );
+			}
+
+			/// @brief 識別機のパラメータを記録した文字列からパラメータを復元する
+			void deserialize( const std::string &data ) const
+			{
+				//sscanf( data.c_str( ), "%d,%lf,%lf,%lf,%lf", &index_, &ave_[ 0 ], &ave_[ 1 ], &sig_[ 0 ], &sig_[ 1 ] );
+			}
+		};
+
 		/// @brief AdaBoost を用いた識別器（マルチクラス対応）
 		template < typename __WEAK_CLASSIFIER__ = threshold_classifier >
 		class classifier

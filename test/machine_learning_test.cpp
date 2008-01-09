@@ -44,14 +44,16 @@ int main( int argc, char *argv[] )
 	double cy1 = 2.0;
 	double cx2 = 17.0;
 	double cy2 = 17.0;
+	double cx  = ( cx1 + cx2 ) * 0.5;
+	double cy  = ( cy1 + cy2 ) * 0.5;
 	double r1 = 2.0;
 	double r2 = 2.0;
 
 	// 学習用サンプルデータを作成する
 	for( size_t i = 0 ; i < 1000 ; i++ )
 	{
-		double x = rnd.real1( ) * 50.0;
-		double y = rnd.real1( ) * 50.0;
+		double x = ( rnd.real1( ) - 0.5 ) * 20.0 + cx;
+		double y = ( rnd.real1( ) - 0.5 ) * 20.0 + cy;
 
 		double R1 = ( x - cx1 ) * ( x - cx1 ) + ( y - cy1 ) * ( y - cy1 );
 		double R2 = ( x - cx2 ) * ( x - cx2 ) + ( y - cy2 ) * ( y - cy2 );
@@ -75,8 +77,8 @@ int main( int argc, char *argv[] )
 	// テスト用サンプルデータを作成する
 	for( size_t i = 0 ; i < 1000 ; i++ )
 	{
-		double x = rnd.real1( ) * 10.0;
-		double y = rnd.real1( ) * 10.0;
+		double x = ( rnd.real1( ) - 0.5 ) * 20.0 + cx;
+		double y = ( rnd.real1( ) - 0.5 ) * 20.0 + cy;
 
 		double R1 = ( x - cx1 ) * ( x - cx1 ) + ( y - cy1 ) * ( y - cy1 );
 		double R2 = ( x - cx2 ) * ( x - cx2 ) + ( y - cy2 ) * ( y - cy2 );
@@ -99,13 +101,14 @@ int main( int argc, char *argv[] )
 
 	// AdaBoost を使用する識別器
 	//mist::machine_learning::adaboost::classifier< mist::machine_learning::adaboost::mahalanobis_classifier > classifier;
+	//mist::machine_learning::adaboost::classifier< mist::machine_learning::adaboost::rating_classifier > classifier;
 	mist::machine_learning::adaboost::classifier< > classifier;
 
 	{
 		mist::timer t;
 
 		// 学習データを用いて識別器を構築します
-		classifier.learn( train, 5 );
+		classifier.learn( train, 50 );
 
 		std::cout << "Computation Time: " << t << " sec." << std::endl;
 	}
