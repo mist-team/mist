@@ -354,7 +354,15 @@ namespace machine_learning
 							th        = f.value;
 							sgn       = e1 < e2 ? -1.0 : 1.0;
 
-							if( i < flist.size( ) - 1 )
+							if( 0 < i && i < flist.size( ) - 2 )
+							{
+								double v1 = std::abs( flist[ i - 1 ].value - flist[ i + 0 ].value );
+								double v2 = std::abs( flist[ i + 1 ].value - flist[ i + 2 ].value );
+								double t1 = flist[ i + 0 ].value;
+								double t2 = flist[ i + 1 ].value;
+								th = ( t1 * v2 + t2 * v1 ) / ( v1 + v2 );
+							}
+							else if( i < flist.size( ) - 1 )
 							{
 								th = ( th + flist[ i + 1 ].value ) * 0.5;
 							}
@@ -548,7 +556,6 @@ namespace machine_learning
 					}
 				}
 
-				double max_sigma = -1.0;
 				int nfeatures = static_cast< int >( features[ 0 ].size( ) );
 
 				// 特徴量のリストを作成する
@@ -606,54 +613,10 @@ namespace machine_learning
 					#pragma omp critical
 					if( _minimum_classification_error_ > e )
 					{
-						double M1 = 0.0;
-						double M2 = 0.0;
-						double S1 = 0.0;
-						double S2 = 0.0;
-
-						for( size_type i = 0 ; i < features.size( ) ; i++ )
-						{
-							const feature_type &f = features[ i ];
-							if( categories[ i ] )
-							{
-								M1 += f.weight * f[ index ];
-							}
-							else
-							{
-								M2 += f.weight * f[ index ];
-							}
-						}
-
-						M1 /= overall_sum_of_positive_weights;
-						M2 /= overall_sum_of_negative_weights;
-
-						for( size_type i = 0 ; i < features.size( ) ; i++ )
-						{
-							const feature_type &f = features[ i ];
-							if( categories[ i ] )
-							{
-								S1 += f.weight * ( f[ index ] - M1 ) * ( f[ index ] - M1 );
-							}
-							else
-							{
-								S2 += f.weight * ( f[ index ] - M2 ) * ( f[ index ] - M2 );
-							}
-						}
-
-						S1 /= overall_sum_of_positive_weights;
-						S2 /= overall_sum_of_negative_weights;
-						double V1 = overall_sum_of_positive_weights * overall_sum_of_negative_weights * ( M1 - M2 ) * ( M1 - M2 );
-						double V2 = ( overall_sum_of_positive_weights + overall_sum_of_negative_weights ) * ( overall_sum_of_positive_weights * S1 + overall_sum_of_negative_weights * S2 );
-						double sigma = V2 / V1;
-
-						if( sigma > max_sigma )
-						{
-							_minimum_classification_error_ = e;
-							index_ = index;
-							max_sigma = sigma;
-							memcpy( ave_, ave, sizeof( double ) * 2 );
-							memcpy( sig_, sig, sizeof( double ) * 2 );
-						}
+						_minimum_classification_error_ = e;
+						index_ = index;
+						memcpy( ave_, ave, sizeof( double ) * 2 );
+						memcpy( sig_, sig, sizeof( double ) * 2 );
 					}
 				}
 
@@ -687,7 +650,7 @@ namespace machine_learning
 			{
 				double v0 = f[ indx ] - ave[ 0 ];
 				double v1 = f[ indx ] - ave[ 1 ];
-				return( v0 * v0 / sig[ 0 ] <= v1 * v1 / sig[ 1 ] );
+				return( v0 * v0 * sig[ 1 ] <= v1 * v1 * sig[ 0 ] );
 			}
 
 			/// @brief 識別機のパラメータを文字列形式で記録する
@@ -706,7 +669,7 @@ namespace machine_learning
 		};
 
 		/// @brief AdaBoost で利用するマハラノビス距離を用いた弱識別器
-		class rating_classifier
+		class confidence_rating_classifier
 		{
 		public:
 			typedef feature feature_type;
@@ -714,35 +677,37 @@ namespace machine_learning
 			typedef feature_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 			typedef feature_type::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
+			_MIST_CONST( size_type, __number_of_bins__, 100 );
+
 		private:
-			double hist1_[ 20 ];	///< @brief 各クラスの平均値
-			double hist2_[ 20 ];	///< @brief 各クラスの平均値
+			double hist1_[ __number_of_bins__ ];	///< @brief 各クラスの平均値
+			double hist2_[ __number_of_bins__ ];	///< @brief 各クラスの平均値
 			double min_;	///< @brief 各クラスの分散値
 			double max_;	///< @brief 各クラスの分散値
 			size_type index_;	///< @brief 使用する特徴量の番号
 
 		public:
 			/// @brief デフォルトのコンストラクタ
-			rating_classifier( ) : index_( 0 ), min_( 0 ), max_( 0 )
+			confidence_rating_classifier( ) : index_( 0 ), min_( 0 ), max_( 0 )
 			{
-				memset( hist1_, 0, sizeof( double ) * 20 );
-				memset( hist2_, 0, sizeof( double ) * 20 );
+				memset( hist1_, 0, sizeof( double ) * __number_of_bins__ );
+				memset( hist2_, 0, sizeof( double ) * __number_of_bins__ );
 			}
 
 			/// @brief コピーコンストラクタ
-			rating_classifier( const rating_classifier& w ) : index_( w.index_ ), min_( w.min_ ), max_( w.max_ )
+			confidence_rating_classifier( const confidence_rating_classifier& w ) : index_( w.index_ ), min_( w.min_ ), max_( w.max_ )
 			{
-				memcpy( hist1_, w.hist1_, sizeof( double ) * 20 );
-				memcpy( hist2_, w.hist2_, sizeof( double ) * 20 );
+				memcpy( hist1_, w.hist1_, sizeof( double ) * __number_of_bins__ );
+				memcpy( hist2_, w.hist2_, sizeof( double ) * __number_of_bins__ );
 			}
 
 			/// @brief 他の識別器と同じパラメータの識別器となるようにデータをコピーする
-			rating_classifier& operator =( const rating_classifier& other )
+			confidence_rating_classifier& operator =( const confidence_rating_classifier& other )
 			{
 				if( this != &other )
 				{
-					memcpy( hist1_, other.hist1_, sizeof( double ) * 20 );
-					memcpy( hist2_, other.hist2_, sizeof( double ) * 20 );
+					memcpy( hist1_, other.hist1_, sizeof( double ) * __number_of_bins__ );
+					memcpy( hist2_, other.hist2_, sizeof( double ) * __number_of_bins__ );
 					index_  = other.index_;
 					min_    = other.min_;
 					max_    = other.max_;
@@ -788,9 +753,9 @@ namespace machine_learning
 						}
 					}
 
-					double hist1[ 20 ];
-					double hist2[ 20 ];
-					for( size_type i = 0 ; i < 20 ; i++ )
+					double hist1[ __number_of_bins__ ];
+					double hist2[ __number_of_bins__ ];
+					for( size_type i = 0 ; i < __number_of_bins__ ; i++ )
 					{
 						hist1[ i ] = hist2[ i ] = 0.0;
 					}
@@ -798,14 +763,14 @@ namespace machine_learning
 					for( size_type i = 0 ; i < features.size( ) ; i++ )
 					{
 						const feature_type &f = features[ i ];
-						int bin = ( int )( ( f[ index ] - min ) * 20 / ( max - min + 1 ) + 0.5 );
+						int bin = ( int )( ( f[ index ] - min ) * __number_of_bins__ / ( max - min + 1 ) + 0.5 );
 						if( bin < 0 )
 						{
 							bin = 0;
 						}
-						else if( bin >= 20 )
+						else if( bin >= __number_of_bins__ )
 						{
-							bin = 19;
+							bin = __number_of_bins__ - 1;
 						}
 
 						if( categories[ i ] )
@@ -838,8 +803,8 @@ namespace machine_learning
 						index_ = index;
 						min_ = min;
 						max_ = max;
-						memcpy( hist1_, hist1, sizeof( double ) * 20 );
-						memcpy( hist2_, hist2, sizeof( double ) * 20 );
+						memcpy( hist1_, hist1, sizeof( double ) * __number_of_bins__ );
+						memcpy( hist2_, hist2, sizeof( double ) * __number_of_bins__ );
 					}
 				}
 
@@ -869,16 +834,16 @@ namespace machine_learning
 
 			/// @brief 学習済みの弱識別器を用いて特徴量を分類する
 			template < class FEATURE >
-			bool evaluate( const FEATURE &f, size_type indx, const double hist1[ 20 ], const double hist2[ 20 ], double min, double max ) const
+			bool evaluate( const FEATURE &f, size_type indx, const double hist1[ ], const double hist2[ ], double min, double max ) const
 			{
-				int bin = ( int )( ( f[ indx ] - min ) * 20 / ( max - min + 1 ) + 0.5 );
+				int bin = ( int )( ( f[ indx ] - min ) * __number_of_bins__ / ( max - min + 1 ) + 0.5 );
 				if( bin < 0 )
 				{
 					bin = 0;
 				}
-				else if( bin >= 20 )
+				else if( bin >= __number_of_bins__ )
 				{
-					bin = 19;
+					bin = __number_of_bins__ - 1;
 				}
 				return( hist1[ bin ] <= hist2[ bin ] );
 			}
