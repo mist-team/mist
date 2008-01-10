@@ -382,8 +382,7 @@ namespace machine_learning
 						}
 					}
 
-					#pragma omp critical
-					if( _minimum_classification_error_ > e )
+					double sigma = 0.0;
 					{
 						double M1 = 0.0;
 						double M2 = 0.0;
@@ -423,9 +422,12 @@ namespace machine_learning
 						S2 /= overall_sum_of_negative_weights;
 						double V1 = overall_sum_of_positive_weights * overall_sum_of_negative_weights * ( M1 - M2 ) * ( M1 - M2 );
 						double V2 = ( overall_sum_of_positive_weights + overall_sum_of_negative_weights ) * ( overall_sum_of_positive_weights * S1 + overall_sum_of_negative_weights * S2 );
-						double sigma = V1 / V2;
+						sigma = V1 / V2;
+					}
 
-						if( sigma > max_sigma )
+					#pragma omp critical
+					{
+						if( _minimum_classification_error_ >= e && sigma > max_sigma )
 						{
 							_minimum_classification_error_ = e;
 							index_ = index;
@@ -556,6 +558,7 @@ namespace machine_learning
 					}
 				}
 
+				double max_sigma = -1.0;
 				int nfeatures = static_cast< int >( features[ 0 ].size( ) );
 
 				// “Á’¥—Ê‚ÌƒŠƒXƒg‚ðì¬‚·‚é
@@ -610,13 +613,22 @@ namespace machine_learning
 						}
 					}
 
-					#pragma omp critical
-					if( _minimum_classification_error_ > e )
+					double sigma = 0.0;
 					{
-						_minimum_classification_error_ = e;
-						index_ = index;
-						memcpy( ave_, ave, sizeof( double ) * 2 );
-						memcpy( sig_, sig, sizeof( double ) * 2 );
+						double V1 = overall_sum_of_positive_weights * overall_sum_of_negative_weights * ( ave[ 0 ] - ave[ 1 ] ) * ( ave[ 0 ] - ave[ 1 ] );
+						double V2 = ( overall_sum_of_positive_weights + overall_sum_of_negative_weights ) * ( overall_sum_of_positive_weights * sig[ 0 ] + overall_sum_of_negative_weights * sig[ 1 ] );
+						sigma = V1 / V2;
+					}
+
+					#pragma omp critical
+					{
+						if( _minimum_classification_error_ >= e && sigma > max_sigma )
+						{
+							_minimum_classification_error_ = e;
+							index_ = index;
+							memcpy( ave_, ave, sizeof( double ) * 2 );
+							memcpy( sig_, sig, sizeof( double ) * 2 );
+						}
 					}
 				}
 
@@ -797,14 +809,16 @@ namespace machine_learning
 					}
 
 					#pragma omp critical
-					if( _minimum_classification_error_ > e )
 					{
-						_minimum_classification_error_ = e;
-						index_ = index;
-						min_ = min;
-						max_ = max;
-						memcpy( hist1_, hist1, sizeof( double ) * __number_of_bins__ );
-						memcpy( hist2_, hist2, sizeof( double ) * __number_of_bins__ );
+						if( _minimum_classification_error_ >= e )
+						{
+							_minimum_classification_error_ = e;
+							index_ = index;
+							min_ = min;
+							max_ = max;
+							memcpy( hist1_, hist1, sizeof( double ) * __number_of_bins__ );
+							memcpy( hist2_, hist2, sizeof( double ) * __number_of_bins__ );
+						}
 					}
 				}
 
