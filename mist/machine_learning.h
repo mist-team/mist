@@ -1216,18 +1216,40 @@ namespace machine_learning
 								}
 							}
 
+							std::vector< bool > tmyu( myu );
 							bool isChanged = false;
 							for( size_type i = 0 ; i < rpweight.size( ) ; i++ )
 							{
 								bool nmyu = rpweight[ i ] >= 0.0;
-								isChanged = isChanged || nmyu != myu[ i ];
-								myu[ i ] = nmyu;
+								isChanged = isChanged || nmyu != tmyu[ i ];
+								tmyu[ i ] = nmyu;
 							}
 
 							if( !isChanged )
 							{
 								// 前回とまったく同じなので終了する
 								break;
+							}
+
+							// すべて同じコードワードになっていないかをチェックする
+							{
+								size_type idx = 1;
+								for( ; idx < tmyu.size( ) ; idx++ )
+								{
+									if( tmyu[ 0 ] != tmyu[ idx ] )
+									{
+										break;
+									}
+								}
+
+								if( idx < tmyu.size( ) )
+								{
+									myu = tmyu;
+								}
+								else
+								{
+									break;
+								}
 							}
 						}
 					}
