@@ -8,4 +8,7 @@
 {0,0x2040,0x0074,US,1,"""Magnify to Number of Columns""",},//
 {0,0x2040,0x0080,CS,1,"""Overlay Foreground Density""",},//
 {0,0x2040,0x0082,CS,1,"""Overlay Background Density""",},//
+{0,0x2040,0x0090,CS,1,"""Overlay Mode""",},//
+{0,0x2040,0x0100,CS,1,"""Threshold Density""",},//
+{0,0x2040,0x0500,SQ,1,"""Referenced Image Box Sequence""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

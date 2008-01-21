@@ -4,6 +4,7 @@
 {0,0x3008,0x0014,CS,1,"""Measured Dose Type""",},//
 {0,0x3008,0x0016,DS,1,"""Measured Dose Value""",},//
 {0,0x3008,0x0020,SQ,1,"""Treatment Session Beam Sequence""",},//
+{0,0x3008,0x0021,SQ,1,"""Treatment Session Ion Beam Sequence""",},//
 {0,0x3008,0x0022,IS,1,"""Current Fraction Number""",},//
 {0,0x3008,0x0024,DA,1,"""Treatment Control Point Date""",},//
 {0,0x3008,0x0025,TM,1,"""Treatment Control Point Time""",},//
@@ -18,17 +19,27 @@
 {0,0x3008,0x003A,DS,1,"""Specified Treatment Time""",},//
 {0,0x3008,0x003B,DS,1,"""Delivered Treatment Time""",},//
 {0,0x3008,0x0040,SQ,1,"""Control Point Delivery Sequence""",},//
+{0,0x3008,0x0041,SQ,1,"""Ion Control Point Delivery Sequence""",},//
 {0,0x3008,0x0042,DS,1,"""Specified Meterset""",},//
 {0,0x3008,0x0044,DS,1,"""Delivered Meterset""",},//
+{0,0x3008,0x0045,FL,1,"""Meterset Rate Set""",},//
+{0,0x3008,0x0046,FL,1,"""Meterset Rate Delivered""",},//
+{0,0x3008,0x0047,FL,-1,"""Scan Spot Metersets Delivered""",},//
 {0,0x3008,0x0048,DS,1,"""Dose Rate Delivered""",},//
+{0,0x3008,0x0050,SQ,1,"""Treatment Summary Calculated Dose Reference Sequence""",},//
 {0,0x3008,0x0052,DS,1,"""Cumulative Dose to Dose Reference""",},//
 {0,0x3008,0x0054,DA,1,"""First Treatment Date""",},//
 {0,0x3008,0x0056,DA,1,"""Most Recent Treatment Date""",},//
 {0,0x3008,0x005A,IS,1,"""Number of Fractions Delivered""",},//
 {0,0x3008,0x0060,SQ,1,"""Override Sequence""",},//
+{0,0x3008,0x0061,AT,1,"""Parameter Sequence Pointer""",},//
 {0,0x3008,0x0062,AT,1,"""Override Parameter Pointer""",},//
+{0,0x3008,0x0063,IS,1,"""Parameter Item Index""",},//
 {0,0x3008,0x0064,IS,1,"""Measured Dose Reference Number""",},//
+{0,0x3008,0x0065,AT,1,"""Parameter Pointer""",},//
 {0,0x3008,0x0066,ST,1,"""Override Reason""",},//
+{0,0x3008,0x0068,SQ,1,"""Corrected Parameter Sequence""",},//
+{0,0x3008,0x006A,FL,1,"""Correction Value""",},//
 {0,0x3008,0x0070,SQ,1,"""Calculated Dose Reference Sequence""",},//
 {0,0x3008,0x0072,IS,1,"""Calculated Dose Reference Number""",},//
 {0,0x3008,0x0074,ST,1,"""Calculated Dose Reference Description""",},//
@@ -43,6 +54,11 @@
 {0,0x3008,0x00B0,SQ,1,"""Recorded Wedge Sequence""",},//
 {0,0x3008,0x00C0,SQ,1,"""Recorded Compensator Sequence""",},//
 {0,0x3008,0x00D0,SQ,1,"""Recorded Block Sequence""",},//
+{0,0x3008,0x00E0,SQ,1,"""Treatment Summary Measured Dose Reference Sequence""",},//
+{0,0x3008,0x00F0,SQ,1,"""Recorded Snout Sequence""",},//
+{0,0x3008,0x00F2,SQ,1,"""Recorded Range Shifter Sequence""",},//
+{0,0x3008,0x00F4,SQ,1,"""Recorded Lateral Spreading Device Sequence""",},//
+{0,0x3008,0x00F6,SQ,1,"""Recorded Range Modulator Sequence""",},//
 {0,0x3008,0x0100,SQ,1,"""Recorded Source Sequence""",},//
 {0,0x3008,0x0105,LO,1,"""Source Serial Number""",},//
 {0,0x3008,0x0110,SQ,1,"""Treatment Session Application Setup Sequence""",},//

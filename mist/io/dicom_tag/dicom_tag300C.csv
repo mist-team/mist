@@ -24,4 +24,10 @@
 {0,0x300C,0x00D0,IS,1,"""Referenced Compensator Number""",},//
 {0,0x300C,0x00E0,IS,1,"""Referenced Block Number""",},//
 {0,0x300C,0x00F0,IS,1,"""Referenced Control Point Index""",},//
+{0,0x300C,0x00F2,SQ,1,"""Referenced Control Point Sequence""",},//
+{0,0x300C,0x00F4,IS,1,"""Referenced Start Control Point Index""",},//
+{0,0x300C,0x00F6,IS,1,"""Referenced Stop Control Point Index""",},//
+{0,0x300C,0x0100,IS,1,"""Referenced Range Shifter Number""",},//
+{0,0x300C,0x0102,IS,1,"""Referenced Lateral Spreading Device Number""",},//
+{0,0x300C,0x0104,IS,1,"""Referenced Range Modulator Number""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

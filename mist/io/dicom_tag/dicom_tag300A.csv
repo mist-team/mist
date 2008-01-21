@@ -5,7 +5,7 @@
 {0,0x300A,0x0006,DA,1,"""RT Plan Date""",},//
 {0,0x300A,0x0007,TM,1,"""RT Plan Time""",},//
 {0,0x300A,0x0009,LO,-1,"""Treatment Protocols""",},//
-{0,0x300A,0x000A,CS,1,"""Treatment Intent""",},//
+{0,0x300A,0x000A,CS,1,"""Plan Intent""",},//
 {0,0x300A,0x000B,LO,-1,"""Treatment Sites""",},//
 {0,0x300A,0x000C,CS,1,"""RT Plan Geometry""",},//
 {0,0x300A,0x000E,ST,1,"""Prescription Description""",},//
@@ -36,8 +36,11 @@
 {0,0x300A,0x0046,DS,1,"""Beam Limiting Device Angle Tolerance""",},//
 {0,0x300A,0x0048,SQ,1,"""Beam Limiting Device Tolerance Sequence""",},//
 {0,0x300A,0x004A,DS,1,"""Beam Limiting Device Position Tolerance""",},//
+{0,0x300A,0x004B,FL,1,"""Snout Position Tolerance""",},//
 {0,0x300A,0x004C,DS,1,"""Patient Support Angle Tolerance""",},//
 {0,0x300A,0x004E,DS,1,"""Table Top Eccentric Angle Tolerance""",},//
+{0,0x300A,0x004F,FL,1,"""Table Top Pitch Angle Tolerance""",},//
+{0,0x300A,0x0050,FL,1,"""Table Top Roll Angle Tolerance""",},//
 {0,0x300A,0x0051,DS,1,"""Table Top Vertical Position Tolerance""",},//
 {0,0x300A,0x0052,DS,1,"""Table Top Longitudinal Position Tolerance""",},//
 {0,0x300A,0x0053,DS,1,"""Table Top Lateral Position Tolerance""",},//
@@ -53,6 +56,9 @@
 {0,0x300A,0x0082,DS,3,"""Beam Dose Specification Point""",},//
 {0,0x300A,0x0084,DS,1,"""Beam Dose""",},//
 {0,0x300A,0x0086,DS,1,"""Beam Meterset""",},//
+{0,0x300A,0x0088,FL,1,"""Beam Dose Point Depth""",},//
+{0,0x300A,0x0089,FL,1,"""Beam Dose Point Equivalent Depth""",},//
+{0,0x300A,0x008A,FL,1,"""Beam Dose Point SSD""",},//
 {0,0x300A,0x00A0,IS,1,"""Number of Brachy Application Setups""",},//
 {0,0x300A,0x00A2,DS,3,"""Brachy Application Setup Dose Specification Point""",},//
 {0,0x300A,0x00A4,DS,1,"""Brachy Application Setup Dose""",},//
@@ -63,6 +69,7 @@
 {0,0x300A,0x00B6,SQ,1,"""Beam Limiting Device Sequence""",},//
 {0,0x300A,0x00B8,CS,1,"""RT Beam Limiting Device Type""",},//
 {0,0x300A,0x00BA,DS,1,"""Source to Beam Limiting Device Distance""",},//
+{0,0x300A,0x00BB,FL,1,"""Isocenter to Beam Limiting Device Distance""",},//
 {0,0x300A,0x00BC,IS,1,"""Number of Leaf/Jaw Pairs""",},//
 {0,0x300A,0x00BE,DS,-1,"""Leaf Position Boundaries""",},//
 {0,0x300A,0x00C0,IS,1,"""Beam Number""",},//
@@ -82,8 +89,13 @@
 {0,0x300A,0x00D4,SH,1,"""Wedge ID""",},//
 {0,0x300A,0x00D5,IS,1,"""Wedge Angle""",},//
 {0,0x300A,0x00D6,DS,1,"""Wedge Factor""",},//
+{0,0x300A,0x00D7,FL,1,"""Total Wedge Tray Water-Equivalent Thickness""",},//
 {0,0x300A,0x00D8,DS,1,"""Wedge Orientation""",},//
+{0,0x300A,0x00D9,FL,1,"""Isocenter to Wedge Tray Distance""",},//
 {0,0x300A,0x00DA,DS,1,"""Source to Wedge Tray Distance""",},//
+{0,0x300A,0x00DB,FL,1,"""Wedge Thin Edge Position""",},//
+{0,0x300A,0x00DC,SH,1,"""Bolus ID""",},//
+{0,0x300A,0x00DD,ST,1,"""Bolus Description""",},//
 {0,0x300A,0x00E0,IS,1,"""Number of Compensators""",},//
 {0,0x300A,0x00E1,SH,1,"""Material ID""",},//
 {0,0x300A,0x00E2,DS,1,"""Total Compensator Tray Factor""",},//
@@ -101,9 +113,11 @@
 {0,0x300A,0x00EE,CS,1,"""Compensator Type""",},//
 {0,0x300A,0x00F0,IS,1,"""Number of Blocks""",},//
 {0,0x300A,0x00F2,DS,1,"""Total Block Tray Factor""",},//
+{0,0x300A,0x00F3,FL,1,"""Total Block Tray Water-Equivalent Thickness""",},//
 {0,0x300A,0x00F4,SQ,1,"""Block Sequence""",},//
 {0,0x300A,0x00F5,SH,1,"""Block Tray ID""",},//
 {0,0x300A,0x00F6,DS,1,"""Source to Block Tray Distance""",},//
+{0,0x300A,0x00F7,FL,1,"""Isocenter to Block Tray Distance""",},//
 {0,0x300A,0x00F8,CS,1,"""Block Type""",},//
 {0,0x300A,0x00F9,LO,1,"""Accessory Code""",},//
 {0,0x300A,0x00FA,CS,1,"""Block Divergence""",},//
@@ -145,14 +159,25 @@
 {0,0x300A,0x012E,DS,3,"""Surface Entry Point""",},//
 {0,0x300A,0x0130,DS,1,"""Source to Surface Distance""",},//
 {0,0x300A,0x0134,DS,1,"""Cumulative Meterset Weight""",},//
+{0,0x300A,0x0140,FL,1,"""Table Top Pitch Angle""",},//
+{0,0x300A,0x0142,CS,1,"""Table Top Pitch Rotation Direction""",},//
+{0,0x300A,0x0144,FL,1,"""Table Top Roll Angle""",},//
+{0,0x300A,0x0146,CS,1,"""Table Top Roll Rotation Direction""",},//
+{0,0x300A,0x0148,FL,1,"""Head Fixation Angle""",},//
+{0,0x300A,0x014A,FL,1,"""Gantry Pitch Angle""",},//
+{0,0x300A,0x014C,CS,1,"""Gantry Pitch Rotation Direction""",},//
+{0,0x300A,0x014E,FL,1,"""Gantry Pitch Angle Tolerance""",},//
 {0,0x300A,0x0180,SQ,1,"""Patient Setup Sequence""",},//
 {0,0x300A,0x0182,IS,1,"""Patient Setup Number""",},//
+{0,0x300A,0x0183,LO,1,"""Patient Setup Label""",},//
 {0,0x300A,0x0184,LO,1,"""Patient Additional Position""",},//
 {0,0x300A,0x0190,SQ,1,"""Fixation Device Sequence""",},//
 {0,0x300A,0x0192,CS,1,"""Fixation Device Type""",},//
 {0,0x300A,0x0194,SH,1,"""Fixation Device Label""",},//
 {0,0x300A,0x0196,ST,1,"""Fixation Device Description""",},//
 {0,0x300A,0x0198,SH,1,"""Fixation Device Position""",},//
+{0,0x300A,0x0199,FL,1,"""Fixation Device Pitch Angle""",},//
+{0,0x300A,0x019A,FL,1,"""Fixation Device Roll Angle""",},//
 {0,0x300A,0x01A0,SQ,1,"""Shielding Device Sequence""",},//
 {0,0x300A,0x01A2,CS,1,"""Shielding Device Type""",},//
 {0,0x300A,0x01A4,SH,1,"""Shielding Device Label""",},//
@@ -182,9 +207,11 @@
 {0,0x300A,0x0224,DS,1,"""Source Encapsulation Nominal Transmission""",},//
 {0,0x300A,0x0226,LO,1,"""Source Isotope Name""",},//
 {0,0x300A,0x0228,DS,1,"""Source Isotope Half Life""",},//
+{0,0x300A,0x0229,CS,1,"""Source Strength Units""",},//
 {0,0x300A,0x022A,DS,1,"""Reference Air Kerma Rate""",},//
-{0,0x300A,0x022C,DA,1,"""Air Kerma Rate Reference Date""",},//
-{0,0x300A,0x022E,TM,1,"""Air Kerma Rate Reference Time""",},//
+{0,0x300A,0x022B,DS,1,"""Source Strength""",},//
+{0,0x300A,0x022C,DA,1,"""Source Strength Reference Date""",},//
+{0,0x300A,0x022E,TM,1,"""Source Strength Reference Time""",},//
 {0,0x300A,0x0230,SQ,1,"""Application Setup Sequence""",},//
 {0,0x300A,0x0232,CS,1,"""Application Setup Type""",},//
 {0,0x300A,0x0234,IS,1,"""Application Setup Number""",},//
@@ -233,4 +260,74 @@
 {0,0x300A,0x02E0,CS,1,"""Compensator Divergence""",},//
 {0,0x300A,0x02E1,CS,1,"""Compensator Mounting Position""",},//
 {0,0x300A,0x02E2,DS,-1,"""Source to Compensator Distance""",},//
+{0,0x300A,0x02E3,FL,1,"""Total Compensator Tray Water-Equivalent Thickness""",},//
+{0,0x300A,0x02E4,FL,1,"""Isocenter to Compensator Tray Distance""",},//
+{0,0x300A,0x02E5,FL,1,"""Compensator Column Offset""",},//
+{0,0x300A,0x02E6,FL,-1,"""Isocenter to Compensator Distances""",},//
+{0,0x300A,0x02E7,FL,1,"""Compensator Relative Stopping Power Ratio""",},//
+{0,0x300A,0x02E8,FL,1,"""Compensator Milling Tool Diameter""",},//
+{0,0x300A,0x02EA,SQ,1,"""Ion Range Compensator Sequence""",},//
+{0,0x300A,0x0302,IS,1,"""Radiation Mass Number""",},//
+{0,0x300A,0x0304,IS,1,"""Radiation Atomic Number""",},//
+{0,0x300A,0x0306,SS,1,"""Radiation Charge State""",},//
+{0,0x300A,0x0308,CS,1,"""Scan Mode""",},//
+{0,0x300A,0x030A,FL,2,"""Virtual Source-Axis Distances""",},//
+{0,0x300A,0x030C,SQ,1,"""Snout Sequence""",},//
+{0,0x300A,0x030D,FL,1,"""Snout Position""",},//
+{0,0x300A,0x030F,SH,1,"""Snout ID""",},//
+{0,0x300A,0x0312,IS,1,"""Number of Range Shifters""",},//
+{0,0x300A,0x0314,SQ,1,"""Range Shifter Sequence""",},//
+{0,0x300A,0x0316,IS,1,"""Range Shifter Number""",},//
+{0,0x300A,0x0318,SH,1,"""Range Shifter ID""",},//
+{0,0x300A,0x0320,CS,1,"""Range Shifter Type""",},//
+{0,0x300A,0x0322,LO,1,"""Range Shifter Description""",},//
+{0,0x300A,0x0330,IS,1,"""Number of Lateral Spreading Devices""",},//
+{0,0x300A,0x0332,SQ,1,"""Lateral Spreading Device Sequence""",},//
+{0,0x300A,0x0334,IS,1,"""Lateral Spreading Device Number""",},//
+{0,0x300A,0x0336,SH,1,"""Lateral Spreading Device ID""",},//
+{0,0x300A,0x0338,CS,1,"""Lateral Spreading Device Type""",},//
+{0,0x300A,0x033A,LO,1,"""Lateral Spreading Device Description""",},//
+{0,0x300A,0x033C,FL,1,"""Lateral Spreading Device Water Equivalent Thickness""",},//
+{0,0x300A,0x0340,IS,1,"""Number of Range Modulators""",},//
+{0,0x300A,0x0342,SQ,1,"""Range Modulator Sequence""",},//
+{0,0x300A,0x0344,IS,1,"""Range Modulator Number""",},//
+{0,0x300A,0x0346,SH,1,"""Range Modulator ID""",},//
+{0,0x300A,0x0348,CS,1,"""Range Modulator Type""",},//
+{0,0x300A,0x034A,LO,1,"""Range Modulator Description""",},//
+{0,0x300A,0x034C,SH,1,"""Beam Current Modulation ID""",},//
+{0,0x300A,0x0350,CS,1,"""Patient Support Type""",},//
+{0,0x300A,0x0352,SH,1,"""Patient Support ID""",},//
+{0,0x300A,0x0354,LO,1,"""Patient Support Accessory Code""",},//
+{0,0x300A,0x0356,FL,1,"""Fixation Light Azimuthal Angle""",},//
+{0,0x300A,0x0358,FL,1,"""Fixation Light Polar Angle""",},//
+{0,0x300A,0x035A,FL,1,"""Meterset Rate""",},//
+{0,0x300A,0x0360,SQ,1,"""Range Shifter Settings Sequence""",},//
+{0,0x300A,0x0362,LO,1,"""Range Shifter Setting""",},//
+{0,0x300A,0x0364,FL,1,"""Isocenter to Range Shifter Distance""",},//
+{0,0x300A,0x0366,FL,1,"""Range Shifter Water Equivalent Thickness""",},//
+{0,0x300A,0x0370,SQ,1,"""Lateral Spreading Device Settings Sequence""",},//
+{0,0x300A,0x0372,LO,1,"""Lateral Spreading Device Setting""",},//
+{0,0x300A,0x0374,FL,1,"""Isocenter to Lateral Spreading Device Distance""",},//
+{0,0x300A,0x0380,SQ,1,"""Range Modulator Settings Sequence""",},//
+{0,0x300A,0x0382,FL,1,"""Range Modulator Gating Start Value""",},//
+{0,0x300A,0x0384,FL,1,"""Range Modulator Gating Stop Value""",},//
+{0,0x300A,0x0386,FL,1,"""Range Modulator Gating Start Water Equivalent Thickness""",},//
+{0,0x300A,0x0388,FL,1,"""Range Modulator Gating Stop Water Equivalent Thickness""",},//
+{0,0x300A,0x038A,FL,1,"""Isocenter to Range Modulator Distance""",},//
+{0,0x300A,0x0390,SH,1,"""Scan Spot Tune ID""",},//
+{0,0x300A,0x0392,IS,1,"""Number of Scan Spot Positions""",},//
+{0,0x300A,0x0394,FL,-1,"""Scan Spot Position Map""",},//
+{0,0x300A,0x0396,FL,-1,"""Scan Spot Meterset Weights""",},//
+{0,0x300A,0x0398,FL,2,"""Scanning Spot Size""",},//
+{0,0x300A,0x039A,IS,1,"""Number of Paintings""",},//
+{0,0x300A,0x03A0,SQ,1,"""Ion Tolerance Table Sequence""",},//
+{0,0x300A,0x03A2,SQ,1,"""Ion Beam Sequence""",},//
+{0,0x300A,0x03A4,SQ,1,"""Ion Beam Limiting Device Sequence""",},//
+{0,0x300A,0x03A6,SQ,1,"""Ion Block Sequence""",},//
+{0,0x300A,0x03A8,SQ,1,"""Ion Control Point Sequence""",},//
+{0,0x300A,0x03AA,SQ,1,"""Ion Wedge Sequence""",},//
+{0,0x300A,0x03AC,SQ,1,"""Ion Wedge Position Sequence""",},//
+{0,0x300A,0x0401,SQ,1,"""Referenced Setup Image Sequence""",},//
+{0,0x300A,0x0402,ST,1,"""Setup Image Comment""",},//
+{0,0x300A,0x0410,SQ,1,"""Motion Synchronization Sequence""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

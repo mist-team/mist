@@ -1,4 +1,4 @@
-{0,0x4000,0x0000,UL,1,"""Group 4000 Length (RET)""",},//
-{0,0x4000,0x0010,SH,1,"""Arbitray (RET)""",},//
-{0,0x4000,0x4000,LT,1,"""Group 4000 Comments (RET)""",},//
+{0,0x4000,0x0000,UL,1,"""Group 4000 Length""",},//
+{0,0x4000,0x0010,LT,1,"""Arbitrary""",},//
+{0,0x4000,0x4000,LT,1,"""Text Comments""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

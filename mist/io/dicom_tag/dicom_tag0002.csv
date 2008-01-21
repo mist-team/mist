@@ -1,7 +1,7 @@
 {0,0x0002,0x0000,UL,1,"""Group 0002 Length""",},//
 {0,0x0002,0x0001,OB,1,"""File Meta Information Version""",},//
-{0,0x0002,0x0002,UI,1,"""Media Stored SOP Class UID""",},//
-{0,0x0002,0x0003,UI,1,"""Media Stored SOP Instance UID""",},//
+{0,0x0002,0x0002,UI,1,"""Media Storage SOP Class UID""",},//
+{0,0x0002,0x0003,UI,1,"""Media Storage SOP Instance UID""",},//
 {0,0x0002,0x0010,UI,1,"""Transfer Syntax UID""",},//
 {0,0x0002,0x0012,UI,1,"""Implementation Class UID""",},//
 {0,0x0002,0x0013,SH,1,"""Implementation Version Name""",},//

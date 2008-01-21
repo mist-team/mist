@@ -9,4 +9,7 @@
 {0,0x0012,0x0050,LO,1,"""Clinical Trial Time Point ID""",},//
 {0,0x0012,0x0051,ST,1,"""Clinical Trial Time Point Description""",},//
 {0,0x0012,0x0060,LO,1,"""Clinical Trial Coordinating Center Name""",},//
+{0,0x0012,0x0062,CS,1,"""Patient Identity Removed""",},//
+{0,0x0012,0x0063,LO,-1,"""De-identification Method""",},//
+{0,0x0012,0x0064,SQ,1,"""De-identification Method Code Sequence""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

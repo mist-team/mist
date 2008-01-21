@@ -31,7 +31,8 @@
 {0,0x0070,0x0081,LO,1,"""Content Description""",},//
 {0,0x0070,0x0082,DA,1,"""Presentation Creation Date""",},//
 {0,0x0070,0x0083,TM,1,"""Presentation Creation Time""",},//
-{0,0x0070,0x0084,PN,1,"""Content CreatorÅfs Name""",},//
+{0,0x0070,0x0084,PN,1,"""Content Creator's Name""",},//
+{0,0x0070,0x0086,SQ,1,"""Content Creator's Identification Code Sequence""",},//
 {0,0x0070,0x0100,CS,1,"""Presentation Size Mode""",},//
 {0,0x0070,0x0101,DS,2,"""Presentation Pixel Spacing""",},//
 {0,0x0070,0x0102,IS,2,"""Presentation Pixel Aspect Ratio""",},//
@@ -51,4 +52,9 @@
 {0,0x0070,0x031A,UI,1,"""Fiducial UID""",},//
 {0,0x0070,0x031C,SQ,1,"""Fiducial Set Sequence""",},//
 {0,0x0070,0x031E,SQ,1,"""Fiducial Sequence""",},//
+{0,0x0070,0x0401,US,3,"""Graphic Layer Recommended Display CIELab Value""",},//
+{0,0x0070,0x0402,SQ,1,"""Blending Sequence""",},//
+{0,0x0070,0x0403,FL,1,"""Relative Opacity""",},//
+{0,0x0070,0x0404,SQ,1,"""Referenced Spatial Registration Sequence""",},//
+{0,0x0070,0x0405,CS,1,"""Blending Position""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -1,14 +1,14 @@
 {0,0x0004,0x0000,UL,1,"""Group 0004 Length""",},//
 {0,0x0004,0x1130,CS,1,"""File-set ID""",},//
-{0,0x0004,0x1141,CS,8,"""File-set Descriptor File File ID""",},//
+{0,0x0004,0x1141,CS,8,"""File-set Descriptor File ID""",},//
 {0,0x0004,0x1142,CS,1,"""Specific Character Set of File-set Descriptor File""",},//
 {0,0x0004,0x1200,UL,1,"""Offset of the First Directory Record of the Root Directory Entity""",},//
 {0,0x0004,0x1202,UL,1,"""Offset of the Last Directory Record of the Root Directory Entity""",},//
-{0,0x0004,0x1212,US,1,"""File-set Consistence Flag""",},//
+{0,0x0004,0x1212,US,1,"""File-set Consistency Flag""",},//
 {0,0x0004,0x1220,SQ,1,"""Directory Record Sequence""",},//
-{0,0x0004,0x1400,UL,1,"""Next Directory Record Offset""",},//
+{0,0x0004,0x1400,UL,1,"""Offset of the Next Directory Record""",},//
 {0,0x0004,0x1410,US,1,"""Record In-use Flag""",},//
-{0,0x0004,0x1420,UL,1,"""Referenced Lower-level Directory Entity Offset""",},//
+{0,0x0004,0x1420,UL,1,"""Offset of Referenced Lower-Level Directory Entity""",},//
 {0,0x0004,0x1430,CS,1,"""Directory Record Type""",},//
 {0,0x0004,0x1432,UI,1,"""Private Record UID""",},//
 {0,0x0004,0x1500,CS,8,"""Referenced File ID""",},//
@@ -16,5 +16,6 @@
 {0,0x0004,0x1510,UI,1,"""Referenced SOP Class UID in File""",},//
 {0,0x0004,0x1511,UI,1,"""Referenced SOP Instance UID in File""",},//
 {0,0x0004,0x1512,UI,1,"""Referenced Transfer Syntax UID in File""",},//
+{0,0x0004,0x151A,UI,-1,"""Referenced Related General SOP Class UID in File""",},//
 {0,0x0004,0x1600,UL,1,"""Number of References""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

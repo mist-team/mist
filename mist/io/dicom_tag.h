@@ -77,10 +77,14 @@ namespace dicom
 		#define __INCLUDE_DICOM_TAG_0038__
 		#define __INCLUDE_DICOM_TAG_003A__
 		#define __INCLUDE_DICOM_TAG_0040__
+		#define __INCLUDE_DICOM_TAG_0042__
 		#define __INCLUDE_DICOM_TAG_0050__
 		#define __INCLUDE_DICOM_TAG_0054__
 		#define __INCLUDE_DICOM_TAG_0060__
+		#define __INCLUDE_DICOM_TAG_0062__
+		#define __INCLUDE_DICOM_TAG_0064__
 		#define __INCLUDE_DICOM_TAG_0070__
+		#define __INCLUDE_DICOM_TAG_0072__
 		#define __INCLUDE_DICOM_TAG_0088__
 		#define __INCLUDE_DICOM_TAG_0100__
 		#define __INCLUDE_DICOM_TAG_0400__
@@ -104,6 +108,7 @@ namespace dicom
 		#define __INCLUDE_DICOM_TAG_300E__
 		#define __INCLUDE_DICOM_TAG_4000__
 		#define __INCLUDE_DICOM_TAG_4008__
+		#define __INCLUDE_DICOM_TAG_4FFE__
 		#define __INCLUDE_DICOM_TAG_5000__
 		#define __INCLUDE_DICOM_TAG_5200__
 		#define __INCLUDE_DICOM_TAG_5400__
@@ -128,10 +133,14 @@ namespace dicom
 		//#define __INCLUDE_DICOM_TAG_0038__
 		//#define __INCLUDE_DICOM_TAG_003A__
 		//#define __INCLUDE_DICOM_TAG_0040__
+		//#define __INCLUDE_DICOM_TAG_0042__
 		//#define __INCLUDE_DICOM_TAG_0050__
 		//#define __INCLUDE_DICOM_TAG_0054__
 		//#define __INCLUDE_DICOM_TAG_0060__
+		//#define __INCLUDE_DICOM_TAG_0062__
+		//#define __INCLUDE_DICOM_TAG_0064__
 		//#define __INCLUDE_DICOM_TAG_0070__
+		//#define __INCLUDE_DICOM_TAG_0072__
 		//#define __INCLUDE_DICOM_TAG_0088__
 		//#define __INCLUDE_DICOM_TAG_0100__
 		//#define __INCLUDE_DICOM_TAG_0400__
@@ -155,6 +164,7 @@ namespace dicom
 		//#define __INCLUDE_DICOM_TAG_300E__
 		//#define __INCLUDE_DICOM_TAG_4000__
 		//#define __INCLUDE_DICOM_TAG_4008__
+		//#define __INCLUDE_DICOM_TAG_4FFE__
 		//#define __INCLUDE_DICOM_TAG_5000__
 		//#define __INCLUDE_DICOM_TAG_5200__
 		//#define __INCLUDE_DICOM_TAG_5400__
@@ -653,10 +663,14 @@ namespace dicom
 		//! - __INCLUDE_DICOM_TAG_0038__ … グループIDが 0038 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_003A__ … グループIDが 003A のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0040__ … グループIDが 0040 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0042__ … グループIDが 0042 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0050__ … グループIDが 0050 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0054__ … グループIDが 0054 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0060__ … グループIDが 0060 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0062__ … グループIDが 0062 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0064__ … グループIDが 0064 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0070__ … グループIDが 0070 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0072__ … グループIDが 0072 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0088__ … グループIDが 0088 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0100__ … グループIDが 0100 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0400__ … グループIDが 0400 のタグを挿入する
@@ -680,6 +694,7 @@ namespace dicom
 		//! - __INCLUDE_DICOM_TAG_300E__ … グループIDが 300E のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_4000__ … グループIDが 4000 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_4008__ … グループIDが 4008 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_4FFE__ … グループIDが 4FFE のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_5000__ … グループIDが 5000 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_5200__ … グループIDが 5200 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_5400__ … グループIDが 5400 のタグを挿入する
@@ -809,6 +824,14 @@ namespace dicom
 				insert_tag( dicom_tag_elements );
 			}
 #endif
+#ifdef __INCLUDE_DICOM_TAG_0042__
+			{
+				dicom_tag_element dicom_tag_elements[] = {
+					#include "dicom_tag/dicom_tag0042.csv"
+				};
+				insert_tag( dicom_tag_elements );
+			}
+#endif
 #ifdef __INCLUDE_DICOM_TAG_0050__
 			{
 				dicom_tag_element dicom_tag_elements[] = {
@@ -825,10 +848,34 @@ namespace dicom
 				insert_tag( dicom_tag_elements );
 			}
 #endif
+#ifdef __INCLUDE_DICOM_TAG_0062__
+			{
+				dicom_tag_element dicom_tag_elements[] = {
+					#include "dicom_tag/dicom_tag0062.csv"
+				};
+				insert_tag( dicom_tag_elements );
+			}
+#endif
+#ifdef __INCLUDE_DICOM_TAG_0064__
+			{
+				dicom_tag_element dicom_tag_elements[] = {
+					#include "dicom_tag/dicom_tag0064.csv"
+				};
+				insert_tag( dicom_tag_elements );
+			}
+#endif
 #ifdef __INCLUDE_DICOM_TAG_0070__
 			{
 				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0070.csv"
+				};
+				insert_tag( dicom_tag_elements );
+			}
+#endif
+#ifdef __INCLUDE_DICOM_TAG_0072__
+			{
+				dicom_tag_element dicom_tag_elements[] = {
+					#include "dicom_tag/dicom_tag0072.csv"
 				};
 				insert_tag( dicom_tag_elements );
 			}
@@ -1013,6 +1060,14 @@ namespace dicom
 			{
 				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag4008.csv"
+				};
+				insert_tag( dicom_tag_elements );
+			}
+#endif
+#ifdef __INCLUDE_DICOM_TAG_4FFE__
+			{
+				dicom_tag_element dicom_tag_elements[] = {
+					#include "dicom_tag/dicom_tag4FFE.csv"
 				};
 				insert_tag( dicom_tag_elements );
 			}

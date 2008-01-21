@@ -1,0 +1,100 @@
+{0,0x0072,0x0000,UL,1,"""Group 0072 Length""",},//
+{0,0x0072,0x0002,SH,1,"""Hanging Protocol Name""",},//
+{0,0x0072,0x0004,LO,1,"""Hanging Protocol Description""",},//
+{0,0x0072,0x0006,CS,1,"""Hanging Protocol Level""",},//
+{0,0x0072,0x0008,LO,1,"""Hanging Protocol Creator""",},//
+{0,0x0072,0x000A,DT,1,"""Hanging Protocol Creation Datetime""",},//
+{0,0x0072,0x000C,SQ,1,"""Hanging Protocol Definition Sequence""",},//
+{0,0x0072,0x000E,SQ,1,"""Hanging Protocol User Identification Code Sequence""",},//
+{0,0x0072,0x0010,LO,1,"""Hanging Protocol User Group Name""",},//
+{0,0x0072,0x0012,SQ,1,"""Source Hanging Protocol Sequence""",},//
+{0,0x0072,0x0014,US,1,"""Number of Priors Referenced""",},//
+{0,0x0072,0x0020,SQ,1,"""Image Sets Sequence""",},//
+{0,0x0072,0x0022,SQ,1,"""Image Set Selector Sequence""",},//
+{0,0x0072,0x0024,CS,1,"""Image Set Selector Usage Flag""",},//
+{0,0x0072,0x0026,AT,1,"""Selector Attribute""",},//
+{0,0x0072,0x0028,US,1,"""Selector Value Number""",},//
+{0,0x0072,0x0030,SQ,1,"""Time Based Image Sets Sequence""",},//
+{0,0x0072,0x0032,US,1,"""Image Set Number""",},//
+{0,0x0072,0x0034,CS,1,"""Image Set Selector Category""",},//
+{0,0x0072,0x0038,US,2,"""Relative Time""",},//
+{0,0x0072,0x003A,CS,1,"""Relative Time Units""",},//
+{0,0x0072,0x003C,SS,2,"""Abstract Prior Value""",},//
+{0,0x0072,0x003E,SQ,1,"""Abstract Prior Code Sequence""",},//
+{0,0x0072,0x0040,LO,1,"""Image Set Label""",},//
+{0,0x0072,0x0050,CS,1,"""Selector Attribute VR""",},//
+{0,0x0072,0x0052,AT,1,"""Selector Sequence Pointer""",},//
+{0,0x0072,0x0054,LO,1,"""Selector Sequence Pointer Private Creator""",},//
+{0,0x0072,0x0056,LO,1,"""Selector Attribute Private Creator""",},//
+{0,0x0072,0x0060,AT,-1,"""Selector AT Value""",},//
+{0,0x0072,0x0062,CS,-1,"""Selector CS Value""",},//
+{0,0x0072,0x0064,IS,-1,"""Selector IS Value""",},//
+{0,0x0072,0x0066,LO,-1,"""Selector LO Value""",},//
+{0,0x0072,0x0068,LT,-1,"""Selector LT Value""",},//
+{0,0x0072,0x006A,PN,-1,"""Selector PN Value""",},//
+{0,0x0072,0x006C,SH,-1,"""Selector SH Value""",},//
+{0,0x0072,0x006E,ST,-1,"""Selector ST Value""",},//
+{0,0x0072,0x0070,UT,-1,"""Selector UT Value""",},//
+{0,0x0072,0x0072,DS,-1,"""Selector DS Value""",},//
+{0,0x0072,0x0074,FD,-1,"""Selector FD Value""",},//
+{0,0x0072,0x0076,FL,-1,"""Selector FL Value""",},//
+{0,0x0072,0x0078,UL,-1,"""Selector UL Value""",},//
+{0,0x0072,0x007A,US,-1,"""Selector US Value""",},//
+{0,0x0072,0x007C,SL,-1,"""Selector SL Value""",},//
+{0,0x0072,0x007E,SS,-1,"""Selector SS Value""",},//
+{0,0x0072,0x0080,SQ,1,"""Selector Code Sequence Value""",},//
+{0,0x0072,0x0100,US,1,"""Number of Screens""",},//
+{0,0x0072,0x0102,SQ,1,"""Nominal Screen Definition Sequence""",},//
+{0,0x0072,0x0104,US,1,"""Number of Vertical Pixels""",},//
+{0,0x0072,0x0106,US,1,"""Number of Horizontal Pixels""",},//
+{0,0x0072,0x0108,FD,4,"""Display Environment Spatial Position""",},//
+{0,0x0072,0x010A,US,1,"""Screen Minimum Grayscale Bit Depth""",},//
+{0,0x0072,0x010C,US,1,"""Screen Minimum Color Bit Depth""",},//
+{0,0x0072,0x010E,US,1,"""Application Maximum Repaint Time""",},//
+{0,0x0072,0x0200,SQ,1,"""Display Sets Sequence""",},//
+{0,0x0072,0x0202,US,1,"""Display Set Number""",},//
+{0,0x0072,0x0203,LO,1,"""Display Set Label""",},//
+{0,0x0072,0x0204,US,1,"""Display Set Presentation Group""",},//
+{0,0x0072,0x0206,LO,1,"""Display Set Presentation Group Description""",},//
+{0,0x0072,0x0208,CS,1,"""Partial Data Display Handling""",},//
+{0,0x0072,0x0210,SQ,1,"""Synchronized Scrolling Sequence""",},//
+{0,0x0072,0x0212,US,-1,"""Display Set Scrolling Group""",},//
+{0,0x0072,0x0214,SQ,1,"""Navigation Indicator Sequence""",},//
+{0,0x0072,0x0216,US,1,"""Navigation Display Set""",},//
+{0,0x0072,0x0218,US,-1,"""Reference Display Sets""",},//
+{0,0x0072,0x0300,SQ,1,"""Image Boxes Sequence""",},//
+{0,0x0072,0x0302,US,1,"""Image Box Number""",},//
+{0,0x0072,0x0304,CS,1,"""Image Box Layout Type""",},//
+{0,0x0072,0x0306,US,1,"""Image Box Tile Horizontal Dimension""",},//
+{0,0x0072,0x0308,US,1,"""Image Box Tile Vertical Dimension""",},//
+{0,0x0072,0x0310,CS,1,"""Image Box Scroll Direction""",},//
+{0,0x0072,0x0312,CS,1,"""Image Box Small Scroll Type""",},//
+{0,0x0072,0x0314,US,1,"""Image Box Small Scroll Amount""",},//
+{0,0x0072,0x0316,CS,1,"""Image Box Large Scroll Type""",},//
+{0,0x0072,0x0318,US,1,"""Image Box Large Scroll Amount""",},//
+{0,0x0072,0x0320,US,1,"""Image Box Overlap Priority""",},//
+{0,0x0072,0x0330,FD,1,"""Cine Relative to Real-Time""",},//
+{0,0x0072,0x0400,SQ,1,"""Filter Operations Sequence""",},//
+{0,0x0072,0x0402,CS,1,"""Filter-by Category""",},//
+{0,0x0072,0x0404,CS,1,"""Filter-by Attribute Presence""",},//
+{0,0x0072,0x0406,CS,1,"""Filter-by Operator""",},//
+{0,0x0072,0x0500,CS,1,"""Blending Operation Type""",},//
+{0,0x0072,0x0510,CS,1,"""Reformatting Operation Type""",},//
+{0,0x0072,0x0512,FD,1,"""Reformatting Thickness""",},//
+{0,0x0072,0x0514,FD,1,"""Reformatting Interval""",},//
+{0,0x0072,0x0516,CS,1,"""Reformatting Operation Initial View Direction""",},//
+{0,0x0072,0x0520,CS,-1,"""3D Rendering Type""",},//
+{0,0x0072,0x0600,SQ,1,"""Sorting Operations Sequence""",},//
+{0,0x0072,0x0602,CS,1,"""Sort-by Category""",},//
+{0,0x0072,0x0604,CS,1,"""Sorting Direction""",},//
+{0,0x0072,0x0700,CS,2,"""Display Set Patient Orientation""",},//
+{0,0x0072,0x0702,CS,1,"""VOI Type""",},//
+{0,0x0072,0x0704,CS,1,"""Pseudo-color Type""",},//
+{0,0x0072,0x0706,CS,1,"""Show Grayscale Inverted""",},//
+{0,0x0072,0x0710,CS,1,"""Show Image True Size Flag""",},//
+{0,0x0072,0x0712,CS,1,"""Show Graphic Annotation Flag""",},//
+{0,0x0072,0x0714,CS,1,"""Show Patient Demographics Flag""",},//
+{0,0x0072,0x0716,CS,1,"""Show Acquisition Techniques Flag""",},//
+{0,0x0072,0x0717,CS,1,"""Display Set Horizontal Justification""",},//
+{0,0x0072,0x0718,CS,1,"""Display Set Vertical Justification""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

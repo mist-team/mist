@@ -2,6 +2,7 @@
 {0,0x0028,0x0002,US,1,"""Samples per Pixel""",},//
 {0,0x0028,0x0003,US,1,"""Samples per Pixel Used""",},//
 {0,0x0028,0x0004,CS,1,"""Photometric Interpretation""",},//
+{0,0x0028,0x0005,US,1,"""Image Dimensions""",},//
 {0,0x0028,0x0006,US,1,"""Planar Configuration""",},//
 {0,0x0028,0x0008,IS,1,"""Number of Frames""",},//
 {0,0x0028,0x0009,AT,-1,"""Frame Increment Pointer""",},//
@@ -14,11 +15,18 @@
 {0,0x0028,0x0031,DS,2,"""Zoom Factor""",},//
 {0,0x0028,0x0032,DS,2,"""Zoom Center""",},//
 {0,0x0028,0x0034,IS,2,"""Pixel Aspect Ratio""",},//
+{0,0x0028,0x0040,CS,1,"""Image Format""",},//
+{0,0x0028,0x0050,LO,-1,"""Manipulated Image""",},//
 {0,0x0028,0x0051,CS,-1,"""Corrected Image""",},//
+{0,0x0028,0x0060,CS,1,"""Compression Code""",},//
 {0,0x0028,0x0100,US,1,"""Bits Allocated""",},//
 {0,0x0028,0x0101,US,1,"""Bits Stored""",},//
 {0,0x0028,0x0102,US,1,"""High Bit""",},//
 {0,0x0028,0x0103,US,1,"""Pixel Representation""",},//
+{0,0x0028,0x0104,US,1,"""Smallest Valid Pixel Value""",},//
+{0,0x0028,0x0104,SS,1,"""Smallest Valid Pixel Value""",},//
+{0,0x0028,0x0105,US,1,"""Largest Valid Pixel Value""",},//
+{0,0x0028,0x0105,SS,1,"""Largest Valid Pixel Value""",},//
 {0,0x0028,0x0106,US,1,"""Smallest Image Pixel Value""",},//
 {0,0x0028,0x0106,SS,1,"""Smallest Image Pixel Value""",},//
 {0,0x0028,0x0107,US,1,"""Largest Image Pixel Value""",},//
@@ -33,8 +41,11 @@
 {0,0x0028,0x0111,SS,1,"""Largest Image Pixel Value in Plane""",},//
 {0,0x0028,0x0120,US,1,"""Pixel Padding Value""",},//
 {0,0x0028,0x0120,SS,1,"""Pixel Padding Value""",},//
+{0,0x0028,0x0200,US,1,"""Image Location""",},//
 {0,0x0028,0x0300,CS,1,"""Quality Control Image""",},//
 {0,0x0028,0x0301,CS,1,"""Burned In Annotation""",},//
+{0,0x0028,0x0402,CS,1,"""Pixel Spacing Calibration Type""",},//
+{0,0x0028,0x0404,LO,1,"""Pixel Spacing Calibration Description""",},//
 {0,0x0028,0x1040,CS,1,"""Pixel Intensity Relationship""",},//
 {0,0x0028,0x1041,SS,1,"""Pixel Intensity Relationship Sign""",},//
 {0,0x0028,0x1050,DS,-1,"""Window Center""",},//
@@ -43,7 +54,11 @@
 {0,0x0028,0x1053,DS,1,"""Rescale Slope""",},//
 {0,0x0028,0x1054,LO,1,"""Rescale Type""",},//
 {0,0x0028,0x1055,LO,-1,"""Window Center & Width Explanation""",},//
+{0,0x0028,0x1056,CS,1,"""VOI LUT Function""",},//
+{0,0x0028,0x1080,CS,1,"""Gray Scale""",},//
 {0,0x0028,0x1090,CS,1,"""Recommended Viewing Mode""",},//
+{0,0x0028,0x1100,US,3,"""Gray Lookup Table Descriptor""",},//
+{0,0x0028,0x1100,SS,3,"""Gray Lookup Table Descriptor""",},//
 {0,0x0028,0x1101,US,3,"""Red Palette Color Lookup Table Descriptor""",},//
 {0,0x0028,0x1101,SS,3,"""Red Palette Color Lookup Table Descriptor""",},//
 {0,0x0028,0x1102,US,3,"""Green Palette Color Lookup Table Descriptor""",},//
@@ -51,6 +66,9 @@
 {0,0x0028,0x1103,US,3,"""Blue Palette Color Lookup Table Descriptor""",},//
 {0,0x0028,0x1103,SS,3,"""Blue Palette Color Lookup Table Descriptor""",},//
 {0,0x0028,0x1199,UI,1,"""Palette Color Lookup Table UID""",},//
+{0,0x0028,0x1200,US,-1,"""Gray Lookup Table Data""",},//
+{0,0x0028,0x1200,SS,-1,"""Gray Lookup Table Data""",},//
+{0,0x0028,0x1200,OW,1,"""Gray Lookup Table Data""",},//
 {0,0x0028,0x1201,OW,1,"""Red Palette Color Lookup Table Data""",},//
 {0,0x0028,0x1202,OW,1,"""Green Palette Color Lookup Table Data""",},//
 {0,0x0028,0x1203,OW,1,"""Blue Palette Color Lookup Table Data""",},//
@@ -60,6 +78,9 @@
 {0,0x0028,0x1300,CS,1,"""Implant Present""",},//
 {0,0x0028,0x1350,CS,1,"""Partial View""",},//
 {0,0x0028,0x1351,ST,1,"""Partial View Description""",},//
+{0,0x0028,0x1352,SQ,1,"""Partial View Code Sequence""",},//
+{0,0x0028,0x135A,CS,1,"""Spatial Locations Preserved""",},//
+{0,0x0028,0x2000,OB,1,"""ICC Profile""",},//
 {0,0x0028,0x2110,CS,1,"""Lossy Image Compression""",},//
 {0,0x0028,0x2112,DS,-1,"""Lossy Image Compression Ratio""",},//
 {0,0x0028,0x2114,CS,-1,"""Lossy Image Compression Method""",},//
@@ -68,13 +89,18 @@
 {0,0x0028,0x3002,SS,3,"""LUT Descriptor""",},//
 {0,0x0028,0x3003,LO,1,"""LUT Explanation""",},//
 {0,0x0028,0x3004,LO,1,"""Modality LUT Type""",},//
+{0,0x0028,0x3006,US,-1,"""LUT Data""",},//
+{0,0x0028,0x3006,SS,-1,"""LUT Data""",},//
+{0,0x0028,0x3006,OW,1,"""LUT Data""",},//
 {0,0x0028,0x3010,SQ,1,"""VOI LUT Sequence""",},//
 {0,0x0028,0x3110,SQ,1,"""Softcopy VOI LUT Sequence""",},//
+{0,0x0028,0x4000,LT,1,"""Image Presentation Comments""",},//
 {0,0x0028,0x5000,SQ,1,"""Bi-Plane Acquisition Sequence""",},//
 {0,0x0028,0x6010,US,1,"""Representative Frame Number""",},//
 {0,0x0028,0x6020,US,-1,"""Frame Numbers of Interest (FOI)""",},//
 {0,0x0028,0x6022,LO,-1,"""Frame(s) of Interest Description""",},//
 {0,0x0028,0x6023,CS,-1,"""Frame of Interest Type""",},//
+{0,0x0028,0x6030,US,-1,"""Mask Pointer(s)""",},//
 {0,0x0028,0x6040,US,-1,"""R Wave Pointer""",},//
 {0,0x0028,0x6100,SQ,1,"""Mask Subtraction Sequence""",},//
 {0,0x0028,0x6101,CS,1,"""Mask Operation""",},//
@@ -84,12 +110,24 @@
 {0,0x0028,0x6114,FL,2,"""Mask Sub-pixel Shift""",},//
 {0,0x0028,0x6120,SS,1,"""TID Offset""",},//
 {0,0x0028,0x6190,ST,1,"""Mask Operation Explanation""",},//
+{0,0x0028,0x7FE0,UT,1,"""Pixel Data Provider URL""",},//
 {0,0x0028,0x9001,UL,1,"""Data Point Rows""",},//
 {0,0x0028,0x9002,UL,1,"""Data Point Columns""",},//
 {0,0x0028,0x9003,CS,1,"""Signal Domain Columns""",},//
+{0,0x0028,0x9099,US,1,"""Largest Monochrome Pixel Value""",},//
 {0,0x0028,0x9108,CS,1,"""Data Representation""",},//
 {0,0x0028,0x9110,SQ,1,"""Pixel Measures Sequence""",},//
 {0,0x0028,0x9132,SQ,1,"""Frame VOI LUT Sequence""",},//
 {0,0x0028,0x9145,SQ,1,"""Pixel Value Transformation Sequence""",},//
 {0,0x0028,0x9235,CS,1,"""Signal Domain Rows""",},//
+{0,0x0028,0x9411,FL,1,"""Display Filter Percentage""",},//
+{0,0x0028,0x9415,SQ,1,"""Frame Pixel Shift Sequence""",},//
+{0,0x0028,0x9416,US,1,"""Subtraction Item ID""",},//
+{0,0x0028,0x9422,SQ,1,"""Pixel Intensity Relationship LUT Sequence""",},//
+{0,0x0028,0x9443,SQ,1,"""Frame Pixel Data Properties Sequence""",},//
+{0,0x0028,0x9444,CS,1,"""Geometrical Properties""",},//
+{0,0x0028,0x9445,FL,1,"""Geometric Maximum Distortion""",},//
+{0,0x0028,0x9446,CS,-1,"""Image Processing Applied""",},//
+{0,0x0028,0x9454,CS,1,"""Mask Selection Mode""",},//
+{0,0x0028,0x9474,CS,1,"""LUT Function""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -1,0 +1,17 @@
+{0,0x0062,0x0000,UL,1,"""Group 0062 Length""",},//
+{0,0x0062,0x0001,CS,1,"""Segmentation Type""",},//
+{0,0x0062,0x0002,SQ,1,"""Segment Sequence""",},//
+{0,0x0062,0x0003,SQ,1,"""Segmented Property Category Code Sequence""",},//
+{0,0x0062,0x0004,US,1,"""Segment Number""",},//
+{0,0x0062,0x0005,LO,1,"""Segment Label""",},//
+{0,0x0062,0x0006,ST,1,"""Segment Description""",},//
+{0,0x0062,0x0008,CS,1,"""Segment Algorithm Type""",},//
+{0,0x0062,0x0009,LO,1,"""Segment Algorithm Name""",},//
+{0,0x0062,0x000A,SQ,1,"""Segment Identification Sequence""",},//
+{0,0x0062,0x000B,US,-1,"""Referenced Segment Number""",},//
+{0,0x0062,0x000C,US,1,"""Recommended Display Grayscale Value""",},//
+{0,0x0062,0x000D,US,3,"""Recommended Display CIELab Value""",},//
+{0,0x0062,0x000E,US,1,"""Maximum Fractional Value""",},//
+{0,0x0062,0x000F,SQ,1,"""Segmented Property Type Code Sequence""",},//
+{0,0x0062,0x0010,CS,1,"""Segmentation Fractional Type""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

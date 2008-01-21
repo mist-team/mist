@@ -10,8 +10,17 @@
 {0,0x0400,0x0120,OB,1,"""Signature""",},//
 {0,0x0400,0x0305,CS,1,"""Certified Timestamp Type""",},//
 {0,0x0400,0x0310,OB,1,"""Certified Timestamp""",},//
+{0,0x0400,0x0401,SQ,1,"""Digital Signature Purpose Code Sequence""",},//
+{0,0x0400,0x0402,SQ,1,"""Referenced Digital Signature Sequence""",},//
+{0,0x0400,0x0403,SQ,1,"""Referenced SOP Instance MAC Sequence""",},//
+{0,0x0400,0x0404,OB,1,"""MAC""",},//
 {0,0x0400,0x0500,SQ,1,"""Encrypted Attributes Sequence""",},//
 {0,0x0400,0x0510,UI,1,"""Encrypted Content Transfer Syntax UID""",},//
 {0,0x0400,0x0520,OB,1,"""Encrypted Content""",},//
 {0,0x0400,0x0550,SQ,1,"""Modified Attributes Sequence""",},//
+{0,0x0400,0x0561,SQ,1,"""Original Attributes Sequence""",},//
+{0,0x0400,0x0562,DT,1,"""Attribute Modification Datetime""",},//
+{0,0x0400,0x0563,LO,1,"""Modifying System""",},//
+{0,0x0400,0x0564,LO,1,"""Source of Previous Values""",},//
+{0,0x0400,0x0565,CS,1,"""Reason for the Attribute Modification""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

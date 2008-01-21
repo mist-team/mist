@@ -5,23 +5,37 @@
 {0,0x0020,0x0011,IS,1,"""Series Number""",},//
 {0,0x0020,0x0012,IS,1,"""Acquisition Number""",},//
 {0,0x0020,0x0013,IS,1,"""Instance Number""",},//
+{0,0x0020,0x0014,IS,1,"""Isotope Number""",},//
+{0,0x0020,0x0015,IS,1,"""Phase Number""",},//
+{0,0x0020,0x0016,IS,1,"""Interval Number""",},//
+{0,0x0020,0x0017,IS,1,"""Time Slot Number""",},//
+{0,0x0020,0x0018,IS,1,"""Angle Number""",},//
 {0,0x0020,0x0019,IS,1,"""Item Number""",},//
 {0,0x0020,0x0020,CS,2,"""Patient Orientation""",},//
 {0,0x0020,0x0022,IS,1,"""Overlay Number""",},//
 {0,0x0020,0x0024,IS,1,"""Curve Number""",},//
 {0,0x0020,0x0026,IS,1,"""Lookup Table Number""",},//
+{0,0x0020,0x0030,DS,3,"""Image Position""",},//
 {0,0x0020,0x0032,DS,3,"""Image Position (Patient)""",},//
+{0,0x0020,0x0035,DS,6,"""Image Orientation""",},//
 {0,0x0020,0x0037,DS,6,"""Image Orientation (Patient)""",},//
+{0,0x0020,0x0050,DS,1,"""Location""",},//
 {0,0x0020,0x0052,UI,1,"""Frame of Reference UID""",},//
 {0,0x0020,0x0060,CS,1,"""Laterality""",},//
 {0,0x0020,0x0062,CS,1,"""Image Laterality""",},//
+{0,0x0020,0x0070,LO,1,"""Image Geometry Type""",},//
+{0,0x0020,0x0080,CS,-1,"""Masking Image""",},//
 {0,0x0020,0x0100,IS,1,"""Temporal Position Identifier""",},//
 {0,0x0020,0x0105,IS,1,"""Number of Temporal Positions""",},//
 {0,0x0020,0x0110,DS,1,"""Temporal Resolution""",},//
 {0,0x0020,0x0200,UI,1,"""Synchronization Frame of Reference UID""",},//
 {0,0x0020,0x1000,IS,1,"""Series in Study""",},//
+{0,0x0020,0x1001,IS,1,"""Acquisitions in Series""",},//
 {0,0x0020,0x1002,IS,1,"""Images in Acquisition""",},//
+{0,0x0020,0x1003,IS,1,"""Images in Series""",},//
 {0,0x0020,0x1004,IS,1,"""Acquisitions in Study""",},//
+{0,0x0020,0x1005,IS,1,"""Images in Study""",},//
+{0,0x0020,0x1020,CS,-1,"""Reference""",},//
 {0,0x0020,0x1040,LO,1,"""Position Reference Indicator""",},//
 {0,0x0020,0x1041,DS,1,"""Slice Location""",},//
 {0,0x0020,0x1070,IS,-1,"""Other Study Numbers""",},//
@@ -31,7 +45,15 @@
 {0,0x0020,0x1206,IS,1,"""Number of Study Related Series""",},//
 {0,0x0020,0x1208,IS,1,"""Number of Study Related Instances""",},//
 {0,0x0020,0x1209,IS,1,"""Number of Series Related Instances""",},//
+{0,0x0020,0x3401,CS,1,"""Modifying Device ID""",},//
+{0,0x0020,0x3402,CS,1,"""Modified Image ID""",},//
+{0,0x0020,0x3403,DA,1,"""Modified Image Date""",},//
+{0,0x0020,0x3404,LO,1,"""Modifying Device Manufacturer""",},//
+{0,0x0020,0x3405,TM,1,"""Modified Image Time""",},//
+{0,0x0020,0x3406,LO,1,"""Modified Image Description""",},//
 {0,0x0020,0x4000,LT,1,"""Image Comments""",},//
+{0,0x0020,0x5000,AT,-1,"""Original Image Identification""",},//
+{0,0x0020,0x5002,CS,-1,"""Original Image Identification Nomenclature""",},//
 {0,0x0020,0x9056,SH,1,"""Stack ID""",},//
 {0,0x0020,0x9057,UL,1,"""In-Stack Position Number""",},//
 {0,0x0020,0x9071,SQ,1,"""Frame Anatomy Sequence""",},//
@@ -40,7 +62,7 @@
 {0,0x0020,0x9113,SQ,1,"""Plane Position Sequence""",},//
 {0,0x0020,0x9116,SQ,1,"""Plane Orientation Sequence""",},//
 {0,0x0020,0x9128,UL,1,"""Temporal Position Index""",},//
-{0,0x0020,0x9153,FD,1,"""Trigger Delay Time""",},//
+{0,0x0020,0x9153,FD,1,"""Cardiac Trigger Delay Time""",},//
 {0,0x0020,0x9156,US,1,"""Frame Acquisition Number""",},//
 {0,0x0020,0x9157,UL,-1,"""Dimension Index Values""",},//
 {0,0x0020,0x9158,LT,1,"""Frame Comments""",},//
@@ -55,4 +77,12 @@
 {0,0x0020,0x9222,SQ,1,"""Dimension Index Sequence""",},//
 {0,0x0020,0x9228,UL,1,"""Concatenation Frame Offset Number""",},//
 {0,0x0020,0x9238,LO,1,"""Functional Group Private Creator""",},//
+{0,0x0020,0x9251,FD,1,"""R Interval Time Measured""",},//
+{0,0x0020,0x9253,SQ,1,"""Respiratory Trigger Sequence""",},//
+{0,0x0020,0x9254,FD,1,"""Respiratory Interval Time""",},//
+{0,0x0020,0x9255,FD,1,"""Respiratory Trigger Delay Time""",},//
+{0,0x0020,0x9256,FD,1,"""Respiratory Trigger Delay Threshold""",},//
+{0,0x0020,0x9421,LO,1,"""Dimension Description Label""",},//
+{0,0x0020,0x9450,SQ,1,"""Patient Orientation in Frame Sequence""",},//
+{0,0x0020,0x9453,LO,1,"""Frame Label""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

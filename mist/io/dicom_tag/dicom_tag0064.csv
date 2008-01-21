@@ -1,0 +1,10 @@
+{0,0x0064,0x0000,UL,1,"""Group 0064 Length""",},//
+{0,0x0064,0x0002,SQ,1,"""Deformable Registration Sequence""",},//
+{0,0x0064,0x0003,UI,1,"""Source Frame of Reference UID""",},//
+{0,0x0064,0x0005,SQ,1,"""Deformable Registration Grid Sequence""",},//
+{0,0x0064,0x0007,UL,3,"""Grid Dimensions""",},//
+{0,0x0064,0x0008,FD,3,"""Grid Resolution""",},//
+{0,0x0064,0x0009,OF,1,"""Vector Grid Data""",},//
+{0,0x0064,0x000F,SQ,1,"""Pre Deformation Matrix Registration Sequence""",},//
+{0,0x0064,0x0010,SQ,1,"""Post Deformation Matrix Registration Sequence""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

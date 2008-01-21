@@ -1,0 +1,6 @@
+{0,0x0042,0x0000,UL,1,"""Group 0042 Length""",},//
+{0,0x0042,0x0010,ST,1,"""Document Title""",},//
+{0,0x0042,0x0011,OB,1,"""Encapsulated Document""",},//
+{0,0x0042,0x0012,LO,1,"""MIME Type of Encapsulated Document""",},//
+{0,0x0042,0x0013,SQ,1,"""Source Instance Sequence""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//
