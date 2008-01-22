@@ -581,15 +581,15 @@ namespace mpeg
 		/// @brief コンストラクタ
 		//! 
 		//! @param[in] encode_buf_size … 4194304（デフォルト値）
-		//! @param[in] bit_rate        … 1048576（デフォルト値）
-		//! @param[in] width           … 160（デフォルト値）
-		//! @param[in] height          … 120（デフォルト値）
-		//! @param[in] frame_rate      … 30（デフォルト値）
-		//! @param[in] frame_rate_base … 1（デフォルト値）
+		//! @param[in] bit_rate        … 1150000（デフォルト値）
+		//! @param[in] width           … 352（デフォルト値）
+		//! @param[in] height          … 240（デフォルト値）
+		//! @param[in] frame_rate      … 30000（デフォルト値）
+		//! @param[in] frame_rate_base … 1001（デフォルト値）
 		//! @param[in] gop_size        … 12（デフォルト値）
-		//! @param[in] max_b_frames    … 2（デフォルト値）
+		//! @param[in] max_b_frames    … 1（デフォルト値）
 		//!
-		output_video( const size_t encode_buf_size = 4194304, const size_t bit_rate = 1048576, const int width = 160, const int height = 120, const int frame_rate = 30, const int frame_rate_base = 1, const int gop_size = 12, const int max_b_frames = 2 )
+		output_video( const size_t encode_buf_size = 4194304, const size_t bit_rate = 1150000, const int width = 352, const int height = 240, const int frame_rate = 30000, const int frame_rate_base = 1001, const int gop_size = 12, const int max_b_frames = 1 )
 			: p_fctx_( NULL ), p_frame_dst_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), video_stream_index_( 0 ), encode_buf_size_( encode_buf_size ), bit_rate_( bit_rate ), width_( width ), height_( height ), frame_rate_( frame_rate ), frame_rate_base_( frame_rate_base ), gop_size_( gop_size ), max_b_frames_( max_b_frames )
 		{
 			if( !__libavcodec__::is_libavcodec_initialized )
@@ -695,10 +695,10 @@ namespace mpeg
 				delete [ ] p_frame_rgb_->data[ 0 ];
 				av_free( p_frame_rgb_ );
 				avcodec_close( &p_fctx_->streams[ video_stream_index_ ]->codec );
-				av_free( encode_buf_ );			
+				delete [ ] encode_buf_;
 				av_freep( &p_fctx_->streams[ video_stream_index_ ] );
+				url_fclose( &p_fctx_->pb );
 				av_free( p_fctx_ );
-
 				is_open_ = false;
 				return true;
 			}
@@ -1177,8 +1177,8 @@ namespace mpeg
 			dst.height(          src.height( ) );
 			dst.frame_rate(      src.frame_rate( ) );
 			dst.frame_rate_base( src.frame_rate_base( ) );
-			dst.gop_size(        src.gop_size( ) );
-			dst.max_b_frames(    src.max_b_frames( ) );
+			//dst.gop_size(        src.gop_size( ) );
+			//dst.max_b_frames(    src.max_b_frames( ) );
 			return true;
 		}
 		return false;
