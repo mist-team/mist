@@ -43,6 +43,10 @@
 #include "../mist.h"
 #endif
 
+#ifndef __INCLUDE_MIST_THREAD__
+#include "../thread.h"
+#endif
+
 #ifndef __INCLUDE_FFT_UTIL_H__
 #include "fft_util.h"
 #endif
@@ -79,19 +83,8 @@ _MIST_BEGIN
 
 
 
-/// @brief 1次元高速フーリエ変換
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
-//! @attention 入力画像の一辺が2の指数乗の必要がある
-//! @attention 出力が実数のみの配列の場合は，パワーを返す
-//! 
-//! @param[in]  in  … 入力画像
-//! @param[out] out … 出力画像
-//! 
-//! @return 変換に成功したかどうか
-//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool fft( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
+bool _fft( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.size( ) ) )
 	{
@@ -141,18 +134,8 @@ bool fft( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 
 
 
-/// @brief 1次元高速逆フーリエ変換
-//! 
-//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
-//! @attention 入力画像の一辺が2の指数乗の必要がある
-//! 
-//! @param[in]  in  … 入力画像
-//! @param[out] out … 出力画像
-//! 
-//! @return 変換に成功したかどうか
-//! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-bool ifft( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
+bool _ifft( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out )
 {
 	if( !__fft_util__::size_check( ( unsigned int ) in.size( ) ) )
 	{
@@ -199,6 +182,42 @@ bool ifft( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
 	__fft_util__::deallocate_memory( mem );
 
 	return( true );
+}
+
+
+/// @brief 1次元高速フーリエ変換
+//! 
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
+//! @attention 出力が実数のみの配列の場合は，パワーを返す
+//! 
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
+//! 
+//! @return 変換に成功したかどうか
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2 >
+bool fft( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
+{
+	return _fft( in, out );
+}
+
+
+
+/// @brief 1次元高速逆フーリエ変換
+//! 
+//! @attention 入力と出力は，同じMISTコンテナオブジェクトでも正しく動作する
+//! @attention 入力画像の一辺が2の指数乗の必要がある
+//! 
+//! @param[in]  in  … 入力画像
+//! @param[out] out … 出力画像
+//! 
+//! @return 変換に成功したかどうか
+//! 
+template < class T1, class T2, class Allocator1, class Allocator2 >
+bool ifft( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out )
+{
+	return _ifft( in, out );
 }
 
 
@@ -271,7 +290,6 @@ bool fft( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
 
 	return( true );
 }
-
 
 
 
