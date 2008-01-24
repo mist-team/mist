@@ -162,7 +162,7 @@ bool hilbert( const array< T > &in, array< std::complex< T > > &out, bool mirror
 		{
 			if( j >= 0 )
 			{
-				as[ i ].real( ) = in[ j -- ];
+				as[ i ] = std::complex< T >( in[ j -- ], as[ i ].imag( ) );
 			}
 		}
 
@@ -180,7 +180,7 @@ bool hilbert( const array< T > &in, array< std::complex< T > > &out, bool mirror
 		{
 			if( j < in.size( ) )
 			{
-				as[ i ].real( ) = in[ j ++ ];
+				as[ i ] = std::complex< T >( in[ j ++ ], as[ i ].imag( ) );
 			}
 		}
 	}
@@ -205,8 +205,7 @@ bool hilbert( const array< T > &in, array< std::complex< T > > &out, bool mirror
 
 	for( size_t i = 0 ; i < in.size( ) ; i++ )
 	{
-		out[ i ].real( ) = in[ i ];
-		out[ i ].imag( ) = as[ i ].imag( );
+		out[ i ] = std::complex< T >( in[ i ], as[ i ].imag( ) );
 	}
 
 	return ( true );
