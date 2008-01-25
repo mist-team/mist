@@ -44,7 +44,7 @@ int main( int argc, char *argv[] )
 	}
 	
 	// Empirical mode decomposition
-	emd( y, imf );
+	mist::emd( y, imf );
 	for( size_t i = 0 ; i < ( imf( 0 ) ).size1( ) ; i++ )
 	{
 		std::cout << i << " " << y( i );
