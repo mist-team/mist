@@ -649,7 +649,6 @@ bool read_stl( facet_list< T > &facets, const std::string &filename )
 //!
 //! @param[in] facets           … ポリゴンのリスト
 //! @param[in] filename         … 出力ファイル名
-//! @param[in] object_name      … 出力ファイル名
 //! @param[in] use_ascii_format … ASCII形式で出力するかどうか
 //!
 //! @retval true  … ファイルへの書き込みに成功

@@ -370,13 +370,13 @@ namespace __mqo_controller__
 				{
 					// 未サポート
 					std::cerr << "Face should have more than three vertices." << std::endl;
-					return( NULL );
+					continue;
 				}
 				else if( num > 4 )
 				{
 					// 未サポート
 					std::cerr << "Face should have less than five vertices." << std::endl;
-					return( NULL );
+					continue;
 				}
 
 				if( num == 3 )
@@ -725,15 +725,16 @@ namespace __mqo_controller__
 				fprintf( fp, "Scene {\r\n" );
 				fprintf( fp, "\tpos 0.0000 0.0000 1000.0\r\n" );
 				fprintf( fp, "\tlookat 0.0000 0.0000 0.0000\r\n" );
-				//fprintf( fp, "\thead -0.2000\r\n" );
-				//fprintf( fp, "\tpich 0.0200\r\n" );
-				fprintf( fp, "\tortho 1\r\n" );
+				fprintf( fp, "\thead 0.0000\r\n" );
+				fprintf( fp, "\tpich 0.0000\r\n" );
+				fprintf( fp, "\tortho 0\r\n" );
 				fprintf( fp, "\tzoom2 5.0\r\n" );
+				fprintf( fp, "\tamb 0.250 0.250 0.250\r\n" );
 				fprintf( fp, "}\r\n" );
 			}
 			{
 				fprintf( fp, "Material 1 {\r\n" );
-				fprintf( fp, "\t\"default\" shader(0) col(1.000 1.000 1.000 1.000) dif(0.600) amb(0.600)\r\n" );
+				fprintf( fp, "\t\"default\" shader(3) col(1.000 1.000 1.000 1.000) dif(0.600) amb(0.600) emi(0.650) spc(0.000) power(0.00)\r\n" );
 				fprintf( fp, "}\r\n" );
 			}
 
@@ -746,15 +747,9 @@ namespace __mqo_controller__
 				if( convert_to_index_list( facets, vertices, faces ) )
 				{
 					fprintf( fp, "Object \"%s\" {\r\n", facets.name.c_str( ) );
-					fprintf( fp, "\tdepth 0\r\n" );
-					fprintf( fp, "\tfolding 0\r\n" );
-					fprintf( fp, "\tscale 1.000000 1.000000 1.000000\r\n" );
-					fprintf( fp, "\trotation 0.000000 0.000000 0.000000\r\n" );
-					fprintf( fp, "\ttranslation 0.000000 0.000000 0.000000\r\n" );
 					fprintf( fp, "\tvisible 15\r\n" );
 					fprintf( fp, "\tlocking 0\r\n" );
 					fprintf( fp, "\tshading 1\r\n" );
-					//fprintf( fp, "\tfacet 160.0\r\n" );
 					fprintf( fp, "\tcolor 1.000 1.000 1.000\r\n" );
 					fprintf( fp, "\tcolor_type 0\r\n" );
 
@@ -782,7 +777,7 @@ namespace __mqo_controller__
 				}
 			}
 
-			//fprintf( fp, "Eof" );
+			fprintf( fp, "Eof" );
 
 			fclose( fp );
 
@@ -827,8 +822,6 @@ bool read_mqo( std::vector< facet_list< T > > &facet_lists, const std::string &f
 //!
 //! @param[in] facet_lists      … ポリゴンのリスト
 //! @param[in] filename         … 出力ファイル名
-//! @param[in] object_name      … 出力ファイル名
-//! @param[in] use_ascii_format … ASCII形式で出力するかどうか
 //!
 //! @retval true  … ファイルへの書き込みに成功
 //! @retval false … ファイルへの書き込みに失敗
@@ -837,6 +830,22 @@ template < class T >
 inline bool write_mqo( const std::vector< facet_list< T > > &facet_lists, const std::string &filename )
 {
 	return( __mqo_controller__::mqo_controller< T >::write( facet_lists, filename ) );
+}
+
+/// @brief ポリゴンデータをMetasequoia形式で出力する
+//!
+//! @param[in] facets           … ポリゴンのリスト
+//! @param[in] filename         … 出力ファイル名
+//!
+//! @retval true  … ファイルへの書き込みに成功
+//! @retval false … ファイルへの書き込みに失敗
+//! 
+template < class T >
+inline bool write_mqo( const facet_list< T > &facets, const std::string &filename )
+{
+	std::vector< facet_list< T > > tmp;
+	tmp.push_back( facets );
+	return( __mqo_controller__::mqo_controller< T >::write( tmp, filename ) );
 }
 
 

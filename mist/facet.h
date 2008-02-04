@@ -50,6 +50,7 @@
 
 
 #include <vector>
+#include <map>
 
 // mistñºëOãÛä‘ÇÃénÇ‹ÇË
 _MIST_BEGIN
@@ -176,13 +177,67 @@ inline bool convert_to_index_list( const facet_list< T > &facets, std::vector< v
 	}
 
 	typedef typename facet_list< T >::size_type size_type;
+	typedef typename facet_list< T >::difference_type difference_type;
 	typedef vector3< T1 > vector_type;
 	typedef vector3< T2 > ivector_type;
 
 	vertices.clear( );
 	indices.clear( );
-	vertices.reserve( facets.size( ) * 3 );
+
+	typedef std::pair< size_type, vector_type > value_type;
+	typedef std::multimap< difference_type, value_type > map_type;
+	typedef std::pair< difference_type, value_type > key_type;
+	map_type table;
+
+	// ÉfÅ[É^ÇÉeÅ[ÉuÉãÇ…ìoò^Ç∑ÇÈ
+	for( size_type i = 0 ; i < facets.size( ) ; i++ )
+	{
+		const typename facet_list< T >::facet_type &f = facets[ i ];
+		vector_type v[ 3 ] = { f.p1, f.p2, f.p3 };
+
+		for( size_type j = 0 ; j < 3 ; j++ )
+		{
+			const vector_type &vec = v[ j ];
+			difference_type k1 = static_cast< difference_type > ( vec.x * 1000000.0 );
+			difference_type k2 = static_cast< difference_type > ( vec.x * 1000000.0 );
+			difference_type k3 = static_cast< difference_type > ( vec.x * 1000000.0 );
+			difference_type key = k1 + k2 + k3;
+
+			typename map_type::iterator ite = table.find( key );
+			if( ite == table.end( ) )
+			{
+				table.insert( key_type( key, value_type( 0, vec ) ) );
+			}
+			else
+			{
+				typename map_type::iterator upper = table.upper_bound( key );
+				for( ; ite != upper ; ++ite )
+				{
+					if( ( ite->second.second - vec ).length( ) < 1.0e-12 )
+					{
+						break;
+					}
+				}
+
+				if( ite == upper )
+				{
+					table.insert( key_type( key, value_type( 0, vec ) ) );
+				}
+			}
+		}
+	}
+
+	vertices.reserve( table.size( ) );
 	indices.reserve( facets.size( ) );
+
+	{
+		size_type count = 0;
+		for( typename map_type::iterator ite = table.begin( ) ; ite != table.end( ) ; ++ite, count++ )
+		{
+			ite->second.first = count;
+			vertices.push_back( ite->second.second );
+		}
+	}
 
 	for( size_type i = 0 ; i < facets.size( ) ; i++ )
 	{
@@ -193,32 +248,35 @@ inline bool convert_to_index_list( const facet_list< T > &facets, std::vector< v
 
 		for( size_type j = 0 ; j < 3 ; j++ )
 		{
-			if( vertices.empty( ) )
+			const vector_type &vec = v[ j ];
+			difference_type k1 = static_cast< difference_type > ( vec.x * 1000000.0 );
+			difference_type k2 = static_cast< difference_type > ( vec.x * 1000000.0 );
+			difference_type k3 = static_cast< difference_type > ( vec.x * 1000000.0 );
+			difference_type key = k1 + k2 + k3;
+
+			typename map_type::iterator ite = table.find( key );
+			if( ite == table.end( ) )
 			{
-				indx[ j ] = vertices.size( );
-				vertices.push_back( v[ j ] );
+				return( false );
 			}
 			else
 			{
-				size_type k = 0;
-				for( ; k < vertices.size( ) ; k++ )
+				typename map_type::iterator upper = table.upper_bound( key );
+				for( ; ite != upper ; ++ite )
 				{
-					if( ( vertices[ k ] - v[ j ] ).length( ) < 1.0e-12 )
+					if( ( ite->second.second - vec ).length( ) < 1.0e-12 )
 					{
 						break;
 					}
 				}
 
-				if( k < vertices.size( ) )
+				if( ite == upper )
 				{
-					// ìoò^çœÇ›ÇÃí∏ì_Çî≠å©
-					indx[ j ] = k;
+					return( false );
 				}
 				else
 				{
-					// êVãKÇ…í∏ì_Çìoò^Ç∑ÇÈ
-					indx[ j ] = vertices.size( );
-					vertices.push_back( v[ j ] );
+					indx[ j ] = ite->second.first;
 				}
 			}
 		}
