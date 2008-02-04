@@ -49,7 +49,7 @@
 #endif
 
 
-#include <cmath>
+#include <vector>
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -96,6 +96,50 @@ public:
 			p1     = f.p1;
 			p2     = f.p2;
 			p3     = f.p3;
+		}
+		return ( *this );
+	}
+};
+
+/// @brief ポリゴン（三角形）の集合を扱うクラス
+//! 
+//! @param T … 内部で用いるデータ型
+//! 
+template < class T >
+class facet_list : public std::vector< facet< T > >
+{
+private:
+	typedef std::vector< facet< T > > base;
+
+public:
+	typedef facet< T > facet_type;								///< @brief ポリゴンタイプ
+	typedef size_t size_type;									///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;							///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef typename facet_type::vector_type vector_type;		///< @brief 頂点などを表す3次元ベクトル型
+	typedef typename float_type< T >::value_type float_type;	///< @brief 長さなどを計算するときに用いる浮動小数点型
+
+public:
+	std::string name;	///< @brief 法線
+
+	/// @brief デフォルトコンストラクタ（全要素をデフォルト値で初期化する）
+	facet_list( ){ }
+
+	/// @brief 指定した名前でポリゴン集合を初期化する
+	facet_list( const std::string &name_ ) : name( name_ ){ }
+
+	/// @brief 他のポリゴンオブジェクトを用いて初期化する
+	template < class TT >
+	facet_list( const facet_list< TT > &f ) : base( f ), name( f.name ){ }
+
+
+	/// @brief 他のポリゴンオブジェクトを代入する
+	template < class TT >
+	const facet_list &operator =( const facet_list< TT > &f )
+	{
+		if( &f != this )
+		{
+			base::operator =( f );
+			name = q.name;
 		}
 		return ( *this );
 	}
