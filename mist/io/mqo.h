@@ -56,24 +56,6 @@ _MIST_BEGIN
 
 namespace __mqo_controller__
 {
-	struct _facet_
-	{
-		enum{ bytes = 50 };
-		float nX;
-		float nY;
-		float nZ;
-		float p1X;
-		float p1Y;
-		float p1Z;
-		float p2X;
-		float p2Y;
-		float p2Z;
-		float p3X;
-		float p3Y;
-		float p3Z;
-		unsigned short dmy;
-	} _MIST_PACKED;
-
 	template < class T >
 	struct mqo_controller
 	{
@@ -427,7 +409,14 @@ namespace __mqo_controller__
 				return( NULL );
 			}
 
-			facets.name = line;
+			if( line.size( ) > 0 && line[ 0 ] == '\"' && line[ line.size( ) - 1 ] == '\"' )
+			{
+				facets.name = line.substr( 1, line.size( ) - 2 );
+			}
+			else
+			{
+				facets.name = line;
+			}
 
 			// ññîˆÇì«Ç›çûÇﬁ
 			p = skip_chunk( p, e, "{" );
@@ -715,13 +704,87 @@ namespace __mqo_controller__
 			return( ret );
 		}
 
-		static bool write( const std::vector< facet_list_type > &facet_lists, const std::string &filename, bool use_ascii_format )
+		static bool write( const std::vector< facet_list_type > &facet_lists, const std::string &filename )
 		{
-			if( facet_list.empty( ) )
+			if( facet_lists.empty( ) )
 			{
 				std::cerr << "There is no object!" << std::endl;
 				return( false );
 			}
+
+			FILE *fp;
+			if( ( fp = fopen( filename.c_str( ), "wb" ) ) == NULL )
+			{
+				return( false );
+			}
+
+			fprintf( fp, "Metasequoia Document\r\n" );
+			fprintf( fp, "Format Text Ver 1.0\r\n\r\n" );
+
+			{
+				fprintf( fp, "Scene {\r\n" );
+				fprintf( fp, "\tpos 0.0000 0.0000 1000.0\r\n" );
+				fprintf( fp, "\tlookat 0.0000 0.0000 0.0000\r\n" );
+				//fprintf( fp, "\thead -0.2000\r\n" );
+				//fprintf( fp, "\tpich 0.0200\r\n" );
+				fprintf( fp, "\tortho 1\r\n" );
+				fprintf( fp, "\tzoom2 5.0\r\n" );
+				fprintf( fp, "}\r\n" );
+			}
+			{
+				fprintf( fp, "Material 1 {\r\n" );
+				fprintf( fp, "\t\"default\" shader(0) col(1.000 1.000 1.000 1.000) dif(0.600) amb(0.600)\r\n" );
+				fprintf( fp, "}\r\n" );
+			}
+
+			for( size_type l = 0 ; l < facet_lists.size( ) ; l++ )
+			{
+				const facet_list_type &facets = facet_lists[ l ];
+
+				std::vector< vector_type > vertices;
+				std::vector< ivector_type > faces;
+				if( convert_to_index_list( facets, vertices, faces ) )
+				{
+					fprintf( fp, "Object \"%s\" {\r\n", facets.name.c_str( ) );
+					fprintf( fp, "\tdepth 0\r\n" );
+					fprintf( fp, "\tfolding 0\r\n" );
+					fprintf( fp, "\tscale 1.000000 1.000000 1.000000\r\n" );
+					fprintf( fp, "\trotation 0.000000 0.000000 0.000000\r\n" );
+					fprintf( fp, "\ttranslation 0.000000 0.000000 0.000000\r\n" );
+					fprintf( fp, "\tvisible 15\r\n" );
+					fprintf( fp, "\tlocking 0\r\n" );
+					fprintf( fp, "\tshading 1\r\n" );
+					//fprintf( fp, "\tfacet 160.0\r\n" );
+					fprintf( fp, "\tcolor 1.000 1.000 1.000\r\n" );
+					fprintf( fp, "\tcolor_type 0\r\n" );
+
+					{
+						fprintf( fp, "\tvertex %d {\r\n", static_cast< int >( vertices.size( ) ) );
+						for( size_type i = 0 ; i < vertices.size( ) ; i++ )
+						{
+							const vector_type &f = vertices[ i ];
+							fprintf( fp, "\t\t%.4f %.4f %.4f\r\n", f.x, f.y, f.z );
+						}
+						fprintf( fp, "\t}\r\n" );
+					}
+
+					{
+						fprintf( fp, "\tface %d {\r\n", static_cast< int >( faces.size( ) ) );
+						for( size_type i = 0 ; i < faces.size( ) ; i++ )
+						{
+							const ivector_type &f = faces[ i ];
+							fprintf( fp, "\t\t%d V(%d %d %d) M(0)\r\n", 3, f.x, f.y, f.z );
+						}
+						fprintf( fp, "\t}\r\n" );
+					}
+
+					fprintf( fp, "}\r\n" );
+				}
+			}
+
+			//fprintf( fp, "Eof" );
+
+			fclose( fp );
 
 			return( true );
 		}
@@ -773,7 +836,7 @@ bool read_mqo( std::vector< facet_list< T > > &facet_lists, const std::string &f
 template < class T >
 inline bool write_mqo( const std::vector< facet_list< T > > &facet_lists, const std::string &filename )
 {
-	return( __stl_controller__::stl_controller< T >::write( facet_lists, filename ) );
+	return( __mqo_controller__::mqo_controller< T >::write( facet_lists, filename ) );
 }
 
 

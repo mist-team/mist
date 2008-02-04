@@ -101,6 +101,28 @@ public:
 	}
 };
 
+
+/// @brief 指定されたストリームに，ポリゴンオブジェクトを整形して出力する
+//! 
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     f   … ポリゴンオブジェクト
+//! 
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! ( 1, 2, 3, 4 )
+//! @endcode
+//! 
+template < class T > inline std::ostream &operator <<( std::ostream &out, const facet< T > &f )
+{
+	out << "(" << f.normal << ") - ";
+	out << "(" << f.p1 << "), ";
+	out << "(" << f.p2 << "), ";
+	out << "(" << f.p3 << ")";
+	return( out );
+}
+
+
 /// @brief ポリゴン（三角形）の集合を扱うクラス
 //! 
 //! @param T … 内部で用いるデータ型
@@ -145,27 +167,67 @@ public:
 	}
 };
 
-
-/// @brief 指定されたストリームに，ポリゴンオブジェクトを整形して出力する
-//! 
-//! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     f   … ポリゴンオブジェクト
-//! 
-//! @return 入力されたストリーム
-//! 
-//! @code 出力例
-//! ( 1, 2, 3, 4 )
-//! @endcode
-//! 
-template < class T > inline std::ostream &operator <<( std::ostream &out, const facet< T > &f )
+template < class T, class T1, class T2 >
+inline bool convert_to_index_list( const facet_list< T > &facets, std::vector< vector3< T1 > > &vertices, std::vector< vector3< T2 > > &indices )
 {
-	out << "(" << f.normal << ") - ";
-	out << "(" << f.p1 << "), ";
-	out << "(" << f.p2 << "), ";
-	out << "(" << f.p3 << ")";
-	return( out );
-}
+	if( facets.empty( ) )
+	{
+		return( false );
+	}
 
+	typedef typename facet_list< T >::size_type size_type;
+	typedef vector3< T1 > vector_type;
+	typedef vector3< T2 > ivector_type;
+
+	vertices.clear( );
+	indices.clear( );
+	vertices.reserve( facets.size( ) * 3 );
+	indices.reserve( facets.size( ) );
+
+	for( size_type i = 0 ; i < facets.size( ) ; i++ )
+	{
+		const typename facet_list< T >::facet_type &f = facets[ i ];
+
+		size_type indx[ 3 ] = { 0, 0, 0 };
+		vector_type v[ 3 ] = { f.p1, f.p2, f.p3 };
+
+		for( size_type j = 0 ; j < 3 ; j++ )
+		{
+			if( vertices.empty( ) )
+			{
+				indx[ j ] = vertices.size( );
+				vertices.push_back( v[ j ] );
+			}
+			else
+			{
+				size_type k = 0;
+				for( ; k < vertices.size( ) ; k++ )
+				{
+					if( ( vertices[ k ] - v[ j ] ).length( ) < 1.0e-12 )
+					{
+						break;
+					}
+				}
+
+				if( k < vertices.size( ) )
+				{
+					// 登録済みの頂点を発見
+					indx[ j ] = k;
+				}
+				else
+				{
+					// 新規に頂点を登録する
+					indx[ j ] = vertices.size( );
+					vertices.push_back( v[ j ] );
+				}
+			}
+		}
+
+		indices.push_back( ivector_type( indx[ 0 ], indx[ 1 ], indx[ 2 ] ) );
+	}
+
+	return( true );
+}
 
 
 // mist名前空間の終わり
