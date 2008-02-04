@@ -235,7 +235,7 @@ namespace __stl_controller__
 			return( line );
 		}
 
-		static bool convert_from_stl_ascii_data( std::vector< facet_type > &facets, const unsigned char *buff, size_type len )
+		static bool convert_from_stl_ascii_data( std::vector< facet_type > &facets, const unsigned char *buff, size_type len, std::string &object_name )
 		{
 			// PNM形式のヘッダ部分
 			const unsigned char *p = buff;
@@ -259,6 +259,11 @@ namespace __stl_controller__
 					if( line == "solid" )
 					{
 						stage++;
+						if( !eol )
+						{
+							p = get_line( p, e, object_name );
+							eol = true;
+						}
 					}
 					else
 					{
@@ -431,7 +436,7 @@ namespace __stl_controller__
 			return( false );
 		}
 
-		static bool convert_from_stl_binary_data( std::vector< facet_type > &facets, const unsigned char *buff, size_type len )
+		static bool convert_from_stl_binary_data( std::vector< facet_type > &facets, const unsigned char *buff, size_type len, std::string &object_name )
 		{
 			// PNM形式のヘッダ部分
 			const unsigned char *p = buff;
@@ -449,16 +454,25 @@ namespace __stl_controller__
 				return( false );
 			}
 
+			object_name = std::string( ( std::string::value_type * )buff, 80 );
+
 			for( size_type i = 0 ; i < num_facets ; i++ )
 			{
 				_facet_ *F = ( _facet_ * )( buff + 80 + 4 + _facet_::bytes * i );
-				facets.push_back( facet_type( vector_type( F->nX, F->nY, F->nZ ), vector_type( F->p1X, F->p1Y, F->p1Z ), vector_type( F->p2X, F->p2Y, F->p2Z ), vector_type( F->p3X, F->p3Y, F->p3Z ) ) );
+				facet_type f( vector_type( F->nX, F->nY, F->nZ ), vector_type( F->p1X, F->p1Y, F->p1Z ), vector_type( F->p2X, F->p2Y, F->p2Z ), vector_type( F->p3X, F->p3Y, F->p3Z ) );
+
+				if( f.normal.length( ) == 0 )
+				{
+					f.normal = ( ( f.p2 - f.p1 ).outer( f.p3 - f.p1 ) ).unit( );
+				}
+
+				facets.push_back( f );
 			}
 
 			return( true );
 		}
 
-		static bool read( std::vector< facet_type > &facets, const std::string &filename )
+		static bool read( std::vector< facet_type > &facets, const std::string &filename, std::string &object_name )
 		{
 			// データをクリアする
 			facets.clear( );
@@ -493,11 +507,11 @@ namespace __stl_controller__
 				std::string sss = to_lower( std::string( ( char * )buff, 5 ) );
 				if( sss == "solid" )
 				{
-					convert_from_stl_ascii_data( facets, buff, filesize );
+					convert_from_stl_ascii_data( facets, buff, filesize, object_name );
 				}
 				else
 				{
-					convert_from_stl_binary_data( facets, buff, filesize );
+					convert_from_stl_binary_data( facets, buff, filesize, object_name );
 				}
 			}
 
@@ -506,7 +520,7 @@ namespace __stl_controller__
 			return( ret );
 		}
 
-		static bool write( const std::vector< facet_type > &facets, const std::string &filename, bool use_ascii_format )
+		static bool write( const std::vector< facet_type > &facets, const std::string &filename, const std::string &object_name, bool use_ascii_format )
 		{
 			if( facets.empty( ) )
 			{
@@ -522,7 +536,7 @@ namespace __stl_controller__
 					return( false );
 				}
 
-				fprintf( fp, "solid %d\n", static_cast< int >( facets.size( ) ) );
+				fprintf( fp, "solid %s\n", object_name.c_str( ) );
 
 				for( size_type i = 0 ; i < facets.size( ) ; i++ )
 				{
@@ -538,7 +552,7 @@ namespace __stl_controller__
 					fprintf( fp, "\tendfacet\n" );
 				}
 
-				fprintf( fp, "endsolid %d", static_cast< int >( facets.size( ) ) );
+				fprintf( fp, "endsolid %s\n", object_name.c_str( ) );
 
 				fclose( fp );
 			}
@@ -553,10 +567,18 @@ namespace __stl_controller__
 				unsigned int num_facets = static_cast< unsigned int >( facets.size( ) );
 				unsigned char dmy[ 80 ];
 				memset( dmy, 0, sizeof( unsigned char ) * 80 );
-				dmy[ 0 ] = 'M';
-				dmy[ 1 ] = 'I';
-				dmy[ 2 ] = 'S';
-				dmy[ 3 ] = 'T';
+
+				{
+					std::string tmp = std::string( "Binary STL output by MIST: " ) + object_name;
+					if( tmp.size( ) < 80 )
+					{
+						memcpy( dmy, tmp.c_str( ), tmp.size( ) );
+					}
+					else
+					{
+						memcpy( dmy, tmp.c_str( ), 80 );
+					}
+				}
 
 				// ヘッダ情報を書き込む
 				fwrite( dmy, sizeof( unsigned char ), 80, fp );
@@ -611,6 +633,21 @@ namespace __stl_controller__
 
 /// @brief STL（ASCII，バイナリ）形式のファイルからポリゴンデータを読み込む
 //! 
+//! @param[out] facets      … ポリゴンのリスト
+//! @param[in]  filename    … 出力ファイル名
+//! @param[out] object_name … データの名称
+//!
+//! @retval true  … ポリゴンデータの読み込みに成功
+//! @retval false … ポリゴンデータの読み込みに失敗
+//! 
+template < class T >
+bool read_stl( std::vector< facet< T > > &facets, const std::string &filename, std::string &object_name )
+{
+	return( __stl_controller__::stl_controller< T >::read( facets, filename, object_name ) );
+}
+
+/// @brief STL（ASCII，バイナリ）形式のファイルからポリゴンデータを読み込む
+//! 
 //! @param[out] facets   … ポリゴンのリスト
 //! @param[in] filename … 出力ファイル名
 //!
@@ -620,7 +657,8 @@ namespace __stl_controller__
 template < class T >
 bool read_stl( std::vector< facet< T > > &facets, const std::string &filename )
 {
-	return( __stl_controller__::stl_controller< T >::read( facets, filename ) );
+	std::string tmp;
+	return( __stl_controller__::stl_controller< T >::read( facets, filename, tmp ) );
 }
 
 
@@ -628,16 +666,18 @@ bool read_stl( std::vector< facet< T > > &facets, const std::string &filename )
 //!
 //! @param[in] facets           … ポリゴンのリスト
 //! @param[in] filename         … 出力ファイル名
+//! @param[in] object_name      … 出力ファイル名
 //! @param[in] use_ascii_format … ASCII形式で出力するかどうか
 //!
 //! @retval true  … ファイルへの書き込みに成功
 //! @retval false … ファイルへの書き込みに失敗
 //! 
 template < class T >
-inline bool write_stl( const std::vector< facet< T > > &facets, const std::string &filename, bool use_ascii_format = true )
+inline bool write_stl( const std::vector< facet< T > > &facets, const std::string &filename, const std::string &object_name = "", bool use_ascii_format = true )
 {
-	return( __stl_controller__::stl_controller< T >::write( facets, filename, use_ascii_format ) );
+	return( __stl_controller__::stl_controller< T >::write( facets, filename, object_name, use_ascii_format ) );
 }
+
 
 
 /// @}
