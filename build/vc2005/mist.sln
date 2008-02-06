@@ -70,6 +70,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "type_test", "type_test.vcpr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_learning_test", "machine_learning_test.vcproj", "{71F170DC-6E2F-4833-9FB2-3CDC1C74E534}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "marching_cubes_test", "marching_cubes_test.vcproj", "{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -327,6 +329,14 @@ Global
 		{71F170DC-6E2F-4833-9FB2-3CDC1C74E534}.Release|Win32.Build.0 = Release|Win32
 		{71F170DC-6E2F-4833-9FB2-3CDC1C74E534}.Release|x64.ActiveCfg = Release|x64
 		{71F170DC-6E2F-4833-9FB2-3CDC1C74E534}.Release|x64.Build.0 = Release|x64
+		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Debug|Win32.Build.0 = Debug|Win32
+		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Debug|x64.ActiveCfg = Debug|x64
+		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Debug|x64.Build.0 = Debug|x64
+		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Release|Win32.ActiveCfg = Release|Win32
+		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Release|Win32.Build.0 = Release|Win32
+		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Release|x64.ActiveCfg = Release|x64
+		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -38,162 +38,65 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <mist/mist.h>
 
-#include <mist/interval_tree.h>
+#ifndef __INCLUDE_MIST_H__
+#include "mist.h"
+#endif
+
+#ifndef __INCLUDE_MIST_VECTOR__
+#include "vector.h"
+#endif
+
+#ifndef __INCLUDE_INTERVAL_TREE_H__
+#include "interval_tree.h"
+#endif
+
 
 // mist名前空間の始まり
 _MIST_BEGIN
 
-//! @addtogroup marching_cubes_group Marching Cubes
-//!
-//! @code 次のヘッダをインクルードする
-//! #include <mist/marching_cubes.h>
-//! @endcode
-//!
-//!  @{
-
-namespace mc
+namespace __mc__
 {
-	/// @brief x, y, z 値を持つポリゴンの頂点や法線を表すための構造体
-	//!
-	//! @param T … ベクトルの要素の型
-	//!
-	template< typename T >
-	class point
-	{
-	public:
-		typedef T value_type;	///< @brief 各 x, y, z 値の型
-
-		/// @brief x の値を返す
-		//!
-		//! @return x の値
-		//!
-		const value_type &x( ) const { return x_; }
-		
-		/// @brief y の値を返す
-		//!
-		//! @return y の値
-		//!
-		const value_type &y( ) const { return y_; }
-		
-		/// @brief z の値を返す
-		//!
-		//! @return z の値
-		//!
-		const value_type &z( ) const { return z_; }
-		
-		/// @brief x の値を返す（入出力可能）
-		//!
-		//! @return x の値
-		//!
-		value_type &x( ) { return x_; }
-		
-		/// @brief y の値を返す（入出力可能）
-		//!
-		//! @return y の値
-		//!
-		value_type &y( ) { return y_; }
-		
-		/// @brief z の値を返す（入出力可能）
-		//!
-		//! @return z の値
-		//!
-		value_type &z( ) { return z_; }
-
-		/// @brief デフォルトコンストラクタ
-		point( ) : x_( value_type( ) ), y_( value_type( ) ), z_( value_type( ) ) { }
-		
-		/// @brief コンストラクタ
-		//!
-		//! @param[in] x … x の値
-		//! @param[in] y … y の値
-		//! @param[in] z … z の値
-		//!
-		point( const value_type &x, const value_type &y, const value_type &z ) : x_( x ), y_( y ), z_( z ) { }
-		
-	protected:
-		value_type x_;
-		value_type y_; 
-		value_type z_;
-	};
-
-	/// @brief 出力演算子
-	//!
-	//! @param[in]  in   … 入力
-	//! @param[out] out  … 出力ストリーム
-	//! @return 出力ストリーム
-	//!
-	template< typename T >
-	inline std::ostream &operator <<( std::ostream &out, const point< T > &in )
-	{
-		return out << in.x( ) << ", " << in.y( ) << ", " << in.z( );
-	}
-
-	/// @brief 法線ベクトルの単位ベクトル化
-	//!
-	//! @param[in]  in   … 単位ベクトル化前のベクトル
-	//! @param[out] out  … 単位ベクトル化後のベクトル
-	//!
-	template< typename I, typename O >
-	inline void normalize( const point< I > &in, point< O > &out )
-	{
-		const double nrm = std::sqrt( static_cast< double >( in.x( ) ) * in.x( ) + static_cast< double >( in.y( ) ) * in.y( ) + static_cast< double >( in.z( ) ) * in.z( ) );
-		if( nrm != 0.0 )
-		{
-			out.x( ) = static_cast< O >( in.x( ) / nrm );
-			out.y( ) = static_cast< O >( in.y( ) / nrm );
-			out.z( ) = static_cast< O >( in.z( ) / nrm );
-		}
-		else
-		{
-			out.x( ) = O( );
-			out.y( ) = O( );
-			out.z( ) = O( );
-		}
-	}
-
 	/// @brief cubeの頂点ノードを扱うためのクラス（ marching_cubes クラスの内部でのみ利用 ）
 	//!
 	//! @param V … 頂点の値の型
 	//! @param P … 頂点の座標の型
 	//! @param N … 頂点の法線ベクトルの型
 	//!
-	template< typename V, typename P, typename N >
+	template< class V, class P >
 	class node
 	{
 	public:
 		typedef V	value_type;
 		typedef P	point_type;
-		typedef N	normal_type;
 
 		const value_type						&v( )  const { return v_; }
 		const point_type						&p( )  const { return p_; }
-		const normal_type						&n( )  const { return n_; }
-		const typename point_type::value_type	&px( ) const { return p_.x( ); }
-		const typename point_type::value_type	&py( ) const { return p_.y( ); }
-		const typename point_type::value_type	&pz( ) const { return p_.z( ); }
-		const typename normal_type::value_type	&nx( ) const { return n_.x( ); }
-		const typename normal_type::value_type	&ny( ) const { return n_.y( ); }
-		const typename normal_type::value_type	&nz( ) const { return n_.z( ); }
+		const point_type						&n( )  const { return n_; }
+		const typename point_type::value_type	&px( ) const { return p_.x; }
+		const typename point_type::value_type	&py( ) const { return p_.y; }
+		const typename point_type::value_type	&pz( ) const { return p_.z; }
+		const typename point_type::value_type	&nx( ) const { return n_.x; }
+		const typename point_type::value_type	&ny( ) const { return n_.y; }
+		const typename point_type::value_type	&nz( ) const { return n_.z; }
 
 		value_type							&v( )  { return v_; }
 		point_type							&p( )  { return p_; }
-		normal_type							&n( )  { return n_; }
-		typename point_type::value_type		&px( ) { return p_.x( ); }
-		typename point_type::value_type		&py( ) { return p_.y( ); }
-		typename point_type::value_type		&pz( ) { return p_.z( ); }
-		typename normal_type::value_type	&nx( ) { return n_.x( ); }
-		typename normal_type::value_type	&ny( ) { return n_.y( ); }
-		typename normal_type::value_type	&nz( ) { return n_.z( ); }
+		point_type							&n( )  { return n_; }
+		typename point_type::value_type		&px( ) { return p_.x; }
+		typename point_type::value_type		&py( ) { return p_.y; }
+		typename point_type::value_type		&pz( ) { return p_.z; }
+		typename point_type::value_type	&nx( ) { return n_.x; }
+		typename point_type::value_type	&ny( ) { return n_.y; }
+		typename point_type::value_type	&nz( ) { return n_.z; }
 
-		node( ) : v_( value_type( ) ), p_( point_type( ) ), n_( normal_type( ) ) { }
-		node( const value_type &v, const point_type &p, const normal_type &n ) : v_( v ), p_( p ), n_( n ) { }
+		node( ) : v_( ), p_( ), n_( ) { }
+		node( const value_type &v, const point_type &p, const point_type &n ) : v_( v ), p_( p ), n_( n ) { }
 
 	private:
 		value_type	v_;
 		point_type	p_;
-		normal_type	n_;
+		point_type	n_;
 	};
 
 	/// @brief 等値面生成結果から3角形パッチの数を計算
@@ -214,18 +117,25 @@ namespace mc
 }
 
 
+//! @addtogroup marching_cubes_group Marching Cubes
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/marching_cubes.h>
+//! @endcode
+//!
+//!  @{
+
 /// @brief ボリュームデータから等値面を生成するためのクラス
 //!
 //! 区間の集合から2分木を構築し、通常O(n)かかる探索時間をO(log_2(n))に削減する．
 //! 線分や面分の重なり判定などに有効．
 //!
 //! @attention mist::arra3< 算術型 > 型を入力とする．
-//! @attention ポリゴンの各頂点座標（ mist::mc::point< 算術型 >型 ），各頂点の法線ベクトル（ mist::mc::point< 算術型 > 型 ），各ポリゴンの頂点数（ size_t 型 ）の3つのstd::vectorを等値面生成結果の出力とする．
+//! @attention ポリゴンの各頂点座標（ mist::vector3< 算術型 >型 ），各頂点の法線ベクトル（ mist::vector3< 算術型 > 型 ），各ポリゴンの頂点数（ size_t 型 ）の3つのstd::vectorを等値面生成結果の出力とする．
 //! @attention ポリゴンの各頂点座標と各頂点の法線ベクトルは OpenGL の頂点配列として利用可能（ GL_POLYGON や GL_TRIANGLE_FAN 等に使える）．
 //! 
-//! @param V  … ボリュームデータの要素の型
-//! @param P  … 等値面ポリゴンの頂点座標の要素の型
-//! @param N  … 等値面ポリゴンの法線ベクトルの要素の型
+//! @param ARRAY3 … ボリュームデータの型
+//! @param P      … 等値面ポリゴンの頂点座標の要素の型
 //!
 //! @code 使用例
 //! // ボリュームデータの用意
@@ -235,14 +145,14 @@ namespace mc
 //!  */
 //! 
 //! // 等値面生成結果を格納するためのオブジェクトの準備
-//! std::vector< mist::mc::point< double > >	pv;		// double 型の要素を持つ頂点座標の集合
-//! std::vector< mist::mc::normal< double > >	nv;		// double 型の要素を持つ法線ベクトルの集合
-//! std::vector< size_t >						sv;		// 各ポリゴンのサイズ（頂点数）の集合
+//! std::vector< mist::vector3< double > >	pv;		// double 型の要素を持つ頂点座標の集合
+//! std::vector< mist::vector3< double > >	nv;		// double 型の要素を持つ法線ベクトルの集合
+//! std::vector< size_t >					sv;		// 各ポリゴンのサイズ（頂点数）の集合
 //!
 //! // ボリュームデータの要素が int 型で，
 //! // 得られる等値面ポリゴンの頂点座標の要素と法線ベクトルが double 型の
 //! // marching_cubes オブジェクトを作成
-//! mist::marching_cubes< int, double, double >	mcs;
+//! mist::marching_cubes< mist::array3< int >, double >	mcs;
 //!
 //! // パラメータ設定（ 頂点座標のオフセット値，拡大率，等値面生成のための閾値 ）
 //! mcs.offset( 0.0, 0.0, 0.0 );
@@ -253,27 +163,25 @@ namespace mc
 //! mcs.isosurfacing( va, pv, nv, sv );
 //! @endcode
 //!
-template< typename V, typename P = double, typename N = double >
+template< typename ARRAY3, typename P = double >
 class marching_cubes
 {
 public:
-	typedef V							in_value_type;		///< @brief ボリュームデータの要素の型
-	typedef typename mc::point< short >	in_point_type;		///< @brief cube の頂点座標の型
-	typedef typename mc::point< short >	in_normal_type;		///< @brief cube の頂点の法線ベクトルの型
-	typedef typename mc::point< P >		out_point_type;		///< @brief ポリゴンの頂点座標の型
-	typedef typename mc::point< N >		out_normal_type;	///< @brief ポリゴンの頂点の法汚染ベクトルの型
-	typedef size_t						out_size_type;		///< @brief 各ポリゴンのサイズ（頂点数）の型
+	typedef ARRAY3				image_type;						///< @brief ボリュームデータの要素の型
+	typedef typename image_type::value_type value_type;			///< @brief ボリュームデータの要素の型
+	typedef vector3< short >	ivector_type;					///< @brief cube の頂点座標の型
+	typedef vector3< P >		vector_type;					///< @brief ポリゴンの頂点座標の型
+	typedef typename vector_type::value_type float_type;		///< @brief ポリゴンの頂点の法汚染ベクトルの型
+	typedef size_t				size_type;						///< @brief 各ポリゴンのサイズ（頂点数）の型
 
-	typedef typename mc::node< in_value_type, in_point_type, in_normal_type >	node_type;	///< @brief cube の頂点情報を保持する型
+	typedef std::vector< vector_type > vector_list_type;		///< @brief 3次元ベクトルリストを扱う型
+	typedef __mc__::node< value_type, ivector_type > node_type;	///< @brief cube の頂点情報を保持する型
+	typedef void ( * func_type )( const array< node_type > &, vector_list_type &, vector_list_type &,
+							std::vector< size_type > &, float_type, const vector_type &, const vector_type & );	///< @brief cube 単位での等値面生成関数の型
 	
-	typedef double							threshold_type;		///< @brief 閾値パラメータの型
-	typedef typename mc::point< double >	offset_type;		///< @brief オフセットパラメータの型
-	typedef typename mc::point< double >	scale_type;			///< @brief スケールパラメータの型
-	typedef void ( *						func_type )( const array< node_type > &, std::vector< out_point_type > &, std::vector< out_normal_type > &, std::vector< out_size_type > & );	///< @brief cube 単位での等値面生成関数の型
-	
-	typedef tagged_section< in_value_type, size_t >		section_type;	///< @brief Interval-tree 用いる区間の型
-	typedef typename section_type::min_max_type			min_max_type;	///< @brief 区間の最大値，最小値の型
-	typedef typename section_type::tag_type				tag_type;		///< @brief 区間のタグ情報の型
+	typedef tagged_section< value_type, size_type >	section_type;	///< @brief Interval-tree 用いる区間の型
+	typedef typename section_type::min_max_type		min_max_type;	///< @brief 区間の最大値，最小値の型
+	typedef typename section_type::tag_type			tag_type;		///< @brief 区間のタグ情報の型
 
 
 	/// @brief 等値面生成（前処理の有無で等値面生成処理を分ける）
@@ -283,7 +191,7 @@ public:
 	//! @param[out] nv   … 等値面ポリゴンの頂点の法線ベクトルの集合
 	//! @param[out] sv   … 等値面ポリゴンのサイズの集合
 	//!
-	void isosurfacing( const array3< in_value_type > &va, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+	void isosurfacing( const image_type &va, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv )
 	{
 		if( is_preprocessed_ )
 		{
@@ -302,17 +210,18 @@ public:
 	//! @param[out] nv   … 等値面ポリゴンの頂点の法線ベクトルの集合
 	//! @param[out] sv   … 等値面ポリゴンのサイズの集合
 	//!
-	void isosurfacing_with_preprocess( const array3< in_value_type > &va, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+	void isosurfacing_with_preprocess( const image_type &va, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv )
 	{
 		pv.resize( 0 );
 		nv.resize( 0 );
 		sv.resize( 0 );
 		it_.find( th_, active_cube_tags_ );
 		std::sort( active_cube_tags_.begin( ), active_cube_tags_.end( ) );
+
 		array< node_type > nda( 8 );
-		const size_t begin = 0;
-		const size_t end = active_cube_tags_.size( );
-		for( size_t i = begin ; i < end ; i ++ )
+		const size_type begin = 0;
+		const size_type end = active_cube_tags_.size( );
+		for( size_type i = begin ; i < end ; i ++ )
 		{
 			construct_cube( va, active_cube_tags_[ i ], nda );
 			isosurfacing_in_cube( nda, pv, nv, sv );
@@ -326,7 +235,7 @@ public:
 	//! @param[out] nv   … 等値面ポリゴンの頂点の法線ベクトルの集合
 	//! @param[out] sv   … 等値面ポリゴンのサイズの集合
 	//!
-	void isosurfacing_without_preprocess( const array3< in_value_type > &va, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+	void isosurfacing_without_preprocess( const image_type &va, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv )
 	{
 		pv.resize( 0 );
 		nv.resize( 0 );
@@ -349,7 +258,7 @@ public:
 	//!
 	//! @param[in]  va   … 等値面生成処理の対象としているボリュームデータ
 	//!
-	bool preprocess( const array3< in_value_type > &va )
+	bool preprocess( const image_type &va )
 	{
 		if( is_preprocessed_ )
 		{
@@ -358,7 +267,7 @@ public:
 		is_preprocessed_ = ( construct_pointer_difference_array( va.width( ), va.height( ) ) && construct_point_array( va ) && construct_normal_array( va ) && construct_interval_tree( va ) );
 		if( !is_preprocessed_ )
 		{
-			std::cout << "can't construct preprocessing data for lack of memory, use non-preprocessing version of marvching cubes." << std::endl;
+			std::cout << "can't construct preprocessing data for lack of memory, use non-preprocessing version of marching cubes." << std::endl;
 			de_preprocess( );
 		}
 		return is_preprocessed_;
@@ -384,7 +293,7 @@ public:
 	//!
 	//! @param[in]  th   … 閾値
 	//!
-	void threshold( const threshold_type &th ) { th_ = th; }
+	void threshold( float_type th ) { th_ = th; }
 	
 	/// @brief オフセットパラメータを設定
 	//!
@@ -392,7 +301,7 @@ public:
 	//! @param[in]  oy   … y 方向オフセット
 	//! @param[in]  oz   … z 方向オフセット
 	//!
-	void offset( const offset_type::value_type &ox, const offset_type::value_type &oy, const offset_type::value_type &oz ) { o_.x( ) = ox; o_.y( ) = oy; o_.z( ) = oz; }
+	void offset( float_type ox, float_type oy, float_type oz ) { o_.x = ox; o_.y = oy; o_.z = oz; }
 	
 	/// @brief スケールパラメータを設定
 	//!
@@ -400,52 +309,52 @@ public:
 	//! @param[in]  sy   … y 方向スケール
 	//! @param[in]  sz   … z 方向スケール
 	//!
-	void scale(  const scale_type::value_type  &sx, const scale_type::value_type  &sy, const scale_type::value_type  &sz ) { s_.x( ) = sx; s_.y( ) = sy; s_.z( ) = sz; }
+	void scale( float_type sx, float_type sy, float_type sz ) { s_.x = sx; s_.y = sy; s_.z = sz; }
 
 	/// @brief 設定されている閾値パラメータを取得
 	//!
 	//! @return    … 閾値
 	//!
-	const threshold_type			&th( ) const { return th_; }
+	const float_type	&th( ) const { return th_; }
 	
 	/// @brief 設定されている x 方向オフセットパラメータを取得
 	//!
 	//! @return    … x 方向オフセット
 	//!
-	const offset_type::value_type	&ox( ) const { return o_.x( ); }
+	const float_type	&ox( ) const { return o_.x( ); }
 	
 	/// @brief 設定されている y 方向オフセットパラメータを取得
 	//!
 	//! @return    … y 方向オフセット
 	//!
-	const offset_type::value_type	&oy( ) const { return o_.y( ); }
+	const float_type	&oy( ) const { return o_.y( ); }
 	
 	/// @brief 設定されている z 方向オフセットパラメータを取得
 	//!
 	//! @return    … z 方向オフセット
 	//!
-	const offset_type::value_type	&oz( ) const { return o_.z( ); }
+	const float_type	&oz( ) const { return o_.z( ); }
 	
 	/// @brief 設定されている x 方向スケールパラメータを取得
 	//!
 	//! @return    … x 方向スケール
 	//!
-	const scale_type::value_type	&sx( ) const { return s_.x( ); }
+	const float_type	&sx( ) const { return s_.x( ); }
 	
 	/// @brief 設定されている y 方向スケールパラメータを取得
 	//!
 	//! @return    … y 方向スケール
 	//!
-	const scale_type::value_type	&sy( ) const { return s_.y( ); }
+	const float_type	&sy( ) const { return s_.y( ); }
 	
 	/// @brief 設定されている z 方向スケールパラメータを取得
 	//!
 	//! @return    … z 方向スケール
 	//!
-	const scale_type::value_type	&sz( ) const { return s_.z( ); }
+	const float_type	&sz( ) const { return s_.z( ); }
 
 	/// @brief コンストラクタ
-	marching_cubes( ) : is_preprocessed_( false )
+	marching_cubes( ) : is_preprocessed_( false ), th_( 0 ), o_( 0, 0, 0 ), s_( 1, 1, 1 )
 	{
 		init_function_array( ); 
 	}
@@ -456,21 +365,20 @@ public:
 	}
 
 private:
-	func_type				fa_[ 256 ];
+	func_type									fa_[ 256 ];
+	bool										is_preprocessed_;
+	array< size_t >								pda_;
+	array3< ivector_type >						pa_;
+	array3< ivector_type >						na_;
+	interval_tree< section_type, float_type >	it_;
+	std::vector< tag_type >						active_cube_tags_;
 
-	bool											is_preprocessed_;
-	array< size_t >							pda_;
-	array3< in_point_type >					pa_;
-	array3< in_normal_type >					na_;
-	interval_tree< section_type, threshold_type >	it_;
-	std::vector< tag_type >							active_cube_tags_;
-
-	static threshold_type	th_;
-	static offset_type		o_;
-	static scale_type		s_;
+	float_type		th_;
+	vector_type		o_;
+	vector_type		s_;
 
 
-	void construct_cube( const array3< in_value_type > &va, const size_t i, array< node_type > &nda ) const
+	void construct_cube( const image_type &va, const size_t i, array< node_type > &nda ) const
 	{
 		nda[ 0 ].v( ) = va[ i + pda_[ 0 ] ]; nda[ 0 ].p( ) = pa_[ i + pda_[ 0 ] ]; nda[ 0 ].n( ) = na_[ i + pda_[ 0 ] ];
 		nda[ 1 ].v( ) = va[ i + pda_[ 1 ] ]; nda[ 1 ].p( ) = pa_[ i + pda_[ 1 ] ]; nda[ 1 ].n( ) = na_[ i + pda_[ 1 ] ];
@@ -482,7 +390,7 @@ private:
 		nda[ 7 ].v( ) = va[ i + pda_[ 7 ] ]; nda[ 7 ].p( ) = pa_[ i + pda_[ 7 ] ]; nda[ 7 ].n( ) = na_[ i + pda_[ 7 ] ];
 	}
 
-	void construct_cube_without_preprocessing( const array3< in_value_type > &va, const size_t i, const size_t j, const size_t k, array< node_type > &nda ) const
+	void construct_cube_without_preprocessing( const image_type &va, const size_t i, const size_t j, const size_t k, array< node_type > &nda ) const
 	{
 		nda[ 0 ].v( ) = va( i,     j,     k     ); nda[ 0 ].p( ) =  _point( i,     j,     k     ); nda[ 0 ].n( ) = _normal( va, i,     j,     k     );
 		nda[ 1 ].v( ) = va( i + 1, j,     k     ); nda[ 1 ].p( ) =  _point( i + 1, j,     k     ); nda[ 1 ].n( ) = _normal( va, i + 1, j,     k     );
@@ -494,29 +402,31 @@ private:
 		nda[ 7 ].v( ) = va( i + 1, j + 1, k + 1 ); nda[ 7 ].p( ) =  _point( i + 1, j + 1, k + 1 ); nda[ 7 ].n( ) = _normal( va, i + 1, j + 1, k + 1 );
 	}
 
-	void isosurfacing_in_cube( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv,std::vector< out_size_type > &sv )
+	void isosurfacing_in_cube( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv,std::vector< size_type > &sv )
 	{
-		fa_[ pattern( nda ) ]( nda, pv, nv, sv );
+		fa_[ pattern( nda ) ]( nda, pv, nv, sv, th_, o_, s_ );
 	}
 
-	in_point_type _point( const size_t i, const size_t j, const size_t k ) const
+	ivector_type _point( const size_type i, const size_type j, const size_type k ) const
 	{
-		return in_point_type( static_cast< typename in_point_type::value_type >( i ), static_cast< typename in_point_type::value_type >( j ), static_cast< typename in_point_type::value_type >( k ) );
+		return( ivector_type( static_cast< typename ivector_type::value_type >( i ), static_cast< typename ivector_type::value_type >( j ), static_cast< typename ivector_type::value_type >( k ) ) );
 	}
 
-	in_normal_type _normal( const array3< in_value_type > &va, const size_t i, const size_t j, const size_t k ) const
+	ivector_type _normal( const image_type &va, const size_type i, const size_type j, const size_type k ) const
 	{
-		mc::point< double > n;
-		mc::normalize< double, double >( mc::point< double >( static_cast< double >( _value( va, i - 1, j, k ) ) - _value( va, i + 1, j , k ), static_cast< double >( _value( va, i, j - 1, k ) ) - _value( va, i, j + 1, k ), static_cast< double >( _value( va, i, j, k - 1 ) ) - _value( va, i, j, k + 1 ) ), n );
-		return in_normal_type( static_cast< typename in_normal_type::value_type >( n.x( ) * 32767 ), static_cast< typename in_normal_type::value_type >( n.y( ) * 32767 ), static_cast< typename in_normal_type::value_type >( n.z( ) * 32767 ) );
+		double v1 = _value( va, i - 1, j, k ) - _value( va, i + 1, j, k );
+		double v2 = _value( va, i, j - 1, k ) - _value( va, i, j + 1, k );
+		double v3 = _value( va, i, j, k - 1 ) - _value( va, i, j, k + 1 );
+		vector_type n = vector_type( v1, v2, v3 ).unit( );
+		return ivector_type( static_cast< typename ivector_type::value_type >( n.x * 32767 ), static_cast< typename ivector_type::value_type >( n.y * 32767 ), static_cast< typename ivector_type::value_type >( n.z * 32767 ) );
 	}
 
-	in_value_type _value( const array3< in_value_type > &va, const size_t i , const size_t j, const size_t k ) const
+	value_type _value( const image_type &va, const size_t i , const size_t j, const size_t k ) const
 	{
-		return ( i < va.width( ) && j < va.height( ) && k < va.depth( ) ) ? va( i, j, k ) : in_value_type( );
+		return ( i < va.width( ) && j < va.height( ) && k < va.depth( ) ) ? va( i, j, k ) : value_type( );
 	}
 
-	bool construct_pointer_difference_array( const size_t w, const size_t h )
+	bool construct_pointer_difference_array( const size_type w, const size_type h )
 	{
 		bool ret = pda_.resize( 8 );
 		if( ret )
@@ -533,7 +443,7 @@ private:
 		return ret;
 	}
 
-	bool construct_point_array( const array3< in_value_type > &va )
+	bool construct_point_array( const image_type &va )
 	{
 		bool ret = pa_.resize( va.width( ), va.height( ), va.depth( ) );
 		for( size_t k = 0 ; k < pa_.depth( ) ; k ++ )
@@ -549,7 +459,7 @@ private:
 		return ret;
 	}
 
-	bool construct_normal_array( const array3< in_value_type > &va )
+	bool construct_normal_array( const image_type &va )
 	{
 		bool ret = na_.resize( va.width( ), va.height( ), va.depth( ) );
 		for( size_t k = 0 ; k < na_.depth( ) ; k ++ )
@@ -565,7 +475,7 @@ private:
 		return ret;
 	}
 
-	bool construct_interval_tree( const array3< in_value_type > &va )
+	bool construct_interval_tree( const image_type &va )
 	{
 		std::vector< section_type >	secs;
 		min_max_type				min, max;
@@ -611,7 +521,7 @@ private:
 		active_cube_tags_.clear( );
 	}
 
-	void get_section( const array3< in_value_type > &va, const tag_type &tag, min_max_type &min, min_max_type &max ) const
+	void get_section( const image_type &va, const tag_type &tag, min_max_type &min, min_max_type &max ) const
 	{
 		min = va[ tag + pda_[ 0 ] ];
 		max = va[ tag + pda_[ 0 ] ];
@@ -633,43 +543,44 @@ private:
 		return ( ( nda[ 0 ].v( ) >= th_ ) ? 1 : 0 ) + ( ( nda[ 1 ].v( ) >= th_ ) ? 2 : 0 ) + ( ( nda[ 2 ].v( ) >= th_ ) ? 4 : 0 ) + ( ( nda[ 3 ].v( ) >= th_ ) ? 8 : 0 ) + ( ( nda[ 4 ].v( ) >= th_ ) ? 16 : 0 ) + ( ( nda[ 5 ].v( ) >= th_ ) ? 32 : 0 ) + ( ( nda[ 6 ].v( ) >= th_ ) ? 64 : 0 ) + ( ( nda[ 7 ].v( ) >= th_ ) ? 128 : 0 );
 	}
 
-	static void interpolation_about_x( const node_type &nd0, const node_type &nd1, out_point_type &p, out_normal_type &n )
+	static void interpolation_about_x( const node_type &nd0, const node_type &nd1, vector_type &p, vector_type &n, float_type th, const vector_type &o, const vector_type &s )
 	{
-		const double tp = ( nd1.v( ) - th_ ) / ( static_cast< double >( nd1.v( ) ) - nd0.v( ) ); 
-		p.x( ) = static_cast< typename out_point_type::value_type >( nd0.px( ) * tp + nd1.px( ) * ( 1.0 - tp ) );
-		p.y( ) = static_cast< typename out_point_type::value_type >( nd0.py( ) );
-		p.z( ) = static_cast< typename out_point_type::value_type >( nd0.pz( ) );
-		const double tn = ( static_cast< double >( nd1.px( ) ) - p.x( ) ) / ( nd1.px( ) - nd0.px( ) );
-		mc::normalize< double, typename out_normal_type::value_type >( mc::point< double >( nd0.nx( ) * tn + nd1.nx( ) * ( 1.0 - tn ), nd0.ny( ) * tn + nd1.ny( ) * ( 1.0 - tn ), nd0.nz( ) * tn + nd1.nz( ) * ( 1.0 - tn ) ), n );
-		p.x( ) = static_cast< typename out_point_type::value_type >( ( p.x( ) + o_.x( ) ) * s_.x( ) );
-		p.y( ) = static_cast< typename out_point_type::value_type >( ( p.y( ) + o_.y( ) ) * s_.y( ) );
-		p.z( ) = static_cast< typename out_point_type::value_type >( ( p.z( ) + o_.z( ) ) * s_.z( ) );
+		const double tp = ( nd1.v( ) - th ) / ( static_cast< double >( nd1.v( ) ) - nd0.v( ) ); 
+		p.x = static_cast< typename vector_type::value_type >( nd0.px( ) * tp + nd1.px( ) * ( 1.0 - tp ) );
+		p.y = static_cast< typename vector_type::value_type >( nd0.py( ) );
+		p.z = static_cast< typename vector_type::value_type >( nd0.pz( ) );
+
+		const double tn = ( static_cast< double >( nd1.px( ) ) - p.x ) / ( nd1.px( ) - nd0.px( ) );
+		n = vector_type( nd0.nx( ) * tn + nd1.nx( ) * ( 1.0 - tn ), nd0.ny( ) * tn + nd1.ny( ) * ( 1.0 - tn ), nd0.nz( ) * tn + nd1.nz( ) * ( 1.0 - tn ) ).unit( );
+		p.x = static_cast< typename vector_type::value_type >( ( p.x + o.x ) * s.x );
+		p.y = static_cast< typename vector_type::value_type >( ( p.y + o.y ) * s.y );
+		p.z = static_cast< typename vector_type::value_type >( ( p.z + o.z ) * s.z );
 	}
 
-	static void interpolation_about_y( const node_type &nd0, const node_type &nd1, out_point_type &p, out_normal_type &n )
+	static void interpolation_about_y( const node_type &nd0, const node_type &nd1, vector_type &p, vector_type &n, float_type th, const vector_type &o, const vector_type &s )
 	{
-		const double tp = ( nd1.v( ) - th_ ) / ( static_cast< double >( nd1.v( ) ) - nd0.v( ) ); 
-		p.x( ) = static_cast< typename out_point_type::value_type >( nd0.px( ) );
-		p.y( ) = static_cast< typename out_point_type::value_type >( nd0.py( ) * tp + nd1.py( ) * ( 1.0 - tp ) );
-		p.z( ) = static_cast< typename out_point_type::value_type >( nd0.pz( ) );
-		const double tn = ( static_cast< double >( nd1.py( ) ) - p.y( ) ) / ( nd1.py( ) - nd0.py( ) );
-		mc::normalize< double, typename out_normal_type::value_type >( mc::point< double >( nd0.nx( ) * tn + nd1.nx( ) * ( 1.0 - tn ), nd0.ny( ) * tn + nd1.ny( ) * ( 1.0 - tn ), nd0.nz( ) * tn + nd1.nz( ) * ( 1.0 - tn ) ), n );
-		p.x( ) = static_cast< typename out_point_type::value_type >( ( p.x( ) + o_.x( ) ) * s_.x( ) );
-		p.y( ) = static_cast< typename out_point_type::value_type >( ( p.y( ) + o_.y( ) ) * s_.y( ) );
-		p.z( ) = static_cast< typename out_point_type::value_type >( ( p.z( ) + o_.z( ) ) * s_.z( ) );
+		const double tp = ( nd1.v( ) - th ) / ( static_cast< double >( nd1.v( ) ) - nd0.v( ) ); 
+		p.x = static_cast< typename vector_type::value_type >( nd0.px( ) );
+		p.y = static_cast< typename vector_type::value_type >( nd0.py( ) * tp + nd1.py( ) * ( 1.0 - tp ) );
+		p.z = static_cast< typename vector_type::value_type >( nd0.pz( ) );
+		const double tn = ( static_cast< double >( nd1.py( ) ) - p.y ) / ( nd1.py( ) - nd0.py( ) );
+		n = vector_type( nd0.nx( ) * tn + nd1.nx( ) * ( 1.0 - tn ), nd0.ny( ) * tn + nd1.ny( ) * ( 1.0 - tn ), nd0.nz( ) * tn + nd1.nz( ) * ( 1.0 - tn ) ).unit( );
+		p.x = static_cast< typename vector_type::value_type >( ( p.x + o.x ) * s.x );
+		p.y = static_cast< typename vector_type::value_type >( ( p.y + o.y ) * s.y );
+		p.z = static_cast< typename vector_type::value_type >( ( p.z + o.z ) * s.z );
 	}
 
-	static void interpolation_about_z( const node_type &nd0, const node_type &nd1, out_point_type &p, out_normal_type &n )
+	static void interpolation_about_z( const node_type &nd0, const node_type &nd1, vector_type &p, vector_type &n, float_type th, const vector_type &o, const vector_type &s )
 	{
-		const double tp = ( nd1.v( ) - th_ ) / ( static_cast< double >( nd1.v( ) ) - nd0.v( ) ); 
-		p.x( ) = static_cast< typename out_point_type::value_type >( nd0.px( ) );
-		p.y( ) = static_cast< typename out_point_type::value_type >( nd0.py( ) );
-		p.z( ) = static_cast< typename out_point_type::value_type >( nd0.pz( ) * tp + nd1.pz( ) * ( 1.0 - tp ) );
-		const double tn = ( static_cast< double >( nd1.pz( ) ) - p.z( ) ) / ( nd1.pz( ) - nd0.pz( ) );
-		mc::normalize< double, typename out_normal_type::value_type >( mc::point< double >( nd0.nx( ) * tn + nd1.nx( ) * ( 1.0 - tn ), nd0.ny( ) * tn + nd1.ny( ) * ( 1.0 - tn ), nd0.nz( ) * tn + nd1.nz( ) * ( 1.0 - tn ) ), n );
-		p.x( ) = static_cast< typename out_point_type::value_type >( ( p.x( ) + o_.x( ) ) * s_.x( ) );
-		p.y( ) = static_cast< typename out_point_type::value_type >( ( p.y( ) + o_.y( ) ) * s_.y( ) );
-		p.z( ) = static_cast< typename out_point_type::value_type >( ( p.z( ) + o_.z( ) ) * s_.z( ) );
+		const double tp = ( nd1.v( ) - th ) / ( static_cast< double >( nd1.v( ) ) - nd0.v( ) ); 
+		p.x = static_cast< typename vector_type::value_type >( nd0.px( ) );
+		p.y = static_cast< typename vector_type::value_type >( nd0.py( ) );
+		p.z = static_cast< typename vector_type::value_type >( nd0.pz( ) * tp + nd1.pz( ) * ( 1.0 - tp ) );
+		const double tn = ( static_cast< double >( nd1.pz( ) ) - p.z ) / ( nd1.pz( ) - nd0.pz( ) );
+		n = vector_type( nd0.nx( ) * tn + nd1.nx( ) * ( 1.0 - tn ), nd0.ny( ) * tn + nd1.ny( ) * ( 1.0 - tn ), nd0.nz( ) * tn + nd1.nz( ) * ( 1.0 - tn ) ).unit( );
+		p.x = static_cast< typename vector_type::value_type >( ( p.x + o.x ) * s.x );
+		p.y = static_cast< typename vector_type::value_type >( ( p.y + o.y ) * s.y );
+		p.z = static_cast< typename vector_type::value_type >( ( p.z + o.z ) * s.z );
 	}
 
 	void init_function_array( )
@@ -708,3962 +619,3958 @@ private:
 		fa_[ 248 ] = f248; fa_[ 249 ] = f249; fa_[ 250 ] = f250; fa_[ 251 ] = f251; fa_[ 252 ] = f252; fa_[ 253 ] = f253; fa_[ 254 ] = f254; fa_[ 255 ] = f255; 
 	}
 
-	static void f000( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f001( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f002( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f003( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f004( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f005( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f006( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f007( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f008( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f009( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f010( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f011( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f012( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f013( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f014( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f015( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f016( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f017( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f018( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f019( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f020( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f021( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f022( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f023( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f024( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f025( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f026( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f027( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f028( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f029( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f030( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f031( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f032( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f033( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f034( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f035( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f036( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f037( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f038( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f039( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f040( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f041( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f042( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f043( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f044( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f045( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f046( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f047( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f048( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f049( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f050( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f051( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f052( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f053( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f054( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f055( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f056( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f057( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f058( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f059( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f060( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f061( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f062( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f063( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f064( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f065( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f066( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f067( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f068( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f069( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f070( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f071( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f072( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f073( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f074( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f075( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f076( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f077( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f078( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f079( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f080( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f081( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f082( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f083( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f084( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f085( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f086( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f087( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f088( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f089( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f090( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f091( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f092( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f093( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f094( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f095( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f096( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f097( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f098( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f099( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f100( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f101( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f102( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f103( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f104( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f105( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f106( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f107( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f108( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f109( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f110( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f111( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f112( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f113( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f114( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f115( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f116( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f117( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f118( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f119( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f120( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f121( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f122( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f123( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f124( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f125( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f126( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f127( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f128( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f129( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f130( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f131( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f132( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f133( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f134( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f135( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f136( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f137( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f138( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f139( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f140( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f141( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f142( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f143( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f144( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f145( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f146( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f147( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f148( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f149( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f150( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f151( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f152( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f153( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f154( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f155( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f156( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f157( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f158( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f159( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f160( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f161( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f162( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f163( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f164( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f165( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f166( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f167( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f168( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f169( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f170( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f171( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f172( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f173( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f174( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f175( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f176( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f177( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f178( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f179( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f180( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f181( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f182( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f183( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f184( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f185( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f186( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f187( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f188( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f189( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f190( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f191( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f192( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f193( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f194( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f195( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f196( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f197( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f198( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f199( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f200( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f201( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f202( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f203( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f204( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f205( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f206( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f207( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f208( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f209( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f210( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f211( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f212( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f213( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f214( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f215( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f216( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f217( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f218( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f219( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f220( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f221( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f222( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f223( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f224( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f225( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f226( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f227( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f228( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f229( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f230( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f231( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f232( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f233( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f234( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f235( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f236( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f237( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f238( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f239( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f240( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f241( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f242( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f243( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f244( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f245( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f246( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f247( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f248( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f249( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f250( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f251( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f252( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f253( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f254( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
-	static void f255( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv );
+	static void f000( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f001( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f002( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f003( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f004( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f005( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f006( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f007( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f008( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f009( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f010( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f011( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f012( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f013( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f014( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f015( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f016( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f017( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f018( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f019( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f020( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f021( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f022( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f023( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f024( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f025( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f026( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f027( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f028( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f029( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f030( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f031( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f032( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f033( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f034( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f035( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f036( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f037( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f038( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f039( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f040( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f041( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f042( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f043( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f044( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f045( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f046( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f047( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f048( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f049( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f050( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f051( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f052( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f053( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f054( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f055( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f056( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f057( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f058( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f059( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f060( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f061( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f062( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f063( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f064( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f065( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f066( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f067( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f068( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f069( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f070( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f071( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f072( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f073( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f074( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f075( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f076( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f077( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f078( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f079( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f080( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f081( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f082( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f083( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f084( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f085( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f086( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f087( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f088( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f089( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f090( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f091( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f092( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f093( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f094( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f095( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f096( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f097( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f098( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f099( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f100( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f101( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f102( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f103( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f104( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f105( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f106( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f107( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f108( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f109( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f110( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f111( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f112( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f113( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f114( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f115( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f116( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f117( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f118( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f119( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f120( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f121( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f122( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f123( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f124( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f125( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f126( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f127( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f128( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f129( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f130( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f131( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f132( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f133( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f134( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f135( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f136( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f137( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f138( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f139( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f140( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f141( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f142( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f143( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f144( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f145( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f146( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f147( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f148( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f149( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f150( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f151( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f152( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f153( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f154( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f155( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f156( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f157( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f158( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f159( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f160( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f161( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f162( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f163( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f164( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f165( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f166( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f167( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f168( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f169( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f170( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f171( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f172( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f173( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f174( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f175( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f176( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f177( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f178( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f179( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f180( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f181( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f182( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f183( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f184( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f185( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f186( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f187( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f188( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f189( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f190( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f191( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f192( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f193( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f194( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f195( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f196( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f197( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f198( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f199( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f200( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f201( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f202( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f203( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f204( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f205( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f206( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f207( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f208( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f209( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f210( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f211( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f212( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f213( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f214( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f215( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f216( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f217( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f218( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f219( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f220( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f221( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f222( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f223( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f224( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f225( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f226( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f227( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f228( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f229( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f230( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f231( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f232( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f233( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f234( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f235( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f236( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f237( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f238( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f239( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f240( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f241( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f242( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f243( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f244( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f245( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f246( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f247( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f248( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f249( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f250( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f251( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f252( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f253( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f254( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
+	static void f255( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s );
 };
 
-template< typename V, typename P, typename N > double				marching_cubes< V, P, N >::th_ = 0.0;
-template< typename V, typename P, typename N > mc::point< double >	marching_cubes< V, P, N >::o_ = mc::point< double >( 0.0, 0.0, 0.0 );
-template< typename V, typename P, typename N > mc::point< double >	marching_cubes< V, P, N >::s_ = mc::point< double >( 1.0, 1.0, 1.0 );
-
 // 0, 0, 0, 0, 0, 0, 0, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f000( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f000( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f255( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f255( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
 }
 
 // 1, 0, 0, 0, 0, 0, 0, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f001( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f001( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f254( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f254( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f004( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f004( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f251( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f251( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f008( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f008( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f247( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f247( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f002( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f002( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f253( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f253( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f016( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f016( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f239( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f239( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f064( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f064( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f191( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f191( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f032( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f032( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f223( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f223( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f128( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f128( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f127( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f127( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
 // 1, 1, 0, 0, 0, 0, 0, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f003( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f003( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f252( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f252( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f005( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f005( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f250( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f250( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f012( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f012( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f243( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f243( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f010( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f010( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f245( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f245( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f017( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f017( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f238( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f238( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f080( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f080( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f175( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f175( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f068( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f068( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f187( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f187( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f048( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f048( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f207( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f207( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f160( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f160( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f095( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f095( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f192( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f192( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f063( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f063( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f034( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f034( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f221( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f221( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f136( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f136( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f119( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f119( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
 // 1, 0, 0, 1, 0, 0, 0, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f009( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f009( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f246( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f246( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f006( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f006( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f249( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f249( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f020( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f020( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f235( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f235( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f065( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f065( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f190( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f190( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f096( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f096( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f159( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f159( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f144( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f144( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f111( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f111( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f130( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f130( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f125( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f125( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f040( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f040( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f215( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f215( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f072( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f072( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f183( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f183( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f132( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f132( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f123( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f123( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f033( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f033( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f222( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f222( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f018( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f018( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f237( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f237( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
 // 1, 0, 0, 0, 0, 0, 0, 1
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f129( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f129( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f126( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f126( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f036( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f036( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f219( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f219( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f024( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f024( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f231( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f231( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f066( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f066( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f189( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f189( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
 // 1, 1, 1, 0, 0, 0, 0, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f007( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f007( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f248( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f248( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f013( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f013( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f242( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f242( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f014( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f014( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f241( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f241( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f011( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f011( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f244( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f244( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f081( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f081( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f174( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f174( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f084( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f084( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f171( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f171( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f069( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f069( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f186( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f186( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f021( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f021( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f234( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f234( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f176( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f176( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f079( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f079( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f224( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f224( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f031( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f031( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f208( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f208( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f047( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f047( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f112( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f112( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f143( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f143( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f042( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f042( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f213( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f213( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f138( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f138( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f117( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f117( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f168( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f168( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f087( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f087( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f162( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f162( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f093( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f093( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f140( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f140( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f115( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f115( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f076( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f076( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f179( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f179( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f196( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f196( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f059( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f059( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f200( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f200( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f055( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f055( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f019( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f019( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f236( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f236( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f035( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f035( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f220( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f220( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f050( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f050( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f205( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f205( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f049( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f049( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f206( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f206( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
 }
 
 // 1, 1, 0, 0, 0, 0, 1, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f067( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f067( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f188( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f188( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f133( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f133( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f122( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f122( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f044( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f044( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f211( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f211( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f026( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f026( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f229( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f229( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f145( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f145( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f110( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f110( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f088( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f088( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f167( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f167( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f070( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f070( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f185( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f185( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f037( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f037( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f218( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f218( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f056( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f056( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f199( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f199( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f164( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f164( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f091( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f091( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f193( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f193( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f062( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f062( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f082( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f082( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f173( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f173( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f038( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f038( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f217( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f217( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f074( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f074( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f181( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f181( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f152( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f152( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f103( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f103( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f161( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f161( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f094( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f094( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f137( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f137( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f118( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f118( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f028( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f028( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f227( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f227( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f100( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f100( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f155( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f155( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f194( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f194( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f061( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f061( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f025( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f025( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f230( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f230( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f131( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f131( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f124( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f124( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f098( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f098( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f157( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f157( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f052( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f052( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f203( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f203( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 7 );
 }
 
 // 1, 0, 0, 1, 0, 1, 0, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f041( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f041( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f214( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f214( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f022( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f022( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f233( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f233( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f073( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f073( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f182( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f182( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f134( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f134( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f121( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f121( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f097( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f097( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f158( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f158( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f148( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f148( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f107( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f107( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f146( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f146( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f109( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f109( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f104( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f104( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f151( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f151( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
 // 1, 1, 1, 1, 0, 0, 0, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f015( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f015( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f085( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f085( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f240( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f240( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f170( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f170( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f204( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f204( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f051( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f051( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
 // 1, 1, 1, 0, 1, 0, 0, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f023( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f023( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f077( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f077( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f142( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f142( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f043( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f043( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f113( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f113( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f212( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f212( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f178( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f178( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f232( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f232( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
 // 1, 1, 1, 0, 0, 1, 0, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f039( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f039( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f029( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f029( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f078( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f078( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f139( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f139( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f083( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f083( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f116( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f116( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f197( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f197( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f177( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f177( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f226( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f226( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f216( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f216( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f058( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f058( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f172( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f172( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
 // 1, 1, 1, 0, 0, 0, 1, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f071( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f071( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f141( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f141( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f046( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f046( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f027( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f027( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f209( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f209( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f092( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f092( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f053( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f053( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f184( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f184( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f228( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f228( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f114( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f114( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f202( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f202( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f163( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f163( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 6 );
 }
 
 // 1, 1, 1, 0, 0, 0, 0, 1
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f135( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f135( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f045( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f045( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f030( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f030( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f075( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f075( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f089( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f089( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f086( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f086( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f101( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f101( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f149( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f149( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f180( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f180( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f225( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f225( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f210( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f210( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f120( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f120( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f106( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f106( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f154( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f154( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f169( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f169( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f166( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f166( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f156( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f156( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f108( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f108( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f198( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f198( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f201( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f201( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f147( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f147( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f099( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f099( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f054( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f054( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f057( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f057( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 5 );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
 // 1, 1, 0, 0, 0, 0, 1, 1
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f195( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f195( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f165( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f165( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f060( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f060( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f090( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f090( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f153( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f153( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f102( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f102( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 4 );
 }
 
 // 1, 0, 0, 1, 0, 1, 1, 0
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f105( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f105( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_x( nda[ 0 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 0 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 0 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 3 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 3 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 3 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 5 ], nda[ 1 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 5 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 5 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 6 ], nda[ 2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 6 ], nda[ 7 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 6 ], nda[ 4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
-template< typename V, typename P, typename N >
-void marching_cubes< V, P, N >::f150( const array< node_type > &nda, std::vector< out_point_type > &pv, std::vector< out_normal_type > &nv, std::vector< out_size_type > &sv )
+template< typename V, typename P >
+void marching_cubes< V, P >::f150( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv, float_type th, const vector_type &o, const vector_type &s )
 {
-	out_point_type	p;
-	out_normal_type	n;
-	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	vector_type	p;
+	vector_type	n;
+	interpolation_about_y( nda[ 2 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 2 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 2 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 1 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 1 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 1 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 4 ], nda[ 0 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 4 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 4 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
-	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n ); pv.push_back( p ); nv.push_back( n );
-	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_z( nda[ 7 ], nda[ 3 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_y( nda[ 7 ], nda[ 5 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
+	interpolation_about_x( nda[ 7 ], nda[ 6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );
 	sv.push_back( 3 );
 }
 
