@@ -331,6 +331,13 @@ namespace __stl_controller__
 						// ƒ|ƒŠƒSƒ“‚ð“o˜^‚·‚é
 						if( vcount >= 3 )
 						{
+							if( facet.normal.inner( ( facet.p2 - facet.p1 ).outer( facet.p3 - facet.p1 ) ) < 0 )
+							{
+								vector_type tmp = facet.p2;
+								facet.p2 = facet.p3;
+								facet.p3 = tmp;
+							}
+
 							facets.push_back( facet );
 						}
 						else
@@ -464,6 +471,12 @@ namespace __stl_controller__
 				{
 					f.normal = ( ( f.p2 - f.p1 ).outer( f.p3 - f.p1 ) ).unit( );
 				}
+				else if( f.normal.inner( ( f.p2 - f.p1 ).outer( f.p3 - f.p1 ) ) < 0 )
+				{
+					vector_type tmp = f.p2;
+					f.p2 = f.p3;
+					f.p3 = tmp;
+				}
 
 				facets.push_back( f );
 			}
@@ -543,9 +556,18 @@ namespace __stl_controller__
 					fprintf( fp, "\tfacet normal %f %f %f\n", f.normal.x, f.normal.y, f.normal.z );
 					fprintf( fp, "\t\touter loop\n" );
 
-					fprintf( fp, "\t\t\tvertex %f %f %f\n", f.p1.x, f.p1.y, f.p1.z );
-					fprintf( fp, "\t\t\tvertex %f %f %f\n", f.p2.x, f.p2.y, f.p2.z );
-					fprintf( fp, "\t\t\tvertex %f %f %f\n", f.p3.x, f.p3.y, f.p3.z );
+					if( f.normal.inner( ( f.p2 - f.p1 ).outer( f.p3 - f.p1 ) ) >= 0 )
+					{
+						fprintf( fp, "\t\t\tvertex %f %f %f\n", f.p1.x, f.p1.y, f.p1.z );
+						fprintf( fp, "\t\t\tvertex %f %f %f\n", f.p2.x, f.p2.y, f.p2.z );
+						fprintf( fp, "\t\t\tvertex %f %f %f\n", f.p3.x, f.p3.y, f.p3.z );
+					}
+					else
+					{
+						fprintf( fp, "\t\t\tvertex %f %f %f\n", f.p1.x, f.p1.y, f.p1.z );
+						fprintf( fp, "\t\t\tvertex %f %f %f\n", f.p3.x, f.p3.y, f.p3.z );
+						fprintf( fp, "\t\t\tvertex %f %f %f\n", f.p2.x, f.p2.y, f.p2.z );
+					}
 
 					fprintf( fp, "\t\tendloop\n" );
 					fprintf( fp, "\tendfacet\n" );

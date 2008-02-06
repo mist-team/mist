@@ -381,12 +381,14 @@ namespace __mqo_controller__
 
 				if( num == 3 )
 				{
-					faces.push_back( ivector_type( atoi( elements[ 0 ].c_str( ) ), atoi( elements[ 1 ].c_str( ) ), atoi( elements[ 2 ].c_str( ) ) ) );
+					// 頂点が時計回りで並んでいるので，反時計回りに変換する
+					faces.push_back( ivector_type( atoi( elements[ 0 ].c_str( ) ), atoi( elements[ 2 ].c_str( ) ), atoi( elements[ 1 ].c_str( ) ) ) );
 				}
 				else
 				{
-					faces.push_back( ivector_type( atoi( elements[ 0 ].c_str( ) ), atoi( elements[ 1 ].c_str( ) ), atoi( elements[ 2 ].c_str( ) ) ) );
-					faces.push_back( ivector_type( atoi( elements[ 0 ].c_str( ) ), atoi( elements[ 2 ].c_str( ) ), atoi( elements[ 3 ].c_str( ) ) ) );
+					// 頂点が時計回りで並んでいるので，反時計回りに変換する
+					faces.push_back( ivector_type( atoi( elements[ 0 ].c_str( ) ), atoi( elements[ 3 ].c_str( ) ), atoi( elements[ 2 ].c_str( ) ) ) );
+					faces.push_back( ivector_type( atoi( elements[ 0 ].c_str( ) ), atoi( elements[ 2 ].c_str( ) ), atoi( elements[ 1 ].c_str( ) ) ) );
 					num_faces++;
 				}
 			}
@@ -734,7 +736,7 @@ namespace __mqo_controller__
 			}
 			{
 				fprintf( fp, "Material 1 {\r\n" );
-				fprintf( fp, "\t\"default\" shader(3) col(1.000 1.000 1.000 1.000) dif(0.600) amb(0.600) emi(0.650) spc(0.000) power(0.00)\r\n" );
+				fprintf( fp, "\t\"default\" shader(3) col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)\r\n" );
 				fprintf( fp, "}\r\n" );
 			}
 
@@ -768,7 +770,9 @@ namespace __mqo_controller__
 						for( size_type i = 0 ; i < faces.size( ) ; i++ )
 						{
 							const ivector_type &f = faces[ i ];
-							fprintf( fp, "\t\t%d V(%d %d %d) M(0)\r\n", 3, f.x, f.y, f.z );
+
+							// 頂点は反時計回りに並んでいるため，時計回りで出力する
+							fprintf( fp, "\t\t%d V(%d %d %d) M(0)\r\n", 3, f.x, f.z, f.y );
 						}
 						fprintf( fp, "\t}\r\n" );
 					}
