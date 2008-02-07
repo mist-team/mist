@@ -82,6 +82,9 @@ public:
 	/// @brief 指定した値を用いて初期化する
 	facet( const vector_type &N, const vector_type &P1, const vector_type &P2, const vector_type &P3 ) : normal( N ), p1( P1 ), p2( P2 ), p3( P3 ){ }
 
+	/// @brief 指定した値を用いて初期化する（点の並び順は反時計回りを仮定）
+	facet( const vector_type &P1, const vector_type &P2, const vector_type &P3 ) : normal( ( ( P2 - P1 ).outer( P3 - P1 ) ).unit( ) ), p1( P1 ), p2( P2 ), p3( P3 ){ }
+
 	/// @brief 他のポリゴンオブジェクトを用いて初期化する
 	template < class TT >
 	facet( const facet< TT > &f ) : normal( f.normal ), p1( f.p1 ), p2( f.p2 ), p3( f.p3 ){ }
@@ -168,6 +171,16 @@ public:
 	}
 };
 
+/// @brief 3角形パッチの集合から頂点集合と三角形パッチを構成するインデックス集合に変換する
+//!
+//! 共通して使用する頂点を全てまとめた頂点集合を作成する．
+//!
+//! @param[in]  facets   … 3角形パッチの集合
+//! @param[in]  vertices … 頂点集合
+//! @param[in]  indices  … 三角形パッチを構成するインデックス集合
+//!
+//! @return 頂点集合とインデックス集合の作成に成功したかどうか
+//!
 template < class T, class T1, class T2 >
 inline bool convert_to_index_list( const facet_list< T > &facets, std::vector< vector3< T1 > > &vertices, std::vector< vector3< T2 > > &indices )
 {
@@ -246,10 +259,9 @@ inline bool convert_to_index_list( const facet_list< T > &facets, std::vector< v
 
 	vertices.clear( );
 	vertices.resize( table.size( ) );
-	typename map_type::iterator ite = table.begin( );
-	for( size_type i = 0 ; ite != table.end( ) ; ++ite, i++ )
+	for( typename map_type::iterator ite = table.begin( ) ; ite != table.end( ) ; ++ite )
 	{
-		vertices[ i ] = ite->second.second;
+		vertices[ ite->second.first ] = ite->second.second;
 	}
 
 
