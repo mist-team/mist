@@ -741,9 +741,9 @@ private:
 
 	ivector_type _normal( const image_type &va, const size_type i, const size_type j, const size_type k ) const
 	{
-		double v1 = _value( va, i - 1, j, k ) - _value( va, i + 1, j, k );
-		double v2 = _value( va, i, j - 1, k ) - _value( va, i, j + 1, k );
-		double v3 = _value( va, i, j, k - 1 ) - _value( va, i, j, k + 1 );
+		float_type v1 = static_cast< float_type >( _value( va, i - 1, j, k ) - _value( va, i + 1, j, k ) );
+		float_type v2 = static_cast< float_type >( _value( va, i, j - 1, k ) - _value( va, i, j + 1, k ) );
+		float_type v3 = static_cast< float_type >( _value( va, i, j, k - 1 ) - _value( va, i, j, k + 1 ) );
 		vector_type n = vector_type( v1, v2, v3 ).unit( );
 		return ivector_type( static_cast< typename ivector_type::value_type >( n.x * 32767 ), static_cast< typename ivector_type::value_type >( n.y * 32767 ), static_cast< typename ivector_type::value_type >( n.z * 32767 ) );
 	}
@@ -887,42 +887,44 @@ private:
 
 	static void interpolation_about_x( const node_type &nd0, const node_type &nd1, vector_type &p, vector_type &n, float_type th, const vector_type &o, const vector_type &s )
 	{
-		const double tp = ( nd1.v - th ) / ( static_cast< double >( nd1.v ) - nd0.v ); 
-		p.x = static_cast< typename vector_type::value_type >( nd0.p.x * tp + nd1.p.x * ( 1.0 - tp ) );
-		p.y = static_cast< typename vector_type::value_type >( nd0.p.y );
-		p.z = static_cast< typename vector_type::value_type >( nd0.p.z );
+		float_type tp = static_cast< float_type >( ( nd1.v - th ) / ( static_cast< double >( nd1.v ) - nd0.v ) );
+		p.x = nd0.p.x * tp + nd1.p.x * ( 1 - tp );
+		p.y = nd0.p.y;
+		p.z = nd0.p.z;
 
-		const double tn = ( static_cast< double >( nd1.p.x ) - p.x ) / ( nd1.p.x - nd0.p.x );
-		n = vector_type( nd0.n.x * tn + nd1.n.x * ( 1.0 - tn ), nd0.n.y * tn + nd1.n.y * ( 1.0 - tn ), nd0.n.z * tn + nd1.n.z * ( 1.0 - tn ) ).unit( );
-		p.x = static_cast< typename vector_type::value_type >( ( p.x + o.x ) * s.x );
-		p.y = static_cast< typename vector_type::value_type >( ( p.y + o.y ) * s.y );
-		p.z = static_cast< typename vector_type::value_type >( ( p.z + o.z ) * s.z );
+		float_type tn = static_cast< float_type >( ( static_cast< float_type >( nd1.p.x ) - p.x ) / ( nd1.p.x - nd0.p.x ) );
+		n = vector_type( nd0.n.x * tn + nd1.n.x * ( 1 - tn ), nd0.n.y * tn + nd1.n.y * ( 1 - tn ), nd0.n.z * tn + nd1.n.z * ( 1 - tn ) ).unit( );
+		p.x = ( p.x + o.x ) * s.x;
+		p.y = ( p.y + o.y ) * s.y;
+		p.z = ( p.z + o.z ) * s.z;
 	}
 
 	static void interpolation_about_y( const node_type &nd0, const node_type &nd1, vector_type &p, vector_type &n, float_type th, const vector_type &o, const vector_type &s )
 	{
-		const double tp = ( nd1.v - th ) / ( static_cast< double >( nd1.v ) - nd0.v ); 
-		p.x = static_cast< typename vector_type::value_type >( nd0.p.x );
-		p.y = static_cast< typename vector_type::value_type >( nd0.p.y * tp + nd1.p.y * ( 1.0 - tp ) );
-		p.z = static_cast< typename vector_type::value_type >( nd0.p.z );
-		const double tn = ( static_cast< double >( nd1.p.y ) - p.y ) / ( nd1.p.y - nd0.p.y );
-		n = vector_type( nd0.n.x * tn + nd1.n.x * ( 1.0 - tn ), nd0.n.y * tn + nd1.n.y * ( 1.0 - tn ), nd0.n.z * tn + nd1.n.z * ( 1.0 - tn ) ).unit( );
-		p.x = static_cast< typename vector_type::value_type >( ( p.x + o.x ) * s.x );
-		p.y = static_cast< typename vector_type::value_type >( ( p.y + o.y ) * s.y );
-		p.z = static_cast< typename vector_type::value_type >( ( p.z + o.z ) * s.z );
+		float_type tp = static_cast< float_type >( ( nd1.v - th ) / ( static_cast< float_type >( nd1.v ) - nd0.v ) );
+		p.x = nd0.p.x;
+		p.y = nd0.p.y * tp + nd1.p.y * ( 1 - tp );
+		p.z = nd0.p.z;
+
+		float_type tn = static_cast< float_type >( ( static_cast< float_type >( nd1.p.y ) - p.y ) / ( nd1.p.y - nd0.p.y ) );
+		n = vector_type( nd0.n.x * tn + nd1.n.x * ( 1 - tn ), nd0.n.y * tn + nd1.n.y * ( 1 - tn ), nd0.n.z * tn + nd1.n.z * ( 1 - tn ) ).unit( );
+		p.x = ( p.x + o.x ) * s.x;
+		p.y = ( p.y + o.y ) * s.y;
+		p.z = ( p.z + o.z ) * s.z;
 	}
 
 	static void interpolation_about_z( const node_type &nd0, const node_type &nd1, vector_type &p, vector_type &n, float_type th, const vector_type &o, const vector_type &s )
 	{
-		const double tp = ( nd1.v - th ) / ( static_cast< double >( nd1.v ) - nd0.v ); 
-		p.x = static_cast< typename vector_type::value_type >( nd0.p.x );
-		p.y = static_cast< typename vector_type::value_type >( nd0.p.y );
-		p.z = static_cast< typename vector_type::value_type >( nd0.p.z * tp + nd1.p.z * ( 1.0 - tp ) );
-		const double tn = ( static_cast< double >( nd1.p.z ) - p.z ) / ( nd1.p.z - nd0.p.z );
-		n = vector_type( nd0.n.x * tn + nd1.n.x * ( 1.0 - tn ), nd0.n.y * tn + nd1.n.y * ( 1.0 - tn ), nd0.n.z * tn + nd1.n.z * ( 1.0 - tn ) ).unit( );
-		p.x = static_cast< typename vector_type::value_type >( ( p.x + o.x ) * s.x );
-		p.y = static_cast< typename vector_type::value_type >( ( p.y + o.y ) * s.y );
-		p.z = static_cast< typename vector_type::value_type >( ( p.z + o.z ) * s.z );
+		float_type tp = static_cast< float_type >( ( nd1.v - th ) / ( static_cast< float_type >( nd1.v ) - nd0.v ) );
+		p.x = nd0.p.x;
+		p.y = nd0.p.y;
+		p.z = nd0.p.z * tp + nd1.p.z * ( 1 - tp );
+
+		float_type tn = static_cast< float_type >( ( static_cast< float_type >( nd1.p.z ) - p.z ) / ( nd1.p.z - nd0.p.z ) );
+		n = vector_type( nd0.n.x * tn + nd1.n.x * ( 1 - tn ), nd0.n.y * tn + nd1.n.y * ( 1 - tn ), nd0.n.z * tn + nd1.n.z * ( 1 - tn ) ).unit( );
+		p.x = ( p.x + o.x ) * s.x;
+		p.y = ( p.y + o.y ) * s.y;
+		p.z = ( p.z + o.z ) * s.z;
 	}
 
 	void init_function_array( )

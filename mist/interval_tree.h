@@ -200,7 +200,7 @@ private:
 			{	
 				for( size_t i = 0 ; i < p->min_inc_secs_size( ) ; i ++ )
 				{
-					if( static_cast< value_type >( p->min_inc_secs( i ).min( ) ) > val )
+					if( static_cast< value_type >( p->min_inc_secs( i ).minimum( ) ) > val )
 					{
 						break;
 					}
@@ -212,7 +212,7 @@ private:
 			{
 				for( size_t i = 0 ; i < p->max_dec_secs_size( ) ; i ++ )
 				{
-					if( static_cast< value_type >( p->max_dec_secs( i ).max( ) ) <= val )
+					if( static_cast< value_type >( p->max_dec_secs( i ).maximum( ) ) <= val )
 					{
 						break;
 					}
@@ -254,13 +254,13 @@ public:
 	//!
 	//! @return 区間の最小値
 	//!
-	const min_max_type	&min( ) const { return min_; }
+	const min_max_type	&minimum( ) const { return min_; }
 	
 	/// @brief 区間の最大値を返す
 	//!
 	//! @return 区間の最大値
 	//!
-	const min_max_type	&max( ) const { return max_; }
+	const min_max_type	&maximum( ) const { return max_; }
 	
 	/// @brief 区間のタグ情報を返す
 	//!
@@ -272,13 +272,13 @@ public:
 	//!
 	//! @return 区間の最小値
 	//!
-	min_max_type	&min( ) { return min_; }
+	min_max_type	&minimum( ) { return min_; }
 	
 	/// @brief 区間の最大値を返す（入出力可能）
 	//!
 	//! @return 区間の最大値
 	//!
-	min_max_type	&max( ) { return max_; }
+	min_max_type	&maximum( ) { return max_; }
 	
 	/// @brief 区間のタグ情報を返す（入出力可能）
 	//!
@@ -312,7 +312,7 @@ private:
 template< typename M, typename T >
 inline std::ostream &operator <<( std::ostream &out, const tagged_section< M, T > &in )
 {
-	return out << in.tag( ) << " [" << in.min( ) << ", " << in.max( ) << ")";
+	return out << in.tag( ) << " [" << in.minimum( ) << ", " << in.maximum( ) << ")";
 }
 
 /// @brief 区間集合のソートに用いる関数オブジェクト
@@ -320,7 +320,7 @@ template< typename M, typename T >
 class tagged_section_min_less	
 { 
 public: 
-	bool operator ( )( const tagged_section< M, T > &s0, const tagged_section< M, T > &s1 ) const { return s0.min( ) < s1.min( ); } 
+	bool operator ( )( const tagged_section< M, T > &s0, const tagged_section< M, T > &s1 ) const { return s0.minimum( ) < s1.minimum( ); } 
 };
 
 /// @brief 区間集合のソートに用いる関数オブジェクト
@@ -328,7 +328,7 @@ template< typename M, typename T >
 class tagged_section_max_greater	
 { 
 public: 
-	bool operator ( )( const tagged_section< M, T > &s0, const tagged_section< M, T > &s1 ) const { return s0.max( ) > s1.max( ); } 
+	bool operator ( )( const tagged_section< M, T > &s0, const tagged_section< M, T > &s1 ) const { return s0.maximum( ) > s1.maximum( ); } 
 };
 
 
@@ -358,12 +358,12 @@ private:
 		std::vector< section_type > l_secs, r_secs;
 		for( size_t i = 0 ; i < secs.size( ) ; i ++ )
 		{
-			if( static_cast< value_type >( secs[ i ].max( ) ) <= val_ )
+			if( static_cast< value_type >( secs[ i ].maximum( ) ) <= val_ )
 			{
 				l_secs.push_back( secs[ i ] );
 				continue;
 			}
-			if( static_cast< value_type >( secs[ i ] .min( ) ) > val_ )
+			if( static_cast< value_type >( secs[ i ] .minimum( ) ) > val_ )
 			{
 				r_secs.push_back( secs[ i ] );
 				continue;
@@ -430,14 +430,15 @@ private:
 
 	value_type middle( const std::vector< section_type > &secs ) const
 	{
-		value_type min = secs[ 0 ].min( );
-		value_type max = secs[ 0 ].max( );
+		typename section_type::min_max_type minimum = secs[ 0 ].minimum( );
+		typename section_type::min_max_type maximum = secs[ 0 ].maximum( );
 		for( size_t i = 1 ; i < secs.size( ) ; i ++ )
 		{
-			min = ( secs[ i ].min( ) < min ) ? secs[ i ].min( ) : min;
-			max = ( secs[ i ].max( ) > max ) ? secs[ i ].max( ) : max;
+			minimum = ( secs[ i ].minimum( ) < minimum ) ? secs[ i ].minimum( ) : minimum;
+			maximum = ( secs[ i ].maximum( ) > maximum ) ? secs[ i ].maximum( ) : maximum;
 		}
-		return static_cast< value_type >( ( min + max ) / 2.0 );
+
+		return( static_cast< value_type >( ( minimum + maximum ) / 2.0 ) );
 	}
 
 	value_type					val_;
