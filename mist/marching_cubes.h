@@ -100,217 +100,206 @@ namespace __mc__
 
 
 #define __MCFUNC__( name )								\
-	static void name( const array< node_type > &nda,	\
-					  vector_list_type &pv,				\
-					  vector_list_type &nv,				\
-					  std::vector< size_type > &sv,		\
-					  float_type th,					\
-					  const vector_type &o,				\
-					  const vector_type &s )			\
+	static size_t name( const array< node_type > &nda,	\
+						vector_type pv[ 12 ],			\
+						vector_type nv[ 12 ],			\
+						size_type   sv[  4 ],			\
+						float_type th,					\
+						const vector_type &o,			\
+						const vector_type &s )			\
 
 #define __MCFUNC_DEF__( name )											\
 	template< typename V, typename P >									\
-	void marching_cubes< V, P >::name( const array< node_type > &nda,	\
-									   vector_list_type &pv,			\
-									   vector_list_type &nv,			\
-									   std::vector< size_type > &sv,	\
-									   float_type th,					\
-									   const vector_type &o,			\
-									   const vector_type &s )			\
+	size_t marching_cubes< V, P >::name( const array< node_type > &nda,	\
+										 vector_type pv[ 12 ],			\
+										 vector_type nv[ 12 ],			\
+										 size_type   sv[  4 ],			\
+										 float_type th,					\
+										 const vector_type &o,			\
+										 const vector_type &s )			\
 
 #define __MCFUNC0__( name )												\
 	__MCFUNC_DEF__( name )												\
 	{																	\
+		return( 0 );													\
 	}																	\
 
 #define __MCFUNC3__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6 )												\
 	__MCFUNC_DEF__( name )																											\
 	{																																\
-		vector_type	p;																												\
-		vector_type	n;																												\
-		interpolation_about_##AXIS1( nda[ NDA1 ], nda[ NDA2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );				\
-		interpolation_about_##AXIS2( nda[ NDA3 ], nda[ NDA4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );				\
-		interpolation_about_##AXIS3( nda[ NDA5 ], nda[ NDA6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );				\
-		sv.push_back( 3 );																											\
+		interpolation_about_##AXIS1( nda[ NDA1 ], nda[ NDA2 ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3 ], nda[ NDA4 ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5 ], nda[ NDA6 ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		sv[ 0 ] = 3;																											\
+		return( 1 );													\
 	}																																\
 
 #define __MCFUNC4__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8 )								\
 	__MCFUNC_DEF__( name )																											\
 	{																																\
-		vector_type	p;																												\
-		vector_type	n;																												\
-		interpolation_about_##AXIS1( nda[ NDA1 ], nda[ NDA2 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );				\
-		interpolation_about_##AXIS2( nda[ NDA3 ], nda[ NDA4 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );				\
-		interpolation_about_##AXIS3( nda[ NDA5 ], nda[ NDA6 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );				\
-		interpolation_about_##AXIS4( nda[ NDA7 ], nda[ NDA8 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );				\
-		sv.push_back( 4 );																											\
+		interpolation_about_##AXIS1( nda[ NDA1 ], nda[ NDA2 ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3 ], nda[ NDA4 ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5 ], nda[ NDA6 ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		interpolation_about_##AXIS4( nda[ NDA7 ], nda[ NDA8 ], pv[ 3 ], nv[ 3 ], th, o, s );				\
+		sv[ 0 ] = 4;																											\
+		return( 1 );													\
 	}																																\
 
 #define __MCFUNC5__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8, AXIS5, NDA9, NDA10 )			\
 	__MCFUNC_DEF__( name )																											\
 	{																																\
-		vector_type	p;																												\
-		vector_type	n;																												\
-		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );			\
-		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );			\
-		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );			\
-		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );			\
-		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );			\
-		sv.push_back( 5 );																											\
+		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], pv[ 3 ], nv[ 3 ], th, o, s );				\
+		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], pv[ 4 ], nv[ 4 ], th, o, s );			\
+		sv[ 0 ] = 5;																											\
+		return( 1 );													\
 	}																																\
 
 #define __MCFUNC6_1__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8, AXIS5, NDA9, NDA10, AXIS6, NDA11, NDA12 )	\
 	__MCFUNC_DEF__( name )																															\
 	{																																				\
-		vector_type	p;																																\
-		vector_type	n;																																\
-		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		sv.push_back( 3 );																															\
-		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		sv.push_back( 3 );																															\
+		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], pv[ 3 ], nv[ 3 ], th, o, s );				\
+		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], pv[ 4 ], nv[ 4 ], th, o, s );			\
+		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], pv[ 5 ], nv[ 5 ], th, o, s );							\
+		sv[ 0 ] = 3;																											\
+		sv[ 1 ] = 3;																											\
+		return( 2 );													\
 	}																																				\
 
 #define __MCFUNC6_2__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8, AXIS5, NDA9, NDA10, AXIS6, NDA11, NDA12 )	\
 	__MCFUNC_DEF__( name )																															\
 	{																																				\
-		vector_type	p;																																\
-		vector_type	n;																																\
-		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );							\
-		sv.push_back( 6 );																															\
+		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], pv[ 3 ], nv[ 3 ], th, o, s );				\
+		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], pv[ 4 ], nv[ 4 ], th, o, s );			\
+		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], pv[ 5 ], nv[ 5 ], th, o, s );							\
+		sv[ 0 ] = 6;																											\
+		return( 1 );													\
 	}																																				\
 
 #define __MCFUNC7_1__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8, AXIS5, NDA9, NDA10, AXIS6, NDA11, NDA12, AXIS7, NDA13, NDA14 )	\
 	__MCFUNC_DEF__( name )																																				\
 	{																																									\
-		vector_type	p;																																					\
-		vector_type	n;																																					\
-		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 4 );																																				\
-		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 3 );																																				\
+		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], pv[ 3 ], nv[ 3 ], th, o, s );				\
+		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], pv[ 4 ], nv[ 4 ], th, o, s );			\
+		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], pv[ 5 ], nv[ 5 ], th, o, s );							\
+		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], pv[ 6 ], nv[ 6 ], th, o, s );												\
+		sv[ 0 ] = 4;																											\
+		sv[ 1 ] = 3;																											\
+		return( 2 );													\
 	}																																									\
 
 #define __MCFUNC7_2__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8, AXIS5, NDA9, NDA10, AXIS6, NDA11, NDA12, AXIS7, NDA13, NDA14 )	\
 	__MCFUNC_DEF__( name )																																				\
 	{																																									\
-		vector_type	p;																																					\
-		vector_type	n;																																					\
-		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 7 );																																				\
+		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], pv[ 3 ], nv[ 3 ], th, o, s );				\
+		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], pv[ 4 ], nv[ 4 ], th, o, s );			\
+		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], pv[ 5 ], nv[ 5 ], th, o, s );							\
+		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], pv[ 6 ], nv[ 6 ], th, o, s );												\
+		sv[ 0 ] = 7;																											\
+		return( 1 );													\
 	}																																									\
 
 #define __MCFUNC8_1__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8, AXIS5, NDA9, NDA10, AXIS6, NDA11, NDA12, AXIS7, NDA13, NDA14, AXIS8, NDA15, NDA16 )	\
 	__MCFUNC_DEF__( name )																																				\
 	{																																									\
-		vector_type	p;																																					\
-		vector_type	n;																																					\
-		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 5 );																																				\
-		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS8( nda[ NDA15 ], nda[ NDA16 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 3 );																																				\
+		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], pv[ 3 ], nv[ 3 ], th, o, s );				\
+		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], pv[ 4 ], nv[ 4 ], th, o, s );			\
+		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], pv[ 5 ], nv[ 5 ], th, o, s );							\
+		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], pv[ 6 ], nv[ 6 ], th, o, s );												\
+		interpolation_about_##AXIS8( nda[ NDA15 ], nda[ NDA16 ], pv[ 7 ], nv[ 7 ], th, o, s );												\
+		sv[ 0 ] = 5;																											\
+		sv[ 1 ] = 3;																											\
+		return( 2 );													\
 	}																																									\
 
 #define __MCFUNC8_2__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8, AXIS5, NDA9, NDA10, AXIS6, NDA11, NDA12, AXIS7, NDA13, NDA14, AXIS8, NDA15, NDA16 )	\
 	__MCFUNC_DEF__( name )																																				\
 	{																																									\
-		vector_type	p;																																					\
-		vector_type	n;																																					\
-		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 4 );																																				\
-		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS8( nda[ NDA15 ], nda[ NDA16 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 4 );																																				\
+		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], pv[ 3 ], nv[ 3 ], th, o, s );				\
+		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], pv[ 4 ], nv[ 4 ], th, o, s );			\
+		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], pv[ 5 ], nv[ 5 ], th, o, s );							\
+		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], pv[ 6 ], nv[ 6 ], th, o, s );												\
+		interpolation_about_##AXIS8( nda[ NDA15 ], nda[ NDA16 ], pv[ 7 ], nv[ 7 ], th, o, s );												\
+		sv[ 0 ] = 4;																											\
+		sv[ 1 ] = 4;																											\
+		return( 2 );													\
 	}																																									\
 
 #define __MCFUNC9_1__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8, AXIS5, NDA9, NDA10, AXIS6, NDA11, NDA12, AXIS7, NDA13, NDA14, AXIS8, NDA15, NDA16, AXIS9, NDA17, NDA18 )	\
 	__MCFUNC_DEF__( name )																																				\
 	{																																									\
-		vector_type	p;																																					\
-		vector_type	n;																																					\
-		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 3 );																																				\
-		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 3 );																																				\
-		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS8( nda[ NDA15 ], nda[ NDA16 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS9( nda[ NDA17 ], nda[ NDA18 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 3 );																																				\
+		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], pv[ 3 ], nv[ 3 ], th, o, s );				\
+		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], pv[ 4 ], nv[ 4 ], th, o, s );			\
+		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], pv[ 5 ], nv[ 5 ], th, o, s );							\
+		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], pv[ 6 ], nv[ 6 ], th, o, s );												\
+		interpolation_about_##AXIS8( nda[ NDA15 ], nda[ NDA16 ], pv[ 7 ], nv[ 7 ], th, o, s );												\
+		interpolation_about_##AXIS9( nda[ NDA17 ], nda[ NDA18 ], pv[ 8 ], nv[ 8 ], th, o, s );												\
+		sv[ 0 ] = 3;																											\
+		sv[ 1 ] = 3;																											\
+		sv[ 2 ] = 3;																											\
+		return( 3 );													\
 	}																																									\
 
 #define __MCFUNC9_2__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8, AXIS5, NDA9, NDA10, AXIS6, NDA11, NDA12, AXIS7, NDA13, NDA14, AXIS8, NDA15, NDA16, AXIS9, NDA17, NDA18 )	\
 	__MCFUNC_DEF__( name )																																				\
 	{																																									\
-		vector_type	p;																																					\
-		vector_type	n;																																					\
-		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 3 );																																				\
-		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS8( nda[ NDA15 ], nda[ NDA16 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS9( nda[ NDA17 ], nda[ NDA18 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 6 );																																				\
+		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], pv[ 0 ], nv[ 0 ], th, o, s );				\
+		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], pv[ 1 ], nv[ 1 ], th, o, s );				\
+		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], pv[ 2 ], nv[ 2 ], th, o, s );				\
+		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], pv[ 3 ], nv[ 3 ], th, o, s );				\
+		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], pv[ 4 ], nv[ 4 ], th, o, s );			\
+		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], pv[ 5 ], nv[ 5 ], th, o, s );							\
+		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], pv[ 6 ], nv[ 6 ], th, o, s );												\
+		interpolation_about_##AXIS8( nda[ NDA15 ], nda[ NDA16 ], pv[ 7 ], nv[ 7 ], th, o, s );												\
+		interpolation_about_##AXIS9( nda[ NDA17 ], nda[ NDA18 ], pv[ 8 ], nv[ 8 ], th, o, s );												\
+		sv[ 0 ] = 3;																											\
+		sv[ 1 ] = 6;																											\
+		return( 2 );													\
 	}																																									\
 
 #define __MCFUNC12__( name, AXIS1, NDA1, NDA2, AXIS2, NDA3, NDA4, AXIS3, NDA5, NDA6, AXIS4, NDA7, NDA8, AXIS5, NDA9, NDA10, AXIS6, NDA11, NDA12, AXIS7, NDA13, NDA14, AXIS8, NDA15, NDA16, AXIS9, NDA17, NDA18, AXIS10, NDA19, NDA20, AXIS11, NDA21, NDA22, AXIS12, NDA23, NDA24 )	\
 	__MCFUNC_DEF__( name )																																				\
 	{																																									\
-		vector_type	p;																																					\
-		vector_type	n;																																					\
-		interpolation_about_##AXIS1( nda[ NDA1  ], nda[ NDA2  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS2( nda[ NDA3  ], nda[ NDA4  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS3( nda[ NDA5  ], nda[ NDA6  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 3 );																																				\
-		interpolation_about_##AXIS4( nda[ NDA7  ], nda[ NDA8  ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS5( nda[ NDA9  ], nda[ NDA10 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS6( nda[ NDA11 ], nda[ NDA12 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 3 );																																				\
-		interpolation_about_##AXIS7( nda[ NDA13 ], nda[ NDA14 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS8( nda[ NDA15 ], nda[ NDA16 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS9( nda[ NDA17 ], nda[ NDA18 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 3 );																																				\
-		interpolation_about_##AXIS10( nda[ NDA19 ], nda[ NDA20 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS11( nda[ NDA21 ], nda[ NDA22 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		interpolation_about_##AXIS12( nda[ NDA23 ], nda[ NDA24 ], p, n, th, o, s ); pv.push_back( p ); nv.push_back( n );												\
-		sv.push_back( 3 );																																				\
+		interpolation_about_##AXIS1 ( nda[ NDA1  ], nda[ NDA2  ], pv[  0 ], nv[  0 ], th, o, s );				\
+		interpolation_about_##AXIS2 ( nda[ NDA3  ], nda[ NDA4  ], pv[  1 ], nv[  1 ], th, o, s );				\
+		interpolation_about_##AXIS3 ( nda[ NDA5  ], nda[ NDA6  ], pv[  2 ], nv[  2 ], th, o, s );				\
+		interpolation_about_##AXIS4 ( nda[ NDA7  ], nda[ NDA8  ], pv[  3 ], nv[  3 ], th, o, s );				\
+		interpolation_about_##AXIS5 ( nda[ NDA9  ], nda[ NDA10 ], pv[  4 ], nv[  4 ], th, o, s );			\
+		interpolation_about_##AXIS6 ( nda[ NDA11 ], nda[ NDA12 ], pv[  5 ], nv[  5 ], th, o, s );							\
+		interpolation_about_##AXIS7 ( nda[ NDA13 ], nda[ NDA14 ], pv[  6 ], nv[  6 ], th, o, s );												\
+		interpolation_about_##AXIS8 ( nda[ NDA15 ], nda[ NDA16 ], pv[  7 ], nv[  7 ], th, o, s );												\
+		interpolation_about_##AXIS9 ( nda[ NDA17 ], nda[ NDA18 ], pv[  8 ], nv[  8 ], th, o, s );												\
+		interpolation_about_##AXIS10( nda[ NDA19 ], nda[ NDA20 ], pv[  9 ], nv[  9 ], th, o, s );												\
+		interpolation_about_##AXIS11( nda[ NDA21 ], nda[ NDA22 ], pv[ 10 ], nv[ 10 ], th, o, s );												\
+		interpolation_about_##AXIS12( nda[ NDA23 ], nda[ NDA24 ], pv[ 11 ], nv[ 11 ], th, o, s );												\
+		sv[ 0 ] = 3;																											\
+		sv[ 1 ] = 3;																											\
+		sv[ 2 ] = 3;																											\
+		sv[ 3 ] = 3;																											\
+		return( 4 );													\
 	}																																									\
 
 
@@ -375,8 +364,8 @@ public:
 
 	typedef std::vector< vector_type > vector_list_type;		///< @brief 3次元ベクトルリストを扱う型
 	typedef __mc__::node< value_type, ivector_type > node_type;	///< @brief cube の頂点情報を保持する型
-	typedef void ( * func_type )( const array< node_type > &, vector_list_type &, vector_list_type &,
-							std::vector< size_type > &, float_type, const vector_type &, const vector_type & );	///< @brief cube 単位での等値面生成関数の型
+	typedef size_t ( * func_type )( const array< node_type > &, vector_type *, vector_type *,
+							size_type *, float_type, const vector_type &, const vector_type & );	///< @brief cube 単位での等値面生成関数の型
 	
 	typedef tagged_section< value_type, size_type >	section_type;	///< @brief Interval-tree 用いる区間の型
 	typedef typename section_type::min_max_type		min_max_type;	///< @brief 区間の最大値，最小値の型
@@ -384,6 +373,9 @@ public:
 
 private:
 	func_type									fa_[ 256 ];
+	vector_type									__p__[ 12 ];
+	vector_type									__n__[ 12 ];
+	size_type									__s__[ 4 ];
 	bool										is_preprocessed_;
 	array< size_t >								pda_;
 	array3< ivector_type >						pa_;
@@ -475,6 +467,24 @@ public:	// 操作関数
 		}
 	}
 
+	/// @brief 等値面生成（前処理の有無で等値面生成処理を分ける）
+	//!
+	//! @param[in]  va     … ボリュームデータ
+	//! @param[out] facets … 等値面ポリゴンの集合
+	//!
+	template < class T >
+	void isosurfacing( const image_type &va, facet_list< T > &facets )
+	{
+		if( is_preprocessed_ )
+		{
+			isosurfacing_with_preprocess( va, facets );
+		}
+		else
+		{
+			isosurfacing_without_preprocess( va, facets );
+		}
+	}
+
 	/// @brief 等値面生成（前処理有り）
 	//!
 	//! @param[in]  va   … ボリュームデータ
@@ -521,6 +531,54 @@ public:	// 操作関数
 				{
 					construct_cube_without_preprocessing( va, i, j, k, nda );
 					isosurfacing_in_cube( nda, pv, nv, sv );
+				}
+			}
+		}
+	}
+
+
+	/// @brief 等値面生成（前処理有り）
+	//!
+	//! @param[in]  va     … ボリュームデータ
+	//! @param[out] facets … 等値面ポリゴンの集合
+	//!
+	template < class T >
+	void isosurfacing_with_preprocess( const image_type &va, facet_list< T > &facets )
+	{
+		facets.resize( 0 );
+
+		it_.find( th_, active_cube_tags_ );
+		std::sort( active_cube_tags_.begin( ), active_cube_tags_.end( ) );
+
+		array< node_type > nda( 8 );
+		const size_type begin = 0;
+		const size_type end = active_cube_tags_.size( );
+		for( size_type i = begin ; i < end ; i ++ )
+		{
+			construct_cube( va, active_cube_tags_[ i ], nda );
+			isosurfacing_in_cube( nda, facets );
+		}
+	}
+
+	/// @brief 等値面生成（前処理無し）
+	//!
+	//! @param[in]  va     … ボリュームデータ
+	//! @param[out] facets … 等値面ポリゴンの集合
+	//!
+	template < class T >
+	void isosurfacing_without_preprocess( const image_type &va, facet_list< T > &facets )
+	{
+		facets.resize( 0 );
+
+		array< node_type > nda( 8 );
+		for( size_t k = 0 ; k < va.depth( ) - 1 ; k ++ )
+		{
+			for( size_t j = 0 ; j < va.height( ) - 1 ; j ++ )
+			{
+				for( size_t i = 0 ; i < va.width( ) - 1 ; i ++ )
+				{
+					construct_cube_without_preprocessing( va, i, j, k, nda );
+					isosurfacing_in_cube( nda, facets );
 				}
 			}
 		}
@@ -586,7 +644,94 @@ private:
 
 	void isosurfacing_in_cube( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv,std::vector< size_type > &sv )
 	{
-		fa_[ pattern( nda ) ]( nda, pv, nv, sv, th_, o_, s_ );
+		size_type num = fa_[ pattern( nda ) ]( nda, __p__, __n__, __s__, th_, o_, s_ );
+
+		vector_type *P = __p__;
+		vector_type *N = __n__;
+		for( size_type i = 0 ; i < num ; i++ )
+		{
+			size_type s = __s__[ i ];
+			for( size_type j = 0 ; j < s ; j++ )
+			{
+				pv.push_back( *P++ );
+				nv.push_back( *N++ );
+			}
+			sv.push_back( s );
+		}
+	}
+
+	template < class T >
+	void add_facet( facet_list< T > &facets, const vector_type &p1, const vector_type &p2, const vector_type &p3, const vector_type &n1, const vector_type &n2, const vector_type &n3 )
+	{
+		vector_type N = n1 + n2 + n3;
+
+		if( N.length( ) > 0.0 )
+		{
+			N = N.unit( );
+			// 点の並びが反時計回りになるようにする．
+			if( N.inner( ( p2 - p1 ).outer( p3 - p1 ) ) < 0 )
+			{
+				facets.push_back( typename facet_list< T >::facet_type( N, p1, p3, p2 ) );
+			}
+			else
+			{
+				facets.push_back( typename facet_list< T >::facet_type( N, p1, p2, p3 ) );
+			}
+		}
+		else
+		{
+			facets.push_back( typename facet_list< T >::facet_type( p1, p2, p3 ) );
+		}
+	}
+
+	template < class T >
+	void isosurfacing_in_cube( const array< node_type > &nda, facet_list< T > &facets )
+	{
+		size_type num = fa_[ pattern( nda ) ]( nda, __p__, __n__, __s__, th_, o_, s_ );
+
+		vector_type *P = __p__;
+		vector_type *N = __n__;
+		for( size_type i = 0 ; i < num ; i++ )
+		{
+			switch( __s__[ i ] )
+			{
+			case 3:
+				add_facet( facets, P[ 0 ], P[ 1 ], P[ 2 ], N[ 0 ], N[ 1 ], N[ 2 ] );
+				break;
+
+			case 4:
+				add_facet( facets, P[ 0 ], P[ 1 ], P[ 2 ], N[ 0 ], N[ 1 ], N[ 2 ] );
+				add_facet( facets, P[ 0 ], P[ 2 ], P[ 3 ], N[ 0 ], N[ 2 ], N[ 3 ] );
+				break;
+
+			case 5:
+				add_facet( facets, P[ 0 ], P[ 1 ], P[ 2 ], N[ 0 ], N[ 1 ], N[ 2 ] );
+				add_facet( facets, P[ 0 ], P[ 2 ], P[ 3 ], N[ 0 ], N[ 2 ], N[ 3 ] );
+				add_facet( facets, P[ 0 ], P[ 3 ], P[ 4 ], N[ 0 ], N[ 3 ], N[ 4 ] );
+				break;
+
+			case 6:
+				add_facet( facets, P[ 0 ], P[ 1 ], P[ 2 ], N[ 0 ], N[ 1 ], N[ 2 ] );
+				add_facet( facets, P[ 0 ], P[ 2 ], P[ 3 ], N[ 0 ], N[ 2 ], N[ 3 ] );
+				add_facet( facets, P[ 0 ], P[ 3 ], P[ 4 ], N[ 0 ], N[ 3 ], N[ 4 ] );
+				add_facet( facets, P[ 0 ], P[ 4 ], P[ 5 ], N[ 0 ], N[ 4 ], N[ 5 ] );
+				break;
+
+			case 7:
+				add_facet( facets, P[ 0 ], P[ 1 ], P[ 2 ], N[ 0 ], N[ 1 ], N[ 2 ] );
+				add_facet( facets, P[ 0 ], P[ 2 ], P[ 3 ], N[ 0 ], N[ 2 ], N[ 3 ] );
+				add_facet( facets, P[ 0 ], P[ 3 ], P[ 4 ], N[ 0 ], N[ 3 ], N[ 4 ] );
+				add_facet( facets, P[ 0 ], P[ 4 ], P[ 5 ], N[ 0 ], N[ 4 ], N[ 5 ] );
+				add_facet( facets, P[ 0 ], P[ 5 ], P[ 6 ], N[ 0 ], N[ 5 ], N[ 6 ] );
+				break;
+
+			default:
+				break;
+			}
+
+			P += __s__[ i ];
+			N += __s__[ i ];
+		}
 	}
 
 	ivector_type _point( const size_type i, const size_type j, const size_type k ) const
