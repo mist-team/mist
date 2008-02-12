@@ -39,7 +39,6 @@
 //!     - Robert E. Schapire, Yoram Singer, ``Improved Boosting Algorithms Using Confidence-rated Predictions,'' Machine Learning, 37, pp. 297--336, 1999
 //!     - Ling Li, ``Multiclass Boosting with Repartitioning,'' Proceedings of 23rd International Conference on Machine Learning, pp.569--576, 2006
 //!
-
 #ifndef __INCLUDE_MACHINE_LEARNING__
 #define __INCLUDE_MACHINE_LEARNING__
 
