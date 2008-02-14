@@ -100,7 +100,7 @@ namespace __mc__
 
 
 #define __MCFUNC__( name )								\
-	static size_t name( const array< node_type > &nda,	\
+	static size_t name( const node_type nda[ 8 ],		\
 						vector_type pv[ 12 ],			\
 						vector_type nv[ 12 ],			\
 						size_type   sv[  4 ],			\
@@ -110,7 +110,7 @@ namespace __mc__
 
 #define __MCFUNC_DEF__( name )											\
 	template< typename V, typename P >									\
-	size_t marching_cubes< V, P >::name( const array< node_type > &nda,	\
+	size_t marching_cubes< V, P >::name( const node_type nda[ 8 ],		\
 										 vector_type pv[ 12 ],			\
 										 vector_type nv[ 12 ],			\
 										 size_type   sv[  4 ],			\
@@ -361,10 +361,11 @@ public:
 	typedef vector3< P >		vector_type;					///< @brief ポリゴンの頂点座標の型
 	typedef typename vector_type::value_type float_type;		///< @brief ポリゴンの頂点の法汚染ベクトルの型
 	typedef size_t				size_type;						///< @brief 各ポリゴンのサイズ（頂点数）の型
+	typedef ptrdiff_t			difference_type;				///< @brief 各ポリゴンのサイズ（頂点数）の型
 
 	typedef std::vector< vector_type > vector_list_type;		///< @brief 3次元ベクトルリストを扱う型
 	typedef __mc__::node< value_type, ivector_type > node_type;	///< @brief cube の頂点情報を保持する型
-	typedef size_t ( * func_type )( const array< node_type > &, vector_type *, vector_type *,
+	typedef size_t ( * func_type )( const node_type *, vector_type *, vector_type *,
 							size_type *, float_type, const vector_type &, const vector_type & );	///< @brief cube 単位での等値面生成関数の型
 	
 	typedef tagged_section< value_type, size_type >	section_type;	///< @brief Interval-tree 用いる区間の型
@@ -377,7 +378,7 @@ private:
 	vector_type									__n__[ 12 ];
 	size_type									__s__[ 4 ];
 	bool										is_preprocessed_;
-	array< size_t >								pda_;
+	size_type									pda_[ 8 ];
 	array3< ivector_type >						pa_;
 	array3< ivector_type >						na_;
 	interval_tree< section_type, float_type >	it_;
@@ -494,13 +495,14 @@ public:	// 操作関数
 	//!
 	void isosurfacing_with_preprocess( const image_type &va, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv )
 	{
+		construct_pointer_difference_array( va );
 		pv.resize( 0 );
 		nv.resize( 0 );
 		sv.resize( 0 );
 		it_.find( th_, active_cube_tags_ );
 		std::sort( active_cube_tags_.begin( ), active_cube_tags_.end( ) );
 
-		array< node_type > nda( 8 );
+		node_type nda[ 8 ];
 		const size_type begin = 0;
 		const size_type end = active_cube_tags_.size( );
 		for( size_type i = begin ; i < end ; i ++ )
@@ -519,10 +521,12 @@ public:	// 操作関数
 	//!
 	void isosurfacing_without_preprocess( const image_type &va, vector_list_type &pv, vector_list_type &nv, std::vector< size_type > &sv )
 	{
+		construct_pointer_difference_array( va );
 		pv.resize( 0 );
 		nv.resize( 0 );
 		sv.resize( 0 );
-		array< node_type > nda( 8 );
+
+		node_type nda[ 8 ];
 		for( size_t k = 0 ; k < va.depth( ) - 1 ; k ++ )
 		{
 			for( size_t j = 0 ; j < va.height( ) - 1 ; j ++ )
@@ -546,11 +550,12 @@ public:	// 操作関数
 	void isosurfacing_with_preprocess( const image_type &va, facet_list< T > &facets )
 	{
 		facets.resize( 0 );
+		construct_pointer_difference_array( va );
 
 		it_.find( th_, active_cube_tags_ );
 		std::sort( active_cube_tags_.begin( ), active_cube_tags_.end( ) );
 
-		array< node_type > nda( 8 );
+		node_type nda[ 8 ];
 		const size_type begin = 0;
 		const size_type end = active_cube_tags_.size( );
 		for( size_type i = begin ; i < end ; i ++ )
@@ -569,15 +574,67 @@ public:	// 操作関数
 	void isosurfacing_without_preprocess( const image_type &va, facet_list< T > &facets )
 	{
 		facets.resize( 0 );
+		construct_pointer_difference_array( va );
 
-		array< node_type > nda( 8 );
-		for( size_t k = 0 ; k < va.depth( ) - 1 ; k ++ )
+		node_type nda[ 8 ];
+
+		size_type k = 0;
+		for( ; k < 1 ; k++ )
 		{
-			for( size_t j = 0 ; j < va.height( ) - 1 ; j ++ )
+			for( size_type j = 0 ; j < va.height( ) - 1 ; j++ )
 			{
-				for( size_t i = 0 ; i < va.width( ) - 1 ; i ++ )
+				for( size_type i = 0 ; i < va.width( ) - 1 ; i++ )
 				{
-					construct_cube_without_preprocessing( va, i, j, k, nda );
+					construct_cube_without_preprocessing2( va, i, j, k, nda );
+					isosurfacing_in_cube( nda, facets );
+				}
+			}
+		}
+
+		if( va.width( ) > 4 && va.height( ) > 4 && va.depth( ) > 4 )
+		{
+			for( ; k < va.depth( ) - 2 ; k++ )
+			{
+				{
+					for( size_type i = 0 ; i < va.width( ) - 1 ; i ++ )
+					{
+						construct_cube_without_preprocessing2( va, i, 0, k, nda );
+						isosurfacing_in_cube( nda, facets );
+					}
+				}
+
+				for( size_type j = 1 ; j < va.height( ) - 2 ; j ++ )
+				{
+					construct_cube_without_preprocessing2( va, 0, j, k, nda );
+					isosurfacing_in_cube( nda, facets );
+
+					for( size_type i = 0 ; i < va.width( ) - 1 ; i ++ )
+					{
+						construct_cube_without_preprocessing1( va, i, j, k, nda );
+						isosurfacing_in_cube( nda, facets );
+					}
+
+					construct_cube_without_preprocessing2( va, va.width( ) - 2, j, k, nda );
+					isosurfacing_in_cube( nda, facets );
+				}
+
+				{
+					for( size_type i = 0 ; i < va.width( ) - 1 ; i ++ )
+					{
+						construct_cube_without_preprocessing2( va, i, va.height( ) - 2, k, nda );
+						isosurfacing_in_cube( nda, facets );
+					}
+				}
+			}
+		}
+
+		for( ; k < va.depth( ) - 1 ; k++ )
+		{
+			for( size_type j = 0 ; j < va.height( ) - 1 ; j ++ )
+			{
+				for( size_type i = 0 ; i < va.width( ) - 1 ; i ++ )
+				{
+					construct_cube_without_preprocessing2( va, i, j, k, nda );
 					isosurfacing_in_cube( nda, facets );
 				}
 			}
@@ -595,7 +652,7 @@ public:	// 操作関数
 			de_preprocess( );
 		}
 
-		is_preprocessed_ = ( construct_pointer_difference_array( va.width( ), va.height( ) ) && construct_point_array( va ) && construct_normal_array( va ) && construct_interval_tree( va ) );
+		is_preprocessed_ = construct_point_array( va ) && construct_normal_array( va ) && construct_interval_tree( va );
 
 		if( !is_preprocessed_ )
 		{
@@ -618,7 +675,7 @@ public:	// 操作関数
 
 
 private:
-	void construct_cube( const image_type &va, const size_t i, array< node_type > &nda ) const
+	void construct_cube( const image_type &va, const size_t i, node_type nda[ 8 ] ) const
 	{
 		nda[ 0 ].v = va[ i + pda_[ 0 ] ]; nda[ 0 ].p = pa_[ i + pda_[ 0 ] ]; nda[ 0 ].n = na_[ i + pda_[ 0 ] ];
 		nda[ 1 ].v = va[ i + pda_[ 1 ] ]; nda[ 1 ].p = pa_[ i + pda_[ 1 ] ]; nda[ 1 ].n = na_[ i + pda_[ 1 ] ];
@@ -630,19 +687,82 @@ private:
 		nda[ 7 ].v = va[ i + pda_[ 7 ] ]; nda[ 7 ].p = pa_[ i + pda_[ 7 ] ]; nda[ 7 ].n = na_[ i + pda_[ 7 ] ];
 	}
 
-	void construct_cube_without_preprocessing( const image_type &va, const size_t i, const size_t j, const size_t k, array< node_type > &nda ) const
+	void construct_cube_without_preprocessing1( const image_type &va, const size_t i, const size_t j, const size_t k, node_type nda[ 8 ] ) const
 	{
-		nda[ 0 ].v = va( i,     j,     k     ); nda[ 0 ].p =  _point( i,     j,     k     ); nda[ 0 ].n = _normal( va, i,     j,     k     );
-		nda[ 1 ].v = va( i + 1, j,     k     ); nda[ 1 ].p =  _point( i + 1, j,     k     ); nda[ 1 ].n = _normal( va, i + 1, j,     k     );
-		nda[ 2 ].v = va( i,     j + 1, k     ); nda[ 2 ].p =  _point( i,     j + 1, k     ); nda[ 2 ].n = _normal( va, i,     j + 1, k     );
-		nda[ 3 ].v = va( i + 1, j + 1, k     ); nda[ 3 ].p =  _point( i + 1, j + 1, k     ); nda[ 3 ].n = _normal( va, i + 1, j + 1, k     );
-		nda[ 4 ].v = va( i,     j,     k + 1 ); nda[ 4 ].p =  _point( i,     j,     k + 1 ); nda[ 4 ].n = _normal( va, i,     j,     k + 1 );
-		nda[ 5 ].v = va( i + 1, j,     k + 1 ); nda[ 5 ].p =  _point( i + 1, j,     k + 1 ); nda[ 5 ].n = _normal( va, i + 1, j,     k + 1 );
-		nda[ 6 ].v = va( i,     j + 1, k + 1 ); nda[ 6 ].p =  _point( i,     j + 1, k + 1 ); nda[ 6 ].n = _normal( va, i,     j + 1, k + 1 );
-		nda[ 7 ].v = va( i + 1, j + 1, k + 1 ); nda[ 7 ].p =  _point( i + 1, j + 1, k + 1 ); nda[ 7 ].n = _normal( va, i + 1, j + 1, k + 1 );
+		typedef typename image_type::const_pointer const_pointer;
+		const_pointer p0 = &va( i, j, k );
+		const_pointer p1 = p0 + pda_[ 1 ];
+		const_pointer p2 = p0 + pda_[ 2 ];
+		const_pointer p3 = p0 + pda_[ 3 ];
+		const_pointer p4 = p0 + pda_[ 4 ];
+		const_pointer p5 = p0 + pda_[ 5 ];
+		const_pointer p6 = p0 + pda_[ 6 ];
+		const_pointer p7 = p0 + pda_[ 7 ];
+
+		difference_type _1 = pda_[ 1 ];
+		difference_type _2 = pda_[ 2 ];
+		difference_type _3 = pda_[ 4 ];
+
+		value_type v00 = p0[ 0 ];
+		value_type v01 = p1[ 0 ];
+		value_type v02 = p2[ 0 ];
+		value_type v03 = p3[ 0 ];
+		value_type v04 = p4[ 0 ];
+		value_type v05 = p5[ 0 ];
+		value_type v06 = p6[ 0 ];
+		value_type v07 = p7[ 0 ];
+
+		nda[ 0 ].v = v00; nda[ 0 ].p = _point( i,     j,     k     );
+		nda[ 1 ].v = v01; nda[ 1 ].p = _point( i + 1, j,     k     );
+		nda[ 2 ].v = v02; nda[ 2 ].p = _point( i,     j + 1, k     );
+		nda[ 3 ].v = v03; nda[ 3 ].p = _point( i + 1, j + 1, k     );
+		nda[ 4 ].v = v04; nda[ 4 ].p = _point( i,     j,     k + 1 );
+		nda[ 5 ].v = v05; nda[ 5 ].p = _point( i + 1, j,     k + 1 );
+		nda[ 6 ].v = v06; nda[ 6 ].p = _point( i,     j + 1, k + 1 );
+		nda[ 7 ].v = v07; nda[ 7 ].p = _point( i + 1, j + 1, k + 1 );
+
+		nda[ 0 ].n = vector_type( p0[ -_1 ] - v01, p0[ -_2 ] - v02, p0[ -_3 ] - v04 );
+		nda[ 1 ].n = vector_type( v00 -  p1[ _1 ], p1[ -_2 ] - v03, p1[ -_3 ] - v05 );
+		nda[ 2 ].n = vector_type( p2[ -_1 ] - v03, v00 -  p2[ _2 ], p2[ -_3 ] - v06 );
+		nda[ 3 ].n = vector_type( v02 -  p3[ _1 ], v01 -  p3[ _2 ], p3[ -_3 ] - v07 );
+		nda[ 4 ].n = vector_type( p4[ -_1 ] - v05, p4[ -_2 ] - v06, v00 -  p4[ _3 ] );
+		nda[ 5 ].n = vector_type( v04 -  p5[ _1 ], p5[ -_2 ] - v07, v01 -  p5[ _3 ] );
+		nda[ 6 ].n = vector_type( p6[ -_1 ] - v07, v04 -  p6[ _2 ], v02 -  p6[ _3 ] );
+		nda[ 7 ].n = vector_type( v06 -  p7[ _1 ], v05 -  p7[ _2 ], v03 -  p7[ _3 ] );
 	}
 
-	void isosurfacing_in_cube( const array< node_type > &nda, vector_list_type &pv, vector_list_type &nv,std::vector< size_type > &sv )
+	void construct_cube_without_preprocessing2( const image_type &va, const size_t i, const size_t j, const size_t k, node_type nda[ 8 ] ) const
+	{
+		typedef typename image_type::const_pointer const_pointer;
+		const_pointer p0 = &va( i, j, k );
+		const_pointer p1 = p0 + pda_[ 1 ];
+		const_pointer p2 = p0 + pda_[ 2 ];
+		const_pointer p3 = p0 + pda_[ 3 ];
+		const_pointer p4 = p0 + pda_[ 4 ];
+		const_pointer p5 = p0 + pda_[ 5 ];
+		const_pointer p6 = p0 + pda_[ 6 ];
+		const_pointer p7 = p0 + pda_[ 7 ];
+
+		nda[ 0 ].v = p0[ 0 ]; nda[ 0 ].p = _point( i,     j,     k     );
+		nda[ 1 ].v = p1[ 0 ]; nda[ 1 ].p = _point( i + 1, j,     k     );
+		nda[ 2 ].v = p2[ 0 ]; nda[ 2 ].p = _point( i,     j + 1, k     );
+		nda[ 3 ].v = p3[ 0 ]; nda[ 3 ].p = _point( i + 1, j + 1, k     );
+		nda[ 4 ].v = p4[ 0 ]; nda[ 4 ].p = _point( i,     j,     k + 1 );
+		nda[ 5 ].v = p5[ 0 ]; nda[ 5 ].p = _point( i + 1, j,     k + 1 );
+		nda[ 6 ].v = p6[ 0 ]; nda[ 6 ].p = _point( i,     j + 1, k + 1 );
+		nda[ 7 ].v = p7[ 0 ]; nda[ 7 ].p = _point( i + 1, j + 1, k + 1 );
+
+		nda[ 0 ].n = __normal( va, i,     j,     k     );
+		nda[ 1 ].n = __normal( va, i + 1, j,     k     );
+		nda[ 2 ].n = __normal( va, i,     j + 1, k     );
+		nda[ 3 ].n = __normal( va, i + 1, j + 1, k     );
+		nda[ 4 ].n = __normal( va, i,     j,     k + 1 );
+		nda[ 5 ].n = __normal( va, i + 1, j,     k + 1 );
+		nda[ 6 ].n = __normal( va, i,     j + 1, k + 1 );
+		nda[ 7 ].n = __normal( va, i + 1, j + 1, k + 1 );
+	}
+
+	void isosurfacing_in_cube( const node_type nda[ 8 ], vector_list_type &pv, vector_list_type &nv,std::vector< size_type > &sv )
 	{
 		size_type num = fa_[ pattern( nda ) ]( nda, __p__, __n__, __s__, th_, o_, s_ );
 
@@ -685,7 +805,7 @@ private:
 	}
 
 	template < class T >
-	void isosurfacing_in_cube( const array< node_type > &nda, facet_list< T > &facets )
+	void isosurfacing_in_cube( const node_type nda[ 8 ], facet_list< T > &facets )
 	{
 		size_type num = fa_[ pattern( nda ) ]( nda, __p__, __n__, __s__, th_, o_, s_ );
 
@@ -748,28 +868,32 @@ private:
 		return ivector_type( static_cast< typename ivector_type::value_type >( n.x * 32767 ), static_cast< typename ivector_type::value_type >( n.y * 32767 ), static_cast< typename ivector_type::value_type >( n.z * 32767 ) );
 	}
 
+	vector_type __normal( const image_type &va, const size_type i, const size_type j, const size_type k ) const
+	{
+		float_type v1 = static_cast< float_type >( _value( va, i - 1, j, k ) - _value( va, i + 1, j, k ) );
+		float_type v2 = static_cast< float_type >( _value( va, i, j - 1, k ) - _value( va, i, j + 1, k ) );
+		float_type v3 = static_cast< float_type >( _value( va, i, j, k - 1 ) - _value( va, i, j, k + 1 ) );
+		return( vector_type( v1, v2, v3 ) );
+	}
+
 	value_type _value( const image_type &va, const size_t i , const size_t j, const size_t k ) const
 	{
 		return ( i < va.width( ) && j < va.height( ) && k < va.depth( ) ) ? va( i, j, k ) : value_type( );
 	}
 
-	bool construct_pointer_difference_array( const size_type w, const size_type h )
+	void construct_pointer_difference_array( const image_type &va )
 	{
-		bool ret = pda_.resize( 8 );
+		size_type w = va.width( );
+		size_type h = va.height( );
 
-		if( ret )
-		{
-			pda_[ 0 ] = 0;
-			pda_[ 1 ] = 1;
-			pda_[ 2 ] = w;
-			pda_[ 3 ] = w + 1;
-			pda_[ 4 ] = w * h;
-			pda_[ 5 ] = w * h + 1;
-			pda_[ 6 ] = w * h + w;
-			pda_[ 7 ] = w * h + w + 1;
-		}
-
-		return( ret );
+		pda_[ 0 ] = 0;
+		pda_[ 1 ] = 1;
+		pda_[ 2 ] = w;
+		pda_[ 3 ] = w + 1;
+		pda_[ 4 ] = w * h;
+		pda_[ 5 ] = w * h + 1;
+		pda_[ 6 ] = w * h + w;
+		pda_[ 7 ] = w * h + w + 1;
 	}
 
 	bool construct_point_array( const image_type &va )
@@ -833,11 +957,6 @@ private:
 		return ( it_.construct( secs ) && active_cube_tags_.capacity( ) >= secs.size( ) );
 	}
 
-	void destruct_pointer_difference_array( )
-	{
-		pda_.clear( );
-	}
-
 	void destruct_point_array( )
 	{
 		pa_.clear( );
@@ -871,7 +990,7 @@ private:
 		}
 	}
 
-	size_type pattern( const array< node_type > &nda ) const
+	size_type pattern( const node_type nda[ 8 ] ) const
 	{
 		size_type v = 0;
 		v += nda[ 0 ].v >= th_ ? 1 : 0;
