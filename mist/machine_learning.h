@@ -1463,9 +1463,8 @@ namespace machine_learning
 
 			/// @brief 学習済みの識別器を用いて特徴量を分類し、各カテゴリの重みを列挙する
 			//! 
-			//! @param[in]  f … 分類する特徴量
-			//! 
-			//! @return 分類結果としての各カテゴリの重み
+			//! @param[in]  f     … 分類する特徴量
+			//! @param[out] ranks … 各クラスに割り振られた重みのリスト
 			//! 
 			template < class FEATURE >
 			void compute_category_ranks( const FEATURE &f, std::vector< pair< double, std::string > > &ranks ) const

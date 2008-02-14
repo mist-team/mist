@@ -602,7 +602,7 @@ struct __mist_progress_callback__
 *   - @ref mist::non_rigid						"非剛体レジストレーション"
 * - @ref visualization_group					"可視化"
 *   - @ref volumerendering_group				"ボリュームレンダリング"
-*   - @ref a									"等濃度面表示"
+*   - @ref mist::marching_cubes					"等濃度面表示"
 * - キャリブレーション
 *   - @ref calibration_group					"カメラキャリブレーション"
 * - @ref machine_learning_group					"機械学習"
