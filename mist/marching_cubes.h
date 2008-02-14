@@ -507,8 +507,11 @@ public:	// ëÄçÏä÷êî
 		const size_type end = active_cube_tags_.size( );
 		for( size_type i = begin ; i < end ; i ++ )
 		{
-			construct_cube( va, active_cube_tags_[ i ], nda );
-			isosurfacing_in_cube( nda, pv, nv, sv );
+			size_type ptn = construct_cube( va, active_cube_tags_[ i ], nda );
+			if( 0 < ptn )
+			{
+				isosurfacing_in_cube( nda, pv, nv, sv, ptn );
+			}
 		}
 	}
 
@@ -533,8 +536,11 @@ public:	// ëÄçÏä÷êî
 			{
 				for( size_t i = 0 ; i < va.width( ) - 1 ; i ++ )
 				{
-					construct_cube_without_preprocessing( va, i, j, k, nda );
-					isosurfacing_in_cube( nda, pv, nv, sv );
+					size_type ptn = construct_cube_without_preprocessing( va, i, j, k, nda );
+					if( 0 < ptn )
+					{
+						isosurfacing_in_cube( nda, pv, nv, sv, ptn );
+					}
 				}
 			}
 		}
@@ -560,8 +566,11 @@ public:	// ëÄçÏä÷êî
 		const size_type end = active_cube_tags_.size( );
 		for( size_type i = begin ; i < end ; i ++ )
 		{
-			construct_cube( va, active_cube_tags_[ i ], nda );
-			isosurfacing_in_cube( nda, facets );
+			size_type ptn = construct_cube( va, active_cube_tags_[ i ], nda );
+			if( 0 < ptn )
+			{
+				isosurfacing_in_cube( nda, facets, ptn );
+			}
 		}
 	}
 
@@ -578,64 +587,17 @@ public:	// ëÄçÏä÷êî
 
 		node_type nda[ 8 ];
 
-		size_type k = 0;
-		for( ; k < 1 ; k++ )
-		{
-			for( size_type j = 0 ; j < va.height( ) - 1 ; j++ )
-			{
-				for( size_type i = 0 ; i < va.width( ) - 1 ; i++ )
-				{
-					construct_cube_without_preprocessing2( va, i, j, k, nda );
-					isosurfacing_in_cube( nda, facets );
-				}
-			}
-		}
-
-		if( va.width( ) > 4 && va.height( ) > 4 && va.depth( ) > 4 )
-		{
-			for( ; k < va.depth( ) - 2 ; k++ )
-			{
-				{
-					for( size_type i = 0 ; i < va.width( ) - 1 ; i ++ )
-					{
-						construct_cube_without_preprocessing2( va, i, 0, k, nda );
-						isosurfacing_in_cube( nda, facets );
-					}
-				}
-
-				for( size_type j = 1 ; j < va.height( ) - 2 ; j ++ )
-				{
-					construct_cube_without_preprocessing2( va, 0, j, k, nda );
-					isosurfacing_in_cube( nda, facets );
-
-					for( size_type i = 0 ; i < va.width( ) - 1 ; i ++ )
-					{
-						construct_cube_without_preprocessing1( va, i, j, k, nda );
-						isosurfacing_in_cube( nda, facets );
-					}
-
-					construct_cube_without_preprocessing2( va, va.width( ) - 2, j, k, nda );
-					isosurfacing_in_cube( nda, facets );
-				}
-
-				{
-					for( size_type i = 0 ; i < va.width( ) - 1 ; i ++ )
-					{
-						construct_cube_without_preprocessing2( va, i, va.height( ) - 2, k, nda );
-						isosurfacing_in_cube( nda, facets );
-					}
-				}
-			}
-		}
-
-		for( ; k < va.depth( ) - 1 ; k++ )
+		for( size_type k = 0 ; k < va.depth( ) - 1 ; k++ )
 		{
 			for( size_type j = 0 ; j < va.height( ) - 1 ; j ++ )
 			{
 				for( size_type i = 0 ; i < va.width( ) - 1 ; i ++ )
 				{
-					construct_cube_without_preprocessing2( va, i, j, k, nda );
-					isosurfacing_in_cube( nda, facets );
+					size_type ptn = construct_cube_without_preprocessing( va, i, j, k, nda );
+					if( 0 < ptn )
+					{
+						isosurfacing_in_cube( nda, facets, ptn );
+					}
 				}
 			}
 		}
@@ -675,19 +637,48 @@ public:	// ëÄçÏä÷êî
 
 
 private:
-	void construct_cube( const image_type &va, const size_t i, node_type nda[ 8 ] ) const
+	size_type construct_cube( const image_type &va, const size_t i, node_type nda[ 8 ] ) const
 	{
-		nda[ 0 ].v = va[ i + pda_[ 0 ] ]; nda[ 0 ].p = pa_[ i + pda_[ 0 ] ]; nda[ 0 ].n = na_[ i + pda_[ 0 ] ];
-		nda[ 1 ].v = va[ i + pda_[ 1 ] ]; nda[ 1 ].p = pa_[ i + pda_[ 1 ] ]; nda[ 1 ].n = na_[ i + pda_[ 1 ] ];
-		nda[ 2 ].v = va[ i + pda_[ 2 ] ]; nda[ 2 ].p = pa_[ i + pda_[ 2 ] ]; nda[ 2 ].n = na_[ i + pda_[ 2 ] ];
-		nda[ 3 ].v = va[ i + pda_[ 3 ] ]; nda[ 3 ].p = pa_[ i + pda_[ 3 ] ]; nda[ 3 ].n = na_[ i + pda_[ 3 ] ];
-		nda[ 4 ].v = va[ i + pda_[ 4 ] ]; nda[ 4 ].p = pa_[ i + pda_[ 4 ] ]; nda[ 4 ].n = na_[ i + pda_[ 4 ] ];
-		nda[ 5 ].v = va[ i + pda_[ 5 ] ]; nda[ 5 ].p = pa_[ i + pda_[ 5 ] ]; nda[ 5 ].n = na_[ i + pda_[ 5 ] ];
-		nda[ 6 ].v = va[ i + pda_[ 6 ] ]; nda[ 6 ].p = pa_[ i + pda_[ 6 ] ]; nda[ 6 ].n = na_[ i + pda_[ 6 ] ];
-		nda[ 7 ].v = va[ i + pda_[ 7 ] ]; nda[ 7 ].p = pa_[ i + pda_[ 7 ] ]; nda[ 7 ].n = na_[ i + pda_[ 7 ] ];
+		nda[ 0 ].v = va[ i + pda_[ 0 ] ];
+		nda[ 1 ].v = va[ i + pda_[ 1 ] ];
+		nda[ 2 ].v = va[ i + pda_[ 2 ] ];
+		nda[ 3 ].v = va[ i + pda_[ 3 ] ];
+		nda[ 4 ].v = va[ i + pda_[ 4 ] ];
+		nda[ 5 ].v = va[ i + pda_[ 5 ] ];
+		nda[ 6 ].v = va[ i + pda_[ 6 ] ];
+		nda[ 7 ].v = va[ i + pda_[ 7 ] ];
+
+		size_type ptn = pattern( nda );
+
+		if( 0 < ptn && ptn < 255 )
+		{
+			nda[ 0 ].p = pa_[ i + pda_[ 0 ] ];
+			nda[ 1 ].p = pa_[ i + pda_[ 1 ] ];
+			nda[ 2 ].p = pa_[ i + pda_[ 2 ] ];
+			nda[ 3 ].p = pa_[ i + pda_[ 3 ] ];
+			nda[ 4 ].p = pa_[ i + pda_[ 4 ] ];
+			nda[ 5 ].p = pa_[ i + pda_[ 5 ] ];
+			nda[ 6 ].p = pa_[ i + pda_[ 6 ] ];
+			nda[ 7 ].p = pa_[ i + pda_[ 7 ] ];
+
+			nda[ 0 ].n = na_[ i + pda_[ 0 ] ];
+			nda[ 1 ].n = na_[ i + pda_[ 1 ] ];
+			nda[ 2 ].n = na_[ i + pda_[ 2 ] ];
+			nda[ 3 ].n = na_[ i + pda_[ 3 ] ];
+			nda[ 4 ].n = na_[ i + pda_[ 4 ] ];
+			nda[ 5 ].n = na_[ i + pda_[ 5 ] ];
+			nda[ 6 ].n = na_[ i + pda_[ 6 ] ];
+			nda[ 7 ].n = na_[ i + pda_[ 7 ] ];
+
+			return( ptn );
+		}
+		else
+		{
+			return( 0 );
+		}
 	}
 
-	void construct_cube_without_preprocessing1( const image_type &va, const size_t i, const size_t j, const size_t k, node_type nda[ 8 ] ) const
+	size_type construct_cube_without_preprocessing( const image_type &va, const size_t i, const size_t j, const size_t k, node_type nda[ 8 ] ) const
 	{
 		typedef typename image_type::const_pointer const_pointer;
 		const_pointer p0 = &va( i, j, k );
@@ -699,72 +690,48 @@ private:
 		const_pointer p6 = p0 + pda_[ 6 ];
 		const_pointer p7 = p0 + pda_[ 7 ];
 
-		difference_type _1 = pda_[ 1 ];
-		difference_type _2 = pda_[ 2 ];
-		difference_type _3 = pda_[ 4 ];
+		nda[ 0 ].v = p0[ 0 ];
+		nda[ 1 ].v = p1[ 0 ];
+		nda[ 2 ].v = p2[ 0 ];
+		nda[ 3 ].v = p3[ 0 ];
+		nda[ 4 ].v = p4[ 0 ];
+		nda[ 5 ].v = p5[ 0 ];
+		nda[ 6 ].v = p6[ 0 ];
+		nda[ 7 ].v = p7[ 0 ];
 
-		value_type v00 = p0[ 0 ];
-		value_type v01 = p1[ 0 ];
-		value_type v02 = p2[ 0 ];
-		value_type v03 = p3[ 0 ];
-		value_type v04 = p4[ 0 ];
-		value_type v05 = p5[ 0 ];
-		value_type v06 = p6[ 0 ];
-		value_type v07 = p7[ 0 ];
+		size_type ptn = pattern( nda );
 
-		nda[ 0 ].v = v00; nda[ 0 ].p = _point( i,     j,     k     );
-		nda[ 1 ].v = v01; nda[ 1 ].p = _point( i + 1, j,     k     );
-		nda[ 2 ].v = v02; nda[ 2 ].p = _point( i,     j + 1, k     );
-		nda[ 3 ].v = v03; nda[ 3 ].p = _point( i + 1, j + 1, k     );
-		nda[ 4 ].v = v04; nda[ 4 ].p = _point( i,     j,     k + 1 );
-		nda[ 5 ].v = v05; nda[ 5 ].p = _point( i + 1, j,     k + 1 );
-		nda[ 6 ].v = v06; nda[ 6 ].p = _point( i,     j + 1, k + 1 );
-		nda[ 7 ].v = v07; nda[ 7 ].p = _point( i + 1, j + 1, k + 1 );
+		if( 0 < ptn && ptn < 255 )
+		{
+			nda[ 0 ].p = _point( i,     j,     k     );
+			nda[ 1 ].p = _point( i + 1, j,     k     );
+			nda[ 2 ].p = _point( i,     j + 1, k     );
+			nda[ 3 ].p = _point( i + 1, j + 1, k     );
+			nda[ 4 ].p = _point( i,     j,     k + 1 );
+			nda[ 5 ].p = _point( i + 1, j,     k + 1 );
+			nda[ 6 ].p = _point( i,     j + 1, k + 1 );
+			nda[ 7 ].p = _point( i + 1, j + 1, k + 1 );
 
-		nda[ 0 ].n = vector_type( p0[ -_1 ] - v01, p0[ -_2 ] - v02, p0[ -_3 ] - v04 );
-		nda[ 1 ].n = vector_type( v00 -  p1[ _1 ], p1[ -_2 ] - v03, p1[ -_3 ] - v05 );
-		nda[ 2 ].n = vector_type( p2[ -_1 ] - v03, v00 -  p2[ _2 ], p2[ -_3 ] - v06 );
-		nda[ 3 ].n = vector_type( v02 -  p3[ _1 ], v01 -  p3[ _2 ], p3[ -_3 ] - v07 );
-		nda[ 4 ].n = vector_type( p4[ -_1 ] - v05, p4[ -_2 ] - v06, v00 -  p4[ _3 ] );
-		nda[ 5 ].n = vector_type( v04 -  p5[ _1 ], p5[ -_2 ] - v07, v01 -  p5[ _3 ] );
-		nda[ 6 ].n = vector_type( p6[ -_1 ] - v07, v04 -  p6[ _2 ], v02 -  p6[ _3 ] );
-		nda[ 7 ].n = vector_type( v06 -  p7[ _1 ], v05 -  p7[ _2 ], v03 -  p7[ _3 ] );
+			nda[ 0 ].n = __normal( va, i,     j,     k     );
+			nda[ 1 ].n = __normal( va, i + 1, j,     k     );
+			nda[ 2 ].n = __normal( va, i,     j + 1, k     );
+			nda[ 3 ].n = __normal( va, i + 1, j + 1, k     );
+			nda[ 4 ].n = __normal( va, i,     j,     k + 1 );
+			nda[ 5 ].n = __normal( va, i + 1, j,     k + 1 );
+			nda[ 6 ].n = __normal( va, i,     j + 1, k + 1 );
+			nda[ 7 ].n = __normal( va, i + 1, j + 1, k + 1 );
+
+			return( ptn );
+		}
+		else
+		{
+			return( 0 );
+		}
 	}
 
-	void construct_cube_without_preprocessing2( const image_type &va, const size_t i, const size_t j, const size_t k, node_type nda[ 8 ] ) const
+	void isosurfacing_in_cube( const node_type nda[ 8 ], vector_list_type &pv, vector_list_type &nv,std::vector< size_type > &sv, size_type ptn )
 	{
-		typedef typename image_type::const_pointer const_pointer;
-		const_pointer p0 = &va( i, j, k );
-		const_pointer p1 = p0 + pda_[ 1 ];
-		const_pointer p2 = p0 + pda_[ 2 ];
-		const_pointer p3 = p0 + pda_[ 3 ];
-		const_pointer p4 = p0 + pda_[ 4 ];
-		const_pointer p5 = p0 + pda_[ 5 ];
-		const_pointer p6 = p0 + pda_[ 6 ];
-		const_pointer p7 = p0 + pda_[ 7 ];
-
-		nda[ 0 ].v = p0[ 0 ]; nda[ 0 ].p = _point( i,     j,     k     );
-		nda[ 1 ].v = p1[ 0 ]; nda[ 1 ].p = _point( i + 1, j,     k     );
-		nda[ 2 ].v = p2[ 0 ]; nda[ 2 ].p = _point( i,     j + 1, k     );
-		nda[ 3 ].v = p3[ 0 ]; nda[ 3 ].p = _point( i + 1, j + 1, k     );
-		nda[ 4 ].v = p4[ 0 ]; nda[ 4 ].p = _point( i,     j,     k + 1 );
-		nda[ 5 ].v = p5[ 0 ]; nda[ 5 ].p = _point( i + 1, j,     k + 1 );
-		nda[ 6 ].v = p6[ 0 ]; nda[ 6 ].p = _point( i,     j + 1, k + 1 );
-		nda[ 7 ].v = p7[ 0 ]; nda[ 7 ].p = _point( i + 1, j + 1, k + 1 );
-
-		nda[ 0 ].n = __normal( va, i,     j,     k     );
-		nda[ 1 ].n = __normal( va, i + 1, j,     k     );
-		nda[ 2 ].n = __normal( va, i,     j + 1, k     );
-		nda[ 3 ].n = __normal( va, i + 1, j + 1, k     );
-		nda[ 4 ].n = __normal( va, i,     j,     k + 1 );
-		nda[ 5 ].n = __normal( va, i + 1, j,     k + 1 );
-		nda[ 6 ].n = __normal( va, i,     j + 1, k + 1 );
-		nda[ 7 ].n = __normal( va, i + 1, j + 1, k + 1 );
-	}
-
-	void isosurfacing_in_cube( const node_type nda[ 8 ], vector_list_type &pv, vector_list_type &nv,std::vector< size_type > &sv )
-	{
-		size_type num = fa_[ pattern( nda ) ]( nda, __p__, __n__, __s__, th_, o_, s_ );
+		size_type num = fa_[ ptn ]( nda, __p__, __n__, __s__, th_, o_, s_ );
 
 		vector_type *P = __p__;
 		vector_type *N = __n__;
@@ -805,9 +772,9 @@ private:
 	}
 
 	template < class T >
-	void isosurfacing_in_cube( const node_type nda[ 8 ], facet_list< T > &facets )
+	void isosurfacing_in_cube( const node_type nda[ 8 ], facet_list< T > &facets, size_type ptn )
 	{
-		size_type num = fa_[ pattern( nda ) ]( nda, __p__, __n__, __s__, th_, o_, s_ );
+		size_type num = fa_[ ptn ]( nda, __p__, __n__, __s__, th_, o_, s_ );
 
 		vector_type *P = __p__;
 		vector_type *N = __n__;
