@@ -614,6 +614,7 @@ public:	// 操作関数
 			de_preprocess( );
 		}
 
+		construct_pointer_difference_array( va );
 		is_preprocessed_ = construct_point_array( va ) && construct_normal_array( va ) && construct_interval_tree( va );
 
 		if( !is_preprocessed_ )
@@ -628,7 +629,6 @@ public:	// 操作関数
 	/// @brief 前処理で構築されたデータを破棄
 	void de_preprocess( )
 	{
-		destruct_pointer_difference_array( );
 		destruct_point_array( );
 		destruct_normal_array( );
 		destruct_interval_tree( );
