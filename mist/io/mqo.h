@@ -746,7 +746,7 @@ namespace __mqo_controller__
 
 				std::vector< vector_type > vertices;
 				std::vector< ivector_type > faces;
-				if( convert_to_index_list( facets, vertices, faces ) )
+				if( convert_to_vertex_face_list( facets, vertices, faces ) )
 				{
 					fprintf( fp, "Object \"%s\" {\r\n", facets.name.c_str( ) );
 					fprintf( fp, "\tvisible 15\r\n" );
