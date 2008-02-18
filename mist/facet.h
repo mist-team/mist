@@ -836,7 +836,7 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 			vertex_edge_map_type::iterator ite = vertex_edge_map.find( EDGE.v2 );
 			if( ite != vertex_edge_map.end( ) )
 			{
-				std::vector< difference_type > combine_edge;
+				std::vector< difference_type > combine_edge, remove_edge;
 				vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( EDGE.v2 );
 				for( ; ite != upper ; )
 				{
@@ -850,7 +850,7 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 						const edge_type &e = edges[ ite->second ];
 						if( e.fid1 == EDGE.fid1 )
 						{
-							face_type &f = faces[ EDGE.fid1 ];
+							face_type &f = faces[ e.fid2 ];
 							if( f.eid1 == ite->second || f.eid1 == -ite->second )
 							{
 								const edge_type &E = edges[ EID1 ];
@@ -905,10 +905,11 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 							}
 
 							*( pFID1 ) = e.fid2;
+							remove_edge.push_back( ite->second );
 						}
 						else if( e.fid2 == EDGE.fid1 )
 						{
-							face_type &f = faces[ EDGE.fid1 ];
+							face_type &f = faces[ e.fid1 ];
 							if( f.eid1 == ite->second || f.eid1 == -ite->second )
 							{
 								const edge_type &E = edges[ EID1 ];
@@ -963,10 +964,11 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 							}
 
 							*( pFID1 ) = e.fid1;
+							remove_edge.push_back( ite->second );
 						}
 						else if( e.fid1 == EDGE.fid2 )
 						{
-							face_type &f = faces[ EDGE.fid2 ];
+							face_type &f = faces[ e.fid2 ];
 							if( f.eid1 == ite->second || f.eid1 == -ite->second )
 							{
 								const edge_type &E = edges[ EID2 ];
@@ -1021,10 +1023,11 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 							}
 
 							*( pFID2 ) = e.fid2;
+							remove_edge.push_back( ite->second );
 						}
 						else if( e.fid2 == EDGE.fid2 )
 						{
-							face_type &f = faces[ EDGE.fid2 ];
+							face_type &f = faces[ e.fid1 ];
 							if( f.eid1 == ite->second || f.eid1 == -ite->second )
 							{
 								const edge_type &E = edges[ EID2 ];
@@ -1079,6 +1082,7 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 							}
 
 							*( pFID2 ) = e.fid1;
+							remove_edge.push_back( ite->second );
 						}
 						else
 						{
@@ -1103,6 +1107,24 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 					}
 				}
 
+				// •s—v‚È•Ó‚ğ‚·‚×‚Äíœ‚·‚é
+				for( size_type ii = 0 ; ii < remove_edge.size( ) ; ii++ )
+				{
+					const edge_type &e = edges[ remove_edge[ ii ] ];
+					difference_type key = e.v1 == EDGE.v1 ? e.v2 : e.v1;
+					vertex_edge_map_type::iterator iite = vertex_edge_map.find( key );
+					vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( key );
+					for( ; iite != upper ; ++iite )
+					{
+						if( iite->second == remove_edge[ ii ] )
+						{
+							vertex_edge_map.erase( iite );
+							break;
+						}
+					}
+				}
+
+				// •ÏX‚³‚ê‚½•Ó‚ğÄ“o˜^‚·‚é
 				for( size_type ii = 0 ; ii < combine_edge.size( ) ; ii++ )
 				{
 					vertex_edge_map.insert( vertex_edge_map_pair_type( EDGE.v1, combine_edge[ ii ] ) );
@@ -1115,6 +1137,42 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 		{
 			__mc__::update_edge( vertices, Q, edges[ *ite ] );
 		}
+
+		for( size_type i = 1 ; i < faces.size( ) ; i++ )
+		{
+			const face_type &f = faces[ i ];
+			if( f.flag )
+			{
+				std::cout << i << ": ";
+				if( f.eid1 < 0 )
+				{
+					std::cout << edges[ -f.eid1 ].v2 << ", " << edges[ -f.eid1 ].v1 << "[" << -f.eid1 << "] -> ";
+				}
+				else
+				{
+					std::cout << edges[ f.eid1 ].v1 << ", " << edges[ f.eid1 ].v2 << "[" << f.eid1 << "] -> ";
+				}
+
+				if( f.eid2 < 0 )
+				{
+					std::cout << edges[ -f.eid2 ].v2 << ", " << edges[ -f.eid2 ].v1 << "[" << -f.eid2 << "] -> ";
+				}
+				else
+				{
+					std::cout << edges[ f.eid2 ].v1 << ", " << edges[ f.eid2 ].v2 << "[" << f.eid2 << "] -> ";
+				}
+
+				if( f.eid3 < 0 )
+				{
+					std::cout << edges[ -f.eid3 ].v2 << ", " << edges[ -f.eid3 ].v1 << "[" << -f.eid3 << "]" << std::endl;
+				}
+				else
+				{
+					std::cout << edges[ f.eid3 ].v1 << ", " << edges[ f.eid3 ].v2  << "[" << f.eid3 << "]" << std::endl;
+				}
+			}
+		}
+		std::cout << std::endl;
 	}
 
 	facets.clear( );
@@ -1128,6 +1186,34 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 			const difference_type v2 = f.eid2 < 0 ? edges[ -f.eid2 ].v2 : edges[ f.eid2 ].v1;
 			const difference_type v3 = f.eid3 < 0 ? edges[ -f.eid3 ].v2 : edges[ f.eid3 ].v1;
 			facets.push_back( facet_type( vertices[ v1 ], vertices[ v2 ], vertices[ v3 ] ) );
+
+			std::cout << i << ": ";
+			if( f.eid1 < 0 )
+			{
+				std::cout << edges[ -f.eid1 ].v2 << ", " << edges[ -f.eid1 ].v1 << " -> ";
+			}
+			else
+			{
+				std::cout << edges[ f.eid1 ].v1 << ", " << edges[ f.eid1 ].v2 << " -> ";
+			}
+
+			if( f.eid2 < 0 )
+			{
+				std::cout << edges[ -f.eid2 ].v2 << ", " << edges[ -f.eid2 ].v1 << " -> ";
+			}
+			else
+			{
+				std::cout << edges[ f.eid2 ].v1 << ", " << edges[ f.eid2 ].v2 << " -> ";
+			}
+
+			if( f.eid3 < 0 )
+			{
+				std::cout << edges[ -f.eid3 ].v2 << ", " << edges[ -f.eid3 ].v1 << std::endl;
+			}
+			else
+			{
+				std::cout << edges[ f.eid3 ].v1 << ", " << edges[ f.eid3 ].v2 << std::endl;
+			}
 		}
 	}
 
