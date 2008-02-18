@@ -55,6 +55,7 @@
 
 #include <vector>
 #include <map>
+#include <set>
 #include <deque>
 #include <algorithm>
 
@@ -291,16 +292,12 @@ namespace __mc__
 		typedef size_t    size_type;
 		typedef ptrdiff_t difference_type;
 
-		difference_type v1;
-		difference_type v2;
-		difference_type v3;
-		difference_type fid1;
-		difference_type fid2;
-		difference_type fid3;
+		difference_type eid1;
+		difference_type eid2;
+		difference_type eid3;
 		bool            flag;
 
-		__face__( ) : v1( -1 ), v2( -1 ), v3( -1 ), fid1( -1 ), fid2( -1 ), fid3( -1 ), flag( true ){ }
-		__face__( difference_type vv1, difference_type vv2, difference_type vv3 ) : v1( vv1 ), v2( vv2 ), v3( vv3 ), fid1( -1 ), fid2( -1 ), fid3( -1 ), flag( true ) { }
+		__face__( ) : eid1( 0 ), eid2( 0 ), eid3( 0 ), flag( true ){ }
 	};
 
 	template < class VERTEX >
@@ -317,7 +314,7 @@ namespace __mc__
 		vector_type     v;
 		double          err;
 
-		__edge__( ) : fid1( -1 ), fid2( -1 ), err( 0.0 ){ }
+		__edge__( ) : fid1( 0 ), fid2( 0 ), err( 0.0 ){ }
 		__edge__( difference_type vv1, difference_type vv2 ) : v1( vv1 ), v2( vv2 ), fid1( -1 ), fid2( -1 ), err( 0.0 ) { }
 		__edge__( difference_type vv1, difference_type vv2, difference_type id1 ) : v1( vv1 ), v2( vv2 ), fid1( id1 ), fid2( -1 ), err( 0.0 ) { }
 
@@ -342,37 +339,37 @@ namespace __mc__
 
 
 	template< class T >
-	inline T find_edge( const __face__ &f, const T v1, const T v2 )
+	inline T find_edge( const T V1, const T V2, const T V3, const T v1, const T v2 )
 	{
-		if( f.v1 == v1 )
+		if( V1 == v1 )
 		{
-			if( f.v2 == v2 )
+			if( V2 == v2 )
 			{
 				return( 0 );
 			}
-			else if( f.v3 == v2 )
+			else if( V3 == v2 )
 			{
 				return( 2 );
 			}
 		}
-		else if( f.v2 == v1 )
+		else if( V2 == v1 )
 		{
-			if( f.v3 == v2 )
+			if( V3 == v2 )
 			{
 				return( 1 );
 			}
-			else if( f.v1 == v2 )
+			else if( V1 == v2 )
 			{
 				return( 0 );
 			}
 		}
-		else if( f.v3 == v1 )
+		else if( V3 == v1 )
 		{
-			if( f.v1 == v2 )
+			if( V1 == v2 )
 			{
 				return( 2 );
 			}
-			else if( f.v2 == v2 )
+			else if( V2 == v2 )
 			{
 				return( 1 );
 			}
@@ -382,7 +379,7 @@ namespace __mc__
 	}
 
 	template < class T1, class T2, class T3 >
-	inline bool convert_to_vertex_face_list( const std::vector< vector3< T1 > > &vertices, const std::vector< vector3< T2 > > &faces, std::vector< __face__ > &face_lists, std::deque< __edge__< T3 > > &edge_lists )
+	inline bool convert_to_vertex_face_list( const std::vector< vector3< T1 > > &vertices, const std::vector< vector3< T2 > > &faces, std::vector< __face__ > &face_lists, std::vector< __edge__< T3 > > &edge_lists )
 	{
 		if( vertices.empty( ) || faces.empty( ) )
 		{
@@ -395,20 +392,23 @@ namespace __mc__
 		typedef vector3< T2 >           ivector_type;
 		typedef __face__                face_type;
 		typedef __edge__< T3 >          edge_type;
-		typedef std::deque< edge_type > edge_list_type;
 
-		typedef std::map< difference_type, size_type > map_type;
+		typedef std::map< difference_type, difference_type > map_type;
 		typedef map_type::iterator iterator;
 		map_type table;
 
+		edge_lists.clear( );
 		face_lists.clear( );
 		face_lists.reserve( faces.size( ) );
 
-		// データをテーブルに登録する
-		for( size_type i = 0 ; i < faces.size( ) ; i++ )
+		// ダミーを1つだけ挿入する
+		face_lists.push_back( face_type( ) );
+		edge_lists.push_back( edge_type( ) );
+
+		// 辺をテーブルに登録する
+		for( size_type i = 1 ; i <= faces.size( ) ; i++ )
 		{
-			const ivector_type &f = faces[ i ];
-			face_lists.push_back( face_type( f.x, f.y, f.z ) );
+			const ivector_type &f = faces[ i - 1 ];
 
 			difference_type key12 = create_key( f.x, f.y, vertices.size( ) );
 			difference_type key23 = create_key( f.y, f.z, vertices.size( ) );
@@ -418,8 +418,8 @@ namespace __mc__
 			iterator ite = table.find( key12 );
 			if( ite == table.end( ) )
 			{
-				// 新規に辺情報を追加する
-				table[ key12 ] = i;
+				// 新規に辺と面の対応情報を追加する
+				table[ key12 ] = edge_lists.size( );
 
 				// エッジを登録する
 				if( f.x < f.y )
@@ -429,32 +429,6 @@ namespace __mc__
 				else
 				{
 					edge_lists.push_back( edge_type( f.y, f.x, i ) );
-				}
-			}
-			else
-			{
-				face_type &f1 = face_lists[ ite->second ];
-				face_type &f2 = face_lists[ i ];
-
-				f2.fid1 = ite->second;
-				switch( find_edge( f1, f2.v1, f2.v2 ) )
-				{
-				case 0:	// Line 1-2
-					f1.fid1 = i;
-					break;
-
-				case 1:	// Line 2-3
-					f1.fid2 = i;
-					break;
-
-				case 2:	// Line 3-1
-					f1.fid3 = i;
-					break;
-
-				default:
-					// エラー?
-					std::cerr << "Cannot find edges!!" << std::endl;
-					break;
 				}
 			}
 
@@ -463,42 +437,16 @@ namespace __mc__
 			if( ite == table.end( ) )
 			{
 				// 新規に辺情報を追加する
-				table[ key23 ] = i;
+				table[ key23 ] = edge_lists.size( );
 
 				// エッジを登録する
-				if( f.x < f.y )
+				if( f.y < f.z )
 				{
-					edge_lists.push_back( edge_type( f.x, f.y, i ) );
+					edge_lists.push_back( edge_type( f.y, f.z, i ) );
 				}
 				else
 				{
-					edge_lists.push_back( edge_type( f.y, f.x, i ) );
-				}
-			}
-			else
-			{
-				face_type &f1 = face_lists[ ite->second ];
-				face_type &f2 = face_lists[ i ];
-
-				f2.fid2 = ite->second;
-				switch( find_edge( f1, f2.v2, f2.v3 ) )
-				{
-				case 0:	// Line 1-2
-					f1.fid1 = i;
-					break;
-
-				case 1:	// Line 2-3
-					f1.fid2 = i;
-					break;
-
-				case 2:	// Line 3-1
-					f1.fid3 = i;
-					break;
-
-				default:
-					// エラー?
-					std::cerr << "Cannot find edges!!" << std::endl;
-					break;
+					edge_lists.push_back( edge_type( f.z, f.y, i ) );
 				}
 			}
 
@@ -507,72 +455,130 @@ namespace __mc__
 			if( ite == table.end( ) )
 			{
 				// 新規に辺情報を追加する
-				table[ key31 ] = i;
+				table[ key31 ] = edge_lists.size( );
 
 				// エッジを登録する
-				if( f.x < f.y )
+				if( f.z < f.x )
 				{
-					edge_lists.push_back( edge_type( f.x, f.y, i ) );
+					edge_lists.push_back( edge_type( f.z, f.x, i ) );
 				}
 				else
 				{
-					edge_lists.push_back( edge_type( f.y, f.x, i ) );
-				}
-			}
-			else
-			{
-				face_type &f1 = face_lists[ ite->second ];
-				face_type &f2 = face_lists[ i ];
-
-				f2.fid3 = ite->second;
-				switch( find_edge( f1, f2.v3, f2.v1 ) )
-				{
-				case 0:	// Line 1-2
-					f1.fid1 = i;
-					break;
-
-				case 1:	// Line 2-3
-					f1.fid2 = i;
-					break;
-
-				case 2:	// Line 3-1
-					f1.fid3 = i;
-					break;
-
-				default:
-					// エラー?
-					std::cerr << "Cannot find edges!!" << std::endl;
-					break;
+					edge_lists.push_back( edge_type( f.x, f.z, i ) );
 				}
 			}
 		}
 
-		for( typename edge_list_type::iterator ite = edge_lists.begin( ) ; ite != edge_lists.end( ) ; ++ite )
+		// 面と辺を関連付ける
+		for( size_type i = 1 ; i <= faces.size( ) ; i++ )
 		{
-			const face_type &f1 = face_lists[ ite->fid1 ];
-			switch( find_edge( f1, ite->v1, ite->v2 ) )
+			const ivector_type &F = faces[ i - 1 ];
+			face_type f;
+
+			difference_type key12 = create_key( F.x, F.y, vertices.size( ) );
+			difference_type key23 = create_key( F.y, F.z, vertices.size( ) );
+			difference_type key31 = create_key( F.z, F.x, vertices.size( ) );
+
+			// 辺1-2を調べる
+			iterator ite = table.find( key12 );
+			if( ite == table.end( ) )
 			{
-			case 0:	// Line 1-2
-				ite->fid2 = f1.fid1;
-				break;
-
-			case 1:	// Line 2-3
-				ite->fid2 = f1.fid2;
-				break;
-
-			case 2:	// Line 3-1
-				ite->fid2 = f1.fid3;
-				break;
-
-			default:
-				// エラー?
-				std::cerr << "Cannot find edges!!" << std::endl;
-				break;
+				std::cerr << "Can't find edge 1 from edge table." << std::endl;
 			}
+			else
+			{
+				edge_type &e = edge_lists[ ite->second ];
+				f.eid1 = F.x == e.v1 ? ite->second : -ite->second;
+
+				if( e.fid1 == 0 )
+				{
+					e.fid1 = i;
+				}
+				else
+				{
+					e.fid2 = i;
+				}
+			}
+
+			// 辺2-3を調べる
+			ite = table.find( key23 );
+			if( ite == table.end( ) )
+			{
+				std::cerr << "Can't find edge 2 from edge table." << std::endl;
+			}
+			else
+			{
+				edge_type &e = edge_lists[ ite->second ];
+				f.eid2 = F.y == e.v1 ? ite->second : -ite->second;
+
+				if( e.fid1 == 0 )
+				{
+					e.fid1 = i;
+				}
+				else
+				{
+					e.fid2 = i;
+				}
+			}
+
+			// 辺2-3を調べる
+			ite = table.find( key31 );
+			if( ite == table.end( ) )
+			{
+				std::cerr << "Can't find edge 3 from edge table." << std::endl;
+			}
+			else
+			{
+				edge_type &e = edge_lists[ ite->second ];
+				f.eid3 = F.z == e.v1 ? ite->second : -ite->second;
+
+				if( e.fid1 == 0 )
+				{
+					e.fid1 = i;
+				}
+				else
+				{
+					e.fid2 = i;
+				}
+			}
+
+			face_lists.push_back( f );
 		}
 
 		return( true );
 	}
+
+	//template < class T >
+	//bool is_same_edge_manner( const __edge__< T > &E, const __edge__< T > &e, const __edge__< T > &EDGE )
+	//{
+	//	//const edge_type &E = edges[ EID1 ];
+	//	if( E.v1 == EDGE.v1 )
+	//	{
+	//		if( E.v2 == e.v1 )
+	//		{
+	//			f.eid1 = -EID1;
+	//		}
+	//		else
+	//		{
+	//			f.eid1 = EID1;
+	//		}
+	//	}
+	//	else if( E.v2 == EDGE.v2 )
+	//	{
+	//		if( E.v1 == e.v1 )
+	//		{
+	//			f.eid1 = EID1;
+	//		}
+	//		else
+	//		{
+	//			f.eid1 = -EID1;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+	//	}
+	//}
 
 	template < class T1, class T2, class Matrix >
 	inline void update_edge( const std::vector< vector3< T1 > > &vertices, const std::vector< Matrix > &Q, __edge__< T2 > &edge )
@@ -634,7 +640,7 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 	typedef __mc__::__edge__< vector_type >        edge_type;
 	typedef __mc__::__face__                       face_type;
 	typedef matrix< double >                       matrix_type;
-	typedef std::deque< edge_type >                edge_list_type;
+	typedef std::vector< edge_type >               edge_list_type;
 
 
 	std::vector< vector_type >  vertices;
@@ -655,7 +661,6 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 	}
 	else
 	{
-		// 使用しないデータをクリアする
 		face_ids.clear( );
 	}
 
@@ -667,13 +672,16 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 	}
 
 	// 接続する頂点の候補集合を求める
-	for( size_type i = 0 ; i < faces.size( ) ; i++ )
+	for( size_type i = 1 ; i < faces.size( ) ; i++ )
 	{
 		const face_type   &f  = faces[ i ];
-		const vector_type &p1 = vertices[ f.v1 ];
-		const vector_type &p2 = vertices[ f.v2 ];
-		const vector_type &p3 = vertices[ f.v3 ];
-		const vector_type &n  = facets[ i ].normal;
+		const difference_type v1 = f.eid1 < 0 ? edges[ -f.eid1 ].v2 : edges[ f.eid1 ].v1;
+		const difference_type v2 = f.eid2 < 0 ? edges[ -f.eid2 ].v2 : edges[ f.eid2 ].v1;
+		const difference_type v3 = f.eid3 < 0 ? edges[ -f.eid3 ].v2 : edges[ f.eid3 ].v1;
+		const vector_type  &p1 = vertices[ v1 ];
+		const vector_type  &p2 = vertices[ v2 ];
+		const vector_type  &p3 = vertices[ v3 ];
+		const vector_type  &n  = facets[ i - 1 ].normal;
 
 		double a = n.x;
 		double b = n.y;
@@ -681,35 +689,52 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 
 		{
 			double d = -( a * p1.x + b * p1.y + c * p1.z );
-			Q[ f.v1 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
-										   a * b, b * b, b * c, b * d,
-										   a * c, b * c, c * c, c * d,
-										   a * d, b * d, c * d, d * d );
+			Q[ v1 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
+										 a * b, b * b, b * c, b * d,
+										 a * c, b * c, c * c, c * d,
+										 a * d, b * d, c * d, d * d );
 		}
 
 		{
 			double d = -( a * p2.x + b * p2.y + c * p2.z );
-			Q[ f.v2 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
-										   a * b, b * b, b * c, b * d,
-										   a * c, b * c, c * c, c * d,
-										   a * d, b * d, c * d, d * d );
+			Q[ v2 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
+										 a * b, b * b, b * c, b * d,
+										 a * c, b * c, c * c, c * d,
+										 a * d, b * d, c * d, d * d );
 		}
 
 		{
 			double d = -( a * p3.x + b * p3.y + c * p3.z );
-			Q[ f.v3 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
-										   a * b, b * b, b * c, b * d,
-										   a * c, b * c, c * c, c * d,
-										   a * d, b * d, c * d, d * d );
+			Q[ v3 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
+										 a * b, b * b, b * c, b * d,
+										 a * c, b * c, c * c, c * d,
+										 a * d, b * d, c * d, d * d );
 		}
 	}
 
-	// 辺を共有していないものは削除する
-	for( typename edge_list_type::iterator ite = edges.begin( ) ; ite != edges.end( ) ; )
+	// 頂点とエッジのテーブルを作成する
+	typedef std::map< difference_type, difference_type > edge_map_type;
+	typedef std::multimap< size_type, difference_type > vertex_edge_map_type;
+	typedef std::pair< size_type, difference_type > vertex_edge_map_pair_type;
+
+	vertex_edge_map_type vertex_edge_map;
+	edge_map_type        edge_map;
+	for( size_type i = 1 ; i < edges.size( ) ; i++ )
 	{
-		if( ite->fid2 < 0 )
+		const edge_type &e = edges[ i ];
+		difference_type key = __mc__::create_key( e.v1, e.v2, vertices.size( ) );
+
+		edge_map[ key ] = i;
+		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v1, i ) );
+		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v2, i ) );
+	}
+
+	// 辺を共有していないものは削除する
+	for( typename edge_map_type::iterator ite = edge_map.begin( ) ; ite != edge_map.end( ) ; )
+	{
+		if( edges[ ite->second ].fid2 == 0 )
 		{
-			ite = edges.erase( ite );
+			ite = edge_map.erase( ite );
 		}
 		else
 		{
@@ -718,41 +743,33 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 	}
 
 	// 各頂点の誤差評価を行う
-	for( typename edge_list_type::iterator ite = edges.begin( ) ; ite != edges.end( ) ; ++ite )
+	for( typename edge_map_type::iterator ite = edge_map.begin( ) ; ite != edge_map.end( ) ; ++ite )
 	{
-		__mc__::update_edge( vertices, Q, *ite );
+		__mc__::update_edge( vertices, Q, edges[ ite->second ] );
 	}
-
-	// 頂点とエッジのテーブルを作成する
-	typedef std::map< difference_type, edge_list_type::iterator > edge_pointer_map_type;
-	typedef std::multimap< size_type, edge_list_type::iterator > vertex_edge_map_type;
-	typedef std::pair< size_type, edge_list_type::iterator > vertex_edge_map_pair_type;
-	vertex_edge_map_type vertex_edge_emap;
-	edge_pointer_map_type edge_pointer_map;
-	for( edge_list_type::iterator ite = edges.begin( ) ; ite != edges.end( ) ; ++ite )
-	{
-		edge_pointer_map[ __mc__::create_key( ite->v1, ite->v2, vertices.size( ) ) ] = ite;
-		vertex_edge_emap.insert( vertex_edge_map_pair_type( ite->v1, ite ) );
-		vertex_edge_emap.insert( vertex_edge_map_pair_type( ite->v2, ite ) );
-	}
-
 
 	// 頂点をコスト順に削減する
-	for( size_type loop = 0 ; loop < number_of_iterations && !edges.empty( ) ; loop++ )
+	for( size_type loop = 0 ; loop < number_of_iterations && !edge_map.empty( ) ; loop++ )
 	{
-		typename edge_pointer_map_type::iterator mite, iite = edge_pointer_map.begin( );
+		typename edge_map_type::iterator mite = edge_map.end( );
 		double minV = 1.0e100;
-		for( ; iite != edge_pointer_map.end( ) ; ++iite )
+		for( typename edge_map_type::iterator ite = edge_map.begin( ) ; ite != edge_map.end( ) ; ++ite )
 		{
-			if( minV > ( iite->second )->err )
+			const edge_type &e = edges[ ite->second ];
+
+			if( minV > e.err )
 			{
-				mite = iite;
-				minV = ( iite->second )->err;
+				mite = ite;
+				minV = e.err;
 			}
 		}
 
-		edge_type EDGE = *( mite->second );
-		edge_pointer_map.erase( mite );
+		difference_type eid = mite->second;
+		difference_type EID = eid < 0 ? -eid : eid;
+		edge_type &EDGE = edges[ EID ];
+
+		// 辺を削除する
+		edge_map.erase( mite );
 
 		// 面を削除する
 		face_type &f1 = faces[ EDGE.fid1 ];
@@ -769,247 +786,348 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 		Q[ EDGE.v1 ] = QQQ;
 		Q[ EDGE.v2 ] = QQQ;
 
-		// 編集対象の辺のキーを列挙する
-		edge_type nedges[ 2 ];
-		difference_type ekey[ 5 ];
-		difference_type vids[ 4 ] = { EDGE.v1, EDGE.v2, -1, -1 };
-		edge_list_type::iterator vites[ 5 ];
-		ekey[ 0 ] = __mc__::create_key( EDGE.v1, EDGE.v2, vertices.size( ) );
-		switch( find_edge( f1, EDGE.v1, EDGE.v2 ) )
+		// 処理対象の辺の登録と，テーブル内からの削除等を行う
+		std::set< difference_type > emap;
+		difference_type *pFID1 = NULL, *pFID2 = NULL;
+		difference_type EID1 = 0, EID2 = 0;
 		{
-		case 0:	// Line 1-2
-			ekey[ 1 ] = __mc__::create_key( f1.v1, f1.v3, vertices.size( ) );
-			ekey[ 2 ] = __mc__::create_key( f1.v2, f1.v3, vertices.size( ) );
-			vids[ 2 ] = f1.v3;
-			nedges[ 0 ] = edge_type( EDGE.v1, f1.v3 );
-			nedges[ 0 ].fid1 = f1.fid2;
-			nedges[ 0 ].fid2 = f1.fid3;
-			break;
-
-		case 1:	// Line 2-3
-			ekey[ 1 ] = __mc__::create_key( f1.v1, f1.v2, vertices.size( ) );
-			ekey[ 2 ] = __mc__::create_key( f1.v1, f1.v3, vertices.size( ) );
-			vids[ 2 ] = f1.v1;
-			nedges[ 0 ] = edge_type( EDGE.v1, f1.v1 );
-			nedges[ 0 ].fid1 = f1.fid1;
-			nedges[ 0 ].fid2 = f1.fid3;
-			break;
-
-		case 2:	// Line 3-1
-			ekey[ 1 ] = __mc__::create_key( f1.v1, f1.v2, vertices.size( ) );
-			ekey[ 2 ] = __mc__::create_key( f1.v2, f1.v3, vertices.size( ) );
-			vids[ 2 ] = f1.v2;
-			nedges[ 0 ] = edge_type( EDGE.v1, f1.v2 );
-			nedges[ 0 ].fid1 = f1.fid1;
-			nedges[ 0 ].fid2 = f1.fid2;
-			break;
-
-		default:
-			// エラー?
-			std::cerr << "Cannot find edges!!" << std::endl;
-			break;
-		}
-
-		switch( find_edge( f2, EDGE.v1, EDGE.v2 ) )
-		{
-		case 0:	// Line 1-2
-			ekey[ 1 ] = __mc__::create_key( f2.v1, f2.v3, vertices.size( ) );
-			ekey[ 2 ] = __mc__::create_key( f2.v2, f2.v3, vertices.size( ) );
-			vids[ 3 ] = f2.v3;
-			nedges[ 1 ] = edge_type( EDGE.v1, f2.v3 );
-			nedges[ 1 ].fid1 = f2.fid2;
-			nedges[ 1 ].fid2 = f2.fid3;
-			break;
-
-		case 1:	// Line 2-3
-			ekey[ 1 ] = __mc__::create_key( f2.v1, f2.v2, vertices.size( ) );
-			ekey[ 2 ] = __mc__::create_key( f2.v1, f2.v3, vertices.size( ) );
-			vids[ 3 ] = f2.v1;
-			nedges[ 1 ] = edge_type( EDGE.v1, f2.v1 );
-			nedges[ 1 ].fid1 = f2.fid1;
-			nedges[ 1 ].fid2 = f2.fid3;
-			break;
-
-		case 2:	// Line 3-1
-			ekey[ 1 ] = __mc__::create_key( f2.v1, f2.v2, vertices.size( ) );
-			ekey[ 2 ] = __mc__::create_key( f2.v2, f2.v3, vertices.size( ) );
-			vids[ 3 ] = f2.v2;
-			nedges[ 1 ] = edge_type( EDGE.v1, f2.v2 );
-			nedges[ 1 ].fid1 = f2.fid1;
-			nedges[ 1 ].fid2 = f2.fid2;
-			break;
-
-		default:
-			// エラー?
-			std::cerr << "Cannot find edges!!" << std::endl;
-			break;
-		}
-
-		// 各頂点を共有するエッジを更新する
-		for( size_type iii = 0 ; iii < 4 ; iii++ )
-		{
-			difference_type vid = vids[ iii ];
-			vertex_edge_map_type::iterator ite = vertex_edge_emap.find( vid );
-			if( ite != vertex_edge_emap.end( ) )
+			vertex_edge_map_type::iterator ite = vertex_edge_map.find( EDGE.v1 );
+			if( ite != vertex_edge_map.end( ) )
 			{
-				vertex_edge_map_type::iterator upper = vertex_edge_emap.upper_bound( vid );
+				vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( EDGE.v1 );
 				for( ; ite != upper ; )
 				{
-					difference_type key = __mc__::create_key( ite->second->v1, ite->second->v2, vertices.size( ) );
-
-					size_type indx = 0;
-					for( ; indx < 5 ; indx++ )
+					if( ite->second == EID )
 					{
-						if( key == ekey[ indx ] )
-						{
-							// 削除対象の辺
-							vites[ indx ] = ite->second;
-							ite = vertex_edge_emap.erase( ite );
-
-							typename edge_pointer_map_type::iterator epite = edge_pointer_map.find( key );
-							if( epite != edge_pointer_map.end( ) )
-							{
-								edge_pointer_map.erase( epite );
-							}
-
-							break;
-						}
+						// 削除する
+						ite = vertex_edge_map.erase( ite );
 					}
-
-					if( indx >= 5 )
+					else
 					{
-						if( iii < 2 )
+						edge_type &e = edges[ ite->second ];
+						if( e.fid1 == EDGE.fid1 )
 						{
-							// 更新対象の辺
-							__mc__::update_edge( vertices, Q, *( ite->second ) );
+							pFID1 = &( e.fid1 );
+							EID1  = ite->second;
 						}
+						else if( e.fid2 == EDGE.fid1 )
+						{
+							pFID1 = &( e.fid2 );
+							EID1  = ite->second;
+						}
+						else if( e.fid1 == EDGE.fid2 )
+						{
+							pFID2 = &( e.fid1 );
+							EID2  = ite->second;
+						}
+						else if( e.fid2 == EDGE.fid2 )
+						{
+							pFID2 = &( e.fid2 );
+							EID2  = ite->second;
+						}
+
+						emap.insert( ite->second );
 						++ite;
 					}
 				}
 			}
 		}
-
 		{
-			// EDGE.v2 の頂点を EDGE.v1 へ移す
-			vertex_edge_map_type::iterator ite = vertex_edge_emap.find( EDGE.v2 );
-			if( ite != vertex_edge_emap.end( ) )
+			vertex_edge_map_type::iterator ite = vertex_edge_map.find( EDGE.v2 );
+			if( ite != vertex_edge_map.end( ) )
 			{
-				vertex_edge_map_type::iterator upper = vertex_edge_emap.upper_bound( EDGE.v2 );
+				std::vector< difference_type > combine_edge;
+				vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( EDGE.v2 );
 				for( ; ite != upper ; )
 				{
-					edge_type &edge = *( ite->second );
-					if( edge.fid1 >= 0 )
+					if( ite->second == EID )
 					{
-						face_type &f = faces[ edge.fid1 ];
-						if( f.v1 == EDGE.v2 )
-						{
-							f.v1 = EDGE.v1;
-						}
-						else if( f.v2 == EDGE.v2 )
-						{
-							f.v2 = EDGE.v1;
-						}
-						else if( f.v3 == EDGE.v2 )
-						{
-							f.v3 = EDGE.v1;
-						}
+						// 削除する
+						ite = vertex_edge_map.erase( ite );
 					}
-
-					if( edge.fid2 >= 0 )
+					else
 					{
-						face_type &f = faces[ edge.fid2 ];
-						if( f.v1 == EDGE.v2 )
+						const edge_type &e = edges[ ite->second ];
+						if( e.fid1 == EDGE.fid1 )
 						{
-							f.v1 = EDGE.v1;
-						}
-						else if( f.v2 == EDGE.v2 )
-						{
-							f.v2 = EDGE.v1;
-						}
-						else if( f.v3 == EDGE.v2 )
-						{
-							f.v3 = EDGE.v1;
-						}
-					}
+							face_type &f = faces[ EDGE.fid1 ];
+							if( f.eid1 == ite->second || f.eid1 == -ite->second )
+							{
+								const edge_type &E = edges[ EID1 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid1 = f.eid1 < 0 ? -EID1 : EID1;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid1 = f.eid1 < 0 ? EID1 : -EID1;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else if( f.eid2 == ite->second || f.eid2 == -ite->second )
+							{
+								const edge_type &E = edges[ EID1 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid2 = f.eid2 < 0 ? -EID1 : EID1;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid2 = f.eid2 < 0 ? EID1 : -EID1;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else if( f.eid3 == ite->second || f.eid3 == -ite->second )
+							{
+								const edge_type &E = edges[ EID1 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid3 = f.eid3 < 0 ? -EID1 : EID1;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid3 = f.eid3 < 0 ? EID1 : -EID1;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else
+							{
+								std::cerr << "Incorrect edge pair is found!!" << std::endl;
+							}
 
-					vertex_edge_emap.insert( vertex_edge_map_pair_type( EDGE.v1, ite->second ) );
-					ite = vertex_edge_emap.erase( ite );
+							*( pFID1 ) = e.fid2;
+						}
+						else if( e.fid2 == EDGE.fid1 )
+						{
+							face_type &f = faces[ EDGE.fid1 ];
+							if( f.eid1 == ite->second || f.eid1 == -ite->second )
+							{
+								const edge_type &E = edges[ EID1 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid1 = f.eid1 < 0 ? -EID1 : EID1;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid1 = f.eid1 < 0 ? EID1 : -EID1;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else if( f.eid2 == ite->second || f.eid2 == -ite->second )
+							{
+								const edge_type &E = edges[ EID1 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid2 = f.eid2 < 0 ? -EID1 : EID1;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid2 = f.eid2 < 0 ? EID1 : -EID1;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else if( f.eid3 == ite->second || f.eid3 == -ite->second )
+							{
+								const edge_type &E = edges[ EID1 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid3 = f.eid3 < 0 ? -EID1 : EID1;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid3 = f.eid3 < 0 ? EID1 : -EID1;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else
+							{
+								std::cerr << "Incorrect edge pair is found!!" << std::endl;
+							}
+
+							*( pFID1 ) = e.fid1;
+						}
+						else if( e.fid1 == EDGE.fid2 )
+						{
+							face_type &f = faces[ EDGE.fid2 ];
+							if( f.eid1 == ite->second || f.eid1 == -ite->second )
+							{
+								const edge_type &E = edges[ EID2 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid1 = f.eid1 < 0 ? -EID2 : EID2;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid1 = f.eid1 < 0 ? EID2 : -EID2;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else if( f.eid2 == ite->second || f.eid2 == -ite->second )
+							{
+								const edge_type &E = edges[ EID2 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid2 = f.eid2 < 0 ? -EID2 : EID2;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid2 = f.eid2 < 0 ? EID2 : -EID2;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else if( f.eid3 == ite->second || f.eid3 == -ite->second )
+							{
+								const edge_type &E = edges[ EID2 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid3 = f.eid3 < 0 ? -EID2 : EID2;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid3 = f.eid3 < 0 ? EID2 : -EID2;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else
+							{
+								std::cerr << "Incorrect edge pair is found!!" << std::endl;
+							}
+
+							*( pFID2 ) = e.fid2;
+						}
+						else if( e.fid2 == EDGE.fid2 )
+						{
+							face_type &f = faces[ EDGE.fid2 ];
+							if( f.eid1 == ite->second || f.eid1 == -ite->second )
+							{
+								const edge_type &E = edges[ EID2 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid1 = f.eid1 < 0 ? -EID2 : EID2;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid1 = f.eid1 < 0 ? EID2 : -EID2;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else if( f.eid2 == ite->second || f.eid2 == -ite->second )
+							{
+								const edge_type &E = edges[ EID2 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid2 = f.eid2 < 0 ? -EID2 : EID2;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid2 = f.eid2 < 0 ? EID2 : -EID2;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else if( f.eid3 == ite->second || f.eid3 == -ite->second )
+							{
+								const edge_type &E = edges[ EID2 ];
+								if( E.v1 == e.v1 || E.v2 == e.v2 )
+								{
+									f.eid3 = f.eid3 < 0 ? -EID2 : EID2;
+								}
+								else if( E.v1 == e.v2 || E.v2 == e.v1 )
+								{
+									f.eid3 = f.eid3 < 0 ? EID2 : -EID2;
+								}
+								else
+								{
+									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
+								}
+							}
+							else
+							{
+								std::cerr << "Incorrect edge pair is found!!" << std::endl;
+							}
+
+							*( pFID2 ) = e.fid1;
+						}
+						else
+						{
+							emap.insert( ite->second );
+							combine_edge.push_back( ite->second );
+						}
+
+						if( edges[ ite->second ].v1 == EDGE.v2 )
+						{
+							edges[ ite->second ].v1 = EDGE.v1;
+						}
+						else if( edges[ ite->second ].v2 == EDGE.v2 )
+						{
+							edges[ ite->second ].v2 = EDGE.v1;
+						}
+						else
+						{
+							std::cerr << "Incorrect edge is found!!" << std::endl;
+						}
+
+						ite = vertex_edge_map.erase( ite );
+					}
+				}
+
+				for( size_type ii = 0 ; ii < combine_edge.size( ) ; ii++ )
+				{
+					vertex_edge_map.insert( vertex_edge_map_pair_type( EDGE.v1, combine_edge[ ii ] ) );
 				}
 			}
 		}
 
-		// 新しい辺を追加する
-		for( size_type i = 0 ; i < 2 ; i++ )
+		// 各頂点を共有するエッジを更新する
+		for( std::set< difference_type >::iterator ite = emap.begin( ) ; ite != emap.end( ) ; ++ite )
 		{
-			edge_type &edge  = *vites[ i ];
-			edge_type &nedge = nedges[ i ];
-
-			if( nedge.fid1 < 0 || nedge.fid2 < 0 )
-			{
-				continue;
-			}
-
-			edge = nedge;
-			__mc__::update_edge( vertices, Q, edge );
-
-			edge_pointer_map[ __mc__::create_key( edge.v1, edge.v2, vertices.size( ) ) ] = vites[ i ];
-			vertex_edge_emap.insert( vertex_edge_map_pair_type( edge.v1, vites[ i ] ) );
-			vertex_edge_emap.insert( vertex_edge_map_pair_type( edge.v2, vites[ i ] ) );
-
-			// 面の接続関係を調整する
-			face_type &ff1 = faces[ edge.fid1 ];
-			face_type &ff2 = faces[ edge.fid2 ];
-
-			switch( find_edge( ff1, edge.v1, edge.v2 ) )
-			{
-			case 0:	// Line 1-2
-				ff1.fid1 = edge.fid2;
-				break;
-
-			case 1:	// Line 2-3
-				ff1.fid2 = edge.fid2;
-				break;
-
-			case 2:	// Line 3-1
-				ff1.fid3 = edge.fid2;
-				break;
-
-			default:
-				// エラー?
-				std::cerr << "Cannot find edges!!" << std::endl;
-				break;
-			}
-
-			switch( find_edge( ff2, edge.v1, edge.v2 ) )
-			{
-			case 0:	// Line 1-2
-				ff2.fid1 = edge.fid2;
-				break;
-
-			case 1:	// Line 2-3
-				ff2.fid2 = edge.fid2;
-				break;
-
-			case 2:	// Line 3-1
-				ff2.fid3 = edge.fid2;
-				break;
-
-			default:
-				// エラー?
-				std::cerr << "Cannot find edges!!" << std::endl;
-				break;
-			}
+			__mc__::update_edge( vertices, Q, edges[ *ite ] );
 		}
 	}
 
 	facets.clear( );
 
-	for( size_type i = 0 ; i < faces.size( ) ; i++ )
+	for( size_type i = 1 ; i < faces.size( ) ; i++ )
 	{
 		const face_type &f = faces[ i ];
 		if( f.flag )
 		{
-			facets.push_back( facet_type( vertices[ f.v1 ], vertices[ f.v2 ], vertices[ f.v3 ] ) );
+			const difference_type v1 = f.eid1 < 0 ? edges[ -f.eid1 ].v2 : edges[ f.eid1 ].v1;
+			const difference_type v2 = f.eid2 < 0 ? edges[ -f.eid2 ].v2 : edges[ f.eid2 ].v1;
+			const difference_type v3 = f.eid3 < 0 ? edges[ -f.eid3 ].v2 : edges[ f.eid3 ].v1;
+			facets.push_back( facet_type( vertices[ v1 ], vertices[ v2 ], vertices[ v3 ] ) );
 		}
 	}
 
