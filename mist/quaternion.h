@@ -620,7 +620,7 @@ DEFINE_PROMOTE_BIND_OPERATOR2( quaternion, / )
 /// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
 //! 
 //! @param[in,out] out … 入力と出力を行うストリーム
-//! @param[in]     q   … 3次元ベクトル
+//! @param[in]     q   … クォータニオン
 //! 
 //! @return 入力されたストリーム
 //! 
