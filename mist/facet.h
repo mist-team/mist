@@ -879,30 +879,58 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 						const edge_type &e = edges[ ite->second ];
 						if( e.fid1 == EDGE.fid1 )
 						{
-							__mc__::update_edge_connection( faces[ e.fid2 ], ite->second, EID1, edges );
+							if( e.fid2 != 0 )
+							{
+								__mc__::update_edge_connection( faces[ e.fid2 ], ite->second, EID1, edges );
+							}
 
-							*( pFID1 ) = e.fid2;
+							if( pFID1 != NULL )
+							{
+								*( pFID1 ) = e.fid2;
+							}
+
 							remove_edge.push_back( ite->second );
 						}
 						else if( e.fid2 == EDGE.fid1 )
 						{
-							__mc__::update_edge_connection( faces[ e.fid1 ], ite->second, EID1, edges );
+							if( e.fid1 != 0 )
+							{
+								__mc__::update_edge_connection( faces[ e.fid1 ], ite->second, EID1, edges );
+							}
 
-							*( pFID1 ) = e.fid1;
+							if( pFID1 != NULL )
+							{
+								*( pFID1 ) = e.fid1;
+							}
+
 							remove_edge.push_back( ite->second );
 						}
 						else if( e.fid1 == EDGE.fid2 )
 						{
-							__mc__::update_edge_connection( faces[ e.fid2 ], ite->second, EID2, edges );
+							if( e.fid2 != 0 )
+							{
+								__mc__::update_edge_connection( faces[ e.fid2 ], ite->second, EID2, edges );
+							}
 
-							*( pFID2 ) = e.fid2;
+							if( pFID2 != NULL )
+							{
+								*( pFID2 ) = e.fid2;
+							}
+
 							remove_edge.push_back( ite->second );
 						}
 						else if( e.fid2 == EDGE.fid2 )
 						{
-							__mc__::update_edge_connection( faces[ e.fid1 ], ite->second, EID2, edges );
+							if( e.fid2 != 0 )
+							{
+								__mc__::update_edge_connection( faces[ e.fid1 ], ite->second, EID2, edges );
+							}
 
-							*( pFID2 ) = e.fid1;
+							if( pFID2 != NULL )
+							{
+								*( pFID2 ) = e.fid1;
+							}
+
 							remove_edge.push_back( ite->second );
 						}
 						else
