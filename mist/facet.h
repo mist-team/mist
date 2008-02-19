@@ -200,7 +200,7 @@ public:
 //! @return 頂点集合とインデックス集合の作成に成功したかどうか
 //!
 template < class T, class T1, class T2 >
-inline bool convert_to_vertex_face_list( const facet_list< T > &facets, std::vector< vector3< T1 > > &vertices, std::vector< vector3< T2 > > &faces, const double eps = 1.0e-12 )
+inline bool convert_to_vertex_face_list( const facet_list< T > &facets, std::vector< vector3< T1 > > &vertices, std::vector< vector3< T2 > > &faces, const double eps = 1.0e-6 )
 {
 	if( facets.empty( ) )
 	{
@@ -318,8 +318,8 @@ namespace __mc__
 		double          err;
 
 		__edge__( ) : fid1( 0 ), fid2( 0 ), key( -1 ), err( 0.0 ){ }
-		__edge__( difference_type vv1, difference_type vv2 ) : v1( vv1 ), v2( vv2 ), fid1( -1 ), fid2( -1 ), key( -1 ), err( 0.0 ) { }
-		__edge__( difference_type vv1, difference_type vv2, difference_type id1 ) : v1( vv1 ), v2( vv2 ), fid1( id1 ), fid2( -1 ), key( -1 ), err( 0.0 ) { }
+		__edge__( difference_type vv1, difference_type vv2 ) : v1( vv1 ), v2( vv2 ), fid1( 0 ), fid2( 0 ), key( -1 ), err( 0.0 ) { }
+		__edge__( difference_type vv1, difference_type vv2, difference_type id1 ) : v1( vv1 ), v2( vv2 ), fid1( id1 ), fid2( 0 ), key( -1 ), err( 0.0 ) { }
 
 		bool operator <( const __edge__ &v ) const
 		{
@@ -413,6 +413,11 @@ namespace __mc__
 		{
 			const ivector_type &f = faces[ i - 1 ];
 
+			if( edge_lists.size( ) == 399 )
+			{
+				std::cout << "debug" << std::endl;
+			}
+
 			difference_type key12 = create_key( f.x, f.y, vertices.size( ) );
 			difference_type key23 = create_key( f.y, f.z, vertices.size( ) );
 			difference_type key31 = create_key( f.z, f.x, vertices.size( ) );
@@ -434,6 +439,10 @@ namespace __mc__
 					edge_lists.push_back( edge_type( f.y, f.x, i ) );
 				}
 			}
+			else
+			{
+				edge_lists[ ite->second ].fid2 = i;
+			}
 
 			// 辺2-3を調べる
 			ite = table.find( key23 );
@@ -452,6 +461,10 @@ namespace __mc__
 					edge_lists.push_back( edge_type( f.z, f.y, i ) );
 				}
 			}
+			else
+			{
+				edge_lists[ ite->second ].fid2 = i;
+			}
 
 			// 辺2-3を調べる
 			ite = table.find( key31 );
@@ -469,6 +482,10 @@ namespace __mc__
 				{
 					edge_lists.push_back( edge_type( f.x, f.z, i ) );
 				}
+			}
+			else
+			{
+				edge_lists[ ite->second ].fid2 = i;
 			}
 		}
 
@@ -492,15 +509,6 @@ namespace __mc__
 			{
 				edge_type &e = edge_lists[ ite->second ];
 				f.eid1 = F.x == e.v1 ? ite->second : -ite->second;
-
-				if( e.fid1 == 0 )
-				{
-					e.fid1 = i;
-				}
-				else
-				{
-					e.fid2 = i;
-				}
 			}
 
 			// 辺2-3を調べる
@@ -513,15 +521,6 @@ namespace __mc__
 			{
 				edge_type &e = edge_lists[ ite->second ];
 				f.eid2 = F.y == e.v1 ? ite->second : -ite->second;
-
-				if( e.fid1 == 0 )
-				{
-					e.fid1 = i;
-				}
-				else
-				{
-					e.fid2 = i;
-				}
 			}
 
 			// 辺2-3を調べる
@@ -535,11 +534,7 @@ namespace __mc__
 				edge_type &e = edge_lists[ ite->second ];
 				f.eid3 = F.z == e.v1 ? ite->second : -ite->second;
 
-				if( e.fid1 == 0 )
-				{
-					e.fid1 = i;
-				}
-				else
+				if( e.fid1 != i )
 				{
 					e.fid2 = i;
 				}
@@ -727,21 +722,12 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 		edge_type &e = edges[ i ];
 		e.key = __mc__::create_key( e.v1, e.v2, vertices.size( ) );
 
-		edge_map[ e.key ] = i;
-		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v1, i ) );
-		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v2, i ) );
-	}
-
-	// 辺を共有していないものは削除する
-	for( typename edge_map_type::iterator ite = edge_map.begin( ) ; ite != edge_map.end( ) ; )
-	{
-		if( edges[ ite->second ].fid2 == 0 )
+		// 辺を共有していないものは削除する
+		if( e.fid2 != 0 )
 		{
-			ite = edge_map.erase( ite );
-		}
-		else
-		{
-			++ite;
+			edge_map[ e.key ] = i;
+			vertex_edge_map.insert( vertex_edge_map_pair_type( e.v1, i ) );
+			vertex_edge_map.insert( vertex_edge_map_pair_type( e.v2, i ) );
 		}
 	}
 
