@@ -63,6 +63,8 @@
 _MIST_BEGIN
 
 
+#define __SHOW_FACET_DEBUG_INFORMATION__	0
+
 //! @addtogroup facet_group ポリゴンを扱うクラス
 //!
 //! @code 次のヘッダをインクルードする
@@ -311,12 +313,13 @@ namespace __mc__
 		difference_type v2;
 		difference_type fid1;
 		difference_type fid2;
+		difference_type key;
 		vector_type     v;
 		double          err;
 
-		__edge__( ) : fid1( 0 ), fid2( 0 ), err( 0.0 ){ }
-		__edge__( difference_type vv1, difference_type vv2 ) : v1( vv1 ), v2( vv2 ), fid1( -1 ), fid2( -1 ), err( 0.0 ) { }
-		__edge__( difference_type vv1, difference_type vv2, difference_type id1 ) : v1( vv1 ), v2( vv2 ), fid1( id1 ), fid2( -1 ), err( 0.0 ) { }
+		__edge__( ) : fid1( 0 ), fid2( 0 ), key( -1 ), err( 0.0 ){ }
+		__edge__( difference_type vv1, difference_type vv2 ) : v1( vv1 ), v2( vv2 ), fid1( -1 ), fid2( -1 ), key( -1 ), err( 0.0 ) { }
+		__edge__( difference_type vv1, difference_type vv2, difference_type id1 ) : v1( vv1 ), v2( vv2 ), fid1( id1 ), fid2( -1 ), key( -1 ), err( 0.0 ) { }
 
 		bool operator <( const __edge__ &v ) const
 		{
@@ -721,10 +724,10 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 	edge_map_type        edge_map;
 	for( size_type i = 1 ; i < edges.size( ) ; i++ )
 	{
-		const edge_type &e = edges[ i ];
-		difference_type key = __mc__::create_key( e.v1, e.v2, vertices.size( ) );
+		edge_type &e = edges[ i ];
+		e.key = __mc__::create_key( e.v1, e.v2, vertices.size( ) );
 
-		edge_map[ key ] = i;
+		edge_map[ e.key ] = i;
 		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v1, i ) );
 		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v2, i ) );
 	}
@@ -767,6 +770,10 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 		difference_type eid = mite->second;
 		difference_type EID = eid < 0 ? -eid : eid;
 		edge_type &EDGE = edges[ EID ];
+
+#if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ != 0
+		std::cout << "Contraction: " << EDGE.v2 << " -> " << EDGE.v1 << std::endl;
+#endif
 
 		// 辺を削除する
 		edge_map.erase( mite );
@@ -1122,6 +1129,9 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 							break;
 						}
 					}
+
+					// 処理対象の枝からも除外する
+					edge_map.erase( e.key );
 				}
 
 				// 変更された辺を再登録する
@@ -1138,6 +1148,7 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 			__mc__::update_edge( vertices, Q, edges[ *ite ] );
 		}
 
+#if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ != 0
 		for( size_type i = 1 ; i < faces.size( ) ; i++ )
 		{
 			const face_type &f = faces[ i ];
@@ -1173,6 +1184,7 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 			}
 		}
 		std::cout << std::endl;
+#endif
 	}
 
 	facets.clear( );
@@ -1186,34 +1198,6 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 			const difference_type v2 = f.eid2 < 0 ? edges[ -f.eid2 ].v2 : edges[ f.eid2 ].v1;
 			const difference_type v3 = f.eid3 < 0 ? edges[ -f.eid3 ].v2 : edges[ f.eid3 ].v1;
 			facets.push_back( facet_type( vertices[ v1 ], vertices[ v2 ], vertices[ v3 ] ) );
-
-			std::cout << i << ": ";
-			if( f.eid1 < 0 )
-			{
-				std::cout << edges[ -f.eid1 ].v2 << ", " << edges[ -f.eid1 ].v1 << " -> ";
-			}
-			else
-			{
-				std::cout << edges[ f.eid1 ].v1 << ", " << edges[ f.eid1 ].v2 << " -> ";
-			}
-
-			if( f.eid2 < 0 )
-			{
-				std::cout << edges[ -f.eid2 ].v2 << ", " << edges[ -f.eid2 ].v1 << " -> ";
-			}
-			else
-			{
-				std::cout << edges[ f.eid2 ].v1 << ", " << edges[ f.eid2 ].v2 << " -> ";
-			}
-
-			if( f.eid3 < 0 )
-			{
-				std::cout << edges[ -f.eid3 ].v2 << ", " << edges[ -f.eid3 ].v1 << std::endl;
-			}
-			else
-			{
-				std::cout << edges[ f.eid3 ].v1 << ", " << edges[ f.eid3 ].v2 << std::endl;
-			}
 		}
 	}
 
