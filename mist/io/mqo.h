@@ -584,7 +584,33 @@ namespace __mqo_controller__
 			return( p );
 		}
 
-		static bool convert_from_data( std::vector< facet_list_type > &facet_lists, const unsigned char *buff, size_type len )
+		static const unsigned char * __process_object_chunk__( std::vector< facet_list_type > &facet_lists, const unsigned char *p, const unsigned char *e )
+		{
+			facet_lists.push_back( facet_list_type( ) );
+			facet_list_type &facets = facet_lists.back( );
+			p = process_object_chunk( facets, p, e );
+			if( p == NULL )
+			{
+				facet_lists.pop_back( );
+			}
+
+			return( p );
+		}
+
+		static const unsigned char * __process_object_chunk__( facet_list_type &facets, const unsigned char *p, const unsigned char *e )
+		{
+			facet_list_type fff;
+			p = process_object_chunk( fff, p, e );
+			if( p != NULL )
+			{
+				facets.insert( facets.end( ), fff.begin( ), fff.end( ) );
+			}
+
+			return( p );
+		}
+
+		template < class FACETLIST >
+		static bool convert_from_data( FACETLIST &facet_lists, const unsigned char *buff, size_type len )
 		{
 			const unsigned char *p = buff;
 			const unsigned char *e = buff + len;
@@ -653,13 +679,7 @@ namespace __mqo_controller__
 				}
 				else if( line == "object" )
 				{
-					facet_lists.push_back( facet_list_type( ) );
-					facet_list_type &facets = facet_lists.back( );
-					p = process_object_chunk( facets, p, e );
-					if( p == NULL )
-					{
-						facet_lists.pop_back( );
-					}
+					p = __process_object_chunk__( facet_lists, p, e );
 				}
 				else
 				{
@@ -671,7 +691,8 @@ namespace __mqo_controller__
 			return( true );
 		}
 
-		static bool read( std::vector< facet_list_type > &facet_lists, const std::string &filename )
+		template < class FACETLIST >
+		static bool read( FACETLIST &facet_lists, const std::string &filename )
 		{
 			// データをクリアする
 			facet_lists.clear( );
@@ -809,7 +830,7 @@ namespace __mqo_controller__
 
 /// @brief Metasequoia形式のファイルからポリゴンデータを読み込む
 //! 
-//! @param[out] facet_lists … ポリゴンのリスト
+//! @param[out] facet_lists … ポリゴンのリスト（オブジェクト単位のポリゴン集合リスト）
 //! @param[in]  filename    … 出力ファイル名
 //!
 //! @retval true  … ポリゴンデータの読み込みに成功
@@ -819,6 +840,21 @@ template < class T >
 bool read_mqo( std::vector< facet_list< T > > &facet_lists, const std::string &filename )
 {
 	return( __mqo_controller__::mqo_controller< T >::read( facet_lists, filename ) );
+}
+
+
+/// @brief Metasequoia形式のファイルからポリゴンデータを読み込む
+//! 
+//! @param[out] facets   … ポリゴンの集合
+//! @param[in]  filename … 出力ファイル名
+//!
+//! @retval true  … ポリゴンデータの読み込みに成功
+//! @retval false … ポリゴンデータの読み込みに失敗
+//! 
+template < class T >
+bool read_mqo( facet_list< T > &facets, const std::string &filename )
+{
+	return( __mqo_controller__::mqo_controller< T >::read( facets, filename ) );
 }
 
 

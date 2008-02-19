@@ -413,11 +413,6 @@ namespace __mc__
 		{
 			const ivector_type &f = faces[ i - 1 ];
 
-			if( edge_lists.size( ) == 399 )
-			{
-				std::cout << "debug" << std::endl;
-			}
-
 			difference_type key12 = create_key( f.x, f.y, vertices.size( ) );
 			difference_type key23 = create_key( f.y, f.z, vertices.size( ) );
 			difference_type key31 = create_key( f.z, f.x, vertices.size( ) );
@@ -620,15 +615,13 @@ namespace __mc__
 //!
 //! 共通して使用する頂点を全てまとめた頂点集合を作成する．
 //!
-//! @param[in]  facets   … 3角形パッチの集合
-//! @param[in]  vertices … 頂点集合
-//! @param[in]  indices  … 三角形パッチを構成するインデックス集合
-//! @param[in]  eps      … 同一頂点と判定される頂点の距離
+//! @param[in]  facets           … 3角形パッチの集合
+//! @param[in]  number_of_facets … 削減後の3角形パッチ数
 //!
 //! @return 頂点集合とインデックス集合の作成に成功したかどうか
 //!
 template < class T >
-inline bool surface_simplification( facet_list< T > &facets, const double threshold, size_t number_of_iterations )
+inline bool surface_simplification( facet_list< T > &facets, size_t number_of_facets )
 {
 	typedef typename facet_list< T >::facet_type   facet_type;
 	typedef typename facet_type::size_type         size_type;
@@ -726,9 +719,10 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 		if( e.fid2 != 0 )
 		{
 			edge_map[ e.key ] = i;
-			vertex_edge_map.insert( vertex_edge_map_pair_type( e.v1, i ) );
-			vertex_edge_map.insert( vertex_edge_map_pair_type( e.v2, i ) );
 		}
+
+		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v1, i ) );
+		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v2, i ) );
 	}
 
 	// 各頂点の誤差評価を行う
@@ -737,8 +731,10 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 		__mc__::update_edge( vertices, Q, edges[ ite->second ] );
 	}
 
+	size_t num_facets = faces.size( ) - 1;
+
 	// 頂点をコスト順に削減する
-	for( size_type loop = 0 ; loop < number_of_iterations && !edge_map.empty( ) ; loop++ )
+	for( ; num_facets - 2 > number_of_facets && !edge_map.empty( ) ; num_facets -= 2 )
 	{
 		typename edge_map_type::iterator mite = edge_map.end( );
 		double minV = 1.0e100;
@@ -892,7 +888,7 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
 								}
 							}
-							else
+							else if( e.fid2 != 0 )
 							{
 								std::cerr << "Incorrect edge pair is found!!" << std::endl;
 							}
@@ -951,7 +947,7 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
 								}
 							}
-							else
+							else if( e.fid1 != 0 )
 							{
 								std::cerr << "Incorrect edge pair is found!!" << std::endl;
 							}
@@ -1010,7 +1006,7 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
 								}
 							}
-							else
+							else if( e.fid2 != 0 )
 							{
 								std::cerr << "Incorrect edge pair is found!!" << std::endl;
 							}
@@ -1069,7 +1065,7 @@ inline bool surface_simplification( facet_list< T > &facets, const double thresh
 									std::cerr << "Incorrect vertex-edge map is created!!" << std::endl;
 								}
 							}
-							else
+							else if( e.fid1 != 0 )
 							{
 								std::cerr << "Incorrect edge pair is found!!" << std::endl;
 							}
