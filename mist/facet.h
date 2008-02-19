@@ -434,9 +434,13 @@ namespace __mc__
 					edge_lists.push_back( edge_type( f.y, f.x, i ) );
 				}
 			}
-			else
+			else if( edge_lists[ ite->second ].fid2 == 0 )
 			{
 				edge_lists[ ite->second ].fid2 = i;
+			}
+			else
+			{
+				std::cerr << "Edge may be shared among more than three faces." << std::endl;
 			}
 
 			// •Ó2-3‚ğ’²‚×‚é
@@ -456,9 +460,13 @@ namespace __mc__
 					edge_lists.push_back( edge_type( f.z, f.y, i ) );
 				}
 			}
-			else
+			else if( edge_lists[ ite->second ].fid2 == 0 )
 			{
 				edge_lists[ ite->second ].fid2 = i;
+			}
+			else
+			{
+				std::cerr << "Edge may be shared among more than three faces." << std::endl;
 			}
 
 			// •Ó2-3‚ğ’²‚×‚é
@@ -478,9 +486,13 @@ namespace __mc__
 					edge_lists.push_back( edge_type( f.x, f.z, i ) );
 				}
 			}
-			else
+			else if( edge_lists[ ite->second ].fid2 == 0 )
 			{
 				edge_lists[ ite->second ].fid2 = i;
+			}
+			else
+			{
+				std::cerr << "Edge may be shared among more than three faces." << std::endl;
 			}
 		}
 
@@ -782,7 +794,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		edge_type &EDGE = edges[ EID ];
 
 #if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 1
-		std::cout << "Contraction: " << EDGE.v2 << " -> " << EDGE.v1 << std::endl;
+		std::cout << "Contraction [" << num_facets << "] : " << EDGE.v2 << " -> " << EDGE.v1 << std::endl;
 #endif
 
 		// •Ó‚ğíœ‚·‚é
@@ -897,19 +909,19 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 						{
 							emap.insert( ite->second );
 							combine_edge.push_back( ite->second );
-						}
 
-						if( edges[ ite->second ].v1 == EDGE.v2 )
-						{
-							edges[ ite->second ].v1 = EDGE.v1;
-						}
-						else if( edges[ ite->second ].v2 == EDGE.v2 )
-						{
-							edges[ ite->second ].v2 = EDGE.v1;
-						}
-						else
-						{
-							std::cerr << "Incorrect edge is found!!" << std::endl;
+							if( edges[ ite->second ].v1 == EDGE.v2 )
+							{
+								edges[ ite->second ].v1 = EDGE.v1;
+							}
+							else if( edges[ ite->second ].v2 == EDGE.v2 )
+							{
+								edges[ ite->second ].v2 = EDGE.v1;
+							}
+							else
+							{
+								std::cerr << "Incorrect edge is found!!" << std::endl;
+							}
 						}
 
 						ite = vertex_edge_map.erase( ite );
@@ -920,7 +932,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 				for( size_type ii = 0 ; ii < remove_edge.size( ) ; ii++ )
 				{
 					const edge_type &e = edges[ remove_edge[ ii ] ];
-					difference_type key = e.v1 == EDGE.v1 ? e.v2 : e.v1;
+					difference_type key = e.v1 == EDGE.v2 ? e.v2 : e.v1;
 					vertex_edge_map_type::iterator iite = vertex_edge_map.find( key );
 					vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( key );
 					for( ; iite != upper ; ++iite )
@@ -940,6 +952,31 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 				for( size_type ii = 0 ; ii < combine_edge.size( ) ; ii++ )
 				{
 					vertex_edge_map.insert( vertex_edge_map_pair_type( EDGE.v1, combine_edge[ ii ] ) );
+
+					//const edge_type &e = edges[ combine_edge[ ii ] ];
+					//vertex_edge_map_type::iterator ite = vertex_edge_map.find( EDGE.v1 );
+					//if( ite != vertex_edge_map.end( ) )
+					//{
+					//	vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( EDGE.v1 );
+					//	for( ; ite != upper ; )
+					//	{
+					//		if( ite->second != combine_edge[ ii ] )
+					//		{
+					//			difference_type Eid = ite->second;
+					//			const edge_type &E = edges[ Eid ];
+					//			if( E.v1 == e.v1 && E.v2 == e.v2 || E.v1 == e.v2 && E.v2 == e.v1 )
+					//			{
+					//				// “¯‚¶•Ó‚ğ3‚ÂˆÈã‚Ì–Ê‚ª‹¤—L‚·‚éê‡‚ÍˆÈ~‚Ìˆ—‚©‚çœŠO‚·‚é
+					//				edge_map.erase( e.key );
+					//				edge_map.erase( E.key );
+					//				std::cerr << "Edge may be shared among more than three faces." << std::endl;
+					//				break;
+					//			}
+					//		}
+
+					//		++ite;
+					//	}
+					//}
 				}
 			}
 		}
