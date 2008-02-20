@@ -330,6 +330,24 @@ namespace __mc__
 		}
 	};
 
+	template < class EDGE >
+	struct __edge_comp__
+	{
+		typedef EDGE edge_type;
+		typedef typename edge_type::difference_type difference_type;
+
+		const std::vector< edge_type > &edges;
+
+		__edge_comp__( const std::vector< edge_type > &edge_list ) : edges( edge_list )
+		{
+		}
+
+		bool operator ()( difference_type v1, difference_type v2 ) const
+		{
+			return( edges[ v1 ].err < edges[ v2 ].err );
+		}
+	};
+
 	template< class T1, class T2 >
 	inline T1 create_key( const T1 v1, const T1 v2, const T2 stride )
 	{
@@ -928,6 +946,16 @@ namespace __mc__
 		}
 	}
 
+	template < class SET >
+	inline void remove_edge_from_set( SET &edge_set, typename SET::value_type EID )
+	{
+		typename SET::iterator ite = edge_set.find( EID );
+		if( ite != edge_set.end( ) )
+		{
+			edge_set.erase( ite );
+		}
+	}
+
 	template < class MULTIMAP, class T >
 	inline bool check_topology_change( const MULTIMAP &vertex_edge_map, const std::vector< __face__ > &faces, const std::vector< __edge__< T > > &edges, __face__::difference_type EID )
 	{
@@ -1155,31 +1183,32 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 	}
 
 	// 頂点とエッジのテーブルを作成する
-	typedef std::map< difference_type, difference_type > edge_map_type;
+	typedef __mc__::__edge_comp__< edge_type > edge_compare_type;
+	typedef std::set< difference_type, edge_compare_type > edge_map_type;
 	typedef std::multimap< size_type, difference_type > vertex_edge_map_type;
 	typedef std::pair< size_type, difference_type > vertex_edge_map_pair_type;
 
 	vertex_edge_map_type vertex_edge_map;
-	edge_map_type        edge_map;
 	for( size_type i = 1 ; i < edges.size( ) ; i++ )
 	{
 		edge_type &e = edges[ i ];
 		e.key = __mc__::create_key( e.v1, e.v2, vertices.size( ) );
 
-		// 辺を共有していないものは削除する
-		if( e.fid1 * e.fid2 != 0 )
-		{
-			edge_map[ e.key ] = i;
-		}
-
 		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v1, i ) );
 		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v2, i ) );
 	}
 
-	// 各頂点の誤差評価を行う
-	for( typename edge_map_type::iterator ite = edge_map.begin( ) ; ite != edge_map.end( ) ; ++ite )
+	edge_compare_type ecomp( edges );
+	edge_map_type edge_map( ecomp );
+	for( size_type i = 1 ; i < edges.size( ) ; i++ )
 	{
-		__mc__::update_edge( vertices, Q, edges[ ite->second ] );
+		// 削除対象にできるかどうかを判定
+		if( !__mc__::check_topology_change( vertex_edge_map, faces, edges, i ) )
+		{
+			// 各頂点の誤差評価を行う
+			__mc__::update_edge( vertices, Q, edges[ i ] );
+			edge_map.insert( i );
+		}
 	}
 
 	size_t num_facets = faces.size( ) - 1;
@@ -1189,25 +1218,19 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 	{
 		typename edge_map_type::iterator mite = edge_map.end( );
 
-		double minV = 1.0e100;
 		for( typename edge_map_type::iterator ite = edge_map.begin( ) ; ite != edge_map.end( ) ; )
 		{
-			const edge_type &e = edges[ ite->second ];
+			const edge_type &e = edges[ *ite ];
 
-			if( __mc__::check_topology_change( vertex_edge_map, faces, edges, ite->second ) )
+			if( __mc__::check_topology_change( vertex_edge_map, faces, edges, *ite ) )
 			{
 				// 削除対象にできない
 				ite = edge_map.erase( ite );
 			}
 			else
 			{
-				if( minV > e.err )
-				{
-					mite = ite;
-					minV = e.err;
-				}
-
-				++ite;
+				mite = ite;
+				break;
 			}
 		}
 
@@ -1217,7 +1240,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 			break;
 		}
 
-		difference_type EID = mite->second < 0 ? -mite->second : mite->second;
+		difference_type EID = *mite < 0 ? -( *mite ) : *mite;
 		edge_type &EDGE = edges[ EID ];
 
 #if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 1
@@ -1320,8 +1343,8 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 				__mc__::remove_edge_from_map( vertex_edge_map, vr, eid[ 2 ] );
 
 				// 処理対象の枝からも除外する
-				edge_map.erase( edges[ eid[ 1 ] ].key );
-				edge_map.erase( edges[ eid[ 2 ] ].key );
+				__mc__::remove_edge_from_set( edge_map, eid[ 1 ] );
+				__mc__::remove_edge_from_set( edge_map, eid[ 2 ] );
 
 				// 変更された辺を再登録する
 				for( size_type ii = 0 ; ii < combine_edge.size( ) ; ii++ )
@@ -1339,15 +1362,15 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		// ただし，統合して領域の端に接した場合は以降の対象から除く
 		for( std::set< difference_type >::iterator ite = emap.begin( ) ; ite != emap.end( ) ; ++ite )
 		{
-			edge_type &e = edges[ *ite ];
-			if( e.fid1 * e.fid2 == 0 )
+			__mc__::remove_edge_from_set( edge_map, *ite );
+			if( __mc__::check_topology_change( vertex_edge_map, faces, edges, *ite ) )
 			{
 				// 処理対象の枝からも除外する
-				edge_map.erase( e.key );
 			}
 			else
 			{
-				__mc__::update_edge( vertices, Q, e );
+				__mc__::update_edge( vertices, Q, edges[ *ite ] );
+				edge_map.insert( *ite );
 			}
 		}
 
