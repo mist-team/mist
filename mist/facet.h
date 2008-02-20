@@ -787,13 +787,13 @@ namespace __mc__
 		QQQ( 3, 2 ) = 0;
 		QQQ( 3, 3 ) = 1;
 
-		if( inv4x4( QQQ ) )
-		{
-			matrix_type V = QQQ * matrix_type::_41( 0, 0, 0, 1.0 );
-			edge.v   = vector_type( V[ 0 ], V[ 1 ], V[ 2 ] );
-			edge.err = ( V.t( ) * QQ * V )[ 0 ];
-		}
-		else
+		//if( inv4x4( QQQ ) )
+		//{
+		//	matrix_type V = QQQ * matrix_type::_41( 0, 0, 0, 1.0 );
+		//	edge.v   = vector_type( V[ 0 ], V[ 1 ], V[ 2 ] );
+		//	edge.err = ( V.t( ) * QQ * V )[ 0 ];
+		//}
+		//else
 		{
 			vector_type v1 = vertices[ edge.v1 ];
 			vector_type v2 = vertices[ edge.v2 ];
@@ -910,6 +910,8 @@ namespace __mc__
 
 		const face_type &f1 = faces[ EDGE.fid1 ];
 		const face_type &f2 = faces[ EDGE.fid2 ];
+
+		eid[ 0 ] = eid[ 1 ] = eid[ 2 ] = eid[ 3 ] = 0;
 
 		// 面1をチェック
 		compute_edge_connections( edges, EID, f1.eid1 < 0 ? -f1.eid1 : f1.eid1, vs, vt, vl, eid[ 0 ], eid[ 1 ] );
