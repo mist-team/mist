@@ -554,62 +554,116 @@ namespace __mc__
 	}
 
 	template < class T >
-	void update_edge_connection( __face__ &f, typename __edge__< T >::difference_type eid, typename __edge__< T >::difference_type EID, std::vector< __edge__< T > > &edges )
+	inline T ABS( T val )
+	{
+		return( val < 0 ? -val : val );
+	}
+
+	template < class T >
+	void contract_edges( std::vector< __edge__< T > > &edges, std::vector< __face__ > &faces, __face__::difference_type eid0, __face__::difference_type eid1, __face__::difference_type EID, __face__::difference_type FID )
 	{
 		typedef __edge__< T > edge_type;
+		typedef __face__ face_type;
+		typedef __face__::difference_type difference_type;
 
-		const edge_type &e = edges[ eid ];
-		if( f.eid1 == eid || f.eid1 == -eid )
+		difference_type fid2 = 0;
+		const edge_type &E  = edges[ EID ];
+		edge_type &e0 = edges[ eid0 ];
+		edge_type &e1 = edges[ eid1 ];
+
+		if( e0.fid1 == FID )
 		{
-			const edge_type &E = edges[ EID ];
-			if( E.v1 == e.v1 || E.v2 == e.v2 )
+			if( e1.fid1 == FID )
 			{
-				f.eid1 = f.eid1 < 0 ? -EID : EID;
+				fid2 = e1.fid2;
+				e0.fid1 = e1.fid2;
 			}
-			else if( E.v1 == e.v2 || E.v2 == e.v1 )
+			else if( e1.fid2 == FID )
 			{
-				f.eid1 = f.eid1 < 0 ? EID : -EID;
+				fid2 = e1.fid1;
+				e0.fid1 = e1.fid1;
 			}
 			else
 			{
-				std::cerr << "Vertex-edge map is incorrect!! " << "(" << e.v1 << ", " << e.v2 << ") <-> (" << E.v1 << ", " << E.v2 << ")" << std::endl;
+				std::cerr << "Face-edge correspondence is incorrect!!" << std::endl;
 			}
+
 		}
-		else if( f.eid2 == eid || f.eid2 == -eid )
+		else if( e0.fid2 == FID )
 		{
-			const edge_type &E = edges[ EID ];
-			if( E.v1 == e.v1 || E.v2 == e.v2 )
+			if( e1.fid1 == FID )
 			{
-				f.eid2 = f.eid2 < 0 ? -EID : EID;
+				fid2 = e1.fid2;
+				e0.fid2 = e1.fid2;
 			}
-			else if( E.v1 == e.v2 || E.v2 == e.v1 )
+			else if( e1.fid2 == FID )
 			{
-				f.eid2 = f.eid2 < 0 ? EID : -EID;
+				fid2 = e1.fid1;
+				e0.fid2 = e1.fid1;
 			}
 			else
 			{
-				std::cerr << "Vertex-edge map is incorrect!! " << "(" << e.v1 << ", " << e.v2 << ") <-> (" << E.v1 << ", " << E.v2 << ")" << std::endl;
+				std::cerr << "Face-edge correspondence is incorrect!!" << std::endl;
 			}
 		}
-		else if( f.eid3 == eid || f.eid3 == -eid )
+		else
 		{
-			const edge_type &E = edges[ EID ];
-			if( E.v1 == e.v1 || E.v2 == e.v2 )
+			std::cerr << "Unknown error occured!!" << std::endl;
+		}
+
+		if( fid2 != 0 )
+		{
+			face_type &f2 = faces[ fid2 ];
+
+			if( ABS( f2.eid1 ) == eid1 )
 			{
-				f.eid3 = f.eid3 < 0 ? -EID : EID;
+				if( e0.v1 == e1.v1 || e0.v2 == e1.v2 )
+				{
+					f2.eid1 = f2.eid1 < 0 ? -eid0 : eid0;
+				}
+				else if( e0.v1 == e1.v2 || e0.v2 == e1.v1 )
+				{
+					f2.eid1 = f2.eid1 < 0 ? eid0 : -eid0;
+				}
+				else
+				{
+					std::cerr << "Vertex-edge map is incorrect!! " << "(" << e1.v1 << ", " << e1.v2 << ") <-> (" << E.v1 << ", " << E.v2 << ")" << std::endl;
+				}
 			}
-			else if( E.v1 == e.v2 || E.v2 == e.v1 )
+			else if( ABS( f2.eid2 ) == eid1 )
 			{
-				f.eid3 = f.eid3 < 0 ? EID : -EID;
+				if( e0.v1 == e1.v1 || e0.v2 == e1.v2 )
+				{
+					f2.eid2 = f2.eid2 < 0 ? -eid0 : eid0;
+				}
+				else if( e0.v1 == e1.v2 || e0.v2 == e1.v1 )
+				{
+					f2.eid2 = f2.eid2 < 0 ? eid0 : -eid0;
+				}
+				else
+				{
+					std::cerr << "Vertex-edge map is incorrect!! " << "(" << e1.v1 << ", " << e1.v2 << ") <-> (" << E.v1 << ", " << E.v2 << ")" << std::endl;
+				}
+			}
+			else if( ABS( f2.eid3 ) == eid1 )
+			{
+				if( e0.v1 == e1.v1 || e0.v2 == e1.v2 )
+				{
+					f2.eid3 = f2.eid3 < 0 ? -eid0 : eid0;
+				}
+				else if( e0.v1 == e1.v2 || e0.v2 == e1.v1 )
+				{
+					f2.eid3 = f2.eid3 < 0 ? eid0 : -eid0;
+				}
+				else
+				{
+					std::cerr << "Vertex-edge map is incorrect!! " << "(" << e1.v1 << ", " << e1.v2 << ") <-> (" << E.v1 << ", " << E.v2 << ")" << std::endl;
+				}
 			}
 			else
 			{
-				std::cerr << "Vertex-edge map is incorrect!! " << "(" << e.v1 << ", " << e.v2 << ") <-> (" << E.v1 << ", " << E.v2 << ")" << std::endl;
+				std::cerr << "Face-edge correspondence is incorrect!!" << std::endl;
 			}
-		}
-		else if( e.fid2 != 0 )
-		{
-			std::cerr << "Incorrect edge pair is found!!" << std::endl;
 		}
 	}
 
@@ -712,13 +766,13 @@ namespace __mc__
 		QQQ( 3, 2 ) = 0;
 		QQQ( 3, 3 ) = 1;
 
-		//if( inv4x4( QQQ ) )
-		//{
-		//	matrix_type V = QQQ * matrix_type::_41( 0, 0, 0, 1.0 );
-		//	edge.v   = vector_type( V[ 0 ], V[ 1 ], V[ 2 ] );
-		//	edge.err = ( V.t( ) * QQ * V )[ 0 ];
-		//}
-		//else
+		if( inv4x4( QQQ ) )
+		{
+			matrix_type V = QQQ * matrix_type::_41( 0, 0, 0, 1.0 );
+			edge.v   = vector_type( V[ 0 ], V[ 1 ], V[ 2 ] );
+			edge.err = ( V.t( ) * QQ * V )[ 0 ];
+		}
+		else
 		{
 			vector_type v1 = vertices[ edge.v1 ];
 			vector_type v2 = vertices[ edge.v2 ];
@@ -747,6 +801,261 @@ namespace __mc__
 				edge.err = err3;
 			}
 		}
+	}
+
+	template < class T >
+	inline bool is_sharp_edge( const __edge__< T > &edge )
+	{
+		return( edge.fid1 * edge.fid2 == 0 );
+	}
+
+	template < class MULTIMAP, class T >
+	inline size_t number_of_sharp_edges( const MULTIMAP &vertex_edge_map, const std::vector< __edge__< T > > &edges, typename MULTIMAP::difference_type vid )
+	{
+		typedef MULTIMAP vertex_edge_map_type;
+		typedef typename vertex_edge_map_type::const_iterator const_iterator;
+		typedef typename vertex_edge_map_type::difference_type difference_type;
+
+		difference_type count = 0;
+
+		const_iterator ite = vertex_edge_map.find( vid );
+		if( ite != vertex_edge_map.end( ) )
+		{
+			const_iterator upper = vertex_edge_map.upper_bound( vid );
+			for( ; ite != upper ; ++ite )
+			{
+				if( is_sharp_edge( edges[ ite->second ] ) )
+				{
+					count++;
+				}
+			}
+		}
+
+		return( count );
+	}
+
+	template < class T >
+	inline void compute_edge_connections( const std::vector< __edge__< T > > &edges, __face__::difference_type EID, __face__::difference_type eid,
+											__face__::difference_type vs, __face__::difference_type vt, __face__::difference_type &vv,
+											__face__::difference_type &eid1, __face__::difference_type &eid2 )
+	{
+		typedef __edge__< T > edge_type;
+
+		if( eid != EID )
+		{
+			const edge_type &e = edges[ eid ];
+			if( e.v1 == vs )
+			{
+				// vs へ接続する辺
+				eid1 = eid;
+				vv = e.v2;
+			}
+			else if( e.v2 == vs )
+			{
+				// vs へ接続する辺
+				eid1 = eid;
+				vv = e.v1;
+			}
+			else if( e.v1 == vt )
+			{
+				// vt へ接続する辺
+				eid2 = eid;
+				vv = e.v2;
+			}
+			else
+			{
+				// vt へ接続する辺
+				eid2 = eid;
+				vv = e.v1;
+			}
+		}
+	}
+
+	template < class T >
+	inline bool compute_edge_connections( const std::vector< __face__ > &faces, const std::vector< __edge__< T > > &edges, __face__::difference_type EID,
+											__face__::difference_type vs, __face__::difference_type vt, __face__::difference_type &vl, __face__::difference_type &vr, __face__::difference_type eid[ 4 ] )
+	{
+		typedef __edge__< T >             edge_type;
+		typedef __face__                  face_type;
+		typedef __face__::difference_type difference_type;
+
+		const edge_type &EDGE = edges[ EID ];
+
+		if( is_sharp_edge( EDGE ) )
+		{
+			// 縁に接している辺は削除対象外
+			return( false );
+		}
+
+		const face_type &f1 = faces[ EDGE.fid1 ];
+		const face_type &f2 = faces[ EDGE.fid2 ];
+
+		// 面1をチェック
+		compute_edge_connections( edges, EID, f1.eid1 < 0 ? -f1.eid1 : f1.eid1, vs, vt, vl, eid[ 0 ], eid[ 1 ] );
+		compute_edge_connections( edges, EID, f1.eid2 < 0 ? -f1.eid2 : f1.eid2, vs, vt, vl, eid[ 0 ], eid[ 1 ] );
+		compute_edge_connections( edges, EID, f1.eid3 < 0 ? -f1.eid3 : f1.eid3, vs, vt, vl, eid[ 0 ], eid[ 1 ] );
+
+		// 面2をチェック
+		compute_edge_connections( edges, EID, f2.eid1 < 0 ? -f2.eid1 : f2.eid1, vs, vt, vr, eid[ 3 ], eid[ 2 ] );
+		compute_edge_connections( edges, EID, f2.eid2 < 0 ? -f2.eid2 : f2.eid2, vs, vt, vr, eid[ 3 ], eid[ 2 ] );
+		compute_edge_connections( edges, EID, f2.eid3 < 0 ? -f2.eid3 : f2.eid3, vs, vt, vr, eid[ 3 ], eid[ 2 ] );
+
+		return( eid[ 0 ] * eid[ 1 ] * eid[ 2 ] * eid[ 3 ] != 0 );
+	}
+
+	template < class MULTIMAP >
+	inline void remove_edge_from_map( MULTIMAP &vertex_edge_map, typename MULTIMAP::key_type key, typename MULTIMAP::mapped_type val )
+	{
+		typename MULTIMAP::iterator ite = vertex_edge_map.find( key );
+		if( ite != vertex_edge_map.end( ) )
+		{
+			typename MULTIMAP::iterator upper = vertex_edge_map.upper_bound( key );
+			for( ; ite != upper ; )
+			{
+				if( ite->second == val )
+				{
+					// 削除する
+					ite = vertex_edge_map.erase( ite );
+				}
+				else
+				{
+					++ite;
+				}
+			}
+		}
+	}
+
+	template < class MULTIMAP, class T >
+	inline bool check_topology_change( const MULTIMAP &vertex_edge_map, const std::vector< __face__ > &faces, const std::vector< __edge__< T > > &edges, __face__::difference_type EID )
+	{
+		typedef MULTIMAP vertex_edge_map_type;
+		typedef typename vertex_edge_map_type::const_iterator const_iterator;
+
+		typedef __edge__< T >             edge_type;
+		typedef __face__                  face_type;
+		typedef __face__::difference_type difference_type;
+
+		const edge_type &EDGE = edges[ EID ];
+
+		if( is_sharp_edge( EDGE ) )
+		{
+			// 縁に接している辺は削除対象外
+			return( true );
+		}
+
+		// 処理対象の辺の登録と，テーブル内からの削除等を行う
+		difference_type vs = EDGE.v1;
+		difference_type vt = EDGE.v2;
+		difference_type vl, vr;
+		difference_type eid[ 4 ];
+		if( !__mc__::compute_edge_connections( faces, edges, EID, vs, vt, vl, vr, eid ) )
+		{
+			return( true );
+		}
+
+		// 指定した辺を削除した場合にトポロジーが変化するかどうかをチェックする
+		if( is_sharp_edge( edges[ eid[ 0 ] ] ) && is_sharp_edge( edges[ eid[ 1 ] ] ) )
+		{
+			return( true );
+		}
+		else if( is_sharp_edge( edges[ eid[ 3 ] ] ) && is_sharp_edge( edges[ eid[ 2 ] ] ) )
+		{
+			return( true );
+		}
+
+		difference_type nvs = number_of_sharp_edges( vertex_edge_map, edges, vs );
+		difference_type nvt = number_of_sharp_edges( vertex_edge_map, edges, vt );
+
+		if( nvs >= 1 && nvt >= 1 )
+		{
+			return( true );
+		}
+
+		//std::set< difference_type > vertex_list;
+
+		//{
+		//	const_iterator ite = vertex_edge_map.find( EDGE.v1 );
+		//	if( ite != vertex_edge_map.end( ) )
+		//	{
+		//		const_iterator upper = vertex_edge_map.upper_bound( EDGE.v1 );
+		//		for( ; ite != upper ; ++ite )
+		//		{
+		//			if( ite->second != EID )
+		//			{
+		//				const edge_type &e = edges[ ite->second ];
+		//				if( ( e.v1 == EDGE.v1 && e.v2 == EDGE.v2 ) || ( e.v1 == EDGE.v2 && e.v2 == EDGE.v1 ) )
+		//				{
+		//					return( true );
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
+
+
+		std::set< difference_type > vertex_list;
+
+		{
+			const_iterator ite = vertex_edge_map.find( EDGE.v1 );
+			if( ite != vertex_edge_map.end( ) )
+			{
+				const_iterator upper = vertex_edge_map.upper_bound( EDGE.v1 );
+				for( ; ite != upper ; ++ite )
+				{
+					if( ite->second != EID )
+					{
+						const edge_type &e = edges[ ite->second ];
+						if( e.fid1 != EDGE.fid1 && e.fid2 != EDGE.fid2 && e.fid1 != EDGE.fid2 && e.fid2 != EDGE.fid1 )
+						{
+							if( e.v1 != EDGE.v1 )
+							{
+								vertex_list.insert( e.v1 );
+							}
+							else
+							{
+								vertex_list.insert( e.v2 );
+							}
+						}
+					}
+				}
+			}
+		}
+
+		{
+			const_iterator ite = vertex_edge_map.find( EDGE.v2 );
+			if( ite != vertex_edge_map.end( ) )
+			{
+				const_iterator upper = vertex_edge_map.upper_bound( EDGE.v2 );
+				for( ; ite != upper ; ++ite )
+				{
+					if( ite->second != EID )
+					{
+						const edge_type &e = edges[ ite->second ];
+						if( e.fid1 != EDGE.fid1 && e.fid2 != EDGE.fid2 && e.fid1 != EDGE.fid2 && e.fid2 != EDGE.fid1 )
+						{
+							if( e.v1 != EDGE.v1 )
+							{
+								if( vertex_list.find( e.v1 ) != vertex_list.end( ) )
+								{
+									// 面の存在しないループを発見
+									return( true );
+								}
+							}
+							else
+							{
+								if( vertex_list.find( e.v2 ) != vertex_list.end( ) )
+								{
+									// 面の存在しないループを発見
+									return( true );
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return( false );
 	}
 }
 
@@ -855,7 +1164,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		e.key = __mc__::create_key( e.v1, e.v2, vertices.size( ) );
 
 		// 辺を共有していないものは削除する
-		if( e.fid2 != 0 )
+		if( e.fid1 * e.fid2 != 0 )
 		{
 			edge_map[ e.key ] = i;
 		}
@@ -876,20 +1185,36 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 	for( ; num_facets - 2 >= number_of_facets && !edge_map.empty( ) ; num_facets -= 2 )
 	{
 		typename edge_map_type::iterator mite = edge_map.end( );
+
 		double minV = 1.0e100;
-		for( typename edge_map_type::iterator ite = edge_map.begin( ) ; ite != edge_map.end( ) ; ++ite )
+		for( typename edge_map_type::iterator ite = edge_map.begin( ) ; ite != edge_map.end( ) ; )
 		{
 			const edge_type &e = edges[ ite->second ];
 
-			if( minV > e.err )
+			if( __mc__::check_topology_change( vertex_edge_map, faces, edges, ite->second ) )
 			{
-				mite = ite;
-				minV = e.err;
+				// 削除対象にできない
+				ite = edge_map.erase( ite );
+			}
+			else
+			{
+				if( minV > e.err )
+				{
+					mite = ite;
+					minV = e.err;
+				}
+
+				++ite;
 			}
 		}
 
-		difference_type eid = mite->second;
-		difference_type EID = eid < 0 ? -eid : eid;
+		if( mite == edge_map.end( ) )
+		{
+			// 削除できる辺が見つからなかったので終了する
+			break;
+		}
+
+		difference_type EID = mite->second < 0 ? -mite->second : mite->second;
 		edge_type &EDGE = edges[ EID ];
 
 #if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 1
@@ -915,14 +1240,22 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		Q[ EDGE.v2 ] = QQQ;
 
 		// 処理対象の辺の登録と，テーブル内からの削除等を行う
-		std::set< difference_type > emap;
-		difference_type *pFID1 = NULL, *pFID2 = NULL;
-		difference_type EID1 = 0, EID2 = 0;
+		difference_type vs = EDGE.v1;
+		difference_type vt = EDGE.v2;
+		difference_type vl, vr;
+		difference_type eid[ 4 ];
+		if( !__mc__::compute_edge_connections( faces, edges, EID, vs, vt, vl, vr, eid ) )
 		{
-			vertex_edge_map_type::iterator ite = vertex_edge_map.find( EDGE.v1 );
+			std::cerr << "Unknown error occured!!" << std::endl;
+			break;
+		}
+
+		std::set< difference_type > emap;
+		{
+			vertex_edge_map_type::iterator ite = vertex_edge_map.find( vs );
 			if( ite != vertex_edge_map.end( ) )
 			{
-				vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( EDGE.v1 );
+				vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( vs );
 				for( ; ite != upper ; )
 				{
 					if( ite->second == EID )
@@ -932,28 +1265,6 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 					}
 					else
 					{
-						edge_type &e = edges[ ite->second ];
-						if( e.fid1 == EDGE.fid1 )
-						{
-							pFID1 = &( e.fid1 );
-							EID1  = ite->second;
-						}
-						else if( e.fid2 == EDGE.fid1 )
-						{
-							pFID1 = &( e.fid2 );
-							EID1  = ite->second;
-						}
-						else if( e.fid1 == EDGE.fid2 )
-						{
-							pFID2 = &( e.fid1 );
-							EID2  = ite->second;
-						}
-						else if( e.fid2 == EDGE.fid2 )
-						{
-							pFID2 = &( e.fid2 );
-							EID2  = ite->second;
-						}
-
 						emap.insert( ite->second );
 						++ite;
 					}
@@ -961,11 +1272,11 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 			}
 		}
 		{
-			vertex_edge_map_type::iterator ite = vertex_edge_map.find( EDGE.v2 );
+			vertex_edge_map_type::iterator ite = vertex_edge_map.find( vt );
 			if( ite != vertex_edge_map.end( ) )
 			{
-				std::vector< difference_type > combine_edge, remove_edge;
-				vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( EDGE.v2 );
+				std::vector< difference_type > combine_edge;
+				vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( vt );
 				for( ; ite != upper ; )
 				{
 					if( ite->second == EID )
@@ -975,62 +1286,8 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 					}
 					else
 					{
-						const edge_type &e = edges[ ite->second ];
-						if( e.fid1 == EDGE.fid1 )
+						if( ite->second == eid[ 1 ] || ite->second == eid[ 2 ] )
 						{
-							if( e.fid2 != 0 )
-							{
-								__mc__::update_edge_connection( faces[ e.fid2 ], ite->second, EID1, edges );
-							}
-
-							if( pFID1 != NULL )
-							{
-								*( pFID1 ) = e.fid2;
-							}
-
-							remove_edge.push_back( ite->second );
-						}
-						else if( e.fid2 == EDGE.fid1 )
-						{
-							if( e.fid1 != 0 )
-							{
-								__mc__::update_edge_connection( faces[ e.fid1 ], ite->second, EID1, edges );
-							}
-
-							if( pFID1 != NULL )
-							{
-								*( pFID1 ) = e.fid1;
-							}
-
-							remove_edge.push_back( ite->second );
-						}
-						else if( e.fid1 == EDGE.fid2 )
-						{
-							if( e.fid2 != 0 )
-							{
-								__mc__::update_edge_connection( faces[ e.fid2 ], ite->second, EID2, edges );
-							}
-
-							if( pFID2 != NULL )
-							{
-								*( pFID2 ) = e.fid2;
-							}
-
-							remove_edge.push_back( ite->second );
-						}
-						else if( e.fid2 == EDGE.fid2 )
-						{
-							if( e.fid2 != 0 )
-							{
-								__mc__::update_edge_connection( faces[ e.fid1 ], ite->second, EID2, edges );
-							}
-
-							if( pFID2 != NULL )
-							{
-								*( pFID2 ) = e.fid1;
-							}
-
-							remove_edge.push_back( ite->second );
 						}
 						else
 						{
@@ -1056,57 +1313,24 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 				}
 
 				// 不要な辺をすべて削除する
-				for( size_type ii = 0 ; ii < remove_edge.size( ) ; ii++ )
-				{
-					const edge_type &e = edges[ remove_edge[ ii ] ];
-					difference_type key = e.v1 == EDGE.v2 ? e.v2 : e.v1;
-					vertex_edge_map_type::iterator iite = vertex_edge_map.find( key );
-					vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( key );
-					for( ; iite != upper ; ++iite )
-					{
-						if( iite->second == remove_edge[ ii ] )
-						{
-							vertex_edge_map.erase( iite );
-							break;
-						}
-					}
+				__mc__::remove_edge_from_map( vertex_edge_map, vl, eid[ 1 ] );
+				__mc__::remove_edge_from_map( vertex_edge_map, vr, eid[ 2 ] );
 
-					// 処理対象の枝からも除外する
-					edge_map.erase( e.key );
-				}
+				// 処理対象の枝からも除外する
+				edge_map.erase( edges[ eid[ 1 ] ].key );
+				edge_map.erase( edges[ eid[ 2 ] ].key );
 
 				// 変更された辺を再登録する
 				for( size_type ii = 0 ; ii < combine_edge.size( ) ; ii++ )
 				{
-					vertex_edge_map.insert( vertex_edge_map_pair_type( EDGE.v1, combine_edge[ ii ] ) );
-
-					//const edge_type &e = edges[ combine_edge[ ii ] ];
-					//vertex_edge_map_type::iterator ite = vertex_edge_map.find( EDGE.v1 );
-					//if( ite != vertex_edge_map.end( ) )
-					//{
-					//	vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( EDGE.v1 );
-					//	for( ; ite != upper ; )
-					//	{
-					//		if( ite->second != combine_edge[ ii ] )
-					//		{
-					//			difference_type Eid = ite->second;
-					//			const edge_type &E = edges[ Eid ];
-					//			if( E.v1 == e.v1 && E.v2 == e.v2 || E.v1 == e.v2 && E.v2 == e.v1 )
-					//			{
-					//				// 同じ辺を3つ以上の面が共有する場合は以降の処理から除外する
-					//				edge_map.erase( e.key );
-					//				edge_map.erase( E.key );
-					//				std::cerr << "Edge may be shared among more than three faces." << std::endl;
-					//				break;
-					//			}
-					//		}
-
-					//		++ite;
-					//	}
-					//}
+					vertex_edge_map.insert( vertex_edge_map_pair_type( vs, combine_edge[ ii ] ) );
 				}
 			}
 		}
+
+		// 辺の付け替えを行う
+		__mc__::contract_edges( edges, faces, eid[ 0 ], eid[ 1 ], EID, EDGE.fid1 );
+		__mc__::contract_edges( edges, faces, eid[ 3 ], eid[ 2 ], EID, EDGE.fid2 );
 
 		// 各頂点を共有するエッジを更新する
 		// ただし，統合して領域の端に接した場合は以降の対象から除く
@@ -1124,7 +1348,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 			}
 		}
 
-#if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 2
+#if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ == 2
 		for( size_type i = 1 ; i < faces.size( ) ; i++ )
 		{
 			const face_type &f = faces[ i ];
@@ -1156,6 +1380,50 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 				else
 				{
 					std::cout << edges[ f.eid3 ].v1 << ", " << edges[ f.eid3 ].v2  << "[" << f.eid3 << "]" << std::endl;
+				}
+			}
+		}
+		std::cout << std::endl;
+#elif defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 3
+		for( size_type i = 1 ; i < faces.size( ) ; i++ )
+		{
+			const face_type &f = faces[ i ];
+			if( f.flag )
+			{
+				printf( "%2d: ", i );
+
+				difference_type eid1 = f.eid1 < 0 ? -f.eid1 : f.eid1;
+				difference_type eid2 = f.eid2 < 0 ? -f.eid2 : f.eid2;
+				difference_type eid3 = f.eid3 < 0 ? -f.eid3 : f.eid3;
+				edge_type &e1 = edges[ eid1 ];
+				edge_type &e2 = edges[ eid2 ];
+				edge_type &e3 = edges[ eid3 ];
+
+				if( f.eid1 < 0 )
+				{
+					printf( "%2d, %2d [%2d] (%2d, %2d) -> ", e1.v2, e1.v1, eid1, e1.fid1, e1.fid2 );
+				}
+				else
+				{
+					printf( "%2d, %2d [%2d] (%2d, %2d) -> ", e1.v1, e1.v2, eid1, e1.fid1, e1.fid2 );
+				}
+
+				if( f.eid2 < 0 )
+				{
+					printf( "%2d, %2d [%2d] (%2d, %2d) -> ", e2.v2, e2.v1, eid2, e2.fid1, e2.fid2 );
+				}
+				else
+				{
+					printf( "%2d, %2d [%2d] (%2d, %2d) -> ", e2.v1, e2.v2, eid2, e2.fid1, e2.fid2 );
+				}
+
+				if( f.eid3 < 0 )
+				{
+					printf( "%2d, %2d [%2d] (%2d, %2d)\n", e3.v2, e3.v1, eid3, e3.fid1, e3.fid2 );
+				}
+				else
+				{
+					printf( "%2d, %2d [%2d] (%2d, %2d)\n", e3.v1, e3.v2, eid3, e3.fid1, e3.fid2 );
 				}
 			}
 		}
