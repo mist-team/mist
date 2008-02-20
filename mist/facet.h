@@ -272,7 +272,10 @@ inline bool convert_to_vertex_face_list( const facet_list< T > &facets, std::vec
 			indx[ 2 ] = tmp;
 		}
 
-		faces.push_back( ivector_type( indx[ 0 ], indx[ 1 ], indx[ 2 ] ) );
+		if( indx[ 0 ] != indx[ 1 ] && indx[ 1 ] != indx[ 2 ] && indx[ 2 ] != indx[ 0 ] )
+		{
+			faces.push_back( ivector_type( indx[ 0 ], indx[ 1 ], indx[ 2 ] ) );
+		}
 	}
 
 	vertices.clear( );
