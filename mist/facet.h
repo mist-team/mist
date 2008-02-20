@@ -865,13 +865,13 @@ namespace __mc__
 		if( eid != EID )
 		{
 			const edge_type &e = edges[ eid ];
-			if( e.v1 == vs )
+			if( e.v1 == vs && eid1 == 0 )
 			{
 				// vs へ接続する辺
 				eid1 = eid;
 				vv = e.v2;
 			}
-			else if( e.v2 == vs )
+			else if( e.v2 == vs && eid1 == 0 )
 			{
 				// vs へ接続する辺
 				eid1 = eid;
@@ -883,11 +883,15 @@ namespace __mc__
 				eid2 = eid;
 				vv = e.v2;
 			}
-			else
+			else if( e.v2 == vt )
 			{
 				// vt へ接続する辺
 				eid2 = eid;
 				vv = e.v1;
+			}
+			else
+			{
+				std::cerr << "Incorrect edge pairs." << std::endl;
 			}
 		}
 	}
@@ -912,6 +916,13 @@ namespace __mc__
 		const face_type &f2 = faces[ EDGE.fid2 ];
 
 		eid[ 0 ] = eid[ 1 ] = eid[ 2 ] = eid[ 3 ] = 0;
+
+		const edge_type &e11 = edges[ f1.eid1 < 0 ? -f1.eid1 : f1.eid1 ];
+		const edge_type &e12 = edges[ f1.eid2 < 0 ? -f1.eid2 : f1.eid2 ];
+		const edge_type &e13 = edges[ f1.eid3 < 0 ? -f1.eid3 : f1.eid3 ];
+		const edge_type &e21 = edges[ f2.eid1 < 0 ? -f2.eid1 : f2.eid1 ];
+		const edge_type &e22 = edges[ f2.eid2 < 0 ? -f2.eid2 : f2.eid2 ];
+		const edge_type &e23 = edges[ f2.eid3 < 0 ? -f2.eid3 : f2.eid3 ];
 
 		// 面1をチェック
 		compute_edge_connections( edges, EID, f1.eid1 < 0 ? -f1.eid1 : f1.eid1, vs, vt, vl, eid[ 0 ], eid[ 1 ] );
@@ -1252,6 +1263,21 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		// 辺を削除する
 		edge_map.erase( mite );
 
+		// 処理対象の辺の登録と，テーブル内からの削除等を行う
+		difference_type vs = EDGE.v1;
+		difference_type vt = EDGE.v2;
+		difference_type vl, vr;
+		difference_type eid[ 4 ];
+		if( !__mc__::compute_edge_connections( faces, edges, EID, vs, vt, vl, vr, eid ) )
+		{
+			std::cerr << "Unknown error occured!!" << std::endl;
+			break;
+		}
+		else if( vl == vr )
+		{
+			continue;
+		}
+
 		// 面を削除する
 		face_type &f1 = faces[ EDGE.fid1 ];
 		face_type &f2 = faces[ EDGE.fid2 ];
@@ -1266,17 +1292,6 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		matrix_type QQQ = Q[ EDGE.v1 ] + Q[ EDGE.v2 ];
 		Q[ EDGE.v1 ] = QQQ;
 		Q[ EDGE.v2 ] = QQQ;
-
-		// 処理対象の辺の登録と，テーブル内からの削除等を行う
-		difference_type vs = EDGE.v1;
-		difference_type vt = EDGE.v2;
-		difference_type vl, vr;
-		difference_type eid[ 4 ];
-		if( !__mc__::compute_edge_connections( faces, edges, EID, vs, vt, vl, vr, eid ) )
-		{
-			std::cerr << "Unknown error occured!!" << std::endl;
-			break;
-		}
 
 		std::set< difference_type > emap;
 		{
@@ -1375,6 +1390,68 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 				edge_map.insert( *ite );
 			}
 		}
+
+#if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 3
+		for( vertex_edge_map_type::iterator ite = vertex_edge_map.begin( ) ; ite != vertex_edge_map.end( ) ; ++ite )
+		{
+			edge_type &e = edges[ ite->second ];
+			if( e.fid1 > 0 && !faces[ e.fid1 ].flag )
+			{
+				std::cerr << "Edge " << ite->second << " connects to disappeared face." << std::endl;
+			}
+			if( e.fid2 > 0 && !faces[ e.fid2 ].flag )
+			{
+				std::cerr << "Edge " << ite->second << " connects to disappeared face." << std::endl;
+			}
+		}
+
+		// 面の接続関係が正しく保たれているかどうかをチェックする
+		for( size_type i = 1 ; i < faces.size( ) ; i++ )
+		{
+			const face_type &f = faces[ i ];
+			if( f.flag )
+			{
+				const difference_type eid1 = f.eid1 < 0 ? -f.eid1 : f.eid1;
+				const difference_type eid2 = f.eid2 < 0 ? -f.eid2 : f.eid2;
+				const difference_type eid3 = f.eid3 < 0 ? -f.eid3 : f.eid3;
+
+				if( eid1 != 0 && edges[ eid1 ].fid1 != i && edges[ eid1 ].fid2 != i )
+				{
+					std::cerr << "Face-edge relationships is broken." << std::endl;
+				}
+				if( eid2 != 0 && edges[ eid2 ].fid1 != i && edges[ eid2 ].fid2 != i )
+				{
+					std::cerr << "Face-edge relationships is broken." << std::endl;
+				}
+				if( eid3 != 0 && edges[ eid3 ].fid1 != i && edges[ eid3 ].fid2 != i )
+				{
+					std::cerr << "Face-edge relationships is broken." << std::endl;
+				}
+
+				if( eid1 * eid2 * eid3 != 0 )
+				{
+					const edge_type &e1 = edges[ eid1 ];
+					const edge_type &e2 = edges[ eid2 ];
+					const edge_type &e3 = edges[ eid3 ];
+					difference_type v11 = f.eid1 < 0 ? e1.v2 : e1.v1;
+					difference_type v12 = f.eid1 < 0 ? e1.v1 : e1.v2;
+					difference_type v21 = f.eid2 < 0 ? e2.v2 : e2.v1;
+					difference_type v22 = f.eid2 < 0 ? e2.v1 : e2.v2;
+					difference_type v31 = f.eid3 < 0 ? e3.v2 : e3.v1;
+					difference_type v32 = f.eid3 < 0 ? e3.v1 : e3.v2;
+
+					if( v12 == v21 && v22 == v31 && v32 == v11 )
+					{
+					}
+					else
+					{
+						std::cerr << "Face-edge connection is broken." << std::endl;
+						std::cout << "(" << v11 << ", " << v12 << ") -> (" << v21 << ", " << v22 << ") -> (" << v31 << ", " << v32 << ")" << std::endl;
+					}
+				}
+			}
+		}
+#endif
 
 #if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ == 2
 		for( size_type i = 1 ; i < faces.size( ) ; i++ )
