@@ -1062,6 +1062,10 @@ namespace __mc__
 //!
 //! 共通して使用する頂点を全てまとめた頂点集合を作成する．
 //!
+//! - 参考文献
+//!   - Michael Garland and Paul S. Heckbert, "Surface Simplification Using Quadric Error Metrics," Proceedings of SIGGRAPH 97, pp.209-216, 1997
+//!   - Michael Garland and Paul S. Heckbert, "Simplifying Surfaces with Color and Texture using Quadric Error Metrics," Proceedings of IEEE Visualization conference , pp.263-269, 1998
+//!
 //! @param[in]  facets           … 3角形パッチの集合
 //! @param[in]  number_of_facets … 削減後の3角形パッチ数
 //! @param[in]  eps              … 同一頂点と判定される頂点の距離
