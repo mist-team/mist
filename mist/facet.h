@@ -188,6 +188,7 @@ public:
 	}
 };
 
+
 /// @brief 3角形パッチの集合から頂点集合と三角形パッチを構成するインデックス集合に変換する
 //!
 //! 共通して使用する頂点を全てまとめた頂点集合を作成する．
@@ -220,6 +221,8 @@ inline bool convert_to_vertex_face_list( const facet_list< T > &facets, std::vec
 	faces.clear( );
 	faces.reserve( facets.size( ) );
 
+	double SCALE = 0.1 / eps;
+
 	// データをテーブルに登録する
 	for( size_type i = 0 ; i < facets.size( ) ; i++ )
 	{
@@ -230,9 +233,9 @@ inline bool convert_to_vertex_face_list( const facet_list< T > &facets, std::vec
 		for( size_type j = 0 ; j < 3 ; j++ )
 		{
 			const vector_type &vec = v[ j ];
-			difference_type k1 = static_cast< difference_type > ( vec.x * 100000.0 );
-			difference_type k2 = static_cast< difference_type > ( vec.y * 100000.0 );
-			difference_type k3 = static_cast< difference_type > ( vec.z * 100000.0 );
+			difference_type k1 = static_cast< difference_type > ( vec.x * SCALE );
+			difference_type k2 = static_cast< difference_type > ( vec.y * SCALE );
+			difference_type k3 = static_cast< difference_type > ( vec.z * SCALE );
 			difference_type key = k1 ^ k2 ^ k3;
 
 			typename map_type::iterator ite = table.find( key );
@@ -450,9 +453,13 @@ namespace __mc__
 				{
 					edge_lists.push_back( edge_type( f.x, f.y, i ) );
 				}
-				else
+				else if( f.y < f.x )
 				{
 					edge_lists.push_back( edge_type( f.y, f.x, i ) );
+				}
+				else
+				{
+					std::cerr << "Incorrect edge is found." << std::endl;
 				}
 			}
 			else if( edge_lists[ ite->second ].fid2 == 0 )
@@ -476,9 +483,13 @@ namespace __mc__
 				{
 					edge_lists.push_back( edge_type( f.y, f.z, i ) );
 				}
-				else
+				else if( f.z < f.y )
 				{
 					edge_lists.push_back( edge_type( f.z, f.y, i ) );
+				}
+				else
+				{
+					std::cerr << "Incorrect edge is found." << std::endl;
 				}
 			}
 			else if( edge_lists[ ite->second ].fid2 == 0 )
@@ -502,9 +513,13 @@ namespace __mc__
 				{
 					edge_lists.push_back( edge_type( f.z, f.x, i ) );
 				}
-				else
+				else if( f.x < f.z )
 				{
 					edge_lists.push_back( edge_type( f.x, f.z, i ) );
+				}
+				else
+				{
+					std::cerr << "Incorrect edge is found." << std::endl;
 				}
 			}
 			else if( edge_lists[ ite->second ].fid2 == 0 )
@@ -561,11 +576,6 @@ namespace __mc__
 			{
 				edge_type &e = edge_lists[ ite->second ];
 				f.eid3 = F.z == e.v1 ? ite->second : -ite->second;
-
-				if( e.fid1 != i )
-				{
-					e.fid2 = i;
-				}
 			}
 
 			face_lists.push_back( f );
@@ -987,12 +997,19 @@ namespace __mc__
 			return( true );
 		}
 
+		return( false );
+
 		// 処理対象の辺の登録と，テーブル内からの削除等を行う
 		difference_type vs = EDGE.v1;
 		difference_type vt = EDGE.v2;
 		difference_type vl, vr;
 		difference_type eid[ 4 ];
 		if( !__mc__::compute_edge_connections( faces, edges, EID, vs, vt, vl, vr, eid ) )
+		{
+			return( true );
+		}
+
+		if( vl == vr )
 		{
 			return( true );
 		}
@@ -1109,11 +1126,12 @@ namespace __mc__
 //!
 //! @param[in]  facets           … 3角形パッチの集合
 //! @param[in]  number_of_facets … 削減後の3角形パッチ数
+//! @param[in]  eps              … 同一頂点と判定される頂点の距離
 //!
-//! @return 頂点集合とインデックス集合の作成に成功したかどうか
+//! @return 3角形パッチす数の削減に成功したかどうか
 //!
 template < class T >
-inline bool surface_simplification( facet_list< T > &facets, size_t number_of_facets )
+inline bool surface_simplification( facet_list< T > &facets, size_t number_of_facets, const double eps = 1.0e-3 )
 {
 	typedef typename facet_list< T >::facet_type   facet_type;
 	typedef typename facet_type::size_type         size_type;
@@ -1132,7 +1150,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 	edge_list_type              edges;
 
 	// 頂点と面のリストに変換する
-	if( !convert_to_vertex_face_list( facets, vertices, face_ids ) )
+	if( !convert_to_vertex_face_list( facets, vertices, face_ids, eps ) )
 	{
 		return( false );
 	}
@@ -1222,6 +1240,11 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 			__mc__::update_edge( vertices, Q, edges[ i ] );
 			edge_map.insert( i );
 		}
+		else
+		{
+			std::cout << "Can't remove edge (" << edges[ i ].fid1 << ", " << edges[ i ].fid2 << ")" << std::endl;
+			faces[ edges[ i ].fid1 ].flag = false;
+		}
 	}
 
 	size_t num_facets = faces.size( ) - 1;
@@ -1272,10 +1295,6 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		{
 			std::cerr << "Unknown error occured!!" << std::endl;
 			break;
-		}
-		else if( vl == vr )
-		{
-			continue;
 		}
 
 		// 面を削除する
@@ -1391,7 +1410,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 			}
 		}
 
-#if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 3
+#if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 2
 		for( vertex_edge_map_type::iterator ite = vertex_edge_map.begin( ) ; ite != vertex_edge_map.end( ) ; ++ite )
 		{
 			edge_type &e = edges[ ite->second ];
@@ -1453,7 +1472,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		}
 #endif
 
-#if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ == 2
+#if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ == 3
 		for( size_type i = 1 ; i < faces.size( ) ; i++ )
 		{
 			const face_type &f = faces[ i ];
@@ -1489,7 +1508,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 			}
 		}
 		std::cout << std::endl;
-#elif defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 3
+#elif defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 4
 		for( size_type i = 1 ; i < faces.size( ) ; i++ )
 		{
 			const face_type &f = faces[ i ];

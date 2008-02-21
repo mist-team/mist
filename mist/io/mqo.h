@@ -781,6 +781,9 @@ namespace __mqo_controller__
 						for( size_type i = 0 ; i < vertices.size( ) ; i++ )
 						{
 							const vector_type &f = vertices[ i ];
+							double fx = ( f.x * 1e4 + 0.5 ) * 1e-4;
+							double fy = ( f.y * 1e4 + 0.5 ) * 1e-4;
+							double fz = ( f.z * 1e4 + 0.5 ) * 1e-4;
 							fprintf( fp, "\t\t%.4f %.4f %.4f\r\n", f.x, f.y, f.z );
 						}
 						fprintf( fp, "\t}\r\n" );
