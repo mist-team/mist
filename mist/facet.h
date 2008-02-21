@@ -319,13 +319,12 @@ namespace __mc__
 		difference_type v2;
 		difference_type fid1;
 		difference_type fid2;
-		difference_type key;
 		vector_type     v;
 		double          err;
 
-		__edge__( ) : fid1( 0 ), fid2( 0 ), key( -1 ), err( 0.0 ){ }
-		__edge__( difference_type vv1, difference_type vv2 ) : v1( vv1 ), v2( vv2 ), fid1( 0 ), fid2( 0 ), key( -1 ), err( 0.0 ) { }
-		__edge__( difference_type vv1, difference_type vv2, difference_type id1 ) : v1( vv1 ), v2( vv2 ), fid1( id1 ), fid2( 0 ), key( -1 ), err( 0.0 ) { }
+		__edge__( ) : fid1( 0 ), fid2( 0 ){ }
+		__edge__( difference_type vv1, difference_type vv2 ) : v1( vv1 ), v2( vv2 ), fid1( 0 ), fid2( 0 ), err( 0.0 ) { }
+		__edge__( difference_type vv1, difference_type vv2, difference_type id1 ) : v1( vv1 ), v2( vv2 ), fid1( id1 ), fid2( 0 ), err( 0.0 ) { }
 
 		bool operator <( const __edge__ &v ) const
 		{
@@ -591,7 +590,7 @@ namespace __mc__
 	}
 
 	template < class T >
-	void contract_edges( std::vector< __edge__< T > > &edges, std::vector< __face__ > &faces, __face__::difference_type eid0, __face__::difference_type eid1, __face__::difference_type EID, __face__::difference_type FID )
+	void contract_edges( std::vector< __edge__< T > > &edges, std::vector< __face__ > &faces, __face__::difference_type eid0, __face__::difference_type eid1, __face__::difference_type EID, __face__::difference_type FID1, __face__::difference_type FID2 )
 	{
 		typedef __edge__< T > edge_type;
 		typedef __face__ face_type;
@@ -602,14 +601,14 @@ namespace __mc__
 		edge_type &e0 = edges[ eid0 ];
 		edge_type &e1 = edges[ eid1 ];
 
-		if( e0.fid1 == FID )
+		if( e0.fid1 == FID1 )
 		{
-			if( e1.fid1 == FID )
+			if( e1.fid1 == FID2 )
 			{
 				fid2 = e1.fid2;
 				e0.fid1 = e1.fid2;
 			}
-			else if( e1.fid2 == FID )
+			else if( e1.fid2 == FID2 )
 			{
 				fid2 = e1.fid1;
 				e0.fid1 = e1.fid1;
@@ -620,14 +619,14 @@ namespace __mc__
 			}
 
 		}
-		else if( e0.fid2 == FID )
+		else if( e0.fid2 == FID1 )
 		{
-			if( e1.fid1 == FID )
+			if( e1.fid1 == FID2 )
 			{
 				fid2 = e1.fid2;
 				e0.fid2 = e1.fid2;
 			}
-			else if( e1.fid2 == FID )
+			else if( e1.fid2 == FID2 )
 			{
 				fid2 = e1.fid1;
 				e0.fid2 = e1.fid1;
@@ -997,8 +996,6 @@ namespace __mc__
 			return( true );
 		}
 
-		return( false );
-
 		// 処理対象の辺の登録と，テーブル内からの削除等を行う
 		difference_type vs = EDGE.v1;
 		difference_type vt = EDGE.v2;
@@ -1031,28 +1028,6 @@ namespace __mc__
 		{
 			return( true );
 		}
-
-		//std::set< difference_type > vertex_list;
-
-		//{
-		//	const_iterator ite = vertex_edge_map.find( EDGE.v1 );
-		//	if( ite != vertex_edge_map.end( ) )
-		//	{
-		//		const_iterator upper = vertex_edge_map.upper_bound( EDGE.v1 );
-		//		for( ; ite != upper ; ++ite )
-		//		{
-		//			if( ite->second != EID )
-		//			{
-		//				const edge_type &e = edges[ ite->second ];
-		//				if( ( e.v1 == EDGE.v1 && e.v2 == EDGE.v2 ) || ( e.v1 == EDGE.v2 && e.v2 == EDGE.v1 ) )
-		//				{
-		//					return( true );
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
-
 
 		std::set< difference_type > vertex_list;
 
@@ -1094,7 +1069,7 @@ namespace __mc__
 						const edge_type &e = edges[ ite->second ];
 						if( e.fid1 != EDGE.fid1 && e.fid2 != EDGE.fid2 && e.fid1 != EDGE.fid2 && e.fid2 != EDGE.fid1 )
 						{
-							if( e.v1 != EDGE.v1 )
+							if( e.v1 != EDGE.v2 )
 							{
 								if( vertex_list.find( e.v1 ) != vertex_list.end( ) )
 								{
@@ -1220,31 +1195,22 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 	typedef std::pair< size_type, difference_type > vertex_edge_map_pair_type;
 
 	vertex_edge_map_type vertex_edge_map;
-	for( size_type i = 1 ; i < edges.size( ) ; i++ )
-	{
-		edge_type &e = edges[ i ];
-		e.key = __mc__::create_key( e.v1, e.v2, vertices.size( ) );
-
-		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v1, i ) );
-		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v2, i ) );
-	}
-
 	edge_compare_type ecomp( edges );
 	edge_map_type edge_map( ecomp );
 	for( size_type i = 1 ; i < edges.size( ) ; i++ )
 	{
+		edge_type &e = edges[ i ];
+
 		// 削除対象にできるかどうかを判定
-		if( !__mc__::check_topology_change( vertex_edge_map, faces, edges, i ) )
+		if( !__mc__::is_sharp_edge( edges[ i ] ) )
 		{
 			// 各頂点の誤差評価を行う
 			__mc__::update_edge( vertices, Q, edges[ i ] );
 			edge_map.insert( i );
 		}
-		else
-		{
-			std::cout << "Can't remove edge (" << edges[ i ].fid1 << ", " << edges[ i ].fid2 << ")" << std::endl;
-			faces[ edges[ i ].fid1 ].flag = false;
-		}
+
+		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v1, i ) );
+		vertex_edge_map.insert( vertex_edge_map_pair_type( e.v2, i ) );
 	}
 
 	size_t num_facets = faces.size( ) - 1;
@@ -1258,15 +1224,19 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		{
 			const edge_type &e = edges[ *ite ];
 
-			if( __mc__::check_topology_change( vertex_edge_map, faces, edges, *ite ) )
+			if( __mc__::is_sharp_edge( e ) )
 			{
-				// 削除対象にできない
 				ite = edge_map.erase( ite );
+			}
+			else if( !__mc__::check_topology_change( vertex_edge_map, faces, edges, *ite ) )
+			{
+				// 削除可能な辺を発見
+				mite = ite;
+				break;
 			}
 			else
 			{
-				mite = ite;
-				break;
+				++ite;
 			}
 		}
 
@@ -1311,6 +1281,10 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		matrix_type QQQ = Q[ EDGE.v1 ] + Q[ EDGE.v2 ];
 		Q[ EDGE.v1 ] = QQQ;
 		Q[ EDGE.v2 ] = QQQ;
+
+		// 辺の付け替えを行う
+		__mc__::contract_edges( edges, faces, eid[ 0 ], eid[ 1 ], EID, EDGE.fid1, EDGE.fid1 );
+		__mc__::contract_edges( edges, faces, eid[ 3 ], eid[ 2 ], EID, EDGE.fid2, EDGE.fid2 );
 
 		std::set< difference_type > emap;
 		{
@@ -1390,21 +1364,16 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 			}
 		}
 
-		// 辺の付け替えを行う
-		__mc__::contract_edges( edges, faces, eid[ 0 ], eid[ 1 ], EID, EDGE.fid1 );
-		__mc__::contract_edges( edges, faces, eid[ 3 ], eid[ 2 ], EID, EDGE.fid2 );
-
 		// 各頂点を共有するエッジを更新する
 		// ただし，統合して領域の端に接した場合は以降の対象から除く
 		for( std::set< difference_type >::iterator ite = emap.begin( ) ; ite != emap.end( ) ; ++ite )
 		{
 			__mc__::remove_edge_from_set( edge_map, *ite );
-			if( __mc__::check_topology_change( vertex_edge_map, faces, edges, *ite ) )
+
+			// 縁に接しているかどうかを判定する
+			if( !__mc__::is_sharp_edge( edges[ *ite ] ) )
 			{
-				// 処理対象の枝からも除外する
-			}
-			else
-			{
+				// 各辺の評価値を更新する
 				__mc__::update_edge( vertices, Q, edges[ *ite ] );
 				edge_map.insert( *ite );
 			}
@@ -1421,6 +1390,20 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 			if( e.fid2 > 0 && !faces[ e.fid2 ].flag )
 			{
 				std::cerr << "Edge " << ite->second << " connects to disappeared face." << std::endl;
+			}
+
+			difference_type vs = e.v1;
+			difference_type vt = e.v2;
+			difference_type vl, vr;
+			difference_type eid[ 4 ];
+			if( !__mc__::compute_edge_connections( faces, edges, ite->second, vs, vt, vl, vr, eid ) )
+			{
+				std::cerr << "Edge " << ite->second << " is invalid." << std::endl;
+			}
+
+			if( vl == vr )
+			{
+				std::cerr << "Edge " << ite->second << " share duplicated faces." << std::endl;
 			}
 		}
 
