@@ -796,39 +796,29 @@ namespace __mc__
 		QQQ( 3, 2 ) = 0;
 		QQQ( 3, 3 ) = 1;
 
-		//if( inv4x4( QQQ ) )
-		//{
-		//	matrix_type V = QQQ * matrix_type::_41( 0, 0, 0, 1.0 );
-		//	edge.v   = vector_type( V[ 0 ], V[ 1 ], V[ 2 ] );
-		//	edge.err = ( V.t( ) * QQ * V )[ 0 ];
-		//}
-		//else
+		edge.err = 1.0e300;
+
+		if( inv4x4( QQQ ) )
 		{
-			vector_type v1 = vertices[ edge.v1 ];
-			vector_type v2 = vertices[ edge.v2 ];
-			vector_type v3 = ( v1 + v2 ) * 0.5;
-			matrix_type V1 = matrix_type::_41( v1.x, v1.y, v1.z, 1.0 );
-			matrix_type V2 = matrix_type::_41( v2.x, v2.y, v2.z, 1.0 );
-			matrix_type V3 = matrix_type::_41( v3.x, v3.y, v3.z, 1.0 );
+			matrix_type V = QQQ * matrix_type::_41( 0, 0, 0, 1.0 );
+			edge.v   = vector_type( V[ 0 ], V[ 1 ], V[ 2 ] );
+			edge.err = ( V.t( ) * QQ * V )[ 0 ];
+		}
 
-			double err1 = ( V1.t( ) * QQ * V1 )[ 0 ];
-			double err2 = ( V2.t( ) * QQ * V2 )[ 0 ];
-			double err3 = ( V3.t( ) * QQ * V3 )[ 0 ];
+		vector_type vs = vertices[ edge.v1 ];
+		vector_type ve = vertices[ edge.v2 ];
+		edge.err = 1.0e300;
 
-			if( err1 < err2 && err1 < err3 )
+		for( double s = 0.0 ; s <= 1.0 ; s += 0.125 )
+		{
+			vector_type v = vs + ( ve - vs ) * s;
+			matrix_type V = matrix_type::_41( v.x, v.y, v.z, 1.0 );
+			double err = ( V.t( ) * QQ * V )[ 0 ];
+
+			if( err < edge.err )
 			{
-				edge.v   = v1;
-				edge.err = err1;
-			}
-			else if( err2 < err1 && err2 < err3 )
-			{
-				edge.v   = v2;
-				edge.err = err2;
-			}
-			else
-			{
-				edge.v   = v3;
-				edge.err = err3;
+				edge.v   = v;
+				edge.err = err;
 			}
 		}
 	}
@@ -1277,14 +1267,14 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		vertices[ EDGE.v1 ] = EDGE.v;
 		vertices[ EDGE.v2 ] = EDGE.v;
 
+		// 辺の付け替えを行う
+		__mc__::contract_edges( edges, faces, eid[ 0 ], eid[ 1 ], EID, EDGE.fid1, EDGE.fid1 );
+		__mc__::contract_edges( edges, faces, eid[ 3 ], eid[ 2 ], EID, EDGE.fid2, EDGE.fid2 );
+
 		// 誤差計算行列を更新する
 		matrix_type QQQ = Q[ EDGE.v1 ] + Q[ EDGE.v2 ];
 		Q[ EDGE.v1 ] = QQQ;
 		Q[ EDGE.v2 ] = QQQ;
-
-		// 辺の付け替えを行う
-		__mc__::contract_edges( edges, faces, eid[ 0 ], eid[ 1 ], EID, EDGE.fid1, EDGE.fid1 );
-		__mc__::contract_edges( edges, faces, eid[ 3 ], eid[ 2 ], EID, EDGE.fid2, EDGE.fid2 );
 
 		std::set< difference_type > emap;
 		{
