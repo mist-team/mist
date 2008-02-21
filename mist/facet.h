@@ -715,7 +715,7 @@ namespace __mc__
 		double detA = a11 * _22x33_23x32_ + a13 * _21x32_22x31_ + a12 * _23x31_21x33_;
 
 		// 逆行列が存在する場合のも逆行列を計算する
-		if( std::abs( detA ) < eps )
+		if( std::abs( detA ) > eps )
 		{
 			// 各要素の値を計算
 			double A11 = _22x33_23x32_;
@@ -773,7 +773,7 @@ namespace __mc__
 		if( inv3x3( QQQ ) )
 		{
 			matrix_type V = QQQ * matrix_type::_31( QQ( 0, 3 ), QQ( 1, 3 ), QQ( 2, 3 ) );
-			edge.v   = vector_type( V[ 0 ], V[ 1 ], V[ 2 ] );
+			edge.v   = vector_type( -V[ 0 ], -V[ 1 ], -V[ 2 ] );
 			edge.err = compute_vertex_error( QQ, edge.v );
 		}
 		else
@@ -1121,38 +1121,28 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		const difference_type v1 = f.eid1 < 0 ? edges[ -f.eid1 ].v2 : edges[ f.eid1 ].v1;
 		const difference_type v2 = f.eid2 < 0 ? edges[ -f.eid2 ].v2 : edges[ f.eid2 ].v1;
 		const difference_type v3 = f.eid3 < 0 ? edges[ -f.eid3 ].v2 : edges[ f.eid3 ].v1;
-		const vector_type  &p1 = vertices[ v1 ];
-		const vector_type  &p2 = vertices[ v2 ];
-		const vector_type  &p3 = vertices[ v3 ];
-		const vector_type  &n  = facets[ i - 1 ].normal;
+		const vector_type &p1 = vertices[ v1 ];
+		const vector_type &p2 = vertices[ v2 ];
+		const vector_type &p3 = vertices[ v3 ];
+		const vector_type  p  = ( p1 + p2 + p3 ) / 3.0;
+		const vector_type &n = facets[ i - 1 ].normal;
 
 		double a = n.x;
 		double b = n.y;
 		double c = n.z;
+		double d = -( a * p.x + b * p.y + c * p.z );
 
-		{
-			double d = -( a * p1.x + b * p1.y + c * p1.z );
-			Q[ v1 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
-										 a * b, b * b, b * c, b * d,
-										 a * c, b * c, c * c, c * d,
-										 a * d, b * d, c * d, d * d );
-		}
+		matrix_type QQ = matrix_type::_44( a * a, a * b, a * c, a * d,
+										   a * b, b * b, b * c, b * d,
+										   a * c, b * c, c * c, c * d,
+										   a * d, b * d, c * d, d * d );
 
-		{
-			double d = -( a * p2.x + b * p2.y + c * p2.z );
-			Q[ v2 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
-										 a * b, b * b, b * c, b * d,
-										 a * c, b * c, c * c, c * d,
-										 a * d, b * d, c * d, d * d );
-		}
+		//double area = ( ( p2 - p1 ).outer( p3 - p1 ) ).length( ) * 0.5;
+		//QQ *= area;
 
-		{
-			double d = -( a * p3.x + b * p3.y + c * p3.z );
-			Q[ v3 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
-										 a * b, b * b, b * c, b * d,
-										 a * c, b * c, c * c, c * d,
-										 a * d, b * d, c * d, d * d );
-		}
+		Q[ v1 ] += QQ;
+		Q[ v2 ] += QQ;
+		Q[ v3 ] += QQ;
 	}
 
 	// 頂点とエッジのテーブルを作成する
@@ -1217,7 +1207,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		edge_type &EDGE = edges[ EID ];
 
 #if defined( __SHOW_FACET_DEBUG_INFORMATION__ ) && __SHOW_FACET_DEBUG_INFORMATION__ >= 1
-		std::cout << "Contraction [" << num_facets << "] : " << EDGE.v2 << " -> " << EDGE.v1 << std::endl;
+		std::cout << "Contraction [" << num_facets << "] : #" << EID << " <" << EDGE.v2 << " -> " << EDGE.v1 << ">" << std::endl;
 #endif
 
 		// 辺を削除する
