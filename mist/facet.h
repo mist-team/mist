@@ -698,81 +698,46 @@ namespace __mc__
 	}
 
 	template < class T, class Allocator >
-	inline bool inv4x4( matrix< T, Allocator > &a )
+	inline bool inv3x3( matrix< T, Allocator > &a, const double eps = 1.0e-6 )
 	{
 		typedef typename matrix< T, Allocator >::value_type value_type;
 
-		double a11 = a( 0, 0 ), a12 = a( 0, 1 ), a13 = a( 0, 2 ), a14 = a( 0, 3 );
-		double a21 = a( 1, 0 ), a22 = a( 1, 1 ), a23 = a( 1, 2 ), a24 = a( 1, 3 );
-		double a31 = a( 2, 0 ), a32 = a( 2, 1 ), a33 = a( 2, 2 ), a34 = a( 2, 3 );
-		double a41 = a( 3, 0 ), a42 = a( 3, 1 ), a43 = a( 3, 2 ), a44 = a( 3, 3 );
+		double a11 = a( 0, 0 ), a12 = a( 0, 1 ), a13 = a( 0, 2 );
+		double a21 = a( 1, 0 ), a22 = a( 1, 1 ), a23 = a( 1, 2 );
+		double a31 = a( 2, 0 ), a32 = a( 2, 1 ), a33 = a( 2, 2 );
 
 		// ã§í Ç≈óòópÇ∑ÇÈåWêîÇÃåvéZ
-		double _33x44_34x43_ = a33 * a44 - a34 * a43;
-		double _34x42_32x44_ = a34 * a42 - a32 * a44;
-		double _32x43_33x42_ = a32 * a43 - a33 * a42;
-		double _31x44_34x41_ = a31 * a44 - a34 * a41;
-		double _33x41_31x43_ = a33 * a41 - a31 * a43;
-		double _31x42_32x41_ = a31 * a42 - a32 * a41;
+		double _22x33_23x32_ = a22 * a33 - a23 * a32;
+		double _21x32_22x31_ = a21 * a32 - a22 * a31;
+		double _23x31_21x33_ = a23 * a31 - a21 * a33;
 
 		// çsóÒéÆÇåvéZ
-		double detA = a11 * ( a22 * _33x44_34x43_ + a23 * _34x42_32x44_ + a24 * _32x43_33x42_ )
-					- a12 * ( a21 * _33x44_34x43_ - a23 * _31x44_34x41_ - a24 * _33x41_31x43_ )
-					- a13 * ( a21 * _34x42_32x44_ + a22 * _31x44_34x41_ - a24 * _31x42_32x41_ )
-					- a14 * ( a21 * _32x43_33x42_ + a22 * _33x41_31x43_ + a23 * _31x42_32x41_ );
+		double detA = a11 * _22x33_23x32_ + a13 * _21x32_22x31_ + a12 * _23x31_21x33_;
 
 		// ãtçsóÒÇ™ë∂ç›Ç∑ÇÈèÍçáÇÃÇ‡ãtçsóÒÇåvéZÇ∑ÇÈ
-		if( detA != 0 )
+		if( std::abs( detA ) < eps )
 		{
-			// ã§í Ç≈óòópÇ∑ÇÈåWêîÇÃåvéZ
-			double _23x44_24x43_ = a23 * a44 - a24 * a43;
-			double _24x42_22x44_ = a24 * a42 - a22 * a44;
-			double _22x43_23x42_ = a22 * a43 - a23 * a42;
-			double _24x33_23x34_ = a24 * a33 - a23 * a34;
-			double _22x34_24x32_ = a22 * a34 - a24 * a32;
-			double _23x32_22x33_ = a23 * a32 - a22 * a33;
-			double _21x44_24x41_ = a21 * a44 - a24 * a41;
-			double _23x41_21x43_ = a23 * a41 - a21 * a43;
-			double _24x31_21x34_ = a24 * a31 - a21 * a34;
-			double _21x33_23x31_ = a21 * a33 - a23 * a31;
-			double _21x42_22x41_ = a21 * a42 - a22 * a41;
-			double _22x31_21x32_ = a22 * a31 - a21 * a32;
-
 			// äeóvëfÇÃílÇåvéZ
-			double A11 =  a22 * _33x44_34x43_ + a23 * _34x42_32x44_ + a24 * _32x43_33x42_;
-			double A12 = -a12 * _33x44_34x43_ - a13 * _34x42_32x44_ - a14 * _32x43_33x42_;
-			double A13 =  a12 * _23x44_24x43_ + a13 * _24x42_22x44_ + a14 * _22x43_23x42_;
-			double A14 =  a12 * _24x33_23x34_ + a13 * _22x34_24x32_ + a14 * _23x32_22x33_;
-			double A21 = -a21 * _33x44_34x43_ + a23 * _31x44_34x41_ + a24 * _33x41_31x43_;
-			double A22 =  a11 * _33x44_34x43_ - a13 * _31x44_34x41_ - a14 * _33x41_31x43_;
-			double A23 = -a11 * _23x44_24x43_ + a13 * _21x44_24x41_ + a14 * _23x41_21x43_;
-			double A24 = -a11 * _24x33_23x34_ + a13 * _24x31_21x34_ + a14 * _21x33_23x31_;
-			double A31 = -a21 * _34x42_32x44_ - a22 * _31x44_34x41_ + a24 * _31x42_32x41_;
-			double A32 =  a11 * _34x42_32x44_ + a12 * _31x44_34x41_ - a14 * _31x42_32x41_;
-			double A33 = -a11 * _24x42_22x44_ - a12 * _21x44_24x41_ + a14 * _21x42_22x41_;
-			double A34 = -a11 * _22x34_24x32_ - a12 * _24x31_21x34_ + a14 * _22x31_21x32_;
-			double A41 = -a21 * _32x43_33x42_ - a22 * _33x41_31x43_ - a23 * _31x42_32x41_;
-			double A42 =  a11 * _32x43_33x42_ + a12 * _33x41_31x43_ + a13 * _31x42_32x41_;
-			double A43 = -a11 * _22x43_23x42_ - a12 * _23x41_21x43_ - a13 * _21x42_22x41_;
-			double A44 = -a11 * _23x32_22x33_ - a12 * _21x33_23x31_ - a13 * _22x31_21x32_;
+			double A11 = _22x33_23x32_;
+			double A12 = a13 * a32 - a12 * a33;
+			double A13 = a12 * a23 - a13 * a22;
+			double A21 = _23x31_21x33_;
+			double A22 = a11 * a33 - a13 * a31;
+			double A23 = a13 * a21 - a11 * a23;
+			double A31 = _21x32_22x31_;
+			double A32 = a12 * a31 - a11 * a32;
+			double A33 = a11 * a22 - a12 * a21;
 
 			double _1_detA = 1.0 / detA;
 			a( 0, 0 ) = static_cast< value_type >( A11 * _1_detA );
 			a( 0, 1 ) = static_cast< value_type >( A12 * _1_detA );
 			a( 0, 2 ) = static_cast< value_type >( A13 * _1_detA );
-			a( 0, 3 ) = static_cast< value_type >( A14 * _1_detA );
 			a( 1, 0 ) = static_cast< value_type >( A21 * _1_detA );
 			a( 1, 1 ) = static_cast< value_type >( A22 * _1_detA );
 			a( 1, 2 ) = static_cast< value_type >( A23 * _1_detA );
-			a( 1, 3 ) = static_cast< value_type >( A24 * _1_detA );
 			a( 2, 0 ) = static_cast< value_type >( A31 * _1_detA );
 			a( 2, 1 ) = static_cast< value_type >( A32 * _1_detA );
 			a( 2, 2 ) = static_cast< value_type >( A33 * _1_detA );
-			a( 2, 3 ) = static_cast< value_type >( A34 * _1_detA );
-			a( 3, 0 ) = static_cast< value_type >( A41 * _1_detA );
-			a( 3, 1 ) = static_cast< value_type >( A42 * _1_detA );
-			a( 3, 2 ) = static_cast< value_type >( A43 * _1_detA );
-			a( 3, 3 ) = static_cast< value_type >( A44 * _1_detA );
 
 			return( true );
 		}
@@ -780,6 +745,16 @@ namespace __mc__
 		{
 			return( false );
 		}
+	}
+
+	template < class Matrix, class Vector >
+	inline double compute_vertex_error( const Matrix &Q, const Vector &v )
+	{
+		double e0 = Q( 0, 0 ) * v.x + Q( 0, 1 ) * v.y + Q( 0, 2 ) * v.z + Q( 0, 3 );
+		double e1 = Q( 1, 0 ) * v.x + Q( 1, 1 ) * v.y + Q( 1, 2 ) * v.z + Q( 1, 3 );
+		double e2 = Q( 2, 0 ) * v.x + Q( 2, 1 ) * v.y + Q( 2, 2 ) * v.z + Q( 2, 3 );
+		double e3 = Q( 3, 0 ) * v.x + Q( 3, 1 ) * v.y + Q( 3, 2 ) * v.z + Q( 3, 3 );
+		return( e0 * v.x + e1 * v.y + e2 * v.z + e3 );
 	}
 
 	template < class T1, class T2, class Matrix >
@@ -790,35 +765,33 @@ namespace __mc__
 
 		// äeí∏ì_ÇÃåÎç∑ï]âøçsóÒÇãÅÇﬂÇÈ
 		matrix_type QQ = Q[ edge.v1 ] + Q[ edge.v2 ];
-		matrix_type QQQ( QQ );
-		QQQ( 3, 0 ) = 0;
-		QQQ( 3, 1 ) = 0;
-		QQQ( 3, 2 ) = 0;
-		QQQ( 3, 3 ) = 1;
+		matrix_type QQQ = matrix_type::_33( QQ( 0, 0 ), QQ( 0, 1 ), QQ( 0, 2 ),
+											QQ( 1, 0 ), QQ( 1, 1 ), QQ( 1, 2 ),
+											QQ( 2, 0 ), QQ( 2, 1 ), QQ( 2, 2 ) );
 
-		edge.err = 1.0e300;
 
-		if( inv4x4( QQQ ) )
+		if( inv3x3( QQQ ) )
 		{
-			matrix_type V = QQQ * matrix_type::_41( 0, 0, 0, 1.0 );
+			matrix_type V = QQQ * matrix_type::_31( QQ( 0, 3 ), QQ( 1, 3 ), QQ( 2, 3 ) );
 			edge.v   = vector_type( V[ 0 ], V[ 1 ], V[ 2 ] );
-			edge.err = ( V.t( ) * QQ * V )[ 0 ];
+			edge.err = compute_vertex_error( QQ, edge.v );
 		}
-
-		vector_type vs = vertices[ edge.v1 ];
-		vector_type ve = vertices[ edge.v2 ];
-		edge.err = 1.0e300;
-
-		for( double s = 0.0 ; s <= 1.0 ; s += 0.125 )
+		else
 		{
-			vector_type v = vs + ( ve - vs ) * s;
-			matrix_type V = matrix_type::_41( v.x, v.y, v.z, 1.0 );
-			double err = ( V.t( ) * QQ * V )[ 0 ];
+			vector_type vs = vertices[ edge.v1 ];
+			vector_type ve = vertices[ edge.v2 ];
+			edge.err = 1.0e300;
 
-			if( err < edge.err )
+			for( double s = 0.0 ; s <= 1.0 ; s += 0.0625 )
 			{
-				edge.v   = v;
-				edge.err = err;
+				vector_type v = vs + ( ve - vs ) * s;
+				double err = compute_vertex_error( QQ, v );
+
+				if( err < edge.err )
+				{
+					edge.v   = v;
+					edge.err = err;
+				}
 			}
 		}
 	}
