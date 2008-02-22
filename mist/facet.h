@@ -1266,7 +1266,7 @@ namespace __mc__
 //! @return 3角形パッチす数の削減に成功したかどうか
 //!
 template < class T >
-inline bool surface_simplification( facet_list< T > &facets, size_t number_of_facets, bool use_optimal_vertex_placement = true, double threshold_for_triangle_compactness = 0.1, const double eps = 1.0e-3 )
+inline bool surface_simplification( facet_list< T > &facets, size_t number_of_facets, bool use_optimal_vertex_placement = true, double threshold_for_triangle_compactness = 0.0, const double eps = 1.0e-3 )
 {
 	typedef typename facet_list< T >::facet_type   facet_type;
 	typedef typename facet_type::size_type         size_type;
@@ -1317,7 +1317,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		const vector_type  &p1 = vertices[ v1 ];
 		const vector_type  &p2 = vertices[ v2 ];
 		const vector_type  &p3 = vertices[ v3 ];
-		const vector_type  &n  = facets[ i - 1 ].normal;
+		vector_type n = ( ( p2 - p1 ).outer( p3 - p1 ) ).unit( );
 
 		double a = n.x;
 		double b = n.y;
