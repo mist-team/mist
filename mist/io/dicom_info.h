@@ -1279,7 +1279,7 @@ namespace dicom
 
 		// データのシリーズを識別するデータを取得
 		info.study_instance_uid		= find_tag( dicm, 0x0020, 0x000D, info.study_instance_uid );
-		info.series_instance_uid	= find_tag( dicm, 0x0020, 0x000D, info.series_instance_uid );
+		info.series_instance_uid	= find_tag( dicm, 0x0020, 0x000E, info.series_instance_uid );
 		info.series_number			= find_tag( dicm, 0x0020, 0x0011, info.series_number );
 		info.acquisition_number		= find_tag( dicm, 0x0020, 0x0012, info.acquisition_number );
 		info.instance_number		= find_tag( dicm, 0x0020, 0x0013, info.instance_number );
