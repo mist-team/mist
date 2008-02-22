@@ -121,7 +121,7 @@ public:
 	//! 
 	//! 生成時に，自動的にタイマを初期化する．
 	//! 
-	timer( )
+	timer( ) : _start_time( _timeGetTime_( ) )
 	{
 		_start_time = _timeGetTime_( );
 	}
