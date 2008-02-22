@@ -758,7 +758,7 @@ namespace __mc__
 	}
 
 	template < class T1, class T2, class Matrix >
-	inline void update_edge( const std::vector< vector3< T1 > > &vertices, const std::vector< Matrix > &Q, __edge__< T2 > &edge )
+	inline void update_edge( const std::vector< vector3< T1 > > &vertices, const std::vector< Matrix > &Q, __edge__< T2 > &edge, bool use_optimal_vertex_placement )
 	{
 		typedef Matrix matrix_type;
 		typedef vector3< T1 > vector_type;
@@ -770,7 +770,7 @@ namespace __mc__
 											QQ( 2, 0 ), QQ( 2, 1 ), QQ( 2, 2 ) );
 
 
-		if( inv3x3( QQQ ) )
+		if( use_optimal_vertex_placement && inv3x3( QQQ ) )
 		{
 			matrix_type V = QQQ * matrix_type::_31( QQ( 0, 3 ), QQ( 1, 3 ), QQ( 2, 3 ) );
 			edge.v   = vector_type( -V[ 0 ], -V[ 1 ], -V[ 2 ] );
@@ -791,6 +791,197 @@ namespace __mc__
 				{
 					edge.v   = v;
 					edge.err = err;
+				}
+			}
+		}
+	}
+
+	template < class T1, class T2 >
+	inline double compute_penalty( const std::vector< vector3< T1 > > &vertices, const std::vector< __edge__< T2 > > &edges, const __face__ &f, typename __edge__< T2 >::difference_type vid, const typename __edge__< T2 >::vector_type &v )
+	{
+		typedef __face__ face_type;
+		typedef __edge__< T2 > edge_type;
+		typedef typename edge_type::vector_type vector_type;
+		typedef typename edge_type::difference_type difference_type;
+
+		const vector_type &v1 = v;
+		vector_type v2, v3;
+
+		const edge_type &e1 = edges[ f.eid1 < 0 ? -f.eid1 : f.eid1 ];
+		const edge_type &e2 = edges[ f.eid2 < 0 ? -f.eid2 : f.eid2 ];
+		const edge_type &e3 = edges[ f.eid3 < 0 ? -f.eid3 : f.eid3 ];
+		difference_type vid1 = f.eid1 < 0 ? e1.v2 : e1.v1;
+		difference_type vid2 = f.eid2 < 0 ? e2.v2 : e2.v1;
+		difference_type vid3 = f.eid3 < 0 ? e3.v2 : e3.v1;
+
+		if( vid1 == vid )
+		{
+			v2 = vertices[ vid2 ];
+			v3 = vertices[ vid3 ];
+		}
+		else if( vid2 == vid )
+		{
+			v2 = vertices[ vid1 ];
+			v3 = vertices[ vid3 ];
+		}
+		else if( vid3 == vid )
+		{
+			v2 = vertices[ vid1 ];
+			v3 = vertices[ vid2 ];
+		}
+		else
+		{
+			std::cout << "Can't find vertices from the specified face." << std::endl;
+		}
+
+		const double coeff = 6.9282032302755091741097853660235;
+		double w  = 0.5 * ( ( v2 - v1 ).outer( v3 - v1 ) ).length( );
+		double l1 = ( v2 - v1 ).inner( v2 - v1 );
+		double l2 = ( v3 - v2 ).inner( v3 - v2 );
+		double l3 = ( v1 - v3 ).inner( v1 - v3 );
+
+		return( coeff * w / ( l1 + l2 + l3 ) );
+	}
+
+	template < class T1, class T2 >
+	inline bool is_collapsed_after_contraction( const std::vector< vector3< T1 > > &vertices, const std::vector< __edge__< T2 > > &edges, const __face__ &f, typename __edge__< T2 >::difference_type vid, const typename __edge__< T2 >::vector_type &v )
+	{
+		typedef __face__ face_type;
+		typedef __edge__< T2 > edge_type;
+		typedef typename edge_type::vector_type vector_type;
+		typedef typename edge_type::difference_type difference_type;
+
+		const vector_type &v0 = vertices[ vid ];
+		const vector_type &v1 = v;
+		vector_type v2, v3;
+
+		const edge_type &e1 = edges[ f.eid1 < 0 ? -f.eid1 : f.eid1 ];
+		const edge_type &e2 = edges[ f.eid2 < 0 ? -f.eid2 : f.eid2 ];
+		const edge_type &e3 = edges[ f.eid3 < 0 ? -f.eid3 : f.eid3 ];
+		difference_type vid1 = f.eid1 < 0 ? e1.v2 : e1.v1;
+		difference_type vid2 = f.eid2 < 0 ? e2.v2 : e2.v1;
+		difference_type vid3 = f.eid3 < 0 ? e3.v2 : e3.v1;
+
+		if( vid1 == vid )
+		{
+			v2 = vertices[ vid2 ];
+			v3 = vertices[ vid3 ];
+		}
+		else if( vid2 == vid )
+		{
+			v2 = vertices[ vid1 ];
+			v3 = vertices[ vid3 ];
+		}
+		else if( vid3 == vid )
+		{
+			v2 = vertices[ vid1 ];
+			v3 = vertices[ vid2 ];
+		}
+		else
+		{
+			std::cout << "Can't find vertices from the specified face." << std::endl;
+		}
+
+		vector_type n1 = ( v2 - v0 ).outer( v3 - v0 );
+		vector_type n2 = ( v2 - v1 ).outer( v3 - v1 );
+
+		return( n1.inner( n2 ) < 0.0 );
+	}
+
+	template < class MULTIMAP, class T1, class T2 >
+	inline void apply_penalties( const MULTIMAP &vertex_edge_map, const std::vector< vector3< T1 > > &vertices, const std::vector< __face__ > &faces, std::vector< __edge__< T2 > > &edges, typename __edge__< T2 >::difference_type EID, double threshold_for_triangle_compactness )
+	{
+		typedef MULTIMAP vertex_edge_map_type;
+		typedef typename vertex_edge_map_type::const_iterator const_iterator;
+
+		typedef __face__ face_type;
+		typedef __edge__< T2 > edge_type;
+		typedef typename edge_type::vector_type vector_type;
+		typedef typename edge_type::difference_type difference_type;
+
+		edge_type &edge = edges[ EID ];
+
+		double penalty = 1.0e100;
+
+		std::set< difference_type > face_map1;
+		std::set< difference_type > face_map2;
+
+		{
+			const_iterator ite = vertex_edge_map.find( edge.v1 );
+			if( ite != vertex_edge_map.end( ) )
+			{
+				const_iterator upper = vertex_edge_map.upper_bound( edge.v1 );
+				for( ; ite != upper ; ++ite )
+				{
+					face_map1.insert( edges[ ite->second ].fid1 );
+					face_map1.insert( edges[ ite->second ].fid2 );
+				}
+			}
+
+			for( std::set< difference_type >::iterator ite = face_map1.begin( ) ; ite != face_map1.end( ) ; ++ite )
+			{
+				if( *ite != 0 )
+				{
+					double ppp = compute_penalty( vertices, edges, faces[ *ite ], edge.v1, edge.v );
+					if( ppp < penalty )
+					{
+						penalty = ppp;
+					}
+				}
+			}
+		}
+
+		{
+			std::set< difference_type > face_map;
+			const_iterator ite = vertex_edge_map.find( edge.v2 );
+			if( ite != vertex_edge_map.end( ) )
+			{
+				const_iterator upper = vertex_edge_map.upper_bound( edge.v2 );
+				for( ; ite != upper ; ++ite )
+				{
+					face_map2.insert( edges[ ite->second ].fid1 );
+					face_map2.insert( edges[ ite->second ].fid2 );
+				}
+			}
+
+			for( std::set< difference_type >::iterator ite = face_map2.begin( ) ; ite != face_map2.end( ) ; ++ite )
+			{
+				if( *ite != 0 )
+				{
+					double ppp = compute_penalty( vertices, edges, faces[ *ite ], edge.v2, edge.v );
+					if( ppp < penalty )
+					{
+						penalty = ppp;
+					}
+				}
+			}
+		}
+
+		if( penalty < threshold_for_triangle_compactness )
+		{
+			edge.err += 1.0 - penalty;
+		}
+
+
+		// 法線が入れ替わるかどうかをチェックする
+		for( std::set< difference_type >::iterator ite = face_map1.begin( ) ; ite != face_map1.end( ) ; ++ite )
+		{
+			if( *ite != 0 && face_map2.find( *ite ) == face_map2.end( ) )
+			{
+				if( is_collapsed_after_contraction( vertices, edges, faces[ *ite ], edge.v1, edge.v ) )
+				{
+					edge.err += 1.0;
+				}
+			}
+		}
+
+		for( std::set< difference_type >::iterator ite = face_map2.begin( ) ; ite != face_map2.end( ) ; ++ite )
+		{
+			if( *ite != 0 && face_map1.find( *ite ) == face_map1.end( ) )
+			{
+				if( is_collapsed_after_contraction( vertices, edges, faces[ *ite ], edge.v2, edge.v ) )
+				{
+					edge.err += 1.0;
 				}
 			}
 		}
@@ -1066,14 +1257,16 @@ namespace __mc__
 //!   - Michael Garland and Paul S. Heckbert, "Surface Simplification Using Quadric Error Metrics," Proceedings of SIGGRAPH 97, pp.209-216, 1997
 //!   - Michael Garland and Paul S. Heckbert, "Simplifying Surfaces with Color and Texture using Quadric Error Metrics," Proceedings of IEEE Visualization conference , pp.263-269, 1998
 //!
-//! @param[in]  facets           … 3角形パッチの集合
-//! @param[in]  number_of_facets … 削減後の3角形パッチ数
-//! @param[in]  eps              … 同一頂点と判定される頂点の距離
+//! @param[in]  facets                             … 3角形パッチの集合
+//! @param[in]  number_of_facets                   … 削減後の3角形パッチ数
+//! @param[in]  use_optimal_vertex_placement       … 辺削除後に最適な位置に頂点を移動させるかどうか（有効にすると場合によってはきれいなメッシュが得られない場合あり）
+//! @param[in]  threshold_for_triangle_compactness … 辺削除後に発生する尖った三角形を抑制する（0～1の間を設定）
+//! @param[in]  eps                                … 同一頂点と判定される頂点の距離
 //!
 //! @return 3角形パッチす数の削減に成功したかどうか
 //!
 template < class T >
-inline bool surface_simplification( facet_list< T > &facets, size_t number_of_facets, const double eps = 1.0e-3 )
+inline bool surface_simplification( facet_list< T > &facets, size_t number_of_facets, bool use_optimal_vertex_placement = true, double threshold_for_triangle_compactness = 0.1, const double eps = 1.0e-3 )
 {
 	typedef typename facet_list< T >::facet_type   facet_type;
 	typedef typename facet_type::size_type         size_type;
@@ -1121,28 +1314,53 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		const difference_type v1 = f.eid1 < 0 ? edges[ -f.eid1 ].v2 : edges[ f.eid1 ].v1;
 		const difference_type v2 = f.eid2 < 0 ? edges[ -f.eid2 ].v2 : edges[ f.eid2 ].v1;
 		const difference_type v3 = f.eid3 < 0 ? edges[ -f.eid3 ].v2 : edges[ f.eid3 ].v1;
-		const vector_type &p1 = vertices[ v1 ];
-		const vector_type &p2 = vertices[ v2 ];
-		const vector_type &p3 = vertices[ v3 ];
-		const vector_type  p  = ( p1 + p2 + p3 ) / 3.0;
-		const vector_type &n = facets[ i - 1 ].normal;
+		const vector_type  &p1 = vertices[ v1 ];
+		const vector_type  &p2 = vertices[ v2 ];
+		const vector_type  &p3 = vertices[ v3 ];
+		const vector_type  &n  = facets[ i - 1 ].normal;
 
 		double a = n.x;
 		double b = n.y;
 		double c = n.z;
-		double d = -( a * p.x + b * p.y + c * p.z );
 
-		matrix_type QQ = matrix_type::_44( a * a, a * b, a * c, a * d,
-										   a * b, b * b, b * c, b * d,
-										   a * c, b * c, c * c, c * d,
-										   a * d, b * d, c * d, d * d );
+		vector_type p0  = ( p1 + p2 + p3 ) / 3.0;
+		vector_type d12 = ( p2 - p1 ).unit( );
+		vector_type d23 = ( p3 - p2 ).unit( );
+		vector_type d31 = ( p1 - p3 ).unit( );
+		vector_type p12 = p1 + d12 * ( p0 - p1 ).inner( d12 );
+		vector_type p23 = p2 + d23 * ( p0 - p2 ).inner( d23 );
+		vector_type p31 = p3 + d31 * ( p0 - p3 ).inner( d31 );
 
-		//double area = ( ( p2 - p1 ).outer( p3 - p1 ) ).length( ) * 0.5;
-		//QQ *= area;
+		{
+			double area1 = ( ( p0 - p1 ).outer( p12 - p1 ) ).length( ) * 0.5;
+			double area2 = ( ( p0 - p1 ).outer( p31 - p1 ) ).length( ) * 0.5;
+			double d = -( a * p1.x + b * p1.y + c * p1.z );
+			Q[ v1 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
+										 a * b, b * b, b * c, b * d,
+										 a * c, b * c, c * c, c * d,
+										 a * d, b * d, c * d, d * d ) * ( area1 + area2 );
+		}
 
-		Q[ v1 ] += QQ;
-		Q[ v2 ] += QQ;
-		Q[ v3 ] += QQ;
+		{
+			double area1 = ( ( p0 - p2 ).outer( p12 - p1 ) ).length( ) * 0.5;
+			double area2 = ( ( p0 - p2 ).outer( p23 - p1 ) ).length( ) * 0.5;
+			double d = -( a * p2.x + b * p2.y + c * p2.z );
+			Q[ v2 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
+										 a * b, b * b, b * c, b * d,
+										 a * c, b * c, c * c, c * d,
+										 a * d, b * d, c * d, d * d ) * ( area1 + area2 );
+		}
+
+		{
+			double area1 = ( ( p0 - p3 ).outer( p23 - p1 ) ).length( ) * 0.5;
+			double area2 = ( ( p0 - p3 ).outer( p31 - p1 ) ).length( ) * 0.5;
+			double d = -( a * p3.x + b * p3.y + c * p3.z );
+			Q[ v3 ] += matrix_type::_44( a * a, a * b, a * c, a * d,
+										 a * b, b * b, b * c, b * d,
+										 a * c, b * c, c * c, c * d,
+										 a * d, b * d, c * d, d * d ) * ( area1 + area2 );
+		}
+
 	}
 
 	// 頂点とエッジのテーブルを作成する
@@ -1162,7 +1380,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 		if( !__mc__::is_sharp_edge( edges[ i ] ) )
 		{
 			// 各頂点の誤差評価を行う
-			__mc__::update_edge( vertices, Q, edges[ i ] );
+			__mc__::update_edge( vertices, Q, edges[ i ], use_optimal_vertex_placement );
 			edge_map.insert( i );
 		}
 
@@ -1331,7 +1549,8 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 			if( !__mc__::is_sharp_edge( edges[ *ite ] ) )
 			{
 				// 各辺の評価値を更新する
-				__mc__::update_edge( vertices, Q, edges[ *ite ] );
+				__mc__::update_edge( vertices, Q, edges[ *ite ], use_optimal_vertex_placement );
+				__mc__::apply_penalties( vertex_edge_map, vertices, faces, edges, *ite, threshold_for_triangle_compactness );
 				edge_map.insert( *ite );
 			}
 		}
