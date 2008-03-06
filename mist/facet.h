@@ -1731,6 +1731,263 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 	return( true );
 }
 
+/// @brief 3角形パッチの集合から最大の連結領域のみを取り出し，他を全て削除する
+//!
+//! @param[in]  facets                             … 3角形パッチの集合
+//! @param[in]  eps                                … 同一頂点と判定される頂点の距離
+//!
+//! @return 最大領域の抽出に成功したかどうか
+//!
+template < class T >
+inline bool maximum_connected_region( facet_list< T > &facets, const double eps = 1.0e-3 )
+{
+	typedef typename facet_list< T >::facet_type   facet_type;
+	typedef typename facet_type::size_type         size_type;
+	typedef typename facet_type::difference_type   difference_type;
+	typedef typename facet_type::vector_type       vector_type;
+	typedef typename vector3< difference_type >    ivector_type;
+	typedef __mc__::__edge__< vector_type >        edge_type;
+	typedef __mc__::__face__                       face_type;
+	typedef matrix< double >                       matrix_type;
+	typedef std::vector< edge_type >               edge_list_type;
+
+
+	std::vector< vector_type >  vertices;
+	std::vector< ivector_type > faces;
+
+	// 頂点と面のリストに変換する
+	if( !convert_to_vertex_face_list( facets, vertices, faces, eps ) )
+	{
+		return( false );
+	}
+
+
+	// 頂点と面のテーブルを作成する
+	typedef std::multimap< size_type, difference_type > vertex_face_map_type;
+	typedef std::multimap< size_type, difference_type >::iterator iterator;
+	typedef std::pair< size_type, difference_type > vertex_face_map_pair_type;
+
+	typedef std::multimap< size_type, size_type > group_map_type;
+	typedef std::pair< size_type, size_type > group_map_type_pair_type;
+
+	vertex_face_map_type vertex_face_map;
+	group_map_type gmap;
+	std::vector< size_type > groups( faces.size( ) );
+	for( size_type i = 0 ; i < faces.size( ) ; i++ )
+	{
+		ivector_type &f = faces[ i ];
+
+		vertex_face_map.insert( vertex_face_map_pair_type( f.x, i ) );
+		vertex_face_map.insert( vertex_face_map_pair_type( f.y, i ) );
+		vertex_face_map.insert( vertex_face_map_pair_type( f.z, i ) );
+
+		groups[ i ] = i;
+		gmap.insert( group_map_type_pair_type( i, i ) );
+	}
+
+	// 各面をグルーピングしていく
+	for( size_type i = 0 ; i < faces.size( ) ; i++ )
+	{
+		ivector_type &f = faces[ i ];
+		size_type &g1 = groups[ i ];
+
+		{
+			iterator ite = vertex_face_map.find( f.x );
+			if( ite != vertex_face_map.end( ) )
+			{
+				iterator upper = vertex_face_map.upper_bound( f.x );
+				for( ; ite != upper ; ++ite )
+				{
+					if( ite->second != i )
+					{
+						size_type &g2 = groups[ ite->second ];
+
+						if( g1 < g2 )
+						{
+							group_map_type::iterator lower = gmap.find( g2 );
+							group_map_type::iterator upper = gmap.upper_bound( g2 );
+
+							std::vector< size_type > gtmp;
+							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							{
+								gtmp.push_back( gite->second );
+							}
+
+							gmap.erase( lower, upper );
+
+							for( size_type i = 0 ; i < gtmp.size( ) ; i++ )
+							{
+								groups[ gtmp[ i ] ] = g1;
+								gmap.insert( group_map_type_pair_type( g1, gtmp[ i ] ) );
+							}
+						}
+						else if( g1 > g2 )
+						{
+							group_map_type::iterator lower = gmap.find( g1 );
+							group_map_type::iterator upper = gmap.upper_bound( g1 );
+
+							std::vector< size_type > gtmp;
+							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							{
+								gtmp.push_back( gite->second );
+							}
+
+							gmap.erase( lower, upper );
+
+							for( size_type i = 0 ; i < gtmp.size( ) ; i++ )
+							{
+								groups[ gtmp[ i ] ] = g2;
+								gmap.insert( group_map_type_pair_type( g2, gtmp[ i ] ) );
+							}
+						}
+					}
+				}
+			}
+		}
+
+		{
+			iterator ite = vertex_face_map.find( f.y );
+			if( ite != vertex_face_map.end( ) )
+			{
+				iterator upper = vertex_face_map.upper_bound( f.y );
+				for( ; ite != upper ; ++ite )
+				{
+					if( ite->second != i )
+					{
+						size_type &g2 = groups[ ite->second ];
+
+						if( g1 < g2 )
+						{
+							group_map_type::iterator lower = gmap.find( g2 );
+							group_map_type::iterator upper = gmap.upper_bound( g2 );
+
+							std::vector< size_type > gtmp;
+							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							{
+								gtmp.push_back( gite->second );
+							}
+
+							gmap.erase( lower, upper );
+
+							for( size_type i = 0 ; i < gtmp.size( ) ; i++ )
+							{
+								groups[ gtmp[ i ] ] = g1;
+								gmap.insert( group_map_type_pair_type( g1, gtmp[ i ] ) );
+							}
+						}
+						else if( g1 > g2 )
+						{
+							group_map_type::iterator lower = gmap.find( g1 );
+							group_map_type::iterator upper = gmap.upper_bound( g1 );
+
+							std::vector< size_type > gtmp;
+							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							{
+								gtmp.push_back( gite->second );
+							}
+
+							gmap.erase( lower, upper );
+
+							for( size_type i = 0 ; i < gtmp.size( ) ; i++ )
+							{
+								groups[ gtmp[ i ] ] = g2;
+								gmap.insert( group_map_type_pair_type( g2, gtmp[ i ] ) );
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		{
+			iterator ite = vertex_face_map.find( f.z );
+			if( ite != vertex_face_map.end( ) )
+			{
+				iterator upper = vertex_face_map.upper_bound( f.z );
+				for( ; ite != upper ; ++ite )
+				{
+					if( ite->second != i )
+					{
+						size_type &g2 = groups[ ite->second ];
+
+						if( g1 < g2 )
+						{
+							group_map_type::iterator lower = gmap.find( g2 );
+							group_map_type::iterator upper = gmap.upper_bound( g2 );
+
+							std::vector< size_type > gtmp;
+							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							{
+								gtmp.push_back( gite->second );
+							}
+
+							gmap.erase( lower, upper );
+
+							for( size_type i = 0 ; i < gtmp.size( ) ; i++ )
+							{
+								groups[ gtmp[ i ] ] = g1;
+								gmap.insert( group_map_type_pair_type( g1, gtmp[ i ] ) );
+							}
+						}
+						else if( g1 > g2 )
+						{
+							group_map_type::iterator lower = gmap.find( g1 );
+							group_map_type::iterator upper = gmap.upper_bound( g1 );
+
+							std::vector< size_type > gtmp;
+							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							{
+								gtmp.push_back( gite->second );
+							}
+
+							gmap.erase( lower, upper );
+
+							for( size_type i = 0 ; i < gtmp.size( ) ; i++ )
+							{
+								groups[ gtmp[ i ] ] = g2;
+								gmap.insert( group_map_type_pair_type( g2, gtmp[ i ] ) );
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	std::vector< size_type > hist( groups.size( ) );
+	for( size_type i = 0 ; i < hist.size( ) ; i++ )
+	{
+		hist[ i ] = 0;
+	}
+	for( size_type i = 0 ; i < groups.size( ) ; i++ )
+	{
+		hist[ groups[ i ] ]++;
+	}
+
+	size_type mgroup = 0;
+	for( size_type i = 1 ; i < hist.size( ) ; i++ )
+	{
+		if( hist[ mgroup ] < hist[ i ] )
+		{
+			mgroup = i;
+		}
+	}
+
+	facets.clear( );
+
+	for( size_type i = 0 ; i < faces.size( ) ; i++ )
+	{
+		if( groups[ i ] == mgroup )
+		{
+			ivector_type &f = faces[ i ];
+			facets.push_back( facet_type( vertices[ f.x ], vertices[ f.y ], vertices[ f.z ] ) );
+		}
+	}
+
+	return( true );
+}
+
 /// @}
 //  Marching Cubesグループの終わり
 
