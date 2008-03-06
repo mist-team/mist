@@ -1955,32 +1955,37 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 		}
 	}
 
-	std::vector< size_type > hist( groups.size( ) );
-	for( size_type i = 0 ; i < hist.size( ) ; i++ )
-	{
-		hist[ i ] = 0;
-	}
-	for( size_type i = 0 ; i < groups.size( ) ; i++ )
-	{
-		hist[ groups[ i ] ]++;
-	}
-
 	size_type mgroup = 0;
-	for( size_type i = 1 ; i < hist.size( ) ; i++ )
+	size_type mcount = 0;
+	for( group_map_type::iterator ite = gmap.begin( ) ; ite != gmap.end( ) ; )
 	{
-		if( hist[ mgroup ] < hist[ i ] )
+		size_type count = gmap.count( ite->first );
+		if( count > mcount )
 		{
-			mgroup = i;
+			mcount = count;
+			mgroup = ite->first;
+		}
+
+		ite = gmap.upper_bound( ite->first );
+		if( ite == gmap.end( ) )
+		{
+			break;
+		}
+		else
+		{
+			++ite;
 		}
 	}
 
 	facets.clear( );
 
-	for( size_type i = 0 ; i < faces.size( ) ; i++ )
+	group_map_type::iterator lower = gmap.find( mgroup );
+	if( lower != gmap.end( ) )
 	{
-		if( groups[ i ] == mgroup )
+		group_map_type::iterator upper = gmap.upper_bound( mgroup );
+		for( ; lower != upper ; ++lower )
 		{
-			ivector_type &f = faces[ i ];
+			ivector_type &f = faces[ lower->second ];
 			facets.push_back( facet_type( vertices[ f.x ], vertices[ f.y ], vertices[ f.z ] ) );
 		}
 	}
