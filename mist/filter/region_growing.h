@@ -187,12 +187,20 @@ namespace region_growing_utility
 		expand_mode_type expand_mode( ) const { return( NC4 ); }
 
 		/// @brief 半径と解像度を指定して球を初期化（楕円の作成も可能，ただし，単位は画素）
-		circle( double radius, double resoX = 1.0, double resoY = 1.0 ) : radius_( radius )
+		circle( double radius, double resoX = 1.0, double resoY = 1.0, bool radiusInPhysicalCoords = false ) : radius_( radius )
 		{
-			double max_reso = resoX > resoY ? resoX: resoY;
+			if (radiusInPhysicalCoords)
+			{
+				resoX_ = resoX;
+				resoY_ = resoY;
+			}
+			else
+			{
+				double max_reso = resoX > resoY ? resoX: resoY;
 
-			resoX_ = resoX / max_reso;
-			resoY_ = resoY / max_reso;
+				resoX_ = resoX / max_reso;
+				resoY_ = resoY / max_reso;
+			}
 			width_  = static_cast< size_type >( std::ceil( radius_ / resoX_ ) ) * 2 + 1;
 			height_ = static_cast< size_type >( std::ceil( radius_ / resoY_ ) ) * 2 + 1;
 		}
@@ -230,14 +238,23 @@ namespace region_growing_utility
 		expand_mode_type expand_mode( ) const { return( NC6 ); }
 
 		/// @brief 半径と解像度を指定して球を初期化（楕円体の作成も可能，ただし，単位は画素）
-		sphere( double radius, double resoX = 1.0, double resoY = 1.0, double resoZ = 1.0 ) : radius_( radius )
+		sphere( double radius, double resoX = 1.0, double resoY = 1.0, double resoZ = 1.0, bool radiusInPhysicalCoords = false ) : radius_( radius )
 		{
-			double max_reso = resoX > resoY ? resoX: resoY;
-			max_reso = max_reso > resoZ ? max_reso : resoZ;
+			if (radiusInPhysicalCoords)
+			{
+				resoX_ = resoX;
+				resoY_ = resoY;
+				resoZ_ = resoZ;
+			}
+			else
+			{
+				double max_reso = resoX > resoY ? resoX: resoY;
+				max_reso = max_reso > resoZ ? max_reso : resoZ;
 
-			resoX_ = resoX / max_reso;
-			resoY_ = resoY / max_reso;
-			resoZ_ = resoZ / max_reso;
+				resoX_ = resoX / max_reso;
+				resoY_ = resoY / max_reso;
+				resoZ_ = resoZ / max_reso;
+			}
 			width_  = static_cast< size_type >( std::ceil( radius_ / resoX_ ) ) * 2 + 1;
 			height_ = static_cast< size_type >( std::ceil( radius_ / resoY_ ) ) * 2 + 1;
 			depth_  = static_cast< size_type >( std::ceil( radius_ / resoZ_ ) ) * 2 + 1;
