@@ -997,8 +997,8 @@ public:
 
 protected:
 	typedef array1< T, Allocator > base;	///< @brief Šî’êƒNƒ‰ƒX
-	size_type size1_;						///< @brief X²•ûŒü‚Ì—v‘f”
 	size_type size2_;						///< @brief Y²•ûŒü‚Ì—v‘f”
+	size_type size1_;						///< @brief X²•ûŒü‚Ì—v‘f”
 	double reso2_;							///< @brief X²•ûŒü‚Ì‰ğ‘œ“x
 
 public:
@@ -1573,9 +1573,9 @@ public:
 
 protected:
 	typedef array2< T, Allocator > base;	///< @brief Šî’êƒNƒ‰ƒX
-	size_type size1_;						///< @brief X²•ûŒü‚Ì—v‘f”
-	size_type size2_;						///< @brief Y²•ûŒü‚Ì—v‘f”
 	size_type size3_;						///< @brief Z²•ûŒü‚Ì—v‘f”
+	size_type size2_;						///< @brief Y²•ûŒü‚Ì—v‘f”
+	size_type size1_;						///< @brief X²•ûŒü‚Ì—v‘f”
 	double reso3_;							///< @brief Z²•ûŒü‚Ì‰ğ‘œ“x
 
 public:

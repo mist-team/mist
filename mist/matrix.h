@@ -74,6 +74,10 @@
 #include "mist.h"
 #endif
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #include <cmath>
 
 
@@ -223,8 +227,8 @@ public:
 
 private:
 	typedef array< T, Allocator > base;
-	size_type size1_;
 	size_type size2_;
+	size_type size1_;
 
 private:
 	// rows Ç‚ cols Ç∆ÇÃç¨óêÇîÇØÇÈÇΩÇﬂÅCmatrix Ç≈ÇÕégÇ¶Ç»Ç¢ÇÊÇ§Ç…Ç∑ÇÈ
@@ -854,6 +858,28 @@ public:
 		typedef __numeric__::value_compare< __numeric__::is_complex< value_type >::value > value_compare;
 
 		matrix< T, Allocator > mat( m1.rows( ), m2.cols( ) );
+
+#ifdef _OPENMP
+		int nCols = static_cast< int >( mat.cols( ) );
+
+		#pragma omp parallel for schedule( guided )
+		for( int c = 0 ; c < nCols ; c++ )
+		{
+			for( size_type t = 0 ; t < m1.cols( ) ; t++ )
+			{
+				value_type val = static_cast< value_type >( m2( t, c ) );
+				if( !value_compare::is_zero( val ) )
+				{
+					pointer pm0 = &mat( 0, c );
+					pointer pm1 = &m1( 0, t );
+					for( size_type r = 0 ; r < mat.rows( ) ; r++ )
+					{
+						pm0[ r ] += pm1[ r ] * val;
+					}
+				}
+			}
+		}
+#else
 		size_type r, c, t;
 
 		for( c = 0 ; c < mat.cols( ) ; c++ )
@@ -872,6 +898,7 @@ public:
 				}
 			}
 		}
+#endif
 
 		m1.swap( mat );
 
