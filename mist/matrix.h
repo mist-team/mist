@@ -364,7 +364,7 @@ public:
 				{
 					for( difference_type r = 0 ; r < nrows ; r++ )
 					{
-						o( r, c ) = operator ()( r + row, c + col );
+						operator ()( r + row, c + col ) = o( r, c );
 					}
 				}
 			}
@@ -643,6 +643,40 @@ public:
 		o( 1, 0 ) = a10; o( 1, 1 ) = a11; o( 1, 2 ) = a12; o( 1, 3 ) = a13;
 		o( 2, 0 ) = a20; o( 2, 1 ) = a21; o( 2, 2 ) = a22; o( 2, 3 ) = a23;
 		o( 3, 0 ) = a30; o( 3, 1 ) = a31; o( 3, 2 ) = a32; o( 3, 3 ) = a33;
+
+		return( o );
+	}
+
+	/// @brief 入力データを用いて3×4の行列を返す
+	static const matrix _34(
+								const value_type &a00, const value_type &a01, const value_type &a02, const value_type &a03,
+								const value_type &a10, const value_type &a11, const value_type &a12, const value_type &a13,
+								const value_type &a20, const value_type &a21, const value_type &a22, const value_type &a23
+							)
+	{
+		matrix o( 3, 4 );
+
+		o( 0, 0 ) = a00; o( 0, 1 ) = a01; o( 0, 2 ) = a02; o( 0, 3 ) = a03;
+		o( 1, 0 ) = a10; o( 1, 1 ) = a11; o( 1, 2 ) = a12; o( 1, 3 ) = a13;
+		o( 2, 0 ) = a20; o( 2, 1 ) = a21; o( 2, 2 ) = a22; o( 2, 3 ) = a23;
+
+		return( o );
+	}
+
+	/// @brief 入力データを用いて4×3の行列を返す
+	static const matrix _43(
+								const value_type &a00, const value_type &a01, const value_type &a02,
+								const value_type &a10, const value_type &a11, const value_type &a12,
+								const value_type &a20, const value_type &a21, const value_type &a22,
+								const value_type &a30, const value_type &a31, const value_type &a32
+							)
+	{
+		matrix o( 4, 3 );
+
+		o( 0, 0 ) = a00; o( 0, 1 ) = a01; o( 0, 2 ) = a02;
+		o( 1, 0 ) = a10; o( 1, 1 ) = a11; o( 1, 2 ) = a12;
+		o( 2, 0 ) = a20; o( 2, 1 ) = a21; o( 2, 2 ) = a22;
+		o( 3, 0 ) = a30; o( 3, 1 ) = a31; o( 3, 2 ) = a32;
 
 		return( o );
 	}
