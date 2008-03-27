@@ -511,7 +511,16 @@ public:
 	/// @brief シグナル状態になるまで待機する
 	bool wait( unsigned long dwMilliseconds = INFINITE )
 	{
-		return( WaitForSingleObjectEx( handle_, dwMilliseconds, FALSE ) == WAIT_OBJECT_0 );
+		DWORD ret = WaitForSingleObject( handle_, dwMilliseconds );
+		if( SUCCEEDED( ret ) )
+		{
+			ResetEvent( handle_ );
+			return ( true );
+		}
+		else
+		{
+			return( false );
+		}
 	}
 
 	/// @brief シグナルを送信する
@@ -660,7 +669,7 @@ public:
 	thread( ) : thread_exit_code_( 0 ){ }
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	thread( const thread &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
-	thread( ) : thread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ){ }
+	thread( ) : thread_handle_( NULL ), thread_id_( ( unsigned int )-1 ), thread_exit_code_( 0 ){ }
 #else
 	thread( const thread &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ){ }
 	thread( ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ){ }
@@ -969,11 +978,29 @@ namespace __thread_controller__
 	class thread_pool_functor_base : public __thread_pool_functor__
 	{
 	private:
+		Param   param_;
+		Functor func_;
+
+	public:
+		thread_pool_functor_base( Param p, Functor f ) : param_( p ), func_( f ){ }
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual void run( size_type id, size_type nthreads )
+		{
+			func_( param_ );
+		}
+	};
+
+	template < class Param, class Functor >
+	class thread_pool_functor_base_nocopy : public __thread_pool_functor__
+	{
+	private:
 		Param   &param_;
 		Functor func_;
 
 	public:
-		thread_pool_functor_base( Param &p, Functor f ) : param_( p ), func_( f ){ }
+		thread_pool_functor_base_nocopy( Param &p, Functor f ) : param_( p ), func_( f ){ }
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
@@ -1253,7 +1280,7 @@ public:
 	//! @param[in]     f     … 実行されるスレッド関数
 	//! 
 	template < class Param, class Functor >
-	bool execute( Param &p, Functor f )
+	bool execute( Param p, Functor f )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -1263,6 +1290,46 @@ public:
 		// キューに追加する
 		{
 			__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base< Param, Functor >( p, f );
+
+			// 排他制御する
+			lock_.lock( );
+			functors_.push_back( func );
+			lock_.unlock( );
+		}
+
+		for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+		{
+			thread_pool_functor &t = *threads_[ i ];
+
+			if( t.is_idle( ) )
+			{
+				// アイドル状態のスレッドがあれば再開する
+				t.resume( );
+				break;
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを指定してスレッドを実行する
+	//! 
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! 
+	//! @param[in,out] param … スレッドの関数に渡すパラメータ
+	//! @param[in]     f     … 実行されるスレッド関数
+	//! 
+	template < class Param, class Functor >
+	bool execute_nocopy( Param &p, Functor f )
+	{
+		if( threads_.empty( ) || !initialized_ )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		{
+			__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base_nocopy< Param, Functor >( p, f );
 
 			// 排他制御する
 			lock_.lock( );
@@ -1345,7 +1412,7 @@ public:
 		lock_.lock( );
 		for( size_type i = 0 ; i < num_threads ; i++ )
 		{
-			functors_.push_back( new __thread_controller__::thread_pool_functor_base< Param, Functor >( param[ i ], f ) );
+			functors_.push_back( new __thread_controller__::thread_pool_functor_base_nocopy< Param, Functor >( param[ i ], f ) );
 		}
 		lock_.unlock( );
 
