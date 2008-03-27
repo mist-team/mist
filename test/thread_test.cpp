@@ -37,7 +37,7 @@ struct parameter
 	unsigned int thread_num_;
 };
 
-void thread_function( const parameter &p )
+void thread_function1( const parameter &p )
 {
 	if( ( p.thread_id_ % 2 ) != 0 )
 	{
@@ -56,6 +56,15 @@ void thread_function( const parameter &p )
 			printf( "%d", p.thread_id_ );
 			mist::sleep( 1 );
 		}
+	}
+}
+
+void thread_function2( )
+{
+	for( int i = 0 ; i < 20 ; i++ )
+	{
+		printf( "A" );
+		mist::sleep( 1 );
 	}
 }
 
@@ -78,7 +87,7 @@ int main( int argc, char *argv[] )
 
 	for( i = 0 ; i < CREATE_THREAD_NUM ; i++ )
 	{
-		t[ i ] = mist::create_thread( param[ i ], thread_function );
+		t[ i ] = mist::create_thread( param[ i ], thread_function1 );
 	}
 
 	for( i = 0 ; i < CREATE_THREAD_NUM ; i++ )
@@ -96,11 +105,9 @@ int main( int argc, char *argv[] )
 
 	// スレッドプールを利用したサンプル
 	{
-		mist::thread_pool pool( 2 );
-		pool.execute( param, CREATE_THREAD_NUM, thread_function );
-		pool.wait( );
-		std::cout << std::endl;
-		pool.execute( param, CREATE_THREAD_NUM, thread_function );
+		mist::thread_pool pool( 3 );
+		pool.execute( thread_function2 );
+		pool.execute( param, CREATE_THREAD_NUM, thread_function1 );
 		pool.wait( );
 		std::cout << std::endl;
 	}

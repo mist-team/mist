@@ -983,6 +983,23 @@ namespace __thread_controller__
 		}
 	};
 
+	template < class Functor >
+	class thread_pool_void_functor_base : public __thread_pool_functor__
+	{
+	private:
+		Functor func_;
+
+	public:
+		thread_pool_void_functor_base( Functor f ) : func_( f ){ }
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual void run( size_type id, size_type nthreads )
+		{
+			func_( );
+		}
+	};
+
 	class thread_pool_functor : public thread< thread_pool_functor >
 	{
 	public:
@@ -1240,12 +1257,52 @@ public:
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
-			return;
+			return( false );
 		}
 
 		// キューに追加する
 		{
 			__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base< Param, Functor >( p, f );
+
+			// 排他制御する
+			lock_.lock( );
+			functors_.push_back( func );
+			lock_.unlock( );
+		}
+
+		for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+		{
+			thread_pool_functor &t = *threads_[ i ];
+
+			if( t.is_idle( ) )
+			{
+				// アイドル状態のスレッドがあれば再開する
+				t.resume( );
+				break;
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを指定してスレッドを実行する
+	//! 
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! 
+	//! @param[in,out] param … スレッドの関数に渡すパラメータ
+	//! @param[in]     f     … 実行されるスレッド関数
+	//! 
+	template < class Functor >
+	bool execute( Functor f )
+	{
+		if( threads_.empty( ) || !initialized_ )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		{
+			__thread_pool_functor__ *func = new __thread_controller__::thread_pool_void_functor_base< Functor >( f );
 
 			// 排他制御する
 			lock_.lock( );
