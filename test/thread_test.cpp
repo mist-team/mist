@@ -39,35 +39,27 @@ struct parameter
 
 void thread_function( const parameter &p )
 {
-	if( p.thread_id_ % 2 != 1 )
+	if( ( p.thread_id_ % 2 ) != 0 )
 	{
-		mist::lock l( "hoge" );
+		//mist::lock l( "hoge" );
 		for( int i = 0 ; i < 10 ; i++ )
 		{
-			std::cout << p.thread_id_;
-//			std::cout << "( " << thread_id_ << ", " << thread_num_ << " )" << std::endl;
-			for( int j = 0, k = 0 ; j < 1000000 ; j++ )
-			{
-				k++;
-			}
+			printf( "%d", p.thread_id_ );
+			mist::sleep( 20 );
 		}
 	}
 	else
 	{
-		mist::lock l( "hoge2" );
+		//mist::lock l( "hoge" );
 		for( int i = 0 ; i < 10 ; i++ )
 		{
-			std::cout << p.thread_id_;
-//			std::cout << "( " << thread_id_ << ", " << thread_num_ << " )" << std::endl;
-			for( int j = 0, k = 0 ; j < 1000000 ; j++ )
-			{
-				k++;
-			}
+			printf( "%d", p.thread_id_ );
+			mist::sleep( 1 );
 		}
 	}
 }
 
-#define CREATE_THREAD_NUM	5
+#define CREATE_THREAD_NUM	8
 
 int main( int argc, char *argv[] )
 {
@@ -76,6 +68,7 @@ int main( int argc, char *argv[] )
 	parameter param[ CREATE_THREAD_NUM ];
 	mist::thread_handle t[ CREATE_THREAD_NUM ];
 
+	// 標準的なスレッド呼び出しを利用したサンプル
 	int i;
 	for( i = 0 ; i < CREATE_THREAD_NUM ; i++ )
 	{
@@ -99,6 +92,18 @@ int main( int argc, char *argv[] )
 	}
 
 	std::cout << std::endl;
+	std::cout << std::endl;
+
+	// スレッドプールを利用したサンプル
+	{
+		mist::thread_pool pool( 2 );
+		pool.execute( param, CREATE_THREAD_NUM, thread_function );
+		pool.wait( );
+		std::cout << std::endl;
+		pool.execute( param, CREATE_THREAD_NUM, thread_function );
+		pool.wait( );
+		std::cout << std::endl;
+	}
 
 	return( 0 );
 }

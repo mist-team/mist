@@ -61,6 +61,8 @@
 #endif
 
 #include <map>
+#include <vector>
+#include <list>
 #include <string>
 
 
@@ -137,6 +139,346 @@ inline void sleep( size_t dwMilliseconds )
 }
 
 
+/// @brief スレッドの排他制御をサポートする最も単純なクラス
+//! 
+//! ロックするオブジェクトを共有する場合に使用する最もシンプルなクラス
+//! 
+//! @attention ロックオブジェクトの生成時点では，ロックはされないことに注意
+//! 
+//! - Windows … クリティカルセクションを利用
+//! - Linux系 … ミューテックスを利用
+//! 
+//! @code 使用例
+//! simple_lock_object l;
+//! 
+//! ... 何らかの処理 ...
+//! 
+//! l.lock( );   // <- これ以降の処理1を排他制御する
+//! 
+//! ... 処理1 ...
+//! 
+//! l.unlock( ); // <- ここまでの処理1が排他制御される
+//! 
+//! 
+//! ... 何らかの処理 ...
+//! 
+//! 
+//! l.lock( );   // <- これ以降の処理2を排他制御する
+//! 
+//! ... 処理2 ...
+//! 
+//! l.unlock( ); // <- ここまでの処理2が排他制御される
+//! 
+//! @endcode
+//! 
+struct simple_lock_object
+{
+protected:
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+	typedef char lock_object_type;					// スレッドサポートはしないのでダミー変数用意
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+	typedef CRITICAL_SECTION lock_object_type;		// Windows用のロックオブジェクト(CRITIFCALSECTIONを利用)
+#else
+	typedef pthread_mutex_t lock_object_type;		// pthreadライブラリでのロックオブジェクト
+#endif
+
+	lock_object_type __lock__;
+
+public:
+	simple_lock_object( )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		InitializeCriticalSection( &__lock__ );	// クリティカルセクションオブジェクトを初期化
+#else
+		pthread_mutex_init( &__lock__, NULL );		// pthread用のMutexオブジェクトを初期化
+#endif
+	}
+
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+
+	// スレッドサポートはしないので特に必何もしない
+	bool lock( ){ return( true ); }
+	bool unlock( ){ return( true ); }
+
+#else
+
+	/// @brief 排他制御用のオブジェクトをロックする
+	//! 
+	//! @retval true  … ロックに成功
+	//! @retval false … ロックオブジェクトの生成に失敗
+	//! 
+	bool lock( )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		EnterCriticalSection( &__lock__ );		// クリティカルセクションオブジェクトをロック
+#else
+		pthread_mutex_lock( &__lock__ );		// pthread用のMutexオブジェクトをロック
+#endif
+
+		return( true );
+	}
+
+
+	/// @brief 排他制御用のオブジェクトをロックを解除する
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
+	bool unlock( )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		LeaveCriticalSection( &__lock__ );		// クリティカルセクションオブジェクトをアンロック
+#else
+		pthread_mutex_unlock( &__lock__ );		// pthread用のMutexオブジェクトをアンロック
+#endif
+
+		return( true );
+	}
+
+#endif
+};
+
+
+/// @brief スレッドの排他制御をサポートするクラス
+//! 
+//! ロックするオブジェクトを名前を用いて共有化することが可能なクラス．
+//! 同名のロックオブジェクトを作成することで別々のスレッド関数内での排他制御が可能となる．
+//! 
+//! @attention ロックオブジェクトの生成時点では，ロックはされないことに注意
+//! 
+//! - Windows … クリティカルセクションを利用
+//! - Linux系 … ミューテックスを利用
+//! 
+//! @code 使用例
+//! lock_object l( "ロックオブジェクトの名前" );  // <- 名前を指定しないと，デフォルトのロックオブジェクトが使用される
+//! 
+//! ... 何らかの処理 ...
+//! 
+//! l.lock( );   // <- これ以降の処理1を排他制御する
+//! 
+//! ... 処理1 ...
+//! 
+//! l.unlock( ); // <- ここまでの処理1が排他制御される
+//! 
+//! 
+//! ... 何らかの処理 ...
+//! 
+//! 
+//! l.lock( );   // <- これ以降の処理2を排他制御する
+//! 
+//! ... 処理2 ...
+//! 
+//! l.unlock( ); // <- ここまでの処理2が排他制御される
+//! 
+//! @endcode
+//! 
+struct lock_object
+{
+protected:
+	::std::string lock_name_;
+
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+	typedef char lock_object_type;					// スレッドサポートはしないのでダミー変数用意
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+	typedef CRITICAL_SECTION lock_object_type;		// Windows用のロックオブジェクト(CRITIFCALSECTIONを利用)
+#else
+	typedef pthread_mutex_t lock_object_type;		// pthreadライブラリでのロックオブジェクト
+#endif
+
+	typedef ::std::map< ::std::string, lock_object_type > lock_table;
+
+public:
+	lock_object( ) : lock_name_( "mist default lock object!!" ){ }
+	lock_object( const std::string &name ) : lock_name_( name ){ }
+
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+
+	// スレッドサポートはしないので特に必何もしない
+	bool lock( ){ return( true ); }
+	bool unlock( ){ return( true ); }
+
+#else
+
+	/// @brief 排他制御用のオブジェクトをロックする
+	//! 
+	//! @retval true  … ロックに成功
+	//! @retval false … ロックオブジェクトの生成に失敗
+	//! 
+	bool lock( )
+	{
+		static bool isFirst = true;
+		static lock_object_type __double_lock__;
+		if( isFirst )
+		{
+			isFirst = false;
+			initialize( __double_lock__ );
+		}
+
+		// テーブルの検索でスレッドが衝突しないようにロックする
+		lock( __double_lock__ );
+
+		lock_table &table = singleton< lock_table >::get_instance( );
+		lock_table::iterator ite = table.find( lock_name_ );
+		if( ite == table.end( ) )
+		{
+			// まだロックオブジェクトを初期化していないので初期化する
+			::std::pair< lock_table::iterator, bool > p = table.insert( lock_table::value_type( lock_name_, lock_object_type( ) ) );
+			if( p.second )
+			{
+				lock_object_type &obj = p.first->second;
+				initialize( obj );
+
+				// テーブル検索用のロックを開放する
+				unlock( __double_lock__ );
+
+				lock( obj );
+			}
+			else
+			{
+				// テーブル検索用のロックを開放する
+				unlock( __double_lock__ );
+
+				// ロックオブジェクトをテーブルに追加することができませんでした・・・
+				return( false );
+			}
+		}
+		else
+		{
+			// テーブル検索用のロックを開放する
+			unlock( __double_lock__ );
+
+			// すでに同名のロックオブジェクトが存在するのでそちらをロックする
+			lock( ite->second );
+		}
+
+		return( true );
+	}
+
+
+	/// @brief 排他制御用のオブジェクトをロックを解除する
+	//! 
+	//! @retval true  … 戻り値の説明
+	//! @retval false … 戻り値の説明
+	//! 
+	bool unlock( )
+	{
+		lock_table &table = singleton< lock_table >::get_instance( );
+		lock_table::iterator ite = table.find( lock_name_ );
+		if( ite == table.end( ) )
+		{
+			// 指定されたロックオブジェクトが見つからなかったので何もしない
+			return( false );
+		}
+		else
+		{
+			unlock( ite->second );
+		}
+		return( true );
+	}
+
+#endif
+
+
+protected:
+	/// @brief ロックオブジェクトの初期化を行う
+	//! 
+	//! @param[in,out] l … ロックオブジェクト
+	//! 
+	static void initialize( lock_object_type &l )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		InitializeCriticalSection( &l );	// クリティカルセクションオブジェクトを初期化
+#else
+		pthread_mutex_init( &l, NULL );		// pthread用のMutexオブジェクトを初期化
+#endif
+	}
+
+
+	/// @brief ロックオブジェクトをロックする
+	//! 
+	//! @param[in,out] l … ロックオブジェクト
+	//! 
+	static void lock( lock_object_type &l )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		EnterCriticalSection( &l );		// クリティカルセクションオブジェクトをロック
+#else
+		pthread_mutex_lock( &l );		// pthread用のMutexオブジェクトをロック
+#endif
+	}
+
+
+	/// @brief ロックオブジェクトをロックを解除する
+	//! 
+	//! @param[in,out] l … ロックオブジェクト
+	//! 
+	static void unlock( lock_object_type &l )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		LeaveCriticalSection( &l );		// クリティカルセクションオブジェクトをアンロック
+#else
+		pthread_mutex_unlock( &l );		// pthread用のMutexオブジェクトをアンロック
+#endif
+	}
+};
+
+
+
+
+/// @brief スレッドの排他制御を簡便に記述するためのヘルパクラス
+//! 
+//! @code 使用例
+//! ... 何らかの処理 ...
+//! {
+//!     // このブロック内を排他制御する
+//!     lock l( "ロックオブジェクトの名前" );  // <- 名前を指定しないと，デフォルトのロックオブジェクトが使用される
+//! 
+//!     ... 排他制御したい処理 ...
+//! 
+//!     // ここまでの処理が排他制御される
+//! }
+//! @endcode
+//! 
+class lock
+{
+protected:
+	lock_object lock_object_;	///< @brief ロックオブジェクト
+
+public:
+	/// @brief デフォルトの名前でロックオブジェクトを生成し，ロックオブジェクトをロックする
+	lock( ) : lock_object_( )
+	{
+		lock_object_.lock( );
+	}
+
+
+	/// @brief 指定した name の名前を持つロックオブジェクトを生成し，ロックオブジェクトをロックする
+	lock( const std::string &name ) : lock_object_( name )
+	{
+		lock_object_.lock( );
+	}
+
+
+	/// @brief 開放時に，ロックオブジェクトのロックを解除する
+	~lock( )
+	{
+		lock_object_.unlock( );
+	}
+};
+
+
 /// @brief template 型のデータを扱うことができるスレッドクラス
 //! 
 //! 詳細な説明や関数の使用例を書く
@@ -164,11 +506,15 @@ private:
 #endif
 
 	thread_exit_type thread_exit_code_;	// スレッドの戻り値
+	bool             is_suspended_;		// サスペンド状態にあるかどうか
 
 public:
 
 	/// @brief スレッドが終了した時に返した戻り値を取得する
 	thread_exit_type exit_code( ) const { return( thread_exit_code_ ); }
+
+	/// @brief スレッドがサスペンド状態にあるかどうかを取得する
+	bool is_suspended( ) const { return( is_suspended_ ); }
 
 
 	/// @brief 他のスレッドオブジェクトと同じものを作成する
@@ -224,14 +570,14 @@ public:
 
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしない
-	thread( const thread &t ) :thread_exit_code_( t.thread_exit_code_ ){ }
-	thread( ) : thread_exit_code_( 0 ){ }
+	thread( const thread &t ) : thread_exit_code_( t.thread_exit_code_ ), is_suspended_( false ){ }
+	thread( ) : thread_exit_code_( 0 ), is_suspended_( false ){ }
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-	thread( const thread &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
-	thread( ) : thread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ){ }
+	thread( const thread &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ), is_suspended_( false ){ }
+	thread( ) : thread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ), is_suspended_( false ){ }
 #else
-	thread( const thread &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ){ }
-	thread(  ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ){ }
+	thread( const thread &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ), is_suspended_( false ){ }
+	thread(  ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ), is_suspended_( false ){ }
 #endif
 
 	virtual ~thread( ){ }
@@ -256,6 +602,8 @@ public:
 		if( thread_id_ != ( pthread_t ) ( -1 ) ) return( false );
 		bool ret = pthread_create( &( thread_id_ ), NULL, map_thread_function, ( void * )this ) == 0 ? true : false;
 #endif
+
+		is_suspended_ = false;
 
 		return ( ret );
 	}
@@ -332,6 +680,8 @@ public:
 	//! 
 	virtual bool close( )
 	{
+		is_suspended_ = false;
+
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので常に true を返す
 		return( true );
@@ -360,8 +710,10 @@ public:
 		// スレッドサポートはしないので常に true を返す
 		return( true );
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		is_suspended_ = true;
 		return( SuspendThread( thread_handle_ ) != static_cast< DWORD >( -1 ) );
 #else
+		is_suspended_ = true;
 //		return( pthread_suspend_np( thread_id_ ) == 0 );
 		return( false );
 #endif
@@ -381,8 +733,10 @@ public:
 		// スレッドサポートはしないので常に true を返す
 		return( true );
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		is_suspended_ = false;
 		return( ResumeThread( thread_handle_ ) == 1 );
 #else
+		is_suspended_ = false;
 //		return( pthread_resume_np( thread_id_ ) == 0 );
 		return( false );
 #endif
@@ -534,7 +888,7 @@ namespace __thread_controller__
 		typedef typename base::thread_exit_type thread_exit_type;
 
 	private:
-		Param &param_;
+		Param   &param_;
 		Functor func_;
 
 	public:
@@ -548,6 +902,127 @@ namespace __thread_controller__
 			return( 0 );
 		}
 	};
+
+	struct __thread_pool_functor__
+	{
+		typedef size_t    size_type;
+		typedef ptrdiff_t difference_type;
+
+		virtual void run( size_type id, size_type nthreads ) = 0;
+	};
+
+	template < class Param, class Functor >
+	class thread_pool_functor_base : public __thread_pool_functor__
+	{
+	private:
+		Param   &param_;
+		Functor func_;
+
+	public:
+		thread_pool_functor_base( Param &p, Functor f ) : param_( p ), func_( f ){ }
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual void run( size_type id, size_type nthreads )
+		{
+			func_( param_ );
+		}
+	};
+
+	class thread_pool_functor : public thread< thread_pool_functor >
+	{
+	public:
+		typedef thread< thread_pool_functor > base;
+		typedef base::thread_exit_type thread_exit_type;
+		typedef size_t    size_type;
+		typedef ptrdiff_t difference_type;
+
+	private:
+		std::list< __thread_pool_functor__ * > &functors_;
+		simple_lock_object                     &lock_;
+		bool                                   is_end_;
+		bool                                   is_idle_;
+		size_type                              id_;
+		size_type                              nthreads_;
+
+	public:
+		thread_pool_functor( std::list< __thread_pool_functor__ * > &functors, simple_lock_object &l, size_type id, size_type nthreads )
+			: functors_( functors ), lock_( l ), is_end_( false ), is_idle_( false ), id_( id ), nthreads_( nthreads )
+		{
+		}
+
+		size_type num_jobs( ) const { return( functors_.size( ) ); }
+		bool is_end( ) const { return( is_end_ ); }
+		bool is_idle( ) const { return( is_idle_ ); }
+
+		virtual bool close( )
+		{
+			is_end_ = true;
+
+			// 終了フラグを立ててスレッドを再起動する
+			if( this->is_suspended( ) )
+			{
+				this->resume( );
+			}
+
+			// スレッドが正常終了するまで待つ
+			this->wait( );
+
+			return( base::close( ) );
+		}
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( )
+		{
+			while( !is_end_ )
+			{
+				is_idle_ = false;
+
+				while( !is_end_ )
+				{
+					// キューの先頭からデータを取り出す
+					lock_.lock( );
+					if( functors_.empty( ) )
+					{
+						lock_.unlock( );
+						break;
+					}
+					else
+					{
+						__thread_pool_functor__ *f = functors_.front( );
+						functors_.pop_front( );
+						lock_.unlock( );
+
+						if( f != NULL )
+						{
+							f->run( id_, nthreads_ );
+							delete f;
+						}
+					}
+				}
+
+				if( !is_end_ )
+				{
+					lock_.lock( );
+					if( functors_.empty( ) )
+					{
+						is_idle_ = true;
+						lock_.unlock( );
+						this->suspend( );
+					}
+					else
+					{
+						lock_.unlock( );
+					}
+				}
+			}
+
+			is_idle_ = true;
+
+			return( 0 );
+		}
+	};
 }
 
 
@@ -555,6 +1030,275 @@ namespace __thread_controller__
 //!
 //!  @{
 
+
+/// @brief スレッドプールを利用してスレッドの再利用を可能にするクラス
+//! 
+//! スレッドプールを利用して処理を実行した場合，処理用にスレッドプール内のスレッドを割り当てます．
+//! 処理が終了した場合は，スレッドはスレッドプールに回収され，別の処理へ割り当てられます．
+//! スレッドを再利用することにより，スレッドの生成破棄に必要なオーバーヘッドを削減します．
+//! 
+//! @attention 初回起動時はスレッド生成に伴うオーバーヘッドがあります
+//! 
+//! @code 使用例
+//! struct parameter{ ... 何らかのパラメータ ... };   // スレッド関数に渡すパラメータ（特に構造体である必要は無い）
+//! 
+//! void thread_function( const parameter &p );       // スレッド関数（内部で何らかの処理をする）
+//! 
+//! // これ以降でスレッドを作成する
+//! parameter param[ 処理を行う数 ];
+//! 
+//! for( i = 0 ; i < 処理を行う数 ; i++ )
+//! {
+//!     パラメータに何らかの値を設定する
+//! }
+//! 
+//! // スレッドプール内のスレッド数を指定して初期化
+//! mist::thread_pool pool( 2 );
+//! 
+//! // 関数をパラメータを変えて複数回処理する
+//! pool.execute( param, 処理を行う数, thread_function );
+//! 
+//! // スレッドプール内のスレッドが実行している処理が全て終了するまで待機
+//! pool.wait( );
+//! @endcode
+//! 
+class thread_pool
+{
+public:
+	typedef size_t    size_type;		///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+
+private:
+	typedef __thread_controller__::thread_pool_functor thread_pool_functor;
+	typedef __thread_controller__::__thread_pool_functor__ __thread_pool_functor__;
+
+	std::vector< thread_pool_functor * >   threads_;		///< @brief スレッドプール内のスレッドを管理する変数
+	std::list< __thread_pool_functor__ * > functors_;		///< @brief スレッドプール内の処理待ちのジョブを管理するリスト
+	simple_lock_object                     lock_;			///< @brief スレッドプール内のスレッド間で同期を取るためのロックオブジェクト
+	bool                                   initialized_;	///< @brief スレッドプールの初期化が終了しているかどうか
+
+public:
+	/// @brief スレッドプール内のオブジェクトを作成するが，スレッドプール内のスレッドは0の状態で初期化する（initialize関数を呼び出す必要あり）
+	thread_pool( ) : initialized_( false )
+	{
+	}
+
+	/// @brief スレッドプール内のスレッド数を指定し，すぐにスレッドプールを使える状態で初期化する
+	thread_pool( size_type number_of_max_threads ) : initialized_( false )
+	{
+		initialize( number_of_max_threads );
+	}
+
+	/// @brief スレッドプールで使用している全てのリソースを開放する
+	~thread_pool( )
+	{
+		uninitialize( );
+	}
+
+	/// @brief スレッドプール内で使用するスレッドの数を指定してスレッドプールを初期化する
+	//! 
+	//! 既にスレッドプールを初期化している場合は，現在のスレッドが全て終了するまで待機する
+	//! 
+	//! @param[in] number_of_max_threads … スレッドプールにためておくスレッドの数
+	//! 
+	bool initialize( size_type number_of_max_threads )
+	{
+		// 現在実行中のスレッドを全て終了させる
+		uninitialize( );
+
+		if( number_of_max_threads == 0 )
+		{
+			// 1以上を指定する必要あり
+			return( false );
+		}
+
+		threads_.resize( number_of_max_threads );
+
+		// スレッドを実行してアイドル状態にする
+		for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+		{
+			threads_[ i ] = new thread_pool_functor( functors_, lock_, i, threads_.size( ) );
+			threads_[ i ]->create( );
+		}
+
+		initialized_ = true;
+
+		return( true );
+	}
+
+	/// @brief スレッドプールで使用しているリソースを全て開放する
+	//! 
+	//! 現在のスレッドが全て終了するまで待機し，スレッドプールで使用しているリソースを全て開放する
+	//! 
+	bool uninitialize( )
+	{
+		if( initialized_ )
+		{
+			for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+			{
+				// スレッドのハンドルを閉じる
+				threads_[ i ]->close( );
+
+				// 使用していたメモリ領域を開放する
+				delete threads_[ i ];
+			}
+
+			threads_.clear( );
+
+			// キューに残っているデータを削除する
+			lock_.lock( );
+			while( !functors_.empty( ) )
+			{
+				__thread_pool_functor__ *f = functors_.front( );
+				functors_.pop_front( );
+				delete f;
+			}
+			lock_.unlock( );
+		}
+
+		initialized_ = false;
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを指定してスレッドを実行する
+	//! 
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! 
+	//! @param[in,out] param … スレッドの関数に渡すパラメータ
+	//! @param[in]     f     … 実行されるスレッド関数
+	//! 
+	template < class Param, class Functor >
+	bool execute( Param &p, Functor f )
+	{
+		if( threads_.empty( ) || !initialized_ )
+		{
+			return;
+		}
+
+		// キューに追加する
+		{
+			__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base< Param, Functor >( p, f );
+
+			// 排他制御する
+			lock_.lock( );
+			functors_.push_back( func );
+			lock_.unlock( );
+		}
+
+		for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+		{
+			thread_pool_functor &t = *threads_[ i ];
+
+			if( t.is_idle( ) )
+			{
+				// アイドル状態のスレッドがあれば再開する
+				t.resume( );
+				break;
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを複数指定してスレッドを実行する
+	//! 
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! 
+	//! @param[in,out] param       … スレッドの関数に渡すパラメータ
+	//! @param[in]     num_threads … スレッド数
+	//! @param[in]     f           … 実行されるスレッド関数
+	//! 
+	template < class Param, class Functor >
+	bool execute( Param *param, size_t num_threads, Functor f )
+	{
+		if( threads_.empty( ) || !initialized_ )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		lock_.lock( );
+		for( size_type i = 0 ; i < num_threads ; i++ )
+		{
+			functors_.push_back( new __thread_controller__::thread_pool_functor_base< Param, Functor >( param[ i ], f ) );
+		}
+		lock_.unlock( );
+
+		size_type count = 0;
+		for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+		{
+			thread_pool_functor &t = *threads_[ i ];
+
+			if( t.is_idle( ) )
+			{
+				// アイドル状態のスレッドがあれば再開する
+				t.resume( );
+			}
+
+			count++;
+
+			if( count >= num_threads )
+			{
+				break;
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 全てのスレッドが終了するか，タイムアウトになるまで待機する
+	//! 
+	//! タイムアウトを INFINITE に設定することで，スレッドが終了するまで待ち続ける．
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! 
+	//! @param[in] dwMilliseconds … タイムアウト時間（ミリ秒単位）
+	//! 
+	//! @retval true  … スレッドがタイムアウト前に終了した
+	//! @retval false … タイムアウトが発生したか，その他のエラーが発生
+	//! 
+	virtual bool wait( unsigned long dwMilliseconds = INFINITE )
+	{
+		if( !initialized_ )
+		{
+			return( false );
+		}
+		else if( threads_.empty( ) )
+		{
+			return( true );
+		}
+
+		unsigned long count = 0;
+
+		while( true )
+		{
+			sleep( 1 );
+
+			if( count < dwMilliseconds )
+			{
+				size_type i = 0;
+				for( ; i < threads_.size( ) ; i++ )
+				{
+					if( !threads_[ i ]->is_idle( ) && !threads_[ i ]->is_end( ) )
+					{
+						break;
+					}
+				}
+
+				if( i >= threads_.size( ) )
+				{
+					return ( true );
+				}
+			}
+			else
+			{
+				return ( false );
+			}
+
+			count++;
+		}
+	}
+};
 
 
 /// @brief 生成したスレッドを管理するクラス
@@ -876,240 +1620,6 @@ inline bool do_threads( Param *params, size_t num_threads, Functor f, unsigned l
 
 	return( ret );
 }
-
-
-
-
-
-/// @brief スレッドの排他制御をサポートするクラス
-//! 
-//! @attention ロックオブジェクトの生成時点では，ロックはされないことに注意
-//! 
-//! - Windows … クリティカルセクションを利用
-//! - Linux系 … ミューテックスを利用
-//! 
-//! @code 使用例
-//! lock_object l( "ロックオブジェクトの名前" );  // <- 名前を指定しないと，デフォルトのロックオブジェクトが使用される
-//! 
-//! ... 何らかの処理 ...
-//! 
-//! l.lock( );   // <- これ以降の処理1を排他制御する
-//! 
-//! ... 処理1 ...
-//! 
-//! l.unlock( ); // <- ここまでの処理1が排他制御される
-//! 
-//! 
-//! ... 何らかの処理 ...
-//! 
-//! 
-//! l.lock( );   // <- これ以降の処理2を排他制御する
-//! 
-//! ... 処理2 ...
-//! 
-//! l.unlock( ); // <- ここまでの処理2が排他制御される
-//! 
-//! @endcode
-//! 
-struct lock_object
-{
-protected:
-	::std::string lock_name_;
-
-#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-	typedef char lock_object_type;					// スレッドサポートはしないのでダミー変数用意
-#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-	typedef CRITICAL_SECTION lock_object_type;		// Windows用のロックオブジェクト(CRITIFCALSECTIONを利用)
-#else
-	typedef pthread_mutex_t lock_object_type;		// pthreadライブラリでのロックオブジェクト
-#endif
-
-	typedef ::std::map< ::std::string, lock_object_type > lock_table;
-
-public:
-	lock_object( ) : lock_name_( "mist default lock object!!" ){ }
-	lock_object( const std::string &name ) : lock_name_( name ){ }
-
-#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-
-	// スレッドサポートはしないので特に必何もしない
-	bool lock( ){ return( true ); }
-	bool unlock( ){ return( true ); }
-
-#else
-
-	/// @brief 排他制御用のオブジェクトをロックする
-	//! 
-	//! @retval true  … ロックに成功
-	//! @retval false … ロックオブジェクトの生成に失敗
-	//! 
-	bool lock( )
-	{
-		static bool isFirst = true;
-		static lock_object_type __double_lock__;
-		if( isFirst )
-		{
-			isFirst = false;
-			initialize( __double_lock__ );
-		}
-
-		// テーブルの検索でスレッドが衝突しないようにロックする
-		lock( __double_lock__ );
-
-		lock_table &table = singleton< lock_table >::get_instance( );
-		lock_table::iterator ite = table.find( lock_name_ );
-		if( ite == table.end( ) )
-		{
-			// まだロックオブジェクトを初期化していないので初期化する
-			::std::pair< lock_table::iterator, bool > p = table.insert( lock_table::value_type( lock_name_, lock_object_type( ) ) );
-			if( p.second )
-			{
-				lock_object_type &obj = p.first->second;
-				initialize( obj );
-
-				// テーブル検索用のロックを開放する
-				unlock( __double_lock__ );
-
-				lock( obj );
-			}
-			else
-			{
-				// テーブル検索用のロックを開放する
-				unlock( __double_lock__ );
-
-				// ロックオブジェクトをテーブルに追加することができませんでした・・・
-				return( false );
-			}
-		}
-		else
-		{
-			// テーブル検索用のロックを開放する
-			unlock( __double_lock__ );
-
-			// すでに同名のロックオブジェクトが存在するのでそちらをロックする
-			lock( ite->second );
-		}
-
-		return( true );
-	}
-
-
-	/// @brief 排他制御用のオブジェクトをロックを解除する
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
-	//! 
-	bool unlock( )
-	{
-		lock_table &table = singleton< lock_table >::get_instance( );
-		lock_table::iterator ite = table.find( lock_name_ );
-		if( ite == table.end( ) )
-		{
-			// 指定されたロックオブジェクトが見つからなかったので何もしない
-			return( false );
-		}
-		else
-		{
-			unlock( ite->second );
-		}
-		return( true );
-	}
-
-#endif
-
-
-protected:
-	/// @brief ロックオブジェクトの初期化を行う
-	//! 
-	//! @param[in,out] l … ロックオブジェクト
-	//! 
-	static void initialize( lock_object_type &l )
-	{
-#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-		// スレッドサポートはしないので特に必何もしない
-#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-		InitializeCriticalSection( &l );	// クリティカルセクションオブジェクトを初期化
-#else
-		pthread_mutex_init( &l, NULL );		// pthread用のMutexオブジェクトを初期化
-#endif
-	}
-
-
-	/// @brief ロックオブジェクトをロックする
-	//! 
-	//! @param[in,out] l … ロックオブジェクト
-	//! 
-	static void lock( lock_object_type &l )
-	{
-#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-		// スレッドサポートはしないので特に必何もしない
-#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-		EnterCriticalSection( &l );		// クリティカルセクションオブジェクトをロック
-#else
-		pthread_mutex_lock( &l );		// pthread用のMutexオブジェクトをロック
-#endif
-	}
-
-
-	/// @brief ロックオブジェクトをロックを解除する
-	//! 
-	//! @param[in,out] l … ロックオブジェクト
-	//! 
-	static void unlock( lock_object_type &l )
-	{
-#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-		// スレッドサポートはしないので特に必何もしない
-#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-		LeaveCriticalSection( &l );		// クリティカルセクションオブジェクトをアンロック
-#else
-		pthread_mutex_unlock( &l );		// pthread用のMutexオブジェクトをアンロック
-#endif
-	}
-};
-
-
-
-
-/// @brief スレッドの排他制御を簡便に記述するためのヘルパクラス
-//! 
-//! @code 使用例
-//! ... 何らかの処理 ...
-//! {
-//!     // このブロック内を排他制御する
-//!     lock l( "ロックオブジェクトの名前" );  // <- 名前を指定しないと，デフォルトのロックオブジェクトが使用される
-//! 
-//!     ... 排他制御したい処理 ...
-//! 
-//!     // ここまでの処理が排他制御される
-//! }
-//! @endcode
-//! 
-class lock
-{
-protected:
-	lock_object lock_object_;	///< @brief ロックオブジェクト
-
-public:
-	/// @brief デフォルトの名前でロックオブジェクトを生成し，ロックオブジェクトをロックする
-	lock( ) : lock_object_( )
-	{
-		lock_object_.lock( );
-	}
-
-
-	/// @brief 指定した name の名前を持つロックオブジェクトを生成し，ロックオブジェクトをロックする
-	lock( const std::string &name ) : lock_object_( name )
-	{
-		lock_object_.lock( );
-	}
-
-
-	/// @brief 開放時に，ロックオブジェクトのロックを解除する
-	~lock( )
-	{
-		lock_object_.unlock( );
-	}
-};
 
 
 /// @}
