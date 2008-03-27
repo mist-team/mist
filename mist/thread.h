@@ -85,8 +85,6 @@ struct thread_object
 	virtual bool create( ) = 0;
 	virtual bool wait( unsigned long dwMilliseconds = INFINITE ) = 0;
 	virtual bool close( ) = 0;
-	virtual bool suspend( ) = 0;
-	virtual bool resume( ) = 0;
 	virtual ~thread_object( ){ }
 };
 
@@ -122,6 +120,7 @@ inline size_t get_cpu_num( )
 }
 
 
+/// @brief 指定した時間だけスリープする（ミリ秒単位）
 inline void sleep( size_t dwMilliseconds )
 {
 #if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
@@ -193,6 +192,17 @@ public:
 		InitializeCriticalSection( &__lock__ );	// クリティカルセクションオブジェクトを初期化
 #else
 		pthread_mutex_init( &__lock__, NULL );		// pthread用のMutexオブジェクトを初期化
+#endif
+	}
+
+	~simple_lock_object( )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		DeleteCriticalSection( &__lock__ );		// クリティカルセクションオブジェクトを削除
+#else
+		pthread_mutex_destroy( &__lock__ );		// pthread用のMutexオブジェクトを初期化
 #endif
 	}
 
@@ -479,6 +489,86 @@ public:
 };
 
 
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+/// @brief スレッド間でシグナルを共有するためのクラス
+class signal
+{
+protected:
+	HANDLE handle_;
+
+public:
+	/// @brief コンストラクタ
+	signal( ) : handle_( CreateEvent( NULL, TRUE, FALSE, NULL ) )
+	{
+	}
+
+	/// @brief デストラクタ
+	~signal( )
+	{
+		CloseHandle( handle_ );
+	}
+
+	/// @brief シグナル状態になるまで待機する
+	bool wait( unsigned long dwMilliseconds = INFINITE )
+	{
+		return( WaitForSingleObjectEx( handle_, dwMilliseconds, FALSE ) == WAIT_OBJECT_0 );
+	}
+
+	/// @brief シグナルを送信する
+	void send( )
+	{
+		SetEvent( handle_ );
+	}
+};
+#else
+class signal
+{
+protected:
+	pthread_cond_t  cond_;
+	pthread_mutex_t mutex_;
+
+public:
+	/// @brief コンストラクタ
+	signal( )
+	{
+		pthread_mutex_init( &mutex_, NULL );
+		pthread_cond_init( &cond_, NULL );
+		pthread_mutex_lock ( &mutex_ );
+	}
+
+	/// @brief デストラクタ
+	~signal( )
+	{
+		pthread_cond_destroy( &cond_ );
+		pthread_mutex_destroy( &mutex_ );
+	}
+
+	/// @brief シグナル状態になるまで待機する
+	bool wait( unsigned long dwMilliseconds = INFINITE )
+	{
+		if( dwMilliseconds == INFINITE )
+		{
+			pthread_cond_wait( &cond_, &mutex_ );
+			return( true );
+		}
+		else
+		{
+			timespec tm;
+			tm.tv_sec = static_cast< time_t >( dwMilliseconds / 1000 );
+			tm.tv_nsec = static_cast< long >( ( dwMilliseconds % 1000 ) * 1000000 );
+			return( pthread_cond_timedwait( &cond_, &mutex_, &tm ) == 0 );
+		}
+	}
+
+	/// @brief シグナルを送信する
+	void send( )
+	{
+		pthread_cond_broadcast( &cond_ );
+	}
+};
+#endif
+
+
 /// @brief template 型のデータを扱うことができるスレッドクラス
 //! 
 //! 詳細な説明や関数の使用例を書く
@@ -506,15 +596,11 @@ private:
 #endif
 
 	thread_exit_type thread_exit_code_;	// スレッドの戻り値
-	bool             is_suspended_;		// サスペンド状態にあるかどうか
 
 public:
 
 	/// @brief スレッドが終了した時に返した戻り値を取得する
 	thread_exit_type exit_code( ) const { return( thread_exit_code_ ); }
-
-	/// @brief スレッドがサスペンド状態にあるかどうかを取得する
-	bool is_suspended( ) const { return( is_suspended_ ); }
 
 
 	/// @brief 他のスレッドオブジェクトと同じものを作成する
@@ -570,17 +656,20 @@ public:
 
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしない
-	thread( const thread &t ) : thread_exit_code_( t.thread_exit_code_ ), is_suspended_( false ){ }
-	thread( ) : thread_exit_code_( 0 ), is_suspended_( false ){ }
+	thread( const thread &t ) : thread_exit_code_( t.thread_exit_code_ ){ }
+	thread( ) : thread_exit_code_( 0 ){ }
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-	thread( const thread &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ), is_suspended_( false ){ }
-	thread( ) : thread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ), is_suspended_( false ){ }
+	thread( const thread &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
+	thread( ) : thread_handle_( NULL ), thread_id_( -1 ), thread_exit_code_( 0 ){ }
 #else
-	thread( const thread &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ), is_suspended_( false ){ }
-	thread(  ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ), is_suspended_( false ){ }
+	thread( const thread &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ){ }
+	thread( ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ){ }
 #endif
 
-	virtual ~thread( ){ }
+	virtual ~thread( )
+	{
+		this->close( );
+	}
 
 
 	/// @brief スレッドを生成する
@@ -600,10 +689,9 @@ public:
 		bool ret = thread_handle_ != NULL ? true : false;
 #else
 		if( thread_id_ != ( pthread_t ) ( -1 ) ) return( false );
+		thread_finished_ = false;
 		bool ret = pthread_create( &( thread_id_ ), NULL, map_thread_function, ( void * )this ) == 0 ? true : false;
 #endif
-
-		is_suspended_ = false;
 
 		return ( ret );
 	}
@@ -680,65 +768,32 @@ public:
 	//! 
 	virtual bool close( )
 	{
-		is_suspended_ = false;
-
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので常に true を返す
 		return( true );
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-		BOOL ret = CloseHandle( thread_handle_ );
-		thread_handle_ = NULL;
-		return ( ret != 0 );
+		if( thread_handle_ != NULL )
+		{
+			BOOL ret = CloseHandle( thread_handle_ );
+			thread_handle_ = NULL;
+			return ( ret != 0 );
+		}
+		else
+		{
+			return( true );
+		}
 #else
-		int ret = pthread_detach( thread_id_ );
-		thread_id_ = ( pthread_t ) ( -1 );
-		return ( ret == 0 );
-#endif
-	}
-
-
-	/// @brief スレッドをサスペンドさせる
-	//! 
-	//! @attention Windows以外の環境では，pthread ライブラリ側でサポートされていないことがあるため，現在のところWindowsのみサポート
-	//! 
-	//! @retval true  … サスペンドに成功
-	//! @retval false … サスペンドに失敗
-	//! 
-	virtual bool suspend( )
-	{
-#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-		// スレッドサポートはしないので常に true を返す
-		return( true );
-#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-		is_suspended_ = true;
-		return( SuspendThread( thread_handle_ ) != static_cast< DWORD >( -1 ) );
-#else
-		is_suspended_ = true;
-//		return( pthread_suspend_np( thread_id_ ) == 0 );
-		return( false );
-#endif
-	}
-
-
-	/// @brief スレッドをリジュームする
-	//! 
-	//! @attention Windows以外の環境では，pthread ライブラリ側でサポートされていないことがあるため，現在のところWindowsのみのサポート
-	//! 
-	//! @retval true  … リジュームに成功
-	//! @retval false … リジュームに失敗
-	//! 
-	virtual bool resume( )
-	{
-#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-		// スレッドサポートはしないので常に true を返す
-		return( true );
-#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-		is_suspended_ = false;
-		return( ResumeThread( thread_handle_ ) == 1 );
-#else
-		is_suspended_ = false;
-//		return( pthread_resume_np( thread_id_ ) == 0 );
-		return( false );
+		if( !thread_finished_ )
+		{
+			int ret = pthread_detach( thread_id_ );
+			thread_id_ = ( pthread_t ) ( -1 );
+			return ( ret == 0 );
+		}
+		else
+		{
+			thread_id_ = ( pthread_t ) ( -1 );
+			return( true );
+		}
 #endif
 	}
 
@@ -773,7 +828,6 @@ protected:
 	}
 #endif
 };
-
 
 
 /// @brief スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う
@@ -944,10 +998,12 @@ namespace __thread_controller__
 		bool                                   is_idle_;
 		size_type                              id_;
 		size_type                              nthreads_;
+		signal                                 signal_;
+		bool                                   is_suspended_;		// サスペンド状態にあるかどうか
 
 	public:
 		thread_pool_functor( std::list< __thread_pool_functor__ * > &functors, simple_lock_object &l, size_type id, size_type nthreads )
-			: functors_( functors ), lock_( l ), is_end_( false ), is_idle_( false ), id_( id ), nthreads_( nthreads )
+			: functors_( functors ), lock_( l ), is_end_( false ), is_idle_( false ), id_( id ), nthreads_( nthreads ), is_suspended_( false )
 		{
 		}
 
@@ -960,7 +1016,7 @@ namespace __thread_controller__
 			is_end_ = true;
 
 			// 終了フラグを立ててスレッドを再起動する
-			if( this->is_suspended( ) )
+			if( is_suspended_ )
 			{
 				this->resume( );
 			}
@@ -971,7 +1027,18 @@ namespace __thread_controller__
 			return( base::close( ) );
 		}
 
+		void resume( )
+		{
+			signal_.send( );
+		}
+
 	protected:
+		void suspend( )
+		{
+			is_suspended_ = true;
+			signal_.wait( );
+		}
+
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( )
 		{
@@ -1333,14 +1400,6 @@ public:
 		return( b );
 	}
 
-
-	/// @brief スレッドをサスペンドする
-	bool suspend( ){ return( thread_ == NULL ? false : thread_->suspend( ) ); }
-
-
-	/// @brief スレッドをリジュームする
-	bool resume( ){ return( thread_ == NULL ? false : thread_->resume( ) ); }
-
 public:
 	thread_handle( ) : thread_( NULL ){ }
 	thread_handle( thread_object *t ) : thread_( t ){ }
@@ -1481,72 +1540,6 @@ inline bool wait_threads( thread_handle *handles, size_t num_threads, unsigned l
 	for( size_t i = 0 ; i < num_threads ; i++ )
 	{
         if( !handles[ i ].wait( dwMilliseconds ) )
-		{
-			ret = false;
-		}
-	}
-	return( ret );
-}
-
-
-/// @brief スレッドをサスペンドさせる
-//! 
-//! @attention Windows環境でのみサポート
-//! 
-//! @param[in,out] thread_ … スレッドオブジェクト
-//!
-//! @retval true  … サスペンドに成功
-//! @retval false … サスペンドに失敗
-//! 
-inline bool suspend_thread( thread_handle &thread_ ){ return( thread_.suspend( ) ); }
-
-/// @brief 複数のスレッドが使用していたリソースを開放する
-//! 
-//! @param[out]    handles     … スレッドオブジェクト
-//! @param[in]     num_threads … スレッド数
-//!
-//! @retval true  … 複数のスレッドのサスペンドに成功
-//! @retval false … 複数のスレッドのサスペンドに失敗
-//! 
-inline bool suspend_threads( thread_handle *handles, size_t num_threads )
-{
-	bool ret = true;
-	for( size_t i = 0 ; i < num_threads ; i++ )
-	{
-        if( !handles[ i ].suspend( ) )
-		{
-			ret = false;
-		}
-	}
-	return( ret );
-}
-
-
-/// @brief スレッドをリジュームする
-//! 
-//! @attention Windows環境でのみサポート
-//! 
-//! @param[in,out] thread_ … スレッドオブジェクト
-//!
-//! @retval true  … リジュームに成功
-//! @retval false … リジュームに失敗
-//! 
-inline bool resume_thread( thread_handle &thread_ ){ return( thread_.resume( ) ); }
-
-/// @brief 複数のスレッドが使用していたリソースを開放する
-//! 
-//! @param[out]    handles     … スレッドオブジェクト
-//! @param[in]     num_threads … スレッド数
-//!
-//! @retval true  … 複数のスレッドのリジュームに成功
-//! @retval false … 複数のスレッドのリジュームに失敗
-//! 
-inline bool resume_threads( thread_handle *handles, size_t num_threads )
-{
-	bool ret = true;
-	for( size_t i = 0 ; i < num_threads ; i++ )
-	{
-        if( !handles[ i ].resume( ) )
 		{
 			ret = false;
 		}
