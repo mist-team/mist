@@ -48,8 +48,13 @@
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしないので特に必要なインクルードファイルは無し
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+	#ifndef _WIN32_WINNT
+		#define _WIN32_WINNT 0x0500
+	#endif
 	#include <windows.h>
 	#include <process.h>
+	#include <mmsystem.h>
+	#pragma comment ( lib, "winmm.lib" )
 #else
 	#include <pthread.h>
 	#include <unistd.h>
@@ -211,19 +216,18 @@ public:
 	// スレッドサポートはしないので特に必何もしない
 	bool lock( ){ return( true ); }
 	bool unlock( ){ return( true ); }
+	bool try_lock( ){ return( true ); }
 
 #else
 
-	/// @brief 排他制御用のオブジェクトをロックする
+	/// @brief 排他制御用オブジェクトをロックする
 	//! 
 	//! @retval true  … ロックに成功
-	//! @retval false … ロックオブジェクトの生成に失敗
+	//! @retval false … ロックに失敗
 	//! 
 	bool lock( )
 	{
-#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-		// スレッドサポートはしないので特に必何もしない
-#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		EnterCriticalSection( &__lock__ );		// クリティカルセクションオブジェクトをロック
 #else
 		pthread_mutex_lock( &__lock__ );		// pthread用のMutexオブジェクトをロック
@@ -232,17 +236,27 @@ public:
 		return( true );
 	}
 
+	/// @brief 排他制御用オブジェクトのロックを試みる
+	//! 
+	//! 既にロックされていた場合は，ロックせずに false を返す．
+	//! 
+	//! @retval true  … ロックに成功
+	//! @retval false … ロックに失敗
+	//! 
+	bool try_lock( )
+	{
+		// クリティカルセクションオブジェクトのロックが可能かを調べる
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		return( TryEnterCriticalSection( &__lock__ ) != FALSE );
+#else
+		return( pthread_mutex_trylock( &__lock__ ) == 0 );
+#endif
+	}
 
-	/// @brief 排他制御用のオブジェクトをロックを解除する
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
-	//! 
+	/// @brief 排他制御用オブジェクトのロックを解除する
 	bool unlock( )
 	{
-#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
-		// スレッドサポートはしないので特に必何もしない
-#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		LeaveCriticalSection( &__lock__ );		// クリティカルセクションオブジェクトをアンロック
 #else
 		pthread_mutex_unlock( &__lock__ );		// pthread用のMutexオブジェクトをアンロック
@@ -315,10 +329,10 @@ public:
 
 #else
 
-	/// @brief 排他制御用のオブジェクトをロックする
+	/// @brief 排他制御用オブジェクトをロックする
 	//! 
 	//! @retval true  … ロックに成功
-	//! @retval false … ロックオブジェクトの生成に失敗
+	//! @retval false … ロックに失敗
 	//! 
 	bool lock( )
 	{
@@ -370,12 +384,7 @@ public:
 		return( true );
 	}
 
-
-	/// @brief 排他制御用のオブジェクトをロックを解除する
-	//! 
-	//! @retval true  … 戻り値の説明
-	//! @retval false … 戻り値の説明
-	//! 
+	/// @brief 排他制御用オブジェクトのロックを解除する
 	bool unlock( )
 	{
 		lock_table &table = singleton< lock_table >::get_instance( );
@@ -514,7 +523,6 @@ public:
 		DWORD ret = WaitForSingleObject( handle_, dwMilliseconds );
 		if( SUCCEEDED( ret ) )
 		{
-			ResetEvent( handle_ );
 			return ( true );
 		}
 		else
@@ -527,6 +535,7 @@ public:
 	void send( )
 	{
 		SetEvent( handle_ );
+		ResetEvent( handle_ );
 	}
 };
 #else
@@ -1038,16 +1047,17 @@ namespace __thread_controller__
 	private:
 		std::list< __thread_pool_functor__ * > &functors_;
 		simple_lock_object                     &lock_;
+		simple_lock_object                     suspend_lock_;
 		bool                                   is_end_;
 		bool                                   is_idle_;
 		size_type                              id_;
 		size_type                              nthreads_;
 		signal                                 signal_;
-		bool                                   is_suspended_;		// サスペンド状態にあるかどうか
+		signal                                 wait_signal_;
 
 	public:
 		thread_pool_functor( std::list< __thread_pool_functor__ * > &functors, simple_lock_object &l, size_type id, size_type nthreads )
-			: functors_( functors ), lock_( l ), is_end_( false ), is_idle_( false ), id_( id ), nthreads_( nthreads ), is_suspended_( false )
+			: functors_( functors ), lock_( l ), is_end_( false ), is_idle_( false ), id_( id ), nthreads_( nthreads )
 		{
 		}
 
@@ -1055,14 +1065,33 @@ namespace __thread_controller__
 		bool is_end( ) const { return( is_end_ ); }
 		bool is_idle( ) const { return( is_idle_ ); }
 
+		bool is_suspended( )
+		{
+			if( suspend_lock_.try_lock( ) )
+			{
+				suspend_lock_.unlock( );
+				return( false );
+			}
+			else
+			{
+				return( true );
+			}
+		}
+
 		virtual bool close( )
 		{
+			lock_.lock( );
 			is_end_ = true;
+			lock_.unlock( );
 
 			// 終了フラグを立ててスレッドを再起動する
-			if( is_suspended_ )
+			if( !suspend_lock_.try_lock( ) )
 			{
 				this->resume( );
+			}
+			else
+			{
+				suspend_lock_.unlock( );
 			}
 
 			// スレッドが正常終了するまで待つ
@@ -1073,14 +1102,39 @@ namespace __thread_controller__
 
 		void resume( )
 		{
-			signal_.send( );
+			if( !suspend_lock_.try_lock( ) )
+			{
+				is_idle_ = functors_.empty( );
+				signal_.send( );
+			}
+			else
+			{
+				suspend_lock_.unlock( );
+			}
+		}
+
+		bool wait( unsigned long dwMilliseconds = INFINITE )
+		{
+			lock_.lock( );
+			bool finished = is_idle_ || is_end_;
+			lock_.unlock( );
+
+			if( finished )
+			{
+				return( true );
+			}
+			else
+			{
+				return( wait_signal_.wait( dwMilliseconds ) );
+			}
 		}
 
 	protected:
 		void suspend( )
 		{
-			is_suspended_ = true;
+			suspend_lock_.lock( );
 			signal_.wait( );
+			suspend_lock_.unlock( );
 		}
 
 		// 継承した先で必ず実装されるスレッド関数
@@ -1088,8 +1142,6 @@ namespace __thread_controller__
 		{
 			while( !is_end_ )
 			{
-				is_idle_ = false;
-
 				while( !is_end_ )
 				{
 					// キューの先頭からデータを取り出す
@@ -1113,13 +1165,14 @@ namespace __thread_controller__
 					}
 				}
 
+				lock_.lock( );
 				if( !is_end_ )
 				{
-					lock_.lock( );
 					if( functors_.empty( ) )
 					{
 						is_idle_ = true;
 						lock_.unlock( );
+						wait_signal_.send( );
 						this->suspend( );
 					}
 					else
@@ -1127,8 +1180,13 @@ namespace __thread_controller__
 						lock_.unlock( );
 					}
 				}
+				else
+				{
+					lock_.unlock( );
+				}
 			}
 
+			wait_signal_.send( );
 			is_idle_ = true;
 
 			return( 0 );
@@ -1275,6 +1333,7 @@ public:
 	/// @brief 関数とパラメータを指定してスレッドを実行する
 	//! 
 	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! スレッドが実行する関数の引数はコピーして渡される．
 	//! 
 	//! @param[in,out] param … スレッドの関数に渡すパラメータ
 	//! @param[in]     f     … 実行されるスレッド関数
@@ -1315,6 +1374,7 @@ public:
 	/// @brief 関数とパラメータを指定してスレッドを実行する
 	//! 
 	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! スレッドが実行する関数の引数は参照として渡される．
 	//! 
 	//! @param[in,out] param … スレッドの関数に渡すパラメータ
 	//! @param[in]     f     … 実行されるスレッド関数
@@ -1395,6 +1455,7 @@ public:
 	/// @brief 関数とパラメータを複数指定してスレッドを実行する
 	//! 
 	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! スレッドが実行する関数の引数はコピーして渡される．
 	//! 
 	//! @param[in,out] param       … スレッドの関数に渡すパラメータ
 	//! @param[in]     num_threads … スレッド数
@@ -1402,6 +1463,53 @@ public:
 	//! 
 	template < class Param, class Functor >
 	bool execute( Param *param, size_t num_threads, Functor f )
+	{
+		if( threads_.empty( ) || !initialized_ )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		lock_.lock( );
+		for( size_type i = 0 ; i < num_threads ; i++ )
+		{
+			functors_.push_back( new __thread_controller__::thread_pool_functor_base< Param, Functor >( param[ i ], f ) );
+		}
+		lock_.unlock( );
+
+		size_type count = 0;
+		for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+		{
+			thread_pool_functor &t = *threads_[ i ];
+
+			if( t.is_idle( ) )
+			{
+				// アイドル状態のスレッドがあれば再開する
+				t.resume( );
+			}
+
+			count++;
+
+			if( count >= num_threads )
+			{
+				break;
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを複数指定してスレッドを実行する
+	//! 
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! スレッドが実行する関数の引数は参照として渡される．
+	//! 
+	//! @param[in,out] param       … スレッドの関数に渡すパラメータ
+	//! @param[in]     num_threads … スレッド数
+	//! @param[in]     f           … 実行されるスレッド関数
+	//! 
+	template < class Param, class Functor >
+	bool execute_nocopy( Param *param, size_t num_threads, Functor f )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -1456,37 +1564,312 @@ public:
 		}
 		else if( threads_.empty( ) )
 		{
-			return( true );
+			return( false );
 		}
 
-		unsigned long count = 0;
-
-		while( true )
+		unsigned long st = _timeGetTime_( );
+		size_type i = 0;
+		for( ; i < threads_.size( ) ; i++ )
 		{
-			sleep( 1 );
-
-			if( count < dwMilliseconds )
+			if( !threads_[ i ]->wait( dwMilliseconds ) )
 			{
-				size_type i = 0;
-				for( ; i < threads_.size( ) ; i++ )
-				{
-					if( !threads_[ i ]->is_idle( ) && !threads_[ i ]->is_end( ) )
-					{
-						break;
-					}
-				}
-
-				if( i >= threads_.size( ) )
-				{
-					return ( true );
-				}
+				break;
 			}
 			else
 			{
-				return ( false );
+				dwMilliseconds -= _timeGetTime_( ) - st;
 			}
+		}
 
-			count++;
+		return( i < threads_.size( ) );
+	}
+
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+	static unsigned long _timeGetTime_( )
+	{
+		return( timeGetTime( ) );
+	}
+#else
+	static unsigned long _timeGetTime_( )
+	{
+		timeval dmy;
+		gettimeofday( &dmy, NULL );
+		return( dmy.tv_sec );
+	}
+#endif
+};
+
+
+
+/// @brief バックグラウンドで実行するワーカースレッドを実現するクラス
+//! 
+//! ワーカースレッドには複数のジョブを設定することができ，各ジョブを順次実行します．
+//! 全てのジョブが終了すると，ワーカースレッドは待機状態に入り，次のジョブを待ちます．
+//! 
+//! @attention 初回起動時はスレッド生成に伴うオーバーヘッドがあります
+//! 
+//! @code 使用例
+//! struct parameter{ ... 何らかのパラメータ ... };   // スレッド関数に渡すパラメータ（特に構造体である必要は無い）
+//! 
+//! void thread_function( const parameter &p );       // スレッド関数（内部で何らかの処理をする）
+//! 
+//! // これ以降でスレッドを作成する
+//! parameter param;
+//! 
+//! // ワーカースレッドを初期化
+//! mist::worker_thread work;
+//! 
+//! // 関数を実行する
+//! work.execute( param, thread_function );
+//! 
+//! // ワーカースレッドが実行している処理が全て終了するまで待機
+//! pool.wait( );
+//! @endcode
+//! 
+class worker_thread
+{
+public:
+	typedef size_t    size_type;		///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+
+private:
+	typedef __thread_controller__::thread_pool_functor thread_pool_functor;
+	typedef __thread_controller__::__thread_pool_functor__ __thread_pool_functor__;
+
+	thread_pool_functor *                  thread_;			///< @brief ワーカースレッドが管理するメインスレッド
+	std::list< __thread_pool_functor__ * > functors_;		///< @brief ワーカースレッド内の処理待ちのジョブを管理するリスト
+	simple_lock_object                     lock_;			///< @brief ワーカースレッド内のスレッド間で同期を取るためのロックオブジェクト
+
+public:
+	/// @brief ワーカースレッド用のスレッドを作成した状態で待機する
+	worker_thread( ) : thread_( NULL )
+	{
+		thread_ = new thread_pool_functor( functors_, lock_, 0, 1 );
+		thread_->create( );
+	}
+
+	/// @brief ワーカースレッドで使用している全てのリソースを開放する
+	~worker_thread( )
+	{
+		close( );
+	}
+
+	/// @brief ワーカースレッドで使用しているリソースを全て開放する
+	//! 
+	//! 直ちにワーカースレッドを終了し，ワーカースレッドで使用しているリソースを全て開放する
+	//! 
+	bool close( )
+	{
+		if( thread_ == NULL )
+		{
+			return( false );
+		}
+
+		// スレッドのハンドルを閉じる
+		thread_->close( );
+
+		// 使用していたメモリ領域を開放する
+		delete thread_;
+		thread_ = NULL;
+
+		// キューに残っているデータを削除する
+		lock_.lock( );
+		while( !functors_.empty( ) )
+		{
+			__thread_pool_functor__ *f = functors_.front( );
+			functors_.pop_front( );
+			delete f;
+		}
+		lock_.unlock( );
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを指定してスレッドを実行する
+	//! 
+	//! ワーカースレッドが終了した状態では false を返す．
+	//! スレッドが実行する関数の引数はコピーして渡される．
+	//! 
+	//! @param[in,out] param … スレッドの関数に渡すパラメータ
+	//! @param[in]     f     … 実行されるスレッド関数
+	//! 
+	template < class Param, class Functor >
+	bool execute( Param p, Functor f )
+	{
+		if( thread_ == NULL )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base< Param, Functor >( p, f );
+
+		// 排他制御する
+		lock_.lock( );
+		functors_.push_back( func );
+		lock_.unlock( );
+
+		if( thread_->is_idle( ) )
+		{
+			// スレッドがアイドル状態であれば再開する
+			thread_->resume( );
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを指定してスレッドを実行する
+	//! 
+	//! ワーカースレッドが終了した状態では false を返す．
+	//! スレッドが実行する関数の引数は参照として渡される．
+	//! 
+	//! @param[in,out] param … スレッドの関数に渡すパラメータ
+	//! @param[in]     f     … 実行されるスレッド関数
+	//! 
+	template < class Param, class Functor >
+	bool execute_nocopy( Param &p, Functor f )
+	{
+		if( thread_ == NULL )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base_nocopy< Param, Functor >( p, f );
+
+		// 排他制御する
+		lock_.lock( );
+		functors_.push_back( func );
+		lock_.unlock( );
+
+		if( thread_->is_idle( ) )
+		{
+			// スレッドがアイドル状態であれば再開する
+			thread_->resume( );
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを指定してスレッドを実行する
+	//! 
+	//! ワーカースレッドが終了した状態では false を返す．
+	//! 
+	//! @param[in,out] param … スレッドの関数に渡すパラメータ
+	//! @param[in]     f     … 実行されるスレッド関数
+	//! 
+	template < class Functor >
+	bool execute( Functor f )
+	{
+		if( thread_ == NULL )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		__thread_pool_functor__ *func = new __thread_controller__::thread_pool_void_functor_base< Functor >( f );
+
+		// 排他制御する
+		lock_.lock( );
+		functors_.push_back( func );
+		lock_.unlock( );
+
+		if( thread_->is_idle( ) )
+		{
+			// スレッドがアイドル状態であれば再開する
+			thread_->resume( );
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを複数指定してスレッドを実行する
+	//! 
+	//! ワーカースレッドが終了した状態では false を返す．
+	//! スレッドが実行する関数の引数はコピーして渡される．
+	//! 
+	//! @param[in,out] param       … スレッドの関数に渡すパラメータ
+	//! @param[in]     num_threads … スレッド数
+	//! @param[in]     f           … 実行されるスレッド関数
+	//! 
+	template < class Param, class Functor >
+	bool execute( Param *param, size_t num_threads, Functor f )
+	{
+		if( thread_ == NULL )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		lock_.lock( );
+		for( size_type i = 0 ; i < num_threads ; i++ )
+		{
+			functors_.push_back( new __thread_controller__::thread_pool_functor_base< Param, Functor >( param[ i ], f ) );
+		}
+		lock_.unlock( );
+
+		if( thread_->is_idle( ) )
+		{
+			// スレッドがアイドル状態であれば再開する
+			thread_->resume( );
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを複数指定してスレッドを実行する
+	//! 
+	//! ワーカースレッドが終了した状態では false を返す．
+	//! スレッドが実行する関数の引数は参照として渡される．
+	//! 
+	//! @param[in,out] param       … スレッドの関数に渡すパラメータ
+	//! @param[in]     num_threads … スレッド数
+	//! @param[in]     f           … 実行されるスレッド関数
+	//! 
+	template < class Param, class Functor >
+	bool execute_nocopy( Param *param, size_t num_threads, Functor f )
+	{
+		if( thread_ == NULL )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		lock_.lock( );
+		for( size_type i = 0 ; i < num_threads ; i++ )
+		{
+			functors_.push_back( new __thread_controller__::thread_pool_functor_base_nocopy< Param, Functor >( param[ i ], f ) );
+		}
+		lock_.unlock( );
+
+		if( thread_->is_idle( ) )
+		{
+			// スレッドがアイドル状態であれば再開する
+			thread_->resume( );
+		}
+
+		return( true );
+	}
+
+	/// @brief 全ての処理が終了するか，タイムアウトになるまで待機する
+	//! 
+	//! タイムアウトを INFINITE に設定することで，スレッドが終了するまで待ち続ける．
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! 
+	//! @param[in] dwMilliseconds … タイムアウト時間（ミリ秒単位）
+	//! 
+	//! @retval true  … スレッドがタイムアウト前に終了した
+	//! @retval false … タイムアウトが発生したか，その他のエラーが発生
+	//! 
+	virtual bool wait( unsigned long dwMilliseconds = INFINITE )
+	{
+		if( thread_ == NULL )
+		{
+			return( true );
+		}
+		else
+		{
+			return( thread_->wait( dwMilliseconds ) );
 		}
 	}
 };
