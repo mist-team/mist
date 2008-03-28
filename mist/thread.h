@@ -523,6 +523,7 @@ public:
 		DWORD ret = WaitForSingleObject( handle_, dwMilliseconds );
 		if( SUCCEEDED( ret ) )
 		{
+			ResetEvent( handle_ );
 			return ( true );
 		}
 		else
@@ -535,6 +536,11 @@ public:
 	void send( )
 	{
 		SetEvent( handle_ );
+	}
+
+	/// @brief シグナルを解除する
+	void reset( )
+	{
 		ResetEvent( handle_ );
 	}
 };
@@ -1049,7 +1055,6 @@ namespace __thread_controller__
 		simple_lock_object                     &lock_;
 		simple_lock_object                     suspend_lock_;
 		bool                                   is_end_;
-		bool                                   is_idle_;
 		size_type                              id_;
 		size_type                              nthreads_;
 		signal                                 signal_;
@@ -1057,13 +1062,12 @@ namespace __thread_controller__
 
 	public:
 		thread_pool_functor( std::list< __thread_pool_functor__ * > &functors, simple_lock_object &l, size_type id, size_type nthreads )
-			: functors_( functors ), lock_( l ), is_end_( false ), is_idle_( false ), id_( id ), nthreads_( nthreads )
+			: functors_( functors ), lock_( l ), is_end_( false ), id_( id ), nthreads_( nthreads )
 		{
 		}
 
 		size_type num_jobs( ) const { return( functors_.size( ) ); }
 		bool is_end( ) const { return( is_end_ ); }
-		bool is_idle( ) const { return( is_idle_ ); }
 
 		bool is_suspended( )
 		{
@@ -1085,14 +1089,7 @@ namespace __thread_controller__
 			lock_.unlock( );
 
 			// 終了フラグを立ててスレッドを再起動する
-			if( !suspend_lock_.try_lock( ) )
-			{
-				this->resume( );
-			}
-			else
-			{
-				suspend_lock_.unlock( );
-			}
+			this->resume( );
 
 			// スレッドが正常終了するまで待つ
 			this->wait( );
@@ -1102,92 +1099,81 @@ namespace __thread_controller__
 
 		void resume( )
 		{
+			lock_.lock( );
 			if( !suspend_lock_.try_lock( ) )
 			{
-				is_idle_ = functors_.empty( );
 				signal_.send( );
 			}
 			else
 			{
 				suspend_lock_.unlock( );
 			}
+			lock_.unlock( );
 		}
 
 		bool wait( unsigned long dwMilliseconds = INFINITE )
 		{
 			lock_.lock( );
-			bool finished = is_idle_ || is_end_;
-			lock_.unlock( );
-
-			if( finished )
+			if( is_end_ )
 			{
+				lock_.unlock( );
+				return( true );
+			}
+			else if( !functors_.empty( ) )
+			{
+				lock_.unlock( );
+				return( wait_signal_.wait( dwMilliseconds ) );
+			}
+			else if( !suspend_lock_.try_lock( ) )
+			{
+				lock_.unlock( );
 				return( true );
 			}
 			else
 			{
+				suspend_lock_.unlock( );
+				lock_.unlock( );
 				return( wait_signal_.wait( dwMilliseconds ) );
 			}
 		}
 
 	protected:
-		void suspend( )
-		{
-			suspend_lock_.lock( );
-			signal_.wait( );
-			suspend_lock_.unlock( );
-		}
-
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( )
 		{
-			while( !is_end_ )
+			while( true )
 			{
-				while( !is_end_ )
-				{
-					// キューの先頭からデータを取り出す
-					lock_.lock( );
-					if( functors_.empty( ) )
-					{
-						lock_.unlock( );
-						break;
-					}
-					else
-					{
-						__thread_pool_functor__ *f = functors_.front( );
-						functors_.pop_front( );
-						lock_.unlock( );
-
-						if( f != NULL )
-						{
-							f->run( id_, nthreads_ );
-							delete f;
-						}
-					}
-				}
-
+				// キューの先頭からデータを取り出す
 				lock_.lock( );
-				if( !is_end_ )
+				if( is_end_ )
 				{
-					if( functors_.empty( ) )
-					{
-						is_idle_ = true;
-						lock_.unlock( );
-						wait_signal_.send( );
-						this->suspend( );
-					}
-					else
-					{
-						lock_.unlock( );
-					}
+					break;
+				}
+				else if( functors_.empty( ) )
+				{
+					// 処理待ちをする
+					suspend_lock_.lock( );
+					wait_signal_.send( );
+					lock_.unlock( );
+					signal_.wait( );
+					wait_signal_.reset( );
+					suspend_lock_.unlock( );
 				}
 				else
 				{
+					__thread_pool_functor__ *f = functors_.front( );
+					functors_.pop_front( );
 					lock_.unlock( );
+
+					if( f != NULL )
+					{
+						f->run( id_, nthreads_ );
+						delete f;
+					}
 				}
 			}
 
 			wait_signal_.send( );
-			is_idle_ = true;
 
 			return( 0 );
 		}
@@ -1288,6 +1274,7 @@ public:
 		{
 			threads_[ i ] = new thread_pool_functor( functors_, lock_, i, threads_.size( ) );
 			threads_[ i ]->create( );
+			threads_[ i ]->wait( );
 		}
 
 		initialized_ = true;
@@ -1360,7 +1347,7 @@ public:
 		{
 			thread_pool_functor &t = *threads_[ i ];
 
-			if( t.is_idle( ) )
+			if( t.is_suspended( ) )
 			{
 				// アイドル状態のスレッドがあれば再開する
 				t.resume( );
@@ -1401,7 +1388,7 @@ public:
 		{
 			thread_pool_functor &t = *threads_[ i ];
 
-			if( t.is_idle( ) )
+			if( t.is_suspended( ) )
 			{
 				// アイドル状態のスレッドがあれば再開する
 				t.resume( );
@@ -1441,7 +1428,7 @@ public:
 		{
 			thread_pool_functor &t = *threads_[ i ];
 
-			if( t.is_idle( ) )
+			if( t.is_suspended( ) )
 			{
 				// アイドル状態のスレッドがあれば再開する
 				t.resume( );
@@ -1482,7 +1469,7 @@ public:
 		{
 			thread_pool_functor &t = *threads_[ i ];
 
-			if( t.is_idle( ) )
+			if( t.is_suspended( ) )
 			{
 				// アイドル状態のスレッドがあれば再開する
 				t.resume( );
@@ -1529,7 +1516,7 @@ public:
 		{
 			thread_pool_functor &t = *threads_[ i ];
 
-			if( t.is_idle( ) )
+			if( t.is_suspended( ) )
 			{
 				// アイドル状態のスレッドがあれば再開する
 				t.resume( );
@@ -1646,6 +1633,7 @@ public:
 	{
 		thread_ = new thread_pool_functor( functors_, lock_, 0, 1 );
 		thread_->create( );
+		thread_->wait( );
 	}
 
 	/// @brief ワーカースレッドで使用している全てのリソースを開放する
@@ -1709,11 +1697,8 @@ public:
 		functors_.push_back( func );
 		lock_.unlock( );
 
-		if( thread_->is_idle( ) )
-		{
-			// スレッドがアイドル状態であれば再開する
-			thread_->resume( );
-		}
+		// スレッドを再開する
+		thread_->resume( );
 
 		return( true );
 	}
@@ -1742,11 +1727,8 @@ public:
 		functors_.push_back( func );
 		lock_.unlock( );
 
-		if( thread_->is_idle( ) )
-		{
-			// スレッドがアイドル状態であれば再開する
-			thread_->resume( );
-		}
+		// スレッドを再開する
+		thread_->resume( );
 
 		return( true );
 	}
@@ -1774,11 +1756,8 @@ public:
 		functors_.push_back( func );
 		lock_.unlock( );
 
-		if( thread_->is_idle( ) )
-		{
-			// スレッドがアイドル状態であれば再開する
-			thread_->resume( );
-		}
+		// スレッドを再開する
+		thread_->resume( );
 
 		return( true );
 	}
@@ -1808,11 +1787,8 @@ public:
 		}
 		lock_.unlock( );
 
-		if( thread_->is_idle( ) )
-		{
-			// スレッドがアイドル状態であれば再開する
-			thread_->resume( );
-		}
+		// スレッドを再開する
+		thread_->resume( );
 
 		return( true );
 	}
@@ -1842,11 +1818,8 @@ public:
 		}
 		lock_.unlock( );
 
-		if( thread_->is_idle( ) )
-		{
-			// スレッドがアイドル状態であれば再開する
-			thread_->resume( );
-		}
+		// スレッドを再開する
+		thread_->resume( );
 
 		return( true );
 	}
