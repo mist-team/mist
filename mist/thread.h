@@ -523,7 +523,6 @@ public:
 		DWORD ret = WaitForSingleObject( handle_, dwMilliseconds );
 		if( SUCCEEDED( ret ) )
 		{
-			ResetEvent( handle_ );
 			return ( true );
 		}
 		else
@@ -536,11 +535,6 @@ public:
 	void send( )
 	{
 		SetEvent( handle_ );
-	}
-
-	/// @brief シグナルを解除する
-	void reset( )
-	{
 		ResetEvent( handle_ );
 	}
 };
@@ -616,10 +610,11 @@ private:
 	unsigned int thread_id_;			// Windows用のスレッドを識別するID
 #else
 	pthread_t thread_id_;				// pthreadライブラリでスレッドを識別するID
-	bool      thread_finished_;			// スレッドが終了したかどうかを保持
+	signal    finish_;					// スレッドの終了待ちを行うシグナル
 #endif
 
-	thread_exit_type thread_exit_code_;	// スレッドの戻り値
+	simple_lock_object exit_;				// 終了待ちシグナル
+	thread_exit_type   thread_exit_code_;	// スレッドの戻り値
 
 public:
 
@@ -643,7 +638,6 @@ public:
 		thread_handle_ = t.thread_handle_;
 		thread_id_ = t.thread_id_;
 #else
-		thread_finished_ = t.thread_finished_;
 		thread_id_ = t.thread_id_;
 #endif
 		thread_exit_code_ = t.thread_exit_code_;
@@ -686,8 +680,8 @@ public:
 	thread( const thread &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
 	thread( ) : thread_handle_( NULL ), thread_id_( ( unsigned int )-1 ), thread_exit_code_( 0 ){ }
 #else
-	thread( const thread &t ) : thread_id_( t.thread_id ), thread_finished_( t.thread_finished ), thread_exit_code_( t.thread_exit_code ){ }
-	thread( ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_finished_( false ), thread_exit_code_( 0 ){ }
+	thread( const thread &t ) : thread_id_( t.thread_id ), , thread_exit_code_( t.thread_exit_code ){ }
+	thread( ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_exit_code_( 0 ){ }
 #endif
 
 	virtual ~thread( )
@@ -713,7 +707,6 @@ public:
 		bool ret = thread_handle_ != NULL ? true : false;
 #else
 		if( thread_id_ != ( pthread_t ) ( -1 ) ) return( false );
-		thread_finished_ = false;
 		bool ret = pthread_create( &( thread_id_ ), NULL, map_thread_function, ( void * )this ) == 0 ? true : false;
 #endif
 
@@ -758,25 +751,21 @@ public:
 		}
 		else
 		{
-			unsigned long count = 0;
-
-			while( true )
+			if( exit_.try_lock( ) )
 			{
-				usleep( 1 );
-
-				if( count < dwMilliseconds )
+				exit_.unlock( );
+				return ( pthread_join( thread_id_, NULL ) == 0 );
+			}
+			else
+			{
+				if( finish_.wait( INFINITE ) )
 				{
-					if( thread_finished_ )
-					{
-						return ( true );
-					}
+					return ( pthread_join( thread_id_, NULL ) == 0 );
 				}
 				else
 				{
-					return ( false );
+					return( false );
 				}
-
-				count++;
 			}
 		}
 #endif
@@ -798,6 +787,10 @@ public:
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		if( thread_handle_ != NULL )
 		{
+			// スレッドの完全終了を待機する
+			while( !exit_.try_lock( ) );
+			exit_.unlock( );
+
 			BOOL ret = CloseHandle( thread_handle_ );
 			thread_handle_ = NULL;
 			return ( ret != 0 );
@@ -807,14 +800,12 @@ public:
 			return( true );
 		}
 #else
-		if( !thread_finished_ )
+		if( thread_id_ != ( pthread_t ) ( -1 ) )
 		{
-			int ret = pthread_detach( thread_id_ );
-			thread_id_ = ( pthread_t ) ( -1 );
-			return ( ret == 0 );
-		}
-		else
-		{
+			// スレッドの完全終了を待機する
+			while( !exit_.try_lock( ) );
+			exit_.unlock( );
+
 			thread_id_ = ( pthread_t ) ( -1 );
 			return( true );
 		}
@@ -839,15 +830,18 @@ protected:
 	static unsigned int __stdcall map_thread_function( void *p )
 	{
 		thread *obj = static_cast< thread * >( p );
+		obj->exit_.lock( );
 		obj->thread_exit_code_ = obj->thread_function( );
+		obj->exit_.unlock( );
 		return( 0 );
 	}
 #else
 	static void *map_thread_function( void *p )
 	{
 		thread *obj = static_cast< thread * >( p );
+		obj->exit_.lock( );
 		obj->thread_exit_code_ = obj->thread_function( );
-		obj->thread_finished_ = true;
+		obj->exit_.unlock( );
 		return ( NULL );
 	}
 #endif
@@ -958,6 +952,20 @@ inline bool do_threads( Thread *threads, size_t num_threads, unsigned long dwMil
 // スレッドを普通の関数形式の呼び出しで簡便に利用するための関数群
 namespace __thread_controller__
 {
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+	inline unsigned long _timeGetTime_( )
+	{
+		return( timeGetTime( ) );
+	}
+#else
+	inline unsigned long _timeGetTime_( )
+	{
+		timeval dmy;
+		gettimeofday( &dmy, NULL );
+		return( dmy.tv_sec );
+	}
+#endif
+
 	template < class Param, class Functor >
 	class thread_object_functor : public thread< thread_object_functor< Param, Functor > >
 	{
@@ -1054,16 +1062,19 @@ namespace __thread_controller__
 		std::list< __thread_pool_functor__ * > &functors_;
 		simple_lock_object                     &lock_;
 		simple_lock_object                     suspend_lock_;
+		simple_lock_object                     wait_lock_;
+		bool                                   is_running_;
 		bool                                   is_end_;
 		size_type                              id_;
 		size_type                              nthreads_;
 		signal                                 signal_;
-		signal                                 wait_signal_;
 
 	public:
 		thread_pool_functor( std::list< __thread_pool_functor__ * > &functors, simple_lock_object &l, size_type id, size_type nthreads )
-			: functors_( functors ), lock_( l ), is_end_( false ), id_( id ), nthreads_( nthreads )
+			: functors_( functors ), lock_( l ), is_running_( false ), is_end_( false ), id_( id ), nthreads_( nthreads )
 		{
+			// ロックした状態でスタートする
+			suspend_lock_.lock( );
 		}
 
 		size_type num_jobs( ) const { return( functors_.size( ) ); }
@@ -1071,14 +1082,14 @@ namespace __thread_controller__
 
 		bool is_suspended( )
 		{
-			if( suspend_lock_.try_lock( ) )
+			if( wait_lock_.try_lock( ) )
 			{
-				suspend_lock_.unlock( );
-				return( false );
+				wait_lock_.unlock( );
+				return( true );
 			}
 			else
 			{
-				return( true );
+				return( false );
 			}
 		}
 
@@ -1092,48 +1103,65 @@ namespace __thread_controller__
 			this->resume( );
 
 			// スレッドが正常終了するまで待つ
-			this->wait( );
+			while( !wait_lock_.try_lock( ) );
+			wait_lock_.unlock( );
 
 			return( base::close( ) );
 		}
 
 		void resume( )
 		{
-			lock_.lock( );
-			if( !suspend_lock_.try_lock( ) )
-			{
-				signal_.send( );
-			}
-			else
+			if( is_suspended( ) )
 			{
 				suspend_lock_.unlock( );
+				while( wait_lock_.try_lock( ) )
+				{
+					wait_lock_.unlock( );
+				}
+				suspend_lock_.lock( );
 			}
-			lock_.unlock( );
 		}
 
-		bool wait( unsigned long dwMilliseconds = INFINITE )
+		bool wait(  unsigned long dwMilliseconds = INFINITE )
 		{
 			lock_.lock( );
-			if( is_end_ )
+			if( !wait_lock_.try_lock( ) )
 			{
+				lock_.unlock( );
+				return( signal_.wait( dwMilliseconds ) );
+			}
+			else
+			{
+				wait_lock_.unlock( );
 				lock_.unlock( );
 				return( true );
 			}
-			else if( !functors_.empty( ) )
+		}
+
+		virtual bool create( )
+		{
+			if( base::create( ) )
 			{
-				lock_.unlock( );
-				return( wait_signal_.wait( dwMilliseconds ) );
-			}
-			else if( !suspend_lock_.try_lock( ) )
-			{
-				lock_.unlock( );
+				// スレッドの開始まで待機する
+				while( true )
+				{
+					lock_.lock( );
+					if( is_running_ )
+					{
+						lock_.unlock( );
+						break;
+					}
+					else
+					{
+						lock_.unlock( );
+					}
+				}
+
 				return( true );
 			}
 			else
 			{
-				suspend_lock_.unlock( );
-				lock_.unlock( );
-				return( wait_signal_.wait( dwMilliseconds ) );
+				return( false );
 			}
 		}
 
@@ -1141,26 +1169,33 @@ namespace __thread_controller__
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( )
 		{
+			lock_.lock( );
+			is_running_ = true;
+			lock_.unlock( );
+
+			wait_lock_.lock( );
+
 			while( true )
 			{
-				// キューの先頭からデータを取り出す
 				lock_.lock( );
 				if( is_end_ )
 				{
+					lock_.unlock( );
 					break;
 				}
 				else if( functors_.empty( ) )
 				{
 					// 処理待ちをする
-					suspend_lock_.lock( );
-					wait_signal_.send( );
+					wait_lock_.unlock( );
 					lock_.unlock( );
-					signal_.wait( );
-					wait_signal_.reset( );
+					signal_.send( );
+					suspend_lock_.lock( );
+					wait_lock_.lock( );
 					suspend_lock_.unlock( );
 				}
 				else
 				{
+					// キューの先頭からデータを取り出す
 					__thread_pool_functor__ *f = functors_.front( );
 					functors_.pop_front( );
 					lock_.unlock( );
@@ -1173,7 +1208,8 @@ namespace __thread_controller__
 				}
 			}
 
-			wait_signal_.send( );
+			wait_lock_.unlock( );
+			signal_.send( );
 
 			return( 0 );
 		}
@@ -1554,7 +1590,7 @@ public:
 			return( false );
 		}
 
-		unsigned long st = _timeGetTime_( );
+		unsigned long st = __thread_controller__::_timeGetTime_( );
 		size_type i = 0;
 		for( ; i < threads_.size( ) ; i++ )
 		{
@@ -1562,28 +1598,16 @@ public:
 			{
 				break;
 			}
-			else
+			else if( dwMilliseconds != INFINITE )
 			{
-				dwMilliseconds -= _timeGetTime_( ) - st;
+				unsigned long ct = __thread_controller__::_timeGetTime_( );
+				dwMilliseconds -= ct - st;
+				st = ct;
 			}
 		}
 
 		return( i < threads_.size( ) );
 	}
-
-#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-	static unsigned long _timeGetTime_( )
-	{
-		return( timeGetTime( ) );
-	}
-#else
-	static unsigned long _timeGetTime_( )
-	{
-		timeval dmy;
-		gettimeofday( &dmy, NULL );
-		return( dmy.tv_sec );
-	}
-#endif
 };
 
 
