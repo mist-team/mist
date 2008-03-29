@@ -629,7 +629,7 @@ protected:
 
 public:
 	/// @brief コンストラクタ
-	signal( ) : handle_( CreateEvent( NULL, TRUE, FALSE, NULL ) )
+	signal( ) : handle_( CreateEvent( NULL, FALSE, FALSE, NULL ) )
 	{
 	}
 
@@ -645,6 +645,7 @@ public:
 		DWORD ret = WaitForSingleObject( handle_, dwMilliseconds );
 		if( SUCCEEDED( ret ) )
 		{
+			ResetEvent( handle_ );
 			return ( true );
 		}
 		else
@@ -657,6 +658,11 @@ public:
 	void send( )
 	{
 		SetEvent( handle_ );
+	}
+
+	/// @brief シグナルをクリアにする
+	void reset( )
+	{
 		ResetEvent( handle_ );
 	}
 };
@@ -704,6 +710,11 @@ public:
 	void send( )
 	{
 		pthread_cond_broadcast( &cond_ );
+	}
+
+	/// @brief シグナルをクリアにする（pthreadの場合は何もしない）
+	void reset( )
+	{
 	}
 };
 #endif
@@ -1219,6 +1230,33 @@ namespace __thread_controller__
 			}
 		}
 
+		virtual bool create( )
+		{
+			if( base::create( ) )
+			{
+				// スレッドの開始まで待機する
+				while( true )
+				{
+					lock_.lock( );
+					if( is_running_ )
+					{
+						lock_.unlock( );
+						break;
+					}
+					else
+					{
+						lock_.unlock( );
+					}
+				}
+
+				return( true );
+			}
+			else
+			{
+				return( false );
+			}
+		}
+
 		virtual bool close( )
 		{
 			lock_.lock( );
@@ -1264,33 +1302,6 @@ namespace __thread_controller__
 			}
 		}
 
-		virtual bool create( )
-		{
-			if( base::create( ) )
-			{
-				// スレッドの開始まで待機する
-				while( true )
-				{
-					lock_.lock( );
-					if( is_running_ )
-					{
-						lock_.unlock( );
-						break;
-					}
-					else
-					{
-						lock_.unlock( );
-					}
-				}
-
-				return( true );
-			}
-			else
-			{
-				return( false );
-			}
-		}
-
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( )
@@ -1316,6 +1327,7 @@ namespace __thread_controller__
 					lock_.unlock( );
 					signal_.send( );
 					suspend_lock_.lock( );
+					signal_.reset( );
 					wait_lock_.lock( );
 					suspend_lock_.unlock( );
 				}
