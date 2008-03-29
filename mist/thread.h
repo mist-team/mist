@@ -59,6 +59,7 @@
 	#include <pthread.h>
 	#include <unistd.h>
 	#include <time.h>
+	#include <sys/time.h>
 #endif
 
 #ifndef INFINITE
@@ -680,7 +681,7 @@ public:
 	thread( const thread &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
 	thread( ) : thread_handle_( NULL ), thread_id_( ( unsigned int )-1 ), thread_exit_code_( 0 ){ }
 #else
-	thread( const thread &t ) : thread_id_( t.thread_id ), , thread_exit_code_( t.thread_exit_code ){ }
+	thread( const thread &t ) : thread_id_( t.thread_id ), thread_exit_code_( t.thread_exit_code ){ }
 	thread( ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_exit_code_( 0 ){ }
 #endif
 
@@ -807,6 +808,10 @@ public:
 			exit_.unlock( );
 
 			thread_id_ = ( pthread_t ) ( -1 );
+			return( true );
+		}
+		else
+		{
 			return( true );
 		}
 #endif
