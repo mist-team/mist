@@ -187,9 +187,10 @@ protected:
 	typedef pthread_mutex_t lock_object_type;		// pthreadライブラリでのロックオブジェクト
 #endif
 
-	lock_object_type __lock__;
+	lock_object_type __lock__;	///< @brief ロック用オブジェクト
 
 public:
+	/// @brief コンストラクタ
 	simple_lock_object( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -201,6 +202,7 @@ public:
 #endif
 	}
 
+	/// @brief デストラクタ
 	~simple_lock_object( )
 	{
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
@@ -269,6 +271,48 @@ public:
 #endif
 };
 
+/// @}
+//  スレッドグループの終わり
+
+template < class MUTEX >
+class lock_object_table : public ::std::map< ::std::string, MUTEX >
+{
+private:
+	typedef ::std::map< ::std::string, MUTEX > base;
+	typedef MUTEX lock_object_type;
+
+public:
+	lock_object_table( )
+	{
+	}
+
+	~lock_object_table( )
+	{
+		base::iterator ite = base::begin( );
+		for( ; ite != base::end( ) ; ++ite )
+		{
+			destroy( ite->second );
+		}
+		base::clear( );
+	}
+
+protected:
+	static void destroy( lock_object_type &l )
+	{
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		DeleteCriticalSection( &l );		// クリティカルセクションオブジェクトを削除
+#else
+		pthread_mutex_destroy( &l );		// pthread用のMutexオブジェクトを初期化
+#endif
+	}
+};
+
+//! @addtogroup thread_group スレッド
+//!
+//!  @{
+
 
 /// @brief スレッドの排他制御をサポートするクラス
 //! 
@@ -316,7 +360,7 @@ protected:
 	typedef pthread_mutex_t lock_object_type;		// pthreadライブラリでのロックオブジェクト
 #endif
 
-	typedef ::std::map< ::std::string, lock_object_type > lock_table;
+	typedef lock_object_table< lock_object_type > lock_table;
 
 public:
 	lock_object( ) : lock_name_( "mist default lock object!!" ){ }
@@ -337,13 +381,7 @@ public:
 	//! 
 	bool lock( )
 	{
-		static bool isFirst = true;
-		static lock_object_type __double_lock__;
-		if( isFirst )
-		{
-			isFirst = false;
-			initialize( __double_lock__ );
-		}
+		static lock_object_type &__double_lock__ = double_lock_object( );
 
 		// テーブルの検索でスレッドが衝突しないようにロックする
 		lock( __double_lock__ );
@@ -385,6 +423,55 @@ public:
 		return( true );
 	}
 
+	/// @brief 排他制御用オブジェクトのロックを試みる
+	//! 
+	//! 既にロックされていた場合は，ロックせずに false を返す．
+	//! 
+	//! @retval true  … ロックに成功
+	//! @retval false … ロックに失敗
+	//! 
+	bool try_lock( )
+	{
+		static lock_object_type &__double_lock__ = double_lock_object( );
+
+		// テーブルの検索でスレッドが衝突しないようにロックする
+		lock( __double_lock__ );
+
+		lock_table &table = singleton< lock_table >::get_instance( );
+		lock_table::iterator ite = table.find( lock_name_ );
+		if( ite == table.end( ) )
+		{
+			// まだロックオブジェクトを初期化していないので初期化する
+			::std::pair< lock_table::iterator, bool > p = table.insert( lock_table::value_type( lock_name_, lock_object_type( ) ) );
+			if( p.second )
+			{
+				lock_object_type &obj = p.first->second;
+				initialize( obj );
+
+				// テーブル検索用のロックを開放する
+				unlock( __double_lock__ );
+
+				return( try_lock( obj ) );
+			}
+			else
+			{
+				// テーブル検索用のロックを開放する
+				unlock( __double_lock__ );
+
+				// ロックオブジェクトをテーブルに追加することができませんでした・・・
+				return( false );
+			}
+		}
+		else
+		{
+			// テーブル検索用のロックを開放する
+			unlock( __double_lock__ );
+
+			// すでに同名のロックオブジェクトが存在するのでそちらをロックする
+			return( try_lock( ite->second ) );
+		}
+	}
+
 	/// @brief 排他制御用オブジェクトのロックを解除する
 	bool unlock( )
 	{
@@ -406,6 +493,19 @@ public:
 
 
 protected:
+	/// @brief 内部で使用するダブルロックオブジェクトを取得する
+	static lock_object_type &double_lock_object( )
+	{
+		static bool isFirst = true;
+		static lock_object_type __double_lock__;
+		if( isFirst )
+		{
+			isFirst = false;
+			initialize( __double_lock__ );
+		}
+		return( __double_lock__ );
+	}
+
 	/// @brief ロックオブジェクトの初期化を行う
 	//! 
 	//! @param[in,out] l … ロックオブジェクト
@@ -437,6 +537,27 @@ protected:
 #endif
 	}
 
+	/// @brief 排他制御用オブジェクトのロックを試みる
+	//! 
+	//! 既にロックされていた場合は，ロックせずに false を返す．
+	//! 
+	//! @param[in,out] l … ロックオブジェクト
+	//! 
+	//! @retval true  … ロックに成功
+	//! @retval false … ロックに失敗
+	//! 
+	static bool try_lock( lock_object_type &l )
+	{
+		// クリティカルセクションオブジェクトのロックが可能かを調べる
+#if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
+		// スレッドサポートはしないので特に必何もしない
+		return( true );
+#elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		return( TryEnterCriticalSection( &l ) != FALSE );
+#else
+		return( pthread_mutex_trylock( &l ) == 0 );
+#endif
+	}
 
 	/// @brief ロックオブジェクトをロックを解除する
 	//! 
