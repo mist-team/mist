@@ -288,7 +288,7 @@ public:
 
 	~lock_object_table( )
 	{
-		base::iterator ite = base::begin( );
+		typename base::iterator ite = base::begin( );
 		for( ; ite != base::end( ) ; ++ite )
 		{
 			destroy( ite->second );
@@ -672,10 +672,11 @@ class signal
 protected:
 	pthread_cond_t  cond_;
 	pthread_mutex_t mutex_;
+	volatile bool   flag_;
 
 public:
 	/// @brief コンストラクタ
-	signal( )
+	signal( ) : flag_( false )
 	{
 		pthread_mutex_init( &mutex_, NULL );
 		pthread_cond_init( &cond_, NULL );
@@ -692,7 +693,12 @@ public:
 	/// @brief シグナル状態になるまで待機する
 	bool wait( unsigned long dwMilliseconds = INFINITE )
 	{
-		if( dwMilliseconds == INFINITE )
+		if( flag_ )
+		{
+			reset( );
+			return( true );
+		}
+		else if( dwMilliseconds == INFINITE )
 		{
 			pthread_cond_wait( &cond_, &mutex_ );
 			return( true );
@@ -709,12 +715,14 @@ public:
 	/// @brief シグナルを送信する
 	void send( )
 	{
+		flag_ = true;
 		pthread_cond_broadcast( &cond_ );
 	}
 
 	/// @brief シグナルをクリアにする（pthreadの場合は何もしない）
 	void reset( )
 	{
+		flag_ = false;
 	}
 };
 #endif
