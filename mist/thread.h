@@ -670,9 +670,10 @@ public:
 class signal
 {
 protected:
-	pthread_cond_t  cond_;
-	pthread_mutex_t mutex_;
-	volatile bool   flag_;
+	pthread_cond_t     cond_;
+	pthread_mutex_t    mutex_;
+	bool               flag_;
+	simple_lock_object flag_lock_;
 
 public:
 	/// @brief コンストラクタ
@@ -693,13 +694,16 @@ public:
 	/// @brief シグナル状態になるまで待機する
 	bool wait( unsigned long dwMilliseconds = INFINITE )
 	{
+		flag_lock_.lock( );
 		if( flag_ )
 		{
-			reset( );
+			flag_ = false;
+			flag_lock_.unlock( );
 			return( true );
 		}
 		else if( dwMilliseconds == INFINITE )
 		{
+			flag_lock_.unlock( );
 			pthread_cond_wait( &cond_, &mutex_ );
 			return( true );
 		}
@@ -708,6 +712,7 @@ public:
 			timespec tm;
 			tm.tv_sec = static_cast< time_t >( dwMilliseconds / 1000 );
 			tm.tv_nsec = static_cast< long >( ( dwMilliseconds % 1000 ) * 1000000 );
+			flag_lock_.unlock( );
 			return( pthread_cond_timedwait( &cond_, &mutex_, &tm ) == 0 );
 		}
 	}
@@ -715,14 +720,18 @@ public:
 	/// @brief シグナルを送信する
 	void send( )
 	{
+		flag_lock_.lock( );
 		flag_ = true;
+		flag_lock_.unlock( );
 		pthread_cond_broadcast( &cond_ );
 	}
 
 	/// @brief シグナルをクリアにする（pthreadの場合は何もしない）
 	void reset( )
 	{
+		flag_lock_.lock( );
 		flag_ = false;
+		flag_lock_.unlock( );
 	}
 };
 #endif
