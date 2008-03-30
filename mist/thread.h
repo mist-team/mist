@@ -705,6 +705,7 @@ public:
 		{
 			flag_lock_.unlock( );
 			pthread_cond_wait( &cond_, &mutex_ );
+			reset( );
 			return( true );
 		}
 		else
@@ -713,7 +714,15 @@ public:
 			tm.tv_sec = static_cast< time_t >( dwMilliseconds / 1000 );
 			tm.tv_nsec = static_cast< long >( ( dwMilliseconds % 1000 ) * 1000000 );
 			flag_lock_.unlock( );
-			return( pthread_cond_timedwait( &cond_, &mutex_, &tm ) == 0 );
+			if( pthread_cond_timedwait( &cond_, &mutex_, &tm ) == 0 )
+			{
+				reset( );
+				return( true );
+			}
+			else
+			{
+				return( false );
+			}
 		}
 	}
 
