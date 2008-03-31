@@ -672,8 +672,7 @@ class signal
 protected:
 	pthread_cond_t     cond_;
 	pthread_mutex_t    mutex_;
-	bool               flag_;
-	simple_lock_object flag_lock_;
+	volatile bool      flag_;
 
 public:
 	/// @brief コンストラクタ
@@ -694,18 +693,16 @@ public:
 	/// @brief シグナル状態になるまで待機する
 	bool wait( unsigned long dwMilliseconds = INFINITE )
 	{
-		flag_lock_.lock( );
-		if( flag_ )
+		if( dwMilliseconds == INFINITE )
 		{
+			while( !flag_ )
+			{
+				if( pthread_cond_wait( &cond_, &mutex_ ) == 0 )
+				{
+					break;
+				}
+			}
 			flag_ = false;
-			flag_lock_.unlock( );
-			return( true );
-		}
-		else if( dwMilliseconds == INFINITE )
-		{
-			flag_lock_.unlock( );
-			pthread_cond_wait( &cond_, &mutex_ );
-			reset( );
 			return( true );
 		}
 		else
@@ -713,34 +710,35 @@ public:
 			timespec tm;
 			tm.tv_sec = static_cast< time_t >( dwMilliseconds / 1000 );
 			tm.tv_nsec = static_cast< long >( ( dwMilliseconds % 1000 ) * 1000000 );
-			flag_lock_.unlock( );
-			if( pthread_cond_timedwait( &cond_, &mutex_, &tm ) == 0 )
+
+			while( !flag_ )
 			{
-				reset( );
-				return( true );
+				if( pthread_cond_timedwait( &cond_, &mutex_, &tm ) == 0 )
+				{
+					break;
+				}
+				else
+				{
+					return( false );
+				}
 			}
-			else
-			{
-				return( false );
-			}
+
+			flag_ = false;
+			return( true );
 		}
 	}
 
 	/// @brief シグナルを送信する
 	void send( )
 	{
-		flag_lock_.lock( );
 		flag_ = true;
-		flag_lock_.unlock( );
 		pthread_cond_broadcast( &cond_ );
 	}
 
 	/// @brief シグナルをクリアにする（pthreadの場合は何もしない）
 	void reset( )
 	{
-		flag_lock_.lock( );
 		flag_ = false;
-		flag_lock_.unlock( );
 	}
 };
 #endif
