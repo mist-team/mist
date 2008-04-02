@@ -238,6 +238,39 @@ namespace __mqo_controller__
 			return( NULL );
 		}
 
+		static const unsigned char *skip_chunk( const unsigned char *p, const unsigned char *e, const char ch )
+		{
+			std::string line = "";
+
+			bool eol = true;
+			while( p < e )
+			{
+				p = get_line( p, e, line );
+
+				for( size_type i = 0 ; i < line.size( ) ; )
+				{
+					// SJISの2倍と文字はスキップする
+					unsigned char v1 = line[ i ];
+					unsigned char v2 = i + 1 < line.size( ) ? line[ i + 1 ] : 0x00;
+
+					if( ( ( 0x81 <= v1 && v1 <= 0x9f ) || ( 0xe0 <= v1 && v1 <= 0xef ) ) && ( 0x40 <= v2 && v2 <= 0xfc && v2 != 0x7f ) )
+					{
+						i += 2;
+					}
+					else if( v1 == ch )
+					{
+						return( p );
+					}
+					else
+					{
+						i++;
+					}
+				}
+			}
+
+			return( NULL );
+		}
+
 		static const unsigned char *process_vertex_chunk( std::vector< vector_type > &vertices, const unsigned char *p, const unsigned char *e )
 		{
 			std::string line = "";
@@ -655,27 +688,27 @@ namespace __mqo_controller__
 				}
 				else if( line == "trialnoise" )
 				{
-					p = skip_chunk( p, e, "}" );
+					p = skip_chunk( p, e, '}' );
 				}
 				else if( line == "includexml" )
 				{
-					p = skip_chunk( p, e, "}" );
+					p = skip_chunk( p, e, '}' );
 				}
 				else if( line == "scene" )
 				{
-					p = skip_chunk( p, e, "}" );
+					p = skip_chunk( p, e, '}' );
 				}
 				else if( line == "backimage" )
 				{
-					p = skip_chunk( p, e, "}" );
+					p = skip_chunk( p, e, '}' );
 				}
 				else if( line == "material" )
 				{
-					p = skip_chunk( p, e, "}" );
+					p = skip_chunk( p, e, '}' );
 				}
 				else if( line == "blob" )
 				{
-					p = skip_chunk( p, e, "}" );
+					p = skip_chunk( p, e, '}' );
 				}
 				else if( line == "object" )
 				{
