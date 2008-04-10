@@ -48,9 +48,10 @@
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしないので特に必要なインクルードファイルは無し
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
-	#ifndef _WIN32_WINNT
-		#define _WIN32_WINNT 0x0500
+	#if !defined( _WIN32_WINNT ) || _WIN32_WINNT < 0x0400
+		#error To use mist thread library, you must define _WIN32_WINNT (>=0x400) in the project setting page.
 	#endif
+
 	#include <windows.h>
 	#include <process.h>
 	#include <mmsystem.h>
@@ -1310,7 +1311,7 @@ namespace __thread_controller__
 			}
 		}
 
-		bool wait(  unsigned long dwMilliseconds = INFINITE )
+		bool wait( unsigned long dwMilliseconds = INFINITE )
 		{
 			lock_.lock( );
 			if( !wait_lock_.try_lock( ) )
@@ -1826,6 +1827,17 @@ public:
 	~worker_thread( )
 	{
 		close( );
+	}
+
+	/// @brief ワーカースレッドがサスペンドしているかどうか
+	bool is_suspended( )
+	{
+		if( thread_ == NULL )
+		{
+			return( true );
+		}
+
+		return( thread_->is_suspended( ) );
 	}
 
 	/// @brief ワーカースレッドで使用しているリソースを全て開放する
