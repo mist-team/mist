@@ -89,7 +89,7 @@ template<>          struct is_integer< signed long >   { _MIST_CONST( bool, valu
 template<>          struct is_integer< bool >          { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_integer< char >          { _MIST_CONST( bool, value, true  ); };
 
-#if defined( __MIST64__ ) && __MIST64__ != 0
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) && defined( __ICC ) )
 template<>          struct is_integer< size_t >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_integer< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
 #endif
@@ -117,7 +117,7 @@ template<>          struct is_arithmetic< float >         { _MIST_CONST( bool, v
 template<>          struct is_arithmetic< double >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_arithmetic< long double >   { _MIST_CONST( bool, value, true  ); };
 
-#if defined( __MIST64__ ) && __MIST64__ != 0
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) && defined( __ICC ) )
 template<>          struct is_arithmetic< size_t >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_arithmetic< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
 #endif
@@ -241,10 +241,10 @@ PROMOTE_TRAIT(         double,    long double,    long double )
 	//!
 	#define DEFINE_PROMOTE_BIND_OPERATOR1( TYPE, OPERATOR )											\
 		template < class T1, class T2 >																\
-		inline TYPE< promote_trait< T1, T2 >::value_type >									\
+		inline TYPE< promote_trait< T1, T2 >::value_type >											\
 					operator OPERATOR( const TYPE< T1 > &t1, const TYPE< T2 > &t2 )					\
 		{																							\
-			return( TYPE< promote_trait< T1, T2 >::value_type >( t1 ) OPERATOR ## = t2 );	\
+			return( TYPE< promote_trait< T1, T2 >::value_type >( t1 ) OPERATOR ## = t2 );			\
 		}
 
 	/// @brief 型の昇格を用いた四則演算子を定義する際に利用する
@@ -253,10 +253,10 @@ PROMOTE_TRAIT(         double,    long double,    long double )
 	//!
 	#define DEFINE_PROMOTE_BIND_OPERATOR2( TYPE, OPERATOR )												\
 		template < class T >																			\
-		inline TYPE< promote_trait< T, double >::value_type >									\
+		inline TYPE< promote_trait< T, double >::value_type >											\
 					operator OPERATOR( const TYPE< T > &t1, const double &t2 )							\
 		{																								\
-			return( TYPE< promote_trait< T, double >::value_type >( t1 ) OPERATOR ## = t2 );	\
+			return( TYPE< promote_trait< T, double >::value_type >( t1 ) OPERATOR ## = t2 );			\
 		}
 
 	/// @brief 型の昇格を用いた四則演算子を定義する際に利用する
@@ -265,10 +265,10 @@ PROMOTE_TRAIT(         double,    long double,    long double )
 	//!
 	#define DEFINE_PROMOTE_BIND_OPERATOR3( TYPE, OPERATOR )												\
 		template < class T >																			\
-		inline TYPE< promote_trait< T, double >::value_type >									\
+		inline TYPE< promote_trait< T, double >::value_type >											\
 					operator OPERATOR( const double &t1, const TYPE< T > &t2 )							\
 		{																								\
-			return( TYPE< promote_trait< T, double >::value_type >( t2 ) OPERATOR ## = t1 );	\
+			return( TYPE< promote_trait< T, double >::value_type >( t2 ) OPERATOR ## = t1 );			\
 		}
 
 	/// @brief 型の昇格を用いた四則演算子を定義する際に利用する
@@ -277,10 +277,10 @@ PROMOTE_TRAIT(         double,    long double,    long double )
 	//!
 	#define DEFINE_PROMOTE_BIND_OPERATOR4( TYPE, OPERATOR )												\
 		template < class T >																			\
-		inline TYPE< promote_trait< T, double >::value_type >									\
+		inline TYPE< promote_trait< T, double >::value_type >											\
 					operator OPERATOR( const double &t1, const TYPE< T > &t2 )							\
 		{																								\
-			return( TYPE< promote_trait< T, double >::value_type >( t1 ) OPERATOR ## = t2 );	\
+			return( TYPE< promote_trait< T, double >::value_type >( t1 ) OPERATOR ## = t2 );			\
 	}
 
 #else
