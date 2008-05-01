@@ -47,11 +47,16 @@
 // UNIX系とWindows用を使い分ける
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 	// スレッドサポートはしないので特に必要なインクルードファイルは無し
+	#define __THREAD_POOL_SUPPORT__		0
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 	#if !defined( _WIN32_WINNT )
-		#error To use mist thread library, you must define _WIN32_WINNT (>=0x0400) in the project setting page.
+		#define __THREAD_POOL_SUPPORT__		0
+		#pragma message( "To use mist thread pool functionality, you must define _WIN32_WINNT (>=0x0400) in the project setting page." )
 	#elif _WIN32_WINNT < 0x0400
-		#error To use mist thread library, _WIN32_WINNT must be greater than 0x0400 in the project setting page.
+		#define __THREAD_POOL_SUPPORT__		0
+		#pragma message( "To use mist thread pool functionality, _WIN32_WINNT must be greater than 0x0400." )
+	#else
+		#define __THREAD_POOL_SUPPORT__		1
 	#endif
 
 	#include <windows.h>
@@ -63,6 +68,7 @@
 	#include <unistd.h>
 	#include <time.h>
 	#include <sys/time.h>
+	#define __THREAD_POOL_SUPPORT__		1
 #endif
 
 #ifndef INFINITE
@@ -241,6 +247,7 @@ public:
 		return( true );
 	}
 
+#if defined( __THREAD_POOL_SUPPORT__ ) && __THREAD_POOL_SUPPORT__ != 0
 	/// @brief 排他制御用オブジェクトのロックを試みる
 	//! 
 	//! 既にロックされていた場合は，ロックせずに false を返す．
@@ -257,6 +264,7 @@ public:
 		return( pthread_mutex_trylock( &__lock__ ) == 0 );
 #endif
 	}
+#endif
 
 	/// @brief 排他制御用オブジェクトのロックを解除する
 	bool unlock( )
@@ -425,6 +433,7 @@ public:
 		return( true );
 	}
 
+#if defined( __THREAD_POOL_SUPPORT__ ) && __THREAD_POOL_SUPPORT__ != 0
 	/// @brief 排他制御用オブジェクトのロックを試みる
 	//! 
 	//! 既にロックされていた場合は，ロックせずに false を返す．
@@ -473,6 +482,7 @@ public:
 			return( try_lock( ite->second ) );
 		}
 	}
+#endif
 
 	/// @brief 排他制御用オブジェクトのロックを解除する
 	bool unlock( )
@@ -539,6 +549,7 @@ protected:
 #endif
 	}
 
+#if defined( __THREAD_POOL_SUPPORT__ ) && __THREAD_POOL_SUPPORT__ != 0
 	/// @brief 排他制御用オブジェクトのロックを試みる
 	//! 
 	//! 既にロックされていた場合は，ロックせずに false を返す．
@@ -560,6 +571,7 @@ protected:
 		return( pthread_mutex_trylock( &l ) == 0 );
 #endif
 	}
+#endif
 
 	/// @brief ロックオブジェクトをロックを解除する
 	//! 
@@ -947,8 +959,10 @@ public:
 		if( thread_handle_ != NULL )
 		{
 			// スレッドの完全終了を待機する
+#if defined( __THREAD_POOL_SUPPORT__ ) && __THREAD_POOL_SUPPORT__ != 0
 			while( !exit_.try_lock( ) );
 			exit_.unlock( );
+#endif
 
 			BOOL ret = CloseHandle( thread_handle_ );
 			thread_handle_ = NULL;
@@ -1152,6 +1166,7 @@ namespace __thread_controller__
 		}
 	};
 
+#if defined( __THREAD_POOL_SUPPORT__ ) && __THREAD_POOL_SUPPORT__ != 0
 	struct __thread_pool_functor__
 	{
 		typedef size_t    size_type;
@@ -1415,6 +1430,7 @@ namespace __thread_controller__
 			return( 0 );
 		}
 	};
+#endif
 }
 
 
@@ -1422,7 +1438,7 @@ namespace __thread_controller__
 //!
 //!  @{
 
-
+#if defined( __THREAD_POOL_SUPPORT__ ) && __THREAD_POOL_SUPPORT__ != 0
 /// @brief スレッドプールを利用してスレッドの再利用を可能にするクラス
 //! 
 //! スレッドプールを利用して処理を実行した場合，処理用にスレッドプール内のスレッドを割り当てます．
@@ -2079,7 +2095,7 @@ public:
 		}
 	}
 };
-
+#endif
 
 /// @brief 生成したスレッドを管理するクラス
 class thread_handle
