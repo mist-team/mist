@@ -447,6 +447,21 @@ namespace dicom
 			{
 				return( false );
 			}
+
+			if( _is_little_endian_( ) != from_little_endian )
+			{
+				for( long i = 0 ; i < num_bytes / 4 ; i += 4 )
+				{
+					unsigned char v0 = byte[ 4 * i + 0 ];
+					unsigned char v1 = byte[ 4 * i + 1 ];
+					unsigned char v2 = byte[ 4 * i + 2 ];
+					unsigned char v3 = byte[ 4 * i + 3 ];
+					byte[ 4 * i + 0 ] = v1;
+					byte[ 4 * i + 1 ] = v0;
+					byte[ 4 * i + 2 ] = v3;
+					byte[ 4 * i + 3 ] = v2;
+				}
+			}
 			break;
 
 		case CS:
@@ -587,18 +602,18 @@ namespace dicom
 			// 4バイト浮動小数のバイト列の並びワード列
 			// 「無制限」
 			// 転送構文のエンディアン形式に依存して，バイトの並びが変化するデータ列
-			if( _is_big_endian_( ) )
+			if( _is_little_endian_( ) != from_little_endian )
 			{
-				for( long i = 0 ; i < num_bytes / 2 ; i += 2 )
+				for( long i = 0 ; i < num_bytes / 4 ; i += 4 )
 				{
-					unsigned char v1 = byte[ 2 * i + 0 ];
-					unsigned char v2 = byte[ 2 * i + 1 ];
-					unsigned char v3 = byte[ 2 * i + 2 ];
-					unsigned char v4 = byte[ 2 * i + 3 ];
-					byte[ 2 * i + 0 ] = v4;
-					byte[ 2 * i + 1 ] = v3;
-					byte[ 2 * i + 2 ] = v2;
-					byte[ 2 * i + 3 ] = v1;
+					unsigned char v1 = byte[ 4 * i + 0 ];
+					unsigned char v2 = byte[ 4 * i + 1 ];
+					unsigned char v3 = byte[ 4 * i + 2 ];
+					unsigned char v4 = byte[ 4 * i + 3 ];
+					byte[ 4 * i + 0 ] = v4;
+					byte[ 4 * i + 1 ] = v3;
+					byte[ 4 * i + 2 ] = v2;
+					byte[ 4 * i + 3 ] = v1;
 				}
 			}
 			break;
@@ -607,7 +622,7 @@ namespace dicom
 			// ワード列
 			// 「無制限」
 			// 転送構文のエンディアン形式に依存して，バイトの並びが変化するデータ列
-			if( _is_big_endian_( ) )
+			if( _is_little_endian_( ) != from_little_endian )
 			{
 				for( long i = 0 ; i < num_bytes / 2 ; i += 2 )
 				{
