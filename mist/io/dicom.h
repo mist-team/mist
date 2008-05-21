@@ -450,16 +450,16 @@ namespace dicom
 
 			if( _is_little_endian_( ) != from_little_endian )
 			{
-				for( long i = 0 ; i < num_bytes / 4 ; i += 4 )
+				for( long i = 0 ; i < num_bytes ; i += 4 )
 				{
-					unsigned char v0 = byte[ 4 * i + 0 ];
-					unsigned char v1 = byte[ 4 * i + 1 ];
-					unsigned char v2 = byte[ 4 * i + 2 ];
-					unsigned char v3 = byte[ 4 * i + 3 ];
-					byte[ 4 * i + 0 ] = v1;
-					byte[ 4 * i + 1 ] = v0;
-					byte[ 4 * i + 2 ] = v3;
-					byte[ 4 * i + 3 ] = v2;
+					unsigned char v0 = byte[ i + 0 ];
+					unsigned char v1 = byte[ i + 1 ];
+					unsigned char v2 = byte[ i + 2 ];
+					unsigned char v3 = byte[ i + 3 ];
+					byte[ i + 0 ] = v1;
+					byte[ i + 1 ] = v0;
+					byte[ i + 2 ] = v3;
+					byte[ i + 3 ] = v2;
 				}
 			}
 			break;
@@ -604,16 +604,16 @@ namespace dicom
 			// 転送構文のエンディアン形式に依存して，バイトの並びが変化するデータ列
 			if( _is_little_endian_( ) != from_little_endian )
 			{
-				for( long i = 0 ; i < num_bytes / 4 ; i += 4 )
+				for( long i = 0 ; i < num_bytes ; i += 4 )
 				{
-					unsigned char v1 = byte[ 4 * i + 0 ];
-					unsigned char v2 = byte[ 4 * i + 1 ];
-					unsigned char v3 = byte[ 4 * i + 2 ];
-					unsigned char v4 = byte[ 4 * i + 3 ];
-					byte[ 4 * i + 0 ] = v4;
-					byte[ 4 * i + 1 ] = v3;
-					byte[ 4 * i + 2 ] = v2;
-					byte[ 4 * i + 3 ] = v1;
+					unsigned char v1 = byte[ i + 0 ];
+					unsigned char v2 = byte[ i + 1 ];
+					unsigned char v3 = byte[ i + 2 ];
+					unsigned char v4 = byte[ i + 3 ];
+					byte[ i + 0 ] = v4;
+					byte[ i + 1 ] = v3;
+					byte[ i + 2 ] = v2;
+					byte[ i + 3 ] = v1;
 				}
 			}
 			break;
@@ -624,11 +624,11 @@ namespace dicom
 			// 転送構文のエンディアン形式に依存して，バイトの並びが変化するデータ列
 			if( _is_little_endian_( ) != from_little_endian )
 			{
-				for( long i = 0 ; i < num_bytes / 2 ; i += 2 )
+				for( long i = 0 ; i < num_bytes ; i += 2 )
 				{
-					unsigned char tmp = byte[ 2 * i ];
-					byte[ 2 * i ] = byte[ 2 * i + 1 ];
-					byte[ 2 * i + 1 ] = tmp;
+					unsigned char tmp = byte[ i ];
+					byte[ i ] = byte[ i + 1 ];
+					byte[ i + 1 ] = tmp;
 				}
 			}
 			break;
