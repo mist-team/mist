@@ -1673,9 +1673,6 @@ namespace __euclidean_utility__
 		typedef border< T > border_type;
 		typedef std::vector< border_type > border_list_type;
 
-		// Step1 距離変換
-		euclidean::distance_transform( in, in );
-
 		// 図形の端は０
 		for( size_type j = 0 ; j < in.height( ) ; j++ )
 		{
@@ -1703,6 +1700,9 @@ namespace __euclidean_utility__
 				in( i, in.height( ) - 1, k ) = 0;
 			}
 		}
+
+		// Step1 距離変換
+		euclidean::distance_transform( in, in );
 
 		value_type min = type_limits< value_type >::maximum( ), max = type_limits< value_type >::minimum( );
 		for( size_type i = 0 ; i < in.size( ) ; i++ )
@@ -2036,6 +2036,8 @@ namespace euclidean
 	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化を行うことが可能です
 	//! @attention 3次元画像に対して適用した場合の結果は正しくないので注意が必要です
 	//!
+	//! @attention 画素のアスペクト比が1でない場合は，出力画像の型をfloatかdoubleにしないと正確な結果が得られません．十分に注意してください．
+	//!
 	//! 細線化を行う際に，出力画像の要素のデータ型で一度ユークリッド2乗距離変換した後，細線化処理が実行されます．
 	//! そのため，出力画像のデータ型が unsinged char の場合には，画像のサイズによっては距離変換が最後まで正しく行われません．
 	//! 細線化を実行する場合は，unsigned short かそれよりも大きい値を表現できるデータ型を利用してください． 
@@ -2050,15 +2052,35 @@ namespace euclidean
 		typedef typename array2< T2, Allocator2 >::value_type value_type;
 
 		out.resize( in.size1( ), in.size2( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
 
-		for( size_type i = 0 ; i < in.size( ) ; i++ )
+		if( in.reso1( ) <= in.reso2( ) || is_float< value_type >::value )
 		{
-			out[ i ] = in[ i ] > 0 ? 1 : 0;
-		}
+			out.reso1( in.reso1( ) );
+			out.reso2( in.reso2( ) );
 
-		__euclidean_utility__::thinning( out );
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
+			}
+			__euclidean_utility__::thinning( out );
+		}
+		else
+		{
+			double r1 = in.reso1( );
+			double r2 = in.reso2( );
+
+			out.reso1( 1.0 );
+			out.reso2( 1.0 );
+
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
+			}
+			__euclidean_utility__::thinning( out );
+
+			out.reso1( r1 );
+			out.reso2( r2 );
+		}
 	}
 
 
@@ -2077,13 +2099,14 @@ namespace euclidean
 		typedef typename array3< T2, Allocator2 >::value_type value_type;
 
 		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+
 		out.reso1( in.reso1( ) );
 		out.reso2( in.reso2( ) );
 		out.reso3( in.reso3( ) );
 
 		for( size_type i = 0 ; i < in.size( ) ; i++ )
 		{
-			out[ i ] = in[ i ] > 0 ? 1 : 0;
+			out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
 		}
 		__euclidean_utility__::shrink_skelton( out, __euclidean_utility__::neighbor< 6 >( ) );
 	}
@@ -2104,13 +2127,14 @@ namespace euclidean
 		typedef typename array3< T2, Allocator2 >::value_type value_type;
 
 		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+
 		out.reso1( in.reso1( ) );
 		out.reso2( in.reso2( ) );
 		out.reso3( in.reso3( ) );
 
 		for( size_type i = 0 ; i < in.size( ) ; i++ )
 		{
-			out[ i ] = in[ i ] > 0 ? 1 : 0;
+			out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
 		}
 		__euclidean_utility__::shrink_skelton( out, __euclidean_utility__::neighbor< 26 >( ) );
 	}
@@ -2124,6 +2148,8 @@ namespace euclidean
 	//!	- 斉藤豊文, 森健策, 鳥脇純一郎, ``ユークリッド距離変換を用いた3次元ディジタル画像の薄面化および細線化の逐次型アルゴリズムとその諸性質,'' 電子情報通信学会論文誌D-II, vol.J79-D-II, no.10, pp.1675-1685, 1996
 	//!
 	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化することが可能です
+	//!
+	//! @attention 画素のアスペクト比が1でない場合は，出力画像の型をfloatかdoubleにしないと正確な結果が得られません．十分に注意してください．
 	//!
 	//! 細線化を行う際に，出力画像の要素のデータ型で一度ユークリッド2乗距離変換した後，細線化処理が実行されます．
 	//! そのため，出力画像のデータ型が unsinged char の場合には，画像のサイズによっては距離変換が最後まで正しく行われません．
@@ -2139,15 +2165,39 @@ namespace euclidean
 		typedef typename array3< T2, Allocator2 >::value_type value_type;
 
 		out.resize( in.size1( ), in.size2( ), in.size3( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-		out.reso3( in.reso3( ) );
 
-		for( size_type i = 0 ; i < in.size( ) ; i++ )
+		if( ( in.reso1( ) <= in.reso2( ) && in.reso1( ) <= in.reso3( ) ) || is_float< value_type >::value )
 		{
-			out[ i ] = in[ i ] > 0 ? 1 : 0;
+			out.reso1( in.reso1( ) );
+			out.reso2( in.reso2( ) );
+			out.reso3( in.reso3( ) );
+
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
+			}
+			__euclidean_utility__::thinning( out, __euclidean_utility__::neighbor< 6 >( ) );
 		}
-		__euclidean_utility__::thinning( out, __euclidean_utility__::neighbor< 6 >( ) );
+		else
+		{
+			double r1 = in.reso1( );
+			double r2 = in.reso2( );
+			double r3 = in.reso3( );
+
+			out.reso1( 1.0 );
+			out.reso2( 1.0 );
+			out.reso3( 1.0 );
+
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
+			}
+			__euclidean_utility__::thinning( out, __euclidean_utility__::neighbor< 6 >( ) );
+
+			out.reso1( r1 );
+			out.reso2( r2 );
+			out.reso3( r3 );
+		}
 	}
 
 
@@ -2159,6 +2209,8 @@ namespace euclidean
 	//!	- 斉藤豊文, 森健策, 鳥脇純一郎, ``ユークリッド距離変換を用いた3次元ディジタル画像の薄面化および細線化の逐次型アルゴリズムとその諸性質,'' 電子情報通信学会論文誌D-II, vol.J79-D-II, no.10, pp.1675-1685, 1996
 	//!
 	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化することが可能です
+	//!
+	//! @attention 画素のアスペクト比が1でない場合は，出力画像の型をfloatかdoubleにしないと正確な結果が得られません．十分に注意してください．
 	//!
 	//! 細線化を行う際に，出力画像の要素のデータ型で一度ユークリッド2乗距離変換した後，細線化処理が実行されます．
 	//! そのため，出力画像のデータ型が unsinged char の場合には，画像のサイズによっては距離変換が最後まで正しく行われません．
@@ -2174,15 +2226,39 @@ namespace euclidean
 		typedef typename array3< T2, Allocator2 >::value_type value_type;
 
 		out.resize( in.size1( ), in.size2( ), in.size3( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-		out.reso3( in.reso3( ) );
 
-		for( size_type i = 0 ; i < in.size( ) ; i++ )
+		if( ( in.reso1( ) <= in.reso2( ) && in.reso1( ) <= in.reso3( ) ) || is_float< value_type >::value )
 		{
-			out[ i ] = in[ i ] > 0 ? 1 : 0;
+			out.reso1( in.reso1( ) );
+			out.reso2( in.reso2( ) );
+			out.reso3( in.reso3( ) );
+
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
+			}
+			__euclidean_utility__::thinning( out, __euclidean_utility__::neighbor< 26 >( ) );
 		}
-		__euclidean_utility__::thinning( out, __euclidean_utility__::neighbor< 26 >( ) );
+		else
+		{
+			double r1 = in.reso1( );
+			double r2 = in.reso2( );
+			double r3 = in.reso3( );
+
+			out.reso1( 1.0 );
+			out.reso2( 1.0 );
+			out.reso3( 1.0 );
+
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
+			}
+			__euclidean_utility__::thinning( out, __euclidean_utility__::neighbor< 26 >( ) );
+
+			out.reso1( r1 );
+			out.reso2( r2 );
+			out.reso3( r3 );
+		}
 	}
 
 	/// @brief ユークリッド距離を用いた3次元画像に対する薄面化アルゴリズム
@@ -2193,6 +2269,9 @@ namespace euclidean
 	//!	- 斉藤豊文, 森健策, 鳥脇純一郎, ``ユークリッド距離変換を用いた3次元ディジタル画像の薄面化および細線化の逐次型アルゴリズムとその諸性質,'' 電子情報通信学会論文誌D-II, vol.J79-D-II, no.10, pp.1675-1685, 1996
 	//!
 	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化することが可能です
+	//!
+	//! @attention 画素のアスペクト比が1でない場合は，出力画像の型をfloatかdoubleにしないと正確な結果が得られません．十分に注意してください．
+	//!
 	//! @param[in]  in  … 入力画像
 	//! @param[out] out … 出力画像
 	//!
@@ -2203,15 +2282,39 @@ namespace euclidean
 		typedef typename array3< T2, Allocator2 >::value_type value_type;
 
 		out.resize( in.size1( ), in.size2( ), in.size3( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-		out.reso3( in.reso3( ) );
 
-		for( size_type i = 0 ; i < in.size( ) ; i++ )
+		if( ( in.reso1( ) <= in.reso2( ) && in.reso1( ) <= in.reso3( ) ) || is_float< value_type >::value )
 		{
-			out[ i ] = in[ i ] > 0 ? 1 : 0;
+			out.reso1( in.reso1( ) );
+			out.reso2( in.reso2( ) );
+			out.reso3( in.reso3( ) );
+
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
+			}
+			__euclidean_utility__::surface_thinning( out, __euclidean_utility__::neighbor< 6 >( ) );
 		}
-		__euclidean_utility__::surface_thinning( out, __euclidean_utility__::neighbor< 6 >( ) );
+		else
+		{
+			double r1 = in.reso1( );
+			double r2 = in.reso2( );
+			double r3 = in.reso3( );
+
+			out.reso1( 1.0 );
+			out.reso2( 1.0 );
+			out.reso3( 1.0 );
+
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
+			}
+			__euclidean_utility__::surface_thinning( out, __euclidean_utility__::neighbor< 6 >( ) );
+
+			out.reso1( r1 );
+			out.reso2( r2 );
+			out.reso3( r3 );
+		}
 	}
 
 
@@ -2224,6 +2327,8 @@ namespace euclidean
 	//!
 	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化することが可能です
 	//!
+	//! @attention 画素のアスペクト比が1でない場合は，出力画像の型をfloatかdoubleにしないと正確な結果が得られません．十分に注意してください．
+	//!
 	//! @param[in]  in  … 入力画像
 	//! @param[out] out … 出力画像
 	//!
@@ -2234,15 +2339,39 @@ namespace euclidean
 		typedef typename array3< T2, Allocator2 >::value_type value_type;
 
 		out.resize( in.size1( ), in.size2( ), in.size3( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-		out.reso3( in.reso3( ) );
 
-		for( size_type i = 0 ; i < in.size( ) ; i++ )
+		if( ( in.reso1( ) <= in.reso2( ) && in.reso1( ) <= in.reso3( ) ) || is_float< value_type >::value )
 		{
-			out[ i ] = in[ i ] > 0 ? 1 : 0;
+			out.reso1( in.reso1( ) );
+			out.reso2( in.reso2( ) );
+			out.reso3( in.reso3( ) );
+
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
+			}
+			__euclidean_utility__::surface_thinning( out, __euclidean_utility__::neighbor< 26 >( ) );
 		}
-		__euclidean_utility__::surface_thinning( out, __euclidean_utility__::neighbor< 26 >( ) );
+		else
+		{
+			double r1 = in.reso1( );
+			double r2 = in.reso2( );
+			double r3 = in.reso3( );
+
+			out.reso1( 1.0 );
+			out.reso2( 1.0 );
+			out.reso3( 1.0 );
+
+			for( size_type i = 0 ; i < in.size( ) ; i++ )
+			{
+				out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
+			}
+			__euclidean_utility__::surface_thinning( out, __euclidean_utility__::neighbor< 26 >( ) );
+
+			out.reso1( r1 );
+			out.reso2( r2 );
+			out.reso3( r3 );
+		}
 	}
 
 	/// @}
