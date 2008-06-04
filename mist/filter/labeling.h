@@ -236,7 +236,7 @@ namespace __labeling_controller__
 		const bool bprogress1 = depth == 1;
 		const bool bprogress2 = depth >  1;
 
-		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		if( is_float< value_type >::value )
 		{
 			label_max = type_limits< size_type >::maximum( );
 		}
@@ -415,7 +415,7 @@ typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Alloca
 
 	if( max_label == 0 )
 	{
-		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		if( is_float< value_type >::value )
 		{
 			max_label = type_limits< size_type >::maximum( );
 		}
@@ -487,7 +487,7 @@ typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Alloca
 
 	if( max_label == 0 )
 	{
-		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		if( is_float< value_type >::value )
 		{
 			max_label = type_limits< size_type >::maximum( );
 		}
@@ -559,7 +559,7 @@ typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Alloca
 
 	if( max_label == 0 )
 	{
-		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		if( is_float< value_type >::value )
 		{
 			max_label = type_limits< size_type >::maximum( );
 		}
@@ -631,7 +631,7 @@ typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Alloc
 
 	if( max_label == 0 )
 	{
-		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		if( is_float< value_type >::value )
 		{
 			max_label = type_limits< size_type >::maximum( );
 		}
@@ -703,7 +703,7 @@ typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Alloc
 
 	if( max_label == 0 )
 	{
-		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		if( is_float< value_type >::value )
 		{
 			max_label = type_limits< size_type >::maximum( );
 		}
