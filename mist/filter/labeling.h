@@ -236,7 +236,14 @@ namespace __labeling_controller__
 		const bool bprogress1 = depth == 1;
 		const bool bprogress2 = depth >  1;
 
-		label_max = type_limits< value_type >::maximum( );
+		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		{
+			label_max = type_limits< size_type >::maximum( );
+		}
+		else
+		{
+			label_max = static_cast< size_type >( type_limits< value_type >::maximum( ) );
+		}
 
 		f( 0.0 );
 
@@ -408,7 +415,14 @@ typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Alloca
 
 	if( max_label == 0 )
 	{
-		max_label = type_limits< value_type >::maximum( );
+		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		{
+			max_label = type_limits< size_type >::maximum( );
+		}
+		else
+		{
+			max_label = static_cast< size_type >( type_limits< value_type >::maximum( ) );
+		}
 	}
 
 	out.resize( in.size1( ), in.size2( ) );
@@ -417,7 +431,7 @@ typename array2< T2, Allocator2 >::size_type labeling4( const array2< T1, Alloca
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		out[ i ] = in[ i ] > 0 ? 1 : 0;
+		out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 4 >( ), f ) );
 }
@@ -473,7 +487,14 @@ typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Alloca
 
 	if( max_label == 0 )
 	{
-		max_label = type_limits< value_type >::maximum( );
+		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		{
+			max_label = type_limits< size_type >::maximum( );
+		}
+		else
+		{
+			max_label = static_cast< size_type >( type_limits< value_type >::maximum( ) );
+		}
 	}
 
 	out.resize( in.size1( ), in.size2( ) );
@@ -482,7 +503,7 @@ typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Alloca
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		out[ i ] = in[ i ] > 0 ? 1 : 0;
+		out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 8 >( ), f ) );
 }
@@ -538,7 +559,14 @@ typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Alloca
 
 	if( max_label == 0 )
 	{
-		max_label = type_limits< value_type >::maximum( );
+		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		{
+			max_label = type_limits< size_type >::maximum( );
+		}
+		else
+		{
+			max_label = static_cast< size_type >( type_limits< value_type >::maximum( ) );
+		}
 	}
 
 	out.resize( in.size1( ), in.size2( ), in.size3( ) );
@@ -548,7 +576,7 @@ typename array3< T2, Allocator2 >::size_type labeling6( const array3< T1, Alloca
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		out[ i ] = in[ i ] > 0 ? 1 : 0;
+		out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 6 >( ), f ) );
 }
@@ -603,7 +631,14 @@ typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Alloc
 
 	if( max_label == 0 )
 	{
-		max_label = type_limits< value_type >::maximum( );
+		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		{
+			max_label = type_limits< size_type >::maximum( );
+		}
+		else
+		{
+			max_label = static_cast< size_type >( type_limits< value_type >::maximum( ) );
+		}
 	}
 
 	out.resize( in.size1( ), in.size2( ), in.size3( ) );
@@ -613,7 +648,7 @@ typename array3< T2, Allocator2 >::size_type labeling18( const array3< T1, Alloc
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		out[ i ] = in[ i ] > 0 ? 1 : 0;
+		out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 18 >( ), f ) );
 }
@@ -668,7 +703,14 @@ typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Alloc
 
 	if( max_label == 0 )
 	{
-		max_label = type_limits< value_type >::maximum( );
+		if( type_limits< size_type >::maximum( ) < type_limits< value_type >::maximum( ) )
+		{
+			max_label = type_limits< size_type >::maximum( );
+		}
+		else
+		{
+			max_label = static_cast< size_type >( type_limits< value_type >::maximum( ) );
+		}
 	}
 
 	out.resize( in.size1( ), in.size2( ), in.size3( ) );
@@ -678,7 +720,7 @@ typename array3< T2, Allocator2 >::size_type labeling26( const array3< T1, Alloc
 
 	for( size_type i = 0 ; i < in.size( ) ; i++ )
 	{
-		out[ i ] = in[ i ] > 0 ? 1 : 0;
+		out[ i ] = static_cast< value_type >( in[ i ] > 0 ? 1 : 0 );
 	}
 	return( __labeling_controller__::labeling( out, max_label, __labeling_controller__::neighbors< 26 >( ), f ) );
 }
@@ -889,7 +931,7 @@ void maximum_region(
 
 	for( i = 0 ; i < out.size( ) ; i++ )
 	{
-		out[ i ] = tmp[ i ] == max_label ? 1 : 0;
+		out[ i ] = static_cast< typename array3< T2, Allocator2 >::value_type >( tmp[ i ] == max_label ? 1 : 0 );
 	}
 }
 
