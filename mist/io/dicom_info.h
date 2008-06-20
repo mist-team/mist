@@ -927,7 +927,8 @@ namespace dicom
 		double				image_position_x;			///< @brief X軸方向のイメージポジション
 		double				image_position_y;			///< @brief Y軸方向のイメージポジション
 		double				image_position_z;			///< @brief Z軸方向のイメージポジション
-		double				rescale_intercept;			///< @brief 画素値のオフセット
+		double				rescale_intercept;			///< @brief 画素値に対するオフセット
+		double				rescale_slope;				///< @brief 画素値に対する変換関数の傾き
 		unsigned short		bits_allocated;				///< @brief 1画素あたりに割り当てられているビット数
 		unsigned short		bits_stored;				///< @brief 1画素あたりに使用しているビット数
 		unsigned short		high_bits;					///< @brief high bits
@@ -952,6 +953,7 @@ namespace dicom
 			image_position_y( 1.0 ),
 			image_position_z( 1.0 ),
 			rescale_intercept( 0.0 ),
+			rescale_slope( 1.0 ),
 			bits_allocated( 8 ),
 			bits_stored( 8 ),
 			high_bits( 7 ),
@@ -1263,11 +1265,18 @@ namespace dicom
 		// スライス厚を取得
 		info.thickness = find_tag( dicm, 0x0018, 0x0050, info.thickness );
 
-		// 画素に対するオフセットを取得
+		// 画素に適用するオフセットを取得
 		std::string rescale_intercept	= find_tag( dicm, 0x0028, 0x1052, "" );
 		if( rescale_intercept != "" )
 		{
 			info.rescale_intercept = atof( rescale_intercept.c_str( ) );
+		}
+
+		// 画素に適用する傾きを取得
+		std::string rescale_slope	= find_tag( dicm, 0x0028, 0x1053, "" );
+		if( rescale_slope != "" )
+		{
+			info.rescale_slope = atof( rescale_slope.c_str( ) );
 		}
 
 		info.bits_allocated			= find_tag( dicm, 0x0028, 0x0100, info.bits_allocated );
