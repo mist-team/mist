@@ -540,6 +540,10 @@ struct __mist_progress_callback__
 * - @ref mist::stereo						"ステレオ音声"
 * - @ref mist::quaternion					"クォータニオン（四元数）"
 * - @ref set_group							"集合"
+* - @ref facet_group						"ポリゴン関連"
+*   - @ref mist::facet						"ポリゴンを扱うクラス"
+*   - @ref mist::facet_list					"ポリゴンの集合を扱うクラス"
+*   - @ref mist::surface_simplification		"ポリゴン数の削減"
 *
 *
 * @section algorithm MISTで提供するアルゴリズム
@@ -608,6 +612,9 @@ struct __mist_progress_callback__
 *   - @ref calibration_group					"カメラキャリブレーション"
 * - @ref machine_learning_group					"機械学習"
 *   - @ref mist::machine_learning::adaboost		"Multiclass AdaBoost"
+* - @ref hht_group								"経験的モード分解およびヒルベルト変換"
+*   - @ref mist::hilbert						"ヒルベルト変換"
+*   - @ref mist::emd							"経験的モード分解"
 *
 *
 * @subsection image 主に画像に対して適用される処理

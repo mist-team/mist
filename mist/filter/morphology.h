@@ -132,9 +132,10 @@ namespace morphology
 	//!
 	//! resoX，resoY の値を変えることで，楕円等を表現可能です
 	//!
-	//! @param[in] radius … 半径（単位は画素）
-	//! @param[in] resoX  … X軸方向の解像度
-	//! @param[in] resoY  … Y軸方向の解像度
+	//! @param[in] radius                 … 半径（単位は画素）
+	//! @param[in] resoX                  … X軸方向の解像度
+	//! @param[in] resoY                  … Y軸方向の解像度
+	//! @param[in] radiusInPhysicalCoords … radiusの単位が画素の場合は false，resoXとresoYの単位の場合は true を指定する（デフォルトは false）
 	//!
 	//! @return 円構造要素
 	//!
@@ -144,7 +145,7 @@ namespace morphology
 		typedef array2< bool >::difference_type difference_type;
 
 		double ax, ay;
-		if (radiusInPhysicalCoords)
+		if( radiusInPhysicalCoords )
 		{
 			ax = resoX;
 			ay = resoY;
@@ -223,6 +224,7 @@ namespace morphology
 	//! @param[in] resoX  … X軸方向の解像度
 	//! @param[in] resoY  … Y軸方向の解像度
 	//! @param[in] resoZ  … Z軸方向の解像度
+	//! @param[in] radiusInPhysicalCoords … radiusの単位が画素の場合は false，resoXとresoYとresoZの単位の場合は true を指定する（デフォルトは false）
 	//!
 	//! @return 球構造要素
 	//!
@@ -232,7 +234,7 @@ namespace morphology
 		typedef array3< bool >::difference_type difference_type;
 
 		double ax, ay, az;
-		if (radiusInPhysicalCoords)
+		if( radiusInPhysicalCoords )
 		{
 			ax = resoX;
 			ay = resoY;
@@ -323,6 +325,7 @@ namespace morphology
 	//! @param[in] radius … 正方形の一辺の長さの半分（単位は画素）
 	//! @param[in] resoX  … X軸方向の解像度
 	//! @param[in] resoY  … Y軸方向の解像度
+	//! @param[in] radiusInPhysicalCoords … radiusの単位が画素の場合は false，resoXとresoYの単位の場合は true を指定する（デフォルトは false）
 	//!
 	//! @return 正方形構造要素
 	//!
@@ -333,7 +336,7 @@ namespace morphology
 		typedef array2< bool >::difference_type difference_type;
 
 		double ax, ay;
-		if (radiusInPhysicalCoords)
+		if( radiusInPhysicalCoords )
 		{
 			ax = resoX;
 			ay = resoY;
@@ -411,6 +414,7 @@ namespace morphology
 	//! @param[in] resoX  … X軸方向の解像度
 	//! @param[in] resoY  … Y軸方向の解像度
 	//! @param[in] resoZ  … Z軸方向の解像度
+	//! @param[in] radiusInPhysicalCoords … radiusの単位が画素の場合は false，resoXとresoYとresoZの単位の場合は true を指定する（デフォルトは false）
 	//!
 	//! @return 立方体構造要素
 	//!
@@ -421,7 +425,7 @@ namespace morphology
 		typedef array3< bool >::difference_type difference_type;
 
 		double ax, ay, az;
-		if (radiusInPhysicalCoords)
+		if( radiusInPhysicalCoords )
 		{
 			ax = resoX;
 			ay = resoY;

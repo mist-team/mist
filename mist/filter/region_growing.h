@@ -189,7 +189,7 @@ namespace region_growing_utility
 		/// @brief 半径と解像度を指定して球を初期化（楕円の作成も可能，ただし，単位は画素）
 		circle( double radius, double resoX = 1.0, double resoY = 1.0, bool radiusInPhysicalCoords = false ) : radius_( radius )
 		{
-			if (radiusInPhysicalCoords)
+			if( radiusInPhysicalCoords )
 			{
 				resoX_ = resoX;
 				resoY_ = resoY;

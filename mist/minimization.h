@@ -2225,7 +2225,7 @@ namespace condor
 						switch( val )
 						{
 						case 2:
-							deg( row, col ) = val;
+							deg( row, col ) = static_cast< imatrix_type::value_type >( val );
 							val--;
 							row++;
 							break;
@@ -2233,8 +2233,8 @@ namespace condor
 						case 1:
 							for( difference_type c = 1 ; c < C - col ; c++ )
 							{
-								deg( row, col ) = val;
-								deg( row, col + c ) = val;
+								deg( row, col )     = static_cast< imatrix_type::value_type >( val );;
+								deg( row, col + c ) = static_cast< imatrix_type::value_type >( val );;
 								row++;
 							}
 							val--;
@@ -2257,7 +2257,7 @@ namespace condor
 						switch( val )
 						{
 						case 2:
-							lex( row, col ) = val;
+							lex( row, col ) = static_cast< imatrix_type::value_type >( val );
 							val--;
 							row++;
 							break;
@@ -2265,11 +2265,11 @@ namespace condor
 						case 1:
 							for( difference_type c = 1 ; c < C - col ; c++ )
 							{
-								lex( row, col ) = val;
-								lex( row, col + c ) = val;
+								lex( row, col )     = static_cast< imatrix_type::value_type >( val );
+								lex( row, col + c ) = static_cast< imatrix_type::value_type >( val );
 								row++;
 							}
-							lex( row, col ) = val;
+							lex( row, col ) = static_cast< imatrix_type::value_type >( val );
 							row++;
 							val--;
 							col++;
@@ -2292,7 +2292,7 @@ namespace condor
 								break;
 							}
 						}
-						tc[ r ] = c;
+						tc[ r ] = static_cast< imatrix_type::value_type >( c );
 					}
 				}
 
@@ -2318,7 +2318,7 @@ namespace condor
 						}
 					}
 
-					tr[ r ] = indx;
+					tr[ r ] = static_cast< imatrix_type::value_type >( indx );
 				}
 			}
 		};

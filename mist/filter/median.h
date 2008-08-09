@@ -168,7 +168,7 @@ namespace __median_filter_with_histogram__
 								}
 							}
 
-							if ( bw <= i )
+							if( bw <= i )
 							{
 								leftmost[ leftnum++ ] = in( i - bw, y, z ) - min;
 							}

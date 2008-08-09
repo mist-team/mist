@@ -204,6 +204,7 @@ public:
 #if !defined( _MIST_THREAD_SUPPORT_ ) || _MIST_THREAD_SUPPORT_ == 0
 		// スレッドサポートはしないので特に必何もしない
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+		//InitializeCriticalSectionAndSpinCount( &__lock__, 4000 );	// クリティカルセクションオブジェクトを初期化
 		InitializeCriticalSection( &__lock__ );	// クリティカルセクションオブジェクトを初期化
 #else
 		pthread_mutex_init( &__lock__, NULL );		// pthread用のMutexオブジェクトを初期化
@@ -1575,8 +1576,8 @@ public:
 	//! スレッドプールの初期化が終了していない場合は false を返す．
 	//! スレッドが実行する関数の引数はコピーして渡される．
 	//! 
-	//! @param[in,out] param … スレッドの関数に渡すパラメータ
-	//! @param[in]     f     … 実行されるスレッド関数
+	//! @param[in,out] p … スレッドの関数に渡すパラメータ
+	//! @param[in]     f … 実行されるスレッド関数
 	//! 
 	template < class Param, class Functor >
 	bool execute( Param p, Functor f )
@@ -1616,8 +1617,8 @@ public:
 	//! スレッドプールの初期化が終了していない場合は false を返す．
 	//! スレッドが実行する関数の引数は参照として渡される．
 	//! 
-	//! @param[in,out] param … スレッドの関数に渡すパラメータ
-	//! @param[in]     f     … 実行されるスレッド関数
+	//! @param[in,out] p … スレッドの関数に渡すパラメータ
+	//! @param[in]     f … 実行されるスレッド関数
 	//! 
 	template < class Param, class Functor >
 	bool execute_nocopy( Param &p, Functor f )
@@ -1656,8 +1657,7 @@ public:
 	//! 
 	//! スレッドプールの初期化が終了していない場合は false を返す．
 	//! 
-	//! @param[in,out] param … スレッドの関数に渡すパラメータ
-	//! @param[in]     f     … 実行されるスレッド関数
+	//! @param[in] f … 実行されるスレッド関数
 	//! 
 	template < class Functor >
 	bool execute( Functor f )
