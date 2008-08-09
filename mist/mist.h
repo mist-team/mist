@@ -1433,76 +1433,76 @@ public:
 
 public:
 	/// @brief ディフォルトコンストラクタ．要素数 0，解像度 1.0 × 1.0 のコンテナを作成する
-	array2( ) : base( ), size1_( 0 ), size2_( 0 ), reso2_( 1.0 ) {}
+	array2( ) : base( ), size2_( 0 ), size1_( 0 ), reso2_( 1.0 ) {}
 
 	/// @brief アロケータ a のコピーを利用する
-	explicit array2( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ), reso2_( 1.0 ) {}
+	explicit array2( const Allocator &a ) : base( a ), size2_( 0 ), size1_( 0 ), reso2_( 1.0 ) {}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，デフォルト値で要素を初期化する
-	array2( size_type num1, size_type num2 ) : base( num1 * num2 ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 )
+	array2( size_type num1, size_type num2 ) : base( num1 * num2 ), size2_( num2 ), size1_( num1 ), reso2_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定する
-	array2( size_type num1, size_type num2, double r1, double r2 ) : base( num1 * num2, r1 ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	array2( size_type num1, size_type num2, double r1, double r2 ) : base( num1 * num2, r1 ), size2_( num2 ), size1_( num1 ), reso2_( r2 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，使用するアロケータを a に設定する
-	array2( size_type num1, size_type num2, const Allocator &a ) : base( num1 * num2, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 )
+	array2( size_type num1, size_type num2, const Allocator &a ) : base( num1 * num2, a ), size2_( num2 ), size1_( num1 ), reso2_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，使用するアロケータを a に設定する
-	array2( size_type num1, size_type num2, double r1, double r2, const Allocator &a ) : base( num1 * num2, r1, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	array2( size_type num1, size_type num2, double r1, double r2, const Allocator &a ) : base( num1 * num2, r1, a ), size2_( num2 ), size1_( num1 ), reso2_( r2 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を 1.0 × 1.0 に設定し，全要素を val で初期化する
-	array2( size_type num1, size_type num2, const value_type &val ) : base( num1 * num2, val ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 )
+	array2( size_type num1, size_type num2, const value_type &val ) : base( num1 * num2, val ), size2_( num2 ), size1_( num1 ), reso2_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，全要素を val で初期化する
-	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val ) : base( num1 * num2, r1, val ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val ) : base( num1 * num2, r1, val ), size2_( num2 ), size1_( num1 ), reso2_( r2 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定し，使用するアロケータを a に設定する
-	array2( size_type num1, size_type num2, const value_type &val, const Allocator &a ) : base( num1 * num2, val, a ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 )
+	array2( size_type num1, size_type num2, const value_type &val, const Allocator &a ) : base( num1 * num2, val, a ), size2_( num2 ), size1_( num1 ), reso2_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2，使用するアロケータを a に設定し，全要素を val で初期化する
-	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val, const Allocator &a ) : base( num1 * num2, r1, val, a ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val, const Allocator &a ) : base( num1 * num2, r1, val, a ), size2_( num2 ), size1_( num1 ), reso2_( r2 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 
 	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 個のコンテナを作成する（ptr が指す先の利用可能なメモリ量は mem_available ）
-	array2( size_type num1, size_type num2, pointer ptr, size_type mem_available ) : base( num1 * num2, ptr, mem_available ), size1_( num1 ), size2_( num2 ), reso2_( 1.0 )
+	array2( size_type num1, size_type num2, pointer ptr, size_type mem_available ) : base( num1 * num2, ptr, mem_available ), size2_( num2 ), size1_( num1 ), reso2_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2 に設定する（ptr が指す先の利用可能なメモリ量は mem_available ）
-	array2( size_type num1, size_type num2, double r1, double r2, pointer ptr, size_type mem_available ) : base( num1 * num2, r1, ptr, mem_available ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	array2( size_type num1, size_type num2, double r1, double r2, pointer ptr, size_type mem_available ) : base( num1 * num2, r1, ptr, mem_available ), size2_( num2 ), size1_( num1 ), reso2_( r2 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 個のコンテナを作成し，解像度を r1 × r2，値 val で初期化する（ptr が指す先の利用可能なメモリ量は mem_available ）
-	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val, pointer ptr, size_type mem_available ) : base( num1 * num2, r1, val, ptr, mem_available ), size1_( num1 ), size2_( num2 ), reso2_( r2 )
+	array2( size_type num1, size_type num2, double r1, double r2, const value_type &val, pointer ptr, size_type mem_available ) : base( num1 * num2, r1, val, ptr, mem_available ), size2_( num2 ), size1_( num1 ), reso2_( r2 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
@@ -1514,13 +1514,13 @@ public:
 	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
 	//!
 	template < class TT, class AAlocator >
-	array2( const array2< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), reso2_( o.reso2( ) )
+	array2( const array2< TT, AAlocator > &o ) : base( o ), size2_( o.size2( ) ), size1_( o.size1( ) ), reso2_( o.reso2( ) )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
 
 	/// @brief 他の array2 配列で同じ要素型のものを用いて初期化する
-	array2( const array2< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), reso2_( o.reso2_ )
+	array2( const array2< T, Allocator > &o ) : base( o ), size2_( o.size2_ ), size1_( o.size1_ ), reso2_( o.reso2_ )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
@@ -2142,56 +2142,56 @@ public:
 
 public:
 	/// @brief ディフォルトコンストラクタ．要素数 0，解像度 1.0 × 1.0 × 1.0 のコンテナを作成する
-	array3( ) : base( ), size1_( 0 ), size2_( 0 ), size3_( 0 ), reso3_( 1.0 ) {}
+	array3( ) : base( ), size3_( 0 ), size2_( 0 ), size1_( 0 ), reso3_( 1.0 ) {}
 
 	/// @brief アロケータ a のコピーを利用する
-	explicit array3( const Allocator &a ) : base( a ), size1_( 0 ), size2_( 0 ), size3_( 0 ), reso3_( 1.0 ) {}
+	explicit array3( const Allocator &a ) : base( a ), size3_( 0 ), size2_( 0 ), size1_( 0 ), reso3_( 1.0 ) {}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，デフォルト値で要素を初期化する
-	array3( size_type num1, size_type num2, size_type num3 ) : base( num1 * num2, num3 ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 )
+	array3( size_type num1, size_type num2, size_type num3 ) : base( num1 * num2, num3 ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定する
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3 ) : base( num1 * num2, num3, r1, r2 ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3 ) : base( num1 * num2, num3, r1, r2 ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( r3 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，使用するアロケータを a に設定する
-	array3( size_type num1, size_type num2, size_type num3, const Allocator &a ) : base( num1 * num2, num3, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 )
+	array3( size_type num1, size_type num2, size_type num3, const Allocator &a ) : base( num1 * num2, num3, a ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定し，使用するアロケータを a に設定する
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const Allocator &a ) : base( num1 * num2, num3, r1, r2, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const Allocator &a ) : base( num1 * num2, num3, r1, r2, a ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( r3 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
 
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を 1.0 × 1.0 × 1.0 に設定し，全要素を val で初期化する
-	array3( size_type num1, size_type num2, size_type num3, const value_type &val ) : base( num1 * num2, num3, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 )
+	array3( size_type num1, size_type num2, size_type num3, const value_type &val ) : base( num1 * num2, num3, val ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定し，全要素を val で初期化する
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val ) : base( num1 * num2, num3, r1, r2, val ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val ) : base( num1 * num2, num3, r1, r2, val ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( r3 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定し，使用するアロケータを a に設定する
-	array3( size_type num1, size_type num2, size_type num3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 )
+	array3( size_type num1, size_type num2, size_type num3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, val, a ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
 
 	/// @brief 要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3，使用するアロケータを a に設定し，全要素を val で初期化する
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, r1, r2, val, a ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val, const Allocator &a ) : base( num1 * num2, num3, r1, r2, val, a ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( r3 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
@@ -2199,19 +2199,19 @@ public:
 
 
 	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 × num3 個のコンテナを作成する（ptr が指す先の利用可能なメモリ量は mem_available ）
-	array3( size_type num1, size_type num2, size_type num3, pointer ptr, size_type mem_available ) : base( num1 * num2, num3, ptr, mem_available ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( 1.0 )
+	array3( size_type num1, size_type num2, size_type num3, pointer ptr, size_type mem_available ) : base( num1 * num2, num3, ptr, mem_available ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
 
 	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3 に設定する（ptr が指す先の利用可能なメモリ量は mem_available ）
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, pointer ptr, size_type mem_available ) : base( num1 * num2, num3, r1, r2, ptr, mem_available ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, pointer ptr, size_type mem_available ) : base( num1 * num2, num3, r1, r2, ptr, mem_available ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( r3 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
 
 	/// @brief ptr が指すメモリ領域に，要素数 num1 × num2 × num3 個のコンテナを作成し，解像度を r1 × r2 × r3，値 val で初期化する（ptr が指す先の利用可能なメモリ量は mem_available ）
-	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val, pointer ptr, size_type mem_available ) : base( num1 * num2, num3, r1, r2, val, ptr, mem_available ), size1_( num1 ), size2_( num2 ), size3_( num3 ), reso3_( r3 )
+	array3( size_type num1, size_type num2, size_type num3, double r1, double r2, double r3, const value_type &val, pointer ptr, size_type mem_available ) : base( num1 * num2, num3, r1, r2, val, ptr, mem_available ), size3_( num3 ), size2_( num2 ), size1_( num1 ), reso3_( r3 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
@@ -2223,13 +2223,13 @@ public:
 	//! @attention 異なる要素型間でデータの変換が可能でなくてはならない
 	//!
 	template < class TT, class AAlocator >
-	array3( const array3< TT, AAlocator > &o ) : base( o ), size1_( o.size1( ) ), size2_( o.size2( ) ), size3_( o.size3( ) ), reso3_( o.reso3( ) )
+	array3( const array3< TT, AAlocator > &o ) : base( o ), size3_( o.size3( ) ), size2_( o.size2( ) ), size1_( o.size1( ) ), reso3_( o.reso3( ) )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}
 
 	/// @brief 他の array3 配列で同じ要素型のものを用いて初期化する
-	array3( const array3< T, Allocator > &o ) : base( o ), size1_( o.size1_ ), size2_( o.size2_ ), size3_( o.size3_ ), reso3_( o.reso3_ )
+	array3( const array3< T, Allocator > &o ) : base( o ), size3_( o.size3_ ), size2_( o.size2_ ), size1_( o.size1_ ), reso3_( o.reso3_ )
 	{
 		if( base::empty( ) ) size1_ = size2_ = size3_ = 0;
 	}

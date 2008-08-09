@@ -993,8 +993,8 @@ namespace __solve__
 					integer ldb   = static_cast< integer >( b.rows( ) );
 					value_type dmy;
 					integer *ipiv = new integer[ n ];
-					integer lwork  = -1;
-					char *uplo    = "U";
+					integer lwork = -1;
+					char uplo[]   = "U";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::sysv( uplo, n, nrhs, NULL, lda, NULL, NULL, ldb, &dmy, lwork, info );
@@ -1094,8 +1094,8 @@ namespace __solve__
 					integer ldb   = static_cast< integer >( b.rows( ) );
 					value_type dmy;
 					integer *ipiv = new integer[ n ];
-					integer lwork  = -1;
-					char *uplo    = "U";
+					integer lwork = -1;
+					char uplo[]   = "U";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::sysv( uplo, n, nrhs, NULL, lda, NULL, NULL, ldb, &dmy, lwork, info );
@@ -1489,7 +1489,7 @@ namespace __cholesky__
 				// LAPACK関数の引数
 				integer n     = static_cast< integer >( a.cols( ) );
 				integer lda   = static_cast< integer >( a.rows( ) );
-				char *uplo    = "L";
+				char uplo[]   = "L";
 
 				// まず最適な作業用配列のサイズを取得する
 				__clapack__::potrf( uplo, n, &( a[0] ), lda, info );
@@ -1714,7 +1714,7 @@ namespace __inverse__
 						integer *ipiv  = new integer[ n ];
 						typename matrix< T, Allocator >::value_type dmy;
 						integer lwork  = -1;
-						char *uplo    = "U";
+						char uplo[]    = "U";
 
 						// LU分解を行う
 						// まず最適な作業用配列のサイズを取得する
@@ -1825,7 +1825,7 @@ namespace __inverse__
 					integer *ipiv  = new integer[ n ];
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
-					char *uplo    = "U";
+					char uplo[]    = "U";
 
 					// LU分解を行う
 					// まず最適な作業用配列のサイズを取得する
@@ -1950,9 +1950,9 @@ namespace __eigen__
 					integer il        = 0;
 					integer iu        = 0;
 					value_type abstol = 0;
-					char *jobz        = "V";
-					char *range       = "A";
-					char *uplo        = "U";
+					char jobz[]        = "V";
+					char range[]       = "A";
+					char uplo[]        = "U";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::syevx( jobz, range, uplo, n, NULL, lda, vl, vu, il, iu, abstol, m, NULL, NULL, ldz, &dmy, lwork, NULL, NULL, info );
@@ -1994,10 +1994,10 @@ namespace __eigen__
 					integer lwork  = -1;
 					integer ilo    = 0;
 					integer ihi    = 0;
-					char *balanc = "B";
-					char *jobvl  = "N";
-					char *jobvr  = "V";
-					char *sense  = "N";
+					char balanc[] = "B";
+					char jobvl[]  = "N";
+					char jobvr[]  = "V";
+					char sense[]  = "N";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::geevx( balanc, jobvl, jobvr, sense, n, NULL, lda, NULL, NULL, NULL, ldvl, NULL, ldvr, ilo, ihi, NULL, abnrm, NULL, NULL, &dmy, lwork, NULL, info );
@@ -2066,10 +2066,10 @@ namespace __eigen__
 					integer lwork  = -1;
 					integer ilo    = 0;
 					integer ihi    = 0;
-					char *balanc = "B";
-					char *jobvl  = "N";
-					char *jobvr  = "V";
-					char *sense  = "N";
+					char balanc[]  = "B";
+					char jobvl[]   = "N";
+					char jobvr[]   = "V";
+					char sense[]   = "N";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::geevx( balanc, jobvl, jobvr, sense, n, NULL, lda, NULL, NULL, ldvl, NULL, ldvr, ilo, ihi, NULL, abnrm, NULL, NULL, &dmy, lwork, NULL, info );
@@ -2147,8 +2147,8 @@ namespace __eigen__
 					integer lda    = static_cast< integer >( a.rows( ) );
 					typename matrix< T, Allocator >::value_type dmy;
 					integer lwork  = -1;
-					char *jobz = "V";
-					char *uplo = "U";
+					char jobz[]    = "V";
+					char uplo[]    = "U";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::syev( jobz, uplo, n, NULL, lda, NULL, &dmy, lwork, info );
@@ -2185,8 +2185,8 @@ namespace __eigen__
 					integer ldvl   = 1;
 					integer ldvr   = n;
 					integer lwork  = -1;
-					char *jobvl = "N";
-					char *jobvr = "V";
+					char jobvl[]   = "N";
+					char jobvr[]   = "V";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::geev( jobvl, jobvr, n, NULL, lda, NULL, NULL, NULL, ldvl, NULL, ldvr, &dmy, lwork, info );
@@ -2256,8 +2256,8 @@ namespace __eigen__
 					integer ldvl   = 1;
 					integer ldvr   = n;
 					integer lwork  = -1;
-					char *jobvl = "N";
-					char *jobvr = "V";
+					char jobvl[]   = "N";
+					char jobvr[]   = "V";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::geev( jobvl, jobvr, n, NULL, lda, NULL, NULL, ldvl, NULL, ldvr, &dmy, lwork, NULL, info );
@@ -2336,7 +2336,7 @@ namespace __svd__
 					typename matrix< T, Allocator >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					char *jobz = "A";
+					char jobz[] = "A";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::gesdd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
@@ -2406,7 +2406,7 @@ namespace __svd__
 					typename matrix< T, Allocator >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					char *jobz = "O";
+					char jobz[]    = "O";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::gesdd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
@@ -2492,7 +2492,7 @@ namespace __svd__
 					typename matrix< T1, Allocator1 >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					char *jobz = "A";
+					char jobz[]    = "A";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::gesdd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, NULL, info );
@@ -2571,7 +2571,7 @@ namespace __svd__
 					typename matrix< T1, Allocator1 >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					char *jobz = "O";
+					char jobz[]    = "O";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::gesdd( jobz, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, NULL, info );
@@ -2673,8 +2673,8 @@ namespace __svd__
 					typename matrix< T, Allocator >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					char *jobu = "A";
-					char *jobvt = "A";
+					char jobu[]    = "A";
+					char jobvt[]   = "A";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, info );
@@ -2740,8 +2740,8 @@ namespace __svd__
 					typename matrix< T, Allocator >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					char *jobu = "N";
-					char *jobvt = "A";
+					char jobu[]    = "N";
+					char jobvt[]   = "A";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, info );
@@ -2806,8 +2806,8 @@ namespace __svd__
 					typename matrix< T1, Allocator1 >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					char *jobu = "A";
-					char *jobvt = "A";
+					char jobu[]    = "A";
+					char jobvt[]   = "A";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );
@@ -2883,8 +2883,8 @@ namespace __svd__
 					typename matrix< T1, Allocator1 >::value_type dmy;
 					integer ldvt   = n;
 					integer lwork  = -1;
-					char *jobu = "N";
-					char *jobvt = "A";
+					char jobu[]    = "N";
+					char jobvt[]   = "A";
 
 					// まず最適な作業用配列のサイズを取得する
 					__clapack__::gesvd( jobu, jobvt, m, n, NULL, lda, NULL, NULL, ldu, NULL, ldvt, &dmy, lwork, NULL, info );

@@ -478,7 +478,7 @@ namespace machine_learning
 			}
 
 			/// @brief 識別機のパラメータを記録した文字列からパラメータを復元する
-			void deserialize( const std::string &data ) const
+			void deserialize( const std::string &data )
 			{
 				sscanf( data.c_str( ), "%d,%lf,%lf", &index_, &sign_, &threshold_ );
 			}
@@ -674,7 +674,7 @@ namespace machine_learning
 			}
 
 			/// @brief 識別機のパラメータを記録した文字列からパラメータを復元する
-			void deserialize( const std::string &data ) const
+			void deserialize( const std::string &data )
 			{
 				sscanf( data.c_str( ), "%d,%lf,%lf,%lf,%lf", &index_, &ave_[ 0 ], &ave_[ 1 ], &sig_[ 0 ], &sig_[ 1 ] );
 			}
@@ -872,7 +872,7 @@ namespace machine_learning
 			}
 
 			/// @brief 識別機のパラメータを記録した文字列からパラメータを復元する
-			void deserialize( const std::string &data ) const
+			void deserialize( const std::string &data )
 			{
 				//sscanf( data.c_str( ), "%d,%lf,%lf,%lf,%lf", &index_, &ave_[ 0 ], &ave_[ 1 ], &sig_[ 0 ], &sig_[ 1 ] );
 			}
