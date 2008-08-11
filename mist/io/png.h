@@ -247,20 +247,32 @@ namespace __png_controller__
 				png_convert_from_time_t( &mod_time, gmt );
 				png_set_tIME( png_ptr, info_ptr, &mod_time );
 
-				text_ptr[ 0 ].key = "Title";
-				text_ptr[ 0 ].text = "slipapng library";
+				static char text[][64] = {
+					"Title",
+					"MIST PNG Library",
+					"Author",
+					"",
+					"Description",
+					"Created by using MIST library",
+					"Creation Time",
+					"Software",
+					"MIST PNG converter",
+				};
+
+				text_ptr[ 0 ].key  = text[ 0 ];
+				text_ptr[ 0 ].text = text[ 1 ];
 				text_ptr[ 0 ].compression = PNG_TEXT_COMPRESSION_NONE;
-				text_ptr[ 1 ].key = "Author";
-				text_ptr[ 1 ].text = "mist project team";
+				text_ptr[ 1 ].key  = text[ 2 ];
+				text_ptr[ 1 ].text = text[ 3 ];
 				text_ptr[ 1 ].compression = PNG_TEXT_COMPRESSION_NONE;
-				text_ptr[ 2 ].key = "Description";
-				text_ptr[ 2 ].text = "created by mist project team";
+				text_ptr[ 2 ].key  = text[ 4 ];
+				text_ptr[ 2 ].text = text[ 5 ];
 				text_ptr[ 2 ].compression = PNG_TEXT_COMPRESSION_NONE;
-				text_ptr[ 3 ].key = "Creation Time";
+				text_ptr[ 3 ].key  = text[ 6 ];
 				text_ptr[ 3 ].text = png_convert_to_rfc1123( png_ptr, &mod_time );
 				text_ptr[ 3 ].compression = PNG_TEXT_COMPRESSION_NONE;
-				text_ptr[ 4 ].key = "Software";
-				text_ptr[ 4 ].text = "mist png converter";
+				text_ptr[ 4 ].key  = text[ 7 ];
+				text_ptr[ 4 ].text = text[ 8 ];
 				text_ptr[ 4 ].compression = PNG_TEXT_COMPRESSION_NONE;
 				png_set_text( png_ptr, info_ptr, text_ptr, 5 );
 			}

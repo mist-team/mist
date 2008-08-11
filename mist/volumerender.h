@@ -1669,10 +1669,10 @@ namespace __volumerendering_specialized__
 						continue;
 					}
 
-					double nct[ 8 ];
-					double ndx[ 8 ];
-					double ndy[ 8 ];
-					double ndz[ 8 ];
+					double nct[ 8 ] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+					double ndx[ 8 ] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+					double ndy[ 8 ] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+					double ndz[ 8 ] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 					const_pointer op = NULL;
 
 					if( l == 0.0 )
