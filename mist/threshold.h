@@ -208,6 +208,99 @@ namespace discriminant_analysis
 		return( static_cast< value_type >( max_k + min ) );
 	}
 
+	/// @brief マスクした領域内のみで判別分析法によるしきい値決定を行う
+	//!
+	//! @param[in] in   … 入力データ
+	//! @param[in] mask … マスクデータ
+	//!
+	//! @return 判別分析法によって決定したしきい値
+	//!
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	typename array< T1, Allocator1 >::value_type threshold( const array< T1, Allocator1 > &in, const array< T2, Allocator2 > &mask )
+	{
+		typedef typename array< T1, Allocator1 >::size_type  size_type;
+		typedef typename array< T1, Allocator1 >::value_type value_type;
+
+		if( in.empty( ) || in.size( ) != mask.size( ) )
+		{
+			return( value_type( 0 ) );
+		}
+
+		value_type min = type_limits< value_type >::maximum( );
+		value_type max = type_limits< value_type >::minimum( );
+
+		size_type i, k, count = 0;
+
+		for( i = 0 ; i < in.size( ) ; i++ )
+		{
+			if( mask[ i ] != 0 )
+			{
+				count++;
+				if( min > in[ i ] )
+				{
+					min = in[ i ];
+				}
+				else if( max < in[ i ] )
+				{
+					max = in[ i ];
+				}
+			}
+		}
+
+		if( count == 0 )
+		{
+			return( value_type( 0 ) );
+		}
+
+		size_type level = static_cast< size_type >( max - min ) + 1;
+		size_type max_k;
+		double *p   = new double[ level ];
+		double myu, omg;
+		double myuT, sig, max_sig = 0.0;
+
+		for( k = 0 ; k < level ; k++ )
+		{
+			p[ k ] = 0.0;
+		}
+		for( k = 0 ; k < in.size( ) ; k++ )
+		{
+			if( mask[ k ] != 0 )
+			{
+				p[ static_cast< size_type >( in[ k ] - min ) ]++;
+			}
+		}
+		for( k = 0 ; k < level ; k++ )
+		{
+			p[ k ] /= static_cast< double >( count );
+		}
+
+		myuT = 0.0;
+		for( k = 0 ; k < level ; k++ )
+		{
+			myuT += k * p[ k ];
+		}
+
+		myu = 0.0;
+		omg = p[ 0 ];
+		max_k = 0;
+		max_sig = ( myuT * omg - myu ) * ( myuT * omg - myu ) / ( omg * ( 1.0 - omg ) );
+		for( k = 1 ; k < level ; k++ )
+		{
+			omg = omg + p[ k ];
+			myu = myu + k * p[ k ];
+			sig = ( myuT * omg - myu ) * ( myuT * omg - myu ) / ( omg * ( 1.0 - omg ) );
+			if( sig > max_sig )
+			{
+				max_sig = sig;
+				max_k = k;
+			}
+		}
+
+		delete [] p;
+
+		return( static_cast< value_type >( max_k + min ) );
+	}
+
 	/// @brief 判別分析法によるしきい値決定
 	//!
 	//! 指定した範囲内でのみ閾値を決定する
