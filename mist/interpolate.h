@@ -106,31 +106,224 @@ namespace __mean__
 	template < bool b >
 	struct _mean_
 	{
-		template < class Array >
-		static double mean___( const Array &in,
-									typename Array::size_type i1,
-									typename Array::size_type i2,
-									typename Array::size_type j1,
-									typename Array::size_type j2,
-									typename Array::size_type k1,
-									typename Array::size_type k2 )
+		template < class T, class Allocator >
+		static double mean___( const array< T, Allocator > &in,
+									typename array< T, Allocator >::size_type i1,
+									typename array< T, Allocator >::size_type i2,
+									typename array< T, Allocator >::size_type j1,
+									typename array< T, Allocator >::size_type j2,
+									typename array< T, Allocator >::size_type k1,
+									typename array< T, Allocator >::size_type k2,
+									double xs,
+									double xe,
+									double ys,
+									double ye,
+									double zs,
+									double ze )
 		{
-			typedef typename Array::size_type size_type;
-			typedef typename Array::value_type value_type;
+			typedef typename array< T, Allocator >::value_type value_type;
+			typedef typename array< T, Allocator >::size_type  size_type;
 			double pix = 0.0;
-			for( size_type k = k1 ; k < k2 ; k++ )
+
+			size_type i = i1;
 			{
+				double a = ( i + 1 - xs ) * 0.5;
+				pix += ( in[ i ] + in[ i + 1 ] ) * a;
+			}
+
+			for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+			{
+				pix += ( in[ i ] + in[ i + 1 ] ) * 0.5;
+			}
+
+			{
+				double a = ( xe - i ) * 0.5;
+				pix += ( in[ i ] + in[ i + 1 ] ) * a;
+			}
+
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			pix /= ( xe - xs ) * ( ye - ys ) * ( ze - zs );
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
+		}
+
+		template < class T, class Allocator >
+		static double mean___( const array2< T, Allocator > &in,
+									typename array2< T, Allocator >::size_type i1,
+									typename array2< T, Allocator >::size_type i2,
+									typename array2< T, Allocator >::size_type j1,
+									typename array2< T, Allocator >::size_type j2,
+									typename array2< T, Allocator >::size_type k1,
+									typename array2< T, Allocator >::size_type k2,
+									double xs,
+									double xe,
+									double ys,
+									double ye,
+									double zs,
+									double ze )
+		{
+			typedef typename array2< T, Allocator >::value_type value_type;
+			typedef typename array2< T, Allocator >::size_type  size_type;
+			double yy;
+			double pix = 0.0;
+
+			for( size_type j = j1 ; j < j2 ; j++ )
+			{
+				if( j == j1 )
+				{
+					yy = j1 + 1 - ys;
+				}
+				else if( j == j2 - 1 )
+				{
+					yy = ye - j;
+				}
+				else
+				{
+					yy = 1.0;
+				}
+
+				size_type i = i1;
+				{
+					const value_type &c1 = in( i    , j     );
+					const value_type &c2 = in( i + 1, j     );
+					const value_type &c3 = in( i    , j + 1 );
+					const value_type &c4 = in( i + 1, j + 1 );
+
+					double a = ( i1 + 1 - xs ) * yy * 0.25;
+					pix += ( c1 + c2 + c3 + c4 ) * a;
+				}
+
+				for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+				{
+					const value_type &c1 = in( i    , j     );
+					const value_type &c2 = in( i + 1, j     );
+					const value_type &c3 = in( i    , j + 1 );
+					const value_type &c4 = in( i + 1, j + 1 );
+
+					double a = yy * 0.25;
+					pix += ( c1 + c2 + c3 + c4 ) * a;
+				}
+
+				{
+					const value_type &c1 = in( i    , j     );
+					const value_type &c2 = in( i + 1, j     );
+					const value_type &c3 = in( i    , j + 1 );
+					const value_type &c4 = in( i + 1, j + 1 );
+
+					double a = ( xe - i ) * yy * 0.25;
+					pix += ( c1 + c2 + c3 + c4 ) * a;
+				}
+			}
+
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			pix /= ( xe - xs ) * ( ye - ys ) * ( ze - zs );
+			pix = pix > min ? pix : min;
+			pix = pix < max ? pix : max;
+			return( pix );
+		}
+
+		template < class T, class Allocator >
+		static double mean___( const array3< T, Allocator > &in,
+										typename array3< T, Allocator >::size_type i1,
+										typename array3< T, Allocator >::size_type i2,
+										typename array3< T, Allocator >::size_type j1,
+										typename array3< T, Allocator >::size_type j2,
+										typename array3< T, Allocator >::size_type k1,
+										typename array3< T, Allocator >::size_type k2,
+										double xs,
+										double xe,
+										double ys,
+										double ye,
+										double zs,
+										double ze )
+		{
+			typedef typename array3< T, Allocator >::value_type value_type;
+			typedef typename array3< T, Allocator >::size_type  size_type;
+			double pix = 0.0;
+			double yy, zz;
+
+			for( size_type k = k1 ; k <= k2 ; k++ )
+			{
+				if( k == k1 )
+				{
+					zz = k1 + 1 - zs;
+				}
+				else if( k == k2 - 1 )
+				{
+					zz = ze - k;
+				}
+				else
+				{
+					zz = 1.0;
+				}
+
 				for( size_type j = j1 ; j < j2 ; j++ )
 				{
-					for( size_type i = i1 ; i < i2 ; i++ )
+					if( j == j1 )
 					{
-						pix += in( i, j, k );
+						yy = j1 + 1 - ys;
+					}
+					else if( j == j2 - 1 )
+					{
+						yy = ye - j;
+					}
+					else
+					{
+						yy = 1.0;
+					}
+
+					size_type i = i1;
+					{
+						const value_type &c1 = in( i    , j    , k     );
+						const value_type &c2 = in( i + 1, j    , k     );
+						const value_type &c3 = in( i    , j + 1, k     );
+						const value_type &c4 = in( i + 1, j + 1, k     );
+						const value_type &c5 = in( i    , j    , k + 1 );
+						const value_type &c6 = in( i + 1, j    , k + 1 );
+						const value_type &c7 = in( i    , j + 1, k + 1 );
+						const value_type &c8 = in( i + 1, j + 1, k + 1 );
+
+						double a = ( i1 + 1 - xs ) * yy * zz * 0.125;
+						pix += ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 ) * a;
+					}
+
+					for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+					{
+						const value_type &c1 = in( i    , j    , k     );
+						const value_type &c2 = in( i + 1, j    , k     );
+						const value_type &c3 = in( i    , j + 1, k     );
+						const value_type &c4 = in( i + 1, j + 1, k     );
+						const value_type &c5 = in( i    , j    , k + 1 );
+						const value_type &c6 = in( i + 1, j    , k + 1 );
+						const value_type &c7 = in( i    , j + 1, k + 1 );
+						const value_type &c8 = in( i + 1, j + 1, k + 1 );
+
+						double a = yy * zz * 0.125;
+						pix += ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 ) * a;
+					}
+
+					{
+						const value_type &c1 = in( i    , j    , k     );
+						const value_type &c2 = in( i + 1, j    , k     );
+						const value_type &c3 = in( i    , j + 1, k     );
+						const value_type &c4 = in( i + 1, j + 1, k     );
+						const value_type &c5 = in( i    , j    , k + 1 );
+						const value_type &c6 = in( i + 1, j    , k + 1 );
+						const value_type &c7 = in( i    , j + 1, k + 1 );
+						const value_type &c8 = in( i + 1, j + 1, k + 1 );
+
+						double a = ( xe - i ) * yy * zz * 0.125;
+						pix += ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 ) * a;
 					}
 				}
 			}
+
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
-			pix /= static_cast< double >( ( i2 - i1 ) * ( j2 - j1 ) * ( k2 - k1 ) );
+			pix /= ( xe - xs ) * ( ye - ys ) * ( ze - zs );
 			pix = pix > min ? pix : min;
 			pix = pix < max ? pix : max;
 			return( pix );
@@ -140,37 +333,362 @@ namespace __mean__
 	template < >
 	struct _mean_< true >
 	{
-		template < class Array >
-		static const rgb< double > mean___( const Array &in,
-												typename Array::size_type i1,
-												typename Array::size_type i2,
-												typename Array::size_type j1,
-												typename Array::size_type j2,
-												typename Array::size_type k1,
-												typename Array::size_type k2 )
+		template < class T, class Allocator >
+		static const rgb< double > mean___( const array< T, Allocator > &in,
+												typename array< T, Allocator >::size_type i1,
+												typename array< T, Allocator >::size_type i2,
+												typename array< T, Allocator >::size_type j1,
+												typename array< T, Allocator >::size_type j2,
+												typename array< T, Allocator >::size_type k1,
+												typename array< T, Allocator >::size_type k2,
+												double xs,
+												double xe,
+												double ys,
+												double ye,
+												double zs,
+												double ze )
 		{
-			typedef typename Array::value_type color;
+			typedef typename array< T, Allocator >::value_type color;
+			typedef typename array< T, Allocator >::size_type size_type;
 			typedef typename color::value_type value_type;
-			typedef typename Array::size_type size_type;
 			double r = 0.0;
 			double g = 0.0;
 			double b = 0.0;
-			for( size_type k = k1 ; k < k2 ; k++ )
+
+			size_type i = i1;
 			{
+				double rr = 0.0;
+				double gg = 0.0;
+				double bb = 0.0;
+
+				const color &c1 = in[ i     ];
+				const color &c2 = in[ i + 1 ];
+
+				rr += c1.r; gg += c1.g; bb += c1.b;
+				rr += c2.r; gg += c2.g; bb += c2.b;
+
+				double a = ( i1 + 1 - xs ) * 0.5;
+				r += rr * a;
+				g += gg * a;
+				b += bb * a;
+			}
+
+			for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+			{
+				double rr = 0.0;
+				double gg = 0.0;
+				double bb = 0.0;
+
+				const color &c1 = in[ i     ];
+				const color &c2 = in[ i + 1 ];
+
+				rr += c1.r; gg += c1.g; bb += c1.b;
+				rr += c2.r; gg += c2.g; bb += c2.b;
+
+				double a = 0.5;
+				r += rr * a;
+				g += gg * a;
+				b += bb * a;
+			}
+
+			{
+				double rr = 0.0;
+				double gg = 0.0;
+				double bb = 0.0;
+
+				const color &c1 = in[ i     ];
+				const color &c2 = in[ i + 1 ];
+
+				rr += c1.r; gg += c1.g; bb += c1.b;
+				rr += c2.r; gg += c2.g; bb += c2.b;
+
+				double a = ( xe - i ) * 0.5;
+				r += rr * a;
+				g += gg * a;
+				b += bb * a;
+			}
+
+			double numPixels = ( xe - xs ) * ( ye - ys ) * ( ze - zs );
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			r /= numPixels;
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g /= numPixels;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b /= numPixels;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( rgb< double >( r, g, b ) );
+		}
+
+		template < class T, class Allocator >
+		static const rgb< double > mean___( const array2< T, Allocator > &in,
+												typename array2< T, Allocator >::size_type i1,
+												typename array2< T, Allocator >::size_type i2,
+												typename array2< T, Allocator >::size_type j1,
+												typename array2< T, Allocator >::size_type j2,
+												typename array2< T, Allocator >::size_type k1,
+												typename array2< T, Allocator >::size_type k2,
+												double xs,
+												double xe,
+												double ys,
+												double ye,
+												double zs,
+												double ze )
+		{
+			typedef typename array2< T, Allocator >::value_type color;
+			typedef typename array2< T, Allocator >::size_type size_type;
+			typedef typename color::value_type value_type;
+			double r = 0.0;
+			double g = 0.0;
+			double b = 0.0;
+			double yy;
+
+			for( size_type j = j1 ; j < j2 ; j++ )
+			{
+				if( j == j1 )
+				{
+					yy = j1 + 1 - ys;
+				}
+				else if( j == j2 - 1 )
+				{
+					yy = ye - j;
+				}
+				else
+				{
+					yy = 1.0;
+				}
+
+				size_type i = i1;
+				{
+					double rr = 0.0;
+					double gg = 0.0;
+					double bb = 0.0;
+
+					const color &c1 = in( i    , j     );
+					const color &c2 = in( i + 1, j     );
+					const color &c3 = in( i    , j + 1 );
+					const color &c4 = in( i + 1, j + 1 );
+
+					rr += c1.r; gg += c1.g; bb += c1.b;
+					rr += c2.r; gg += c2.g; bb += c2.b;
+					rr += c3.r; gg += c3.g; bb += c3.b;
+					rr += c4.r; gg += c4.g; bb += c4.b;
+
+					double a = ( i1 + 1 - xs ) * yy * 0.25;
+					r += rr * a;
+					g += gg * a;
+					b += bb * a;
+				}
+
+				for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+				{
+					double rr = 0.0;
+					double gg = 0.0;
+					double bb = 0.0;
+
+					const color &c1 = in( i    , j     );
+					const color &c2 = in( i + 1, j     );
+					const color &c3 = in( i    , j + 1 );
+					const color &c4 = in( i + 1, j + 1 );
+
+					rr += c1.r; gg += c1.g; bb += c1.b;
+					rr += c2.r; gg += c2.g; bb += c2.b;
+					rr += c3.r; gg += c3.g; bb += c3.b;
+					rr += c4.r; gg += c4.g; bb += c4.b;
+
+					double a = yy * 0.25;
+					r += rr * a;
+					g += gg * a;
+					b += bb * a;
+				}
+
+				{
+					double rr = 0.0;
+					double gg = 0.0;
+					double bb = 0.0;
+
+					const color &c1 = in( i    , j     );
+					const color &c2 = in( i + 1, j     );
+					const color &c3 = in( i    , j + 1 );
+					const color &c4 = in( i + 1, j + 1 );
+
+					rr += c1.r; gg += c1.g; bb += c1.b;
+					rr += c2.r; gg += c2.g; bb += c2.b;
+					rr += c3.r; gg += c3.g; bb += c3.b;
+					rr += c4.r; gg += c4.g; bb += c4.b;
+
+					double a = ( xe - i ) * yy * 0.25;
+					r += rr * a;
+					g += gg * a;
+					b += bb * a;
+				}
+			}
+
+			double numPixels = ( xe - xs ) * ( ye - ys ) * ( ze - zs );
+			double min = type_limits< value_type >::minimum( );
+			double max = type_limits< value_type >::maximum( );
+			r /= numPixels;
+			r = r > min ? r : min;
+			r = r < max ? r : max;
+			g /= numPixels;
+			g = g > min ? g : min;
+			g = g < max ? g : max;
+			b /= numPixels;
+			b = b > min ? b : min;
+			b = b < max ? b : max;
+			return( rgb< double >( r, g, b ) );
+		}
+
+		template < class T, class Allocator >
+		static const rgb< double > mean___( const array3< T, Allocator > &in,
+												typename array3< T, Allocator >::size_type i1,
+												typename array3< T, Allocator >::size_type i2,
+												typename array3< T, Allocator >::size_type j1,
+												typename array3< T, Allocator >::size_type j2,
+												typename array3< T, Allocator >::size_type k1,
+												typename array3< T, Allocator >::size_type k2,
+												double xs,
+												double xe,
+												double ys,
+												double ye,
+												double zs,
+												double ze )
+		{
+			typedef typename array3< T, Allocator >::value_type color;
+			typedef typename array3< T, Allocator >::size_type size_type;
+			typedef typename color::value_type value_type;
+			double r = 0.0;
+			double g = 0.0;
+			double b = 0.0;
+			double yy, zz;
+
+			for( size_type k = k1 ; k <= k2 ; k++ )
+			{
+				if( k == k1 )
+				{
+					zz = k1 + 1 - zs;
+				}
+				else if( k == k2 - 1 )
+				{
+					zz = ze - k;
+				}
+				else
+				{
+					zz = 1.0;
+				}
+
 				for( size_type j = j1 ; j < j2 ; j++ )
 				{
-					for( size_type i = i1 ; i < i2 ; i++ )
+					if( j == j1 )
 					{
-						const color &c = in( i, j, k );
-						r += c.r;
-						g += c.g;
-						b += c.b;
+						yy = j1 + 1 - ys;
+					}
+					else if( j == j2 - 1 )
+					{
+						yy = ye - j;
+					}
+					else
+					{
+						yy = 1.0;
+					}
+
+					size_type i = i1;
+					{
+						double rr = 0.0;
+						double gg = 0.0;
+						double bb = 0.0;
+
+						const color &c1 = in( i    , j    , k     );
+						const color &c2 = in( i + 1, j    , k     );
+						const color &c3 = in( i    , j + 1, k     );
+						const color &c4 = in( i + 1, j + 1, k     );
+						const color &c5 = in( i    , j    , k + 1 );
+						const color &c6 = in( i + 1, j    , k + 1 );
+						const color &c7 = in( i    , j + 1, k + 1 );
+						const color &c8 = in( i + 1, j + 1, k + 1 );
+
+						rr += c1.r; gg += c1.g; bb += c1.b;
+						rr += c2.r; gg += c2.g; bb += c2.b;
+						rr += c3.r; gg += c3.g; bb += c3.b;
+						rr += c4.r; gg += c4.g; bb += c4.b;
+						rr += c5.r; gg += c5.g; bb += c5.b;
+						rr += c6.r; gg += c6.g; bb += c6.b;
+						rr += c7.r; gg += c7.g; bb += c7.b;
+						rr += c8.r; gg += c8.g; bb += c8.b;
+
+						double a = ( i1 + 1 - xs ) * yy * zz * 0.125;
+						r += rr * a;
+						g += gg * a;
+						b += bb * a;
+					}
+
+					for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+					{
+						double rr = 0.0;
+						double gg = 0.0;
+						double bb = 0.0;
+
+						const color &c1 = in( i    , j    , k     );
+						const color &c2 = in( i + 1, j    , k     );
+						const color &c3 = in( i    , j + 1, k     );
+						const color &c4 = in( i + 1, j + 1, k     );
+						const color &c5 = in( i    , j    , k + 1 );
+						const color &c6 = in( i + 1, j    , k + 1 );
+						const color &c7 = in( i    , j + 1, k + 1 );
+						const color &c8 = in( i + 1, j + 1, k + 1 );
+
+						rr += c1.r; gg += c1.g; bb += c1.b;
+						rr += c2.r; gg += c2.g; bb += c2.b;
+						rr += c3.r; gg += c3.g; bb += c3.b;
+						rr += c4.r; gg += c4.g; bb += c4.b;
+						rr += c5.r; gg += c5.g; bb += c5.b;
+						rr += c6.r; gg += c6.g; bb += c6.b;
+						rr += c7.r; gg += c7.g; bb += c7.b;
+						rr += c8.r; gg += c8.g; bb += c8.b;
+
+						double a = yy * zz * 0.125;
+						r += rr * a;
+						g += gg * a;
+						b += bb * a;
+					}
+
+					{
+						double rr = 0.0;
+						double gg = 0.0;
+						double bb = 0.0;
+
+						const color &c1 = in( i    , j    , k     );
+						const color &c2 = in( i + 1, j    , k     );
+						const color &c3 = in( i    , j + 1, k     );
+						const color &c4 = in( i + 1, j + 1, k     );
+						const color &c5 = in( i    , j    , k + 1 );
+						const color &c6 = in( i + 1, j    , k + 1 );
+						const color &c7 = in( i    , j + 1, k + 1 );
+						const color &c8 = in( i + 1, j + 1, k + 1 );
+
+						rr += c1.r; gg += c1.g; bb += c1.b;
+						rr += c2.r; gg += c2.g; bb += c2.b;
+						rr += c3.r; gg += c3.g; bb += c3.b;
+						rr += c4.r; gg += c4.g; bb += c4.b;
+						rr += c5.r; gg += c5.g; bb += c5.b;
+						rr += c6.r; gg += c6.g; bb += c6.b;
+						rr += c7.r; gg += c7.g; bb += c7.b;
+						rr += c8.r; gg += c8.g; bb += c8.b;
+
+						double a = ( xe - i ) * yy * zz * 0.125;
+						r += rr * a;
+						g += gg * a;
+						b += bb * a;
 					}
 				}
 			}
+
+			double numPixels = ( xe - xs ) * ( ye - ys ) * ( ze - zs );
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
-			double numPixels = static_cast< double >( ( i2 - i1 ) * ( j2 - j1 ) * ( k2 - k1 ) );
 			r /= numPixels;
 			r = r > min ? r : min;
 			r = r < max ? r : max;
@@ -208,20 +726,35 @@ namespace __mean__
 
 		for( k = thread_idz ; k < od ; k += thread_numz )
 		{
-			k1 = static_cast< size_type >( sz * k );
-			k2 = static_cast< size_type >( k1 + sz );
-			k2 = k1 == k2 ? k1 + 1 : k2;
+			double zs = sz * k;
+			double ze = zs + sz;
+
+			k1 = static_cast< size_type >( zs );
+			k2 = static_cast< size_type >( ze );
+			k2 = ze > k2 ? k2 + 1 : k2;
+			k2 = k2 < id - 1 ? k2 : id - 1;
+
 			for( j = thread_idy ; j < oh ; j += thread_numy )
 			{
-				j1 = static_cast< size_type >( sy * j );
-				j2 = static_cast< size_type >( j1 + sy );
-				j2 = j1 == j2 ? j1 + 1 : j2;
+				double ys = sy * j;
+				double ye = ys + sy;
+
+				j1 = static_cast< size_type >( ys );
+				j2 = static_cast< size_type >( ye );
+				j2 = ye > j2 ? j2 + 1 : j2;
+				j2 = j2 < ih - 1 ? j2 : ih - 1;
+
 				for( i = thread_idx ; i < ow ; i += thread_numx )
 				{
-					i1 = static_cast< size_type >( sx * i );
-					i2 = static_cast< size_type >( i1 + sx );
-					i2 = i1 == i2 ? i1 + 1 : i2;
-					out( i, j, k ) = static_cast< out_value_type >( _mean_< is_color< value_type >::value >::mean___( in, i1, i2, j1, j2, k1, k2 ) );
+					double xs = sx * i;
+					double xe = xs + sx;
+
+					i1 = static_cast< size_type >( xs );
+					i2 = static_cast< size_type >( xe );
+					i2 = xe > i2 ? i2 + 1 : i2;
+					i2 = i2 < iw - 1 ? i2 : iw - 1;
+
+					out( i, j, k ) = static_cast< out_value_type >( _mean_< is_color< value_type >::value >::mean___( in, i1, i2, j1, j2, k1, k2, xs, xe, ys, ye, zs, ze ) );
 				}
 			}
 		}
@@ -1926,6 +2459,9 @@ namespace mean
 	//!
 	//! 拡大縮小に伴う画素の内挿を，近傍の平均値を用いて決定する
 	//!
+	//! - 参考文献
+	//!   - A. Hore, F. Deschenes, D. Ziou, "A Simple Scaling Algorithm Based on Areas Pixels," Proceedings of ICIAR 2008, pp.53-64, 2008
+	//!
 	//! @attention 拡大縮小に伴い，画像の解像度も自動的に変換される
 	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
@@ -1937,13 +2473,13 @@ namespace mean
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … 補間に成功
-	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，出力サイズが0の場合，もしくは入力サイズが1以下の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	bool interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
 						typename array< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
-		if( is_same_object( in, out ) || width == 0 )
+		if( is_same_object( in, out ) || width == 0 || in.size( ) < 2 )
 		{
 			return( false );
 		}
@@ -1987,6 +2523,9 @@ namespace mean
 	//!
 	//! 拡大縮小に伴う画素の内挿を，近傍の平均値を用いて決定する
 	//!
+	//! - 参考文献
+	//!   - A. Hore, F. Deschenes, D. Ziou, "A Simple Scaling Algorithm Based on Areas Pixels," Proceedings of ICIAR 2008, pp.53-64, 2008
+	//!
 	//! @attention 拡大縮小に伴い，画像の解像度も自動的に変換される
 	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
@@ -1998,13 +2537,13 @@ namespace mean
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … 補間に成功
-	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，出力サイズが0の場合，もしくは入力サイズが1以下の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	bool interpolate( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out,
 					typename array1< T1, Allocator1 >::size_type width, typename array1< T1, Allocator1 >::size_type thread_num = 0 )
 	{
-		if( is_same_object( in, out ) || width == 0 )
+		if( is_same_object( in, out ) || width == 0 || in.width( ) < 2 )
 		{
 			return( false );
 		}
@@ -2049,6 +2588,9 @@ namespace mean
 	//!
 	//! 拡大縮小に伴う画素の内挿を，近傍の平均値を用いて決定する
 	//!
+	//! - 参考文献
+	//!   - A. Hore, F. Deschenes, D. Ziou, "A Simple Scaling Algorithm Based on Areas Pixels," Proceedings of ICIAR 2008, pp.53-64, 2008
+	//!
 	//! @attention 拡大縮小に伴い，画像の解像度も自動的に変換される
 	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
@@ -2061,14 +2603,14 @@ namespace mean
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … 補間に成功
-	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，出力サイズが0の場合，もしくは入力サイズが1以下の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	bool interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 					typename array2< T1, Allocator1 >::size_type width, typename array2< T1, Allocator1 >::size_type height,
 					typename array2< T1, Allocator1 >::size_type thread_num = 0 )
 	{
-		if( is_same_object( in, out ) || width == 0 || height == 0 )
+		if( is_same_object( in, out ) || width == 0 || height == 0 || in.width( ) < 2 || in.height( ) < 2 )
 		{
 			return( false );
 		}
@@ -2114,6 +2656,9 @@ namespace mean
 	//!
 	//! 拡大縮小に伴う画素の内挿を，近傍の平均値を用いて決定する
 	//!
+	//! - 参考文献
+	//!   - A. Hore, F. Deschenes, D. Ziou, "A Simple Scaling Algorithm Based on Areas Pixels," Proceedings of ICIAR 2008, pp.53-64, 2008
+	//!
 	//! @attention 拡大縮小に伴い，画像の解像度も自動的に変換される
 	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
@@ -2127,7 +2672,7 @@ namespace mean
 	//! @param[in]  thread_num … 使用するスレッド数
 	//! 
 	//! @retval true  … 補間に成功
-	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくは出力サイズが0の場合
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，出力サイズが0の場合，もしくは入力サイズが1以下の場合
 	//!
 	template < class T1, class Allocator1, class T2, class Allocator2 >
 	bool interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
@@ -2136,7 +2681,7 @@ namespace mean
 					typename array3< T1, Allocator1 >::size_type depth,
 					typename array3< T1, Allocator1 >::size_type thread_num = 0 )
 	{
-		if( is_same_object( in, out ) || width == 0 || height == 0 || depth == 0 )
+		if( is_same_object( in, out ) || width == 0 || height == 0 || depth == 0 || in.width( ) < 2 || in.height( ) < 2 || in.depth( ) < 2 )
 		{
 			return( false );
 		}
