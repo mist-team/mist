@@ -440,6 +440,7 @@ namespace __mean__
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename array2< T, Allocator >::size_type size_type;
+			typedef typename array2< T, Allocator >::const_pointer const_pointer;
 			typedef typename color::value_type value_type;
 			double r = 0.0;
 			double g = 0.0;
@@ -462,68 +463,62 @@ namespace __mean__
 				}
 
 				size_type i = i1;
+				double rr[ 2 ] = { 0.0, 0.0 };
+				double gg[ 2 ] = { 0.0, 0.0 };
+				double bb[ 2 ] = { 0.0, 0.0 };
+
+				const_pointer p0 = &in( 0, j     );
+				const_pointer p1 = &in( 0, j + 1 );
 				{
-					double rr = 0.0;
-					double gg = 0.0;
-					double bb = 0.0;
+					const color &c1 = p0[ i ];
+					const color &c2 = p1[ i ];
+					const color &c3 = p0[ i + 1 ];
+					const color &c4 = p1[ i + 1 ];
 
-					const color &c1 = in( i    , j     );
-					const color &c2 = in( i + 1, j     );
-					const color &c3 = in( i    , j + 1 );
-					const color &c4 = in( i + 1, j + 1 );
-
-					rr += c1.r; gg += c1.g; bb += c1.b;
-					rr += c2.r; gg += c2.g; bb += c2.b;
-					rr += c3.r; gg += c3.g; bb += c3.b;
-					rr += c4.r; gg += c4.g; bb += c4.b;
+					rr[ 0 ]  = c1.r; gg[ 0 ]  = c1.g; bb[ 0 ]  = c1.b;
+					rr[ 0 ] += c2.r; gg[ 0 ] += c2.g; bb[ 0 ] += c2.b;
+					rr[ 1 ]  = c3.r; gg[ 1 ]  = c3.g; bb[ 1 ]  = c3.b;
+					rr[ 1 ] += c4.r; gg[ 1 ] += c4.g; bb[ 1 ] += c4.b;
 
 					double a = ( i1 + 1 - xs ) * yy * 0.25;
-					r += rr * a;
-					g += gg * a;
-					b += bb * a;
+					r += ( rr[ 0 ] + rr[ 1 ] ) * a;
+					g += ( gg[ 0 ] + gg[ 1 ] ) * a;
+					b += ( bb[ 0 ] + bb[ 1 ] ) * a;
+
+					rr[ 0 ] = rr[ 1 ];
+					gg[ 0 ] = gg[ 1 ];
+					bb[ 0 ] = bb[ 1 ];
 				}
 
 				for( i = i1 + 1 ; i < i2 - 1 ; i++ )
 				{
-					double rr = 0.0;
-					double gg = 0.0;
-					double bb = 0.0;
+					const color &c3 = p0[ i + 1 ];
+					const color &c4 = p1[ i + 1 ];
 
-					const color &c1 = in( i    , j     );
-					const color &c2 = in( i + 1, j     );
-					const color &c3 = in( i    , j + 1 );
-					const color &c4 = in( i + 1, j + 1 );
-
-					rr += c1.r; gg += c1.g; bb += c1.b;
-					rr += c2.r; gg += c2.g; bb += c2.b;
-					rr += c3.r; gg += c3.g; bb += c3.b;
-					rr += c4.r; gg += c4.g; bb += c4.b;
+					rr[ 1 ]  = c3.r; gg[ 1 ]  = c3.g; bb[ 1 ]  = c3.b;
+					rr[ 1 ] += c4.r; gg[ 1 ] += c4.g; bb[ 1 ] += c4.b;
 
 					double a = yy * 0.25;
-					r += rr * a;
-					g += gg * a;
-					b += bb * a;
+					r += ( rr[ 0 ] + rr[ 1 ] ) * a;
+					g += ( gg[ 0 ] + gg[ 1 ] ) * a;
+					b += ( bb[ 0 ] + bb[ 1 ] ) * a;
+
+					rr[ 0 ] = rr[ 1 ];
+					gg[ 0 ] = gg[ 1 ];
+					bb[ 0 ] = bb[ 1 ];
 				}
 
 				{
-					double rr = 0.0;
-					double gg = 0.0;
-					double bb = 0.0;
+					const color &c3 = p0[ i + 1 ];
+					const color &c4 = p1[ i + 1 ];
 
-					const color &c1 = in( i    , j     );
-					const color &c2 = in( i + 1, j     );
-					const color &c3 = in( i    , j + 1 );
-					const color &c4 = in( i + 1, j + 1 );
-
-					rr += c1.r; gg += c1.g; bb += c1.b;
-					rr += c2.r; gg += c2.g; bb += c2.b;
-					rr += c3.r; gg += c3.g; bb += c3.b;
-					rr += c4.r; gg += c4.g; bb += c4.b;
+					rr[ 1 ]  = c3.r; gg[ 1 ]  = c3.g; bb[ 1 ]  = c3.b;
+					rr[ 1 ] += c4.r; gg[ 1 ] += c4.g; bb[ 1 ] += c4.b;
 
 					double a = ( xe - i ) * yy * 0.25;
-					r += rr * a;
-					g += gg * a;
-					b += bb * a;
+					r += ( rr[ 0 ] + rr[ 1 ] ) * a;
+					g += ( gg[ 0 ] + gg[ 1 ] ) * a;
+					b += ( bb[ 0 ] + bb[ 1 ] ) * a;
 				}
 			}
 
