@@ -1561,10 +1561,13 @@ inline void rgb2lab( double r, double g, double b, double &l_, double &a_, doubl
 	y /= Yr;
 	z /= Zr;
 
-	static const double coef = 16.0 / 116.0;
-	x = x > 0.008856 ? std::pow( x, 0.33333333333333333333333333333333333 ) : 7.787 * x + coef;
-	y = y > 0.008856 ? std::pow( y, 0.33333333333333333333333333333333333 ) : 7.787 * y + coef;
-	z = z > 0.008856 ? std::pow( z, 0.33333333333333333333333333333333333 ) : 7.787 * z + coef;
+	static const double th = 216.0 / 24389.0;
+	static const double _1_3 = 1.0 / 3.0;
+	static const double A = 29.0 * 29.0 / ( 3.0 * 6.0 * 6.0 );
+	static const double B = 4.0 / 29.0;
+	x = x > th ? std::pow( x, _1_3 ) : A * x + B;
+	y = y > th ? std::pow( y, _1_3 ) : A * y + B;
+	z = z > th ? std::pow( z, _1_3 ) : A * z + B;
 
 	l_ = 116.0 * y - 16.0;
 	a_ = 500.0 * ( x - y );
@@ -1593,10 +1596,10 @@ inline void lab2rgb( double l_, double a_, double b_, double &r, double &g, doub
 	static const double Zr = 1.0889;
 
 	static const double delta = 6.0 / 29.0;
-	static const double delta3 = 3.0 * delta * delta * delta;
-	double y = fy > delta ? Yr * fy * fy * fy : ( fy - 16.0 / 116.0 ) * delta3 * Yr;
-	double x = fx > delta ? Yr * fx * fx * fx : ( fx - 16.0 / 116.0 ) * delta3 * Xr;
-	double z = fz > delta ? Yr * fz * fz * fz : ( fz - 16.0 / 116.0 ) * delta3 * Zr;
+	static const double delta2 = 3.0 * delta * delta;
+	double y = fy > delta ? Yr * fy * fy * fy : ( fy - 16.0 / 116.0 ) * delta2 * Yr;
+	double x = fx > delta ? Xr * fx * fx * fx : ( fx - 16.0 / 116.0 ) * delta2 * Xr;
+	double z = fz > delta ? Zr * fz * fz * fz : ( fz - 16.0 / 116.0 ) * delta2 * Zr;
 
 	// XYZ表色系からRGB表色系へ変換
 	xyz2rgb( x, y, z, r, g, b );
