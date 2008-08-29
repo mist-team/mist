@@ -164,8 +164,9 @@ namespace __mean__
 									double zs,
 									double ze )
 		{
-			typedef typename array2< T, Allocator >::value_type value_type;
-			typedef typename array2< T, Allocator >::size_type  size_type;
+			typedef typename array2< T, Allocator >::value_type    value_type;
+			typedef typename array2< T, Allocator >::size_type     size_type;
+			typedef typename array2< T, Allocator >::const_pointer const_pointer;
 			double yy;
 			double pix = 0.0;
 
@@ -185,35 +186,26 @@ namespace __mean__
 				}
 
 				size_type i = i1;
-				{
-					const value_type &c1 = in( i    , j     );
-					const value_type &c2 = in( i + 1, j     );
-					const value_type &c3 = in( i    , j + 1 );
-					const value_type &c4 = in( i + 1, j + 1 );
+				double aa[ 3 ] = { ( i1 + 1 - xs ) * yy * 0.25, yy * 0.25, ( xe - i2 + 1 ) * yy * 0.25 };
 
-					double a = ( i1 + 1 - xs ) * yy * 0.25;
-					pix += ( c1 + c2 + c3 + c4 ) * a;
+				const_pointer p0 = &in( 0, j     );
+				const_pointer p1 = &in( 0, j + 1 );
+				double ppp = 0.0;
+
+				{
+					pix += ( p0[ i ] + p1[ i ] + p0[ i + 1 ] + p1[ i + 1 ] ) * aa[ 0 ];
+					ppp += p0[ i + 1 ] + p1[ i + 1 ];
 				}
 
-				for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+				for( i = i1 + 2 ; i < i2 - 1 ; i++ )
 				{
-					const value_type &c1 = in( i    , j     );
-					const value_type &c2 = in( i + 1, j     );
-					const value_type &c3 = in( i    , j + 1 );
-					const value_type &c4 = in( i + 1, j + 1 );
-
-					double a = yy * 0.25;
-					pix += ( c1 + c2 + c3 + c4 ) * a;
+					ppp += ( p0[ i ] + p1[ i ] ) * 2.0;
 				}
 
 				{
-					const value_type &c1 = in( i    , j     );
-					const value_type &c2 = in( i + 1, j     );
-					const value_type &c3 = in( i    , j + 1 );
-					const value_type &c4 = in( i + 1, j + 1 );
-
-					double a = ( xe - i ) * yy * 0.25;
-					pix += ( c1 + c2 + c3 + c4 ) * a;
+					ppp += p0[ i ] + p1[ i ];
+					pix += ppp * aa[ 1 ];
+					pix += ( p0[ i ] + p1[ i ] + p0[ i + 1 ] + p1[ i + 1 ] ) * aa[ 2 ];
 				}
 			}
 
@@ -240,12 +232,13 @@ namespace __mean__
 										double zs,
 										double ze )
 		{
-			typedef typename array3< T, Allocator >::value_type value_type;
-			typedef typename array3< T, Allocator >::size_type  size_type;
+			typedef typename array3< T, Allocator >::value_type    value_type;
+			typedef typename array3< T, Allocator >::size_type     size_type;
+			typedef typename array3< T, Allocator >::const_pointer const_pointer;
 			double pix = 0.0;
 			double yy, zz;
 
-			for( size_type k = k1 ; k <= k2 ; k++ )
+			for( size_type k = k1 ; k < k2 ; k++ )
 			{
 				if( k == k1 )
 				{
@@ -276,47 +269,51 @@ namespace __mean__
 					}
 
 					size_type i = i1;
-					{
-						const value_type &c1 = in( i    , j    , k     );
-						const value_type &c2 = in( i + 1, j    , k     );
-						const value_type &c3 = in( i    , j + 1, k     );
-						const value_type &c4 = in( i + 1, j + 1, k     );
-						const value_type &c5 = in( i    , j    , k + 1 );
-						const value_type &c6 = in( i + 1, j    , k + 1 );
-						const value_type &c7 = in( i    , j + 1, k + 1 );
-						const value_type &c8 = in( i + 1, j + 1, k + 1 );
+					double aa[ 3 ] = { ( i1 + 1 - xs ) * yy * zz * 0.125, yy * zz * 0.125, ( xe - i2 + 1 ) * yy * zz * 0.125 };
 
-						double a = ( i1 + 1 - xs ) * yy * zz * 0.125;
-						pix += ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 ) * a;
+					const_pointer p0 = &in( 0, j    , k     );
+					const_pointer p1 = &in( 0, j + 1, k     );
+					const_pointer p2 = &in( 0, j    , k + 1 );
+					const_pointer p3 = &in( 0, j + 1, k + 1 );
+					double ppp = 0.0;
+
+					{
+						const value_type &c1 = p0[ i ];
+						const value_type &c2 = p1[ i ];
+						const value_type &c3 = p2[ i ];
+						const value_type &c4 = p3[ i ];
+						const value_type &c5 = p0[ i + 1 ];
+						const value_type &c6 = p1[ i + 1 ];
+						const value_type &c7 = p2[ i + 1 ];
+						const value_type &c8 = p3[ i + 1 ];
+
+						pix += ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 ) * aa[ 0 ];
+						ppp += c5 + c6 + c7 + c8;
 					}
 
-					for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+					for( i = i1 + 2 ; i < i2 - 1 ; i++ )
 					{
-						const value_type &c1 = in( i    , j    , k     );
-						const value_type &c2 = in( i + 1, j    , k     );
-						const value_type &c3 = in( i    , j + 1, k     );
-						const value_type &c4 = in( i + 1, j + 1, k     );
-						const value_type &c5 = in( i    , j    , k + 1 );
-						const value_type &c6 = in( i + 1, j    , k + 1 );
-						const value_type &c7 = in( i    , j + 1, k + 1 );
-						const value_type &c8 = in( i + 1, j + 1, k + 1 );
+						const value_type &c1 = p0[ i ];
+						const value_type &c2 = p1[ i ];
+						const value_type &c3 = p2[ i ];
+						const value_type &c4 = p3[ i ];
 
-						double a = yy * zz * 0.125;
-						pix += ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 ) * a;
+						ppp += ( c1 + c2 + c3 + c4 ) * 2.0;
 					}
 
 					{
-						const value_type &c1 = in( i    , j    , k     );
-						const value_type &c2 = in( i + 1, j    , k     );
-						const value_type &c3 = in( i    , j + 1, k     );
-						const value_type &c4 = in( i + 1, j + 1, k     );
-						const value_type &c5 = in( i    , j    , k + 1 );
-						const value_type &c6 = in( i + 1, j    , k + 1 );
-						const value_type &c7 = in( i    , j + 1, k + 1 );
-						const value_type &c8 = in( i + 1, j + 1, k + 1 );
+						const value_type &c1 = p0[ i ];
+						const value_type &c2 = p1[ i ];
+						const value_type &c3 = p2[ i ];
+						const value_type &c4 = p3[ i ];
+						const value_type &c5 = p0[ i + 1 ];
+						const value_type &c6 = p1[ i + 1 ];
+						const value_type &c7 = p2[ i + 1 ];
+						const value_type &c8 = p3[ i + 1 ];
 
-						double a = ( xe - i ) * yy * zz * 0.125;
-						pix += ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 ) * a;
+						ppp += c1 + c2 + c3 + c4;
+						pix += ppp * aa[ 1 ];
+						pix += ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 ) * aa[ 2 ];
 					}
 				}
 			}
@@ -438,8 +435,8 @@ namespace __mean__
 												double zs,
 												double ze )
 		{
-			typedef typename array2< T, Allocator >::value_type color;
-			typedef typename array2< T, Allocator >::size_type size_type;
+			typedef typename array2< T, Allocator >::value_type    color;
+			typedef typename array2< T, Allocator >::size_type     size_type;
 			typedef typename array2< T, Allocator >::const_pointer const_pointer;
 			typedef typename color::value_type value_type;
 			double r = 0.0;
@@ -546,15 +543,16 @@ namespace __mean__
 												double zs,
 												double ze )
 		{
-			typedef typename array3< T, Allocator >::value_type color;
-			typedef typename array3< T, Allocator >::size_type size_type;
+			typedef typename array3< T, Allocator >::value_type    color;
+			typedef typename array3< T, Allocator >::size_type     size_type;
+			typedef typename array3< T, Allocator >::const_pointer const_pointer;
 			typedef typename color::value_type value_type;
 			double r = 0.0;
 			double g = 0.0;
 			double b = 0.0;
 			double yy, zz;
 
-			for( size_type k = k1 ; k <= k2 ; k++ )
+			for( size_type k = k1 ; k < k2 ; k++ )
 			{
 				if( k == k1 )
 				{
@@ -585,92 +583,68 @@ namespace __mean__
 					}
 
 					size_type i = i1;
+					double aa[ 3 ] = { ( i1 + 1 - xs ) * yy * zz * 0.125, yy * zz * 0.125, ( xe - i2 + 1 ) * yy * zz * 0.125 };
+
+					const_pointer p0 = &in( 0, j    , k     );
+					const_pointer p1 = &in( 0, j + 1, k     );
+					const_pointer p2 = &in( 0, j    , k + 1 );
+					const_pointer p3 = &in( 0, j + 1, k + 1 );
+					double rr = 0.0;
+					double gg = 0.0;
+					double bb = 0.0;
+
 					{
-						double rr = 0.0;
-						double gg = 0.0;
-						double bb = 0.0;
+						const color &c1 = p0[ i ];
+						const color &c2 = p1[ i ];
+						const color &c3 = p2[ i ];
+						const color &c4 = p3[ i ];
+						const color &c5 = p0[ i + 1 ];
+						const color &c6 = p1[ i + 1 ];
+						const color &c7 = p2[ i + 1 ];
+						const color &c8 = p3[ i + 1 ];
 
-						const color &c1 = in( i    , j    , k     );
-						const color &c2 = in( i + 1, j    , k     );
-						const color &c3 = in( i    , j + 1, k     );
-						const color &c4 = in( i + 1, j + 1, k     );
-						const color &c5 = in( i    , j    , k + 1 );
-						const color &c6 = in( i + 1, j    , k + 1 );
-						const color &c7 = in( i    , j + 1, k + 1 );
-						const color &c8 = in( i + 1, j + 1, k + 1 );
+						r += ( c1.r + c2.r + c3.r + c4.r + c5.r + c6.r + c7.r + c8.r ) * aa[ 0 ];
+						g += ( c1.g + c2.g + c3.g + c4.g + c5.g + c6.g + c7.g + c8.g ) * aa[ 0 ];
+						b += ( c1.b + c2.b + c3.b + c4.b + c5.b + c6.b + c7.b + c8.b ) * aa[ 0 ];
 
-						rr += c1.r; gg += c1.g; bb += c1.b;
-						rr += c2.r; gg += c2.g; bb += c2.b;
-						rr += c3.r; gg += c3.g; bb += c3.b;
-						rr += c4.r; gg += c4.g; bb += c4.b;
-						rr += c5.r; gg += c5.g; bb += c5.b;
-						rr += c6.r; gg += c6.g; bb += c6.b;
-						rr += c7.r; gg += c7.g; bb += c7.b;
-						rr += c8.r; gg += c8.g; bb += c8.b;
-
-						double a = ( i1 + 1 - xs ) * yy * zz * 0.125;
-						r += rr * a;
-						g += gg * a;
-						b += bb * a;
+						rr += c5.r + c6.r + c7.r + c8.r;
+						gg += c5.g + c6.g + c7.g + c8.g;
+						bb += c5.b + c6.b + c7.b + c8.b;
 					}
 
-					for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+					for( i = i1 + 2 ; i < i2 - 1 ; i++ )
 					{
-						double rr = 0.0;
-						double gg = 0.0;
-						double bb = 0.0;
+						const color &c1 = p0[ i ];
+						const color &c2 = p1[ i ];
+						const color &c3 = p2[ i ];
+						const color &c4 = p3[ i ];
 
-						const color &c1 = in( i    , j    , k     );
-						const color &c2 = in( i + 1, j    , k     );
-						const color &c3 = in( i    , j + 1, k     );
-						const color &c4 = in( i + 1, j + 1, k     );
-						const color &c5 = in( i    , j    , k + 1 );
-						const color &c6 = in( i + 1, j    , k + 1 );
-						const color &c7 = in( i    , j + 1, k + 1 );
-						const color &c8 = in( i + 1, j + 1, k + 1 );
-
-						rr += c1.r; gg += c1.g; bb += c1.b;
-						rr += c2.r; gg += c2.g; bb += c2.b;
-						rr += c3.r; gg += c3.g; bb += c3.b;
-						rr += c4.r; gg += c4.g; bb += c4.b;
-						rr += c5.r; gg += c5.g; bb += c5.b;
-						rr += c6.r; gg += c6.g; bb += c6.b;
-						rr += c7.r; gg += c7.g; bb += c7.b;
-						rr += c8.r; gg += c8.g; bb += c8.b;
-
-						double a = yy * zz * 0.125;
-						r += rr * a;
-						g += gg * a;
-						b += bb * a;
+						rr += ( c1.r + c2.r + c3.r + c4.r ) * 2.0;
+						gg += ( c1.g + c2.g + c3.g + c4.g ) * 2.0;
+						bb += ( c1.b + c2.b + c3.b + c4.b ) * 2.0;
 					}
 
 					{
-						double rr = 0.0;
-						double gg = 0.0;
-						double bb = 0.0;
+						const color &c1 = p0[ i ];
+						const color &c2 = p1[ i ];
+						const color &c3 = p2[ i ];
+						const color &c4 = p3[ i ];
+						const color &c5 = p0[ i + 1 ];
+						const color &c6 = p1[ i + 1 ];
+						const color &c7 = p2[ i + 1 ];
+						const color &c8 = p3[ i + 1 ];
 
-						const color &c1 = in( i    , j    , k     );
-						const color &c2 = in( i + 1, j    , k     );
-						const color &c3 = in( i    , j + 1, k     );
-						const color &c4 = in( i + 1, j + 1, k     );
-						const color &c5 = in( i    , j    , k + 1 );
-						const color &c6 = in( i + 1, j    , k + 1 );
-						const color &c7 = in( i    , j + 1, k + 1 );
-						const color &c8 = in( i + 1, j + 1, k + 1 );
+						rr += c1.r + c2.r + c3.r + c4.r;
+						gg += c1.g + c2.g + c3.g + c4.g;
+						bb += c1.b + c2.b + c3.b + c4.b;
 
-						rr += c1.r; gg += c1.g; bb += c1.b;
-						rr += c2.r; gg += c2.g; bb += c2.b;
-						rr += c3.r; gg += c3.g; bb += c3.b;
-						rr += c4.r; gg += c4.g; bb += c4.b;
-						rr += c5.r; gg += c5.g; bb += c5.b;
-						rr += c6.r; gg += c6.g; bb += c6.b;
-						rr += c7.r; gg += c7.g; bb += c7.b;
-						rr += c8.r; gg += c8.g; bb += c8.b;
+						r += rr * aa[ 1 ];
+						g += gg * aa[ 1 ];
+						b += bb * aa[ 1 ];
 
-						double a = ( xe - i ) * yy * zz * 0.125;
-						r += rr * a;
-						g += gg * a;
-						b += bb * a;
+						r += ( c1.r + c2.r + c3.r + c4.r + c5.r + c6.r + c7.r + c8.r ) * aa[ 2 ];
+						g += ( c1.g + c2.g + c3.g + c4.g + c5.g + c6.g + c7.g + c8.g ) * aa[ 2 ];
+						b += ( c1.b + c2.b + c3.b + c4.b + c5.b + c6.b + c7.b + c8.b ) * aa[ 2 ];
 					}
 				}
 			}
