@@ -167,8 +167,9 @@ namespace __mean__
 			typedef typename array2< T, Allocator >::value_type    value_type;
 			typedef typename array2< T, Allocator >::size_type     size_type;
 			typedef typename array2< T, Allocator >::const_pointer const_pointer;
-			double yy;
 			double pix = 0.0;
+			double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.25, i2 - i1 < 3 ? 0.0 : 1.0 * 0.25, ( xe - i2 + 1 ) * 0.25 };
+			double yy;
 
 			for( size_type j = j1 ; j < j2 ; j++ )
 			{
@@ -185,16 +186,16 @@ namespace __mean__
 					yy = 1.0;
 				}
 
-				size_type i = i1;
-				double aa[ 3 ] = { ( i1 + 1 - xs ) * yy * 0.25, yy * 0.25, ( xe - i2 + 1 ) * yy * 0.25 };
+				double aa[ 3 ] = { xx[ 0 ] * yy, xx[ 1 ] * yy, xx[ 2 ] * yy };
 
 				const_pointer p0 = &in( 0, j     );
 				const_pointer p1 = &in( 0, j + 1 );
-				double ppp = 0.0;
+				double ppp;
+				size_type i = i1;
 
 				{
 					pix += ( p0[ i ] + p1[ i ] + p0[ i + 1 ] + p1[ i + 1 ] ) * aa[ 0 ];
-					ppp += p0[ i + 1 ] + p1[ i + 1 ];
+					ppp  = p0[ i + 1 ] + p1[ i + 1 ];
 				}
 
 				for( i = i1 + 2 ; i < i2 - 1 ; i++ )
@@ -236,6 +237,7 @@ namespace __mean__
 			typedef typename array3< T, Allocator >::size_type     size_type;
 			typedef typename array3< T, Allocator >::const_pointer const_pointer;
 			double pix = 0.0;
+			double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.25, i2 - i1 < 3 ? 0.0 : 1.0 * 0.25, ( xe - i2 + 1 ) * 0.25 };
 			double yy, zz;
 
 			for( size_type k = k1 ; k < k2 ; k++ )
@@ -269,7 +271,7 @@ namespace __mean__
 					}
 
 					size_type i = i1;
-					double aa[ 3 ] = { ( i1 + 1 - xs ) * yy * zz * 0.125, yy * zz * 0.125, ( xe - i2 + 1 ) * yy * zz * 0.125 };
+					double aa[ 3 ] = { xx[ 0 ] * yy * zz, xx[ 1 ] * yy * zz, xx[ 2 ] * yy * zz };
 
 					const_pointer p0 = &in( 0, j    , k     );
 					const_pointer p1 = &in( 0, j + 1, k     );
@@ -443,6 +445,7 @@ namespace __mean__
 			double g = 0.0;
 			double b = 0.0;
 			double yy;
+			double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.25, i2 - i1 < 3 ? 0.0 : 1.0 * 0.25, ( xe - i2 + 1 ) * 0.25 };
 
 			for( size_type j = j1 ; j < j2 ; j++ )
 			{
@@ -459,31 +462,28 @@ namespace __mean__
 					yy = 1.0;
 				}
 
-				size_type i = i1;
-				double aa[ 3 ] = { ( i1 + 1 - xs ) * yy * 0.25, yy * 0.25, ( xe - i2 + 1 ) * yy * 0.25 };
+				double aa[ 3 ] = { xx[ 0 ] * yy, xx[ 1 ] * yy, xx[ 2 ] * yy };
 
 				const_pointer p0 = &in( 0, j     );
 				const_pointer p1 = &in( 0, j + 1 );
-				double rr = 0.0;
-				double gg = 0.0;
-				double bb = 0.0;
+				double rr, gg, bb;
 
 				{
-					const color &c1 = p0[ i ];
-					const color &c2 = p1[ i ];
-					const color &c3 = p0[ i + 1 ];
-					const color &c4 = p1[ i + 1 ];
+					const color &c1 = p0[ i1 ];
+					const color &c2 = p1[ i1 ];
+					const color &c3 = p0[ i1 + 1 ];
+					const color &c4 = p1[ i1 + 1 ];
 
 					r += ( c1.r + c2.r + c3.r + c4.r ) * aa[ 0 ];
 					g += ( c1.g + c2.g + c3.g + c4.g ) * aa[ 0 ];
 					b += ( c1.b + c2.b + c3.b + c4.b ) * aa[ 0 ];
 
-					rr += c3.r + c4.r;
-					gg += c3.g + c4.g;
-					bb += c3.b + c4.b;
+					rr = c3.r + c4.r;
+					gg = c3.g + c4.g;
+					bb = c3.b + c4.b;
 				}
 
-				for( i = i1 + 2 ; i < i2 - 1 ; i++ )
+				for( size_type i = i1 + 2 ; i < i2 - 1 ; i++ )
 				{
 					const color &c1 = p0[ i ];
 					const color &c2 = p1[ i ];
@@ -494,10 +494,10 @@ namespace __mean__
 				}
 
 				{
-					const color &c1 = p0[ i ];
-					const color &c2 = p1[ i ];
-					const color &c3 = p0[ i + 1 ];
-					const color &c4 = p1[ i + 1 ];
+					const color &c1 = p0[ i2 - 1 ];
+					const color &c2 = p1[ i2 - 1 ];
+					const color &c3 = p0[ i2 ];
+					const color &c4 = p1[ i2 ];
 
 					rr += c1.r + c2.r;
 					gg += c1.g + c2.g;
@@ -551,6 +551,7 @@ namespace __mean__
 			double g = 0.0;
 			double b = 0.0;
 			double yy, zz;
+			double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.25, i2 - i1 < 3 ? 0.0 : 1.0 * 0.25, ( xe - i2 + 1 ) * 0.25 };
 
 			for( size_type k = k1 ; k < k2 ; k++ )
 			{
@@ -583,7 +584,7 @@ namespace __mean__
 					}
 
 					size_type i = i1;
-					double aa[ 3 ] = { ( i1 + 1 - xs ) * yy * zz * 0.125, yy * zz * 0.125, ( xe - i2 + 1 ) * yy * zz * 0.125 };
+					double aa[ 3 ] = { xx[ 0 ] * yy * zz, xx[ 1 ] * yy * zz, xx[ 2 ] * yy * zz };
 
 					const_pointer p0 = &in( 0, j    , k     );
 					const_pointer p1 = &in( 0, j + 1, k     );
