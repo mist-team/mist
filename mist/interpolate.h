@@ -53,6 +53,59 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
+// 補間関数で利用するユーティリティー関数群
+namespace __interpolate_utility__
+{
+	// 浮動小数の場合は四捨五入しない
+	template < bool b >
+	struct _round_
+	{
+		template < class T >
+		static void convert( double in, T &out )
+		{
+			out = static_cast< T >( in );
+		}
+
+		template < class T >
+		static void convert( const rgb< double > &in, rgb< T > &out )
+		{
+			out.r = static_cast< T >( in.r );
+			out.g = static_cast< T >( in.g );
+			out.b = static_cast< T >( in.b );
+		}
+	};
+
+	// 整数の場合は四捨五入する
+	template < >
+	struct _round_< true >
+	{
+		template < class T >
+		static void convert( double in, T &out )
+		{
+			out = static_cast< T >( in + 0.5 );
+		}
+
+		template < class T >
+		static void convert( const rgb< double > &in, rgb< T > &out )
+		{
+			out.r = static_cast< T >( in.r + 0.5 );
+			out.g = static_cast< T >( in.g + 0.5 );
+			out.b = static_cast< T >( in.b + 0.5 );
+		}
+	};
+
+	template < class T >
+	inline void round( const double in, T &out )
+	{
+		_round_< is_integer< T >::value >::convert( in, out );
+	}
+
+	template < class T >
+	inline void round( const rgb< double > &in, rgb< T > &out )
+	{
+		_round_< is_integer< T >::value >::convert( in, out );
+	}
+}
 
 // 最近傍型補間
 namespace __nearest__
@@ -92,7 +145,8 @@ namespace __nearest__
 				{
 					x = static_cast< size_type >( sx * i + 0.5 );
 					x = x < iw ? x : iw - 1;
-					out( i, j, k ) = static_cast< out_value_type >( in( x, y, z ) );
+
+					__interpolate_utility__::round( in( x, y, z ), out( i, j, k ) );
 				}
 			}
 		}
@@ -125,20 +179,19 @@ namespace __mean__
 			typedef typename array< T, Allocator >::size_type  size_type;
 			double pix = 0.0;
 
-			size_type i = i1;
 			{
-				double a = ( i + 1 - xs ) * 0.5;
-				pix += ( in[ i ] + in[ i + 1 ] ) * a;
+				double a = ( i1 + 1 - xs ) * 0.5;
+				pix += ( in[ i1 ] + in[ i1 + 1 ] ) * a;
 			}
 
-			for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+			for( size_type i = i1 + 1 ; i < i2 - 1 ; i++ )
 			{
 				pix += ( in[ i ] + in[ i + 1 ] ) * 0.5;
 			}
 
 			{
-				double a = ( xe - i ) * 0.5;
-				pix += ( in[ i ] + in[ i + 1 ] ) * a;
+				double a = ( xe - i2 + 1 ) * 0.5;
+				pix += ( in[ i2 - 1 ] + in[ i2 ] ) * a;
 			}
 
 			double min = type_limits< value_type >::minimum( );
@@ -168,45 +221,75 @@ namespace __mean__
 			typedef typename array2< T, Allocator >::size_type     size_type;
 			typedef typename array2< T, Allocator >::const_pointer const_pointer;
 			double pix = 0.0;
-			double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.25, i2 - i1 < 3 ? 0.0 : 1.0 * 0.25, ( xe - i2 + 1 ) * 0.25 };
 			double yy;
 
-			for( size_type j = j1 ; j < j2 ; j++ )
+			if( i2 - i1 < 3 )
 			{
-				if( j == j1 )
+				double xx[ 2 ] = { ( i1 + 1 - xs ) * 0.25, ( xe - i2 + 1 ) * 0.25 };
+				for( size_type j = j1 ; j < j2 ; j++ )
 				{
-					yy = j1 + 1 - ys;
-				}
-				else if( j == j2 - 1 )
-				{
-					yy = ye - j;
-				}
-				else
-				{
-					yy = 1.0;
-				}
+					if( j == j1 )
+					{
+						yy = j1 + 1 - ys;
+					}
+					else if( j == j2 - 1 )
+					{
+						yy = ye - j;
+					}
+					else
+					{
+						yy = 1.0;
+					}
 
-				double aa[ 3 ] = { xx[ 0 ] * yy, xx[ 1 ] * yy, xx[ 2 ] * yy };
+					double aa[ 2 ] = { xx[ 0 ] * yy, xx[ 1 ] * yy };
 
-				const_pointer p0 = &in( 0, j     );
-				const_pointer p1 = &in( 0, j + 1 );
-				double ppp;
-				size_type i = i1;
+					const_pointer p0 = &in( 0, j     );
+					const_pointer p1 = &in( 0, j + 1 );
 
-				{
-					pix += ( p0[ i ] + p1[ i ] + p0[ i + 1 ] + p1[ i + 1 ] ) * aa[ 0 ];
-					ppp  = p0[ i + 1 ] + p1[ i + 1 ];
+					pix += ( p0[ i1 ] + p1[ i1 ] + p0[ i1 + 1 ] + p1[ i1 + 1 ] ) * aa[ 0 ];
+					pix += ( p0[ i2 - 1 ] + p1[ i2 - 1 ] + p0[ i2 ] + p1[ i2 ] ) * aa[ 1 ];
 				}
-
-				for( i = i1 + 2 ; i < i2 - 1 ; i++ )
+			}
+			else
+			{
+				double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.25, 0.25, ( xe - i2 + 1 ) * 0.25 };
+				for( size_type j = j1 ; j < j2 ; j++ )
 				{
-					ppp += ( p0[ i ] + p1[ i ] ) * 2.0;
-				}
+					if( j == j1 )
+					{
+						yy = j1 + 1 - ys;
+					}
+					else if( j == j2 - 1 )
+					{
+						yy = ye - j;
+					}
+					else
+					{
+						yy = 1.0;
+					}
 
-				{
-					ppp += p0[ i ] + p1[ i ];
-					pix += ppp * aa[ 1 ];
-					pix += ( p0[ i ] + p1[ i ] + p0[ i + 1 ] + p1[ i + 1 ] ) * aa[ 2 ];
+					double aa[ 3 ] = { xx[ 0 ] * yy, xx[ 1 ] * yy, xx[ 2 ] * yy };
+
+					const_pointer p0 = &in( 0, j     );
+					const_pointer p1 = &in( 0, j + 1 );
+					double ppp;
+					size_type i = i1;
+
+					{
+						pix += ( p0[ i ] + p1[ i ] + p0[ i + 1 ] + p1[ i + 1 ] ) * aa[ 0 ];
+						ppp  = p0[ i + 1 ] + p1[ i + 1 ];
+					}
+
+					for( i = i1 + 2 ; i < i2 - 1 ; i++ )
+					{
+						ppp += ( p0[ i ] + p1[ i ] ) * 2.0;
+					}
+
+					{
+						ppp += p0[ i2 - 1 ] + p1[ i2 - 1 ];
+						pix += ppp * aa[ 1 ];
+						pix += ( p0[ i2 - 1 ] + p1[ i2 - 1 ] + p0[ i2 ] + p1[ i2 ] ) * aa[ 2 ];
+					}
 				}
 			}
 
@@ -237,7 +320,7 @@ namespace __mean__
 			typedef typename array3< T, Allocator >::size_type     size_type;
 			typedef typename array3< T, Allocator >::const_pointer const_pointer;
 			double pix = 0.0;
-			double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.25, i2 - i1 < 3 ? 0.0 : 1.0 * 0.25, ( xe - i2 + 1 ) * 0.25 };
+			double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.125, i2 - i1 < 3 ? 0.0 : 1.0 * 0.125, ( xe - i2 + 1 ) * 0.125 };
 			double yy, zz;
 
 			for( size_type k = k1 ; k < k2 ; k++ )
@@ -270,7 +353,6 @@ namespace __mean__
 						yy = 1.0;
 					}
 
-					size_type i = i1;
 					double aa[ 3 ] = { xx[ 0 ] * yy * zz, xx[ 1 ] * yy * zz, xx[ 2 ] * yy * zz };
 
 					const_pointer p0 = &in( 0, j    , k     );
@@ -280,20 +362,20 @@ namespace __mean__
 					double ppp = 0.0;
 
 					{
-						const value_type &c1 = p0[ i ];
-						const value_type &c2 = p1[ i ];
-						const value_type &c3 = p2[ i ];
-						const value_type &c4 = p3[ i ];
-						const value_type &c5 = p0[ i + 1 ];
-						const value_type &c6 = p1[ i + 1 ];
-						const value_type &c7 = p2[ i + 1 ];
-						const value_type &c8 = p3[ i + 1 ];
+						const value_type &c1 = p0[ i1 ];
+						const value_type &c2 = p1[ i1 ];
+						const value_type &c3 = p2[ i1 ];
+						const value_type &c4 = p3[ i1 ];
+						const value_type &c5 = p0[ i1 + 1 ];
+						const value_type &c6 = p1[ i1 + 1 ];
+						const value_type &c7 = p2[ i1 + 1 ];
+						const value_type &c8 = p3[ i1 + 1 ];
 
 						pix += ( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 ) * aa[ 0 ];
 						ppp += c5 + c6 + c7 + c8;
 					}
 
-					for( i = i1 + 2 ; i < i2 - 1 ; i++ )
+					for( size_type i = i1 + 2 ; i < i2 - 1 ; i++ )
 					{
 						const value_type &c1 = p0[ i ];
 						const value_type &c2 = p1[ i ];
@@ -304,14 +386,14 @@ namespace __mean__
 					}
 
 					{
-						const value_type &c1 = p0[ i ];
-						const value_type &c2 = p1[ i ];
-						const value_type &c3 = p2[ i ];
-						const value_type &c4 = p3[ i ];
-						const value_type &c5 = p0[ i + 1 ];
-						const value_type &c6 = p1[ i + 1 ];
-						const value_type &c7 = p2[ i + 1 ];
-						const value_type &c8 = p3[ i + 1 ];
+						const value_type &c1 = p0[ i2 - 1 ];
+						const value_type &c2 = p1[ i2 - 1 ];
+						const value_type &c3 = p2[ i2 - 1 ];
+						const value_type &c4 = p3[ i2 - 1 ];
+						const value_type &c5 = p0[ i2 ];
+						const value_type &c6 = p1[ i2 ];
+						const value_type &c7 = p2[ i2 ];
+						const value_type &c8 = p3[ i2 ];
 
 						ppp += c1 + c2 + c3 + c4;
 						pix += ppp * aa[ 1 ];
@@ -354,14 +436,13 @@ namespace __mean__
 			double g = 0.0;
 			double b = 0.0;
 
-			size_type i = i1;
 			{
 				double rr = 0.0;
 				double gg = 0.0;
 				double bb = 0.0;
 
-				const color &c1 = in[ i     ];
-				const color &c2 = in[ i + 1 ];
+				const color &c1 = in[ i1     ];
+				const color &c2 = in[ i1 + 1 ];
 
 				rr += c1.r; gg += c1.g; bb += c1.b;
 				rr += c2.r; gg += c2.g; bb += c2.b;
@@ -372,7 +453,7 @@ namespace __mean__
 				b += bb * a;
 			}
 
-			for( i = i1 + 1 ; i < i2 - 1 ; i++ )
+			for( size_type i = i1 + 1 ; i < i2 - 1 ; i++ )
 			{
 				double rr = 0.0;
 				double gg = 0.0;
@@ -395,13 +476,13 @@ namespace __mean__
 				double gg = 0.0;
 				double bb = 0.0;
 
-				const color &c1 = in[ i     ];
-				const color &c2 = in[ i + 1 ];
+				const color &c1 = in[ i2 - 1 ];
+				const color &c2 = in[ i2     ];
 
 				rr += c1.r; gg += c1.g; bb += c1.b;
 				rr += c2.r; gg += c2.g; bb += c2.b;
 
-				double a = ( xe - i ) * 0.5;
+				double a = ( xe - i2 + 1 ) * 0.5;
 				r += rr * a;
 				g += gg * a;
 				b += bb * a;
@@ -445,71 +526,115 @@ namespace __mean__
 			double g = 0.0;
 			double b = 0.0;
 			double yy;
-			double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.25, i2 - i1 < 3 ? 0.0 : 1.0 * 0.25, ( xe - i2 + 1 ) * 0.25 };
 
-			for( size_type j = j1 ; j < j2 ; j++ )
+			if( i2 - i1 < 3 )
 			{
-				if( j == j1 )
+				double xx[ 2 ] = { ( i1 + 1 - xs ) * 0.25, ( xe - i2 + 1 ) * 0.25 };
+				for( size_type j = j1 ; j < j2 ; j++ )
 				{
-					yy = j1 + 1 - ys;
+					if( j == j1 )
+					{
+						yy = j1 + 1 - ys;
+					}
+					else if( j == j2 - 1 )
+					{
+						yy = ye - j;
+					}
+					else
+					{
+						yy = 1.0;
+					}
+
+					double aa[ 2 ] = { xx[ 0 ] * yy, xx[ 1 ] * yy };
+
+					const_pointer p0 = &in( 0, j     );
+					const_pointer p1 = &in( 0, j + 1 );
+
+					{
+						const color &c1 = p0[ i1 ];
+						const color &c2 = p1[ i1 ];
+						const color &c3 = p0[ i1 + 1 ];
+						const color &c4 = p1[ i2 - 1 ];
+						const color &c5 = p0[ i2 ];
+						const color &c6 = p1[ i2 ];
+
+						r += ( c1.r + c2.r + c3.r + c4.r ) * aa[ 0 ];
+						g += ( c1.g + c2.g + c3.g + c4.g ) * aa[ 0 ];
+						b += ( c1.b + c2.b + c3.b + c4.b ) * aa[ 0 ];
+
+						r += ( c3.r + c4.r + c5.r + c6.r ) * aa[ 1 ];
+						g += ( c3.g + c4.g + c5.g + c6.g ) * aa[ 1 ];
+						b += ( c3.b + c4.b + c5.b + c6.b ) * aa[ 1 ];
+					}
 				}
-				else if( j == j2 - 1 )
+			}
+			else
+			{
+				double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.25, 0.25, ( xe - i2 + 1 ) * 0.25 };
+				for( size_type j = j1 ; j < j2 ; j++ )
 				{
-					yy = ye - j;
-				}
-				else
-				{
-					yy = 1.0;
-				}
+					if( j == j1 )
+					{
+						yy = j1 + 1 - ys;
+					}
+					else if( j == j2 - 1 )
+					{
+						yy = ye - j;
+					}
+					else
+					{
+						yy = 1.0;
+					}
 
-				double aa[ 3 ] = { xx[ 0 ] * yy, xx[ 1 ] * yy, xx[ 2 ] * yy };
+					double aa[ 3 ] = { xx[ 0 ] * yy, xx[ 1 ] * yy, xx[ 2 ] * yy };
 
-				const_pointer p0 = &in( 0, j     );
-				const_pointer p1 = &in( 0, j + 1 );
-				double rr, gg, bb;
+					const_pointer p0 = &in( 0, j     );
+					const_pointer p1 = &in( 0, j + 1 );
+					double rr, gg, bb;
 
-				{
-					const color &c1 = p0[ i1 ];
-					const color &c2 = p1[ i1 ];
-					const color &c3 = p0[ i1 + 1 ];
-					const color &c4 = p1[ i1 + 1 ];
+					{
+						const color &c1 = p0[ i1 ];
+						const color &c2 = p1[ i1 ];
+						const color &c3 = p0[ i1 + 1 ];
+						const color &c4 = p1[ i1 + 1 ];
 
-					r += ( c1.r + c2.r + c3.r + c4.r ) * aa[ 0 ];
-					g += ( c1.g + c2.g + c3.g + c4.g ) * aa[ 0 ];
-					b += ( c1.b + c2.b + c3.b + c4.b ) * aa[ 0 ];
+						r += ( c1.r + c2.r + c3.r + c4.r ) * aa[ 0 ];
+						g += ( c1.g + c2.g + c3.g + c4.g ) * aa[ 0 ];
+						b += ( c1.b + c2.b + c3.b + c4.b ) * aa[ 0 ];
 
-					rr = c3.r + c4.r;
-					gg = c3.g + c4.g;
-					bb = c3.b + c4.b;
-				}
+						rr = c3.r + c4.r;
+						gg = c3.g + c4.g;
+						bb = c3.b + c4.b;
+					}
 
-				for( size_type i = i1 + 2 ; i < i2 - 1 ; i++ )
-				{
-					const color &c1 = p0[ i ];
-					const color &c2 = p1[ i ];
+					for( size_type i = i1 + 2 ; i < i2 - 1 ; i++ )
+					{
+						const color &c1 = p0[ i ];
+						const color &c2 = p1[ i ];
 
-					rr += ( c1.r + c2.r ) * 2.0;
-					gg += ( c1.g + c2.g ) * 2.0;
-					bb += ( c1.b + c2.b ) * 2.0;
-				}
+						rr += ( c1.r + c2.r ) * 2.0;
+						gg += ( c1.g + c2.g ) * 2.0;
+						bb += ( c1.b + c2.b ) * 2.0;
+					}
 
-				{
-					const color &c1 = p0[ i2 - 1 ];
-					const color &c2 = p1[ i2 - 1 ];
-					const color &c3 = p0[ i2 ];
-					const color &c4 = p1[ i2 ];
+					{
+						const color &c1 = p0[ i2 - 1 ];
+						const color &c2 = p1[ i2 - 1 ];
+						const color &c3 = p0[ i2 ];
+						const color &c4 = p1[ i2 ];
 
-					rr += c1.r + c2.r;
-					gg += c1.g + c2.g;
-					bb += c1.b + c2.b;
+						rr += c1.r + c2.r;
+						gg += c1.g + c2.g;
+						bb += c1.b + c2.b;
 
-					r += rr * aa[ 1 ];
-					g += gg * aa[ 1 ];
-					b += bb * aa[ 1 ];
+						r += rr * aa[ 1 ];
+						g += gg * aa[ 1 ];
+						b += bb * aa[ 1 ];
 
-					r += ( c1.r + c2.r + c3.r + c4.r ) * aa[ 2 ];
-					g += ( c1.g + c2.g + c3.g + c4.g ) * aa[ 2 ];
-					b += ( c1.b + c2.b + c3.b + c4.b ) * aa[ 2 ];
+						r += ( c1.r + c2.r + c3.r + c4.r ) * aa[ 2 ];
+						g += ( c1.g + c2.g + c3.g + c4.g ) * aa[ 2 ];
+						b += ( c1.b + c2.b + c3.b + c4.b ) * aa[ 2 ];
+					}
 				}
 			}
 
@@ -551,7 +676,7 @@ namespace __mean__
 			double g = 0.0;
 			double b = 0.0;
 			double yy, zz;
-			double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.25, i2 - i1 < 3 ? 0.0 : 1.0 * 0.25, ( xe - i2 + 1 ) * 0.25 };
+			double xx[ 3 ] = { ( i1 + 1 - xs ) * 0.125, i2 - i1 < 3 ? 0.0 : 1.0 * 0.125, ( xe - i2 + 1 ) * 0.125 };
 
 			for( size_type k = k1 ; k < k2 ; k++ )
 			{
@@ -583,7 +708,6 @@ namespace __mean__
 						yy = 1.0;
 					}
 
-					size_type i = i1;
 					double aa[ 3 ] = { xx[ 0 ] * yy * zz, xx[ 1 ] * yy * zz, xx[ 2 ] * yy * zz };
 
 					const_pointer p0 = &in( 0, j    , k     );
@@ -595,14 +719,14 @@ namespace __mean__
 					double bb = 0.0;
 
 					{
-						const color &c1 = p0[ i ];
-						const color &c2 = p1[ i ];
-						const color &c3 = p2[ i ];
-						const color &c4 = p3[ i ];
-						const color &c5 = p0[ i + 1 ];
-						const color &c6 = p1[ i + 1 ];
-						const color &c7 = p2[ i + 1 ];
-						const color &c8 = p3[ i + 1 ];
+						const color &c1 = p0[ i1 ];
+						const color &c2 = p1[ i1 ];
+						const color &c3 = p2[ i1 ];
+						const color &c4 = p3[ i1 ];
+						const color &c5 = p0[ i1 + 1 ];
+						const color &c6 = p1[ i1 + 1 ];
+						const color &c7 = p2[ i1 + 1 ];
+						const color &c8 = p3[ i1 + 1 ];
 
 						r += ( c1.r + c2.r + c3.r + c4.r + c5.r + c6.r + c7.r + c8.r ) * aa[ 0 ];
 						g += ( c1.g + c2.g + c3.g + c4.g + c5.g + c6.g + c7.g + c8.g ) * aa[ 0 ];
@@ -613,7 +737,7 @@ namespace __mean__
 						bb += c5.b + c6.b + c7.b + c8.b;
 					}
 
-					for( i = i1 + 2 ; i < i2 - 1 ; i++ )
+					for( size_type i = i1 + 2 ; i < i2 - 1 ; i++ )
 					{
 						const color &c1 = p0[ i ];
 						const color &c2 = p1[ i ];
@@ -626,14 +750,14 @@ namespace __mean__
 					}
 
 					{
-						const color &c1 = p0[ i ];
-						const color &c2 = p1[ i ];
-						const color &c3 = p2[ i ];
-						const color &c4 = p3[ i ];
-						const color &c5 = p0[ i + 1 ];
-						const color &c6 = p1[ i + 1 ];
-						const color &c7 = p2[ i + 1 ];
-						const color &c8 = p3[ i + 1 ];
+						const color &c1 = p0[ i2 - 1 ];
+						const color &c2 = p1[ i2 - 1 ];
+						const color &c3 = p2[ i2 - 1 ];
+						const color &c4 = p3[ i2 - 1 ];
+						const color &c5 = p0[ i2     ];
+						const color &c6 = p1[ i2     ];
+						const color &c7 = p2[ i2     ];
+						const color &c8 = p3[ i2     ];
 
 						rr += c1.r + c2.r + c3.r + c4.r;
 						gg += c1.g + c2.g + c3.g + c4.g;
@@ -718,7 +842,7 @@ namespace __mean__
 					i2 = xe > i2 ? i2 + 1 : i2;
 					i2 = i2 < iw - 1 ? i2 : iw - 1;
 
-					out( i, j, k ) = static_cast< out_value_type >( _mean_< is_color< value_type >::value >::mean___( in, i1, i2, j1, j2, k1, k2, xs, xe, ys, ye, zs, ze ) );
+					__interpolate_utility__::round( _mean_< is_color< value_type >::value >::mean___( in, i1, i2, j1, j2, k1, k2, xs, xe, ys, ye, zs, ze ), out( i, j, k ) );
 				}
 			}
 		}
@@ -916,7 +1040,8 @@ namespace __linear__
 					i1 = static_cast< size_type >( x );
 					x -= i1;
 					i2 = i1 < iw - 1 ? i1 + 1 : i1;
-					out( i, j, k ) = static_cast< out_value_type >( _linear_< is_color< value_type >::value >::interpolate( in, i1, i2, j1, j2, k1, k2, x, y, z ) );
+
+					__interpolate_utility__::round( _linear_< is_color< value_type >::value >::interpolate( in, i1, i2, j1, j2, k1, k2, x, y, z ), out( i, j, k ) );
 				}
 			}
 		}
@@ -1259,7 +1384,7 @@ namespace __cubic__
 					ii[ 3 ] = ii[ 2 ] < iw - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
 					x -= ii[ 1 ];
 
-					out( i, j, k ) = static_cast< out_value_type >( _cubic_< is_color< value_type >::value >::interpolate( in, ii, jj, kk, x, y, z ) );
+					__interpolate_utility__::round( _cubic_< is_color< value_type >::value >::interpolate( in, ii, jj, kk, x, y, z ), out( i, j, k ) );
 				}
 			}
 		}
@@ -1605,7 +1730,7 @@ namespace __bspline__
 					ii[ 3 ] = ii[ 2 ] < iw - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
 					x -= ii[ 1 ];
 
-					out( i, j, k ) = static_cast< out_value_type >( _bspline_< is_color< value_type >::value >::interpolate( in, ii, jj, kk, x, y, z ) );
+					__interpolate_utility__::round( _bspline_< is_color< value_type >::value >::interpolate( in, ii, jj, kk, x, y, z ), out( i, j, k ) );
 				}
 			}
 		}
@@ -1896,7 +2021,7 @@ namespace __sinc__
 					ii = static_cast< difference_type >( x );
 					x -= ii;
 
-					out( i, j, k ) = static_cast< out_value_type >( _sinc_< is_color< value_type >::value >::interpolate( in, ii, jj, kk, x, y, z ) );
+					__interpolate_utility__::round( _sinc_< is_color< value_type >::value >::interpolate( in, ii, jj, kk, x, y, z ), out( i, j, k ) );
 				}
 			}
 		}
