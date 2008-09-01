@@ -409,7 +409,7 @@ namespace __limits_0_255__
 template < class T >
 inline const T limits_min_max( const T &v, const T &min, const T &max )
 {
-	return( __limits_min_max__::limits_min_max< is_color< T >::value >::limits( v ) );
+	return( __limits_min_max__::limits_min_max< is_color< T >::value >::limits( v, min, max ) );
 }
 
 
