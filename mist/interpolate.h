@@ -790,15 +790,89 @@ namespace __mean__
 		}
 	};
 
-	template < class Array1, class Array2 >
-	void interpolate( const Array1 &in, Array2 &out,
-						typename Array1::size_type thread_idx, typename Array1::size_type thread_numx,
-						typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
-						typename Array1::size_type thread_idz, typename Array1::size_type thread_numz )
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	void interpolate( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+						typename array< T1, Allocator1 >::size_type thread_idx, typename array< T1, Allocator1 >::size_type thread_numx,
+						typename array< T1, Allocator1 >::size_type thread_idy, typename array< T1, Allocator1 >::size_type thread_numy,
+						typename array< T1, Allocator1 >::size_type thread_idz, typename array< T1, Allocator1 >::size_type thread_numz )
 	{
-		typedef typename Array1::size_type  size_type;
-		typedef typename Array1::value_type value_type;
-		typedef typename Array2::value_type out_value_type;
+		typedef typename array< T1, Allocator1 >::size_type  size_type;
+		typedef typename array< T1, Allocator1 >::value_type value_type;
+		typedef typename array< T2, Allocator2 >::value_type out_value_type;
+
+		size_type i, i1, i2;
+		size_type iw = in.width( );
+		size_type ow = out.width( );
+
+		double sx = static_cast< double >( iw - 1 ) / static_cast< double >( ow );
+
+		for( i = thread_idx ; i < ow ; i += thread_numx )
+		{
+			double xs = sx * i;
+			double xe = xs + sx;
+
+			i1 = static_cast< size_type >( xs );
+			i2 = static_cast< size_type >( xe );
+			i2 = xe > i2 ? i2 + 1 : i2;
+			i2 = i2 < iw - 1 ? i2 : iw - 1;
+
+			__interpolate_utility__::round( _mean_< is_color< value_type >::value >::mean___( in, i1, i2, 0, 1, 0, 1, xs, xe, 0, 1, 0, 1 ), out[ i ] );
+		}
+	}
+
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	void interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+						typename array2< T1, Allocator1 >::size_type thread_idx, typename array2< T1, Allocator1 >::size_type thread_numx,
+						typename array2< T1, Allocator1 >::size_type thread_idy, typename array2< T1, Allocator1 >::size_type thread_numy,
+						typename array2< T1, Allocator1 >::size_type thread_idz, typename array2< T1, Allocator1 >::size_type thread_numz )
+	{
+		typedef typename array2< T1, Allocator1 >::size_type  size_type;
+		typedef typename array2< T1, Allocator1 >::value_type value_type;
+		typedef typename array2< T2, Allocator2 >::value_type out_value_type;
+
+		size_type i, j, i1, i2, j1, j2;
+		size_type iw = in.width( );
+		size_type ih = in.height( );
+		size_type ow = out.width( );
+		size_type oh = out.height( );
+
+		double sx = static_cast< double >( iw - 1 ) / static_cast< double >( ow );
+		double sy = static_cast< double >( ih - 1 ) / static_cast< double >( oh );
+
+		for( j = thread_idy ; j < oh ; j += thread_numy )
+		{
+			double ys = sy * j;
+			double ye = ys + sy;
+
+			j1 = static_cast< size_type >( ys );
+			j2 = static_cast< size_type >( ye );
+			j2 = ye > j2 ? j2 + 1 : j2;
+			j2 = j2 < ih - 1 ? j2 : ih - 1;
+
+			for( i = thread_idx ; i < ow ; i += thread_numx )
+			{
+				double xs = sx * i;
+				double xe = xs + sx;
+
+				i1 = static_cast< size_type >( xs );
+				i2 = static_cast< size_type >( xe );
+				i2 = xe > i2 ? i2 + 1 : i2;
+				i2 = i2 < iw - 1 ? i2 : iw - 1;
+
+				__interpolate_utility__::round( _mean_< is_color< value_type >::value >::mean___( in, i1, i2, j1, j2, 0, 1, xs, xe, ys, ye, 0, 1 ), out( i, j ) );
+			}
+		}
+	}
+
+	template < class T1, class Allocator1, class T2, class Allocator2 >
+	void interpolate( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+						typename array3< T1, Allocator1 >::size_type thread_idx, typename array3< T1, Allocator1 >::size_type thread_numx,
+						typename array3< T1, Allocator1 >::size_type thread_idy, typename array3< T1, Allocator1 >::size_type thread_numy,
+						typename array3< T1, Allocator1 >::size_type thread_idz, typename array3< T1, Allocator1 >::size_type thread_numz )
+	{
+		typedef typename array3< T1, Allocator1 >::size_type  size_type;
+		typedef typename array3< T1, Allocator1 >::value_type value_type;
+		typedef typename array3< T2, Allocator2 >::value_type out_value_type;
 
 		size_type i, j, k, i1, i2, j1, j2, k1, k2;
 		size_type iw = in.width( );
@@ -808,9 +882,9 @@ namespace __mean__
 		size_type oh = out.height( );
 		size_type od = out.depth( );
 
-		double sx = static_cast< double >( iw ) / static_cast< double >( ow );
-		double sy = static_cast< double >( ih ) / static_cast< double >( oh );
-		double sz = static_cast< double >( id ) / static_cast< double >( od );
+		double sx = static_cast< double >( iw - 1 ) / static_cast< double >( ow );
+		double sy = static_cast< double >( ih - 1 ) / static_cast< double >( oh );
+		double sz = static_cast< double >( id - 1 ) / static_cast< double >( od );
 
 		for( k = thread_idz ; k < od ; k += thread_numz )
 		{
