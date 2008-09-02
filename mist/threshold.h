@@ -66,11 +66,11 @@ namespace ptile
 	//!
 	//! @return p-tile法によって決定されたしきい値
 	//!
-	template < class T, class Allocator >
-	typename array< T, Allocator >::value_type threshold( const array< T, Allocator > &in, double ratio )
+	template < class Array >
+	typename Array::value_type threshold( const Array &in, double ratio )
 	{
-		typedef typename array< T, Allocator >::size_type  size_type;
-		typedef typename array< T, Allocator >::value_type value_type;
+		typedef typename Array::size_type  size_type;
+		typedef typename Array::value_type value_type;
 
 		if( in.empty( ) )
 		{
@@ -111,6 +111,82 @@ namespace ptile
 		size_type th = 0;
 
 		while( ( pix_num * 100.0 ) / static_cast< double >( N ) < ratio )
+		{
+			pix_num += hist[ th ];
+			th++;
+		}
+
+		delete [] hist;
+
+		return( static_cast< value_type >( th + min ) );
+	}
+
+	/// @brief p-tile法によるしきい値決定
+	//!
+	//! ratio は 0 ～ 100％の範囲で指定する
+	//!
+	//! @param[in] in    … 入力データ
+	//! @param[in] mask  … マスクデータ
+	//! @param[in] ratio … 濃度値の累積分布が全体に占める割合
+	//!
+	//! @return p-tile法によって決定されたしきい値
+	//!
+	template < class Array, class Mask >
+	typename Array::value_type threshold( const Array &in, const Mask &mask, double ratio )
+	{
+		typedef typename Array::size_type  size_type;
+		typedef typename Array::value_type value_type;
+
+		if( in.empty( ) )
+		{
+			return( value_type( 0 ) );
+		}
+
+		value_type min = type_limits< value_type >::maximum( );
+		value_type max = type_limits< value_type >::minimum( );
+
+		size_type i, count = 0;
+
+		for( i = 0 ; i < in.size( ) ; i++ )
+		{
+			if( mask[ i ] != 0 )
+			{
+				count++;
+				if( min > in[ i ] )
+				{
+					min = in[ i ];
+				}
+				else if( max < in[ i ] )
+				{
+					max = in[ i ];
+				}
+			}
+		}
+
+		if( count == 0 )
+		{
+			return( value_type( 0 ) );
+		}
+
+		size_type level = static_cast< size_type >( max - min ) + 1;
+		size_type *hist = new size_type[ level ];
+
+		for( i = 0 ; i < level ; i++ )
+		{
+			hist[ i ] = 0;
+		}
+		for( i = 0 ; i < in.size( ) ; i++ )
+		{
+			if( mask[ i ] != 0 )
+			{
+				hist[ static_cast< size_type >( in[ i ] - min ) ]++;
+			}
+		}
+
+		size_type pix_num = 0;
+		size_type th = 0;
+
+		while( ( pix_num * 100.0 ) / static_cast< double >( count ) < ratio )
 		{
 			pix_num += hist[ th ];
 			th++;
