@@ -89,8 +89,8 @@ namespace __jpeg2000_controller__
 				cmptparm[ i ].sgnd = 0;
 				cmptparm[ i ].dx   = param.subsampling_dx;
 				cmptparm[ i ].dy   = param.subsampling_dy;
-				cmptparm[ i ].w    = image.width( );
-				cmptparm[ i ].h    = image.height( );
+				cmptparm[ i ].w    = static_cast< int >( image.width( ) );
+				cmptparm[ i ].h    = static_cast< int >( image.height( ) );
 			}
 
 			// カラー画像として作成する
@@ -99,8 +99,8 @@ namespace __jpeg2000_controller__
 			// 画像のオフセットとレンダリンググリッドを設定する
 			img->x0 = param.image_offset_x0;
 			img->y0 = param.image_offset_y0;
-			img->x1 = img->x0 + ( image.width( )  - 1 ) * param.subsampling_dx + 1;
-			img->y1 = img->y0 + ( image.height( ) - 1 ) * param.subsampling_dy + 1;
+			img->x1 = img->x0 + ( static_cast< int >( image.width( ) )  - 1 ) * param.subsampling_dx + 1;
+			img->y1 = img->y0 + ( static_cast< int >( image.height( ) ) - 1 ) * param.subsampling_dy + 1;
 
 			// 画像データをコピーする
 			for( size_t i = 0 ; i < image.size( ) ; i++ )
@@ -131,8 +131,8 @@ namespace __jpeg2000_controller__
 				cmptparm[ i ].sgnd = 0;
 				cmptparm[ i ].dx   = param.subsampling_dx;
 				cmptparm[ i ].dy   = param.subsampling_dy;
-				cmptparm[ i ].w    = image.width( );
-				cmptparm[ i ].h    = image.height( );
+				cmptparm[ i ].w    = static_cast< int >( image.width( ) );
+				cmptparm[ i ].h    = static_cast< int >( image.height( ) );
 			}
 
 			// カラー画像として作成する
@@ -141,8 +141,8 @@ namespace __jpeg2000_controller__
 			// 画像のオフセットとレンダリンググリッドを設定する
 			img->x0 = param.image_offset_x0;
 			img->y0 = param.image_offset_y0;
-			img->x1 = img->x0 + ( image.width( )  - 1 ) * param.subsampling_dx + 1;
-			img->y1 = img->y0 + ( image.height( ) - 1 ) * param.subsampling_dy + 1;
+			img->x1 = img->x0 + ( static_cast< int >( image.width( ) )  - 1 ) * param.subsampling_dx + 1;
+			img->y1 = img->y0 + ( static_cast< int >( image.height( ) ) - 1 ) * param.subsampling_dy + 1;
 
 			// 画像データをコピーする
 			for( size_t i = 0 ; i < image.size( ) ; i++ )
@@ -255,7 +255,7 @@ namespace __jpeg2000_controller__
 			opj_setup_decoder( dinfo, &param );
 
 			// デコード用のメモリストリームを準備する
-			opj_cio_t *cio = opj_cio_open( ( opj_common_ptr )dinfo, buff, filesize );
+			opj_cio_t *cio = opj_cio_open( ( opj_common_ptr )dinfo, buff, static_cast< int >( filesize ) );
 
 			// 画像をデコードする
 			opj_image_t *img = opj_decode( dinfo, cio );			
