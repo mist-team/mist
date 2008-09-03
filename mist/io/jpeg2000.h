@@ -336,20 +336,11 @@ namespace __jpeg2000_controller__
 			// エンコードパラメータをデフォルトに設定する
 			opj_set_default_encoder_parameters( &param );
 
-			if( compression_level == 0 )
-			{
-				// Losslessに設定する
-				param.tcp_rates[ 0 ] = 0;
-				param.tcp_numlayers++;
-				param.cp_disto_alloc = 1;
-			}
-			else
-			{
-				// 圧縮率を設定する
-				param.tcp_rates[ 0 ] = static_cast< float >( compression_level );
-				param.tcp_numlayers++;
-				param.cp_disto_alloc = 1;
-			}
+			// 圧縮率を設定する
+			// 0はLossless圧縮
+			param.tcp_rates[ 0 ] = static_cast< float >( compression_level );
+			param.tcp_numlayers = 1;
+			param.cp_disto_alloc = 1;
 
 			// コメントを埋め込む
 			static char comment[] = "Created by MIST with OpenJPEG Library";
