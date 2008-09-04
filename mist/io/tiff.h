@@ -64,6 +64,406 @@ _MIST_BEGIN
 
 namespace __tiff_controller__
 {
+	// グレースケール版
+	template < bool b >
+	struct _tiff_writer_
+	{
+		template < class T, class Allocator >
+		static bool write( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression )
+		{
+			typedef typename array2< T, Allocator >::size_type size_type;
+
+			if( image.empty( ) )
+			{
+				return( false );
+			}
+			else if( image.width( ) == 0 )
+			{
+				std::cerr << "Image width is zero!" << std::endl;
+				return( false );
+			}
+			else if( image.height( ) == 0 )
+			{
+				std::cerr << "Image height is zero!" << std::endl;
+				return( false );
+			}
+
+			TIFF *tif;
+			size_type tiffW, tiffH;
+
+			tif = TIFFOpen( filename.c_str( ), "w" );
+			if( tif == NULL )
+			{
+				return( false );
+			}
+
+			tiffW = image.width( );
+			tiffH = image.height( );
+
+			TIFFSetField( tif, TIFFTAG_IMAGEWIDTH, tiffW );
+			TIFFSetField( tif, TIFFTAG_IMAGELENGTH, tiffH );
+			TIFFSetField( tif, TIFFTAG_BITSPERSAMPLE, 8 );
+			TIFFSetField( tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK );
+			TIFFSetField( tif, TIFFTAG_FILLORDER, FILLORDER_MSB2LSB );
+			TIFFSetField( tif, TIFFTAG_DOCUMENTNAME, "MIST Project Team" );
+			TIFFSetField( tif, TIFFTAG_IMAGEDESCRIPTION, "Created by MIST TIFF Conveter" );
+			TIFFSetField( tif, TIFFTAG_SAMPLESPERPIXEL, 1 );
+			TIFFSetField( tif, TIFFTAG_ROWSPERSTRIP, TIFFDefaultStripSize( tif, ( unsigned int )-1 ) );
+			TIFFSetField( tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG );
+			if( use_lzw_compression )
+			{
+				// LZW圧縮を利用するかどうか
+				TIFFSetField( tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW );
+			}
+
+			size_type size = image.width( ) * image.height( );
+			size_type lsize = image.width( );
+			unsigned char *buf = new unsigned char[ size ];
+			size_type i;
+
+			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )
+			{
+				buf[ i ] = static_cast< unsigned char >( image[ i ] );
+			}
+
+			bool ret = true;
+			for( i = 0 ; i < tiffH ; i++ )
+			{
+				if( TIFFWriteScanline( tif, buf + i * lsize, static_cast< unsigned int >( i ), 0 ) < 0 )
+				{
+					ret = false;
+					break;
+				}
+			}
+
+			delete [] buf;
+
+			TIFFFlushData( tif );
+			TIFFClose( tif );
+
+			return( ret );
+		}
+
+		template < class Allocator >
+		static bool write( const array2< unsigned short, Allocator > &image, const std::string &filename, bool use_lzw_compression )
+		{
+			typedef typename array2< unsigned short, Allocator >::size_type size_type;
+
+			if( image.empty( ) )
+			{
+				return( false );
+			}
+			else if( image.width( ) == 0 )
+			{
+				std::cerr << "Image width is zero!" << std::endl;
+				return( false );
+			}
+			else if( image.height( ) == 0 )
+			{
+				std::cerr << "Image height is zero!" << std::endl;
+				return( false );
+			}
+
+			TIFF *tif;
+			size_type tiffW, tiffH;
+
+			tif = TIFFOpen( filename.c_str( ), "w" );
+			if( tif == NULL )
+			{
+				return( false );
+			}
+
+			tiffW = image.width( );
+			tiffH = image.height( );
+
+			TIFFSetField( tif, TIFFTAG_IMAGEWIDTH, tiffW );
+			TIFFSetField( tif, TIFFTAG_IMAGELENGTH, tiffH );
+			TIFFSetField( tif, TIFFTAG_BITSPERSAMPLE, 16 );
+			TIFFSetField( tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK );
+			TIFFSetField( tif, TIFFTAG_FILLORDER, FILLORDER_MSB2LSB );
+			TIFFSetField( tif, TIFFTAG_DOCUMENTNAME, "MIST Project Team" );
+			TIFFSetField( tif, TIFFTAG_IMAGEDESCRIPTION, "Created by MIST TIFF Conveter" );
+			TIFFSetField( tif, TIFFTAG_SAMPLESPERPIXEL, 1 );
+			TIFFSetField( tif, TIFFTAG_ROWSPERSTRIP, TIFFDefaultStripSize( tif, ( unsigned int )-1 ) );
+			TIFFSetField( tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG );
+			if( use_lzw_compression )
+			{
+				// LZW圧縮を利用するかどうか
+				TIFFSetField( tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW );
+			}
+
+			size_type size = image.width( ) * image.height( );
+			size_type lsize = image.width( );
+			unsigned short *buf = new unsigned short[ size ];
+			size_type i;
+
+			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )
+			{
+				buf[ i ] = image[ i ];
+			}
+
+			bool ret = true;
+			for( i = 0 ; i < tiffH ; i++ )
+			{
+				if( TIFFWriteScanline( tif, buf + i * lsize, static_cast< unsigned int >( i ), 0 ) < 0 )
+				{
+					ret = false;
+					break;
+				}
+			}
+
+			delete [] buf;
+
+			TIFFFlushData( tif );
+			TIFFClose( tif );
+
+			return( ret );
+		}
+	};
+
+	// カラー画素版
+	template < >
+	struct _tiff_writer_< true >
+	{
+		template < class T, class Allocator >
+		static bool write( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression )
+		{
+			typedef _pixel_converter_< T > pixel_converter;
+			typedef typename pixel_converter::color_type color_type;
+			typedef typename pixel_converter::value_type value_type;
+			typedef typename array2< T, Allocator >::size_type size_type;
+
+			if( image.empty( ) )
+			{
+				return( false );
+			}
+			else if( image.width( ) == 0 )
+			{
+				std::cerr << "Image width is zero!" << std::endl;
+				return( false );
+			}
+			else if( image.height( ) == 0 )
+			{
+				std::cerr << "Image height is zero!" << std::endl;
+				return( false );
+			}
+
+			TIFF *tif;
+			size_type tiffW, tiffH;
+
+			tif = TIFFOpen( filename.c_str( ), "w" );
+			if( tif == NULL )
+			{
+				return( false );
+			}
+
+			tiffW = image.width( );
+			tiffH = image.height( );
+
+			TIFFSetField( tif, TIFFTAG_IMAGEWIDTH, tiffW );
+			TIFFSetField( tif, TIFFTAG_IMAGELENGTH, tiffH );
+			TIFFSetField( tif, TIFFTAG_BITSPERSAMPLE, 8 );
+			TIFFSetField( tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB );
+			TIFFSetField( tif, TIFFTAG_FILLORDER, FILLORDER_MSB2LSB );
+			TIFFSetField( tif, TIFFTAG_DOCUMENTNAME, "MIST Project Team" );
+			TIFFSetField( tif, TIFFTAG_IMAGEDESCRIPTION, "Created by MIST TIFF Conveter" );
+			TIFFSetField( tif, TIFFTAG_SAMPLESPERPIXEL, 3 );
+			TIFFSetField( tif, TIFFTAG_ROWSPERSTRIP, TIFFDefaultStripSize( tif, ( unsigned int )-1 ) );
+			TIFFSetField( tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG );
+			if( use_lzw_compression )
+			{
+				// LZW圧縮を利用するかどうか
+				TIFFSetField( tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW );
+			}
+
+			size_type size = image.width( ) * image.height( ) * 3;
+			size_type lsize = image.width( ) * 3;
+			unsigned char *buf = new unsigned char[ size ];
+			size_type i;
+
+			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )
+			{
+				color_type c = limits_0_255( pixel_converter::convert_from( image[ i ] ) );
+				buf[ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
+				buf[ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
+				buf[ i * 3 + 2 ] = static_cast< unsigned char >( c.b );
+			}
+
+			bool ret = true;
+			for( i = 0 ; i < tiffH ; i++ )
+			{
+				if( TIFFWriteScanline( tif, buf + i * lsize, static_cast< unsigned int >( i ), 0 ) < 0 )
+				{
+					ret = false;
+					break;
+				}
+			}
+
+			delete [] buf;
+
+			TIFFFlushData( tif );
+			TIFFClose( tif );
+
+			return( ret );
+		}
+
+		template < class Allocator >
+		static bool write( const array2< rgb< unsigned short >, Allocator > &image, const std::string &filename, bool use_lzw_compression )
+		{
+			typedef typename array2< rgb< unsigned short >, Allocator >::size_type size_type;
+
+			if( image.empty( ) )
+			{
+				return( false );
+			}
+			else if( image.width( ) == 0 )
+			{
+				std::cerr << "Image width is zero!" << std::endl;
+				return( false );
+			}
+			else if( image.height( ) == 0 )
+			{
+				std::cerr << "Image height is zero!" << std::endl;
+				return( false );
+			}
+
+			TIFF *tif;
+			size_type tiffW, tiffH;
+
+			tif = TIFFOpen( filename.c_str( ), "w" );
+			if( tif == NULL )
+			{
+				return( false );
+			}
+
+			tiffW = image.width( );
+			tiffH = image.height( );
+
+			TIFFSetField( tif, TIFFTAG_IMAGEWIDTH, tiffW );
+			TIFFSetField( tif, TIFFTAG_IMAGELENGTH, tiffH );
+			TIFFSetField( tif, TIFFTAG_BITSPERSAMPLE, 16 );
+			TIFFSetField( tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB );
+			TIFFSetField( tif, TIFFTAG_FILLORDER, FILLORDER_MSB2LSB );
+			TIFFSetField( tif, TIFFTAG_DOCUMENTNAME, "MIST Project Team" );
+			TIFFSetField( tif, TIFFTAG_IMAGEDESCRIPTION, "Created by MIST TIFF Conveter" );
+			TIFFSetField( tif, TIFFTAG_SAMPLESPERPIXEL, 3 );
+			TIFFSetField( tif, TIFFTAG_ROWSPERSTRIP, TIFFDefaultStripSize( tif, ( unsigned int )-1 ) );
+			TIFFSetField( tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG );
+			if( use_lzw_compression )
+			{
+				// LZW圧縮を利用するかどうか
+				TIFFSetField( tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW );
+			}
+
+			size_type size = image.width( ) * image.height( ) * 3;
+			size_type lsize = image.width( ) * 3;
+			unsigned short *buf = new unsigned short[ size ];
+			size_type i;
+
+			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )
+			{
+				buf[ i * 3 + 0 ] = image[ i ].r;
+				buf[ i * 3 + 1 ] = image[ i ].g;
+				buf[ i * 3 + 2 ] = image[ i ].b;
+			}
+
+			bool ret = true;
+			for( i = 0 ; i < tiffH ; i++ )
+			{
+				if( TIFFWriteScanline( tif, buf + i * lsize, static_cast< unsigned int >( i ), 0 ) < 0 )
+				{
+					ret = false;
+					break;
+				}
+			}
+
+			delete [] buf;
+
+			TIFFFlushData( tif );
+			TIFFClose( tif );
+
+			return( ret );
+		}
+
+		template < class Allocator >
+		static bool write( const array2< rgba< unsigned short >, Allocator > &image, const std::string &filename, bool use_lzw_compression )
+		{
+			typedef typename array2< rgba< unsigned short >, Allocator >::size_type size_type;
+
+			if( image.empty( ) )
+			{
+				return( false );
+			}
+			else if( image.width( ) == 0 )
+			{
+				std::cerr << "Image width is zero!" << std::endl;
+				return( false );
+			}
+			else if( image.height( ) == 0 )
+			{
+				std::cerr << "Image height is zero!" << std::endl;
+				return( false );
+			}
+
+			TIFF *tif;
+			size_type tiffW, tiffH;
+
+			tif = TIFFOpen( filename.c_str( ), "w" );
+			if( tif == NULL )
+			{
+				return( false );
+			}
+
+			tiffW = image.width( );
+			tiffH = image.height( );
+
+			TIFFSetField( tif, TIFFTAG_IMAGEWIDTH, tiffW );
+			TIFFSetField( tif, TIFFTAG_IMAGELENGTH, tiffH );
+			TIFFSetField( tif, TIFFTAG_BITSPERSAMPLE, 16 );
+			TIFFSetField( tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB );
+			TIFFSetField( tif, TIFFTAG_FILLORDER, FILLORDER_MSB2LSB );
+			TIFFSetField( tif, TIFFTAG_DOCUMENTNAME, "MIST Project Team" );
+			TIFFSetField( tif, TIFFTAG_IMAGEDESCRIPTION, "Created by MIST TIFF Conveter" );
+			TIFFSetField( tif, TIFFTAG_SAMPLESPERPIXEL, 3 );
+			TIFFSetField( tif, TIFFTAG_ROWSPERSTRIP, TIFFDefaultStripSize( tif, ( unsigned int )-1 ) );
+			TIFFSetField( tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG );
+			if( use_lzw_compression )
+			{
+				// LZW圧縮を利用するかどうか
+				TIFFSetField( tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW );
+			}
+
+			size_type size = image.width( ) * image.height( ) * 3;
+			size_type lsize = image.width( ) * 3;
+			unsigned short *buf = new unsigned short[ size ];
+			size_type i;
+
+			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )
+			{
+				buf[ i * 3 + 0 ] = image[ i ].r;
+				buf[ i * 3 + 1 ] = image[ i ].g;
+				buf[ i * 3 + 2 ] = image[ i ].b;
+			}
+
+			bool ret = true;
+			for( i = 0 ; i < tiffH ; i++ )
+			{
+				if( TIFFWriteScanline( tif, buf + i * lsize, static_cast< unsigned int >( i ), 0 ) < 0 )
+				{
+					ret = false;
+					break;
+				}
+			}
+
+			delete [] buf;
+
+			TIFFFlushData( tif );
+			TIFFClose( tif );
+
+			return( ret );
+		}
+	};
+
 	template < class T, class Allocator >
 	struct tiff_controller
 	{
@@ -311,85 +711,7 @@ namespace __tiff_controller__
 
 		static bool write( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression )
 		{
-			if( image.empty( ) )
-			{
-				return( false );
-			}
-			else if( image.width( ) == 0 )
-			{
-				std::cerr << "Image width is zero!" << std::endl;
-				return( false );
-			}
-			else if( image.height( ) == 0 )
-			{
-				std::cerr << "Image height is zero!" << std::endl;
-				return( false );
-			}
-
-			TIFF *tif;
-			size_type tiffW, tiffH;
-			size_type rowsPerStrip;
-
-			tif = TIFFOpen( filename.c_str( ), "w" );
-			if( tif == NULL )
-			{
-				return(false);
-			}
-
-			tiffW = image.width( );
-			tiffH = image.height( );
-
-			rowsPerStrip = ( 8 * 1024 ) / ( 3 * tiffW );
-			if( rowsPerStrip == 0 )
-			{
-				rowsPerStrip = 1;
-			}
-
-			TIFFSetField( tif, TIFFTAG_IMAGEWIDTH, tiffW );
-			TIFFSetField( tif, TIFFTAG_IMAGELENGTH, tiffH );
-			TIFFSetField( tif, TIFFTAG_BITSPERSAMPLE, 8 );
-			TIFFSetField( tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB );
-			TIFFSetField( tif, TIFFTAG_FILLORDER, FILLORDER_MSB2LSB );
-			TIFFSetField( tif, TIFFTAG_DOCUMENTNAME, "mist project team" );
-			TIFFSetField( tif, TIFFTAG_IMAGEDESCRIPTION, "Created by mist tiff conveter" );
-			TIFFSetField( tif, TIFFTAG_SAMPLESPERPIXEL, 3 );
-			TIFFSetField( tif, TIFFTAG_ROWSPERSTRIP, rowsPerStrip );
-			TIFFSetField( tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG );
-			if( use_lzw_compression )
-			{
-				// LZW圧縮を利用するかどうか
-				TIFFSetField( tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW );
-			}
-
-			size_type size = image.width( ) * image.height( ) * 3;
-			size_type lsize = image.width( ) * 3;
-			unsigned char *buf = new unsigned char[ size ];
-			size_type i;
-
-			for( i = 0 ; i < image.width( ) * image.height( ) ; i++ )
-			{
-				color_type c = limits_0_255( pixel_converter::convert_from( image[ i ] ) );
-				buf[ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
-				buf[ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
-				buf[ i * 3 + 2 ] = static_cast< unsigned char >( c.b );
-			}
-
-			bool ret = true;
-			for( i = 0 ; i < tiffH ; i++ )
-			{
-				if( TIFFWriteScanline( tif, buf + i * lsize, static_cast< unsigned int >( i ), 0 ) < 0 )
-				{
-					ret = false;
-					break;
-				}
-			}
-
-			delete [] buf;
-
-			TIFFFlushData( tif );
-			TIFFClose( tif );
-
-			return( ret );
+			return( _tiff_writer_< is_color< T >::value >::write( image, filename, use_lzw_compression ) );
 		}
 	};
 }
@@ -431,9 +753,10 @@ bool read_tiff( array2< T, Allocator > &image, const std::string &filename )
 /// @brief MISTコンテナの画像をTIFF形式でファイルに出力する
 //! 
 //! @attention LZW圧縮のかかったTIFF画像を出力する場合は，libtiff ライブラリ側でLZW圧縮が有効になっている必要がある
+//! @attention データの型がunsigned short，rgb< unsigned short>，rgba< unsigned short>の場合は、16ビットチャンネルを使用して画像が保存される
 //! 
-//! @param[in] image    … 出力画像を保持するMISTコンテナ
-//! @param[in] filename … 出力ファイル名
+//! @param[in] image               … 出力画像を保持するMISTコンテナ
+//! @param[in] filename            … 出力ファイル名
 //! @param[in] use_lzw_compression … LZW圧縮されたTIFF画像を出力するかどうか
 //!
 //! @retval true  … 画像の書き込みに成功
