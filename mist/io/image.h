@@ -38,10 +38,6 @@
 #include "../mist.h"
 #endif
 
-#ifndef __INCLUDE_MIST_JPEG__
-#include "jpeg.h"
-#endif
-
 #ifndef __INCLUDE_MIST_BMP__
 #include "bmp.h"
 #endif
@@ -56,6 +52,10 @@
 
 #ifndef __INCLUDE_MIST_TIFF__
 #include "tiff.h"
+#endif
+
+#ifndef __INCLUDE_MIST_JPEG__
+#include "jpeg.h"
 #endif
 
 #ifndef __INCLUDE_MIST_PNM__
