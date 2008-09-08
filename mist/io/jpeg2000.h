@@ -339,7 +339,7 @@ namespace __jpeg2000_controller__
 			// ˆ³k—¦‚ğİ’è‚·‚é
 			// 0‚ÍLosslessˆ³k
 			param.tcp_rates[ 0 ] = static_cast< float >( compression_level );
-			param.tcp_numlayers = 1;
+			param.tcp_numlayers  = 1;
 			param.cp_disto_alloc = 1;
 
 			// ƒRƒƒ“ƒg‚ğ–„‚ß‚Ş

@@ -139,7 +139,7 @@ namespace __numeric__
 		template < class T > static bool gt( const T &v1, const T &v2 ){ return( v1 >  v2 ); }
 		template < class T > static bool eq( const T &v1, const T &v2 ){ return( v1 == v2 ); }
 		template < class T > static bool eq( const T &v1, const T &v2, const double delta ){ return( std::abs( v1 - v2 ) < delta ); }
-		template < class T > static bool is_zero( const T &v ){ return( v == 0 ); }
+		template < class T > static bool is_zero( const T &v ){ return( v == T( ) ); }
 	};
 
 	template< >
