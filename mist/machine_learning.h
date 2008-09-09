@@ -700,14 +700,14 @@ namespace machine_learning
 
 		public:
 			/// @brief デフォルトのコンストラクタ
-			confidence_rating_classifier( ) : index_( 0 ), min_( 0 ), max_( 0 )
+			confidence_rating_classifier( ) : min_( 0 ), max_( 0 ), index_( 0 )
 			{
 				memset( hist1_, 0, sizeof( double ) * __number_of_bins__ );
 				memset( hist2_, 0, sizeof( double ) * __number_of_bins__ );
 			}
 
 			/// @brief コピーコンストラクタ
-			confidence_rating_classifier( const confidence_rating_classifier& w ) : index_( w.index_ ), min_( w.min_ ), max_( w.max_ )
+			confidence_rating_classifier( const confidence_rating_classifier& w ) : min_( w.min_ ), max_( w.max_ ), index_( w.index_ )
 			{
 				memcpy( hist1_, w.hist1_, sizeof( double ) * __number_of_bins__ );
 				memcpy( hist2_, w.hist2_, sizeof( double ) * __number_of_bins__ );
@@ -749,7 +749,7 @@ namespace machine_learning
 				#pragma omp parallel for firstprivate( nfeatures ) schedule( guided )
 				for( int index = 0 ; index < nfeatures ; index++ )
 				{
-					double min = f[ 0 ];
+					double min = features[ 0 ];
 					double max = min;
 
 					for( size_type i = 0 ; i < features.size( ) ; i++ )
@@ -1193,7 +1193,6 @@ namespace machine_learning
 								rpweight[ i ] = 0.0;
 							}
 
-							double sum = 0.0;
 							for( size_type i = 0 ; i < features.size( ) ; i++ )
 							{
 								feature_type &f = features[ i ];

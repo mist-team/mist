@@ -364,7 +364,7 @@ public:
 				pointer       po = paccess( 0, 0 );
 				for( difference_type c = 0 ; c < ncols ; c++ )
 				{
-					po = allocator_.copy_objects( pi, nrows, po );
+					po = base::allocator_.copy_objects( pi, nrows, po );
 					pi += o.rows( );
 				}
 			}
@@ -381,7 +381,7 @@ public:
 			pointer       po = o.paccess( 0, 0 );
 			for( difference_type c = 0 ; c < ncols ; c++ )
 			{
-				po = allocator_.copy_objects( pi, nrows, po );
+				po = base::allocator_.copy_objects( pi, nrows, po );
 				pi += this->rows( );
 			}
 

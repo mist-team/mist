@@ -1081,7 +1081,7 @@ public:
 				pointer       po = paccess( 0, 0 );
 				for( difference_type j = 0 ; j < h ; j++ )
 				{
-					po = allocator_.copy_objects( pi, w, po );
+					po = base::allocator_.copy_objects( pi, w, po );
 					pi += o.width( );
 				}
 			}
@@ -1098,7 +1098,7 @@ public:
 			pointer       po = o.paccess( 0, 0 );
 			for( difference_type j = 0 ; j < h ; j++ )
 			{
-				po = allocator_.copy_objects( pi, w, po );
+				po = base::allocator_.copy_objects( pi, w, po );
 				pi += this->width( );
 			}
 
@@ -1679,7 +1679,7 @@ public:
 				{
 					for( difference_type j = 0 ; j < h ; j++ )
 					{
-						po = allocator_.copy_objects( pi, w, po );
+						po = base::allocator_.copy_objects( pi, w, po );
 						pi += s1;
 					}
 
@@ -1704,7 +1704,7 @@ public:
 			{
 				for( difference_type j = 0 ; j < h ; j++ )
 				{
-					po = allocator_.copy_objects( pi, w, po );
+					po = base::allocator_.copy_objects( pi, w, po );
 					pi += s1;
 				}
 
