@@ -140,8 +140,10 @@ public:
 	};
 
 
-private:
+protected:
 	mist_allocator< T, Allocator > allocator_;		///< @brief 各コンテナで利用するアロケータオブジェクト
+
+private:
 	size_type size_;								///< @brief コンテナに格納されている要素数
 
 protected:
@@ -742,9 +744,10 @@ public:
 		typedef array1< TT, AAllocator > other;
 	};
 
+private:
+	typedef array< T, Allocator > base;		///< @brief 基底クラスの別名
 
 protected:
-	typedef array< T, Allocator > base;		///< @brief 基底クラスの別名
 	double reso1_;							///< @brief コンテナ内の要素の解像度（ミリや周波数など）
 
 public:
@@ -995,10 +998,12 @@ public:
 	};
 
 
-protected:
+private:
 	typedef array1< T, Allocator > base;	///< @brief 基底クラス
 	size_type size2_;						///< @brief Y軸方向の要素数
 	size_type size1_;						///< @brief X軸方向の要素数
+
+protected:
 	double reso2_;							///< @brief X軸方向の解像度
 
 public:
@@ -1072,12 +1077,12 @@ public:
 			array2 o( *this );
 			if( resize( w, h ) )
 			{
+				const_pointer pi = o.paccess( x, y );
+				pointer       po = paccess( 0, 0 );
 				for( difference_type j = 0 ; j < h ; j++ )
 				{
-					for( difference_type i = 0 ; i < w ; i++ )
-					{
-						operator ()( i, j ) = o( i + x, j + y );
-					}
+					po = allocator_.copy_objects( pi, w, po );
+					pi += o.width( );
 				}
 			}
 			else
@@ -1088,12 +1093,13 @@ public:
 		else
 		{
 			array2 o( w, h, base::reso1( ), reso2( ) );
+
+			const_pointer pi = paccess( x, y );
+			pointer       po = o.paccess( 0, 0 );
 			for( difference_type j = 0 ; j < h ; j++ )
 			{
-				for( difference_type i = 0 ; i < w ; i++ )
-				{
-					o( i, j ) = operator ()( i + x, j + y );
-				}
+				po = allocator_.copy_objects( pi, w, po );
+				pi += this->width( );
 			}
 
 			swap( o );
@@ -1571,11 +1577,13 @@ public:
 	};
 
 
-protected:
+private:
 	typedef array2< T, Allocator > base;	///< @brief 基底クラス
 	size_type size3_;						///< @brief Z軸方向の要素数
 	size_type size2_;						///< @brief Y軸方向の要素数
 	size_type size1_;						///< @brief X軸方向の要素数
+
+protected:
 	double reso3_;							///< @brief Z軸方向の解像度
 
 public:
@@ -1662,15 +1670,20 @@ public:
 			array3 o( *this );
 			if( resize( w, h, d ) )
 			{
+				const_pointer pi = o.paccess( x, y, z );
+				pointer       po = paccess( 0, 0, 0 );
+				size_type     s1 = o.paccess( x, y + 1, z ) - pi;
+				size_type     s2 = o.paccess( x, y, z + 1 ) - o.paccess( x, y + h, z );
+
 				for( difference_type k = 0 ; k < d ; k++ )
 				{
 					for( difference_type j = 0 ; j < h ; j++ )
 					{
-						for( difference_type i = 0 ; i < w ; i++ )
-						{
-							operator ()( i, j, k ) = o( i + x, j + y, k + z );
-						}
+						po = allocator_.copy_objects( pi, w, po );
+						pi += s1;
 					}
+
+					pi += s2;
 				}
 			}
 			else
@@ -1681,15 +1694,21 @@ public:
 		else
 		{
 			array3 o( w, h, d, base::reso1( ), base::reso2( ), reso3( ) );
+
+			const_pointer pi = paccess( x, y, z );
+			pointer       po = o.paccess( 0, 0, 0 );
+			size_type     s1 = paccess( x, y + 1, z ) - pi;
+			size_type     s2 = paccess( x, y, z + 1 ) - paccess( x, y + h, z );
+
 			for( difference_type k = 0 ; k < d ; k++ )
 			{
 				for( difference_type j = 0 ; j < h ; j++ )
 				{
-					for( difference_type i = 0 ; i < w ; i++ )
-					{
-						o( i, j, k ) = operator ()( i + x, j + y, k + z );
-					}
+					po = allocator_.copy_objects( pi, w, po );
+					pi += s1;
 				}
+
+				pi += s2;
 			}
 
 			swap( o );

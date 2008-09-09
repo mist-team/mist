@@ -360,12 +360,12 @@ public:
 
 			if( resize( nrows, ncols ) )
 			{
+				const_pointer pi = o.paccess( row, col );
+				pointer       po = paccess( 0, 0 );
 				for( difference_type c = 0 ; c < ncols ; c++ )
 				{
-					for( difference_type r = 0 ; r < nrows ; r++ )
-					{
-						operator ()( r + row, c + col ) = o( r, c );
-					}
+					po = allocator_.copy_objects( pi, nrows, po );
+					pi += o.rows( );
 				}
 			}
 			else
@@ -376,12 +376,13 @@ public:
 		else
 		{
 			matrix o( nrows, ncols );
+
+			const_pointer pi = paccess( row, col );
+			pointer       po = o.paccess( 0, 0 );
 			for( difference_type c = 0 ; c < ncols ; c++ )
 			{
-				for( difference_type r = 0 ; r < nrows ; r++ )
-				{
-					o( r, c ) = operator ()( r + row, c + col );
-				}
+				po = allocator_.copy_objects( pi, nrows, po );
+				pi += this->rows( );
 			}
 
 			swap( o );
