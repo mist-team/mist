@@ -156,7 +156,7 @@ namespace ptile
 				{
 					min = in[ i ];
 				}
-				else if( max < in[ i ] )
+				if( max < in[ i ] )
 				{
 					max = in[ i ];
 				}
@@ -316,7 +316,7 @@ namespace discriminant_analysis
 				{
 					min = in[ i ];
 				}
-				else if( max < in[ i ] )
+				if( max < in[ i ] )
 				{
 					max = in[ i ];
 				}
