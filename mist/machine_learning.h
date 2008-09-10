@@ -749,7 +749,7 @@ namespace machine_learning
 				#pragma omp parallel for firstprivate( nfeatures ) schedule( guided )
 				for( int index = 0 ; index < nfeatures ; index++ )
 				{
-					double min = features[ 0 ];
+					double min = features[ 0 ][ index ];
 					double max = min;
 
 					for( size_type i = 0 ; i < features.size( ) ; i++ )
