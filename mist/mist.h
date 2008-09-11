@@ -214,6 +214,7 @@ public:
 		if( out.resize( num ) )
 		{
 			allocator_.copy_objects( paccess( index ), num, out.paccess( 0 ) );
+			return( true );
 		}
 		else
 		{
