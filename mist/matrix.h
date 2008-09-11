@@ -319,15 +319,16 @@ public:
 
 	/// @brief コンテナ内の要素をトリミングする
 	//! 
-	//! @param[in] row   … トリミングの行方向の開始位置（ゼロから始まるインデックス）
-	//! @param[in] col   … トリミングの列方向の開始位置（ゼロから始まるインデックス）
-	//! @param[in] nrows … トリミング後の行数（-1の場合は，最後までをコピーする）
-	//! @param[in] ncols … トリミング後の列数（-1の場合は，最後までをコピーする）
+	//! @param[out] out   … トリミング結果の行列を格納するオブジェクト（行列のサイズは自動で変更されます）
+	//! @param[in]  row   … トリミングの行方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in]  col   … トリミングの列方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in]  nrows … トリミング後の行数（-1の場合は，最後までをコピーする）
+	//! @param[in]  ncols … トリミング後の列数（-1の場合は，最後までをコピーする）
 	//! 
 	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
 	//! @retval false … 不正なトリミングを行おうとした場合
 	//! 
-	bool trim( size_type row, size_type col, difference_type nrows = -1, difference_type ncols = -1 )
+	bool trim( matrix &out, size_type row, size_type col, difference_type nrows = -1, difference_type ncols = -1 )
 	{
 		difference_type nrows_ = rows( );
 		difference_type ncols_ = cols( );
@@ -353,44 +354,58 @@ public:
 			ncols = ncols_ - col;
 		}
 
-		if( base::is_memory_shared( ) )
+		if( out.resize( nrows, ncols ) )
 		{
-			// 外部メモリを利用している場合
-			matrix o( *this );
-
-			if( resize( nrows, ncols ) )
-			{
-				const_pointer pi = o.paccess( row, col );
-				pointer       po = paccess( 0, 0 );
-				for( difference_type c = 0 ; c < ncols ; c++ )
-				{
-					po = base::allocator_.copy_objects( pi, nrows, po );
-					pi += o.rows( );
-				}
-			}
-			else
-			{
-				return( false );
-			}
-		}
-		else
-		{
-			matrix o( nrows, ncols );
-
 			const_pointer pi = paccess( row, col );
-			pointer       po = o.paccess( 0, 0 );
+			pointer       po = out.paccess( 0, 0 );
 			for( difference_type c = 0 ; c < ncols ; c++ )
 			{
 				po = base::allocator_.copy_objects( pi, nrows, po );
 				pi += this->rows( );
 			}
 
-			swap( o );
+			return( true );
 		}
-
-		return( true );
+		else
+		{
+			return( false );
+		}
 	}
 
+	/// @brief コンテナ内の要素をトリミングする
+	//! 
+	//! @param[in] row   … トリミングの行方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] col   … トリミングの列方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] nrows … トリミング後の行数（-1の場合は，最後までをコピーする）
+	//! @param[in] ncols … トリミング後の列数（-1の場合は，最後までをコピーする）
+	//! 
+	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
+	//! @retval false … 不正なトリミングを行おうとした場合
+	//! 
+	bool trim( size_type row, size_type col, difference_type nrows = -1, difference_type ncols = -1 )
+	{
+		if( base::is_memory_shared( ) )
+		{
+			// 外部メモリを利用している場合
+			matrix o( *this );
+			return( o.trim( *this, row, col, nrows, ncols ) );
+		}
+		else
+		{
+			matrix o;
+
+			if( this->trim( o, row, col, nrows, ncols ) )
+			{
+				swap( o );
+
+				return( true );
+			}
+			else
+			{
+				return( false );
+			}
+		}
+	}
 
 	/// @brief 行列内の全ての内容を入れ替える．
 	//! 

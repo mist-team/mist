@@ -187,13 +187,14 @@ public:
 	//!
 	//! メモリの確保に失敗したら，空のコンテナとなる
 	//!
-	//! @param[in] index … トリミングの開始位置（ゼロから始まるインデックス）
-	//! @param[in] num   … トリミング後の要素数（-1の場合は，最後までをコピーする）
+	//! @param[out] out   … トリミング結果を格納するオブジェクト（サイズは自動で変更されます）
+	//! @param[in]  index … トリミングの開始位置（ゼロから始まるインデックス）
+	//! @param[in]  num   … トリミング後の要素数（-1の場合は，最後までをコピーする）
 	//! 
 	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
 	//! @retval false … 不正なトリミングを行おうとした場合
 	//! 
-	bool trim( size_type index, difference_type num = -1 )
+	bool trim( array &out, size_type index, difference_type num = -1 )
 	{
 		difference_type num_ = size( );
 		if( num_ <= static_cast< difference_type >( index ) || num_ < static_cast< difference_type >( index + num ) )
@@ -210,35 +211,49 @@ public:
 			num = size( ) - index;
 		}
 
+		if( out.resize( num ) )
+		{
+			allocator_.copy_objects( paccess( index ), num, out.paccess( 0 ) );
+		}
+		else
+		{
+			return( false );
+		}
+	}
+
+	/// @brief コンテナ内の要素をトリミングする
+	//!
+	//! メモリの確保に失敗したら，空のコンテナとなる
+	//!
+	//! @param[in] index … トリミングの開始位置（ゼロから始まるインデックス）
+	//! @param[in] num   … トリミング後の要素数（-1の場合は，最後までをコピーする）
+	//! 
+	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
+	//! @retval false … 不正なトリミングを行おうとした場合
+	//! 
+	bool trim( size_type index, difference_type num = -1 )
+	{
 		if( is_memory_shared( ) )
 		{
 			// 外部メモリを利用している場合
 			array o( *this );
+			return( o.trim( *this, index, num ) );
+		}
+		else
+		{
+			array o( num );
 
-			if( resize( num ) )
+			if( this->trim( o, index, num ) )
 			{
-				for( difference_type i = 0 ; i < num ; i++ )
-				{
-					operator []( i ) = o( i + index );
-				}
+				swap( o );
+
+				return( true );
 			}
 			else
 			{
 				return( false );
 			}
 		}
-		else
-		{
-			array o( num );
-			for( difference_type i = 0 ; i < num ; i++ )
-			{
-				o[ i ] = operator []( i + index );
-			}
-
-			swap( o );
-		}
-
-		return( true );
 	}
 
 
@@ -817,6 +832,28 @@ public: // 配列に対する操作
 
 	/// @brief コンテナ内の要素をトリミングする
 	//! 
+	//! @param[out] out   … トリミング結果を格納するオブジェクト（サイズは自動で変更されます）
+	//! @param[in]  index … トリミングの開始位置（ゼロから始まるインデックス）
+	//! @param[in]  num   … トリミング後の要素数（-1の場合は，最後までをコピーする）
+	//! 
+	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
+	//! @retval false … 不正なトリミングを行おうとした場合
+	//! 
+	bool trim( array1 &out, size_type index, difference_type num = -1 )
+	{
+		if( base::trim( out, index, num ) )
+		{
+			reso( reso1( ) );
+			return( true );
+		}
+		else
+		{
+			return( false );
+		}
+	}
+
+	/// @brief コンテナ内の要素をトリミングする
+	//! 
 	//! @param[in] index … トリミングの開始位置（ゼロから始まるインデックス）
 	//! @param[in] num   … トリミング後の要素数（-1の場合は，最後までをコピーする）
 	//! 
@@ -1037,15 +1074,16 @@ public:
 
 	/// @brief コンテナ内の要素をトリミングする
 	//! 
-	//! @param[in] x … トリミングのX軸方向の開始位置（ゼロから始まるインデックス）
-	//! @param[in] y … トリミングのY軸方向の開始位置（ゼロから始まるインデックス）
-	//! @param[in] w … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
-	//! @param[in] h … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[out] out … トリミング結果の画像を格納するオブジェクト（画像のサイズは自動で変更されます）
+	//! @param[in]  x   … トリミングのX軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in]  y   … トリミングのY軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in]  w   … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in]  h   … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
 	//! 
 	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
 	//! @retval false … 不正なトリミングを行おうとした場合
 	//! 
-	bool trim( size_type x, size_type y, difference_type w = -1, difference_type h = -1 )
+	bool trim( array2 &out, size_type x, size_type y, difference_type w = -1, difference_type h = -1 )
 	{
 		difference_type w_ = width( );
 		difference_type h_ = height( );
@@ -1071,43 +1109,60 @@ public:
 			h = h_ - y;
 		}
 
-		if( base::is_memory_shared( ) )
+		if( out.resize( w, h ) )
 		{
-			// 外部メモリを利用している場合
-			array2 o( *this );
-			if( resize( w, h ) )
-			{
-				const_pointer pi = o.paccess( x, y );
-				pointer       po = paccess( 0, 0 );
-				for( difference_type j = 0 ; j < h ; j++ )
-				{
-					po = base::allocator_.copy_objects( pi, w, po );
-					pi += o.width( );
-				}
-			}
-			else
-			{
-				return( false );
-			}
-		}
-		else
-		{
-			array2 o( w, h, base::reso1( ), reso2( ) );
+			out.reso( base::reso1( ), base::reso2( ) );
 
 			const_pointer pi = paccess( x, y );
-			pointer       po = o.paccess( 0, 0 );
+			pointer       po = out.paccess( 0, 0 );
 			for( difference_type j = 0 ; j < h ; j++ )
 			{
 				po = base::allocator_.copy_objects( pi, w, po );
 				pi += this->width( );
 			}
 
-			swap( o );
+			return( true );
 		}
-
-		return( true );
+		else
+		{
+			return( false );
+		}
 	}
 
+	/// @brief コンテナ内の要素をトリミングする
+	//! 
+	//! @param[in] x … トリミングのX軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] y … トリミングのY軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] w … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in] h … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! 
+	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
+	//! @retval false … 不正なトリミングを行おうとした場合
+	//! 
+	bool trim( size_type x, size_type y, difference_type w = -1, difference_type h = -1 )
+	{
+		if( base::is_memory_shared( ) )
+		{
+			// 外部メモリを利用している場合
+			array2 o( *this );
+			return( o.trim( *this, x, y, w, h ) );
+		}
+		else
+		{
+			array2 o;
+
+			if( this->trim( o, x, y, w, h ) )
+			{
+				swap( o );
+
+				return( true );
+			}
+			else
+			{
+				return( false );
+			}
+		}
+	}
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
@@ -1619,17 +1674,18 @@ public:
 
 	/// @brief コンテナ内の要素をトリミングする
 	//! 
-	//! @param[in] x … トリミングのX軸方向の開始位置（ゼロから始まるインデックス）
-	//! @param[in] y … トリミングのY軸方向の開始位置（ゼロから始まるインデックス）
-	//! @param[in] z … トリミングのZ軸方向の開始位置（ゼロから始まるインデックス）
-	//! @param[in] w … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
-	//! @param[in] h … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
-	//! @param[in] d … トリミング後のZ軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[out] out … トリミング結果の画像を格納するオブジェクト（画像のサイズは自動で変更されます）
+	//! @param[in]  x   … トリミングのX軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in]  y   … トリミングのY軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in]  z   … トリミングのZ軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in]  w   … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in]  h   … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in]  d   … トリミング後のZ軸方向の要素数（-1の場合は，最後までをコピーする）
 	//! 
 	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
 	//! @retval false … 不正なトリミングを行おうとした場合
 	//! 
-	bool trim( size_type x, size_type y, size_type z, difference_type w = -1, difference_type h = -1, difference_type d = -1 )
+	bool trim( array3 &out, size_type x, size_type y, size_type z, difference_type w = -1, difference_type h = -1, difference_type d = -1 )
 	{
 		difference_type w_ = width( );
 		difference_type h_ = height( );
@@ -1664,39 +1720,12 @@ public:
 			d = d_ - z;
 		}
 
-		if( base::is_memory_shared( ) )
+		if( out.resize( w, h, d ) )
 		{
-			// 外部メモリを利用している場合
-			array3 o( *this );
-			if( resize( w, h, d ) )
-			{
-				const_pointer pi = o.paccess( x, y, z );
-				pointer       po = paccess( 0, 0, 0 );
-				size_type     s1 = o.paccess( x, y + 1, z ) - pi;
-				size_type     s2 = o.paccess( x, y, z + 1 ) - o.paccess( x, y + h, z );
-
-				for( difference_type k = 0 ; k < d ; k++ )
-				{
-					for( difference_type j = 0 ; j < h ; j++ )
-					{
-						po = base::allocator_.copy_objects( pi, w, po );
-						pi += s1;
-					}
-
-					pi += s2;
-				}
-			}
-			else
-			{
-				return( false );
-			}
-		}
-		else
-		{
-			array3 o( w, h, d, base::reso1( ), base::reso2( ), reso3( ) );
+			out.reso( base::reso1( ), base::reso2( ), reso3( ) );
 
 			const_pointer pi = paccess( x, y, z );
-			pointer       po = o.paccess( 0, 0, 0 );
+			pointer       po = out.paccess( 0, 0, 0 );
 			size_type     s1 = paccess( x, y + 1, z ) - pi;
 			size_type     s2 = paccess( x, y, z + 1 ) - paccess( x, y + h, z );
 
@@ -1711,12 +1740,50 @@ public:
 				pi += s2;
 			}
 
-			swap( o );
+			return( true );
 		}
-
-		return( true );
+		else
+		{
+			return( false );
+		}
 	}
 
+	/// @brief コンテナ内の要素をトリミングする
+	//! 
+	//! @param[in] x … トリミングのX軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] y … トリミングのY軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] z … トリミングのZ軸方向の開始位置（ゼロから始まるインデックス）
+	//! @param[in] w … トリミング後のX軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in] h … トリミング後のY軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! @param[in] d … トリミング後のZ軸方向の要素数（-1の場合は，最後までをコピーする）
+	//! 
+	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
+	//! @retval false … 不正なトリミングを行おうとした場合
+	//! 
+	bool trim( size_type x, size_type y, size_type z, difference_type w = -1, difference_type h = -1, difference_type d = -1 )
+	{
+		if( base::is_memory_shared( ) )
+		{
+			// 外部メモリを利用している場合
+			array3 o( *this );
+			return( o.trim( *this, x, y, z, w, h, d ) );
+		}
+		else
+		{
+			array3 o;
+
+			if( this->trim( o, x, y, z, w, h, d ) )
+			{
+				swap( o );
+
+				return( true );
+			}
+			else
+			{
+				return( false );
+			}
+		}
+	}
 
 	/// @brief コンテナ内の全ての内容を入れ替える．
 	//! 
