@@ -43,6 +43,11 @@
 #include "../config/type_trait.h"
 #endif
 
+// カラー画像の設定を読み込む
+#ifndef __INCLUDE_MIST_COLOR_H__
+#include "../config/color.h"
+#endif
+
 
 #ifndef __INCLUDE_MIST_THREAD__
 #include "../thread.h"
@@ -1029,7 +1034,7 @@ namespace __median_filter_controller__
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( )
 		{
-			__median_filter__< is_integer< value_type >::value >::median_filter( *in_, *out_, fw_, fh_, fd_, thread_id_, thread_num_, f_ );
+			__median_filter__< type_and< is_integer< value_type >::value, !is_color< value_type >::value >::value >::median_filter( *in_, *out_, fw_, fh_, fd_, thread_id_, thread_num_, f_ );
 			return( true );
 		}
 	};
