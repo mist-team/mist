@@ -1863,6 +1863,101 @@ struct _pixel_converter_
 #endif
 
 
+#define __DEFINE_COLOR_TYPE_TRAIT__( function, type ) \
+	template<> struct function<  rgb< type > >{ _MIST_CONST( bool, value, true  ); }; \
+	template<> struct function<  bgr< type > >{ _MIST_CONST( bool, value, true  ); }; \
+	template<> struct function< rgba< type > >{ _MIST_CONST( bool, value, true  ); }; \
+	template<> struct function< bgra< type > >{ _MIST_CONST( bool, value, true  ); }; \
+
+// type_trait 内の機能を拡張する
+/// @brief char 判定
+//! 
+//! Tが１バイトの文字列型であれば真に評価する
+//! 
+//! @param T  … 調査する型
+//! 
+__DEFINE_COLOR_TYPE_TRAIT__( is_char, unsigned char )
+__DEFINE_COLOR_TYPE_TRAIT__( is_char, signed char )
+__DEFINE_COLOR_TYPE_TRAIT__( is_char, char )
+
+
+/// @brief 浮動小数点 判定
+//! 
+//! T が float か double 型であれば真に評価する
+//! 
+//! @param T  … 調査する型
+//! 
+__DEFINE_COLOR_TYPE_TRAIT__( is_float, float )
+__DEFINE_COLOR_TYPE_TRAIT__( is_float, double )
+__DEFINE_COLOR_TYPE_TRAIT__( is_float, long double )
+
+
+
+/// @brief integer 判定
+//! 
+//! T が整数型であれば真に評価する。汎整数型がこれにあたる
+//! 
+//! @param T  … 調査する型
+//! 
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, unsigned char )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, unsigned short )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, unsigned int )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, unsigned long )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, signed char )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, signed short )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, signed int )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, signed long )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, bool )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, char )
+
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) && defined( __ICC ) )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, size_t )
+__DEFINE_COLOR_TYPE_TRAIT__( is_integer, ptrdiff_t )
+#endif
+
+
+
+/// @brief arithmetic 判定
+//! 
+//! T が算術型であれば真に評価する。汎整数型か浮動小数点型のいずれかがこれにあたる
+//! 
+//! @param T  … 調査する型
+//! 
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, unsigned char )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, unsigned short )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, unsigned int )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, unsigned long )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, signed char )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, signed short )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, signed int )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, signed long )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, bool )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, char )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, float )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, double )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, long double )
+
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) && defined( __ICC ) )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, size_t )
+__DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, ptrdiff_t )
+#endif
+
+
+/// @brief 対応する float 型を返す
+//! 
+//! T が float の場合は float を返し，それ以外は double （もしくは long double）とする
+//! 
+//! @param T  … 調査する型
+//! 
+template< class T > struct float_type<  rgb< T > > { typedef rgb< typename float_type< T >::value_type > value_type; };
+template< class T > struct float_type<  bgr< T > > { typedef rgb< typename float_type< T >::value_type > value_type; };
+template< class T > struct float_type< rgba< T > > { typedef rgb< typename float_type< T >::value_type > value_type; };
+template< class T > struct float_type< bgra< T > > { typedef rgb< typename float_type< T >::value_type > value_type; };
+
+
+#undef __DEFINE_COLOR_TYPE_TRAIT__
+
+
 // mist名前空間の終わり
 _MIST_END
 

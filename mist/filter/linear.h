@@ -150,6 +150,80 @@ namespace __linear__
 		}
 	};
 
+	template < int DIMENSION >
+	struct __access__
+	{
+		template < class Array >
+		inline static typename Array::value_type &at( Array &in, typename Array::size_type _1, typename Array::size_type _2, typename Array::size_type _3 )
+		{
+			return( in( _1, _2, _3 ) );
+		}
+
+		template < class Array >
+		inline static const typename Array::value_type &at( const Array &in, typename Array::size_type _1, typename Array::size_type _2, typename Array::size_type _3 )
+		{
+			return( in( _1, _2, _3 ) );
+		}
+
+		template < class Array >
+		inline static typename Array::size_type size1( const Array &in ){ return( in.size1( ) ); }
+
+		template < class Array >
+		inline static typename Array::size_type size2( const Array &in ){ return( in.size2( ) ); }
+
+		template < class Array >
+		inline static typename Array::size_type size3( const Array &in ){ return( in.size3( ) ); }
+	};
+
+	template < >
+	struct __access__< 2 >
+	{
+		template < class Array >
+		inline static typename Array::value_type &at( Array &in, typename Array::size_type _1, typename Array::size_type _2, typename Array::size_type _3 )
+		{
+			return( in( _2, _1, _3 ) );
+		}
+
+		template < class Array >
+		inline static const typename Array::value_type &at( const Array &in, typename Array::size_type _1, typename Array::size_type _2, typename Array::size_type _3 )
+		{
+			return( in( _2, _1, _3 ) );
+		}
+
+		template < class Array >
+		inline static typename Array::size_type size1( const Array &in ){ return( in.size2( ) ); }
+
+		template < class Array >
+		inline static typename Array::size_type size2( const Array &in ){ return( in.size1( ) ); }
+
+		template < class Array >
+		inline static typename Array::size_type size3( const Array &in ){ return( in.size3( ) ); }
+	};
+
+	template < >
+	struct __access__< 3 >
+	{
+		template < class Array >
+		inline static typename Array::value_type &at( Array &in, typename Array::size_type _1, typename Array::size_type _2, typename Array::size_type _3 )
+		{
+			return( in( _2, _3, _1 ) );
+		}
+
+		template < class Array >
+		inline static const typename Array::value_type &at( const Array &in, typename Array::size_type _1, typename Array::size_type _2, typename Array::size_type _3 )
+		{
+			return( in( _2, _3, _1 ) );
+		}
+
+		template < class Array >
+		inline static typename Array::size_type size1( const Array &in ){ return( in.size3( ) ); }
+
+		template < class Array >
+		inline static typename Array::size_type size2( const Array &in ){ return( in.size1( ) ); }
+
+		template < class Array >
+		inline static typename Array::size_type size3( const Array &in ){ return( in.size2( ) ); }
+	};
 
 	// in  : 入力画像. 入力画像の画素値は min と max の間とする
 	// out : 出力画像. 出力画像のメモリはあらかじめ割り当てられているものとする
@@ -423,7 +497,6 @@ namespace __linear__
 		delete [] pf;
 	}
 
-
 	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
 	static void __linear_filter__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const Kernel &kernel,
 						typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num, Functor f )
@@ -495,6 +568,200 @@ namespace __linear__
 		}
 	};
 
+
+	template < int DIMENSION >
+	struct _1D_linear_filter_
+	{
+		template < class Array1, class Array2, class Kernel, class Functor >
+		static void linear_filter( const Array1 &in, Array2 &out, const Kernel &kernel,
+									typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
+									typename Array1::size_type thread_idz, typename Array1::size_type thread_numz, Functor f )
+		{
+			typedef typename Array1::size_type		 size_type;
+			typedef typename Array1::value_type		 value_type;
+			typedef typename Kernel::value_type		 kvalue_type;
+			typedef typename Array1::const_pointer	 ipointer;
+			typedef typename Array2::pointer		 opointer;
+			typedef typename Array1::difference_type difference_type;
+			typedef __promote_pixel_converter_< typename Array1::value_type > promote_pixel_converter;
+			typedef typename promote_pixel_converter::promote_type promote_type;
+			typedef __access__< DIMENSION > access;
+
+			difference_type _1e = access::size1( in );
+			difference_type _2e = access::size2( in );
+			difference_type _3e = access::size3( in );
+
+			const bool bprogress1 = thread_idy == 0 && _3e == 1;
+			const bool bprogress2 = thread_idz == 0 && _3e > 1;
+
+			difference_type fw = kernel.size( );
+			difference_type rw = fw / 2;
+
+			difference_type i1, i2, i3;
+			value_type *tmp = new value_type[ _1e ];
+			difference_type diff = &access::at( in, 1, 0, 0 ) - &access::at( in, 0, 0, 0 );
+
+			for( i3 = thread_idz ; i3 < _3e ; i3 += thread_numz )
+			{
+				for( i2 = thread_idy ; i2 < _2e ; i2 += thread_numy )
+				{
+					ipointer p0 = &access::at( in,  0, i2, i3 );
+					opointer op = &access::at( out, 0, i2, i3 );
+					ipointer p  = p0;
+
+					// テンポラリ領域に画素値を一時的に記憶する
+					for( i1 = 0 ; i1 + rw < fw - 1 ; i1++ )
+					{
+						tmp[ i1 ] = *p;
+						p += diff;
+					}
+
+					for( i1 = 0 ; i1 < rw ; i1++ )
+					{
+						tmp[ i1 + rw ] = *p;
+						p += diff;
+
+						promote_type value = promote_type( );
+
+						value_type *ptmp = tmp + i1 - rw;
+						kvalue_type sum = 0;
+						for( size_type n = rw - i1 ; n < kernel.size( ) ; n++ )
+						{
+							value += kernel[ n ] * ptmp[ n ];
+							sum += kernel[ n ];
+						}
+
+						*op = promote_pixel_converter::convert_from( sum == 0 ? value : value / sum );
+						op += diff;
+					}
+
+					for( ; i1 + rw < _1e ; i1++ )
+					{
+						tmp[ i1 + rw ] = *p;
+						p += diff;
+
+						promote_type value = promote_type( );
+
+						value_type *ptmp = tmp + i1 - rw;
+						for( size_type n = 0 ; n < kernel.size( ) ; n++ )
+						{
+							value += kernel[ n ] * ptmp[ n ];
+						}
+
+						*op = promote_pixel_converter::convert_from( value );
+						op += diff;
+					}
+
+					for( ; i1 < _1e ; i1++ )
+					{
+						promote_type value = promote_type( );
+
+						value_type *ptmp = tmp + i1 - rw;
+						kvalue_type sum = 0;
+						size_type   ne = rw + _1e - i1;
+						for( size_type n = 0 ; n < ne ; n++ )
+						{
+							value += kernel[ n ] * ptmp[ n ];
+							sum += kernel[ n ];
+						}
+
+						*op = promote_pixel_converter::convert_from( sum == 0 ? value : value / sum );
+						op += diff;
+					}
+
+					if( bprogress1 )
+					{
+						f( static_cast< double >( i2 + 1 ) / static_cast< double >( _2e ) * 100.0 );
+					}
+				}
+
+				if( bprogress2 )
+				{
+					f( static_cast< double >( i3 + 1 ) / static_cast< double >( _3e ) * 100.0 );
+				}
+			}
+
+			delete [] tmp;
+		}
+	};
+
+	//template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+	//static void __1D_linear_filter__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
+	//					typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num, Functor f )
+	//{
+	//	linear_filter( in, out, k1, 0, 1, thread_id, thread_num, f );
+	//}
+
+	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+	static void __1D_linear_filter__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
+						typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num, Functor f )
+	{
+		_1D_linear_filter_< 1 >::linear_filter( in,  out, k1, thread_id, thread_num, 0, 1, f );
+		_1D_linear_filter_< 2 >::linear_filter( out, out, k2, thread_id, thread_num, 0, 1, f );
+	}
+
+	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+	static void __1D_linear_filter__( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
+						typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num, Functor f )
+	{
+		_1D_linear_filter_< 1 >::linear_filter( in,  out, k1, 0, 1, thread_id, thread_num, f );
+		_1D_linear_filter_< 2 >::linear_filter( out, out, k2, 0, 1, thread_id, thread_num, f );
+		_1D_linear_filter_< 3 >::linear_filter( out, out, k3, 0, 1, thread_id, thread_num, f );
+	}
+
+	template < class T1, class T2, class Kernel, class Functor >
+	class _1D_linear_thread : public mist::thread< linear_thread< T1, T2, Kernel, Functor > >
+	{
+	public:
+		typedef mist::thread< linear_thread< T1, T2, Kernel, Functor > > base;
+		typedef typename base::thread_exit_type thread_exit_type;
+		typedef typename T1::size_type size_type;
+		typedef typename T1::value_type value_type;
+
+	private:
+		size_t thread_id_;
+		size_t thread_num_;
+
+		// 入出力用の画像へのポインタ
+		const T1 *in_;
+		T2 *out_;
+		const Kernel *k1_;
+		const Kernel *k2_;
+		const Kernel *k3_;
+
+		Functor f_;
+
+	public:
+		void setup_parameters( const T1 &in, T2 &out, const Kernel &k1, const Kernel &k2, const Kernel &k3, size_type thread_id, size_type thread_num, Functor f )
+		{
+			in_  = &in;
+			out_ = &out;
+			k1_ = &k1;
+			k2_ = &k2;
+			k3_ = &k3;
+			thread_id_ = thread_id;
+			thread_num_ = thread_num;
+			f_ = f;
+		}
+
+		_1D_linear_thread( size_type id = 0, size_type num = 1 ) : thread_id_( id ), thread_num_( num ),
+													in_( NULL ), out_( NULL ), k1_( NULL ), k2_( NULL ), k3_( NULL )
+		{
+		}
+
+		_1D_linear_thread( const _1D_linear_thread &p ) : base( p ), thread_id_( p.thread_id_ ), thread_num_( p.thread_num_ ),
+													in_( p.in_ ), out_( p.out_ ), k1_( p.k1_ ), k2_( p.k2_ ), k3_( p.k3_ )
+		{
+		}
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( )
+		{
+			__1D_linear_filter__( *in_, *out_, *k1_, *k2_, *k3_, thread_id_, thread_num_, f_ );
+			return( true );
+		}
+	};
 
 	// in  : 入力画像. 入力画像の画素値は min と max の間とする
 	// out : 出力画像. 出力画像のメモリはあらかじめ割り当てられているものとする
@@ -806,6 +1073,92 @@ namespace __linear__
 			kernel[ i ] /= sum;
 		}
 	}
+
+	template < class Array >
+	inline void compute_gaussian_kernel( Array &k1, Array &k2, Array &k3, double sigma )
+	{
+		typedef typename Array::size_type  size_type;
+		typedef typename Array::difference_type  difference_type;
+		typedef typename Array::value_type  value_type;
+
+		if( sigma == 0.0 )
+		{
+			sigma = 1.0;
+		}
+
+		double radius = sigma * 2.0;
+		double ax = k1.reso1( );
+		double ay = k2.reso1( );
+		double az = k3.reso1( );
+		double axx = ax * ax;
+		double ayy = ay * ay;
+		double azz = az * az;
+
+		difference_type Rx = static_cast< difference_type >( std::ceil( radius / ax ) );
+		difference_type Ry = static_cast< difference_type >( std::ceil( radius / ay ) );
+		difference_type Rz = static_cast< difference_type >( std::ceil( radius / az ) );
+
+		k1.resize( Rx * 2 + 1 );
+		k2.resize( Ry * 2 + 1 );
+		k3.resize( Rz * 2 + 1 );
+
+		difference_type fw = k1.size( );
+		difference_type fh = k2.size( );
+		difference_type fd = k3.size( );
+
+		difference_type rw = fw / 2;
+		difference_type rh = fh / 2;
+		difference_type rd = fd / 2;
+
+		double _1_sig2 = 1.0 / ( sigma * sigma * 2.0 );
+		{
+			double sum = 0.0;
+			for( difference_type x = -rw ; x <= rw ; x++ )
+			{
+				double xx = static_cast< double >( x * x * axx );
+				double g = std::exp( -xx * _1_sig2 );
+				sum += g;
+				k1[ x + rw ] = static_cast< value_type >( g );
+			}
+
+			for( size_type i = 0 ; i < k1.size( ) ; i++ )
+			{
+				k1[ i ] /= sum;
+			}
+		}
+
+		{
+			double sum = 0.0;
+			for( difference_type y = -rh ; y <= rh ; y++ )
+			{
+				double yy = static_cast< double >( y * y * ayy );
+				double g = std::exp( -yy * _1_sig2 );
+				sum += g;
+				k2[ y + rh ] = static_cast< value_type >( g );
+			}
+
+			for( size_type i = 0 ; i < k2.size( ) ; i++ )
+			{
+				k2[ i ] /= sum;
+			}
+		}
+
+		{
+			double sum = 0.0;
+			for( difference_type z = -rd ; z <= rd ; z++ )
+			{
+				double zz = static_cast< double >( z * z * azz );
+				double g = std::exp( -zz * _1_sig2 );
+				sum += g;
+				k3[ z + rd ] = static_cast< value_type >( g );
+			}
+
+			for( size_type i = 0 ; i < k3.size( ) ; i++ )
+			{
+				k3[ i ] /= sum;
+			}
+		}
+	}
 }
 
 
@@ -974,6 +1327,122 @@ namespace linear
 	}
 
 
+	/// @brief 一般の線形フィルタ( array2 )
+	//! 
+	//! 1次元分解した各軸に沿ったカーネル配列を画像に適用する(中心はカーネルのサイズから計算)
+	//! ガウシアンフィルタ等の1次元分解可能なフィルタで利用可能
+	//!
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくても動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @note マスクの一辺のサイズは奇数でなくてはならない
+	//! 
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  kernel1    … X軸方向のカーネル配列
+	//! @param[in]  kernel2    … Y軸方向のカーネル配列
+	//! @param[in]  f          … コールバック関数
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … フィルタリングに成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+	//! 
+	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+	bool filter1d( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const Kernel &kernel1, const Kernel &kernel2, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
+	{
+		if( in.empty( ) )
+		{
+			return( false );
+		}
+
+		typedef typename array2< T1, Allocator1 >::size_type  size_type;
+		typedef __linear__::_1D_linear_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 >, Kernel, Functor > _1D_linear_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		out.resize( in.size1( ), in.size2( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+
+		_1D_linear_thread *thread = new _1D_linear_thread[ thread_num ];
+
+		size_type i;
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, kernel1, kernel2, kernel2, i, thread_num, f );
+		}
+
+		f( 0.0 );
+
+		// スレッドを実行して，終了まで待機する
+		do_threads_( thread, thread_num );
+
+		f( 100.1 );
+
+		delete [] thread;
+		
+		return( true );
+	}
+
+
+	/// @brief 一般の線形フィルタ( array2 )
+	//! 
+	//! 1次元分解した各軸に沿ったカーネル配列を画像に適用する(中心はカーネルのサイズから計算)
+	//! ガウシアンフィルタ等の1次元分解可能なフィルタで利用可能
+	//!
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @note マスクの一辺のサイズは奇数でなくてはならない
+	//! 
+	//! @param[in,out] in         … 入力・出力配列
+	//! @param[in]     kernel1    … X軸方向のカーネル配列
+	//! @param[in]     kernel2    … Y軸方向のカーネル配列
+	//! @param[in]     f          … コールバック関数
+	//! @param[in]     thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … フィルタリングに成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+	//! 
+	template < class T, class Allocator, class Kernel, class Functor >
+	bool filter1d( array2< T, Allocator > &in, const Kernel &kernel1, const Kernel &kernel2, Functor f, typename array2< T, Allocator >::size_type thread_num )
+	{
+		if( in.empty( ) )
+		{
+			return( false );
+		}
+
+		typedef typename array2< T, Allocator >::size_type  size_type;
+		typedef __linear__::_1D_linear_thread< array2< T, Allocator >, array2< T, Allocator >, Kernel, Functor > _1D_linear_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		_1D_linear_thread *thread = new _1D_linear_thread[ thread_num ];
+
+		size_type i;
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, in, kernel1, kernel2, kernel2, i, thread_num, f );
+		}
+
+		f( 0.0 );
+
+		// スレッドを実行して，終了まで待機する
+		do_threads_( thread, thread_num );
+
+		f( 100.1 );
+
+		delete [] thread;
+		
+		return( true );
+	}
+
+
 	/// @brief 一般の線形フィルタ( array3 )
 	//! 
 	//! カーネル配列を指定する(中心はカーネルのサイズから計算)
@@ -1019,6 +1488,125 @@ namespace linear
 		for( i = 0 ; i < thread_num ; i++ )
 		{
 			thread[ i ].setup_parameters( in, out, kernel, i, thread_num, f );
+		}
+
+		f( 0.0 );
+
+		// スレッドを実行して，終了まで待機する
+		do_threads_( thread, thread_num );
+
+		f( 100.1 );
+
+		delete [] thread;
+		
+		return( true );
+	}
+
+
+	/// @brief 一般の線形フィルタ( array3 )
+	//! 
+	//! 1次元分解した各軸に沿ったカーネル配列を画像に適用する(中心はカーネルのサイズから計算)
+	//! ガウシアンフィルタ等の1次元分解可能なフィルタで利用可能
+	//!
+	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくても動作する
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @note マスクの一辺のサイズは奇数でなくてはならない
+	//! 
+	//! @param[in]  in         … 入力配列
+	//! @param[out] out        … 出力配列
+	//! @param[in]  kernel1    … X軸方向のカーネル配列
+	//! @param[in]  kernel2    … Y軸方向のカーネル配列
+	//! @param[in]  kernel3    … Z軸方向のカーネル配列
+	//! @param[in]  f          … コールバック関数
+	//! @param[in]  thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … フィルタリングに成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+	//! 
+	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+	bool filter1d( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const Kernel &kernel1, const Kernel &kernel2, const Kernel &kernel3, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
+	{
+		if( in.empty( ) )
+		{
+			return( false );
+		}
+
+		typedef typename array3< T1, Allocator1 >::size_type  size_type;
+		typedef __linear__::_1D_linear_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 >, Kernel, Functor > _1D_linear_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		out.resize( in.size1( ), in.size2( ), in.size3( ) );
+		out.reso1( in.reso1( ) );
+		out.reso2( in.reso2( ) );
+		out.reso3( in.reso3( ) );
+
+		_1D_linear_thread *thread = new _1D_linear_thread[ thread_num ];
+
+		size_type i;
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, out, kernel1, kernel2, kernel3, i, thread_num, f );
+		}
+
+		f( 0.0 );
+
+		// スレッドを実行して，終了まで待機する
+		do_threads_( thread, thread_num );
+
+		f( 100.1 );
+
+		delete [] thread;
+		
+		return( true );
+	}
+
+
+	/// @brief 一般の線形フィルタ( array3 )
+	//! 
+	//! 1次元分解した各軸に沿ったカーネル配列を画像に適用する(中心はカーネルのサイズから計算)
+	//! ガウシアンフィルタ等の1次元分解可能なフィルタで利用可能
+	//!
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//!
+	//! @note マスクの一辺のサイズは奇数でなくてはならない
+	//! 
+	//! @param[in,out] in         … 入力・出力配列
+	//! @param[in]     kernel1    … X軸方向のカーネル配列
+	//! @param[in]     kernel2    … Y軸方向のカーネル配列
+	//! @param[in]     kernel3    … Z軸方向のカーネル配列
+	//! @param[in]     f          … コールバック関数
+	//! @param[in]     thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … フィルタリングに成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+	//! 
+	template < class T, class Allocator, class Kernel, class Functor >
+	bool filter1d( array3< T, Allocator > &in, const Kernel &kernel1, const Kernel &kernel2, const Kernel &kernel3, Functor f, typename array3< T, Allocator >::size_type thread_num )
+	{
+		if( in.empty( ) )
+		{
+			return( false );
+		}
+
+		typedef typename array3< T, Allocator >::size_type  size_type;
+		typedef __linear__::_1D_linear_thread< array3< T, Allocator >, array3< T, Allocator >, Kernel, Functor > _1D_linear_thread;
+
+		if( thread_num == 0 )
+		{
+			thread_num = static_cast< size_type >( get_cpu_num( ) );
+		}
+
+		_1D_linear_thread *thread = new _1D_linear_thread[ thread_num ];
+
+		size_type i;
+		for( i = 0 ; i < thread_num ; i++ )
+		{
+			thread[ i ].setup_parameters( in, in, kernel1, kernel2, kernel3, i, thread_num, f );
 		}
 
 		f( 0.0 );
@@ -1409,7 +1997,7 @@ namespace gaussian
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
 	bool filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2 > &out, const double sigma, Functor f, typename array1< T1, Allocator1 >::size_type thread_num )
 	{
-		array< double > a( 3 );
+		array< double > a( 3, in.reso1( ) );
 
 		__linear__::compute_gaussian_kernel( a, sigma );
 
@@ -1419,6 +2007,10 @@ namespace gaussian
 	/// @brief ガウシアンフィルタ( array2 )
 	//! 
 	//! 任意サイズのガウシアンフィルタ
+	//!
+	//! 出力のデータ方が float や double や rgb< float > などの浮動小数点型の場合は，
+	//! ガウシアンカーネルを1次元分解し，高速にフィルタを計算する．それ以外のデータ型
+	//! （int等）の場合は各画素ごとにカーネルを適用する（計算コスト大）
 	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
@@ -1435,16 +2027,73 @@ namespace gaussian
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
 	bool filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const double sigma, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
 	{
-		array2< double > a( 3, 3, in.reso1( ), in.reso2( ) );
+		// データの方が浮動小数点型の場合は高速なバージョンを利用する
+		if( is_float< T2 >::value )
+		{
+			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
 
-		__linear__::compute_gaussian_kernel( a, sigma );
+			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
 
-		return( linear::filter( in, out, a, f, thread_num ) );
+			return( linear::filter1d( in, out, a1, a2, f, thread_num ) );
+		}
+		else
+		{
+			array2< double > a( 3, 3, in.reso1( ), in.reso2( ) );
+
+			__linear__::compute_gaussian_kernel( a, sigma );
+
+			return( linear::filter( in, out, a, f, thread_num ) );
+		}
+	}
+
+	/// @brief ガウシアンフィルタ( array2 )
+	//! 
+	//! 任意サイズのガウシアンフィルタ
+	//!
+	//! 出力のデータ方が float や double や rgb< float > などの浮動小数点型の場合は，
+	//! ガウシアンカーネルを1次元分解し，高速にフィルタを計算する．それ以外のデータ型
+	//! （int等）の場合は各画素ごとにカーネルを適用する（計算コスト大）
+	//!
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! 
+	//! @param[in,out] in         … 入力・出力配列
+	//! @param[in]     sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
+	//! @param[in]     f          … コールバック関数
+	//! @param[in]     thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … フィルタリングに成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+	//! 
+	template < class T, class Allocator, class Functor >
+	bool filter( array2< T, Allocator > &in, const double sigma, Functor f, typename array2< T, Allocator >::size_type thread_num )
+	{
+		// データの方が浮動小数点型の場合は高速なバージョンを利用する
+		if( is_float< T >::value )
+		{
+			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
+
+			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
+
+			return( linear::filter1d( in, a1, a2, f, thread_num ) );
+		}
+		else
+		{
+			array2< double > a( 3, 3, in.reso1( ), in.reso2( ) );
+
+			__linear__::compute_gaussian_kernel( a, sigma );
+
+			array2< T, Allocator > tmp( in );
+			return( linear::filter( tmp, in, a, f, thread_num ) );
+		}
 	}
 
 	/// @brief ガウシアンフィルタ( array3 )
 	//! 
 	//! 任意サイズのガウシアンフィルタ
+	//!
+	//! 出力のデータ方が float や double や rgb< float > などの浮動小数点型の場合は，
+	//! ガウシアンカーネルを1次元分解し，高速にフィルタを計算する．それ以外のデータ型
+	//! （int等）の場合は各画素ごとにカーネルを適用する（計算コスト大）
 	//!
 	//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
@@ -1461,11 +2110,64 @@ namespace gaussian
 	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
 	bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double sigma, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
 	{
-		array3< double > a( 3, 3, 3, in.reso1( ), in.reso2( ), in.reso3( ) );
+		// データの方が浮動小数点型の場合は高速なバージョンを利用する
+		if( is_float< T2 >::value )
+		{
+			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
 
-		__linear__::compute_gaussian_kernel( a, sigma );
+			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
 
-		return( linear::filter( in, out, a, f, thread_num ) );
+			return( linear::filter1d( in, out, a1, a2, a3, f, thread_num ) );
+		}
+		else
+		{
+			array3< double > a( 3, 3, 3, in.reso1( ), in.reso2( ), in.reso3( ) );
+
+			__linear__::compute_gaussian_kernel( a, sigma );
+
+			return( linear::filter( in, out, a, f, thread_num ) );
+		}
+	}
+
+	/// @brief ガウシアンフィルタ( array3 )
+	//! 
+	//! 任意サイズのガウシアンフィルタ
+	//!
+	//! 出力のデータ方が float や double や rgb< float > などの浮動小数点型の場合は，
+	//! ガウシアンカーネルを1次元分解し，高速にフィルタを計算する．それ以外のデータ型
+	//! （int等）の場合は各画素ごとにカーネルを適用する（計算コスト大）
+	//!
+	//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+	//! 
+	//! @param[in,out] in         … 入力・出力配列
+	//! @param[in]     sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
+	//! @param[in]     f          … コールバック関数
+	//! @param[in]     thread_num … 使用するスレッド数
+	//! 
+	//! @retval true  … フィルタリングに成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+	//! 
+	template < class T, class Allocator, class Functor >
+	bool filter( array3< T, Allocator > &in, const double sigma, Functor f, typename array3< T, Allocator >::size_type thread_num )
+	{
+		// データの方が浮動小数点型の場合は高速なバージョンを利用する
+		if( is_float< T >::value )
+		{
+			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
+
+			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
+
+			return( linear::filter1d( in, in, a1, a2, a3, f, thread_num ) );
+		}
+		else
+		{
+			array3< double > a( 3, 3, 3, in.reso1( ), in.reso2( ), in.reso3( ) );
+
+			__linear__::compute_gaussian_kernel( a, sigma );
+
+			array2< T, Allocator > tmp( in );
+			return( linear::filter( tmp, in, a, f, thread_num ) );
+		}
 	}
 }
 
@@ -1516,6 +2218,10 @@ bool gaussian_filter( const array1< T1, Allocator1 > &in, array1< T2, Allocator2
 //! 
 //! 任意サイズのガウシアンフィルタ
 //!
+//! 出力のデータ方が float や double や rgb< float > などの浮動小数点型の場合は，
+//! ガウシアンカーネルを1次元分解し，高速にフィルタを計算する．それ以外のデータ型
+//! （int等）の場合は各画素ごとにカーネルを適用する（計算コスト大）
+//!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
 //! 
@@ -1533,9 +2239,37 @@ bool gaussian_filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2
 	return( gaussian::filter( in, out, sigma, __mist_dmy_callback__( ), thread_num ) );
 }
 
+/// @brief ガウシアンフィルタ( array2 )
+//! 
+//! 任意サイズのガウシアンフィルタ
+//!
+//! 出力のデータ方が float や double や rgb< float > などの浮動小数点型の場合は，
+//! ガウシアンカーネルを1次元分解し，高速にフィルタを計算する．それ以外のデータ型
+//! （int等）の場合は各画素ごとにカーネルを適用する（計算コスト大）
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in,out] in         … 入力・出力配列
+//! @param[in]     sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
+//! @param[in]     thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T, class Allocator >
+bool gaussian_filter( array2< T, Allocator > &in, const double sigma = 1.0, typename array2< T, Allocator >::size_type thread_num = 0 )
+{
+	return( gaussian::filter( in, sigma, __mist_dmy_callback__( ), thread_num ) );
+}
+
 /// @brief ガウシアンフィルタ( array3 )
 //! 
 //! 任意サイズのガウシアンフィルタ
+//!
+//! 出力のデータ方が float や double や rgb< float > などの浮動小数点型の場合は，
+//! ガウシアンカーネルを1次元分解し，高速にフィルタを計算する．それ以外のデータ型
+//! （int等）の場合は各画素ごとにカーネルを適用する（計算コスト大）
 //!
 //! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
 //! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
@@ -1552,6 +2286,30 @@ template < class T1, class Allocator1, class T2, class Allocator2 >
 bool gaussian_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double sigma = 1.0, typename array3< T1, Allocator1 >::size_type thread_num = 0 )
 {
 	return( gaussian::filter( in, out, sigma, __mist_dmy_callback__( ), thread_num ) );
+}
+
+/// @brief ガウシアンフィルタ( array3 )
+//! 
+//! 任意サイズのガウシアンフィルタ
+//!
+//! 出力のデータ方が float や double や rgb< float > などの浮動小数点型の場合は，
+//! ガウシアンカーネルを1次元分解し，高速にフィルタを計算する．それ以外のデータ型
+//! （int等）の場合は各画素ごとにカーネルを適用する（計算コスト大）
+//!
+//! @attention 入力と出力は，別のMISTコンテナオブジェクトでなくてはならない
+//! @attention スレッド数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! 
+//! @param[in,out] in         … 入力・出力配列
+//! @param[in]     sigma      … フィルタの標準偏差（画素の大きさを考慮した値を指定）
+//! @param[in]     thread_num … 使用するスレッド数
+//! 
+//! @retval true  … フィルタリングに成功
+//! @retval false … 入力と出力が同じオブジェクトを指定した場合
+//! 
+template < class T, class Allocator >
+bool gaussian_filter( array3< T, Allocator > &in, const double sigma = 1.0, typename array3< T, Allocator >::size_type thread_num = 0 )
+{
+	return( gaussian::filter( in, sigma, __mist_dmy_callback__( ), thread_num ) );
 }
 
 /// @}
