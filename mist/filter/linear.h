@@ -163,9 +163,11 @@ namespace __linear__
 		typedef typename Array1::difference_type  difference_type;
 		typedef __promote_pixel_converter_< typename Array1::value_type > promote_pixel_converter;
 		typedef typename promote_pixel_converter::promote_type promote_type;
-		typedef typename Array2::value_type out_value_type;
+		typedef typename Array2::value_type    out_value_type;
 		typedef typename Array1::const_pointer ipointer_type;
-		typedef typename Array2::pointer opointer_type;
+		typedef typename Array2::pointer       opointer_type;
+		typedef typename Kernel::const_pointer kpointer_type;
+		typedef typename Kernel::value_type    kvalue_type;
 
 		difference_type w = in.width( );
 		difference_type h = in.height( );
@@ -206,39 +208,102 @@ namespace __linear__
 			}
 		}
 
-
+		// 画像の縁の処理を行う
 		for( k = thread_idz ; k < rd ; k += thread_numz )
 		{
 			for( j = thread_idy ; j < h ; j += thread_numy )
 			{
-				ipointer_type ip = &in( 0, j, k );
 				opointer_type op = &out( 0, j, k );
+
 				for( i = 0 ; i < w ; i++ )
 				{
-					op[ i ] = ip[ i ];
+					promote_type value   = promote_type( );
+					kvalue_type  sum     = 0;
+					difference_type sl   = i < rw ? rw - i : 0;
+					difference_type el   = w - i <= rw ? rw + w - i : fw;
+					difference_type sm   = j < rh ? rh - j : 0;
+					difference_type em   = h - j <= rh ? rh + h - j : fh;
+					difference_type sn   = k < rd ? rd - k : 0;
+
+					for( difference_type n = sn ; n < fd ; n++ )
+					{
+						for( difference_type m = sm ; m < em ; m++ )
+						{
+							for( difference_type l = sl ; l < el ; l++ )
+							{
+								kvalue_type kv = kernel( l, m, n );
+								value += kernel( l, m, n ) * in( i + l - rw, j + m - rh, k + n - rd );
+								sum += kv;
+							}
+						}
+					}
+
+					op[ i ] = promote_pixel_converter::convert_from( sum == 0 ? value : value / sum );
 				}
 			}
 		}
 
+		// 画像の中心部分の処理を行う
 		for( ; k + rd < d ; k += thread_numz )
 		{
 			for( j = thread_idy ; j < rh ; j += thread_numy )
 			{
-				ipointer_type ip = &in( 0, j, k );
 				opointer_type op = &out( 0, j, k );
+
 				for( i = 0 ; i < w ; i++ )
 				{
-					op[ i ] = ip[ i ];
+					promote_type value   = promote_type( );
+					kvalue_type  sum     = 0;
+					difference_type sl   = i < rw ? rw - i : 0;
+					difference_type el   = w - i <= rw ? rw + w - i : fw;
+					difference_type sm   = rh - j;
+
+					for( difference_type n = 0 ; n < fd ; n++ )
+					{
+						for( difference_type m = sm ; m < fh ; m++ )
+						{
+							for( difference_type l = sl ; l < el ; l++ )
+							{
+								kvalue_type kv = kernel( l, m, n );
+								value += kernel( l, m, n ) * in( i + l - rw, j + m - rh, k + n - rd );
+								sum += kv;
+							}
+						}
+					}
+
+					op[ i ] = promote_pixel_converter::convert_from( sum == 0 ? value : value / sum );
 				}
 			}
 
+			// 中心部分の処理を行う
 			for( ; j + rh < h ; j += thread_numy )
 			{
 				ipointer_type ip = &in( 0, j, k );
 				opointer_type op = &out( 0, j, k );
+
 				for( i = 0 ; i < rw ; i++ )
 				{
-					op[ i ] = ip[ i ];
+					difference_type *ppf = pf;
+					ipointer_type p      = ip + i;
+					kpointer_type kp     = &kernel[ 0 ];
+					promote_type value   = promote_type( );
+					kvalue_type  sum     = 0;
+					difference_type lnum = fh * fd;
+					difference_type sn   = rw - i;
+
+					for( difference_type l = 0 ; l < lnum ; l++ )
+					{
+						for( difference_type n = sn ; n < fw ; n++ )
+						{
+							value += kp[ n ] * p[ ppf[ n ] ];
+							sum += kp[ n ];
+						}
+
+						kp  += fw;
+						ppf += fw;
+					}
+
+					op[ i ] = promote_pixel_converter::convert_from( sum == 0 ? value : value / sum );
 				}
 
 				for( ; i + rw < w ; i++ )
@@ -256,7 +321,27 @@ namespace __linear__
 
 				for( ; i < w ; i++ )
 				{
-					op[ i ] = ip[ i ];
+					difference_type *ppf = pf;
+					ipointer_type p      = ip + i;
+					kpointer_type kp     = &kernel[ 0 ];
+					promote_type value   = promote_type( );
+					kvalue_type  sum     = 0;
+					difference_type lnum = fh * fd;
+					difference_type en   = rw + w - i;
+
+					for( difference_type l = 0 ; l < lnum ; l++ )
+					{
+						for( difference_type n = 0 ; n < en ; n++ )
+						{
+							value += kp[ n ] * p[ ppf[ n ] ];
+							sum += kp[ n ];
+						}
+
+						kp  += fw;
+						ppf += fw;
+					}
+
+					op[ i ] = promote_pixel_converter::convert_from( sum == 0 ? value : value / sum );
 				}
 
 				if( bprogress1 )
@@ -267,11 +352,30 @@ namespace __linear__
 
 			for( ; j < h ; j += thread_numy )
 			{
-				ipointer_type ip = &in( 0, j, k );
 				opointer_type op = &out( 0, j, k );
+
 				for( i = 0 ; i < w ; i++ )
 				{
-					op[ i ] = ip[ i ];
+					promote_type value   = promote_type( );
+					kvalue_type  sum     = 0;
+					difference_type sl   = i < rw ? rw - i : 0;
+					difference_type el   = w - i <= rw ? rw + w - i : fw;
+					difference_type em   = rh + h - j;
+
+					for( difference_type n = 0 ; n < fd ; n++ )
+					{
+						for( difference_type m = 0 ; m < em ; m++ )
+						{
+							for( difference_type l = sl ; l < el ; l++ )
+							{
+								kvalue_type kv = kernel( l, m, n );
+								value += kernel( l, m, n ) * in( i + l - rw, j + m - rh, k + n - rd );
+								sum += kv;
+							}
+						}
+					}
+
+					op[ i ] = promote_pixel_converter::convert_from( sum == 0 ? value : value / sum );
 				}
 			}
 
@@ -281,15 +385,37 @@ namespace __linear__
 			}
 		}
 
+		// 画像の縁の処理を行う
 		for( ; k < d ; k += thread_numz )
 		{
 			for( j = thread_idy ; j < h ; j += thread_numy )
 			{
-				ipointer_type ip = &in( 0, j, k );
 				opointer_type op = &out( 0, j, k );
+
 				for( i = 0 ; i < w ; i++ )
 				{
-					op[ i ] = ip[ i ];
+					promote_type value   = promote_type( );
+					kvalue_type  sum     = 0;
+					difference_type sl   = i < rw ? rw - i : 0;
+					difference_type el   = w - i <= rw ? rw + w - i : fw;
+					difference_type sm   = j < rh ? rh - j : 0;
+					difference_type em   = h - j <= rh ? rh + h - j : fh;
+					difference_type en   = d - k <= rd ? rd + d - k : fd;
+
+					for( difference_type n = 0 ; n < en ; n++ )
+					{
+						for( difference_type m = sm ; m < em ; m++ )
+						{
+							for( difference_type l = sl ; l < el ; l++ )
+							{
+								kvalue_type kv = kernel( l, m, n );
+								value += kernel( l, m, n ) * in( i + l - rw, j + m - rh, k + n - rd );
+								sum += kv;
+							}
+						}
+					}
+
+					op[ i ] = promote_pixel_converter::convert_from( sum == 0 ? value : value / sum );
 				}
 			}
 		}
