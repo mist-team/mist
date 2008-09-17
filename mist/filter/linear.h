@@ -575,7 +575,7 @@ namespace __linear__
 		template < class Array1, class Array2, class Kernel, class Functor >
 		static void linear_filter( const Array1 &in, Array2 &out, const Kernel &kernel,
 									typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
-									typename Array1::size_type thread_idz, typename Array1::size_type thread_numz, Functor f )
+									typename Array1::size_type thread_idz, typename Array1::size_type thread_numz, Functor f, double sp, double ep )
 		{
 			typedef typename Array1::size_type		 size_type;
 			typedef typename Array1::value_type		 value_type;
@@ -671,13 +671,13 @@ namespace __linear__
 
 					if( bprogress1 )
 					{
-						f( static_cast< double >( i2 + 1 ) / static_cast< double >( _2e ) * 100.0 );
+						f( sp + static_cast< double >( i2 + 1 ) / static_cast< double >( _2e ) * ( ep - sp ) );
 					}
 				}
 
 				if( bprogress2 )
 				{
-					f( static_cast< double >( i3 + 1 ) / static_cast< double >( _3e ) * 100.0 );
+					f( sp + static_cast< double >( i3 + 1 ) / static_cast< double >( _3e ) * ( ep - sp ) );
 				}
 			}
 
@@ -696,17 +696,17 @@ namespace __linear__
 	static void __1D_linear_filter__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
 						typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num, Functor f )
 	{
-		_1D_linear_filter_< 1 >::linear_filter( in,  out, k1, thread_id, thread_num, 0, 1, f );
-		_1D_linear_filter_< 2 >::linear_filter( out, out, k2, thread_id, thread_num, 0, 1, f );
+		_1D_linear_filter_< 1 >::linear_filter( in,  out, k1, thread_id, thread_num, 0, 1, f,  0.0,  50.0 );
+		_1D_linear_filter_< 2 >::linear_filter( out, out, k2, thread_id, thread_num, 0, 1, f, 50.0, 100.0 );
 	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
 	static void __1D_linear_filter__( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
 						typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num, Functor f )
 	{
-		_1D_linear_filter_< 1 >::linear_filter( in,  out, k1, 0, 1, thread_id, thread_num, f );
-		_1D_linear_filter_< 2 >::linear_filter( out, out, k2, 0, 1, thread_id, thread_num, f );
-		_1D_linear_filter_< 3 >::linear_filter( out, out, k3, 0, 1, thread_id, thread_num, f );
+		_1D_linear_filter_< 1 >::linear_filter( in,  out, k1, 0, 1, thread_id, thread_num, f,         0.0,  100.0 / 3.0 );
+		_1D_linear_filter_< 2 >::linear_filter( out, out, k2, 0, 1, thread_id, thread_num, f, 100.0 / 3.0,  200.0 / 3.0 );
+		_1D_linear_filter_< 3 >::linear_filter( out, out, k3, 0, 1, thread_id, thread_num, f, 200.0 / 3.0,  100.0 );
 	}
 
 	template < class T1, class T2, class Kernel, class Functor >
