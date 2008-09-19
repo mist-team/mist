@@ -2321,7 +2321,7 @@ namespace gaussian
 	bool filter( array2< T, Allocator > &in, const double sigma, Functor f, typename array2< T, Allocator >::size_type thread_num )
 	{
 		// データの方が浮動小数点型の場合は高速なバージョンを利用する
-		return( gaussian_filter_helper< is_float< T >::value >::filter( in, out, sigma, f, thread_num ) );
+		return( gaussian_filter_helper< is_float< T >::value >::filter( in, sigma, f, thread_num ) );
 	}
 
 	/// @brief ガウシアンフィルタ( array3 )
@@ -2373,7 +2373,7 @@ namespace gaussian
 	bool filter( array3< T, Allocator > &in, const double sigma, Functor f, typename array3< T, Allocator >::size_type thread_num )
 	{
 		// データの方が浮動小数点型の場合は高速なバージョンを利用する
-		return( gaussian_filter_helper< is_float< T >::value >::filter( in, out, sigma, f, thread_num ) );
+		return( gaussian_filter_helper< is_float< T >::value >::filter( in, sigma, f, thread_num ) );
 	}
 }
 
