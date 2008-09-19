@@ -583,7 +583,7 @@ namespace __linear__
 			typedef typename Array1::const_pointer	 ipointer;
 			typedef typename Array2::pointer		 opointer;
 			typedef typename Array1::difference_type difference_type;
-			typedef __promote_pixel_converter_< typename Array1::value_type > promote_pixel_converter;
+			typedef __promote_pixel_converter_< typename Array2::value_type > promote_pixel_converter;
 			typedef typename promote_pixel_converter::promote_type promote_type;
 			typedef __access__< DIMENSION > access;
 
@@ -610,7 +610,7 @@ namespace __linear__
 					ipointer p  = p0;
 
 					// テンポラリ領域に画素値を一時的に記憶する
-					for( i1 = 0 ; i1 + rw < fw - 1 ; i1++ )
+					for( i1 = 0 ; i1 + rw + 1 < fw ; i1++ )
 					{
 						tmp[ i1 ] = *p;
 						p += diff;
@@ -685,12 +685,12 @@ namespace __linear__
 		}
 	};
 
-	//template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
-	//static void __1D_linear_filter__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
-	//					typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num, Functor f )
-	//{
-	//	linear_filter( in, out, k1, 0, 1, thread_id, thread_num, f );
-	//}
+	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
+	static void __1D_linear_filter__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
+						typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num, Functor f )
+	{
+		linear_filter( in, out, k1, 0, 1, thread_id, thread_num, f );
+	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
 	static void __1D_linear_filter__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
@@ -710,10 +710,10 @@ namespace __linear__
 	}
 
 	template < class T1, class T2, class Kernel, class Functor >
-	class _1D_linear_thread : public mist::thread< linear_thread< T1, T2, Kernel, Functor > >
+	class _1D_linear_thread : public mist::thread< _1D_linear_thread< T1, T2, Kernel, Functor > >
 	{
 	public:
-		typedef mist::thread< linear_thread< T1, T2, Kernel, Functor > > base;
+		typedef mist::thread< _1D_linear_thread< T1, T2, Kernel, Functor > > base;
 		typedef typename base::thread_exit_type thread_exit_type;
 		typedef typename T1::size_type size_type;
 		typedef typename T1::value_type value_type;
@@ -774,7 +774,7 @@ namespace __linear__
 	{
 		typedef typename Array1::size_type  size_type;
 		typedef typename Array1::difference_type  difference_type;
-		typedef __promote_pixel_converter_< typename Array1::value_type > promote_pixel_converter;
+		typedef __promote_pixel_converter_< typename Array2::value_type > promote_pixel_converter;
 		typedef typename promote_pixel_converter::promote_type promote_type;
 		typedef typename Array2::value_type out_value_type;
 		typedef typename Array1::const_pointer ipointer_type;
@@ -993,6 +993,180 @@ namespace __linear__
 		virtual thread_exit_type thread_function( )
 		{
 			__average_filter__( *in_, *out_, fw_, fh_, fd_, thread_id_, thread_num_, f_ );
+			return( true );
+		}
+	};
+
+	template < int DIMENSION >
+	struct _1D_average_filter_
+	{
+		template < class Array1, class Array2, class Functor >
+		static void average_filter( const Array1 &in, Array2 &out, typename Array1::difference_type fw,
+									typename Array1::size_type thread_idy, typename Array1::size_type thread_numy,
+									typename Array1::size_type thread_idz, typename Array1::size_type thread_numz, Functor f, double sp, double ep )
+		{
+			typedef typename Array1::size_type		 size_type;
+			typedef typename Array1::value_type		 value_type;
+			typedef typename Array1::const_pointer	 ipointer;
+			typedef typename Array2::pointer		 opointer;
+			typedef typename Array1::difference_type difference_type;
+			typedef __promote_pixel_converter_< typename Array2::value_type > promote_pixel_converter;
+			typedef typename promote_pixel_converter::promote_type promote_type;
+			typedef __access__< DIMENSION > access;
+
+			difference_type _1e = access::size1( in );
+			difference_type _2e = access::size2( in );
+			difference_type _3e = access::size3( in );
+
+			const bool bprogress1 = thread_idy == 0 && _3e == 1;
+			const bool bprogress2 = thread_idz == 0 && _3e > 1;
+
+			difference_type rw = fw / 2;
+
+			difference_type i1, i2, i3;
+			value_type *tmp = new value_type[ _1e ];
+			difference_type diff = &access::at( in, 1, 0, 0 ) - &access::at( in, 0, 0, 0 );
+
+			for( i3 = thread_idz ; i3 < _3e ; i3 += thread_numz )
+			{
+				for( i2 = thread_idy ; i2 < _2e ; i2 += thread_numy )
+				{
+					ipointer p0 = &access::at( in,  0, i2, i3 );
+					opointer op = &access::at( out, 0, i2, i3 );
+					ipointer p  = p0;
+
+					promote_type value = promote_type( );
+
+					// テンポラリ領域に画素値を一時的に記憶する
+					for( i1 = 0 ; i1 + rw + 1 < fw ; i1++ )
+					{
+						value += *p;
+						tmp[ i1 ] = *p;
+						p += diff;
+					}
+
+					for( i1 = 0 ; i1 <= rw ; i1++ )
+					{
+						value += *p;
+						tmp[ i1 + rw ] = *p;
+						p += diff;
+
+						*op = promote_pixel_converter::convert_from( value / static_cast< double >( fw - rw + i1 ) );
+						op += diff;
+					}
+
+					for( ; i1 + rw < _1e ; i1++ )
+					{
+						value += *p;
+						value -= tmp[ i1 - rw - 1 ];
+						tmp[ i1 + rw ] = *p;
+						p += diff;
+
+						*op = promote_pixel_converter::convert_from( value / static_cast< double >( fw ) );
+						op += diff;
+					}
+
+					for( ; i1 < _1e ; i1++ )
+					{
+						value -= tmp[ i1 - rw - 1 ];
+
+						*op = promote_pixel_converter::convert_from( value / static_cast< double >( rw + _1e - i1 ) );
+						op += diff;
+					}
+
+					if( bprogress1 )
+					{
+						f( sp + static_cast< double >( i2 + 1 ) / static_cast< double >( _2e ) * ( ep - sp ) );
+					}
+				}
+
+				if( bprogress2 )
+				{
+					f( sp + static_cast< double >( i3 + 1 ) / static_cast< double >( _3e ) * ( ep - sp ) );
+				}
+			}
+
+			delete [] tmp;
+		}
+	};
+
+	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+	static void __1D_average_filter__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out,
+									typename array< T1, Allocator1 >::size_type fw, typename array< T1, Allocator1 >::size_type fh, typename array< T1, Allocator1 >::size_type fd,
+									typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num, Functor f )
+	{
+		average_filter( in, out, fw, fh, fd, 0, 1, thread_id, thread_num, f );
+	}
+
+	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+	static void __1D_average_filter__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+									typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh, typename array2< T1, Allocator1 >::size_type fd,
+									typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num, Functor f )
+	{
+		_1D_average_filter_< 1 >::average_filter( in,  out, fw, thread_id, thread_num, 0, 1, f,  0.0,  50.0 );
+		_1D_average_filter_< 2 >::average_filter( out, out, fh, thread_id, thread_num, 0, 1, f, 50.0, 100.0 );
+	}
+
+	template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+	static void __1D_average_filter__( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+									typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
+									typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num, Functor f )
+	{
+		_1D_average_filter_< 1 >::average_filter( in,  out, fw, 0, 1, thread_id, thread_num, f,         0.0,  100.0 / 3.0 );
+		_1D_average_filter_< 2 >::average_filter( out, out, fh, 0, 1, thread_id, thread_num, f, 100.0 / 3.0,  200.0 / 3.0 );
+		_1D_average_filter_< 3 >::average_filter( out, out, fd, 0, 1, thread_id, thread_num, f, 200.0 / 3.0,  100.0 );
+	}
+
+	template < class T1, class T2, class Functor >
+	class _1D_average_thread : public mist::thread< _1D_average_thread< T1, T2, Functor > >
+	{
+	public:
+		typedef mist::thread< _1D_average_thread< T1, T2, Functor > > base;
+		typedef typename base::thread_exit_type thread_exit_type;
+		typedef typename T1::size_type size_type;
+		typedef typename T1::value_type value_type;
+
+	private:
+		size_t thread_id_;
+		size_t thread_num_;
+
+		// 入出力用の画像へのポインタ
+		const T1 *in_;
+		T2 *out_;
+		size_type fw_;
+		size_type fh_;
+		size_type fd_;
+
+		Functor f_;
+
+	public:
+		void setup_parameters( const T1 &in, T2 &out, size_type fw, size_type fh, size_type fd, size_type thread_id, size_type thread_num, Functor f )
+		{
+			in_  = &in;
+			out_ = &out;
+			fw_ = fw;
+			fh_ = fh;
+			fd_ = fd;
+			thread_id_ = thread_id;
+			thread_num_ = thread_num;
+			f_ = f;
+		}
+
+		_1D_average_thread( size_type id = 0, size_type num = 1 ) : thread_id_( id ), thread_num_( num ),
+													in_( NULL ), out_( NULL ), fw_( 0 ), fh_( 0 ), fd_( 0 )
+		{
+		}
+
+		_1D_average_thread( const _1D_average_thread &p ) : base( p ), thread_id_( p.thread_id_ ), thread_num_( p.thread_num_ ),
+													in_( p.in_ ), out_( p.out_ ), fw_( p.fw_ ), fh_( p.fh_ ), fd_( p.fd_ )
+		{
+		}
+
+	protected:
+		// 継承した先で必ず実装されるスレッド関数
+		virtual thread_exit_type thread_function( )
+		{
+			__1D_average_filter__( *in_, *out_, fw_, fh_, fd_, thread_id_, thread_num_, f_ );
 			return( true );
 		}
 	};
@@ -1952,6 +2126,100 @@ bool laplacian_filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator
 /// @brief ガウシアンフィルタの実装（コールバック関数を指定することが可能）
 namespace gaussian
 {
+	template < bool b >
+	struct gaussian_filter_helper
+	{
+		template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+		static bool filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const double sigma, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
+		{
+			array2< double > a( 3, 3, in.reso1( ), in.reso2( ) );
+
+			__linear__::compute_gaussian_kernel( a, sigma );
+
+			return( linear::filter( in, out, a, f, thread_num ) );
+		}
+
+		template < class T, class Allocator, class Functor >
+		static bool filter( array2< T, Allocator > &in, const double sigma, Functor f, typename array2< T, Allocator >::size_type thread_num )
+		{
+			array2< double > a( 3, 3, in.reso1( ), in.reso2( ) );
+
+			__linear__::compute_gaussian_kernel( a, sigma );
+
+			array2< T, Allocator > tmp( in );
+			return( linear::filter( tmp, in, a, f, thread_num ) );
+		}
+
+		template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+		static bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double sigma, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
+		{
+			array3< double > a( 3, 3, 3, in.reso1( ), in.reso2( ), in.reso3( ) );
+
+			__linear__::compute_gaussian_kernel( a, sigma );
+
+			return( linear::filter( in, out, a, f, thread_num ) );
+		}
+
+		template < class T, class Allocator, class Functor >
+		static bool filter( array3< T, Allocator > &in, const double sigma, Functor f, typename array3< T, Allocator >::size_type thread_num )
+		{
+			array3< double > a( 3, 3, 3, in.reso1( ), in.reso2( ), in.reso3( ) );
+
+			__linear__::compute_gaussian_kernel( a, sigma );
+
+			array2< T, Allocator > tmp( in );
+			return( linear::filter( tmp, in, a, f, thread_num ) );
+		}
+	};
+
+	template < >
+	struct gaussian_filter_helper< true >
+	{
+		template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+		static bool filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const double sigma, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
+		{
+			// データの方が浮動小数点型の場合は高速なバージョンを利用する
+			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
+
+			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
+
+			return( linear::filter1d( in, out, a1, a2, f, thread_num ) );
+		}
+
+		template < class T, class Allocator, class Functor >
+		static bool filter( array2< T, Allocator > &in, const double sigma, Functor f, typename array2< T, Allocator >::size_type thread_num )
+		{
+			// データの方が浮動小数点型の場合は高速なバージョンを利用する
+			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
+
+			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
+
+			return( linear::filter1d( in, a1, a2, f, thread_num ) );
+		}
+
+		template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+		static bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double sigma, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
+		{
+			// データの方が浮動小数点型の場合は高速なバージョンを利用する
+			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
+
+			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
+
+			return( linear::filter1d( in, out, a1, a2, a3, f, thread_num ) );
+		}
+
+		template < class T, class Allocator, class Functor >
+		static bool filter( array3< T, Allocator > &in, const double sigma, Functor f, typename array3< T, Allocator >::size_type thread_num )
+		{
+			// データの方が浮動小数点型の場合は高速なバージョンを利用する
+			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
+
+			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
+
+			return( linear::filter1d( in, in, a1, a2, a3, f, thread_num ) );
+		}
+	};
+
 	/// @brief ガウシアンフィルタ( array )
 	//! 
 	//! 任意サイズのガウシアンフィルタ
@@ -2028,22 +2296,7 @@ namespace gaussian
 	bool filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const double sigma, Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
 	{
 		// データの方が浮動小数点型の場合は高速なバージョンを利用する
-		if( is_float< T2 >::value )
-		{
-			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
-
-			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
-
-			return( linear::filter1d( in, out, a1, a2, f, thread_num ) );
-		}
-		else
-		{
-			array2< double > a( 3, 3, in.reso1( ), in.reso2( ) );
-
-			__linear__::compute_gaussian_kernel( a, sigma );
-
-			return( linear::filter( in, out, a, f, thread_num ) );
-		}
+		return( gaussian_filter_helper< is_float< T2 >::value >::filter( in, out, sigma, f, thread_num ) );
 	}
 
 	/// @brief ガウシアンフィルタ( array2 )
@@ -2068,23 +2321,7 @@ namespace gaussian
 	bool filter( array2< T, Allocator > &in, const double sigma, Functor f, typename array2< T, Allocator >::size_type thread_num )
 	{
 		// データの方が浮動小数点型の場合は高速なバージョンを利用する
-		if( is_float< T >::value )
-		{
-			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
-
-			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
-
-			return( linear::filter1d( in, a1, a2, f, thread_num ) );
-		}
-		else
-		{
-			array2< double > a( 3, 3, in.reso1( ), in.reso2( ) );
-
-			__linear__::compute_gaussian_kernel( a, sigma );
-
-			array2< T, Allocator > tmp( in );
-			return( linear::filter( tmp, in, a, f, thread_num ) );
-		}
+		return( gaussian_filter_helper< is_float< T >::value >::filter( in, out, sigma, f, thread_num ) );
 	}
 
 	/// @brief ガウシアンフィルタ( array3 )
@@ -2111,22 +2348,7 @@ namespace gaussian
 	bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const double sigma, Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
 	{
 		// データの方が浮動小数点型の場合は高速なバージョンを利用する
-		if( is_float< T2 >::value )
-		{
-			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
-
-			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
-
-			return( linear::filter1d( in, out, a1, a2, a3, f, thread_num ) );
-		}
-		else
-		{
-			array3< double > a( 3, 3, 3, in.reso1( ), in.reso2( ), in.reso3( ) );
-
-			__linear__::compute_gaussian_kernel( a, sigma );
-
-			return( linear::filter( in, out, a, f, thread_num ) );
-		}
+		return( gaussian_filter_helper< is_float< T2 >::value >::filter( in, out, sigma, f, thread_num ) );
 	}
 
 	/// @brief ガウシアンフィルタ( array3 )
@@ -2151,23 +2373,7 @@ namespace gaussian
 	bool filter( array3< T, Allocator > &in, const double sigma, Functor f, typename array3< T, Allocator >::size_type thread_num )
 	{
 		// データの方が浮動小数点型の場合は高速なバージョンを利用する
-		if( is_float< T >::value )
-		{
-			array1< double > a1( 3, in.reso1( ) ), a2( 3, in.reso2( ) ), a3( 3, in.reso3( ) );
-
-			__linear__::compute_gaussian_kernel( a1, a2, a3, sigma );
-
-			return( linear::filter1d( in, in, a1, a2, a3, f, thread_num ) );
-		}
-		else
-		{
-			array3< double > a( 3, 3, 3, in.reso1( ), in.reso2( ), in.reso3( ) );
-
-			__linear__::compute_gaussian_kernel( a, sigma );
-
-			array2< T, Allocator > tmp( in );
-			return( linear::filter( tmp, in, a, f, thread_num ) );
-		}
+		return( gaussian_filter_helper< is_float< T >::value >::filter( in, out, sigma, f, thread_num ) );
 	}
 }
 
@@ -2333,6 +2539,184 @@ bool gaussian_filter( array3< T, Allocator > &in, const double sigma = 1.0, type
 /// @brief 一様重み平滑化フィルタの実装（コールバック関数を指定することが可能）
 namespace average
 {
+	template < bool b >
+	struct average_thread_helper
+	{
+		template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+		static bool filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+							   typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh,
+							   Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
+		{
+			if( is_same_object( in, out ) || in.empty( ) )
+			{
+				return( false );
+			}
+
+			typedef typename array2< T1, Allocator1 >::size_type  size_type;
+			typedef __linear__::average_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 >, Functor > average_thread;
+
+			if( thread_num == 0 )
+			{
+				thread_num = static_cast< size_type >( get_cpu_num( ) );
+			}
+
+			out.resize( in.size1( ), in.size2( ) );
+			out.reso1( in.reso1( ) );
+			out.reso2( in.reso2( ) );
+
+			average_thread *thread = new average_thread[ thread_num ];
+
+			size_type i;
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, out, fw, fh, 1, i, thread_num, f );
+			}
+
+			f( 0.0 );
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+
+			f( 100.1 );
+
+			delete [] thread;
+
+			return( true );
+		}
+
+		template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+		bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+					   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
+					   Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
+		{
+			if( is_same_object( in, out ) || in.empty( ) )
+			{
+				return( false );
+			}
+
+			typedef typename array3< T1, Allocator1 >::size_type  size_type;
+			typedef __linear__::average_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 >, Functor > average_thread;
+
+			if( thread_num == 0 )
+			{
+				thread_num = static_cast< size_type >( get_cpu_num( ) );
+			}
+
+			out.resize( in.size1( ), in.size2( ), in.size3( ) );
+			out.reso1( in.reso1( ) );
+			out.reso2( in.reso2( ) );
+			out.reso3( in.reso3( ) );
+
+			average_thread *thread = new average_thread[ thread_num ];
+
+			size_type i;
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, out, fw, fh, fd, i, thread_num, f );
+			}
+
+			f( 0.0 );
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+
+			f( 100.1 );
+
+			delete [] thread;
+			
+			return( true );
+		}
+	};
+
+	template < >
+	struct average_thread_helper< true >
+	{
+		template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+		static bool filter( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
+							   typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh,
+							   Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
+		{
+			if( in.empty( ) )
+			{
+				return( false );
+			}
+
+			typedef typename array2< T1, Allocator1 >::size_type  size_type;
+			typedef __linear__::_1D_average_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 >, Functor > average_thread;
+
+			if( thread_num == 0 )
+			{
+				thread_num = static_cast< size_type >( get_cpu_num( ) );
+			}
+
+			out.resize( in.size1( ), in.size2( ) );
+			out.reso1( in.reso1( ) );
+			out.reso2( in.reso2( ) );
+
+			average_thread *thread = new average_thread[ thread_num ];
+
+			size_type i;
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, out, fw, fh, 1, i, thread_num, f );
+			}
+
+			f( 0.0 );
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+
+			f( 100.1 );
+
+			delete [] thread;
+
+			return( true );
+		}
+
+		template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
+		bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+					   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
+					   Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
+		{
+			if( in.empty( ) )
+			{
+				return( false );
+			}
+
+			typedef typename array3< T1, Allocator1 >::size_type  size_type;
+			typedef __linear__::_1D_average_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 >, Functor > average_thread;
+
+			if( thread_num == 0 )
+			{
+				thread_num = static_cast< size_type >( get_cpu_num( ) );
+			}
+
+			out.resize( in.size1( ), in.size2( ), in.size3( ) );
+			out.reso1( in.reso1( ) );
+			out.reso2( in.reso2( ) );
+			out.reso3( in.reso3( ) );
+
+			average_thread *thread = new average_thread[ thread_num ];
+
+			size_type i;
+			for( i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, out, fw, fh, fd, i, thread_num, f );
+			}
+
+			f( 0.0 );
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+
+			f( 100.1 );
+
+			delete [] thread;
+			
+			return( true );
+		}
+	};
+
 	/// @brief 一様重み( array )
 	//! 
 	//! サイズ fw の一様重み
@@ -2420,41 +2804,7 @@ namespace average
 				   typename array2< T1, Allocator1 >::size_type fw, typename array2< T1, Allocator1 >::size_type fh,
 				   Functor f, typename array2< T1, Allocator1 >::size_type thread_num )
 	{
-		if( is_same_object( in, out ) || in.empty( ) )
-		{
-			return( false );
-		}
-
-		typedef typename array2< T1, Allocator1 >::size_type  size_type;
-		typedef __linear__::average_thread< array2< T1, Allocator1 >, array2< T2, Allocator2 >, Functor > average_thread;
-
-		if( thread_num == 0 )
-		{
-			thread_num = static_cast< size_type >( get_cpu_num( ) );
-		}
-
-		out.resize( in.size1( ), in.size2( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-
-		average_thread *thread = new average_thread[ thread_num ];
-
-		size_type i;
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].setup_parameters( in, out, fw, fh, 1, i, thread_num, f );
-		}
-
-		f( 0.0 );
-
-		// スレッドを実行して，終了まで待機する
-		do_threads_( thread, thread_num );
-
-		f( 100.1 );
-
-		delete [] thread;
-		
-		return( true );
+		return( average_thread_helper< is_float< T2 >::value >::filter( in, out, fw, fh, f, thread_num ) );
 	}
 
 	/// @brief 一様重み( array3 )
@@ -2480,42 +2830,7 @@ namespace average
 				   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
 				   Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
 	{
-		if( is_same_object( in, out ) || in.empty( ) )
-		{
-			return( false );
-		}
-
-		typedef typename array3< T1, Allocator1 >::size_type  size_type;
-		typedef __linear__::average_thread< array3< T1, Allocator1 >, array3< T2, Allocator2 >, Functor > average_thread;
-
-		if( thread_num == 0 )
-		{
-			thread_num = static_cast< size_type >( get_cpu_num( ) );
-		}
-
-		out.resize( in.size1( ), in.size2( ), in.size3( ) );
-		out.reso1( in.reso1( ) );
-		out.reso2( in.reso2( ) );
-		out.reso3( in.reso3( ) );
-
-		average_thread *thread = new average_thread[ thread_num ];
-
-		size_type i;
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].setup_parameters( in, out, fw, fh, fd, i, thread_num, f );
-		}
-
-		f( 0.0 );
-
-		// スレッドを実行して，終了まで待機する
-		do_threads_( thread, thread_num );
-
-		f( 100.1 );
-
-		delete [] thread;
-		
-		return( true );
+		return( average_thread_helper< is_float< T2 >::value >::filter( in, out, fw, fh, fd, f, thread_num ) );
 	}
 }
 
