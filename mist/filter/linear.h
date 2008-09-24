@@ -2585,7 +2585,7 @@ namespace average
 		}
 
 		template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
-		bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+		static bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
 					   Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
 		{
@@ -2674,7 +2674,7 @@ namespace average
 		}
 
 		template < class T1, class Allocator1, class T2, class Allocator2, class Functor >
-		bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
+		static bool filter( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out,
 					   typename array3< T1, Allocator1 >::size_type fw, typename array3< T1, Allocator1 >::size_type fh, typename array3< T1, Allocator1 >::size_type fd,
 					   Functor f, typename array3< T1, Allocator1 >::size_type thread_num )
 		{
