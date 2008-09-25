@@ -38,6 +38,10 @@
 #include "mist.h"
 #endif
 
+#ifndef __INCLUDE_MIST_LIMITS__
+#include "limits.h"
+#endif
+
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN
