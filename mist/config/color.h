@@ -1800,7 +1800,7 @@ struct _pixel_converter_
 			return( color_type( r, g, b, a ) );
 		}
 
-		static color_type convert_from( const color_type &pixel )
+		static color_type convert_from( const rgb< T > &pixel )
 		{
 			return( pixel );
 		}
@@ -1818,9 +1818,9 @@ struct _pixel_converter_
 			return( color_type( r, g, b, a ) );
 		}
 
-		static color_type convert_from( const color_type &pixel )
+		static color_type convert_from( const bgr< T > &pixel )
 		{
-			return( pixel );
+			return( color_type( pixel.r, pixel.g, pixel.b ) );
 		}
 	};
 
@@ -1836,7 +1836,7 @@ struct _pixel_converter_
 			return( color_type( r, g, b, a ) );
 		}
 
-		static color_type convert_from( const color_type &pixel )
+		static color_type convert_from( const rgba< T > &pixel )
 		{
 			return( pixel );
 		}
@@ -1854,9 +1854,9 @@ struct _pixel_converter_
 			return( color_type( r, g, b, a ) );
 		}
 
-		static color_type convert_from( const color_type &pixel )
+		static color_type convert_from( const bgra< T > &pixel )
 		{
-			return( pixel );
+			return( color_type( pixel.r, pixel.g, pixel.b, pixel.a ) );
 		}
 	};
 
