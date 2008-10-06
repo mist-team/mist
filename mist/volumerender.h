@@ -47,6 +47,11 @@
 #include "mist.h"
 #endif
 
+// カラー画像の設定を読み込む
+#ifndef __INCLUDE_MIST_COLOR_H__
+#include "config/color.h"
+#endif
+
 #ifndef __INCLUDE_MIST_VECTOR__
 #include "vector.h"
 #endif
@@ -401,12 +406,15 @@ namespace volumerender
 		double	sampling_step;			// レイキャスティング時のサンプリング間隔
 		double	termination;			// レイキャスティングの終了条件（積算不透明度が個の値未満になるとキャスティングを打ち切り）
 		double	specular;				// 鏡面反射光の強さ（最大1）
+		double	background_R;			// 背景色のR成分
+		double	background_G;			// 背景色のG成分
+		double	background_B;			// 背景色のB成分
 
 		vector_type	offset;				// バウンディングボックスの中心座標
 		boundingbox box[ 6 ];			// バウンディングボックス
 
 		parameter( ) : perspective_view( true ), mirror_view( false ), value_interpolation( true ), fovy( 80.0 ), ambient_ratio( 0.4 ), diffuse_ratio( 0.6 ),
-						light_attenuation( 0.0 ), sampling_step( 1.0 ), termination( 0.01 ), specular( 1.0 )
+						light_attenuation( 0.0 ), sampling_step( 1.0 ), termination( 0.01 ), specular( 1.0 ), background_R( 0.0 ), background_G( 0.0 ), background_B( 0.0 )
 		{
 		}
 	};
@@ -1488,6 +1496,8 @@ namespace __volumerendering_specialized__
 
 		const attribute_type *table = &volrtable[ 0 ];
 
+		const pixel_type background = _pixel_converter_< pixel_type >::convert_to( param.background_R, param.background_G, param.background_B );
+
 		// 高速にアドレス計算を行うためのポインタの差分
 		difference_type d0, d1, d2, d3, d4, d5, d6, d7, _1, _2, _3;
 		{
@@ -1665,7 +1675,7 @@ namespace __volumerendering_specialized__
 					// 端まで到達した場合は何もしない
 					if( l >= n )
 					{
-						out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
+						out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( background ) );
 						continue;
 					}
 
@@ -1820,7 +1830,7 @@ namespace __volumerendering_specialized__
 							// 画素がレンダリング結果に与える影響がしきい値以下になった場合は終了
 							if( add_opacity < termination )
 							{
-								out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
+								out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity * ( 1.0 - add_opacity ) + background * add_opacity ) );
 								continue;
 							}
 
@@ -2102,11 +2112,11 @@ namespace __volumerendering_specialized__
 						}
 					}
 
-					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
+					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity * ( 1.0 - add_opacity ) + background * add_opacity ) );
 				}
 				else
 				{
-					out( i, j ) = 0;
+					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( background ) );
 				}
 			}
 		}
@@ -2201,6 +2211,8 @@ namespace __volumerendering_controller__
 
 		const size_type image_width  = out.width( );
 		const size_type image_height = out.height( );
+
+		const pixel_type background = _pixel_converter_< pixel_type >::convert_to( param.background_R, param.background_G, param.background_B );
 
 		// スライス座標系の実寸をワールドと考える
 		vector_type casting_start, casting_end;
@@ -2334,7 +2346,7 @@ namespace __volumerendering_controller__
 					// 端まで到達した場合は何もしない
 					if( l >= n )
 					{
-						out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
+						out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( background ) );
 						continue;
 					}
 
@@ -2435,11 +2447,12 @@ namespace __volumerendering_controller__
 							}
 						}
 					}
-					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity ) );
+
+					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( add_intensity * ( 1.0 - add_opacity ) + background * add_opacity ) );
 				}
 				else
 				{
-					out( i, j ) = 0;
+					out( i, j ) = static_cast< out_value_type >( mist::limits_0_255( background ) );
 				}
 			}
 		}
