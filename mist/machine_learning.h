@@ -76,15 +76,18 @@ _MIST_BEGIN
 /// @brief 機械学習
 namespace machine_learning
 {
+	typedef double feature_value_type;		///< @brief 機械学習で利用する特徴量を表現するデータ型
+	typedef double feature_weight_type;		///< @brief 機械学習で利用するサンプルの重み表現するデータ型
+
 	/// @brief 機械学習で利用する２カテゴリの特徴量を管理するクラス（内部でのみ使用）
 	struct feature_one
 	{
 		typedef size_t size_type;			///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 		typedef ptrdiff_t difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
-		double value;		///< @brief 特徴量の値
-		bool   category;	///< @brief 学習データのカテゴリ名（true か false）
-		double weight;		///< @brief 学習データに対する重み
+		feature_value_type  value;		///< @brief 特徴量の値
+		bool                category;	///< @brief 学習データのカテゴリ名（true か false）
+		feature_weight_type weight;		///< @brief 学習データに対する重み
 
 		/// @brief デフォルトのコンストラクタ
 		feature_one( ) : value( 0.0 ), category( true ), weight( 0.0 )
@@ -97,7 +100,7 @@ namespace machine_learning
 		//! @param[in]  cate … カテゴリ
 		//! @param[in]  wei  … 重み
 		//! 
-		feature_one( double val, bool cate, double wei ) : value( val ), category( cate ), weight( wei )
+		feature_one( feature_value_type val, bool cate, feature_weight_type wei ) : value( val ), category( cate ), weight( wei )
 		{
 		}
 
@@ -127,16 +130,16 @@ namespace machine_learning
 	};
 
 	/// @brief 機械学習で利用する多カテゴリの特徴量を管理するクラス
-	struct feature : public std::vector< double >
+	struct feature : public std::vector< feature_value_type >
 	{
-		typedef std::vector< double > base;
+		typedef std::vector< feature_value_type > base;
 		typedef base::value_type value_type;			///< @brief MISTのコンテナ内に格納するデータ型．mist::array< data > の data と同じ
 		typedef base::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 		typedef base::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
-		std::string category;	///< @brief 学習データのカテゴリ名
-		double      weight;		///< @brief 学習データに対する重み
-		bool        valid;		///< @brief 機械学習に利用するかどうか
+		std::string         category;	///< @brief 学習データのカテゴリ名
+		feature_weight_type weight;		///< @brief 学習データに対する重み
+		bool                valid;		///< @brief 機械学習に利用するかどうか
 
 		/// @brief デフォルトのコンストラクタ
 		feature( ) : base( ), category( "unknown" ), weight( 0.0 ), valid( true )
@@ -360,7 +363,7 @@ namespace machine_learning
 								double v2 = std::abs( flist[ i + 1 ].value - flist[ i + 2 ].value );
 								double t1 = flist[ i + 0 ].value;
 								double t2 = flist[ i + 1 ].value;
-								th = ( t1 * v2 + t2 * v1 ) / ( v1 + v2 );
+								th = ( t1 * v1 + t2 * v2 ) / ( v1 + v2 );
 							}
 							else if( i < flist.size( ) - 1 )
 							{
@@ -1178,7 +1181,7 @@ namespace machine_learning
 									}
 								}
 
-								f.weight = sum / Ut;
+								f.weight = static_cast< feature_value_type >( sum / Ut );
 							}
 						}
 
