@@ -435,7 +435,7 @@ public:
 		else if( !is_memory_shared( ) )
 		{
 			// 自動でメモリを割り当てる場合
-			return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects1( *this, num ) );
+			return( mist_memory_operator< is_builtin< T >::value >::allocate_objects1( *this, num ) );
 		}
 		else
 		{
@@ -454,12 +454,12 @@ public:
 		else if( !is_memory_shared( ) )
 		{
 			// 自動でメモリを割り当てる場合
-			return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects2( *this, num, obj ) );
+			return( mist_memory_operator< is_builtin< T >::value >::allocate_objects2( *this, num, obj ) );
 		}
 		else
 		{
 			// 外部割り当てのメモリを利用する場合
-			mist_memory_operator< is_char< T >::value >::fill_objects1( *this, shared_pointer, num, obj );
+			mist_memory_operator< type_and< is_char< T >::value, is_builtin< T >::value >::value >::fill_objects1( *this, shared_pointer, num, obj );
 			return( shared_pointer );
 		}
 	}
@@ -474,12 +474,12 @@ public:
 		else if( !is_memory_shared( ) )
 		{
 			// 自動でメモリを割り当てる場合
-			return( mist_memory_operator< is_arithmetic< T >::value >::allocate_objects3( *this, s, e ) );
+			return( mist_memory_operator< is_builtin< T >::value >::allocate_objects3( *this, s, e ) );
 		}
 		else
 		{
 			// 外部割り当てのメモリを利用する場合
-			mist_memory_operator< is_char< T >::value >::copy_objects2( *this, s, e - s, shared_pointer );
+			mist_memory_operator< type_and< is_char< T >::value, is_builtin< T >::value >::value >::copy_objects2( *this, s, e - s, shared_pointer );
 			return( shared_pointer );
 		}
 	}
@@ -491,7 +491,7 @@ public:
 		{
 			// 自動でメモリを割り当てる場合
 			if( num <= 0 ) return;
-			mist_memory_operator< is_arithmetic< T >::value >::deallocate_objects( *this, ptr, num );
+			mist_memory_operator< is_builtin< T >::value >::deallocate_objects( *this, ptr, num );
 		}
 	}
 
@@ -499,28 +499,28 @@ public:
 	pointer copy_objects( const_pointer s, const_pointer e, pointer x )
 	{
 		if( s >= e ) return( x );
-		return( mist_memory_operator< is_arithmetic< T >::value >::copy_objects1( *this, s, e, x ) );
+		return( mist_memory_operator< is_builtin< T >::value >::copy_objects1( *this, s, e, x ) );
 	}
 
 	/// @brief ポインタ ptr から num 個のデータを to にコピーする
 	pointer copy_objects( const_pointer ptr, size_type num, pointer to )
 	{
 		if( num <= 0 ) return( to );
-		return( mist_memory_operator< is_arithmetic< T >::value >::copy_objects2( *this, ptr, num, to ) );
+		return( mist_memory_operator< is_builtin< T >::value >::copy_objects2( *this, ptr, num, to ) );
 	}
 
 	/// @brief ポインタ ptr から num 個のデータにobjを代入する
 	void fill_objects( pointer ptr, size_type num, const_reference obj )
 	{
 		if( num <= 0 ) return;
-		mist_memory_operator< is_char< T >::value >::fill_objects1( *this, ptr, num, obj );
+		mist_memory_operator< type_and< is_char< T >::value, is_builtin< T >::value >::value >::fill_objects1( *this, ptr, num, obj );
 	}
 
 	/// @brief ポインタ ptr から num 個のデータに初期値を代入する
 	void fill_objects( pointer ptr, size_type num )
 	{
 		if( num <= 0 ) return;
-		mist_memory_operator< is_arithmetic< T >::value >::fill_objects2( *this, ptr, num );
+		mist_memory_operator< is_builtin< T >::value >::fill_objects2( *this, ptr, num );
 	}
 
 	/// @brief ptr から始まり num 個存在するオブジェクトを dest_num 個まで縮め，全ての要素をデフォルトの値で初期化する
