@@ -123,6 +123,33 @@ template<>          struct is_arithmetic< ptrdiff_t >     { _MIST_CONST( bool, v
 #endif
 
 
+/// @brief 組み込み型の判定
+//! 
+//! T が組み込み型であれば真に評価する。汎整数型か浮動小数点型のいずれかがこれにあたる
+//! 
+//! @param T  … 調査する型
+//! 
+template< class T > struct is_builtin                  { _MIST_CONST( bool, value, false ); };
+template<>          struct is_builtin< unsigned char > { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< unsigned short >{ _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< unsigned int >  { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< unsigned long > { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< signed char >   { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< signed short >  { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< signed int >    { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< signed long >   { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< bool >          { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< char >          { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< float >         { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< double >        { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< long double >   { _MIST_CONST( bool, value, true  ); };
+
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) && defined( __ICC ) )
+template<>          struct is_builtin< size_t >        { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_builtin< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
+#endif
+
+
 /// @brief 対応する float 型を返す
 //! 
 //! T が float の場合は float を返し，それ以外は double （もしくは long double）とする
