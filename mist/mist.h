@@ -203,6 +203,7 @@ public:
 		}
 		else if( num_ == num )
 		{
+			out = *this;
 			return( true );
 		}
 
@@ -242,17 +243,29 @@ public:
 		}
 		else
 		{
-			array o( num );
-
-			if( this->trim( o, index, num ) )
+			difference_type num_ = size( );
+			if( num_ <= static_cast< difference_type >( index ) || num_ < static_cast< difference_type >( index + num ) )
 			{
-				swap( o );
-
+				return( false );
+			}
+			else if( num_ == num )
+			{
 				return( true );
 			}
 			else
 			{
-				return( false );
+				array o( num );
+
+				if( this->trim( o, index, num ) )
+				{
+					swap( o );
+
+					return( true );
+				}
+				else
+				{
+					return( false );
+				}
 			}
 		}
 	}
@@ -1098,6 +1111,7 @@ public:
 		}
 		else if( w_ == w && h_ == h )
 		{
+			out = *this;
 			return( true );
 		}
 
@@ -1150,17 +1164,35 @@ public:
 		}
 		else
 		{
-			array2 o;
+			difference_type w_ = this->width( );
+			difference_type h_ = this->width( );
 
-			if( this->trim( o, x, y, w, h ) )
+			if( w_ <= static_cast< difference_type >( x ) || w_ < static_cast< difference_type >( x + w ) )
 			{
-				swap( o );
-
+				return( false );
+			}
+			else if( h_ <= static_cast< difference_type >( y ) || h_ < static_cast< difference_type >( y + h ) )
+			{
+				return( false );
+			}
+			else if( w_ == w && h_ == h )
+			{
 				return( true );
 			}
 			else
 			{
-				return( false );
+				array2 o;
+
+				if( this->trim( o, x, y, w, h ) )
+				{
+					swap( o );
+
+					return( true );
+				}
+				else
+				{
+					return( false );
+				}
 			}
 		}
 	}
@@ -1705,6 +1737,7 @@ public:
 		}
 		else if( w_ == w && h_ == h && d_ == d )
 		{
+			out = *this;
 			return( true );
 		}
 
@@ -1771,17 +1804,39 @@ public:
 		}
 		else
 		{
-			array3 o;
-
-			if( this->trim( o, x, y, z, w, h, d ) )
+			difference_type w_ = this->width( );
+			difference_type h_ = this->width( );
+			difference_type d_ = this->depth( );
+			if( w_ <= static_cast< difference_type >( x ) || w_ < static_cast< difference_type >( x + w ) )
 			{
-				swap( o );
-
+				return( false );
+			}
+			else if( h_ <= static_cast< difference_type >( y ) || h_ < static_cast< difference_type >( y + h ) )
+			{
+				return( false );
+			}
+			else if( d_ <= static_cast< difference_type >( z ) || d_ < static_cast< difference_type >( z + d ) )
+			{
+				return( false );
+			}
+			else if( w_ == w && h_ == h && d_ == d )
+			{
 				return( true );
 			}
 			else
 			{
-				return( false );
+				array3 o;
+
+				if( this->trim( o, x, y, z, w, h, d ) )
+				{
+					swap( o );
+
+					return( true );
+				}
+				else
+				{
+					return( false );
+				}
 			}
 		}
 	}
