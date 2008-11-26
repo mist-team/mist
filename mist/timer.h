@@ -146,6 +146,82 @@ private:
 };
 
 
+/// 時間計測を行うためのクラス
+//! 
+//! timerクラスを生成時から時間計測を開始する．
+//! 
+//! @par 複数箇所で時間計測を行う場合は，以下のように記述する
+//! @code タイマーオブジェクトの利用方法
+//! {
+//!     mist::timer t;
+//! 
+//!     ... 何らかの計算 ...
+//! 
+//!     std::cout << "計算時間: " << t << std::endl;
+//! }
+//! @endcode
+//!
+class stopwatch
+{
+private:
+	timer t_;
+	double sec_;
+	bool   run_;
+
+public:
+	/// @brief 時間計測を行うためのクラスのコンストラクタ．
+	//! 
+	//! 生成時に，自動的にタイマを初期化する．
+	//! 
+	stopwatch( ) : sec_( 0.0 ), run_( false )
+	{
+	}
+
+	/// @brief 強制的に，タイマーをクリアする．
+	void reset( )
+	{
+		t_.reset( );
+		sec_ = 0.0;
+	}
+
+	/// @brief 時間計測開始時からの経過時間をミリ秒単位で返す．
+	//! 
+	//! @return ミリ秒単位での経過時間
+	//! 
+	double elapse( ) const
+	{
+		if( run_ )
+		{
+			return( sec_ + t_.elapse( ) );
+		}
+		else
+		{
+			return( sec_ );
+		}
+	}
+
+	/// @brief 計測を止める．
+	//! 
+	//! @return ミリ秒単位での経過時間
+	//! 
+	void stop( )
+	{
+		sec_ += t_.elapse( );
+		run_ = false;
+	}
+
+	/// @brief 計測を再開する．
+	//! 
+	//! @return ミリ秒単位での経過時間
+	//! 
+	void start( )
+	{
+		t_.reset( );
+		run_ = true;
+	}
+};
+
+
 /// @brief 経過時間を標準出力に出力する．
 //! 
 //! @param[in,out] out … 引数の説明
@@ -154,6 +230,19 @@ private:
 //! @return 戻り値の説明
 //! 
 inline ::std::ostream &operator <<( ::std::ostream &out, const timer &t )
+{
+	out << t.elapse( );
+	return( out );
+}
+
+/// @brief 経過時間を標準出力に出力する．
+//! 
+//! @param[in,out] out … 引数の説明
+//! @param[in]     t   … 引数の説明
+//! 
+//! @return 戻り値の説明
+//! 
+inline ::std::ostream &operator <<( ::std::ostream &out, const stopwatch &t )
 {
 	out << t.elapse( );
 	return( out );
