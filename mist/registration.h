@@ -976,7 +976,7 @@ namespace __non_rigid_registration_utility__
 			// ‰Šú‰æ‘œ‚ğì¬‚·‚é
 			transformation( transformed_image, source, control_mesh, ffd_coeff );
 
-			minimum = get_maximum( get_minimum( get_minimum( tgt ), get_minimum( src ) ), -1000 );
+			minimum = get_maximum( get_minimum( get_minimum( tgt ), get_minimum( src ) ), static_cast< difference_type >(-1000) );
 			maximum = get_maximum( get_maximum( tgt ), get_maximum( src ) );
 			h.resize( ( maximum - minimum + 1 ) / BIN + 1, ( maximum - minimum + 1 ) / BIN + 1 );
 			hh.resize( ( maximum - minimum + 1 ) / BIN + 1, 1 );
