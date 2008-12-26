@@ -673,7 +673,8 @@ namespace brent
 				e = d;
 			}
 
-			if( std::abs( p ) < std::abs( 0.5 * q * r ) && p < q * ( a - x ) && p < q * ( b - x ) )
+			if( std::abs( p ) < std::abs( 0.5 * q * r ) && p > q * ( a - x ) && p < q * ( b - x ) )
+			//if( std::abs( p ) < std::abs( 0.5 * q * r ) && p < q * ( a - x ) && p < q * ( b - x ) )
 			{
 				// 放物線補間が適切に行われたので区間を更新する
 				d = p / q;
