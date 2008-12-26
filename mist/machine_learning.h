@@ -309,6 +309,11 @@ namespace machine_learning
 					}
 				}
 
+				if( overall_sum_of_positive_weights == 0.0 || overall_sum_of_negative_weights == 0.0 )
+				{
+					return( false );
+				}
+
 				double max_sigma = -1.0;
 				int nfeatures = static_cast< int >( features[ 0 ].size( ) );
 
@@ -425,12 +430,20 @@ namespace machine_learning
 						S2 /= overall_sum_of_negative_weights;
 						double V1 = overall_sum_of_positive_weights * overall_sum_of_negative_weights * ( M1 - M2 ) * ( M1 - M2 );
 						double V2 = ( overall_sum_of_positive_weights + overall_sum_of_negative_weights ) * ( overall_sum_of_positive_weights * S1 + overall_sum_of_negative_weights * S2 );
-						sigma = V1 / V2;
+						sigma = V1 / ( 1.0 + V2 );
 					}
 
 					#pragma omp critical
 					{
-						if( _minimum_classification_error_ >= e && sigma > max_sigma )
+						if( _minimum_classification_error_ > e )
+						{
+							_minimum_classification_error_ = e;
+							index_ = index;
+							sign_ = sgn;
+							threshold_ = th;
+							max_sigma = sigma;
+						}
+						else if( _minimum_classification_error_ == e && sigma > max_sigma )
 						{
 							_minimum_classification_error_ = e;
 							index_ = index;
