@@ -547,6 +547,23 @@ void fill_rect( mist::array2< BITS, Allocator > &image,
     }
 }
 
+/// @brief 十字点を描画
+//! @param[out] image 出力画像
+//! @param[in]  cx     中心のX座標
+//! @param[in]  cy     中心のY座標
+//! @param[in]  size     十字点の大きさ
+//! @param[in]  value  … 描画する色もしくは値
+template< typename BITS, typename Allocator >
+void draw_crosspoint( mist::array2< BITS, Allocator > &image, 
+		  typename array2< BITS, Allocator >::difference_type cx, 
+		  typename array2< BITS, Allocator >::difference_type cy, 
+		  typename array2< BITS, Allocator >::difference_type size, 
+		  const typename mist::array2< BITS, Allocator >::value_type &value )
+{
+  mist::draw_line( image, cx - size / 2, cy, cx + size / 2, cy, value );
+  mist::draw_line( image, cx, cy - size / 2, cx, cy + size / 2, value );
+}
+
 /// @}
 //  直線や円の描画グループの終わり
 
