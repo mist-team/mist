@@ -496,6 +496,56 @@ void draw_circle( mist::array2< BITS, Allocator > &image,
     }
 }
 
+/// @brief 長方形を描く
+//! @param[out] image 出力画像
+//! @param[in]  x0     左上のX座標
+//! @param[in]  y0     左上のY座標
+//! @param[in]  x1     右下のX座標
+//! @param[in]  y1     右下のY座標
+//! @param[in]  value  … 描画する色もしくは値
+template< typename BITS, typename Allocator >
+void draw_rect( mist::array2< BITS, Allocator > &image, 
+		  typename array2< BITS, Allocator >::difference_type x0, 
+		  typename array2< BITS, Allocator >::difference_type y0, 
+		  typename array2< BITS, Allocator >::difference_type x1, 
+		  typename array2< BITS, Allocator >::difference_type y1, 		
+		  const typename mist::array2< BITS, Allocator >::value_type &value )
+{
+  draw_line( image, x0, y0, x1, y0, value );
+  draw_line( image, x0, y0, x0, y1, value );
+  draw_line( image, x1, y0, x1, y1, value );
+  draw_line( image, x0, y1, x1, y1, value );
+}
+
+/// @brief 長方形で塗りつぶす
+//! @param[out] image 出力画像
+//! @param[in]  x0     左上のX座標
+//! @param[in]  y0     左上のY座標
+//! @param[in]  x1     右下のX座標
+//! @param[in]  y1     右下のY座標
+//! @param[in]  value  … 描画する色もしくは値
+template< typename BITS, typename Allocator >
+void fill_rect( mist::array2< BITS, Allocator > &image, 
+		  typename array2< BITS, Allocator >::difference_type x0, 
+		  typename array2< BITS, Allocator >::difference_type y0, 
+		  typename array2< BITS, Allocator >::difference_type x1, 
+		  typename array2< BITS, Allocator >::difference_type y1, 		
+		  const typename mist::array2< BITS, Allocator >::value_type &value )
+{
+  typedef typename array2< BITS, Allocator >::difference_type difference_type;
+  x0 = std::max( 0, x0 );
+  y0 = std::max( 0, y0 );
+  x1 = std::min( x1, static_cast< difference_type >( image.width() ) - 1 );
+  y1 = std::min( y1, static_cast< difference_type >( image.height() ) - 1 );
+
+  for( difference_type y = y0 ; y <= y1 ; ++y )
+    {
+      for( difference_type x = x0 ; x <= x1 ; ++x )
+	{
+	  image( x, y ) = value;
+	}
+    }
+}
 
 /// @}
 //  直線や円の描画グループの終わり
