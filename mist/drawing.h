@@ -430,6 +430,73 @@ void draw_point( array3< T, Allocator > &image,
 	}
 }
 
+
+/// @brief 2次元が像に範囲チェックを行い，値を代入
+//! @param[out] image 出力画像
+//! @param[in]  x     画素のX座標
+//! @param[in]  y     画素のY座標
+//! @param[in]  value  … 描画する色もしくは値
+template< typename BITS, typename Allocator >
+void set_pixel(  mist::array2< BITS, Allocator > &image,
+		 typename array2< BITS, Allocator >::difference_type x,
+		 typename array2< BITS, Allocator >::difference_type y,
+		 const typename mist::array2< BITS, Allocator >::value_type &value )
+{
+  // 範囲チェック
+  if( x < 0 || y < 0 || x >= static_cast< int >( image.width() ) || y >= static_cast< int >( image.height() ) )
+    {
+      return;
+    }
+
+  image( x, y ) = value;
+}
+
+/// @brief 円を描く(Michenerの手法)
+//! @param[out] image 出力画像
+//! @param[in]  cx     円中心のX座標
+//! @param[in]  cy     円中心のY座標
+//! @param[in]  r      円の半径
+//! @param[in]  value  … 描画する色もしくは値
+template< typename BITS, typename Allocator >
+void draw_circle( mist::array2< BITS, Allocator > &image, 
+		  typename array2< BITS, Allocator >::difference_type cx, 
+		  typename array2< BITS, Allocator >::difference_type cy, 
+		  typename array2< BITS, Allocator >::difference_type r, 
+		  const typename mist::array2< BITS, Allocator >::value_type &value )
+{
+  typename array2< BITS, Allocator >::difference_type d = 3 - 2 * r;
+  typename array2< BITS, Allocator >::difference_type dx;
+  typename array2< BITS, Allocator >::difference_type dy = r;
+
+  // 開始点
+  set_pixel( image, cx, cy + r, value );
+  set_pixel( image, cx, cy - r, value );
+  set_pixel( image, cx + r, cy, value );
+  set_pixel( image, cx - r, cy, value );
+
+  for( dx = 0 ; dx <= dy ; ++dx )
+    {
+      if( d < 0 )
+	{
+	  d += 6 + 4 * dx;	  
+	}
+      else
+	{
+	  d += 10 + 4 * dx - 4 * dy--;
+	}
+
+      set_pixel( image, cx + dy, cy + dx, value );
+      set_pixel( image, cx + dx, cy + dy, value );
+      set_pixel( image, cx - dx, cy + dy, value );
+      set_pixel( image, cx - dy, cy + dx, value );
+      set_pixel( image, cx - dy, cy - dx, value );
+      set_pixel( image, cx - dx, cy - dy, value );
+      set_pixel( image, cx + dx, cy - dy, value );
+      set_pixel( image, cx + dy, cy - dx, value );
+    }
+}
+
+
 /// @}
 //  直線や円の描画グループの終わり
 
