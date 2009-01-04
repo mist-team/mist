@@ -34,6 +34,7 @@
 #ifndef __INCLUDE_MIST_ALLOC_H__
 #define __INCLUDE_MIST_ALLOC_H__
 
+#include <cstring>
 #include <memory>
 
 #ifndef __INCLUDE_MIST_CONF_H__
