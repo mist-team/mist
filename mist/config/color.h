@@ -1959,150 +1959,152 @@ template< class T > struct float_type< bgra< T > > { typedef rgb< typename float
 #undef __DEFINE_COLOR_TYPE_TRAIT__
 
 /// @brief ’è‹`Ï‚ÝF
-template< typename T = unsigned char >
+template< typename T = rgb< unsigned char > >
 struct colors
 {
-  static rgb< T > aliceblue() { return rgb< T >( 0xf0, 0xf8, 0xff ); }
-  static rgb< T > antiquewhite() { return rgb< T >( 0xfa, 0xeb, 0xd7 ); }
-  static rgb< T > aqua() { return rgb< T >( 0x00, 0xff, 0xff ); }
-  static rgb< T > aquamarine() { return rgb< T >( 0x7f, 0xff, 0xd4 ); }
-  static rgb< T > azure() { return rgb< T >( 0xf0, 0xff, 0xff ); }
-  static rgb< T > beige() { return rgb< T >( 0xf5, 0xf5, 0xdc ); }
-  static rgb< T > bisque() { return rgb< T >( 0xff, 0xe4, 0xc4 ); }
-  static rgb< T > black() { return rgb< T >( 0x00, 0x00, 0x00 ); }
-  static rgb< T > blanchedalmond() { return rgb< T >( 0xff, 0xeb, 0xcd ); }
-  static rgb< T > blue() { return rgb< T >( 0x00, 0x00, 0xff ); }
-  static rgb< T > blueviolet() { return rgb< T >( 0x8a, 0x2b, 0xe2 ); }
-  static rgb< T > brown() { return rgb< T >( 0xa5, 0x2a, 0x2a ); }
-  static rgb< T > burlywood() { return rgb< T >( 0xde, 0xb8, 0x87 ); }
-  static rgb< T > cadetblue() { return rgb< T >( 0x5f, 0x9e, 0xa0 ); }
-  static rgb< T > chartreuse() { return rgb< T >( 0x7f, 0xff, 0x00 ); }
-  static rgb< T > chocolate() { return rgb< T >( 0xd2, 0x69, 0x1e ); }
-  static rgb< T > coral() { return rgb< T >( 0xff, 0x7f, 0x50 ); }
-  static rgb< T > cornflowerblue() { return rgb< T >( 0x64, 0x95, 0xed ); }
-  static rgb< T > cornsilk() { return rgb< T >( 0xff, 0xf8, 0xdc ); }
-  static rgb< T > crimson() { return rgb< T >( 0xdc, 0x14, 0x3c ); }
-  static rgb< T > cyan() { return rgb< T >( 0x00, 0xff, 0xff ); }
-  static rgb< T > darkblue() { return rgb< T >( 0x00, 0x00, 0x8b ); }
-  static rgb< T > darkcyan() { return rgb< T >( 0x00, 0x8b, 0x8b ); }
-  static rgb< T > darkgoldenrod() { return rgb< T >( 0xb8, 0x86, 0x0b ); }
-  static rgb< T > darkgray() { return rgb< T >( 0xa9, 0xa9, 0xa9 ); }
-  static rgb< T > darkgreen() { return rgb< T >( 0x00, 0x64, 0x00 ); }
-  static rgb< T > darkkhaki() { return rgb< T >( 0xbd, 0xb7, 0x6b ); }
-  static rgb< T > darkmagenta() { return rgb< T >( 0x8b, 0x00, 0x8b ); }
-  static rgb< T > darkolivegreen() { return rgb< T >( 0x55, 0x6b, 0x2f ); }
-  static rgb< T > darkorange() { return rgb< T >( 0xff, 0x8c, 0x00 ); }
-  static rgb< T > darkorchid() { return rgb< T >( 0x99, 0x32, 0xcc ); }
-  static rgb< T > darkred() { return rgb< T >( 0x8b, 0x00, 0x00 ); }
-  static rgb< T > darksalmon() { return rgb< T >( 0xe9, 0x96, 0x7a ); }
-  static rgb< T > darkseagreen() { return rgb< T >( 0x8f, 0xbc, 0x8f ); }
-  static rgb< T > darkslateblue() { return rgb< T >( 0x48, 0x3d, 0x8b ); }
-  static rgb< T > darkslategray() { return rgb< T >( 0x2f, 0x4f, 0x4f ); }
-  static rgb< T > darkturquoise() { return rgb< T >( 0x00, 0xce, 0xd1 ); }
-  static rgb< T > darkviolet() { return rgb< T >( 0x94, 0x00, 0xd3 ); }
-  static rgb< T > deeppink() { return rgb< T >( 0xff, 0x14, 0x93 ); }
-  static rgb< T > deepskyblue() { return rgb< T >( 0x00, 0xbf, 0xff ); }
-  static rgb< T > dimgray() { return rgb< T >( 0x69, 0x69, 0x69 ); }
-  static rgb< T > dodgerblue() { return rgb< T >( 0x1e, 0x90, 0xff ); }
-  static rgb< T > firebrick() { return rgb< T >( 0xb2, 0x22, 0x22 ); }
-  static rgb< T > floralwhite() { return rgb< T >( 0xff, 0xfa, 0xf0 ); }
-  static rgb< T > forestgreen() { return rgb< T >( 0x22, 0x8b, 0x22 ); }
-  static rgb< T > fuchsia() { return rgb< T >( 0xff, 0x00, 0xff ); }
-  static rgb< T > gainsboro() { return rgb< T >( 0xdc, 0xdc, 0xdc ); }
-  static rgb< T > ghostwhite() { return rgb< T >( 0xf8, 0xf8, 0xff ); }
-  static rgb< T > gold() { return rgb< T >( 0xff, 0xd7, 0x00 ); }
-  static rgb< T > goldenrod() { return rgb< T >( 0xda, 0xa5, 0x20 ); }
-  static rgb< T > gray() { return rgb< T >( 0x80, 0x80, 0x80 ); }
-  static rgb< T > green() { return rgb< T >( 0x00, 0x80, 0x00 ); }
-  static rgb< T > greenyellow() { return rgb< T >( 0xad, 0xff, 0x2f ); }
-  static rgb< T > honeydew() { return rgb< T >( 0xf0, 0xff, 0xf0 ); }
-  static rgb< T > hotpink() { return rgb< T >( 0xff, 0x69, 0xb4 ); }
-  static rgb< T > indianred() { return rgb< T >( 0xcd, 0x5c, 0x5c ); }
-  static rgb< T > indigo() { return rgb< T >( 0x4b, 0x00, 0x82 ); }
-  static rgb< T > ivory() { return rgb< T >( 0xff, 0xff, 0xf0 ); }
-  static rgb< T > khaki() { return rgb< T >( 0xf0, 0xe6, 0x8c ); }
-  static rgb< T > lavender() { return rgb< T >( 0xe6, 0xe6, 0xfa ); }
-  static rgb< T > lavenderblush() { return rgb< T >( 0xff, 0xf0, 0xf5 ); }
-  static rgb< T > lawngreen() { return rgb< T >( 0x7c, 0xfc, 0x00 ); }
-  static rgb< T > lemonchiffon() { return rgb< T >( 0xff, 0xfa, 0xcd ); }
-  static rgb< T > lightblue() { return rgb< T >( 0xad, 0xd8, 0xe6 ); }
-  static rgb< T > lightcoral() { return rgb< T >( 0xf0, 0x80, 0x80 ); }
-  static rgb< T > lightcyan() { return rgb< T >( 0xe0, 0xff, 0xff ); }
-  static rgb< T > lightgoldenrodyellow() { return rgb< T >( 0xfa, 0xfa, 0xd2 ); }
-  static rgb< T > lightgray() { return rgb< T >( 0xd3, 0xd3, 0xd3 ); }
-  static rgb< T > lightgreen() { return rgb< T >( 0x90, 0xee, 0x90 ); }
-  static rgb< T > lightpink() { return rgb< T >( 0xff, 0xb6, 0xc1 ); }
-  static rgb< T > lightsalmon() { return rgb< T >( 0xff, 0xa0, 0x7a ); }
-  static rgb< T > lightseagreen() { return rgb< T >( 0x20, 0xb2, 0xaa ); }
-  static rgb< T > lightskyblue() { return rgb< T >( 0x87, 0xce, 0xfa ); }
-  static rgb< T > lightslategray() { return rgb< T >( 0x77, 0x88, 0x99 ); }
-  static rgb< T > lightsteelblue() { return rgb< T >( 0xb0, 0xc4, 0xde ); }
-  static rgb< T > lightyellow() { return rgb< T >( 0xff, 0xff, 0xe0 ); }
-  static rgb< T > lime() { return rgb< T >( 0x00, 0xff, 0x00 ); }
-  static rgb< T > limegreen() { return rgb< T >( 0x32, 0xcd, 0x32 ); }
-  static rgb< T > linen() { return rgb< T >( 0xfa, 0xf0, 0xe6 ); }
-  static rgb< T > magenta() { return rgb< T >( 0xff, 0x00, 0xff ); }
-  static rgb< T > maroon() { return rgb< T >( 0x80, 0x00, 0x00 ); }
-  static rgb< T > mediumaquamarine() { return rgb< T >( 0x66, 0xcd, 0xaa ); }
-  static rgb< T > mediumblue() { return rgb< T >( 0x00, 0x00, 0xcd ); }
-  static rgb< T > mediumorchid() { return rgb< T >( 0xba, 0x55, 0xd3 ); }
-  static rgb< T > mediumpurple() { return rgb< T >( 0x93, 0x70, 0xdb ); }
-  static rgb< T > mediumseagreen() { return rgb< T >( 0x3c, 0xb3, 0x71 ); }
-  static rgb< T > mediumslateblue() { return rgb< T >( 0x7b, 0x68, 0xee ); }
-  static rgb< T > mediumspringgreen() { return rgb< T >( 0x00, 0xfa, 0x9a ); }
-  static rgb< T > mediumturquoise() { return rgb< T >( 0x48, 0xd1, 0xcc ); }
-  static rgb< T > mediumvioletred() { return rgb< T >( 0xc7, 0x15, 0x85 ); }
-  static rgb< T > midnightblue() { return rgb< T >( 0x19, 0x19, 0x70 ); }
-  static rgb< T > mintcream() { return rgb< T >( 0xf5, 0xff, 0xfa ); }
-  static rgb< T > mistyrose() { return rgb< T >( 0xff, 0xe4, 0xe1 ); }
-  static rgb< T > moccasin() { return rgb< T >( 0xff, 0xe4, 0xb5 ); }
-  static rgb< T > navajowhite() { return rgb< T >( 0xff, 0xde, 0xad ); }
-  static rgb< T > navy() { return rgb< T >( 0x00, 0x00, 0x80 ); }
-  static rgb< T > oldlace() { return rgb< T >( 0xfd, 0xf5, 0xe6 ); }
-  static rgb< T > olive() { return rgb< T >( 0x80, 0x80, 0x00 ); }
-  static rgb< T > olivedrab() { return rgb< T >( 0x6b, 0x8e, 0x23 ); }
-  static rgb< T > orange() { return rgb< T >( 0xff, 0xa5, 0x00 ); }
-  static rgb< T > orangered() { return rgb< T >( 0xff, 0x45, 0x00 ); }
-  static rgb< T > orchid() { return rgb< T >( 0xda, 0x70, 0xd6 ); }
-  static rgb< T > palegoldenrod() { return rgb< T >( 0xee, 0xe8, 0xaa ); }
-  static rgb< T > palegreen() { return rgb< T >( 0x98, 0xfb, 0x98 ); }
-  static rgb< T > paleturquoise() { return rgb< T >( 0xaf, 0xee, 0xee ); }
-  static rgb< T > palevioletred() { return rgb< T >( 0xdb, 0x70, 0x93 ); }
-  static rgb< T > papayawhip() { return rgb< T >( 0xff, 0xef, 0xd5 ); }
-  static rgb< T > peachpuff() { return rgb< T >( 0xff, 0xda, 0xb9 ); }
-  static rgb< T > peru() { return rgb< T >( 0xcd, 0x85, 0x3f ); }
-  static rgb< T > pink() { return rgb< T >( 0xff, 0xc0, 0xcb ); }
-  static rgb< T > plum() { return rgb< T >( 0xdd, 0xa0, 0xdd ); }
-  static rgb< T > powderblue() { return rgb< T >( 0xb0, 0xe0, 0xe6 ); }
-  static rgb< T > purple() { return rgb< T >( 0x80, 0x00, 0x80 ); }
-  static rgb< T > red() { return rgb< T >( 0xff, 0x00, 0x00 ); }
-  static rgb< T > rosybrown() { return rgb< T >( 0xbc, 0x8f, 0x8f ); }
-  static rgb< T > royalblue() { return rgb< T >( 0x41, 0x69, 0xe1 ); }
-  static rgb< T > saddlebrown() { return rgb< T >( 0x8b, 0x45, 0x13 ); }
-  static rgb< T > salmon() { return rgb< T >( 0xfa, 0x80, 0x72 ); }
-  static rgb< T > sandybrown() { return rgb< T >( 0xf4, 0xa4, 0x60 ); }
-  static rgb< T > seagreen() { return rgb< T >( 0x2e, 0x8b, 0x57 ); }
-  static rgb< T > seashell() { return rgb< T >( 0xff, 0xf5, 0xee ); }
-  static rgb< T > sienna() { return rgb< T >( 0xa0, 0x52, 0x2d ); }
-  static rgb< T > silver() { return rgb< T >( 0xc0, 0xc0, 0xc0 ); }
-  static rgb< T > skyblue() { return rgb< T >( 0x87, 0xce, 0xeb ); }
-  static rgb< T > slateblue() { return rgb< T >( 0x6a, 0x5a, 0xcd ); }
-  static rgb< T > slategray() { return rgb< T >( 0x70, 0x80, 0x90 ); }
-  static rgb< T > snow() { return rgb< T >( 0xff, 0xfa, 0xfa ); }
-  static rgb< T > springgreen() { return rgb< T >( 0x00, 0xff, 0x7f ); }
-  static rgb< T > steelblue() { return rgb< T >( 0x46, 0x82, 0xb4 ); }
-  static rgb< T > tan() { return rgb< T >( 0xd2, 0xb4, 0x8c ); }
-  static rgb< T > teal() { return rgb< T >( 0x00, 0x80, 0x80 ); }
-  static rgb< T > thistle() { return rgb< T >( 0xd8, 0xbf, 0xd8 ); }
-  static rgb< T > tomato() { return rgb< T >( 0xff, 0x63, 0x47 ); }
-  static rgb< T > transparent() { return rgb< T >( 0x00, 0x00, 0xe0 ); }
-  static rgb< T > turquoise() { return rgb< T >( 0x40, 0xe0, 0xd0 ); }
-  static rgb< T > violet() { return rgb< T >( 0xee, 0x82, 0xee ); }
-  static rgb< T > wheat() { return rgb< T >( 0xf5, 0xde, 0xb3 ); }
-  static rgb< T > white() { return rgb< T >( 0xff, 0xff, 0xff ); }
-  static rgb< T > whitesmoke() { return rgb< T >( 0xf5, 0xf5, 0xf5 ); }
-  static rgb< T > yellow() { return rgb< T >( 0xff, 0xff, 0x00 ); }
-  static rgb< T > yellowgreen() { return rgb< T >( 0x9a, 0xcd, 0x32 ); }
+	typedef T color_type;
+
+	static color_type aliceblue( )				{ return color_type( 0xf0, 0xf8, 0xff ); }
+	static color_type antiquewhite( )			{ return color_type( 0xfa, 0xeb, 0xd7 ); }
+	static color_type aqua( )					{ return color_type( 0x00, 0xff, 0xff ); }
+	static color_type aquamarine( )				{ return color_type( 0x7f, 0xff, 0xd4 ); }
+	static color_type azure( )					{ return color_type( 0xf0, 0xff, 0xff ); }
+	static color_type beige( )					{ return color_type( 0xf5, 0xf5, 0xdc ); }
+	static color_type bisque( )					{ return color_type( 0xff, 0xe4, 0xc4 ); }
+	static color_type black( )					{ return color_type( 0x00, 0x00, 0x00 ); }
+	static color_type blanchedalmond( )			{ return color_type( 0xff, 0xeb, 0xcd ); }
+	static color_type blue( )					{ return color_type( 0x00, 0x00, 0xff ); }
+	static color_type blueviolet( )				{ return color_type( 0x8a, 0x2b, 0xe2 ); }
+	static color_type brown( )					{ return color_type( 0xa5, 0x2a, 0x2a ); }
+	static color_type burlywood( )				{ return color_type( 0xde, 0xb8, 0x87 ); }
+	static color_type cadetblue( )				{ return color_type( 0x5f, 0x9e, 0xa0 ); }
+	static color_type chartreuse( )				{ return color_type( 0x7f, 0xff, 0x00 ); }
+	static color_type chocolate( )				{ return color_type( 0xd2, 0x69, 0x1e ); }
+	static color_type coral( )					{ return color_type( 0xff, 0x7f, 0x50 ); }
+	static color_type cornflowerblue( )			{ return color_type( 0x64, 0x95, 0xed ); }
+	static color_type cornsilk( )				{ return color_type( 0xff, 0xf8, 0xdc ); }
+	static color_type crimson( )				{ return color_type( 0xdc, 0x14, 0x3c ); }
+	static color_type cyan( )					{ return color_type( 0x00, 0xff, 0xff ); }
+	static color_type darkblue( )				{ return color_type( 0x00, 0x00, 0x8b ); }
+	static color_type darkcyan( )				{ return color_type( 0x00, 0x8b, 0x8b ); }
+	static color_type darkgoldenrod( )			{ return color_type( 0xb8, 0x86, 0x0b ); }
+	static color_type darkgray( )				{ return color_type( 0xa9, 0xa9, 0xa9 ); }
+	static color_type darkgreen( )				{ return color_type( 0x00, 0x64, 0x00 ); }
+	static color_type darkkhaki( )				{ return color_type( 0xbd, 0xb7, 0x6b ); }
+	static color_type darkmagenta( )			{ return color_type( 0x8b, 0x00, 0x8b ); }
+	static color_type darkolivegreen( )			{ return color_type( 0x55, 0x6b, 0x2f ); }
+	static color_type darkorange( )				{ return color_type( 0xff, 0x8c, 0x00 ); }
+	static color_type darkorchid( )				{ return color_type( 0x99, 0x32, 0xcc ); }
+	static color_type darkred( )				{ return color_type( 0x8b, 0x00, 0x00 ); }
+	static color_type darksalmon( )				{ return color_type( 0xe9, 0x96, 0x7a ); }
+	static color_type darkseagreen( )			{ return color_type( 0x8f, 0xbc, 0x8f ); }
+	static color_type darkslateblue( )			{ return color_type( 0x48, 0x3d, 0x8b ); }
+	static color_type darkslategray( )			{ return color_type( 0x2f, 0x4f, 0x4f ); }
+	static color_type darkturquoise( )			{ return color_type( 0x00, 0xce, 0xd1 ); }
+	static color_type darkviolet( )				{ return color_type( 0x94, 0x00, 0xd3 ); }
+	static color_type deeppink( )				{ return color_type( 0xff, 0x14, 0x93 ); }
+	static color_type deepskyblue( )			{ return color_type( 0x00, 0xbf, 0xff ); }
+	static color_type dimgray( )				{ return color_type( 0x69, 0x69, 0x69 ); }
+	static color_type dodgerblue( )				{ return color_type( 0x1e, 0x90, 0xff ); }
+	static color_type firebrick( )				{ return color_type( 0xb2, 0x22, 0x22 ); }
+	static color_type floralwhite( )			{ return color_type( 0xff, 0xfa, 0xf0 ); }
+	static color_type forestgreen( )			{ return color_type( 0x22, 0x8b, 0x22 ); }
+	static color_type fuchsia( )				{ return color_type( 0xff, 0x00, 0xff ); }
+	static color_type gainsboro( )				{ return color_type( 0xdc, 0xdc, 0xdc ); }
+	static color_type ghostwhite( )				{ return color_type( 0xf8, 0xf8, 0xff ); }
+	static color_type gold( )					{ return color_type( 0xff, 0xd7, 0x00 ); }
+	static color_type goldenrod( )				{ return color_type( 0xda, 0xa5, 0x20 ); }
+	static color_type gray( )					{ return color_type( 0x80, 0x80, 0x80 ); }
+	static color_type green( )					{ return color_type( 0x00, 0x80, 0x00 ); }
+	static color_type greenyellow( )			{ return color_type( 0xad, 0xff, 0x2f ); }
+	static color_type honeydew( )				{ return color_type( 0xf0, 0xff, 0xf0 ); }
+	static color_type hotpink( )				{ return color_type( 0xff, 0x69, 0xb4 ); }
+	static color_type indianred( )				{ return color_type( 0xcd, 0x5c, 0x5c ); }
+	static color_type indigo( )					{ return color_type( 0x4b, 0x00, 0x82 ); }
+	static color_type ivory( )					{ return color_type( 0xff, 0xff, 0xf0 ); }
+	static color_type khaki( )					{ return color_type( 0xf0, 0xe6, 0x8c ); }
+	static color_type lavender( )				{ return color_type( 0xe6, 0xe6, 0xfa ); }
+	static color_type lavenderblush( )			{ return color_type( 0xff, 0xf0, 0xf5 ); }
+	static color_type lawngreen( )				{ return color_type( 0x7c, 0xfc, 0x00 ); }
+	static color_type lemonchiffon( )			{ return color_type( 0xff, 0xfa, 0xcd ); }
+	static color_type lightblue( )				{ return color_type( 0xad, 0xd8, 0xe6 ); }
+	static color_type lightcoral( )				{ return color_type( 0xf0, 0x80, 0x80 ); }
+	static color_type lightcyan( )				{ return color_type( 0xe0, 0xff, 0xff ); }
+	static color_type lightgoldenrodyellow( )	{ return color_type( 0xfa, 0xfa, 0xd2 ); }
+	static color_type lightgray( )				{ return color_type( 0xd3, 0xd3, 0xd3 ); }
+	static color_type lightgreen( )				{ return color_type( 0x90, 0xee, 0x90 ); }
+	static color_type lightpink( )				{ return color_type( 0xff, 0xb6, 0xc1 ); }
+	static color_type lightsalmon( )			{ return color_type( 0xff, 0xa0, 0x7a ); }
+	static color_type lightseagreen( )			{ return color_type( 0x20, 0xb2, 0xaa ); }
+	static color_type lightskyblue( )			{ return color_type( 0x87, 0xce, 0xfa ); }
+	static color_type lightslategray( )			{ return color_type( 0x77, 0x88, 0x99 ); }
+	static color_type lightsteelblue( )			{ return color_type( 0xb0, 0xc4, 0xde ); }
+	static color_type lightyellow( )			{ return color_type( 0xff, 0xff, 0xe0 ); }
+	static color_type lime( )					{ return color_type( 0x00, 0xff, 0x00 ); }
+	static color_type limegreen( )				{ return color_type( 0x32, 0xcd, 0x32 ); }
+	static color_type linen( )					{ return color_type( 0xfa, 0xf0, 0xe6 ); }
+	static color_type magenta( )				{ return color_type( 0xff, 0x00, 0xff ); }
+	static color_type maroon( )					{ return color_type( 0x80, 0x00, 0x00 ); }
+	static color_type mediumaquamarine( )		{ return color_type( 0x66, 0xcd, 0xaa ); }
+	static color_type mediumblue( )				{ return color_type( 0x00, 0x00, 0xcd ); }
+	static color_type mediumorchid( )			{ return color_type( 0xba, 0x55, 0xd3 ); }
+	static color_type mediumpurple( )			{ return color_type( 0x93, 0x70, 0xdb ); }
+	static color_type mediumseagreen( )			{ return color_type( 0x3c, 0xb3, 0x71 ); }
+	static color_type mediumslateblue( )		{ return color_type( 0x7b, 0x68, 0xee ); }
+	static color_type mediumspringgreen( )		{ return color_type( 0x00, 0xfa, 0x9a ); }
+	static color_type mediumturquoise( )		{ return color_type( 0x48, 0xd1, 0xcc ); }
+	static color_type mediumvioletred( )		{ return color_type( 0xc7, 0x15, 0x85 ); }
+	static color_type midnightblue( )			{ return color_type( 0x19, 0x19, 0x70 ); }
+	static color_type mintcream( )				{ return color_type( 0xf5, 0xff, 0xfa ); }
+	static color_type mistyrose( )				{ return color_type( 0xff, 0xe4, 0xe1 ); }
+	static color_type moccasin( )				{ return color_type( 0xff, 0xe4, 0xb5 ); }
+	static color_type navajowhite( )			{ return color_type( 0xff, 0xde, 0xad ); }
+	static color_type navy( )					{ return color_type( 0x00, 0x00, 0x80 ); }
+	static color_type oldlace( )				{ return color_type( 0xfd, 0xf5, 0xe6 ); }
+	static color_type olive( )					{ return color_type( 0x80, 0x80, 0x00 ); }
+	static color_type olivedrab( )				{ return color_type( 0x6b, 0x8e, 0x23 ); }
+	static color_type orange( )					{ return color_type( 0xff, 0xa5, 0x00 ); }
+	static color_type orangered( )				{ return color_type( 0xff, 0x45, 0x00 ); }
+	static color_type orchid( )					{ return color_type( 0xda, 0x70, 0xd6 ); }
+	static color_type palegoldenrod( )			{ return color_type( 0xee, 0xe8, 0xaa ); }
+	static color_type palegreen( )				{ return color_type( 0x98, 0xfb, 0x98 ); }
+	static color_type paleturquoise( )			{ return color_type( 0xaf, 0xee, 0xee ); }
+	static color_type palevioletred( )			{ return color_type( 0xdb, 0x70, 0x93 ); }
+	static color_type papayawhip( )				{ return color_type( 0xff, 0xef, 0xd5 ); }
+	static color_type peachpuff( )				{ return color_type( 0xff, 0xda, 0xb9 ); }
+	static color_type peru( )					{ return color_type( 0xcd, 0x85, 0x3f ); }
+	static color_type pink( )					{ return color_type( 0xff, 0xc0, 0xcb ); }
+	static color_type plum( )					{ return color_type( 0xdd, 0xa0, 0xdd ); }
+	static color_type powderblue( )				{ return color_type( 0xb0, 0xe0, 0xe6 ); }
+	static color_type purple( )					{ return color_type( 0x80, 0x00, 0x80 ); }
+	static color_type red( )					{ return color_type( 0xff, 0x00, 0x00 ); }
+	static color_type rosybrown( )				{ return color_type( 0xbc, 0x8f, 0x8f ); }
+	static color_type royalblue( )				{ return color_type( 0x41, 0x69, 0xe1 ); }
+	static color_type saddlebrown( )			{ return color_type( 0x8b, 0x45, 0x13 ); }
+	static color_type salmon( )					{ return color_type( 0xfa, 0x80, 0x72 ); }
+	static color_type sandybrown( )				{ return color_type( 0xf4, 0xa4, 0x60 ); }
+	static color_type seagreen( )				{ return color_type( 0x2e, 0x8b, 0x57 ); }
+	static color_type seashell( )				{ return color_type( 0xff, 0xf5, 0xee ); }
+	static color_type sienna( )					{ return color_type( 0xa0, 0x52, 0x2d ); }
+	static color_type silver( )					{ return color_type( 0xc0, 0xc0, 0xc0 ); }
+	static color_type skyblue( )				{ return color_type( 0x87, 0xce, 0xeb ); }
+	static color_type slateblue( )				{ return color_type( 0x6a, 0x5a, 0xcd ); }
+	static color_type slategray( )				{ return color_type( 0x70, 0x80, 0x90 ); }
+	static color_type snow( )					{ return color_type( 0xff, 0xfa, 0xfa ); }
+	static color_type springgreen( )			{ return color_type( 0x00, 0xff, 0x7f ); }
+	static color_type steelblue( )				{ return color_type( 0x46, 0x82, 0xb4 ); }
+	static color_type tan( )					{ return color_type( 0xd2, 0xb4, 0x8c ); }
+	static color_type teal( )					{ return color_type( 0x00, 0x80, 0x80 ); }
+	static color_type thistle( )				{ return color_type( 0xd8, 0xbf, 0xd8 ); }
+	static color_type tomato( )					{ return color_type( 0xff, 0x63, 0x47 ); }
+	static color_type transparent( )			{ return color_type( 0x00, 0x00, 0xe0 ); }
+	static color_type turquoise( )				{ return color_type( 0x40, 0xe0, 0xd0 ); }
+	static color_type violet( )					{ return color_type( 0xee, 0x82, 0xee ); }
+	static color_type wheat( )					{ return color_type( 0xf5, 0xde, 0xb3 ); }
+	static color_type white( )					{ return color_type( 0xff, 0xff, 0xff ); }
+	static color_type whitesmoke( )				{ return color_type( 0xf5, 0xf5, 0xf5 ); }
+	static color_type yellow( )					{ return color_type( 0xff, 0xff, 0x00 ); }
+	static color_type yellowgreen( )			{ return color_type( 0x9a, 0xcd, 0x32 ); }
 };
 
 

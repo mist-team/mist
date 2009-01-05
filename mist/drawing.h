@@ -341,6 +341,82 @@ void draw_line( array3< T, Allocator > &image,
 //! @param[in]     value  … 描画する色もしくは値
 //!
 template < class T, class Allocator >
+void draw_point( array2< T, Allocator > &image,
+				 typename array2< T, Allocator >::difference_type x,
+				 typename array2< T, Allocator >::difference_type y,
+				 typename array2< T, Allocator >::difference_type radius,
+				 typename array2< T, Allocator >::value_type value = typename array3< T, Allocator >::value_type( ) )
+{
+	typedef typename array2< T, Allocator >::difference_type difference_type;
+
+	difference_type is = x - radius;
+	difference_type ie = x + radius;
+	difference_type js = y - radius;
+	difference_type je = y + radius;
+
+	difference_type w = static_cast< difference_type >( image.width( ) );
+	difference_type h = static_cast< difference_type >( image.height( ) );
+
+	if( is < 0 )
+	{
+		is = 0;
+	}
+	if( is >= w )
+	{
+		is = w;
+		ie = w - 1;
+	}
+	if( ie < 0 )
+	{
+		is = 0;
+		ie = -1;
+	}
+	if( ie >= w )
+	{
+		ie = w - 1;
+	}
+
+	if( js < 0 )
+	{
+		js = 0;
+	}
+	if( js >= h )
+	{
+		js = h;
+		je = h - 1;
+	}
+	if( je < 0 )
+	{
+		js = 0;
+		je = -1;
+	}
+	if( je >= h )
+	{
+		je = h - 1;
+	}
+
+	for( difference_type j = js ; j <= je ; j++ )
+	{
+		for( difference_type i = is ; i <= ie ; i++ )
+		{
+			image( i, j ) = value;
+		}
+	}
+}
+
+
+/// @brief 3次元画像に直線を描画する
+//! 
+//! 手法について何か書く
+//! 
+//! @param[in,out] image  … 入出力画像
+//! @param[in]     x      … 描画する点のX座標
+//! @param[in]     y      … 描画する点のY座標
+//! @param[in]     z      … 描画する点のZ座標
+//! @param[in]     radius … 描画する点の半径
+//! @param[in]     value  … 描画する色もしくは値
+//!
+template < class T, class Allocator >
 void draw_point( array3< T, Allocator > &image,
 				 typename array3< T, Allocator >::difference_type x,
 				 typename array3< T, Allocator >::difference_type y,
@@ -430,25 +506,26 @@ void draw_point( array3< T, Allocator > &image,
 	}
 }
 
-
 /// @brief 2次元が像に範囲チェックを行い，値を代入
 //! @param[out] image 出力画像
 //! @param[in]  x     画素のX座標
 //! @param[in]  y     画素のY座標
 //! @param[in]  value  … 描画する色もしくは値
-template< typename BITS, typename Allocator >
-void set_pixel(  mist::array2< BITS, Allocator > &image,
-		 typename array2< BITS, Allocator >::difference_type x,
-		 typename array2< BITS, Allocator >::difference_type y,
-		 const typename mist::array2< BITS, Allocator >::value_type &value )
+template< typename T, typename Allocator >
+void set_pixel( array2< T, Allocator > &image,
+			   typename array2< T, Allocator >::difference_type x,
+			   typename array2< T, Allocator >::difference_type y,
+			   const typename array2< T, Allocator >::value_type &value )
 {
-  // 範囲チェック
-  if( x < 0 || y < 0 || x >= static_cast< int >( image.width() ) || y >= static_cast< int >( image.height() ) )
-    {
-      return;
-    }
+	typedef typename array2< T, Allocator >::difference_type difference_type;
 
-  image( x, y ) = value;
+	// 範囲チェック
+	if( x < 0 || y < 0 || x >= static_cast< difference_type >( image.width( ) ) || y >= static_cast< difference_type >( image.height( ) ) )
+	{
+		return;
+	}
+
+	image( x, y ) = value;
 }
 
 /// @brief 円を描く(Michenerの手法)
@@ -457,43 +534,43 @@ void set_pixel(  mist::array2< BITS, Allocator > &image,
 //! @param[in]  cy     円中心のY座標
 //! @param[in]  r      円の半径
 //! @param[in]  value  … 描画する色もしくは値
-template< typename BITS, typename Allocator >
-void draw_circle( mist::array2< BITS, Allocator > &image, 
-		  typename array2< BITS, Allocator >::difference_type cx, 
-		  typename array2< BITS, Allocator >::difference_type cy, 
-		  typename array2< BITS, Allocator >::difference_type r, 
-		  const typename mist::array2< BITS, Allocator >::value_type &value )
+template< typename T, typename Allocator >
+void draw_circle( array2< T, Allocator > &image, 
+				 typename array2< T, Allocator >::difference_type cx, 
+				 typename array2< T, Allocator >::difference_type cy, 
+				 typename array2< T, Allocator >::difference_type r, 
+				 const typename array2< T, Allocator >::value_type &value )
 {
-  typename array2< BITS, Allocator >::difference_type d = 3 - 2 * r;
-  typename array2< BITS, Allocator >::difference_type dx;
-  typename array2< BITS, Allocator >::difference_type dy = r;
+	typename array2< T, Allocator >::difference_type d = 3 - 2 * r;
+	typename array2< T, Allocator >::difference_type dx;
+	typename array2< T, Allocator >::difference_type dy = r;
 
-  // 開始点
-  set_pixel( image, cx, cy + r, value );
-  set_pixel( image, cx, cy - r, value );
-  set_pixel( image, cx + r, cy, value );
-  set_pixel( image, cx - r, cy, value );
+	// 開始点
+	set_pixel( image, cx, cy + r, value );
+	set_pixel( image, cx, cy - r, value );
+	set_pixel( image, cx + r, cy, value );
+	set_pixel( image, cx - r, cy, value );
 
-  for( dx = 0 ; dx <= dy ; ++dx )
-    {
-      if( d < 0 )
+	for( dx = 0 ; dx <= dy ; ++dx )
 	{
-	  d += 6 + 4 * dx;	  
-	}
-      else
-	{
-	  d += 10 + 4 * dx - 4 * dy--;
-	}
+		if( d < 0 )
+		{
+			d += 6 + 4 * dx;	  
+		}
+		else
+		{
+			d += 10 + 4 * dx - 4 * dy--;
+		}
 
-      set_pixel( image, cx + dy, cy + dx, value );
-      set_pixel( image, cx + dx, cy + dy, value );
-      set_pixel( image, cx - dx, cy + dy, value );
-      set_pixel( image, cx - dy, cy + dx, value );
-      set_pixel( image, cx - dy, cy - dx, value );
-      set_pixel( image, cx - dx, cy - dy, value );
-      set_pixel( image, cx + dx, cy - dy, value );
-      set_pixel( image, cx + dy, cy - dx, value );
-    }
+		set_pixel( image, cx + dy, cy + dx, value );
+		set_pixel( image, cx + dx, cy + dy, value );
+		set_pixel( image, cx - dx, cy + dy, value );
+		set_pixel( image, cx - dy, cy + dx, value );
+		set_pixel( image, cx - dy, cy - dx, value );
+		set_pixel( image, cx - dx, cy - dy, value );
+		set_pixel( image, cx + dx, cy - dy, value );
+		set_pixel( image, cx + dy, cy - dx, value );
+	}
 }
 
 /// @brief 長方形を描く
@@ -503,18 +580,18 @@ void draw_circle( mist::array2< BITS, Allocator > &image,
 //! @param[in]  x1     右下のX座標
 //! @param[in]  y1     右下のY座標
 //! @param[in]  value  … 描画する色もしくは値
-template< typename BITS, typename Allocator >
-void draw_rect( mist::array2< BITS, Allocator > &image, 
-		  typename array2< BITS, Allocator >::difference_type x0, 
-		  typename array2< BITS, Allocator >::difference_type y0, 
-		  typename array2< BITS, Allocator >::difference_type x1, 
-		  typename array2< BITS, Allocator >::difference_type y1, 		
-		  const typename mist::array2< BITS, Allocator >::value_type &value )
+template< typename T, typename Allocator >
+void draw_rect( array2< T, Allocator > &image, 
+			   typename array2< T, Allocator >::difference_type x0, 
+			   typename array2< T, Allocator >::difference_type y0, 
+			   typename array2< T, Allocator >::difference_type x1, 
+			   typename array2< T, Allocator >::difference_type y1, 		
+			   const typename array2< T, Allocator >::value_type &value )
 {
-  draw_line( image, x0, y0, x1, y0, value );
-  draw_line( image, x0, y0, x0, y1, value );
-  draw_line( image, x1, y0, x1, y1, value );
-  draw_line( image, x0, y1, x1, y1, value );
+	draw_line( image, x0, y0, x1, y0, value );
+	draw_line( image, x0, y0, x0, y1, value );
+	draw_line( image, x1, y0, x1, y1, value );
+	draw_line( image, x0, y1, x1, y1, value );
 }
 
 /// @brief 長方形で塗りつぶす
@@ -524,27 +601,28 @@ void draw_rect( mist::array2< BITS, Allocator > &image,
 //! @param[in]  x1     右下のX座標
 //! @param[in]  y1     右下のY座標
 //! @param[in]  value  … 描画する色もしくは値
-template< typename BITS, typename Allocator >
-void fill_rect( mist::array2< BITS, Allocator > &image, 
-		  typename array2< BITS, Allocator >::difference_type x0, 
-		  typename array2< BITS, Allocator >::difference_type y0, 
-		  typename array2< BITS, Allocator >::difference_type x1, 
-		  typename array2< BITS, Allocator >::difference_type y1, 		
-		  const typename mist::array2< BITS, Allocator >::value_type &value )
+template< typename T, typename Allocator >
+void fill_rect( array2< T, Allocator > &image, 
+			   typename array2< T, Allocator >::difference_type x0, 
+			   typename array2< T, Allocator >::difference_type y0, 
+			   typename array2< T, Allocator >::difference_type x1, 
+			   typename array2< T, Allocator >::difference_type y1, 		
+			   const typename array2< BITS, Allocator >::value_type &value )
 {
-  typedef typename array2< BITS, Allocator >::difference_type difference_type;
-  x0 = std::max( 0, x0 );
-  y0 = std::max( 0, y0 );
-  x1 = std::min( x1, static_cast< difference_type >( image.width() ) - 1 );
-  y1 = std::min( y1, static_cast< difference_type >( image.height() ) - 1 );
+	typedef typename array2< T, Allocator >::difference_type difference_type;
 
-  for( difference_type y = y0 ; y <= y1 ; ++y )
-    {
-      for( difference_type x = x0 ; x <= x1 ; ++x )
+	x0 = std::max( 0, x0 );
+	y0 = std::max( 0, y0 );
+	x1 = std::min( x1, static_cast< difference_type >( image.width() ) - 1 );
+	y1 = std::min( y1, static_cast< difference_type >( image.height() ) - 1 );
+
+	for( difference_type y = y0 ; y <= y1 ; ++y )
 	{
-	  image( x, y ) = value;
+		for( difference_type x = x0 ; x <= x1 ; ++x )
+		{
+			image( x, y ) = value;
+		}
 	}
-    }
 }
 
 /// @brief 十字点を描画
@@ -553,15 +631,15 @@ void fill_rect( mist::array2< BITS, Allocator > &image,
 //! @param[in]  cy     中心のY座標
 //! @param[in]  size     十字点の大きさ
 //! @param[in]  value  … 描画する色もしくは値
-template< typename BITS, typename Allocator >
-void draw_crosspoint( mist::array2< BITS, Allocator > &image, 
-		  typename array2< BITS, Allocator >::difference_type cx, 
-		  typename array2< BITS, Allocator >::difference_type cy, 
-		  typename array2< BITS, Allocator >::difference_type size, 
-		  const typename mist::array2< BITS, Allocator >::value_type &value )
+template< typename T, typename Allocator >
+void draw_crosspoint( array2< T, Allocator > &image, 
+					 typename array2< T, Allocator >::difference_type cx, 
+					 typename array2< T, Allocator >::difference_type cy, 
+					 typename array2< T, Allocator >::difference_type size, 
+					 const typename array2< T, Allocator >::value_type &value )
 {
-  mist::draw_line( image, cx - size / 2, cy, cx + size / 2, cy, value );
-  mist::draw_line( image, cx, cy - size / 2, cx, cy + size / 2, value );
+	draw_line( image, cx - size / 2, cy, cx + size / 2, cy, value );
+	draw_line( image, cx, cy - size / 2, cx, cy + size / 2, value );
 }
 
 /// @}
