@@ -687,26 +687,41 @@ namespace __linear__
 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
 	static void __1D_linear_filter__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
-						typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num, Functor f )
+						typename array3< T1, Allocator1 >::size_type axis, typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num, Functor f )
 	{
 		linear_filter( in, out, k1, 0, 1, thread_id, thread_num, f );
 	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
 	static void __1D_linear_filter__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
-						typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num, Functor f )
+						typename array3< T1, Allocator1 >::size_type axis, typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num, Functor f )
 	{
-		_1D_linear_filter_< 1 >::linear_filter( in,  out, k1, thread_id, thread_num, 0, 1, f,  0.0,  50.0 );
-		_1D_linear_filter_< 2 >::linear_filter( out, out, k2, thread_id, thread_num, 0, 1, f, 50.0, 100.0 );
+		if( axis == 0 )
+		{
+			_1D_linear_filter_< 1 >::linear_filter( in,  out, k1, thread_id, thread_num, 0, 1, f,  0.0,  50.0 );
+		}
+		else
+		{
+			_1D_linear_filter_< 2 >::linear_filter( out, out, k2, thread_id, thread_num, 0, 1, f, 50.0, 100.0 );
+		}
 	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
 	static void __1D_linear_filter__( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
-						typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num, Functor f )
+						typename array3< T1, Allocator1 >::size_type axis, typename array3< T1, Allocator1 >::size_type thread_id, typename array3< T1, Allocator1 >::size_type thread_num, Functor f )
 	{
-		_1D_linear_filter_< 1 >::linear_filter( in,  out, k1, 0, 1, thread_id, thread_num, f,         0.0,  100.0 / 3.0 );
-		_1D_linear_filter_< 2 >::linear_filter( out, out, k2, 0, 1, thread_id, thread_num, f, 100.0 / 3.0,  200.0 / 3.0 );
-		_1D_linear_filter_< 3 >::linear_filter( out, out, k3, 0, 1, thread_id, thread_num, f, 200.0 / 3.0,  100.0 );
+		if( axis == 0 )
+		{
+			_1D_linear_filter_< 1 >::linear_filter( in,  out, k1, 0, 1, thread_id, thread_num, f,         0.0,  100.0 / 3.0 );
+		}
+		else if( axis == 1 )
+		{
+			_1D_linear_filter_< 2 >::linear_filter( out, out, k2, 0, 1, thread_id, thread_num, f, 100.0 / 3.0,  200.0 / 3.0 );
+		}
+		else
+		{
+			_1D_linear_filter_< 3 >::linear_filter( out, out, k3, 0, 1, thread_id, thread_num, f, 200.0 / 3.0,  100.0 );
+		}
 	}
 
 	template < class T1, class T2, class Kernel, class Functor >
@@ -728,17 +743,19 @@ namespace __linear__
 		const Kernel *k1_;
 		const Kernel *k2_;
 		const Kernel *k3_;
+		size_type axis_;
 
 		Functor f_;
 
 	public:
-		void setup_parameters( const T1 &in, T2 &out, const Kernel &k1, const Kernel &k2, const Kernel &k3, size_type thread_id, size_type thread_num, Functor f )
+		void setup_parameters( const T1 &in, T2 &out, const Kernel &k1, const Kernel &k2, const Kernel &k3, size_type axis, size_type thread_id, size_type thread_num, Functor f )
 		{
 			in_  = &in;
 			out_ = &out;
 			k1_ = &k1;
 			k2_ = &k2;
 			k3_ = &k3;
+			axis_ = axis;
 			thread_id_ = thread_id;
 			thread_num_ = thread_num;
 			f_ = f;
@@ -758,7 +775,7 @@ namespace __linear__
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( )
 		{
-			__1D_linear_filter__( *in_, *out_, *k1_, *k2_, *k3_, thread_id_, thread_num_, f_ );
+			__1D_linear_filter__( *in_, *out_, *k1_, *k2_, *k3_, axis_, thread_id_, thread_num_, f_ );
 			return( true );
 		}
 	};
@@ -1543,16 +1560,27 @@ namespace linear
 
 		_1D_linear_thread *thread = new _1D_linear_thread[ thread_num ];
 
-		size_type i;
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].setup_parameters( in, out, kernel1, kernel2, kernel2, i, thread_num, f );
-		}
-
 		f( 0.0 );
 
-		// スレッドを実行して，終了まで待機する
-		do_threads_( thread, thread_num );
+		{
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, out, kernel1, kernel2, kernel2, 0, i, thread_num, f );
+			}
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+		}
+
+		{
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, out, kernel1, kernel2, kernel2, 1, i, thread_num, f );
+			}
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+		}
 
 		f( 100.1 );
 
@@ -1598,16 +1626,27 @@ namespace linear
 
 		_1D_linear_thread *thread = new _1D_linear_thread[ thread_num ];
 
-		size_type i;
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].setup_parameters( in, in, kernel1, kernel2, kernel2, i, thread_num, f );
-		}
-
 		f( 0.0 );
 
-		// スレッドを実行して，終了まで待機する
-		do_threads_( thread, thread_num );
+		{
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, in, kernel1, kernel2, kernel2, 0, i, thread_num, f );
+			}
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+		}
+
+		{
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, in, kernel1, kernel2, kernel2, 1, i, thread_num, f );
+			}
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+		}
 
 		f( 100.1 );
 
@@ -1721,16 +1760,37 @@ namespace linear
 
 		_1D_linear_thread *thread = new _1D_linear_thread[ thread_num ];
 
-		size_type i;
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].setup_parameters( in, out, kernel1, kernel2, kernel3, i, thread_num, f );
-		}
-
 		f( 0.0 );
 
-		// スレッドを実行して，終了まで待機する
-		do_threads_( thread, thread_num );
+		{
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, out, kernel1, kernel2, kernel3, 0, i, thread_num, f );
+			}
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+		}
+
+		{
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, out, kernel1, kernel2, kernel3, 1, i, thread_num, f );
+			}
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+		}
+
+		{
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, out, kernel1, kernel2, kernel3, 2, i, thread_num, f );
+			}
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+		}
 
 		f( 100.1 );
 
@@ -1777,16 +1837,37 @@ namespace linear
 
 		_1D_linear_thread *thread = new _1D_linear_thread[ thread_num ];
 
-		size_type i;
-		for( i = 0 ; i < thread_num ; i++ )
-		{
-			thread[ i ].setup_parameters( in, in, kernel1, kernel2, kernel3, i, thread_num, f );
-		}
-
 		f( 0.0 );
 
-		// スレッドを実行して，終了まで待機する
-		do_threads_( thread, thread_num );
+		{
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, in, kernel1, kernel2, kernel3, 0, i, thread_num, f );
+			}
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+		}
+
+		{
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, in, kernel1, kernel2, kernel3, 1, i, thread_num, f );
+			}
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+		}
+
+		{
+			for( size_type i = 0 ; i < thread_num ; i++ )
+			{
+				thread[ i ].setup_parameters( in, in, kernel1, kernel2, kernel3, 2, i, thread_num, f );
+			}
+
+			// スレッドを実行して，終了まで待機する
+			do_threads_( thread, thread_num );
+		}
 
 		f( 100.1 );
 
