@@ -429,191 +429,191 @@ namespace statistics
 				max1 = in1[ i ];
 			}
 		}
-		
+
 		value_type min2 = in2[ 0 ];
 		value_type max2 = in2[ 0 ];
 		for( size_type i = 1 ; i < in2.size( ) ; i++ )
-		  {
-		    if( min2 > in2[ i ] )
-		      {
-			min2 = in2[ i ];
-		      }
-		    else if( max2 < in2[ i ] )
-		      {
-			max2 = in2[ i ];
-		      }
-		  }
-		
+		{
+			if( min2 > in2[ i ] )
+			{
+				min2 = in2[ i ];
+			}
+			else if( max2 < in2[ i ] )
+			{
+				max2 = in2[ i ];
+			}
+		}
+
 		return( generate_histogram( in1, in2, out, min1, max1, min2, max2, bin ) );
 	}
-  
-  
-  /// データ全体からビン幅 1 のヒストグラムを作成する
-  //!
-  //! @attention 入力・出力となるデータの配列として，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．
-  //!
-  //! @param[in] in1  … ヒストグラムを作成するための元となるデータ配列1（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
-  //! @param[in] in2  … ヒストグラムを作成するための元となるデータ配列2（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
-  //! @param[in] out  … 作成されたヒストグラム（MISTで提供する2次元コンテナ array2 のみ）
-  //! 
-  //! @retval true  … ヒストグラムの作成に成功
-  //! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空，入力となる2つのデータ数が異なる
-  //! 
-  template < class Array1, class Array2, class T, class Allocator >
-  bool generate_histogram( const Array1 &in1, const Array2 &in2, array2< T, Allocator > &out )
-  {
-    return( generate_histogram( in1, in2, out, 1 ) );
-  }
-  
-  
-  
-  namespace detail
-  {
-    /// @brief 画像の中心モーメント
-    //! @param[in] img      入力画像
-    //! @param[in] x_order  X方向のモーメントの次数
-    //! @param[in] y_order  Y方向のモーメントの次数 
-    //! @param[in] x0       X方向の重心
-    //! @param[in] y0       Y方向の重心
-    //! @return モーメント
-    template< typename T, typename Allocator >
-    double central_moment( const mist::array2< T, Allocator > &img, size_t x_order, size_t y_order, double x0, double y0 )
-    {
-      double r = 0;
-      for( size_t y = 0 ; y < img.height() ; ++y )
-	{
-	  for( size_t x = 0 ; x < img.width() ; ++x )
-	    {
-	      r += pow( static_cast< double >( x ) - x0, x_order ) * pow( static_cast< double >( y ) - y0, y_order ) * img( x, y );
-	    }
-	}    
-      return r;
-    }
-    
-    /// @brief 画像から正規化中心モーメントを求める
-    //! @param[in] img      入力画像
-    //! @param[in] x_order  X方向のモーメントの次数
-    //! @param[in] y_order  Y方向のモーメントの次数 
-    //! @param[in] y00      モーメント00(面積)
-    //! @param[in] x0       X方向の重心
-    //! @param[in] y0       Y方向の重心
-    //! @return モーメント
-    template< typename T, typename Allocator >
-    double normalized_central_moment( const mist::array2< T, Allocator > &img, size_t x_order, size_t y_order, double u00, double x0, double y0 )
-    {
-      return central_moment( img, x_order, y_order, x0, y0 ) / u00;
-    }
-  }
-  
-  /// @brief 画像のモーメントを求める
-  //! @param[in] img      入力画像
-  //! @param[in] x_order  X方向のモーメントの次数
-  //! @param[in] y_order  Y方向のモーメントの次数 
-  //! @return モーメント
-  template< typename T, typename Allocator >
-  double moment( const mist::array2< T, Allocator > &img, size_t x_order, size_t y_order )
-  {
-    double r = 0;
-    
-    for( size_t y = 0 ; y < img.height() ; ++y )
-      {
-	for( size_t x = 0 ; x < img.width() ; ++x )
-	  {
-	    r += pow( x, x_order ) * pow( y, y_order ) * img( x, y );
-	  }
-      }
-    
-    return r;
-  }
-  
-  /// @brief 画像の中心モーメント
-  //! @param[in] img      入力画像
-  //! @param[in] x_order  X方向のモーメントの次数
-  //! @param[in] y_order  Y方向のモーメントの次数 
-  //! @return モーメント
-  template< typename T, typename Allocator >
-  double central_moment( const mist::array2< T, Allocator > &img, size_t x_order, size_t y_order )
-  {
-    double u00 = moment( img, 0, 0 );
-    double u10 = moment( img, 1, 0 );
-    double u01 = moment( img, 0, 1 );
-    
-    double x0 = u10 / u00;
-    double y0 = u01 / u00;
-    
-    return detail::central_moment( img, x_order, y_order, x0, y0 );
-  }
-  
-  
-  
-  /// @biref 画像から正規化中心モーメントを求める
-  //! @param[in] img      入力画像
-  //! @param[in] x_order  X方向のモーメントの次数
-  //! @param[in] y_order  Y方向のモーメントの次数 
-  //! @return モーメント
-  template< typename T, typename Allocator >
-  double normalized_central_moment( const mist::array2< T, Allocator > &img, size_t x_order, size_t y_order )
-  {
-    double u00 = moment( img, 0, 0 );
-    double u10 = moment( img, 1, 0 );
-    double u01 = moment( img, 0, 1 );
-    double x0 = u10 / u00;
-    double y0 = u01 / u00;
-    return detail::normalized_central_moment( img, x_order, y_order, u00, x0, y0 );
-  }
-  
-  
-  /// @brief 画像からHuモーメントを求める
-  //! @param[in]  img      入力画像
-  //! @param[out] moments  Huモーメント(7次元)
-  template< typename T, typename Allocator >
-  void hu_moments( const mist::array2< T, Allocator > &img, mist::array1< double > &moments )
-  {
-    double u00 = moment( img, 0, 0 );
-    double u10 = moment( img, 1, 0 );
-    double u01 = moment( img, 0, 1 );
-    double x0 = u10 / u00;
-    double y0 = u01 / u00;
-    
-    // 正規化中心モーメントを計算
-    mist::array2< double > ncm( 4, 4 );
-    for( size_t x = 0 ; x <= 3 ; ++x )
-      {
-	for( size_t y = 0 ; y <= 3 ; ++y )
-	  {
-	    if( x + y > 3 )
-	      {
-		continue;
-	      }	  
-	    ncm( x, y ) = detail::normalized_central_moment( img, x, y, u00, x0, y0 );	  
-	  }
-      }
-    
-    // Huモーメントを計算
-    moments.resize( 7 );
-    moments( 0 ) = ncm( 2, 0 ) * ncm( 0, 2 );
-    moments( 1 ) = pow( ncm( 2, 0 ) - ncm( 0, 2 ), 2.0 ) + 4 * pow( ncm( 1, 1 ), 2.0 );
-    moments( 2 ) = pow( ncm( 3, 0 ) - 3 * ncm( 1, 2 ), 2.0 ) + pow( 3 * ncm( 2, 1 ) - ncm( 0, 3 ), 2.0 );
-    moments( 3 ) = pow( ncm( 3, 0 ) * ncm( 1, 2 ), 2.0 ) + pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 );
-    moments( 4 ) = ( ncm( 3, 0 ) - 3 * ncm( 1, 2 ) ) *
-      ( ncm( 3, 0 ) + ncm( 1, 2 ) ) *
-      ( pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - 3 * pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ) +
-      ( 3 * ncm( 2, 1 ) - ncm( 0, 3 ) ) *
-      ( ncm( 2, 1 ) + ncm( 0, 3 ) ) *
-      ( 3 * pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) );    
-    moments( 5 ) = ( ncm( 2, 0 ) - ncm( 0, 2 ) ) *
-      ( pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ) +
-      4 * ncm( 1, 1 ) * ( ncm( 3, 0 ) + ncm( 1, 2 ) ) * ( ncm( 2, 1 ) + ncm( 0, 3 ) );
-    moments( 6 ) = ( 3 * ncm( 2, 1 ) - ncm( 0, 3 ) ) *
-      ( ncm( 2, 1 ) + ncm( 0, 3 ) ) *
-      ( 3 * pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ) -
-      ( ncm( 3, 0 ) - 3 * ncm( 2, 1 ) ) *
-      ( ncm( 2, 1 ) + ncm( 0, 3 ) ) *
-      ( 3 * pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ); 
-  }
 
-/// @}
-//  統計処理の終わり
+
+	/// データ全体からビン幅 1 のヒストグラムを作成する
+	//!
+	//! @attention 入力・出力となるデータの配列として，MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナが利用可能です．
+	//!
+	//! @param[in] in1  … ヒストグラムを作成するための元となるデータ配列1（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
+	//! @param[in] in2  … ヒストグラムを作成するための元となるデータ配列2（MISTで提供するコンテナ，STLで提供されているvector，dequeコンテナ）
+	//! @param[in] out  … 作成されたヒストグラム（MISTで提供する2次元コンテナ array2 のみ）
+	//! 
+	//! @retval true  … ヒストグラムの作成に成功
+	//! @retval false … 入力と出力が同じオブジェクトを指定した場合，もしくはヒストグラムの作成用のデータが空，入力となる2つのデータ数が異なる
+	//! 
+	template < class Array1, class Array2, class T, class Allocator >
+	bool generate_histogram( const Array1 &in1, const Array2 &in2, array2< T, Allocator > &out )
+	{
+		return( generate_histogram( in1, in2, out, 1 ) );
+	}
+
+
+
+	namespace detail
+	{
+		/// @brief 画像の中心モーメント
+		//! @param[in] img      入力画像
+		//! @param[in] x_order  X方向のモーメントの次数
+		//! @param[in] y_order  Y方向のモーメントの次数 
+		//! @param[in] x0       X方向の重心
+		//! @param[in] y0       Y方向の重心
+		//! @return モーメント
+		template< typename T, typename Allocator >
+		double central_moment( const array2< T, Allocator > &img, size_t x_order, size_t y_order, double x0, double y0 )
+		{
+			double r = 0;
+			for( size_t y = 0 ; y < img.height() ; ++y )
+			{
+				for( size_t x = 0 ; x < img.width() ; ++x )
+				{
+					r += pow( static_cast< double >( x ) - x0, x_order ) * pow( static_cast< double >( y ) - y0, y_order ) * img( x, y );
+				}
+			}    
+			return( r );
+		}
+
+		/// @brief 画像から正規化中心モーメントを求める
+		//! @param[in] img      入力画像
+		//! @param[in] x_order  X方向のモーメントの次数
+		//! @param[in] y_order  Y方向のモーメントの次数 
+		//! @param[in] y00      モーメント00(面積)
+		//! @param[in] x0       X方向の重心
+		//! @param[in] y0       Y方向の重心
+		//! @return モーメント
+		template< typename T, typename Allocator >
+		double normalized_central_moment( const array2< T, Allocator > &img, size_t x_order, size_t y_order, double u00, double x0, double y0 )
+		{
+			return( central_moment( img, x_order, y_order, x0, y0 ) / u00 );
+		}
+	}
+
+	/// @brief 画像のモーメントを求める
+	//! @param[in] img      入力画像
+	//! @param[in] x_order  X方向のモーメントの次数
+	//! @param[in] y_order  Y方向のモーメントの次数 
+	//! @return モーメント
+	template< typename T, typename Allocator >
+	double moment( const array2< T, Allocator > &img, size_t x_order, size_t y_order )
+	{
+		double r = 0;
+
+		for( size_t y = 0 ; y < img.height() ; ++y )
+		{
+			for( size_t x = 0 ; x < img.width() ; ++x )
+			{
+				r += pow( x, x_order ) * pow( y, y_order ) * img( x, y );
+			}
+		}
+
+		return( r );
+	}
+
+	/// @brief 画像の中心モーメント
+	//! @param[in] img      入力画像
+	//! @param[in] x_order  X方向のモーメントの次数
+	//! @param[in] y_order  Y方向のモーメントの次数 
+	//! @return モーメント
+	template< typename T, typename Allocator >
+	double central_moment( const array2< T, Allocator > &img, size_t x_order, size_t y_order )
+	{
+		double u00 = moment( img, 0, 0 );
+		double u10 = moment( img, 1, 0 );
+		double u01 = moment( img, 0, 1 );
+
+		double x0 = u10 / u00;
+		double y0 = u01 / u00;
+
+		return( detail::central_moment( img, x_order, y_order, x0, y0 ) );
+	}
+
+
+
+	/// @biref 画像から正規化中心モーメントを求める
+	//! @param[in] img      入力画像
+	//! @param[in] x_order  X方向のモーメントの次数
+	//! @param[in] y_order  Y方向のモーメントの次数 
+	//! @return モーメント
+	template< typename T, typename Allocator >
+	double normalized_central_moment( const array2< T, Allocator > &img, size_t x_order, size_t y_order )
+	{
+		double u00 = moment( img, 0, 0 );
+		double u10 = moment( img, 1, 0 );
+		double u01 = moment( img, 0, 1 );
+		double x0 = u10 / u00;
+		double y0 = u01 / u00;
+		return( detail::normalized_central_moment( img, x_order, y_order, u00, x0, y0 ) );
+	}
+
+
+	/// @brief 画像からHuモーメントを求める
+	//! @param[in]  img      入力画像
+	//! @param[out] moments  Huモーメント(7次元)
+	template< typename T, typename Allocator >
+	void hu_moments( const array2< T, Allocator > &img, array1< double > &moments )
+	{
+		double u00 = moment( img, 0, 0 );
+		double u10 = moment( img, 1, 0 );
+		double u01 = moment( img, 0, 1 );
+		double x0 = u10 / u00;
+		double y0 = u01 / u00;
+
+		// 正規化中心モーメントを計算
+		array2< double > ncm( 4, 4 );
+		for( size_t x = 0 ; x <= 3 ; ++x )
+		{
+			for( size_t y = 0 ; y <= 3 ; ++y )
+			{
+				if( x + y > 3 )
+				{
+					continue;
+				}	  
+				ncm( x, y ) = detail::normalized_central_moment( img, x, y, u00, x0, y0 );	  
+			}
+		}
+
+		// Huモーメントを計算
+		moments.resize( 7 );
+		moments( 0 ) = ncm( 2, 0 ) * ncm( 0, 2 );
+		moments( 1 ) = pow( ncm( 2, 0 ) - ncm( 0, 2 ), 2.0 ) + 4 * pow( ncm( 1, 1 ), 2.0 );
+		moments( 2 ) = pow( ncm( 3, 0 ) - 3 * ncm( 1, 2 ), 2.0 ) + pow( 3 * ncm( 2, 1 ) - ncm( 0, 3 ), 2.0 );
+		moments( 3 ) = pow( ncm( 3, 0 ) * ncm( 1, 2 ), 2.0 ) + pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 );
+		moments( 4 ) = ( ncm( 3, 0 ) - 3 * ncm( 1, 2 ) ) *
+					   ( ncm( 3, 0 ) + ncm( 1, 2 ) ) *
+					   ( pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - 3 * pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ) +
+					   ( 3 * ncm( 2, 1 ) - ncm( 0, 3 ) ) *
+					   ( ncm( 2, 1 ) + ncm( 0, 3 ) ) *
+					   ( 3 * pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) );    
+		moments( 5 ) = ( ncm( 2, 0 ) - ncm( 0, 2 ) ) *
+					   ( pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ) +
+					   4 * ncm( 1, 1 ) * ( ncm( 3, 0 ) + ncm( 1, 2 ) ) * ( ncm( 2, 1 ) + ncm( 0, 3 ) );
+		moments( 6 ) = ( 3 * ncm( 2, 1 ) - ncm( 0, 3 ) ) *
+					   ( ncm( 2, 1 ) + ncm( 0, 3 ) ) *
+					   ( 3 * pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ) -
+					   ( ncm( 3, 0 ) - 3 * ncm( 2, 1 ) ) *
+					   ( ncm( 2, 1 ) + ncm( 0, 3 ) ) *
+					   ( 3 * pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ); 
+	}
+
+	/// @}
+	//  統計処理の終わり
 }
 
 

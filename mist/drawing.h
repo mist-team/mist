@@ -607,7 +607,7 @@ void fill_rect( array2< T, Allocator > &image,
 			   typename array2< T, Allocator >::difference_type y0, 
 			   typename array2< T, Allocator >::difference_type x1, 
 			   typename array2< T, Allocator >::difference_type y1, 		
-			   const typename array2< BITS, Allocator >::value_type &value )
+			   const typename array2< T, Allocator >::value_type &value )
 {
 	typedef typename array2< T, Allocator >::difference_type difference_type;
 
