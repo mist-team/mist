@@ -497,28 +497,28 @@ public:
 	}
 
 	/// @brief ポインタ s から e までの間のデータを x にコピーする
-	pointer copy_objects( const_pointer s, const_pointer e, pointer x )
+	pointer copy_objects( const_pointer s, const_pointer e, pointer x ) const
 	{
 		if( s >= e ) return( x );
 		return( mist_memory_operator< is_builtin< T >::value >::copy_objects1( *this, s, e, x ) );
 	}
 
 	/// @brief ポインタ ptr から num 個のデータを to にコピーする
-	pointer copy_objects( const_pointer ptr, size_type num, pointer to )
+	pointer copy_objects( const_pointer ptr, size_type num, pointer to ) const
 	{
 		if( num <= 0 ) return( to );
 		return( mist_memory_operator< is_builtin< T >::value >::copy_objects2( *this, ptr, num, to ) );
 	}
 
 	/// @brief ポインタ ptr から num 個のデータにobjを代入する
-	void fill_objects( pointer ptr, size_type num, const_reference obj )
+	void fill_objects( pointer ptr, size_type num, const_reference obj ) const
 	{
 		if( num <= 0 ) return;
 		mist_memory_operator< type_and< is_char< T >::value, is_builtin< T >::value >::value >::fill_objects1( *this, ptr, num, obj );
 	}
 
 	/// @brief ポインタ ptr から num 個のデータに初期値を代入する
-	void fill_objects( pointer ptr, size_type num )
+	void fill_objects( pointer ptr, size_type num ) const
 	{
 		if( num <= 0 ) return;
 		mist_memory_operator< is_builtin< T >::value >::fill_objects2( *this, ptr, num );
