@@ -328,7 +328,7 @@ public:
 	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
 	//! @retval false … 不正なトリミングを行おうとした場合
 	//! 
-	bool trim( matrix &out, size_type row, size_type col, difference_type nrows = -1, difference_type ncols = -1 )
+	bool trim( matrix &out, size_type row, size_type col, difference_type nrows = -1, difference_type ncols = -1 ) const
 	{
 		difference_type nrows_ = rows( );
 		difference_type ncols_ = cols( );

@@ -194,7 +194,7 @@ public:
 	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
 	//! @retval false … 不正なトリミングを行おうとした場合
 	//! 
-	bool trim( array &out, size_type index, difference_type num = -1 )
+	bool trim( array &out, size_type index, difference_type num = -1 ) const
 	{
 		difference_type num_ = size( );
 		if( num_ <= static_cast< difference_type >( index ) || num_ < static_cast< difference_type >( index + num ) )
@@ -853,7 +853,7 @@ public: // 配列に対する操作
 	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
 	//! @retval false … 不正なトリミングを行おうとした場合
 	//! 
-	bool trim( array1 &out, size_type index, difference_type num = -1 )
+	bool trim( array1 &out, size_type index, difference_type num = -1 ) const
 	{
 		if( base::trim( out, index, num ) )
 		{
@@ -1097,7 +1097,7 @@ public:
 	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
 	//! @retval false … 不正なトリミングを行おうとした場合
 	//! 
-	bool trim( array2 &out, size_type x, size_type y, difference_type w = -1, difference_type h = -1 )
+	bool trim( array2 &out, size_type x, size_type y, difference_type w = -1, difference_type h = -1 ) const
 	{
 		difference_type w_ = width( );
 		difference_type h_ = height( );
@@ -1718,7 +1718,7 @@ public:
 	//! @retval true  … トリミングに成功した場合（元とサイズが変わらない場合も含む）
 	//! @retval false … 不正なトリミングを行おうとした場合
 	//! 
-	bool trim( array3 &out, size_type x, size_type y, size_type z, difference_type w = -1, difference_type h = -1, difference_type d = -1 )
+	bool trim( array3 &out, size_type x, size_type y, size_type z, difference_type w = -1, difference_type h = -1, difference_type d = -1 ) const
 	{
 		difference_type w_ = width( );
 		difference_type h_ = height( );
