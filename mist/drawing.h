@@ -611,10 +611,10 @@ void fill_rect( array2< T, Allocator > &image,
 {
 	typedef typename array2< T, Allocator >::difference_type difference_type;
 
-	x0 = std::max( 0, x0 );
-	y0 = std::max( 0, y0 );
-	x1 = std::min( x1, static_cast< difference_type >( image.width() ) - 1 );
-	y1 = std::min( y1, static_cast< difference_type >( image.height() ) - 1 );
+	x0 = ( 0 < x0 ) ? x0 : 0;
+	y0 = ( 0 < y0 ) ? y0 : 0;
+	x1 = ( x1 < static_cast< difference_type >( image.width() - 1 ) ) ? x1 : static_cast< difference_type >( image.width() - 1 );
+	y1 = ( y1 < static_cast< difference_type >( image.height() - 1 ) ) ? y1 : static_cast< difference_type >( image.height() - 1 );
 
 	for( difference_type y = y0 ; y <= y1 ; ++y )
 	{
