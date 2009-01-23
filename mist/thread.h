@@ -1157,6 +1157,7 @@ namespace __thread_controller__
 
 	public:
 		thread_object_functor( Param &p, Functor f ) : param_( p ), func_( f ){ }
+		virtual ~thread_object_functor( ){ }
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
@@ -1174,6 +1175,8 @@ namespace __thread_controller__
 		typedef ptrdiff_t difference_type;
 
 		virtual void run( size_type id, size_type nthreads ) = 0;
+
+		virtual ~__thread_pool_functor__( ){}
 	};
 
 	template < class Param, class Functor >
@@ -1185,6 +1188,7 @@ namespace __thread_controller__
 
 	public:
 		thread_pool_functor_base( Param p, Functor f ) : param_( p ), func_( f ){ }
+		virtual ~thread_pool_functor_base( ){}
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
@@ -1204,6 +1208,7 @@ namespace __thread_controller__
 
 	public:
 		thread_pool_functor_base2( Param1 p1, Param2 p2, Functor f ) : param1_( p1 ), param2_( p2 ), func_( f ){ }
+		virtual ~thread_pool_functor_base2( ){ }
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
@@ -1222,6 +1227,7 @@ namespace __thread_controller__
 
 	public:
 		thread_pool_functor_base_nocopy( Param &p, Functor f ) : param_( p ), func_( f ){ }
+		virtual ~thread_pool_functor_base_nocopy( ){ }
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
@@ -1241,6 +1247,7 @@ namespace __thread_controller__
 
 	public:
 		thread_pool_functor_base_nocopy2( Param1 &p1, Param2 &p2, Functor f ) : param1_( p1 ), param2_( p2 ), func_( f ){ }
+		virtual ~thread_pool_functor_base_nocopy2( ){ }
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
@@ -1258,6 +1265,7 @@ namespace __thread_controller__
 
 	public:
 		thread_pool_void_functor_base( Functor f ) : func_( f ){ }
+		virtual ~thread_pool_void_functor_base( ){ }
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
@@ -1293,6 +1301,8 @@ namespace __thread_controller__
 			// ロックした状態でスタートする
 			suspend_lock_.lock( );
 		}
+
+		virtual ~thread_pool_functor( ){ }
 
 		size_type num_jobs( ) const { return( functors_.size( ) ); }
 		bool is_end( ) const { return( is_end_ ); }
@@ -1499,7 +1509,7 @@ public:
 	}
 
 	/// @brief スレッドプールで使用している全てのリソースを開放する
-	~thread_pool( )
+	virtual ~thread_pool( )
 	{
 		uninitialize( );
 	}
@@ -1875,7 +1885,7 @@ public:
 	}
 
 	/// @brief ワーカースレッドで使用している全てのリソースを開放する
-	~worker_thread( )
+	virtual ~worker_thread( )
 	{
 		close( );
 	}
