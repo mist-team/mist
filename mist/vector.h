@@ -408,6 +408,26 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 	return( out );
 }
 
+/// @brief Method for reading the vector comma separated from an istream
+//! 
+//! @param[in,out] in … input stream
+//! @param[out]    v  … 3-dimensional vector
+//! 
+//! @return the input stream
+//! 
+//! @code Marco Feuerstein
+//! ( 1, 2, 3 )
+//! @endcode
+//!
+template < class T > inline std::istream &operator >>( std::istream &in, vector3< T > &v )
+{
+	std::string comma;
+	in >> v.x >> comma;
+	in >> v.y >> comma;
+	in >> v.z;
+	return( in );
+}
+
 
 
 /// @brief 2次元ベクトルを扱うクラス
@@ -714,6 +734,25 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 	out << v.x << ", ";
 	out << v.y;
 	return( out );
+}
+
+/// @brief Method for reading the vector comma separated from an istream
+//! 
+//! @param[in,out] in … input stream
+//! @param[out]    v  … 2-dimensional vector
+//! 
+//! @return the input stream
+//! 
+//! @code Marco Feuerstein
+//! ( 1, 2 )
+//! @endcode
+//!
+template < class T > inline std::istream &operator >>( std::istream &in, vector2< T > &v )
+{
+	std::string comma;
+	in >> v.x >> comma;
+	in >> v.y;
+	return( in );
 }
 
 
