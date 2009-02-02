@@ -155,7 +155,7 @@ namespace __libavcodec__
 
 
 /// @brief mpeg1,mpeg2ファイルからビデオストリームの読み込み，mpeg1videoビデオストリームのmpegファイル書き出し
-namespace mpeg
+namespace video
 {
 
 	/// @brief 異なるストリーム間でフレームバッファのやり取りを行うためのクラス
@@ -478,11 +478,6 @@ namespace mpeg
 					printf( "Codec not found\n" );
 					return( false );
 				}
-
-				//if( ( p_codec->capabilities & CODEC_CAP_TRUNCATED ) != 0 )
-				//{
-				//	p_cctx->flags |= CODEC_FLAG_TRUNCATED;
-				//}
 
 				// コーデックを開く
 				if( avcodec_open( p_cctx, p_codec) < 0 )
