@@ -342,7 +342,7 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( p_fctx_->streams[ video_stream_index_ ]->codec->frame_number );
+				return( static_cast< difference_type >( p_fctx_->streams[ video_stream_index_ ]->codec->coded_frame->pts ) );
 			}
 			else
 			{
@@ -539,44 +539,48 @@ namespace video
 		//! 
 		//! @param[in] nskips … スキップ枚数
 		//!
-		bool skip( const size_type nskips = 1 )
+		bool skip( difference_type nskips = 1 )
 		{
 			if( is_open( ) && !this->is_eof( ) )
 			{
-				AVPacket packet;
-				AVCodecContext *p_cctx = p_fctx_->streams[ video_stream_index_ ]->codec;
-				int bFinished = 0;
-
-				for( size_type i = 1 ; !is_eof( ) && i <= nskips ; i++ )
-				{
-					bFinished = 0;
-					while( bFinished == 0 && !is_eof( ) )
-					{
-						is_eof_ = av_read_frame( p_fctx_, &packet ) < 0;
-
-						// 動画ストリームを探す
-						if( !is_eof( ) && packet.stream_index == video_stream_index_ )
-						{
-							// パケットをでコードする
-							avcodec_decode_video( p_cctx, p_frame_src_, &bFinished, packet.data, packet.size );
-						}
-
-						av_free_packet( &packet );
-					}
-				}
-
-				if( !is_eof( ) )
+				if( decode( nskips ) && !is_eof( ) )
 				{
 					// 画像の形式を変換する
+					AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
+					AVCodecContext *p_cctx = stream->codec;
 					sws_scale( p_swscale_, p_frame_src_->data, p_frame_src_->linesize, 0, p_cctx->height, p_frame_rgb_->data, p_frame_rgb_->linesize );
+					return( true );
 				}
-
-				return( bFinished != 0 );
+				else
+				{
+					return( false );
+				}
 			}
 			else
 			{
 				return( false );
 			}
+		}
+
+		/// @brief 指定したフレームをビデオストリームから探す
+		//! 
+		//! @param[in] fid … 探索するフレーム番号
+		//!
+		bool seek( difference_type fid )
+		{
+			if( is_open( ) && fid >= 0 )
+			{
+				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
+				if( av_seek_frame( p_fctx_, video_stream_index_, fid, AVSEEK_FLAG_BACKWARD ) >= 0 )
+				{
+					if( decode( 1 ) )
+					{
+						return( this->skip( fid - frame_id( ) ) );
+					}
+				}
+			}
+
+			return( false );
 		}
 
 		/// @brief 現在のフレームバッファをarray2形式に変換して格納する
@@ -659,6 +663,57 @@ namespace video
 		{
 			AVCodecContext *p_cctx = p_fctx_->streams[ video_stream_index_ ]->codec;
 			return( avpicture_deinterlace( ( AVPicture * )p_frame_src_, ( AVPicture * )p_frame_src_, p_cctx->pix_fmt, p_cctx->width, p_cctx->height) >= 0 );
+		}
+
+	protected:
+		/// @brief 指定した回数だけフレームをでコードする
+		//! 
+		//! @param[in] ntimes … スキップ枚数
+		//!
+		bool decode( difference_type ntimes = 1 )
+		{
+			if( is_open( ) && !this->is_eof( ) && ntimes >= 0 )
+			{
+				if( ntimes == 0 )
+				{
+					return( true );
+				}
+
+				AVPacket packet;
+				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
+				AVCodecContext *p_cctx = stream->codec;
+				int bFinished = 0;
+
+				// 不要なフレームをスキップする
+				int hup = stream->codec->hurry_up;
+				stream->codec->hurry_up = 1;
+
+				for( difference_type i = 1 ; !is_eof( ) && i <= ntimes ; i++ )
+				{
+					bFinished = 0;
+					while( bFinished == 0 && !is_eof( ) )
+					{
+						is_eof_ = av_read_frame( p_fctx_, &packet ) < 0;
+
+						// 動画ストリームを探す
+						if( !is_eof( ) && packet.stream_index == video_stream_index_ )
+						{
+							// パケットをでコードする
+							avcodec_decode_video( p_cctx, p_frame_src_, &bFinished, packet.data, packet.size );
+						}
+
+						av_free_packet( &packet );
+					}
+				}
+
+				stream->codec->hurry_up = hup;
+
+				return( bFinished != 0 );
+			}
+			else
+			{
+				return( false );
+			}
 		}
 
 	public:	// オペレータの実装
