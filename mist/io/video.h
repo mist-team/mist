@@ -62,96 +62,57 @@ _MIST_BEGIN
 
 
 
-//! @defgroup mpeg_group mpeg1, mpeg2形式ビデオストリーム入出力のためのライブラリ
+//! @defgroup video_group ビデオファイルの入出力を行うライブラリ
 //!
-//! 本ライブラリは，http://ffmpeg.sourceforge.net/index.php で開発が行われている ffmpeg-0.4.8 の libavcodec, libavformat を利用している
+//! 本ライブラリは，http://ffmpeg.sourceforge.net/index.php で開発が行われている ffmpeg の libavcodec, libavformat を利用している
 //! エンコードとデコードはこのライブラリのAPIを用いて実装されているため，別途ライブラリを用意する必要がある
 //!
 //! @code 次のヘッダをインクルードする
-//! #include <mist/io/mpeg.h>
+//! #include <mist/io/video.h>
 //! @endcode
 //!
-//! @code 使用例(mpegのビデオストリームから連番bmpファイルを作成)
+//! @code 使用例(ビデオストリームから連番bmpファイルを作成)
 //! mist::array2< mist::rgb< unsigned char > > img;
-//! mist::mpeg::decoder iv;
-//! mist::mpeg::open( iv, "input.mpeg" );
-//! mist::mpeg::dump_format( iv );
-//! char f_name[ 256 ];
-//! size_t i = 0;
-//! while( mist::mpeg::read_frame( iv, img ) )
+//! mist::video::decoder iv( "input.avi" );
+//! 
+//! iv.dump( );
+//! char fname[ 256 ];
+//! int i = 0;
+//! while( !iv.is_eof( ) )
 //! {
-//!		sprintf( f_name, "tmp/frame%04d.bmp", i ++ );
-//!		mist::write_bmp( img, f_name );
+//!     iv >> img;
+//!     sprintf( fname, "%04d.bmp", i++ );
+//!     mist::write_bmp( img, fname );
 //! }
-//! mist::mpeg::close( iv );
+//! iv.close( );
 //! @endcode
 //!
-//! @code 使用例(連番bmpからmpeg1videoストリームを作成)
+//! @code 使用例(入力ビデオをmpeg1ビデオに変換)
 //! mist::array2< mist::rgb< unsigned char > > img;
-//! mist::mpeg::output_video ov;
-//! // パラメータの変更（【注意！】ストリームを開く前に変更しなければならない）
-//! // ov.encode_buf_size( 524288 );	// 十分に確保する
-//! // ov.bit_rate( 1000000 );			// 少ないと品質が落ちる
-//! ov.width( 320 );					// 画像のサイズに合わせて変更
-//! ov.height( 240 );					// 画像のサイズに合わせて変更
-//! // ov.frame_rate( 30 );				// フレームレート
-//! // ov.frame_rate_base( 1 );			// 
-//! // ov.gop_size( 12 );				// 多いと品質が落ちる
-//! // ov.max_b_frames( 2 );			// 多いと品質が落ちる
-//! mist::mpeg::open( ov, "output.mpeg" );
-//! mist::mpeg::dump_format( ov );
-//! char f_name[ 256 ];
-//! const size_t frame_num = 100;       // 連番bmpファイルの数
-//! for( size_t i = 0 ; i < frame_num ; i ++ )
+//! mist::video::decoder iv( "D:\\Data\\sample\\1-15-raw.avi" );
+//! 
+//! // コンストラクタの引数を変更して圧縮パラメータの変更
+//! // （【注意！】ストリームを開く前に変更しなければならない）
+//! mist::video::mpeg1::encoder ov( "output.mpg", 320, 240 );
+//! ov.dump( );
+//! 
+//! while( !iv.is_eof( ) )
 //! {
-//!		sprintf( f_name, "tmp/frame%04d.bmp", i );
-//!		mist::read_bmp( img, f_name );
-//!		mist::mpeg::write_frame( ov, img );
+//!     std::cout << iv.frame_id( ) << std::endl;
+//!     iv >> img;
+//!     /* ここで img に何らかの画像処理を施すことも可能 */
+//!     ov << img;
 //! }
-//! mist::mpeg::close( ov );
+//! 
+//! ov.close( );
+//! iv.close( );
 //! @endcode
-//!
-//! @code 使用例(ストリーム中の各フレームの画像処理フィルタ処理)
-//! mist::array2< mist::rgb< unsigned char > > in_img, out_img;
-//! mist::mpeg::decoder iv;
-//! mist::mpeg::output_video ov;
-//! mist::mpeg::open( iv, "input.mpeg" );
-//! mist::mpeg::copy_format( iv, ov );
-//! // 必要ならovのパラメータの変更（解像度変換するような場合にはフレームの幅と高さを変更）
-//! mist::mpeg::open( ov, "output.mpeg" );
-//! mist::mpeg::dump_format( iv );
-//! mist::mpeg::dump_format( ov );
-//! while( mist::mpeg::read_frame( iv, in_img ) )
-//! {
-//!		// in_imgを入力してout_imgを出力するようなフィルタ
-//!		mist::gaussian( in_img, out_img ); // 例
-//!		mist::mpeg::write_frame( ov, out_img );
-//! }
-//! mist::mpeg::close( iv );
-//! mist::mpeg::close( ov );
-//! @endcode
-//!
-//! //! @code 使用例(mpeg中の任意のフレームからmpeg1videoストリームを作成)
-//! mist::mpeg::decoder iv;
-//! mist::mpeg::output_video ov; 
-//! mist::mpeg::open( iv, "input.mpeg" );
-//! mist::mpeg::copy_format( iv, ov );
-//! // 必要ならovのパラメータの変更
-//! mist::mpeg::open( ov, "output.mpeg" );
-//! mist::mpeg::dump_format( iv );
-//! mist::mpeg::dump_format( ov );
-//! mist::mpeg::skip_frame( iv, 60 );      // いらないフレームはスキップ
-//! mist::mpeg::copy_frame( iv, ov, 240 ); // 必要なフレームのみコピー
-//! mist::mpeg::close( iv );
-//! mist::mpeg::close( ov );
-//! @endcode
-//!
 //!
 //!  @{
 
 
 
-/// @brief mpeg1,mpeg2ファイルからビデオストリームの読み込み，mpeg1videoビデオストリームのmpegファイル書き出し
+/// @brief ビデオファイルを扱うライブラリ
 namespace video
 {
 	class video_io_vase
@@ -266,14 +227,14 @@ namespace video
 		#pragma endregion
 	};
 
-	/// @brief mpegビデオ入力クラス
+	/// @brief ビデオ入力クラス
 	//! 
 	//! オーディオストリームは未サポート
 	//!
 	class decoder : public video_io_vase
 	{
 	private:
-		AVFormatContext	*p_fctx_;				///< @brief mpegのフォーマット情報，デコーダ等
+		AVFormatContext	*p_fctx_;				///< @brief ビデオフォーマット情報，デコーダ等
 		AVFrame			*p_frame_src_;			///< @brief 読み出されたフレーム画像バッファ
 		AVFrame			*p_frame_rgb_;			///< @brief RGBフォーマットのフレーム画像バッファ（array2形式のフレーム画像を得るための中間データ）
 		bool			is_open_;				///< @brief ビデオが開いているかどうかのフラグ
@@ -282,7 +243,6 @@ namespace video
 		SwsContext		*p_swscale_;			///< @brief デコード後のフレームをRGBのフレームに変換するフィルタを指すポインタ
 
 	public:
-
 		/// @brief コンストラクタ
 		//! 
 		//! デフォルトコンストラクタ
@@ -296,6 +256,27 @@ namespace video
 				//avdevice_register_all( );
 				av_register_all( );
 				bInitialized = true;
+			}
+		}
+
+		/// @brief コンストラクタ
+		//! 
+		//! デフォルトコンストラクタ
+		//! 
+		decoder( const std::string &filename ) : p_fctx_( NULL ), p_frame_src_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), is_eof_( true ), video_stream_index_( -1 ), p_swscale_( NULL )
+		{
+			bool &bInitialized = singleton< bool, 60602 >::get_instance( );
+			if( !bInitialized )
+			{
+				avcodec_register_all( );
+				//avdevice_register_all( );
+				av_register_all( );
+				bInitialized = true;
+			}
+
+			if( !open( filename ) )
+			{
+				throw;
 			}
 		}
 
@@ -341,7 +322,7 @@ namespace video
 			}
 		}
 
-		/// @brief mpegファイル名を得る
+		/// @brief ファイル名を得る
 		virtual const std::string filename( ) const
 		{
 			if( is_open( ) )
@@ -420,9 +401,9 @@ namespace video
 		}
 
 	public:
-		/// @brief mpegファイルから入力用ビデオストリームを開く
+		/// @brief ファイルから入力用ビデオストリームを開く
 		//! 
-		//! @param[in] filename … 入力mpegファイル
+		//! @param[in] filename … 入力ファイル名
 		//! 
 		virtual bool open( const std::string &filename )
 		{
@@ -721,14 +702,14 @@ namespace video
 
 
 
-	/// @brief mpegビデオ出力クラス
+	/// @brief ビデオ出力クラス
 	//! 
 	//! オーディオストリームは未サポート
 	//!
 	class encoder : public video_io_vase
 	{
 	private:
-		AVFormatContext	*p_fctx_;				///< @brief mpegのフォーマット情報，デコーダ等
+		AVFormatContext	*p_fctx_;				///< @brief フォーマット情報，デコーダ等
 		AVFrame			*p_frame_dst_;			///< @brief 書き出されるフレーム画像バッファ
 		AVFrame			*p_frame_rgb_;			///< @brief RGBフォーマットのフレーム画像バッファ(array2形式の画像を得るための中間データ)
 		SwsContext		*p_swscale_;			///< @brief デコード後のフレームをRGBのフレームに変換するフィルタを指すポインタ
@@ -814,7 +795,7 @@ namespace video
 			}
 		}
 
-		/// @brief mpegファイル名を得る
+		/// @brief ファイル名を得る
 		virtual const std::string filename( ) const
 		{
 			if( is_open( ) )
@@ -867,7 +848,7 @@ namespace video
 
 		/// @brief ビデオファイル名およびMIME情報等を用いて出力用ビデオストリームを開く
 		//! 
-		//! @param[in] filename … 出力mpegファイル
+		//! @param[in] filename … 出力ファイル名
 		//! 
 		bool open( const std::string &filename, const std::string &format_type, const std::string &video_type, const std::string &mime_type, CodecID codec_id = CODEC_ID_NONE )
 		{
@@ -950,7 +931,7 @@ namespace video
 	protected:
 		/// @brief AVOutputFormat 情報を用いて出力用ビデオストリームを開く
 		//! 
-		//! @param[in] filename … 出力mpegファイル
+		//! @param[in] filename … 出力ファイル名
 		//! 
 		bool open( const std::string &filename, AVOutputFormat *format, CodecID codec_id = CODEC_ID_NONE )
 		{
@@ -1078,8 +1059,7 @@ namespace video
 				}
 
 				// ヘッダ情報を書き込む
-				int ret = av_write_header( p_fctx_ );
-					std::cout << ret << std::endl;
+				av_write_header( p_fctx_ );
 
 				encode_buf_ = NULL;
 				encode_buf_size_ = width( ) * height( ) * 4;
@@ -1158,12 +1138,16 @@ namespace video
 					p_frame_rgb_ = allocate_frame( source_width_, source_height_, PIX_FMT_RGB32 );
 				}
 
+				typedef _pixel_converter_< T > pixel_converter;
+				typedef typename pixel_converter::color_type color_type;
+
 				unsigned char *p = p_frame_rgb_->data[ 0 ];
 				for( size_type i = 0 ; i < image.size( ) ; i++ )
 				{
-					p[ 0 ] = image[ i ].b;
-					p[ 1 ] = image[ i ].g;
-					p[ 2 ] = image[ i ].r;
+					color_type c = pixel_converter::convert_from( image[ i ] );
+					p[ 0 ] = c.b;
+					p[ 1 ] = c.g;
+					p[ 2 ] = c.r;
 					p[ 3 ] = 255;
 					p += 4;
 				}
@@ -1292,9 +1276,70 @@ namespace video
 		};
 	}
 
+	namespace mpeg4
+	{
+		/// @brief MPEG4ビデオ出力クラス
+		//! 
+		//! オーディオストリームは未サポート
+		//!
+		class encoder : public video::encoder
+		{
+		private:
+			typedef video::encoder base;
+
+		public:
+			/// @brief コンストラクタ
+			//! 
+			//! @param[in] w               … 320（デフォルト値）
+			//! @param[in] h               … 240（デフォルト値）
+			//! @param[in] frame_rate_num  … 1（デフォルト値）
+			//! @param[in] frame_rate_den  … 30（デフォルト値）
+			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//!
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			{
+			}
+
+			/// @brief コンストラクタ
+			//! 
+			//! コンストラクタの実行時に出力ビデオファイルの初期化を行う
+			//! 
+			//! @param[in] filename        … 出力ファイル名
+			//! @param[in] w               … 320（デフォルト値）
+			//! @param[in] h               … 240（デフォルト値）
+			//! @param[in] frame_rate_num  … 1（デフォルト値）
+			//! @param[in] frame_rate_den  … 30（デフォルト値）
+			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//!
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			{
+				if( !open( filename ) )
+				{
+					throw;
+				}
+			}
+			
+			/// @brief デストラクタ
+			//! 
+			virtual ~encoder( )
+			{
+				base::close( );
+			}
+
+		public:
+			virtual bool open( const std::string &filename )
+			{
+				//return( base::open( filename, "m4v", "" ) );
+				return( base::open( filename, ".avi", "m4v", "" ) );
+			}
+		};
+	}
+
 	namespace mjpeg
 	{
-		/// @brief H264ビデオ出力クラス
+		/// @brief MotionJPEGビデオ出力クラス
 		//! 
 		//! オーディオストリームは未サポート
 		//!
@@ -1414,6 +1459,67 @@ namespace video
 		};
 	}
 
+	namespace wmv
+	{
+		/// @brief WMVビデオ出力クラス
+		//! 
+		//! オーディオストリームは未サポート
+		//!
+		class encoder : public video::encoder
+		{
+		private:
+			typedef video::encoder base;
+
+		public:
+			/// @brief コンストラクタ
+			//! 
+			//! @param[in] w               … 320（デフォルト値）
+			//! @param[in] h               … 240（デフォルト値）
+			//! @param[in] frame_rate_num  … 1（デフォルト値）
+			//! @param[in] frame_rate_den  … 30（デフォルト値）
+			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//!
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			{
+			}
+
+			/// @brief コンストラクタ
+			//! 
+			//! コンストラクタの実行時に出力ビデオファイルの初期化を行う
+			//! 
+			//! @param[in] filename        … 出力ファイル名
+			//! @param[in] w               … 320（デフォルト値）
+			//! @param[in] h               … 240（デフォルト値）
+			//! @param[in] frame_rate_num  … 1（デフォルト値）
+			//! @param[in] frame_rate_den  … 30（デフォルト値）
+			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//!
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			{
+				if( !open( filename ) )
+				{
+					throw;
+				}
+			}
+			
+			/// @brief デストラクタ
+			//! 
+			virtual ~encoder( )
+			{
+				base::close( );
+			}
+
+		public:
+			virtual bool open( const std::string &filename )
+			{
+				//return( base::open( filename, "m4v", "" ) );
+				return( base::open( filename, ".wmv", "", "", CODEC_ID_WMV2 ) );
+			}
+		};
+	}
+
 	namespace raw
 	{
 		/// @brief RAWビデオ出力クラス
@@ -1496,53 +1602,32 @@ namespace video
 	//! @param[in]     num         … コピー回数
 	//!
 	template< typename Stream1, typename Stream2 >
-	inline bool copy_frame( Stream1 &src, Stream2 &dst, const size_t num = 1 )
+	inline bool copy_frames( Stream1 &src, Stream2 &dst, const size_t num = 1 )
 	{
+		array2< rgb< unsigned char > > tmp;
+
 		for( size_t i = 0 ; i < num ; i ++ )
 		{
-			if( src.read( ) )
+			if( src.read( tmp ) )
 			{
-				dst.put( src.frame( ) );
-				if( !dst.write( ) )
+				if( !dst.write( tmp ) )
 				{
-					return false;
+					return( false );
 				}
 			}
 			else
 			{
-				return false;
+				return( false );
 			}
 		}
-		return true;
-	}
 
-	/// @brief ビデオストリーム間でフォーマット情報のコピー
-	//! 
-	//! @param[in,out] src         … コピー元ビデオストリーム
-	//! @param[out]    dst         … コピー先ビデオストリーム
-	//!
-	template< typename Stream1, typename Stream2 >
-	inline bool copy_format( const Stream1 &src, Stream2 &dst )
-	{
-		if( src.is_open( ) && !dst.is_open( ) )
-		{
-			dst.bit_rate(        src.bit_rate( ) );
-			dst.width(           src.width( ) );
-			dst.height(          src.height( ) );
-			dst.frame_rate(      src.frame_rate( ) );
-			dst.frame_rate_base( src.frame_rate_base( ) );
-			//dst.gop_size(        src.gop_size( ) );
-			//dst.max_b_frames(    src.max_b_frames( ) );
-			return true;
-		}
-		return false;
+		return( true );
 	}
-
-} // namespace mpeg
+}
 
 
 /// @}
-//  mpeg1, mpeg2形式ビデオストリーム入出力のためのライブラリの終わり
+// video_group ビデオファイルの入出力を行うライブラリの終わり
 
 
 // mist名前空間の終わり
