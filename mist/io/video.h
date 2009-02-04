@@ -89,7 +89,7 @@ _MIST_BEGIN
 //!
 //! @code 使用例(入力ビデオをmpeg1ビデオに変換)
 //! mist::array2< mist::rgb< unsigned char > > img;
-//! mist::video::decoder iv( "D:\\Data\\sample\\1-15-raw.avi" );
+//! mist::video::decoder iv( "input.avi" );
 //! 
 //! // コンストラクタの引数を変更して圧縮パラメータの変更
 //! // （【注意！】ストリームを開く前に変更しなければならない）
