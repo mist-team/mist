@@ -26,9 +26,9 @@
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
-/// @file mist/io/mpeg.h
+/// @file mist/io/video.h
 //!
-//! @brief mpeg1, mpeg2形式ビデオ外リーム入出力
+//! @brief さまざまなビデオストリームの入出力ライブラリ
 //!
 
 #ifndef __INCLUDE_IO_VIDEO_H__
