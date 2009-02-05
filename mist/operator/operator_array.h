@@ -44,7 +44,7 @@
 //! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
-inline const array< T, Allocator >& operator +=( array< T, Allocator > &a1, const array< T, Allocator >  &a2 )
+inline const array< T, Allocator >& operator +=( array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
 #if _CHECK_ARRAY_OPERATION_ != 0
@@ -70,7 +70,7 @@ inline const array< T, Allocator >& operator +=( array< T, Allocator > &a1, cons
 //! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
-inline const array< T, Allocator >& operator -=( array< T, Allocator > &a1, const array< T, Allocator >  &a2 )
+inline const array< T, Allocator >& operator -=( array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
 #if _CHECK_ARRAY_OPERATION_ != 0
@@ -96,7 +96,7 @@ inline const array< T, Allocator >& operator -=( array< T, Allocator > &a1, cons
 //! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
-inline const array< T, Allocator >& operator *=( array< T, Allocator > &a1, const array< T, Allocator >  &a2 )
+inline const array< T, Allocator >& operator *=( array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
 #if _CHECK_ARRAY_OPERATION_ != 0
@@ -122,7 +122,7 @@ inline const array< T, Allocator >& operator *=( array< T, Allocator > &a1, cons
 //! @return 戻り値の説明
 //! 
 template < class T, class Allocator >
-inline const array< T, Allocator >& operator /=( array< T, Allocator > &a1, const array< T, Allocator >  &a2 )
+inline const array< T, Allocator >& operator /=( array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
 	typedef typename array< T, Allocator >::size_type size_type;
 #if _CHECK_ARRAY_OPERATION_ != 0

@@ -31,8 +31,8 @@
 //! @brief mpeg1, mpeg2形式ビデオ外リーム入出力
 //!
 
-#ifndef __INCLUDE_IO_MPEG_H__
-#define __INCLUDE_IO_MPEG_H__
+#ifndef __INCLUDE_IO_VIDEO_H__
+#define __INCLUDE_IO_VIDEO_H__
 
 
 #ifndef __INCLUDE_MIST_H__
@@ -843,7 +843,7 @@ namespace video
 		#pragma region ビデオストリーム操作関連
 		virtual bool open( const std::string &filename )
 		{
-			return( open( filename, "", "", "" ) );
+			return( open( filename, filename, "", "" ) );
 		}
 
 		/// @brief ビデオファイル名およびMIME情報等を用いて出力用ビデオストリームを開く
@@ -1332,7 +1332,7 @@ namespace video
 			virtual bool open( const std::string &filename )
 			{
 				//return( base::open( filename, "m4v", "" ) );
-				return( base::open( filename, ".avi", "m4v", "" ) );
+				return( base::open( filename, ".avi", "", "" ) );
 			}
 		};
 	}
@@ -1635,4 +1635,4 @@ _MIST_END
 
 
 
-#endif // __INCLUDE_IO_MPEG_H__
+#endif // __INCLUDE_IO_VIDEO_H__
