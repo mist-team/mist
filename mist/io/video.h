@@ -1560,8 +1560,8 @@ namespace video
 			//! @param[in] frame_rate_num  … 1（デフォルト値）
 			//! @param[in] frame_rate_den  … 30（デフォルト値）
 			//!
-			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30 )
+				: base( w, h, frame_rate_num, frame_rate_den )
 			{
 				if( !open( filename ) )
 				{
