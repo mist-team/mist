@@ -336,7 +336,6 @@ void draw_line( array3< T, Allocator > &image,
 //! @param[in,out] image  … 入出力画像
 //! @param[in]     x      … 描画する点のX座標
 //! @param[in]     y      … 描画する点のY座標
-//! @param[in]     z      … 描画する点のZ座標
 //! @param[in]     radius … 描画する点の半径
 //! @param[in]     value  … 描画する色もしくは値
 //!

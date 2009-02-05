@@ -848,7 +848,11 @@ namespace video
 
 		/// @brief ビデオファイル名およびMIME情報等を用いて出力用ビデオストリームを開く
 		//! 
-		//! @param[in] filename … 出力ファイル名
+		//! @param[in] filename    … 出力ファイル名
+		//! @param[in] format_type … ビデオの出力フォーマットに対応した拡張子（"."を含む）
+		//! @param[in] video_type  … 出力するビデオの名称
+		//! @param[in] mime_type   … 出力するビデオのMIMEタイプ
+		//! @param[in] codec_id    … フォーマット内で使用するコーデックID
 		//! 
 		bool open( const std::string &filename, const std::string &format_type, const std::string &video_type, const std::string &mime_type, CodecID codec_id = CODEC_ID_NONE )
 		{
@@ -932,6 +936,8 @@ namespace video
 		/// @brief AVOutputFormat 情報を用いて出力用ビデオストリームを開く
 		//! 
 		//! @param[in] filename … 出力ファイル名
+		//! @param[in] format   … ビデオの出力フォーマット
+		//! @param[in] codec_id … フォーマット内で使用するコーデックID
 		//! 
 		bool open( const std::string &filename, AVOutputFormat *format, CodecID codec_id = CODEC_ID_NONE )
 		{
@@ -1538,7 +1544,6 @@ namespace video
 			//! @param[in] h               … 240（デフォルト値）
 			//! @param[in] frame_rate_num  … 1（デフォルト値）
 			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 1150000（デフォルト値）
 			//!
 			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30 )
 				: base( w, h, frame_rate_num, frame_rate_den )
@@ -1554,7 +1559,6 @@ namespace video
 			//! @param[in] h               … 240（デフォルト値）
 			//! @param[in] frame_rate_num  … 1（デフォルト値）
 			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 1150000（デフォルト値）
 			//!
 			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
 				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )

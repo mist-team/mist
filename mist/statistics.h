@@ -546,7 +546,7 @@ namespace statistics
 
 
 
-	/// @biref 画像から正規化中心モーメントを求める
+	/// @brief 画像から正規化中心モーメントを求める
 	//! @param[in] img      入力画像
 	//! @param[in] x_order  X方向のモーメントの次数
 	//! @param[in] y_order  Y方向のモーメントの次数 
