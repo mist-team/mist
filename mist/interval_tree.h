@@ -41,7 +41,7 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
-//! @addtogroup interval-tree_group Interval-tree
+//! @addtogroup interval_tree_group Interval-tree
 //!
 //! @code 次のヘッダをインクルードする
 //! #include <mist/interval_tree.h>
