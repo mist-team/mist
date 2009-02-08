@@ -957,7 +957,11 @@ namespace video
 				}
 
 				p_fctx_->oformat = format;
+#ifdef WIN32
 				_snprintf( p_fctx_->filename, sizeof( p_fctx_->filename ), "%s", filename.c_str( ) );
+#else
+				snprintf( p_fctx_->filename, sizeof( p_fctx_->filename ), "%s", filename.c_str( ) );
+#endif
 				//av_strlcpy( p_fctx_->filename, filename.c_str( ), sizeof( p_fctx_->filename ) );
 
 				AVStream *stream = NULL;
