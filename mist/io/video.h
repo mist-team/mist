@@ -51,9 +51,15 @@
 
 extern "C"
 {
+#if 0
+	#include <ffmpeg/avcodec.h>
+	#include <ffmpeg/avformat.h>
+	#include <ffmpeg/swscale.h>
+#else
 	#include <libavcodec/avcodec.h>
 	#include <libavformat/avformat.h>
 	#include <libswscale/swscale.h>
+#endif
 }
 
 
@@ -412,7 +418,7 @@ namespace video
 				// ファイルのヘッダ情報を読み取ってビデオフォーマットを取得する
 				if( av_open_input_file( &p_fctx_, filename.c_str( ), NULL, 0, NULL ) != 0 )
 				{
-					printf( "Couldn't open file %s\n", filename );
+					printf( "Couldn't open file %s\n", filename.c_str( ) );
 					return( false );
 				}
 
@@ -447,7 +453,7 @@ namespace video
 				AVCodec *p_codec = avcodec_find_decoder( p_cctx->codec_id );
 				if( p_codec == NULL )
 				{
-					printf( "Codec not found\n" );
+					printf( "Codec %d not found\n", p_cctx->codec_id );
 					return( false );
 				}
 
@@ -632,7 +638,7 @@ namespace video
 	protected:
 		/// @brief 指定した回数だけフレームをでコードする
 		//! 
-		//! @param[in] ntimes … スキップ枚数
+		//! @param[in] ntimes       … スキップ枚数
 		//!
 		bool decode( difference_type ntimes = 1 )
 		{
@@ -647,10 +653,6 @@ namespace video
 				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
 				AVCodecContext *p_cctx = stream->codec;
 				int bFinished = 0;
-
-				// 不要なフレームをスキップする
-				int hup = stream->codec->hurry_up;
-				stream->codec->hurry_up = 1;
 
 				for( difference_type i = 1 ; !is_eof( ) && i <= ntimes ; i++ )
 				{
@@ -669,8 +671,6 @@ namespace video
 						av_free_packet( &packet );
 					}
 				}
-
-				stream->codec->hurry_up = hup;
 
 				return( bFinished != 0 );
 			}
@@ -1193,11 +1193,8 @@ namespace video
 						packet.stream_index = stream->index;
 						packet.data         = encode_buf_;
 						packet.size         = out_size;
+						packet.pts = av_rescale_q( c->coded_frame->pts, c->time_base, stream->time_base );
 
-						if( c->coded_frame->pts != 0x8000000000000000 )
-						{
-							packet.pts = av_rescale_q( c->coded_frame->pts, c->time_base, stream->time_base );
-						}
 						if( c->coded_frame->key_frame )
 						{
 							packet.flags |= PKT_FLAG_KEY;
