@@ -708,7 +708,7 @@ namespace video
 	//!
 	class encoder : public video_io_vase
 	{
-	private:
+	protected:
 		AVFormatContext	*p_fctx_;				///< @brief フォーマット情報，デコーダ等
 		AVFrame			*p_frame_dst_;			///< @brief 書き出されるフレーム画像バッファ
 		AVFrame			*p_frame_rgb_;			///< @brief RGBフォーマットのフレーム画像バッファ(array2形式の画像を得るための中間データ)
@@ -726,6 +726,9 @@ namespace video
 		size_type		bit_rate_;				///< @brief ビットレート
 		size_type		gop_size_;				///< @brief GOPサイズ（この枚数の連続フレーム中に必ず１枚以上Iフレームが存在する）
 		size_type		max_b_frames_;			///< @brief 最大連続Bフレーム数
+		size_type		audio_bit_rate_;		///< @brief 音声のビットレート
+		size_type		audio_sampling_rate_;	///< @brief 音声のサンプリングレート
+		size_type		audio_channels_;		///< @brief 音声のチャンネル数
 
 	public:
 		#pragma region コンストラクタ関連
@@ -739,8 +742,11 @@ namespace video
 		//! @param[in] gop_size        … 12（デフォルト値）
 		//! @param[in] max_b_frames    … 2（デフォルト値）
 		//!
-		encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000, size_type gop_size = 12, size_type max_b_frames = 2 )
-			: p_fctx_( NULL ), p_frame_dst_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), encode_buf_( NULL ), encode_buf_size_( 0 ), width_( w ), height_( h ), frame_rate_num_( frame_rate_num ), frame_rate_den_( frame_rate_den ), bit_rate_( bit_rate ), gop_size_( gop_size ), max_b_frames_( max_b_frames ), source_width_( w ), source_height_( h )
+		encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30,
+				 size_type bit_rate = 1150000, size_type gop_size = 12, size_type max_b_frames = 2, size_type audio_bit_rate = 64000, size_type audio_sampling_rate = 44100, size_type audio_channels = 2 )
+					: p_fctx_( NULL ), p_frame_dst_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), encode_buf_( NULL ), encode_buf_size_( 0 ),
+						width_( w ), height_( h ), frame_rate_num_( frame_rate_num ), frame_rate_den_( frame_rate_den ), bit_rate_( bit_rate ), gop_size_( gop_size ), max_b_frames_( max_b_frames ),
+						source_width_( w ), source_height_( h ), audio_bit_rate_( audio_bit_rate ), audio_sampling_rate_( audio_bit_rate ), audio_channels_( audio_channels )
 		{
 			bool &bInitialized = singleton< bool, 60602 >::get_instance( );
 			if( !bInitialized )
@@ -897,23 +903,23 @@ namespace video
 					}
 				}
 
-				// codecを閉じる
-				if( p_fctx_->streams[ 0 ]->codec->codec_id != CODEC_ID_NONE )
+				// すべてのストリームを解放する
+				for( size_type i = 0 ; i < p_fctx_->nb_streams ; i++ )
 				{
-					avcodec_close( p_fctx_->streams[ 0 ]->codec );
+					// CODECを閉じる
+					if( p_fctx_->streams[ i ]->codec->codec_id != CODEC_ID_NONE )
+					{
+						avcodec_close( p_fctx_->streams[ i ]->codec );
+					}
+
+					av_freep( &( p_fctx_->streams[ i ] ->codec ) );
+					av_freep( &( p_fctx_->streams[ i ] ) );
 				}
 
 				// エンコードに使用したバッファを解放
 				if( encode_buf_ != NULL )
 				{
 					av_freep( &encode_buf_ );
-				}
-
-				// すべてのストリームを解放する
-				for( size_type i = 0 ; i < p_fctx_->nb_streams ; i++ )
-				{
-					av_freep( &( p_fctx_->streams[ i ] ->codec ) );
-					av_freep( &( p_fctx_->streams[ i ] ) );
 				}
 
 				// 残りのデータを解放する
@@ -939,7 +945,7 @@ namespace video
 		//! @param[in] format   … ビデオの出力フォーマット
 		//! @param[in] codec_id … フォーマット内で使用するコーデックID
 		//! 
-		bool open( const std::string &filename, AVOutputFormat *format, CodecID codec_id = CODEC_ID_NONE )
+		bool open( const std::string &filename, AVOutputFormat *format, CodecID video_codec_id = CODEC_ID_NONE, CodecID audio_codec_id = CODEC_ID_NONE, PixelFormat default_pixel_format = PIX_FMT_YUV420P )
 		{
 			if( !is_open_ )
 			{
@@ -962,35 +968,34 @@ namespace video
 #else
 				snprintf( p_fctx_->filename, sizeof( p_fctx_->filename ), "%s", filename.c_str( ) );
 #endif
-				//av_strlcpy( p_fctx_->filename, filename.c_str( ), sizeof( p_fctx_->filename ) );
 
-				AVStream *stream = NULL;
+				AVStream *vstream = NULL;
 				if( p_fctx_->oformat->video_codec != CODEC_ID_NONE )
 				{
-					stream = av_new_stream( p_fctx_, 0 );
-					if( stream == NULL )
+					vstream = av_new_stream( p_fctx_, 0 );
+					if( vstream == NULL )
 					{
-						std::cerr << "Could not allocate encode stream" << std::endl;
+						std::cerr << "Could not allocate video encode stream" << std::endl;
 						return( false );
 					}
 
 					// コーデックを推測する
-					if( codec_id == CODEC_ID_NONE )
+					if( video_codec_id == CODEC_ID_NONE )
 					{
-						codec_id = av_guess_codec( p_fctx_->oformat, NULL, p_fctx_->filename, NULL, CODEC_TYPE_VIDEO );
+						video_codec_id = av_guess_codec( p_fctx_->oformat, NULL, p_fctx_->filename, NULL, CODEC_TYPE_VIDEO );
 					}
 
 					// コーデックを探す
-					AVCodec *codec = avcodec_find_encoder( codec_id );
+					AVCodec *codec = avcodec_find_encoder( video_codec_id );
 					if( codec == NULL && p_fctx_->oformat->video_codec != CODEC_ID_NONE )
 					{
-						std::cerr << "Could not find appropriate Codec from the database." << std::endl;
+						std::cerr << "Could not find appropriate Video Codec from the database." << std::endl;
 						return( false );
 					}
 
 					// ビデオストリームにコーデック情報を指定する
-					AVCodecContext *cctx = stream->codec;
-					cctx->codec_id   = codec == NULL ? codec_id : codec->id;
+					AVCodecContext *cctx = vstream->codec;
+					cctx->codec_id   = codec == NULL ? video_codec_id : codec->id;
 					cctx->codec_type = CODEC_TYPE_VIDEO;
 
 					// 画像のサイズを設定
@@ -998,7 +1003,7 @@ namespace video
 					cctx->height     = static_cast< int >( height( ) );
 
 					// 画素フォーマットを設定
-					cctx->pix_fmt    = PIX_FMT_YUV420P;
+					cctx->pix_fmt    = default_pixel_format;
 
 					// ピクセルフォーマットの対応状況を調べる
 					if( codec->pix_fmts )
@@ -1058,6 +1063,39 @@ namespace video
 					}
 				}
 
+				if( audio_codec_id != CODEC_ID_NONE )
+				{
+					AVStream *astream = av_new_stream( p_fctx_, 1 );
+					if( astream == NULL )
+					{
+						std::cerr << "Could not allocate audio encode stream" << std::endl;
+						return( false );
+					}
+
+					astream->codec->codec_id    = audio_codec_id;
+					astream->codec->codec_type  = CODEC_TYPE_AUDIO;
+
+					// オーディオのストリームを設定する
+					astream->codec->bit_rate    = static_cast< int >( audio_bit_rate_ );
+					astream->codec->sample_rate = static_cast< int >( audio_sampling_rate_ );
+					astream->codec->channels    = static_cast< int >( audio_channels_ );
+
+					// コーデックを探す
+					AVCodec *codec = avcodec_find_encoder( astream->codec->codec_id );
+					if( codec == NULL )
+					{
+						std::cerr << "Could not find appropriate Audio Codec from the database." << std::endl;
+						return( false );
+					}
+
+					// コーデックを開く
+					if( avcodec_open( astream->codec, codec ) < 0 )
+					{
+						std::cerr << "Could not open codec." << std::endl;
+						return( false );
+					}
+				}
+
 				// ファイルを開く
 				if( ( p_fctx_->oformat->flags & AVFMT_NOFILE ) == 0 )
 				{
@@ -1069,7 +1107,11 @@ namespace video
 				}
 
 				// ヘッダ情報を書き込む
-				av_write_header( p_fctx_ );
+				if( av_write_header( p_fctx_ ) != 0 )
+				{
+					std::cerr << "Failed to write video header" << std::endl;
+					return( false );
+				}
 
 				encode_buf_ = NULL;
 				encode_buf_size_ = width( ) * height( ) * 4;
@@ -1078,7 +1120,7 @@ namespace video
 					encode_buf_ = ( uint8_t * )av_malloc( encode_buf_size_ );
 				}
 
-				PixelFormat pix_fmt = stream == NULL ? PIX_FMT_RGB32 : stream->codec->pix_fmt;
+				PixelFormat pix_fmt = vstream == NULL ? PIX_FMT_RGB32 : vstream->codec->pix_fmt;
 
 				// エンコード用のフレームバッファを用意する
 				p_frame_dst_ = allocate_frame( width( ), height( ), pix_fmt );
@@ -1523,6 +1565,64 @@ namespace video
 			{
 				//return( base::open( filename, "m4v", "" ) );
 				return( base::open( filename, ".wmv", "", "", CODEC_ID_WMV2 ) );
+			}
+		};
+	}
+
+	namespace dv
+	{
+		/// @brief DVビデオ出力クラス
+		//! 
+		//! オーディオストリームは未サポート
+		//!
+		class encoder : public video::encoder
+		{
+		private:
+			typedef video::encoder base;
+
+		public:
+			/// @brief コンストラクタ
+			//! 
+			//! @param[in] w               … 720（デフォルト値）
+			//! @param[in] h               … 480（デフォルト値）
+			//!
+			encoder( size_type w = 720, size_type h = 480 )
+				: base( w, h, 1001, 30000 )
+			{
+				audio_sampling_rate_ = 48000;
+			}
+
+			/// @brief コンストラクタ
+			//! 
+			//! コンストラクタの実行時に出力ビデオファイルの初期化を行う
+			//! 
+			//! @param[in] filename        … 出力ファイル名
+			//! @param[in] w               … 720（デフォルト値）
+			//! @param[in] h               … 480（デフォルト値）
+			//!
+			encoder( const std::string &filename, size_type w = 720, size_type h = 480 )
+				: base( w, h, 1001, 30000 )
+			{
+				audio_sampling_rate_ = 48000;
+
+				if( !open( filename ) )
+				{
+					throw;
+				}
+			}
+
+			/// @brief デストラクタ
+			//! 
+			virtual ~encoder( )
+			{
+				base::close( );
+			}
+
+		public:
+			virtual bool open( const std::string &filename )
+			{
+				AVOutputFormat *fmt = guess_video_format( ".avi", "", "" );
+				return( base::open( filename, fmt, CODEC_ID_DVVIDEO, CODEC_ID_NONE, PIX_FMT_YUV411P ) );
 			}
 		};
 	}
