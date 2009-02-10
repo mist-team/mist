@@ -247,13 +247,14 @@ namespace video
 		bool			is_eof_;				///< @brief ビデオが開いているかどうかのフラグ
 		int				video_stream_index_;	///< @brief ビデオを指すストリーム番号
 		SwsContext		*p_swscale_;			///< @brief デコード後のフレームをRGBのフレームに変換するフィルタを指すポインタ
+		difference_type frame_index_;			///< @brief ビデオストリーム中での現在のフレーム番号保持する変数
 
 	public:
 		/// @brief コンストラクタ
 		//! 
 		//! デフォルトコンストラクタ
 		//! 
-		decoder( ) : p_fctx_( NULL ), p_frame_src_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), is_eof_( true ), video_stream_index_( -1 ), p_swscale_( NULL )
+		decoder( ) : p_fctx_( NULL ), p_frame_src_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), is_eof_( true ), video_stream_index_( -1 ), p_swscale_( NULL ), frame_index_( -1 )
 		{
 			bool &bInitialized = singleton< bool, 60602 >::get_instance( );
 			if( !bInitialized )
@@ -269,7 +270,7 @@ namespace video
 		//! 
 		//! デフォルトコンストラクタ
 		//! 
-		decoder( const std::string &filename ) : p_fctx_( NULL ), p_frame_src_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), is_eof_( true ), video_stream_index_( -1 ), p_swscale_( NULL )
+		decoder( const std::string &filename ) : p_fctx_( NULL ), p_frame_src_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), is_eof_( true ), video_stream_index_( -1 ), p_swscale_( NULL ), frame_index_( -1 )
 		{
 			bool &bInitialized = singleton< bool, 60602 >::get_instance( );
 			if( !bInitialized )
@@ -320,7 +321,7 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< difference_type >( p_fctx_->streams[ video_stream_index_ ]->codec->frame_number ) );
+				return( frame_index_ );
 			}
 			else
 			{
@@ -662,10 +663,15 @@ namespace video
 						is_eof_ = av_read_frame( p_fctx_, &packet ) < 0;
 
 						// 動画ストリームを探す
-						if( !is_eof( ) && packet.stream_index == video_stream_index_ )
+						if( packet.stream_index == video_stream_index_ )
 						{
-							// パケットをでコードする
-							avcodec_decode_video( p_cctx, p_frame_src_, &bFinished, packet.data, packet.size );
+							frame_index_ = static_cast< difference_type >( packet.pts );
+
+							if( !is_eof( ) )
+							{
+								// パケットをでコードする
+								avcodec_decode_video( p_cctx, p_frame_src_, &bFinished, packet.data, packet.size );
+							}
 						}
 
 						av_free_packet( &packet );
@@ -687,15 +693,21 @@ namespace video
 			return( *this );
 		}
 
-		const decoder & operator ++( int )
+		decoder & operator --( )
 		{
-			this->skip( 1 );
+			this->seek( this->frame_id( ) - 1 );
 			return( *this );
 		}
 
 		decoder & operator +=( difference_type skip )
 		{
 			this->skip( skip );
+			return( *this );
+		}
+
+		decoder & operator -=( difference_type skip )
+		{
+			this->seek( this->frame_id( ) - skip );
 			return( *this );
 		}
 	};
