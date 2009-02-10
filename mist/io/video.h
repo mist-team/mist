@@ -135,7 +135,8 @@ namespace video
 		virtual bool is_open( ) const = 0;						///< @brief ビデオストリームが開いているかどうかを返す
 		virtual bool is_eof( ) const = 0;						///< @brief ビデオストリームの終わりに来たかどうかを返す
 		virtual bool dump( ) const = 0;							///< @brief ストリームのフォーマットを標準出力にダンプする
-		virtual difference_type frame_id( ) const = 0;						///< @brief 現在のフレーム番号を返す
+		virtual difference_type frame_id( ) const = 0;			///< @brief 現在のフレーム番号を返す
+		virtual difference_type duration( ) const = 0;			///< @brief 総フレーム数を返す
 		virtual const std::string filename( ) const = 0;		///< @brief ファイル名を返す
 		virtual size_type bit_rate( ) const = 0;				///< @brief ビットレートを返す
 		virtual size_type width( ) const = 0;					///< @brief フレームの幅を返す
@@ -322,6 +323,19 @@ namespace video
 			if( is_open( ) )
 			{
 				return( frame_index_ );
+			}
+			else
+			{
+				return( -1 );
+			}
+		}
+
+		/// @brief 総フレーム数を得る
+		virtual difference_type duration( ) const
+		{
+			if( is_open( ) )
+			{
+				return( static_cast< difference_type >( p_fctx_->streams[ video_stream_index_ ]->duration ) );
 			}
 			else
 			{
@@ -802,6 +816,19 @@ namespace video
 
 		/// @brief 現在のフレーム番号を得る
 		virtual difference_type frame_id( ) const
+		{
+			if( is_open( ) )
+			{
+				return( p_fctx_->streams[ 0 ]->codec->frame_number );
+			}
+			else
+			{
+				return( -1 );
+			}
+		}
+
+		/// @brief 総フレーム数を得る
+		virtual difference_type duration( ) const
 		{
 			if( is_open( ) )
 			{
