@@ -47,6 +47,10 @@
 #include "../singleton.h"
 #endif
 
+#ifndef __INCLUDE_MIST_LIMITS__
+#include "../limits.h"
+#endif
+
 #include <string>
 
 extern "C"
@@ -130,22 +134,22 @@ namespace video
 	public:
 		virtual ~video_io_vase( ){ }
 
-		virtual bool open( const std::string &filename ) = 0;	///< @brief 
-		virtual bool close( ) = 0;								///< @brief 
-		virtual bool is_open( ) const = 0;						///< @brief ビデオストリームが開いているかどうかを返す
-		virtual bool is_eof( ) const = 0;						///< @brief ビデオストリームの終わりに来たかどうかを返す
-		virtual bool dump( ) const = 0;							///< @brief ストリームのフォーマットを標準出力にダンプする
-		virtual difference_type frame_id( ) const = 0;			///< @brief 現在のフレーム番号を返す
-		virtual difference_type duration( ) const = 0;			///< @brief 総フレーム数を返す
-		virtual const std::string filename( ) const = 0;		///< @brief ファイル名を返す
-		virtual size_type bit_rate( ) const = 0;				///< @brief ビットレートを返す
-		virtual size_type width( ) const = 0;					///< @brief フレームの幅を返す
-		virtual size_type height( ) const = 0;					///< @brief フレームの高さを返す
-		virtual size_type frame_rate_numerator( ) const = 0;	///< @brief フレームレート（A÷B）の分子部分のAを返す
-		virtual size_type frame_rate_denominator( ) const = 0;	///< @brief フレームレート（A÷B）の分母部分のBを返す
+		virtual bool open( const std::string &filename ) = 0;		///< @brief 
+		virtual bool close( ) = 0;									///< @brief 
+		virtual bool is_open( ) const = 0;							///< @brief ビデオストリームが開いているかどうかを返す
+		virtual bool is_eof( ) const = 0;							///< @brief ビデオストリームの終わりに来たかどうかを返す
+		virtual bool dump( ) const = 0;								///< @brief ストリームのフォーマットを標準出力にダンプする
+		virtual long double time( ) const = 0;						///< @brief 現在のビデオストリーム上での再生位置を表す秒数
+		virtual long double duration( ) const = 0;					///< @brief ビデオストリームの総秒数を返す
+		virtual const std::string filename( ) const = 0;			///< @brief ファイル名を返す
+		virtual size_type bit_rate( ) const = 0;					///< @brief ビットレートを返す
+		virtual size_type width( ) const = 0;						///< @brief フレームの幅を返す
+		virtual size_type height( ) const = 0;						///< @brief フレームの高さを返す
+		virtual long double frame_rate_numerator( ) const = 0;		///< @brief フレームレート（A÷B）の分子部分のAを返す
+		virtual long double frame_rate_denominator( ) const = 0;	///< @brief フレームレート（A÷B）の分母部分のBを返す
 
 		/// @brief フレームレートを返す
-		virtual double frame_rate( ) const
+		virtual long double frame_rate( ) const
 		{
 			return( frame_rate_numerator( ) / frame_rate_denominator( ) );
 		}
@@ -248,14 +252,14 @@ namespace video
 		bool			is_eof_;				///< @brief ビデオが開いているかどうかのフラグ
 		int				video_stream_index_;	///< @brief ビデオを指すストリーム番号
 		SwsContext		*p_swscale_;			///< @brief デコード後のフレームをRGBのフレームに変換するフィルタを指すポインタ
-		difference_type frame_index_;			///< @brief ビデオストリーム中での現在のフレーム番号保持する変数
+		difference_type frame_pts_;				///< @brief ビデオストリーム中での現在のフレーム番号保持する変数
 
 	public:
 		/// @brief コンストラクタ
 		//! 
 		//! デフォルトコンストラクタ
 		//! 
-		decoder( ) : p_fctx_( NULL ), p_frame_src_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), is_eof_( true ), video_stream_index_( -1 ), p_swscale_( NULL ), frame_index_( -1 )
+		decoder( ) : p_fctx_( NULL ), p_frame_src_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), is_eof_( true ), video_stream_index_( -1 ), p_swscale_( NULL ), frame_pts_( -1 )
 		{
 			bool &bInitialized = singleton< bool, 60602 >::get_instance( );
 			if( !bInitialized )
@@ -271,7 +275,7 @@ namespace video
 		//! 
 		//! デフォルトコンストラクタ
 		//! 
-		decoder( const std::string &filename ) : p_fctx_( NULL ), p_frame_src_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), is_eof_( true ), video_stream_index_( -1 ), p_swscale_( NULL ), frame_index_( -1 )
+		decoder( const std::string &filename ) : p_fctx_( NULL ), p_frame_src_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), is_eof_( true ), video_stream_index_( -1 ), p_swscale_( NULL ), frame_pts_( -1 )
 		{
 			bool &bInitialized = singleton< bool, 60602 >::get_instance( );
 			if( !bInitialized )
@@ -317,25 +321,25 @@ namespace video
 			}
 		}
 
-		/// @brief 現在のフレーム番号を得る
-		virtual difference_type frame_id( ) const
+		/// @brief 現在のビデオストリーム上での再生位置を表す秒数
+		virtual long double time( ) const
 		{
 			if( is_open( ) )
 			{
-				return( frame_index_ );
+				return( frame_pts_ * frame_rate( ) );
 			}
 			else
 			{
-				return( -1 );
+				return( -1.0 );
 			}
 		}
 
 		/// @brief 総フレーム数を得る
-		virtual difference_type duration( ) const
+		virtual long double duration( ) const
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< difference_type >( p_fctx_->streams[ video_stream_index_ ]->duration ) );
+				return( static_cast< long double >( p_fctx_->streams[ video_stream_index_ ]->duration ) * frame_rate( ) );
 			}
 			else
 			{
@@ -396,11 +400,11 @@ namespace video
 		}
 
 		/// @brief フレームレートを得る
-		virtual size_type frame_rate_numerator( ) const
+		virtual long double frame_rate_numerator( ) const
 		{
 			if( is_open( ) )
 			{
-				return( p_fctx_->streams[ video_stream_index_ ]->codec->time_base.den );
+				return( p_fctx_->streams[ video_stream_index_ ]->codec->time_base.num );
 			}
 			else
 			{
@@ -409,7 +413,7 @@ namespace video
 		}
 		
 		/// @brief フレームレートベースを得る（実際のフレームレート＝フレームレート/フレームレートベース）
-		virtual size_type frame_rate_denominator( ) const
+		virtual long double frame_rate_denominator( ) const
 		{
 			if( is_open( ) )
 			{
@@ -555,20 +559,39 @@ namespace video
 			}
 		}
 
-		/// @brief 指定したフレームをビデオストリームから探す
+		/// @brief 指定した時刻をビデオストリームから探す
 		//! 
-		//! @param[in] fid … 探索するフレーム番号
+		//! @param[in] tm … ビデオストリーム上での位置を表す秒数
 		//!
-		bool seek( difference_type fid )
+		bool seek( long double tm )
 		{
-			if( is_open( ) && fid >= 0 )
+			if( is_open( ) && tm >= 0 )
 			{
 				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
-				if( av_seek_frame( p_fctx_, video_stream_index_, fid, AVSEEK_FLAG_BACKWARD ) >= 0 )
+				int64_t pts = static_cast< int64_t >( tm * frame_rate_denominator( ) / frame_rate_numerator( ) + 0.5 );
+				if( av_seek_frame( p_fctx_, video_stream_index_, pts, AVSEEK_FLAG_BACKWARD ) >= 0 )
 				{
 					if( decode( 1 ) )
 					{
-						return( this->skip( fid - frame_id( ) ) );
+						if( frame_pts_ >= pts )
+						{
+							// 画像の形式を変換する
+							AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
+							AVCodecContext *p_cctx = stream->codec;
+							sws_scale( p_swscale_, p_frame_src_->data, p_frame_src_->linesize, 0, p_cctx->height, p_frame_rgb_->data, p_frame_rgb_->linesize );
+						}
+						else if( decode( type_limits< difference_type >::maximum( ), pts ) && !is_eof( ) )
+						{
+							// 画像の形式を変換する
+							AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
+							AVCodecContext *p_cctx = stream->codec;
+							sws_scale( p_swscale_, p_frame_src_->data, p_frame_src_->linesize, 0, p_cctx->height, p_frame_rgb_->data, p_frame_rgb_->linesize );
+							return( true );
+						}
+						else
+						{
+							return( false );
+						}
 					}
 				}
 			}
@@ -651,13 +674,14 @@ namespace video
 		}
 
 	protected:
-		/// @brief 指定した回数だけフレームをでコードする
+		/// @brief 指定した回数もしくは指定した位置に来るまでフレームをデコードする
 		//! 
 		//! @param[in] ntimes       … スキップ枚数
+		//! @param[in] pts          … 終了位置
 		//!
-		bool decode( difference_type ntimes = 1 )
+		bool decode( difference_type ntimes = 1, int64_t pts = type_limits< int64_t >::maximum( ) )
 		{
-			if( is_open( ) && !this->is_eof( ) && ntimes >= 0 )
+			if( is_open( ) && !this->is_eof( ) && ntimes >= 0 && pts >= 0 )
 			{
 				if( ntimes == 0 )
 				{
@@ -669,7 +693,7 @@ namespace video
 				AVCodecContext *p_cctx = stream->codec;
 				int bFinished = 0;
 
-				for( difference_type i = 1 ; !is_eof( ) && i <= ntimes ; i++ )
+				for( difference_type i = 1 ; !is_eof( ) && i <= ntimes && frame_pts_ < pts ; i++ )
 				{
 					bFinished = 0;
 					while( bFinished == 0 && !is_eof( ) )
@@ -679,7 +703,7 @@ namespace video
 						// 動画ストリームを探す
 						if( packet.stream_index == video_stream_index_ )
 						{
-							frame_index_ = static_cast< difference_type >( packet.pts );
+							frame_pts_ = static_cast< difference_type >( packet.pts );
 
 							if( !is_eof( ) )
 							{
@@ -701,27 +725,37 @@ namespace video
 		}
 
 	public:	// オペレータの実装
+		/// @brief 次のフレームへ進む
 		decoder & operator ++( )
 		{
 			this->skip( 1 );
 			return( *this );
 		}
 
+		/// @brief 一つ前のフレームへ戻る
 		decoder & operator --( )
 		{
-			this->seek( this->frame_id( ) - 1 );
+			this->seek( this->time( ) - this->frame_rate( ) );
 			return( *this );
 		}
 
-		decoder & operator +=( difference_type skip )
+		/// @brief ビデオストリームの位置を指定した秒数だけ進める
+		//! 
+		//! @param[in] tm … ストリームの位置を進める秒数
+		//!
+		decoder & operator +=( long double tm )
 		{
-			this->skip( skip );
+			this->seek( this->time( ) + tm );
 			return( *this );
 		}
 
-		decoder & operator -=( difference_type skip )
+		/// @brief ビデオストリームの位置を指定した秒数だけ戻す
+		//! 
+		//! @param[in] tm … ストリームの位置を進める秒数
+		//!
+		decoder & operator -=( long double tm )
 		{
-			this->seek( this->frame_id( ) - skip );
+			this->seek( this->time( ) - tm );
 			return( *this );
 		}
 	};
@@ -815,11 +849,11 @@ namespace video
 		}
 
 		/// @brief 現在のフレーム番号を得る
-		virtual difference_type frame_id( ) const
+		virtual long double time( ) const
 		{
 			if( is_open( ) )
 			{
-				return( p_fctx_->streams[ 0 ]->codec->frame_number );
+				return( static_cast< long double >( p_fctx_->streams[ 0 ]->codec->frame_number ) * frame_rate( ) );
 			}
 			else
 			{
@@ -828,11 +862,11 @@ namespace video
 		}
 
 		/// @brief 総フレーム数を得る
-		virtual difference_type duration( ) const
+		virtual long double duration( ) const
 		{
 			if( is_open( ) )
 			{
-				return( p_fctx_->streams[ 0 ]->codec->frame_number );
+				return( static_cast< long double >( p_fctx_->streams[ 0 ]->codec->frame_number ) * frame_rate( ) );
 			}
 			else
 			{
@@ -872,13 +906,13 @@ namespace video
 		}
 
 		/// @brief フレームレートを得る
-		virtual size_type frame_rate_numerator( ) const
+		virtual long double frame_rate_numerator( ) const
 		{
 			return( frame_rate_num_ );
 		}
 		
 		/// @brief フレームレートベースを得る（実際のフレームレート＝フレームレート/フレームレートベース）
-		virtual size_type frame_rate_denominator( ) const
+		virtual long double frame_rate_denominator( ) const
 		{
 			return( frame_rate_den_ );
 		}
