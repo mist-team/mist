@@ -55,7 +55,7 @@
 
 extern "C"
 {
-#if 0
+#if 1
 	#include <ffmpeg/avcodec.h>
 	#include <ffmpeg/avformat.h>
 	#include <ffmpeg/swscale.h>
@@ -108,7 +108,7 @@ _MIST_BEGIN
 //! 
 //! while( !iv.is_eof( ) )
 //! {
-//!     std::cout << iv.frame_id( ) << std::endl;
+//!     std::cout << iv.time( ) << std::endl;
 //!     iv >> img;
 //!     /* ここで img に何らかの画像処理を施すことも可能 */
 //!     ov << img;
@@ -653,15 +653,15 @@ namespace video
 
 		/// @brief 現在のフレームバッファをarray2形式に変換して格納し，フレーム番号を1進める
 		//! 
-		//! @param[out] image   … フレーム画像を格納するための２次元配列
-		//! @param[out] frameNo … 読み込んだフレームのフレーム番号を格納する符号付き整数
+		//! @param[out] image      … フレーム画像を格納するための２次元配列
+		//! @param[out] frame_time … 読み込んだフレームのビデオストリーム上での時刻を格納する変数
 		//! 
 		//! @return ストリームの終わりを超えて読み込みを行った場合は false を返す．
 		//!
 		template < class T >
-		bool read( array2< T > &image, difference_type &frameNo )
+		bool read( array2< T > &image, long double &frame_time )
 		{
-			frameNo = this->frame_id( );
+			frame_time = this->time( );
 			if( read_buffer( image ) )
 			{
 				this->skip( 1 );
