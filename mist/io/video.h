@@ -55,7 +55,7 @@
 
 extern "C"
 {
-#if 1
+#if 0
 	#include <ffmpeg/avcodec.h>
 	#include <ffmpeg/avformat.h>
 	#include <ffmpeg/swscale.h>
@@ -252,7 +252,7 @@ namespace video
 		bool			is_eof_;				///< @brief ビデオが開いているかどうかのフラグ
 		int				video_stream_index_;	///< @brief ビデオを指すストリーム番号
 		SwsContext		*p_swscale_;			///< @brief デコード後のフレームをRGBのフレームに変換するフィルタを指すポインタ
-		difference_type frame_pts_;				///< @brief ビデオストリーム中での現在のフレーム番号保持する変数
+		difference_type frame_pts_;				///< @brief ビデオストリーム中での現在のフレーム位置を保持する変数
 
 	public:
 		/// @brief コンストラクタ
@@ -773,14 +773,15 @@ namespace video
 		AVFrame			*p_frame_dst_;			///< @brief 書き出されるフレーム画像バッファ
 		AVFrame			*p_frame_rgb_;			///< @brief RGBフォーマットのフレーム画像バッファ(array2形式の画像を得るための中間データ)
 		SwsContext		*p_swscale_;			///< @brief デコード後のフレームをRGBのフレームに変換するフィルタを指すポインタ
-		size_type		source_width_;
-		size_type		source_height_;
+		difference_type frame_pts_;				///< @brief ビデオストリーム中での現在のフレーム位置を保持する変数
 
 		bool			is_open_;				///< @brief ビデオが開いているかどうかのフラグ
 		size_type		encode_buf_size_;		///< @brief エンコードバッファのサイズ
 		uint8_t*		encode_buf_;			///< @brief エンコードバッファ
 		size_type		width_;					///< @brief フレーム画像の幅
 		size_type		height_;				///< @brief フレーム画像の高さ
+		size_type		source_width_;			///< @brief 内部で使用する変数
+		size_type		source_height_;			///< @brief 内部で使用する変数
 		size_type		frame_rate_num_;		///< @brief フレームレート
 		size_type		frame_rate_den_;		///< @brief フレームレートベース（実際のフレームレート＝フレームレート/フレームレートベース）
 		size_type		bit_rate_;				///< @brief ビットレート
@@ -804,9 +805,9 @@ namespace video
 		//!
 		encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30,
 				 size_type bit_rate = 1150000, size_type gop_size = 12, size_type max_b_frames = 2, size_type audio_bit_rate = 64000, size_type audio_sampling_rate = 44100, size_type audio_channels = 2 )
-					: p_fctx_( NULL ), p_frame_dst_( NULL ), p_frame_rgb_( NULL ), is_open_( false ), encode_buf_( NULL ), encode_buf_size_( 0 ),
-						width_( w ), height_( h ), frame_rate_num_( frame_rate_num ), frame_rate_den_( frame_rate_den ), bit_rate_( bit_rate ), gop_size_( gop_size ), max_b_frames_( max_b_frames ),
-						source_width_( w ), source_height_( h ), audio_bit_rate_( audio_bit_rate ), audio_sampling_rate_( audio_bit_rate ), audio_channels_( audio_channels )
+					: p_fctx_( NULL ), p_frame_dst_( NULL ), p_frame_rgb_( NULL ), p_swscale_( NULL ), frame_pts_( 0 ), is_open_( false ), encode_buf_( NULL ), encode_buf_size_( 0 ),
+						width_( w ), height_( h ), source_width_( w ), source_height_( h ), frame_rate_num_( frame_rate_num ), frame_rate_den_( frame_rate_den ), bit_rate_( bit_rate ),
+						gop_size_( gop_size ), max_b_frames_( max_b_frames ), audio_bit_rate_( audio_bit_rate ), audio_sampling_rate_( audio_bit_rate ), audio_channels_( audio_channels )
 		{
 			bool &bInitialized = singleton< bool, 60602 >::get_instance( );
 			if( !bInitialized )
@@ -853,7 +854,7 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< long double >( p_fctx_->streams[ 0 ]->codec->frame_number ) * frame_rate( ) );
+				return( static_cast< long double >( frame_pts_ ) * frame_rate( ) );
 			}
 			else
 			{
@@ -866,7 +867,7 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< long double >( p_fctx_->streams[ 0 ]->codec->frame_number ) * frame_rate( ) );
+				return( static_cast< long double >( frame_pts_ ) * frame_rate( ) );
 			}
 			else
 			{
@@ -1179,6 +1180,10 @@ namespace video
 					}
 				}
 
+				p_fctx_->preload = static_cast< int >( 0.5 * AV_TIME_BASE );
+				p_fctx_->max_delay = static_cast< int >( 0.7 * AV_TIME_BASE );
+				p_fctx_->loop_output = AVFMT_NOOUTPUTLOOP;
+
 				// ヘッダ情報を書き込む
 				if( av_write_header( p_fctx_ ) != 0 )
 				{
@@ -1216,7 +1221,8 @@ namespace video
 				source_height_ = height( );
 				p_swscale_ = sws_getContext( source_width_, source_height_, PIX_FMT_RGB32, width( ), height( ), pix_fmt, SWS_LANCZOS, NULL, NULL, NULL);
 
-				is_open_ = true;
+				is_open_   = true;
+				frame_pts_ = 0;
 
 				return( true );
 			}
@@ -1229,8 +1235,12 @@ namespace video
 	public:
 		#pragma region フレームの書き出し
 		/// @brief array2形式の画像をフレームバッファに書き込み，エンコードしてストリームに出力する
+		//! 
+		//! @param[in] image … ビデオストリームにエンコードする画像
+		//! @param[in] tm    … ビデオストリームにエンコードする際のタイムスタンプ（-1の場合はフレームレートをもとに書き込み位置を算出する）
+		//! 
 		template < class T, class Allocator >
-		bool write( const array2< T, Allocator > &image )
+		bool write( const array2< T, Allocator > &image, long double tm = -1.0 )
 		{
 			if( is_open( ) )
 			{
@@ -1282,7 +1292,6 @@ namespace video
 
 				if( ( p_fctx_->oformat->flags & AVFMT_RAWPICTURE ) != 0 )
 				{
-					// RAW Video
 					AVPacket packet;
 					av_init_packet( &packet );
 
@@ -1290,6 +1299,7 @@ namespace video
 					packet.stream_index = p_fctx_->streams[ 0 ]->index;
 					packet.data = ( uint8_t * )p_frame_dst_;
 					packet.size = sizeof( AVPicture );
+					frame_pts_++;
 
 					ret = av_write_frame( p_fctx_, &packet );
 				}
@@ -1308,7 +1318,16 @@ namespace video
 						packet.stream_index = stream->index;
 						packet.data         = encode_buf_;
 						packet.size         = out_size;
-						packet.pts = av_rescale_q( c->coded_frame->pts, c->time_base, stream->time_base );
+						if( tm < 0 )
+						{
+							packet.pts = av_rescale_q( c->coded_frame->pts, c->time_base, stream->time_base );
+							frame_pts_ = static_cast< difference_type >( packet.pts );
+						}
+						else
+						{
+							packet.pts = static_cast< int64_t >( tm * frame_rate_denominator( ) / frame_rate_numerator( ) + 0.5 );
+							frame_pts_ = static_cast< difference_type >( packet.pts );
+						}
 
 						if( c->coded_frame->key_frame )
 						{
