@@ -534,7 +534,7 @@ bool write_raw( const array< T, Allocator > &image, const std::string &filename,
 //! @retval false c ‰æ‘œ‚Ì“Ç‚İ‚İ‚É¸”s
 //! 
 template < class T, class Allocator >
-bool write_raw_gz( const array< T, Allocator > &image, const std::string &filename, typename array< T, Allocator >::value_type offset = 0, bool to_little_endian = false )
+bool write_raw_gz( const array< T, Allocator > &image, const std::string &filename, typename array< T, Allocator >::value_type offset = typename array< T, Allocator >::value_type( 0 ), bool to_little_endian = false )
 {
 	return( write_raw_gz( image, filename, offset, to_little_endian, __mist_dmy_callback__( ) ) );
 }
@@ -768,7 +768,7 @@ bool read_raw( array3< T, Allocator > &image, const std::string &filename,
 template < class T, class Allocator >
 bool read_raw( array3< T, Allocator > &image, const std::string &filename,
 				typename array3< T, Allocator >::size_type w, typename array3< T, Allocator >::size_type h, typename array3< T, Allocator >::size_type d,
-				double x = 1.0, double y = 1.0, double z = 1.0, typename array3< T, Allocator >::value_type offset = 0, bool from_little_endian = false )
+				double x = 1.0, double y = 1.0, double z = 1.0, typename array3< T, Allocator >::value_type offset = typename array3< T, Allocator >::value_type( 0 ), bool from_little_endian = false )
 {
 	return( read_raw( image, filename, w, h, d, x, y, z, offset, from_little_endian, __mist_dmy_callback__( ) ) );
 }

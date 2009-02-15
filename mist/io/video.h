@@ -785,6 +785,7 @@ namespace video
 		size_type		frame_rate_num_;		///< @brief フレームレート
 		size_type		frame_rate_den_;		///< @brief フレームレートベース（実際のフレームレート＝フレームレート/フレームレートベース）
 		size_type		bit_rate_;				///< @brief ビットレート
+		double			quality_;				///< @brief 圧縮のクオリティー[0～100]（ビットレートとどちらかを指定）
 		size_type		gop_size_;				///< @brief GOPサイズ（この枚数の連続フレーム中に必ず１枚以上Iフレームが存在する）
 		size_type		max_b_frames_;			///< @brief 最大連続Bフレーム数
 		size_type		audio_bit_rate_;		///< @brief 音声のビットレート
@@ -795,18 +796,21 @@ namespace video
 		#pragma region コンストラクタ関連
 		/// @brief コンストラクタ
 		//! 
-		//! @param[in] w               … 320（デフォルト値）
-		//! @param[in] h               … 240（デフォルト値）
-		//! @param[in] frame_rate_num  … 1（デフォルト値）
-		//! @param[in] frame_rate_den  … 30（デフォルト値）
-		//! @param[in] bit_rate        … 1150000（デフォルト値）
-		//! @param[in] gop_size        … 12（デフォルト値）
-		//! @param[in] max_b_frames    … 2（デフォルト値）
+		//! @param[in] w                   … 320（デフォルト値）
+		//! @param[in] h                   … 240（デフォルト値）
+		//! @param[in] frame_rate_num      … 1（デフォルト値）
+		//! @param[in] frame_rate_den      … 30（デフォルト値）
+		//! @param[in] bit_rate            … 1150000（デフォルト値）
+		//! @param[in] quality             … 0～100の値を指定。0以外を指定した場合はbit_rateは無視される
+		//! @param[in] gop_size            … 12（デフォルト値）
+		//! @param[in] max_b_frames        … 2（デフォルト値）
+		//! @param[in] audio_sampling_rate … 44100（デフォルト値）
+		//! @param[in] audio_channels      … 2（デフォルト値）
 		//!
 		encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30,
-				 size_type bit_rate = 1150000, size_type gop_size = 12, size_type max_b_frames = 2, size_type audio_bit_rate = 64000, size_type audio_sampling_rate = 44100, size_type audio_channels = 2 )
+				 size_type bit_rate = 1150000, double quality = 0, size_type gop_size = 12, size_type max_b_frames = 2, size_type audio_bit_rate = 64000, size_type audio_sampling_rate = 44100, size_type audio_channels = 2 )
 					: p_fctx_( NULL ), p_frame_dst_( NULL ), p_frame_rgb_( NULL ), p_swscale_( NULL ), frame_pts_( 0 ), is_open_( false ), encode_buf_( NULL ), encode_buf_size_( 0 ),
-						width_( w ), height_( h ), source_width_( w ), source_height_( h ), frame_rate_num_( frame_rate_num ), frame_rate_den_( frame_rate_den ), bit_rate_( bit_rate ),
+						width_( w ), height_( h ), source_width_( w ), source_height_( h ), frame_rate_num_( frame_rate_num ), frame_rate_den_( frame_rate_den ), bit_rate_( bit_rate ), quality_( quality < 0 ? 0 : ( quality > 100 ? 100 : quality ) ),
 						gop_size_( gop_size ), max_b_frames_( max_b_frames ), audio_bit_rate_( audio_bit_rate ), audio_sampling_rate_( audio_bit_rate ), audio_channels_( audio_channels )
 		{
 			bool &bInitialized = singleton< bool, 60602 >::get_instance( );
@@ -1101,6 +1105,15 @@ namespace video
 					// ビットレートを設定
 					cctx->bit_rate = static_cast< int >( bit_rate( ) );
 
+					// 固定クオリティーが設定されている場合の処理
+					if( quality_ > 0 )
+					{
+						cctx->flags |= CODEC_FLAG_QSCALE;
+						float q = static_cast< float >( FF_QP2LAMBDA * quality_ * 255 );
+						vstream->quality = q;
+						cctx->global_quality = static_cast< int >( q );
+					}
+
 					// フレームレートを設定
 					cctx->time_base.den = static_cast< int >( frame_rate_denominator( ) );
 					cctx->time_base.num = static_cast< int >( frame_rate_numerator( ) );
@@ -1376,7 +1389,7 @@ namespace video
 			//! @param[in] max_b_frames    … 2（デフォルト値）
 			//!
 			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000, size_type gop_size = 12, size_type max_b_frames = 2 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, gop_size, max_b_frames )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, 0, gop_size, max_b_frames )
 			{
 			}
 
@@ -1394,7 +1407,7 @@ namespace video
 			//! @param[in] max_b_frames    … 2（デフォルト値）
 			//!
 			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000, size_type gop_size = 12, size_type max_b_frames = 2 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, gop_size, max_b_frames )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, 0, gop_size, max_b_frames )
 			{
 				if( !open( filename ) )
 				{
@@ -1497,9 +1510,10 @@ namespace video
 			//! @param[in] frame_rate_num  … 1（デフォルト値）
 			//! @param[in] frame_rate_den  … 30（デフォルト値）
 			//! @param[in] bit_rate        … 11500000（デフォルト値）
+			//! @param[in] quality         … 0～100の値を指定。0以外を指定した場合はbit_rateは無視される
 			//!
-			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 11500000 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 11500000, double quality = 0 )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, quality, 0 )
 			{
 			}
 
@@ -1513,9 +1527,10 @@ namespace video
 			//! @param[in] frame_rate_num  … 1（デフォルト値）
 			//! @param[in] frame_rate_den  … 30（デフォルト値）
 			//! @param[in] bit_rate        … 11500000（デフォルト値）
+			//! @param[in] quality         … 0～100の値を指定。0以外を指定した場合はbit_rateは無視される
 			//!
-			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 11500000 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 11500000, double quality = 0 )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, quality, 0 )
 			{
 				if( !open( filename ) )
 				{
