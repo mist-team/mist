@@ -708,6 +708,7 @@ namespace video
 							if( !is_eof( ) )
 							{
 								// パケットをでコードする
+								avcodec_get_frame_defaults( p_frame_src_ );
 								avcodec_decode_video( p_cctx, p_frame_src_, &bFinished, packet.data, packet.size );
 							}
 						}
@@ -785,7 +786,8 @@ namespace video
 		size_type		frame_rate_num_;		///< @brief フレームレート
 		size_type		frame_rate_den_;		///< @brief フレームレートベース（実際のフレームレート＝フレームレート/フレームレートベース）
 		size_type		bit_rate_;				///< @brief ビットレート
-		double			quality_;				///< @brief 圧縮のクオリティー[0～100]（ビットレートとどちらかを指定）
+		size_type		qmin_;					///< @brief 圧縮のクオリティー[0～32]（ビットレートとどちらかを指定）
+		size_type		qmax_;					///< @brief 圧縮のクオリティー[0～100]（ビットレートとどちらかを指定）
 		size_type		gop_size_;				///< @brief GOPサイズ（この枚数の連続フレーム中に必ず１枚以上Iフレームが存在する）
 		size_type		max_b_frames_;			///< @brief 最大連続Bフレーム数
 		size_type		audio_bit_rate_;		///< @brief 音声のビットレート
@@ -801,16 +803,17 @@ namespace video
 		//! @param[in] frame_rate_num      … 1（デフォルト値）
 		//! @param[in] frame_rate_den      … 30（デフォルト値）
 		//! @param[in] bit_rate            … 1150000（デフォルト値）
-		//! @param[in] quality             … 0～100の値を指定。0以外を指定した場合はbit_rateは無視される
+		//! @param[in] qmin                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+		//! @param[in] qmax                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
 		//! @param[in] gop_size            … 12（デフォルト値）
 		//! @param[in] max_b_frames        … 2（デフォルト値）
 		//! @param[in] audio_sampling_rate … 44100（デフォルト値）
 		//! @param[in] audio_channels      … 2（デフォルト値）
 		//!
 		encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30,
-				 size_type bit_rate = 1150000, double quality = 0, size_type gop_size = 12, size_type max_b_frames = 2, size_type audio_bit_rate = 64000, size_type audio_sampling_rate = 44100, size_type audio_channels = 2 )
+				 size_type bit_rate = 1150000, size_type qmin = 0, size_type qmax = 0, size_type gop_size = 12, size_type max_b_frames = 2, size_type audio_bit_rate = 64000, size_type audio_sampling_rate = 44100, size_type audio_channels = 2 )
 					: p_fctx_( NULL ), p_frame_dst_( NULL ), p_frame_rgb_( NULL ), p_swscale_( NULL ), frame_pts_( 0 ), is_open_( false ), encode_buf_( NULL ), encode_buf_size_( 0 ),
-						width_( w ), height_( h ), source_width_( w ), source_height_( h ), frame_rate_num_( frame_rate_num ), frame_rate_den_( frame_rate_den ), bit_rate_( bit_rate ), quality_( quality < 0 ? 0 : ( quality > 100 ? 100 : quality ) ),
+						width_( w ), height_( h ), source_width_( w ), source_height_( h ), frame_rate_num_( frame_rate_num ), frame_rate_den_( frame_rate_den ), bit_rate_( bit_rate ), qmin_( qmin ), qmax_( qmax ),
 						gop_size_( gop_size ), max_b_frames_( max_b_frames ), audio_bit_rate_( audio_bit_rate ), audio_sampling_rate_( audio_bit_rate ), audio_channels_( audio_channels )
 		{
 			bool &bInitialized = singleton< bool, 60602 >::get_instance( );
@@ -1057,6 +1060,9 @@ namespace video
 						return( false );
 					}
 
+					// コーデックのデフォルト設定を行う
+					avcodec_get_context_defaults2( vstream->codec, CODEC_TYPE_VIDEO );
+
 					// コーデックを推測する
 					if( video_codec_id == CODEC_ID_NONE )
 					{
@@ -1106,12 +1112,10 @@ namespace video
 					cctx->bit_rate = static_cast< int >( bit_rate( ) );
 
 					// 固定クオリティーが設定されている場合の処理
-					if( quality_ > 0 )
+					if( qmin_ > 0 && qmax_ > 0 )
 					{
-						cctx->flags |= CODEC_FLAG_QSCALE;
-						float q = static_cast< float >( FF_QP2LAMBDA * quality_ * 255 );
-						vstream->quality = q;
-						cctx->global_quality = static_cast< int >( q );
+						cctx->qmin = qmin_;
+						cctx->qmax = qmax_;
 					}
 
 					// フレームレートを設定
@@ -1321,6 +1325,7 @@ namespace video
 					// 画像をエンコードする
 					AVStream  *stream = p_fctx_->streams[ 0 ];
 					AVCodecContext *c = stream->codec;
+					p_frame_dst_->quality = static_cast< int >( stream->quality );
 					int out_size = avcodec_encode_video( c, encode_buf_, encode_buf_size_, p_frame_dst_ );
 
 					if( out_size > 0 )
@@ -1385,11 +1390,13 @@ namespace video
 			//! @param[in] frame_rate_num  … 1（デフォルト値）
 			//! @param[in] frame_rate_den  … 30（デフォルト値）
 			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//! @param[in] qmin            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] qmax            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
 			//! @param[in] gop_size        … 12（デフォルト値）
 			//! @param[in] max_b_frames    … 2（デフォルト値）
 			//!
-			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000, size_type gop_size = 12, size_type max_b_frames = 2 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, 0, gop_size, max_b_frames )
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000, size_type qmin = 0, size_type qmax = 0, size_type gop_size = 12, size_type max_b_frames = 2 )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, qmin, qmax, gop_size, max_b_frames )
 			{
 			}
 
@@ -1403,11 +1410,13 @@ namespace video
 			//! @param[in] frame_rate_num  … 1（デフォルト値）
 			//! @param[in] frame_rate_den  … 30（デフォルト値）
 			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//! @param[in] qmin            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] qmax            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
 			//! @param[in] gop_size        … 12（デフォルト値）
 			//! @param[in] max_b_frames    … 2（デフォルト値）
 			//!
-			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000, size_type gop_size = 12, size_type max_b_frames = 2 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, 0, gop_size, max_b_frames )
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000, size_type qmin = 0, size_type qmax = 0, size_type gop_size = 12, size_type max_b_frames = 2 )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, qmin, qmax, gop_size, max_b_frames )
 			{
 				if( !open( filename ) )
 				{
@@ -1510,10 +1519,11 @@ namespace video
 			//! @param[in] frame_rate_num  … 1（デフォルト値）
 			//! @param[in] frame_rate_den  … 30（デフォルト値）
 			//! @param[in] bit_rate        … 11500000（デフォルト値）
-			//! @param[in] quality         … 0～100の値を指定。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] qmin            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] qmax            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
 			//!
-			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 11500000, double quality = 0 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, quality, 0 )
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 11500000, size_type qmin = 0, size_type qmax = 0 )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, qmin, qmax, 0 )
 			{
 			}
 
@@ -1527,10 +1537,11 @@ namespace video
 			//! @param[in] frame_rate_num  … 1（デフォルト値）
 			//! @param[in] frame_rate_den  … 30（デフォルト値）
 			//! @param[in] bit_rate        … 11500000（デフォルト値）
-			//! @param[in] quality         … 0～100の値を指定。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] qmin            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] qmax            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
 			//!
-			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 11500000, double quality = 0 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, quality, 0 )
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 11500000, size_type qmin = 0, size_type qmax = 0 )
+				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, qmin, qmax, 0 )
 			{
 				if( !open( filename ) )
 				{
