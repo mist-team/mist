@@ -540,18 +540,7 @@ namespace video
 		{
 			if( is_open( ) && !this->is_eof( ) )
 			{
-				if( decode( nskips ) && !is_eof( ) )
-				{
-					// 画像の形式を変換する
-					AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
-					AVCodecContext *p_cctx = stream->codec;
-					sws_scale( p_swscale_, p_frame_src_->data, p_frame_src_->linesize, 0, p_cctx->height, p_frame_rgb_->data, p_frame_rgb_->linesize );
-					return( true );
-				}
-				else
-				{
-					return( false );
-				}
+				return( decode( nskips ) && !is_eof( ) );
 			}
 			else
 			{
@@ -571,28 +560,7 @@ namespace video
 				int64_t pts = static_cast< int64_t >( tm * frame_rate_denominator( ) / frame_rate_numerator( ) + 0.5 );
 				if( av_seek_frame( p_fctx_, video_stream_index_, pts, AVSEEK_FLAG_BACKWARD ) >= 0 )
 				{
-					if( decode( 1 ) )
-					{
-						if( frame_pts_ >= pts )
-						{
-							// 画像の形式を変換する
-							AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
-							AVCodecContext *p_cctx = stream->codec;
-							sws_scale( p_swscale_, p_frame_src_->data, p_frame_src_->linesize, 0, p_cctx->height, p_frame_rgb_->data, p_frame_rgb_->linesize );
-						}
-						else if( decode( type_limits< difference_type >::maximum( ), pts ) && !is_eof( ) )
-						{
-							// 画像の形式を変換する
-							AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
-							AVCodecContext *p_cctx = stream->codec;
-							sws_scale( p_swscale_, p_frame_src_->data, p_frame_src_->linesize, 0, p_cctx->height, p_frame_rgb_->data, p_frame_rgb_->linesize );
-							return( true );
-						}
-						else
-						{
-							return( false );
-						}
-					}
+					return( decode( 1 ) );
 				}
 			}
 
@@ -711,6 +679,12 @@ namespace video
 								avcodec_get_frame_defaults( p_frame_src_ );
 								avcodec_decode_video( p_cctx, p_frame_src_, &bFinished, packet.data, packet.size );
 							}
+						}
+
+						if( bFinished != 0 && ( i == ntimes || frame_pts_ >= pts ) )
+						{
+							// 一時バッファにデータをコピーする
+							sws_scale( p_swscale_, p_frame_src_->data, p_frame_src_->linesize, 0, p_cctx->height, p_frame_rgb_->data, p_frame_rgb_->linesize );
 						}
 
 						av_free_packet( &packet );
