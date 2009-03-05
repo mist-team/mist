@@ -1186,6 +1186,19 @@ namespace dicom
 		return( true );
 	}
 
+	inline bool can_convert_to_number( const std::string &str )
+	{
+		for( size_t i = 0 ; i < str.size( ) ; i++ )
+		{
+			std::string::value_type ch = str[ i ];
+			if( !( ( '0' <= ch && ch <= '9' ) || ( '+' <= ch && ch <= '.' ) ) )
+			{
+				return( false );
+			}
+		}
+		return( true );
+	}
+
 	/// @brief DICOMコンテナからDICOMの情報を取得する
 	inline bool get_dicom_info( const dicom_tag_container &dicm, dicom_info &info )
 	{
@@ -1269,16 +1282,30 @@ namespace dicom
 
 		// 画素に適用するオフセットを取得
 		std::string rescale_intercept	= find_tag( dicm, 0x0028, 0x1052, "" );
-		if( rescale_intercept != "" )
+		if( rescale_intercept != "" && can_convert_to_number( rescale_intercept ) )
 		{
 			info.rescale_intercept = atof( rescale_intercept.c_str( ) );
 		}
 
 		// 画素に適用する傾きを取得
 		std::string rescale_slope	= find_tag( dicm, 0x0028, 0x1053, "" );
-		if( rescale_slope != "" )
+		if( rescale_slope != "" && can_convert_to_number( rescale_slope ) )
 		{
 			info.rescale_slope = atof( rescale_slope.c_str( ) );
+		}
+
+		// Window Centerを取得
+		std::string window_center	= find_tag( dicm, 0x0028, 0x1050, "" );
+		if( window_center != "" && can_convert_to_number( window_center ) )
+		{
+			info.window_center = atof( window_center.c_str( ) );
+		}
+
+		// Window Widthを取得
+		std::string window_width	= find_tag( dicm, 0x0028, 0x1051, "" );
+		if( window_width != "" && can_convert_to_number( window_width ) )
+		{
+			info.window_width = atof( window_width.c_str( ) );
 		}
 
 		info.bits_allocated			= find_tag( dicm, 0x0028, 0x0100, info.bits_allocated );
@@ -1286,8 +1313,6 @@ namespace dicom
 		info.high_bits				= find_tag( dicm, 0x0028, 0x0102, info.high_bits );
 		info.pixel_representation	= find_tag( dicm, 0x0028, 0x0103, info.pixel_representation );
 		info.planar_configuration	= find_tag( dicm, 0x0028, 0x0006, info.planar_configuration );
-		info.window_center			= find_tag( dicm, 0x0028, 0x1050, info.window_center );
-		info.window_width			= find_tag( dicm, 0x0028, 0x1051, info.window_width );
 
 		// データのシリーズを識別するデータを取得
 		info.study_instance_uid		= find_tag( dicm, 0x0020, 0x000D, info.study_instance_uid );
