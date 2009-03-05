@@ -932,7 +932,8 @@ namespace dicom
 		unsigned short		bits_allocated;				///< @brief 1‰æ‘f‚ ‚½‚è‚ÉŠ„‚è“–‚Ä‚ç‚ê‚Ä‚¢‚éƒrƒbƒg”
 		unsigned short		bits_stored;				///< @brief 1‰æ‘f‚ ‚½‚è‚ÉŽg—p‚µ‚Ä‚¢‚éƒrƒbƒg”
 		unsigned short		high_bits;					///< @brief high bits
-		unsigned short		pixel_representation;		///< @brief pixel representation
+		unsigned short		pixel_representation;		///< @brief ‰æ‘f‚Ì•\Œ»•û–@
+		unsigned short		planar_configuration;		///< @brief RGB‚È‚Ç‚Ì—v‘f‚Ì•À‚Ñ
 		double				window_center;				///< @brief •`‰æ‚É—p‚¢‚é Window Center
 		double				window_width;				///< @brief •`‰æ‚É—p‚¢‚é Window Width
 
@@ -958,6 +959,7 @@ namespace dicom
 			bits_stored( 8 ),
 			high_bits( 7 ),
 			pixel_representation( 0 ),
+			planar_configuration( 0 ),
 			window_center( 128 ),
 			window_width( 256 ),
 			KVP( 0.0 ),
@@ -1283,6 +1285,7 @@ namespace dicom
 		info.bits_stored			= find_tag( dicm, 0x0028, 0x0101, info.bits_stored );
 		info.high_bits				= find_tag( dicm, 0x0028, 0x0102, info.high_bits );
 		info.pixel_representation	= find_tag( dicm, 0x0028, 0x0103, info.pixel_representation );
+		info.planar_configuration	= find_tag( dicm, 0x0028, 0x0006, info.planar_configuration );
 		info.window_center			= find_tag( dicm, 0x0028, 0x1050, info.window_center );
 		info.window_width			= find_tag( dicm, 0x0028, 0x1051, info.window_width );
 
