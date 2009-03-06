@@ -857,7 +857,7 @@ public: // ”z—ñ‚É‘Î‚·‚é‘€ì
 	{
 		if( base::trim( out, index, num ) )
 		{
-			reso( reso1( ) );
+			out.reso( reso1( ) );
 			return( true );
 		}
 		else
