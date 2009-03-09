@@ -38,6 +38,8 @@
 #ifndef __INCLUDE_MD5__
 #define __INCLUDE_MD5__
 
+#include <cstring>
+
 #ifndef __INCLUDE_MIST_CONF_H__
 #include "config/mist_conf.h"
 #endif

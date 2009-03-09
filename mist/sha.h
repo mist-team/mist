@@ -37,6 +37,8 @@
 #ifndef __INCLUDE_SHA__
 #define __INCLUDE_SHA__
 
+#include <cstring>
+
 #ifndef __INCLUDE_MIST_CONF_H__
 #include "config/mist_conf.h"
 #endif
