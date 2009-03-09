@@ -522,9 +522,12 @@ struct __mist_progress_callback__
 
 #else
 
-	#define _CHECK_ACCESS_VIOLATION1_( index ) 
-	#define _CHECK_ACCESS_VIOLATION2_( index1, index2 )
-	#define _CHECK_ACCESS_VIOLATION3_( index1, index2, index3 )
+	#define _CHECK_ACCESS_VIOLATION1U_( index ) 
+	#define _CHECK_ACCESS_VIOLATION1S_( index ) 
+	#define _CHECK_ACCESS_VIOLATION2U_( index1, index2 )
+	#define _CHECK_ACCESS_VIOLATION2S_( index1, index2 )
+	#define _CHECK_ACCESS_VIOLATION3U_( index1, index2, index3 )
+	#define _CHECK_ACCESS_VIOLATION3S_( index1, index2, index3 )
 
 #endif
 
