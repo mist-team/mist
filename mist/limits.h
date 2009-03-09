@@ -362,29 +362,25 @@ namespace __limits_0_255__
 		template < class T >
 		static const rgb< T > limits( const rgb< T > &v )
 		{
-			typedef limits_0_255__< is_char< T >::value > limits_0_255_;
-			return( rgb< T >( limits_0_255_::limits( v.r ), limits_0_255_::limits( v.g ), limits_0_255_::limits( v.b ) ) );
+			return( rgb< T >( limits_0_255__< is_char< T >::value >::limits( v.r ), limits_0_255__< is_char< T >::value >::limits( v.g ), limits_0_255__< is_char< T >::value >::limits( v.b ) ) );
 		}
 
 		template < class T >
 		static const rgba< T > limits( const rgba< T > &v )
 		{
-			typedef limits_0_255__< is_char< T >::value > limits_0_255_;
-			return( rgba< T >( limits_0_255_::limits( v.r ), limits_0_255_::limits( v.g ), limits_0_255_::limits( v.b ), limits_0_255_::limits( v.a ) ) );
+			return( rgba< T >( limits_0_255__< is_char< T >::value >::limits( v.r ), limits_0_255__< is_char< T >::value >::limits( v.g ), limits_0_255__< is_char< T >::value >::limits( v.b ), limits_0_255__< is_char< T >::value >::limits( v.a ) ) );
 		}
 
 		template < class T >
 		static const bgr< T > limits( const bgr< T > &v )
 		{
-			typedef limits_0_255__< is_char< T >::value > limits_0_255_;
-			return( bgr< T >( limits_0_255_::limits( v.r ), limits_0_255_::limits( v.g ), limits_0_255_::limits( v.b ) ) );
+			return( bgr< T >( limits_0_255__< is_char< T >::value >::limits( v.r ), limits_0_255__< is_char< T >::value >::limits( v.g ), limits_0_255__< is_char< T >::value >::limits( v.b ) ) );
 		}
 
 		template < class T >
 		static const bgra< T > limits( const bgra< T > &v )
 		{
-			typedef limits_0_255__< is_char< T >::value > limits_0_255_;
-			return( bgra< T >( limits_0_255_::limits( v.r ), limits_0_255_::limits( v.g ), limits_0_255_::limits( v.b ), limits_0_255_::limits( v.a ) ) );
+			return( bgra< T >( limits_0_255__< is_char< T >::value >::limits( v.r ), limits_0_255__< is_char< T >::value >::limits( v.g ), limits_0_255__< is_char< T >::value >::limits( v.b ), limits_0_255__< is_char< T >::value >::limits( v.a ) ) );
 		}
 	};
 }
