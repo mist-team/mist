@@ -764,7 +764,7 @@ template < class T > inline std::istream &operator >>( std::istream &in, vector2
 //! 
 //! - _USE_EXPRESSION_TEMPLATE_  マクロが1の場合は，Expression Template を利用して，行列・ベクトル演算を高速化する
 //! - _CHECK_MATRIX_OPERATION_   マクロが1の場合は，行列・ベクトル演算の左辺と右辺でベクトルのサイズが適切であるかをチェックする
-//! - _CHECK_ACCESS_VIOLATION2_  マクロが1の場合は，ベクトルの要素へアクセスする際に，範囲外かどうかを判定する
+//! - _CHECK_ACCESS_VIOLATION_   マクロが1の場合は，ベクトルの要素へアクセスする際に，範囲外かどうかを判定する
 //! 
 //! @param T         … 行列内に格納するデータ型
 //! @param Allocator … MISTコンテナが利用するアロケータ型．省略した場合は，STLのデフォルトアロケータを使用する

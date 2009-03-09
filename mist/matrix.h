@@ -187,8 +187,8 @@ namespace __numeric__
 
 /// @brief 行と列の要素数が可変の行列
 //! 
-//! - _CHECK_MATRIX_OPERATION_   マクロが1の場合は，行列演算の左辺と右辺で行列のサイズが適切であるかをチェックする
-//! - _CHECK_ACCESS_VIOLATION2_  マクロが1の場合は，行列の要素へアクセスする際に，範囲外かどうかを判定する
+//! - _CHECK_MATRIX_OPERATION_  マクロが1の場合は，行列演算の左辺と右辺で行列のサイズが適切であるかをチェックする
+//! - _CHECK_ACCESS_VIOLATION_  マクロが1の場合は，行列の要素へアクセスする際に，範囲外かどうかを判定する
 //! 
 //! @param T         … 行列内に格納するデータ型
 //! @param Allocator … MISTコンテナが利用するアロケータ型．省略した場合は，STLのデフォルトアロケータを使用する
@@ -1190,7 +1190,7 @@ public:
 	//! 
 	reference at( size_type r, size_type c )
 	{
-		_CHECK_ACCESS_VIOLATION2_( r, c )
+		_CHECK_ACCESS_VIOLATION2U_( r, c )
 		return( base::data_[ r + c * size1_ ] );
 	}
 
@@ -1205,7 +1205,7 @@ public:
 	//! 
 	const_reference at( size_type r, size_type c ) const
 	{
-		_CHECK_ACCESS_VIOLATION2_( r, c )
+		_CHECK_ACCESS_VIOLATION2U_( r, c )
 		return( base::data_[ r + c * size1_ ] );
 	}
 
@@ -1220,7 +1220,7 @@ public:
 	//! 
 	reference operator ()( size_type r, size_type c )
 	{
-		_CHECK_ACCESS_VIOLATION2_( r, c )
+		_CHECK_ACCESS_VIOLATION2U_( r, c )
 		return( base::data_[ r + c * size1_ ] );
 	}
 
@@ -1235,7 +1235,7 @@ public:
 	//! 
 	const_reference operator ()( size_type r, size_type c ) const
 	{
-		_CHECK_ACCESS_VIOLATION2_( r, c )
+		_CHECK_ACCESS_VIOLATION2U_( r, c )
 		return( base::data_[ r + c * size1_ ] );
 	}
 

@@ -543,7 +543,7 @@ public:
 	//!
 	reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
-		_CHECK_ACCESS_VIOLATION1_( index )
+		_CHECK_ACCESS_VIOLATION1U_( index )
 		return( data_[ index ] );
 	}
 
@@ -560,7 +560,7 @@ public:
 	//!
 	const_reference at( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
-		_CHECK_ACCESS_VIOLATION1_( index )
+		_CHECK_ACCESS_VIOLATION1U_( index )
 		return( data_[ index ] );
 	}
 
@@ -577,7 +577,7 @@ public:
 	//!
 	reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 )
 	{
-		_CHECK_ACCESS_VIOLATION1_( index )
+		_CHECK_ACCESS_VIOLATION1U_( index )
 		return( data_[ index ] );
 	}
 
@@ -594,7 +594,7 @@ public:
 	//!
 	const_reference operator ()( size_type index, size_type dmy1 = 0, size_type dmy2 = 0 ) const
 	{
-		_CHECK_ACCESS_VIOLATION1_( index )
+		_CHECK_ACCESS_VIOLATION1U_( index )
 		return( data_[ index ] );
 	}
 
@@ -609,7 +609,7 @@ public:
 	//!
 	reference operator []( size_type index )
 	{
-		_CHECK_ACCESS_VIOLATION1_( index )
+		_CHECK_ACCESS_VIOLATION1U_( index )
 		return( data_[ index ] );
 	}
 
@@ -624,7 +624,7 @@ public:
 	//!
 	const_reference operator []( size_type index ) const
 	{
-		_CHECK_ACCESS_VIOLATION1_( index )
+		_CHECK_ACCESS_VIOLATION1U_( index )
 		return( data_[ index ] );
 	}
 
@@ -1469,7 +1469,7 @@ public:
 	//!
 	reference at( size_type i, size_type j, size_type dmy = 0 )
 	{
-		_CHECK_ACCESS_VIOLATION2_( i, j )
+		_CHECK_ACCESS_VIOLATION2U_( i, j )
 		return( base::data_[ i + j * size1_ ] );
 	}
 
@@ -1486,7 +1486,7 @@ public:
 	//!
 	const_reference at( size_type i, size_type j, size_type dmy = 0 ) const
 	{
-		_CHECK_ACCESS_VIOLATION2_( i, j )
+		_CHECK_ACCESS_VIOLATION2U_( i, j )
 		return( base::data_[ i + j * size1_ ] );
 	}
 
@@ -1503,7 +1503,7 @@ public:
 	//!
 	reference operator ()( size_type i, size_type j, size_type dmy = 0 )
 	{
-		_CHECK_ACCESS_VIOLATION2_( i, j )
+		_CHECK_ACCESS_VIOLATION2U_( i, j )
 		return( base::data_[ i + j * size1_ ] );
 	}
 
@@ -1520,7 +1520,7 @@ public:
 	//!
 	const_reference operator ()( size_type i, size_type j, size_type dmy = 0 ) const
 	{
-		_CHECK_ACCESS_VIOLATION2_( i, j )
+		_CHECK_ACCESS_VIOLATION2U_( i, j )
 		return( base::data_[ i + j * size1_ ] );
 	}
 
@@ -2226,7 +2226,7 @@ public:
 	//!
 	reference at( size_type i, size_type j, size_type k )
 	{
-		_CHECK_ACCESS_VIOLATION3_( i, j, k )
+		_CHECK_ACCESS_VIOLATION3U_( i, j, k )
 		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
@@ -2243,7 +2243,7 @@ public:
 	//!
 	const_reference at( size_type i, size_type j, size_type k ) const
 	{
-		_CHECK_ACCESS_VIOLATION3_( i, j, k )
+		_CHECK_ACCESS_VIOLATION3U_( i, j, k )
 		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
@@ -2260,7 +2260,7 @@ public:
 	//!
 	reference operator ()( size_type i, size_type j, size_type k )
 	{
-		_CHECK_ACCESS_VIOLATION3_( i, j, k )
+		_CHECK_ACCESS_VIOLATION3U_( i, j, k )
 		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 
@@ -2277,7 +2277,7 @@ public:
 	//!
 	const_reference operator ()( size_type i, size_type j, size_type k ) const
 	{
-		_CHECK_ACCESS_VIOLATION3_( i, j, k )
+		_CHECK_ACCESS_VIOLATION3U_( i, j, k )
 		return( base::data_[ i + ( j + k * size2_ ) * size1_ ] );
 	}
 

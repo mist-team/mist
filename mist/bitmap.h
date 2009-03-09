@@ -376,7 +376,7 @@ public:
 	//!
 	reference operator []( size_type index )
 	{
-		_CHECK_ACCESS_VIOLATION1_( index )
+		_CHECK_ACCESS_VIOLATION1U_( index )
 		size_type j = index / size1_;
 		size_type i = index - j * size1_;
 		return( reinterpret_cast< reference >( base::data_[ i * pixel_bytes( ) + j * nbytes_ ] ) );
@@ -393,7 +393,7 @@ public:
 	//!
 	reference operator []( size_type index ) const
 	{
-		_CHECK_ACCESS_VIOLATION1_( index )
+		_CHECK_ACCESS_VIOLATION1U_( index )
 		size_type j = index / size1_;
 		size_type i = index - j * size1_;
 		return( reinterpret_cast< reference >( base::data_[ i * pixel_bytes( ) + j * nbytes_ ] ) );
@@ -412,7 +412,7 @@ public:
 	//!
 	reference at( size_type i, size_type j, size_type dmy = 0 )
 	{
-		_CHECK_ACCESS_VIOLATION2_( i, j )
+		_CHECK_ACCESS_VIOLATION2U_( i, j )
 		return( reinterpret_cast< reference >( base::data_[ i * pixel_bytes( ) + j * nbytes_ ] ) );
 	}
 
@@ -429,7 +429,7 @@ public:
 	//!
 	const_reference at( size_type i, size_type j, size_type dmy = 0 ) const
 	{
-		_CHECK_ACCESS_VIOLATION2_( i, j )
+		_CHECK_ACCESS_VIOLATION2U_( i, j )
 		return( reinterpret_cast< reference >( base::data_[ i * pixel_bytes( ) + j * nbytes_ ] ) );
 	}
 
@@ -446,7 +446,7 @@ public:
 	//!
 	reference operator ()( size_type i, size_type j, size_type dmy = 0 )
 	{
-		_CHECK_ACCESS_VIOLATION2_( i, j )
+		_CHECK_ACCESS_VIOLATION2U_( i, j )
 		return( reinterpret_cast< reference >( base::data_[ i * pixel_bytes( ) + j * nbytes_ ] ) );
 	}
 
@@ -463,7 +463,7 @@ public:
 	//!
 	const_reference operator ()( size_type i, size_type j, size_type dmy = 0 ) const
 	{
-		_CHECK_ACCESS_VIOLATION2_( i, j )
+		_CHECK_ACCESS_VIOLATION2U_( i, j )
 		return( reinterpret_cast< reference >( base::data_[ i * pixel_bytes( ) + j * nbytes_ ] ) );
 	}
 
