@@ -446,7 +446,7 @@ namespace __tga_controller__
 								unsigned char r = ( ( v & 0x7c00 ) >> 10 ) * 8;
 								unsigned char g = ( ( v & 0x03e0 ) >> 5 ) * 8;
 								unsigned char b = ( v & 0x001f ) * 8;
-								image( i, j ) = pixel_converter::convert_to( r, g, b, a * 255 );
+								image( i, j ) = pixel_converter::convert_to( r, g, b, static_cast< unsigned char >( a * 255 ) );
 							}
 							break;
 
@@ -491,7 +491,7 @@ namespace __tga_controller__
 							unsigned char r = ( ( pix & 0x7c00 ) >> 10 ) * 8;
 							unsigned char g = ( ( pix & 0x03e0 ) >> 5 ) * 8;
 							unsigned char b = ( pix & 0x001f ) * 8;
-							image( i, j ) = pixel_converter::convert_to( r, g, b, a * 255 );
+							image( i, j ) = pixel_converter::convert_to( r, g, b, static_cast< unsigned char >( a * 255 ) );
 						}
 						break;
 
