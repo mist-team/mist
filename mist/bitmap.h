@@ -76,7 +76,7 @@ struct bitmap_type< 8 >
 //! @param BITS      … ビットマップで利用する1画素あたりのビット数（24ビットと32ビットのみをサポート）
 //! @param Allocator … MISTコンテナが利用するアロケータ型．省略した場合は，STLのデフォルトアロケータを使用する
 //! 
-template < size_t BITS = 24, class Allocator = std::allocator< unsigned char > >
+template < size_t BITS, class Allocator = std::allocator< unsigned char > >
 class bitmap : public array< unsigned char, Allocator >
 {
 public:
