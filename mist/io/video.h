@@ -308,6 +308,19 @@ namespace video
 		virtual bool is_eof( ) const { return( is_eof_ ); }
 
 		/// @brief ストリームのフォーマットを標準出力にダンプする
+		virtual int codec_id( ) const
+		{
+			if( is_open( ) && video_stream_index_ >= 0 )
+			{
+				return( p_fctx_->streams[ video_stream_index_ ]->codec->codec_id );
+			}
+			else
+			{
+				return( CODEC_ID_NONE );
+			}
+		}
+
+		/// @brief ストリームのフォーマットを標準出力にダンプする
 		virtual bool dump( ) const
 		{
 			if( is_open( ) )
