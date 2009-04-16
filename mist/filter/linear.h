@@ -235,7 +235,7 @@ namespace __linear__
 	{
 		typedef typename Array1::size_type  size_type;
 		typedef typename Array1::difference_type  difference_type;
-		typedef __promote_pixel_converter_< typename Array1::value_type > promote_pixel_converter;
+		typedef __promote_pixel_converter_< typename Array2::value_type > promote_pixel_converter;
 		typedef typename promote_pixel_converter::promote_type promote_type;
 		typedef typename Array2::value_type    out_value_type;
 		typedef typename Array1::const_pointer ipointer_type;
