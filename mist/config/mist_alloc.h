@@ -531,7 +531,7 @@ public:
 	pointer trim_objects( pointer ptr, size_type num, size_type dest_num )
 	{
 		if( num < dest_num ) return( ptr );			// 開放しようとしている配列の要素数は，トリム後の配列サイズよりサイズよりも小さい例外
-		if( num < 0 ) return( NULL );				// トリム先の配列サイズが0より小さい例外
+		//if( num < 0 ) return( NULL );				// トリム先の配列サイズが0より小さい例外
 		if( num == dest_num ) return( ptr );		// トリムによる変更の必要なし
 		if( num == 0 ) return( NULL );
 
@@ -625,6 +625,10 @@ public:
 
 	/// @brief 他のアロケータを用いて初期化する
 	mist_allocator( const Allocator &alloc ) : base( alloc ), shared_pointer( NULL ), shared_memory( 0 ){}
+
+
+	/// @brief 他のアロケータを用いて初期化する
+	mist_allocator( const mist_allocator &alloc ) : base( alloc ), shared_pointer( NULL ), shared_memory( 0 ){}
 };
 
 
