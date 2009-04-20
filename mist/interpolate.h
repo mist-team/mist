@@ -1313,15 +1313,15 @@ namespace __cubic__
 	struct _cubic_< true >
 	{
 		template < class T, class Allocator >
-		static const typename T::rebind< double >::other interpolate( const array< T, Allocator > &in,
-																	  typename array< T, Allocator >::size_type i[4],
-																	  typename array< T, Allocator >::size_type j[4],
-																	  typename array< T, Allocator >::size_type k[4],
-																	  double x, double y, double z )
+		static const typename T::template rebind< double >::other interpolate( const array< T, Allocator > &in,
+																			   typename array< T, Allocator >::size_type i[4],
+																			   typename array< T, Allocator >::size_type j[4],
+																			   typename array< T, Allocator >::size_type k[4],
+																			   double x, double y, double z )
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
-			typedef typename T::rebind< double >::other ovalue_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 
 			double u0 = sinc2( 1 + x );
 			double u1 = sinc1( x );
@@ -1345,15 +1345,15 @@ namespace __cubic__
 		}
 
 		template < class T, class Allocator >
-		static const typename T::rebind< double >::other interpolate( const array2< T, Allocator > &in,
-																	  typename array2< T, Allocator >::size_type i[4],
-																	  typename array2< T, Allocator >::size_type j[4],
-																	  typename array2< T, Allocator >::size_type k[4],
-																	  double x, double y, double z )
+		static const typename T::template rebind< double >::other interpolate( const array2< T, Allocator > &in,
+																			   typename array2< T, Allocator >::size_type i[4],
+																			   typename array2< T, Allocator >::size_type j[4],
+																			   typename array2< T, Allocator >::size_type k[4],
+																			   double x, double y, double z )
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
-			typedef typename T::rebind< double >::other ovalue_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 
 			double u0 = sinc2( 1 + x );
 			double u1 = sinc1( x );
@@ -1391,15 +1391,15 @@ namespace __cubic__
 		}
 
 		template < class T, class Allocator >
-		static const typename T::rebind< double >::other interpolate( const array3< T, Allocator > &in,
-																	  typename array3< T, Allocator >::size_type i[4],
-																	  typename array3< T, Allocator >::size_type j[4],
-																	  typename array3< T, Allocator >::size_type k[4],
-																	  double x, double y, double z )
+		static const typename T::template rebind< double >::other interpolate( const array3< T, Allocator > &in,
+																			   typename array3< T, Allocator >::size_type i[4],
+																			   typename array3< T, Allocator >::size_type j[4],
+																			   typename array3< T, Allocator >::size_type k[4],
+																			   double x, double y, double z )
 		{
 			typedef typename array3< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
-			typedef typename T::rebind< double >::other ovalue_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 
 			double u0 = sinc2( 1 + x );
 			double u1 = sinc1( x );
