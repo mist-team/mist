@@ -83,6 +83,13 @@ public:
 	typedef T* pointer;						///< @brief データ型のポインター型．data の場合，data * となる
 	typedef const T* const_pointer;			///< @brief データ型の const ポインター型．data の場合，const data * となる
 
+	/// @brief データ型の変換を行う
+	template < class TT > 
+	struct rebind
+	{
+		typedef rgb< TT > other;
+	};
+
 public:
 	value_type r;		///< @brief 赤色成分
 	value_type g;		///< @brief 緑色成分
@@ -406,6 +413,13 @@ public:
 	typedef T value_type;					///< @brief 内部データ型．T と同じ
 	typedef T* pointer;						///< @brief データ型のポインター型．data の場合，data * となる
 	typedef const T* const_pointer;			///< @brief データ型の const ポインター型．data の場合，const data * となる
+
+	/// @brief データ型の変換を行う
+	template < class TT > 
+	struct rebind
+	{
+		typedef bgr< TT > other;
+	};
 
 public:
 	value_type b;		///< @brief 青色成分
@@ -731,6 +745,13 @@ public:
 	typedef typename base::pointer			pointer;				///< @brief データ型のポインター型．data の場合，data * となる
 	typedef typename base::const_pointer	const_pointer;			///< @brief データ型の const ポインター型．data の場合，const data * となる
 
+	/// @brief データ型の変換を行う
+	template < class TT > 
+	struct rebind
+	{
+		typedef rgba< TT > other;
+	};
+
 public:
 	value_type a;		///< @brief アルファ成分
 
@@ -1025,6 +1046,13 @@ public:
 	typedef typename base::value_type		value_type;				///< @brief 内部データ型．T と同じ
 	typedef typename base::pointer			pointer;				///< @brief データ型のポインター型．data の場合，data * となる
 	typedef typename base::const_pointer	const_pointer;			///< @brief データ型の const ポインター型．data の場合，const data * となる
+
+	/// @brief データ型の変換を行う
+	template < class TT > 
+	struct rebind
+	{
+		typedef bgra< TT > other;
+	};
 
 public:
 	value_type a;		///< @brief アルファ成分

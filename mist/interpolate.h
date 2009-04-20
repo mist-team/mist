@@ -73,6 +73,32 @@ namespace __interpolate_utility__
 			out.g = static_cast< T >( in.g );
 			out.b = static_cast< T >( in.b );
 		}
+
+		template < class T >
+		static void convert( const rgba< double > &in, rgba< T > &out )
+		{
+			out.r = static_cast< T >( in.r );
+			out.g = static_cast< T >( in.g );
+			out.b = static_cast< T >( in.b );
+			out.a = static_cast< T >( in.a );
+		}
+
+		template < class T >
+		static void convert( const bgr< double > &in, bgr< T > &out )
+		{
+			out.r = static_cast< T >( in.r );
+			out.g = static_cast< T >( in.g );
+			out.b = static_cast< T >( in.b );
+		}
+
+		template < class T >
+		static void convert( const bgra< double > &in, bgra< T > &out )
+		{
+			out.r = static_cast< T >( in.r );
+			out.g = static_cast< T >( in.g );
+			out.b = static_cast< T >( in.b );
+			out.a = static_cast< T >( in.a );
+		}
 	};
 
 	// êÆêîÇÃèÍçáÇÕéléÃå‹ì¸Ç∑ÇÈ
@@ -92,6 +118,32 @@ namespace __interpolate_utility__
 			out.g = static_cast< T >( in.g + 0.5 );
 			out.b = static_cast< T >( in.b + 0.5 );
 		}
+
+		template < class T >
+		static void convert( const rgba< double > &in, rgba< T > &out )
+		{
+			out.r = static_cast< T >( in.r + 0.5 );
+			out.g = static_cast< T >( in.g + 0.5 );
+			out.b = static_cast< T >( in.b + 0.5 );
+			out.a = static_cast< T >( in.a + 0.5 );
+		}
+
+		template < class T >
+		static void convert( const bgr< double > &in, bgr< T > &out )
+		{
+			out.r = static_cast< T >( in.r + 0.5 );
+			out.g = static_cast< T >( in.g + 0.5 );
+			out.b = static_cast< T >( in.b + 0.5 );
+		}
+
+		template < class T >
+		static void convert( const bgra< double > &in, bgra< T > &out )
+		{
+			out.r = static_cast< T >( in.r + 0.5 );
+			out.g = static_cast< T >( in.g + 0.5 );
+			out.b = static_cast< T >( in.b + 0.5 );
+			out.a = static_cast< T >( in.a + 0.5 );
+		}
 	};
 
 	template < class T >
@@ -102,6 +154,24 @@ namespace __interpolate_utility__
 
 	template < class T >
 	inline void round( const rgb< double > &in, rgb< T > &out )
+	{
+		_round_< is_integer< T >::value >::convert( in, out );
+	}
+
+	template < class T >
+	inline void round( const rgba< double > &in, rgba< T > &out )
+	{
+		_round_< is_integer< T >::value >::convert( in, out );
+	}
+
+	template < class T >
+	inline void round( const bgr< double > &in, bgr< T > &out )
+	{
+		_round_< is_integer< T >::value >::convert( in, out );
+	}
+
+	template < class T >
+	inline void round( const bgra< double > &in, bgra< T > &out )
 	{
 		_round_< is_integer< T >::value >::convert( in, out );
 	}
@@ -1243,14 +1313,15 @@ namespace __cubic__
 	struct _cubic_< true >
 	{
 		template < class T, class Allocator >
-		static const rgb< double >  interpolate( const array< T, Allocator > &in,
-												typename array< T, Allocator >::size_type i[4],
-												typename array< T, Allocator >::size_type j[4],
-												typename array< T, Allocator >::size_type k[4],
-												double x, double y, double z )
+		static const typename T::rebind< double >::other interpolate( const array< T, Allocator > &in,
+																	  typename array< T, Allocator >::size_type i[4],
+																	  typename array< T, Allocator >::size_type j[4],
+																	  typename array< T, Allocator >::size_type k[4],
+																	  double x, double y, double z )
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			typedef typename T::rebind< double >::other ovalue_type;
 
 			double u0 = sinc2( 1 + x );
 			double u1 = sinc1( x );
@@ -1270,18 +1341,19 @@ namespace __cubic__
 			b = b > min ? b : min;
 			b = b < max ? b : max;
 
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double >  interpolate( const array2< T, Allocator > &in,
-												typename array2< T, Allocator >::size_type i[4],
-												typename array2< T, Allocator >::size_type j[4],
-												typename array2< T, Allocator >::size_type k[4],
-												double x, double y, double z )
+		static const typename T::rebind< double >::other interpolate( const array2< T, Allocator > &in,
+																	  typename array2< T, Allocator >::size_type i[4],
+																	  typename array2< T, Allocator >::size_type j[4],
+																	  typename array2< T, Allocator >::size_type k[4],
+																	  double x, double y, double z )
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			typedef typename T::rebind< double >::other ovalue_type;
 
 			double u0 = sinc2( 1 + x );
 			double u1 = sinc1( x );
@@ -1315,18 +1387,19 @@ namespace __cubic__
 			b = b > min ? b : min;
 			b = b < max ? b : max;
 
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double >  interpolate( const array3< T, Allocator > &in,
-												typename array3< T, Allocator >::size_type i[4],
-												typename array3< T, Allocator >::size_type j[4],
-												typename array3< T, Allocator >::size_type k[4],
-												double x, double y, double z )
+		static const typename T::rebind< double >::other interpolate( const array3< T, Allocator > &in,
+																	  typename array3< T, Allocator >::size_type i[4],
+																	  typename array3< T, Allocator >::size_type j[4],
+																	  typename array3< T, Allocator >::size_type k[4],
+																	  double x, double y, double z )
 		{
 			typedef typename array3< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			typedef typename T::rebind< double >::other ovalue_type;
 
 			double u0 = sinc2( 1 + x );
 			double u1 = sinc1( x );
@@ -1404,7 +1477,7 @@ namespace __cubic__
 			b = b > min ? b : min;
 			b = b < max ? b : max;
 
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 	};
 
