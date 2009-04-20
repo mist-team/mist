@@ -75,12 +75,11 @@ namespace __interpolate_utility__
 		}
 
 		template < class T >
-		static void convert( const rgba< double > &in, rgba< T > &out )
+		static void convert( const rgb< double > &in, rgba< T > &out )
 		{
 			out.r = static_cast< T >( in.r );
 			out.g = static_cast< T >( in.g );
 			out.b = static_cast< T >( in.b );
-			out.a = static_cast< T >( in.a );
 		}
 
 		template < class T >
@@ -92,12 +91,11 @@ namespace __interpolate_utility__
 		}
 
 		template < class T >
-		static void convert( const bgra< double > &in, bgra< T > &out )
+		static void convert( const bgr< double > &in, bgra< T > &out )
 		{
 			out.r = static_cast< T >( in.r );
 			out.g = static_cast< T >( in.g );
 			out.b = static_cast< T >( in.b );
-			out.a = static_cast< T >( in.a );
 		}
 	};
 
@@ -120,12 +118,11 @@ namespace __interpolate_utility__
 		}
 
 		template < class T >
-		static void convert( const rgba< double > &in, rgba< T > &out )
+		static void convert( const rgb< double > &in, rgba< T > &out )
 		{
 			out.r = static_cast< T >( in.r + 0.5 );
 			out.g = static_cast< T >( in.g + 0.5 );
 			out.b = static_cast< T >( in.b + 0.5 );
-			out.a = static_cast< T >( in.a + 0.5 );
 		}
 
 		template < class T >
@@ -137,12 +134,11 @@ namespace __interpolate_utility__
 		}
 
 		template < class T >
-		static void convert( const bgra< double > &in, bgra< T > &out )
+		static void convert( const bgr< double > &in, bgra< T > &out )
 		{
 			out.r = static_cast< T >( in.r + 0.5 );
 			out.g = static_cast< T >( in.g + 0.5 );
 			out.b = static_cast< T >( in.b + 0.5 );
-			out.a = static_cast< T >( in.a + 0.5 );
 		}
 	};
 
@@ -159,7 +155,7 @@ namespace __interpolate_utility__
 	}
 
 	template < class T >
-	inline void round( const rgba< double > &in, rgba< T > &out )
+	inline void round( const rgb< double > &in, rgba< T > &out )
 	{
 		_round_< is_integer< T >::value >::convert( in, out );
 	}
@@ -171,7 +167,7 @@ namespace __interpolate_utility__
 	}
 
 	template < class T >
-	inline void round( const bgra< double > &in, bgra< T > &out )
+	inline void round( const bgr< double > &in, bgra< T > &out )
 	{
 		_round_< is_integer< T >::value >::convert( in, out );
 	}
@@ -485,7 +481,7 @@ namespace __mean__
 	struct _mean_< true >
 	{
 		template < class T, class Allocator >
-		static const rgb< double > mean___( const array< T, Allocator > &in,
+		static const typename T::template rebind< double >::other mean___( const array< T, Allocator > &in,
 												typename array< T, Allocator >::size_type i1,
 												typename array< T, Allocator >::size_type i2,
 												typename array< T, Allocator >::size_type j1,
@@ -502,6 +498,7 @@ namespace __mean__
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename array< T, Allocator >::size_type size_type;
 			typedef typename color::value_type value_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 			double r = 0.0;
 			double g = 0.0;
 			double b = 0.0;
@@ -570,11 +567,11 @@ namespace __mean__
 			b /= numPixels;
 			b = b > min ? b : min;
 			b = b < max ? b : max;
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double > mean___( const array2< T, Allocator > &in,
+		static const typename T::template rebind< double >::other mean___( const array2< T, Allocator > &in,
 												typename array2< T, Allocator >::size_type i1,
 												typename array2< T, Allocator >::size_type i2,
 												typename array2< T, Allocator >::size_type j1,
@@ -592,6 +589,7 @@ namespace __mean__
 			typedef typename array2< T, Allocator >::size_type     size_type;
 			typedef typename array2< T, Allocator >::const_pointer const_pointer;
 			typedef typename color::value_type value_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 			double r = 0.0;
 			double g = 0.0;
 			double b = 0.0;
@@ -720,11 +718,11 @@ namespace __mean__
 			b /= numPixels;
 			b = b > min ? b : min;
 			b = b < max ? b : max;
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double > mean___( const array3< T, Allocator > &in,
+		static const typename T::template rebind< double >::other mean___( const array3< T, Allocator > &in,
 												typename array3< T, Allocator >::size_type i1,
 												typename array3< T, Allocator >::size_type i2,
 												typename array3< T, Allocator >::size_type j1,
@@ -742,6 +740,7 @@ namespace __mean__
 			typedef typename array3< T, Allocator >::size_type     size_type;
 			typedef typename array3< T, Allocator >::const_pointer const_pointer;
 			typedef typename color::value_type value_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 			double r = 0.0;
 			double g = 0.0;
 			double b = 0.0;
@@ -856,7 +855,7 @@ namespace __mean__
 			b /= numPixels;
 			b = b > min ? b : min;
 			b = b < max ? b : max;
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 	};
 
@@ -1062,7 +1061,7 @@ namespace __linear__
 	struct _linear_< true >
 	{
 		template < class T, class Allocator >
-		static const rgb< double > interpolate( const array< T, Allocator > &in,
+		static const typename T::template rebind< double >::other interpolate( const array< T, Allocator > &in,
 												typename array< T, Allocator >::size_type i1,
 												typename array< T, Allocator >::size_type i2,
 												typename array< T, Allocator >::size_type j1,
@@ -1073,6 +1072,7 @@ namespace __linear__
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double r = in[ i1 ].r * ( 1.0 - x ) + in[ i2 ].r * x;
@@ -1084,11 +1084,11 @@ namespace __linear__
 			g = g < max ? g : max;
 			b = b > min ? b : min;
 			b = b < max ? b : max;
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double > interpolate( const array2< T, Allocator > &in,
+		static const typename T::template rebind< double >::other interpolate( const array2< T, Allocator > &in,
 												typename array2< T, Allocator >::size_type i1,
 												typename array2< T, Allocator >::size_type i2,
 												typename array2< T, Allocator >::size_type j1,
@@ -1099,6 +1099,7 @@ namespace __linear__
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double r = ( in( i1, j1 ).r * ( 1.0 - x ) + in( i2, j1 ).r * x ) * ( 1.0 - y ) + ( in( i1, j2 ).r * ( 1.0 - x ) + in( i2, j2 ).r * x ) * y;
@@ -1110,11 +1111,11 @@ namespace __linear__
 			g = g < max ? g : max;
 			b = b > min ? b : min;
 			b = b < max ? b : max;
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double > interpolate( const array3< T, Allocator > &in,
+		static const typename T::template rebind< double >::other interpolate( const array3< T, Allocator > &in,
 												typename array3< T, Allocator >::size_type i1,
 												typename array3< T, Allocator >::size_type i2,
 												typename array3< T, Allocator >::size_type j1,
@@ -1125,6 +1126,7 @@ namespace __linear__
 		{
 			typedef typename array3< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
 			double r = ( ( in( i1, j1, k1 ).r * ( 1.0 - x ) + in( i2, j1, k1 ).r * x ) * ( 1.0 - y ) + ( in( i1, j2, k1 ).r * ( 1.0 - x ) + in( i2, j2, k1 ).r * x ) * y ) * ( 1.0 - z )
@@ -1139,7 +1141,7 @@ namespace __linear__
 			g = g < max ? g : max;
 			b = b > min ? b : min;
 			b = b < max ? b : max;
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 	};
 
@@ -1662,7 +1664,7 @@ namespace __bspline__
 	struct _bspline_< true >
 	{
 		template < class T, class Allocator >
-		static const rgb< double >  interpolate( const array< T, Allocator > &in,
+		static const typename T::template rebind< double >::other interpolate( const array< T, Allocator > &in,
 												typename array< T, Allocator >::size_type i[4],
 												typename array< T, Allocator >::size_type j[4],
 												typename array< T, Allocator >::size_type k[4],
@@ -1670,6 +1672,7 @@ namespace __bspline__
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 
 			double u0 = bspline2( 1 + x );
 			double u1 = bspline1( x );
@@ -1689,11 +1692,11 @@ namespace __bspline__
 			b = b > min ? b : min;
 			b = b < max ? b : max;
 
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double >  interpolate( const array2< T, Allocator > &in,
+		static const typename T::template rebind< double >::other interpolate( const array2< T, Allocator > &in,
 												typename array2< T, Allocator >::size_type i[4],
 												typename array2< T, Allocator >::size_type j[4],
 												typename array2< T, Allocator >::size_type k[4],
@@ -1701,6 +1704,7 @@ namespace __bspline__
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 
 			double u0 = bspline2( 1 + x );
 			double u1 = bspline1( x );
@@ -1734,11 +1738,11 @@ namespace __bspline__
 			b = b > min ? b : min;
 			b = b < max ? b : max;
 
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 
 		template < class T, class Allocator >
-		static const rgb< double >  interpolate( const array3< T, Allocator > &in,
+		static const typename T::template rebind< double >::other interpolate( const array3< T, Allocator > &in,
 												typename array3< T, Allocator >::size_type i[4],
 												typename array3< T, Allocator >::size_type j[4],
 												typename array3< T, Allocator >::size_type k[4],
@@ -1746,6 +1750,7 @@ namespace __bspline__
 		{
 			typedef typename array3< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
+			typedef typename T::template rebind< double >::other ovalue_type;
 
 			double u0 = bspline2( 1 + x );
 			double u1 = bspline1( x );
@@ -1823,7 +1828,7 @@ namespace __bspline__
 			b = b > min ? b : min;
 			b = b < max ? b : max;
 
-			return( rgb< double >( r, g, b ) );
+			return( ovalue_type( r, g, b ) );
 		}
 	};
 
@@ -2094,7 +2099,7 @@ namespace __sinc__
 	struct _sinc_< true >
 	{
 		template < class T, class Allocator >
-		static rgb< double > interpolate( const array< T, Allocator > &in,
+		static typename T::template rebind< double >::other interpolate( const array< T, Allocator > &in,
 								typename array< T, Allocator >::difference_type ix,
 								typename array< T, Allocator >::difference_type iy,
 								typename array< T, Allocator >::difference_type iz,
@@ -2104,7 +2109,7 @@ namespace __sinc__
 		}
 
 		template < class T, class Allocator >
-		static rgb< double > interpolate( const array2< T, Allocator > &in,
+		static typename T::template rebind< double >::other interpolate( const array2< T, Allocator > &in,
 								typename array2< T, Allocator >::difference_type ix,
 								typename array2< T, Allocator >::difference_type iy,
 								typename array2< T, Allocator >::difference_type iz,
@@ -2114,7 +2119,7 @@ namespace __sinc__
 		}
 
 		template < class T, class Allocator >
-		static rgb< double > interpolate( const array3< T, Allocator > &in,
+		static typename T::template rebind< double >::other interpolate( const array3< T, Allocator > &in,
 								typename array3< T, Allocator >::difference_type ix,
 								typename array3< T, Allocator >::difference_type iy,
 								typename array3< T, Allocator >::difference_type iz,
