@@ -1188,10 +1188,35 @@ namespace dicom
 
 	inline bool can_convert_to_number( const std::string &str )
 	{
-		for( size_t i = 0 ; i < str.size( ) ; i++ )
+		size_t i = 0;
+		for( i = 0 ; i < str.size( ) ; i++ )
 		{
 			std::string::value_type ch = str[ i ];
-			if( !( ( '0' <= ch && ch <= '9' ) || ( '+' <= ch && ch <= '.' ) ) )
+			if( ( '0' <= ch && ch <= '9' ) || ( '+' <= ch && ch <= '.' ) )
+			{
+				break;
+			}
+			else if( ch != ' ' )
+			{
+				return( false );
+			}
+		}
+		for( ; i < str.size( ) ; i++ )
+		{
+			std::string::value_type ch = str[ i ];
+			if( ch == ' ' )
+			{
+				break;
+			}
+			else if( !( ( '0' <= ch && ch <= '9' ) || ( '+' <= ch && ch <= '.' ) ) )
+			{
+				return( false );
+			}
+		}
+		for( ; i < str.size( ) ; i++ )
+		{
+			std::string::value_type ch = str[ i ];
+			if( ch != ' ' )
 			{
 				return( false );
 			}
