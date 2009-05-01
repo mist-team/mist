@@ -498,10 +498,10 @@ namespace video
 
 				// フレームを管理するオブジェクトを作成する
 				p_frame_src_ = avcodec_alloc_frame( );
-				p_frame_rgb_ = allocate_frame( p_cctx->width, p_cctx->height, PIX_FMT_RGB32 );
+				p_frame_rgb_ = allocate_frame( p_cctx->width, p_cctx->height, PIX_FMT_BGR24 );
 
 				// 画像の変換用のフィルタを設定する
-				p_swscale_ = sws_getContext( p_cctx->width, p_cctx->height, p_cctx->pix_fmt, p_cctx->width, p_cctx->height, PIX_FMT_RGB32, SWS_FAST_BILINEAR, NULL, NULL, NULL);
+				p_swscale_ = sws_getContext( p_cctx->width, p_cctx->height, p_cctx->pix_fmt, p_cctx->width, p_cctx->height, PIX_FMT_BGR24, SWS_FAST_BILINEAR, NULL, NULL, NULL);
 
 				// ファイルのオープンに成功したフラグを設定する
 				is_open_ = true;
@@ -598,10 +598,27 @@ namespace video
 				image.resize( p_cctx->width, p_cctx->height );
 
 				unsigned char *p = p_frame_rgb_->data[ 0 ];
-				for( size_type i = 0 ; i < image.size( ) ; i ++ )
+
+				if( ( image.width( ) % 2 ) == 0 )
 				{
-					image[ i ] = pixel_converter::convert_to( p[ 2 ], p[ 1 ], p[ 0 ] );
-					p += 4;
+					for( size_type i = 0 ; i < image.size( ) ; i++ )
+					{
+						image[ i ] = pixel_converter::convert_to( p[ 2 ], p[ 1 ], p[ 0 ] );
+						p += 3;
+					}
+				}
+				else
+				{
+					typename array2< T, Allocator >::pointer pi = &image[ 0 ];
+					size_type stride = p_frame_rgb_->linesize[ 0 ];
+					for( size_type j = 0 ; j < image.height( ) ; j++ )
+					{
+						for( size_type i = 0 ; i < stride ; i += 3 )
+						{
+							*pi++ = pixel_converter::convert_to( p[ i + 2 ], p[ i + 1 ], p[ i ] );
+						}
+						p += stride;
+					}
 				}
 
 				return( true );
@@ -1202,7 +1219,7 @@ namespace video
 					encode_buf_ = ( uint8_t * )av_malloc( encode_buf_size_ );
 				}
 
-				PixelFormat pix_fmt = vstream == NULL ? PIX_FMT_RGB32 : vstream->codec->pix_fmt;
+				PixelFormat pix_fmt = vstream == NULL ? PIX_FMT_BGR24 : vstream->codec->pix_fmt;
 
 				// エンコード用のフレームバッファを用意する
 				p_frame_dst_ = allocate_frame( width( ), height( ), pix_fmt );
@@ -1213,7 +1230,7 @@ namespace video
 				}
 
 				// 一時領域用のフレームバッファを用意する
-				p_frame_rgb_ = allocate_frame( width( ), height( ), PIX_FMT_RGB32 );
+				p_frame_rgb_ = allocate_frame( width( ), height( ), PIX_FMT_BGR24 );
 				if( p_frame_dst_ == NULL )
 				{
 					std::cerr << "Could not allocate temporal frame buffer." << std::endl;
@@ -1223,7 +1240,7 @@ namespace video
 				// 画像の変換用のフィルタを設定する
 				source_width_  = width( );
 				source_height_ = height( );
-				p_swscale_ = sws_getContext( source_width_, source_height_, PIX_FMT_RGB32, width( ), height( ), pix_fmt, SWS_LANCZOS, NULL, NULL, NULL);
+				p_swscale_ = sws_getContext( source_width_, source_height_, PIX_FMT_BGR24, width( ), height( ), pix_fmt, SWS_LANCZOS, NULL, NULL, NULL);
 
 				is_open_   = true;
 				frame_pts_ = 0;
@@ -1261,34 +1278,53 @@ namespace video
 						free_frame( &p_frame_rgb_ );
 					}
 
-					PixelFormat pix_fmt = p_fctx_->streams[ 0 ] == NULL ? PIX_FMT_RGB32 : p_fctx_->streams[ 0 ]->codec->pix_fmt;
+					PixelFormat pix_fmt = p_fctx_->streams[ 0 ] == NULL ? PIX_FMT_BGR24 : p_fctx_->streams[ 0 ]->codec->pix_fmt;
 
 					if( source_width_ < image.width( ) )
 					{
-						p_swscale_ = sws_getContext( image.width( ), image.height( ), PIX_FMT_RGB32, width( ), height( ), pix_fmt, SWS_AREA, NULL, NULL, NULL);
+						p_swscale_ = sws_getContext( image.width( ), image.height( ), PIX_FMT_BGR24, width( ), height( ), pix_fmt, SWS_AREA, NULL, NULL, NULL);
 					}
 					else
 					{
-						p_swscale_ = sws_getContext( image.width( ), image.height( ), PIX_FMT_RGB32, width( ), height( ), pix_fmt, SWS_LANCZOS, NULL, NULL, NULL);
+						p_swscale_ = sws_getContext( image.width( ), image.height( ), PIX_FMT_BGR24, width( ), height( ), pix_fmt, SWS_LANCZOS, NULL, NULL, NULL);
 					}
 
 					source_width_  = image.width( );
 					source_height_ = image.height( );
-					p_frame_rgb_ = allocate_frame( source_width_, source_height_, PIX_FMT_RGB32 );
+					p_frame_rgb_ = allocate_frame( source_width_, source_height_, PIX_FMT_BGR24 );
 				}
 
 				typedef _pixel_converter_< T > pixel_converter;
 				typedef typename pixel_converter::color_type color_type;
 
 				unsigned char *p = p_frame_rgb_->data[ 0 ];
-				for( size_type i = 0 ; i < image.size( ) ; i++ )
+				if( ( source_width_ % 2 ) == 0 )
 				{
-					color_type c = pixel_converter::convert_from( image[ i ] );
-					p[ 0 ] = c.b;
-					p[ 1 ] = c.g;
-					p[ 2 ] = c.r;
-					p[ 3 ] = 255;
-					p += 4;
+					for( size_type i = 0 ; i < image.size( ) ; i++ )
+					{
+						color_type c = pixel_converter::convert_from( image[ i ] );
+						p[ 0 ] = c.b;
+						p[ 1 ] = c.g;
+						p[ 2 ] = c.r;
+						p += 3;
+					}
+				}
+				else
+				{
+					typename array2< T, Allocator >::const_pointer pi = &image[ 0 ];
+					size_type stride = p_frame_rgb_->linesize[ 0 ];
+					for( size_type j = 0 ; j < image.height( ) ; j++ )
+					{
+						for( size_type i = 0 ; i < stride ; i += 3 )
+						{
+							color_type c = pixel_converter::convert_from( *pi++ );
+							p[ i + 0 ] = c.b;
+							p[ i + 1 ] = c.g;
+							p[ i + 2 ] = c.r;
+						}
+
+						p += stride;
+					}
 				}
 
 				// 画像の形式を変換する
