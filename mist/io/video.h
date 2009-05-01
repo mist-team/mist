@@ -861,8 +861,8 @@ namespace video
 		int64_t			 frame_pts_;				///< @brief ビデオストリーム中での現在のフレーム位置を保持する変数
 
 		bool			is_open_;				///< @brief ビデオが開いているかどうかのフラグ
-		size_type		encode_buf_size_;		///< @brief エンコードバッファのサイズ
 		uint8_t*		encode_buf_;			///< @brief エンコードバッファ
+		size_type		encode_buf_size_;		///< @brief エンコードバッファのサイズ
 		size_type		width_;					///< @brief フレーム画像の幅
 		size_type		height_;				///< @brief フレーム画像の高さ
 		size_type		source_width_;			///< @brief 内部で使用する変数
