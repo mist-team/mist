@@ -161,7 +161,6 @@ namespace video
 		}
 
 	protected:
-		#pragma region 内部ユーティリティー関数
 		AVOutputFormat *guess_video_format( const std::string &filename, const std::string &video_type, const std::string &mime_type )
 		{
 			AVOutputFormat *fmt = NULL;
@@ -241,7 +240,6 @@ namespace video
 				*frame = NULL;
 			}
 		}
-		#pragma endregion
 	};
 
 	/// @brief ビデオ入力クラス
@@ -805,7 +803,6 @@ namespace video
 		size_type		audio_channels_;		///< @brief 音声のチャンネル数
 
 	public:
-		#pragma region コンストラクタ関連
 		/// @brief コンストラクタ
 		//! 
 		//! @param[in] w                   … 320（デフォルト値）
@@ -842,10 +839,8 @@ namespace video
 		{
 			close( );
 		}
-		#pragma endregion
 
 	public:
-		#pragma region ビデオの状態を取得する関数群
 		/// @brief ビデオストリームが開いているかどうかを返す
 		virtual bool is_open( ) const { return( is_open_ ); }
 
@@ -934,10 +929,8 @@ namespace video
 		{
 			return( frame_rate_den_ );
 		}
-		#pragma endregion
 
 	public:
-		#pragma region ビデオストリーム操作関連
 		virtual bool open( const std::string &filename )
 		{
 			return( open( filename, filename, "", "" ) );
@@ -1027,7 +1020,6 @@ namespace video
 				return( false );
 			}
 		}
-		#pragma endregion
 
 	protected:
 		/// @brief AVOutputFormat 情報を用いて出力用ビデオストリームを開く
@@ -1260,7 +1252,6 @@ namespace video
 		}
 
 	public:
-		#pragma region フレームの書き出し
 		/// @brief array2形式の画像をフレームバッファに書き込み，エンコードしてストリームに出力する
 		//! 
 		//! @param[in] image … ビデオストリームにエンコードする画像
@@ -1397,7 +1388,6 @@ namespace video
 				return( false );
 			}
 		}
-		#pragma endregion
 	};
 
 	namespace mpeg1
