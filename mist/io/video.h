@@ -357,7 +357,8 @@ namespace video
 			if( is_open( ) )
 			{
 				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
-				int64_t pts = av_rescale( frame_pts_, stream->time_base.den, stream->time_base.num * AV_TIME_BASE );
+				//int64_t pts = av_rescale( frame_pts_, stream->time_base.den, stream->time_base.num * AV_TIME_BASE );
+				int64_t pts = av_rescale( frame_pts_, stream->time_base.den, stream->time_base.num, AV_TIME_BASE );
 				return( static_cast< difference_type >( pts ) );
 			}
 			else
@@ -373,7 +374,7 @@ namespace video
 			{
 				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
 				int64_t pts = p_fctx_->streams[ video_stream_index_ ]->duration * AV_TIME_BASE;
-				return( static_cast< long double >( av_rescale( pts, stream->time_base.num, stream->time_base.den ) ) / static_cast< long double >( AV_TIME_BASE ) );
+				return( static_cast< long double >( av_rescale( pts, stream->time_base.num, stream->time_base.den, AV_TIME_BASE ) ) );
 			}
 			else
 			{
@@ -605,7 +606,7 @@ namespace video
 			{
 				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
 				int64_t tgt = static_cast< int64_t >( AV_TIME_BASE * tm );
-				int64_t pts = av_rescale( tgt, stream->time_base.den, AV_TIME_BASE * stream->time_base.num );
+				int64_t pts = av_rescale( tgt, stream->time_base.den, stream->time_base.num, AV_TIME_BASE );
 
 				if( av_seek_frame( p_fctx_, video_stream_index_, pts, AVSEEK_FLAG_BACKWARD ) >= 0 )
 				{
@@ -740,7 +741,7 @@ namespace video
 							// 動画ストリームを探す
 							if( packet.stream_index == video_stream_index_ )
 							{
-								frame_pts_ = static_cast< difference_type >( av_rescale( packet.pts, AV_TIME_BASE * ( int64_t ) stream->time_base.num, stream->time_base.den ) );
+								frame_pts_ = static_cast< difference_type >( av_rescale( AV_TIME_BASE * packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
 
 								if( !is_eof( ) )
 								{
@@ -780,7 +781,7 @@ namespace video
 							// 動画ストリームを探す
 							if( packet.stream_index == video_stream_index_ )
 							{
-								frame_pts_ = static_cast< difference_type >( av_rescale( packet.pts, AV_TIME_BASE * ( int64_t ) stream->time_base.num, stream->time_base.den ) );
+								frame_pts_ = static_cast< difference_type >( av_rescale( AV_TIME_BASE * packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
 
 								if( !is_eof( ) )
 								{
@@ -807,6 +808,26 @@ namespace video
 			{
 				return( false );
 			}
+		}
+
+		int64_t av_rescale( int64_t a, int64_t b, int64_t c ) const
+		{
+			long double A = static_cast< long double >( a );
+			long double B = static_cast< long double >( b );
+			long double C = static_cast< long double >( c );
+			long double D = A * ( B / C );
+			return( static_cast< int64_t >( D + 0.5 ) );
+		}
+
+		int64_t av_rescale( int64_t a, int64_t b, int64_t c, int64_t d ) const
+		{
+			long double A = static_cast< long double >( a );
+			long double B = static_cast< long double >( b );
+			long double C = static_cast< long double >( c );
+			long double D = static_cast< long double >( d );
+			long double BC = B / C;
+			long double AD = A / D;
+			return( static_cast< int64_t >( AD * BC + 0.5 ) );
 		}
 
 	public:	// オペレータの実装
