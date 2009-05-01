@@ -55,14 +55,14 @@
 
 extern "C"
 {
-#if 0
-	#include <ffmpeg/avcodec.h>
-	#include <ffmpeg/avformat.h>
-	#include <ffmpeg/swscale.h>
-#else
+#ifdef __MIST_WINDOWS__
 	#include <libavcodec/avcodec.h>
 	#include <libavformat/avformat.h>
 	#include <libswscale/swscale.h>
+#else
+	#include <ffmpeg/avcodec.h>
+	#include <ffmpeg/avformat.h>
+	#include <ffmpeg/swscale.h>
 #endif
 }
 
@@ -150,6 +150,12 @@ namespace video
 
 		/// @brief フレームレートを返す
 		virtual long double frame_rate( ) const
+		{
+			return( frame_rate_denominator( ) / frame_rate_numerator( ) );
+		}
+
+		/// @brief 1フレームあたりの時間を返す
+		virtual long double seconds_per_frame( ) const
 		{
 			return( frame_rate_numerator( ) / frame_rate_denominator( ) );
 		}
@@ -339,7 +345,7 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( frame_pts_ * frame_rate( ) );
+				return( frame_pts_ * seconds_per_frame( ) );
 			}
 			else
 			{
@@ -352,7 +358,7 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< long double >( p_fctx_->streams[ video_stream_index_ ]->duration ) * frame_rate( ) );
+				return( static_cast< long double >( p_fctx_->streams[ video_stream_index_ ]->duration ) * seconds_per_frame( ) );
 			}
 			else
 			{
@@ -740,7 +746,7 @@ namespace video
 		/// @brief 一つ前のフレームへ戻る
 		decoder & operator --( )
 		{
-			this->seek( this->time( ) - this->frame_rate( ) );
+			this->seek( this->time( ) - this->seconds_per_frame( ) );
 			return( *this );
 		}
 
@@ -865,7 +871,7 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< long double >( frame_pts_ ) * frame_rate( ) );
+				return( static_cast< long double >( frame_pts_ ) * seconds_per_frame( ) );
 			}
 			else
 			{
@@ -878,7 +884,7 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< long double >( frame_pts_ ) * frame_rate( ) );
+				return( static_cast< long double >( frame_pts_ ) * seconds_per_frame( ) );
 			}
 			else
 			{
