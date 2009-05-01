@@ -256,7 +256,7 @@ namespace video
 		bool			is_eof_;				///< @brief ビデオが開いているかどうかのフラグ
 		int				video_stream_index_;	///< @brief ビデオを指すストリーム番号
 		SwsContext		*p_swscale_;			///< @brief デコード後のフレームをRGBのフレームに変換するフィルタを指すポインタ
-		difference_type frame_pts_;				///< @brief ビデオストリーム中での現在のフレーム位置を保持する変数
+		int64_t			frame_pts_;				///< @brief ビデオストリーム中での現在のフレーム位置を保持する変数
 
 	public:
 		/// @brief コンストラクタ
@@ -343,11 +343,26 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( frame_pts_ * seconds_per_frame( ) );
+				return( static_cast< long double >( frame_pts_ ) / static_cast< long double >( AV_TIME_BASE ) );
 			}
 			else
 			{
 				return( -1.0 );
+			}
+		}
+
+		/// @brief 現在のビデオストリーム上での再生位置を表す秒数
+		virtual difference_type frame_id( ) const
+		{
+			if( is_open( ) )
+			{
+				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
+				int64_t pts = av_rescale( frame_pts_, stream->time_base.den, stream->time_base.num * AV_TIME_BASE );
+				return( static_cast< difference_type >( pts ) );
+			}
+			else
+			{
+				return( 0 );
 			}
 		}
 
@@ -356,11 +371,26 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< long double >( p_fctx_->streams[ video_stream_index_ ]->duration ) * seconds_per_frame( ) );
+				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
+				int64_t pts = p_fctx_->streams[ video_stream_index_ ]->duration * AV_TIME_BASE;
+				return( static_cast< long double >( av_rescale( pts, stream->time_base.num, stream->time_base.den ) ) / static_cast< long double >( AV_TIME_BASE ) );
 			}
 			else
 			{
 				return( -1 );
+			}
+		}
+
+		/// @brief 総フレーム数を得る
+		virtual difference_type number_of_frames( ) const
+		{
+			if( is_open( ) )
+			{
+				return( static_cast< difference_type >( p_fctx_->streams[ video_stream_index_ ]->duration ) );
+			}
+			else
+			{
+				return( 0 );
 			}
 		}
 
@@ -574,10 +604,12 @@ namespace video
 			if( is_open( ) && tm >= 0 )
 			{
 				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
-				int64_t pts = static_cast< int64_t >( tm * frame_rate_denominator( ) / frame_rate_numerator( ) + 0.5 );
+				int64_t tgt = static_cast< int64_t >( AV_TIME_BASE * tm );
+				int64_t pts = av_rescale( tgt, stream->time_base.den, AV_TIME_BASE * stream->time_base.num );
+
 				if( av_seek_frame( p_fctx_, video_stream_index_, pts, AVSEEK_FLAG_BACKWARD ) >= 0 )
 				{
-					return( decode( 1 ) );
+					return( decode( -1, tgt ) );
 				}
 			}
 
@@ -683,49 +715,93 @@ namespace video
 		//!
 		bool decode( difference_type ntimes = 1, int64_t pts = type_limits< int64_t >::maximum( ) )
 		{
-			if( is_open( ) && !this->is_eof( ) && ntimes >= 0 && pts >= 0 )
+			if( is_open( ) && !this->is_eof( ) && pts >= 0 )
 			{
-				if( ntimes == 0 )
+				if( ntimes >= 0 )
 				{
-					return( true );
-				}
-
-				AVPacket packet;
-				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
-				AVCodecContext *p_cctx = stream->codec;
-				int bFinished = 0;
-
-				for( difference_type i = 1 ; !is_eof( ) && i <= ntimes && frame_pts_ < pts ; i++ )
-				{
-					bFinished = 0;
-					while( bFinished == 0 && !is_eof( ) )
+					if( ntimes == 0 )
 					{
-						is_eof_ = av_read_frame( p_fctx_, &packet ) < 0;
-
-						// 動画ストリームを探す
-						if( packet.stream_index == video_stream_index_ )
-						{
-							frame_pts_ = static_cast< difference_type >( packet.pts );
-
-							if( !is_eof( ) )
-							{
-								// パケットをでコードする
-								avcodec_get_frame_defaults( p_frame_src_ );
-								avcodec_decode_video( p_cctx, p_frame_src_, &bFinished, packet.data, packet.size );
-							}
-						}
-
-						if( bFinished != 0 && ( i == ntimes || frame_pts_ >= pts ) )
-						{
-							// 一時バッファにデータをコピーする
-							sws_scale( p_swscale_, p_frame_src_->data, p_frame_src_->linesize, 0, p_cctx->height, p_frame_rgb_->data, p_frame_rgb_->linesize );
-						}
-
-						av_free_packet( &packet );
+						return( true );
 					}
-				}
 
-				return( bFinished != 0 );
+					AVPacket packet;
+					AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
+					AVCodecContext *p_cctx = stream->codec;
+					int bFinished = 0;
+
+					frame_pts_ = pts - 1;
+					for( difference_type i = 1 ; !is_eof( ) && i <= ntimes && frame_pts_ < pts ; i++ )
+					{
+						bFinished = 0;
+						while( bFinished == 0 && !is_eof( ) )
+						{
+							is_eof_ = av_read_frame( p_fctx_, &packet ) < 0;
+
+							// 動画ストリームを探す
+							if( packet.stream_index == video_stream_index_ )
+							{
+								frame_pts_ = static_cast< difference_type >( av_rescale( packet.pts, AV_TIME_BASE * ( int64_t ) stream->time_base.num, stream->time_base.den ) );
+
+								if( !is_eof( ) )
+								{
+									// パケットをでコードする
+									avcodec_get_frame_defaults( p_frame_src_ );
+									avcodec_decode_video( p_cctx, p_frame_src_, &bFinished, packet.data, packet.size );
+								}
+							}
+
+							if( bFinished != 0 && ( i == ntimes || frame_pts_ >= pts ) )
+							{
+								// 一時バッファにデータをコピーする
+								sws_scale( p_swscale_, p_frame_src_->data, p_frame_src_->linesize, 0, p_cctx->height, p_frame_rgb_->data, p_frame_rgb_->linesize );
+							}
+
+							av_free_packet( &packet );
+						}
+					}
+
+					return( bFinished != 0 );
+				}
+				else
+				{
+					AVPacket packet;
+					AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
+					AVCodecContext *p_cctx = stream->codec;
+					int bFinished = 0;
+
+					frame_pts_ = pts - 1;
+					for( difference_type i = 1 ; !is_eof( ) && frame_pts_ < pts ; i++ )
+					{
+						bFinished = 0;
+						while( bFinished == 0 && !is_eof( ) )
+						{
+							is_eof_ = av_read_frame( p_fctx_, &packet ) < 0;
+
+							// 動画ストリームを探す
+							if( packet.stream_index == video_stream_index_ )
+							{
+								frame_pts_ = static_cast< difference_type >( av_rescale( packet.pts, AV_TIME_BASE * ( int64_t ) stream->time_base.num, stream->time_base.den ) );
+
+								if( !is_eof( ) )
+								{
+									// パケットをでコードする
+									avcodec_get_frame_defaults( p_frame_src_ );
+									avcodec_decode_video( p_cctx, p_frame_src_, &bFinished, packet.data, packet.size );
+								}
+							}
+
+							if( bFinished != 0 && frame_pts_ >= pts )
+							{
+								// 一時バッファにデータをコピーする
+								sws_scale( p_swscale_, p_frame_src_->data, p_frame_src_->linesize, 0, p_cctx->height, p_frame_rgb_->data, p_frame_rgb_->linesize );
+							}
+
+							av_free_packet( &packet );
+						}
+					}
+
+					return( bFinished != 0 );
+				}
 			}
 			else
 			{
@@ -782,7 +858,7 @@ namespace video
 		AVFrame			*p_frame_dst_;			///< @brief 書き出されるフレーム画像バッファ
 		AVFrame			*p_frame_rgb_;			///< @brief RGBフォーマットのフレーム画像バッファ(array2形式の画像を得るための中間データ)
 		SwsContext		*p_swscale_;			///< @brief デコード後のフレームをRGBのフレームに変換するフィルタを指すポインタ
-		difference_type frame_pts_;				///< @brief ビデオストリーム中での現在のフレーム位置を保持する変数
+		int64_t			 frame_pts_;				///< @brief ビデオストリーム中での現在のフレーム位置を保持する変数
 
 		bool			is_open_;				///< @brief ビデオが開いているかどうかのフラグ
 		size_type		encode_buf_size_;		///< @brief エンコードバッファのサイズ
@@ -866,7 +942,9 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< long double >( frame_pts_ ) * seconds_per_frame( ) );
+				AVStream *stream = p_fctx_->streams[ 0 ];
+				int64_t pts = av_rescale( frame_pts_ * AV_TIME_BASE, stream->time_base.num, stream->time_base.den );
+				return( static_cast< long double >( pts ) / static_cast< long double >( AV_TIME_BASE ) );
 			}
 			else
 			{
@@ -879,7 +957,7 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< long double >( frame_pts_ ) * seconds_per_frame( ) );
+				return( time( ) );
 			}
 			else
 			{
@@ -1363,7 +1441,7 @@ namespace video
 						}
 						else
 						{
-							packet.pts = static_cast< int64_t >( tm * frame_rate_denominator( ) / frame_rate_numerator( ) + 0.5 );
+							packet.pts = av_rescale( static_cast< int64_t >( tm * AV_TIME_BASE ), stream->time_base.den, stream->time_base.num * AV_TIME_BASE );
 							frame_pts_ = static_cast< difference_type >( packet.pts );
 						}
 
