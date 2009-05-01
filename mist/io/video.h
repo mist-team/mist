@@ -357,7 +357,6 @@ namespace video
 			if( is_open( ) )
 			{
 				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
-				//int64_t pts = av_rescale( frame_pts_, stream->time_base.den, stream->time_base.num * AV_TIME_BASE );
 				int64_t pts = av_rescale( frame_pts_, stream->time_base.den, stream->time_base.num, AV_TIME_BASE );
 				return( static_cast< difference_type >( pts ) );
 			}
@@ -617,6 +616,24 @@ namespace video
 			return( false );
 		}
 
+		/// @brief 指定したフレーム番号をビデオストリームから探す
+		//! 
+		//! @param[in] fno … ビデオストリーム上での位置を表すフレーム番号
+		//!
+		bool seek_frame( difference_type fno )
+		{
+			if( is_open( ) && fno >= 0 )
+			{
+				if( av_seek_frame( p_fctx_, video_stream_index_, fno, AVSEEK_FLAG_BACKWARD ) >= 0 )
+				{
+					AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
+					return( decode( -1, av_rescale_( AV_TIME_BASE, fno, stream->time_base.num, stream->time_base.den ) ) );
+				}
+			}
+
+			return( false );
+		}
+
 		/// @brief 現在のフレームバッファをarray2形式に変換して格納する
 		//! 
 		//! @param[out] image … フレーム画像を格納するための２次元配列
@@ -741,7 +758,7 @@ namespace video
 							// 動画ストリームを探す
 							if( packet.stream_index == video_stream_index_ )
 							{
-								frame_pts_ = static_cast< difference_type >( av_rescale( AV_TIME_BASE * packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
+								frame_pts_ = static_cast< difference_type >( av_rescale_( AV_TIME_BASE, packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
 
 								if( !is_eof( ) )
 								{
@@ -781,7 +798,7 @@ namespace video
 							// 動画ストリームを探す
 							if( packet.stream_index == video_stream_index_ )
 							{
-								frame_pts_ = static_cast< difference_type >( av_rescale( AV_TIME_BASE * packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
+								frame_pts_ = static_cast< difference_type >( av_rescale_( AV_TIME_BASE, packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
 
 								if( !is_eof( ) )
 								{
@@ -819,6 +836,16 @@ namespace video
 			return( static_cast< int64_t >( D + 0.5 ) );
 		}
 
+		int64_t av_rescale_( int64_t s, int64_t a, int64_t b, int64_t c ) const
+		{
+			long double S = static_cast< long double >( s );
+			long double A = static_cast< long double >( a );
+			long double B = static_cast< long double >( b );
+			long double C = static_cast< long double >( c );
+			long double D = S * ( A * ( B / C ) );
+			return( static_cast< int64_t >( D + 0.5 ) );
+		}
+
 		int64_t av_rescale( int64_t a, int64_t b, int64_t c, int64_t d ) const
 		{
 			long double A = static_cast< long double >( a );
@@ -841,7 +868,8 @@ namespace video
 		/// @brief 一つ前のフレームへ戻る
 		decoder & operator --( )
 		{
-			this->seek( this->time( ) - this->seconds_per_frame( ) );
+			this->seek_frame( this->frame_id( ) - 1 );
+			//this->seek( this->time( ) - this->seconds_per_frame( ) );
 			return( *this );
 		}
 
