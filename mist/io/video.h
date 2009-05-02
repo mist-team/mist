@@ -747,7 +747,7 @@ namespace video
 					AVCodecContext *p_cctx = stream->codec;
 					int bFinished = 0;
 
-					frame_pts_ = pts - 1;
+					frame_pts_ = 0;
 					for( difference_type i = 1 ; !is_eof( ) && i <= ntimes && frame_pts_ < pts ; i++ )
 					{
 						bFinished = 0;
@@ -758,7 +758,7 @@ namespace video
 							// 動画ストリームを探す
 							if( packet.stream_index == video_stream_index_ )
 							{
-								frame_pts_ = static_cast< difference_type >( av_rescale_( AV_TIME_BASE, packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
+								frame_pts_ = static_cast< difference_type >( av_rescale_( AV_TIME_BASE, packet.pts < 0 ? packet.dts : packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
 
 								if( !is_eof( ) )
 								{
@@ -798,7 +798,7 @@ namespace video
 							// 動画ストリームを探す
 							if( packet.stream_index == video_stream_index_ )
 							{
-								frame_pts_ = static_cast< difference_type >( av_rescale_( AV_TIME_BASE, packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
+								frame_pts_ = static_cast< difference_type >( av_rescale_( AV_TIME_BASE, packet.pts < 0 ? packet.dts : packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
 
 								if( !is_eof( ) )
 								{
@@ -873,23 +873,23 @@ namespace video
 			return( *this );
 		}
 
-		/// @brief ビデオストリームの位置を指定した秒数だけ進める
+		/// @brief ビデオストリームの位置を指定したフレーム数だけ進める
 		//! 
-		//! @param[in] tm … ストリームの位置を進める秒数
+		//! @param[in] fno … ストリームの位置を進めるフレーム数
 		//!
-		decoder & operator +=( long double tm )
+		decoder & operator +=( difference_type fno )
 		{
-			this->seek( this->time( ) + tm );
+			this->skip( fno );
 			return( *this );
 		}
 
-		/// @brief ビデオストリームの位置を指定した秒数だけ戻す
+		/// @brief ビデオストリームの位置を指定したフレーム数だけ戻す
 		//! 
-		//! @param[in] tm … ストリームの位置を進める秒数
+		//! @param[in] fno … ストリームの位置を進めるフレーム数
 		//!
-		decoder & operator -=( long double tm )
+		decoder & operator -=( difference_type fno )
 		{
-			this->seek( this->time( ) - tm );
+			this->seek_frame( this->frame_id( ) - fno );
 			return( *this );
 		}
 	};
