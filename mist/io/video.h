@@ -121,7 +121,6 @@ _MIST_BEGIN
 //!  @{
 
 
-
 /// @brief ビデオファイルを扱うライブラリ
 namespace video
 {
@@ -352,13 +351,12 @@ namespace video
 		}
 
 		/// @brief 現在のビデオストリーム上での再生位置を表す秒数
-		virtual difference_type frame_id( ) const
+		virtual int64_t frame_id( ) const
 		{
 			if( is_open( ) )
 			{
 				AVStream *stream = p_fctx_->streams[ video_stream_index_ ];
-				int64_t pts = av_rescale( frame_pts_, stream->time_base.den, stream->time_base.num, AV_TIME_BASE );
-				return( static_cast< difference_type >( pts ) );
+				return( av_rescale( frame_pts_, stream->time_base.den, stream->time_base.num, AV_TIME_BASE ) );
 			}
 			else
 			{
@@ -382,11 +380,11 @@ namespace video
 		}
 
 		/// @brief 総フレーム数を得る
-		virtual difference_type number_of_frames( ) const
+		virtual int64_t number_of_frames( ) const
 		{
 			if( is_open( ) )
 			{
-				return( static_cast< difference_type >( p_fctx_->streams[ video_stream_index_ ]->duration ) );
+				return( p_fctx_->streams[ video_stream_index_ ]->duration );
 			}
 			else
 			{
@@ -544,6 +542,12 @@ namespace video
 				// 先頭フレームを読み込んでおく
 				this->skip( 1 );
 
+				// 先頭をうまく読めない場合は再度先頭に戻す
+				if( frame_pts_ != 0 )
+				{
+					this->seek_frame( 0 );
+				}
+
 				return( true );
 			}
 
@@ -620,7 +624,7 @@ namespace video
 		//! 
 		//! @param[in] fno … ビデオストリーム上での位置を表すフレーム番号
 		//!
-		bool seek_frame( difference_type fno )
+		bool seek_frame( int64_t fno )
 		{
 			if( is_open( ) && fno >= 0 )
 			{
@@ -758,7 +762,7 @@ namespace video
 							// 動画ストリームを探す
 							if( packet.stream_index == video_stream_index_ )
 							{
-								frame_pts_ = static_cast< difference_type >( av_rescale_( AV_TIME_BASE, packet.pts < 0 ? packet.dts : packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
+								frame_pts_ = av_rescale_( AV_TIME_BASE, packet.pts < 0 ? packet.dts : packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den );
 
 								if( !is_eof( ) )
 								{
@@ -798,7 +802,7 @@ namespace video
 							// 動画ストリームを探す
 							if( packet.stream_index == video_stream_index_ )
 							{
-								frame_pts_ = static_cast< difference_type >( av_rescale_( AV_TIME_BASE, packet.pts < 0 ? packet.dts : packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den ) );
+								frame_pts_ = av_rescale_( AV_TIME_BASE, packet.pts < 0 ? packet.dts : packet.pts, ( int64_t ) stream->time_base.num, stream->time_base.den );
 
 								if( !is_eof( ) )
 								{
