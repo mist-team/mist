@@ -1041,7 +1041,7 @@ void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocat
 	tmp.resize( in.size1( ), in.size2( ), in.size3( ) );
 	tmp.reso1( in.reso1( ) );
 	tmp.reso2( in.reso2( ) );
-	tmp.reso2( in.reso3( ) );
+	tmp.reso3( in.reso3( ) );
 
 	// ”½“]‚µ‚½‰æ‘œ‚ðì¬‚·‚é
 	for( i = 0 ; i < tmp.size( ) ; i++ )
@@ -1073,7 +1073,7 @@ void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocat
 	out.resize( in.size1( ), in.size2( ), in.size3( ) );
 	out.reso1( in.reso1( ) );
 	out.reso2( in.reso2( ) );
-	out.reso2( in.reso3( ) );
+	out.reso3( in.reso3( ) );
 
 	// Å‘å¬•ª‚ðŽc‚µC”½“]‚µ‚½‰æ‘œ‚ðo—Í‚·‚é
 	for( i = 0 ; i < out.size( ) ; i++ )
