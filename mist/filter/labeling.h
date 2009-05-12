@@ -965,10 +965,11 @@ void maximum_region( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 
 //! 
 //! @param[in]  in        … 入力画像
 //! @param[out] out       … 出力画像
+//! @param[in]  include_corner_labels … whether to also remove holes of the labels containing the corners of the image
 //! @param[in]  max_label … 最大で割り当てるラベル数
 //! 
 template < class T1,  class T2, class Allocator1, class Allocator2 >
-void remove_hole_region( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T1, Allocator1 >::size_type max_label = __labeling_controller__::default_label_num2< T2 >::value )
+void remove_hole_region( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const bool include_corner_labels, typename array2< T1, Allocator1 >::size_type max_label = __labeling_controller__::default_label_num2< T2 >::value )
 {
 	typedef typename array2< T1, Allocator1 >::size_type size_type;
 	typedef typename array2< T1, Allocator1 >::difference_type difference_type;
@@ -987,6 +988,28 @@ void remove_hole_region( const array2< T1, Allocator1 > &in, array2< T2, Allocat
 	}
 
 	size_type label_num = mist::labeling4( tmp, tmp, max_label );
+
+	if ( include_corner_labels )
+	{
+		size_type *L = new size_type[ label_num + 1 ];
+
+		for( size_type i = 0 ; i <= label_num ; i++ )
+		{
+			L[ i ] = static_cast< size_type >( i );
+		}
+
+		L[ tmp( 0, 0 ) ] = 1;
+		L[ tmp( tmp.width() - 1, 0 ) ] = 1;
+		L[ tmp( 0, tmp.height() - 1 ) ] = 1;
+		L[ tmp( tmp.width() - 1, tmp.height() - 1 ) ] = 1;
+		
+		for( size_type i = 0 ; i < tmp.size( ) ; i++ )
+		{
+			tmp[ i ] = L[ tmp[ i ] ];
+		}
+
+		delete [] L;
+	}
 
 	// 指定された範囲内の最大ラベルを探索
 	size_type *menseki = new size_type[ label_num + 1 ];
@@ -1021,7 +1044,7 @@ void remove_hole_region( const array2< T1, Allocator1 > &in, array2< T2, Allocat
 
 /// @brief 画像の0/1を反転させて穴埋め処理を行う
 //! 
-//! 3次元画像に対する4近傍型ラベリングを用いて，穴埋め処理を行う
+//! 2次元画像に対する4近傍型ラベリングを用いて，穴埋め処理を行う
 //! 
 //! @attention 入力と出力が同じ画像オブジェクトでも正しく動作する
 //! 
@@ -1030,7 +1053,25 @@ void remove_hole_region( const array2< T1, Allocator1 > &in, array2< T2, Allocat
 //! @param[in]  max_label … 最大で割り当てるラベル数
 //! 
 template < class T1,  class T2, class Allocator1, class Allocator2 >
-void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T1, Allocator1 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
+void remove_hole_region( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T1, Allocator1 >::size_type max_label = __labeling_controller__::default_label_num2< T2 >::value )
+{
+	remove_hole_region( in, out, false, max_label );
+}
+
+
+/// @brief 画像の0/1を反転させて穴埋め処理を行う
+//! 
+//! 3次元画像に対する4近傍型ラベリングを用いて，穴埋め処理を行う
+//! 
+//! @attention 入力と出力が同じ画像オブジェクトでも正しく動作する
+//! 
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  include_corner_labels … whether to also remove holes of the labels containing the corners of the image
+//! @param[in]  max_label … 最大で割り当てるラベル数
+//! 
+template < class T1,  class T2, class Allocator1, class Allocator2 >
+void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, const bool include_corner_labels, typename array3< T1, Allocator1 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
 {
 	typedef typename array2< T1, Allocator1 >::size_type size_type;
 	typedef typename array2< T1, Allocator1 >::difference_type difference_type;
@@ -1050,6 +1091,32 @@ void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocat
 	}
 
 	size_type label_num = mist::labeling6( tmp, tmp, max_label );
+
+	if ( include_corner_labels )
+	{
+		size_type *L = new size_type[ label_num + 1 ];
+
+		for( size_type i = 0 ; i <= label_num ; i++ )
+		{
+			L[ i ] = static_cast< size_type >( i );
+		}
+
+		L[ tmp( 0, 0, 0 ) ] = 1;
+		L[ tmp( tmp.width() - 1, 0, 0 ) ] = 1;
+		L[ tmp( 0, tmp.height() - 1, 0 ) ] = 1;
+		L[ tmp( 0, 0, tmp.depth() - 1 ) ] = 1;
+		L[ tmp( tmp.width() - 1, tmp.height() - 1, 0 ) ] = 1;
+		L[ tmp( 0, tmp.height() - 1, tmp.depth() - 1 ) ] = 1;
+		L[ tmp( tmp.width() - 1, 0, tmp.depth() - 1 ) ] = 1;
+		L[ tmp( tmp.width() - 1, tmp.height() - 1, tmp.depth() - 1 ) ] = 1;
+		
+		for( size_type i = 0 ; i < tmp.size( ) ; i++ )
+		{
+			tmp[ i ] = L[ tmp[ i ] ];
+		}
+
+		delete [] L;
+	}
 
 	// 指定された範囲内の最大ラベルを探索
 	size_type *menseki = new size_type[ label_num + 1 ];
@@ -1080,6 +1147,22 @@ void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocat
 	{
 		out[ i ] = tmp[ i ] == max_label ? 0 : 1;
 	}
+}
+
+/// @brief 画像の0/1を反転させて穴埋め処理を行う
+//! 
+//! 3次元画像に対する4近傍型ラベリングを用いて，穴埋め処理を行う
+//! 
+//! @attention 入力と出力が同じ画像オブジェクトでも正しく動作する
+//! 
+//! @param[in]  in        … 入力画像
+//! @param[out] out       … 出力画像
+//! @param[in]  max_label … 最大で割り当てるラベル数
+//! 
+template < class T1,  class T2, class Allocator1, class Allocator2 >
+void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out, typename array3< T1, Allocator1 >::size_type max_label = __labeling_controller__::default_label_num3< T2 >::value )
+{
+	remove_hole_region( in, out, false, max_label );
 }
 
 /// @}
