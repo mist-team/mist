@@ -503,7 +503,8 @@ public:
 		}
 		else
 		{
-			return( acmp( *this, a ) >= 0 );
+			bool cmp = acmp( *this, a ) >= 0;
+			return( sign_ ? cmp : !cmp );
 		}
 	}
 
