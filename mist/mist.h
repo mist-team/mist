@@ -1805,7 +1805,7 @@ public:
 		else
 		{
 			difference_type w_ = this->width( );
-			difference_type h_ = this->width( );
+			difference_type h_ = this->height( );
 			difference_type d_ = this->depth( );
 			if( w_ <= static_cast< difference_type >( x ) || w_ < static_cast< difference_type >( x + w ) )
 			{
