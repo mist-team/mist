@@ -1639,8 +1639,8 @@ public:
 	//! @param[in,out] p … スレッドの関数に渡すパラメータ
 	//! @param[in]     f … 実行されるスレッド関数
 	//! 
-	template < class Param, class Functor >
-	bool execute( Param p, Functor f )
+	template < class Functor, class Param >
+	bool execute( Functor f, Param &p )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -1680,8 +1680,8 @@ public:
 	//! @param[in,out] p … スレッドの関数に渡すパラメータ
 	//! @param[in]     f … 実行されるスレッド関数
 	//! 
-	template < class Param, class Functor >
-	bool execute_nocopy( Param &p, Functor f )
+	template < class Functor, class Param >
+	bool execute_nocopy( Functor f, Param &p )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -1691,6 +1691,88 @@ public:
 		// キューに追加する
 		{
 			__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base_nocopy< Param, Functor >( p, f );
+
+			// 排他制御する
+			lock_.lock( );
+			functors_.push_back( func );
+			lock_.unlock( );
+		}
+
+		for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+		{
+			thread_pool_functor &t = *threads_[ i ];
+
+			if( t.is_suspended( ) )
+			{
+				// アイドル状態のスレッドがあれば再開する
+				t.resume( );
+				break;
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを指定してスレッドを実行する
+	//! 
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! スレッドが実行する関数の引数はコピーして渡される．
+	//! 
+	//! @param[in,out] p … スレッドの関数に渡すパラメータ
+	//! @param[in]     f … 実行されるスレッド関数
+	//! 
+	template < class Functor, class Param1, class Param2 >
+	bool execute( Functor f, Param1 &p1, Param2 &p2 )
+	{
+		if( threads_.empty( ) || !initialized_ )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		{
+			__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base2< Param1, Param2, Functor >( p1, p2, f );
+
+			// 排他制御する
+			lock_.lock( );
+			functors_.push_back( func );
+			lock_.unlock( );
+		}
+
+		for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+		{
+			thread_pool_functor &t = *threads_[ i ];
+
+			if( t.is_suspended( ) )
+			{
+				// アイドル状態のスレッドがあれば再開する
+				t.resume( );
+				break;
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを指定してスレッドを実行する
+	//! 
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! スレッドが実行する関数の引数は参照として渡される．
+	//! 
+	//! @param[in,out] p … スレッドの関数に渡すパラメータ
+	//! @param[in]     f … 実行されるスレッド関数
+	//! 
+	template < class Functor, class Param1, class Param2 >
+	bool execute_nocopy( Functor f, Param1 &p1, Param2 &p2 )
+	{
+		if( threads_.empty( ) || !initialized_ )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		{
+			__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base_nocopy2< Param1, Param2, Functor >( p1, p2, f );
 
 			// 排他制御する
 			lock_.lock( );
@@ -1761,8 +1843,8 @@ public:
 	//! @param[in]     num_threads … スレッド数
 	//! @param[in]     f           … 実行されるスレッド関数
 	//! 
-	template < class Param, class Functor >
-	bool execute( Param *param, size_t num_threads, Functor f )
+	template < class Functor, class Param >
+	bool executes( Functor f, Param *param, size_t num_threads )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -1808,8 +1890,8 @@ public:
 	//! @param[in]     num_threads … スレッド数
 	//! @param[in]     f           … 実行されるスレッド関数
 	//! 
-	template < class Param, class Functor >
-	bool execute_nocopy( Param *param, size_t num_threads, Functor f )
+	template < class Functor, class Param >
+	bool executes_nocopy( Functor f, Param *param, size_t num_threads )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -1856,8 +1938,8 @@ public:
 	//! @param[in]     num_threads … スレッド数
 	//! @param[in]     f           … 実行されるスレッド関数
 	//! 
-	template < class Param1, class Param2, class Functor >
-	bool execute( Param1 *param1, Param2 *param2, size_t num_threads, Functor f )
+	template < class Functor, class Param1, class Param2 >
+	bool executes( Functor f, Param1 *param1, Param2 *param2, size_t num_threads )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -1903,8 +1985,8 @@ public:
 	//! @param[in]     num_threads … スレッド数
 	//! @param[in]     f           … 実行されるスレッド関数
 	//! 
-	template < class Param1, class Param2, class Functor >
-	bool execute_nocopy( Param1 *param1, Param2 *param2, size_t num_threads, Functor f )
+	template < class Functor, class Param1, class Param2 >
+	bool executes_nocopy( Functor f, Param1 *param1, Param2 *param2, size_t num_threads )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
