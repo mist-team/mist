@@ -1076,6 +1076,56 @@ inline bool do_threads_( Thread *threads, size_t num_threads, unsigned long dwMi
 	return( ret );
 }
 
+/// @brief スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う
+//! 
+//! @param[in] threads        … スレッドオブジェクト
+//! @param[in] num_threads    … スレッド数
+//! @param[in] dwMilliseconds … タイムアウト時間（ミリ秒単位）
+//!
+//! @retval true  … 複数のスレッドの実行に成功
+//! @retval false … 複数のスレッドの実行に失敗
+//! 
+template < class Thread >
+inline bool do_threads_( Thread **threads, size_t num_threads, unsigned long dwMilliseconds = INFINITE )
+{
+	bool ret = true;
+	size_t i = 0;
+
+	// スレッドの生成
+	for( i = 1 ; i < num_threads ; i++ )
+	{
+		if( !threads[ i ]->create( ) )
+		{
+			ret = false;
+		}
+	}
+	if( num_threads > 0 )
+	{
+		// 先頭のパラメータのみ実行スレッドで行う
+		threads[ 0 ]->create_without_thread( );
+	}
+
+	// スレッドの終了待ち
+	for( i = 1 ; i < num_threads ; i++ )
+	{
+		if( !threads[ i ]->wait( dwMilliseconds ) )
+		{
+			ret = false;
+		}
+	}
+
+	// リソースの開放
+	for( i = 1 ; i < num_threads ; i++ )
+	{
+		if( !threads[ i ]->close( ) )
+		{
+			ret = false;
+		}
+	}
+
+	return( ret );
+}
+
 
 
 /// @brief スレッド生成・終了待機・スレッドの破棄までを一連の流れとして行う
@@ -1771,6 +1821,101 @@ public:
 		for( size_type i = 0 ; i < num_threads ; i++ )
 		{
 			functors_.push_back( new __thread_controller__::thread_pool_functor_base_nocopy< Param, Functor >( param[ i ], f ) );
+		}
+		lock_.unlock( );
+
+		size_type count = 0;
+		for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+		{
+			thread_pool_functor &t = *threads_[ i ];
+
+			if( t.is_suspended( ) )
+			{
+				// アイドル状態のスレッドがあれば再開する
+				t.resume( );
+			}
+
+			count++;
+
+			if( count >= num_threads )
+			{
+				break;
+			}
+		}
+
+		return( true );
+	}
+
+
+	/// @brief 関数とパラメータを複数指定してスレッドを実行する
+	//! 
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! スレッドが実行する関数の引数はコピーして渡される．
+	//! 
+	//! @param[in,out] param       … スレッドの関数に渡すパラメータ
+	//! @param[in]     num_threads … スレッド数
+	//! @param[in]     f           … 実行されるスレッド関数
+	//! 
+	template < class Param1, class Param2, class Functor >
+	bool execute( Param1 *param1, Param2 *param2, size_t num_threads, Functor f )
+	{
+		if( threads_.empty( ) || !initialized_ )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		lock_.lock( );
+		for( size_type i = 0 ; i < num_threads ; i++ )
+		{
+			functors_.push_back( new __thread_controller__::thread_pool_functor_base2< Param1, Param2, Functor >( param1[ i ], param2[ i ], f ) );
+		}
+		lock_.unlock( );
+
+		size_type count = 0;
+		for( size_type i = 0 ; i < threads_.size( ) ; i++ )
+		{
+			thread_pool_functor &t = *threads_[ i ];
+
+			if( t.is_suspended( ) )
+			{
+				// アイドル状態のスレッドがあれば再開する
+				t.resume( );
+			}
+
+			count++;
+
+			if( count >= num_threads )
+			{
+				break;
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 関数とパラメータを複数指定してスレッドを実行する
+	//! 
+	//! スレッドプールの初期化が終了していない場合は false を返す．
+	//! スレッドが実行する関数の引数は参照として渡される．
+	//! 
+	//! @param[in,out] param       … スレッドの関数に渡すパラメータ
+	//! @param[in]     num_threads … スレッド数
+	//! @param[in]     f           … 実行されるスレッド関数
+	//! 
+	template < class Param1, class Param2, class Functor >
+	bool execute_nocopy( Param1 *param1, Param2 *param2, size_t num_threads, Functor f )
+	{
+		if( threads_.empty( ) || !initialized_ )
+		{
+			return( false );
+		}
+
+		// キューに追加する
+		lock_.lock( );
+		for( size_type i = 0 ; i < num_threads ; i++ )
+		{
+			functors_.push_back( new __thread_controller__::thread_pool_functor_base_nocopy2< Param1, Param2, Functor >( param1[ i ], param2[ i ], f ) );
 		}
 		lock_.unlock( );
 
