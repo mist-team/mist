@@ -128,8 +128,8 @@ public:
 		memset( data_, 0, sizeof( value_type ) * NMPA1 );
 	}
 
-#if 0
-	decimal( const double &a ) : sign_( true ), exp_( 0 ), zero_( true )
+#if 1
+	decimal( double a ) : sign_( true ), exp_( 0 ), zero_( true )
 	{
 		memset( data_, 0, sizeof( value_type ) * NMPA1 );
 
@@ -170,14 +170,17 @@ public:
 		{
 			double a = v;
 			zero_ = false;
+
 			if( a < 0.0 )
 			{
 				sign_ = false;
 				a = - a;
 			}
+
 			decimal b( static_cast< difference_type >( a ) );
 			a -= static_cast< difference_type >( a );
-			decimal x( 10 );
+			decimal x( 1 );
+
 			for( difference_type i = 0 ; i < keta && a != 0.0 ; i++ )
 			{
 				a *= 10;
@@ -186,8 +189,10 @@ public:
 				a -= static_cast< difference_type >( a );
 				x *= 10;
 			}
+
 			b /= x;
 			b.sign_ = sign_;
+
 			operator =( b );
 		}
 	}
@@ -618,6 +623,14 @@ public:
 			sprintf( str, "E%+d", exp_ );
 			return( tmp.to_string( ) + str );
 		}
+		else if( *this == 10000 )
+		{
+			return( "+10000" );
+		}
+		else if( *this == -10000 )
+		{
+			return( "-10000" );
+		}
 
 		if( zero_ )
 		{
@@ -718,8 +731,10 @@ public:
 			a.data_[ i ] = 0;
 			a.exp_ = -1;
 		}
+
 		a *= 10000;
 		m++;
+
 		if( a.exp_ == 0 )
 		{
 			c[ cp++ ] = a.data_[ 0 ];
@@ -729,6 +744,7 @@ public:
 		{
 			c[ cp++ ] = 0;
 		}
+
 		while( m <= mmpa )
 		{
 			if( a.is_zero( ) )
@@ -741,6 +757,7 @@ public:
 			m++;
 			a.data_[ 0 ] = 0;
 		}
+
 		if( c[ mmpa ] < 5000 )
 		{
 			c[ mmpa ] = 0;
@@ -758,6 +775,7 @@ public:
 				c[ m ] = 0;
 			}
 		}
+
 		for( i = mmpa ; i >= 0 ; i-- )
 		{
 			if( c[ i ] )
@@ -766,6 +784,7 @@ public:
 			}
 			mmpa--;
 		}
+
 		if( mmpa < 0 )
 		{
 			return( "0" );
@@ -808,6 +827,7 @@ public:
 				s += ".";
 			}
 		}
+
 		if( m < mp )
 		{
 			do
@@ -815,6 +835,7 @@ public:
 				s += "0000";
 			} while( m++ < mp );
 		}
+
 		return( s );
 	}
 
