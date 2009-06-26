@@ -943,6 +943,7 @@ namespace video
 		//! @param[in] qmax                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
 		//! @param[in] gop_size            … 12（デフォルト値）
 		//! @param[in] max_b_frames        … 2（デフォルト値）
+		//! @param[in] audio_bit_rate      … 64000（デフォルト値）
 		//! @param[in] audio_sampling_rate … 44100（デフォルト値）
 		//! @param[in] audio_channels      … 2（デフォルト値）
 		//!
@@ -1155,9 +1156,11 @@ namespace video
 	protected:
 		/// @brief AVOutputFormat 情報を用いて出力用ビデオストリームを開く
 		//! 
-		//! @param[in] filename … 出力ファイル名
-		//! @param[in] format   … ビデオの出力フォーマット
-		//! @param[in] codec_id … フォーマット内で使用するコーデックID
+		//! @param[in] filename             … 出力ファイル名
+		//! @param[in] format               … ビデオの出力フォーマット
+		//! @param[in] video_codec_id       … フォーマット内で使用するビデオコーデックID
+		//! @param[in] audio_codec_id       … フォーマット内で使用するオーディオコーデックID
+		//! @param[in] default_pixel_format … フォーマット内でデフォルトの画素表現
 		//! 
 		bool open( const std::string &filename, AVOutputFormat *format, CodecID video_codec_id = CODEC_ID_NONE, CodecID audio_codec_id = CODEC_ID_NONE, PixelFormat default_pixel_format = PIX_FMT_YUV420P )
 		{

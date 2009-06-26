@@ -1704,6 +1704,7 @@ public:
 	//! @param[in,out] p1 … スレッドの関数に渡すパラメータ
 	//! @param[in,out] p2 … スレッドの関数に渡すパラメータ
 	//! @param[in,out] p3 … スレッドの関数に渡すパラメータ
+	//! @param[in,out] p4 … スレッドの関数に渡すパラメータ
 	//! @param[in]     f  … 実行されるスレッド関数
 	//! 
 	template < class Functor, class Param1, class Param2, class Param3, class Param4 >
