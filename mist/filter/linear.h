@@ -306,7 +306,7 @@ namespace __linear__
 							for( difference_type l = sl ; l < el ; l++ )
 							{
 								kvalue_type kv = kernel( l, m, n );
-								value += kernel( l, m, n ) * in( i + l - rw, j + m - rh, k + n - rd );
+								value += kv * in( i + l - rw, j + m - rh, k + n - rd );
 								sum += kv;
 							}
 						}
@@ -339,7 +339,7 @@ namespace __linear__
 							for( difference_type l = sl ; l < el ; l++ )
 							{
 								kvalue_type kv = kernel( l, m, n );
-								value += kernel( l, m, n ) * in( i + l - rw, j + m - rh, k + n - rd );
+								value += kv * in( i + l - rw, j + m - rh, k + n - rd );
 								sum += kv;
 							}
 						}
@@ -443,7 +443,7 @@ namespace __linear__
 							for( difference_type l = sl ; l < el ; l++ )
 							{
 								kvalue_type kv = kernel( l, m, n );
-								value += kernel( l, m, n ) * in( i + l - rw, j + m - rh, k + n - rd );
+								value += kv * in( i + l - rw, j + m - rh, k + n - rd );
 								sum += kv;
 							}
 						}
@@ -483,7 +483,7 @@ namespace __linear__
 							for( difference_type l = sl ; l < el ; l++ )
 							{
 								kvalue_type kv = kernel( l, m, n );
-								value += kernel( l, m, n ) * in( i + l - rw, j + m - rh, k + n - rd );
+								value += kv * in( i + l - rw, j + m - rh, k + n - rd );
 								sum += kv;
 							}
 						}
