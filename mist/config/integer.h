@@ -40,7 +40,9 @@
 
 #include <iostream>
 #include <string>
+#include <cstring>
 
+#include <stdlib.h>
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN

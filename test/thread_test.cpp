@@ -107,7 +107,7 @@ int main( int argc, char *argv[] )
 	{
 		mist::thread_pool pool( 3 );
 		pool.execute( thread_function2 );
-		pool.execute( param, CREATE_THREAD_NUM, thread_function1 );
+		pool.executes( thread_function1, param, CREATE_THREAD_NUM );
 		pool.wait( );
 		std::cout << std::endl;
 	}

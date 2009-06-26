@@ -1311,87 +1311,6 @@ namespace __thread_controller__
 		}
 	};
 
-	template < class Param, class Functor >
-	class thread_pool_functor_base_nocopy : public __thread_pool_functor__
-	{
-	private:
-		Param   &param_;
-		Functor func_;
-
-	public:
-		thread_pool_functor_base_nocopy( Param &p, Functor f ) : param_( p ), func_( f ){ }
-		virtual ~thread_pool_functor_base_nocopy( ){ }
-
-	protected:
-		// 継承した先で必ず実装されるスレッド関数
-		virtual void run( size_type id, size_type nthreads )
-		{
-			func_( param_ );
-		}
-	};
-
-	template < class Param1, class Param2, class Functor >
-	class thread_pool_functor_base_nocopy2 : public __thread_pool_functor__
-	{
-	private:
-		Param1  &param1_;
-		Param2  &param2_;
-		Functor func_;
-
-	public:
-		thread_pool_functor_base_nocopy2( Param1 &p1, Param2 &p2, Functor f ) : param1_( p1 ), param2_( p2 ), func_( f ){ }
-		virtual ~thread_pool_functor_base_nocopy2( ){ }
-
-	protected:
-		// 継承した先で必ず実装されるスレッド関数
-		virtual void run( size_type id, size_type nthreads )
-		{
-			func_( param1_, param2_ );
-		}
-	};
-
-	template < class Param1, class Param2, class Param3, class Functor >
-	class thread_pool_functor_base_nocopy3 : public __thread_pool_functor__
-	{
-	private:
-		Param1  &param1_;
-		Param2  &param2_;
-		Param3  &param3_;
-		Functor func_;
-
-	public:
-		thread_pool_functor_base_nocopy3( Param1 &p1, Param2 &p2, Param3 &p3, Functor f ) : param1_( p1 ), param2_( p2 ), param3_( p3 ), func_( f ){ }
-		virtual ~thread_pool_functor_base_nocopy3( ){ }
-
-	protected:
-		// 継承した先で必ず実装されるスレッド関数
-		virtual void run( size_type id, size_type nthreads )
-		{
-			func_( param1_, param2_, param3_ );
-		}
-	};
-
-	template < class Param1, class Param2, class Param3, class Param4, class Functor >
-	class thread_pool_functor_base_nocopy4 : public __thread_pool_functor__
-	{
-	private:
-		Param1  &param1_;
-		Param2  &param2_;
-		Param3  &param3_;
-		Param4  &param4_;
-		Functor func_;
-
-	public:
-		thread_pool_functor_base_nocopy4( Param1 &p1, Param2 &p2, Param3 &p3, Param4 &p4, Functor f ) : param1_( p1 ), param2_( p2 ), param3_( p3 ), param4_( p4 ), func_( f ){ }
-		virtual ~thread_pool_functor_base_nocopy4( ){ }
-
-	protected:
-		// 継承した先で必ず実装されるスレッド関数
-		virtual void run( size_type id, size_type nthreads )
-		{
-			func_( param1_, param2_, param3_, param4_ );
-		}
-	};
 
 	template < class Functor >
 	class thread_pool_void_functor_base : public __thread_pool_functor__
@@ -1739,25 +1658,6 @@ public:
 	/// @brief 関数とパラメータを指定してスレッドを実行する
 	//! 
 	//! スレッドプールの初期化が終了していない場合は false を返す．
-	//! スレッドが実行する関数の引数は参照として渡される．
-	//! 
-	//! @param[in,out] p … スレッドの関数に渡すパラメータ
-	//! @param[in]     f … 実行されるスレッド関数
-	//! 
-	template < class Functor, class Param >
-	bool execute_nocopy( Functor f, Param &p )
-	{
-		if( threads_.empty( ) || !initialized_ )
-		{
-			return( false );
-		}
-
-		return( exec( new __thread_controller__::thread_pool_functor_base_nocopy< Param, Functor >( p, f ) ) );
-	}
-
-	/// @brief 関数とパラメータを指定してスレッドを実行する
-	//! 
-	//! スレッドプールの初期化が終了していない場合は false を返す．
 	//! スレッドが実行する関数の引数はコピーして渡される．
 	//! 
 	//! @param[in,out] p1 … スレッドの関数に渡すパラメータ
@@ -1773,26 +1673,6 @@ public:
 		}
 
 		return( exec( new __thread_controller__::thread_pool_functor_base2< Param1, Param2, Functor >( p1, p2, f ) ) );
-	}
-
-	/// @brief 関数とパラメータを指定してスレッドを実行する
-	//! 
-	//! スレッドプールの初期化が終了していない場合は false を返す．
-	//! スレッドが実行する関数の引数は参照として渡される．
-	//! 
-	//! @param[in,out] p1 … スレッドの関数に渡すパラメータ
-	//! @param[in,out] p2 … スレッドの関数に渡すパラメータ
-	//! @param[in]     f  … 実行されるスレッド関数
-	//! 
-	template < class Functor, class Param1, class Param2 >
-	bool execute_nocopy( Functor f, Param1 &p1, Param2 &p2 )
-	{
-		if( threads_.empty( ) || !initialized_ )
-		{
-			return( false );
-		}
-
-		return( exec( new __thread_controller__::thread_pool_functor_base_nocopy2< Param1, Param2, Functor >( p1, p2, f ) ) );
 	}
 
 	/// @brief 関数とパラメータを指定してスレッドを実行する
@@ -1819,27 +1699,6 @@ public:
 	/// @brief 関数とパラメータを指定してスレッドを実行する
 	//! 
 	//! スレッドプールの初期化が終了していない場合は false を返す．
-	//! スレッドが実行する関数の引数は参照として渡される．
-	//! 
-	//! @param[in,out] p1 … スレッドの関数に渡すパラメータ
-	//! @param[in,out] p2 … スレッドの関数に渡すパラメータ
-	//! @param[in,out] p3 … スレッドの関数に渡すパラメータ
-	//! @param[in]     f  … 実行されるスレッド関数
-	//! 
-	template < class Functor, class Param1, class Param2, class Param3 >
-	bool execute_nocopy( Functor f, Param1 &p1, Param2 &p2, Param3 &p3 )
-	{
-		if( threads_.empty( ) || !initialized_ )
-		{
-			return( false );
-		}
-
-		return( exec( new __thread_controller__::thread_pool_functor_base_nocopy3< Param1, Param2, Param3, Functor >( p1, p2, p3, f ) ) );
-	}
-
-	/// @brief 関数とパラメータを指定してスレッドを実行する
-	//! 
-	//! スレッドプールの初期化が終了していない場合は false を返す．
 	//! スレッドが実行する関数の引数はコピーして渡される．
 	//! 
 	//! @param[in,out] p1 … スレッドの関数に渡すパラメータ
@@ -1856,27 +1715,6 @@ public:
 		}
 
 		return( exec( new __thread_controller__::thread_pool_functor_base4< Param1, Param2, Param3, Param4, Functor >( p1, p2, p3, p4, f ) ) );
-	}
-
-	/// @brief 関数とパラメータを指定してスレッドを実行する
-	//! 
-	//! スレッドプールの初期化が終了していない場合は false を返す．
-	//! スレッドが実行する関数の引数は参照として渡される．
-	//! 
-	//! @param[in,out] p1 … スレッドの関数に渡すパラメータ
-	//! @param[in,out] p2 … スレッドの関数に渡すパラメータ
-	//! @param[in,out] p3 … スレッドの関数に渡すパラメータ
-	//! @param[in]     f  … 実行されるスレッド関数
-	//! 
-	template < class Functor, class Param1, class Param2, class Param3, class Param4 >
-	bool execute_nocopy( Functor f, Param1 &p1, Param2 &p2, Param3 &p3, Param4 &p4 )
-	{
-		if( threads_.empty( ) || !initialized_ )
-		{
-			return( false );
-		}
-
-		return( exec( new __thread_controller__::thread_pool_functor_base_nocopy4< Param1, Param2, Param3, Param4, Functor >( p1, p2, p3, p4, f ) ) );
 	}
 
 	/// @brief 関数とパラメータを指定してスレッドを実行する
@@ -1929,36 +1767,6 @@ public:
 	/// @brief 関数とパラメータを複数指定してスレッドを実行する
 	//! 
 	//! スレッドプールの初期化が終了していない場合は false を返す．
-	//! スレッドが実行する関数の引数は参照として渡される．
-	//! 
-	//! @param[in,out] param       … スレッドの関数に渡すパラメータ
-	//! @param[in]     num_threads … スレッド数
-	//! @param[in]     f           … 実行されるスレッド関数
-	//! 
-	template < class Functor, class Param >
-	bool executes_nocopy( Functor f, Param *param, size_t num_threads )
-	{
-		if( threads_.empty( ) || !initialized_ )
-		{
-			return( false );
-		}
-
-		// キューに追加する
-		lock_.lock( );
-		for( size_type i = 0 ; i < num_threads ; i++ )
-		{
-			functors_.push_back( new __thread_controller__::thread_pool_functor_base_nocopy< Param, Functor >( param[ i ], f ) );
-		}
-		lock_.unlock( );
-
-		resume_thread_from_queue( num_threads );
-
-		return( true );
-	}
-
-	/// @brief 関数とパラメータを複数指定してスレッドを実行する
-	//! 
-	//! スレッドプールの初期化が終了していない場合は false を返す．
 	//! スレッドが実行する関数の引数はコピーして渡される．
 	//! 
 	//! @param[in,out] param1      … スレッドの関数に渡すパラメータ
@@ -1979,37 +1787,6 @@ public:
 		for( size_type i = 0 ; i < num_threads ; i++ )
 		{
 			functors_.push_back( new __thread_controller__::thread_pool_functor_base2< Param1, Param2, Functor >( param1[ i ], param2[ i ], f ) );
-		}
-		lock_.unlock( );
-
-		resume_thread_from_queue( num_threads );
-
-		return( true );
-	}
-
-	/// @brief 関数とパラメータを複数指定してスレッドを実行する
-	//! 
-	//! スレッドプールの初期化が終了していない場合は false を返す．
-	//! スレッドが実行する関数の引数は参照として渡される．
-	//! 
-	//! @param[in,out] param1      … スレッドの関数に渡すパラメータ
-	//! @param[in,out] param2      … スレッドの関数に渡すパラメータ
-	//! @param[in]     num_threads … スレッド数
-	//! @param[in]     f           … 実行されるスレッド関数
-	//! 
-	template < class Functor, class Param1, class Param2 >
-	bool executes_nocopy( Functor f, Param1 *param1, Param2 *param2, size_t num_threads )
-	{
-		if( threads_.empty( ) || !initialized_ )
-		{
-			return( false );
-		}
-
-		// キューに追加する
-		lock_.lock( );
-		for( size_type i = 0 ; i < num_threads ; i++ )
-		{
-			functors_.push_back( new __thread_controller__::thread_pool_functor_base_nocopy2< Param1, Param2, Functor >( param1[ i ], param2[ i ], f ) );
 		}
 		lock_.unlock( );
 
@@ -2053,38 +1830,6 @@ public:
 	/// @brief 関数とパラメータを複数指定してスレッドを実行する
 	//! 
 	//! スレッドプールの初期化が終了していない場合は false を返す．
-	//! スレッドが実行する関数の引数は参照として渡される．
-	//! 
-	//! @param[in,out] param1      … スレッドの関数に渡すパラメータ
-	//! @param[in,out] param2      … スレッドの関数に渡すパラメータ
-	//! @param[in,out] param3      … スレッドの関数に渡すパラメータ
-	//! @param[in]     num_threads … スレッド数
-	//! @param[in]     f           … 実行されるスレッド関数
-	//! 
-	template < class Functor, class Param1, class Param2, class Param3 >
-	bool executes_nocopy( Functor f, Param1 *param1, Param2 *param2, Param3 *param3, size_t num_threads )
-	{
-		if( threads_.empty( ) || !initialized_ )
-		{
-			return( false );
-		}
-
-		// キューに追加する
-		lock_.lock( );
-		for( size_type i = 0 ; i < num_threads ; i++ )
-		{
-			functors_.push_back( new __thread_controller__::thread_pool_functor_base_nocopy3< Param1, Param2, Param3, Functor >( param1[ i ], param2[ i ], param3[ i ], f ) );
-		}
-		lock_.unlock( );
-
-		resume_thread_from_queue( num_threads );
-
-		return( true );
-	}
-
-	/// @brief 関数とパラメータを複数指定してスレッドを実行する
-	//! 
-	//! スレッドプールの初期化が終了していない場合は false を返す．
 	//! スレッドが実行する関数の引数はコピーして渡される．
 	//! 
 	//! @param[in,out] param1      … スレッドの関数に渡すパラメータ
@@ -2107,39 +1852,6 @@ public:
 		for( size_type i = 0 ; i < num_threads ; i++ )
 		{
 			functors_.push_back( new __thread_controller__::thread_pool_functor_base4< Param1, Param2, Param3, Param4, Functor >( param1[ i ], param2[ i ], param3[ i ], param4[ i ], f ) );
-		}
-		lock_.unlock( );
-
-		resume_thread_from_queue( num_threads );
-
-		return( true );
-	}
-
-	/// @brief 関数とパラメータを複数指定してスレッドを実行する
-	//! 
-	//! スレッドプールの初期化が終了していない場合は false を返す．
-	//! スレッドが実行する関数の引数は参照として渡される．
-	//! 
-	//! @param[in,out] param1      … スレッドの関数に渡すパラメータ
-	//! @param[in,out] param2      … スレッドの関数に渡すパラメータ
-	//! @param[in,out] param3      … スレッドの関数に渡すパラメータ
-	//! @param[in,out] param4      … スレッドの関数に渡すパラメータ
-	//! @param[in]     num_threads … スレッド数
-	//! @param[in]     f           … 実行されるスレッド関数
-	//! 
-	template < class Functor, class Param1, class Param2, class Param3, class Param4 >
-	bool executes_nocopy( Functor f, Param1 *param1, Param2 *param2, Param3 *param3, Param4 *param4, size_t num_threads )
-	{
-		if( threads_.empty( ) || !initialized_ )
-		{
-			return( false );
-		}
-
-		// キューに追加する
-		lock_.lock( );
-		for( size_type i = 0 ; i < num_threads ; i++ )
-		{
-			functors_.push_back( new __thread_controller__::thread_pool_functor_base_nocopy4< Param1, Param2, Param3, Param4, Functor >( param1[ i ], param2[ i ], param3[ i ], param4[ i ], f ) );
 		}
 		lock_.unlock( );
 
@@ -2193,7 +1905,7 @@ protected:
 	//! 
 	//! @param[in] func … 実行されるスレッド関数
 	//! 
-	bool exec( __thread_pool_functor__ *func )
+	bool exec( __thread_controller__::__thread_pool_functor__ *func )
 	{
 		// キューに追加する
 		{
@@ -2338,26 +2050,15 @@ public:
 	//! @param[in,out] p … スレッドの関数に渡すパラメータ
 	//! @param[in]     f … 実行されるスレッド関数
 	//! 
-	template < class Param, class Functor >
-	bool execute( Param p, Functor f )
+	template < class Functor, class Param >
+	bool execute(  Functor f, Param p )
 	{
 		if( thread_ == NULL )
 		{
 			return( false );
 		}
 
-		// キューに追加する
-		__thread_controller__::__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base< Param, Functor >( p, f );
-
-		// 排他制御する
-		lock_.lock( );
-		functors_.push_back( func );
-		lock_.unlock( );
-
-		// スレッドを再開する
-		thread_->resume( );
-
-		return( true );
+		return( exec( new __thread_controller__::thread_pool_functor_base< Param, Functor >( p, f ) ) );
 	}
 
 
@@ -2370,87 +2071,58 @@ public:
 	//! @param[in] p2 … スレッドの関数に渡すパラメータ2
 	//! @param[in] f  … 実行されるスレッド関数
 	//! 
-	template < class Param1, class Param2, class Functor >
-	bool execute( Param1 p1, Param2 p2, Functor f )
+	template < class Functor, class Param1, class Param2 >
+	bool execute( Functor f, Param1 p1, Param2 p2 )
 	{
 		if( thread_ == NULL )
 		{
 			return( false );
 		}
 
-		// キューに追加する
-		__thread_controller__::__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base2< Param1, Param2, Functor >( p1, p2, f );
-
-		// 排他制御する
-		lock_.lock( );
-		functors_.push_back( func );
-		lock_.unlock( );
-
-		// スレッドを再開する
-		thread_->resume( );
-
-		return( true );
+		return( exec( new __thread_controller__::thread_pool_functor_base2< Param1, Param2, Functor >( p1, p2, f ) ) );
 	}
 
 	/// @brief 関数とパラメータを指定してスレッドを実行する
 	//! 
 	//! ワーカースレッドが終了した状態では false を返す．
-	//! スレッドが実行する関数の引数は参照として渡される．
+	//! スレッドが実行する関数の引数はコピーして渡される．
 	//! 
-	//! @param[in,out] p … スレッドの関数に渡すパラメータ
-	//! @param[in]     f … 実行されるスレッド関数
-	//! 
-	template < class Param, class Functor >
-	bool execute_nocopy( Param &p, Functor f )
-	{
-		if( thread_ == NULL )
-		{
-			return( false );
-		}
-
-		// キューに追加する
-		__thread_controller__::__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base_nocopy< Param, Functor >( p, f );
-
-		// 排他制御する
-		lock_.lock( );
-		functors_.push_back( func );
-		lock_.unlock( );
-
-		// スレッドを再開する
-		thread_->resume( );
-
-		return( true );
-	}
-
-	/// @brief 関数とパラメータを指定してスレッドを実行する
-	//! 
-	//! ワーカースレッドが終了した状態では false を返す．
-	//! スレッドが実行する関数の引数は参照として渡される．
-	//! 
-	//! @param[in,out] p1 … スレッドの関数に渡すパラメータ1
-	//! @param[in,out] p2 … スレッドの関数に渡すパラメータ2
+	//! @param[in,out] p1 … スレッドの関数に渡すパラメータ
+	//! @param[in,out] p2 … スレッドの関数に渡すパラメータ
+	//! @param[in,out] p3 … スレッドの関数に渡すパラメータ
 	//! @param[in]     f  … 実行されるスレッド関数
 	//! 
-	template < class Param1, class Param2, class Functor >
-	bool execute_nocopy( Param1 &p1, Param2 &p2, Functor f )
+	template < class Functor, class Param1, class Param2, class Param3 >
+	bool execute( Functor f, Param1 &p1, Param2 &p2, Param3 &p3 )
 	{
 		if( thread_ == NULL )
 		{
 			return( false );
 		}
 
-		// キューに追加する
-		__thread_controller__::__thread_pool_functor__ *func = new __thread_controller__::thread_pool_functor_base_nocopy2< Param1, Param2, Functor >( p1, p2, f );
+		return( exec( new __thread_controller__::thread_pool_functor_base3< Param1, Param2, Param3, Functor >( p1, p2, p3, f ) ) );
+	}
 
-		// 排他制御する
-		lock_.lock( );
-		functors_.push_back( func );
-		lock_.unlock( );
+	/// @brief 関数とパラメータを指定してスレッドを実行する
+	//! 
+	//! ワーカースレッドが終了した状態では false を返す．
+	//! スレッドが実行する関数の引数はコピーして渡される．
+	//! 
+	//! @param[in,out] p1 … スレッドの関数に渡すパラメータ
+	//! @param[in,out] p2 … スレッドの関数に渡すパラメータ
+	//! @param[in,out] p3 … スレッドの関数に渡すパラメータ
+	//! @param[in,out] p4 … スレッドの関数に渡すパラメータ
+	//! @param[in]     f  … 実行されるスレッド関数
+	//! 
+	template < class Functor, class Param1, class Param2, class Param3, class Param4 >
+	bool execute( Functor f, Param1 &p1, Param2 &p2, Param3 &p3, Param4 &p4 )
+	{
+		if( thread_ == NULL )
+		{
+			return( false );
+		}
 
-		// スレッドを再開する
-		thread_->resume( );
-
-		return( true );
+		return( exec( new __thread_controller__::thread_pool_functor_base4< Param1, Param2, Param3, Param4, Functor >( p1, p2, p3, p4, f ) ) );
 	}
 
 	/// @brief 関数とパラメータを指定してスレッドを実行する
@@ -2467,18 +2139,7 @@ public:
 			return( false );
 		}
 
-		// キューに追加する
-		__thread_controller__::__thread_pool_functor__ *func = new __thread_controller__::thread_pool_void_functor_base< Functor >( f );
-
-		// 排他制御する
-		lock_.lock( );
-		functors_.push_back( func );
-		lock_.unlock( );
-
-		// スレッドを再開する
-		thread_->resume( );
-
-		return( true );
+		return( exec( new __thread_controller__::thread_pool_void_functor_base< Functor >( f ) ) );
 	}
 
 	/// @brief 全ての処理が終了するか，タイムアウトになるまで待機する
@@ -2501,6 +2162,28 @@ public:
 		{
 			return( thread_->wait( dwMilliseconds ) );
 		}
+	}
+
+protected:
+	/// @brief 関数をスレッドプール内のスレッドに割り当てて実行する
+	//! 
+	//! @param[in] func … 実行されるスレッド関数
+	//! 
+	bool exec( __thread_controller__::__thread_pool_functor__ *func )
+	{
+		// キューに追加する
+		{
+			// 排他制御する
+			lock_.lock( );
+			functors_.push_back( func );
+			lock_.unlock( );
+		}
+
+		// スレッドを再開する
+		thread_->resume( );
+
+
+		return( true );
 	}
 };
 #endif

@@ -45,6 +45,8 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <cstring>
+#include <stdlib.h>
 
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
@@ -152,7 +154,7 @@ public:
 				a *= static_cast< double >( RADIX );
 			}
 
-			size_type i = 0;
+			difference_type i = 0;
 			do
 			{
 				data_[ i ] = static_cast< unsigned int >( a );
@@ -615,7 +617,7 @@ public:
 		difference_type nmpa = NMPA;
 		difference_type mmpa = MMPA - 1;
 
-		if( mmpa < std::abs( static_cast< int >( exp_ ) ) )
+		if( mmpa < static_cast< difference_type >( std::abs( static_cast< double >( exp_ ) ) ) )
 		{
 			decimal tmp( *this );
 			tmp.exp_ = 0;
