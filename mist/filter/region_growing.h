@@ -112,7 +112,7 @@ namespace region_growing_utility
 		expand_mode_type __expand_mode__;
 
 		/// @brief 任意の位置が構造要素内かどうかを判定する関数
-		bool operator ()( difference_type i, difference_type j, difference_type k ) const { return( true ); }
+		bool operator ()( difference_type /* i */, difference_type /* j */, difference_type /* k */ ) const { return( true ); }
 
 		/// @brief 次の注目点の定め方
 		expand_mode_type expand_mode( ) const { return( __expand_mode__ ); }
@@ -138,7 +138,7 @@ namespace region_growing_utility
 		expand_mode_type __expand_mode__;
 
 		/// @brief 任意の位置が構造要素内かどうかを判定する関数
-		bool operator ()( difference_type i, difference_type j, difference_type k ) const { return( true ); }
+		bool operator ()( difference_type /* i */, difference_type /* j */, difference_type /* k */ ) const { return( true ); }
 
 		/// @brief 次の注目点の定め方
 		expand_mode_type expand_mode( ) const { return( __expand_mode__ ); }
@@ -456,7 +456,7 @@ namespace __region_growing_utility__
 		typedef ptrdiff_t	difference_type;
 
 		bool empty( ) const { return( true ); }
-		bool operator ()( difference_type i, difference_type j, difference_type k ) const { return( false ); }
+		bool operator ()( difference_type /* i */, difference_type /* j */, difference_type /* k */ ) const { return( false ); }
 	};
 
 

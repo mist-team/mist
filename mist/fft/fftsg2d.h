@@ -816,7 +816,7 @@ inline void cdft2d_sub(int n1, int n2, int isgn, double **a, double *t,
 }
 
 
-inline void rdft2d_sub(int n1, int n2, int isgn, double **a)
+inline void rdft2d_sub(int n1, int /* n2 */, int isgn, double **a)
 {
     int n1h, i, j;
     double xi;

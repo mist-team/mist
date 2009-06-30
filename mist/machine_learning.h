@@ -123,7 +123,7 @@ namespace machine_learning
 		}
 
 		/// @brief 他の特徴量と値の大小を比較する
-		const bool operator <( const feature_one &f ) const
+		bool operator <( const feature_one &f ) const
 		{
 			return( value < f.value );
 		}
@@ -205,7 +205,7 @@ namespace machine_learning
 		pair( const KEY &k, const VALUE &val ) : key( k ), value( val ){ }
 
 		/// @brief 他の特徴量と値の大小を比較する
-		const bool operator <( const pair &f ) const
+		bool operator <( const pair &f ) const
 		{
 			return( key < f.key );
 		}
@@ -888,7 +888,7 @@ namespace machine_learning
 			}
 
 			/// @brief 識別機のパラメータを記録した文字列からパラメータを復元する
-			void deserialize( const std::string &data )
+			void deserialize( const std::string & /* data */ )
 			{
 				//sscanf( data.c_str( ), "%d,%lf,%lf,%lf,%lf", &index_, &ave_[ 0 ], &ave_[ 1 ], &sig_[ 0 ], &sig_[ 1 ] );
 			}
@@ -1694,10 +1694,14 @@ namespace machine_learning
 				char line[ 4096 ], buff[ 4096 ];
 
 				// クラス数等の基本情報を書き込む
-				fgets( line, 4096, fp );
-				sscanf( line, "Category  = %d", &numClasses );
-				fgets( line, 4096, fp );
-				sscanf( line, "Stage     = %d", &numStages );
+				if( fgets( line, 4096, fp ) != NULL )
+				{
+					sscanf( line, "Category  = %d", &numClasses );
+				}
+				if( fgets( line, 4096, fp ) != NULL )
+				{
+					sscanf( line, "Stage     = %d", &numStages );
+				}
 
 				// 強識別器を初期化する
 				weak_classifiers_.resize( numStages );
@@ -1709,10 +1713,12 @@ namespace machine_learning
 				// クラス名を読み込む
 				for( size_type i = 0 ; i < categories_.size( ) ; i++ )
 				{
-					fgets( line, 4096, fp );
-					memset( buff, '\0', 4096 );
-					sscanf( line, "Class[%d] : %s", &dmy, buff );
-					categories_[ i ] = buff;
+					if( fgets( line, 4096, fp ) != NULL )
+					{
+						memset( buff, '\0', 4096 );
+						sscanf( line, "Class[%d] : %s", &dmy, buff );
+						categories_[ i ] = buff;
+					}
 				}
 
 				// Code Word を読み込む
@@ -1721,7 +1727,11 @@ namespace machine_learning
 					std::vector< bool > &code = code_word_[ i ];
 					code.resize( numClasses );
 
-					fgets( line, 4096, fp );
+					if( fgets( line, 4096, fp ) == NULL )
+					{
+						break;
+					}
+
 					const char *p = line, *ep = line + 4096;
 
 					for( size_type l = 0 ; l < code.size( ) ; l++ )
@@ -1735,14 +1745,18 @@ namespace machine_learning
 				// 弱識別器と Alpha と Beta を列挙する
 				for( size_type i = 0 ; i < weak_classifiers_.size( ) ; i++ )
 				{
-					fgets( line, 4096, fp );
-					weak_classifiers_[ i ].deserialize( line );
+					if( fgets( line, 4096, fp ) != NULL )
+					{
+						weak_classifiers_[ i ].deserialize( line );
+					}
 
-					fgets( line, 4096, fp );
-					double alpha, beta;
-					sscanf( line, "%lf,%lf", &alpha, &beta );
-					alpha_[ i ] = alpha;
-					beta_[ i ] = beta;
+					if( fgets( line, 4096, fp ) != NULL )
+					{
+						double alpha, beta;
+						sscanf( line, "%lf,%lf", &alpha, &beta );
+						alpha_[ i ] = alpha;
+						beta_[ i ] = beta;
+					}
 				}
 
 				fclose( fp );

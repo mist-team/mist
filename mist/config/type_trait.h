@@ -94,6 +94,26 @@ template<>          struct is_integer< size_t >        { _MIST_CONST( bool, valu
 template<>          struct is_integer< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
 #endif
 
+/// @brief •„†•t‚«Œ^‚©‚Ç‚¤‚©”»’è
+//! 
+//! T ‚ª•„†•t‚«Œ^‚Å‚ ‚ê‚Î^‚É•]‰¿‚·‚éB
+//! 
+//! @param T  c ’²¸‚·‚éŒ^
+//! 
+template< class T > struct is_signed                  { _MIST_CONST( bool, value, false ); };
+template<>          struct is_signed< signed char >   { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_signed< signed short >  { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_signed< signed int >    { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_signed< signed long >   { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_signed< char >          { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_signed< float >         { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_signed< double >        { _MIST_CONST( bool, value, true  ); };
+template<>          struct is_signed< long double >   { _MIST_CONST( bool, value, true  ); };
+
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) && defined( __ICC ) )
+template<>          struct is_signed< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
+#endif
+
 
 
 /// @brief arithmetic ”»’è

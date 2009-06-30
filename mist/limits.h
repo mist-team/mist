@@ -326,6 +326,26 @@ namespace __limits_min_max__
 
 namespace __limits_0_255__
 {
+	template < bool _ISSIGNED_ >
+	struct __limits_0_255__
+	{
+		template < class T >
+		static const T limits( const T &v )
+		{
+			return( v < 0 ? 0 : ( v > 255 ? 255 : v ) );
+		}
+	};
+
+	template < >
+	struct __limits_0_255__< false >
+	{
+		template < class T >
+		static const T limits( const T &v )
+		{
+			return( v > 255 ? 255 : v );
+		}
+	};
+
 	template < bool _ISCHAR_ >
 	struct limits_0_255__
 	{
@@ -342,7 +362,7 @@ namespace __limits_0_255__
 		template < class T >
 		static const T limits( const T &v )
 		{
-			return( v < 0 ? 0 : ( v > 255 ? 255 : v ) );
+			return( __limits_0_255__< is_signed< T >::value >::limits( v ) );
 		}
 	};
 

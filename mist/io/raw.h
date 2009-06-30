@@ -152,7 +152,7 @@ namespace __raw_controller__
 							bool from_little_endian,
 							typename Array::size_type skip_num_bytes,
 							Functor f,
-							ValueType v
+							ValueType /* v */
 						)
 		{
 			typedef typename Array::value_type value_type;

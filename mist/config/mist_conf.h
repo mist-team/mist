@@ -129,13 +129,14 @@ _MIST_BEGIN
 #define _MIST_ALLOCATE_TEST_			0
 
 //#ifdef __MIST_MSVC__
-//	#define _MIST_ALLOCATOR_MEMORY_TRIM_	0	///< VC標準のSTLではサポートしていないのでオフにする
+//	#define _MIST_ALLOCATOR_MEMORY_TRIM_	0		///< VC標準のSTLではサポートしていないのでオフにする
 //#else
-//	#define _MIST_ALLOCATOR_MEMORY_TRIM_	1	///< VC以外のSTLではサポートしているのでオンにする
+//	#define _MIST_ALLOCATOR_MEMORY_TRIM_	1		///< VC以外のSTLではサポートしているのでオンにする
 //#endif
 
-#define _MIST_ALLOCATOR_MEMORY_TRIM_	0		///< すでに確保されているメモリ領域の切り詰めを行うアロケータをサポートする場合はオンにする
+#define _MIST_ALLOCATOR_MEMORY_TRIM_	0			///< すでに確保されているメモリ領域の切り詰めを行うアロケータをサポートする場合はオンにする
 
+#define _MIST_UNUSED_( arg )	( void )( arg )		///< 未使用の変数に関する警告を表示しなくするためのマクロ
 
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 
@@ -274,7 +275,7 @@ struct __mist_dmy_callback__
 	//! @return true  … アルゴリズムの実行を継続
 	//! @return false … ユーザー側からのキャンセルにより，アルゴリズムの実行を中止
 	//!
-	bool operator()( long double percent ) const { return( true ); }
+	bool operator()( long double /* percent */ ) const { return( true ); }
 };
 
 

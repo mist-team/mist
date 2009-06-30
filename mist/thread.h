@@ -67,6 +67,7 @@
 	#include <pthread.h>
 	#include <unistd.h>
 	#include <time.h>
+	#include <errno.h>
 	#include <sys/time.h>
 	#define __THREAD_POOL_SUPPORT__		1
 #endif
@@ -722,9 +723,15 @@ public:
 		}
 		else
 		{
+			timeval now;
+			gettimeofday( &now, NULL );
+
 			timespec tm;
-			tm.tv_sec = static_cast< time_t >( dwMilliseconds / 1000 );
-			tm.tv_nsec = static_cast< long >( ( dwMilliseconds % 1000 ) * 1000000 );
+			tm.tv_sec  = now.tv_sec + static_cast< time_t >( dwMilliseconds / 1000 );
+			tm.tv_nsec = now.tv_usec * 1000 + static_cast< long >( ( dwMilliseconds % 1000 ) * 1000000 );
+
+			tm.tv_sec += tm.tv_nsec / 1000000000;
+			tm.tv_nsec = tm.tv_nsec % 1000000000;
 
 			while( !flag_ )
 			{
@@ -915,7 +922,7 @@ public:
 		return( true );
 #elif defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
 		DWORD ret = WaitForSingleObject( thread_handle_, dwMilliseconds );
-		return ( SUCCEEDED( ret ) );
+		return ( ret == WAIT_OBJECT_0 );
 #else
 		if( dwMilliseconds == INFINITE )
 		{
@@ -923,21 +930,13 @@ public:
 		}
 		else
 		{
-			if( exit_.try_lock( ) )
+			if( finish_.wait( dwMilliseconds ) )
 			{
-				exit_.unlock( );
 				return ( pthread_join( thread_id_, NULL ) == 0 );
 			}
 			else
 			{
-				if( finish_.wait( INFINITE ) )
-				{
-					return ( pthread_join( thread_id_, NULL ) == 0 );
-				}
-				else
-				{
-					return( false );
-				}
+				return( false );
 			}
 		}
 #endif
@@ -961,7 +960,7 @@ public:
 		{
 			// スレッドの完全終了を待機する
 #if defined( __THREAD_POOL_SUPPORT__ ) && __THREAD_POOL_SUPPORT__ != 0
-			while( !exit_.try_lock( ) );
+			while( !exit_.try_lock( ) ){}
 			exit_.unlock( );
 #endif
 
@@ -977,8 +976,10 @@ public:
 		if( thread_id_ != ( pthread_t ) ( -1 ) )
 		{
 			// スレッドの完全終了を待機する
-			while( !exit_.try_lock( ) );
+			while( !exit_.try_lock( ) ){}
 			exit_.unlock( );
+
+			pthread_join( thread_id_, NULL );
 
 			thread_id_ = ( pthread_t ) ( -1 );
 			return( true );
@@ -1020,6 +1021,7 @@ protected:
 		obj->exit_.lock( );
 		obj->thread_exit_code_ = obj->thread_function( );
 		obj->exit_.unlock( );
+		obj->finish_.send( );
 		return ( NULL );
 	}
 #endif
@@ -1242,7 +1244,7 @@ namespace __thread_controller__
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual void run( size_type id, size_type nthreads )
+		virtual void run( size_type /* id */, size_type /* nthreads */ )
 		{
 			func_( param_ );
 		}
@@ -1262,7 +1264,7 @@ namespace __thread_controller__
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual void run( size_type id, size_type nthreads )
+		virtual void run( size_type /* id */, size_type /* nthreads */ )
 		{
 			func_( param1_, param2_ );
 		}
@@ -1283,7 +1285,7 @@ namespace __thread_controller__
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual void run( size_type id, size_type nthreads )
+		virtual void run( size_type /* id */, size_type /* nthreads */ )
 		{
 			func_( param1_, param2_, param3_ );
 		}
@@ -1305,7 +1307,7 @@ namespace __thread_controller__
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual void run( size_type id, size_type nthreads )
+		virtual void run( size_type /* id */, size_type /* nthreads */ )
 		{
 			func_( param1_, param2_, param3_, param4_ );
 		}
@@ -1324,7 +1326,7 @@ namespace __thread_controller__
 
 	protected:
 		// 継承した先で必ず実装されるスレッド関数
-		virtual void run( size_type id, size_type nthreads )
+		virtual void run( size_type /* id */, size_type /* nthreads */ )
 		{
 			func_( );
 		}
@@ -1411,7 +1413,7 @@ namespace __thread_controller__
 			lock_.unlock( );
 
 			// スレッドが正常終了するまで待つ
-			while( !wait_lock_.try_lock( ) );
+			while( !wait_lock_.try_lock( ) ){}
 			wait_lock_.unlock( );
 
 			return( base::close( ) );
@@ -2205,7 +2207,7 @@ public:
 	//! 
 	//! @param[in] dwMilliseconds … タイムアウト時間（ミリ秒単位）
 	//! 
-	bool wait( unsigned long dwMilliseconds = INFINITE ){ return( thread_ == NULL ? false : thread_->wait( INFINITE ) ); }
+	bool wait( unsigned long dwMilliseconds = INFINITE ){ return( thread_ == NULL ? false : thread_->wait( dwMilliseconds ) ); }
 
 
 	/// @brief スレッドが使用していたリソースを開放する
@@ -2295,7 +2297,7 @@ inline void create_threads( thread_handle *handles, Param *param, size_t num_thr
 {
 	for( size_t i = 0 ; i < num_threads ; i++ )
 	{
-		handles[ i ] = thread_handle( new __thread_controller__::thread_object_functor< Param, Functor >( param, f ) );
+		handles[ i ] = thread_handle( new __thread_controller__::thread_object_functor< Param, Functor >( param[ i ], f ) );
         handles[ i ].create( );
 	}
 }
@@ -2341,8 +2343,8 @@ inline bool close_threads( thread_handle *handles, size_t num_threads )
 //! @param[in,out] thread_        … スレッドオブジェクト
 //! @param[in]     dwMilliseconds … タイムアウト時間（ミリ秒単位）
 //!
-//! @retval true  … スレッドがタイムアンと時間内に正常終了した場合
-//! @retval false … スレッドがタイムアンと時間内に終了しなかった場合
+//! @retval true  … スレッドがタイムアウト時間内に正常終了した場合
+//! @retval false … スレッドがタイムアウト時間内に終了しなかった場合
 //! 
 inline bool wait_thread( thread_handle &thread_, unsigned long dwMilliseconds = INFINITE ){ return( thread_.wait( dwMilliseconds ) ); }
 
@@ -2352,20 +2354,58 @@ inline bool wait_thread( thread_handle &thread_, unsigned long dwMilliseconds = 
 //! @param[in]     num_threads    … スレッド数
 //! @param[in]     dwMilliseconds … タイムアウト時間（ミリ秒単位）
 //!
-//! @retval true  … 複数のスレッドがタイムアンと時間内に正常終了した場合
-//! @retval false … 複数のスレッドがタイムアンと時間内に終了しなかった場合
+//! @retval true  … 複数のスレッドがタイムアウト時間内に正常終了した場合
+//! @retval false … 複数のスレッドがタイムアウト時間内に終了しなかった場合
 //! 
 inline bool wait_threads( thread_handle *handles, size_t num_threads, unsigned long dwMilliseconds = INFINITE )
 {
-	bool ret = true;
-	for( size_t i = 0 ; i < num_threads ; i++ )
+	if( dwMilliseconds == INFINITE )
 	{
-        if( !handles[ i ].wait( dwMilliseconds ) )
+		bool ret = true;
+		for( size_t i = 0 ; i < num_threads ; i++ )
 		{
-			ret = false;
+			if( !handles[ i ].wait( INFINITE ) )
+			{
+				ret = false;
+			}
 		}
+		return( ret );
 	}
-	return( ret );
+	else
+	{
+		bool ret = true;
+		for( size_t i = 0 ; i < num_threads ; i++ )
+		{
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+			DWORD st = timeGetTime( );
+#else
+			timeval dmy;
+			gettimeofday( &dmy, NULL );
+			unsigned long st = dmy.tv_sec * 1000 + dmy.tv_usec / 1000;
+#endif
+			if( !handles[ i ].wait( dwMilliseconds ) )
+			{
+				ret = false;
+			}
+
+#if defined( __MIST_WINDOWS__ ) && __MIST_WINDOWS__ > 0
+			DWORD et = timeGetTime( );
+#else
+			gettimeofday( &dmy, NULL );
+			unsigned long et = dmy.tv_sec * 1000 + dmy.tv_usec / 1000;
+#endif
+
+			if( st + dwMilliseconds <= et )
+			{
+				break;
+			}
+			else
+			{
+				dwMilliseconds -= et - st;
+			}
+		}
+		return( ret );
+	}
 }
 
 
@@ -2431,6 +2471,8 @@ inline bool do_threads( Param *params, size_t num_threads, Functor f, unsigned l
 	{
 		ret = false;
 	}
+
+	delete [] threads_;
 
 	return( ret );
 }

@@ -166,7 +166,7 @@ public:
 	//! @retval true  … 正常にリサイズが終了
 	//! @retval false … リサイズ後のメモリを確保できなかった場合
 	//! 
-	bool resize( size_type num, size_type dmy1 = 0, size_type dmy2 = 0 )
+	bool resize( size_type num, size_type /* dmy1 */ = 0, size_type /* dmy2 */ = 0 )
 	{
 		if( size_ < num )
 		{
@@ -346,20 +346,20 @@ public:
 	bool empty( ) const { return( size_ == 0 ); }
 
 
-	size_type size( ) const { return( size_ ); }	///< @brief コンテナに格納されているデータ数を返す
-	size_type size1( ) const { return( size_ ); }	///< @brief X軸方向のコンテナに格納されているデータ数を返す
-	size_type size2( ) const { return( 1 ); }		///< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
-	size_type size3( ) const { return( 1 ); }		///< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
-	size_type width( ) const { return( size_ ); }	///< @brief X軸方向のコンテナに格納されているデータ数を返す
-	size_type height( ) const { return( 1 ); }		///< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
-	size_type depth( ) const { return( 1 ); }		///< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type size( ) const { return( size_ ); }		///< @brief コンテナに格納されているデータ数を返す
+	size_type size1( ) const { return( size_ ); }		///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type size2( ) const { return( 1 ); }			///< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type size3( ) const { return( 1 ); }			///< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type width( ) const { return( size_ ); }		///< @brief X軸方向のコンテナに格納されているデータ数を返す
+	size_type height( ) const { return( 1 ); }			///< @brief Y軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
+	size_type depth( ) const { return( 1 ); }			///< @brief Z軸方向のコンテナに格納されているデータ数を返す（常に1を返す）
 
-	double reso1( double r1 ){ return( 1.0 ); }		///< @brief X軸方向の解像度を返す
-	double reso1( ) const { return( 1.0 ); }		///< @brief X軸方向の解像度を設定する
-	double reso2( double r2 ){ return( 1.0 ); }		///< @brief Y軸方向の解像度を返す
-	double reso2( ) const { return( 1.0 ); }		///< @brief Y軸方向の解像度を設定する
-	double reso3( double r3 ){ return( 1.0 ); }		///< @brief Z軸方向の解像度を返す
-	double reso3( ) const { return( 1.0 ); }		///< @brief Z軸方向の解像度を設定する）
+	double reso1( double /* r1 */ ){ return( 1.0 ); }	///< @brief X軸方向の解像度を返す
+	double reso1( ) const { return( 1.0 ); }			///< @brief X軸方向の解像度を設定する
+	double reso2( double /* r2 */ ){ return( 1.0 ); }	///< @brief Y軸方向の解像度を返す
+	double reso2( ) const { return( 1.0 ); }			///< @brief Y軸方向の解像度を設定する
+	double reso3( double /* r3 */ ){ return( 1.0 ); }	///< @brief Z軸方向の解像度を返す
+	double reso3( ) const { return( 1.0 ); }			///< @brief Z軸方向の解像度を設定する）
 
 
 	/// @brief コンテナ内の要素が占めるデータ量をバイト単位で返す
@@ -780,9 +780,9 @@ protected:
 	double reso1_;							///< @brief コンテナ内の要素の解像度（ミリや周波数など）
 
 public:
-	double reso1( double r1 ){ return( reso1_ = r1 ); }								//< @brief X軸方向の解像度を r1 に設定し，設定後の値を返す
-	double reso1( ) const { return( reso1_ ); }										//< @brief X軸方向の解像度を返す
-	void reso( double r1, double dmy1 = 1.0, double dmy2 = 1.0 ){ reso1_ = r1; }	//< @brief X軸方向の解像度を r1 に設定し，設定後の値を返す
+	double reso1( double r1 ){ return( reso1_ = r1 ); }											//< @brief X軸方向の解像度を r1 に設定し，設定後の値を返す
+	double reso1( ) const { return( reso1_ ); }													//< @brief X軸方向の解像度を返す
+	void reso( double r1, double /* dmy1 */ = 1.0, double /* dmy2 */ = 1.0 ){ reso1_ = r1; }	//< @brief X軸方向の解像度を r1 に設定し，設定後の値を返す
 
 
 /************************************************************************************************************
@@ -1071,7 +1071,7 @@ public:
 	//! @retval true  … 正常にリサイズが終了
 	//! @retval false … リサイズ後のメモリを確保できなかった場合
 	//! 
-	bool resize( size_type num1, size_type num2, size_type dmy1 = 0 )
+	bool resize( size_type num1, size_type num2, size_type /* dmy1 */ = 0 )
 	{
 		if( base::resize( num1 * num2 ) )
 		{
@@ -1256,7 +1256,7 @@ public:
 	//! @param[in] r2  … 新しいY軸方向の解像度
 	//! @param[in] dmy … 利用しない
 	//!
-	void reso( double r1, double r2, double dmy = 1.0 ){ base::reso1_ = r1; reso2_ = r2; }
+	void reso( double r1, double r2, double /* dmy */ = 1.0 ){ base::reso1_ = r1; reso2_ = r2; }
 
 
 
@@ -1501,7 +1501,7 @@ public:
 	//!
 	/// @return 指定された要素を示す参照
 	//!
-	reference operator ()( size_type i, size_type j, size_type dmy = 0 )
+	reference operator ()( size_type i, size_type j, size_type /* dmy */ = 0 )
 	{
 		_CHECK_ACCESS_VIOLATION2U_( i, j )
 		return( base::data_[ i + j * size1_ ] );
@@ -1518,7 +1518,7 @@ public:
 	//!
 	/// @return 指定された要素を示す const 参照
 	//!
-	const_reference operator ()( size_type i, size_type j, size_type dmy = 0 ) const
+	const_reference operator ()( size_type i, size_type j, size_type /* dmy */ = 0 ) const
 	{
 		_CHECK_ACCESS_VIOLATION2U_( i, j )
 		return( base::data_[ i + j * size1_ ] );
@@ -3046,7 +3046,7 @@ public:
 
 	/// @brief array2 配列 o の配列の大きさと，X軸方向のマージン margin1，Y軸方向のマージン margin2 を用いて初期化し，全要素を val で初期化する
 	template < class T, class Allocator >
-	marray( const array2< T, Allocator > &o, size_type margin1, size_type margin2, size_type margin3, const value_type &val )
+	marray( const array2< T, Allocator > &o, size_type margin1, size_type margin2, size_type /* margin3 */, const value_type &val )
 		: base( o.size1( ) + margin1 * 2, o.size2( ) + margin2 * 2, o.reso1( ), o.reso2( ) ), margin1_( margin1 ), margin2_( margin2 ), margin3_( 0 )
 	{
 		fill_margin( val );

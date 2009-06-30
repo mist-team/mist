@@ -1654,7 +1654,7 @@ struct _pixel_converter_
 	typedef rgba< T > color_type;
 	enum{ color_num = 1 };
 
-	static value_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )
+	static value_type convert_to( value_type r, value_type g, value_type b, value_type /* a */ = 255 )
 	{
 		return( color_type( r, g, b ).get_value( ) );
 	}

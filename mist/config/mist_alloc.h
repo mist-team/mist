@@ -152,7 +152,7 @@ struct mist_memory_operator
 	//! @return コピー先の末尾アドレス
 	//! 
 	template < class Allocator >
-	static typename Allocator::pointer copy_objects1( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x )
+	static typename Allocator::pointer copy_objects1( Allocator & /* allocator */, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cerr << "Normal Copy Function" << ::std::endl;
@@ -179,7 +179,7 @@ struct mist_memory_operator
 	//! @return コピー先の末尾アドレス
 	//! 
 	template < class Allocator >
-	static typename Allocator::pointer copy_objects2( Allocator &allocator, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to )
+	static typename Allocator::pointer copy_objects2( Allocator & /* allocator */, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cerr << "Normal Copy Function" << ::std::endl;
@@ -199,7 +199,7 @@ struct mist_memory_operator
 	//! @param[in] obj       … 代入するオブジェクト
 	//! 
 	template < class Allocator >
-	static void fill_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
+	static void fill_objects1( Allocator & /* allocator */, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cerr << "Normal Clean Function" << ::std::endl;
@@ -217,7 +217,7 @@ struct mist_memory_operator
 	//! @param[in] num       … 代入するオブジェクト数
 	//! 
 	template < class Allocator >
-	static void fill_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
+	static void fill_objects2( Allocator & /* allocator */, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cerr << "Normal Clean Function" << ::std::endl;
@@ -329,7 +329,7 @@ struct mist_memory_operator< true >
 	//! @return コピー先の末尾アドレス
 	//! 
 	template < class Allocator >
-	static typename Allocator::pointer copy_objects1( Allocator &allocator, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x )
+	static typename Allocator::pointer copy_objects1( Allocator & /* allocator */, typename Allocator::const_pointer s, typename Allocator::const_pointer e, typename Allocator::pointer x )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cerr << "Memcpy Copy Function" << ::std::endl;
@@ -351,7 +351,7 @@ struct mist_memory_operator< true >
 	//! @return コピー先の末尾アドレス
 	//! 
 	template < class Allocator >
-	static typename Allocator::pointer copy_objects2( Allocator &allocator, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to )
+	static typename Allocator::pointer copy_objects2( Allocator & /* allocator */, typename Allocator::const_pointer ptr, typename Allocator::size_type num, typename Allocator::pointer to )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cerr << "Memcpy Copy Function" << ::std::endl;
@@ -371,7 +371,7 @@ struct mist_memory_operator< true >
 	//! @param[in] obj       … 代入するオブジェクト
 	//! 
 	template < class Allocator >
-	static void fill_objects1( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
+	static void fill_objects1( Allocator & /* allocator */, typename Allocator::pointer ptr, typename Allocator::size_type num, typename Allocator::const_reference obj )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cerr << "Memcpy Clean Function" << ::std::endl;
@@ -389,7 +389,7 @@ struct mist_memory_operator< true >
 	//! @param[in] num       … 代入するオブジェクト数
 	//! 
 	template < class Allocator >
-	static void fill_objects2( Allocator &allocator, typename Allocator::pointer ptr, typename Allocator::size_type num )
+	static void fill_objects2( Allocator & /* allocator */, typename Allocator::pointer ptr, typename Allocator::size_type num )
 	{
 #if _MIST_ALLOCATE_TEST_ != 0
 		::std::cerr << "Memcpy Clean Function" << ::std::endl;
