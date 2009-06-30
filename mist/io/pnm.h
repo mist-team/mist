@@ -247,7 +247,7 @@ namespace __pnm_controller__
 			elements.clear( );
 			while( i < line.size( ) )
 			{
-				for( ; i < line.size( ) && line[ i ] == ch ; i++ );
+				for( ; i < line.size( ) && line[ i ] == ch ; i++ ){}
 
 				str = "";
 				for( ; i < line.size( ) && line[ i ] != ch ; i++ )

@@ -1119,7 +1119,7 @@ inline void cdft3db_sub(int n1, int n2, int n3, int isgn, double ***a,
 }
 
 
-inline void rdft3d_sub(int n1, int n2, int n3, int isgn, double ***a)
+inline void rdft3d_sub(int n1, int n2, int /* n3 */, int isgn, double ***a)
 {
     int n1h, n2h, i, j, k, l;
     double xi;

@@ -535,7 +535,7 @@ public:
 	shared_array( pointer p ){ base::add_ref( p ); }
 
 	/// @brief 他の共有メモリポインタを用いて初期化し，参照カウントを 1 増やす
-	shared_array( const shared_array &p ){ base::add_ref( p ); }
+	shared_array( const shared_array &p ) : base( ) { base::add_ref( p ); }
 
 	/// @brief 管理するポインタの参照カウントを1減らす
 	//!

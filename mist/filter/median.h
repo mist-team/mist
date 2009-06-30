@@ -135,7 +135,7 @@ namespace __median_filter_with_histogram__
 				else
 				{
 					a = th;
-					while( med <= sort[ --a ] );
+					while( med <= sort[ --a ] ){}
 					lt_med = static_cast< signed int >( a + 1 );
 				}
 
