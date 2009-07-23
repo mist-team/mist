@@ -1647,7 +1647,7 @@ public:
 	//! @param[in]     f … 実行されるスレッド関数
 	//! 
 	template < class Functor, class Param >
-	bool execute( Functor f, Param &p )
+	bool execute( Functor f, Param p )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -1667,7 +1667,7 @@ public:
 	//! @param[in]     f  … 実行されるスレッド関数
 	//! 
 	template < class Functor, class Param1, class Param2 >
-	bool execute( Functor f, Param1 &p1, Param2 &p2 )
+	bool execute( Functor f, Param1 p1, Param2 p2 )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -1688,7 +1688,7 @@ public:
 	//! @param[in]     f  … 実行されるスレッド関数
 	//! 
 	template < class Functor, class Param1, class Param2, class Param3 >
-	bool execute( Functor f, Param1 &p1, Param2 &p2, Param3 &p3 )
+	bool execute( Functor f, Param1 p1, Param2 p2, Param3 p3 )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -1710,7 +1710,7 @@ public:
 	//! @param[in]     f  … 実行されるスレッド関数
 	//! 
 	template < class Functor, class Param1, class Param2, class Param3, class Param4 >
-	bool execute( Functor f, Param1 &p1, Param2 &p2, Param3 &p3, Param4 &p4 )
+	bool execute( Functor f, Param1 p1, Param2 p2, Param3 p3, Param4 p4 )
 	{
 		if( threads_.empty( ) || !initialized_ )
 		{
@@ -2096,7 +2096,7 @@ public:
 	//! @param[in]     f  … 実行されるスレッド関数
 	//! 
 	template < class Functor, class Param1, class Param2, class Param3 >
-	bool execute( Functor f, Param1 &p1, Param2 &p2, Param3 &p3 )
+	bool execute( Functor f, Param1 p1, Param2 p2, Param3 p3 )
 	{
 		if( thread_ == NULL )
 		{
@@ -2118,7 +2118,7 @@ public:
 	//! @param[in]     f  … 実行されるスレッド関数
 	//! 
 	template < class Functor, class Param1, class Param2, class Param3, class Param4 >
-	bool execute( Functor f, Param1 &p1, Param2 &p2, Param3 &p3, Param4 &p4 )
+	bool execute( Functor f, Param1 p1, Param2 p2, Param3 p3, Param4 p4 )
 	{
 		if( thread_ == NULL )
 		{
