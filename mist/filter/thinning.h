@@ -1990,12 +1990,14 @@ namespace hilditch
 	//! @attention 入力と出力が同じ画像オブジェクトでも正しく細線化を行うことが可能です
 	//! @attention 3次元画像に対して適用した場合の結果は正しくないので注意が必要です
 	//!
+	//! @attention 出力画像では，背景に0，前景に1が代入されています．もし，画像として保存したい場合は本関数の実行後に画素値が1のものを255に置き換えてください．
+	//!
 	//! - 参考文献
 	//!   - C. J. Hilditch, ``Linear Skeleton from Square Cupboards,'' In: Machine Intelligence 6, B. Meltzer and D. Michie eds., Edinburgh Univ. Press, pp.403?420, 1969
 	//!   - 鳥脇純一郎, ``画像理解のためのディジタル画像処理〔II〕，'' 昭晃堂，pp.56-59，1988
 	//! 
 	//! @param[in]  in  … 入力画像
-	//! @param[out] out … 出力画像
+	//! @param[out] out … 出力画像（0か1の2値）
 	//!
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void thinning( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
@@ -2038,12 +2040,14 @@ namespace euclidean
 	//!
 	//! @attention 画素のアスペクト比が1でない場合は，出力画像の型をfloatかdoubleにしないと正確な結果が得られません．十分に注意してください．
 	//!
+	//! @attention 出力画像では，背景に0，前景に1が代入されています．もし，画像として保存したい場合は本関数の実行後に画素値が1のものを255に置き換えてください．
+	//!
 	//! 細線化を行う際に，出力画像の要素のデータ型で一度ユークリッド2乗距離変換した後，細線化処理が実行されます．
 	//! そのため，出力画像のデータ型が unsinged char の場合には，画像のサイズによっては距離変換が最後まで正しく行われません．
 	//! 細線化を実行する場合は，unsigned short かそれよりも大きい値を表現できるデータ型を利用してください． 
 	//!
 	//! @param[in]  in  … 入力画像
-	//! @param[out] out … 出力画像
+	//! @param[out] out … 出力画像（0か1の2値）
 	//!
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void thinning8( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out )
@@ -2089,8 +2093,10 @@ namespace euclidean
 	//!	- 参考文献
 	//! - 米倉達広, 横井茂樹, 鳥脇純一郎, 福村晃夫, ``3次元ディジタル画像における1-要素の消去可能性と図形収縮について,'' 電子情報通信学会論文誌D, vol.65-D, no.12, pp.1543-1549, 1982
 	//!
+	//! @attention 出力画像では，背景に0，前景に1が代入されています．
+	//!
 	//! @param[in]  in  … 入力画像
-	//! @param[out] out … 出力画像
+	//! @param[out] out … 出力画像（0か1の2値）
 	//!
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void shrink_skelton6( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
@@ -2117,8 +2123,10 @@ namespace euclidean
 	//!	- 参考文献
 	//! - 米倉達広, 横井茂樹, 鳥脇純一郎, 福村晃夫, ``3次元ディジタル画像における1-要素の消去可能性と図形収縮について,'' 電子情報通信学会論文誌D, vol.65-D, no.12, pp.1543-1549, 1982
 	//!
+	//! @attention 出力画像では，背景に0，前景に1が代入されています．
+	//!
 	//! @param[in]  in  … 入力画像
-	//! @param[out] out … 出力画像
+	//! @param[out] out … 出力画像（0か1の2値）
 	//!
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void shrink_skelton26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
@@ -2151,12 +2159,14 @@ namespace euclidean
 	//!
 	//! @attention 画素のアスペクト比が1でない場合は，出力画像の型をfloatかdoubleにしないと正確な結果が得られません．十分に注意してください．
 	//!
+	//! @attention 出力画像では，背景に0，前景に1が代入されています．
+	//!
 	//! 細線化を行う際に，出力画像の要素のデータ型で一度ユークリッド2乗距離変換した後，細線化処理が実行されます．
 	//! そのため，出力画像のデータ型が unsinged char の場合には，画像のサイズによっては距離変換が最後まで正しく行われません．
 	//! 細線化を実行する場合は，unsigned short かそれよりも大きい値を表現できるデータ型を利用してください． 
 	//!
 	//! @param[in]  in  … 入力画像
-	//! @param[out] out … 出力画像
+	//! @param[out] out … 出力画像（0か1の2値）
 	//!
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void thinning6( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
@@ -2212,12 +2222,14 @@ namespace euclidean
 	//!
 	//! @attention 画素のアスペクト比が1でない場合は，出力画像の型をfloatかdoubleにしないと正確な結果が得られません．十分に注意してください．
 	//!
+	//! @attention 出力画像では，背景に0，前景に1が代入されています．
+	//!
 	//! 細線化を行う際に，出力画像の要素のデータ型で一度ユークリッド2乗距離変換した後，細線化処理が実行されます．
 	//! そのため，出力画像のデータ型が unsinged char の場合には，画像のサイズによっては距離変換が最後まで正しく行われません．
 	//! 細線化を実行する場合は，unsigned short かそれよりも大きい値を表現できるデータ型を利用してください． 
 	//!
 	//! @param[in]  in  … 入力画像
-	//! @param[out] out … 出力画像
+	//! @param[out] out … 出力画像（0か1の2値）
 	//!
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void thinning26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
@@ -2272,8 +2284,10 @@ namespace euclidean
 	//!
 	//! @attention 画素のアスペクト比が1でない場合は，出力画像の型をfloatかdoubleにしないと正確な結果が得られません．十分に注意してください．
 	//!
+	//! @attention 出力画像では，背景に0，前景に1が代入されています．
+	//!
 	//! @param[in]  in  … 入力画像
-	//! @param[out] out … 出力画像
+	//! @param[out] out … 出力画像（0か1の2値）
 	//!
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void surface_thinning6( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
@@ -2329,8 +2343,10 @@ namespace euclidean
 	//!
 	//! @attention 画素のアスペクト比が1でない場合は，出力画像の型をfloatかdoubleにしないと正確な結果が得られません．十分に注意してください．
 	//!
+	//! @attention 出力画像では，背景に0，前景に1が代入されています．
+	//!
 	//! @param[in]  in  … 入力画像
-	//! @param[out] out … 出力画像
+	//! @param[out] out … 出力画像（0か1の2値）
 	//!
 	template < class T1, class T2, class Allocator1, class Allocator2 >
 	void surface_thinning26( const array3< T1, Allocator1 > &in, array3< T2, Allocator2 > &out )
