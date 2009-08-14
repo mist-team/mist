@@ -1532,7 +1532,7 @@ namespace __thread_controller__
 //! mist::thread_pool pool( 2 );
 //! 
 //! // 関数をパラメータを変えて複数回処理する
-//! pool.execute( param, 処理を行う数, thread_function );
+//! pool.execute( thread_function, param, 処理を行う数 );
 //! 
 //! // スレッドプール内のスレッドが実行している処理が全て終了するまで待機
 //! pool.wait( );
@@ -1971,10 +1971,10 @@ protected:
 //! mist::worker_thread work;
 //! 
 //! // 関数を実行する
-//! work.execute( param, thread_function );
+//! work.execute( thread_function, param );
 //! 
 //! // ワーカースレッドが実行している処理が全て終了するまで待機
-//! pool.wait( );
+//! work.wait( );
 //! @endcode
 //! 
 class worker_thread
