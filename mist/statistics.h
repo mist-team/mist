@@ -148,7 +148,7 @@ namespace statistics
 				v = x * __utility_type__::t( x );
 			}
 
-			for( size_type i = 0 ; i < a.size( ) ; i++ )
+			for( size_type i = 1 ; i < a.size( ) ; i++ )
 			{
 				value_type x = a[ i ] - ave;
 				v += x * __utility_type__::t( x );
