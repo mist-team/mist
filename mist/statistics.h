@@ -69,6 +69,16 @@ namespace __utility__
 	struct __value_type__
 	{
 		typedef typename ____value_type____< is_color< T >::value >::value_type value_type;
+
+		static value_type t( const value_type &v ){ return( v ); }
+	};
+
+	template < class T, class Allocator >
+	struct __value_type__< matrix< T, Allocator > >
+	{
+		typedef matrix< T, Allocator > value_type;
+
+		static value_type t( const value_type &v ){ return( v.t( ) ); }
 	};
 }
 
@@ -84,7 +94,6 @@ namespace statistics
 	//!
 	//!  @{
 
-
 	/// データの平均値を計算する
 	//!
 	//! @param[in] a … 平均値を計算するデータ配列
@@ -99,12 +108,12 @@ namespace statistics
 
 		if( a.empty( ) )
 		{
-			return( value_type( 0 ) );
+			return( value_type( ) );
 		}
 		else
 		{
-			value_type v = value_type( 0 );
-			for( size_type i = 0 ; i < a.size( ) ; i++ )
+			value_type v = a[ 0 ];
+			for( size_type i = 1 ; i < a.size( ) ; i++ )
 			{
 				v += a[ i ];
 			}
@@ -113,49 +122,53 @@ namespace statistics
 	}
 
 
-	/// データの分散を計算する
+	/// データの分散（共分散行列）を計算する
 	//!
-	//! @param[in] a   … 分散を計算するデータ配列
+	//! @param[in] a   … 分散（共分散行列）を計算するデータ配列
 	//! @param[in] ave … データ配列の平均値
 	//! 
-	//! @return データの分散
+	//! @return データの分散（共分散行列）
 	//! 
 	template < class Array >
-	inline typename __utility__::__value_type__< typename Array::value_type >::value_type variance( const Array &a, double ave )
+	inline typename __utility__::__value_type__< typename Array::value_type >::value_type variance( const Array &a, const typename __utility__::__value_type__< typename Array::value_type >::value_type &ave )
 	{
 		typedef typename Array::size_type size_type;
-		typedef typename __utility__::__value_type__< typename Array::value_type >::value_type value_type;
+		typedef __utility__::__value_type__< typename Array::value_type > __utility_type__;
+		typedef typename __utility_type__::value_type value_type;
 
 		if( a.empty( ) )
 		{
-			return( value_type( 0 ) );
+			return( value_type( ) );
 		}
 		else
 		{
-			value_type v = value_type( 0 );
+			value_type v;
+			{
+				value_type x = a[ 0 ] - ave;
+				v = x * __utility_type__::t( x );
+			}
+
 			for( size_type i = 0 ; i < a.size( ) ; i++ )
 			{
 				value_type x = a[ i ] - ave;
-				v += x * x;
+				v += x * __utility_type__::t( x );
 			}
 			return( v / static_cast< double >( a.size( ) ) );
 		}
 	}
 
 
-	/// データの分散を計算する
+	/// データの分散（共分散行列）を計算する
 	//!
-	//! @param[in] a … 分散を計算するデータ配列
+	//! @param[in] a … 分散（共分散行列）を計算するデータ配列
 	//! 
-	//! @return データの分散
+	//! @return データの分散（共分散行列）
 	//! 
 	template < class Array >
 	inline typename __utility__::__value_type__< typename Array::value_type >::value_type variance( const Array &a )
 	{
 		return( variance( a, average( a ) ) );
 	}
-
-
 
 
 	/// データの範囲を指定してヒストグラムを作成する
