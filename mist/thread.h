@@ -1452,11 +1452,11 @@ namespace __thread_controller__
 		// 継承した先で必ず実装されるスレッド関数
 		virtual thread_exit_type thread_function( )
 		{
+			wait_lock_.lock( );
+
 			lock_.lock( );
 			is_running_ = true;
 			lock_.unlock( );
-
-			wait_lock_.lock( );
 
 			while( true )
 			{
@@ -1595,7 +1595,7 @@ public:
 		{
 			threads_[ i ] = new thread_pool_functor( functors_, lock_, i, threads_.size( ) );
 			threads_[ i ]->create( );
-			threads_[ i ]->wait( );
+			//threads_[ i ]->wait( );
 		}
 
 		initialized_ = true;
@@ -1994,7 +1994,7 @@ public:
 	{
 		thread_ = new __thread_controller__::thread_pool_functor( functors_, lock_, 0, 1 );
 		thread_->create( );
-		thread_->wait( );
+		//thread_->wait( );
 	}
 
 	/// @brief ワーカースレッドで使用している全てのリソースを開放する
