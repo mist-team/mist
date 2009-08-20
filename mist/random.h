@@ -566,7 +566,29 @@ namespace multivariate_gauss
 			l_triangle_( choleski( covariance ) )
 		{
 		}
-		
+
+		/// @brief seedで初期化
+		//! 
+		//! initializes vec_[n_] with a seed
+		//! 
+		//! @param[in] seed … g_rand_のseed(これを用いてseed配列を作る)
+		//! 
+		void init( const unsigned long& seed )
+		{
+			g_rand_.init( seed );
+		}
+
+		/// @brief 正規乱数のパラメータ指定
+		//! 
+		//! @param[in] mean … 正規乱数の平均
+		//! @param[in] variance … 正規乱数の分散
+		//! 
+		void set_param( const matrix< double > &mean, const matrix< double > &covariance )
+		{
+			mean_ = mean, 
+			l_triangle_ = choleski( covariance );
+		}
+
 		/// @brief 指定された平均・標準偏差の正規乱数を生成
 		//! 
 		//! @return 生成された正規乱数
