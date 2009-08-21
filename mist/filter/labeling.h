@@ -1165,6 +1165,210 @@ void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocat
 	remove_hole_region( in, out, false, max_label );
 }
 
+namespace __he__
+{
+	template< typename L >
+	inline void resolve( const L u, const L v, mist::array< L > &rl_table, mist::array< L > &next_label, mist::array< L > &tail_label )
+	{
+		typedef L label_type;
+		if( rl_table[ u ] != rl_table[ v ] )
+		{
+			label_type lu, lv;
+			if( rl_table[ u ] < rl_table[ v ] )
+			{
+				lu = rl_table[ u ];
+				lv = rl_table[ v ];
+			}
+			else
+			{
+				lu = rl_table[ v ];
+				lv = rl_table[ u ];
+			}
+			next_label[ tail_label[ lu ] ] = lv;
+			tail_label[ lu ] = tail_label[ lv ];
+			label_type i = lv;
+			while( i != 0 )
+			{
+				rl_table[ i ] = lu;
+				i = next_label[ i ];
+			}
+		}
+	}
+
+	template< typename L >
+	inline void update( L &m, mist::array< L > &rl_table, mist::array< L > &next_label, mist::array< L > &tail_label )
+	{
+		rl_table[ m ] = m;
+		tail_label[ m ] = m;
+		m ++;
+	}
+}
+
+namespace he
+{
+
+	/// @brief Heらの2次元画像に対する8近傍型ラベリング
+	//! 
+	//! Heらの2次元画像に対する8近傍型ラベリング
+	//! 
+	//! @attention 入力と出力は異なる画像オブジェクトである必要がある
+	//! 
+	//! 出力画像のデータ型は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+	//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+	//! この関数は，以下に挙げる文献のアルゴリズムを実装したものです。
+	//! 何 立風, 巣 宇燕, 鈴木 賢治, 中村 剛士, 伊藤 英則, "高速2回走査ラベル付けアルゴリズム," 電子情報通信学会論文誌D, Vol.J91-D, No.4, pp.1016-1024, 2008.
+	//! 
+	//! @param[in]  in        … 入力画像
+	//! @param[out] out       … 出力画像
+	//! 
+	//! @return 割り当てられたラベル数
+	//! 
+	template< typename V, typename L >
+	inline L labeling8( const mist::array2< V > &b, mist::array2< L > &v )
+	{
+		typedef V value_type;
+		typedef L label_type;
+		const size_t size = ( ( b.width( ) + 1 ) / 2 ) * ( ( b.height( ) + 1 ) / 2 ); 
+		mist::array< label_type > rl_table( size ), next_label( size ), tail_label( size );
+		v.resize( b.width( ), b.height( ) );
+		label_type m = 1;
+		{
+			const size_t j = 0;
+			{
+				const size_t i = 0;
+				if( b( i, j ) != 0 )
+				{
+					v( i, j ) = m;
+					__he__::update( m, rl_table, next_label, tail_label );
+				}
+			}
+			for( size_t i = 1 ; i != b.width( ) ; ++ i )
+			{
+				const label_type &v1 = v( i - 1, j );
+				if( b( i, j ) != 0 )
+				{
+					if( v1 != 0 )
+					{
+						v( i, j ) = v1;
+					}
+					else
+					{
+						v( i, j ) = m;
+						__he__::update( m, rl_table, next_label, tail_label );
+					}				
+				}
+			}
+		}
+		for( size_t j = 1 ; j != b.height( ) ; ++ j )
+		{
+			{
+				const size_t i = 0;
+				const label_type &v3 = v( i, j - 1 );
+				const label_type &v4 = v( i + 1, j - 1 );
+				if( b( i, j ) != 0 )
+				{
+					if( v3 != 0 )
+					{
+						v( i, j ) = v3;
+					}
+					else if( v4 != 0 )
+					{
+						v( i, j ) = v4;
+					}
+					else
+					{
+						v( i, j ) = m;
+						__he__::update( m, rl_table, next_label, tail_label );
+					}				
+				}
+			}
+			for( size_t i = 1 ; i != b.width( ) - 1 ; ++ i )
+			{
+				const label_type &v1 = v( i - 1, j );
+				const label_type &v2 = v( i - 1, j - 1 );
+				const label_type &v3 = v( i, j - 1 );
+				const label_type &v4 = v( i + 1, j - 1 );
+				if( b( i, j ) != 0 )
+				{
+					if( v3 != 0 )
+					{
+						v( i, j ) = v3;
+					}
+					else if( v1 != 0 )
+					{
+						v( i, j ) = v1;
+						if( v4 != 0 )
+						{
+							__he__::resolve( v1, v4, rl_table, next_label, tail_label );
+						}
+					}
+					else if( v2 != 0 )
+					{
+						v( i, j ) = v2;
+						if( v4 != 0 )
+						{
+							__he__::resolve( v2, v4, rl_table, next_label, tail_label );
+						}
+					}
+					else if( v4 != 0 )
+					{
+						v( i, j ) = v4;
+					}
+					else
+					{
+						v( i, j ) = m;
+						__he__::update( m, rl_table, next_label, tail_label );
+					}				
+				}
+			}
+			{
+				const size_t i = b.width( ) - 1;
+				const label_type &v1 = v( i - 1, j );
+				const label_type &v2 = v( i - 1, j - 1 );
+				const label_type &v3 = v( i, j - 1 );
+				if( b( i, j ) != 0 )
+				{
+					if( v3 != 0 )
+					{
+						v( i, j ) = v3;
+					}
+					else if( v1 != 0 )
+					{
+						v( i, j ) = v1;
+					}
+					else if( v2 != 0 )
+					{
+						v( i, j ) = v2;
+					}
+					else
+					{
+						v( i, j ) = m;
+						__he__::update( m, rl_table, next_label, tail_label );
+					}				
+				}
+			}
+		}
+		mist::array< label_type > l_table( m );
+		label_type l = 0;
+		for( size_t i = 1 ; i != m ; ++ i )
+		{
+			if( l_table[ rl_table[ i ] ] == 0 )
+			{
+				l ++;
+				l_table[ rl_table[ i ] ] = l;
+			}
+		}
+		for( size_t j = 0 ; j != v.height( ) ; ++ j )
+		{
+			for( size_t i = 0 ; i != v.width( ) ; ++ i )
+			{
+				v( i, j ) = l_table[ rl_table[ v( i, j ) ] ];
+			}
+		}
+		return l;
+	}
+}
+
 /// @}
 //  ラベリンググループの終わり
 
