@@ -1167,10 +1167,10 @@ void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocat
 
 namespace __he__
 {
-	template< typename L >
-	inline void resolve( const L u, const L v, mist::array< L > &rl_table, mist::array< L > &next_label, mist::array< L > &tail_label )
+	template< class L, class Allocator >
+	inline void resolve( const typename array< L, Allocator >::value_type u, const typename array< L, Allocator >::value_type v, array< L, Allocator > &rl_table, array< L, Allocator > &next_label, array< L, Allocator > &tail_label )
 	{
-		typedef L label_type;
+		typedef typename array< L, Allocator >::value_type label_type;
 		if( rl_table[ u ] != rl_table[ v ] )
 		{
 			label_type lu, lv;
@@ -1184,9 +1184,11 @@ namespace __he__
 				lu = rl_table[ v ];
 				lv = rl_table[ u ];
 			}
+
 			next_label[ tail_label[ lu ] ] = lv;
 			tail_label[ lu ] = tail_label[ lv ];
 			label_type i = lv;
+
 			while( i != 0 )
 			{
 				rl_table[ i ] = lu;
@@ -1195,18 +1197,17 @@ namespace __he__
 		}
 	}
 
-	template< typename L >
-	inline void update( L &m, mist::array< L > &rl_table, mist::array< L > &next_label, mist::array< L > &tail_label )
+	template< class L, class Allocator >
+	inline void update( typename array< L, Allocator >::value_type &m, array< L, Allocator > &rl_table, array< L, Allocator > &next_label, array< L, Allocator > &tail_label )
 	{
-		rl_table[ m ] = m;
+		rl_table[ m ]   = m;
 		tail_label[ m ] = m;
-		m ++;
+		m++;
 	}
 }
 
 namespace he
 {
-
 	/// @brief Heらの2次元画像に対する8近傍型ラベリング
 	//! 
 	//! Heらの2次元画像に対する8近傍型ラベリング
@@ -1223,149 +1224,162 @@ namespace he
 	//! 
 	//! @return 割り当てられたラベル数
 	//! 
-	template< typename V, typename L >
-	inline L labeling8( const mist::array2< V > &b, mist::array2< L > &v )
+	template< typename T1, class Allocator1, typename T2, class Allocator2 >
+	inline typename array2< T2, Allocator2 >::size_type labeling8( const array2< T1, Allocator1 > &b, array2< T2, Allocator2 > &v )
 	{
-		typedef V value_type;
-		typedef L label_type;
-		const size_t size = ( ( b.width( ) + 1 ) / 2 ) * ( ( b.height( ) + 1 ) / 2 ); 
-		mist::array< label_type > rl_table( size ), next_label( size ), tail_label( size );
-		v.resize( b.width( ), b.height( ) );
+		typedef typename array2< T1, Allocator1 >::size_type		size_type;
+		typedef typename array2< T1, Allocator1 >::difference_type	difference_type;
+		typedef typename array2< T1, Allocator1 >::value_type		value_type;
+		typedef typename array2< T2, Allocator2 >::value_type		label_type;
+		typedef typename array2< T1, Allocator1 >::const_pointer	ipointer;
+		typedef typename array2< T2, Allocator2 >::pointer			opointer;
+
+		const size_type size = ( ( b.width( ) + 1 ) / 2 ) * ( ( b.height( ) + 1 ) / 2 ); 
+		array< label_type > rl_table( size ), next_label( size ), tail_label( size );
 		label_type m = 1;
+
+		v.resize( b.width( ), b.height( ) );
+
+		ipointer ip  = &b( 0, 0 );
+		opointer op1 = &v( 0, 0 );
+
+		if( ip[ 0 ] != 0 )
 		{
-			const size_t j = 0;
+			op1[ 0 ] = m;
+			__he__::update( m, rl_table, next_label, tail_label );
+		}
+
+		for( size_type i = 1 ; i < b.width( ) ; i++ )
+		{
+			if( ip[ i ] != 0 )
 			{
-				const size_t i = 0;
-				if( b( i, j ) != 0 )
+				if( op1[ i - 1 ] != 0 )
 				{
-					v( i, j ) = m;
+					op1[ i ] = op1[ i - 1 ];
+				}
+				else
+				{
+					op1[ i ] = m;
 					__he__::update( m, rl_table, next_label, tail_label );
-				}
-			}
-			for( size_t i = 1 ; i != b.width( ) ; ++ i )
-			{
-				const label_type &v1 = v( i - 1, j );
-				if( b( i, j ) != 0 )
-				{
-					if( v1 != 0 )
-					{
-						v( i, j ) = v1;
-					}
-					else
-					{
-						v( i, j ) = m;
-						__he__::update( m, rl_table, next_label, tail_label );
-					}				
-				}
+				}				
 			}
 		}
-		for( size_t j = 1 ; j != b.height( ) ; ++ j )
+
+		// 一つ前のラインを覚える
+		opointer op0 = op1;
+
+		// 1ライン下に進める
+		ip  += b.width( );
+		op1 += v.width( );
+
+		for( size_type j = 1 ; j < b.height( ) ; j++ )
 		{
+			if( ip[ 0 ] != 0 )
 			{
-				const size_t i = 0;
-				const label_type &v3 = v( i, j - 1 );
-				const label_type &v4 = v( i + 1, j - 1 );
-				if( b( i, j ) != 0 )
+				if( op0[ 0 ] != 0 )
 				{
-					if( v3 != 0 )
-					{
-						v( i, j ) = v3;
-					}
-					else if( v4 != 0 )
-					{
-						v( i, j ) = v4;
-					}
-					else
-					{
-						v( i, j ) = m;
-						__he__::update( m, rl_table, next_label, tail_label );
-					}				
+					op1[ 0 ] = op0[ 0 ];
 				}
-			}
-			for( size_t i = 1 ; i != b.width( ) - 1 ; ++ i )
-			{
-				const label_type &v1 = v( i - 1, j );
-				const label_type &v2 = v( i - 1, j - 1 );
-				const label_type &v3 = v( i, j - 1 );
-				const label_type &v4 = v( i + 1, j - 1 );
-				if( b( i, j ) != 0 )
+				else if( op0[ 1 ] != 0 )
 				{
-					if( v3 != 0 )
+					op1[ 0 ] = op0[ 1 ];
+				}
+				else
+				{
+					op1[ 0 ] = m;
+					__he__::update( m, rl_table, next_label, tail_label );
+				}				
+			}
+
+			size_type i = 1;
+			for( ; i < b.width( ) - 1 ; i++ )
+			{
+				if( ip[ i ] != 0 )
+				{
+					if( op0[ i ] != 0 )
 					{
-						v( i, j ) = v3;
+						op1[ i ] = op0[ i ];
 					}
-					else if( v1 != 0 )
+					else if( op1[ i - 1 ] != 0 )
 					{
-						v( i, j ) = v1;
-						if( v4 != 0 )
+						op1[ i ] = op1[ i - 1 ];
+						if( op0[ i + 1 ] != 0 )
 						{
-							__he__::resolve( v1, v4, rl_table, next_label, tail_label );
+							__he__::resolve( op1[ i - 1 ], op0[ i + 1 ], rl_table, next_label, tail_label );
 						}
 					}
-					else if( v2 != 0 )
+					else if( op0[ i - 1 ] != 0 )
 					{
-						v( i, j ) = v2;
-						if( v4 != 0 )
+						op1[ i ] = op0[ i - 1 ];
+						if( op0[ i + 1 ] != 0 )
 						{
-							__he__::resolve( v2, v4, rl_table, next_label, tail_label );
+							__he__::resolve( op0[ i - 1 ], op0[ i + 1 ], rl_table, next_label, tail_label );
 						}
 					}
-					else if( v4 != 0 )
+					else if( op0[ i + 1 ] != 0 )
 					{
-						v( i, j ) = v4;
+						op1[ i ] = op0[ i + 1 ];
 					}
 					else
 					{
-						v( i, j ) = m;
+						op1[ i ] = m;
 						__he__::update( m, rl_table, next_label, tail_label );
-					}				
+					}
 				}
 			}
+
+			if( ip[ i ] != 0 )
 			{
-				const size_t i = b.width( ) - 1;
-				const label_type &v1 = v( i - 1, j );
-				const label_type &v2 = v( i - 1, j - 1 );
-				const label_type &v3 = v( i, j - 1 );
-				if( b( i, j ) != 0 )
+				if( op0[ i ] != 0 )
 				{
-					if( v3 != 0 )
-					{
-						v( i, j ) = v3;
-					}
-					else if( v1 != 0 )
-					{
-						v( i, j ) = v1;
-					}
-					else if( v2 != 0 )
-					{
-						v( i, j ) = v2;
-					}
-					else
-					{
-						v( i, j ) = m;
-						__he__::update( m, rl_table, next_label, tail_label );
-					}				
+					op1[ i ] = op0[ i ];
 				}
+				else if( op1[ i - 1 ] != 0 )
+				{
+					op1[ i ] = op1[ i - 1 ];
+				}
+				else if( op0[ i - 1 ] != 0 )
+				{
+					op1[ i ] = op0[ i - 1 ];
+				}
+				else
+				{
+					op1[ i ] = m;
+					__he__::update( m, rl_table, next_label, tail_label );
+				}				
 			}
+
+			op0  = op1;
+			ip  += b.width( );
+			op1 += v.width( );
 		}
-		mist::array< label_type > l_table( m );
+
+		// 目盛りの無駄遣いを避けるために既存のテーブルを使い回す
+		array< label_type > &l_table = next_label;
+		//array< label_type > l_table( m );
+
+		// 再割り当て用のテーブルをクリア
+		for( size_type i = 1 ; i < m ; i++ )
+		{
+			l_table[ i ] = 0;
+		}
+
 		label_type l = 0;
-		for( size_t i = 1 ; i != m ; ++ i )
+		for( size_type i = 1 ; i < m ; i++ )
 		{
 			if( l_table[ rl_table[ i ] ] == 0 )
 			{
-				l ++;
+				l++;
 				l_table[ rl_table[ i ] ] = l;
 			}
 		}
-		for( size_t j = 0 ; j != v.height( ) ; ++ j )
+
+		for( size_t i = 0 ; i < v.size( ) ; i++ )
 		{
-			for( size_t i = 0 ; i != v.width( ) ; ++ i )
-			{
-				v( i, j ) = l_table[ rl_table[ v( i, j ) ] ];
-			}
+			v[ i ] = l_table[ rl_table[ v[ i ] ] ];
 		}
-		return l;
+
+		return( static_cast< size_type >( l ) );
 	}
 }
 
