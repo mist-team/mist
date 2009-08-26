@@ -1179,46 +1179,59 @@ void remove_hole_region( const array3< T1, Allocator1 > &in, array3< T2, Allocat
 	remove_hole_region( in, out, false, max_label );
 }
 
+
 namespace __he__
 {
-	template< class L, class Allocator >
-	inline void resolve( const typename array< L, Allocator >::value_type u, const typename array< L, Allocator >::value_type v, array< L, Allocator > &rl_table, array< L, Allocator > &next_label, array< L, Allocator > &tail_label )
+	template< class L >
+	struct table_type
 	{
-		typedef typename array< L, Allocator >::value_type label_type;
-		if( rl_table[ u ] != rl_table[ v ] )
+		typedef typename array< L >::value_type		label_type;
+		label_type label;
+		table_type *next;
+		table_type *tail;
+		table_type( ) : label( 0 ), next( NULL ), tail( NULL )
 		{
-			label_type lu, lv;
-			if( rl_table[ u ] < rl_table[ v ] )
+		}
+	};
+
+	template< class L, class Allocator >
+	inline void resolve( const typename array< L, Allocator >::value_type::label_type u, const typename array< L, Allocator >::value_type::label_type v, array< table_type< L >, Allocator > &table )
+	{
+		typedef typename array< L, Allocator >::value_type	table_type;
+		typedef typename table_type::label_type				label_type;
+		if( table[ u ].label != table[ v ].label )
+		{
+			table_type *pu;
+			table_type *pv;
+			if( table[ u ].label < table[ v ].label )
 			{
-				lu = rl_table[ u ];
-				lv = rl_table[ v ];
+				pu = &table[ table[ u ].label ];
+				pv = &table[ table[ v ].label ];
 			}
 			else
 			{
-				lu = rl_table[ v ];
-				lv = rl_table[ u ];
+				pu = &table[ table[ v ].label ];
+				pv = &table[ table[ u ].label ];
 			}
-
-			next_label[ tail_label[ lu ] ] = lv;
-			tail_label[ lu ] = tail_label[ lv ];
-			label_type i = lv;
-
-			while( i != 0 )
+			pu->tail->next = pv;
+			pu->tail = pv->tail;
+			while( pv )
 			{
-				rl_table[ i ] = lu;
-				i = next_label[ i ];
+				pv->label = pu->label;
+				pv = pv->next;
 			}
 		}
 	}
 
 	template< class L, class Allocator >
-	inline void update( typename array< L, Allocator >::value_type &m, array< L, Allocator > &rl_table, array< L, Allocator > &next_label, array< L, Allocator > &tail_label )
+	inline void update( typename array< L, Allocator >::value_type::label_type &m, array< table_type< L >, Allocator > &table )
 	{
-		rl_table[ m ]   = m;
-		tail_label[ m ] = m;
+		table[ m ].label = m;
+		table[ m ].tail  = &table[ m ];
 		m++;
 	}
 }
+
 
 namespace he
 {
@@ -1248,8 +1261,10 @@ namespace he
 		typedef typename array2< T1, Allocator1 >::const_pointer	ipointer;
 		typedef typename array2< T2, Allocator2 >::pointer			opointer;
 
+		typedef typename __he__::table_type< label_type >			table_type;
+
 		const size_type size = ( ( b.width( ) + 1 ) / 2 ) * ( ( b.height( ) + 1 ) / 2 ); 
-		array< label_type > rl_table( size ), next_label( size ), tail_label( size );
+		array< table_type > table( size );
 		label_type m = 1;
 
 		v.resize( b.width( ), b.height( ) );
@@ -1260,7 +1275,7 @@ namespace he
 		if( ip[ 0 ] != 0 )
 		{
 			op1[ 0 ] = m;
-			__he__::update( m, rl_table, next_label, tail_label );
+			__he__::update( m, table );
 		}
 
 		for( size_type i = 1 ; i < b.width( ) ; i++ )
@@ -1274,7 +1289,7 @@ namespace he
 				else
 				{
 					op1[ i ] = m;
-					__he__::update( m, rl_table, next_label, tail_label );
+					__he__::update( m, table );
 				}				
 			}
 		}
@@ -1301,7 +1316,7 @@ namespace he
 				else
 				{
 					op1[ 0 ] = m;
-					__he__::update( m, rl_table, next_label, tail_label );
+					__he__::update( m, table );
 				}				
 			}
 
@@ -1319,7 +1334,7 @@ namespace he
 						op1[ i ] = op1[ i - 1 ];
 						if( op0[ i + 1 ] != 0 )
 						{
-							__he__::resolve( op1[ i - 1 ], op0[ i + 1 ], rl_table, next_label, tail_label );
+							__he__::resolve( op1[ i - 1 ], op0[ i + 1 ], table );
 						}
 					}
 					else if( op0[ i - 1 ] != 0 )
@@ -1327,7 +1342,7 @@ namespace he
 						op1[ i ] = op0[ i - 1 ];
 						if( op0[ i + 1 ] != 0 )
 						{
-							__he__::resolve( op0[ i - 1 ], op0[ i + 1 ], rl_table, next_label, tail_label );
+							__he__::resolve( op0[ i - 1 ], op0[ i + 1 ], table );
 						}
 					}
 					else if( op0[ i + 1 ] != 0 )
@@ -1337,7 +1352,7 @@ namespace he
 					else
 					{
 						op1[ i ] = m;
-						__he__::update( m, rl_table, next_label, tail_label );
+						__he__::update( m, table );
 					}
 				}
 			}
@@ -1359,7 +1374,7 @@ namespace he
 				else
 				{
 					op1[ i ] = m;
-					__he__::update( m, rl_table, next_label, tail_label );
+					__he__::update( m, table );
 				}				
 			}
 
@@ -1368,29 +1383,20 @@ namespace he
 			op1 += v.width( );
 		}
 
-		// 目盛りの無駄遣いを避けるために既存のテーブルを使い回す
-		array< label_type > &l_table = next_label;
-		//array< label_type > l_table( m );
-
-		// 再割り当て用のテーブルをクリア
-		for( size_type i = 1 ; i < m ; i++ )
-		{
-			l_table[ i ] = 0;
-		}
-
+		array< label_type > l_table( m );
 		label_type l = 0;
 		for( size_type i = 1 ; i < m ; i++ )
 		{
-			if( l_table[ rl_table[ i ] ] == 0 )
+			if( l_table[ table[ i ].label ] == 0 )
 			{
 				l++;
-				l_table[ rl_table[ i ] ] = l;
+				l_table[ table[ i ].label ] = l;
 			}
 		}
 
 		for( size_t i = 0 ; i < v.size( ) ; i++ )
 		{
-			v[ i ] = l_table[ rl_table[ v[ i ] ] ];
+			v[ i ] = l_table[ table[ v[ i ] ].label ];
 		}
 
 		return( static_cast< size_type >( l ) );
