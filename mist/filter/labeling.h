@@ -47,6 +47,7 @@
 #endif
 
 #include <vector>
+#include <list>
 
 
 
@@ -220,11 +221,13 @@ namespace __labeling_controller__
 		typedef unsigned int label_value_type;
 
 		typedef std::vector< label_value_type >::value_type vector_label_value_type;
+		typedef std::list< label_value_type > label_list_type;
 
 		size_type label_num = 0;
 		size_type i, j, k, l, count;
 
 		std::vector< label_value_type > T;
+		std::vector< label_list_type > TBL;
 		label_value_type L[ neighbor::array_num ];
 		const size_type width = in.width( );
 		const size_type height = in.height( );
@@ -232,6 +235,7 @@ namespace __labeling_controller__
 
 		T.reserve( label_max );
 		T.push_back( 0 );	// T[ 0 ]
+		TBL.push_back( label_list_type( ) );	// T[ 0 ]
 
 		const bool bprogress1 = depth == 1;
 		const bool bprogress2 = depth >  1;
@@ -287,7 +291,12 @@ namespace __labeling_controller__
 						{
 							label_num++;
 						}
+
 						T.push_back( static_cast< label_value_type >( label_num ) );
+
+						label_list_type ll;
+						ll.push_back( static_cast< label_value_type >( label_num ) );
+						TBL.push_back( ll );
 
 						in( i, j, k ) = static_cast< value_type >( label_num );
 					}
@@ -303,15 +312,20 @@ namespace __labeling_controller__
 						// 複数のラベルが結合するため，テーブルを修正する
 						for( l = 0 ; l < neighbor::array_num ; l++ )
 						{
-							if( T[ L[ l ] ] != L1 )
+							label_value_type L0 = L[ l ];
+							if( T[ L0 ] != L1 )
 							{
-								for( size_type m = 1 ; m <= label_num ; m++ )
+								typename label_list_type::iterator ite  = TBL[ L0 ].begin( );
+								typename label_list_type::iterator eite = TBL[ L0 ].end( );
+
+								for( ; ite != eite ; ++ite )
 								{
-									if( T[ m ] == L[ l ] )
-									{
-										T[ m ] = static_cast< vector_label_value_type >( L1 );
-									}
+									T[ *ite ] = static_cast< vector_label_value_type >( L1 );
 								}
+
+								label_list_type &TBL1 = TBL[ L0 ];
+								TBL[ L1 ].insert( TBL[ L1 ].end( ), TBL[ L0 ].begin( ), TBL[ L0 ].end( ) );
+								TBL[ L0 ].clear( );
 							}
 						}
 					}
