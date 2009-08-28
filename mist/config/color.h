@@ -2043,7 +2043,7 @@ struct colors
 	static color_type gold( )					{ return color_type( 0xff, 0xd7, 0x00 ); }
 	static color_type goldenrod( )				{ return color_type( 0xda, 0xa5, 0x20 ); }
 	static color_type gray( )					{ return color_type( 0x80, 0x80, 0x80 ); }
-	static color_type green( )					{ return color_type( 0x00, 0x80, 0x00 ); }
+	static color_type green( )					{ return color_type( 0x00, 0xff, 0x00 ); }
 	static color_type greenyellow( )			{ return color_type( 0xad, 0xff, 0x2f ); }
 	static color_type honeydew( )				{ return color_type( 0xf0, 0xff, 0xf0 ); }
 	static color_type hotpink( )				{ return color_type( 0xff, 0x69, 0xb4 ); }
