@@ -964,7 +964,7 @@ namespace __clapack__
 namespace __solve__
 {
 	// 行列の連立一次方程式を解く関数
-	template < bool b >
+	template < bool >
 	struct __solve__
 	{
 		// 実数バージョン
