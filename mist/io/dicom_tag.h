@@ -78,6 +78,7 @@ namespace dicom
 		#define __INCLUDE_DICOM_TAG_003A__
 		#define __INCLUDE_DICOM_TAG_0040__
 		#define __INCLUDE_DICOM_TAG_0042__
+		#define __INCLUDE_DICOM_TAG_0044__
 		#define __INCLUDE_DICOM_TAG_0050__
 		#define __INCLUDE_DICOM_TAG_0054__
 		#define __INCLUDE_DICOM_TAG_0060__
@@ -85,6 +86,7 @@ namespace dicom
 		#define __INCLUDE_DICOM_TAG_0064__
 		#define __INCLUDE_DICOM_TAG_0070__
 		#define __INCLUDE_DICOM_TAG_0072__
+		#define __INCLUDE_DICOM_TAG_0074__
 		#define __INCLUDE_DICOM_TAG_0088__
 		#define __INCLUDE_DICOM_TAG_0100__
 		#define __INCLUDE_DICOM_TAG_0400__
@@ -134,6 +136,7 @@ namespace dicom
 		//#define __INCLUDE_DICOM_TAG_003A__
 		//#define __INCLUDE_DICOM_TAG_0040__
 		//#define __INCLUDE_DICOM_TAG_0042__
+		//#define __INCLUDE_DICOM_TAG_0044__
 		//#define __INCLUDE_DICOM_TAG_0050__
 		//#define __INCLUDE_DICOM_TAG_0054__
 		//#define __INCLUDE_DICOM_TAG_0060__
@@ -141,6 +144,7 @@ namespace dicom
 		//#define __INCLUDE_DICOM_TAG_0064__
 		//#define __INCLUDE_DICOM_TAG_0070__
 		//#define __INCLUDE_DICOM_TAG_0072__
+		//#define __INCLUDE_DICOM_TAG_0074__
 		//#define __INCLUDE_DICOM_TAG_0088__
 		//#define __INCLUDE_DICOM_TAG_0100__
 		//#define __INCLUDE_DICOM_TAG_0400__
@@ -728,14 +732,6 @@ namespace dicom
 				insert_tag( dicom_tag_elements );
 			}
 #endif
-#ifdef __INCLUDE_DICOM_TAG_0000__
-			{
-				dicom_tag_element dicom_tag_elements[] = {
-					#include "dicom_tag/dicom_tag0000.csv"
-				};
-				insert_tag( dicom_tag_elements );
-			}
-#endif
 #ifdef __INCLUDE_DICOM_TAG_0008__
 			{
 				dicom_tag_element dicom_tag_elements[] = {
@@ -832,10 +828,26 @@ namespace dicom
 				insert_tag( dicom_tag_elements );
 			}
 #endif
+#ifdef __INCLUDE_DICOM_TAG_0044__
+			{
+				dicom_tag_element dicom_tag_elements[] = {
+					#include "dicom_tag/dicom_tag0044.csv"
+				};
+				insert_tag( dicom_tag_elements );
+			}
+#endif
 #ifdef __INCLUDE_DICOM_TAG_0050__
 			{
 				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0050.csv"
+				};
+				insert_tag( dicom_tag_elements );
+			}
+#endif
+#ifdef __INCLUDE_DICOM_TAG_0054__
+			{
+				dicom_tag_element dicom_tag_elements[] = {
+					#include "dicom_tag/dicom_tag0054.csv"
 				};
 				insert_tag( dicom_tag_elements );
 			}
@@ -876,6 +888,14 @@ namespace dicom
 			{
 				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0072.csv"
+				};
+				insert_tag( dicom_tag_elements );
+			}
+#endif
+#ifdef __INCLUDE_DICOM_TAG_0074__
+			{
+				dicom_tag_element dicom_tag_elements[] = {
+					#include "dicom_tag/dicom_tag0074.csv"
 				};
 				insert_tag( dicom_tag_elements );
 			}

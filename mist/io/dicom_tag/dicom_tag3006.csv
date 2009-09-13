@@ -1,4 +1,3 @@
-{0,0x3006,0x0000,UL,1,"""Group 3006 Length""",},//
 {0,0x3006,0x0002,SH,1,"""Structure Set Label""",},//
 {0,0x3006,0x0004,LO,1,"""Structure Set Name""",},//
 {0,0x3006,0x0006,ST,1,"""Structure Set Description""",},//
@@ -27,7 +26,7 @@
 {0,0x3006,0x0046,IS,1,"""Number of Contour Points""",},//
 {0,0x3006,0x0048,IS,1,"""Contour Number""",},//
 {0,0x3006,0x0049,IS,-1,"""Attached Contours""",},//
-{0,0x3006,0x0050,DS,-1,"""Contour Data""",},//
+{0,0x3006,0x0050,DS,3,"""Contour Data""",},//
 {0,0x3006,0x0080,SQ,1,"""RT ROI Observations Sequence""",},//
 {0,0x3006,0x0082,IS,1,"""Observation Number""",},//
 {0,0x3006,0x0084,IS,1,"""Referenced ROI Number""",},//
@@ -40,6 +39,9 @@
 {0,0x3006,0x00B0,SQ,1,"""ROI Physical Properties Sequence""",},//
 {0,0x3006,0x00B2,CS,1,"""ROI Physical Property""",},//
 {0,0x3006,0x00B4,DS,1,"""ROI Physical Property Value""",},//
+{0,0x3006,0x00B6,SQ,1,"""ROI Elemental Composition Sequence""",},//
+{0,0x3006,0x00B7,US,1,"""ROI Elemental Composition Atomic Number""",},//
+{0,0x3006,0x00B8,FL,1,"""ROI Elemental Composition Atomic Mass Fraction""",},//
 {0,0x3006,0x00C0,SQ,1,"""Frame of Reference Relationship Sequence""",},//
 {0,0x3006,0x00C2,UI,1,"""Related Frame of Reference UID""",},//
 {0,0x3006,0x00C4,CS,1,"""Frame of Reference Transformation Type""",},//

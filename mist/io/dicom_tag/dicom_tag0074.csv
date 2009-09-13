@@ -1,0 +1,45 @@
+{0,0x0074,0x1000,CS,1,"""Unified Procedure Step State""",},//
+{0,0x0074,0x1002,SQ,1,"""UPS Progress Information Sequence""",},//
+{0,0x0074,0x1004,DS,1,"""Unified Procedure Step Progress""",},//
+{0,0x0074,0x1006,ST,1,"""Unified Procedure Step Progress Description""",},//
+{0,0x0074,0x1008,SQ,1,"""Unified Procedure Step Communications URI Sequence""",},//
+{0,0x0074,0x100a,ST,1,"""Contact URI""",},//
+{0,0x0074,0x100c,LO,1,"""Contact Display Name""",},//
+{0,0x0074,0x100e,SQ,1,"""Unified Procedure Step Discontinuation Reason Code Sequence""",},//
+{0,0x0074,0x1020,SQ,1,"""Beam Task Sequence""",},//
+{0,0x0074,0x1022,CS,1,"""Beam Task Type""",},//
+{0,0x0074,0x1024,IS,1,"""Beam Order Index""",},//
+{0,0x0074,0x1030,SQ,1,"""Delivery Verification Image Sequence""",},//
+{0,0x0074,0x1032,CS,1,"""Verification Image Timing""",},//
+{0,0x0074,0x1034,CS,1,"""Double Exposure Flag""",},//
+{0,0x0074,0x1036,CS,1,"""Double Exposure Ordering""",},//
+{0,0x0074,0x1038,DS,1,"""Double Exposure Meterset""",},//
+{0,0x0074,0x103A,DS,4,"""Double Exposure Field Delta""",},//
+{0,0x0074,0x1040,SQ,1,"""Related Reference RT Image Sequence""",},//
+{0,0x0074,0x1042,SQ,1,"""General Machine Verification Sequence""",},//
+{0,0x0074,0x1044,SQ,1,"""Conventional Machine Verification Sequence""",},//
+{0,0x0074,0x1046,SQ,1,"""Ion Machine Verification Sequence""",},//
+{0,0x0074,0x1048,SQ,-1,"""Failed Attributes Sequence""",},//
+{0,0x0074,0x104A,SQ,-1,"""Overridden Attributes Sequence""",},//
+{0,0x0074,0x104C,SQ,1,"""Conventional Control Point Verification Sequence""",},//
+{0,0x0074,0x104E,SQ,1,"""Ion Control Point Verification Sequence""",},//
+{0,0x0074,0x1050,SQ,-1,"""Attribute Occurrence Sequence""",},//
+{0,0x0074,0x1052,AT,1,"""Attribute Occurrence Pointer""",},//
+{0,0x0074,0x1054,UL,1,"""Attribute Item Selector""",},//
+{0,0x0074,0x1056,LO,1,"""Attribute Occurrence Private Creator""",},//
+{0,0x0074,0x1200,CS,1,"""Scheduled Procedure Step Priority""",},//
+{0,0x0074,0x1202,LO,1,"""Worklist Label""",},//
+{0,0x0074,0x1204,LO,1,"""Procedure Step Label""",},//
+{0,0x0074,0x1210,SQ,1,"""Scheduled Processing Parameters Sequence""",},//
+{0,0x0074,0x1212,SQ,1,"""Performed Processing Parameters Sequence""",},//
+{0,0x0074,0x1216,SQ,1,"""UPS Performed Procedure Sequence""",},//
+{0,0x0074,0x1220,SQ,1,"""Related Procedure Step Sequence""",},//
+{0,0x0074,0x1222,LO,1,"""Procedure Step Relationship Type""",},//
+{0,0x0074,0x1230,LO,1,"""Deletion Lock""",},//
+{0,0x0074,0x1234,AE,1,"""Receiving AE""",},//
+{0,0x0074,0x1236,AE,1,"""Requesting AE""",},//
+{0,0x0074,0x1238,LT,1,"""Reason for Cancellation""",},//
+{0,0x0074,0x1242,CS,1,"""SCP Status""",},//
+{0,0x0074,0x1244,CS,1,"""Subscription List Status""",},//
+{0,0x0074,0x1246,CS,1,"""UPS List Status""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -1,4 +1,3 @@
-{0,0x0054,0x0000,UL,1,"""Group 0054 Length""",},//
 {0,0x0054,0x0010,US,-1,"""Energy Window Vector""",},//
 {0,0x0054,0x0011,US,1,"""Number of Energy Windows""",},//
 {0,0x0054,0x0012,SQ,1,"""Energy Window Information Sequence""",},//

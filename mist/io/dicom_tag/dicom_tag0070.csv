@@ -1,4 +1,3 @@
-{0,0x0070,0x0000,UL,1,"""Group 0070 Length""",},//
 {0,0x0070,0x0001,SQ,1,"""Graphic Annotation Sequence""",},//
 {0,0x0070,0x0002,CS,1,"""Graphic Layer""",},//
 {0,0x0070,0x0003,CS,1,"""Bounding Box Annotation Units""",},//
@@ -12,13 +11,16 @@
 {0,0x0070,0x0012,CS,1,"""Bounding Box Text Horizontal Justification""",},//
 {0,0x0070,0x0014,FL,2,"""Anchor Point""",},//
 {0,0x0070,0x0015,CS,1,"""Anchor Point Visibility""",},//
-{0,0x0070,0x0020,US,1,"""Graphic Dimensions""",},//
+{0,0x0070,0x0020,US,1,"""Graphic Dimensions """,},//
 {0,0x0070,0x0021,US,1,"""Number of Graphic Points""",},//
 {0,0x0070,0x0022,FL,-1,"""Graphic Data""",},//
 {0,0x0070,0x0023,CS,1,"""Graphic Type""",},//
 {0,0x0070,0x0024,CS,1,"""Graphic Filled""",},//
+{0,0x0070,0x0040,IS,1,"""Image Rotation (Retired)""",},//
 {0,0x0070,0x0041,CS,1,"""Image Horizontal Flip""",},//
-{0,0x0070,0x0042,US,1,"""Image Rotation""",},//
+{0,0x0070,0x0042,US,1,"""Image Rotation """,},//
+{0,0x0070,0x0050,US,2,"""Displayed Area Top Left Hand Corner (Trial)""",},//
+{0,0x0070,0x0051,US,2,"""Displayed Area Bottom Right Hand Corner (Trial)""",},//
 {0,0x0070,0x0052,SL,2,"""Displayed Area Top Left Hand Corner""",},//
 {0,0x0070,0x0053,SL,2,"""Displayed Area Bottom Right Hand Corner""",},//
 {0,0x0070,0x005A,SQ,1,"""Displayed Area Selection Sequence""",},//

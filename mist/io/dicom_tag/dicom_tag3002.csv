@@ -1,4 +1,3 @@
-{0,0x3002,0x0000,UL,1,"""Group 3002 Length""",},//
 {0,0x3002,0x0002,SH,1,"""RT Image Label""",},//
 {0,0x3002,0x0003,LO,1,"""RT Image Name""",},//
 {0,0x3002,0x0004,ST,1,"""RT Image Description""",},//

@@ -1,4 +1,3 @@
-{0,0x2040,0x0000,UL,1,"""Group 2040 Length""",},//
 {0,0x2040,0x0010,SQ,1,"""Referenced Overlay Plane Sequence""",},//
 {0,0x2040,0x0011,US,99,"""Referenced Overlay Plane Groups""",},//
 {0,0x2040,0x0020,SQ,1,"""Overlay Pixel Data Sequence""",},//
@@ -10,5 +9,5 @@
 {0,0x2040,0x0082,CS,1,"""Overlay Background Density""",},//
 {0,0x2040,0x0090,CS,1,"""Overlay Mode""",},//
 {0,0x2040,0x0100,CS,1,"""Threshold Density""",},//
-{0,0x2040,0x0500,SQ,1,"""Referenced Image Box Sequence""",},//
+{0,0x2040,0x0500,SQ,1,"""Referenced Image Box Sequence (Retired)""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

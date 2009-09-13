@@ -1,9 +1,8 @@
-{0,0x0088,0x0000,UL,1,"""Group 0088 Length""",},//
 {0,0x0088,0x0130,SH,1,"""Storage Media File-set ID""",},//
 {0,0x0088,0x0140,UI,1,"""Storage Media File-set UID""",},//
 {0,0x0088,0x0200,SQ,1,"""Icon Image Sequence""",},//
 {0,0x0088,0x0904,LO,1,"""Topic Title""",},//
 {0,0x0088,0x0906,ST,1,"""Topic Subject""",},//
 {0,0x0088,0x0910,LO,1,"""Topic Author""",},//
-{0,0x0088,0x0912,LO,32,"""Topic Key Words""",},//
+{0,0x0088,0x0912,LO,32,"""Topic Keywords""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

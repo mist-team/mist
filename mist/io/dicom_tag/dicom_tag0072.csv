@@ -1,9 +1,8 @@
-{0,0x0072,0x0000,UL,1,"""Group 0072 Length""",},//
 {0,0x0072,0x0002,SH,1,"""Hanging Protocol Name""",},//
 {0,0x0072,0x0004,LO,1,"""Hanging Protocol Description""",},//
 {0,0x0072,0x0006,CS,1,"""Hanging Protocol Level""",},//
 {0,0x0072,0x0008,LO,1,"""Hanging Protocol Creator""",},//
-{0,0x0072,0x000A,DT,1,"""Hanging Protocol Creation Datetime""",},//
+{0,0x0072,0x000A,DT,1,"""Hanging Protocol Creation DateTime""",},//
 {0,0x0072,0x000C,SQ,1,"""Hanging Protocol Definition Sequence""",},//
 {0,0x0072,0x000E,SQ,1,"""Hanging Protocol User Identification Code Sequence""",},//
 {0,0x0072,0x0010,LO,1,"""Hanging Protocol User Group Name""",},//
@@ -30,11 +29,11 @@
 {0,0x0072,0x0062,CS,-1,"""Selector CS Value""",},//
 {0,0x0072,0x0064,IS,-1,"""Selector IS Value""",},//
 {0,0x0072,0x0066,LO,-1,"""Selector LO Value""",},//
-{0,0x0072,0x0068,LT,-1,"""Selector LT Value""",},//
+{0,0x0072,0x0068,LT,1,"""Selector LT Value""",},//
 {0,0x0072,0x006A,PN,-1,"""Selector PN Value""",},//
 {0,0x0072,0x006C,SH,-1,"""Selector SH Value""",},//
-{0,0x0072,0x006E,ST,-1,"""Selector ST Value""",},//
-{0,0x0072,0x0070,UT,-1,"""Selector UT Value""",},//
+{0,0x0072,0x006E,ST,1,"""Selector ST Value""",},//
+{0,0x0072,0x0070,UT,1,"""Selector UT Value""",},//
 {0,0x0072,0x0072,DS,-1,"""Selector DS Value""",},//
 {0,0x0072,0x0074,FD,-1,"""Selector FD Value""",},//
 {0,0x0072,0x0076,FL,-1,"""Selector FL Value""",},//
@@ -60,7 +59,7 @@
 {0,0x0072,0x0210,SQ,1,"""Synchronized Scrolling Sequence""",},//
 {0,0x0072,0x0212,US,-1,"""Display Set Scrolling Group""",},//
 {0,0x0072,0x0214,SQ,1,"""Navigation Indicator Sequence""",},//
-{0,0x0072,0x0216,US,1,"""Navigation Display Set""",},//
+{0,0x0072,0x0216,US,1,"""Navigation Display Set """,},//
 {0,0x0072,0x0218,US,-1,"""Reference Display Sets""",},//
 {0,0x0072,0x0300,SQ,1,"""Image Boxes Sequence""",},//
 {0,0x0072,0x0302,US,1,"""Image Box Number""",},//
@@ -95,6 +94,6 @@
 {0,0x0072,0x0712,CS,1,"""Show Graphic Annotation Flag""",},//
 {0,0x0072,0x0714,CS,1,"""Show Patient Demographics Flag""",},//
 {0,0x0072,0x0716,CS,1,"""Show Acquisition Techniques Flag""",},//
-{0,0x0072,0x0717,CS,1,"""Display Set Horizontal Justification""",},//
+{0,0x0072,0x0717,CS,1,"""Display Set Horizontal Justification """,},//
 {0,0x0072,0x0718,CS,1,"""Display Set Vertical Justification""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

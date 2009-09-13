@@ -1,4 +1,3 @@
-{0,0x3008,0x0000,UL,1,"""Group 3008 Length""",},//
 {0,0x3008,0x0010,SQ,1,"""Measured Dose Reference Sequence""",},//
 {0,0x3008,0x0012,ST,1,"""Measured Dose Description""",},//
 {0,0x3008,0x0014,CS,1,"""Measured Dose Type""",},//
@@ -12,10 +11,10 @@
 {0,0x3008,0x002B,SH,1,"""Treatment Termination Code""",},//
 {0,0x3008,0x002C,CS,1,"""Treatment Verification Status""",},//
 {0,0x3008,0x0030,SQ,1,"""Referenced Treatment Record Sequence""",},//
-{0,0x3008,0x0032,DS,1,"""Specified Primary Meterset""",},//
-{0,0x3008,0x0033,DS,1,"""Specified Secondary Meterset""",},//
-{0,0x3008,0x0036,DS,1,"""Delivered Primary Meterset""",},//
-{0,0x3008,0x0037,DS,1,"""Delivered Secondary Meterset""",},//
+{0,0x3008,0x0032,DS,1,"""Specified Primary Meterset """,},//
+{0,0x3008,0x0033,DS,1,"""Specified Secondary Meterset """,},//
+{0,0x3008,0x0036,DS,1,"""Delivered Primary Meterset """,},//
+{0,0x3008,0x0037,DS,1,"""Delivered Secondary Meterset """,},//
 {0,0x3008,0x003A,DS,1,"""Specified Treatment Time""",},//
 {0,0x3008,0x003B,DS,1,"""Delivered Treatment Time""",},//
 {0,0x3008,0x0040,SQ,1,"""Control Point Delivery Sequence""",},//

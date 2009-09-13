@@ -1,10 +1,9 @@
-{0,0x0040,0x0000,UL,1,"""Group 0040 Length""",},//
 {0,0x0040,0x0001,AE,-1,"""Scheduled Station AE Title""",},//
 {0,0x0040,0x0002,DA,1,"""Scheduled Procedure Step Start Date""",},//
 {0,0x0040,0x0003,TM,1,"""Scheduled Procedure Step Start Time""",},//
 {0,0x0040,0x0004,DA,1,"""Scheduled Procedure Step End Date""",},//
 {0,0x0040,0x0005,TM,1,"""Scheduled Procedure Step End Time""",},//
-{0,0x0040,0x0006,PN,1,"""Scheduled Performing Physician' Name""",},//
+{0,0x0040,0x0006,PN,1,"""Scheduled Performing Physician's Name""",},//
 {0,0x0040,0x0007,LO,1,"""Scheduled Procedure Step Description""",},//
 {0,0x0040,0x0008,SQ,1,"""Scheduled Protocol Code Sequence""",},//
 {0,0x0040,0x0009,SH,1,"""Scheduled Procedure Step ID""",},//
@@ -15,7 +14,7 @@
 {0,0x0040,0x0012,LO,1,"""Pre-Medication""",},//
 {0,0x0040,0x0020,CS,1,"""Scheduled Procedure Step Status""",},//
 {0,0x0040,0x0100,SQ,1,"""Scheduled Procedure Step Sequence""",},//
-{0,0x0040,0x0220,SQ,1,"""Referenced Non-Image Composite SOP Instance Sequence""",},//
+{0,0x0040,0x0220,SQ,1,"""Referenced Non-Image Composite SOP Instance Sequence """,},//
 {0,0x0040,0x0241,AE,1,"""Performed Station AE Title""",},//
 {0,0x0040,0x0242,SH,1,"""Performed Station Name""",},//
 {0,0x0040,0x0243,SH,1,"""Performed Location""",},//
@@ -59,6 +58,8 @@
 {0,0x0040,0x050A,LO,1,"""Specimen Accession Number""",},//
 {0,0x0040,0x0550,SQ,1,"""Specimen Sequence""",},//
 {0,0x0040,0x0551,LO,1,"""Specimen Identifier""",},//
+{0,0x0040,0x0552,SQ,1,"""Specimen Description Sequence   Trial""",},//
+{0,0x0040,0x0553,ST,1,"""Specimen Description   Trial""",},//
 {0,0x0040,0x0555,SQ,1,"""Acquisition Context Sequence""",},//
 {0,0x0040,0x0556,ST,1,"""Acquisition Context Description""",},//
 {0,0x0040,0x059A,SQ,1,"""Specimen Type Code Sequence""",},//
@@ -70,9 +71,10 @@
 {0,0x0040,0x08D8,SQ,1,"""Pixel Spacing Sequence""",},//
 {0,0x0040,0x08DA,SQ,1,"""Coordinate System Axis Code Sequence""",},//
 {0,0x0040,0x08EA,SQ,1,"""Measurement Units Code Sequence""",},//
+{0,0x0040,0x09F8,SQ,1,"""Vital Stain Code Sequence   Trial""",},//
 {0,0x0040,0x1001,SH,1,"""Requested Procedure ID""",},//
 {0,0x0040,0x1002,LO,1,"""Reason for the Requested Procedure""",},//
-{0,0x0040,0x1003,SH,1,"""Requested Procedure Priority""",},//
+{0,0x0040,0x1003,SH,1,"""Requested Procedure Priority """,},//
 {0,0x0040,0x1004,LO,1,"""Patient Transport Arrangements""",},//
 {0,0x0040,0x1005,LO,1,"""Requested Procedure Location""",},//
 {0,0x0040,0x1006,SH,1,"""Placer Order Number / Procedure""",},//
@@ -89,8 +91,8 @@
 {0,0x0040,0x2001,LO,1,"""Reason for the Imaging Service Request""",},//
 {0,0x0040,0x2004,DA,1,"""Issue Date of Imaging Service Request""",},//
 {0,0x0040,0x2005,TM,1,"""Issue Time of Imaging Service Request""",},//
-{0,0x0040,0x2006,SH,1,"""Placer Order Number / Imaging Service Request""",},//
-{0,0x0040,0x2007,SH,1,"""Filler Order Number / Imaging Service Request""",},//
+{0,0x0040,0x2006,SH,1,"""Placer Order Number / Imaging Service Request (Retired)""",},//
+{0,0x0040,0x2007,SH,1,"""Filler Order Number / Imaging Service Request (Retired)""",},//
 {0,0x0040,0x2008,PN,1,"""Order Entered By""",},//
 {0,0x0040,0x2009,SH,1,"""Order Enterer's Location""",},//
 {0,0x0040,0x2010,SH,1,"""Order Callback Phone Number""",},//
@@ -131,7 +133,7 @@
 {0,0x0040,0x4037,PN,1,"""Human Performer's Name""",},//
 {0,0x0040,0x8302,DS,1,"""Entrance Dose in mGy""",},//
 {0,0x0040,0x9094,SQ,1,"""Referenced Image Real World Value Mapping Sequence""",},//
-{0,0x0040,0x9096,SQ,1,"""Real World Value Mapping Sequence""",},//
+{0,0x0040,0x9096,SQ,1,"""Real World Value Mapping Sequence """,},//
 {0,0x0040,0x9098,SQ,1,"""Pixel Value Mapping Code Sequence""",},//
 {0,0x0040,0x9210,SH,1,"""LUT Label""",},//
 {0,0x0040,0x9211,US,1,"""Real World Value Last Value Mapped""",},//
@@ -154,11 +156,11 @@
 {0,0x0040,0xA07A,SQ,1,"""Participant Sequence""",},//
 {0,0x0040,0xA07C,SQ,1,"""Custodial Organization Sequence""",},//
 {0,0x0040,0xA080,CS,1,"""Participation Type""",},//
-{0,0x0040,0xA082,DT,1,"""Participation Datetime""",},//
+{0,0x0040,0xA082,DT,1,"""Participation DateTime""",},//
 {0,0x0040,0xA084,CS,1,"""Observer Type""",},//
 {0,0x0040,0xA088,SQ,1,"""Verifying Observer Identification Code Sequence""",},//
 {0,0x0040,0xA090,SQ,1,"""Equivalent CDA Document Sequence""",},//
-{0,0x0040,0xA0B0,US,-1,"""Referenced Waveform Channels""",},//
+{0,0x0040,0xA0B0,US,2,"""Referenced Waveform Channels""",},//
 {0,0x0040,0xA120,DT,1,"""DateTime""",},//
 {0,0x0040,0xA121,DA,1,"""Date""",},//
 {0,0x0040,0xA122,TM,1,"""Time""",},//
@@ -168,15 +170,17 @@
 {0,0x0040,0xA132,UL,-1,"""Referenced Sample Positions""",},//
 {0,0x0040,0xA136,US,-1,"""Referenced Frame Numbers""",},//
 {0,0x0040,0xA138,DS,-1,"""Referenced Time Offsets""",},//
-{0,0x0040,0xA13A,DT,-1,"""Referenced Datetime""",},//
+{0,0x0040,0xA13A,DT,-1,"""Referenced DateTime """,},//
 {0,0x0040,0xA160,UT,1,"""Text Value""",},//
 {0,0x0040,0xA168,SQ,1,"""Concept Code Sequence""",},//
 {0,0x0040,0xA170,SQ,1,"""Purpose of Reference Code Sequence""",},//
 {0,0x0040,0xA180,US,1,"""Annotation Group Number""",},//
-{0,0x0040,0xA195,SQ,1,"""Modifier Code Sequence""",},//
+{0,0x0040,0xA195,SQ,1,"""Modifier Code Sequence """,},//
 {0,0x0040,0xA300,SQ,1,"""Measured Value Sequence""",},//
 {0,0x0040,0xA301,SQ,1,"""Numeric Value Qualifier Code Sequence""",},//
 {0,0x0040,0xA30A,DS,-1,"""Numeric Value""",},//
+{0,0x0040,0xA353,ST,1,"""Address   Trial""",},//
+{0,0x0040,0xA354,LO,1,"""Telephone Number   Trial""",},//
 {0,0x0040,0xA360,SQ,1,"""Predecessor Documents Sequence""",},//
 {0,0x0040,0xA370,SQ,1,"""Referenced Request Sequence""",},//
 {0,0x0040,0xA372,SQ,1,"""Performed Procedure Code Sequence""",},//
@@ -186,6 +190,7 @@
 {0,0x0040,0xA491,CS,1,"""Completion Flag""",},//
 {0,0x0040,0xA492,LO,1,"""Completion Flag Description""",},//
 {0,0x0040,0xA493,CS,1,"""Verification Flag""",},//
+{0,0x0040,0xA494,CS,1,"""Archive Requested""",},//
 {0,0x0040,0xA504,SQ,1,"""Content Template Sequence""",},//
 {0,0x0040,0xA525,SQ,1,"""Identical Documents Sequence""",},//
 {0,0x0040,0xA730,SQ,1,"""Content Sequence""",},//
@@ -197,8 +202,8 @@
 {0,0x0040,0xDB0C,UI,1,"""Template Extension Organization UID""",},//
 {0,0x0040,0xDB0D,UI,1,"""Template Extension Creator UID""",},//
 {0,0x0040,0xDB73,UL,-1,"""Referenced Content Item Identifier""",},//
-{0,0x0040,0xE001,ST,1,"""HL7 Instance Identifier""",},//
+{0,0x0040,0xE001,ST,1,"""HL7 Instance Identifier """,},//
 {0,0x0040,0xE004,DT,1,"""HL7 Document Effective Time""",},//
 {0,0x0040,0xE006,SQ,1,"""HL7 Document Type Code Sequence""",},//
-{0,0x0040,0xE010,UT,1,"""Retrieve URI""",},//
+{0,0x0040,0xE010,UT,1,"""Retrieve URI """,},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

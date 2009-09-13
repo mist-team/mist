@@ -3,6 +3,9 @@
 {0,0x7E0F,0x0010,OB,1,"""Pixel Data""",},//
 {0,0x7FE0,0x0010,OW,1,"""Pixel Data""",},//
 {0,0x7FE0,0x0010,OB,1,"""Pixel Data""",},//
+{0,0x7FE0,0x0020,OW,1,"""Coefficients SDVN""",},//
+{0,0x7FE0,0x0030,OW,1,"""Coefficients SDHN""",},//
+{0,0x7FE0,0x0040,OW,1,"""Coefficients SDDN""",},//
 {0,0xFFFA,0xFFFA,SQ,1,"""Digital Signatures Sequence""",},//
 {0,0xFFFC,0xFFFC,OB,1,"""Data Set Trailing Padding""",},//
 //{0,0xFFFE,0xE000,DL,1,"""Item""",},//

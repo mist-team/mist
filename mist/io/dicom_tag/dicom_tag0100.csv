@@ -1,4 +1,3 @@
-{0,0x0100,0x0000,UL,1,"""Group 0100 Length""",},//
 {0,0x0100,0x0410,CS,1,"""SOP Instance Status""",},//
 {0,0x0100,0x0420,DT,1,"""SOP Authorization Date and Time""",},//
 {0,0x0100,0x0424,LT,1,"""SOP Authorization Comment""",},//

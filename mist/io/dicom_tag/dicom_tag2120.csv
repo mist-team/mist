@@ -1,4 +1,3 @@
-{0,0x2120,0x0000,UL,1,"""Group 2120 Length""",},//
 {0,0x2120,0x0010,CS,1,"""Queue Status""",},//
 {0,0x2120,0x0050,SQ,1,"""Print Job Description Sequence""",},//
 {0,0x2120,0x0070,SQ,1,"""Referenced Print Job Sequence""",},//

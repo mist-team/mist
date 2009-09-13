@@ -1,4 +1,3 @@
-{0,0x0010,0x0000,UL,1,"""Group 0010 Length""",},//
 {0,0x0010,0x0010,PN,1,"""Patient's Name""",},//
 {0,0x0010,0x0020,LO,1,"""Patient ID""",},//
 {0,0x0010,0x0021,LO,1,"""Issuer of Patient ID""",},//
@@ -23,7 +22,7 @@
 {0,0x0010,0x1081,LO,1,"""Branch of Service""",},//
 {0,0x0010,0x1090,LO,1,"""Medical Record Locator""",},//
 {0,0x0010,0x2000,LO,-1,"""Medical Alerts""",},//
-{0,0x0010,0x2110,LO,-1,"""Contrast Allergies""",},//
+{0,0x0010,0x2110,LO,-1,"""Allergies""",},//
 {0,0x0010,0x2150,LO,1,"""Country of Residence""",},//
 {0,0x0010,0x2152,LO,1,"""Region of Residence""",},//
 {0,0x0010,0x2154,SH,-1,"""Patient's Telephone Numbers""",},//

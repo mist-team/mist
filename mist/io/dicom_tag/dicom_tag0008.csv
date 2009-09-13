@@ -15,7 +15,7 @@
 {0,0x0008,0x0023,DA,1,"""Content Date""",},//
 {0,0x0008,0x0024,DA,1,"""Overlay Date""",},//
 {0,0x0008,0x0025,DA,1,"""Curve Date""",},//
-{0,0x0008,0x002A,DT,1,"""Acquisition Datetime""",},//
+{0,0x0008,0x002A,DT,1,"""Acquisition DateTime""",},//
 {0,0x0008,0x0030,TM,1,"""Study Time""",},//
 {0,0x0008,0x0031,TM,1,"""Series Time""",},//
 {0,0x0008,0x0032,TM,1,"""Acquisition Time""",},//
@@ -58,7 +58,7 @@
 {0,0x0008,0x0112,LO,1,"""Coding Scheme Registry""",},//
 {0,0x0008,0x0114,ST,1,"""Coding Scheme External ID""",},//
 {0,0x0008,0x0115,ST,1,"""Coding Scheme Name""",},//
-{0,0x0008,0x0116,ST,1,"""Responsible Organization""",},//
+{0,0x0008,0x0116,ST,1,"""Coding Scheme Responsible Organization""",},//
 {0,0x0008,0x0201,SH,1,"""Timezone Offset From UTC""",},//
 {0,0x0008,0x1000,AE,1,"""Network ID""",},//
 {0,0x0008,0x1010,SH,1,"""Station Name""",},//
@@ -68,7 +68,7 @@
 {0,0x0008,0x1040,LO,1,"""Institutional Department Name""",},//
 {0,0x0008,0x1048,PN,-1,"""Physician(s) of Record""",},//
 {0,0x0008,0x1049,SQ,1,"""Physician(s) of Record Identification Sequence""",},//
-{0,0x0008,0x1050,PN,-1,"""Performing Physician.s Name""",},//
+{0,0x0008,0x1050,PN,-1,"""Performing Physician's Name""",},//
 {0,0x0008,0x1052,SQ,1,"""Performing Physician Identification Sequence""",},//
 {0,0x0008,0x1060,PN,-1,"""Name of  Physician(s) Reading Study""",},//
 {0,0x0008,0x1062,SQ,1,"""Physician(s) Reading Study Identification Sequence""",},//
@@ -76,7 +76,7 @@
 {0,0x0008,0x1072,SQ,1,"""Operator Identification Sequence""",},//
 {0,0x0008,0x1080,LO,-1,"""Admitting Diagnoses Description""",},//
 {0,0x0008,0x1084,SQ,1,"""Admitting Diagnoses Code Sequence""",},//
-{0,0x0008,0x1090,LO,1,"""Manufacturer.s Model Name""",},//
+{0,0x0008,0x1090,LO,1,"""Manufacturer's Model Name""",},//
 {0,0x0008,0x1100,SQ,1,"""Referenced Results Sequence""",},//
 {0,0x0008,0x1110,SQ,1,"""Referenced Study Sequence""",},//
 {0,0x0008,0x1111,SQ,1,"""Referenced Performed Procedure Step Sequence""",},//
@@ -99,7 +99,7 @@
 {0,0x0008,0x1199,SQ,1,"""Referenced SOP Sequence""",},//
 {0,0x0008,0x1200,SQ,1,"""Studies Containing Other Referenced Instances Sequence""",},//
 {0,0x0008,0x1250,SQ,1,"""Related Series Sequence""",},//
-{0,0x0008,0x2110,CS,1,"""Lossy Image Compression""",},//
+{0,0x0008,0x2110,CS,1,"""Lossy Image Compression (Retired)""",},//
 {0,0x0008,0x2111,ST,1,"""Derivation Description""",},//
 {0,0x0008,0x2112,SQ,1,"""Source Image Sequence""",},//
 {0,0x0008,0x2120,SH,1,"""Stage Name""",},//
@@ -126,6 +126,15 @@
 {0,0x0008,0x2242,SQ,1,"""Transducer Position Modifier Sequence""",},//
 {0,0x0008,0x2244,SQ,1,"""Transducer Orientation Sequence""",},//
 {0,0x0008,0x2246,SQ,1,"""Transducer Orientation Modifier Sequence""",},//
+{0,0x0008,0x2251,SQ,1,"""Anatomic Structure Space Or Region Code Sequence (Trial)""",},//
+{0,0x0008,0x2253,SQ,1,"""Anatomic Portal Of Entrance Code Sequence (Trial)""",},//
+{0,0x0008,0x2255,SQ,1,"""Anatomic Approach Direction Code Sequence (Trial)""",},//
+{0,0x0008,0x2256,ST,1,"""Anatomic Perspective Description (Trial)""",},//
+{0,0x0008,0x2257,SQ,1,"""Anatomic Perspective Code Sequence (Trial)""",},//
+{0,0x0008,0x2258,ST,1,"""Anatomic Location Of Examining Instrument Description (Trial)""",},//
+{0,0x0008,0x2259,SQ,1,"""Anatomic Location Of Examining Instrument Code Sequence (Trial)""",},//
+{0,0x0008,0x225A,SQ,1,"""Anatomic Structure Space Or Region Modifier Code Sequence (Trial)""",},//
+{0,0x0008,0x225C,SQ,1,"""OnAxis Background Anatomic Structure Code Sequence (Trial)""",},//
 {0,0x0008,0x3001,SQ,1,"""Alternate Representation Sequence""",},//
 {0,0x0008,0x3010,UI,1,"""Irradiation Event UID""",},//
 {0,0x0008,0x4000,LT,1,"""Identifying Comments""",},//

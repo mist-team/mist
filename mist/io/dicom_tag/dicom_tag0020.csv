@@ -1,4 +1,3 @@
-{0,0x0020,0x0000,UL,1,"""Group 0020 Length""",},//
 {0,0x0020,0x000D,UI,1,"""Study Instance UID""",},//
 {0,0x0020,0x000E,UI,1,"""Series Instance UID""",},//
 {0,0x0020,0x0010,SH,1,"""Study ID""",},//
@@ -45,6 +44,7 @@
 {0,0x0020,0x1206,IS,1,"""Number of Study Related Series""",},//
 {0,0x0020,0x1208,IS,1,"""Number of Study Related Instances""",},//
 {0,0x0020,0x1209,IS,1,"""Number of Series Related Instances""",},//
+{0,0x0020,0x3100,CS,-1,"""Source Image IDs""",},//
 {0,0x0020,0x3401,CS,1,"""Modifying Device ID""",},//
 {0,0x0020,0x3402,CS,1,"""Modified Image ID""",},//
 {0,0x0020,0x3403,DA,1,"""Modified Image Date""",},//
@@ -62,7 +62,7 @@
 {0,0x0020,0x9113,SQ,1,"""Plane Position Sequence""",},//
 {0,0x0020,0x9116,SQ,1,"""Plane Orientation Sequence""",},//
 {0,0x0020,0x9128,UL,1,"""Temporal Position Index""",},//
-{0,0x0020,0x9153,FD,1,"""Cardiac Trigger Delay Time""",},//
+{0,0x0020,0x9153,FD,1,"""Nominal Cardiac Trigger Delay Time""",},//
 {0,0x0020,0x9156,US,1,"""Frame Acquisition Number""",},//
 {0,0x0020,0x9157,UL,-1,"""Dimension Index Values""",},//
 {0,0x0020,0x9158,LT,1,"""Frame Comments""",},//
@@ -77,12 +77,24 @@
 {0,0x0020,0x9222,SQ,1,"""Dimension Index Sequence""",},//
 {0,0x0020,0x9228,UL,1,"""Concatenation Frame Offset Number""",},//
 {0,0x0020,0x9238,LO,1,"""Functional Group Private Creator""",},//
-{0,0x0020,0x9251,FD,1,"""R Interval Time Measured""",},//
-{0,0x0020,0x9253,SQ,1,"""Respiratory Trigger Sequence""",},//
+{0,0x0020,0x9241,FL,1,"""Nominal Percentage of Cardiac Phase""",},//
+{0,0x0020,0x9245,FL,1,"""Nominal Percentage of Respiratory Phase""",},//
+{0,0x0020,0x9246,FL,1,"""Starting Respiratory Amplitude""",},//
+{0,0x0020,0x9247,CS,1,"""Starting Respiratory Phase""",},//
+{0,0x0020,0x9248,FL,1,"""Ending Respiratory Amplitude""",},//
+{0,0x0020,0x9249,CS,1,"""Ending Respiratory Phase""",},//
+{0,0x0020,0x9250,CS,1,"""Respiratory Trigger Type""",},//
+{0,0x0020,0x9251,FD,1,"""R   R Interval Time Nominal""",},//
+{0,0x0020,0x9252,FD,1,"""Actual Cardiac Trigger Delay Time""",},//
+{0,0x0020,0x9253,SQ,1,"""Respiratory Synchronization Sequence""",},//
 {0,0x0020,0x9254,FD,1,"""Respiratory Interval Time""",},//
-{0,0x0020,0x9255,FD,1,"""Respiratory Trigger Delay Time""",},//
+{0,0x0020,0x9255,FD,1,"""Nominal Respiratory Trigger Delay Time""",},//
 {0,0x0020,0x9256,FD,1,"""Respiratory Trigger Delay Threshold""",},//
+{0,0x0020,0x9257,FD,1,"""Actual Respiratory Trigger Delay Time""",},//
 {0,0x0020,0x9421,LO,1,"""Dimension Description Label""",},//
 {0,0x0020,0x9450,SQ,1,"""Patient Orientation in Frame Sequence""",},//
 {0,0x0020,0x9453,LO,1,"""Frame Label""",},//
+{0,0x0020,0x9518,US,-1,"""Acquisition Index""",},//
+{0,0x0020,0x9529,SQ,1,"""Contributing SOP Instances Reference Sequence""",},//
+{0,0x0020,0x9536,US,1,"""Reconstruction Index""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

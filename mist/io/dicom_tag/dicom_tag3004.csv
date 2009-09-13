@@ -1,4 +1,3 @@
-{0,0x3004,0x0000,UL,1,"""Group 3004 Length""",},//
 {0,0x3004,0x0001,CS,1,"""DVH Type""",},//
 {0,0x3004,0x0002,CS,1,"""Dose Units""",},//
 {0,0x3004,0x0004,CS,1,"""Dose Type""",},//
@@ -16,7 +15,7 @@
 {0,0x3004,0x0052,DS,1,"""DVH Dose Scaling""",},//
 {0,0x3004,0x0054,CS,1,"""DVH Volume Units""",},//
 {0,0x3004,0x0056,IS,1,"""DVH Number of Bins""",},//
-{0,0x3004,0x0058,DS,-1,"""DVH Data""",},//
+{0,0x3004,0x0058,DS,2,"""DVH Data""",},//
 {0,0x3004,0x0060,SQ,1,"""DVH Referenced ROI Sequence""",},//
 {0,0x3004,0x0062,CS,1,"""DVH ROI Contribution Type""",},//
 {0,0x3004,0x0070,DS,1,"""DVH Minimum Dose""",},//

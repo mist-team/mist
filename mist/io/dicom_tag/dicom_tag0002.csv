@@ -1,4 +1,4 @@
-{0,0x0002,0x0000,UL,1,"""Group 0002 Length""",},//
+{0,0x0002,0x0000,UL,1,"""File Meta Information Group Length""",},//
 {0,0x0002,0x0001,OB,1,"""File Meta Information Version""",},//
 {0,0x0002,0x0002,UI,1,"""Media Storage SOP Class UID""",},//
 {0,0x0002,0x0003,UI,1,"""Media Storage SOP Instance UID""",},//

@@ -1,4 +1,3 @@
-{0,0x0400,0x0000,UL,1,"""Group 0400 Length""",},//
 {0,0x0400,0x0005,US,1,"""MAC ID Number""",},//
 {0,0x0400,0x0010,UI,1,"""MAC Calculation Transfer Syntax UID""",},//
 {0,0x0400,0x0015,CS,1,"""MAC Algorithm""",},//
@@ -19,7 +18,7 @@
 {0,0x0400,0x0520,OB,1,"""Encrypted Content""",},//
 {0,0x0400,0x0550,SQ,1,"""Modified Attributes Sequence""",},//
 {0,0x0400,0x0561,SQ,1,"""Original Attributes Sequence""",},//
-{0,0x0400,0x0562,DT,1,"""Attribute Modification Datetime""",},//
+{0,0x0400,0x0562,DT,1,"""Attribute Modification DateTime""",},//
 {0,0x0400,0x0563,LO,1,"""Modifying System""",},//
 {0,0x0400,0x0564,LO,1,"""Source of Previous Values""",},//
 {0,0x0400,0x0565,CS,1,"""Reason for the Attribute Modification""",},//

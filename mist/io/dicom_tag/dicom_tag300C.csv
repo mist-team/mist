@@ -1,4 +1,3 @@
-{0,0x300C,0x0000,UL,1,"""Group 300C Length""",},//
 {0,0x300C,0x0002,SQ,1,"""Referenced RT Plan Sequence""",},//
 {0,0x300C,0x0004,SQ,1,"""Referenced Beam Sequence""",},//
 {0,0x300C,0x0006,IS,1,"""Referenced Beam Number""",},//
