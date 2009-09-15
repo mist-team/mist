@@ -247,13 +247,7 @@ public:
 private:
 	integral_image_type integral_;
 
-	integral_type _value( const size_type i, const size_type j ) const
-	{
-		return( integral_( i, j ) );
-	}
-
 public:
-
 	/// @brief 任意の矩形領域内の画素の総和を返す：O(1)
 	//! 
 	//! @param[in] begin_i … i方向の始点
@@ -265,7 +259,7 @@ public:
 	//!
 	integral_type operator ( )( const size_type begin_i, const size_type begin_j, const size_type width, const size_type height ) const
 	{
-		return( _value( begin_i + width, begin_j + height ) + _value( begin_i, begin_j ) - _value( begin_i + width, begin_j ) - _value( begin_i, begin_j + height ) );
+		return( integral_( begin_i + width, begin_j + height ) + integral_( begin_i, begin_j ) - integral_( begin_i + width, begin_j ) - integral_( begin_i, begin_j + height ) );
 	}
 
 	/// @brief 全ての画素値の総和を返す：O(1)
@@ -274,7 +268,7 @@ public:
 	//!
 	integral_type overall( ) const 
 	{
-		return( integral_( integral_.width( ) - 1, integral_.height( ) - 1 ) );
+		return( integral_[ integral_.size( ) - 1 ] );
 	}
 
 	/// @brief 画像配列のi方向のサイズを返す
@@ -311,12 +305,34 @@ public:
 	void construct_integral_array( const image_type &in )
 	{ 
 		integral_.resize( in.width( ) + 1, in.height( ) + 1 );	
-		for( size_type j = 1 ; j < integral_.height( ) ; j ++ )
+
+		typename image_type::const_pointer    ip = &in[ 0 ];
+		typename integral_image_type::pointer op = &integral_( 1, 1 );
+
+		op[ 0 ] = ip[ 0 ];
+		for( size_type i = 1 ; i < in.width( ) ; i++ )
 		{
-			for( size_type i = 1 ; i < integral_.width( ) ; i ++ )
+			op[ i ] = op[ i - 1 ] + ip[ i ];
+		}
+
+		typename integral_image_type::pointer oop = op;
+		ip += in.width( );
+		op += integral_.width( );
+
+		for( size_type j = 1 ; j < in.height( ) ; j++ )
+		{
+			integral_type tmp = ip[ 0 ];
+			op[ 0 ] = oop[ 0 ] + tmp;
+
+			for( size_type i = 1 ; i < in.width( ) ; i++ )
 			{
-				integral_( i, j ) = in( i - 1, j - 1 ) + integral_( i, j - 1 ) + integral_( i - 1, j ) - integral_( i - 1, j - 1 );
+				tmp += ip[ i ];
+				op[ i ] = oop[ i ] + tmp;
 			}
+
+			oop = op;
+			ip += in.width( );
+			op += integral_.width( );
 		}
 	}
 
