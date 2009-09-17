@@ -53,12 +53,12 @@ _MIST_BEGIN
 // 入力のデータ型から画素値の総和のデータ型を決定するためのクラス
 namespace __integral_image__
 {
-	template< bool Is_signed, bool Is_decimal, bool Is_color >	struct integral_type						{ typedef rgb< double >	type; };
-	template< >													struct integral_type< true,  false, true >	{ typedef rgb< int >	type; };
-	template< >													struct integral_type< false, false, true >	{ typedef rgb< size_t >	type; };
-	template< >													struct integral_type< true,  true,  false >	{ typedef double		type; };
-	template< >													struct integral_type< true,  false, false >	{ typedef int			type; };
-	template< >													struct integral_type< false, false, false >	{ typedef size_t		type; };
+	template< bool Is_signed, bool Is_decimal, bool Is_color >	struct integral_type						{ typedef rgb< double >		type; };
+	template< >													struct integral_type< true,  false, true >	{ typedef rgb< int >		type; };
+	template< >													struct integral_type< false, false, true >	{ typedef rgb< ptrdiff_t >	type; };
+	template< >													struct integral_type< true,  true,  false >	{ typedef double			type; };
+	template< >													struct integral_type< true,  false, false >	{ typedef int				type; };
+	template< >													struct integral_type< false, false, false >	{ typedef ptrdiff_t			type; };
 }
 
 /// @brief 1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス
@@ -127,19 +127,14 @@ template< typename T, typename Allocator >
 class integral_image< array< T, Allocator > >
 {
 public:
-	typedef typename __integral_image__::integral_type< is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type integral_type;
-	typedef array< integral_type > integral_image_type;
+	typedef typename __integral_image__::integral_type< is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
+	typedef array< value_type > integral_image_type;
 	typedef array< T, Allocator > image_type;
 	typedef typename image_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 	typedef typename image_type::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 private:
 	integral_image_type integral_;
-
-	integral_type _value( const size_type i ) const
-	{
-		return integral_[ i ];
-	}
 
 public:
 
@@ -150,16 +145,16 @@ public:
 	//!
 	//! @return 画素値の総和
 	//!
-	integral_type operator ( )( const size_type begin, const size_type size ) const
+	value_type operator ( )( const size_type begin, const size_type size ) const
 	{
-		return( _value( begin + size ) - _value( begin ) );
+		return( integral_( begin + size ) - integral_( begin ) );
 	}
 
 	/// @brief 全ての画素値の総和を返す：O(1)
 	//! 
 	//! @return 画素値の総和
 	//!
-	integral_type overall( ) const 
+	value_type overall( ) const 
 	{
 		return( integral_[ integral_.size( ) - 1 ] );
 	}
@@ -238,8 +233,8 @@ template< typename T, typename Allocator >
 class integral_image< array2< T, Allocator > >
 {
 public:
-	typedef typename __integral_image__::integral_type< is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type integral_type;
-	typedef array2< integral_type > integral_image_type;
+	typedef typename __integral_image__::integral_type< is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
+	typedef array2< value_type > integral_image_type;
 	typedef array2< T, Allocator > image_type;
 	typedef typename image_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 	typedef typename image_type::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
@@ -257,7 +252,7 @@ public:
 	//!
 	//! @return 画素値の総和
 	//!
-	integral_type operator ( )( const size_type begin_i, const size_type begin_j, const size_type width, const size_type height ) const
+	value_type operator ( )( const size_type begin_i, const size_type begin_j, const size_type width, const size_type height ) const
 	{
 		return( integral_( begin_i + width, begin_j + height ) + integral_( begin_i, begin_j ) - integral_( begin_i + width, begin_j ) - integral_( begin_i, begin_j + height ) );
 	}
@@ -266,7 +261,7 @@ public:
 	//! 
 	//! @return 画素値の総和
 	//!
-	integral_type overall( ) const 
+	value_type overall( ) const 
 	{
 		return( integral_[ integral_.size( ) - 1 ] );
 	}
@@ -321,7 +316,7 @@ public:
 
 		for( size_type j = 1 ; j < in.height( ) ; j++ )
 		{
-			integral_type tmp = ip[ 0 ];
+			value_type tmp = ip[ 0 ];
 			op[ 0 ] = oop[ 0 ] + tmp;
 
 			for( size_type i = 1 ; i < in.width( ) ; i++ )
@@ -388,19 +383,14 @@ template< typename T, typename Allocator >
 class integral_image< array3< T, Allocator > >
 {
 public:
-	typedef typename __integral_image__::integral_type< is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type integral_type;
-	typedef array3< integral_type > integral_image_type;
+	typedef typename __integral_image__::integral_type< is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
+	typedef array3< value_type > integral_image_type;
 	typedef array3< T, Allocator > image_type;
 	typedef typename image_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
 	typedef typename image_type::difference_type difference_type;	///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
 
 private:
 	integral_image_type integral_;
-
-	integral_type _value( const size_type i, const size_type j, const size_type k ) const
-	{
-		return integral_( i, j, k );
-	}
 
 public:
 
@@ -415,16 +405,16 @@ public:
 	//!
 	//! @return 画素値の総和
 	//!
-	integral_type operator ( )( const size_type begin_i, const size_type begin_j, const size_type begin_k, const size_type width, const size_type height, const size_type depth ) const
+	value_type operator ( )( const size_type begin_i, const size_type begin_j, const size_type begin_k, const size_type width, const size_type height, const size_type depth ) const
 	{
-		return( _value( begin_i + width, begin_j + height, begin_k + depth ) + _value( begin_i, begin_j, begin_k + depth ) + _value( begin_i, begin_j + height, begin_k ) + _value( begin_i + width, begin_j, begin_k ) - _value( begin_i, begin_j + height, begin_k + depth ) - _value( begin_i + width, begin_j, begin_k + depth ) - _value( begin_i + width, begin_j + height, begin_k ) - _value( begin_i, begin_j, begin_k ) );
+		return( integral_( begin_i + width, begin_j + height, begin_k + depth ) + integral_( begin_i, begin_j, begin_k + depth ) + integral_( begin_i, begin_j + height, begin_k ) + integral_( begin_i + width, begin_j, begin_k ) - integral_( begin_i, begin_j + height, begin_k + depth ) - integral_( begin_i + width, begin_j, begin_k + depth ) - integral_( begin_i + width, begin_j + height, begin_k ) - integral_( begin_i, begin_j, begin_k ) );
 	}
 
 	/// @brief 全ての画素値の総和を返す：O(1)
 	//! 
 	//! @return 画素値の総和
 	//!
-	integral_type overall( ) const 
+	value_type overall( ) const 
 	{
 		return( integral_( integral_.width( ) - 1, integral_.height( ) - 1, integral_.depth( ) - 1 ) );
 	}
