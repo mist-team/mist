@@ -252,6 +252,7 @@ public:
 						if( i + 1 < argc && ( argv[ i + 1 ][ 0 ] != '-' && argv[ i + 1 ][ 0 ] != '/' ) )
 						{
 							a.value = argv[ i + 1 ];
+							i++;
 						}
 						else
 						{
