@@ -46,6 +46,10 @@
 #include "mist.h"
 #endif
 
+#ifndef __INCLUDE_MIST_MATRIX__
+#include "matrix.h"
+#endif
+
 
 // mist–¼‘O‹óŠÔ‚ÌŽn‚Ü‚è
 _MIST_BEGIN
