@@ -1559,7 +1559,7 @@ public:
 
 
 	/// @brief 要素数 num1 × num2 個のコンテナを作成し，解像度を 1.0 × 1.0 に設定し，全要素を val で初期化する
-	array2( size_type num1, size_type num2, const value_type &val ) : base( num1 * num2, val ), size2_( num2 ), size1_( num1 ), reso2_( 1.0 )
+	array2( size_type num1, size_type num2, const value_type &val ) : base( num1 * num2, 1.0, val ), size2_( num2 ), size1_( num1 ), reso2_( 1.0 )
 	{
 		if( base::empty( ) ) size1_ = size2_ = 0;
 	}
