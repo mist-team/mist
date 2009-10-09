@@ -1415,7 +1415,7 @@ public:
 	/// @brief 全ての成分を pix で初期化する
 	explicit nRGB( const value_type &pix ) : base( pix )
 	{
-		__color_normalizer__::compute( r, g, b, R, G, B );
+		__color_normalizer__::compute( base::r, base::g, base::b, R, G, B );
 	}
 
 	/// @brief 異なる型のカラー画素を用いて初期化する
@@ -1429,33 +1429,33 @@ public:
 	template < class TT >
 	nRGB( const rgb< TT > &c ) : base( c )
 	{
-		__color_normalizer__::compute( r, g, b, R, G, B );
+		__color_normalizer__::compute( base::r, base::g, base::b, R, G, B );
 	}
 
 	/// @brief 他のカラー画素を用いて初期化する
 	nRGB( const rgb< T > &c ) : base( c )
 	{
-		__color_normalizer__::compute( r, g, b, R, G, B );
+		__color_normalizer__::compute( base::r, base::g, base::b, R, G, B );
 	}
 
 	/// @brief 異なる型のカラー画素を用いて初期化する
 	template < class TT >
 	nRGB( const bgr< TT > &c ) : base( c )
 	{
-		__color_normalizer__::compute( r, g, b, R, G, B );
+		__color_normalizer__::compute( base::r, base::g, base::b, R, G, B );
 	}
 
 	/// @brief 他のカラー画素を用いて初期化する
 	nRGB( const bgr< T > &c ) : base( c )
 	{
-		__color_normalizer__::compute( r, g, b, R, G, B );
+		__color_normalizer__::compute( base::r, base::g, base::b, R, G, B );
 	}
 
 
 	/// @brief 赤 rr，緑 gg，青 bb を用いて初期化する
 	nRGB( const value_type &rr, const value_type &gg, const value_type &bb ) : base( rr, gg, bb )
 	{
-		__color_normalizer__::compute( r, g, b, R, G, B );
+		__color_normalizer__::compute( base::r, base::g, base::b, R, G, B );
 	}
 
 	/// @brief 赤 rr，緑 gg，青 bb を用いて初期化する
@@ -1478,7 +1478,7 @@ public:
 	const nRGB &operator =( const rgb< TT > &c )
 	{
 		base::operator =( c );
-		__color_normalizer__::compute( r, g, b, R, G, B );
+		__color_normalizer__::compute( base::r, base::g, base::b, R, G, B );
 		return( *this );
 	}
 
@@ -1487,7 +1487,7 @@ public:
 	const nRGB &operator =( const bgr< TT > &c )
 	{
 		base::operator =( c );
-		__color_normalizer__::compute( r, g, b, R, G, B );
+		__color_normalizer__::compute( base::r, base::g, base::b, R, G, B );
 		return( *this );
 	}
 
@@ -1508,13 +1508,13 @@ public:
 	const nRGB &operator =( const value_type &pix )
 	{
 		base::operator =( pix );
-		__color_normalizer__::compute( r, g, b, R, G, B );
+		__color_normalizer__::compute( base::r, base::g, base::b, R, G, B );
 		return( *this );
 	}
 
 
 	/// @brief 全要素の符号反転
-	const nRGB  operator -( ) const { return( nRGB( -r, -g, -b, -RR, -GG, -BB ) ); }
+	const nRGB  operator -( ) const { return( nRGB( -base::r, -base::g, -base::b, -R, -G, -B ) ); }
 
 	/// @brief nRGB成分の和
 	template < class TT >
