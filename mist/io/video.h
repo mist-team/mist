@@ -364,7 +364,7 @@ namespace video
 			}
 		}
 
-		/// @brief 総フレーム数を得る
+		/// @brief ビデオストリームの総秒数を返す
 		virtual long double duration( ) const
 		{
 			if( is_open( ) )

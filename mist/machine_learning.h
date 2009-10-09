@@ -366,9 +366,12 @@ namespace machine_learning
 							{
 								double v1 = std::abs( flist[ i - 1 ].value - flist[ i + 0 ].value );
 								double v2 = std::abs( flist[ i + 1 ].value - flist[ i + 2 ].value );
-								double t1 = flist[ i + 0 ].value;
-								double t2 = flist[ i + 1 ].value;
-								th = ( t1 * v1 + t2 * v2 ) / ( v1 + v2 );
+								if( std::abs( v1 + v2 ) > 0 )
+								{
+									double t1 = flist[ i + 0 ].value;
+									double t2 = flist[ i + 1 ].value;
+									th = ( t1 * v1 + t2 * v2 ) / ( v1 + v2 );
+								}
 							}
 							else if( i < flist.size( ) - 1 )
 							{
