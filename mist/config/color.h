@@ -49,6 +49,50 @@
 // mist名前空間の始まり
 _MIST_BEGIN
 
+namespace __color_utility__
+{
+	template < bool >
+	struct __normalized_color__
+	{
+		template < class T >
+		static void compute( const T &r, const T &g, const T &b, T &R, T &G, T &B )
+		{
+			T sum = r + g + b;
+
+			sum = sum > 0 ? sum : 1;
+
+			R = r / sum;
+			G = g / sum;
+			B = b / sum;
+		}
+	};
+
+	template < >
+	struct __normalized_color__< false >
+	{
+		template < class T >
+		static void compute( const T &r, const T &g, const T &b, T &R, T &G, T &B )
+		{
+			double sum = static_cast< double >( r ) + static_cast< double >( g ) + static_cast< double >( b );
+
+			sum = sum > 0.0 ? sum : 1.0;
+
+			R = static_cast< T >( r * 255.0 / sum + 0.5 );
+			G = static_cast< T >( g * 255.0 / sum + 0.5 );
+			B = static_cast< T >( b * 255.0 / sum + 0.5 );
+		}
+	};
+
+	template < class T > inline T maximum( const T &v1, const T &v2 )
+	{
+		return( v1 > v2 ? v1 : v2 );
+	}
+
+	template < class T > inline T minimum( const T &v1, const T &v2 )
+	{
+		return( v1 < v2 ? v1 : v2 );
+	}
+}
 
 // MISTで利用する基底のデータ型
 template < class T > struct bgr;
@@ -1329,6 +1373,342 @@ DEFINE_PROMOTE_BIND_OPERATOR1( bgra, & )
 DEFINE_PROMOTE_BIND_OPERATOR1( bgra, ^ )
 
 
+/// @brief カラー画像用の画素（6次元）
+//! 
+//! @code カラー画像の作成例
+//! mist::array2< mist::RGB< unsigned char > > image;
+//! @endcode
+//! 
+//! @param T … 各色成分のデータ型
+//! 
+template< class T >
+struct nRGB : public rgb< T >
+{
+private:
+	typedef rgb< T > base;																			///< @brief 基底クラス
+	typedef __color_utility__::__normalized_color__< is_float< T >::value >	__color_normalizer__;	///< @brief 色の正規化を行うクラス
+
+public:
+	typedef typename base::size_type		size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef typename base::difference_type	difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef T& reference;											///< @brief データ型の参照．data の場合，data & となる
+	typedef const T& const_reference;								///< @brief データ型の const 参照．data の場合，const data & となる
+	typedef T value_type;											///< @brief 内部データ型．T と同じ
+	typedef T* pointer;												///< @brief データ型のポインター型．data の場合，data * となる
+	typedef const T* const_pointer;									///< @brief データ型の const ポインター型．data の場合，const data * となる
+
+	/// @brief データ型の変換を行う
+	template < class TT > 
+	struct rebind
+	{
+		typedef nRGB< TT > other;
+	};
+
+public:
+	value_type R;		///< @brief 赤色成分（正規化）
+	value_type G;		///< @brief 緑色成分（正規化）
+	value_type B;		///< @brief 青色成分（正規化）
+
+	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
+	nRGB( ) : base( ), R( 0 ), G( 0 ), B( 0 ){ }
+
+	/// @brief 全ての成分を pix で初期化する
+	explicit nRGB( const value_type &pix ) : base( pix )
+	{
+		__color_normalizer__::compute( r, g, b, R, G, B );
+	}
+
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	nRGB( const nRGB< TT > &c ) : base( c ), R( static_cast< T >( c.R ) ), G( static_cast< T >( c.G ) ), B( static_cast< T >( c.B ) ){ }
+
+	/// @brief 他のカラー画素を用いて初期化する
+	nRGB( const nRGB< T > &c ) : base( c ), R( c.R ), G( c.G ), B( c.B ){ }
+
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	nRGB( const rgb< TT > &c ) : base( c )
+	{
+		__color_normalizer__::compute( r, g, b, R, G, B );
+	}
+
+	/// @brief 他のカラー画素を用いて初期化する
+	nRGB( const rgb< T > &c ) : base( c )
+	{
+		__color_normalizer__::compute( r, g, b, R, G, B );
+	}
+
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	nRGB( const bgr< TT > &c ) : base( c )
+	{
+		__color_normalizer__::compute( r, g, b, R, G, B );
+	}
+
+	/// @brief 他のカラー画素を用いて初期化する
+	nRGB( const bgr< T > &c ) : base( c )
+	{
+		__color_normalizer__::compute( r, g, b, R, G, B );
+	}
+
+
+	/// @brief 赤 rr，緑 gg，青 bb を用いて初期化する
+	nRGB( const value_type &rr, const value_type &gg, const value_type &bb ) : base( rr, gg, bb )
+	{
+		__color_normalizer__::compute( r, g, b, R, G, B );
+	}
+
+	/// @brief 赤 rr，緑 gg，青 bb を用いて初期化する
+	nRGB( const value_type &rr, const value_type &gg, const value_type &bb, const value_type &RR, const value_type &GG, const value_type &BB ) : base( rr, gg, bb ), R( RR ), G( GG ), B( BB ){ }
+
+
+	/// @brief 異なる型の他のカラー画素を代入する
+	template < class TT >
+	const nRGB &operator =( const nRGB< TT > &c )
+	{
+		base::operator =( c );
+		R = static_cast< value_type >( c.R );
+		G = static_cast< value_type >( c.G );
+		B = static_cast< value_type >( c.B );
+		return( *this );
+	}
+
+	/// @brief 異なる型の他のカラー画素を代入する
+	template < class TT >
+	const nRGB &operator =( const rgb< TT > &c )
+	{
+		base::operator =( c );
+		__color_normalizer__::compute( r, g, b, R, G, B );
+		return( *this );
+	}
+
+	/// @brief 異なる型の他のカラー画素を代入する
+	template < class TT >
+	const nRGB &operator =( const bgr< TT > &c )
+	{
+		base::operator =( c );
+		__color_normalizer__::compute( r, g, b, R, G, B );
+		return( *this );
+	}
+
+	/// @brief 他のカラー画素を代入する
+	const nRGB &operator =( const nRGB< T > &c )
+	{
+		if( &c != this )
+		{
+			base::operator =( c );
+			R = c.R;
+			G = c.G;
+			B = c.B;
+		}
+		return( *this );
+	}
+
+	/// @brief 全ての要素に pix を代入する
+	const nRGB &operator =( const value_type &pix )
+	{
+		base::operator =( pix );
+		__color_normalizer__::compute( r, g, b, R, G, B );
+		return( *this );
+	}
+
+
+	/// @brief 全要素の符号反転
+	const nRGB  operator -( ) const { return( nRGB( -r, -g, -b, -RR, -GG, -BB ) ); }
+
+	/// @brief nRGB成分の和
+	template < class TT >
+	const nRGB &operator +=( const nRGB< TT > &c )
+	{
+		base::operator +=( ( const base &)c );
+		R = static_cast< value_type >( R + c.R );
+		G = static_cast< value_type >( G + c.G );
+		B = static_cast< value_type >( B + c.B );
+		return( *this );
+	}
+
+	/// @brief nRGB成分の差
+	template < class TT >
+	const nRGB &operator -=( const nRGB< TT > &c )
+	{
+		base::operator -=( ( const base &)c );
+		R = static_cast< value_type >( R - c.R );
+		G = static_cast< value_type >( G - c.G );
+		B = static_cast< value_type >( B - c.B );
+		return( *this );
+	}
+
+	/// @brief nRGB成分の積
+	template < class TT >
+	const nRGB &operator *=( const nRGB< TT > &c )
+	{
+		base::operator *=( ( const base &)c );
+		R = static_cast< value_type >( R * c.R );
+		G = static_cast< value_type >( G * c.G );
+		B = static_cast< value_type >( B * c.B );
+		return( *this );
+	}
+
+	/// @brief nRGB成分の割り算
+	template < class TT >
+	const nRGB &operator /=( const nRGB< TT > &c )
+	{
+		base::operator /=( ( const base &)c );
+		R = static_cast< value_type >( R / c.R );
+		G = static_cast< value_type >( G / c.G );
+		B = static_cast< value_type >( B / c.B );
+		return( *this );
+	}
+
+	/// @brief nRGB成分の剰余
+	const nRGB &operator %=( const nRGB &c )
+	{
+		base::operator %=( ( const base &)c );
+		R %= c.R;
+		G %= c.G;
+		B %= c.B;
+		return( *this );
+	}
+
+	/// @brief nRGB成分の | 演算
+	const nRGB &operator |=( const nRGB &c )
+	{
+		base::operator |=( ( const base &)c );
+		R |= c.R;
+		G |= c.G;
+		B |= c.B;
+		return( *this );
+	}
+
+	/// @brief nRGB成分の & 演算
+	const nRGB &operator &=( const nRGB &c )
+	{
+		base::operator &=( ( const base &)c );
+		R &= c.R;
+		G &= c.G;
+		B &= c.B;
+		return( *this );
+	}
+
+	/// @brief nRGB成分の ^ 演算
+	const nRGB &operator ^=( const nRGB &c )
+	{
+		base::operator ^=( ( const base &)c );
+		R ^= c.R;
+		G ^= c.G;
+		B ^= c.B;
+		return( *this );
+	}
+
+
+	/// @brief nRGB成分に pix 値を足す
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const nRGB &operator +=( const double &pix )
+#else
+	template < class TT >
+	const nRGB &operator +=( const TT &pix )
+#endif
+	{
+		base::operator +=( pix );
+		R = static_cast< value_type >( R + pix );
+		G = static_cast< value_type >( G + pix );
+		B = static_cast< value_type >( B + pix );
+		return( *this );
+	}
+
+	/// @brief nRGB成分から pix 値を引く
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const nRGB &operator -=( const double &pix )
+#else
+	template < class TT >
+	const nRGB &operator -=( const TT &pix )
+#endif
+	{
+		base::operator -=( pix );
+		R = static_cast< value_type >( R - pix );
+		G = static_cast< value_type >( G - pix );
+		B = static_cast< value_type >( B - pix );
+		return( *this );
+	}
+
+	/// @brief nRGB成分に pix 値を掛ける
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const nRGB &operator *=( const double &pix )
+#else
+	template < class TT >
+	const nRGB &operator *=( const TT &pix )
+#endif
+	{
+		base::operator *=( pix );
+		R = static_cast< value_type >( R * pix );
+		G = static_cast< value_type >( G * pix );
+		B = static_cast< value_type >( B * pix );
+		return( *this );
+	}
+
+	/// @brief nRGB成分を pix 値で割る
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const nRGB &operator /=( const double &pix )
+#else
+	template < class TT >
+	const nRGB &operator /=( const TT &pix )
+#endif
+	{
+		base::operator /=( pix );
+		R = static_cast< value_type >( R / pix );
+		G = static_cast< value_type >( G / pix );
+		B = static_cast< value_type >( B / pix );
+		return( *this );
+	}
+};
+
+
+
+/// @brief カラー画素の和
+DEFINE_PROMOTE_BIND_OPERATOR1( nRGB, + )
+
+/// @brief カラー画素と定数の和
+DEFINE_PROMOTE_BIND_OPERATOR2( nRGB, + )
+
+/// @brief 定数とカラー画素の和
+DEFINE_PROMOTE_BIND_OPERATOR3( nRGB, + )
+
+/// @brief カラー画素の差
+DEFINE_PROMOTE_BIND_OPERATOR1( nRGB, - )
+
+/// @brief カラー画素と定数の差
+DEFINE_PROMOTE_BIND_OPERATOR2( nRGB, - )
+
+/// @brief 定数とカラー画素の差
+DEFINE_PROMOTE_BIND_OPERATOR4( nRGB, - )
+
+/// @brief カラー画素の積
+DEFINE_PROMOTE_BIND_OPERATOR1( nRGB, * )
+
+/// @brief カラー画素と定数の積
+DEFINE_PROMOTE_BIND_OPERATOR2( nRGB, * )
+
+/// @brief 定数とカラー画素の積
+DEFINE_PROMOTE_BIND_OPERATOR3( nRGB, * )
+
+/// @brief カラー画素の割り算
+DEFINE_PROMOTE_BIND_OPERATOR1( nRGB, / )
+
+/// @brief カラー画素を定数で割る
+DEFINE_PROMOTE_BIND_OPERATOR2( nRGB, / )
+
+/// @brief カラー画素の剰余
+DEFINE_PROMOTE_BIND_OPERATOR1( nRGB, % )
+
+
+/// @brief カラー画素の | 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( nRGB, | )
+
+/// @brief カラー画素の & 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( nRGB, & )
+
+/// @brief カラー画素の ^ 演算
+DEFINE_PROMOTE_BIND_OPERATOR1( nRGB, ^ )
 
 
 
@@ -1377,18 +1757,29 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 }
 
 
-namespace __color_utility__
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
+//! 
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     c   … カラー画素
+//! 
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! ( 1, 2, 3, 1, 2, 3 )
+//! @endcode
+//! 
+template < class T > inline std::ostream &operator <<( std::ostream &out, const nRGB< T > &c )
 {
-	template < class T > inline T maximum( const T &v1, const T &v2 )
-	{
-		return( v1 > v2 ? v1 : v2 );
-	}
-
-	template < class T > inline T minimum( const T &v1, const T &v2 )
-	{
-		return( v1 < v2 ? v1 : v2 );
-	}
+	out << "( ";
+	out << c.r << ", ";
+	out << c.g << ", ";
+	out << c.b << ", ";
+	out << c.R << ", ";
+	out << c.G << ", ";
+	out << c.B << " )";
+	return( out );
 }
+
 
 
 /// @brief RGB色空間をHSV色空間に変換する
@@ -1818,6 +2209,12 @@ struct _pixel_converter_
 	};
 
 	template < class T >
+	struct is_color< nRGB< T > >
+	{
+		_MIST_CONST( bool, value, true );
+	};
+
+	template < class T >
 	struct _pixel_converter_< rgb< T > >
 	{
 		typedef T value_type;
@@ -1889,6 +2286,24 @@ struct _pixel_converter_
 		}
 	};
 
+	template < class T >
+	struct _pixel_converter_< nRGB< T > >
+	{
+		typedef T value_type;
+		typedef nRGB< T > color_type;
+		enum{ color_num = 6 };
+
+		static color_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )
+		{
+			return( color_type( r, g, b ) );
+		}
+
+		static color_type convert_from( const nRGB< T > &pixel )
+		{
+			return( color_type( pixel.r, pixel.g, pixel.b ) );
+		}
+	};
+
 #endif
 
 
@@ -1897,6 +2312,7 @@ struct _pixel_converter_
 	template<> struct function<  bgr< type > >{ _MIST_CONST( bool, value, true  ); }; \
 	template<> struct function< rgba< type > >{ _MIST_CONST( bool, value, true  ); }; \
 	template<> struct function< bgra< type > >{ _MIST_CONST( bool, value, true  ); }; \
+	template<> struct function<  nRGB< type > >{ _MIST_CONST( bool, value, true  ); }; \
 
 // type_trait 内の機能を拡張する
 /// @brief char 判定

@@ -53,12 +53,12 @@ _MIST_BEGIN
 // 入力のデータ型から画素値の総和のデータ型を決定するためのクラス
 namespace __integral_image__
 {
-	template< bool Is_signed, bool Is_decimal, bool Is_color >	struct integral_type						{ typedef rgb< double >		type; };
-	template< >													struct integral_type< true,  false, true >	{ typedef rgb< int >		type; };
-	template< >													struct integral_type< false, false, true >	{ typedef rgb< ptrdiff_t >	type; };
-	template< >													struct integral_type< true,  true,  false >	{ typedef double			type; };
-	template< >													struct integral_type< true,  false, false >	{ typedef int				type; };
-	template< >													struct integral_type< false, false, false >	{ typedef ptrdiff_t			type; };
+	template< class T, bool Is_signed, bool Is_decimal, bool Is_color >	struct integral_type							{ typedef typename T::template rebind< double >::other		type; };
+	template< class T >													struct integral_type< T, true,  false, true >	{ typedef typename T::template rebind< int >::other			type; };
+	template< class T >													struct integral_type< T, false, false, true >	{ typedef typename T::template rebind< ptrdiff_t >::other	type; };
+	template< class T >													struct integral_type< T, true,  true,  false >	{ typedef double			type; };
+	template< class T >													struct integral_type< T, true,  false, false >	{ typedef int				type; };
+	template< class T >													struct integral_type< T, false, false, false >	{ typedef ptrdiff_t			type; };
 }
 
 /// @brief 1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス
@@ -127,7 +127,7 @@ template< typename T, typename Allocator >
 class integral_image< array< T, Allocator > >
 {
 public:
-	typedef typename __integral_image__::integral_type< is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
+	typedef typename __integral_image__::integral_type< T, is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
 	typedef array< value_type > integral_image_type;
 	typedef array< T, Allocator > image_type;
 	typedef typename image_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
@@ -148,6 +148,17 @@ public:
 	value_type operator ( )( const size_type begin, const size_type size ) const
 	{
 		return( integral_( begin + size ) - integral_( begin ) );
+	}
+
+	/// @brief 任意の位置の積分値を返す
+	//! 
+	//! @param[in] i … i方向の始点
+	//!
+	//! @return 画素値の総和
+	//!
+	value_type operator ( )( const size_type i ) const
+	{
+		return( integral_( i + 1 ) );
 	}
 
 	/// @brief 全ての画素値の総和を返す：O(1)
@@ -233,7 +244,7 @@ template< typename T, typename Allocator >
 class integral_image< array2< T, Allocator > >
 {
 public:
-	typedef typename __integral_image__::integral_type< is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
+	typedef typename __integral_image__::integral_type< T, is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
 	typedef array2< value_type > integral_image_type;
 	typedef array2< T, Allocator > image_type;
 	typedef typename image_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
@@ -257,6 +268,18 @@ public:
 		return( integral_( begin_i + width, begin_j + height ) + integral_( begin_i, begin_j ) - integral_( begin_i + width, begin_j ) - integral_( begin_i, begin_j + height ) );
 	}
 
+	/// @brief 任意の位置の積分値を返す
+	//! 
+	//! @param[in] i … i方向の始点
+	//! @param[in] j … j方向の始点
+	//!
+	//! @return 画素値の総和
+	//!
+	value_type operator ( )( const size_type i, const size_type j ) const
+	{
+		return( integral_( i + 1, j + 1 ) );
+	}
+
 	/// @brief 全ての画素値の総和を返す：O(1)
 	//! 
 	//! @return 画素値の総和
@@ -270,7 +293,7 @@ public:
 	//! 
 	//! @return i方向のサイズ
 	//!
-	size_type width( ) const
+	size_type size1( ) const
 	{
 		return( integral_.width( ) - 1 );
 	}
@@ -279,9 +302,27 @@ public:
 	//! 
 	//! @return j方向のサイズ
 	//!
-	size_type height( ) const
+	size_type size2( ) const
 	{
 		return( integral_.height( ) - 1 );
+	}
+
+	/// @brief 画像配列のi方向のサイズを返す
+	//! 
+	//! @return i方向のサイズ
+	//!
+	size_type width( ) const
+	{
+		return( size1( ) );
+	}
+
+	/// @brief 画像配列のj方向のサイズを返す
+	//! 
+	//! @return j方向のサイズ
+	//!
+	size_type height( ) const
+	{
+		return( size2( ) );
 	}
 
 	/// @brief 画像配列のサイズを返す
@@ -301,6 +342,40 @@ public:
 	{ 
 		integral_.resize( in.width( ) + 1, in.height( ) + 1 );	
 
+#if 0
+		int iw       = static_cast< int >( in.width( ) );
+		int ih       = static_cast< int >( in.height( ) );
+		size_type ow = integral_.width( );
+
+		#pragma omp parallel for firstprivate( iw, ih ) schedule( static )
+		for( int j = 0 ; j < ih ; j++ )
+		{
+			typename image_type::const_pointer    ip = &in( 0, j );
+			typename integral_image_type::pointer op = &integral_( 1, j + 1 );
+
+			op[ 0 ] = ip[ 0 ];
+			for( int i = 1 ; i < iw ; i++ )
+			{
+				op[ i ] = op[ i - 1 ] + ip[ i ];
+			}
+		}
+
+		#pragma omp parallel for firstprivate( iw, ih, ow ) schedule( static )
+		for( int i = 0 ; i < iw ; i++ )
+		{
+			typename integral_image_type::pointer    op = &integral_( i + 1, 1 );
+			typename integral_image_type::value_type ov = *op;
+
+			op += ow;
+
+			for( int j = 1 ; j < ih ; j++ )
+			{
+				ov  += *op;
+				*op  = ov;
+				op  += ow;
+			}
+		}
+#else
 		typename image_type::const_pointer    ip = &in[ 0 ];
 		typename integral_image_type::pointer op = &integral_( 1, 1 );
 
@@ -329,6 +404,7 @@ public:
 			ip += in.width( );
 			op += integral_.width( );
 		}
+#endif
 	}
 
 	/// @brief コンストラクタ
@@ -383,7 +459,7 @@ template< typename T, typename Allocator >
 class integral_image< array3< T, Allocator > >
 {
 public:
-	typedef typename __integral_image__::integral_type< is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
+	typedef typename __integral_image__::integral_type< T, is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
 	typedef array3< value_type > integral_image_type;
 	typedef array3< T, Allocator > image_type;
 	typedef typename image_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
@@ -393,7 +469,6 @@ private:
 	integral_image_type integral_;
 
 public:
-
 	/// @brief 任意の矩形領域内の画素の総和を返す：O(1)
 	//! 
 	//! @param[in] begin_i … i方向の始点
@@ -410,6 +485,19 @@ public:
 		return( integral_( begin_i + width, begin_j + height, begin_k + depth ) + integral_( begin_i, begin_j, begin_k + depth ) + integral_( begin_i, begin_j + height, begin_k ) + integral_( begin_i + width, begin_j, begin_k ) - integral_( begin_i, begin_j + height, begin_k + depth ) - integral_( begin_i + width, begin_j, begin_k + depth ) - integral_( begin_i + width, begin_j + height, begin_k ) - integral_( begin_i, begin_j, begin_k ) );
 	}
 
+	/// @brief 任意の位置の積分値を返す
+	//! 
+	//! @param[in] i … i方向の始点
+	//! @param[in] j … j方向の始点
+	//! @param[in] k … k方向の始点
+	//!
+	//! @return 画素値の総和
+	//!
+	value_type operator ( )( const size_type i, const size_type j, const size_type k ) const
+	{
+		return( integral_( i + 1, j + 1, k + 1 ) );
+	}
+
 	/// @brief 全ての画素値の総和を返す：O(1)
 	//! 
 	//! @return 画素値の総和
@@ -423,7 +511,7 @@ public:
 	//! 
 	//! @return i方向のサイズ
 	//!
-	size_type width( ) const
+	size_type size1( ) const
 	{
 		return( integral_.width( ) - 1 );
 	}
@@ -432,7 +520,7 @@ public:
 	//! 
 	//! @return j方向のサイズ
 	//!
-	size_type height( ) const
+	size_type size2( ) const
 	{
 		return( integral_.height( ) - 1 );
 	}
@@ -441,9 +529,36 @@ public:
 	//! 
 	//! @return k方向のサイズ
 	//!
-	size_type depth( ) const
+	size_type size3( ) const
 	{
 		return( integral_.depth( ) - 1 );
+	}
+
+	/// @brief 画像配列のi方向のサイズを返す
+	//! 
+	//! @return i方向のサイズ
+	//!
+	size_type width( ) const
+	{
+		return( size1( ) );
+	}
+
+	/// @brief 画像配列のj方向のサイズを返す
+	//! 
+	//! @return j方向のサイズ
+	//!
+	size_type height( ) const
+	{
+		return( size2( ) );
+	}
+
+	/// @brief 画像配列のk方向のサイズを返す
+	//! 
+	//! @return k方向のサイズ
+	//!
+	size_type depth( ) const
+	{
+		return( size3( ) );
 	}
 
 	/// @brief 画像配列のサイズを返す
@@ -489,6 +604,133 @@ public:
 	{
 	}
 };
+
+
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
+//! 
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     a   … array 配列
+//! 
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! 1, 2, 3, 4
+//! @endcode
+//! 
+template < class T, class Allocator >
+inline std::ostream &operator <<( std::ostream &out, const integral_image< array< T, Allocator > > &a )
+{
+	typename array< T, Allocator >::size_type i;
+	for( i = 0 ; i < a.size( ) ; i++ )
+	{
+		out << a[ i ];
+		if( i != a.size1( ) - 1 ) out << ", ";
+	}
+
+	return( out );
+}
+
+
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
+//! 
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     a   … array1 配列
+//! 
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! 1, 2, 3, 4
+//! @endcode
+//! 
+template < class T, class Allocator >
+inline std::ostream &operator <<( std::ostream &out, const integral_image< array1< T, Allocator > > &a )
+{
+	typename array1< T, Allocator >::size_type i;
+	for( i = 0 ; i < a.size( ) ; i++ )
+	{
+		out << a[ i ];
+		if( i != a.size1( ) - 1 ) out << ", ";
+	}
+
+	return( out );
+}
+
+
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
+//! 
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     a   … array2 配列
+//! 
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! 1, 2, 3, 4
+//! 5, 6, 7, 8
+//! 9, 10, 11, 12
+//! @endcode
+//! 
+template < class T, class Allocator >
+inline std::ostream &operator <<( std::ostream &out, const integral_image< array2< T, Allocator > > &a )
+{
+	typename array2< T, Allocator >::size_type i, j;
+	for( j = 0 ; j < a.size2( ) ; j++ )
+	{
+		if( j != 0 )
+		{
+			out << std::endl;
+		}
+		for( i = 0 ; i < a.size1( ) ; i++ )
+		{
+			out << a( i, j );
+			if( i != a.size1( ) - 1 ) out << ", ";
+		}
+	}
+
+	return( out );
+}
+
+
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
+//! 
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     a   … array3 配列
+//! 
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! 1, 2, 3, 4
+//! 5, 6, 7, 8
+//! 9, 10, 11, 12
+//! ----- separator -----
+//! 1, 2, 3, 4
+//! 5, 6, 7, 8
+//! 9, 10, 11, 12
+//! @endcode
+//! 
+template < class T, class Allocator >
+inline std::ostream &operator <<( std::ostream &out, const integral_image< array3< T, Allocator > > &a )
+{
+	typename array3< T, Allocator >::size_type i, j, k;
+	for( k = 0 ; k < a.size3( ) ; k++ )
+	{
+		for( j = 0 ; j < a.size2( ) ; j++ )
+		{
+			for( i = 0 ; i < a.size1( ) ; i++ )
+			{
+				out << a( i, j, k );
+				if( i != a.size1( ) - 1 ) out << ", ";
+			}
+			out << std::endl;
+		}
+		if( k != a.size3( ) - 1 )
+		{
+			out << "----- separator -----";
+		}
+		out << std::endl;
+	}
+
+	return( out );
+}
 
 
 /// @}
