@@ -2767,7 +2767,7 @@ struct _pixel_converter_
 		{
 			if( NDIM < 3 )
 			{
-				return( color_type( ( r + g + b ) / 3 ) );
+				return( color_type( pixel[ 0 ] ) );
 			}
 			else
 			{
