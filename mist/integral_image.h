@@ -53,12 +53,10 @@ _MIST_BEGIN
 // 入力のデータ型から画素値の総和のデータ型を決定するためのクラス
 namespace __integral_image__
 {
-	template< class T, bool Is_signed, bool Is_decimal, bool Is_color >	struct integral_type							{ typedef typename T::template rebind< double >::other		type; };
-	template< class T >													struct integral_type< T, true,  false, true >	{ typedef typename T::template rebind< int >::other			type; };
-	template< class T >													struct integral_type< T, false, false, true >	{ typedef typename T::template rebind< ptrdiff_t >::other	type; };
-	template< class T >													struct integral_type< T, true,  true,  false >	{ typedef double			type; };
-	template< class T >													struct integral_type< T, true,  false, false >	{ typedef int				type; };
-	template< class T >													struct integral_type< T, false, false, false >	{ typedef ptrdiff_t			type; };
+	template< class T, bool Is_decimal, bool Is_color >	struct integral_type					{ typedef typename T::template rebind< double >::other		type; };
+	template< class T >									struct integral_type< T, false, true >	{ typedef typename T::template rebind< ptrdiff_t >::other	type; };
+	template< class T >									struct integral_type< T, true,  false >	{ typedef double			type; };
+	template< class T >									struct integral_type< T, false, false >	{ typedef ptrdiff_t			type; };
 }
 
 /// @brief 1次元の積分画像を保持し，任意の矩形領域の画素値の総和を高速に計算するためのクラス
@@ -127,7 +125,7 @@ template< typename T, typename Allocator >
 class integral_image< array< T, Allocator > >
 {
 public:
-	typedef typename __integral_image__::integral_type< T, is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
+	typedef typename __integral_image__::integral_type< T, is_float< T >::value, is_color< T >::value >::type value_type;
 	typedef array< value_type > integral_image_type;
 	typedef array< T, Allocator > image_type;
 	typedef typename image_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
@@ -244,7 +242,7 @@ template< typename T, typename Allocator >
 class integral_image< array2< T, Allocator > >
 {
 public:
-	typedef typename __integral_image__::integral_type< T, is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
+	typedef typename __integral_image__::integral_type< T, is_float< T >::value, is_color< T >::value >::type value_type;
 	typedef array2< value_type > integral_image_type;
 	typedef array2< T, Allocator > image_type;
 	typedef typename image_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
@@ -347,7 +345,7 @@ public:
 		int ih       = static_cast< int >( in.height( ) );
 		size_type ow = integral_.width( );
 
-		#pragma omp parallel for firstprivate( iw, ih ) schedule( static )
+		#pragma omp parallel for firstprivate( iw, ih ) schedule( guided )
 		for( int j = 0 ; j < ih ; j++ )
 		{
 			typename image_type::const_pointer    ip = &in( 0, j );
@@ -360,7 +358,7 @@ public:
 			}
 		}
 
-		#pragma omp parallel for firstprivate( iw, ih, ow ) schedule( static )
+		#pragma omp parallel for firstprivate( iw, ih, ow ) schedule( guided )
 		for( int i = 0 ; i < iw ; i++ )
 		{
 			typename integral_image_type::pointer    op = &integral_( i + 1, 1 );
@@ -459,7 +457,7 @@ template< typename T, typename Allocator >
 class integral_image< array3< T, Allocator > >
 {
 public:
-	typedef typename __integral_image__::integral_type< T, is_signed< T >::value, is_float< T >::value, is_color< T >::value >::type value_type;
+	typedef typename __integral_image__::integral_type< T, is_float< T >::value, is_color< T >::value >::type value_type;
 	typedef array3< value_type > integral_image_type;
 	typedef array3< T, Allocator > image_type;
 	typedef typename image_type::size_type size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ

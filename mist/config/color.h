@@ -1712,6 +1712,424 @@ DEFINE_PROMOTE_BIND_OPERATOR1( nRGB, ^ )
 
 
 
+/// @brief カラー画像用の画素
+//! 
+//! @code カラー画像の作成例
+//! mist::array2< mist::color< unsigned char, 9 > > image;
+//! @endcode
+//! 
+//! @param T … 各色成分のデータ型
+//! 
+template< class T, size_t NDIM = 9 >
+struct color
+{
+public:
+	typedef size_t size_type;				///< @brief 符号なしの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には size_t 型と同じ
+	typedef ptrdiff_t difference_type;		///< @brief 符号付きの整数を表す型．コンテナ内の要素数や，各要素を指定するときなどに利用し，内部的には ptrdiff_t 型と同じ
+	typedef T& reference;					///< @brief データ型の参照．data の場合，data & となる
+	typedef const T& const_reference;		///< @brief データ型の const 参照．data の場合，const data & となる
+	typedef T value_type;					///< @brief 内部データ型．T と同じ
+	typedef T* pointer;						///< @brief データ型のポインター型．data の場合，data * となる
+	typedef const T* const_pointer;			///< @brief データ型の const ポインター型．data の場合，const data * となる
+
+	/// @brief データ型の変換を行う
+	template < class TT > 
+	struct rebind
+	{
+		typedef color< TT, NDIM > other;
+	};
+
+private:
+	value_type c_[ NDIM ];		///< @brief 色成分
+
+public:
+
+	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
+	color( )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = 0;
+		}
+	}
+
+	/// @brief 全ての成分を pix で初期化する
+	explicit color( const value_type &pix )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = pix;
+		}
+	}
+
+	/// @brief 異なる型のカラー画素を用いて初期化する
+	template < class TT >
+	color( const color< TT, NDIM > &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = static_cast< value_type >( c[ i ] );
+		}
+	}
+
+	/// @brief 他のカラー画素を用いて初期化する
+	color( const color< T, NDIM > &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = c[ i ];
+		}
+	}
+
+
+	/// @brief 異なる型の他のカラー画素を代入する
+	template < class TT >
+	const color &operator =( const color< TT, NDIM > &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = static_cast< value_type >( c[ i ] );
+		}
+		return( *this );
+	}
+
+	/// @brief 他のカラー画素を代入する
+	const color &operator =( const color< T, NDIM > &c )
+	{
+		if( &c != this )
+		{
+			for( size_type i = 0 ; i < NDIM ; i++ )
+			{
+				c_[ i ] = c[ i ];
+			}
+		}
+		return( *this );
+	}
+
+	/// @brief 全ての要素に pix を代入する
+	const color &operator =( const value_type &pix )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = pix;
+		}
+		return( *this );
+	}
+
+
+	/// @brief 全要素の符号反転
+	const color  operator -( ) const
+	{
+		color c;
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c[ i ] = -c_[ i ];
+		}
+		return( c );
+	}
+
+	/// @brief RGB成分の和
+	template < class TT >
+	const color &operator +=( const color< TT, NDIM > &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = static_cast< value_type >( c_[ i ] + c[ i ] );
+		}
+		return( *this );
+	}
+
+	/// @brief RGB成分の差
+	template < class TT >
+	const color &operator -=( const color< TT, NDIM > &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = static_cast< value_type >( c_[ i ] - c[ i ] );
+		}
+		return( *this );
+	}
+
+	/// @brief RGB成分の積
+	template < class TT >
+	const color &operator *=( const color< TT, NDIM > &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = static_cast< value_type >( c_[ i ] * c[ i ] );
+		}
+		return( *this );
+	}
+
+	/// @brief RGB成分の割り算
+	template < class TT >
+	const color &operator /=( const color< TT, NDIM > &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = static_cast< value_type >( c_[ i ] / c[ i ] );
+		}
+		return( *this );
+	}
+
+	/// @brief RGB成分の剰余
+	const color &operator %=( const color &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] %= c[ i ];
+		}
+		return( *this );
+	}
+
+	/// @brief RGB成分の | 演算
+	const color &operator |=( const color &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] |= c[ i ];
+		}
+		return( *this );
+	}
+
+	/// @brief RGB成分の & 演算
+	const color &operator &=( const color &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] &= c[ i ];
+		}
+		return( *this );
+	}
+
+	/// @brief RGB成分の ^ 演算
+	const color &operator ^=( const color &c )
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] ^= c[ i ];
+		}
+		return( *this );
+	}
+
+
+	/// @brief RGB成分に pix 値を足す
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const color &operator +=( const double &pix )
+#else
+	template < class TT >
+	const color &operator +=( const TT &pix )
+#endif
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = static_cast< value_type >( c_[ i ] + pix );
+		}
+		return( *this );
+	}
+
+	/// @brief RGB成分から pix 値を引く
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const color &operator -=( const double &pix )
+#else
+	template < class TT >
+	const color &operator -=( const TT &pix )
+#endif
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = static_cast< value_type >( c_[ i ] - pix );
+		}
+		return( *this );
+	}
+
+	/// @brief RGB成分に pix 値を掛ける
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const color &operator *=( const double &pix )
+#else
+	template < class TT >
+	const color &operator *=( const TT &pix )
+#endif
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = static_cast< value_type >( c_[ i ] * pix );
+		}
+		return( *this );
+	}
+
+	/// @brief RGB成分を pix 値で割る
+#if defined( __MIST_MSVC__ ) && __MIST_MSVC__ < 7
+	const color &operator /=( const double &pix )
+#else
+	template < class TT >
+	const color &operator /=( const TT &pix )
+#endif
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			c_[ i ] = static_cast< value_type >( c_[ i ] / pix );
+		}
+		return( *this );
+	}
+
+
+	/// @brief 2つのカラー画素が等しい（全要素が同じ値を持つ）かどうかを判定する
+	//! 
+	//! \f[ \mbox{\boldmath p} = \mbox{\boldmath q} \rightarrow p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … 2つのカラー画素が等しい場合
+	//! @retval false … 2つのカラー画素が異なる場合
+	//! 
+	bool operator ==( const color &c ) const
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			if( c_[ i ] != c[ i ] )
+			{
+				return( false );
+			}
+		}
+
+		return( true );
+	}
+
+	/// @brief 2つのカラー画素が等しくない（全要素が同じ値を持つ）かどうかを判定する
+	//! 
+	//! \f[ \mbox{\boldmath p} \neq \mbox{\boldmath q} \rightarrow \overline{ p_r = q_r \; \wedge \; p_g = q_g \; \wedge \; p_b = q_b } \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … 2つのカラー画素が異なる場合
+	//! @retval false … 2つのカラー画素が等しい場合
+	//! 
+	bool operator !=( const color &c ) const { return( !( *this == c ) ); }
+
+	/// @brief 2つのカラー画素の < を判定する
+	//! 
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow \overline{ p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b } \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 <  c2 の場合
+	//! @retval false … c1 >= c2 の場合
+	//! 
+	bool operator < ( const color &c ) const
+	{
+		for( size_type i = 0 ; i < NDIM ; i++ )
+		{
+			if( c_[ i ] != c[ i ] )
+			{
+				return( c_[ i ] < c[ i ] );
+			}
+		}
+
+		return( false );
+	}
+
+	/// @brief 2つのカラー画素の <= を判定する
+	//! 
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 <= c2 の場合
+	//! @retval false … c1 >  c2 の場合
+	//! 
+	bool operator <=( const color &c ) const { return( c >= *this ); }
+
+	/// @brief 2つのカラー画素の > を判定する
+	//! 
+	//! \f[ \mbox{\boldmath p} \le \mbox{\boldmath q} \rightarrow \overline{ p_r \le q_r \; \wedge \; p_g \le q_g \; \wedge \; p_b \le q_b } \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 >  c2 の場合
+	//! @retval false … c1 <= c2 の場合
+	//! 
+	bool operator > ( const color &c ) const { return( c < *this ); }
+
+	/// @brief 2つのカラー画素の >= を判定する
+	//! 
+	//! \f[ \mbox{\boldmath p} \ge \mbox{\boldmath q} \rightarrow p_r \ge q_r \; \wedge \; p_g \ge q_g \; \wedge \; p_b \ge q_b \f]
+	//! 
+	//! @param[in] c … 右辺値
+	//! 
+	//! @retval true  … c1 >= c2 の場合
+	//! @retval false … c1 <  c2 の場合
+	//! 
+	bool operator >=( const color &c ) const { return( !( *this < c ) ); }
+
+	value_type & operator []( size_type index ){ return( c_[ index ] ); }
+
+	const value_type & operator []( size_type index ) const { return( c_[ index ] ); }
+
+	/// @brief NTSC系加重平均法により，グレースケールへ変換する
+	value_type get_value( ) const
+	{
+		double sum = 0.0;
+		for( size_type i = 0 ; i < NDIM - 1 ; i++ )
+		{
+			sum += c_[ i ];
+		}
+		return( half_adjust< value_type >::convert( sum ) );
+	}
+
+	// カラーからグレースケールへの自動キャスト演算子（危険のため一時停止）
+	//operator value_type( ) const { return( get_value( ) ); }
+};
+
+
+
+/// @brief カラー画素の和
+DEFINE_PROMOTE_BIND_OPERATOR1_( color, + )
+
+/// @brief カラー画素と定数の和
+DEFINE_PROMOTE_BIND_OPERATOR2_( color, + )
+
+/// @brief 定数とカラー画素の和
+DEFINE_PROMOTE_BIND_OPERATOR3_( color, + )
+
+/// @brief カラー画素の差
+DEFINE_PROMOTE_BIND_OPERATOR1_( color, - )
+
+/// @brief カラー画素と定数の差
+DEFINE_PROMOTE_BIND_OPERATOR2_( color, - )
+
+/// @brief 定数とカラー画素の差
+DEFINE_PROMOTE_BIND_OPERATOR4_( color, - )
+
+/// @brief カラー画素の積
+DEFINE_PROMOTE_BIND_OPERATOR1_( color, * )
+
+/// @brief カラー画素と定数の積
+DEFINE_PROMOTE_BIND_OPERATOR2_( color, * )
+
+/// @brief 定数とカラー画素の積
+DEFINE_PROMOTE_BIND_OPERATOR3_( color, * )
+
+/// @brief カラー画素の割り算
+DEFINE_PROMOTE_BIND_OPERATOR1_( color, / )
+
+/// @brief カラー画素を定数で割る
+DEFINE_PROMOTE_BIND_OPERATOR2_( color, / )
+
+/// @brief カラー画素の剰余
+DEFINE_PROMOTE_BIND_OPERATOR1_( color, % )
+
+
+/// @brief カラー画素の | 演算
+DEFINE_PROMOTE_BIND_OPERATOR1_( color, | )
+
+/// @brief カラー画素の & 演算
+DEFINE_PROMOTE_BIND_OPERATOR1_( color, & )
+
+/// @brief カラー画素の ^ 演算
+DEFINE_PROMOTE_BIND_OPERATOR1_( color, ^ )
+
+
 
 
 /// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
@@ -1777,6 +2195,29 @@ template < class T > inline std::ostream &operator <<( std::ostream &out, const 
 	out << c.R << ", ";
 	out << c.G << ", ";
 	out << c.B << " )";
+	return( out );
+}
+
+
+/// @brief 指定されたストリームに，コンテナ内の要素を整形して出力する
+//! 
+//! @param[in,out] out … 入力と出力を行うストリーム
+//! @param[in]     c   … カラー画素
+//! 
+//! @return 入力されたストリーム
+//! 
+//! @code 出力例
+//! ( 1, 2, 3, 1, 2, 3 )
+//! @endcode
+//! 
+template < class T, size_t NDIM > inline std::ostream &operator <<( std::ostream &out, const color< T, NDIM > &c )
+{
+	out << "( ";
+	for( size_t i = 0 ; i < NDIM - 1 ; i++ )
+	{
+		out << c[ i ] << ", ";
+	}
+	out << c[ NDIM - 1 ] << " )";
 	return( out );
 }
 
@@ -2214,6 +2655,12 @@ struct _pixel_converter_
 		_MIST_CONST( bool, value, true );
 	};
 
+	template < class T, size_t NDIM >
+	struct is_color< color< T, NDIM > >
+	{
+		_MIST_CONST( bool, value, true );
+	};
+
 	template < class T >
 	struct _pixel_converter_< rgb< T > >
 	{
@@ -2304,6 +2751,31 @@ struct _pixel_converter_
 		}
 	};
 
+	template < class T, size_t NDIM >
+	struct _pixel_converter_< color< T, NDIM > >
+	{
+		typedef T value_type;
+		typedef color< T, NDIM > color_type;
+		enum{ color_num = NDIM };
+
+		static color_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )
+		{
+			return( color_type( ( r + g + b ) / 3 ) );
+		}
+
+		static color_type convert_from( const color< T, NDIM > &pixel )
+		{
+			if( NDIM < 3 )
+			{
+				return( color_type( ( r + g + b ) / 3 ) );
+			}
+			else
+			{
+				return( color_type( pixel[ 0 ], pixel[ 1 ], pixel[ 2 ] ) );
+			}
+		}
+	};
+
 #endif
 
 
@@ -2313,6 +2785,7 @@ struct _pixel_converter_
 	template<> struct function< rgba< type > >{ _MIST_CONST( bool, value, true  ); }; \
 	template<> struct function< bgra< type > >{ _MIST_CONST( bool, value, true  ); }; \
 	template<> struct function<  nRGB< type > >{ _MIST_CONST( bool, value, true  ); }; \
+	template< size_t NDIM > struct function<  color< type, NDIM > >{ _MIST_CONST( bool, value, true  ); }; \
 
 // type_trait 内の機能を拡張する
 /// @brief char 判定
