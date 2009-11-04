@@ -425,6 +425,26 @@ bool read_csv( Array &csv, const std::string &filename, const std::string &separ
 	return( __csv_controller__::csv_controller< Array >::read( csv, filename, separator ) );
 }
 
+
+/// @brief CSV形式のファイルをSTLコンテナに読み込む
+//! 
+//! データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている．
+//! データの区切りを変更する場合は，separator 引数を変更する．
+//! 
+//! @param[out] csv       … CSV形式のファイルを読み込む先のSTLコンテナ
+//! @param[in]  filename  … 入力ファイル名
+//! @param[in]  separator … データの区切り記号
+//!
+//! @retval true  … CSV形式データの読み込みに成功
+//! @retval false … CSV形式データの読み込みに失敗
+//! 
+template < class Array >
+bool read_csv( Array &csv, const std::string &filename, const std::wstring &separator =", " )
+{
+	return( read_csv( csv, wstr2str( filename  ), separator ) );
+}
+
+
 /// @brief CSV形式のファイルをMISTコンテナ（mist::matrix）に読み込む
 //! 
 //! データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている．
@@ -462,6 +482,23 @@ bool read_csv( matrix< T, Allocator > &csv, const std::string &filename, const s
 	}
 
 	return( false );
+}
+/// @brief CSV形式のファイルをMISTコンテナ（mist::matrix）に読み込む
+//! 
+//! データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている．
+//! データの区切りを変更する場合は，separator 引数を変更する．
+//! 
+//! @param[out] csv       … CSV形式のファイルを読み込む先の行列
+//! @param[in]  filename  … 入力ファイル名
+//! @param[in]  separator … データの区切り記号
+//!
+//! @retval true  … CSV形式データの読み込みに成功
+//! @retval false … CSV形式データの読み込みに失敗
+//! 
+template < class T, class Allocator >
+bool read_csv( matrix< T, Allocator > &csv, const std::wstring &filename, const std::string &separator =", " )
+{
+	return( read_csv( csv, wstr2str( filename ), separator ) );
 }
 
 /// @}

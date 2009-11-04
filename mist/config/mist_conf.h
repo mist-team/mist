@@ -35,6 +35,8 @@
 #define __INCLUDE_MIST_CONF_H__
 
 #include <iostream>
+#include <cstdlib>
+#include <string>
 
 
 // MIST名前空間を定義するためのマクロ
@@ -247,6 +249,29 @@ template < class Object1, class Object2 >
 inline bool is_same_object( const Object1 &o1, const Object2 &o2 )
 {
 	return( reinterpret_cast< const void * >( &o1 ) == reinterpret_cast< const void * >( &o2 ) );
+}
+
+/// @brief UNICODE文字列をマルチバイト文字列に変換する
+//!
+//! @param[in] src … UNICODE文字列
+//!
+//! @return マルチバイト文字列
+//!
+inline const std::string wstr2str( const std::wstring &src )
+{
+	static bool is_initialized = false;
+	if( !is_initialized )
+	{
+		is_initialized = true;
+		setlocale( LC_CTYPE, "" );
+	}
+
+	size_t nbytes = wcstombs( NULL, src.c_str( ), 0 );
+	char *buff = new char[ nbytes + 1 ];
+	wcstombs( buff, src.c_str( ), nbytes + 1 );
+	std::string dst( buff );
+	delete [] buff;
+	return( dst );
 }
 
 

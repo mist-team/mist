@@ -164,6 +164,24 @@ bool read_lines( Array< std::string, Allocator > &lines, const std::string &file
 	return( __lines_controller__::lines_controller::read( lines, filename ) );
 }
 
+
+/// @brief 改行区切りのファイルをSTLコンテナに読み込む
+//! 
+//! データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている．
+//! データの区切りを変更する場合は，separator 引数を変更する．
+//! 
+//! @param[out] lines     … 改行区切りのファイルを読み込む先のSTLコンテナ
+//! @param[in]  filename  … 入力ファイル名
+//!
+//! @retval true  … データの読み込みに成功
+//! @retval false … データの読み込みに失敗
+//! 
+template < template < typename T, typename A > class Array, class Allocator >
+bool read_lines( Array< std::string, Allocator > &lines, const std::wstring &filename )
+{
+	return( read_lines( lines, wstr2str( filename ) ) );
+}
+
 /// @}
 //  改行区切りのデータの入出力グループの終わり
 

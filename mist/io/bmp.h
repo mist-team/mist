@@ -779,6 +779,23 @@ bool read_bmp( array2< T, Allocator > &image, const std::string &filename )
 }
 
 
+/// @brief BMP画像をMISTコンテナに読み込む
+//! 
+//! @attention RLE圧縮のかかったBMPには未対応
+//! 
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator >
+bool read_bmp( array2< T, Allocator > &image, const std::wstring &filename )
+{
+	return( read_bmp( image, wstr2str( filename ) ) );
+}
+
+
 /// @brief MISTコンテナの画像をBMP形式でファイルに出力する
 //! 
 //! @param[in] image    … 出力画像を保持するMISTコンテナ
@@ -798,6 +815,28 @@ template < class T, class Allocator >
 bool write_bmp( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type bmp_bits = 24 )
 {
 	return( __bmp_controller__::bmp_controller< T, Allocator >::write( image, filename, bmp_bits ) );
+}
+
+
+/// @brief MISTコンテナの画像をBMP形式でファイルに出力する
+//! 
+//! @param[in] image    … 出力画像を保持するMISTコンテナ
+//! @param[in] filename … 出力ファイル名
+//! @param[in] bmp_bits … 以下のビットマップのビット数のいずれか
+//!
+//! -#  1ビット … 白黒の2値ビットマップ
+//! -#  4ビット … 8色のカラーテーブルを持つビットマップ
+//! -#  8ビット … 256色のカラーテーブルを持つビットマップ
+//! -# 24ビット … フルカラービットマップ
+//! -# 32ビット … フルカラービットマップ（アルファチャンネル付）
+//!
+//! @retval true  … 画像の書き込みに成功
+//! @retval false … 画像の書き込みに失敗
+//! 
+template < class T, class Allocator >
+bool write_bmp( const array2< T, Allocator > &image, const std::wstring &filename, typename array2< T, Allocator >::size_type bmp_bits = 24 )
+{
+	return( write_bmp( image, wstr2str( filename ), bmp_bits ) );
 }
 
 /// @}

@@ -454,6 +454,23 @@ bool read_jpeg2000( array2< T, Allocator > &image, const std::string &filename )
 }
 
 
+/// @brief JPEG2000画像をMISTコンテナに読み込む
+//! 
+//! 全てのJPEG2000画像形式を読み込むことが可能です
+//! 
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator >
+bool read_jpeg2000( array2< T, Allocator > &image, const std::wstring &filename )
+{
+	return( read_jpeg2000( image, wstr2str( filename ) ) );
+}
+
+
 /// @brief MISTコンテナの画像をJPEG2000形式でファイルに出力する
 //! 
 //! @attention JPEG2000の圧縮率は数値が大きいほど圧縮率が高くなる．0を指定するとLossless圧縮を行う．（デフォルト値は0）
@@ -469,6 +486,24 @@ template < class T, class Allocator >
 bool write_jpeg2000( const array2< T, Allocator > &image, const std::string &filename, double compression_level = 0 )
 {
 	return( __jpeg2000_controller__::jpeg2000_controller< T, Allocator >::write( image, filename, compression_level ) );
+}
+
+
+/// @brief MISTコンテナの画像をJPEG2000形式でファイルに出力する
+//! 
+//! @attention JPEG2000の圧縮率は数値が大きいほど圧縮率が高くなる．0を指定するとLossless圧縮を行う．（デフォルト値は0）
+//! 
+//! @param[in] image             … 出力画像を保持するMISTコンテナ
+//! @param[in] filename          … 出力ファイル名
+//! @param[in] compression_level … 画像の圧縮率（例えば2を指定すると画像サイズを2分の1にする．また，0を指定するとLossless圧縮を行う）
+//!
+//! @retval true  … 画像の書き込みに成功
+//! @retval false … 画像の書き込みに失敗
+//! 
+template < class T, class Allocator >
+bool write_jpeg2000( const array2< T, Allocator > &image, const std::wstring &filename, double compression_level = 0 )
+{
+	return( write_jpeg2000( image, wstr2str( filename ), compression_level ) );
 }
 
 

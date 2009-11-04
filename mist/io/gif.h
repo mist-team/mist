@@ -539,6 +539,24 @@ bool read_gif( array2< T, Allocator > &image, const std::string &filename )
 }
 
 
+/// @brief GIF画像をMISTコンテナに読み込む
+//! 
+//! LZW圧縮のかかったGIF等のさまざまなフォーマットを読み込むことが可能．
+//! また，出力するMISTコンテナがカラー画像かグレースケール画像かによって，ピクセルデータを適切に変換する
+//! 
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator >
+bool read_gif( array2< T, Allocator > &image, const std::wstring &filename )
+{
+	return( read_gif( image, wstr2str( filename ) ) );
+}
+
+
 /// @}
 //  GIF 画像入出力グループの終わり
 

@@ -785,6 +785,23 @@ bool read_tga( array2< T, Allocator > &image, const std::string &filename )
 }
 
 
+/// @brief TGA画像をMISTコンテナに読み込む
+//! 
+//! @attention RLE圧縮のかかったTGAもサポート（ハフマン符号化を用いたものに対しては未対応）
+//! 
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator >
+bool read_tga( array2< T, Allocator > &image, const std::wstring &filename )
+{
+	return( read_tga( image, wstr2str( filename ) ) );
+}
+
+
 /// @brief MISTコンテナの画像をTGA形式でファイルに出力する
 //! 
 //! @param[in] image         … 出力画像を保持するMISTコンテナ
@@ -803,6 +820,27 @@ template < class T, class Allocator >
 bool write_tga( const array2< T, Allocator > &image, const std::string &filename, typename array2< T, Allocator >::size_type tga_bits = 32, bool is_encode_RLE = true )
 {
 	return( __tga_controller__::tga_controller< T, Allocator >::write( image, filename, tga_bits, is_encode_RLE ) );
+}
+
+
+/// @brief MISTコンテナの画像をTGA形式でファイルに出力する
+//! 
+//! @param[in] image         … 出力画像を保持するMISTコンテナ
+//! @param[in] filename      … 出力ファイル名
+//! @param[in] tga_bits      … 以下のビットマップのビット数のいずれか
+//! @param[in] is_encode_RLE … RLE圧縮をかけるかどうか（デフォルトはTrue）
+//!
+//! -# 16ビット … 各色 5 ビットのビットマップ
+//! -# 24ビット … フルカラービットマップ
+//! -# 32ビット … フルカラービットマップ（アルファチャンネル付）
+//!
+//! @retval true  … 画像の書き込みに成功
+//! @retval false … 画像の書き込みに失敗
+//! 
+template < class T, class Allocator >
+bool write_tga( const array2< T, Allocator > &image, const std::wstring &filename, typename array2< T, Allocator >::size_type tga_bits = 32, bool is_encode_RLE = true )
+{
+	return( write_tga( image, wstr2str( filename ), tga_bits, is_encode_RLE ) );
 }
 
 /// @}

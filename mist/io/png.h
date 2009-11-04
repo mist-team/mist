@@ -359,6 +359,23 @@ bool read_png( array2< T, Allocator > &image, const std::string &filename )
 }
 
 
+/// @brief PNG画像をMISTコンテナに読み込む
+//! 
+//! RGBやRGBAやカラーテーブルを使用した全てのPNG画像を読み込むことが可能です
+//! 
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator >
+bool read_png( array2< T, Allocator > &image, const std::wstring &filename )
+{
+	return( read_png( image, wstr2str( filename ) ) );
+}
+
+
 /// @brief MISTコンテナの画像をPNG形式でファイルに出力する
 //! 
 //! @attention 圧縮レベルは0～9まであり，引数に負の値を指定すると，適切な圧縮レベルが自動的に選択される（デフォルト）
@@ -374,6 +391,24 @@ template < class T, class Allocator >
 bool write_png( const array2< T, Allocator > &image, const std::string &filename, int compression_level = -1 )
 {
 	return( __png_controller__::png_controller< T, Allocator >::write( image, filename, compression_level ) );
+}
+
+
+/// @brief MISTコンテナの画像をPNG形式でファイルに出力する
+//! 
+//! @attention 圧縮レベルは0～9まであり，引数に負の値を指定すると，適切な圧縮レベルが自動的に選択される（デフォルト）
+//! 
+//! @param[in] image    … 出力画像を保持するMISTコンテナ
+//! @param[in] filename … 出力ファイル名
+//! @param[in] compression_level … PNG画像を出力する際の圧縮レベル
+//!
+//! @retval true  … 画像の書き込みに成功
+//! @retval false … 画像の書き込みに失敗
+//! 
+template < class T, class Allocator >
+bool write_png( const array2< T, Allocator > &image, const std::wstring &filename, int compression_level = -1 )
+{
+	return( write_png( image, wstr2str( filename ), compression_level ) );
 }
 
 

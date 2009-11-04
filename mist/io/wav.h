@@ -782,6 +782,22 @@ bool read_wav( array< T, Allocator > &sound, const std::string &filename, unsign
 //! 
 //! @param[out] sound         … 音声データを出力するMISTコンテナ
 //! @param[in]  filename      … WAVファイル名
+//! @param[out] sampling_rate … WAVファイルに記録されているサンプリングレート
+//!
+//! @retval true  … WAVファイルの読み込みに成功
+//! @retval false … ファイルの読み込みに失敗（ファイルが存在しない，不適切なファイル等・・・）
+//! 
+template < class T, class Allocator >
+bool read_wav( array< T, Allocator > &sound, const std::wstring &filename, unsigned int &sampling_rate )
+{
+	return( read_wav( sound, wstr2str( filename ), sampling_rate ) );
+}
+
+
+/// @brief WAVファイルから音声データををMISTコンテナに読み込む
+//! 
+//! @param[out] sound         … 音声データを出力するMISTコンテナ
+//! @param[in]  filename      … WAVファイル名
 //!
 //! @retval true  … WAVファイルの読み込みに成功
 //! @retval false … ファイルの読み込みに失敗（ファイルが存在しない，不適切なファイル等・・・）
@@ -791,6 +807,21 @@ bool read_wav( array< T, Allocator > &sound, const std::string &filename )
 {
 	unsigned int sampling_rate = 44100;
 	return( read_wav( sound, filename, sampling_rate ) );
+}
+
+
+/// @brief WAVファイルから音声データををMISTコンテナに読み込む
+//! 
+//! @param[out] sound         … 音声データを出力するMISTコンテナ
+//! @param[in]  filename      … WAVファイル名
+//!
+//! @retval true  … WAVファイルの読み込みに成功
+//! @retval false … ファイルの読み込みに失敗（ファイルが存在しない，不適切なファイル等・・・）
+//! 
+template < class T, class Allocator >
+bool read_wav( array< T, Allocator > &sound, const std::wstring &filename )
+{
+	return( read_wav( sound, wstr2str( filename ), sampling_rate ) );
 }
 
 
@@ -811,6 +842,26 @@ bool write_wav( const array< T, Allocator > &sound, const std::string &filename,
 						typename array< T, Allocator >::size_type sampling_rate )
 {
 	return( __wav_controller__::wav_controller< T, Allocator >::write( sound, filename, wav_bits, sampling_rate ) );
+}
+
+
+/// @brief MISTコンテナのデータをWAVファイルへ出力する
+//! 
+//! 詳細な説明や関数の使用例を書く
+//! 
+//! @param[in] sound         … 音声データの入ったMISTコンテナ
+//! @param[in] filename      … 出力ファイル名
+//! @param[in] wav_bits      … 出力するWAVファイルの量子化ビット数
+//! @param[in] sampling_rate … 出力するWAVファイルのサンプリングレート
+//!
+//! @retval true  … WAVファイルの出力に成功
+//! @retval false … ファイルの出力に失敗
+//! 
+template < class T, class Allocator >
+bool write_wav( const array< T, Allocator > &sound, const std::string &filename, typename array< T, Allocator >::size_type wav_bits,
+						typename array< T, Allocator >::size_type sampling_rate )
+{
+	return( write_wav( sound, wstr2str( filename ), wav_bits, sampling_rate ) );
 }
 
 

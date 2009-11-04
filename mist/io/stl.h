@@ -661,10 +661,43 @@ namespace __stl_controller__
 //! @retval false … ポリゴンデータの読み込みに失敗
 //! 
 template < class T >
+bool read_stl( facet_list< T > &facets, const std::wstring &filename )
+{
+	return( read_stl( facets, wstr2str( filename ) ) );
+}
+
+
+/// @brief STL（ASCII，バイナリ）形式のファイルからポリゴンデータを読み込む
+//! 
+//! @param[out] facets   … ポリゴンのリスト
+//! @param[in] filename … 出力ファイル名
+//!
+//! @retval true  … ポリゴンデータの読み込みに成功
+//! @retval false … ポリゴンデータの読み込みに失敗
+//! 
+template < class T >
 bool read_stl( facet_list< T > &facets, const std::string &filename )
 {
 	return( __stl_controller__::stl_controller< T >::read( facets, filename ) );
 }
+
+
+/// @brief ポリゴンデータをSTL（ASCII，バイナリ）形式で出力する
+//!
+//! @param[in] facets           … ポリゴンのリスト
+//! @param[in] filename         … 出力ファイル名
+//! @param[in] use_ascii_format … ASCII形式で出力するかどうか
+//!
+//! @retval true  … ファイルへの書き込みに成功
+//! @retval false … ファイルへの書き込みに失敗
+//! 
+template < class T >
+inline bool write_stl( const facet_list< T > &facets, const std::wstring &filename, bool use_ascii_format = true )
+{
+	return( write_stl( facets, wstr2str( filename ), use_ascii_format ) );
+}
+
+
 
 
 /// @brief ポリゴンデータをSTL（ASCII，バイナリ）形式で出力する

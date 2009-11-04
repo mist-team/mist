@@ -165,6 +165,21 @@ inline bool read_image( mist::array2< T, Allocator > &image, const std::string &
 	return( ret );
 }
 
+/// @brief JPEG，TIFF，PNG，BMP，PNM，GIF 画像を拡張子に基づいてMISTコンテナに読み込む
+//! 
+//! @attention 拡張子に基づいて画像形式を判別するため，正しいファイル拡張子が付いている必要あり
+//! 
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator >
+inline bool read_image( mist::array2< T, Allocator > &image, const std::wstring &filename )
+{
+	return( read_image( image, wstr2str( filename ) ) );
+}
 
 /// @brief MISTコンテナの画像をTIFF形式でJPEG，TIFF，PNG，BMP，PNM，GIF 画像形式でファイルに出力する
 //! 
@@ -240,6 +255,22 @@ inline bool write_image( mist::array2< T, Allocator > &image, const std::string 
 	return( ret );
 }
 
+/// @brief MISTコンテナの画像をTIFF形式でJPEG，TIFF，PNG，BMP，PNM，GIF 画像形式でファイルに出力する
+//! 
+//! @attention 拡張子に基づいて画像形式を判別するため，正しいファイル拡張子が付いている必要あり
+//! @attention 出力されるファイルの圧縮率は，各 read_jpeg 等のデフォルト値が用いられる
+//! 
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator >
+inline bool write_image( mist::array2< T, Allocator > &image, const std::wstring &filename )
+{
+	return( write_image( image, wstr2str( filename ) ) );
+}
 
 /// @}
 //  画像入出力グループの終わり

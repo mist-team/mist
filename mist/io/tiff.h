@@ -750,6 +750,24 @@ bool read_tiff( array2< T, Allocator > &image, const std::string &filename )
 }
 
 
+/// @brief TIFF画像をMISTコンテナに読み込む
+//! 
+//! LZW圧縮のかかったTIFFやカラーテーブルを使用したTIFFファイル等のさまざまなフォーマットを読み込むことが可能．
+//! また，出力するMISTコンテナがカラー画像かグレースケール画像かによって，ピクセルデータを適切に変換する
+//! 
+//! @param[out] image    … 画像を読み込む先のMISTコンテナ
+//! @param[in]  filename … 入力ファイル名
+//!
+//! @retval true  … 画像の読み込みに成功
+//! @retval false … 画像の読み込みに失敗
+//! 
+template < class T, class Allocator >
+bool read_tiff( array2< T, Allocator > &image, const std::wstring &filename )
+{
+	return( read_tiff( image, wstr2str( filename ) ) );
+}
+
+
 /// @brief MISTコンテナの画像をTIFF形式でファイルに出力する
 //! 
 //! @attention LZW圧縮のかかったTIFF画像を出力する場合は，libtiff ライブラリ側でLZW圧縮が有効になっている必要がある
@@ -766,6 +784,25 @@ template < class T, class Allocator >
 bool write_tiff( const array2< T, Allocator > &image, const std::string &filename, bool use_lzw_compression = _LZW_COMPRESSION_SUPPORT_ )
 {
 	return( __tiff_controller__::tiff_controller< T, Allocator >::write( image, filename, use_lzw_compression ) );
+}
+
+
+/// @brief MISTコンテナの画像をTIFF形式でファイルに出力する
+//! 
+//! @attention LZW圧縮のかかったTIFF画像を出力する場合は，libtiff ライブラリ側でLZW圧縮が有効になっている必要がある
+//! @attention データの型がunsigned short，rgb< unsigned short>，rgba< unsigned short>の場合は、16ビットチャンネルを使用して画像が保存される
+//! 
+//! @param[in] image               … 出力画像を保持するMISTコンテナ
+//! @param[in] filename            … 出力ファイル名
+//! @param[in] use_lzw_compression … LZW圧縮されたTIFF画像を出力するかどうか
+//!
+//! @retval true  … 画像の書き込みに成功
+//! @retval false … 画像の書き込みに失敗
+//! 
+template < class T, class Allocator >
+bool write_tiff( const array2< T, Allocator > &image, const std::wstring &filename, bool use_lzw_compression = _LZW_COMPRESSION_SUPPORT_ )
+{
+	return( write_tiff( image, wstr2str( filename ), use_lzw_compression ) );
 }
 
 

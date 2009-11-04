@@ -133,6 +133,8 @@ namespace video
 	public:
 		virtual ~video_io_vase( ){ }
 
+		bool open( const std::wstring &filename ){ return( open( wstr2str( filename ) ) ); }	///< @brief 
+
 		virtual bool open( const std::string &filename ) = 0;		///< @brief 
 		virtual bool close( ) = 0;									///< @brief 
 		virtual bool is_open( ) const = 0;							///< @brief ビデオストリームが開いているかどうかを返す

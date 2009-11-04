@@ -881,6 +881,21 @@ bool read_mqo( std::vector< facet_list< T > > &facet_lists, const std::string &f
 
 /// @brief Metasequoia形式のファイルからポリゴンデータを読み込む
 //! 
+//! @param[out] facet_lists … ポリゴンのリスト（オブジェクト単位のポリゴン集合リスト）
+//! @param[in]  filename    … 出力ファイル名
+//!
+//! @retval true  … ポリゴンデータの読み込みに成功
+//! @retval false … ポリゴンデータの読み込みに失敗
+//! 
+template < class T >
+bool read_mqo( std::vector< facet_list< T > > &facet_lists, const std::wstring &filename )
+{
+	return( read_mqo( facet_lists, wstr2str( filename ) ) );
+}
+
+
+/// @brief Metasequoia形式のファイルからポリゴンデータを読み込む
+//! 
 //! @param[out] facets   … ポリゴンの集合
 //! @param[in]  filename … 出力ファイル名
 //!
@@ -891,6 +906,21 @@ template < class T >
 bool read_mqo( facet_list< T > &facets, const std::string &filename )
 {
 	return( __mqo_controller__::mqo_controller< T >::read( facets, filename ) );
+}
+
+
+/// @brief Metasequoia形式のファイルからポリゴンデータを読み込む
+//! 
+//! @param[out] facets   … ポリゴンの集合
+//! @param[in]  filename … 出力ファイル名
+//!
+//! @retval true  … ポリゴンデータの読み込みに成功
+//! @retval false … ポリゴンデータの読み込みに失敗
+//! 
+template < class T >
+bool read_mqo( facet_list< T > &facets, const std::wstring &filename )
+{
+	return( read_mqo( facets, wstr2str( filename ) ) );
 }
 
 
@@ -910,6 +940,20 @@ inline bool write_mqo( const std::vector< facet_list< T > > &facet_lists, const 
 
 /// @brief ポリゴンデータをMetasequoia形式で出力する
 //!
+//! @param[in] facet_lists      … ポリゴンのリスト
+//! @param[in] filename         … 出力ファイル名
+//!
+//! @retval true  … ファイルへの書き込みに成功
+//! @retval false … ファイルへの書き込みに失敗
+//! 
+template < class T >
+inline bool write_mqo( const std::vector< facet_list< T > > &facet_lists, const std::wstring &filename )
+{
+	return( write_mqo( facet_lists, wstr2str( filename ) ) );
+}
+
+/// @brief ポリゴンデータをMetasequoia形式で出力する
+//!
 //! @param[in] facets           … ポリゴンのリスト
 //! @param[in] filename         … 出力ファイル名
 //!
@@ -922,6 +966,21 @@ inline bool write_mqo( const facet_list< T > &facets, const std::string &filenam
 	std::vector< facet_list< T > > tmp;
 	tmp.push_back( facets );
 	return( __mqo_controller__::mqo_controller< T >::write( tmp, filename ) );
+}
+
+
+/// @brief ポリゴンデータをMetasequoia形式で出力する
+//!
+//! @param[in] facets           … ポリゴンのリスト
+//! @param[in] filename         … 出力ファイル名
+//!
+//! @retval true  … ファイルへの書き込みに成功
+//! @retval false … ファイルへの書き込みに失敗
+//! 
+template < class T >
+inline bool write_mqo( const facet_list< T > &facets, const std::wstring &filename )
+{
+	return( write_mqo( tmp, wstr2str( filename ) ) );
 }
 
 
