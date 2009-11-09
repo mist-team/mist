@@ -439,7 +439,7 @@ bool read_csv( Array &csv, const std::string &filename, const std::string &separ
 //! @retval false … CSV形式データの読み込みに失敗
 //! 
 template < class Array >
-bool read_csv( Array &csv, const std::string &filename, const std::wstring &separator =", " )
+bool read_csv( Array &csv, const std::wstring &filename, const std::wstring &separator =", " )
 {
 	return( read_csv( csv, wstr2str( filename  ), separator ) );
 }
