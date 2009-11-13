@@ -858,7 +858,7 @@ bool write_wav( const array< T, Allocator > &sound, const std::string &filename,
 //! @retval false … ファイルの出力に失敗
 //! 
 template < class T, class Allocator >
-bool write_wav( const array< T, Allocator > &sound, const std::string &filename, typename array< T, Allocator >::size_type wav_bits,
+bool write_wav( const array< T, Allocator > &sound, const std::wstring &filename, typename array< T, Allocator >::size_type wav_bits,
 						typename array< T, Allocator >::size_type sampling_rate )
 {
 	return( write_wav( sound, wstr2str( filename ), wav_bits, sampling_rate ) );
