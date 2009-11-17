@@ -148,6 +148,7 @@ namespace video
 		virtual size_type height( ) const = 0;						///< @brief フレームの高さを返す
 		virtual long double frame_rate_numerator( ) const = 0;		///< @brief フレームレート（A÷B）の分子部分のAを返す
 		virtual long double frame_rate_denominator( ) const = 0;	///< @brief フレームレート（A÷B）の分母部分のBを返す
+		virtual long double frame_aspect_ratio( ) const = 0;		///< @brief フレームのアスペクト比を得る（ウィンドウ幅/ウィンドウ高さ）
 
 		/// @brief フレームレートを返す
 		virtual long double frame_rate( ) const
@@ -469,6 +470,19 @@ namespace video
 			else
 			{
 				return( 0 );
+			}
+		}
+
+		/// @brief フレームのアスペクト比を得る（ウィンドウ幅/ウィンドウ高さ）
+		virtual long double frame_aspect_ratio( ) const
+		{
+			if( is_open( ) )
+			{
+				return( av_q2d( p_fctx_->streams[ video_stream_index_ ]->codec->sample_aspect_ratio ) * ( double )this->width( ) / this->height( ) );
+			}
+			else
+			{
+				return( 4.0 / 3.0 );
 			}
 		}
 
@@ -924,6 +938,7 @@ namespace video
 		size_type		source_height_;			///< @brief 内部で使用する変数
 		size_type		frame_rate_num_;		///< @brief フレームレート
 		size_type		frame_rate_den_;		///< @brief フレームレートベース（実際のフレームレート＝フレームレート/フレームレートベース）
+		double			frame_aspect_ratio_;	///< @brief フレームのアスペクト比（幅÷高さ）
 		size_type		bit_rate_;				///< @brief ビットレート
 		size_type		qmin_;					///< @brief 圧縮のクオリティー[0～32]（ビットレートとどちらかを指定）
 		size_type		qmax_;					///< @brief 圧縮のクオリティー[0～100]（ビットレートとどちらかを指定）
@@ -940,6 +955,7 @@ namespace video
 		//! @param[in] h                   … 240（デフォルト値）
 		//! @param[in] frame_rate_num      … 1（デフォルト値）
 		//! @param[in] frame_rate_den      … 30（デフォルト値）
+		//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
 		//! @param[in] bit_rate            … 1150000（デフォルト値）
 		//! @param[in] qmin                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
 		//! @param[in] qmax                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
@@ -949,10 +965,10 @@ namespace video
 		//! @param[in] audio_sampling_rate … 44100（デフォルト値）
 		//! @param[in] audio_channels      … 2（デフォルト値）
 		//!
-		encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30,
+		encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0,
 				 size_type bit_rate = 1150000, size_type qmin = 0, size_type qmax = 0, size_type gop_size = 12, size_type max_b_frames = 2, size_type audio_bit_rate = 64000, size_type audio_sampling_rate = 44100, size_type audio_channels = 2 )
 					: p_fctx_( NULL ), p_frame_dst_( NULL ), p_frame_rgb_( NULL ), p_swscale_( NULL ), frame_pts_( 0 ), is_open_( false ), encode_buf_( NULL ), encode_buf_size_( 0 ),
-						width_( w ), height_( h ), source_width_( w ), source_height_( h ), frame_rate_num_( frame_rate_num ), frame_rate_den_( frame_rate_den ), bit_rate_( bit_rate ), qmin_( qmin ), qmax_( qmax ),
+						width_( w ), height_( h ), source_width_( w ), source_height_( h ), frame_rate_num_( frame_rate_num ), frame_rate_den_( frame_rate_den ), frame_aspect_ratio_( frame_aspect_ratio ), bit_rate_( bit_rate ), qmin_( qmin ), qmax_( qmax ),
 						gop_size_( gop_size ), max_b_frames_( max_b_frames ), audio_bit_rate_( audio_bit_rate ), audio_sampling_rate_( audio_bit_rate ), audio_channels_( audio_channels )
 		{
 			bool &bInitialized = singleton< bool, 60602 >::get_instance( );
@@ -1057,11 +1073,17 @@ namespace video
 		{
 			return( frame_rate_num_ );
 		}
-		
+
 		/// @brief フレームレートベースを得る（実際のフレームレート＝フレームレート/フレームレートベース）
 		virtual long double frame_rate_denominator( ) const
 		{
 			return( frame_rate_den_ );
+		}
+
+		/// @brief フレームのアスペクト比を得る（ウィンドウ幅/ウィンドウ高さ）
+		virtual long double frame_aspect_ratio( ) const
+		{
+			return( frame_aspect_ratio_ );
 		}
 
 	public:
@@ -1261,6 +1283,9 @@ namespace video
 					cctx->time_base.num = static_cast< int >( frame_rate_numerator( ) );
 
 					cctx->gop_size = gop_size_;
+
+					// フレームのアスペクト比を設定する
+					cctx->sample_aspect_ratio = vstream->sample_aspect_ratio = av_d2q( frame_aspect_ratio_ * cctx->height / cctx->width, 255 );
 
 					if( cctx->codec_id == CODEC_ID_MPEG2VIDEO )
 					{
@@ -1540,18 +1565,19 @@ namespace video
 		public:
 			/// @brief コンストラクタ
 			//! 
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 1150000（デフォルト値）
-			//! @param[in] qmin            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
-			//! @param[in] qmax            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
-			//! @param[in] gop_size        … 12（デフォルト値）
-			//! @param[in] max_b_frames    … 2（デフォルト値）
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
+			//! @param[in] bit_rate            … 1150000（デフォルト値）
+			//! @param[in] qmin                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] qmax                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] gop_size            … 12（デフォルト値）
+			//! @param[in] max_b_frames        … 2（デフォルト値）
 			//!
-			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000, size_type qmin = 0, size_type qmax = 0, size_type gop_size = 12, size_type max_b_frames = 2 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, qmin, qmax, gop_size, max_b_frames )
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0, size_type bit_rate = 1150000, size_type qmin = 0, size_type qmax = 0, size_type gop_size = 12, size_type max_b_frames = 2 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio, bit_rate, qmin, qmax, gop_size, max_b_frames )
 			{
 			}
 
@@ -1559,19 +1585,20 @@ namespace video
 			//! 
 			//! コンストラクタの実行時に出力ビデオファイルの初期化を行う
 			//! 
-			//! @param[in] filename        … 出力ファイル名
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 1150000（デフォルト値）
-			//! @param[in] qmin            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
-			//! @param[in] qmax            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
-			//! @param[in] gop_size        … 12（デフォルト値）
-			//! @param[in] max_b_frames    … 2（デフォルト値）
+			//! @param[in] filename            … 出力ファイル名
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
+			//! @param[in] bit_rate            … 1150000（デフォルト値）
+			//! @param[in] qmin                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] qmax                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] gop_size            … 12（デフォルト値）
+			//! @param[in] max_b_frames        … 2（デフォルト値）
 			//!
-			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000, size_type qmin = 0, size_type qmax = 0, size_type gop_size = 12, size_type max_b_frames = 2 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, qmin, qmax, gop_size, max_b_frames )
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0, size_type bit_rate = 1150000, size_type qmin = 0, size_type qmax = 0, size_type gop_size = 12, size_type max_b_frames = 2 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio, bit_rate, qmin, qmax, gop_size, max_b_frames )
 			{
 				if( !open( filename ) )
 				{
@@ -1608,14 +1635,15 @@ namespace video
 		public:
 			/// @brief コンストラクタ
 			//! 
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
+			//! @param[in] bit_rate            … 1150000（デフォルト値）
 			//!
-			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0, size_type bit_rate = 1150000 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio, bit_rate )
 			{
 			}
 
@@ -1623,15 +1651,16 @@ namespace video
 			//! 
 			//! コンストラクタの実行時に出力ビデオファイルの初期化を行う
 			//! 
-			//! @param[in] filename        … 出力ファイル名
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//! @param[in] filename            … 出力ファイル名
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
+			//! @param[in] bit_rate            … 1150000（デフォルト値）
 			//!
-			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0, size_type bit_rate = 1150000 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio, bit_rate )
 			{
 				if( !open( filename ) )
 				{
@@ -1669,16 +1698,17 @@ namespace video
 		public:
 			/// @brief コンストラクタ
 			//! 
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 11500000（デフォルト値）
-			//! @param[in] qmin            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
-			//! @param[in] qmax            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
+			//! @param[in] bit_rate            … 11500000（デフォルト値）
+			//! @param[in] qmin                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] qmax                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
 			//!
-			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 11500000, size_type qmin = 0, size_type qmax = 0 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, qmin, qmax, 0 )
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0, size_type bit_rate = 11500000, size_type qmin = 0, size_type qmax = 0 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio, bit_rate, qmin, qmax, 0 )
 			{
 			}
 
@@ -1686,17 +1716,18 @@ namespace video
 			//! 
 			//! コンストラクタの実行時に出力ビデオファイルの初期化を行う
 			//! 
-			//! @param[in] filename        … 出力ファイル名
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 11500000（デフォルト値）
-			//! @param[in] qmin            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
-			//! @param[in] qmax            … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] filename            … 出力ファイル名
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
+			//! @param[in] bit_rate            … 11500000（デフォルト値）
+			//! @param[in] qmin                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
+			//! @param[in] qmax                … 固定品質の指定[0～31]（値が小さいほど高品質）。0以外を指定した場合はbit_rateは無視される
 			//!
-			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 11500000, size_type qmin = 0, size_type qmax = 0 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate, qmin, qmax, 0 )
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0, size_type bit_rate = 11500000, size_type qmin = 0, size_type qmax = 0 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio, bit_rate, qmin, qmax, 0 )
 			{
 				if( !open( filename ) )
 				{
@@ -1734,14 +1765,15 @@ namespace video
 		public:
 			/// @brief コンストラクタ
 			//! 
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
+			//! @param[in] bit_rate            … 1150000（デフォルト値）
 			//!
-			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0, size_type bit_rate = 1150000 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio, bit_rate )
 			{
 			}
 
@@ -1749,15 +1781,16 @@ namespace video
 			//! 
 			//! コンストラクタの実行時に出力ビデオファイルの初期化を行う
 			//! 
-			//! @param[in] filename        … 出力ファイル名
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//! @param[in] filename            … 出力ファイル名
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
+			//! @param[in] bit_rate            … 1150000（デフォルト値）
 			//!
-			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0, size_type bit_rate = 1150000 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio, bit_rate )
 			{
 				if( !open( filename ) )
 				{
@@ -1795,14 +1828,15 @@ namespace video
 		public:
 			/// @brief コンストラクタ
 			//! 
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
+			//! @param[in] bit_rate            … 1150000（デフォルト値）
 			//!
-			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0, size_type bit_rate = 1150000 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio, bit_rate )
 			{
 			}
 
@@ -1810,15 +1844,16 @@ namespace video
 			//! 
 			//! コンストラクタの実行時に出力ビデオファイルの初期化を行う
 			//! 
-			//! @param[in] filename        … 出力ファイル名
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
-			//! @param[in] bit_rate        … 1150000（デフォルト値）
+			//! @param[in] filename            … 出力ファイル名
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
+			//! @param[in] bit_rate            … 1150000（デフォルト値）
 			//!
-			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, size_type bit_rate = 1150000 )
-				: base( w, h, frame_rate_num, frame_rate_den, bit_rate )
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0, size_type bit_rate = 1150000 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio, bit_rate )
 			{
 				if( !open( filename ) )
 				{
@@ -1856,11 +1891,12 @@ namespace video
 		public:
 			/// @brief コンストラクタ
 			//! 
-			//! @param[in] w               … 720（デフォルト値）
-			//! @param[in] h               … 480（デフォルト値）
+			//! @param[in] w                   … 720（デフォルト値）
+			//! @param[in] h                   … 480（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
 			//!
-			encoder( size_type w = 720, size_type h = 480 )
-				: base( w, h, 1001, 30000 )
+			encoder( size_type w = 720, size_type h = 480, double frame_aspect_ratio = 4.0 / 3.0 )
+				: base( w, h, 1001, 30000, frame_aspect_ratio )
 			{
 				audio_sampling_rate_ = 48000;
 			}
@@ -1869,12 +1905,13 @@ namespace video
 			//! 
 			//! コンストラクタの実行時に出力ビデオファイルの初期化を行う
 			//! 
-			//! @param[in] filename        … 出力ファイル名
-			//! @param[in] w               … 720（デフォルト値）
-			//! @param[in] h               … 480（デフォルト値）
+			//! @param[in] filename            … 出力ファイル名
+			//! @param[in] w                   … 720（デフォルト値）
+			//! @param[in] h                   … 480（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
 			//!
-			encoder( const std::string &filename, size_type w = 720, size_type h = 480 )
-				: base( w, h, 1001, 30000 )
+			encoder( const std::string &filename, size_type w = 720, size_type h = 480, double frame_aspect_ratio = 4.0 / 3.0 )
+				: base( w, h, 1001, 30000, frame_aspect_ratio )
 			{
 				audio_sampling_rate_ = 48000;
 
@@ -1914,13 +1951,14 @@ namespace video
 		public:
 			/// @brief コンストラクタ
 			//! 
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
 			//!
-			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30 )
-				: base( w, h, frame_rate_num, frame_rate_den )
+			encoder( size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio )
 			{
 			}
 
@@ -1928,14 +1966,15 @@ namespace video
 			//! 
 			//! コンストラクタの実行時に出力ビデオファイルの初期化を行う
 			//! 
-			//! @param[in] filename        … 出力ファイル名
-			//! @param[in] w               … 320（デフォルト値）
-			//! @param[in] h               … 240（デフォルト値）
-			//! @param[in] frame_rate_num  … 1（デフォルト値）
-			//! @param[in] frame_rate_den  … 30（デフォルト値）
+			//! @param[in] filename            … 出力ファイル名
+			//! @param[in] w                   … 320（デフォルト値）
+			//! @param[in] h                   … 240（デフォルト値）
+			//! @param[in] frame_rate_num      … 1（デフォルト値）
+			//! @param[in] frame_rate_den      … 30（デフォルト値）
+			//! @param[in] frame_aspect_ratio  … 4/3（デフォルト値）
 			//!
-			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30 )
-				: base( w, h, frame_rate_num, frame_rate_den )
+			encoder( const std::string &filename, size_type w = 320, size_type h = 240, size_type frame_rate_num = 1, size_type frame_rate_den = 30, double frame_aspect_ratio = 4.0 / 3.0 )
+				: base( w, h, frame_rate_num, frame_rate_den, frame_aspect_ratio )
 			{
 				if( !open( filename ) )
 				{
