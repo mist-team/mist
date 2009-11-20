@@ -89,7 +89,7 @@ template<>          struct is_integer< signed long >   { _MIST_CONST( bool, valu
 template<>          struct is_integer< bool >          { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_integer< char >          { _MIST_CONST( bool, value, true  ); };
 
-#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) || defined( __ICC ) )
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __GNUC__ ) || defined( __APPLE__ ) || defined( __ICC ) )
 template<>          struct is_integer< size_t >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_integer< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
 #endif
@@ -110,7 +110,7 @@ template<>          struct is_signed< float >         { _MIST_CONST( bool, value
 template<>          struct is_signed< double >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_signed< long double >   { _MIST_CONST( bool, value, true  ); };
 
-#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) || defined( __ICC ) )
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __GNUC__ ) || defined( __APPLE__ ) || defined( __ICC ) )
 template<>          struct is_signed< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
 #endif
 
@@ -137,7 +137,7 @@ template<>          struct is_arithmetic< float >         { _MIST_CONST( bool, v
 template<>          struct is_arithmetic< double >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_arithmetic< long double >   { _MIST_CONST( bool, value, true  ); };
 
-#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) || defined( __ICC ) )
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __GNUC__ ) || defined( __APPLE__ ) || defined( __ICC ) )
 template<>          struct is_arithmetic< size_t >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_arithmetic< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
 #endif
@@ -164,7 +164,7 @@ template<>          struct is_builtin< float >         { _MIST_CONST( bool, valu
 template<>          struct is_builtin< double >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_builtin< long double >   { _MIST_CONST( bool, value, true  ); };
 
-#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) || defined( __ICC ) )
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __GNUC__ ) || defined( __APPLE__ ) || defined( __ICC ) )
 template<>          struct is_builtin< size_t >        { _MIST_CONST( bool, value, true  ); };
 template<>          struct is_builtin< ptrdiff_t >     { _MIST_CONST( bool, value, true  ); };
 #endif
