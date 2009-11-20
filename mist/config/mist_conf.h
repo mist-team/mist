@@ -110,7 +110,7 @@ _MIST_BEGIN
 
 
 
-// Microsoft Visual C++ 6.0 では，static const を見サポートのための enum による代用
+// Microsoft Visual C++ 6.0 では，static const を未サポートのため，enum で代用する
 #if defined( __MIST_MSVC__ ) && __MIST_MSVC__ <= 6
 	#define _MIST_CONST( type, name, value ) enum{ name = value }
 #else
