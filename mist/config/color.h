@@ -2828,7 +2828,7 @@ __DEFINE_COLOR_TYPE_TRAIT__( is_integer, signed long )
 __DEFINE_COLOR_TYPE_TRAIT__( is_integer, bool )
 __DEFINE_COLOR_TYPE_TRAIT__( is_integer, char )
 
-#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) || defined( __ICC ) )
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __GNUC__ ) || defined( __APPLE__ ) || defined( __ICC ) )
 __DEFINE_COLOR_TYPE_TRAIT__( is_integer, size_t )
 __DEFINE_COLOR_TYPE_TRAIT__( is_integer, ptrdiff_t )
 #endif
@@ -2855,7 +2855,7 @@ __DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, float )
 __DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, double )
 __DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, long double )
 
-#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __APPLE__ ) || defined( __ICC ) )
+#if defined( __MIST64__ ) && __MIST64__ != 0 && !( defined( __GNUC__ ) || defined( __APPLE__ ) || defined( __ICC ) )
 __DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, size_t )
 __DEFINE_COLOR_TYPE_TRAIT__( is_arithmetic, ptrdiff_t )
 #endif
