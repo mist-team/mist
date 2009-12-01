@@ -70,7 +70,6 @@ _MIST_BEGIN
 //!  @{
 
 
-
 /// @brief Cannyのエッジ検出フィルタ
 //! 
 //! @attention 入力と出力は，同じオブジェクトでも正しく動作する
@@ -80,15 +79,20 @@ _MIST_BEGIN
 //! @param[out] out           … 出力画像
 //! @param[in]  lower         … ヒステリシスしきい値処理の下限
 //! @param[in]  upper         … ヒステリシスしきい値処理の上限
-//! @param[in]  useL2gradient … L2のグラディエントを計算するかどうか
-//! @param[in]  thread_num    … 使用するスレッド数
+//! @param[in]  useL2gradient … L2のグラディエントを計算するかどうか（デフォルトはfalse）
+//! @param[in]  oval          … エッジ画素に代入する値（デフォルトは255）
 //! 
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, double lower, double upper, bool useL2gradient = false, typename array2< T1, Allocator1 >::size_type thread_num = 0 )
+inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, double lower, double upper, bool useL2gradient = false, const typename array2< T2, Allocator2 >::value_type &oval = 255 )
 {
+	if( in.empty( ) )
+	{
+		return( false );
+	}
+
 	// 値が入れ替わっている場合への対処
 	if( lower > upper )
 	{
@@ -99,9 +103,7 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 
 	typedef array2< double > image_type;
 
-	image_type tmp( in ), gx, gy;
-
-	mist::array2< double > k1( 3, 3 ), k2( 3, 3 );
+	image_type tmp( in ), k1( 3, 3 ), k2( 3, 3 ), gx, gy;
 
 	k1( 0, 0 ) = -1; k1( 1, 0 ) =  0; k1( 2, 0 ) =  1;
 	k1( 0, 1 ) = -2; k1( 1, 1 ) =  0; k1( 2, 1 ) =  2;
@@ -128,10 +130,6 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 			tmp[ i ] = std::abs( gx[ i ] ) + std::abs( gy[ i ] );
 		}
 	}
-
-	typedef mist::vector2< size_t > vector_type;
-	typedef std::list< vector_type > point_list_type;
-	point_list_type point_list;
 
 	out.resize( in.width( ), in.height( ) );
 	out.reso( in.reso1( ), in.reso2( ) );
@@ -160,12 +158,11 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 					{
 						if( val > upper )
 						{
-							out( i, j ) = 255;
+							out( i, j ) = 2;
 						}
 						else
 						{
-							point_list.push_back( vector_type( i, j ) );
-							out( i, j ) = 0;
+							out( i, j ) = 1;
 						}
 					}
 				}
@@ -177,12 +174,11 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 					{
 						if( val > upper )
 						{
-							out( i, j ) = 255;
+							out( i, j ) = 2;
 						}
 						else
 						{
-							point_list.push_back( vector_type( i, j ) );
-							out( i, j ) = 0;
+							out( i, j ) = 1;
 						}
 					}
 				}
@@ -195,12 +191,11 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 						{
 							if( val > upper )
 							{
-								out( i, j ) = 255;
+								out( i, j ) = 2;
 							}
 							else
 							{
-								point_list.push_back( vector_type( i, j ) );
-								out( i, j ) = 0;
+								out( i, j ) = 1;
 							}
 						}
 					}
@@ -211,12 +206,11 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 						{
 							if( val > upper )
 							{
-								out( i, j ) = 255;
+								out( i, j ) = 2;
 							}
 							else
 							{
-								point_list.push_back( vector_type( i, j ) );
-								out( i, j ) = 0;
+								out( i, j ) = 1;
 							}
 						}
 					}
@@ -225,30 +219,79 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 		}
 	}
 
-	bool flag = true;
-	while( flag )
+	typedef mist::vector2< size_t > vector_type;
+	typedef std::list< vector_type > point_list_type;
+	point_list_type point_list;
+
+	for( size_t j = 1 ; j < tmp.height( ) - 1 ; j++ )
 	{
-		flag = false;
-
-		point_list_type::iterator ite = point_list.begin( );
-		for( ; ite != point_list.end( ) ; )
+		for( size_t i = 1 ; i < tmp.width( ) - 1 ; i++ )
 		{
-			size_t i = ite->x;
-			size_t j = ite->y;
-
-			if( out( i - 1, j - 1 ) == 255 || out( i, j - 1 ) == 255 || out( i + 1, j - 1 ) == 255 || 
-				out( i - 1, j     ) == 255                            || out( i + 1, j     ) == 255 || 
-				out( i - 1, j + 1 ) == 255 || out( i, j + 1 ) == 255 || out( i + 1, j + 1 ) == 255 )
+			if( out( i, j ) == 1 )
 			{
-				flag = true;
-				out( i, j ) = 255;
-				ite = point_list.erase( ite );
-			}
-			else
-			{
-				++ite;
+				if( out( i - 1, j - 1 ) == 2 || out( i, j - 1 ) == 2 || out( i + 1, j - 1 ) == 2 || 
+					out( i - 1, j     ) == 2                         || out( i + 1, j     ) == 2 || 
+					out( i - 1, j + 1 ) == 2 || out( i, j + 1 ) == 2 || out( i + 1, j + 1 ) == 2 )
+				{
+					out( i, j ) = 2;
+					point_list.push_back( vector_type( i, j ) );
+				}
 			}
 		}
+	}
+
+	while( !point_list.empty( ) )
+	{
+		vector_type v = point_list.front( );
+		point_list.pop_front( );
+		size_t i = v.x;
+		size_t j = v.y;
+
+		if( out( i - 1, j - 1 ) == 1 )
+		{
+			out( i - 1, j - 1 ) = 2;
+			point_list.push_back( vector_type( i - 1, j - 1 ) );
+		}
+		if( out( i, j - 1 ) == 1 )
+		{
+			out( i, j - 1 ) = 2;
+			point_list.push_back( vector_type( i, j - 1 ) );
+		}
+		if( out( i + 1, j - 1 ) == 1 )
+		{
+			out( i + 1, j - 1 ) = 2;
+			point_list.push_back( vector_type( i + 1, j - 1 ) );
+		}
+		if( out( i - 1, j ) == 1 )
+		{
+			out( i - 1, j ) = 2;
+			point_list.push_back( vector_type( i - 1, j ) );
+		}
+		if( out( i + 1, j ) == 1 )
+		{
+			out( i + 1, j ) = 2;
+			point_list.push_back( vector_type( i + 1, j ) );
+		}
+		if( out( i - 1, j + 1 ) == 1 )
+		{
+			out( i - 1, j + 1 ) = 2;
+			point_list.push_back( vector_type( i - 1, j + 1 ) );
+		}
+		if( out( i, j + 1 ) == 1 )
+		{
+			out( i, j + 1 ) = 2;
+			point_list.push_back( vector_type( i, j + 1 ) );
+		}
+		if( out( i + 1, j + 1 ) == 1 )
+		{
+			out( i + 1, j + 1 ) = 2;
+			point_list.push_back( vector_type( i + 1, j + 1 ) );
+		}
+	}
+
+	for( size_t i = 0 ; i < out.size( ) ; i++ )
+	{
+		out[ i ] = out[ i ] == 2 ? oval : 0;
 	}
 
 	return( true );
@@ -257,7 +300,7 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 
 
 /// @}
-//  最頻値フィルタグループの終わり
+//  エッジ検出フィルタグループの終わり
 
 
 // mist名前空間の終わり
