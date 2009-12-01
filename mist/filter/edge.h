@@ -43,6 +43,9 @@
 #include "../limits.h"
 #endif
 
+#ifndef __INCLUDE_MIST_VECTOR__
+#include "../vector.h"
+#endif
 
 #ifndef __INCLUDE_MIST_THREAD__
 #include "../thread.h"
@@ -219,7 +222,7 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 		}
 	}
 
-	typedef mist::vector2< size_t > vector_type;
+	typedef vector2< size_t > vector_type;
 	typedef std::list< vector_type > point_list_type;
 	point_list_type point_list;
 
