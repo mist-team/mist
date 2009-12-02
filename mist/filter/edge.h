@@ -39,12 +39,20 @@
 #include "../mist.h"
 #endif
 
+#ifndef __INCLUDE_MIST_VECTOR__
+#include "../vector.h"
+#endif
+
 #ifndef __INCLUDE_MIST_LIMITS__
 #include "../limits.h"
 #endif
 
 #ifndef __INCLUDE_MIST_VECTOR__
 #include "../vector.h"
+#endif
+
+#ifndef __INCLUDE_CONVERTER__
+#include "../converter.h"
 #endif
 
 #ifndef __INCLUDE_MIST_THREAD__
@@ -83,14 +91,17 @@ _MIST_BEGIN
 //! @param[in]  lower         … ヒステリシスしきい値処理の下限
 //! @param[in]  upper         … ヒステリシスしきい値処理の上限
 //! @param[in]  useL2gradient … L2のグラディエントを計算するかどうか（デフォルトはfalse）
-//! @param[in]  oval          … エッジ画素に代入する値（デフォルトは255）
+//! @param[in]  fgval         … エッジ画素（全景）に代入する値（デフォルトは255）
+//! @param[in]  bgval         … 背景画素に代入する値（デフォルトは0）
 //! 
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, double lower, double upper, bool useL2gradient = false, const typename array2< T2, Allocator2 >::value_type &oval = 255 )
+inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, double lower, double upper, bool useL2gradient = false, const typename array2< T2, Allocator2 >::value_type &fgval = typename array2< T2, Allocator2 >::value_type( 255 ), const typename array2< T2, Allocator2 >::value_type &bgval = typename array2< T2, Allocator2 >::value_type( 0 ) )
 {
+	typedef typename array2< T1, Allocator1 >::size_type       size_type;
+	typedef typename array2< T1, Allocator1 >::difference_type difference_type;
 	if( in.empty( ) )
 	{
 		return( false );
@@ -105,8 +116,11 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 	}
 
 	typedef array2< double > image_type;
+	typedef array2< unsigned char > mask_type;
 
-	image_type tmp( in ), k1( 3, 3 ), k2( 3, 3 ), gx, gy;
+	image_type tmp, k1( 3, 3 ), k2( 3, 3 ), gx, gy;
+
+	convert( in, tmp );
 
 	k1( 0, 0 ) = -1; k1( 1, 0 ) =  0; k1( 2, 0 ) =  1;
 	k1( 0, 1 ) = -2; k1( 1, 1 ) =  0; k1( 2, 1 ) =  2;
@@ -121,26 +135,24 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 
 	if( useL2gradient )
 	{
-		for( size_t i = 0 ; i < tmp.size( ) ; i++ )
+		for( size_type i = 0 ; i < tmp.size( ) ; i++ )
 		{
 			tmp[ i ] = std::sqrt( gx[ i ] * gx[ i ] + gy[ i ] * gy[ i ] );
 		}
 	}
 	else
 	{
-		for( size_t i = 0 ; i < tmp.size( ) ; i++ )
+		for( size_type i = 0 ; i < tmp.size( ) ; i++ )
 		{
 			tmp[ i ] = std::abs( gx[ i ] ) + std::abs( gy[ i ] );
 		}
 	}
 
-	out.resize( in.width( ), in.height( ) );
-	out.reso( in.reso1( ), in.reso2( ) );
-	out.fill( 0 );
+	mask_type mask( in.width( ), in.height( ) );
 
-	for( size_t j = 1 ; j < tmp.height( ) - 1 ; j++ )
+	for( size_type j = 1 ; j < tmp.height( ) - 1 ; j++ )
 	{
-		for( size_t i = 1 ; i < tmp.width( ) - 1 ; i++ )
+		for( size_type i = 1 ; i < tmp.width( ) - 1 ; i++ )
 		{
 			double dx = gx( i, j );
 			double dy = gy( i, j );
@@ -161,11 +173,11 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 					{
 						if( val > upper )
 						{
-							out( i, j ) = 2;
+							mask( i, j ) = 2;
 						}
 						else
 						{
-							out( i, j ) = 1;
+							mask( i, j ) = 1;
 						}
 					}
 				}
@@ -177,11 +189,11 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 					{
 						if( val > upper )
 						{
-							out( i, j ) = 2;
+							mask( i, j ) = 2;
 						}
 						else
 						{
-							out( i, j ) = 1;
+							mask( i, j ) = 1;
 						}
 					}
 				}
@@ -194,11 +206,11 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 						{
 							if( val > upper )
 							{
-								out( i, j ) = 2;
+								mask( i, j ) = 2;
 							}
 							else
 							{
-								out( i, j ) = 1;
+								mask( i, j ) = 1;
 							}
 						}
 					}
@@ -209,11 +221,11 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 						{
 							if( val > upper )
 							{
-								out( i, j ) = 2;
+								mask( i, j ) = 2;
 							}
 							else
 							{
-								out( i, j ) = 1;
+								mask( i, j ) = 1;
 							}
 						}
 					}
@@ -222,21 +234,21 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 		}
 	}
 
-	typedef vector2< size_t > vector_type;
+	typedef vector2< size_type > vector_type;
 	typedef std::list< vector_type > point_list_type;
 	point_list_type point_list;
 
-	for( size_t j = 1 ; j < tmp.height( ) - 1 ; j++ )
+	for( size_type j = 1 ; j < tmp.height( ) - 1 ; j++ )
 	{
-		for( size_t i = 1 ; i < tmp.width( ) - 1 ; i++ )
+		for( size_type i = 1 ; i < tmp.width( ) - 1 ; i++ )
 		{
-			if( out( i, j ) == 1 )
+			if( mask( i, j ) == 1 )
 			{
-				if( out( i - 1, j - 1 ) == 2 || out( i, j - 1 ) == 2 || out( i + 1, j - 1 ) == 2 || 
-					out( i - 1, j     ) == 2                         || out( i + 1, j     ) == 2 || 
-					out( i - 1, j + 1 ) == 2 || out( i, j + 1 ) == 2 || out( i + 1, j + 1 ) == 2 )
+				if( mask( i - 1, j - 1 ) == 2 || mask( i, j - 1 ) == 2 || mask( i + 1, j - 1 ) == 2 || 
+					mask( i - 1, j     ) == 2                         || mask( i + 1, j     ) == 2 || 
+					mask( i - 1, j + 1 ) == 2 || mask( i, j + 1 ) == 2 || mask( i + 1, j + 1 ) == 2 )
 				{
-					out( i, j ) = 2;
+					mask( i, j ) = 2;
 					point_list.push_back( vector_type( i, j ) );
 				}
 			}
@@ -247,54 +259,57 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 	{
 		vector_type v = point_list.front( );
 		point_list.pop_front( );
-		size_t i = v.x;
-		size_t j = v.y;
+		size_type i = v.x;
+		size_type j = v.y;
 
-		if( out( i - 1, j - 1 ) == 1 )
+		if( mask( i - 1, j - 1 ) == 1 )
 		{
-			out( i - 1, j - 1 ) = 2;
+			mask( i - 1, j - 1 ) = 2;
 			point_list.push_back( vector_type( i - 1, j - 1 ) );
 		}
-		if( out( i, j - 1 ) == 1 )
+		if( mask( i, j - 1 ) == 1 )
 		{
-			out( i, j - 1 ) = 2;
+			mask( i, j - 1 ) = 2;
 			point_list.push_back( vector_type( i, j - 1 ) );
 		}
-		if( out( i + 1, j - 1 ) == 1 )
+		if( mask( i + 1, j - 1 ) == 1 )
 		{
-			out( i + 1, j - 1 ) = 2;
+			mask( i + 1, j - 1 ) = 2;
 			point_list.push_back( vector_type( i + 1, j - 1 ) );
 		}
-		if( out( i - 1, j ) == 1 )
+		if( mask( i - 1, j ) == 1 )
 		{
-			out( i - 1, j ) = 2;
+			mask( i - 1, j ) = 2;
 			point_list.push_back( vector_type( i - 1, j ) );
 		}
-		if( out( i + 1, j ) == 1 )
+		if( mask( i + 1, j ) == 1 )
 		{
-			out( i + 1, j ) = 2;
+			mask( i + 1, j ) = 2;
 			point_list.push_back( vector_type( i + 1, j ) );
 		}
-		if( out( i - 1, j + 1 ) == 1 )
+		if( mask( i - 1, j + 1 ) == 1 )
 		{
-			out( i - 1, j + 1 ) = 2;
+			mask( i - 1, j + 1 ) = 2;
 			point_list.push_back( vector_type( i - 1, j + 1 ) );
 		}
-		if( out( i, j + 1 ) == 1 )
+		if( mask( i, j + 1 ) == 1 )
 		{
-			out( i, j + 1 ) = 2;
+			mask( i, j + 1 ) = 2;
 			point_list.push_back( vector_type( i, j + 1 ) );
 		}
-		if( out( i + 1, j + 1 ) == 1 )
+		if( mask( i + 1, j + 1 ) == 1 )
 		{
-			out( i + 1, j + 1 ) = 2;
+			mask( i + 1, j + 1 ) = 2;
 			point_list.push_back( vector_type( i + 1, j + 1 ) );
 		}
 	}
 
+	out.resize( in.width( ), in.height( ) );
+	out.reso( in.reso1( ), in.reso2( ) );
+
 	for( size_t i = 0 ; i < out.size( ) ; i++ )
 	{
-		out[ i ] = out[ i ] == 2 ? oval : 0;
+		out[ i ] = mask[ i ] == 2 ? fgval : bgval;
 	}
 
 	return( true );
