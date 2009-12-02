@@ -135,14 +135,20 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 
 	if( useL2gradient )
 	{
-		for( size_type i = 0 ; i < tmp.size( ) ; i++ )
+#ifdef _OPENMP
+		#pragma omp parallel for
+#endif
+		for( int i = 0 ; i < static_cast< int >( tmp.size( ) ) ; i++ )
 		{
 			tmp[ i ] = std::sqrt( gx[ i ] * gx[ i ] + gy[ i ] * gy[ i ] );
 		}
 	}
 	else
 	{
-		for( size_type i = 0 ; i < tmp.size( ) ; i++ )
+#ifdef _OPENMP
+		#pragma omp parallel for
+#endif
+		for( int i = 0 ; i < static_cast< int >( tmp.size( ) ) ; i++ )
 		{
 			tmp[ i ] = std::abs( gx[ i ] ) + std::abs( gy[ i ] );
 		}
@@ -150,7 +156,10 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 
 	mask_type mask( in.width( ), in.height( ) );
 
-	for( size_type j = 1 ; j < tmp.height( ) - 1 ; j++ )
+#ifdef _OPENMP
+	#pragma omp parallel for schedule( guided )
+#endif
+	for( int j = 1 ; j < static_cast< int >( tmp.height( ) - 1 ) ; j++ )
 	{
 		for( size_type i = 1 ; i < tmp.width( ) - 1 ; i++ )
 		{
@@ -245,7 +254,7 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 			if( mask( i, j ) == 1 )
 			{
 				if( mask( i - 1, j - 1 ) == 2 || mask( i, j - 1 ) == 2 || mask( i + 1, j - 1 ) == 2 || 
-					mask( i - 1, j     ) == 2                         || mask( i + 1, j     ) == 2 || 
+					mask( i - 1, j     ) == 2                          || mask( i + 1, j     ) == 2 || 
 					mask( i - 1, j + 1 ) == 2 || mask( i, j + 1 ) == 2 || mask( i + 1, j + 1 ) == 2 )
 				{
 					mask( i, j ) = 2;
@@ -307,7 +316,10 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 	out.resize( in.width( ), in.height( ) );
 	out.reso( in.reso1( ), in.reso2( ) );
 
-	for( size_t i = 0 ; i < out.size( ) ; i++ )
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
+	for( int i = 0 ; i < static_cast< int >( out.size( ) ) ; i++ )
 	{
 		out[ i ] = mask[ i ] == 2 ? fgval : bgval;
 	}
