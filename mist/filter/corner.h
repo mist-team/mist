@@ -124,21 +124,24 @@ namespace __corner_utility__
 //! @param[in]  fgval        … エッジ画素（前景）に代入する値（デフォルトは255）
 //! @param[in]  bgval        … 背景画素に代入する値（デフォルトは0）
 //! 
-//! @retval true  … フィルタリングに成功
-//! @retval false … 入力画像が空の場合
+//! @return 検出したコーナー数
 //! 
-template < class T1, class T2, class Allocator1, class Allocator2 >
-inline bool harris( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, typename array2< T2, Allocator2 >::size_type max_corners, double min_distance, double kappa = 0.04, typename array2< T2, Allocator2 >::size_type window_size = 3, const typename array2< T2, Allocator2 >::value_type &fgval = typename array2< T2, Allocator2 >::value_type( 255 ), const typename array2< T2, Allocator2 >::value_type &bgval = typename array2< T2, Allocator2 >::value_type( 0 ) )
+template < class T, class Allocator, template < typename, typename > class LIST, class TT, class AAllocator >
+typename array2< T, Allocator >::difference_type harris( const array2< T, Allocator > &in, LIST< vector2< TT >, AAllocator >&out, typename array2< T, Allocator >::size_type max_corners,
+														 double min_distance, double kappa = 0.04, typename array2< T, Allocator >::size_type window_size = 3,
+														 const typename array2< T, Allocator >::value_type &fgval = typename array2< T, Allocator >::value_type( 255 ),
+														 const typename array2< T, Allocator >::value_type &bgval = typename array2< T, Allocator >::value_type( 0 ) )
 {
-	typedef typename array2< T1, Allocator1 >::size_type       size_type;
-	typedef typename array2< T1, Allocator1 >::difference_type difference_type;
+	typedef typename array2< T, Allocator >::size_type       size_type;
+	typedef typename array2< T, Allocator >::difference_type difference_type;
 
 	if( in.empty( ) )
 	{
-		return( false );
+		return( -1 );
 	}
 
 	typedef array2< double > image_type;
+	typedef vector2< TT > ovector_type;
 	typedef rgb< double > vector_type;
 	typedef array2< vector_type > vector_image_type;
 	typedef array2< unsigned char > mask_type;
@@ -163,9 +166,9 @@ inline bool harris( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 >
 #ifdef _OPENMP
 	#pragma omp parallel for schedule( guided )
 #endif
-	for( int j = 1 ; j < static_cast< int >( tmp.height( ) - 1 ) ; j++ )
+	for( int j = 0 ; j < static_cast< int >( tmp.height( ) ) ; j++ )
 	{
-		for( size_type i = 1 ; i < tmp.width( ) - 1 ; i++ )
+		for( size_type i = 0 ; i < tmp.width( ) ; i++ )
 		{
 			double dx = gx( i, j );
 			double dy = gy( i, j );
@@ -222,22 +225,17 @@ inline bool harris( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 >
 		if( flag )
 		{
 			out_list.push_back( v );
-			mask( v.x, v.y ) = 1;
 		}
 	}
 
-	out.resize( in.width( ), in.height( ) );
-	out.reso( in.reso1( ), in.reso2( ) );
+	out.clear( );
 
-#ifdef _OPENMP
-	#pragma omp parallel for
-#endif
-	for( int i = 0 ; i < static_cast< int >( out.size( ) ) ; i++ )
+	for( size_type i = 0 ; i < out_list.size( ) ; i++ )
 	{
-		out[ i ] = mask[ i ] == 1 ? fgval : bgval;
+		out.push_back( ovector_type( out_list[ i ].x, out_list[ i ].y ) );
 	}
 
-	return( true );
+	return( out.size( ) );
 }
 
 
