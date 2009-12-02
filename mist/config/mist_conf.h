@@ -697,6 +697,10 @@ struct __mist_progress_callback__
 *   - @ref mist::cubic								"3次補間（sinc関数の3次近似を利用した補間）"
 *   - @ref mist::BSpline							"3次のBスプライン補間"
 *   - @ref mist::sinc								"sinc関数補間（全画素を畳み込むので計算コスト大）"
+* - @ref edge_group									"エッジ検出"
+*   - @ref mist::canny								"Cannyエッジ検出器"
+* - @ref corner_group								"コーナー検出"
+*   - @ref mist::harris								"Harrisコーナー検出器"
 * - カラー画像に対する処理
 *   - @ref interlace_group							"インターレス除去"
 * - @ref threshold_group							"閾値選択"
