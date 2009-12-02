@@ -121,7 +121,7 @@ namespace __corner_utility__
 //! @param[in]  min_distance … コーナー間の距離の最小値
 //! @param[in]  kappa        … コーナーを検出する際の条件に使用する係数0.04～0.15（デフォルトは0.04）
 //! @param[in]  window_size  … コーナー検出を行う行列を求める際の窓サイズ（デフォルトは3）
-//! @param[in]  fgval        … エッジ画素（全景）に代入する値（デフォルトは255）
+//! @param[in]  fgval        … エッジ画素（前景）に代入する値（デフォルトは255）
 //! @param[in]  bgval        … 背景画素に代入する値（デフォルトは0）
 //! 
 //! @retval true  … フィルタリングに成功
@@ -163,9 +163,9 @@ inline bool harris( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 >
 #ifdef _OPENMP
 	#pragma omp parallel for schedule( guided )
 #endif
-	for( int j = 0 ; j < static_cast< int >( tmp.height( ) ) ; j++ )
+	for( int j = 1 ; j < static_cast< int >( tmp.height( ) - 1 ) ; j++ )
 	{
-		for( size_type i = 0 ; i < tmp.width( ) ; i++ )
+		for( size_type i = 1 ; i < tmp.width( ) - 1 ; i++ )
 		{
 			double dx = gx( i, j );
 			double dy = gy( i, j );
@@ -174,8 +174,12 @@ inline bool harris( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 >
 		}
 	}
 
+#if 0
 	window_size /= 2;
 	gaussian_filter( work, wwork, window_size * 0.5 );
+#else
+	average_filter( work, wwork, window_size, window_size );
+#endif
 
 	mask_type mask( in.width( ), in.height( ) );
 
@@ -183,9 +187,9 @@ inline bool harris( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 >
 	typedef std::vector< point_type > point_list_type;
 	point_list_type point_list, out_list;
 
-	for( size_type j = 0 ; j < wwork.height( ) ; j++ )
+	for( size_type j = 1 ; j < wwork.height( ) - 1 ; j++ )
 	{
-		for( size_type i = 0 ; i < wwork.width( ) ; i++ )
+		for( size_type i = 1 ; i < wwork.width( ) - 1 ; i++ )
 		{
 			const vector_type &v = wwork( i, j );
 			double Mc = v.r * v.g - v.b * v.b - kappa * ( v.r + v.g ) * ( v.r + v.g );

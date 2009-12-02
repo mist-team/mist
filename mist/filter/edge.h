@@ -91,7 +91,7 @@ _MIST_BEGIN
 //! @param[in]  lower         … ヒステリシスしきい値処理の下限
 //! @param[in]  upper         … ヒステリシスしきい値処理の上限
 //! @param[in]  useL2gradient … L2のグラディエントを計算するかどうか（デフォルトはfalse）
-//! @param[in]  fgval         … エッジ画素（全景）に代入する値（デフォルトは255）
+//! @param[in]  fgval         … エッジ画素（前景）に代入する値（デフォルトは255）
 //! @param[in]  bgval         … 背景画素に代入する値（デフォルトは0）
 //! 
 //! @retval true  … フィルタリングに成功
