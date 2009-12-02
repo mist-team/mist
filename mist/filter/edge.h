@@ -84,7 +84,7 @@ _MIST_BEGIN
 /// @brief Cannyのエッジ検出フィルタ
 //! 
 //! @attention 入力と出力は，同じオブジェクトでも正しく動作する
-//! @attention CPU数に0を指定した場合は，使用可能なCPU数を自動的に取得する
+//! @attention OpenMPが有効な場合は自動的に並列計算が実行される
 //! 
 //! @param[in]  in            … 入力画像
 //! @param[out] out           … 出力画像
