@@ -46,6 +46,10 @@
 #include "../config/color.h"
 #endif
 
+#ifndef __INCLUDE_MIST_VECTOR__
+#include "../vector.h"
+#endif
+
 #ifndef __INCLUDE_MIST_TYPE_TRAIT_H__
 #include "../config/type_trait.h"
 #endif
@@ -147,6 +151,40 @@ namespace __linear__
 		static value_type convert_from( const promote_type &pixel )
 		{
 			return( value_type( static_cast< T >( pixel.r ), static_cast< T >( pixel.g ), static_cast< T >( pixel.b ) ) );
+		}
+	};
+
+	template < class T >
+	struct __promote_pixel_converter_< vector2< T > >
+	{
+		typedef vector2< T > value_type;
+		typedef vector2< double > promote_type;
+
+		static promote_type convert_to( const value_type &pixel )
+		{
+			return( promote_type( pixel.x, pixel.y ) );
+		}
+
+		static value_type convert_from( const promote_type &pixel )
+		{
+			return( value_type( static_cast< T >( pixel.x ), static_cast< T >( pixel.y ) ) );
+		}
+	};
+
+	template < class T >
+	struct __promote_pixel_converter_< vector3< T > >
+	{
+		typedef vector3< T > value_type;
+		typedef vector3< double > promote_type;
+
+		static promote_type convert_to( const value_type &pixel )
+		{
+			return( promote_type( pixel.x, pixel.y, pixel.z ) );
+		}
+
+		static value_type convert_from( const promote_type &pixel )
+		{
+			return( value_type( static_cast< T >( pixel.x ), static_cast< T >( pixel.y ), static_cast< T >( pixel.z ) ) );
 		}
 	};
 
