@@ -10,6 +10,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <sstream>
 
 
 // mist名前空間の始まり
@@ -172,8 +173,10 @@ public:
 	/// @brief オプションの一覧を標準出力に表示する
 	void show_help( ) const
 	{
+		std::stringstream sout;
+
 		// ヘッダ部分を出力する
-		std::cout << header_text << std::endl;
+		sout << header_text << std::endl;
 
 		size_t max_len = 0;
 		for( size_t i = 0 ; i < option_list.size( ) ; i++ )
@@ -191,26 +194,26 @@ public:
 			{
 				const arg &a = ite->second;
 
-				std::cout << "-";
-				std::cout << a.name;
+				sout << "-";
+				sout << a.name;
 
 				for( size_t i = a.name.size( ) ; i < max_len + 3 ; i++ )
 				{
-					std::cout << ' ';
+					sout << ' ';
 				}
 
-				std::cout << a.comment;
+				sout << a.comment;
 
 				if( a.has_value )
 				{
-					std::cout << "[" << a.value << "]";
+					sout << "[" << a.value << "]";
 				}
 
 				if( a.found )
 				{
-					std::cout << "*";
+					sout << "*";
 				}
-				std::cout << std::endl;
+				sout << std::endl;
 			}
 			else
 			{
@@ -219,7 +222,10 @@ public:
 		}
 
 		// フッタ部分を出力する
-		std::cout << footer_text << std::endl;
+		sout << footer_text << std::endl;
+
+		puts( sout.str( ).c_str( ) );
+		//std::cout << sout.str( ) << std::endl;
 	}
 
 	/// @brief プログラム引数を解析して，オプションとの対応関係を求める
