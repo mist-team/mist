@@ -45,14 +45,14 @@ _MIST_BEGIN
 
 namespace kmeans
 {
-	/// @brief kmeans clastering algorithm
+	/// @brief kmeans clustering algorithm
 	//! @param[in]     in is input data
-	//! @param[in,out] k is number of claster
+	//! @param[in,out] k is number of cluster
 	//! @param[out]    response is kmeans result
-	//! @param[out]    center is centroid of claster
+	//! @param[out]    center is centroid of cluster
 	//! @param[in]     crt is criteria
 	//! 
-	inline void clastering( 
+	inline void clustering( 
 					const mist::matrix< double > &in, 
 					int &k,
 					mist::array1< int > &response,
