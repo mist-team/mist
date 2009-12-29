@@ -45,6 +45,30 @@ _MIST_BEGIN
 
 namespace kmeans
 {
+  namespace detail
+  {
+    double nearestCenter( const mist::matrix< double > &in, int col, const mist::matrix< double > &center, int n )
+    {
+      double min = 1e12;
+
+      for( int i = 0 ; i < n ; ++i )
+	{
+	  double dist = 0.0;
+	  for( int j = 0 ; j < in.rows() ; ++j )
+	    {
+	      dist += pow( in( j, col ) - center( j, i ), 2.0 );
+	    }
+
+	  if( dist < min )
+	    {
+	      min = dist;
+	    }
+	}
+
+      return min;
+    }
+  }
+
 	/// @brief kmeans clustering algorithm
 	//! @param[in]     in is input data
 	//! @param[in,out] k is number of cluster
@@ -75,7 +99,7 @@ namespace kmeans
 				max( i, 0 ) = std::max( max( i, 0 ), in( i, j ) );
 			}
 		}
-
+		/*
 		// initialize centroid[0-1]
 		mist::uniform::random rnd;
 		for( int i = 0 ; i < k ; ++i )
@@ -85,6 +109,46 @@ namespace kmeans
 				center( j, i ) = min( j, 0 ) + rnd.real3() * ( max( j, 0 ) - min( j, 0 ) );
 			}
 		}
+		*/
+
+		// initialize centroid using kmeans++
+		// kmeans++: David Arthur, Sergei Vassilvitskii, "k-means++: The Advantages of Careful Seeding," Proc. SODA, 2007
+		mist::uniform::random rnd;
+		for( size_t i = 0 ; i < k ; ++i )
+		  {
+		    if( i == 0 )
+		      {
+			for( size_t j = 0 ; j < in.rows() ; ++j )
+			  {
+			    center( j, i ) = min( j, 0 ) + rnd.real3() * ( max( j, 0 ) - min( j, 0 ) );
+			  }
+		      }
+		    else
+		      {
+			double total = 0.0;
+			for( int l = 0 ; l < in.cols() ; ++l )
+			  {
+			    total += detail::nearestCenter( in, l, center, i );
+			  }
+
+			double max_prob = 0.0;
+			int max_idx = 0;
+			for( int l = 0 ; l < in.cols() ; ++l )
+			  {
+			    double prob = detail::nearestCenter( in, l, center, i ) / total;
+			    if( prob > max_prob )
+			      {
+				max_prob = prob;
+				max_idx = l;
+			      }
+			  }
+
+			for( int j = 0 ; j < in.rows() ; ++j )
+			  {
+			    center( j, i ) = in( j, max_idx );
+			  }
+		      }
+		  }
 
 		mist::array1< bool > is_set( k );									
 
@@ -200,6 +264,8 @@ namespace kmeans
 			k = cnt;
 		}
 	}
+
+
 }
 
 
