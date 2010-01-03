@@ -47,14 +47,14 @@ namespace kmeans
 {
   namespace detail
   {
-    double nearestCenter( const mist::matrix< double > &in, int col, const mist::matrix< double > &center, int n )
+    double nearestCenter( const mist::matrix< double > &in, int col, const mist::matrix< double > &center, int n, int &idx )
     {
       double min = 1e12;
 
       for( int i = 0 ; i < n ; ++i )
 	{
 	  double dist = 0.0;
-	  for( int j = 0 ; j < in.rows() ; ++j )
+	  for( int j = 0 ; j < static_cast< int >( in.rows() ) ; ++j )
 	    {
 	      dist += pow( in( j, col ) - center( j, i ), 2.0 );
 	    }
@@ -62,6 +62,7 @@ namespace kmeans
 	  if( dist < min )
 	    {
 	      min = dist;
+	      idx = i;
 	    }
 	}
 
@@ -114,28 +115,30 @@ namespace kmeans
 		// initialize centroid using kmeans++
 		// kmeans++: David Arthur, Sergei Vassilvitskii, "k-means++: The Advantages of Careful Seeding," Proc. SODA, 2007
 		mist::uniform::random rnd;
-		for( size_t i = 0 ; i < k ; ++i )
+		for( int i = 0 ; i < k ; ++i )
 		  {
 		    if( i == 0 )
 		      {
-			for( size_t j = 0 ; j < in.rows() ; ++j )
+			for( int j = 0 ; j < static_cast< int >( in.rows() ) ; ++j )
 			  {
 			    center( j, i ) = min( j, 0 ) + rnd.real3() * ( max( j, 0 ) - min( j, 0 ) );
 			  }
 		      }
 		    else
 		      {
+			/*
 			double total = 0.0;
 			for( int l = 0 ; l < in.cols() ; ++l )
 			  {
 			    total += detail::nearestCenter( in, l, center, i );
 			  }
-
+			*/
 			double max_prob = 0.0;
 			int max_idx = 0;
-			for( int l = 0 ; l < in.cols() ; ++l )
+			for( int l = 0 ; l < static_cast< int >( in.cols() ) ; ++l )
 			  {
-			    double prob = detail::nearestCenter( in, l, center, i ) / total;
+			    int idx;
+			    double prob = detail::nearestCenter( in, l, center, i, idx );// / total;
 			    if( prob > max_prob )
 			      {
 				max_prob = prob;
@@ -143,7 +146,7 @@ namespace kmeans
 			      }
 			  }
 
-			for( int j = 0 ; j < in.rows() ; ++j )
+			for( int j = 0 ; j < static_cast< int >( in.rows() ) ; ++j )
 			  {
 			    center( j, i ) = in( j, max_idx );
 			  }
@@ -160,7 +163,8 @@ namespace kmeans
 			// allocate to centroid
 			for( size_t i = 0 ; i < in.cols() ; ++i )
 			{
-				int minidx = 0;
+			  int minidx = 0;
+			  /*
 				double mindist = 1e12;
 				for( int j = 0 ; j < k ; ++j )
 				{
@@ -176,7 +180,8 @@ namespace kmeans
 						minidx = j;
 					}
 				}
-
+			  */
+			  detail::nearestCenter( in, i, center, center.size(), minidx );
 				//
 				if( response( i ) != minidx )
 				{
