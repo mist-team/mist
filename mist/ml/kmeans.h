@@ -45,30 +45,30 @@ _MIST_BEGIN
 
 namespace kmeans
 {
-  namespace detail
-  {
-    double nearestCenter( const mist::matrix< double > &in, int col, const mist::matrix< double > &center, int n, int &idx )
-    {
-      double min = 1e12;
-
-      for( int i = 0 ; i < n ; ++i )
+	namespace detail
 	{
-	  double dist = 0.0;
-	  for( int j = 0 ; j < static_cast< int >( in.rows() ) ; ++j )
-	    {
-	      dist += pow( in( j, col ) - center( j, i ), 2.0 );
-	    }
+		double nearestCenter( const matrix< double > &in, int col, const matrix< double > &center, int n, int &idx )
+		{
+			double min = 1e12;
 
-	  if( dist < min )
-	    {
-	      min = dist;
-	      idx = i;
-	    }
+			for( int i = 0 ; i < n ; ++i )
+			{
+				double dist = 0.0;
+				for( int j = 0 ; j < static_cast< int >( in.rows() ) ; ++j )
+				{
+					dist += pow( in( j, col ) - center( j, i ), 2.0 );
+				}
+
+				if( dist < min )
+				{
+					min = dist;
+					idx = i;
+				}
+			}
+
+			return min;
+		}
 	}
-
-      return min;
-    }
-  }
 
 	/// @brief kmeans clustering algorithm
 	//! @param[in]     in is input data
@@ -78,18 +78,18 @@ namespace kmeans
 	//! @param[in]     crt is criteria
 	//! 
 	inline void clustering( 
-					const mist::matrix< double > &in, 
-					int &k,
-					mist::array1< int > &response,
-					mist::matrix< double > &center,
-					mist::criteria crt = mist::criteria( mist::criteria::iteration, 0.0, 20 ) )
+		const matrix< double > &in, 
+		int &k,
+		array1< int > &response,
+		matrix< double > &center,
+		criteria crt = criteria( criteria::iteration, 0.0, 20 ) )
 	{
 		response.resize( in.cols() );
 		center.resize( in.rows(), k );
 
 		// calculate value range(min-max)
-		mist::matrix< double > min( in.rows(), 1 );
-		mist::matrix< double > max( in.rows(), 1 );
+		matrix< double > min( in.rows(), 1 );
+		matrix< double > max( in.rows(), 1 );
 		for( size_t i = 0 ; i < in.rows() ; ++i )
 		{
 			min( i, 0 ) =  1e12;
@@ -102,60 +102,60 @@ namespace kmeans
 		}
 		/*
 		// initialize centroid[0-1]
-		mist::uniform::random rnd;
+		uniform::random rnd;
 		for( int i = 0 ; i < k ; ++i )
 		{
-			for( size_t j = 0 ; j < in.rows() ; ++j )
-			{
-				center( j, i ) = min( j, 0 ) + rnd.real3() * ( max( j, 0 ) - min( j, 0 ) );
-			}
+		for( size_t j = 0 ; j < in.rows() ; ++j )
+		{
+		center( j, i ) = min( j, 0 ) + rnd.real3() * ( max( j, 0 ) - min( j, 0 ) );
+		}
 		}
 		*/
 
 		// initialize centroid using kmeans++
 		// kmeans++: David Arthur, Sergei Vassilvitskii, "k-means++: The Advantages of Careful Seeding," Proc. SODA, 2007
-		mist::uniform::random rnd;
+		uniform::random rnd;
 		for( int i = 0 ; i < k ; ++i )
-		  {
-		    if( i == 0 )
-		      {
-			for( int j = 0 ; j < static_cast< int >( in.rows() ) ; ++j )
-			  {
-			    center( j, i ) = min( j, 0 ) + rnd.real3() * ( max( j, 0 ) - min( j, 0 ) );
-			  }
-		      }
-		    else
-		      {
-			/*
-			double total = 0.0;
-			for( int l = 0 ; l < in.cols() ; ++l )
-			  {
-			    total += detail::nearestCenter( in, l, center, i );
-			  }
-			*/
-			double max_prob = 0.0;
-			int max_idx = 0;
-			for( int l = 0 ; l < static_cast< int >( in.cols() ) ; ++l )
-			  {
-			    int idx;
-			    double prob = detail::nearestCenter( in, l, center, i, idx );// / total;
-			    if( prob > max_prob )
-			      {
-				max_prob = prob;
-				max_idx = l;
-			      }
-			  }
+		{
+			if( i == 0 )
+			{
+				for( int j = 0 ; j < static_cast< int >( in.rows() ) ; ++j )
+				{
+					center( j, i ) = min( j, 0 ) + rnd.real3() * ( max( j, 0 ) - min( j, 0 ) );
+				}
+			}
+			else
+			{
+				/*
+				double total = 0.0;
+				for( int l = 0 ; l < in.cols() ; ++l )
+				{
+				total += detail::nearestCenter( in, l, center, i );
+				}
+				*/
+				double max_prob = 0.0;
+				int max_idx = 0;
+				for( int l = 0 ; l < static_cast< int >( in.cols() ) ; ++l )
+				{
+					int idx;
+					double prob = detail::nearestCenter( in, l, center, i, idx );// / total;
+					if( prob > max_prob )
+					{
+						max_prob = prob;
+						max_idx = l;
+					}
+				}
 
-			for( int j = 0 ; j < static_cast< int >( in.rows() ) ; ++j )
-			  {
-			    center( j, i ) = in( j, max_idx );
-			  }
-		      }
-		  }
+				for( int j = 0 ; j < static_cast< int >( in.rows() ) ; ++j )
+				{
+					center( j, i ) = in( j, max_idx );
+				}
+			}
+		}
 
-		mist::array1< bool > is_set( k );									
+		array1< bool > is_set( k );									
 
-		for( int m = 0 ; ( crt.type & mist::criteria::iteration ) ? ( m < crt.max_itr ) : true ; ++m )
+		for( int m = 0 ; ( crt.type & criteria::iteration ) ? ( m < crt.max_itr ) : true ; ++m )
 		{
 			bool is_finish = true;
 			is_set.fill( false );
@@ -163,25 +163,25 @@ namespace kmeans
 			// allocate to centroid
 			for( size_t i = 0 ; i < in.cols() ; ++i )
 			{
-			  int minidx = 0;
-			  /*
+				int minidx = 0;
+				/*
 				double mindist = 1e12;
 				for( int j = 0 ; j < k ; ++j )
 				{
-					double dist = 0;
-					for( size_t l = 0 ; l < in.rows() ; ++l )
-					{	
-						dist += pow( center( l, j ) - in( l, i ), 2.0 );
-					}
-
-					if( dist < mindist )
-					{
-						mindist = dist;
-						minidx = j;
-					}
+				double dist = 0;
+				for( size_t l = 0 ; l < in.rows() ; ++l )
+				{	
+				dist += pow( center( l, j ) - in( l, i ), 2.0 );
 				}
-			  */
-			  detail::nearestCenter( in, i, center, center.size(), minidx );
+
+				if( dist < mindist )
+				{
+				mindist = dist;
+				minidx = j;
+				}
+				}
+				*/
+				detail::nearestCenter( in, i, center, center.size(), minidx );
 				//
 				if( response( i ) != minidx )
 				{
@@ -229,7 +229,7 @@ namespace kmeans
 		}
 
 
-		mist::array1< int > idx_map( k );
+		array1< int > idx_map( k );
 		int cnt = 0;
 		for( size_t i = 0 ; i < is_set.size() ; ++i )
 		{
@@ -246,7 +246,7 @@ namespace kmeans
 		if( k > cnt )
 		{
 			// reduce k
-			mist::matrix< double > tmp = center;
+			matrix< double > tmp = center;
 			center.resize( in.rows(), cnt );
 
 			int c = 0;
@@ -266,11 +266,10 @@ namespace kmeans
 			{
 				response( i ) = idx_map( response( i ) );
 			}
+
 			k = cnt;
 		}
 	}
-
-
 }
 
 
