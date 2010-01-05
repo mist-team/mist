@@ -217,7 +217,7 @@ public:
 			}
 			else
 			{
-				std::cerr << "オプションの解析に失敗しました．" << std::endl;
+				std::cerr << "Failed to parse options." << std::endl;
 			}
 		}
 
@@ -262,14 +262,14 @@ public:
 						}
 						else
 						{
-							std::cerr << "オプション \"" << option << "\" は値を指定する必要があります．" << std::endl;
+							std::cerr << "Option \"" << option << "\" requires values." << std::endl;
 							ret = false;
 						}
 					}
 				}
 				else
 				{
-					std::cerr << "\"" << option << "\" は不明なオプションです．" << std::endl;
+					std::cerr << "\"" << option << "\" is an unknown option." << std::endl;
 					ret = false;
 				}
 			}
