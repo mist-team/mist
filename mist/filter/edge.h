@@ -93,12 +93,13 @@ _MIST_BEGIN
 //! @param[in]  useL2gradient … L2のグラディエントを計算するかどうか（デフォルトはfalse）
 //! @param[in]  fgval         … エッジ画素（前景）に代入する値（デフォルトは255）
 //! @param[in]  bgval         … 背景画素に代入する値（デフォルトは0）
+//! @param[in]  thread_num    … 使用するスレッド数
 //! 
 //! @retval true  … フィルタリングに成功
 //! @retval false … 入力画像が空の場合
 //! 
 template < class T1, class T2, class Allocator1, class Allocator2 >
-inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, double lower, double upper, bool useL2gradient = false, const typename array2< T2, Allocator2 >::value_type &fgval = typename array2< T2, Allocator2 >::value_type( 255 ), const typename array2< T2, Allocator2 >::value_type &bgval = typename array2< T2, Allocator2 >::value_type( 0 ) )
+inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, double lower, double upper, bool useL2gradient = false, const typename array2< T2, Allocator2 >::value_type &fgval = typename array2< T2, Allocator2 >::value_type( 255 ), const typename array2< T2, Allocator2 >::value_type &bgval = typename array2< T2, Allocator2 >::value_type( 0 ), typename array2< T2, Allocator2 >::size_type thread_num = 0 )
 {
 	typedef typename array2< T1, Allocator1 >::size_type       size_type;
 	typedef typename array2< T1, Allocator1 >::difference_type difference_type;
@@ -130,8 +131,8 @@ inline bool canny( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > 
 	k2( 0, 1 ) =  0; k2( 1, 1 ) =  0; k2( 2, 1 ) =  0;
 	k2( 0, 2 ) = +1; k2( 1, 2 ) = +2; k2( 2, 2 ) = +1;
 
-	linear_filter( tmp, gx, k1 );
-	linear_filter( tmp, gy, k2 );
+	linear_filter( tmp, gx, k1, thread_num );
+	linear_filter( tmp, gy, k2, thread_num );
 
 	if( useL2gradient )
 	{
