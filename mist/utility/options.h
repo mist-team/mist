@@ -260,6 +260,11 @@ public:
 							a.value = argv[ i + 1 ];
 							i++;
 						}
+						else if( i + 1 < argc && strlen( argv[ i + 1 ] ) > 1 && argv[ i + 1 ][ 0 ] == '-' && '0' <= argv[ i + 1 ][ 1 ] && argv[ i + 1 ][ 1 ] <= '9' )
+						{
+							a.value = argv[ i + 1 ];
+							i++;
+						}
 						else
 						{
 							std::cerr << "Option \"" << option << "\" requires values." << std::endl;
