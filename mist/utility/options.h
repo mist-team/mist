@@ -239,7 +239,7 @@ public:
 		{
 			std::string option = argv[ i ];
 
-			if( option[ 0 ] != '-' && option[ 0 ] != '/' )
+			if( option[ 0 ] != '-' )
 			{
 				base::push_back( option );
 			}
@@ -255,7 +255,7 @@ public:
 
 					if( a.has_value )
 					{
-						if( i + 1 < argc && ( argv[ i + 1 ][ 0 ] != '-' && argv[ i + 1 ][ 0 ] != '/' ) )
+						if( i + 1 < argc && argv[ i + 1 ][ 0 ] != '-' )
 						{
 							a.value = argv[ i + 1 ];
 							i++;
