@@ -58,7 +58,6 @@ namespace kmeans
 				{
 					dist += pow( in( j, col ) - center( j, i ), 2.0 );
 				}
-
 				if( dist < min )
 				{
 					min = dist;
