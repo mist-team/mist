@@ -118,7 +118,7 @@ namespace knn
 	  mes( i ).distance = dist;
 	}
 
-      // sort by descent order
+      // sort by ascending order
       std::sort( mes.begin(), mes.end() );
 
       for( int i = 0 ; i < k ; ++i )
