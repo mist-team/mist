@@ -484,10 +484,10 @@ namespace __mean__
 		static const typename T::template rebind< double >::other mean___( const array< T, Allocator > &in,
 												typename array< T, Allocator >::size_type i1,
 												typename array< T, Allocator >::size_type i2,
-												typename array< T, Allocator >::size_type j1,
-												typename array< T, Allocator >::size_type j2,
-												typename array< T, Allocator >::size_type k1,
-												typename array< T, Allocator >::size_type k2,
+												typename array< T, Allocator >::size_type /* j1 */,
+												typename array< T, Allocator >::size_type /* j2 */,
+												typename array< T, Allocator >::size_type /* k1 */,
+												typename array< T, Allocator >::size_type /* k2 */,
 												double xs,
 												double xe,
 												double ys,
@@ -576,8 +576,8 @@ namespace __mean__
 												typename array2< T, Allocator >::size_type i2,
 												typename array2< T, Allocator >::size_type j1,
 												typename array2< T, Allocator >::size_type j2,
-												typename array2< T, Allocator >::size_type k1,
-												typename array2< T, Allocator >::size_type k2,
+												typename array2< T, Allocator >::size_type /* k1 */,
+												typename array2< T, Allocator >::size_type /* k2 */,
 												double xs,
 												double xe,
 												double ys,
@@ -893,7 +893,7 @@ namespace __mean__
 	void interpolate( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out,
 						typename array2< T1, Allocator1 >::size_type thread_idx, typename array2< T1, Allocator1 >::size_type thread_numx,
 						typename array2< T1, Allocator1 >::size_type thread_idy, typename array2< T1, Allocator1 >::size_type thread_numy,
-						typename array2< T1, Allocator1 >::size_type thread_idz, typename array2< T1, Allocator1 >::size_type thread_numz )
+						typename array2< T1, Allocator1 >::size_type /* thread_idz */, typename array2< T1, Allocator1 >::size_type /* thread_numz */ )
 	{
 		typedef typename array2< T1, Allocator1 >::size_type  size_type;
 		typedef typename array2< T1, Allocator1 >::value_type value_type;
@@ -1064,11 +1064,11 @@ namespace __linear__
 		static const typename T::template rebind< double >::other interpolate( const array< T, Allocator > &in,
 												typename array< T, Allocator >::size_type i1,
 												typename array< T, Allocator >::size_type i2,
-												typename array< T, Allocator >::size_type j1,
-												typename array< T, Allocator >::size_type j2,
-												typename array< T, Allocator >::size_type k1,
-												typename array< T, Allocator >::size_type k2,
-												double x, double y, double z )
+												typename array< T, Allocator >::size_type /* j1 */,
+												typename array< T, Allocator >::size_type /* j2 */,
+												typename array< T, Allocator >::size_type /* k1 */,
+												typename array< T, Allocator >::size_type /* k2 */,
+												double x, double /* y */, double /* z */ )
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -1093,9 +1093,9 @@ namespace __linear__
 												typename array2< T, Allocator >::size_type i2,
 												typename array2< T, Allocator >::size_type j1,
 												typename array2< T, Allocator >::size_type j2,
-												typename array2< T, Allocator >::size_type k1,
-												typename array2< T, Allocator >::size_type k2,
-												double x, double y, double z )
+												typename array2< T, Allocator >::size_type /* k1 */,
+												typename array2< T, Allocator >::size_type /* k2 */,
+												double x, double y, double /* z */ )
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -1212,9 +1212,9 @@ namespace __cubic__
 		template < class T, class Allocator >
 		static double interpolate( const array< T, Allocator > &in,
 								typename array< T, Allocator >::size_type i[4],
-								typename array< T, Allocator >::size_type j[4],
-								typename array< T, Allocator >::size_type k[4],
-								double x, double y, double z )
+								typename array< T, Allocator >::size_type /* j */[4],
+								typename array< T, Allocator >::size_type /* k */[4],
+								double x, double /* y */, double /* z */ )
 		{
 			typedef typename array< T, Allocator >::value_type value_type;
 
@@ -1236,8 +1236,8 @@ namespace __cubic__
 		static double interpolate( const array2< T, Allocator > &in,
 								typename array2< T, Allocator >::size_type i[4],
 								typename array2< T, Allocator >::size_type j[4],
-								typename array2< T, Allocator >::size_type k[4],
-								double x, double y, double z )
+								typename array2< T, Allocator >::size_type /* k */[4],
+								double x, double y, double /* z */ )
 		{
 			typedef typename array2< T, Allocator >::value_type value_type;
 
@@ -1317,9 +1317,9 @@ namespace __cubic__
 		template < class T, class Allocator >
 		static const typename T::template rebind< double >::other interpolate( const array< T, Allocator > &in,
 																			   typename array< T, Allocator >::size_type i[4],
-																			   typename array< T, Allocator >::size_type j[4],
-																			   typename array< T, Allocator >::size_type k[4],
-																			   double x, double y, double z )
+																			   typename array< T, Allocator >::size_type /* j */[4],
+																			   typename array< T, Allocator >::size_type /* k */[4],
+																			   double x, double /* y */, double /* z */ )
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -1350,8 +1350,8 @@ namespace __cubic__
 		static const typename T::template rebind< double >::other interpolate( const array2< T, Allocator > &in,
 																			   typename array2< T, Allocator >::size_type i[4],
 																			   typename array2< T, Allocator >::size_type j[4],
-																			   typename array2< T, Allocator >::size_type k[4],
-																			   double x, double y, double z )
+																			   typename array2< T, Allocator >::size_type /* k */[4],
+																			   double x, double y, double /* z */ )
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -1561,9 +1561,9 @@ namespace __bspline__
 		template < class T, class Allocator >
 		static double interpolate( const array< T, Allocator > &in,
 								typename array< T, Allocator >::size_type i[4],
-								typename array< T, Allocator >::size_type j[4],
-								typename array< T, Allocator >::size_type k[4],
-								double x, double y, double z )
+								typename array< T, Allocator >::size_type /* j */[4],
+								typename array< T, Allocator >::size_type /* k */[4],
+								double x, double /* y */, double /* z */ )
 		{
 			typedef typename array< T, Allocator >::value_type value_type;
 
@@ -1585,8 +1585,8 @@ namespace __bspline__
 		static double interpolate( const array2< T, Allocator > &in,
 								typename array2< T, Allocator >::size_type i[4],
 								typename array2< T, Allocator >::size_type j[4],
-								typename array2< T, Allocator >::size_type k[4],
-								double x, double y, double z )
+								typename array2< T, Allocator >::size_type /* k */[4],
+								double x, double y, double /* z */ )
 		{
 			typedef typename array2< T, Allocator >::value_type value_type;
 
@@ -1666,9 +1666,9 @@ namespace __bspline__
 		template < class T, class Allocator >
 		static const typename T::template rebind< double >::other interpolate( const array< T, Allocator > &in,
 												typename array< T, Allocator >::size_type i[4],
-												typename array< T, Allocator >::size_type j[4],
-												typename array< T, Allocator >::size_type k[4],
-												double x, double y, double z )
+												typename array< T, Allocator >::size_type /* j */[4],
+												typename array< T, Allocator >::size_type /* k */[4],
+												double x, double /* y */, double /* z */ )
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -1699,8 +1699,8 @@ namespace __bspline__
 		static const typename T::template rebind< double >::other interpolate( const array2< T, Allocator > &in,
 												typename array2< T, Allocator >::size_type i[4],
 												typename array2< T, Allocator >::size_type j[4],
-												typename array2< T, Allocator >::size_type k[4],
-												double x, double y, double z )
+												typename array2< T, Allocator >::size_type /* k */[4],
+												double x, double y, double /* z */ )
 		{
 			typedef typename array2< T, Allocator >::value_type color;
 			typedef typename color::value_type value_type;
@@ -2103,7 +2103,7 @@ namespace __sinc__
 								typename array< T, Allocator >::difference_type ix,
 								typename array< T, Allocator >::difference_type iy,
 								typename array< T, Allocator >::difference_type iz,
-								double x, double y, double z )
+								double /* x */, double /* y */, double /* z */ )
 		{
 			return( in( ix, iy, iz ) );
 		}
@@ -2113,7 +2113,7 @@ namespace __sinc__
 								typename array2< T, Allocator >::difference_type ix,
 								typename array2< T, Allocator >::difference_type iy,
 								typename array2< T, Allocator >::difference_type iz,
-								double x, double y, double z )
+								double /* x */, double /* y */, double /* z */ )
 		{
 			return( in( ix, iy, iz ) );
 		}
@@ -2123,7 +2123,7 @@ namespace __sinc__
 								typename array3< T, Allocator >::difference_type ix,
 								typename array3< T, Allocator >::difference_type iy,
 								typename array3< T, Allocator >::difference_type iz,
-								double x, double y, double z )
+								double /* x */, double /* y */, double /* z */ )
 		{
 			return( in( ix, iy, iz ) );
 		}

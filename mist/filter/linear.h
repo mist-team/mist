@@ -724,14 +724,14 @@ namespace __linear__
 	};
 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
-	static void __1D_linear_filter__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
+	static void __1D_linear_filter__( const array< T1, Allocator1 > &in, array< T2, Allocator2 > &out, const Kernel &k1, const Kernel & /* k2 */, const Kernel & /* k3 */,
 						typename array3< T1, Allocator1 >::size_type axis, typename array< T1, Allocator1 >::size_type thread_id, typename array< T1, Allocator1 >::size_type thread_num, Functor f )
 	{
 		linear_filter( in, out, k1, 0, 1, thread_id, thread_num, f );
 	}
 
 	template < class T1, class Allocator1, class T2, class Allocator2, class Kernel, class Functor >
-	static void __1D_linear_filter__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel &k3,
+	static void __1D_linear_filter__( const array2< T1, Allocator1 > &in, array2< T2, Allocator2 > &out, const Kernel &k1, const Kernel &k2, const Kernel & /* k3 */,
 						typename array3< T1, Allocator1 >::size_type axis, typename array2< T1, Allocator1 >::size_type thread_id, typename array2< T1, Allocator1 >::size_type thread_num, Functor f )
 	{
 		if( axis == 0 )

@@ -2740,7 +2740,7 @@ struct _pixel_converter_
 		typedef nRGB< T > color_type;
 		enum{ color_num = 6 };
 
-		static color_type convert_to( value_type r, value_type g, value_type b, value_type a = 255 )
+		static color_type convert_to( value_type r, value_type g, value_type b, value_type /* a */ = 255 )
 		{
 			return( color_type( r, g, b ) );
 		}

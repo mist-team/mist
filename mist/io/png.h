@@ -178,8 +178,10 @@ namespace __png_controller__
 			return( ret );
 		}
 
-		static bool write( const array2< T, Allocator > &image, const std::string &filename, int compression_level )
+		static bool write( const array2< T, Allocator > &image, const std::string &filename, int compression_level__ )
 		{
+			int compression_level = compression_level__ < 0 ? 0 : ( compression_level__ > 9 ? 9 : compression_level__ );
+
 			if( image.width( ) == 0 )
 			{
 				std::cerr << "Image width is zero!" << std::endl;
