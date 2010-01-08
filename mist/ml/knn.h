@@ -43,108 +43,105 @@ _MIST_BEGIN
 
 namespace knn
 {
-  //! @brief knn classifier
-  class classifier
-  {
-  private:
-    struct distance_pair
-    {
-      int index;
-      double distance;
-
-      bool operator<( const distance_pair &a ) const
-      {
-	return distance < a.distance;
-      }
-    };
-
-
-  public:
-    classifier() :
-      category_count_( 0 )
-    {
-    }
-
-    /*!
-      @biref train dataset
-      @param[in]     in is input data
-      @param[in]     response is target value of in
-    */
-    bool train( const mist::matrix< double > &in, const mist::array1< int > &response )
-    {
-      if( in.cols() != response.size() )
+	//! @brief knn classifier
+	class classifier
 	{
-	  return false;
-	}
+	private:
+		struct distance_pair
+		{
+			int index;
+			double distance;
 
-      in_ = in;
-      response_ = response;
+			bool operator<( const distance_pair &a ) const
+			{
+				return distance < a.distance;
+			}
+		};
 
-      // calculate # of category
-      std::map< int, bool > rmap;
-      category_count_ = 0;
-      for( size_t i = 0 ; i < response.size() ; ++i )
-	{
-	  if( rmap.find( response( i ) ) == rmap.end() )
-	    {
-	      rmap[ response( i ) ] = true;
-	      ++category_count_;
-	    }
-	}
+	protected:
+		matrix< double > in_;
+		array1< int > response_;
+		int category_count_;
 
-      return true;
-    }
+	public:
+		classifier( ) : category_count_( 0 )
+		{
+		}
 
-   /*!
-      @biref predict data
-      @param[in]     in is input data
-      @param[in]     k is # of knn
-      @return prediction of in
-    */
-    int predict( const mist::matrix< double > &in, int k = 1 )
-    {
-      mist::array< distance_pair > mes( in_.cols() );
-      mist::array< int > vote( category_count_ );
+		/// @biref train dataset
+		//! @param[in]     in is input data
+		//! @param[in]     response is target value of in
+		//! 
+		bool train( const matrix< double > &in, const array1< int > &response )
+		{
+			if( in.cols( ) != response.size( ) )
+			{
+				return false;
+			}
 
-      // calculate distance from training dataset
-      for( size_t i = 0 ; i < in_.cols() ; ++i )
-	{
-	  double dist = 0;
-	  for( size_t j = 0 ; j < in_.rows() ; ++j )
-	    {
-	      dist += pow( in_( j, i ) - in( j, 0 ), 2.0 );
-	    }
-	  mes( i ).index = i;
-	  mes( i ).distance = dist;
-	}
+			in_ = in;
+			response_ = response;
 
-      // sort by ascending order
-      std::sort( mes.begin(), mes.end() );
+			// calculate # of category
+			std::map< int, bool > rmap;
+			category_count_ = 0;
+			for( size_t i = 0 ; i < response.size() ; ++i )
+			{
+				if( rmap.find( response( i ) ) == rmap.end() )
+				{
+					rmap[ response( i ) ] = true;
+					++category_count_;
+				}
+			}
 
-      for( int i = 0 ; i < k ; ++i )
-	{
-	  ++vote( response_( mes( i ).index ) );
-	}
+			return true;
+		}
 
-      // predict category
-      int max_count = 0;
-      int max_idx = 0;
-      for( int i = 0 ; i < category_count_ ; ++i )
-	{
-	  if( vote( i ) > max_count )
-	    {
-	      max_count = vote( i );
-	      max_idx = i;
-	    }
-	}
+		/// @biref predict data
+		//! @param[in]     in is input data
+		//! @param[in]     k is # of knn
+		//! @return prediction of in
+		//! 
+		int predict( const matrix< double > &in, int k = 1 )
+		{
+			array< distance_pair > mes( in_.cols() );
+			array< int > vote( category_count_ );
 
-      return max_idx;
-    }
+			// calculate distance from training dataset
+			for( size_t i = 0 ; i < in_.cols() ; ++i )
+			{
+				double dist = 0;
+				for( size_t j = 0 ; j < in_.rows() ; ++j )
+				{
+					dist += pow( in_( j, i ) - in( j, 0 ), 2.0 );
+				}
+				mes( i ).index = i;
+				mes( i ).distance = dist;
+			}
 
-    mist::matrix< double > in_;
-    mist::array1< int > response_;
-    int category_count_;
-  };
+			// sort by ascending order
+			std::sort( mes.begin(), mes.end() );
+
+			for( int i = 0 ; i < k ; ++i )
+			{
+				++vote( response_( mes( i ).index ) );
+			}
+
+			// predict category
+			int max_count = 0;
+			int max_idx = 0;
+			for( int i = 0 ; i < category_count_ ; ++i )
+			{
+				if( vote( i ) > max_count )
+				{
+					max_count = vote( i );
+					max_idx = i;
+				}
+			}
+
+			return max_idx;
+		}
+	};
 }
 
 _MIST_END
