@@ -61,12 +61,12 @@ namespace __csv_controller__
 	{
 		typedef T value_type;
 
-		static const value_type convert_to( const unsigned char *s, const unsigned char *e )
+		static value_type convert_to( const unsigned char *s, const unsigned char *e )
 		{
 			return( atoi( std::string( s, e ).c_str( ) ) );
 		}
 
-		static const std::string convert_from( const value_type &val )
+		static std::string convert_from( const value_type &val )
 		{
 			static char buff[ 256 ];
 			sprintf( buff, "%d", val );
@@ -79,12 +79,12 @@ namespace __csv_controller__
 	{
 		typedef float value_type;
 
-		static const value_type convert_to( const unsigned char *s, const unsigned char *e )
+		static value_type convert_to( const unsigned char *s, const unsigned char *e )
 		{
 			return( ( float )atof( std::string( s, e ).c_str( ) ) );
 		}
 
-		static const std::string convert_from( const value_type &val )
+		static std::string convert_from( const value_type &val )
 		{
 			static char buff[ 256 ];
 			sprintf( buff, "%f", val );
@@ -97,12 +97,12 @@ namespace __csv_controller__
 	{
 		typedef double value_type;
 
-		static const value_type convert_to( const unsigned char *s, const unsigned char *e )
+		static value_type convert_to( const unsigned char *s, const unsigned char *e )
 		{
 			return( atof( std::string( s, e ).c_str( ) ) );
 		}
 
-		static const std::string convert_from( const value_type &val )
+		static std::string convert_from( const value_type &val )
 		{
 			static char buff[ 256 ];
 			sprintf( buff, "%f", val );
@@ -115,12 +115,12 @@ namespace __csv_controller__
 	{
 		typedef std::string value_type;
 
-		static const value_type convert_to( const unsigned char *s, const unsigned char *e )
+		static value_type convert_to( const unsigned char *s, const unsigned char *e )
 		{
 			return( std::string( s, e ).c_str( ) );
 		}
 
-		static const std::string convert_from( const value_type &val )
+		static std::string convert_from( const value_type &val )
 		{
 			return( val );
 		}
