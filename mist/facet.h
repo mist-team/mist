@@ -113,7 +113,7 @@ public:
 	{
 		if( &f != this )
 		{
-			normal = q.normal;
+			normal = f.normal;
 			p1     = f.p1;
 			p2     = f.p2;
 			p3     = f.p3;
@@ -182,7 +182,7 @@ public:
 		if( &f != this )
 		{
 			base::operator =( f );
-			name = q.name;
+			name = f.name;
 		}
 		return ( *this );
 	}
@@ -420,7 +420,7 @@ namespace __mc__
 		typedef __edge__< T3 >          edge_type;
 
 		typedef std::map< difference_type, difference_type > map_type;
-		typedef map_type::iterator iterator;
+		typedef typename map_type::iterator iterator;
 		map_type table;
 
 		edge_lists.clear( );
@@ -918,7 +918,7 @@ namespace __mc__
 				}
 			}
 
-			for( std::set< difference_type >::iterator ite = face_map1.begin( ) ; ite != face_map1.end( ) ; ++ite )
+			for( typename std::set< difference_type >::iterator ite = face_map1.begin( ) ; ite != face_map1.end( ) ; ++ite )
 			{
 				if( *ite != 0 )
 				{
@@ -944,7 +944,7 @@ namespace __mc__
 				}
 			}
 
-			for( std::set< difference_type >::iterator ite = face_map2.begin( ) ; ite != face_map2.end( ) ; ++ite )
+			for( typename std::set< difference_type >::iterator ite = face_map2.begin( ) ; ite != face_map2.end( ) ; ++ite )
 			{
 				if( *ite != 0 )
 				{
@@ -964,7 +964,7 @@ namespace __mc__
 
 
 		// 法線が入れ替わるかどうかをチェックする
-		for( std::set< difference_type >::iterator ite = face_map1.begin( ) ; ite != face_map1.end( ) ; ++ite )
+		for( typename std::set< difference_type >::iterator ite = face_map1.begin( ) ; ite != face_map1.end( ) ; ++ite )
 		{
 			if( *ite != 0 && face_map2.find( *ite ) == face_map2.end( ) )
 			{
@@ -975,7 +975,7 @@ namespace __mc__
 			}
 		}
 
-		for( std::set< difference_type >::iterator ite = face_map2.begin( ) ; ite != face_map2.end( ) ; ++ite )
+		for( typename std::set< difference_type >::iterator ite = face_map2.begin( ) ; ite != face_map2.end( ) ; ++ite )
 		{
 			if( *ite != 0 && face_map1.find( *ite ) == face_map1.end( ) )
 			{
@@ -1272,7 +1272,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 	typedef typename facet_type::size_type         size_type;
 	typedef typename facet_type::difference_type   difference_type;
 	typedef typename facet_type::vector_type       vector_type;
-	typedef typename vector3< difference_type >    ivector_type;
+	typedef vector3< difference_type >             ivector_type;
 	typedef __mc__::__edge__< vector_type >        edge_type;
 	typedef __mc__::__face__                       face_type;
 	typedef matrix< double >                       matrix_type;
@@ -1463,10 +1463,10 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 
 		std::set< difference_type > emap;
 		{
-			vertex_edge_map_type::iterator ite = vertex_edge_map.find( vs );
+			typename vertex_edge_map_type::iterator ite = vertex_edge_map.find( vs );
 			if( ite != vertex_edge_map.end( ) )
 			{
-				vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( vs );
+				typename vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( vs );
 				for( ; ite != upper ; )
 				{
 					if( ite->second == EID )
@@ -1483,11 +1483,11 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 			}
 		}
 		{
-			vertex_edge_map_type::iterator ite = vertex_edge_map.find( vt );
+			typename vertex_edge_map_type::iterator ite = vertex_edge_map.find( vt );
 			if( ite != vertex_edge_map.end( ) )
 			{
 				std::vector< difference_type > combine_edge;
-				vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( vt );
+				typename vertex_edge_map_type::iterator upper = vertex_edge_map.upper_bound( vt );
 				for( ; ite != upper ; )
 				{
 					if( ite->second == EID )
@@ -1541,7 +1541,7 @@ inline bool surface_simplification( facet_list< T > &facets, size_t number_of_fa
 
 		// 各頂点を共有するエッジを更新する
 		// ただし，統合して領域の端に接した場合は以降の対象から除く
-		for( std::set< difference_type >::iterator ite = emap.begin( ) ; ite != emap.end( ) ; ++ite )
+		for( typename std::set< difference_type >::iterator ite = emap.begin( ) ; ite != emap.end( ) ; ++ite )
 		{
 			__mc__::remove_edge_from_set( edge_map, *ite );
 
@@ -1745,7 +1745,7 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 	typedef typename facet_type::size_type         size_type;
 	typedef typename facet_type::difference_type   difference_type;
 	typedef typename facet_type::vector_type       vector_type;
-	typedef typename vector3< difference_type >    ivector_type;
+	typedef vector3< difference_type >             ivector_type;
 	typedef __mc__::__edge__< vector_type >        edge_type;
 	typedef __mc__::__face__                       face_type;
 	typedef matrix< double >                       matrix_type;
@@ -1763,9 +1763,9 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 
 
 	// 頂点と面のテーブルを作成する
-	typedef std::multimap< size_type, difference_type > vertex_face_map_type;
-	typedef std::multimap< size_type, difference_type >::iterator iterator;
-	typedef std::pair< size_type, difference_type > vertex_face_map_pair_type;
+	typedef std::multimap< size_type, difference_type >                    vertex_face_map_type;
+	typedef typename std::multimap< size_type, difference_type >::iterator iterator;
+	typedef std::pair< size_type, difference_type >                        vertex_face_map_pair_type;
 
 	typedef std::multimap< size_type, size_type > group_map_type;
 	typedef std::pair< size_type, size_type > group_map_type_pair_type;
@@ -1804,11 +1804,11 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 
 						if( g1 < g2 )
 						{
-							group_map_type::iterator lower = gmap.find( g2 );
-							group_map_type::iterator upper = gmap.upper_bound( g2 );
+							typename group_map_type::iterator lower = gmap.find( g2 );
+							typename group_map_type::iterator upper = gmap.upper_bound( g2 );
 
 							std::vector< size_type > gtmp;
-							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							for( typename group_map_type::iterator gite = lower ; gite != upper ; ++gite )
 							{
 								gtmp.push_back( gite->second );
 							}
@@ -1823,11 +1823,11 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 						}
 						else if( g1 > g2 )
 						{
-							group_map_type::iterator lower = gmap.find( g1 );
-							group_map_type::iterator upper = gmap.upper_bound( g1 );
+							typename group_map_type::iterator lower = gmap.find( g1 );
+							typename group_map_type::iterator upper = gmap.upper_bound( g1 );
 
 							std::vector< size_type > gtmp;
-							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							for( typename group_map_type::iterator gite = lower ; gite != upper ; ++gite )
 							{
 								gtmp.push_back( gite->second );
 							}
@@ -1858,11 +1858,11 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 
 						if( g1 < g2 )
 						{
-							group_map_type::iterator lower = gmap.find( g2 );
-							group_map_type::iterator upper = gmap.upper_bound( g2 );
+							typename group_map_type::iterator lower = gmap.find( g2 );
+							typename group_map_type::iterator upper = gmap.upper_bound( g2 );
 
 							std::vector< size_type > gtmp;
-							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							for( typename group_map_type::iterator gite = lower ; gite != upper ; ++gite )
 							{
 								gtmp.push_back( gite->second );
 							}
@@ -1877,11 +1877,11 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 						}
 						else if( g1 > g2 )
 						{
-							group_map_type::iterator lower = gmap.find( g1 );
-							group_map_type::iterator upper = gmap.upper_bound( g1 );
+							typename group_map_type::iterator lower = gmap.find( g1 );
+							typename group_map_type::iterator upper = gmap.upper_bound( g1 );
 
 							std::vector< size_type > gtmp;
-							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							for( typename group_map_type::iterator gite = lower ; gite != upper ; ++gite )
 							{
 								gtmp.push_back( gite->second );
 							}
@@ -1913,11 +1913,11 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 
 						if( g1 < g2 )
 						{
-							group_map_type::iterator lower = gmap.find( g2 );
-							group_map_type::iterator upper = gmap.upper_bound( g2 );
+							typename group_map_type::iterator lower = gmap.find( g2 );
+							typename group_map_type::iterator upper = gmap.upper_bound( g2 );
 
 							std::vector< size_type > gtmp;
-							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							for( typename group_map_type::iterator gite = lower ; gite != upper ; ++gite )
 							{
 								gtmp.push_back( gite->second );
 							}
@@ -1932,11 +1932,11 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 						}
 						else if( g1 > g2 )
 						{
-							group_map_type::iterator lower = gmap.find( g1 );
-							group_map_type::iterator upper = gmap.upper_bound( g1 );
+							typename group_map_type::iterator lower = gmap.find( g1 );
+							typename group_map_type::iterator upper = gmap.upper_bound( g1 );
 
 							std::vector< size_type > gtmp;
-							for( group_map_type::iterator gite = lower ; gite != upper ; ++gite )
+							for( typename group_map_type::iterator gite = lower ; gite != upper ; ++gite )
 							{
 								gtmp.push_back( gite->second );
 							}
@@ -1957,7 +1957,7 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 
 	size_type mgroup = 0;
 	size_type mcount = 0;
-	for( group_map_type::iterator ite = gmap.begin( ) ; ite != gmap.end( ) ; )
+	for( typename group_map_type::iterator ite = gmap.begin( ) ; ite != gmap.end( ) ; )
 	{
 		size_type count = gmap.count( ite->first );
 		if( count > mcount )
@@ -1979,10 +1979,10 @@ inline bool maximum_connected_region( facet_list< T > &facets, const double eps 
 
 	facets.clear( );
 
-	group_map_type::iterator lower = gmap.find( mgroup );
+	typename group_map_type::iterator lower = gmap.find( mgroup );
 	if( lower != gmap.end( ) )
 	{
-		group_map_type::iterator upper = gmap.upper_bound( mgroup );
+		typename group_map_type::iterator upper = gmap.upper_bound( mgroup );
 		for( ; lower != upper ; ++lower )
 		{
 			ivector_type &f = faces[ lower->second ];

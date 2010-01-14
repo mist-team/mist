@@ -346,8 +346,8 @@ private:
 	const value_type	&val( )							const { return val_; } 
 	const section_type	&min_inc_secs( const size_t i )	const { return min_inc_secs_[ i ]; }
 	const section_type	&max_dec_secs( const size_t i )	const { return max_dec_secs_[ i ]; }
-	const size_t		min_inc_secs_size( )			const { return min_inc_secs_.size( ); }
-	const size_t		max_dec_secs_size( )			const { return max_dec_secs_.size( ); }
+	size_t		min_inc_secs_size( )					const { return min_inc_secs_.size( ); }
+	size_t		max_dec_secs_size( )					const { return max_dec_secs_.size( ); }
 	
 	node *left( )	{ return left_; }
 	node *right( )	{ return right_; }

@@ -733,15 +733,15 @@ private:
 	{
 		size_type num = fa_[ ptn ]( nda, __p__, __n__, __s__, th_, o_, s_ );
 
-		vector_type *P = __p__;
-		vector_type *N = __n__;
+		vector_type *PP = __p__;
+		vector_type *NN = __n__;
 		for( size_type i = 0 ; i < num ; i++ )
 		{
 			size_type s = __s__[ i ];
 			for( size_type j = 0 ; j < s ; j++ )
 			{
-				pv.push_back( *P++ );
-				nv.push_back( *N++ );
+				pv.push_back( *PP++ );
+				nv.push_back( *NN++ );
 			}
 			sv.push_back( s );
 		}
