@@ -152,8 +152,7 @@ namespace kmeans
 			}
 		}
 
-		array1< bool > is_set( k );									
-
+		array1< bool > is_set( k );											
 		for( int m = 0 ; ( crt.type & criteria::iteration ) ? ( m < crt.max_itr ) : true ; ++m )
 		{
 			bool is_finish = true;
@@ -180,7 +179,7 @@ namespace kmeans
 				}
 				}
 				*/
-				detail::nearestCenter( in, i, center, center.size(), minidx );
+				detail::nearestCenter( in, i, center, k, minidx );
 				//
 				if( response( i ) != minidx )
 				{
