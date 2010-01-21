@@ -1027,7 +1027,7 @@ namespace gradient
 		typedef typename matrix< T, Allocator >::difference_type difference_type;
 		typedef matrix< T, Allocator > matrix_type;
 
-		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 );
+		matrix_type dir( p.size( ), 1 ), tmp = p;
 		double x, v1, v2, err = 1.0e100, old_err = f( p );
 		size_type i;
 
@@ -1121,7 +1121,7 @@ namespace gradient
 		typedef typename matrix< T, Allocator >::difference_type difference_type;
 		typedef matrix< T, Allocator > matrix_type;
 
-		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 );
+		matrix_type dir( p.size( ), 1 ), tmp = p;
 		double x = 0.0, v1, v2, err = 1.0e100, old_err = f( p );
 		size_type i;
 
