@@ -1185,13 +1185,13 @@ namespace __he__
 	template< class L >
 	struct table_type
 	{
-		typedef typename array< L >::value_type		label_type;
+		typedef typename array< L >::value_type label_type;
+
 		label_type label;
 		table_type *next;
 		table_type *tail;
-		table_type( ) : label( 0 ), next( NULL ), tail( NULL )
-		{
-		}
+
+		table_type( ) : label( 0 ), next( NULL ), tail( NULL ){}
 	};
 
 	template< class L, class Allocator >
@@ -1277,6 +1277,10 @@ namespace he
 			op1[ 0 ] = m;
 			__he__::update( m, table );
 		}
+		else
+		{
+			op1[ 0 ] = 0;
+		}
 
 		for( size_type i = 1 ; i < b.width( ) ; i++ )
 		{
@@ -1291,6 +1295,10 @@ namespace he
 					op1[ i ] = m;
 					__he__::update( m, table );
 				}				
+			}
+			else
+			{
+				op1[ 0 ] = 0;
 			}
 		}
 
@@ -1318,6 +1326,10 @@ namespace he
 					op1[ 0 ] = m;
 					__he__::update( m, table );
 				}				
+			}
+			else
+			{
+				op1[ 0 ] = 0;
 			}
 
 			size_type i = 1;
@@ -1355,6 +1367,10 @@ namespace he
 						__he__::update( m, table );
 					}
 				}
+				else
+				{
+					op1[ i ] = 0;
+				}
 			}
 
 			if( ip[ i ] != 0 )
@@ -1376,6 +1392,10 @@ namespace he
 					op1[ i ] = m;
 					__he__::update( m, table );
 				}				
+			}
+			else
+			{
+				op1[ i ] = 0;
 			}
 
 			op0  = op1;
