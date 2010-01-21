@@ -2055,7 +2055,6 @@ namespace __eigen__
 			case matrix_style::ge:
 			default:
 				{
-
 					// LAPACKŠÖ”‚Ìˆø”
 					integer n      = static_cast< integer >( a.cols( ) );
 					integer lda    = static_cast< integer >( a.rows( ) );
