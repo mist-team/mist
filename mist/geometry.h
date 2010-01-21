@@ -181,7 +181,7 @@ namespace detail
 			dx0 = ( dx0 < static_cast< int >( tx[ i ] ) ) ? dx0 : static_cast< int >( tx[ i ] );
 			dx1 = ( dx1 > static_cast< int >( tx[ i ] ) ) ? dx1 : static_cast< int >( tx[ i ] );
 			dy0 = ( dy0 < static_cast< int >( ty[ i ] ) ) ? dy0 : static_cast< int >( ty[ i ] );
-			dy1 = ( dy1 > static_cast< int >( ty[ i ] ) ) ? dy1 : static_cast< int >(a ty[ i ] );
+			dy1 = ( dy1 > static_cast< int >( ty[ i ] ) ) ? dy1 : static_cast< int >( ty[ i ] );
 		}
 	}
 }
