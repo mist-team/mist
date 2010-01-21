@@ -52,7 +52,7 @@
 #include "../limits.h"
 #endif
 
-
+#include <cstdio>
 #include <iostream>
 #include <string>
 
