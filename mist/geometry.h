@@ -74,6 +74,33 @@ void rotation_matrix( matrix< T, Allocator > &mat, typename matrix< T, Allocator
 		);
 }
 
+/// @brief calculate rotation matrix
+//! @param[out] mat    is rotation matrix
+//! @param[in]  radian is rotation angle
+//! @param[in]  cx     is X coordinate of the rotation center
+//! @param[in]  cy     is Y coordinate of the rotation center
+//! 
+template< class T, class Allocator >
+void rotation_matrix( matrix< T, Allocator > &mat, typename matrix< T, Allocator >::value_type radian, typename matrix< T, Allocator >::value_type cx, typename matrix< T, Allocator >::value_type cy )
+{
+	typedef matrix< T > matrix_type;
+	mat  = matrix_type::_33(
+			1.0, 0.0,  cx,
+			0.0, 1.0,  cy,
+			0.0, 0.0, 1.0
+		);
+	mat *= matrix_type::_33(
+			cos( radian ), -sin( radian ), 0.0,
+			sin( radian ),  cos( radian ), 0.0,
+			0.0,            0.0,           1.0
+		);
+	mat *= matrix_type::_33(
+			1.0, 0.0, -cx,
+			0.0, 1.0, -cy,
+			0.0, 0.0, 1.0
+		);
+}
+
 /// @brief calculate scaling matrix
 //! @param[out] mat   is scaling matrix
 //! @param[in]  sx,sy is scale
@@ -199,13 +226,14 @@ namespace nearest
 	{
 		matrix< double > m = inverse( mat );
 
-		int dx0, dy0, dx1, dy1;
-		detail::clipping( 0, 0, static_cast< int >( in.width( ) ), static_cast< int >( in.height( ) ), dx0, dy0, dx1, dy1, mat );
-
 		int w = static_cast< int >( out.width() );
 		int h = static_cast< int >( out.height() );
 		int iw = static_cast< int >( in.width( ) );
 		int ih = static_cast< int >( in.height( ) );
+
+		int dx0, dy0, dx1, dy1;
+		detail::clipping( 0, 0, iw, ih, dx0, dy0, dx1, dy1, mat );
+
 		for( int y = ( ( dy0 > 0 ) ? dy0 : 0 ) ; y < ( ( dy1 < h ) ? dy1 : h ) ; ++y )
 		{
 			for( int x = ( ( dx0 > 0 ) ? dx0 : 0 ) ; x < ( ( dx1 < w ) ? dx1 : w ) ; ++x )
@@ -237,13 +265,14 @@ namespace linear
 	{
 		matrix< double > m = inverse( mat );
 
-		int dx0, dy0, dx1, dy1;
-		detail::clipping( 0, 0, static_cast< int >( in.width() ), static_cast< int >( in.height() ), dx0, dy0, dx1, dy1, mat );
-
 		int w = static_cast< int >( out.width( ) );
 		int h = static_cast< int >( out.height( ) );
 		int iw = static_cast< int >( in.width( ) );
 		int ih = static_cast< int >( in.height( ) );
+
+		int dx0, dy0, dx1, dy1;
+		detail::clipping( 0, 0, iw, ih, dx0, dy0, dx1, dy1, mat );
+
 		for( int y = ( ( dy0 > 0 ) ? dy0 : 0 ) ; y < ( ( dy1 < h ) ? dy1 : h ) ; ++y )
 		{
 			for( int x = ( ( dx0 > 0 ) ? dx0 : 0 ) ; x < ( ( dx1 < w ) ? dx1 : w ) ; ++x )
@@ -257,11 +286,13 @@ namespace linear
 				double dy = sy - iy;
 
 				if( 0 <= ix && ix < iw - 1 && 0 <= iy && iy < ih - 1 )
-				{		
-					out( x, y ) = static_cast< T1 >( static_cast< double >( in( ix, iy ) ) * ( 1.0 - dx ) * ( 1.0 - dy ) +
-								  static_cast< double >( in( ix + 1, iy ) ) * dx * ( 1.0 - dy ) +
-								  static_cast< double >( in( ix, iy + 1 ) ) * ( 1.0 - dx ) * dy +
-								  static_cast< double >( in( ix + 1, iy + 1 ) ) * dx * dy );
+				{
+					typedef typename array2< T1, Allocator1 >::value_type value_type; 
+					value_type tmp = in( ix, iy ) * ( 1.0 - dx ) * ( 1.0 - dy )
+								   + in( ix + 1, iy ) * dx * ( 1.0 - dy )
+								   + in( ix, iy + 1 ) * ( 1.0 - dx ) * dy
+								   + in( ix + 1, iy + 1 ) * dx * dy;
+					out( x, y ) = tmp;
 				}
 			}
 		}
