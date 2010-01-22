@@ -43,69 +43,72 @@
 
 _MIST_BEGIN
 
-/*!
-@brief calculate translation matrix
-@param[out] mat is translation matrix
-@param[in]  x,y is position
-*/
-template< typename T >
-void translation_matrix( mist::matrix< T > &mat,
-						T x, T y )
+
+/// @brief calculate translation matrix
+//! @param[out] mat is translation matrix
+//! @param[in]  x,y is position
+//! 
+template< class T, class Allocator >
+void translation_matrix( matrix< T, Allocator > &mat, typename matrix< T, Allocator >::value_type x, typename matrix< T, Allocator >::value_type y )
 {
-	mat = mist::matrix< T >::_33( 1.0, 0.0, x,
-		0.0, 1.0, y,
-		0.0, 0.0, 1.0 );
+	typedef matrix< T > matrix_type;
+	mat = matrix_type::_33(
+		1.0, 0.0,  x,
+		0.0, 1.0,  y,
+		0.0, 0.0, 1.0
+	);
 }
 
-/*!
-@brief calculate rotation matrix
-@param[out] mat    is rotation matrix
-@param[in]  radian is rotation angle
-*/
-template< typename T >
-void rotation_matrix( mist::matrix< T > &mat,
-					 T radian )
+/// @brief calculate rotation matrix
+//! @param[out] mat    is rotation matrix
+//! @param[in]  radian is rotation angle
+//! 
+template< class T, class Allocator >
+void rotation_matrix( matrix< T, Allocator > &mat, typename matrix< T, Allocator >::value_type radian )
 {
-	mat = mist::matrix< T >::_33( cos( radian ), -sin( radian ), 0.0,
-		sin( radian ), cos( radian ), 0.0,
-		0.0, 0.0, 1.0 );
+	typedef matrix< T > matrix_type;
+	mat = matrix_type::_33(
+			cos( radian ), -sin( radian ), 0.0,
+			sin( radian ),  cos( radian ), 0.0,
+			0.0,            0.0,           1.0
+		);
 }
 
-/*!
-@brief calculate scaling matrix
-@param[out] mat   is scaling matrix
-@param[in]  sx,sy is scale
-*/
-template< typename T >
-void scaling_matrix( mist::matrix< T > &mat,
-					T x, T y )
+/// @brief calculate scaling matrix
+//! @param[out] mat   is scaling matrix
+//! @param[in]  sx,sy is scale
+//! 
+template< class T, class Allocator >
+void scaling_matrix( matrix< T, Allocator > &mat, typename matrix< T, Allocator >::value_type x, typename matrix< T, Allocator >::value_type y )
 {
-	mat = mist::matrix< T >::_33( x, 0.0, 0.0,
-		0.0, y, 0.0,
-		0.0, 0.0, 1.0 );
+	typedef matrix< T > matrix_type;
+	mat = matrix_type::_33(
+			 x,  0.0, 0.0,
+			0.0,  y,  0.0,
+			0.0, 0.0, 1.0
+		);
 }
 
-/*!
-@brief calculate homography matrix
-@param[out] mat   is homography matrix
-@param[in]  p1,p2 are input matrix(2x4)
-@return success of calculation
-*/
-template < typename T >
-bool homography_matrix( mist::matrix< T > &mat, 
-					   const mist::matrix< T > &p1, 
-					   const mist::matrix< T > &p2 )
+/// @brief calculate homography matrix
+//! @param[out] mat   is homography matrix
+//! @param[in]  p1,p2 are input matrix(2x4)
+//! @return success of calculation
+//! 
+template< class T, class Allocator >
+bool homography_matrix( matrix< T, Allocator > &mat, const matrix< T, Allocator > &p1, const matrix< T, Allocator > &p2 )
 {
 	if( p1.rows() != 2 || p1.cols() != 4 ||
 		p2.rows() != 2 || p2.cols() != 4 )
 	{
 		throw( numerical_exception( 1, "Incorrect input matrix size is specified." ) );
-		return false;
+		return( false );
 	}
 
-	mist::matrix< double > tm( 8, 9 );
+	typedef matrix< double > matrix_type;
+
+	matrix_type tm( 8, 9 );
 	double w = 1.0;
-	for( int i = 0; i < 4; ++i )
+	for( int i = 0 ; i < 4 ; ++i )
 	{
 		tm( i * 2 + 0, 0 ) = 0;
 		tm( i * 2 + 0, 1 ) = 0;
@@ -128,11 +131,11 @@ bool homography_matrix( mist::matrix< T > &mat,
 		tm( i * 2 + 1, 8 ) = -p2( 0, i ) * w;
 	}
 
-	// 特異値分解
-	mist::matrix<double> u, s, vt;
-	mist::svd( tm, u, s, vt );
+	// Singular Value Decomposition
+	matrix_type u, s, vt;
+	svd( tm, u, s, vt );
 
-	// 最終行から射影行列を作成
+	// Compute projection matrix from last row of the matrix
 	mat.resize( 3, 3 );
 	w = 1.0 / vt( 8, 8 );
 	mat( 0, 0 ) = vt( 8, 0 ) * w;
@@ -147,24 +150,22 @@ bool homography_matrix( mist::matrix< T > &mat,
 	mat( 2, 1 ) = vt( 8, 7 ) * w;
 	mat( 2, 2 ) = vt( 8, 8 ) * w;
 
-	return true;
+	return( true );
 }
 
 namespace detail
 {
-	template< typename T >
-	void transform_point( int sx, int sy, 
-		double &dx, double &dy,
-		const mist::matrix< T > &mat )
+	template< class T, class Allocator >
+	void transform_point( int sx, int sy, double &dx, double &dy, const matrix< T, Allocator > &mat )
 	{
 		dx = ( mat( 0, 0 ) * sx + mat( 0, 1 ) * sy + mat( 0, 2 ) ) / ( mat( 2, 0 ) * sx + mat( 2, 1 ) * sy + mat( 2, 2 ) );
 		dy = ( mat( 1, 0 ) * sx + mat( 1, 1 ) * sy + mat( 1, 2 ) ) / ( mat( 2, 0 ) * sx + mat( 2, 1 ) * sy + mat( 2, 2 ) );
 	}
 
-	template< typename T >
+	template< class T, class Allocator >
 	void clipping( int sx0, int sy0, int sx1, int sy1, 
-		int &dx0, int &dy0, int &dx1, int &dy1,
-		const mist::matrix< T > &mat )
+				   int &dx0, int &dy0, int &dx1, int &dy1,
+				   const matrix< T, Allocator > &mat )
 	{
 		double tx[ 4 ], ty[ 4 ];
 		transform_point( sx0, sy0, tx[ 0 ], ty[ 0 ], mat );
@@ -172,9 +173,9 @@ namespace detail
 		transform_point( sx0, sy1, tx[ 2 ], ty[ 2 ], mat );
 		transform_point( sx1, sy1, tx[ 3 ], ty[ 3 ], mat );
 
-		dx0 = 1e6;
+		dx0 = 1000000;
 		dx1 = 0;
-		dy0 = 1e6;
+		dy0 = 1000000;
 		dy1 = 0;
 		for( int i = 0 ; i < 4 ; ++i )
 		{
@@ -188,34 +189,34 @@ namespace detail
 
 namespace nearest
 {
-	/*!
-	@brief transform array2
-	@param[in]  in  is input array
-	@param[out] out is output array
-	@param[int] mat is transformation matrix
-	*/
-	template< typename T, typename T2 >
-	void transform( const mist::array2< T > &in, mist::array2< T > &out, const mist::matrix< T2 > &mat )
+	/// @brief transform array2
+	//! @param[in]  in  is input array
+	//! @param[out] out is output array
+	//! @param[int] mat is transformation matrix
+	//! 
+	template< class T1, class Allocator1, class T2, class Allocator2 >
+	void transform( const array2< T1, Allocator1 > &in, array2< T1, Allocator1 > &out, const matrix< T2, Allocator2 > &mat )
 	{
-		mist::matrix< double > m = mist::inverse( mat );
+		matrix< double > m = inverse( mat );
 
 		int dx0, dy0, dx1, dy1;
-		detail::clipping( 0, 0, static_cast< int >( in.width() ), static_cast< int >( in.height() ),
-			dx0, dy0, dx1, dy1, mat );
+		detail::clipping( 0, 0, static_cast< int >( in.width( ) ), static_cast< int >( in.height( ) ), dx0, dy0, dx1, dy1, mat );
+
 		int w = static_cast< int >( out.width() );
 		int h = static_cast< int >( out.height() );
+		int iw = static_cast< int >( in.width( ) );
+		int ih = static_cast< int >( in.height( ) );
 		for( int y = ( ( dy0 > 0 ) ? dy0 : 0 ) ; y < ( ( dy1 < h ) ? dy1 : h ) ; ++y )
 		{
 			for( int x = ( ( dx0 > 0 ) ? dx0 : 0 ) ; x < ( ( dx1 < w ) ? dx1 : w ) ; ++x )
 			{
-				double sx =  (  m( 0, 0 ) * x + m( 0, 1 ) * y + m( 0, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
-				double sy =  (  m( 1, 0 ) * x + m( 1, 1 ) * y + m( 1, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
+				double sx = (  m( 0, 0 ) * x + m( 0, 1 ) * y + m( 0, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
+				double sy = (  m( 1, 0 ) * x + m( 1, 1 ) * y + m( 1, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
 
 				int ix = static_cast< int >( sx );
 				int iy = static_cast< int >( sy );
 
-				if( 0 <= ix && ix < static_cast< int >( in.width() ) &&
-					0 <= iy && iy < static_cast< int >( in.height() ) )
+				if( 0 <= ix && ix < iw && 0 <= iy && iy < ih )
 				{
 					out( x, y ) = in( ix, iy );
 				}
@@ -226,41 +227,41 @@ namespace nearest
 
 namespace linear
 {
-	/*!
-	@brief transform array2
-	@param[in]  in  is input array
-	@param[out] out is output array
-	@param[int] mat is transformation matrix
-	*/
-	template< typename T, typename T2 >
-	void transform( const mist::array2< T > &in, mist::array2< T > &out, const mist::matrix< T2 > &mat )
+	/// @brief transform array2
+	//! @param[in]  in  is input array
+	//! @param[out] out is output array
+	//! @param[int] mat is transformation matrix
+	//! 
+	template< class T1, class Allocator1, class T2, class Allocator2 >
+	void transform( const array2< T1, Allocator1 > &in, array2< T1, Allocator1 > &out, const matrix< T2, Allocator2 > &mat )
 	{
-		mist::matrix< double > m = mist::inverse( mat );
+		matrix< double > m = inverse( mat );
 
 		int dx0, dy0, dx1, dy1;
-		detail::clipping( 0, 0, static_cast< int >( in.width() ), static_cast< int >( in.height() ),
-			dx0, dy0, dx1, dy1, mat );
-		int w = static_cast< int >( out.width() );
-		int h = static_cast< int >( out.height() );
+		detail::clipping( 0, 0, static_cast< int >( in.width() ), static_cast< int >( in.height() ), dx0, dy0, dx1, dy1, mat );
+
+		int w = static_cast< int >( out.width( ) );
+		int h = static_cast< int >( out.height( ) );
+		int iw = static_cast< int >( in.width( ) );
+		int ih = static_cast< int >( in.height( ) );
 		for( int y = ( ( dy0 > 0 ) ? dy0 : 0 ) ; y < ( ( dy1 < h ) ? dy1 : h ) ; ++y )
 		{
 			for( int x = ( ( dx0 > 0 ) ? dx0 : 0 ) ; x < ( ( dx1 < w ) ? dx1 : w ) ; ++x )
 			{
-				double sx =  (  m( 0, 0 ) * x + m( 0, 1 ) * y + m( 0, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
-				double sy =  (  m( 1, 0 ) * x + m( 1, 1 ) * y + m( 1, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
+				double sx = ( m( 0, 0 ) * x + m( 0, 1 ) * y + m( 0, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
+				double sy = ( m( 1, 0 ) * x + m( 1, 1 ) * y + m( 1, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
 
 				int ix = static_cast< int >( sx );
 				int iy = static_cast< int >( sy );
 				double dx = sx - ix;
 				double dy = sy - iy;
 
-				if( 0 <= ix && ix < static_cast< int >( in.width() - 1 ) &&
-					0 <= iy && iy < static_cast< int >( in.height() ) - 1 )
+				if( 0 <= ix && ix < iw - 1 && 0 <= iy && iy < ih - 1 )
 				{		
-					out( x, y ) = static_cast< T >( static_cast< double >( in( ix, iy ) ) * ( 1.0 - dx ) * ( 1.0 - dy ) +
-						static_cast< double >( in( ix + 1, iy ) ) * dx * ( 1.0 - dy ) +
-						static_cast< double >( in( ix, iy + 1 ) ) * ( 1.0 - dx ) * dy +
-						static_cast< double >( in( ix + 1, iy + 1 ) ) * dx * dy );
+					out( x, y ) = static_cast< T1 >( static_cast< double >( in( ix, iy ) ) * ( 1.0 - dx ) * ( 1.0 - dy ) +
+								  static_cast< double >( in( ix + 1, iy ) ) * dx * ( 1.0 - dy ) +
+								  static_cast< double >( in( ix, iy + 1 ) ) * ( 1.0 - dx ) * dy +
+								  static_cast< double >( in( ix + 1, iy + 1 ) ) * dx * dy );
 				}
 			}
 		}
