@@ -380,7 +380,7 @@ bool read_png( array2< T, Allocator > &image, const std::wstring &filename )
 
 /// @brief MISTコンテナの画像をPNG形式でファイルに出力する
 //! 
-//! @attention 圧縮レベルは0～9まであり，引数に負の値を指定すると，適切な圧縮レベルが自動的に選択される（デフォルト）
+//! @attention 圧縮レベルは0～9まであり，デフォルトは圧縮レベル6が選択される
 //! 
 //! @param[in] image    … 出力画像を保持するMISTコンテナ
 //! @param[in] filename … 出力ファイル名
@@ -390,7 +390,7 @@ bool read_png( array2< T, Allocator > &image, const std::wstring &filename )
 //! @retval false … 画像の書き込みに失敗
 //! 
 template < class T, class Allocator >
-bool write_png( const array2< T, Allocator > &image, const std::string &filename, int compression_level = -1 )
+bool write_png( const array2< T, Allocator > &image, const std::string &filename, int compression_level = 6 )
 {
 	return( __png_controller__::png_controller< T, Allocator >::write( image, filename, compression_level ) );
 }
@@ -398,7 +398,7 @@ bool write_png( const array2< T, Allocator > &image, const std::string &filename
 
 /// @brief MISTコンテナの画像をPNG形式でファイルに出力する
 //! 
-//! @attention 圧縮レベルは0～9まであり，引数に負の値を指定すると，適切な圧縮レベルが自動的に選択される（デフォルト）
+//! @attention 圧縮レベルは0～9まであり，デフォルトは圧縮レベル6が選択される
 //! 
 //! @param[in] image    … 出力画像を保持するMISTコンテナ
 //! @param[in] filename … 出力ファイル名
@@ -408,7 +408,7 @@ bool write_png( const array2< T, Allocator > &image, const std::string &filename
 //! @retval false … 画像の書き込みに失敗
 //! 
 template < class T, class Allocator >
-bool write_png( const array2< T, Allocator > &image, const std::wstring &filename, int compression_level = -1 )
+bool write_png( const array2< T, Allocator > &image, const std::wstring &filename, int compression_level = 6 )
 {
 	return( write_png( image, wstr2str( filename ), compression_level ) );
 }
