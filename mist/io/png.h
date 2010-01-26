@@ -91,12 +91,17 @@ namespace __png_controller__
 			png_read_info( png_ptr, info_ptr );				// PNGファイルのヘッダを読み込む
 			png_get_IHDR( png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);	// IHDRチャンク情報を取得する
 
+			if( bit_depth < 8 )
+			{
+				png_set_packing( png_ptr );
+			}
+			
 			// PNGの画像を操作するための一時配列を用意する
 			png_bytepp png_buff;
 			png_buff = ( png_bytepp )malloc( height * sizeof( png_bytep ) );
 			for( i = 0 ; i < (size_type)height ; i++ )
 			{
-				png_buff[i] = ( png_bytep )malloc( png_get_rowbytes( png_ptr, info_ptr ) );
+				png_buff[ i ] = ( png_bytep )malloc( png_get_rowbytes( png_ptr, info_ptr ) );
 			}
 
 			image.resize( width, height );
@@ -114,7 +119,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < ( size_type )width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to( png_buff[j][i], png_buff[j][i], png_buff[j][i] );
+						image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i ], png_buff[ j ][ i ], png_buff[ j ][ i ] );
 					}
 				}
 				break;
@@ -124,7 +129,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < ( size_type )width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 3 + 0 ], png_buff[j][ i * 3 + 1 ], png_buff[j][ i * 3 + 2 ] );
+						image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i * 3 + 0 ], png_buff[ j ][ i * 3 + 1 ], png_buff[ j ][ i * 3 + 2 ] );
 					}
 				}
 				break;
@@ -134,7 +139,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < ( size_type )width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 4 + 0 ], png_buff[j][ i * 4 + 1 ], png_buff[j][ i * 4 + 2 ], png_buff[j][ i * 4 + 3 ] );
+						image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i * 4 + 0 ], png_buff[ j ][ i * 4 + 1 ], png_buff[ j ][ i * 4 + 2 ], png_buff[ j ][ i * 4 + 3 ] );
 					}
 				}
 				break;
@@ -144,7 +149,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < ( size_type )width ; i++ )
 					{
-						image( i, j ) = pixel_converter::convert_to( png_buff[j][ i * 2 ], png_buff[j][ i * 2 ], png_buff[j][ i * 2 ], png_buff[j][ i * 2 + 1 ] );
+						image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i * 2 ], png_buff[ j ][ i * 2 ], png_buff[ j ][ i * 2 ], png_buff[ j ][ i * 2 + 1 ] );
 					}
 				}
 				break;
@@ -154,7 +159,7 @@ namespace __png_controller__
 				{
 					for( i = 0 ; i < ( size_type )width ; i++ )
 					{
-						png_color &p = info_ptr->palette[ png_buff[j][ i ] ];
+						png_color &p = info_ptr->palette[ png_buff[ j ][ i ] ];
 						image( i, j ) = pixel_converter::convert_to( p.red, p.green, p.blue );
 					}
 				}
@@ -166,7 +171,7 @@ namespace __png_controller__
 			}
 
 			// 一時画像用に確保したメモリを開放する
-			for( i = 0 ; i < (size_type)height ; i++ ) free( png_buff[i] );
+			for( i = 0 ; i < ( size_type )height ; i++ ) free( png_buff[ i ] );
 			free( png_buff );
 
 			// PNG の操作用に使用した構造体のメモリを解放する
