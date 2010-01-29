@@ -1421,7 +1421,994 @@ namespace he
 
 		return( static_cast< size_type >( l ) );
 	}
+
+	/// @brief Heらの3次元画像に対する26近傍型ラベリング
+	//! 
+	//! Heらの3次元画像に対する26近傍型ラベリング
+	//! 
+	//! @attention 入力と出力は異なる画像オブジェクトである必要がある
+	//! 
+	//! 出力画像のデータ型は，ラベル数がオーバーフローしないように注意が必要なため，short や int を利用することをお勧めします．
+	//! ここで，ラベル数とは最終的に得られる領域の数ではなく，作業中に発生する一時的なラベル数を指すため，データ型が char の場合にはオーバーフローする可能性が非常に大きくなります．
+	//! この関数は，以下に挙げる文献のアルゴリズムを実装したものです。
+	//! 何 立風, 巣 宇燕, 鈴木 賢治, 中村 剛士, 伊藤 英則, "三次元2値画像における高速ラベル付けアルゴリズム," 電子情報通信学会論文誌D, Vol.J92-D, No.12, pp.2261-2269, 2009.
+	//! 
+	//! @param[in]  in        … 入力画像
+	//! @param[out] out       … 出力画像
+	//! 
+	//! @return 割り当てられたラベル数
+	//! 
+	template< typename T1, class Allocator1, typename T2, class Allocator2 >
+	inline typename array3< T2, Allocator2 >::value_type labeling26( const array3< T1, Allocator1 > &b, array3< T2, Allocator2 > &l )
+	{
+		typedef typename array3< T1, Allocator1 >::size_type		size_type;
+		typedef typename array3< T1, Allocator1 >::difference_type	difference_type;
+		typedef typename array3< T1, Allocator1 >::value_type		value_type;
+		typedef typename array3< T2, Allocator2 >::value_type		label_type;
+		typedef typename array3< T1, Allocator1 >::const_pointer	ipointer;
+		typedef typename array3< T2, Allocator2 >::pointer			opointer;
+
+		typedef typename __he__::table_type< label_type >			table_type;
+
+		const size_type size = ( ( b.width( ) + 1 ) / 2 ) * ( ( b.height( ) + 1 ) / 2 ) * ( ( b.depth( ) + 1 ) / 2 ); 
+		array< table_type > table( size );
+		l.resize( b.width( ), b.height( ), b.depth( ) );
+		label_type label = 1;
+		{// k = 0
+			const size_t k = 0;
+			{// j = 0
+				const size_t j = 0;
+				{// i = 0
+					const size_t i = 0;
+					if( b( i, j, k ) != 0 )
+					{
+						l( i, j, k ) = label;
+						__he__::update( label, table );
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+				for( size_t i = 1 ; i != b.width( ) ; ++ i )
+				{
+					const label_type &l1  = l( i - 1, j    , k );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l1 != 0 )
+						{
+							l( i, j, k ) = l1;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+			}
+			for( size_t j = 1 ; j != b.height( ) ; ++ j )
+			{
+				{// i = 0
+					const size_t i = 0;
+					const label_type &l3  = l( i,     j - 1, k );
+					const label_type &l4  = l( i + 1, j - 1, k );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l3 != 0 )
+						{
+							l( i, j, k ) = l3;
+						}
+						else if( l4 != 0 )
+						{
+							l( i, j, k ) = l4;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+				for( size_t i = 1 ; i != b.width( ) - 1 ; ++ i )
+				{
+					const label_type &l1  = l( i - 1, j    , k );
+					const label_type &l2  = l( i - 1, j - 1, k );
+					const label_type &l3  = l( i,     j - 1, k );
+					const label_type &l4  = l( i + 1, j - 1, k );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l3 != 0 )
+						{
+							l( i, j, k ) = l3;
+						}
+						else if( l1 != 0 )
+						{
+							l( i, j, k ) = l1;
+							if( l4 != 0 )
+							{
+								__he__::resolve( l1, l4, table );
+							}
+						}
+						else if( l2 != 0 )
+						{
+							l( i, j, k ) = l2;
+							if( l4 != 0 )
+							{
+								__he__::resolve( l2, l4, table );
+							}
+						}
+						else if( l4 != 0 )
+						{
+							l( i, j, k ) = l4;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}				
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+				{// i = width - 1
+					const size_t i = b.width( ) - 1;
+					const label_type &l1 = l( i - 1, j,     k );
+					const label_type &l2 = l( i - 1, j - 1, k );
+					const label_type &l3 = l( i,     j - 1, k );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l3 != 0 )
+						{
+							l( i, j, k ) = l3;
+						}
+						else if( l1 != 0 )
+						{
+							l( i, j, k ) = l1;
+						}
+						else if( l2 != 0 )
+						{
+							l( i, j, k ) = l2;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}				
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+			}
+		}
+		for( size_t k = 1 ; k != b.depth( ) ; ++ k )
+		{
+			{// j = 0
+				const size_t j = 0;
+				{// i = 0
+					const size_t i = 0;
+					const label_type &l9  = l( i,     j,     k - 1 );
+					const label_type &l10 = l( i + 1, j,     k - 1 );
+					const label_type &l12 = l( i,     j + 1, k - 1 );
+					const label_type &l13 = l( i + 1, j + 1, k - 1 );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l9 != 0 )
+						{
+							l( i, j, k ) = l9;
+						}
+						else if( l10 != 0 )
+						{
+							l( i, j, k ) = l10;
+						}
+						else if( l12 != 0 )
+						{
+							l( i, j, k ) = l12;
+						}
+						else if( l13 != 0 )
+						{
+							l( i, j, k ) = l13;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+				for( size_t i = 1 ; i != b.width( ) - 1 ; ++ i )
+				{
+					const label_type &l1  = l( i - 1, j    , k );
+					const label_type &l8  = l( i - 1, j,     k - 1 );
+					const label_type &l9  = l( i,     j,     k - 1 );
+					const label_type &l10 = l( i + 1, j,     k - 1 );
+					const label_type &l11 = l( i - 1, j + 1, k - 1 );
+					const label_type &l12 = l( i,     j + 1, k - 1 );
+					const label_type &l13 = l( i + 1, j + 1, k - 1 );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l9 != 0 )
+						{
+							l( i, j, k ) = l9;
+						}
+						else if( l1 != 0 )
+						{
+							l( i, j, k ) = l1;
+							if( l10 != 0 && l12 == 0 )
+							{
+								__he__::resolve( l1, l10, table );
+							}
+							else if( l13 != 0 && l12 == 0 )
+							{
+								__he__::resolve( l1, l13, table );
+							}
+						}
+						else if( l8 != 0 )
+						{
+							l( i, j, k ) = l8;
+							if( l10 != 0 && l12 == 0 )
+							{
+								__he__::resolve( l8, l10, table );
+							}
+							else if( l13 != 0 && l12 == 0 )
+							{
+								__he__::resolve( l8, l13, table );
+							}
+						}
+						else if( l10 != 0 )
+						{
+							l( i, j, k ) = l10;
+							if( l11 != 0 && l12 == 0 )
+							{
+								__he__::resolve( l10, l11, table );
+							}
+						}
+						else if( l12 != 0 )
+						{
+							l( i, j, k ) = l12;
+						}
+						else if( l11 != 0 )
+						{
+							l( i, j, k ) = l11;
+							if( l13 != 0 )
+							{
+								__he__::resolve( l11, l13, table );
+							}
+						}
+						else if( l13 != 0 )
+						{
+							l( i, j, k ) = l13;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+				{// i = width - 1
+					const size_t i = b.width( ) - 1;
+					const label_type &l1  = l( i - 1, j    , k );
+					const label_type &l8  = l( i - 1, j,     k - 1 );
+					const label_type &l9  = l( i,     j,     k - 1 );
+					const label_type &l11 = l( i - 1, j + 1, k - 1 );
+					const label_type &l12 = l( i,     j + 1, k - 1 );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l9 != 0 )
+						{
+							l( i, j, k ) = l9;
+						}
+						else if( l1 != 0 )
+						{
+							l( i, j, k ) = l1;
+						}
+						else if( l8 != 0 )
+						{
+							l( i, j, k ) = l8;
+						}
+						else if( l12 != 0 )
+						{
+							l( i, j, k ) = l12;
+						}
+						else if( l11 != 0 )
+						{
+							l( i, j, k ) = l11;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+			}
+			for( size_t j = 1 ; j != b.height( ) - 1 ; ++ j )
+			{
+				{// i = 0
+					const size_t i = 0;
+					const label_type &l3  = l( i,     j - 1, k );
+					const label_type &l4  = l( i + 1, j - 1, k );
+					const label_type &l6  = l( i,     j - 1, k - 1 );
+					const label_type &l7  = l( i + 1, j - 1, k - 1 );
+					const label_type &l9  = l( i,     j,     k - 1 );
+					const label_type &l10 = l( i + 1, j,     k - 1 );
+					const label_type &l12 = l( i,     j + 1, k - 1 );
+					const label_type &l13 = l( i + 1, j + 1, k - 1 );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l9 != 0 )
+						{
+							l( i, j, k ) = l9;
+						}
+						else if( l3 != 0 )
+						{
+							l( i, j, k ) = l3;
+							if( l12 != 0 && l10 == 0 )
+							{
+								__he__::resolve( l3, l12, table );
+							}
+							else
+							{
+								if( l13 != 0 && l10 == 0 )
+								{
+									__he__::resolve( l3, l13, table );
+								}
+							}
+						}
+						else if( l6 != 0 )
+						{
+							l( i, j, k ) = l6;
+							if( l12 != 0 && l10 == 0 )
+							{
+								__he__::resolve( l6, l12, table );
+							}
+							else
+							{
+								if( l13 != 0 && l10 == 0 )
+								{
+									__he__::resolve( l6, l13, table );
+								}
+							}
+						}
+						else if( l10 != 0 )
+						{
+							l( i, j, k ) = l10;
+						}
+						else if( l12 != 0 )
+						{
+							l( i, j, k ) = l12;
+							if( l4 != 0 )
+							{
+								__he__::resolve( l12, l4, table );
+							}
+							else if( l7 != 0 )
+							{
+								__he__::resolve( l12, l7, table );
+							}
+						}
+						else if( l4 != 0 )
+						{
+							l( i, j, k ) = l4;
+							if( l13 != 0 )
+							{
+								__he__::resolve( l4, l13, table );
+							}
+						}
+						else if( l7 != 0 )
+						{
+							l( i, j, k ) = l7;
+							if( l13 != 0 )
+							{
+								__he__::resolve( l7, l13, table );
+							}
+						}
+						else if( l13 != 0 )
+						{
+							l( i, j, k ) = l13;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+				for( size_t i = 1 ; i != b.width( ) - 1 ; ++ i )
+				{
+					const label_type &l1  = l( i - 1, j    , k );
+					const label_type &l2  = l( i - 1, j - 1, k );
+					const label_type &l3  = l( i,     j - 1, k );
+					const label_type &l4  = l( i + 1, j - 1, k );
+					const label_type &l5  = l( i - 1, j - 1, k - 1 );
+					const label_type &l6  = l( i,     j - 1, k - 1 );
+					const label_type &l7  = l( i + 1, j - 1, k - 1 );
+					const label_type &l8  = l( i - 1, j,     k - 1 );
+					const label_type &l9  = l( i,     j,     k - 1 );
+					const label_type &l10 = l( i + 1, j,     k - 1 );
+					const label_type &l11 = l( i - 1, j + 1, k - 1 );
+					const label_type &l12 = l( i,     j + 1, k - 1 );
+					const label_type &l13 = l( i + 1, j + 1, k - 1 );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l9 != 0 )
+						{
+							l( i, j, k ) = l9;
+						}
+						else if( l3 != 0 )
+						{
+							l( i, j, k ) = l3;
+							if( l12 != 0 && l8 == 0 && l10 == 0 )
+							{
+								__he__::resolve( l3, l12, table );
+							}
+							else
+							{
+								if( l11 != 0 && l8 == 0 )
+								{
+									__he__::resolve( l3, l11, table );
+								}
+								if( l13 != 0 && l10 == 0 )
+								{
+									__he__::resolve( l3, l13, table );
+								}
+							}
+						}
+						else if( l6 != 0 )
+						{
+							l( i, j, k ) = l6;
+							if( l12 != 0 && l8 == 0 && l10 == 0 )
+							{
+								__he__::resolve( l6, l12, table );
+							}
+							else
+							{
+								if( l11 != 0 && l8 == 0 )
+								{
+									__he__::resolve( l6, l11, table );
+								}
+								if( l13 != 0 && l10 == 0 )
+								{
+									__he__::resolve( l6, l13, table );
+								}
+							}
+						}
+						else if( l1 != 0 )
+						{
+							l( i, j, k ) = l1;
+							if( l10 != 0 && l12 == 0 )
+							{
+								__he__::resolve( l1, l10, table );
+							}
+							else if( l7 != 0 )
+							{
+								__he__::resolve( l1, l7, table );
+								if( l13 != 0 )
+								{
+									__he__::resolve( l1, l13, table );
+								}
+							}
+							else if( l4 != 0 )
+							{
+								__he__::resolve( l1, l4, table );
+								if( l13 != 0 )
+								{
+									__he__::resolve( l1, l13, table );
+								}
+							}
+							else if( l13 != 0 && l12 == 0 )
+							{
+								__he__::resolve( l1, l13, table );
+							}
+						}
+						else if( l8 != 0 )
+						{
+							l( i, j, k ) = l8;
+							if( l10 != 0 && l12 == 0 )
+							{
+								__he__::resolve( l8, l10, table );
+							}
+							else if( l7 != 0 )
+							{
+								__he__::resolve( l8, l7, table );
+								if( l13 != 0 )
+								{
+									__he__::resolve( l8, l13, table );
+								}
+							}
+							else if( l4 != 0 )
+							{
+								__he__::resolve( l8, l4, table );
+								if( l13 != 0 )
+								{
+									__he__::resolve( l8, l13, table );
+								}
+							}
+							else if( l13 != 0 && l12 == 0 )
+							{
+								__he__::resolve( l8, l13, table );
+							}
+						}
+						else if( l10 != 0 )
+						{
+							l( i, j, k ) = l10;
+							if( l11 != 0 && l12 == 0 )
+							{
+								__he__::resolve( l10, l11, table );
+							}
+							if( l5 != 0 )
+							{
+								__he__::resolve( l10, l5, table );
+							}
+							else if( l2 != 0 )
+							{
+								__he__::resolve( l10, l2, table );
+							}
+						}
+						else if( l12 != 0 )
+						{
+							l( i, j, k ) = l12;
+							if( l4 != 0 )
+							{
+								__he__::resolve( l12, l4, table );
+							}
+							else if( l7 != 0 )
+							{
+								__he__::resolve( l12, l7, table );
+							}
+							if( l2 != 0 )
+							{
+								__he__::resolve( l12, l2, table );
+							}
+							else if( l5 != 0 )
+							{
+								__he__::resolve( l12, l5, table );
+							}
+						}
+						else if( l5 != 0 )
+						{
+							l( i, j, k ) = l5;
+							if( l4 != 0 )
+							{
+								__he__::resolve( l5, l4, table );
+							}
+							else if( l7 != 0 )
+							{
+								__he__::resolve( l5, l7, table );
+							}
+							if( l11 != 0 )
+							{
+								__he__::resolve( l5, l11, table );	
+							}
+							if( l13 != 0 )
+							{
+								__he__::resolve( l5, l13, table );
+							}
+						}
+						else if( l2 != 0 )
+						{
+							l( i, j, k ) = l2;
+							if( l4 != 0 )
+							{
+								__he__::resolve( l2, l4, table );
+							}
+							else if( l7 != 0 )
+							{
+								__he__::resolve( l2, l7, table );
+							}
+							if( l11 != 0 )
+							{
+								__he__::resolve( l2, l11, table );
+							}
+							if( l13 != 0 )
+							{
+								__he__::resolve( l2, l13, table );
+							}
+						}
+						else if( l4 != 0 )
+						{
+							l( i, j, k ) = l4;
+							if( l11 != 0 )
+							{
+								__he__::resolve( l4, l11, table );
+							}
+							if( l13 != 0 )
+							{
+								__he__::resolve( l4, l13, table );
+							}
+						}
+						else if( l7 != 0 )
+						{
+							l( i, j, k ) = l7;
+							if( l11 != 0 )
+							{
+								__he__::resolve( l7, l11, table );
+							}
+							if( l13 != 0 )
+							{
+								__he__::resolve( l7, l13, table );
+							}
+						}
+						else if( l11 != 0 )
+						{
+							l( i, j, k ) = l11;
+							if( l13 != 0 )
+							{
+								__he__::resolve( l11, l13, table );
+							}
+						}
+						else if( l13 != 0 )
+						{
+							l( i, j, k ) = l13;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+				{// i = width - 1
+					const size_t i = b.width( ) - 1;
+					const label_type &l1  = l( i - 1, j    , k );
+					const label_type &l2  = l( i - 1, j - 1, k );
+					const label_type &l3  = l( i,     j - 1, k );
+					const label_type &l5  = l( i - 1, j - 1, k - 1 );
+					const label_type &l6  = l( i,     j - 1, k - 1 );
+					const label_type &l8  = l( i - 1, j,     k - 1 );
+					const label_type &l9  = l( i,     j,     k - 1 );
+					const label_type &l11 = l( i - 1, j + 1, k - 1 );
+					const label_type &l12 = l( i,     j + 1, k - 1 );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l9 != 0 )
+						{
+							l( i, j, k ) = l9;
+						}
+						else if( l3 != 0 )
+						{
+							l( i, j, k ) = l3;
+							if( l12 != 0 && l8 == 0 )
+							{
+								__he__::resolve( l3, l12, table );
+							}
+							else
+							{
+								if( l11 != 0 && l8 == 0 )
+								{
+									__he__::resolve( l3, l11, table );
+								}
+							}
+						}
+						else if( l6 != 0 )
+						{
+							l( i, j, k ) = l6;
+							if( l12 != 0 && l8 == 0 )
+							{
+								__he__::resolve( l6, l12, table );
+							}
+							else
+							{
+								if( l11 != 0 && l8 == 0 )
+								{
+									__he__::resolve( l6, l11, table );
+								}
+							}
+						}
+						else if( l1 != 0 )
+						{
+							l( i, j, k ) = l1;
+						}
+						else if( l8 != 0 )
+						{
+							l( i, j, k ) = l8;
+						}
+						else if( l12 != 0 )
+						{
+							l( i, j, k ) = l12;
+							if( l2 != 0 )
+							{
+								__he__::resolve( l12, l2, table );
+							}
+							else if( l5 != 0 )
+							{
+								__he__::resolve( l12, l5, table );
+							}
+						}
+						else if( l5 != 0 )
+						{
+							l( i, j, k ) = l5;
+							if( l11 != 0 )
+							{
+								__he__::resolve( l5, l11, table );	
+							}
+						}
+						else if( l2 != 0 )
+						{
+							l( i, j, k ) = l2;
+							if( l11 != 0 )
+							{
+								__he__::resolve( l2, l11, table );
+							}
+						}
+						else if( l11 != 0 )
+						{
+							l( i, j, k ) = l11;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+			}
+			{// j = height - 1
+				const size_t j = b.height( ) - 1;
+				{// i = 0
+					const size_t i = 0;
+					const label_type &l3  = l( i,     j - 1, k );
+					const label_type &l4  = l( i + 1, j - 1, k );
+					const label_type &l6  = l( i,     j - 1, k - 1 );
+					const label_type &l7  = l( i + 1, j - 1, k - 1 );
+					const label_type &l9  = l( i,     j,     k - 1 );
+					const label_type &l10 = l( i + 1, j,     k - 1 );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l9 != 0 )
+						{
+							l( i, j, k ) = l9;
+						}
+						else if( l3 != 0 )
+						{
+							l( i, j, k ) = l3;
+						}
+						else if( l6 != 0 )
+						{
+							l( i, j, k ) = l6;
+						}
+						else if( l10 != 0 )
+						{
+							l( i, j, k ) = l10;
+						}
+						else if( l4 != 0 )
+						{
+							l( i, j, k ) = l4;
+						}
+						else if( l7 != 0 )
+						{
+							l( i, j, k ) = l7;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+				for( size_t i = 1 ; i != b.width( ) - 1 ; ++ i )
+				{
+					const label_type &l1  = l( i - 1, j    , k );
+					const label_type &l2  = l( i - 1, j - 1, k );
+					const label_type &l3  = l( i,     j - 1, k );
+					const label_type &l4  = l( i + 1, j - 1, k );
+					const label_type &l5  = l( i - 1, j - 1, k - 1 );
+					const label_type &l6  = l( i,     j - 1, k - 1 );
+					const label_type &l7  = l( i + 1, j - 1, k - 1 );
+					const label_type &l8  = l( i - 1, j,     k - 1 );
+					const label_type &l9  = l( i,     j,     k - 1 );
+					const label_type &l10 = l( i + 1, j,     k - 1 );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l9 != 0 )
+						{
+							l( i, j, k ) = l9;
+						}
+						else if( l3 != 0 )
+						{
+							l( i, j, k ) = l3;
+						}
+						else if( l6 != 0 )
+						{
+							l( i, j, k ) = l6;
+						}
+						else if( l1 != 0 )
+						{
+							l( i, j, k ) = l1;
+							if( l10 != 0 )
+							{
+								__he__::resolve( l1, l10, table );
+							}
+							else if( l7 != 0 )
+							{
+								__he__::resolve( l1, l7, table );
+							}
+							else if( l4 != 0 )
+							{
+								__he__::resolve( l1, l4, table );
+							}
+						}
+						else if( l8 != 0 )
+						{
+							l( i, j, k ) = l8;
+							if( l10 != 0 )
+							{
+								__he__::resolve( l8, l10, table );
+							}
+							else if( l7 != 0 )
+							{
+								__he__::resolve( l8, l7, table );
+							}
+							else if( l4 != 0 )
+							{
+								__he__::resolve( l8, l4, table );
+							}
+						}
+						else if( l10 != 0 )
+						{
+							l( i, j, k ) = l10;
+							if( l5 != 0 )
+							{
+								__he__::resolve( l10, l5, table );
+							}
+							else if( l2 != 0 )
+							{
+								__he__::resolve( l10, l2, table );
+							}
+						}
+						else if( l5 != 0 )
+						{
+							l( i, j, k ) = l5;
+							if( l4 != 0 )
+							{
+								__he__::resolve( l5, l4, table );
+							}
+							else if( l7 != 0 )
+							{
+								__he__::resolve( l5, l7, table );
+							}
+						}
+						else if( l2 != 0 )
+						{
+							l( i, j, k ) = l2;
+							if( l4 != 0 )
+							{
+								__he__::resolve( l2, l4, table );
+							}
+							else if( l7 != 0 )
+							{
+								__he__::resolve( l2, l7, table );
+							}
+						}
+						else if( l4 != 0 )
+						{
+							l( i, j, k ) = l4;
+						}
+						else if( l7 != 0 )
+						{
+							l( i, j, k ) = l7;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+				{// i = width - 1
+					const size_t i = b.width( ) - 1;
+					const label_type &l1  = l( i - 1, j    , k );
+					const label_type &l2  = l( i - 1, j - 1, k );
+					const label_type &l3  = l( i,     j - 1, k );
+					const label_type &l5  = l( i - 1, j - 1, k - 1 );
+					const label_type &l6  = l( i,     j - 1, k - 1 );
+					const label_type &l8  = l( i - 1, j,     k - 1 );
+					const label_type &l9  = l( i,     j,     k - 1 );
+					if( b( i, j, k ) != 0 )
+					{
+						if( l9 != 0 )
+						{
+							l( i, j, k ) = l9;
+						}
+						else if( l3 != 0 )
+						{
+							l( i, j, k ) = l3;
+						}
+						else if( l6 != 0 )
+						{
+							l( i, j, k ) = l6;
+						}
+						else if( l1 != 0 )
+						{
+							l( i, j, k ) = l1;
+						}
+						else if( l8 != 0 )
+						{
+							l( i, j, k ) = l8;
+						}
+						else if( l5 != 0 )
+						{
+							l( i, j, k ) = l5;
+						}
+						else if( l2 != 0 )
+						{
+							l( i, j, k ) = l2;
+						}
+						else
+						{
+							l( i, j, k ) = label;
+							__he__::update( label, table );
+						}
+					}
+					else
+					{
+						l( i, j, k ) = 0;
+					}
+				}
+			}
+		}
+		mist::array< label_type > l_table( label );
+		label_type ret = 0;
+		for( size_t i = 1 ; i != label ; ++ i )
+		{
+			if( l_table[ table[ i ].label ] == 0 )
+			{
+				ret ++;
+				l_table[ table[ i ].label ] = ret;
+			}
+		}
+		for( size_t i = 0 ; i != l.size( ) ; ++ i )
+		{
+			l[ i ] = l_table[ table[ l[ i ] ].label ];
+		}
+		return ret;
+	}
 }
+
 
 /// @}
 //  ラベリンググループの終わり
