@@ -234,20 +234,21 @@ namespace nearest
 		int dx0, dy0, dx1, dy1;
 		detail::clipping( 0, 0, iw, ih, dx0, dy0, dx1, dy1, mat );
 
-		for( int y = ( ( dy0 > 0 ) ? dy0 : 0 ) ; y < ( ( dy1 < h ) ? dy1 : h ) ; ++y )
+		//	for( int y = ( ( dy0 > 0 ) ? dy0 : 0 ) ; y < ( ( dy1 < h ) ? dy1 : h ) ; ++y )
+		for( int y = 0 ; y < h ; ++y )
 		{
-			for( int x = ( ( dx0 > 0 ) ? dx0 : 0 ) ; x < ( ( dx1 < w ) ? dx1 : w ) ; ++x )
+		  //			for( int x = ( ( dx0 > 0 ) ? dx0 : 0 ) ; x < ( ( dx1 < w ) ? dx1 : w ) ; ++x )
+			for( int x = 0 ; x < w ; ++x )
 			{
-				double sx = (  m( 0, 0 ) * x + m( 0, 1 ) * y + m( 0, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
-				double sy = (  m( 1, 0 ) * x + m( 1, 1 ) * y + m( 1, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
+			  double sx, sy;
+			  detail::transform_point( x, y, sx, sy, m );
+			  int ix = static_cast< int >( sx );
+			  int iy = static_cast< int >( sy );			  
 
-				int ix = static_cast< int >( sx );
-				int iy = static_cast< int >( sy );
-
-				if( 0 <= ix && ix < iw && 0 <= iy && iy < ih )
-				{
-					out( x, y ) = in( ix, iy );
-				}
+			  if( 0 <= ix && ix < iw && 0 <= iy && iy < ih )
+			    {
+			      out( x, y ) = in( ix, iy );
+			    }
 			}
 		}
 	}
@@ -273,12 +274,14 @@ namespace linear
 		int dx0, dy0, dx1, dy1;
 		detail::clipping( 0, 0, iw, ih, dx0, dy0, dx1, dy1, mat );
 
-		for( int y = ( ( dy0 > 0 ) ? dy0 : 0 ) ; y < ( ( dy1 < h ) ? dy1 : h ) ; ++y )
+		for( int y = 0 ; y < h ; ++y )		
+		  //		for( int y = ( ( dy0 > 0 ) ? dy0 : 0 ) ; y < ( ( dy1 < h ) ? dy1 : h ) ; ++y )
 		{
-			for( int x = ( ( dx0 > 0 ) ? dx0 : 0 ) ; x < ( ( dx1 < w ) ? dx1 : w ) ; ++x )
+		  for( int x = 0 ; x < w ; ++x )
+		    //			for( int x = ( ( dx0 > 0 ) ? dx0 : 0 ) ; x < ( ( dx1 < w ) ? dx1 : w ) ; ++x )
 			{
-				double sx = ( m( 0, 0 ) * x + m( 0, 1 ) * y + m( 0, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
-				double sy = ( m( 1, 0 ) * x + m( 1, 1 ) * y + m( 1, 2 ) ) / ( m( 2, 0 ) * x + m( 2, 1 ) * y + m( 2, 2 ) );
+				double sx, sy;
+				detail::transform_point( x, y, sx, sy, m );
 
 				int ix = static_cast< int >( sx );
 				int iy = static_cast< int >( sy );
