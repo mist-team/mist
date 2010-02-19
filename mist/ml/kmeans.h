@@ -96,8 +96,8 @@ namespace kmeans
 			maxv( i, 0 ) = -1e12;
 			for( size_t j = 0 ; j < in.cols() ; ++j )
 			{
-				minv( i, 0 ) = std::min( minv( i, 0 ), in( i, j ) );
-				maxv( i, 0 ) = std::max( maxv( i, 0 ), in( i, j ) );
+				minv( i, 0 ) = min( minv( i, 0 ), in( i, j ) );
+				maxv( i, 0 ) = max( maxv( i, 0 ), in( i, j ) );
 			}
 		}
 		/*
