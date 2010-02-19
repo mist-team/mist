@@ -40,6 +40,7 @@
 #include "criteria.h"
 #endif
 
+#include <cstdio>
 
 _MIST_BEGIN
 
@@ -49,7 +50,7 @@ namespace kmeans
 	{
 		double nearestCenter( const matrix< double > &in, int col, const matrix< double > &center, int n, int &idx )
 		{
-			double min = 1e12;
+			double minv = 1e12;
 
 			for( int i = 0 ; i < n ; ++i )
 			{
@@ -58,14 +59,14 @@ namespace kmeans
 				{
 					dist += pow( in( j, col ) - center( j, i ), 2.0 );
 				}
-				if( dist < min )
+				if( dist < minv )
 				{
-					min = dist;
+					minv = dist;
 					idx = i;
 				}
 			}
 
-			return min;
+			return minv;
 		}
 	}
 
@@ -87,16 +88,16 @@ namespace kmeans
 		center.resize( in.rows(), k );
 
 		// calculate value range(min-max)
-		matrix< double > min( in.rows(), 1 );
-		matrix< double > max( in.rows(), 1 );
+		matrix< double > minv( in.rows(), 1 );
+		matrix< double > maxv( in.rows(), 1 );
 		for( size_t i = 0 ; i < in.rows() ; ++i )
 		{
-			min( i, 0 ) =  1e12;
-			max( i, 0 ) = -1e12;
+			minv( i, 0 ) =  1e12;
+			maxv( i, 0 ) = -1e12;
 			for( size_t j = 0 ; j < in.cols() ; ++j )
 			{
-				min( i, 0 ) = std::min( min( i, 0 ), in( i, j ) );
-				max( i, 0 ) = std::max( max( i, 0 ), in( i, j ) );
+				minv( i, 0 ) = std::min( minv( i, 0 ), in( i, j ) );
+				maxv( i, 0 ) = std::max( maxv( i, 0 ), in( i, j ) );
 			}
 		}
 		/*
@@ -106,7 +107,7 @@ namespace kmeans
 		{
 		for( size_t j = 0 ; j < in.rows() ; ++j )
 		{
-		center( j, i ) = min( j, 0 ) + rnd.real3() * ( max( j, 0 ) - min( j, 0 ) );
+		center( j, i ) = minv( j, 0 ) + rnd.real3() * ( maxv( j, 0 ) - minv( j, 0 ) );
 		}
 		}
 		*/
@@ -120,7 +121,7 @@ namespace kmeans
 			{
 				for( int j = 0 ; j < static_cast< int >( in.rows() ) ; ++j )
 				{
-					center( j, i ) = min( j, 0 ) + rnd.real3() * ( max( j, 0 ) - min( j, 0 ) );
+					center( j, i ) = minv( j, 0 ) + rnd.real3() * ( maxv( j, 0 ) - minv( j, 0 ) );
 				}
 			}
 			else
