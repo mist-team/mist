@@ -28,7 +28,7 @@
 
 /// @file mist/drawing.h
 //!
-//! @brief 画像に対して，直線や円などを描画するライブラリ
+//! @brief 画像に対して，直線や円，テキストなどを描画するライブラリ
 //!
 #ifndef __INCLUDE_MIST_DRAWING__
 #define __INCLUDE_MIST_DRAWING__
@@ -43,6 +43,11 @@
 #endif
 
 #include <cmath>
+
+#ifdef MIST_USE_DRAW_TEXT
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#endif
 
 
 // mist名前空間の始まり
@@ -640,6 +645,171 @@ void draw_crosspoint( array2< T, Allocator > &image,
 	draw_line( image, cx - size / 2, cy, cx + size / 2, cy, value );
 	draw_line( image, cx, cy - size / 2, cx, cy + size / 2, value );
 }
+
+
+
+#ifdef MIST_USE_DRAW_TEXT
+
+
+/// @brief Draw a UTF-32 code text
+//! 
+//! FreeType2 is required.
+//! Define `MIST_USE_DRAW_TEXT' to use this function.
+//! TureType fonts (.ttf) are recommended to be used.
+//! 
+//! @param[in,out] img is a image
+//! @param[in]     filename is a font file name
+//! @param[in]	   px is a X coordinate where the baseline starts
+//! @param[in]     py is a Y coordinate where the baseline starts
+//! @param[in]     size is a font size in pixels
+//! @param[in]     color is a font color
+//! @param[in]     str is an array of UTF-32 values
+//! @param[in]     len is a length of str
+//!
+//! @return        result
+//!
+template < typename T, typename Allocator >
+inline bool draw_text( array2< T, Allocator > &img, 
+					   char *filename, 
+					   int px, 
+					   int py, 
+					   int size, 
+					   typename array2< T, Allocator >::value_type color, 
+					   unsigned long *str, 
+					   int len )
+{
+	
+	FT_Library library = NULL;
+	FT_Face    face    = NULL;
+	FT_Error   error;	
+
+	try
+	{
+		error = FT_Init_FreeType( &library );
+		if ( error )
+		{
+			library = NULL;
+			throw error;
+		}
+
+		error = FT_New_Face( library, filename, 0, &face );
+		if ( error )
+		{
+			face = NULL;
+			throw error;
+		}
+
+		error = FT_Set_Pixel_Sizes( face, 0, size );
+		if ( error )
+		{
+			throw error;
+		}
+
+		int pen_x = px;
+		int pen_y = py;
+		for ( int i = 0; i < len; i++)
+		{
+			FT_UInt glyph_index = FT_Get_Char_Index( face, (FT_ULong)str[i] );
+			
+			error = FT_Load_Glyph( face, glyph_index, FT_LOAD_DEFAULT );
+			if ( error )
+			{
+				throw error;
+			}
+
+			error = FT_Render_Glyph( face->glyph, FT_RENDER_MODE_NORMAL );
+			if ( error )
+			{
+				throw error;
+			}
+
+			for (int x = 0; x < face->glyph->bitmap.width; x++)
+			{
+				for (int y = 0; y < face->glyph->bitmap.rows; y++)
+				{
+					int xx = x + pen_x + face->glyph->bitmap_left;
+					int yy = y + pen_y - face->glyph->bitmap_top;
+					if ( ( 0 <= xx ) && ( xx < (int)img.width() ) && ( 0 <= yy ) && ( yy < (int)img.height() ) )
+					{
+						// alpha blending
+						T img_value = img(xx, yy);
+						double str_value = static_cast< double > ( face->glyph->bitmap.buffer[ x + y * face->glyph->bitmap.width] ) / 255.0;
+						img(xx, yy) = static_cast< typename array2<T>::value_type > ( str_value * color + (1.0 - str_value) * img_value );
+					}
+				}
+			}
+			pen_x += face->glyph->advance.x >> 6;
+			
+		}
+		
+		FT_Done_Face(face);
+		FT_Done_FreeType(library);
+		
+	}
+	catch ( ... )
+	{
+		if (face != NULL)
+		{
+			FT_Done_Face(face);
+		}
+		if (library != NULL)
+		{
+			FT_Done_FreeType(library);
+		}
+		return false;
+	}
+
+	return true;
+
+}
+
+
+
+/// @brief Draw a ASCII code text
+//!  
+//! FreeType2 is required.
+//! Define `MIST_USE_DRAW_TEXT' to use this function.
+//! TureType fonts (.ttf) are recommended to be used.
+//! 
+//! @param[in,out] img is a image
+//! @param[in]     filename is a font file name
+//! @param[in]	   px is a X coordinate where the baseline starts
+//! @param[in]     py is a Y coordinate where the baseline starts
+//! @param[in]     size is a font size in pixels
+//! @param[in]     color is a font color
+//! @param[in]     str is an array of ASCII codes, required to finish by 0x00
+//!
+//! @return        result
+//!
+template < typename T, typename Allocator >
+inline bool draw_text( array2< T, Allocator > &img,
+					   char *filename,
+					   int px,
+					   int py,
+					   int size,
+					   typename array2< T, Allocator >::value_type color,
+					   char *str )
+{
+	int len = strlen(str);
+	
+	unsigned long *str_ulong = new unsigned long[len];
+
+	for (int i = 0; i < len; i++)
+	{
+		str_ulong[i] = (FT_ULong)str[i];
+	}
+
+	bool result = draw_text( img, filename, px, py, size, color, str_ulong, len );
+
+	delete []str_ulong;
+
+	return result;
+
+}
+
+
+#endif // MIST_USE_DRAW_TEXT
+
 
 /// @}
 //  直線や円の描画グループの終わり
