@@ -211,10 +211,10 @@ _MIST_BEGIN
 
 #define __CHECK_HARD_CASE__					0	///< CONDOR アルゴリズムにおいて，Trust Region を解く際に Hard Case のチェックをするかどうか．チェックをするほうが安定した最適化が可能になる場合があります．
 
-#define _ARRAY_BIND_OPERATION_SUPPORT_		0	///< MISTの array  コンテナ同士の四則演算を有効にするかどうか
-#define _ARRAY1_BIND_OPERATION_SUPPORT_		0	///< MISTの array1 コンテナ同士の四則演算を有効にするかどうか
-#define _ARRAY2_BIND_OPERATION_SUPPORT_		0	///< MISTの array2 コンテナ同士の四則演算を有効にするかどうか
-#define _ARRAY3_BIND_OPERATION_SUPPORT_		0	///< MISTの array3 コンテナ同士の四則演算を有効にするかどうか
+#define _ARRAY_BIND_OPERATION_SUPPORT_		1	///< MISTの array  コンテナ同士の四則演算を有効にするかどうか
+#define _ARRAY1_BIND_OPERATION_SUPPORT_		1	///< MISTの array1 コンテナ同士の四則演算を有効にするかどうか
+#define _ARRAY2_BIND_OPERATION_SUPPORT_		1	///< MISTの array2 コンテナ同士の四則演算を有効にするかどうか
+#define _ARRAY3_BIND_OPERATION_SUPPORT_		1	///< MISTの array3 コンテナ同士の四則演算を有効にするかどうか
 
 
 #define _MIST_THREAD_SUPPORT_				1	///< MISTの各アルゴリズムでのスレッドサポートをするかどうか．サポートする場合は，LINUX系の場合は pthread ライブラリが必要
@@ -222,6 +222,8 @@ _MIST_BEGIN
 #define _MIST_VECTOR_SUPPORT_				0	///< MISTのVECTORを有効にする．MATRIXとの掛け算等もサポートする．STLのvectorとクラス名がかぶるため，名前空間を正しくインポートする必要がある．
 
 #define _LZW_COMPRESSION_SUPPORT_		false	///< TIFFの出力で，LZW圧縮を有効にするオプションをデフォルトにするかどうか
+
+#define _COMPRESSED_CSV_SUPPORT_			0	///< ZLIB圧縮されたCSVファイルの読み込みをサポートするかどうか
 
 
 // 行列演算のオプション

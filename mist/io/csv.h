@@ -47,7 +47,9 @@
 #include <string>
 #include <vector>
 
-#include <zlib.h>
+#if defined( _COMPRESSED_CSV_SUPPORT_ ) && _COMPRESSED_CSV_SUPPORT_ != 0
+	#include <zlib.h>
+#endif
 
 
 // mist名前空間の始まり
@@ -303,11 +305,19 @@ namespace __csv_controller__
 
 		static bool read( Array &csv, const std::string &filename, const std::string &separator )
 		{
+#if defined( _COMPRESSED_CSV_SUPPORT_ ) && _COMPRESSED_CSV_SUPPORT_ != 0
 			gzFile fp;
 			if( ( fp = gzopen( filename.c_str( ), "rb" ) ) == NULL )
 			{
 				return( false );
 			}
+#else
+			FILE *fp;
+			if( ( fp = fopen( filename.c_str( ), "rb" ) ) == NULL )
+			{
+				return( false );
+			}
+#endif
 
 			size_type numBytes = 4096;
 			unsigned char *buff = new unsigned char[ numBytes ];
@@ -315,10 +325,18 @@ namespace __csv_controller__
 			ptrdiff_t read_size = 0;
 
 			bool ret = true;
+#if defined( _COMPRESSED_CSV_SUPPORT_ ) && _COMPRESSED_CSV_SUPPORT_ != 0
 			while( gzeof( fp ) == 0 )
+#else
+			while( feof( fp ) == 0 )
+#endif
 			{
 				ptrdiff_t restBytes = ( buff + numBytes ) - sp;
+#if defined( _COMPRESSED_CSV_SUPPORT_ ) && _COMPRESSED_CSV_SUPPORT_ != 0
 				read_size = gzread( fp, ( void * )sp, static_cast< unsigned int >( sizeof( unsigned char ) * restBytes ) );
+#else
+				read_size = fread( ( void * )sp, sizeof( unsigned char ), static_cast< unsigned int >( restBytes ), fp );
+#endif
 
 				unsigned char *eep = sp + read_size;
 				if( eep < buff + numBytes )
@@ -384,7 +402,11 @@ namespace __csv_controller__
 				}
 			}
 
+#if defined( _COMPRESSED_CSV_SUPPORT_ ) && _COMPRESSED_CSV_SUPPORT_ != 0
 			gzclose( fp );
+#else
+			fclose( fp );
+#endif
 
 			delete [] buff;
 			return( ret );
@@ -483,6 +505,7 @@ bool read_csv( matrix< T, Allocator > &csv, const std::string &filename, const s
 
 	return( false );
 }
+
 /// @brief CSV形式のファイルをMISTコンテナ（mist::matrix）に読み込む
 //! 
 //! データの区切りとして，コンマもしくは半角空白をデフォルトで識別するようになっている．
