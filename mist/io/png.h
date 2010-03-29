@@ -95,13 +95,37 @@ namespace __png_controller__
 			{
 				png_set_packing( png_ptr );
 			}
-			
+
+			// カラーパレットをRGBに変換する
+			if( color_type == PNG_COLOR_TYPE_PALETTE )
+			{
+				png_set_palette_to_rgb( png_ptr );
+			}
+
+			// 8ビット未満のグレースケールを8ビットに変換する
+			if( color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8 )
+			{
+				png_set_expand_gray_1_2_4_to_8( png_ptr );
+			}
+
+			// アルファチャンネルを有効化する
+			if( png_get_valid( png_ptr, info_ptr, PNG_INFO_tRNS ) )
+			{
+				png_set_tRNS_to_alpha( png_ptr );
+			}
+
+			png_read_update_info( png_ptr, info_ptr );
+
+			// IHDRチャンク情報を再度取得する
+			png_get_IHDR( png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
+
 			// PNGの画像を操作するための一時配列を用意する
 			png_bytepp png_buff;
 			png_buff = ( png_bytepp )malloc( height * sizeof( png_bytep ) );
-			for( i = 0 ; i < (size_type)height ; i++ )
+			for( i = 0 ; i < ( size_type )height ; i++ )
 			{
-				png_buff[ i ] = ( png_bytep )malloc( png_get_rowbytes( png_ptr, info_ptr ) );
+				png_uint_32 nbytes = png_get_rowbytes( png_ptr, info_ptr );
+				png_buff[ i ] = ( png_bytep )malloc( nbytes );
 			}
 
 			image.resize( width, height );
@@ -171,7 +195,10 @@ namespace __png_controller__
 			}
 
 			// 一時画像用に確保したメモリを開放する
-			for( i = 0 ; i < ( size_type )height ; i++ ) free( png_buff[ i ] );
+			for( i = 0 ; i < ( size_type )height ; i++ )
+			{
+				free( png_buff[ i ] );
+			}
 			free( png_buff );
 
 			// PNG の操作用に使用した構造体のメモリを解放する
