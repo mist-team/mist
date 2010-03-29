@@ -79,7 +79,6 @@ namespace __png_controller__
 			png_infop		info_ptr;
 			unsigned long	width, height;
 			int				bit_depth, color_type, interlace_type;
-			size_type		i, j;
 
 			fp = fopen( filename.c_str( ), "rb" );	// 読み込むPNG画像ファイルを開く
 			if( !fp ) return( false );
@@ -119,87 +118,151 @@ namespace __png_controller__
 			// IHDRチャンク情報を再度取得する
 			png_get_IHDR( png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
 
-			// PNGの画像を操作するための一時配列を用意する
-			png_bytepp png_buff;
-			png_buff = ( png_bytepp )malloc( height * sizeof( png_bytep ) );
-			for( i = 0 ; i < ( size_type )height ; i++ )
-			{
-				png_uint_32 nbytes = png_get_rowbytes( png_ptr, info_ptr );
-				png_buff[ i ] = ( png_bytep )malloc( nbytes );
-			}
-
 			image.resize( width, height );
-
-			// 画像データを読み込む
-			png_read_image( png_ptr, png_buff );
 
 			bool ret = true;
 
-			// PNG に格納されている画像の形式に応じてデータを読み込む
-			switch( color_type )
+			if( interlace_type == 0 )
 			{
-			case PNG_COLOR_TYPE_GRAY:
-				for( j = 0 ; j < ( size_type )height ; j++ )
+				// PNGの画像を操作するための一時配列を用意する
+				png_bytep png_buff = ( png_bytep )malloc( png_get_rowbytes( png_ptr, info_ptr ) );
+
+				for( size_type j = 0 ; j < ( size_type )height ; j++ )
 				{
-					for( i = 0 ; i < ( size_type )width ; i++ )
+					// 画像データを読み込む
+					png_read_rows( png_ptr, &png_buff, NULL, 1 );
+
+					// 出力先のポインタ
+					typename array2< T, Allocator >::pointer op = &image( 0, j );
+
+					// PNG に格納されている画像の形式に応じてデータを読み込む
+					switch( color_type )
 					{
-						image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i ], png_buff[ j ][ i ], png_buff[ j ][ i ] );
+					case PNG_COLOR_TYPE_GRAY:
+						for( size_type i = 0 ; i < ( size_type )width ; i++ )
+						{
+							op[ i ] = pixel_converter::convert_to( png_buff[ i ], png_buff[ i ], png_buff[ i ] );
+						}
+						break;
+
+					case PNG_COLOR_TYPE_RGB:
+						for( size_type i = 0 ; i < ( size_type )width ; i++ )
+						{
+							op[ i ] = pixel_converter::convert_to( png_buff[ i * 3 + 0 ], png_buff[ i * 3 + 1 ], png_buff[ i * 3 + 2 ] );
+						}
+						break;
+
+					case PNG_COLOR_TYPE_RGBA:
+						for( size_type i = 0 ; i < ( size_type )width ; i++ )
+						{
+							op[ i ] = pixel_converter::convert_to( png_buff[ i * 4 + 0 ], png_buff[ i * 4 + 1 ], png_buff[ i * 4 + 2 ], png_buff[ i * 4 + 3 ] );
+						}
+						break;
+
+					case PNG_COLOR_TYPE_GA:
+						for( size_type i = 0 ; i < ( size_type )width ; i++ )
+						{
+							op[ i ] = pixel_converter::convert_to( png_buff[ i * 2 ], png_buff[ i * 2 ], png_buff[ i * 2 ], png_buff[ i * 2 + 1 ] );
+						}
+						break;
+
+					case PNG_COLOR_TYPE_PALETTE:
+						for( size_type i = 0 ; i < ( size_type )width ; i++ )
+						{
+							png_color &p = info_ptr->palette[ png_buff[ i ] ];
+							op[ i ] = pixel_converter::convert_to( p.red, p.green, p.blue );
+						}
+						break;
+
+					default:
+						ret = false;
+						break;
 					}
 				}
-				break;
 
-			case PNG_COLOR_TYPE_RGB:
-				for( j = 0 ; j < ( size_type )height ; j++ )
-				{
-					for( i = 0 ; i < ( size_type )width ; i++ )
-					{
-						image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i * 3 + 0 ], png_buff[ j ][ i * 3 + 1 ], png_buff[ j ][ i * 3 + 2 ] );
-					}
-				}
-				break;
-
-			case PNG_COLOR_TYPE_RGBA:
-				for( j = 0 ; j < ( size_type )height ; j++ )
-				{
-					for( i = 0 ; i < ( size_type )width ; i++ )
-					{
-						image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i * 4 + 0 ], png_buff[ j ][ i * 4 + 1 ], png_buff[ j ][ i * 4 + 2 ], png_buff[ j ][ i * 4 + 3 ] );
-					}
-				}
-				break;
-
-			case PNG_COLOR_TYPE_GA:
-				for( j = 0 ; j < ( size_type )height ; j++ )
-				{
-					for( i = 0 ; i < ( size_type )width ; i++ )
-					{
-						image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i * 2 ], png_buff[ j ][ i * 2 ], png_buff[ j ][ i * 2 ], png_buff[ j ][ i * 2 + 1 ] );
-					}
-				}
-				break;
-
-			case PNG_COLOR_TYPE_PALETTE:
-				for( j = 0 ; j < ( size_type )height ; j++ )
-				{
-					for( i = 0 ; i < ( size_type )width ; i++ )
-					{
-						png_color &p = info_ptr->palette[ png_buff[ j ][ i ] ];
-						image( i, j ) = pixel_converter::convert_to( p.red, p.green, p.blue );
-					}
-				}
-				break;
-
-			default:
-				ret = false;
-				break;
+				// 一時画像用に確保したメモリを開放する
+				free( png_buff );
 			}
-
-			// 一時画像用に確保したメモリを開放する
-			for( i = 0 ; i < ( size_type )height ; i++ )
+			else
 			{
-				free( png_buff[ i ] );
+				// PNGの画像を操作するための一時配列を用意する
+				png_bytepp png_buff;
+				png_buff = ( png_bytepp )malloc( height * sizeof( png_bytep ) );
+				for( size_type i = 0 ; i < ( size_type )height ; i++ )
+				{
+					png_uint_32 nbytes = png_get_rowbytes( png_ptr, info_ptr );
+					png_buff[ i ] = ( png_bytep )malloc( nbytes );
+				}
+
+				// 画像データを読み込む
+				png_read_image( png_ptr, png_buff );
+
+				// PNG に格納されている画像の形式に応じてデータを読み込む
+				switch( color_type )
+				{
+				case PNG_COLOR_TYPE_GRAY:
+					for( size_type j = 0 ; j < ( size_type )height ; j++ )
+					{
+						for( size_type i = 0 ; i < ( size_type )width ; i++ )
+						{
+							image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i ], png_buff[ j ][ i ], png_buff[ j ][ i ] );
+						}
+					}
+					break;
+
+				case PNG_COLOR_TYPE_RGB:
+					for( size_type j = 0 ; j < ( size_type )height ; j++ )
+					{
+						for( size_type i = 0 ; i < ( size_type )width ; i++ )
+						{
+							image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i * 3 + 0 ], png_buff[ j ][ i * 3 + 1 ], png_buff[ j ][ i * 3 + 2 ] );
+						}
+					}
+					break;
+
+				case PNG_COLOR_TYPE_RGBA:
+					for( size_type j = 0 ; j < ( size_type )height ; j++ )
+					{
+						for( size_type i = 0 ; i < ( size_type )width ; i++ )
+						{
+							image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i * 4 + 0 ], png_buff[ j ][ i * 4 + 1 ], png_buff[ j ][ i * 4 + 2 ], png_buff[ j ][ i * 4 + 3 ] );
+						}
+					}
+					break;
+
+				case PNG_COLOR_TYPE_GA:
+					for( size_type j = 0 ; j < ( size_type )height ; j++ )
+					{
+						for( size_type i = 0 ; i < ( size_type )width ; i++ )
+						{
+							image( i, j ) = pixel_converter::convert_to( png_buff[ j ][ i * 2 ], png_buff[ j ][ i * 2 ], png_buff[ j ][ i * 2 ], png_buff[ j ][ i * 2 + 1 ] );
+						}
+					}
+					break;
+
+				case PNG_COLOR_TYPE_PALETTE:
+					for( size_type j = 0 ; j < ( size_type )height ; j++ )
+					{
+						for( size_type i = 0 ; i < ( size_type )width ; i++ )
+						{
+							png_color &p = info_ptr->palette[ png_buff[ j ][ i ] ];
+							image( i, j ) = pixel_converter::convert_to( p.red, p.green, p.blue );
+						}
+					}
+					break;
+
+				default:
+					ret = false;
+					break;
+				}
+
+				// 一時画像用に確保したメモリを開放する
+				for( size_type i = 0 ; i < ( size_type )height ; i++ )
+				{
+					free( png_buff[ i ] );
+				}
+				free( png_buff );
 			}
-			free( png_buff );
 
 			// PNG の操作用に使用した構造体のメモリを解放する
 			png_destroy_read_struct( &png_ptr, &info_ptr, NULL );
@@ -311,48 +374,51 @@ namespace __png_controller__
 				png_set_text( png_ptr, info_ptr, text_ptr, 5 );
 			}
 
-			png_bytepp png_buff;
-			png_buff = new png_byte*[height];
+			png_write_info( png_ptr, info_ptr );
 
-			size_type i, j;
 			if( pixel_converter::color_num == 4 )
 			{
-				for( j = 0 ; j < height ; j++ )
+				png_bytep png_buff = new png_byte[ width * 4 ];
+				for( size_type j = 0 ; j < height ; j++ )
 				{
-					png_buff[ j ] = new png_byte[width * 4];
-					for( i = 0 ; i < width ; i++ )
+					typename array2< T, Allocator >::const_pointer ip = &image( 0, j );
+					for( size_type i = 0 ; i < width ; i++ )
 					{
-						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
-						png_buff[ j ][ i * 4 + 0 ] = static_cast< unsigned char >( c.r );
-						png_buff[ j ][ i * 4 + 1 ] = static_cast< unsigned char >( c.g );
-						png_buff[ j ][ i * 4 + 2 ] = static_cast< unsigned char >( c.b );
-						png_buff[ j ][ i * 4 + 3 ] = static_cast< unsigned char >( c.a );
+						color_type c = limits_0_255( pixel_converter::convert_from( ip[ i ] ) );
+						png_buff[ i * 4 + 0 ] = static_cast< png_byte >( c.r );
+						png_buff[ i * 4 + 1 ] = static_cast< png_byte >( c.g );
+						png_buff[ i * 4 + 2 ] = static_cast< png_byte >( c.b );
+						png_buff[ i * 4 + 3 ] = static_cast< png_byte >( c.a );
 					}
+
+					png_write_rows( png_ptr, &png_buff, 1 );
 				}
+
+				delete [] png_buff;
 			}
 			else
 			{
-				for( j = 0 ; j < height ; j++ )
+				png_bytep png_buff = new png_byte[ width * 4 ];
+				for( size_type j = 0 ; j < height ; j++ )
 				{
-					png_buff[j] = new png_byte[width * 3];
-					for( i = 0 ; i < width ; i++ )
+					typename array2< T, Allocator >::const_pointer ip = &image( 0, j );
+					for( size_type i = 0 ; i < width ; i++ )
 					{
-						color_type c = limits_0_255( pixel_converter::convert_from( image( i, j ) ) );
-						png_buff[ j ][ i * 3 + 0 ] = static_cast< unsigned char >( c.r );
-						png_buff[ j ][ i * 3 + 1 ] = static_cast< unsigned char >( c.g );
-						png_buff[ j ][ i * 3 + 2 ] = static_cast< unsigned char >( c.b );
+						color_type c = limits_0_255( pixel_converter::convert_from( ip[ i ] ) );
+						png_buff[ i * 3 + 0 ] = static_cast< png_byte >( c.r );
+						png_buff[ i * 3 + 1 ] = static_cast< png_byte >( c.g );
+						png_buff[ i * 3 + 2 ] = static_cast< png_byte >( c.b );
 					}
+
+					png_write_rows( png_ptr, &png_buff, 1 );
 				}
+
+				delete [] png_buff;
 			}
 
-			png_write_info( png_ptr, info_ptr );
-			png_write_image( png_ptr, png_buff );
 			png_write_end( png_ptr, info_ptr );
 			png_destroy_write_struct( &png_ptr, &info_ptr );
 			fclose( fp );
-
-			for( j = 0 ; j < height ; j++ ) delete [] png_buff[j];
-			delete [] png_buff;
 
 			return( true );
 		}
@@ -422,7 +488,7 @@ bool read_png( array2< T, Allocator > &image, const std::wstring &filename )
 //! @retval false … 画像の書き込みに失敗
 //! 
 template < class T, class Allocator >
-bool write_png( const array2< T, Allocator > &image, const std::string &filename, int compression_level = -1 )
+bool write_png( const array2< T, Allocator > &image, const std::string &filename, int compression_level = 6 )
 {
 	return( __png_controller__::png_controller< T, Allocator >::write( image, filename, compression_level ) );
 }
@@ -440,7 +506,7 @@ bool write_png( const array2< T, Allocator > &image, const std::string &filename
 //! @retval false … 画像の書き込みに失敗
 //! 
 template < class T, class Allocator >
-bool write_png( const array2< T, Allocator > &image, const std::wstring &filename, int compression_level = -1 )
+bool write_png( const array2< T, Allocator > &image, const std::wstring &filename, int compression_level = 6 )
 {
 	return( write_png( image, wstr2str( filename ), compression_level ) );
 }
