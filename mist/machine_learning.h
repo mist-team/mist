@@ -492,14 +492,14 @@ namespace machine_learning
 			const std::string serialize( ) const
 			{
 				char buff[ 1024 ];
-				sprintf( buff, "%d,%f,%f", index_, sign_, threshold_ );
+				sprintf( buff, "%ld,%f,%f", index_, sign_, threshold_ );
 				return( buff );
 			}
 
 			/// @brief 識別機のパラメータを記録した文字列からパラメータを復元する
 			void deserialize( const std::string &data )
 			{
-				sscanf( data.c_str( ), "%d,%lf,%lf", &index_, &sign_, &threshold_ );
+				sscanf( data.c_str( ), "%ld,%lf,%lf", &index_, &sign_, &threshold_ );
 			}
 		};
 
@@ -688,14 +688,14 @@ namespace machine_learning
 			const std::string serialize( ) const
 			{
 				char buff[ 1024 ];
-				sprintf( buff, "%d,%f,%f,%f,%f", index_, ave_[ 0 ], ave_[ 1 ], sig_[ 0 ], sig_[ 1 ] );
+				sprintf( buff, "%ld,%f,%f,%f,%f", index_, ave_[ 0 ], ave_[ 1 ], sig_[ 0 ], sig_[ 1 ] );
 				return( buff );
 			}
 
 			/// @brief 識別機のパラメータを記録した文字列からパラメータを復元する
 			void deserialize( const std::string &data )
 			{
-				sscanf( data.c_str( ), "%d,%lf,%lf,%lf,%lf", &index_, &ave_[ 0 ], &ave_[ 1 ], &sig_[ 0 ], &sig_[ 1 ] );
+				sscanf( data.c_str( ), "%ld,%lf,%lf,%lf,%lf", &index_, &ave_[ 0 ], &ave_[ 1 ], &sig_[ 0 ], &sig_[ 1 ] );
 			}
 		};
 
@@ -1642,13 +1642,13 @@ namespace machine_learning
 				}
 
 				// クラス数等の基本情報を書き込む
-				fprintf( fp, "Category = %d\n", categories_.size( ) );
-				fprintf( fp, "Stage    = %d\n", weak_classifiers_.size( ) );
+				fprintf( fp, "Category = %ld\n", categories_.size( ) );
+				fprintf( fp, "Stage    = %ld\n", weak_classifiers_.size( ) );
 
 				// クラス名を列挙する
 				for( size_type i = 0 ; i < categories_.size( ) ; i++ )
 				{
-					fprintf( fp, "Class[%d] : %s\n", i + 1, categories_[ i ].c_str( ) );
+					fprintf( fp, "Class[%ld] : %s\n", i + 1, categories_[ i ].c_str( ) );
 				}
 
 				// Code Word を列挙する

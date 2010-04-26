@@ -17,9 +17,6 @@ ALL = \
 	thread_test \
 	region_growing_test \
 	machine_learning_test \
-	image_test \
-	raw_test \
-	volumerender_test \
 	wav_test \
 	margin_array_test \
 	median_test \
@@ -28,9 +25,6 @@ ALL = \
 	singleton_test \
 	integer_test \
 	decimal_test \
-	matrix_test \
-	matrix_util_test \
-	matrix_util_test2 \
 	vector_test \
 	set_test \
 	crc_test \
@@ -38,6 +32,12 @@ ALL = \
 	minimization_test \
 	mixture_test \
 	environment_test \
+	matrix_test \
+	matrix_util_test \
+	matrix_util_test2 \
+	image_test \
+	raw_test \
+	volumerender_test \
 
 
 all: $(ALL)

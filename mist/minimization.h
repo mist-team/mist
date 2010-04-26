@@ -1163,7 +1163,7 @@ namespace gradient
 				break;
 			}
 
-			double l1, l2;
+			double l1 = 0.0, l2 = 0.0;
 			if( __minimization_utility__::clipping_length( l1, l2, p, dir, bound ) )
 			{
 				// Brent の2次収束アルゴリズムを用いて dir 方向への最小化を行う
@@ -1398,7 +1398,7 @@ namespace powell
 
 		matrix_type dir( p.size( ), 1 ), tmp( p.size( ), 1 ), p0( p ), pn( p );
 		double x = 0.0, fp0 = 1.0e100, fp = f( p ), delta;
-		double l1, l2;
+		double l1 = 0.0, l2 = 0.0;
 
 		// 他変数関数を１変数関数に変換する
 		__minimization_utility__::__convert_to_vector_functor__< T, Allocator, Functor > functor( p, dir, tmp, f );

@@ -821,6 +821,7 @@ bool read_wav( array< T, Allocator > &sound, const std::string &filename )
 template < class T, class Allocator >
 bool read_wav( array< T, Allocator > &sound, const std::wstring &filename )
 {
+	unsigned int sampling_rate = 44100;
 	return( read_wav( sound, wstr2str( filename ), sampling_rate ) );
 }
 
