@@ -154,7 +154,7 @@ public:
 	//!
 	//! @return ‰æ‘f’l‚Ì‘˜a
 	//!
-	value_type operator ( )( const size_type i ) const
+	value_type operator ( )( const difference_type i ) const
 	{
 		return( integral_( i + 1 ) );
 	}
@@ -273,7 +273,7 @@ public:
 	//!
 	//! @return ‰æ‘f’l‚Ì‘˜a
 	//!
-	value_type operator ( )( const size_type i, const size_type j ) const
+	value_type operator ( )( const difference_type i, const difference_type j ) const
 	{
 		return( integral_( i + 1, j + 1 ) );
 	}
@@ -491,7 +491,7 @@ public:
 	//!
 	//! @return ‰æ‘f’l‚Ì‘˜a
 	//!
-	value_type operator ( )( const size_type i, const size_type j, const size_type k ) const
+	value_type operator ( )( const difference_type i, const difference_type j, const difference_type k ) const
 	{
 		return( integral_( i + 1, j + 1, k + 1 ) );
 	}
