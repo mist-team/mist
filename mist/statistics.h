@@ -33,6 +33,9 @@
 #ifndef __INCLUDE_MIST_STATISTICS__
 #define __INCLUDE_MIST_STATISTICS__
 
+#include <iostream>
+#include <stdexcept>
+#include <cstdio>
 
 #ifndef __INCLUDE_MIST_CONF_H__
 #include "config/mist_conf.h"
@@ -50,6 +53,9 @@
 #include "matrix.h"
 #endif
 
+#ifndef __INCLUDE_MIST_NUMERIC__
+#include "numeric.h"
+#endif
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -628,7 +634,352 @@ namespace statistics
 					   ( ncm( 2, 1 ) + ncm( 0, 3 ) ) *
 					   ( 3 * pow( ncm( 3, 0 ) + ncm( 1, 2 ), 2.0 ) - pow( ncm( 2, 1 ) + ncm( 0, 3 ), 2.0 ) ); 
 	}
+  
+  namespace normal_distribution
+  {
+    /// @brief Obtain propability
+    //! @param[in] x is input data
+    //! @param[in] u is average
+    //! @param[in] sigma is variance
+    //! @return probability
+    template< typename T, typename Allocator >
+    double probability( const mist::matrix< T, Allocator > &x, const mist::matrix< T, Allocator > &u, const mist::matrix< T, Allocator > &sigma )
+    {
+	if( x.rows() != u.rows() || u.cols() != 1 || x.rows() != sigma.rows() || sigma.rows() != sigma.cols() )
+	  {
+	    throw std::invalid_argument( "" );
+	  }
+      mist::matrix< T, Allocator > b = x - u;
+      double t = ( b.t() * mist::inverse( sigma ) * b )( 0, 0 );      
+      double d = mist::det( sigma );      
+      return ( 1.0 / pow( 2 * M_PI, 0.5 * x.rows() ) ) * ( 1.0 / d ) * exp( -0.5 * t );
+    }
 
+    /// @brief Estimate sample average and variance
+    //! @param[in] sample is training sample
+    //! @param[in] average
+    //! @param[in] variant
+    template< typename T, typename Allocator >
+    void estimate( const mist::matrix< T, Allocator > &sample, mist::matrix< T, Allocator > &average, mist::matrix< T, Allocator > &variance )
+    {
+      if( sample.cols() <= 1 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      average.resize( sample.rows(), 1 );
+      for( size_t i = 0 ; i < sample.cols() ; ++i )
+	{
+	  for( size_t j = 0 ; j < sample.rows() ; ++j )
+	    {
+	      average( j, 0 ) += sample( j, i );
+	    }
+	}
+      average /= sample.cols();
+
+      mist::matrix< T, Allocator > tmp = sample;
+      for( size_t i = 0 ; i < sample.cols() ; ++i )
+	{
+	  for( size_t j = 0 ; j < sample.rows() ; ++j )
+	    {
+	      tmp( j, i ) -= average( j, 0 );
+	    }
+	}
+      variance = ( tmp * tmp.t() ) / ( sample.cols() - 1 );
+    }
+  }
+
+
+  namespace parzen
+  {
+    /// @brief Estimate probability density
+    //! @param[in] sample is training sample
+    //! @param[in] x is input data
+    //! @param[in] band is band length
+    //! @return probability density
+    template< typename T, typename Allocator >
+    double density( const mist::matrix< T, Allocator > &sample, const mist::matrix< T, Allocator > &x, double band )
+    {
+      if( sample.cols() == 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      if( sample.rows() != x.rows() )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      if( band <= 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      double t = 0.0;
+      for( size_t i = 0 ; i < sample.cols() ; ++i )
+	{
+	  double a = 1.0;
+	  for( size_t j = 0 ; j < sample.rows() ; ++j )
+	    {
+	      double s = fabs( sample( j, i ) - x( j, 0 ) ) / band;
+	      if( s > 0.5 )
+		{
+		  a = 0.0;
+		  break;
+		}
+	    }
+	  t += a;
+	}
+      return ( 1.0 / ( pow( band, sample.rows() ) * sample.cols() ) ) * t;
+    }
+
+    /// @brief Varidate band length
+    //! @param[in] sample is training sample
+    //! @param[in] band is band length
+    //! @param[in] n is number of cross-varidation
+    //! @return probability density
+    template< typename T, typename Allocator >
+    double test( const mist::matrix< T, Allocator > &sample, double band, int n = 5 )
+    {
+      if( sample.cols() == 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      if( n == 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      if( band <= 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      int ns = sample.cols() / n;
+      int n1 = ns * ( n - 1 );
+
+      double J = 0;
+
+      mist::matrix< T, Allocator > a( sample.rows(), n1 );
+      for( int i = 0 ; i < n ; ++i )
+	{
+	  int idx = 0;
+	  for( size_t j = 0 ; j < sample.cols() ; ++j )
+	    {
+	      if( static_cast< int >( j / ns ) != i )
+		{
+		  for( size_t k = 0 ; k < sample.rows() ; ++k )
+		    {
+		      a( k, idx ) = sample( k, j );
+		    }
+		  ++idx;
+		}
+	    }
+
+	  for( size_t j = 0 ; j < sample.cols() ; ++j )
+	    {
+	      if( static_cast< int >( j / ns ) == i )
+		{
+		  mist::matrix< T, Allocator > x( sample.rows(), 1 );
+		  sample.trim( x, 0, j, -1, 1 );		  
+		  J += log( density( a, x, band ) );
+		}	  	  
+	    }
+	}      
+      return J / n;
+    }
+  }
+
+  namespace kernel
+  {
+    /// @brief Estimate probability density
+    //! @param[in] sample is training sample
+    //! @param[in] x is input data
+    //! @param[in] band is band length
+    //! @return probability density
+    template< typename T, typename Allocator >
+    double density( const mist::matrix< T, Allocator > &sample, const mist::matrix< T, Allocator > &x, double b )
+    {
+      double t = 0.0;
+      for( size_t i = 0 ; i < sample.cols() ; ++i )
+	{
+	  mist::matrix< T, Allocator > d = x;
+	  for( size_t j = 0 ; j < sample.rows() ; ++j )
+	    {
+	      d( j, 0 ) -= sample( j, i );
+	    }
+	  d /= b;	  
+	  t += 1.0 / pow( 2.0 * M_PI, 0.5 * sample.rows() ) * exp( -0.5 * ( d.t() * d )( 0, 0 ) );
+	}      
+      return ( 1.0 / ( pow( b, sample.rows() ) * sample.cols() ) ) * t;
+    }
+
+    /// @brief Varidate band length
+    //! @param[in] sample is training sample
+    //! @param[in] band is band length
+    //! @param[in] n is number of cross-varidation
+    //! @return probability density
+    template< typename T, typename Allocator >
+    double test( const mist::matrix< T, Allocator > &sample, double band, int n = 5 )
+    {
+      if( sample.cols() == 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      if( n == 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      if( band <= 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      int ns = sample.cols() / n;
+      int n1 = ns * ( n - 1 );
+
+      double J = 0;
+
+      mist::matrix< T, Allocator > a( sample.rows(), n1 );
+      for( int i = 0 ; i < n ; ++i )
+	{
+	  int idx = 0;
+	  for( size_t j = 0 ; j < sample.cols() ; ++j )
+	    {
+	      if( static_cast< int >( j / ns ) != i )
+		{
+		  for( size_t k = 0 ; k < sample.rows() ; ++k )
+		    {
+		      a( k, idx ) = sample( k, j );
+		    }
+		  ++idx;
+		}
+	    }
+
+	  for( size_t j = 0 ; j < sample.cols() ; ++j )
+	    {
+	      if( static_cast< int >( j / ns ) == i )
+		{
+		  mist::matrix< T, Allocator > x( sample.rows(), 1 );
+		  sample.trim( x, 0, j, -1, 1 );		  
+		  J += log( density( a, x, band ) );
+		}	  	  
+	    }
+	}      
+      return J / n;
+    }
+  }
+
+  namespace knn
+  {
+    /// @brief Estimate probability density
+    //! @param[in] sample is training sample
+    //! @param[in] x is input data
+    //! @param[in] k is number of nearest neighbor
+    //! @return probability density
+    template< typename T, typename Allocator >
+    double density( const mist::matrix< T, Allocator > &sample, const mist::matrix< T, Allocator > &x, int k )
+    {
+      std::vector< T, Allocator > ssample( sample.size() );
+      for( int i = 0 ; i < static_cast< int >( sample.cols() ) ; ++i )
+	{
+	  double dist = 0;
+	  for( int j = 0 ; j < static_cast< int >( sample.rows() ) ; ++j )
+	    {
+	      dist += pow( x( j, 0 ) - sample( j, i ), 2.0 );
+	    }
+	  ssample[ i ] = dist;
+	}
+  
+      std::sort( ssample.begin(), ssample.end() );
+
+      double r = sqrt( ssample[ k - 1 ] );
+
+      int h = 0;
+      int d = static_cast< int >( sample.rows() );
+      double g = 1.0;
+      if( d % 2 == 0 )
+	{
+	  d /= 2;
+	  while( d != 1 )
+	    {
+	      g *= d;
+	      d -= 1;
+	    }
+	}
+      else
+	{
+	  g = 0.5;
+	  while( d != 1 )
+	    {
+	      g *= ( 0.5 * d );
+	      d -= 2;
+	    }
+	  h = 1;
+	}
+      return ( g * k ) / ( pow( M_PI, 0.5 * ( sample.rows() - h ) ) * pow( r, sample.rows() ) * sample.cols() );
+    }
+
+    /// @brief Varidate band length
+    //! @param[in] sample is training sample
+    //! @param[in] k is number of nearest neighbor
+    //! @param[in] n is number of cross-varidation
+    //! @return probability density
+    template< typename T, typename Allocator >
+    double test( const mist::matrix< T, Allocator > &sample, int k, int n = 5 )
+    {
+      if( sample.cols() == 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      if( n == 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      if( k <= 0 )
+	{
+	  throw std::invalid_argument( "" );
+	}
+
+      int ns = sample.cols() / n;
+      int n1 = ns * ( n - 1 );
+
+      double J = 0;
+
+      mist::matrix< T, Allocator > a( sample.rows(), n1 );
+      for( int i = 0 ; i < n ; ++i )
+	{
+	  int idx = 0;
+	  for( size_t j = 0 ; j < sample.cols() ; ++j )
+	    {
+	      if( static_cast< int >( j / ns ) != i )
+		{
+		  for( size_t k = 0 ; k < sample.rows() ; ++k )
+		    {
+		      a( k, idx ) = sample( k, j );
+		    }
+		  ++idx;
+		}
+	    }
+
+	  for( size_t j = 0 ; j < sample.cols() ; ++j )
+	    {
+	      if( static_cast< int >( j / ns ) == i )
+		{
+		  mist::matrix< T, Allocator > x( sample.rows(), 1 );
+		  sample.trim( x, 0, j, -1, 1 );
+		  J += log( density( a, x, k ) );
+		}	  	  
+	    }
+	}      
+      return J / n;
+    }
+  }
 	/// @}
 	//  統計処理の終わり
 }
