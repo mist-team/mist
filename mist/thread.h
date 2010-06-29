@@ -790,6 +790,7 @@ private:
 #else
 	pthread_t thread_id_;				// pthreadライブラリでスレッドを識別するID
 	signal    finish_;					// スレッドの終了待ちを行うシグナル
+	bool      joined_;					// スレッドに対する pthread_join 処理が終了しているかどうか
 #endif
 
 	simple_lock_object exit_;				// 終了待ちシグナル
@@ -818,6 +819,7 @@ public:
 		thread_id_ = t.thread_id_;
 #else
 		thread_id_ = t.thread_id_;
+		joined_    = t.joined_;
 #endif
 		thread_exit_code_ = t.thread_exit_code_;
 		return( *this );
@@ -859,8 +861,8 @@ public:
 	thread( const thread &t ) : thread_handle_( t.thread_handle_ ), thread_id_( t.thread_id_ ), thread_exit_code_( t.thread_exit_code_ ){ }
 	thread( ) : thread_handle_( NULL ), thread_id_( ( unsigned int )-1 ), thread_exit_code_( 0 ){ }
 #else
-	thread( const thread &t ) : thread_id_( t.thread_id ), thread_exit_code_( t.thread_exit_code ){ }
-	thread( ) : thread_id_( ( pthread_t ) ( -1 ) ), thread_exit_code_( 0 ){ }
+	thread( const thread &t ) : thread_id_( t.thread_id ), joined_( false ), thread_exit_code_( t.thread_exit_code ){ }
+	thread( ) : thread_id_( ( pthread_t ) ( -1 ) ), joined_( false ), thread_exit_code_( 0 ){ }
 #endif
 
 	virtual ~thread( )
@@ -887,6 +889,7 @@ public:
 #else
 		if( thread_id_ != ( pthread_t ) ( -1 ) ) return( false );
 		bool ret = pthread_create( &( thread_id_ ), NULL, map_thread_function, ( void * )this ) == 0 ? true : false;
+		joined_ = false;
 #endif
 
 		return ( ret );
@@ -926,13 +929,29 @@ public:
 #else
 		if( dwMilliseconds == INFINITE )
 		{
-			return ( pthread_join( thread_id_, NULL ) == 0 );
+			if( pthread_join( thread_id_, NULL ) == 0 )
+			{
+				joined_ = true;
+				return( true );
+			}
+			else
+			{
+				return( false );
+			}
 		}
 		else
 		{
 			if( finish_.wait( dwMilliseconds ) )
 			{
-				return ( pthread_join( thread_id_, NULL ) == 0 );
+				if( pthread_join( thread_id_, NULL ) == 0 )
+				{
+					joined_ = true;
+					return( true );
+				}
+				else
+				{
+					return( false );
+				}
 			}
 			else
 			{
@@ -979,7 +998,10 @@ public:
 			while( !exit_.try_lock( ) ){}
 			exit_.unlock( );
 
-			pthread_join( thread_id_, NULL );
+			if( !joined_ )
+			{
+				pthread_join( thread_id_, NULL );
+			}
 
 			thread_id_ = ( pthread_t ) ( -1 );
 			return( true );

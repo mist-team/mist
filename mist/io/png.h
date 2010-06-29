@@ -77,7 +77,7 @@ namespace __png_controller__
 			FILE			*fp;
 			png_structp		png_ptr;
 			png_infop		info_ptr;
-			unsigned long	width, height;
+			png_uint_32		width, height;
 			int				bit_depth, color_type, interlace_type;
 
 			fp = fopen( filename.c_str( ), "rb" );	// 読み込むPNG画像ファイルを開く
