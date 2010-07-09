@@ -659,7 +659,7 @@ bool read_raw( array2< T, Allocator > &image, const std::string &filename,
 				double x, double y, typename array2< T, Allocator >::value_type offset, bool from_little_endian, Functor callback )
 {
 	typename array2< T, Allocator >::value_type v( 0 );
-	return( read_raw( image, filename, w, h, x, y, offset, from_little_endian, 0, v, callback ) );
+	return( read_raw( image, filename, w, h, x, y, offset, from_little_endian, v, callback ) );
 }
 
 
