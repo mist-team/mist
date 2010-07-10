@@ -72,6 +72,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_learning_test", "ma
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "marching_cubes_test", "marching_cubes_test.vcproj", "{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hough_test", "hough_test.vcproj", "{D3D71998-3785-4DF2-96A0-690EE9F3A28C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -337,6 +339,14 @@ Global
 		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Release|Win32.Build.0 = Release|Win32
 		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Release|x64.ActiveCfg = Release|x64
 		{641E049A-15E9-4582-8D38-0E1B1B4DEBC5}.Release|x64.Build.0 = Release|x64
+		{D3D71998-3785-4DF2-96A0-690EE9F3A28C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D3D71998-3785-4DF2-96A0-690EE9F3A28C}.Debug|Win32.Build.0 = Debug|Win32
+		{D3D71998-3785-4DF2-96A0-690EE9F3A28C}.Debug|x64.ActiveCfg = Debug|x64
+		{D3D71998-3785-4DF2-96A0-690EE9F3A28C}.Debug|x64.Build.0 = Debug|x64
+		{D3D71998-3785-4DF2-96A0-690EE9F3A28C}.Release|Win32.ActiveCfg = Release|Win32
+		{D3D71998-3785-4DF2-96A0-690EE9F3A28C}.Release|Win32.Build.0 = Release|Win32
+		{D3D71998-3785-4DF2-96A0-690EE9F3A28C}.Release|x64.ActiveCfg = Release|x64
+		{D3D71998-3785-4DF2-96A0-690EE9F3A28C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,6 +20,7 @@ ALL = \
 	wav_test \
 	margin_array_test \
 	median_test \
+	hough_test \
 	morphology_test \
 	fft_test \
 	singleton_test \
@@ -112,6 +113,9 @@ margin_array_test : margin_array_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDLIBS)
 
 median_test : median_test.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDLIBS) $(IMGLIBS) $(LIBS)
+
+hough_test : hough_test.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDLIBS) $(IMGLIBS) $(LIBS)
 
 morphology_test : morphology_test.o
