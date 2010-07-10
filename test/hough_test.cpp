@@ -48,7 +48,7 @@ int main( int argc, char * argv[] )
 	}
 
 	color_image_type orginal_img;
-	gray_image_type  canny_img;
+	color_image_type  canny_img;
 
 	if( !read_image( orginal_img, argv[ 1 ] ) )
 	{
@@ -61,7 +61,7 @@ int main( int argc, char * argv[] )
 
 	// Hough•ÏŠ·‚É‚æ‚è’¼ü‚Ìƒpƒ‰ƒ[ƒ^‚ğ‹‚ß‚é
 	std::vector< std::complex< double > > lines;
-	mist::line::hough_transform( canny_img, lines, 100, 1, 3.14159 / 360.0, 500 );
+	mist::line::hough_transform( canny_img, lines, 100, 1, 3.1415926535897932384626433832795 / 360.0, 200 );
 
 	// ’¼ü‚ğ•`‰æ‚·‚é
 	double scale = orginal_img.width( ) > orginal_img.height( ) ? orginal_img.width( ) : orginal_img.height( );
@@ -77,10 +77,10 @@ int main( int argc, char * argv[] )
 		p1 -= d * scale;
 		p2 += d * scale;
 
-		int x1 = static_cast< int >( p1.x );
-		int y1 = static_cast< int >( p1.y );
-		int x2 = static_cast< int >( p2.x );
-		int y2 = static_cast< int >( p2.y );
+		int x1 = static_cast< int >( p1.x + 0.5 );
+		int y1 = static_cast< int >( p1.y + 0.5 );
+		int x2 = static_cast< int >( p2.x + 0.5 );
+		int y2 = static_cast< int >( p2.y + 0.5 );
 
 		mist::draw_line( orginal_img, x1, y1, x2, y2, mist::colors< pixel_type >::red( ) );
 	}

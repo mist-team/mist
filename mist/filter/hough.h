@@ -69,7 +69,7 @@ namespace __hough_detail__
 
 	public:
 		trigonometric_table( double rho_resolution, double theta_resolution )
-			: size_( static_cast< size_type >( std::fabs( 3.1415926535897932384626433832795 / theta_resolution ) ) ), cos_table_( size_ ), sin_table_( size_ )
+			: size_( static_cast< size_type >( std::fabs( 3.1415926535897932384626433832795 / theta_resolution ) + 0.5 ) ), cos_table_( size_ ), sin_table_( size_ )
 		{
 			const double rho_inverse = 1.0 / rho_resolution;
 			double angle = 0.0;
@@ -137,7 +137,7 @@ namespace __hough_detail__
 
 		size_type at( size_type rho, size_type angle ) const
 		{
-			return( this->operator ()( rho + 1, angle + 1 ) );
+			return( this->operator ()( rho, angle ) );
 		}
 
 		size_type get_rho_size( ) const
@@ -181,7 +181,7 @@ namespace __hough_detail__
 				{
 					for( size_type angle = 0 ; angle < angle_size ; ++angle )
 					{
-						difference_type rho = static_cast< difference_type >( i * table.cos( angle ) + j * table.sin( angle ) );
+						difference_type rho = static_cast< difference_type >( i * table.cos( angle ) + j * table.sin( angle ) + 0.5 );
 						accumulator.count_up( rho, angle );
 					}
 				}
