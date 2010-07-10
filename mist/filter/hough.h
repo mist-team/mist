@@ -97,7 +97,7 @@ namespace __hough_detail__
 		data_type data_;
 
 	public:
-		accumulator( size_type rho_size, size_type angle_size ) : data_( rho_size + 2, angle_size + 2 )  // 外周1ずつ広い平面を用意する。isPeakCell()で注目Pixelの上下左右をアクセスするため、1Pixelずつ大きくしておく
+		accumulator( size_type rho_size, size_type angle_size ) : data_( angle_size + 2, rho_size + 2 )  // 外周1ずつ広い平面を用意する。isPeakCell()で注目Pixelの上下左右をアクセスするため、1Pixelずつ大きくしておく
 		{
 		}
 
@@ -107,15 +107,18 @@ namespace __hough_detail__
 
 		void count_up( difference_type rho, size_type angle )
 		{
-			data_( static_cast< difference_type >( rho + 1 + ( get_rho_size( ) - 1 ) / 2 ), angle + 1 ) ++;
+			this->operator ()( static_cast< difference_type >( rho + ( get_rho_size( ) - 1 ) / 2 ), angle ) ++;
 		}
 
 		void convert_to_counter( hough_counter &c, size_type threshold ) const
 		{
-			size_type rho_size = get_rho_size( );
+			int rho_size = static_cast< int >( get_rho_size( ) );
 			size_type angle_size = get_angle_size( );
 
-			for( size_type rho = 0 ; rho < rho_size ; ++rho )
+#ifdef _OPENMP
+			#pragma omp parallel for schedule( guided )
+#endif
+			for( int rho = 0 ; rho < rho_size ; ++rho )
 			{
 				for( size_type angle = 0 ; angle < angle_size ; ++angle )
 				{
@@ -123,16 +126,31 @@ namespace __hough_detail__
 
 					if( ( count > threshold ) && is_peak_cell( rho, angle ) )
 					{
-						c.insert( std::make_pair( count, std::complex< int >( rho - ( rho_size - 1 ) / 2, angle ) ) );
+#ifdef _OPENMP
+						#pragma omp critical
+#endif
+						{
+							c.insert( std::make_pair( count, std::complex< int >( rho - ( rho_size - 1 ) / 2, angle ) ) );
+						}
 					}
 				}
 			}
 		}
 
 	private:
+		size_type & operator ()( size_type rho, size_type angle )
+		{
+			return( data_( angle + 1, rho + 1 ) );
+		}
+
 		size_type operator ()( size_type rho, size_type angle ) const
 		{
-			return( data_( rho + 1, angle + 1 ) );
+			return( data_( angle + 1, rho + 1 ) );
+		}
+
+		size_type & at( size_type rho, size_type angle )
+		{
+			return( this->operator ()( rho, angle ) );
 		}
 
 		size_type at( size_type rho, size_type angle ) const
@@ -142,12 +160,12 @@ namespace __hough_detail__
 
 		size_type get_rho_size( ) const
 		{
-			return( data_.width( ) - 2 );
+			return( data_.size2( ) - 2 );
 		}
 
 		size_type get_angle_size( ) const
 		{
-			return( data_.height( ) - 2 );
+			return( data_.size1( ) - 2 );
 		}
 
 		bool is_peak_cell( size_type rho, size_type angle ) const
@@ -173,12 +191,20 @@ namespace __hough_detail__
 
 		accumulator accumulator( rho_size, angle_size );
 
-		for( size_type j = 0 ; j < input.height( ) ; j++ )
+		int height = static_cast< int >( input.height( ) );
+
+#ifdef _OPENMP
+		#pragma omp parallel for schedule( guided )
+#endif
+		for( int j = 0 ; j < height ; j++ )
 		{
 			for( size_type i = 0 ; i < input.width( ) ; i++ )
 			{
 				if( f( input( i, j ) ) )
 				{
+#ifdef _OPENMP
+					#pragma omp critical
+#endif
 					for( size_type angle = 0 ; angle < angle_size ; ++angle )
 					{
 						difference_type rho = static_cast< difference_type >( i * table.cos( angle ) + j * table.sin( angle ) + 0.5 );
@@ -195,11 +221,10 @@ namespace __hough_detail__
 	void hough_inverse( const hough_counter & counter, LINES< TT, AAllocator > &lines, double rho_resolution, double theta_resolution, size_t max_lines )
 	{
 		typedef typename LINES< TT, AAllocator >::value_type value_type;
-		std::size_t count = 0;
 
 		lines.clear( );
 
-		for( hough_counter::const_iterator ite = counter.begin( ) ; ite != counter.end( ) && count < max_lines ; ++ite, ++count )
+		for( hough_counter::const_iterator ite = counter.begin( ) ; ite != counter.end( ) && lines.size( ) < max_lines ; ++ite )
 		{
 			double rho   = ite->second.real( ) * rho_resolution;
 			double theta = ite->second.imag( ) * theta_resolution;
