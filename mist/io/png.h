@@ -190,7 +190,7 @@ namespace __png_controller__
 				png_buff = ( png_bytepp )malloc( height * sizeof( png_bytep ) );
 				for( size_type i = 0 ; i < ( size_type )height ; i++ )
 				{
-					png_uint_32 nbytes = png_get_rowbytes( png_ptr, info_ptr );
+					png_size_t nbytes = png_get_rowbytes( png_ptr, info_ptr );
 					png_buff[ i ] = ( png_bytep )malloc( nbytes );
 				}
 
