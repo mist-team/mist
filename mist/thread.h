@@ -1917,12 +1917,19 @@ public:
 			else if( dwMilliseconds != INFINITE )
 			{
 				unsigned long ct = __thread_controller__::_timeGetTime_( );
-				dwMilliseconds -= ct - st;
-				st = ct;
+				if( dwMilliseconds <= ct - st )
+				{
+					break;
+				}
+				else
+				{
+					dwMilliseconds -= ct - st;
+					st = ct;
+				}
 			}
 		}
 
-		return( i < threads_.size( ) );
+		return( i == threads_.size( ) );
 	}
 
 protected:
