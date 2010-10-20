@@ -1373,6 +1373,11 @@ namespace video
 
 				encode_buf_ = NULL;
 				encode_buf_size_ = width( ) * height( ) * 4;
+				if( encode_buf_size_ < FF_MIN_BUFFER_SIZE )
+				{
+					encode_buf_size_ = FF_MIN_BUFFER_SIZE;
+				}
+
 				if( ( p_fctx_->oformat->flags & AVFMT_RAWPICTURE ) == 0 )
 				{
 					encode_buf_ = ( uint8_t * )av_malloc( encode_buf_size_ );
