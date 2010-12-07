@@ -59,14 +59,34 @@
 #include "limits.h"
 #endif
 
+#ifndef __INCLUDE_MIST_FFT__
+#include "fft/fft.h" 
+#endif
+
+#ifndef __INCLUDE_CONVERTER__
+#include "converter.h"
+#endif
+
+#ifndef __INCLUDE_INTERPOLATE__
+#include "interpolate.h"
+#endif
+
+#ifndef __INCLUDE_GEOMETRY__
+#include "geometry.h"
+#endif
+
+#ifndef M_PI
+#define M_PI           3.14159265358979323846  /* pi */
+#endif
 
 #include <vector>
+#include <complex>
 
 
 // mist名前空間の始まり
 _MIST_BEGIN
 
-namespace __non_rigid_registration_utility__
+	namespace __non_rigid_registration_utility__
 {
 	inline void FFD( double v, double &f0, double &f1, double &f2, double &f3 )
 	{
@@ -83,12 +103,12 @@ namespace __non_rigid_registration_utility__
 	// 制御点情報を用いて，ソース画像をターゲット画像に変形する
 	template < class TARGETTYPE, class TARGETTYPEA, class SOURCETYPE, class SOURCETYPEA, class CONTROLMESH >
 	static void non_rigid_transformation_( array2< TARGETTYPE, TARGETTYPEA > &target, const array2< SOURCETYPE, SOURCETYPEA > &source, const CONTROLMESH &control_mesh,
-											typename CONTROLMESH::difference_type mx = -1,
-											typename CONTROLMESH::difference_type my = -1,
-											typename CONTROLMESH::difference_type mz = -1,
-											typename CONTROLMESH::size_type thread_id = 0,
-											typename CONTROLMESH::size_type thread_num = 1
-										)
+		typename CONTROLMESH::difference_type mx = -1,
+		typename CONTROLMESH::difference_type my = -1,
+		typename CONTROLMESH::difference_type mz = -1,
+		typename CONTROLMESH::size_type thread_id = 0,
+		typename CONTROLMESH::size_type thread_num = 1
+		)
 	{
 		typedef array2< TARGETTYPE, TARGETTYPEA >  target_image_type;
 		typedef array2< SOURCETYPE, SOURCETYPEA >  source_image_type;
@@ -202,12 +222,12 @@ namespace __non_rigid_registration_utility__
 	// 制御点情報を用いて，ソース画像をターゲット画像に変形する
 	template < class TARGETTYPE, class TARGETTYPEA, class SOURCETYPE, class SOURCETYPEA, class CONTROLMESH >
 	static void non_rigid_transformation_( array3< TARGETTYPE, TARGETTYPEA > &target, const array3< SOURCETYPE, SOURCETYPEA > &source, const CONTROLMESH &control_mesh,
-											typename CONTROLMESH::difference_type mx = -1,
-											typename CONTROLMESH::difference_type my = -1,
-											typename CONTROLMESH::difference_type mz = -1,
-											typename CONTROLMESH::size_type thread_id = 0,
-											typename CONTROLMESH::size_type thread_num = 1
-										)
+		typename CONTROLMESH::difference_type mx = -1,
+		typename CONTROLMESH::difference_type my = -1,
+		typename CONTROLMESH::difference_type mz = -1,
+		typename CONTROLMESH::size_type thread_id = 0,
+		typename CONTROLMESH::size_type thread_num = 1
+		)
 	{
 		typedef array3< TARGETTYPE, TARGETTYPEA >  target_image_type;
 		typedef array3< SOURCETYPE, SOURCETYPEA >  source_image_type;
@@ -438,13 +458,13 @@ namespace __non_rigid_registration_utility__
 	// 制御点情報を用いて，ソース画像をターゲット画像に変形する
 	template < class TARGETTYPE, class TARGETTYPEA, class SOURCETYPE, class SOURCETYPEA, class CONTROLMESH >
 	static void non_rigid_transformation_( array2< TARGETTYPE, TARGETTYPEA > &target, const array2< SOURCETYPE, SOURCETYPEA > &source, const CONTROLMESH &control_mesh,
-											const ffd_coefficient &ffd_coeff,
-											typename CONTROLMESH::difference_type mx = -1,
-											typename CONTROLMESH::difference_type my = -1,
-											typename CONTROLMESH::difference_type mz = -1,
-											typename CONTROLMESH::size_type thread_id = 0,
-											typename CONTROLMESH::size_type thread_num = 1
-										)
+		const ffd_coefficient &ffd_coeff,
+		typename CONTROLMESH::difference_type mx = -1,
+		typename CONTROLMESH::difference_type my = -1,
+		typename CONTROLMESH::difference_type mz = -1,
+		typename CONTROLMESH::size_type thread_id = 0,
+		typename CONTROLMESH::size_type thread_num = 1
+		)
 	{
 		typedef array2< TARGETTYPE, TARGETTYPEA >  target_image_type;
 		typedef array2< SOURCETYPE, SOURCETYPEA >  source_image_type;
@@ -566,13 +586,13 @@ namespace __non_rigid_registration_utility__
 	// 制御点情報を用いて，ソース画像をターゲット画像に変形する
 	template < class TARGETTYPE, class TARGETTYPEA, class SOURCETYPE, class SOURCETYPEA, class CONTROLMESH >
 	static void non_rigid_transformation_( array3< TARGETTYPE, TARGETTYPEA > &target, const array3< SOURCETYPE, SOURCETYPEA > &source, const CONTROLMESH &control_mesh,
-											const ffd_coefficient &ffd_coeff,
-											typename CONTROLMESH::difference_type mx = -1,
-											typename CONTROLMESH::difference_type my = -1,
-											typename CONTROLMESH::difference_type mz = -1,
-											typename CONTROLMESH::size_type thread_id = 0,
-											typename CONTROLMESH::size_type thread_num = 1
-										)
+		const ffd_coefficient &ffd_coeff,
+		typename CONTROLMESH::difference_type mx = -1,
+		typename CONTROLMESH::difference_type my = -1,
+		typename CONTROLMESH::difference_type mz = -1,
+		typename CONTROLMESH::size_type thread_id = 0,
+		typename CONTROLMESH::size_type thread_num = 1
+		)
 	{
 		typedef array3< TARGETTYPE, TARGETTYPEA >  target_image_type;
 		typedef array3< SOURCETYPE, SOURCETYPEA >  source_image_type;
@@ -756,7 +776,7 @@ namespace __non_rigid_registration_utility__
 
 	public:
 		void setup_parameters( target_image_type &target, const source_image_type &source, const control_mesh_type &control_mesh,
-								const ffd_coefficient &ffd_coefficient__, size_t mx, size_type my, size_type mz, size_type thread_id, size_type thread_num )
+			const ffd_coefficient &ffd_coefficient__, size_t mx, size_type my, size_type mz, size_type thread_id, size_type thread_num )
 		{
 			target_  = &target;
 			source_ = &source;
@@ -770,7 +790,7 @@ namespace __non_rigid_registration_utility__
 		}
 
 		void setup_parameters( target_image_type &target, const source_image_type &source, const control_mesh_type &control_mesh,
-												size_t mx, size_type my, size_type mz, size_type thread_id, size_type thread_num )
+			size_t mx, size_type my, size_type mz, size_type thread_id, size_type thread_num )
 		{
 			target_  = &target;
 			source_ = &source;
@@ -813,11 +833,11 @@ namespace __non_rigid_registration_utility__
 	// 制御点情報を用いて，ソース画像をターゲット画像に変形する
 	template < class TARGETTYPE, class SOURCETYPE, class CONTROLMESH >
 	static bool transformation( TARGETTYPE &target, const SOURCETYPE &source, const CONTROLMESH &control_mesh,
-									typename CONTROLMESH::difference_type mx = -1,
-									typename CONTROLMESH::difference_type my = -1,
-									typename CONTROLMESH::difference_type mz = -1,
-									typename CONTROLMESH::size_type thread_num = 0
-								)
+		typename CONTROLMESH::difference_type mx = -1,
+		typename CONTROLMESH::difference_type my = -1,
+		typename CONTROLMESH::difference_type mz = -1,
+		typename CONTROLMESH::size_type thread_num = 0
+		)
 	{
 		if( is_same_object( target, source ) || target.empty( ) || source.empty( ) )
 		{
@@ -847,18 +867,18 @@ namespace __non_rigid_registration_utility__
 		do_threads_( thread, thread_num );
 
 		delete [] thread;
-		
+
 		return( true );
 	}
 
 	// 制御点情報を用いて，ソース画像をターゲット画像に変形する
 	template < class TARGETTYPE, class SOURCETYPE, class CONTROLMESH >
 	static bool transformation( TARGETTYPE &target, const SOURCETYPE &source, const CONTROLMESH &control_mesh, const ffd_coefficient &ffd_coeff,
-									typename CONTROLMESH::difference_type mx = -1,
-									typename CONTROLMESH::difference_type my = -1,
-									typename CONTROLMESH::difference_type mz = -1,
-									typename CONTROLMESH::size_type thread_num = 0
-								)
+		typename CONTROLMESH::difference_type mx = -1,
+		typename CONTROLMESH::difference_type my = -1,
+		typename CONTROLMESH::difference_type mz = -1,
+		typename CONTROLMESH::size_type thread_num = 0
+		)
 	{
 		if( is_same_object( target, source ) || target.empty( ) || source.empty( ) )
 		{
@@ -888,7 +908,7 @@ namespace __non_rigid_registration_utility__
 		do_threads_( thread, thread_num );
 
 		delete [] thread;
-		
+
 		return( true );
 	}
 
@@ -1125,8 +1145,8 @@ namespace __non_rigid_registration_utility__
 		}
 
 		double min_range( const double &v1, const double &v2, const double &v3,
-							const double &v4, const double &v5, const double &v6,
-							const double &v7, const double &v8, const double &v9 ) const
+			const double &v4, const double &v5, const double &v6,
+			const double &v7, const double &v8, const double &v9 ) const
 		{
 			double vv1 = min_range( v1, v2, v3 );
 			double vv2 = min_range( v4, v5, v6 );
@@ -1135,8 +1155,8 @@ namespace __non_rigid_registration_utility__
 		}
 
 		double max_range( const double &v1, const double &v2, const double &v3,
-							const double &v4, const double &v5, const double &v6,
-							const double &v7, const double &v8, const double &v9 ) const
+			const double &v4, const double &v5, const double &v6,
+			const double &v7, const double &v8, const double &v9 ) const
 		{
 			double vv1 = max_range( v1, v2, v3 );
 			double vv2 = max_range( v4, v5, v6 );
@@ -1259,8 +1279,8 @@ namespace __non_rigid_registration_utility__
 				return( false );
 			}
 
-//			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 1.0 );
-//			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 0.1, 1.0, 1 );
+			//			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 1.0 );
+			//			gradient::minimization( p, bound, no_constructor_functor_type( *this ), 0.1, 1.0, 1 );
 
 			// 結果を反映
 			vector_type &v = control_mesh_tmp( x, y, z );
@@ -1541,125 +1561,125 @@ namespace non_rigid
 								if( i_is_odd && j_is_odd && k_is_odd )
 								{
 									control_mesh( i, j, k ) = ( cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
-																cmesh( ii    , jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 ) +
-																cmesh( ii + 1, jj    , kk     ) + cmesh( ii + 1, jj    , kk + 1 ) +
-																cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk + 1 ) ) / 8.0;
+										cmesh( ii    , jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 ) +
+										cmesh( ii + 1, jj    , kk     ) + cmesh( ii + 1, jj    , kk + 1 ) +
+										cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk + 1 ) ) / 8.0;
 								}
 								else if( !i_is_odd && j_is_odd && k_is_odd )
 								{
 									control_mesh( i, j, k ) = (
-																	cmesh( ii - 1, jj    , kk     ) + cmesh( ii - 1, jj    , kk + 1 ) +
-																	cmesh( ii - 1, jj + 1, kk     ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
-																	cmesh( ii + 1, jj    , kk     ) + cmesh( ii + 1, jj    , kk + 1 ) +
-																	cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk + 1 ) + 
-																	6.0 * (
-																		cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
-																		cmesh( ii    , jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 )
-																	)
-															  ) / 32.0;
+										cmesh( ii - 1, jj    , kk     ) + cmesh( ii - 1, jj    , kk + 1 ) +
+										cmesh( ii - 1, jj + 1, kk     ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
+										cmesh( ii + 1, jj    , kk     ) + cmesh( ii + 1, jj    , kk + 1 ) +
+										cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk + 1 ) + 
+										6.0 * (
+										cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
+										cmesh( ii    , jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 )
+										)
+										) / 32.0;
 								}
 								else if( i_is_odd && !j_is_odd && k_is_odd )
 								{
 									control_mesh( i, j, k ) = (
-																	cmesh( ii    , jj - 1, kk     ) + cmesh( ii    , jj - 1, kk + 1 ) +
-																	cmesh( ii + 1, jj - 1, kk     ) + cmesh( ii + 1, jj - 1, kk + 1 ) +
-																	cmesh( ii    , jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 ) +
-																	cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk + 1 ) + 
-																	6.0 * (
-																		cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
-																		cmesh( ii + 1, jj    , kk     ) + cmesh( ii + 1, jj    , kk + 1 )
-																	)
-															  ) / 32.0;
+										cmesh( ii    , jj - 1, kk     ) + cmesh( ii    , jj - 1, kk + 1 ) +
+										cmesh( ii + 1, jj - 1, kk     ) + cmesh( ii + 1, jj - 1, kk + 1 ) +
+										cmesh( ii    , jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 ) +
+										cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk + 1 ) + 
+										6.0 * (
+										cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
+										cmesh( ii + 1, jj    , kk     ) + cmesh( ii + 1, jj    , kk + 1 )
+										)
+										) / 32.0;
 								}
 								else if( i_is_odd && j_is_odd && !k_is_odd )
 								{
 									control_mesh( i, j, k ) = (
-																	cmesh( ii    , jj    , kk - 1 ) + cmesh( ii + 1, jj    , kk - 1 ) +
-																	cmesh( ii    , jj + 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk - 1 ) +
-																	cmesh( ii    , jj    , kk + 1 ) + cmesh( ii + 1, jj    , kk + 1 ) +
-																	cmesh( ii    , jj + 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) + 
-																	6.0 * (
-																		cmesh( ii    , jj    , kk     ) + cmesh( ii + 1, jj    , kk     ) +
-																		cmesh( ii    , jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk     )
-																	)
-															  ) / 32.0;
+										cmesh( ii    , jj    , kk - 1 ) + cmesh( ii + 1, jj    , kk - 1 ) +
+										cmesh( ii    , jj + 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk - 1 ) +
+										cmesh( ii    , jj    , kk + 1 ) + cmesh( ii + 1, jj    , kk + 1 ) +
+										cmesh( ii    , jj + 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) + 
+										6.0 * (
+										cmesh( ii    , jj    , kk     ) + cmesh( ii + 1, jj    , kk     ) +
+										cmesh( ii    , jj + 1, kk     ) + cmesh( ii + 1, jj + 1, kk     )
+										)
+										) / 32.0;
 								}
 								else if( !i_is_odd && !j_is_odd && k_is_odd )
 								{
 									control_mesh( i, j, k ) = (
-																	cmesh( ii - 1, jj - 1, kk     ) + cmesh( ii - 1, jj + 1, kk     ) +
-																	cmesh( ii + 1, jj - 1, kk     ) + cmesh( ii + 1, jj + 1, kk     ) +
-																	cmesh( ii - 1, jj - 1, kk + 1 ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
-																	cmesh( ii + 1, jj - 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
-																	6.0 * (
-																		cmesh( ii - 1, jj    , kk     ) + cmesh( ii    , jj - 1, kk     ) +
-																		cmesh( ii + 1, jj    , kk     ) + cmesh( ii    , jj + 1, kk     ) +
-																		cmesh( ii - 1, jj    , kk + 1 ) + cmesh( ii    , jj - 1, kk + 1 ) +
-																		cmesh( ii + 1, jj    , kk + 1 ) + cmesh( ii    , jj + 1, kk + 1 )
-																	) + 
-																	36.0 * (
-																		cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 )
-																	)
-																) / 128.0;
+										cmesh( ii - 1, jj - 1, kk     ) + cmesh( ii - 1, jj + 1, kk     ) +
+										cmesh( ii + 1, jj - 1, kk     ) + cmesh( ii + 1, jj + 1, kk     ) +
+										cmesh( ii - 1, jj - 1, kk + 1 ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
+										cmesh( ii + 1, jj - 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
+										6.0 * (
+										cmesh( ii - 1, jj    , kk     ) + cmesh( ii    , jj - 1, kk     ) +
+										cmesh( ii + 1, jj    , kk     ) + cmesh( ii    , jj + 1, kk     ) +
+										cmesh( ii - 1, jj    , kk + 1 ) + cmesh( ii    , jj - 1, kk + 1 ) +
+										cmesh( ii + 1, jj    , kk + 1 ) + cmesh( ii    , jj + 1, kk + 1 )
+										) + 
+										36.0 * (
+										cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj    , kk + 1 )
+										)
+										) / 128.0;
 								}
 								else if( !i_is_odd && j_is_odd && !k_is_odd )
 								{
 									control_mesh( i, j, k ) = (
-																	cmesh( ii - 1, jj    , kk - 1 ) + cmesh( ii - 1, jj    , kk + 1 ) +
-																	cmesh( ii + 1, jj    , kk - 1 ) + cmesh( ii + 1, jj    , kk + 1 ) +
-																	cmesh( ii - 1, jj + 1, kk - 1 ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
-																	cmesh( ii + 1, jj + 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
-																	6.0 * (
-																		cmesh( ii - 1, jj    , kk     ) + cmesh( ii    , jj    , kk - 1 ) +
-																		cmesh( ii + 1, jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
-																		cmesh( ii - 1, jj + 1, kk     ) + cmesh( ii    , jj + 1, kk - 1 ) +
-																		cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 )
-																	) + 
-																	36.0 * (
-																		cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj + 1, kk     )
-																	)
-																) / 128.0;
+										cmesh( ii - 1, jj    , kk - 1 ) + cmesh( ii - 1, jj    , kk + 1 ) +
+										cmesh( ii + 1, jj    , kk - 1 ) + cmesh( ii + 1, jj    , kk + 1 ) +
+										cmesh( ii - 1, jj + 1, kk - 1 ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
+										cmesh( ii + 1, jj + 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
+										6.0 * (
+										cmesh( ii - 1, jj    , kk     ) + cmesh( ii    , jj    , kk - 1 ) +
+										cmesh( ii + 1, jj    , kk     ) + cmesh( ii    , jj    , kk + 1 ) +
+										cmesh( ii - 1, jj + 1, kk     ) + cmesh( ii    , jj + 1, kk - 1 ) +
+										cmesh( ii + 1, jj + 1, kk     ) + cmesh( ii    , jj + 1, kk + 1 )
+										) + 
+										36.0 * (
+										cmesh( ii    , jj    , kk     ) + cmesh( ii    , jj + 1, kk     )
+										)
+										) / 128.0;
 								}
 								else if( i_is_odd && !j_is_odd && !k_is_odd )
 								{
 									control_mesh( i, j, k ) = (
-																	cmesh( ii    , jj - 1, kk - 1 ) + cmesh( ii    , jj + 1, kk - 1 ) +
-																	cmesh( ii    , jj - 1, kk + 1 ) + cmesh( ii    , jj + 1, kk + 1 ) +
-																	cmesh( ii + 1, jj - 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk - 1 ) +
-																	cmesh( ii + 1, jj - 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
-																	6.0 * (
-																		cmesh( ii    , jj    , kk - 1 ) + cmesh( ii    , jj - 1, kk     ) +
-																		cmesh( ii    , jj    , kk + 1 ) + cmesh( ii    , jj + 1, kk     ) +
-																		cmesh( ii + 1, jj    , kk - 1 ) + cmesh( ii + 1, jj - 1, kk     ) +
-																		cmesh( ii + 1, jj    , kk + 1 ) + cmesh( ii + 1, jj + 1, kk     )
-																	) + 
-																	36.0 * (
-																		cmesh( ii    , jj    , kk     ) + cmesh( ii + 1, jj    , kk     )
-																	)
-																) / 128.0;
+										cmesh( ii    , jj - 1, kk - 1 ) + cmesh( ii    , jj + 1, kk - 1 ) +
+										cmesh( ii    , jj - 1, kk + 1 ) + cmesh( ii    , jj + 1, kk + 1 ) +
+										cmesh( ii + 1, jj - 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk - 1 ) +
+										cmesh( ii + 1, jj - 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
+										6.0 * (
+										cmesh( ii    , jj    , kk - 1 ) + cmesh( ii    , jj - 1, kk     ) +
+										cmesh( ii    , jj    , kk + 1 ) + cmesh( ii    , jj + 1, kk     ) +
+										cmesh( ii + 1, jj    , kk - 1 ) + cmesh( ii + 1, jj - 1, kk     ) +
+										cmesh( ii + 1, jj    , kk + 1 ) + cmesh( ii + 1, jj + 1, kk     )
+										) + 
+										36.0 * (
+										cmesh( ii    , jj    , kk     ) + cmesh( ii + 1, jj    , kk     )
+										)
+										) / 128.0;
 								}
 								else
 								{
 									control_mesh( i, j, k ) = (
-																	cmesh( ii - 1, jj - 1, kk - 1 ) + cmesh( ii - 1, jj + 1, kk - 1 ) +
-																	cmesh( ii + 1, jj - 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk - 1 ) +
-																	cmesh( ii - 1, jj - 1, kk + 1 ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
-																	cmesh( ii + 1, jj - 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
-																	6.0 * (
-																		cmesh( ii - 1, jj - 1, kk     ) + cmesh( ii - 1, jj + 1, kk     ) +
-																		cmesh( ii + 1, jj - 1, kk     ) + cmesh( ii + 1, jj + 1, kk     ) +
-																		cmesh( ii - 1, jj    , kk - 1 ) + cmesh( ii    , jj - 1, kk - 1 ) +
-																		cmesh( ii + 1, jj    , kk - 1 ) + cmesh( ii    , jj + 1, kk - 1 ) +
-																		cmesh( ii - 1, jj    , kk + 1 ) + cmesh( ii    , jj - 1, kk + 1 ) +
-																		cmesh( ii + 1, jj    , kk + 1 ) + cmesh( ii    , jj + 1, kk + 1 )
-																	) + 
-																	36.0 * (
-																		cmesh( ii    , jj    , kk - 1 ) + cmesh( ii    , jj    , kk + 1 ) +
-																		cmesh( ii - 1, jj    , kk     ) + cmesh( ii    , jj - 1, kk     ) +
-																		cmesh( ii + 1, jj    , kk     ) + cmesh( ii    , jj + 1, kk     )
-																	) +
-																	cmesh( ii    , jj    , kk     ) * 216.0
-																) / 512.0;
+										cmesh( ii - 1, jj - 1, kk - 1 ) + cmesh( ii - 1, jj + 1, kk - 1 ) +
+										cmesh( ii + 1, jj - 1, kk - 1 ) + cmesh( ii + 1, jj + 1, kk - 1 ) +
+										cmesh( ii - 1, jj - 1, kk + 1 ) + cmesh( ii - 1, jj + 1, kk + 1 ) +
+										cmesh( ii + 1, jj - 1, kk + 1 ) + cmesh( ii + 1, jj + 1, kk + 1 ) +
+										6.0 * (
+										cmesh( ii - 1, jj - 1, kk     ) + cmesh( ii - 1, jj + 1, kk     ) +
+										cmesh( ii + 1, jj - 1, kk     ) + cmesh( ii + 1, jj + 1, kk     ) +
+										cmesh( ii - 1, jj    , kk - 1 ) + cmesh( ii    , jj - 1, kk - 1 ) +
+										cmesh( ii + 1, jj    , kk - 1 ) + cmesh( ii    , jj + 1, kk - 1 ) +
+										cmesh( ii - 1, jj    , kk + 1 ) + cmesh( ii    , jj - 1, kk + 1 ) +
+										cmesh( ii + 1, jj    , kk + 1 ) + cmesh( ii    , jj + 1, kk + 1 )
+										) + 
+										36.0 * (
+										cmesh( ii    , jj    , kk - 1 ) + cmesh( ii    , jj    , kk + 1 ) +
+										cmesh( ii - 1, jj    , kk     ) + cmesh( ii    , jj - 1, kk     ) +
+										cmesh( ii + 1, jj    , kk     ) + cmesh( ii    , jj + 1, kk     )
+										) +
+										cmesh( ii    , jj    , kk     ) * 216.0
+										) / 512.0;
 								}
 							}
 						}
@@ -1845,7 +1865,411 @@ namespace non_rigid
 
 } // 名前空間 non_rigid の終わり
 
+namespace _poc_
+{
+	template < class T> class point
+	{
+	public :
+		T value;
+		int x;
+		int y;
+	};
 
+	// 象限の入れ換え(1と3、2と4)
+	// 中心に直流成分が来る
+	mist::array2< double > shuffle_image( const mist::array2< double > &image )
+	{
+		mist::array2< double > tmp;
+		int width =image.width();
+		int height = image.height();
+
+		tmp.resize( width , height );
+		
+#pragma omp parallel for schedule( guided )
+		for( int h = 0 ; h < height ; h++)
+		{
+			for( int w = 0 ; w < width ; w++ )
+			{
+				if( w < width / 2 && h < height / 2 )
+				{
+					tmp( w + width / 2, h + height / 2 ) = image( w, h );   
+				}
+				else if( w < width / 2 && h >= height / 2 )
+				{
+					tmp( w + width / 2, h - height / 2 ) = image( w, h );   
+
+				}
+				else if( w >= width / 2 && h < height / 2 )
+				{
+					tmp( w - width / 2, h + height / 2 ) = image( w, h );  
+				}
+				else if( w >= width / 2 && h >= height / 2 )
+				{
+					tmp( w - width / 2, h - height / 2 ) = image( w, h );   
+				}
+			}
+		}
+		return tmp;
+	}
+
+	// ローパスフィルタ
+	mist::array2< std::complex< double > > lowpass_filter( const mist::array2< std::complex< double > > &image, const double lowpass_range )
+	{
+		mist::array2< std::complex< double > > tmp;
+		int width =image.width();
+		int height = image.height();
+
+		tmp.resize( width, height );
+		std::complex< double > zero( 0 , 0 );
+
+		int width1 = (int)(width * lowpass_range / 2);
+		int width2 = (int)(width * (1-lowpass_range / 2));
+		int height1 = (int)(height * lowpass_range / 2);
+		int height2 = (int)(height * (1-lowpass_range / 2));
+#pragma omp parallel for schedule( guided )
+		for( int h = 0 ; h < height ; h++)
+		{
+			for( int w = 0 ; w < width ; w++ )
+			{
+				if( !( ( w < width1 || w > width2 ) && ( h < height1 || h > height2 ) ) )
+				{
+					tmp( w, h ) = zero;
+				}
+				else{
+					tmp( w, h ) = image( w, h );
+				}
+			}
+		}
+		return tmp;
+	}
+
+	//サブピークを探索
+	void serch_peak( const mist::array2< double > &poc_image, point< double > &peak, point< double > &x_peak, point< double > &y_peak )
+	{
+		// ピーク位置の探索
+		peak.value = poc_image( 0, 0 );
+		peak.x = 0; peak.y = 0;
+		for( size_t h = 0 ; h < poc_image.height() ; h++)
+		{
+			for( size_t w = 0 ; w < poc_image.width() ; w++ )
+			{
+				if( peak.value < poc_image( w, h ) )
+				{
+					peak.value = poc_image( w, h );
+					peak.x = w; peak.y = h;
+				}
+			}
+		}
+
+		// サブピーク位置の探索
+		/// x方向
+		if( peak.x == 0 )
+		{
+			x_peak.value = poc_image( peak.x + 1, peak.y );
+			x_peak.x = peak.x + 1;
+			x_peak.y = peak.y;
+		}
+		else if( peak.x == poc_image.width() )
+		{
+			x_peak.value = poc_image( peak.x - 1, peak.y );
+			x_peak.x = peak.x - 1;
+			x_peak.y = peak.y;
+		}
+		else if( poc_image( peak.x + 1, peak.y ) >= poc_image( peak.x - 1, peak.y ) )
+		{
+			x_peak.value = poc_image( peak.x + 1, peak.y );
+			x_peak.x = peak.x + 1;
+			x_peak.y = peak.y;
+		}
+		else
+		{
+			x_peak.value = poc_image( peak.x - 1, peak.y );
+			x_peak.x = peak.x - 1;
+			x_peak.y = peak.y;
+		}
+
+		/// y方向
+		if( peak.y == 0 )
+		{
+			y_peak.value = poc_image( peak.x, peak.y + 1 );
+			y_peak.x = peak.x;
+			y_peak.y = peak.y + 1;
+		}
+		else if( peak.y == poc_image.height() )
+		{
+			y_peak.value = poc_image( peak.x, peak.y - 1 );
+			y_peak.x = peak.x;
+			y_peak.y = peak.y - 1;
+		}
+		else if( poc_image( peak.x, peak.y + 1 ) >= poc_image( peak.x, peak.y - 1 ) )
+		{
+			y_peak.value = poc_image( peak.x, peak.y + 1 );
+			y_peak.x = peak.x;
+			y_peak.y = peak.y + 1;
+		}
+		else
+		{
+			y_peak.value = poc_image( peak.x, peak.y - 1 );
+			y_peak.x = peak.x;
+			y_peak.y = peak.y - 1;
+		}
+	}
+	//PEF
+	void PEF(  const mist::array2< double > &poc_image, point< double > &peak, point< double > &x_peak, point< double > &y_peak, double &delta_x, double &delta_y, const int distance0, const double lowpass_range )
+	{
+		double ux, uy, vx, vy;
+		double UUx = 0.0 , UVx = 0.0, UUy = 0.0, UVy = 0.0;
+		int distance = distance0;
+		int width = poc_image.width();
+		int height = poc_image.height();
+
+		// distanceの例外処理(範囲外のアクセス防止) --------------------------------------
+		if(distance > peak.x) distance = peak.x;
+		if(distance > peak.y) distance = peak.y;
+		if(distance > width - peak.x) distance = width - peak.x;
+		if(distance > height - peak.y) distance = height - peak.y;
+
+		for( int d = 1; d <= distance; d++ )
+		{
+			//peak x方向
+			ux = poc_image( peak.x - d, peak.y ) + poc_image( peak.x + d, peak.y ) - 2 * cos( M_PI * d * lowpass_range ) * poc_image( peak.x, peak.y );
+			vx = 2 * cos( M_PI * d * lowpass_range ) * poc_image( peak.x, peak.y ) * ( peak.x - width / 2 )
+				- ( peak.x - width / 2 - d ) *  poc_image( peak.x - d, peak.y )
+				- ( peak.x - width / 2 + d ) *  poc_image( peak.x + d, peak.y );
+			UVx += ux*vx;
+			UUx += ux*ux;
+
+			//peak y方向
+			uy = poc_image( peak.x, peak.y - d ) + poc_image( peak.x, peak.y + d ) - 2 * cos( M_PI * d * lowpass_range ) * poc_image( peak.x, peak.y );
+			vy = 2 * cos( M_PI * d * lowpass_range ) * poc_image( peak.x, peak.y ) * ( peak.y - height / 2 )
+				- ( peak.y - height / 2 - d ) *  poc_image( peak.x, peak.y - d )
+				- ( peak.y - height / 2 + d ) *  poc_image( peak.x, peak.y + d );
+			UVy += uy*vy;
+			UUy += uy*uy;
+
+			//peak2 x方向
+			ux = poc_image( x_peak.x - d, x_peak.y ) + poc_image( x_peak.x + d, x_peak.y ) - 2 * cos( M_PI * d * lowpass_range ) * poc_image( x_peak.x, x_peak.y );
+			vx = 2 * cos( M_PI * d * lowpass_range ) * poc_image( x_peak.x, x_peak.y ) * ( x_peak.x - width / 2 )
+				- ( x_peak.x - width / 2 - d ) *  poc_image( x_peak.x - d, x_peak.y )
+				- ( x_peak.x - width / 2 + d ) *  poc_image( x_peak.x + d, x_peak.y );
+			UVx += ux*vx;
+			UUx += ux*ux;
+
+			//peak2 y方向
+			uy = poc_image( y_peak.x, y_peak.y - d ) + poc_image( y_peak.x, y_peak.y + d ) - 2 * cos( M_PI * d * lowpass_range ) * poc_image( y_peak.x, y_peak.y );
+			vy = 2 * cos( M_PI * d * lowpass_range ) * poc_image( y_peak.x, y_peak.y ) * ( y_peak.y - height / 2 )
+				- ( y_peak.y - height / 2 - d ) *  poc_image( y_peak.x, y_peak.y - d )
+				- ( y_peak.y - height / 2 + d ) *  poc_image( y_peak.x, y_peak.y + d );
+			UVy += uy*vy;
+			UUy += uy*uy;
+		}
+
+		//std::cout << UVx << "," << UUx << std::endl;
+		//std::cout << UVy << "," << UUy << std::endl;
+
+		delta_x =  - UVx / UUx;
+		delta_y =  - UVy / UUy;
+	}
+
+	/// @brief 2枚の画像の平行移動のずれをサブピクセル精度で推定
+	//! FFTを使用するため画像の1辺は2のべき乗でなければならない
+	//!
+	//! @param[in]  input            … 入力画像
+	//! @param[in]  reference        … 基準画像
+	//! @param[out] delta_x          … x方向位置ずれ
+	//! @param[out] delta_y          … y方向位置ずれ
+	//!
+	//! @return なし
+	//! 
+	void poc( const mist::array2< double > &input, const mist::array2< double > &reference, double &delta_x, double &delta_y, const double lowpass_range = 1.0, const int distance = 5 )
+	{
+		int width = reference.width();
+		int height = reference.height();
+		mist::array2< std::complex< double > > freq_ref( width , height ),  freq_input( width , height ) ;	//周波数空間画像
+		//mist::array2< std::complex< double > > phase_ref( width , height ), phase_input( width , height ) ;  //位相限定画像
+		mist::array2< std::complex< double > > freq_poc( width , height );	//
+		mist::array2< double > poc_image;
+		double norm = 0.0;
+
+		// FFT 
+		mist::fft( reference, freq_ref );
+		mist::fft( input, freq_input );
+		// 位相限定相関画像作成 --------------------------------------
+		//for( int h = 0 ; h < height ; h++)
+		//{
+		//	for( int w = 0 ; w < width ; w++ )
+		//	{
+		//		freq_poc( w, h ) = freq_ref( w , h ) * conj( freq_input( w , h ) );
+		//		norm = abs( freq_poc( w, h) );
+		//		if( norm == 0){
+		//			freq_poc( w, h ) = freq_poc( w, h );
+		//		}
+		//		else
+		//		{
+		//			freq_poc( w, h ) = freq_poc( w, h ) / norm;
+		//		}
+		//	}
+		//}
+		for( size_t i = 0 ; i < reference.size() ; i++)
+		{
+			freq_poc[i] = freq_ref[i] * conj( freq_input[i] );
+			norm = abs( freq_poc[i] );
+			if( norm != 0)
+			{
+				freq_poc[i] = freq_poc[i] / norm;
+			}
+		}
+		// end 位相限定相関画像計算 --------------------------------------
+
+		// ローパスフィルタ
+		freq_poc = lowpass_filter( freq_poc, lowpass_range );
+
+		// 逆FFT
+		mist::ifft( freq_poc, poc_image );
+
+		// 象限の配置換え(1と3、2と4) ----------------------------
+		poc_image = shuffle_image( poc_image );
+
+		//ピーク、サブピーク位置の探索 ----------------------------
+		point< double > peak;
+		point< double > x_peak, y_peak;
+		serch_peak( poc_image, peak, x_peak, y_peak );
+
+		//std::cout << "peak ( " << peak.x - width / 2 << ", " << peak.y - height / 2 << " ) " << peak.value <<  std::endl;
+		//std::cout << "x_peak ( " << x_peak.x - width / 2 << ", " << x_peak.y - height / 2 << " ) " << x_peak.value << std::endl;
+		//std::cout << "y_peak ( " << y_peak.x - width / 2 << ", " << y_peak.y - height / 2 << " ) " << y_peak.value << std::endl;
+		//PEF
+		PEF( poc_image, peak, x_peak, y_peak, delta_x, delta_y, distance, lowpass_range );
+
+		delta_x *= -1;
+		delta_y *= -1;
+	}
+
+
+} // 名前空間 _poc_ の終わり
+
+namespace poc
+{
+	enum interpolate_type{ LINEAR, BICUBIC };
+	/// @brief 2枚の画像のx,y方向の平行移動をサブピクセル精度で計算する: mist::array2< 任意の型 > 型バージョン
+	//!
+	//! @attention 入力画像、参照画像ともに mist::array2< 任意の型 > 型でなければならない
+	//!
+	//! @param[in]     input        … 入力画像 
+	//! @param[in]     reference    … 参照画像
+	//! @param[out]    dx           … x方向位置ずれ
+	//! @param[out]    dy           … y方向位置ずれ
+	//! @param[in]     low_pass_range … ローパスフィルタの範囲
+	//! @param[in]     distance     … ピークからの探索距離
+	//!
+	//! @return なし
+	template < typename Value_type, typename Allocator >
+	void estimate(
+		const array2< Value_type, Allocator >	&input,
+		const array2< Value_type, Allocator >	&reference,
+		double      							&dx,
+		double      							&dy,
+		double                                  low_pass_range = 1.0,
+		int                                     distance = 5)
+	{
+		typedef array2< double > image_type;
+		image_type tmp1, tmp2;
+		convert( input, tmp1 );
+		convert( reference, tmp2 );
+		return _poc_::poc( tmp1, tmp2, dx, dy, low_pass_range, distance );
+	}	
+	/// @brief 2枚の画像のx,y方向の平行移動をサブピクセル精度で計算する: mist::array2< 任意の型 > 型バージョン
+	//!
+	//! @attention 入力画像、参照画像ともに mist::array2< 任意の型 > 型でなければならない
+	//!
+	//! @param[in]     input        … 入力画像 
+	//! @param[in]     reference    … 参照画像
+	//! @param[out]    dvec         … 位置ずれベクトル
+	//! @param[in]     low_pass_range … ローパスフィルタの範囲
+	//! @param[in]     distance     … ピークからの探索距離
+	//!
+	//! @return なし
+	template < typename Value_type, typename Allocator >
+	void estimate(
+		const array2< Value_type, Allocator >	&input,
+		const array2< Value_type, Allocator >	&reference,
+		vector2< double >  						&dvec,
+		double                                  low_pass_range = 1.0,
+		int                                     distance = 5)
+	{
+		typedef array2< double > image_type;
+		image_type tmp1, tmp2;
+		convert( input, tmp1 );
+		convert( reference, tmp2 );
+		return _poc_::poc( tmp1, tmp2, dvec.x, dvec.y, low_pass_range, distance );
+	}
+
+	/// @brief 平行移動を考慮して変形する
+	//!
+	//! @param[in]  in              … 入力画像
+	//! @param[out]  out            … 基準画像
+	//! @param[in] dx               … x方向位置ずれ
+	//! @param[in] dy               … y方向位置ずれ
+	//! @param[in] factor           … 拡大率
+	//!
+	//! @return なし
+	//! 
+	template< class Value_type1, class Allocator1, class Value_type2, class Allocator2 >
+	void transform(
+		const array2< Value_type1, Allocator1 >	&in,
+		array2< Value_type2, Allocator2 >	&out,
+		double      							&dx,
+		double      							&dy,
+		double                                  factor = -1,
+		int                                     interpolate_type = BICUBIC)
+	{
+		if( factor != -1 )
+		{
+			out.resize( (size_t)( in.width() * factor ), (size_t )( in.height() * factor ) );
+		}
+		switch( interpolate_type )
+		{
+		case LINEAR:
+			return linear::transform( in, out, -dx, -dy );
+		case BICUBIC:
+			return cubic::transform( in, out, -dx, -dy );
+		}
+		return;
+	}	
+
+	/// @brief 平行移動を考慮して変形する
+	//!
+	//! @param[in]  in              … 入力画像
+	//! @param[out]  out            … 基準画像
+	//! @param[in] dx               … x方向位置ずれ
+	//! @param[in] dy               … y方向位置ずれ
+	//! @param[in] factor           … 拡大率
+	//!
+	//! @return なし
+	//! 
+	template< class Value_type1, class Allocator1, class Value_type2, class Allocator2 >
+	void transform(
+		const array2< Value_type1, Allocator1 >	&in,
+		array2< Value_type2, Allocator2 >	&out,
+		vector2< double >  						&dvec,
+		double                                  factor = -1,
+		int                                     interpolate_type = BICUBIC)
+	{
+		if( factor != -1 )
+		{
+			out.resize( (size_t)( in.width() * factor ), (size_t )( in.height() * factor ) );
+		}
+		switch( interpolate_type )
+		{
+		case LINEAR:
+			return linear::transform( in, out, -dvec.x, -dvec.y );
+		case BICUBIC:
+			return cubic::transform( in, out, -dvec.x, -dvec.y );
+		}
+		return;
+	}
+
+} // 名前空間 poc の終わり
 /// @}
 //  画像のレジストレーショングループの終わり
 

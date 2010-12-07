@@ -41,6 +41,10 @@
 #include "numeric.h"
 #endif
 
+#ifndef __INCLUDE_MIST_VECTOR__
+#include "vector.h"
+#endif
+
 _MIST_BEGIN
 
 
@@ -273,7 +277,8 @@ namespace linear
 
 		int dx0, dy0, dx1, dy1;
 		detail::clipping( 0, 0, iw, ih, dx0, dy0, dx1, dy1, mat );
-
+		
+#pragma omp parallel for schedule( guided )
 		for( int y = 0 ; y < h ; ++y )		
 		  //		for( int y = ( ( dy0 > 0 ) ? dy0 : 0 ) ; y < ( ( dy1 < h ) ? dy1 : h ) ; ++y )
 		{
@@ -300,8 +305,172 @@ namespace linear
 			}
 		}
 	}
+
+		/// @brief 平行移動を考慮して変形する
+	//!
+	//! @param[in]  in              … 入力画像
+	//! @param[out]  out            … 基準画像
+	//! @param[in] delta_x          … x方向位置ずれ
+	//! @param[in] delta_y          … y方向位置ずれ
+	//! @param[in] factor           … 拡大率
+	//!
+	//! @return なし
+	//! 
+	template< class Value_type1, class Allocator1, class Value_type2, class Allocator2 >
+	void transform( const mist::array2< Value_type1, Allocator1 > &in, mist::array2< Value_type2, Allocator2 > &out, const double &delta_x, const double &delta_y )
+	{
+		vector2< double > factor( out.width() / in.width(), out.height() / in.height() );
+
+#pragma omp parallel for schedule( guided )
+		for( int y = 0 ; y < static_cast< int >(out.height()) ; y++ )
+		{
+			size_t ii[ 4 ], jj[ 4 ];
+			double fy = y / factor.y - delta_y;
+			if( fy < 0 )
+			{
+				fy = 0;
+			}
+			else if( fy > static_cast< int >(in.height()) - 1 )
+			{
+				fy = in.height() - 1;
+			}
+
+			jj[ 1 ] = static_cast< size_t >( fy );
+			jj[ 2 ] = jj[ 1 ] < in.height() - 1 ? jj[ 1 ] + 1 : jj[ 1 ];
+			fy -= jj[ 1 ];
+			for( size_t x = 0 ; x < out.width() ; x++ )
+			{
+				double fx = x / factor.x - delta_x;
+
+				if( fx < 0 )
+				{
+					fx = 0;
+				}
+				else if( fx > in.width() - 1 )
+				{
+					fx = in.width() - 1;
+				}
+				ii[ 1 ] = static_cast< size_t >( fx );
+				ii[ 2 ] = ii[ 1 ] < in.width() - 1 ? ii[ 1 ] + 1 : ii[ 1 ];
+				fx -= ii[ 1 ];
+
+				out( x, y ) += mist::__linear__::_linear_< is_color< Value_type2 >::value >::interpolate( in, ii[ 1 ], ii[ 2 ], jj[ 1 ], jj[ 2 ], 0, 0, fx, fy, 0 ) ;
+			}
+		}
+	}
 }
 
+namespace cubic
+{
+	/// @brief transform array2
+	//! @param[in]  in  is input array
+	//! @param[out] out is output array
+	//! @param[int] mat is transformation matrix
+	//! 
+	template< class T1, class Allocator1, class T2, class Allocator2 >
+	void transform( const array2< T1, Allocator1 > &in, array2< T1, Allocator1 > &out, const matrix< T2, Allocator2 > &mat )
+	{
+		matrix< double > m = inverse( mat );
+
+		int w = static_cast< int >( out.width( ) );
+		int h = static_cast< int >( out.height( ) );
+		int iw = static_cast< int >( in.width( ) );
+		int ih = static_cast< int >( in.height( ) );
+
+		int dx0, dy0, dx1, dy1;
+		detail::clipping( 0, 0, iw, ih, dx0, dy0, dx1, dy1, mat );
+		
+#pragma omp parallel for schedule( guided )
+		for( int y = 0 ; y < h ; ++y )	
+		  //		for( int y = ( ( dy0 > 0 ) ? dy0 : 0 ) ; y < ( ( dy1 < h ) ? dy1 : h ) ; ++y )
+		{
+			size_t ii[ 4 ], jj[ 4 ], kk[ 4 ];
+		  for( int x = 0 ; x < w ; ++x )
+		    //			for( int x = ( ( dx0 > 0 ) ? dx0 : 0 ) ; x < ( ( dx1 < w ) ? dx1 : w ) ; ++x )
+			{
+				double sx, sy;
+				detail::transform_point( x, y, sx, sy, m );
+
+				int ix = static_cast< int >( sx );
+				int iy = static_cast< int >( sy );
+				jj[ 1 ] = static_cast< size_t >( sy );
+				jj[ 0 ] = jj[ 1 ] > 0      ? jj[ 1 ] - 1 : jj[ 1 ];
+				jj[ 2 ] = jj[ 1 ] < ih - 1 ? jj[ 1 ] + 1 : jj[ 1 ];
+				jj[ 3 ] = jj[ 2 ] < ih - 1 ? jj[ 2 ] + 1 : jj[ 2 ];
+				sy -= jj[ 1 ];
+
+				ii[ 1 ] = static_cast< size_t >( sx );
+				ii[ 0 ] = ii[ 1 ] > 0      ? ii[ 1 ] - 1 : ii[ 1 ];
+				ii[ 2 ] = ii[ 1 ] < iw - 1 ? ii[ 1 ] + 1 : ii[ 1 ];
+				ii[ 3 ] = ii[ 2 ] < iw - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
+				sx -= ii[ 1 ];
+
+				if( 0 <= ix && ix < iw && 0 <= iy && iy < ih )
+				{
+					out( x, y ) = mist::__cubic__::_cubic_< false >::interpolate( in, ii, jj, kk, sx, sy, 0 ) ;
+				}
+			}
+		}
+	}
+
+	/// @brief 平行移動を考慮して変形する
+	//!
+	//! @param[in]  in              … 入力画像
+	//! @param[out]  out            … 基準画像
+	//! @param[in] delta_x          … x方向位置ずれ
+	//! @param[in] delta_y          … y方向位置ずれ
+	//! @param[in] factor           … 拡大率
+	//!
+	//! @return なし
+	//! 
+	template< class Value_type1, class Allocator1, class Value_type2, class Allocator2 >
+	void transform( const mist::array2< Value_type1, Allocator1 > &in, mist::array2< Value_type2, Allocator2 > &out, const double &delta_x, const double &delta_y )
+	{
+		vector2< double > factor( out.width() / in.width(), out.height() / in.height() );
+
+#pragma omp parallel for schedule( guided )
+		for( int y = 0 ; y < static_cast< int >(out.height()) ; y++ )
+		{
+			size_t ii[ 4 ], jj[ 4 ], kk[ 4 ];
+			double fy = y / factor.y - delta_y;
+			if( fy < 0 )
+			{
+				fy = 0;
+			}
+			else if( fy > static_cast< int >(in.height()) - 1 )
+			{
+				fy = in.height() - 1;
+			}
+
+			jj[ 1 ] = static_cast< size_t >( fy );
+			jj[ 0 ] = jj[ 1 ] > 0      ? jj[ 1 ] - 1 : jj[ 1 ];
+			jj[ 2 ] = jj[ 1 ] < in.height() - 1 ? jj[ 1 ] + 1 : jj[ 1 ];
+			jj[ 3 ] = jj[ 2 ] < in.height() - 1 ? jj[ 2 ] + 1 : jj[ 2 ];
+			fy -= jj[ 1 ];
+			for( size_t x = 0 ; x < out.width() ; x++ )
+			{
+				double fx = x / factor.x - delta_x;
+
+				if( fx < 0 )
+				{
+					fx = 0;
+				}
+				else if( fx > in.width() - 1 )
+				{
+					fx = in.width() - 1;
+				}
+				ii[ 1 ] = static_cast< size_t >( fx );
+				ii[ 0 ] = ii[ 1 ] > 0      ? ii[ 1 ] - 1 : ii[ 1 ];
+				ii[ 2 ] = ii[ 1 ] < in.width() - 1 ? ii[ 1 ] + 1 : ii[ 1 ];
+				ii[ 3 ] = ii[ 2 ] < in.width() - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
+				fx -= ii[ 1 ];
+
+				//out( x, y ) += mist::__linear__::_linear_< false >::interpolate( in, ii[ 1 ], ii[ 2 ], jj[ 1 ], jj[ 2 ], 0, 0, fx, fy, 0 ) ;
+				out( x, y ) += mist::__cubic__::_cubic_< is_color< Value_type2 >::value >::interpolate( in, ii, jj, kk, fx, fy, 0 ) ;
+			}
+		}
+	}
+}
 
 _MIST_END
 
