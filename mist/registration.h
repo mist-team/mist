@@ -2081,7 +2081,7 @@ namespace _poc_
 	//!
 	//! @return なし
 	//! 
-	void poc( const mist::array2< double > &input, const mist::array2< double > &reference, double &delta_x, double &delta_y, const double lowpass_range = 1.0, const int distance = 5 )
+	void poc( const mist::array2< double > &input, const mist::array2< double > &reference, double &delta_x, double &delta_y, const double lowpass_range = 0.85, const int distance = 5 )
 	{
 		int width = reference.width();
 		int height = reference.height();
@@ -2169,8 +2169,8 @@ namespace poc
 		const array2< Value_type, Allocator >	&reference,
 		double      							&dx,
 		double      							&dy,
-		double                                  low_pass_range = 1.0,
-		int                                     distance = 5)
+		const double                                  low_pass_range = 0.85,
+		const int                                     distance = 5)
 	{
 		typedef array2< double > image_type;
 		image_type tmp1, tmp2;
@@ -2194,8 +2194,8 @@ namespace poc
 		const array2< Value_type, Allocator >	&input,
 		const array2< Value_type, Allocator >	&reference,
 		vector2< double >  						&dvec,
-		double                                  low_pass_range = 1.0,
-		int                                     distance = 5)
+		const double                            low_pass_range = 0.85,
+		const int                               distance = 5)
 	{
 		typedef array2< double > image_type;
 		image_type tmp1, tmp2;
@@ -2204,7 +2204,7 @@ namespace poc
 		return _poc_::poc( tmp1, tmp2, dvec.x, dvec.y, low_pass_range, distance );
 	}
 
-	/// @brief 平行移動を考慮して変形する
+	/// @brief 基準画像にあうように平行移動させる
 	//!
 	//! @param[in]  in              … 入力画像
 	//! @param[out]  out            … 基準画像
@@ -2218,10 +2218,10 @@ namespace poc
 	void transform(
 		const array2< Value_type1, Allocator1 >	&in,
 		array2< Value_type2, Allocator2 >	&out,
-		double      							&dx,
-		double      							&dy,
-		double                                  factor = -1,
-		int                                     interpolate_type = BICUBIC)
+		const double      							&dx,
+		const double      							&dy,
+		const double                                  factor = -1,
+		const int                                     interpolate_type = BICUBIC)
 	{
 		if( factor != -1 )
 		{
@@ -2237,7 +2237,7 @@ namespace poc
 		return;
 	}	
 
-	/// @brief 平行移動を考慮して変形する
+	/// @brief 基準画像にあうように平行移動させる
 	//!
 	//! @param[in]  in              … 入力画像
 	//! @param[out]  out            … 基準画像
@@ -2251,9 +2251,9 @@ namespace poc
 	void transform(
 		const array2< Value_type1, Allocator1 >	&in,
 		array2< Value_type2, Allocator2 >	&out,
-		vector2< double >  						&dvec,
-		double                                  factor = -1,
-		int                                     interpolate_type = BICUBIC)
+		const vector2< double >  			&dvec,
+		const double                        factor = -1,
+		const int                           interpolate_type = BICUBIC)
 	{
 		if( factor != -1 )
 		{

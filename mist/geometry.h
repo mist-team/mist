@@ -306,7 +306,7 @@ namespace linear
 		}
 	}
 
-		/// @brief 平行移動を考慮して変形する
+	/// @brief 平行移動と拡大を考慮して変形する
 	//!
 	//! @param[in]  in              … 入力画像
 	//! @param[out]  out            … 基準画像
@@ -320,6 +320,7 @@ namespace linear
 	void transform( const mist::array2< Value_type1, Allocator1 > &in, mist::array2< Value_type2, Allocator2 > &out, const double &delta_x, const double &delta_y )
 	{
 		vector2< double > factor( out.width() / in.width(), out.height() / in.height() );
+		//out.fill( 0 );
 
 #pragma omp parallel for schedule( guided )
 		for( int y = 0 ; y < static_cast< int >(out.height()) ; y++ )
@@ -354,7 +355,7 @@ namespace linear
 				ii[ 2 ] = ii[ 1 ] < in.width() - 1 ? ii[ 1 ] + 1 : ii[ 1 ];
 				fx -= ii[ 1 ];
 
-				out( x, y ) += mist::__linear__::_linear_< is_color< Value_type2 >::value >::interpolate( in, ii[ 1 ], ii[ 2 ], jj[ 1 ], jj[ 2 ], 0, 0, fx, fy, 0 ) ;
+				out( x, y ) = mist::__linear__::_linear_< is_color< Value_type2 >::value >::interpolate( in, ii[ 1 ], ii[ 2 ], jj[ 1 ], jj[ 2 ], 0, 0, fx, fy, 0 ) ;
 			}
 		}
 	}
@@ -413,7 +414,7 @@ namespace cubic
 		}
 	}
 
-	/// @brief 平行移動を考慮して変形する
+	/// @brief 平行移動と拡大を考慮して変形する
 	//!
 	//! @param[in]  in              … 入力画像
 	//! @param[out]  out            … 基準画像
@@ -427,7 +428,7 @@ namespace cubic
 	void transform( const mist::array2< Value_type1, Allocator1 > &in, mist::array2< Value_type2, Allocator2 > &out, const double &delta_x, const double &delta_y )
 	{
 		vector2< double > factor( out.width() / in.width(), out.height() / in.height() );
-
+		//out.fill( 0 );
 #pragma omp parallel for schedule( guided )
 		for( int y = 0 ; y < static_cast< int >(out.height()) ; y++ )
 		{
@@ -465,8 +466,7 @@ namespace cubic
 				ii[ 3 ] = ii[ 2 ] < in.width() - 1 ? ii[ 2 ] + 1 : ii[ 2 ];
 				fx -= ii[ 1 ];
 
-				//out( x, y ) += mist::__linear__::_linear_< false >::interpolate( in, ii[ 1 ], ii[ 2 ], jj[ 1 ], jj[ 2 ], 0, 0, fx, fy, 0 ) ;
-				out( x, y ) += mist::__cubic__::_cubic_< is_color< Value_type2 >::value >::interpolate( in, ii, jj, kk, fx, fy, 0 ) ;
+				out( x, y ) = mist::__cubic__::_cubic_< is_color< Value_type2 >::value >::interpolate( in, ii, jj, kk, fx, fy, 0 ) ;
 			}
 		}
 	}
