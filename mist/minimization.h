@@ -779,6 +779,135 @@ namespace brent
 	}
 }
 
+/// @brief Armijoの基準を用いた極小値の一次元探索
+namespace Armijo
+{
+	template < class T, class Allocator>
+	double mul( const array2< T, Allocator > &a, const array2< T, Allocator > &b )
+	{
+		double res = 0.0;
+		for ( size_t i = 0 ; i < a.size() ; i++ )
+		{
+			res += a[i] * b[i];
+		}
+		return res;
+	}
+	
+	template < class T, class Allocator>
+	double mul( const array2< rgb < T >, Allocator > &a, const array2< rgb < T >, Allocator > &b )
+	{
+		double res = 0.0;
+		for ( size_t i = 0 ; i < a.size() ; i++ )
+		{
+			res += a[i].r * b[i].r;
+			res += a[i].g * b[i].g;
+			res += a[i].b * b[i].b;
+		}
+		return res;
+	}
+
+	/// @brief Armijoの基準を用いて，f(x)の極小値の一次元探索を行う
+	//! 
+	//! @param[out] p              … 極小を与える座標値
+	//! @param[in]  f              … 評価関数
+	//! @param[in]  grad           … 勾配方向ベクトル
+	//! @param[in]  d              … 探索方向ベクトル
+	//! @param[in]  data           … 評価関数,勾配関数の計算に必要なデータ
+	//! @param[in]  rho            … 減少率
+	//! @param[in]  c              … 条件数
+	//! @param[in]  max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator,class Functor, class T2 >
+	double minimization( array2< T, Allocator > &p, Functor f, const array2< T, Allocator > &grad, const array2< T, Allocator > &d,T2 &data,  const double rho = 0.7, const double c = 0.1, const size_t max_iterations = 10)
+	{
+		double alpha = 1.0;
+		double value = f( p, data );
+		double err = 0;
+		double fd = mul( grad, d );
+		array2< T, Allocator > start = p;
+
+		int i = 0;
+	
+		do
+		{
+			if ( i == max_iterations )
+			{
+				p = start;
+				break;
+			}
+			if( i != 0 )
+			{
+				alpha *= rho;
+			}
+
+			//p = start + alpha * d;
+			for( size_t k = 0 ; k < p.size() ; k++ )
+			{
+				p[k] = start[k] + alpha * d[k];
+			}
+
+			i++;
+			//std::cout << "α = " << alpha ;
+			//std::cout << ", f = " << f( p, data ) << std::endl;
+			err = f( p, data );
+		}while( err > value + c * alpha *  fd );
+
+		return err;	
+	}
+
+	
+	/// @brief Armijoの基準を用いて，f(x)の極小値の一次元探索を行う
+	//! 
+	//! @param[out] p              … 極小を与える座標値
+	//! @param[in]  f              … 評価関数
+	//! @param[in]  grad           … 勾配方向ベクトル
+	//! @param[in]  d              … 探索方向ベクトル
+	//! @param[in]  rho            … 減少率
+	//! @param[in]  c              … 条件数
+	//! @param[in]  max_iterations … 最大反復回数
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator,class Functor>
+	double minimization( array2< T, Allocator > &p, Functor f, const array2< T, Allocator > &grad, const array2< T, Allocator > &d, const double rho = 0.7, const double c = 0.1, const size_t max_iterations = 10)
+	{
+		double alpha = 1.0;
+		double value = f( p );
+		double err = 0;
+		double fd = mul( grad, d );
+		array2< T, Allocator > start = p;
+
+		int i = 0;
+	
+		do
+		{
+			if ( i == max_iterations )
+			{
+				p = start;
+				break;
+			}
+			if( i != 0 )
+			{
+				alpha *= rho;
+			}
+
+			//p = start + alpha * d;
+			for( size_t k = 0 ; k < p.size() ; k++ )
+			{
+				p[k] = start[k] + alpha * d[k];
+			}
+
+			i++;
+			//std::cout << "α = " << alpha ;
+			//std::cout << ", f = " << f( p, data ) << std::endl;
+			err = f( p );
+		}while( err > value + c * alpha *  fd );
+
+		return err;	
+	}
+}
 
 /// @brief 勾配関数をユーザーが定義する最急降下法（勾配を用いた多変数関数の極小値の探索）
 namespace gradient_with_vector
@@ -1196,8 +1325,100 @@ namespace gradient
 		return( err );
 	}
 
+	/// @brief 探索の開始点を指定し，最急降下法(Steepest descent method)によりユーザーが指定した勾配計算関数を用いて最小値を探索する
+	//! 
+	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     g              … 勾配関数
+	//! @param[in]     data           … 評価関数,勾配関数の計算に必要なデータ
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[out]    iterations     … 実際の反復回数
+	//! @param[in]     max_iterations … 最大反復回数
+	//! @param[in]     armijo_rho     … 減少率（１次元最適化のパラメータ）
+	//! @param[in]     armijo_c       … 条件数（１次元最適化のパラメータ）
+	//! @param[in]     armijo_max_iteration … 最大反復回数（１次元最適化のパラメータ）
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator,class Functor1, class Functor2, class T2 >
+	double minimization( array2< T, Allocator > &p, Functor1 f, Functor2 g, const T2 &data, double tolerance, size_t &iterations, const size_t max_iterations = 12, const double armijo_rho = 0.7, const double armijo_c = 0.1, const size_t armijo_max_iteration = 10 )
+	{
+		double beta = 0.0;
+		double err = 0.0, old_err = f( p, data );
 
+		array2< T, Allocator > grad( p.width(), p.height() ); // 勾配
+		
+		size_t ite;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		{
+			//勾配方向を計算する
+			g( p, grad, data );
 
+			//Armijoの基準によりステップ幅α倍勾配方向へ画像を修正
+			// x(k+1) = x(k) + α(k)d(k)
+			err = Armijo::minimization( p, f, grad, -grad, data, armijo_rho, armijo_c, armijo_max_iteration );	
+
+			// 相対誤差を用いた収束判定
+			if( 2.0 * std::abs( err - old_err ) <= tolerance * ( std::abs( err ) + std::abs( old_err ) ) || old_err <= err )
+			{
+				break;
+			}
+			
+			old_err = err;
+			std::cout << ite  << " : Energy : " << err << std::endl;
+		}
+		iterations = ite;
+		return err;
+	}
+
+		/// @brief 探索の開始点を指定し，最急降下法(Steepest descent method)によりユーザーが指定した勾配計算関数を用いて最小値を探索する
+	//! 
+	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     g              … 勾配関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[out]    iterations     … 実際の反復回数
+	//! @param[in]     max_iterations … 最大反復回数
+	//! @param[in]     armijo_rho     … 減少率（１次元最適化のパラメータ）
+	//! @param[in]     armijo_c       … 条件数（１次元最適化のパラメータ）
+	//! @param[in]     armijo_max_iteration … 最大反復回数（１次元最適化のパラメータ）
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator,class Functor1, class Functor2 >
+	double minimization( array2< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t &iterations, const size_t max_iterations = 12, const double armijo_rho = 0.7, const double armijo_c = 0.1, const size_t armijo_max_iteration = 10 )
+	{
+		double beta = 0.0;
+		double err = 0.0, old_err = f( p );
+
+		array2< T, Allocator > grad( p.width(), p.height() ); // 勾配
+		
+		size_t ite;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		{
+			//勾配方向を計算する
+			g( p, grad );
+
+			//Armijoの基準によりステップ幅α倍勾配方向へ画像を修正
+			// x(k+1) = x(k) + α(k)d(k)
+			err = Armijo::minimization( p, f, grad, -grad, armijo_rho, armijo_c, armijo_max_iteration );	
+
+			// 相対誤差を用いた収束判定
+			if( 2.0 * std::abs( err - old_err ) <= tolerance * ( std::abs( err ) + std::abs( old_err ) ) || old_err <= err )
+			{
+				break;
+			}
+			
+			old_err = err;
+			std::cout << ite  << " : Energy : " << err << std::endl;
+		}
+		iterations = ite;
+		return err;
+	}
 	/// @brief 探索の開始点を指定し，勾配を計算しながら最小値を探索する
 	//! 
 	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
@@ -1242,6 +1463,221 @@ namespace gradient
 }
 
 
+/// @brief 共役勾配法（勾配を用いた多変数関数の極小値の探索）
+namespace conjugate_gradient
+{
+
+	template < class T, class Allocator >
+	double norm( const array2< T, Allocator > a )
+	{
+		double res = 0.0;
+		for( size_t i = 0 ; i < a.size() ; i++ )
+		{
+			res += a[i] * a[i];
+		}
+		return res;
+	}
+
+	template < class T, class Allocator >
+	double norm( const array2< rgb< T >, Allocator > a )
+	{
+		double res = 0.0;
+		for( size_t i = 0 ; i < a.size() ; i++ )
+		{
+			res += a[i].r * a[i].r;
+			res += a[i].g * a[i].g;
+			res += a[i].b * a[i].b;
+		}
+		return res;
+	}
+	template < class T, class Allocator>
+	double mul( const array2< T, Allocator > &a, const array2< T, Allocator > &b )
+	{
+		double res = 0.0;
+		for ( size_t i = 0 ; i < a.size() ; i++ )
+		{
+			res += a[i] * b[i];
+		}
+		return res;
+	}
+
+	template < class T, class Allocator>
+	double mul( const array2< rgb < T >, Allocator > &a, const array2< rgb < T >, Allocator > &b )
+	{
+		double res = 0.0;
+		for ( size_t i = 0 ; i < a.size() ; i++ )
+		{
+			res += a[i].r * b[i].r;
+			res += a[i].g * b[i].g;
+			res += a[i].b * b[i].b;
+		}
+		return res;
+	}
+	/// @brief 共役勾配法(conjugate gradient method)のβをPolak-Ribiere-Polyakの公式で計算する
+	//! 
+	//! βが負になることもありうる
+	//! 
+	//! @param[in] g0              … 1回前の勾配
+	//! @param[in] g1              … 現在の勾配
+	//!
+	//! @return β
+	//! 
+	template < class T >
+	double Polak_Ribiere_Polyak( const array2< T > &g0, const array2< T > &g1)
+	{
+		return mul( g1, g1 - g0 ) / pow( norm( g0 ), 2 );
+	}
+	/// @brief 共役勾配法(conjugate gradient method)のβをFletcher-Reevesの公式で計算する
+	//! 
+	//! 
+	//! @param[in] g0              … 1回前の勾配
+	//! @param[in] g1              … 現在の勾配
+	//!
+	//! @return β
+	//! 
+	template < class T >
+	double Fletcher_Reeves( const array2< T > &g0, const array2< T > &g1)
+	{
+		return norm( g1 ) / norm( g0 );
+	}
+
+	
+	/// @brief 探索の開始点を指定し，共役勾配法(conjugate gradient method)によりユーザーが指定した勾配計算関数を用いて最小値を探索する
+	//! 
+	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     g              … 勾配関数
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[out]    iterations     … 実際の反復回数
+	//! @param[in]     max_iterations … 最大反復回数
+	//! @param[in]     armijo_rho     … 減少率（１次元最適化のパラメータ）
+	//! @param[in]     armijo_c       … 条件数（１次元最適化のパラメータ）
+	//! @param[in]     armijo_max_iteration … 最大反復回数（１次元最適化のパラメータ）
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator,class Functor1, class Functor2>
+	double minimization( array2< T, Allocator > &p, Functor1 f, Functor2 g, double tolerance, size_t &iterations, const size_t max_iterations = 12, const double armijo_rho = 0.7, const double armijo_c = 0.1, const size_t armijo_max_iteration = 10 )
+	{
+		double beta = 0.0;
+		double err = 0.0, old_err = f( p );
+
+		array2< T, Allocator > grad0( p.width(), p.height() ), grad1( p.width(), p.height() ); // 勾配
+		array2< T, Allocator > d( p.width(), p.height() ); // 修正した勾配
+
+		size_t ite;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		{
+			//勾配方向を計算する
+			g( p, grad1 );
+
+			// 新しい勾配方向をβにより計算
+			// p(k) = -g(k) + β(k)p(k-1) 
+			if( ite % p.width() == 1 )
+			{
+				d = - grad1;
+				beta = 0.0;
+			}
+			else
+			{
+				// 修正した画像の勾配と修正する前の画像の勾配よりβを決定
+				beta = Fletcher_Reeves( grad0, grad1 );
+				//beta = Polak_Ribiere_Polyak( grad0, grad1 );
+				//d = - grad1 + beta * d;
+				for( size_t i = 0 ; i < d.size() ; i++ )
+				{
+					d[i] = -grad1[i] + beta * d[i];
+				}
+			}
+
+			//Armijoの基準によりステップ幅α倍勾配方向へ画像を修正	
+			err = Armijo::minimization( p, f, grad1, d, armijo_rho, armijo_c, armijo_max_iteration );
+			
+			// 相対誤差を用いた収束判定
+			if( 2.0 * std::abs( err - old_err ) <= tolerance * ( std::abs( err ) + std::abs( old_err ) ) || old_err <= err )
+			{
+				break;
+			}
+			
+			old_err = err;
+			grad0 = grad1;
+			std::cout << ite << " : Energy : " << err  << " : β -> " << beta  << std::endl;
+		}
+		iterations = ite;
+		return err;
+	}
+
+		/// @brief 探索の開始点を指定し，共役勾配法(conjugate gradient method)によりユーザーが指定した勾配計算関数を用いて最小値を探索する
+	//! 
+	//! 探索の開始点を指定しその位置での勾配方向に向かった最小化を繰り返し，最小値を探索する
+	//! 
+	//! @param[in,out] p              … 探索の開始ベクトル，最小値を与えるベクトル
+	//! @param[in]     f              … 評価関数
+	//! @param[in]     g              … 勾配関数
+	//! @param[in]     data           … 評価関数,勾配関数の計算に必要なデータ
+	//! @param[in]     tolerance      … 許容誤差
+	//! @param[out]    iterations     … 実際の反復回数
+	//! @param[in]     max_iterations … 最大反復回数
+	//! @param[in]     armijo_rho     … 減少率（１次元最適化のパラメータ）
+	//! @param[in]     armijo_c       … 条件数（１次元最適化のパラメータ）
+	//! @param[in]     armijo_max_iteration … 最大反復回数（１次元最適化のパラメータ）
+	//!
+	//! @return 極小を与える座標値における評価値
+	//! 
+	template < class T, class Allocator,class Functor1, class Functor2, class T2 >
+	double minimization( array2< T, Allocator > &p, Functor1 f, Functor2 g, const T2 &data, double tolerance, size_t &iterations, const size_t max_iterations = 12, const double armijo_rho = 0.7, const double armijo_c = 0.1, const size_t armijo_max_iteration = 10 )
+	{
+		double beta = 0.0;
+		double err = 0.0, old_err = f( p, data );
+
+		array2< T, Allocator > grad0( p.width(), p.height() ), grad1( p.width(), p.height() ); // 勾配
+		array2< T, Allocator > d( p.width(), p.height() ); // 修正した勾配
+
+		size_t ite;
+		for( ite = 1 ; ite <= max_iterations ; ite++ )
+		{
+			//勾配方向を計算する
+			g( p, grad1, data );
+
+			// 新しい勾配方向をβにより計算
+			// p(k) = -g(k) + β(k)p(k-1) 
+			if( ite % p.width() == 1 )
+			{
+				d = - grad1;
+				beta = 0.0;
+			}
+			else
+			{
+				// 修正した画像の勾配と修正する前の画像の勾配よりβを決定
+				beta = Fletcher_Reeves( grad0, grad1 );
+				//beta = Polak_Ribiere_Polyak( grad0, grad1 );
+				//d = - grad1 + beta * d;
+				for( size_t i = 0 ; i < d.size() ; i++ )
+				{
+					d[i] = -grad1[i] + beta * d[i];
+				}
+			}
+
+			//Armijoの基準によりステップ幅α倍勾配方向へ画像を修正	
+			err = Armijo::minimization( p, f, grad1, d, data, armijo_rho, armijo_c, armijo_max_iteration );
+			
+			// 相対誤差を用いた収束判定
+			if( 2.0 * std::abs( err - old_err ) <= tolerance * ( std::abs( err ) + std::abs( old_err ) ) || old_err <= err )
+			{
+				break;
+			}
+			
+			old_err = err;
+			grad0 = grad1;
+			std::cout << ite << " : Energy : " << err  << " : β -> " << beta  << std::endl;
+		}
+		iterations = ite;
+		return err;
+	}
+
+}
 /// @brief Powell法（方向集合を用いた多変数関数の極小値の探索）
 namespace powell
 {
