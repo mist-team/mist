@@ -26,6 +26,11 @@
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
 
+/// @file mist/utility/options.h
+//!
+//! @brief コマンドライン引数の解析ツール
+//!
+
 #ifndef __INCLUDE_MIST_OPTIONS__
 #define __INCLUDE_MIST_OPTIONS__
 
@@ -43,6 +48,15 @@
 
 // mist名前空間の始まり
 _MIST_BEGIN
+
+//! @addtogroup options_group コマンドライン引数の解析
+//!
+//! @code 次のヘッダをインクルードする
+//! #include <mist/utility/options.h>
+//! @endcode
+//!
+//! @{
+
 
 /// @brief コマンドライン引数を解析するクラス
 //! 
@@ -319,6 +333,8 @@ public:
 
 // mist名前空間の終わり
 _MIST_END
-
+	
+/// @}
+//  コマンドライン引数の解析グループの終わり
 
 #endif	// __INCLUDE_MIST_OPTIONS__
