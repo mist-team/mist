@@ -1877,7 +1877,7 @@ namespace _poc_
 
 	// 象限の入れ換え(1と3、2と4)
 	// 中心に直流成分が来る
-	static mist::array2< double > shuffle_image( const mist::array2< double > &image )
+	inline mist::array2< double > shuffle_image( const mist::array2< double > &image )
 	{
 		mist::array2< double > tmp;
 		int width =image.width();
@@ -1913,7 +1913,7 @@ namespace _poc_
 	}
 
 	// ローパスフィルタ
-	static mist::array2< std::complex< double > > lowpass_filter( const mist::array2< std::complex< double > > &image, const double lowpass_range )
+	inline mist::array2< std::complex< double > > lowpass_filter( const mist::array2< std::complex< double > > &image, const double lowpass_range )
 	{
 		mist::array2< std::complex< double > > tmp;
 		int width =image.width();
@@ -1944,7 +1944,7 @@ namespace _poc_
 	}
 
 	//サブピークを探索
-	static void serch_peak( const mist::array2< double > &poc_image, point< double > &peak, point< double > &x_peak, point< double > &y_peak )
+	inline void serch_peak( const mist::array2< double > &poc_image, point< double > &peak, point< double > &x_peak, point< double > &y_peak )
 	{
 		// ピーク位置の探索
 		peak.value = poc_image( 0, 0 );
@@ -2015,7 +2015,7 @@ namespace _poc_
 		}
 	}
 	//PEF
-	static void PEF(  const mist::array2< double > &poc_image, point< double > &peak, point< double > &x_peak, point< double > &y_peak, double &delta_x, double &delta_y, const int distance0, const double lowpass_range )
+	inline void PEF(  const mist::array2< double > &poc_image, point< double > &peak, point< double > &x_peak, point< double > &y_peak, double &delta_x, double &delta_y, const int distance0, const double lowpass_range )
 	{
 		double ux, uy, vx, vy;
 		double UUx = 0.0 , UVx = 0.0, UUy = 0.0, UVy = 0.0;
@@ -2081,7 +2081,7 @@ namespace _poc_
 	//!
 	//! @return なし
 	//! 
-	static void poc( const mist::array2< double > &input, const mist::array2< double > &reference, double &delta_x, double &delta_y, const double lowpass_range = 0.85, const int distance = 5 )
+	inline void poc( const mist::array2< double > &input, const mist::array2< double > &reference, double &delta_x, double &delta_y, const double lowpass_range = 0.85, const int distance = 5 )
 	{
 		int width = reference.width();
 		int height = reference.height();
