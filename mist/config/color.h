@@ -2355,7 +2355,40 @@ inline void hsv2rgb( double h, double s, double v, double &r, double &g, double 
 	}
 }
 
+/// @brief RGB色空間をYIQ色空間に変換する
+//! 
+//! 
+//! @param[in]  r … RGB色空間のR(赤)成分(0～255)
+//! @param[in]  g … RGB色空間のG(緑)成分(0～255)
+//! @param[in]  b … RGB色空間のB(青)成分(0～255)
+//! @param[out] y … YIQ色空間のY成分(0～255)
+//! @param[out] i … YIQ色空間のI成分(0～255)
+//! @param[out] q … YIQ色空間のQ成分(0～255)
+//! 
+inline void rgb2yiq( double r, double g, double b, double &y, double &i, double &q )
+{
+	y = 0.299 * r + 0.587 * g + 0.114 * b;
+	i = 0.596 * r - 0.274 * g - 0.322 * b;
+	q = 0.211 * r - 0.522 * g + 0.311 * b;
+}
 
+
+/// @brief YIQ色空間をRGB色空間に変換する
+//! 
+//! 
+//! @param[in]  y … YIQ色空間のY成分(0～255)
+//! @param[in]  i … YIQ色空間のI成分(0～255)
+//! @param[in]  q … YIQ色空間のQ成分(0～255)
+//! @param[out] r … RGB色空間のR(赤)成分(0～255)
+//! @param[out] g … RGB色空間のG(緑)成分(0～255)
+//! @param[out] b … RGB色空間のB(青)成分(0～255)
+//! 
+inline void yiq2rgb( double y, double i, double q, double &r, double &g, double &b )
+{
+	r = y + 0.9489 * i + 0.6561 * q;
+	g = y - 0.2645 * i - 0.6847 * q;
+	b = y - 1.1270 * i + 1.8050 * q;
+}
 
 
 /// @brief RGB色空間をXYZ色空間に変換する
