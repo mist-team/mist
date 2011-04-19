@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="MISTファイル">
+      <UniqueIdentifier>{b1ebf5e7-b074-467c-b019-7d2703c7edc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MISTファイル入出力">
+      <UniqueIdentifier>{265adf82-87df-4b20-9fad-66b392304a58}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\test\image_test.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\image_test_window.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\test\image_test.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\test\image_test_window.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\config\binary.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\bitmap.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\config\color.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\decomposition.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\dicom.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\dicom_info.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\dicom_tag.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\distance.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\draw.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\config\endian.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\fusion.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\interlace.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\interpolate.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\labeling.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\median.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\mist.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\config\mist_alloc.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\config\mist_conf.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\mode.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\morphology.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\thinning.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\threshold.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\bmp.h">
+      <Filter>MISTファイル入出力</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\gif.h">
+      <Filter>MISTファイル入出力</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\image.h">
+      <Filter>MISTファイル入出力</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\jpeg.h">
+      <Filter>MISTファイル入出力</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\png.h">
+      <Filter>MISTファイル入出力</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\pnm.h">
+      <Filter>MISTファイル入出力</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\tga.h">
+      <Filter>MISTファイル入出力</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\tiff.h">
+      <Filter>MISTファイル入出力</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

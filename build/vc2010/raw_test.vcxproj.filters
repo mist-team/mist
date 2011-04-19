@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="MISTファイル">
+      <UniqueIdentifier>{e3055727-638f-43c6-a47e-9388d78b4079}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\test\ct_image_window.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\raw_test.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\test\ct_image_window.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\test\raw_test.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\distance.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\draw.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\median.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\mist.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\config\mist_alloc.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\config\mist_conf.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\morphology.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\io\raw.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\filter\thinning.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mist\thread.h">
+      <Filter>MISTファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
