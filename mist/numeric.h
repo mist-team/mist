@@ -3194,7 +3194,7 @@ inline const typename matrix< T, Allocator >::value_type det( const matrix< T, A
 //! \f[ {\bf A}\mbox{\boldmath x} = \mbox{\boldmath b} \f]
 //!
 //! @param[in]  a     … 行列 \f${\bf A}\f$
-//! @param[out] b     … ベクトル \f$\mbox{\boldmath b}\f$
+//! @param[in,out] b     … ベクトル \f$\mbox{\boldmath b}\f$
 //! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
 //!
 //! @return ベクトル \f$\mbox{\boldmath x}\f$
