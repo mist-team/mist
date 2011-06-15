@@ -210,7 +210,7 @@ inline const array< T, Allocator >& operator /=( array< T, Allocator > &a1, type
 	{
 		// ƒ[ƒœZ”­¶
 		::std::cerr << "zero division occured." << ::std::endl;
-		return;
+		return( a1 );
 	}
 #endif
 	for( size_type i = 0 ; i < a1.size( ) ; i++ ) a1[i] /= val;
