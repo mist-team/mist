@@ -193,7 +193,7 @@ inline bool read_image( mist::array2< T, Allocator > &image, const std::wstring 
 //! @retval false c ‰æ‘œ‚Ì“Ç‚İ‚İ‚É¸”s
 //! 
 template < class T, class Allocator >
-inline bool write_image( mist::array2< T, Allocator > &image, const std::string &filename )
+inline bool write_image( const mist::array2< T, Allocator > &image, const std::string &filename )
 {
 	typedef typename mist::array2< T, Allocator >::size_type size_type;
 
@@ -267,7 +267,7 @@ inline bool write_image( mist::array2< T, Allocator > &image, const std::string 
 //! @retval false c ‰æ‘œ‚Ì“Ç‚İ‚İ‚É¸”s
 //! 
 template < class T, class Allocator >
-inline bool write_image( mist::array2< T, Allocator > &image, const std::wstring &filename )
+inline bool write_image( const mist::array2< T, Allocator > &image, const std::wstring &filename )
 {
 	return( write_image( image, wstr2str( filename ) ) );
 }
