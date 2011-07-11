@@ -206,8 +206,9 @@ template < class T, class Allocator >
 inline const array2< T, Allocator >& operator /=( array2< T, Allocator > &a1, typename array2< T, Allocator >::value_type val )
 {
 	typedef typename array2< T, Allocator >::size_type size_type;
+	typedef typename array2< T, Allocator >::value_type value_type;
 #if _CHECK_ARRAY2_OPERATION_ != 0
-	if( val == 0 )
+	if( val == value_type( 0 ) )
 	{
 		// É[ÉçèúéZî≠ê∂
 		::std::cerr << "zero division occured." << ::std::endl;
