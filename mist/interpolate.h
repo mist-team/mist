@@ -905,8 +905,8 @@ namespace __mean__
 		size_type ow = out.width( );
 		size_type oh = out.height( );
 
-		double sx = static_cast< double >( iw - 1 ) / static_cast< double >( ow );
-		double sy = static_cast< double >( ih - 1 ) / static_cast< double >( oh );
+		double sx = static_cast< double >( iw ) / static_cast< double >( ow );
+		double sy = static_cast< double >( ih ) / static_cast< double >( oh );
 
 		for( j = thread_idy ; j < oh ; j += thread_numy )
 		{
@@ -951,9 +951,9 @@ namespace __mean__
 		size_type oh = out.height( );
 		size_type od = out.depth( );
 
-		double sx = static_cast< double >( iw - 1 ) / static_cast< double >( ow );
-		double sy = static_cast< double >( ih - 1 ) / static_cast< double >( oh );
-		double sz = static_cast< double >( id - 1 ) / static_cast< double >( od );
+		double sx = static_cast< double >( iw ) / static_cast< double >( ow );
+		double sy = static_cast< double >( ih ) / static_cast< double >( oh );
+		double sz = static_cast< double >( id ) / static_cast< double >( od );
 
 		for( k = thread_idz ; k < od ; k += thread_numz )
 		{
