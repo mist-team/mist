@@ -87,8 +87,6 @@ namespace uniform
 
 
 	public:
-
-
 		/// @brief コンストラクタ
 		//! 
 		//! デフォルトコンストラクタ
@@ -355,8 +353,6 @@ namespace gauss
 		double standard_deviation_;		///< @brief 生成する正規乱数の標準偏差
 
 	public:
-
-
 		/// @brief デフォルトコンストラクタ
 		//! 
 		//! 
@@ -464,6 +460,124 @@ namespace gauss
 } // gauss
 
 
+
+/// @brief ポアソン分布に従う乱数のジェネレータ
+namespace poisson
+{
+	/// @brief ポアソン分布に従う乱数のジェネレータ
+	//! 
+	//! 平均値（lambda）を指定し，一様乱数ジェネレータを用いてポアソン分布に従う乱数を発生させるクラス．
+	//! 
+	class random 
+	{
+		uniform::random u_rand_;	///< @brief 一様乱数ジェネレータ
+
+		double lambda_exp_;			///< @brief ポアソン分布の平均値
+
+	public:
+		/// @brief デフォルトコンストラクタ
+		//! 
+		//! 
+		random( ) :
+			u_rand_( ),
+			lambda_exp_( std::exp( 1.0 ) )
+		{
+		}
+
+		/// @brief コンストラクタ
+		//! 
+		//! @param[in] lambda … ポアソン分布の平均
+		//! 
+		random( const double lambda ) :
+			u_rand_( ),
+			lambda_exp_( std::exp( lambda ) )
+		{
+		}
+
+		/// @brief コンストラクタ
+		//! 
+		//! @param[in] seed … u_rand_のseed(これを用いてジェネレータの状態を初期化する)
+		//! @param[in] lambda … ポアソン分布の平均
+		//! 
+		random( const unsigned long seed, const double lambda = 1.0 ) :
+			u_rand_( seed ),
+			lambda_exp_( std::exp( lambda ) )
+		{
+		}
+
+		/// @brief コンストラクタ
+		//! 
+		//! @param[in] seed_array … u_rand_のseed配列
+		//! @param[in] lambda … ポアソン分布の平均
+		//! 
+		random( const array< unsigned long >& seed_array, const double lambda = 1.0 ) :
+			u_rand_( seed_array ),
+			lambda_exp_( std::exp( lambda ) )
+		{
+		}
+
+		/// @brief seedで初期化
+		//! 
+		//! initializes vec_[n_] with a seed
+		//! 
+		//! @param[in] seed … u_rand_のseed(これを用いてseed配列を作る)
+		//! 
+		void init( const unsigned long& seed )
+		{
+			u_rand_.init( seed );
+		}
+
+		//
+		/// @brief seed_arrayで初期化
+		//! 
+		//! initialize by an array with array-length
+		//! seed_array is the array for initializing seeds
+		//! array_length is its length
+		//! 
+		//! @param[in] seed_array … u_rand_のseed配列
+		//! 
+		void init( const array< unsigned long >& seed_array )
+		{
+			u_rand_.init( seed_array );
+		}
+
+		/// @brief ポアソン分布のパラメータ指定
+		//! 
+		//! @param[in] lambda … ポアソン分布の平均
+		//! 
+		void set_param( const double lambda = 1.0 )
+		{
+			lambda_exp_ = std::exp( lambda );
+		}
+		
+		/// @brief ポアソン分布に従う乱数を生成
+		//! 
+		//! @return ポアソン分布に従う生成された乱数
+		//! 
+		int generate( )
+		{
+			int k = 0;
+			double lambda = lambda_exp_ * u_rand_.real2( );
+			for( ; lambda > 1.0 ; k++ )
+			{
+				lambda *= u_rand_.real2( );
+			}
+			return( k );
+		}
+
+		/// @brief ポアソン分布に従う乱数を生成
+		//! 
+		//! @return ポアソン分布に従う生成された乱数
+		//! 
+		int operator( )( )
+		{
+			return( generate( ) );
+		}
+	};
+
+} // poisson
+
+
 /// @brief 多変量正規乱数のジェネレータ
 namespace multivariate_gauss
 {
@@ -517,8 +631,6 @@ namespace multivariate_gauss
 		}
 
 	public:
-
-
 		/// @brief デフォルトコンストラクタ
 		//! 
 		//! 
