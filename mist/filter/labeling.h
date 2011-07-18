@@ -175,8 +175,8 @@ namespace __labeling_controller__
 
 		template < class Array, class Vector >
 		static inline typename Array::size_type neighbor( Array &in, const Vector &T, typename Vector::value_type *L,
-										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type k,
-										const typename Array::size_type w, const typename Array::size_type h, const typename Array::size_type d )
+										const typename Array::size_type i, const typename Array::size_type j, const typename Array::size_type /* k */,
+										const typename Array::size_type w, const typename Array::size_type /* h */, const typename Array::size_type /* d */ )
 		{
 			typedef typename Array::size_type size_type;
 
@@ -210,7 +210,7 @@ namespace __labeling_controller__
 
 
 	template < class Array, class neighbor, class Functor >
-	typename Array::size_type labeling( Array &in, typename Array::size_type label_max, const neighbor dmy, Functor f )
+	typename Array::size_type labeling( Array &in, typename Array::size_type label_max, const neighbor /* dmy */, Functor f )
 	{
 		typedef typename Array::size_type size_type;
 		typedef typename Array::difference_type difference_type;
@@ -323,7 +323,7 @@ namespace __labeling_controller__
 									T[ *ite ] = static_cast< vector_label_value_type >( L1 );
 								}
 
-								label_list_type &TBL1 = TBL[ L0 ];
+								//label_list_type &TBL1 = TBL[ L0 ];
 								TBL[ L1 ].insert( TBL[ L1 ].end( ), TBL[ L0 ].begin( ), TBL[ L0 ].end( ) );
 								TBL[ L0 ].clear( );
 							}
