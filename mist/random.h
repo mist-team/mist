@@ -33,9 +33,15 @@
 #ifndef __INCLUDE_MIST_RANDOM__
 #define __INCLUDE_MIST_RANDOM__
 
-#include "mist.h"
-#include "matrix.h"
 #include <cmath>
+
+#ifndef __INCLUDE_MIST_H__
+#include "mist.h"
+#endif
+
+#ifndef __INCLUDE_MIST_MATRIX__
+#include "matrix.h"
+#endif
 
 // mist名前空間の始まり
 _MIST_BEGIN
@@ -549,7 +555,7 @@ namespace poisson
 		{
 			lambda_exp_ = std::exp( lambda );
 		}
-		
+
 		/// @brief ポアソン分布に従う乱数を生成
 		//! 
 		//! @return ポアソン分布に従う生成された乱数
@@ -564,6 +570,23 @@ namespace poisson
 			}
 			return( k );
 		}
+		
+		/// @brief ポアソン分布のパラメータを指定して乱数を生成
+		//! 
+		//! @param[in] l … ポアソン分布のパラメータを指定して乱数を生成
+		//! 
+		//! @return ポアソン分布に従う生成された乱数
+		//! 
+		int generate( double l )
+		{
+			int k = 0;
+			double lambda = std::exp( l ) * u_rand_.real2( );
+			for( ; lambda > 1.0 ; k++ )
+			{
+				lambda *= u_rand_.real2( );
+			}
+			return( k );
+		}
 
 		/// @brief ポアソン分布に従う乱数を生成
 		//! 
@@ -572,6 +595,17 @@ namespace poisson
 		int operator( )( )
 		{
 			return( generate( ) );
+		}
+
+		/// @brief ポアソン分布のパラメータを指定して乱数を生成
+		//! 
+		//! @param[in] l … ポアソン分布のパラメータを指定して乱数を生成
+		//! 
+		//! @return ポアソン分布に従う生成された乱数
+		//! 
+		int operator( )( double l )
+		{
+			return( generate( l ) );
 		}
 	};
 
