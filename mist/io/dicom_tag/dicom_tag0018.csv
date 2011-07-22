@@ -11,7 +11,7 @@
 {0,0x0018,0x0026,SQ,1,"""Intervention Drug Information Sequence""",},//
 {0,0x0018,0x0027,TM,1,"""Intervention Drug Stop Time""",},//
 {0,0x0018,0x0028,DS,1,"""Intervention Drug Dose""",},//
-{0,0x0018,0x0029,SQ,1,"""Intervention Drug Sequence""",},//
+{0,0x0018,0x0029,SQ,1,"""Intervention Drug Code Sequence""",},//
 {0,0x0018,0x002A,SQ,1,"""Additional Drug Sequence""",},//
 {0,0x0018,0x0030,LO,-1,"""Radionuclide""",},//
 {0,0x0018,0x0031,LO,1,"""Radiopharmaceutical""",},//
@@ -24,7 +24,8 @@
 {0,0x0018,0x0038,CS,1,"""Intervention Status""",},//
 {0,0x0018,0x0039,CS,1,"""Therapy Description""",},//
 {0,0x0018,0x003A,ST,1,"""Intervention Description""",},//
-{0,0x0018,0x0040,IS,1,"""Cine Rate """,},//
+{0,0x0018,0x0040,IS,1,"""Cine Rate""",},//
+{0,0x0018,0x0042,CS,1,"""Initial Cine Run State""",},//
 {0,0x0018,0x0050,DS,1,"""Slice Thickness""",},//
 {0,0x0018,0x0060,DS,1,"""KVP""",},//
 {0,0x0018,0x0070,IS,1,"""Counts Accumulated""",},//
@@ -60,10 +61,10 @@
 {0,0x0018,0x1011,LO,1,"""Hardcopy Creation Device ID""",},//
 {0,0x0018,0x1012,DA,1,"""Date of Secondary Capture""",},//
 {0,0x0018,0x1014,TM,1,"""Time of Secondary Capture""",},//
-{0,0x0018,0x1016,LO,1,"""Secondary Capture Device Manufacturers""",},//
+{0,0x0018,0x1016,LO,1,"""Secondary Capture Device Manufacturer""",},//
 {0,0x0018,0x1017,LO,1,"""Hardcopy Device Manufacturer""",},//
 {0,0x0018,0x1018,LO,1,"""Secondary Capture Device Manufacturer's Model Name""",},//
-{0,0x0018,0x1019,LO,-1,"""Secondary Capture Device Software Version(s)""",},//
+{0,0x0018,0x1019,LO,-1,"""Secondary Capture Device Software Versions""",},//
 {0,0x0018,0x101A,LO,-1,"""Hardcopy Device Software Version""",},//
 {0,0x0018,0x101B,LO,1,"""Hardcopy Device Manufacturer's Model Name""",},//
 {0,0x0018,0x1020,LO,-1,"""Software Version(s)""",},//
@@ -72,8 +73,8 @@
 {0,0x0018,0x1030,LO,1,"""Protocol Name""",},//
 {0,0x0018,0x1040,LO,1,"""Contrast/Bolus Route""",},//
 {0,0x0018,0x1041,DS,1,"""Contrast/Bolus Volume""",},//
-{0,0x0018,0x1042,TM,1,"""Contrast/Bolus Start Time """,},//
-{0,0x0018,0x1043,TM,1,"""Contrast/Bolus Stop Time """,},//
+{0,0x0018,0x1042,TM,1,"""Contrast/Bolus Start Time""",},//
+{0,0x0018,0x1043,TM,1,"""Contrast/Bolus Stop Time""",},//
 {0,0x0018,0x1044,DS,1,"""Contrast/Bolus Total Dose""",},//
 {0,0x0018,0x1045,IS,1,"""Syringe Counts""",},//
 {0,0x0018,0x1046,DS,-1,"""Contrast Flow Rate""",},//
@@ -139,8 +140,8 @@
 {0,0x0018,0x1149,IS,2,"""Field of View Dimension(s)""",},//
 {0,0x0018,0x1150,IS,1,"""Exposure Time""",},//
 {0,0x0018,0x1151,IS,1,"""X-Ray Tube Current""",},//
-{0,0x0018,0x1152,IS,1,"""Exposure """,},//
-{0,0x0018,0x1153,IS,1,"""Exposure in μAs""",},//
+{0,0x0018,0x1152,IS,1,"""Exposure""",},//
+{0,0x0018,0x1153,IS,1,"""Exposure in uAs""",},//
 {0,0x0018,0x1154,DS,1,"""Average Pulse Width""",},//
 {0,0x0018,0x1155,CS,1,"""Radiation Setting""",},//
 {0,0x0018,0x1156,CS,1,"""Rectification Type""",},//
@@ -152,7 +153,7 @@
 {0,0x0018,0x1164,DS,2,"""Imager Pixel Spacing""",},//
 {0,0x0018,0x1166,CS,-1,"""Grid""",},//
 {0,0x0018,0x1170,IS,1,"""Generator Power""",},//
-{0,0x0018,0x1180,SH,1,"""Collimator/grid Name """,},//
+{0,0x0018,0x1180,SH,1,"""Collimator/grid Name""",},//
 {0,0x0018,0x1181,CS,1,"""Collimator Type""",},//
 {0,0x0018,0x1182,IS,2,"""Focal Distance""",},//
 {0,0x0018,0x1183,DS,2,"""X Focus Center""",},//
@@ -181,7 +182,7 @@
 {0,0x0018,0x1315,CS,1,"""Variable Flip Angle Flag""",},//
 {0,0x0018,0x1316,DS,1,"""SAR""",},//
 {0,0x0018,0x1318,DS,1,"""dB/dt""",},//
-{0,0x0018,0x1400,LO,1,"""Acquisition Device Processing Description """,},//
+{0,0x0018,0x1400,LO,1,"""Acquisition Device Processing Description""",},//
 {0,0x0018,0x1401,LO,1,"""Acquisition Device Processing Code""",},//
 {0,0x0018,0x1402,CS,1,"""Cassette Orientation""",},//
 {0,0x0018,0x1403,CS,1,"""Cassette Size""",},//
@@ -209,7 +210,7 @@
 {0,0x0018,0x1608,IS,1,"""Shutter Lower Horizontal Edge""",},//
 {0,0x0018,0x1610,IS,2,"""Center of Circular Shutter""",},//
 {0,0x0018,0x1612,IS,1,"""Radius of Circular Shutter""",},//
-{0,0x0018,0x1620,IS,2,"""Vertices of the Polygonal Shutter""",},//
+{0,0x0018,0x1620,IS,-1,"""Vertices of the Polygonal Shutter""",},//
 {0,0x0018,0x1622,US,1,"""Shutter Presentation Value""",},//
 {0,0x0018,0x1623,US,1,"""Shutter Overlay Group""",},//
 {0,0x0018,0x1624,US,3,"""Shutter Presentation Color CIELab Value""",},//
@@ -220,7 +221,7 @@
 {0,0x0018,0x1708,IS,1,"""Collimator Lower Horizontal Edge""",},//
 {0,0x0018,0x1710,IS,2,"""Center of Circular Collimator""",},//
 {0,0x0018,0x1712,IS,1,"""Radius of Circular Collimator""",},//
-{0,0x0018,0x1720,IS,2,"""Vertices of the Polygonal Collimator""",},//
+{0,0x0018,0x1720,IS,-1,"""Vertices of the Polygonal Collimator""",},//
 {0,0x0018,0x1800,CS,1,"""Acquisition Time Synchronized""",},//
 {0,0x0018,0x1801,SH,1,"""Time Source""",},//
 {0,0x0018,0x1802,CS,1,"""Time Distribution Protocol""",},//
@@ -239,10 +240,10 @@
 {0,0x0018,0x3102,DS,1,"""IVUS Gated Rate""",},//
 {0,0x0018,0x3103,IS,1,"""IVUS Pullback Start Frame Number""",},//
 {0,0x0018,0x3104,IS,1,"""IVUS Pullback Stop Frame Number""",},//
-{0,0x0018,0x3105,IS,-1,"""Lesion Number """,},//
+{0,0x0018,0x3105,IS,-1,"""Lesion Number""",},//
 {0,0x0018,0x4000,LT,1,"""Acquisition Comments""",},//
 {0,0x0018,0x5000,SH,-1,"""Output Power""",},//
-{0,0x0018,0x5010,LO,3,"""Transducer Data""",},//
+{0,0x0018,0x5010,LO,-1,"""Transducer Data""",},//
 {0,0x0018,0x5012,DS,1,"""Focus Depth""",},//
 {0,0x0018,0x5020,LO,1,"""Processing Function""",},//
 {0,0x0018,0x5021,LO,1,"""Postprocessing Function""",},//
@@ -307,21 +308,21 @@
 {0,0x0018,0x6058,UL,-1,"""Table of Pixel Values""",},//
 {0,0x0018,0x605A,FL,-1,"""Table of Parameter Values""",},//
 {0,0x0018,0x6060,FL,-1,"""R Wave Time Vector""",},//
-{0,0x0018,0x7000,CS,1,"""Detector Conditions Nominal Flag """,},//
+{0,0x0018,0x7000,CS,1,"""Detector Conditions Nominal Flag""",},//
 {0,0x0018,0x7001,DS,1,"""Detector Temperature""",},//
 {0,0x0018,0x7004,CS,1,"""Detector Type""",},//
 {0,0x0018,0x7005,CS,1,"""Detector Configuration""",},//
 {0,0x0018,0x7006,LT,1,"""Detector Description""",},//
 {0,0x0018,0x7008,LT,1,"""Detector Mode""",},//
 {0,0x0018,0x700A,SH,1,"""Detector ID""",},//
-{0,0x0018,0x700C,DA,1,"""Date of Last Detector Calibration """,},//
+{0,0x0018,0x700C,DA,1,"""Date of Last Detector Calibration""",},//
 {0,0x0018,0x700E,TM,1,"""Time of Last Detector Calibration""",},//
-{0,0x0018,0x7010,IS,1,"""Exposures on Detector Since Last Calibration """,},//
-{0,0x0018,0x7011,IS,1,"""Exposures on Detector Since Manufactured """,},//
-{0,0x0018,0x7012,DS,1,"""Detector Time Since Last Exposure """,},//
-{0,0x0018,0x7014,DS,1,"""Detector Active Time """,},//
+{0,0x0018,0x7010,IS,1,"""Exposures on Detector Since Last Calibration""",},//
+{0,0x0018,0x7011,IS,1,"""Exposures on Detector Since Manufactured""",},//
+{0,0x0018,0x7012,DS,1,"""Detector Time Since Last Exposure""",},//
+{0,0x0018,0x7014,DS,1,"""Detector Active Time""",},//
 {0,0x0018,0x7016,DS,1,"""Detector Activation Offset From Exposure""",},//
-{0,0x0018,0x701A,DS,2,"""Detector Binning """,},//
+{0,0x0018,0x701A,DS,2,"""Detector Binning""",},//
 {0,0x0018,0x7020,DS,2,"""Detector Element Physical Size""",},//
 {0,0x0018,0x7022,DS,2,"""Detector Element Spacing""",},//
 {0,0x0018,0x7024,CS,1,"""Detector Active Shape""",},//
@@ -342,12 +343,14 @@
 {0,0x0018,0x7050,CS,-1,"""Filter Material""",},//
 {0,0x0018,0x7052,DS,-1,"""Filter Thickness Minimum""",},//
 {0,0x0018,0x7054,DS,-1,"""Filter Thickness Maximum""",},//
+{0,0x0018,0x7056,FL,-1,"""Filter Beam Path Length Minimum""",},//
+{0,0x0018,0x7058,FL,-1,"""Filter Beam Path Length Maximum""",},//
 {0,0x0018,0x7060,CS,1,"""Exposure Control Mode""",},//
 {0,0x0018,0x7062,LT,1,"""Exposure Control Mode Description""",},//
 {0,0x0018,0x7064,CS,1,"""Exposure Status""",},//
 {0,0x0018,0x7065,DS,1,"""Phototimer Setting""",},//
-{0,0x0018,0x8150,DS,1,"""Exposure Time in micro sec.""",},//
-{0,0x0018,0x8151,DS,1,"""X-Ray Tube Current in micro A""",},//
+{0,0x0018,0x8150,DS,1,"""Exposure Time in uS""",},//
+{0,0x0018,0x8151,DS,1,"""X-Ray Tube Current in uA""",},//
 {0,0x0018,0x9004,CS,1,"""Content Qualification""",},//
 {0,0x0018,0x9005,SH,1,"""Pulse Sequence Name""",},//
 {0,0x0018,0x9006,SQ,1,"""MR Imaging Modifier Sequence""",},//
@@ -380,10 +383,10 @@
 {0,0x0018,0x9037,CS,1,"""Cardiac Synchronization Technique""",},//
 {0,0x0018,0x9041,LO,1,"""Receive Coil Manufacturer Name""",},//
 {0,0x0018,0x9042,SQ,1,"""MR Receive Coil Sequence""",},//
-{0,0x0018,0x9043,CS,1,"""Receive Coil Type """,},//
-{0,0x0018,0x9044,CS,1,"""Quadrature Receive Coil """,},//
+{0,0x0018,0x9043,CS,1,"""Receive Coil Type""",},//
+{0,0x0018,0x9044,CS,1,"""Quadrature Receive Coil""",},//
 {0,0x0018,0x9045,SQ,1,"""Multi-Coil Definition Sequence""",},//
-{0,0x0018,0x9046,LO,1,"""Multi-Coil Configuration """,},//
+{0,0x0018,0x9046,LO,1,"""Multi-Coil Configuration""",},//
 {0,0x0018,0x9047,SH,1,"""Multi-Coil Element Name""",},//
 {0,0x0018,0x9048,CS,1,"""Multi-Coil Element Used""",},//
 {0,0x0018,0x9049,SQ,1,"""MR Transmit Coil Sequence""",},//
@@ -467,8 +470,8 @@
 {0,0x0018,0x9184,FD,1,"""Tagging Delay""",},//
 {0,0x0018,0x9185,ST,1,"""Respiratory Motion Compensation Technique Description""",},//
 {0,0x0018,0x9186,SH,1,"""Respiratory Signal Source ID""",},//
-{0,0x0018,0x9195,FD,1,"""Chemical Shifts Minimum Integration Limit in Hz""",},//
-{0,0x0018,0x9196,FD,1,"""Chemical Shifts Maximum Integration Limit in Hz""",},//
+{0,0x0018,0x9195,FD,1,"""Chemical Shift Minimum Integration Limit in Hz""",},//
+{0,0x0018,0x9196,FD,1,"""Chemical Shift Maximum Integration Limit in Hz""",},//
 {0,0x0018,0x9197,SQ,1,"""MR Velocity Encoding Sequence""",},//
 {0,0x0018,0x9198,CS,1,"""First Order Phase Correction""",},//
 {0,0x0018,0x9199,CS,1,"""Water Referenced Phase Correction""",},//
@@ -487,8 +490,8 @@
 {0,0x0018,0x9239,SQ,1,"""Specific Absorption Rate Sequence""",},//
 {0,0x0018,0x9240,US,1,"""RF Echo Train Length""",},//
 {0,0x0018,0x9241,US,1,"""Gradient Echo Train Length""",},//
-{0,0x0018,0x9295,FD,1,"""Chemical Shifts Minimum Integration Limit in ppm""",},//
-{0,0x0018,0x9296,FD,1,"""Chemical Shifts Maximum Integration Limit in ppm""",},//
+{0,0x0018,0x9295,FD,1,"""Chemical Shift Minimum Integration Limit in ppm""",},//
+{0,0x0018,0x9296,FD,1,"""Chemical Shift Maximum Integration Limit in ppm""",},//
 {0,0x0018,0x9301,SQ,1,"""CT Acquisition Type Sequence""",},//
 {0,0x0018,0x9302,CS,1,"""Acquisition Type""",},//
 {0,0x0018,0x9303,FD,1,"""Tube Angle""",},//
@@ -510,7 +513,7 @@
 {0,0x0018,0x9319,FD,1,"""Reconstruction Angle""",},//
 {0,0x0018,0x9320,SH,1,"""Image Filter""",},//
 {0,0x0018,0x9321,SQ,1,"""CT Exposure Sequence""",},//
-{0,0x0018,0x9322,FD,2,"""Reconstruction Pixel Spacing """,},//
+{0,0x0018,0x9322,FD,2,"""Reconstruction Pixel Spacing""",},//
 {0,0x0018,0x9323,CS,1,"""Exposure Modulation Type""",},//
 {0,0x0018,0x9324,FD,1,"""Estimated Dose Saving""",},//
 {0,0x0018,0x9325,SQ,1,"""CT X-Ray Details Sequence""",},//
@@ -520,7 +523,7 @@
 {0,0x0018,0x9329,SQ,1,"""CT Image Frame Type Sequence""",},//
 {0,0x0018,0x9330,FD,1,"""X-Ray Tube Current in mA""",},//
 {0,0x0018,0x9332,FD,1,"""Exposure in mAs""",},//
-{0,0x0018,0x9333,CS,1,"""Constant Volume Flag """,},//
+{0,0x0018,0x9333,CS,1,"""Constant Volume Flag""",},//
 {0,0x0018,0x9334,CS,1,"""Fluoroscopy Flag""",},//
 {0,0x0018,0x9335,FD,1,"""Distance Source to Data Collection Center""",},//
 {0,0x0018,0x9337,US,1,"""Contrast/Bolus Agent Number""",},//
@@ -534,6 +537,7 @@
 {0,0x0018,0x9346,SQ,1,"""CTDI Phantom Type Code Sequence""",},//
 {0,0x0018,0x9351,FL,1,"""Calcium Scoring Mass Factor Patient""",},//
 {0,0x0018,0x9352,FL,3,"""Calcium Scoring Mass Factor Device""",},//
+{0,0x0018,0x9353,FL,1,"""Energy Weighting Factor""",},//
 {0,0x0018,0x9360,SQ,1,"""CT Additional X-Ray Source Sequence""",},//
 {0,0x0018,0x9401,SQ,1,"""Projection Pixel Calibration Sequence""",},//
 {0,0x0018,0x9402,FL,1,"""Distance Source to Isocenter""",},//
@@ -613,6 +617,62 @@
 {0,0x0018,0x9605,FD,1,"""Diffusion b-value YY""",},//
 {0,0x0018,0x9606,FD,1,"""Diffusion b-value YZ""",},//
 {0,0x0018,0x9607,FD,1,"""Diffusion b-value ZZ""",},//
+{0,0x0018,0x9701,DT,1,"""Decay Correction DateTime""",},//
+{0,0x0018,0x9715,FD,1,"""Start Density Threshold""",},//
+{0,0x0018,0x9716,FD,1,"""Start Relative Density Difference Threshold""",},//
+{0,0x0018,0x9717,FD,1,"""Start Cardiac Trigger Count Threshold""",},//
+{0,0x0018,0x9718,FD,1,"""Start Respiratory Trigger Count Threshold""",},//
+{0,0x0018,0x9719,FD,1,"""Termination Counts Threshold""",},//
+{0,0x0018,0x9720,FD,1,"""Termination Density Threshold""",},//
+{0,0x0018,0x9721,FD,1,"""Termination Relative Density Threshold""",},//
+{0,0x0018,0x9722,FD,1,"""Termination Time Threshold""",},//
+{0,0x0018,0x9723,FD,1,"""Termination Cardiac Trigger Count Threshold""",},//
+{0,0x0018,0x9724,FD,1,"""Termination Respiratory Trigger Count Threshold""",},//
+{0,0x0018,0x9725,CS,1,"""Detector Geometry""",},//
+{0,0x0018,0x9726,FD,1,"""Transverse Detector Separation""",},//
+{0,0x0018,0x9727,FD,1,"""Axial Detector Dimension""",},//
+{0,0x0018,0x9729,US,1,"""Radiopharmaceutical Agent Number""",},//
+{0,0x0018,0x9732,SQ,1,"""PET Frame Acquisition Sequence""",},//
+{0,0x0018,0x9733,SQ,1,"""PET Detector Motion Details Sequence""",},//
+{0,0x0018,0x9734,SQ,1,"""PET Table Dynamics Sequence""",},//
+{0,0x0018,0x9735,SQ,1,"""PET Position Sequence""",},//
+{0,0x0018,0x9736,SQ,1,"""PET Frame Correction Factors Sequence""",},//
+{0,0x0018,0x9737,SQ,1,"""Radiopharmaceutical Usage Sequence""",},//
+{0,0x0018,0x9738,CS,1,"""Attenuation Correction Source""",},//
+{0,0x0018,0x9739,US,1,"""Number of Iterations""",},//
+{0,0x0018,0x9740,US,1,"""Number of Subsets""",},//
+{0,0x0018,0x9749,SQ,1,"""PET Reconstruction Sequence""",},//
+{0,0x0018,0x9751,SQ,1,"""PET Frame Type Sequence""",},//
+{0,0x0018,0x9755,CS,1,"""Time of Flight Information Used""",},//
+{0,0x0018,0x9756,CS,1,"""Reconstruction Type""",},//
+{0,0x0018,0x9758,CS,1,"""Decay Corrected""",},//
+{0,0x0018,0x9759,CS,1,"""Attenuation Corrected""",},//
+{0,0x0018,0x9760,CS,1,"""Scatter Corrected""",},//
+{0,0x0018,0x9761,CS,1,"""Dead Time Corrected""",},//
+{0,0x0018,0x9762,CS,1,"""Gantry Motion Corrected""",},//
+{0,0x0018,0x9763,CS,1,"""Patient Motion Corrected""",},//
+{0,0x0018,0x9764,CS,1,"""Count Loss Normalization Corrected""",},//
+{0,0x0018,0x9765,CS,1,"""Randoms Corrected""",},//
+{0,0x0018,0x9766,CS,1,"""Non-uniform Radial Sampling Corrected""",},//
+{0,0x0018,0x9767,CS,1,"""Sensitivity Calibrated""",},//
+{0,0x0018,0x9768,CS,1,"""Detector Normalization Correction""",},//
+{0,0x0018,0x9769,CS,1,"""Iterative Reconstruction Method""",},//
+{0,0x0018,0x9770,CS,1,"""Attenuation Correction Temporal Relationship""",},//
+{0,0x0018,0x9771,SQ,1,"""Patient Physiological State Sequence""",},//
+{0,0x0018,0x9772,SQ,1,"""Patient Physiological State Code Sequence""",},//
+{0,0x0018,0x9801,FD,-1,"""Depth(s) of Focus""",},//
+{0,0x0018,0x9803,SQ,1,"""Excluded Intervals Sequence""",},//
+{0,0x0018,0x9804,DT,1,"""Exclusion Start Datetime""",},//
+{0,0x0018,0x9805,FD,1,"""Exclusion Duration""",},//
+{0,0x0018,0x9806,SQ,1,"""US Image Description Sequence""",},//
+{0,0x0018,0x9807,SQ,1,"""Image Data Type Sequence""",},//
+{0,0x0018,0x9808,CS,1,"""Data Type""",},//
+{0,0x0018,0x9809,SQ,1,"""Transducer Scan Pattern Code Sequence""",},//
+{0,0x0018,0x980B,CS,1,"""Aliased Data Type""",},//
+{0,0x0018,0x980C,CS,1,"""Position Measuring Device Used""",},//
+{0,0x0018,0x980D,SQ,1,"""Transducer Geometry Code Sequence""",},//
+{0,0x0018,0x980E,SQ,1,"""Transducer Beam Steering Code Sequence""",},//
+{0,0x0018,0x980F,SQ,1,"""Transducer Application Code Sequence""",},//
 {0,0x0018,0xA001,SQ,1,"""Contributing Equipment Sequence""",},//
 {0,0x0018,0xA002,DT,1,"""Contribution Date Time""",},//
 {0,0x0018,0xA003,ST,1,"""Contribution Description""",},//

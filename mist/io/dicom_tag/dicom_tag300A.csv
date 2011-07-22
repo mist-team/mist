@@ -62,7 +62,7 @@
 {0,0x300A,0x00A2,DS,3,"""Brachy Application Setup Dose Specification Point""",},//
 {0,0x300A,0x00A4,DS,1,"""Brachy Application Setup Dose""",},//
 {0,0x300A,0x00B0,SQ,1,"""Beam Sequence""",},//
-{0,0x300A,0x00B2,SH,1,"""Treatment Machine Name """,},//
+{0,0x300A,0x00B2,SH,1,"""Treatment Machine Name""",},//
 {0,0x300A,0x00B3,CS,1,"""Primary Dosimeter Unit""",},//
 {0,0x300A,0x00B4,DS,1,"""Source-Axis Distance""",},//
 {0,0x300A,0x00B6,SQ,1,"""Beam Limiting Device Sequence""",},//
@@ -126,7 +126,7 @@
 {0,0x300A,0x0100,DS,1,"""Block Thickness""",},//
 {0,0x300A,0x0102,DS,1,"""Block Transmission""",},//
 {0,0x300A,0x0104,IS,1,"""Block Number of Points""",},//
-{0,0x300A,0x0106,DS,2,"""Block Data""",},//
+{0,0x300A,0x0106,DS,-1,"""Block Data""",},//
 {0,0x300A,0x0107,SQ,1,"""Applicator Sequence""",},//
 {0,0x300A,0x0108,SH,1,"""Applicator ID""",},//
 {0,0x300A,0x0109,CS,1,"""Applicator Type""",},//
@@ -141,7 +141,7 @@
 {0,0x300A,0x0116,SQ,1,"""Wedge Position Sequence""",},//
 {0,0x300A,0x0118,CS,1,"""Wedge Position""",},//
 {0,0x300A,0x011A,SQ,1,"""Beam Limiting Device Position Sequence""",},//
-{0,0x300A,0x011C,DS,2,"""Leaf/Jaw Positions""",},//
+{0,0x300A,0x011C,DS,-1,"""Leaf/Jaw Positions""",},//
 {0,0x300A,0x011E,DS,1,"""Gantry Angle""",},//
 {0,0x300A,0x011F,CS,1,"""Gantry Rotation Direction""",},//
 {0,0x300A,0x0120,DS,1,"""Beam Limiting Device Angle""",},//
@@ -332,8 +332,8 @@
 {0,0x300A,0x0410,SQ,1,"""Motion Synchronization Sequence""",},//
 {0,0x300A,0x0412,FL,3,"""Control Point Orientation""",},//
 {0,0x300A,0x0420,SQ,1,"""General Accessory Sequence""",},//
-{0,0x300A,0x0421,CS,1,"""General Accessory ID""",},//
+{0,0x300A,0x0421,SH,1,"""General Accessory ID""",},//
 {0,0x300A,0x0422,ST,1,"""General Accessory Description""",},//
-{0,0x300A,0x0423,SH,1,"""General Accessory Type""",},//
+{0,0x300A,0x0423,CS,1,"""General Accessory Type""",},//
 {0,0x300A,0x0424,IS,1,"""General Accessory Number""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

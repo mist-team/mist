@@ -26,7 +26,7 @@
 {0,0x3006,0x0046,IS,1,"""Number of Contour Points""",},//
 {0,0x3006,0x0048,IS,1,"""Contour Number""",},//
 {0,0x3006,0x0049,IS,-1,"""Attached Contours""",},//
-{0,0x3006,0x0050,DS,3,"""Contour Data""",},//
+{0,0x3006,0x0050,DS,-1,"""Contour Data""",},//
 {0,0x3006,0x0080,SQ,1,"""RT ROI Observations Sequence""",},//
 {0,0x3006,0x0082,IS,1,"""Observation Number""",},//
 {0,0x3006,0x0084,IS,1,"""Referenced ROI Number""",},//

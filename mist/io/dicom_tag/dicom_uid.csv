@@ -30,8 +30,10 @@
 {0,"1.2.840.10008.1.2.4.94","JPIP Referenced","Transfer Syntax",},//
 {0,"1.2.840.10008.1.2.4.95","JPIP Referenced Deflate","Transfer Syntax",},//
 {0,"1.2.840.10008.1.2.4.100","MPEG2 Main Profile @ Main Level","Transfer Syntax",},//
+{0,"1.2.840.10008.1.2.4.101","MPEG2 Main Profile @ High Level","Transfer Syntax",},//
 {0,"1.2.840.10008.1.2.5","RLE Lossless","Transfer Syntax",},//
 {0,"1.2.840.10008.1.2.6.1","RFC 2557 MIME encapsulation","Transfer Syntax",},//
+{0,"1.2.840.10008.1.2.6.2","XML Encoding","Transfer Syntax",},//
 {0,"1.2.840.10008.1.3.10","Media Storage Directory Storage","SOP Class",},//
 {0,"1.2.840.10008.1.4.1.1","Talairach Brain Atlas Frame of Reference","Well-known frame of reference",},//
 {0,"1.2.840.10008.1.4.1.2","SPM2 T1 Frame of Reference","Well-known frame of reference",},//
@@ -53,6 +55,10 @@
 {0,"1.2.840.10008.1.4.1.18","SPM2 SINGLESUBJT1 Frame of Reference","Well-known frame of reference",},//
 {0,"1.2.840.10008.1.4.2.1","ICBM 452 T1 Frame of Reference","Well-known frame of reference",},//
 {0,"1.2.840.10008.1.4.2.2","ICBM Single Subject MRI Frame of Reference","Well-known frame of reference",},//
+{0,"1.2.840.10008.1.5.1","Hot Iron Color Palette SOP Instance","Well-known SOP Instance",},//
+{0,"1.2.840.10008.1.5.2","PET Color Palette SOP Instance","Well-known SOP Instance",},//
+{0,"1.2.840.10008.1.5.3","Hot Metal Blue Color Palette SOP Instance","Well-known SOP Instance",},//
+{0,"1.2.840.10008.1.5.4","PET 20 Step Color Palette SOP Instance","Well-known SOP Instance",},//
 {0,"1.2.840.10008.1.9","Basic Study Content Notification SOP Class (Retired)","SOP Class",},//
 {0,"1.2.840.10008.1.20.1","Storage Commitment Push Model SOP Class","SOP Class",},//
 {0,"1.2.840.10008.1.20.1.1","Storage Commitment Push Model SOP Instance","Well-known SOP Instance",},//
@@ -60,6 +66,8 @@
 {0,"1.2.840.10008.1.20.2.1","Storage Commitment Pull Model SOP Instance (Retired)","Well-known SOP Instance",},//
 {0,"1.2.840.10008.1.40","Procedural Event Logging SOP Class","SOP Class",},//
 {0,"1.2.840.10008.1.40.1","Procedural Event Logging SOP Instance","Well-known SOP Instance",},//
+{0,"1.2.840.10008.1.42","Substance Administration Logging SOP Class","SOP Class",},//
+{0,"1.2.840.10008.1.42.1","Substance Administration Logging SOP Instance","Well-known SOP Instance",},//
 {0,"1.2.840.10008.2.6.1","DICOM UID Registry","DICOM UIDs as a Coding Scheme",},//
 {0,"1.2.840.10008.2.16.4","DICOM Controlled Terminology","Coding Scheme",},//
 {0,"1.2.840.10008.3.1.1.1","DICOM Application Context Name","Application Context Name",},//
@@ -117,9 +125,11 @@
 {0,"1.2.840.10008.5.1.4.1.1.4","MR Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.4.1","Enhanced MR Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.4.2","MR Spectroscopy Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.4.3","Enhanced MR Color Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.5","Nuclear Medicine Image  Storage (Retired)","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.6","Ultrasound Image Storage (Retired)","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.6.1","Ultrasound Image Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.6.2","Enhanced US Volume Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.7","Secondary Capture Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.7.1","Multi-frame Single Bit Secondary Capture Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.7.2","Multi-frame Grayscale Byte Secondary Capture Image Storage","SOP Class",},//
@@ -127,22 +137,30 @@
 {0,"1.2.840.10008.5.1.4.1.1.7.4","Multi-frame True Color Secondary Capture Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.8","Standalone Overlay Storage (Retired)","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.9","Standalone Curve Storage (Retired)","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.9.1","Waveform Storage - Trial (Retired)","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.9.1.1","12-lead ECG Waveform Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.9.1.2","General ECG Waveform Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.9.1.3","Ambulatory ECG Waveform Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.9.2.1","Hemodynamic Waveform Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.9.3.1","Cardiac Electrophysiology Waveform Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.9.4.1","Basic Voice Audio Waveform Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.9.4.2","General Audio Waveform Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.9.5.1","Arterial Pulse Waveform Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.9.6.1","Respiratory Waveform Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.10","Standalone Modality LUT Storage (Retired)","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.11","Standalone VOI LUT Storage (Retired)","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.11.1","Grayscale Softcopy Presentation State Storage SOP Class","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.11.2","Color Softcopy Presentation State Storage SOP Class","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.11.3","Pseudo-Color Softcopy Presentation State Storage SOP Class","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.11.4","Blending Softcopy Presentation State Storage SOP Class","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.11.5","XA/XRF Grayscale Softcopy Presentation State Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.12.1","X-Ray Angiographic Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.12.1.1","Enhanced XA Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.12.2","X-Ray Radiofluoroscopic Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.12.2.1","Enhanced XRF Image Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.13.1.1","X-Ray 3D Angiographic Image Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.13.1.2","X-Ray 3D Craniofacial Image Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.13.1.3","Breast Tomosynthesis Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.12.3","X-Ray Angiographic Bi-Plane Image Storage (Retired)","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.20","Nuclear Medicine Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.66","Raw Data Storage","SOP Class",},//
@@ -150,9 +168,10 @@
 {0,"1.2.840.10008.5.1.4.1.1.66.2","Spatial Fiducials Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.66.3","Deformable Spatial Registration Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.66.4","Segmentation Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.66.5","Surface Segmentation Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.67","Real World Value Mapping Storage","SOP Class",},//
-{0,"1.2.840.10008.5.1.4.1.1.77.1","VL Image Storage (Retired)","",},//
-{0,"1.2.840.10008.5.1.4.1.1.77.2","VL Multi-frame Image Storage (Retired)","",},//
+{0,"1.2.840.10008.5.1.4.1.1.77.1","VL Image Storage - Trial (Retired)","",},//
+{0,"1.2.840.10008.5.1.4.1.1.77.2","VL Multi-frame Image Storage - Trial (Retired)","",},//
 {0,"1.2.840.10008.5.1.4.1.1.77.1.1","VL Endoscopic Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.77.1.1.1","Video Endoscopic Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.77.1.2","VL Microscopic Image Storage","SOP Class",},//
@@ -163,17 +182,33 @@
 {0,"1.2.840.10008.5.1.4.1.1.77.1.5.1","Ophthalmic Photography 8 Bit Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.77.1.5.2","Ophthalmic Photography 16 Bit Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.77.1.5.3","Stereometric Relationship Storage","SOP Class",},//
-{0,"1.2.840.10008.5.1.4.1.1.88.11","Basic Text SR","SOP Class",},//
-{0,"1.2.840.10008.5.1.4.1.1.88.22","Enhanced SR","SOP Class",},//
-{0,"1.2.840.10008.5.1.4.1.1.88.33","Comprehensive SR","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.77.1.5.4","Ophthalmic Tomography Image Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.78.1","Lensometry Measurements Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.78.2","Autorefraction Measurements Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.78.3","Keratometry Measurements Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.78.4","Subjective Refraction Measurements Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.78.5","Visual Acuity Measurements","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.78.6","Spectacle Prescription Reports Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.79.1","Macular Grid Thickness and Volume Report Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.1","Text SR Storage - Trial (Retired)","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.2","Audio SR Storage - Trial (Retired)","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.3","Detail SR Storage - Trial (Retired)","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.4","Comprehensive SR Storage - Trial (Retired)","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.11","Basic Text SR Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.22","Enhanced SR Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.33","Comprehensive SR Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.88.40","Procedure Log Storage","SOP Class",},//
-{0,"1.2.840.10008.5.1.4.1.1.88.50","Mammography CAD SR","SOP Class",},//
-{0,"1.2.840.10008.5.1.4.1.1.88.59","Key Object Selection Document","SOP Class",},//
-{0,"1.2.840.10008.5.1.4.1.1.88.65","Chest CAD SR","SOP Class",},//
-{0,"1.2.840.10008.5.1.4.1.1.88.67","X-Ray Radiation Dose SR","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.50","Mammography CAD SR Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.59","Key Object Selection Document Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.65","Chest CAD SR Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.67","X-Ray Radiation Dose SR Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.88.69","Colon CAD SR Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.104.1","Encapsulated PDF Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.104.2","Encapsulated CDA Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.128","Positron Emission Tomography Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.129","Standalone PET Curve Storage (Retired)","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.130","Enhanced PET Image Storage","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.1.131","Basic Structured Display Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.481.1","RT Image Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.481.2","RT Dose Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.1.481.3","RT Structure Set Storage","SOP Class",},//
@@ -192,16 +227,74 @@
 {0,"1.2.840.10008.5.1.4.1.2.3.1","Patient/Study Only Query/Retrieve Information Model  - FIND (Retired)","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.2.3.2","Patient/Study Only Query/Retrieve Information Model  - MOVE (Retired)","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.1.2.3.3","Patient/Study Only Query/Retrieve Information Model  - GET (Retired)","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.2.4.2","Composite Instance Root Retrieve - MOVE","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.2.4.3","Composite Instance Root Retrieve - GET","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.1.2.5.3","Composite Instance Retrieve Without Bulk Data - GET","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.31","Modality Worklist Information Model - FIND","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.32.1","General Purpose Worklist Information Model - FIND","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.32.2","General Purpose Scheduled Procedure Step SOP Class","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.32.3","General Purpose Performed Procedure Step SOP Class","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.32","General Purpose Worklist Management Meta SOP Class","Meta SOP Class",},//
 {0,"1.2.840.10008.5.1.4.33","Instance Availability Notification SOP Class","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.34.1","RT Beams Delivery Instruction Storage (Supplement 74 Frozen Draft)","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.34.2","RT Conventional Machine Verification (Supplement 74 Frozen Draft)","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.34.3","RT Ion Machine Verification (Supplement 74 Frozen Draft)","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.34.4","Unified Worklist and Procedure Step Service Class","Service Class",},//
+{0,"1.2.840.10008.5.1.4.34.4.1","Unified Procedure Step - Push SOP Class","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.34.4.2","Unified Procedure Step - Watch SOP Class","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.34.4.3","Unified Procedure Step - Pull SOP Class","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.34.4.4","Unified Procedure Step - Event SOP Class","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.34.5","Unified Worklist and Procedure Step SOP Instance","Well-known SOP Instance",},//
 {0,"1.2.840.10008.5.1.4.37.1","General Relevant Patient Information Query","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.37.2","Breast Imaging Relevant Patient Information Query","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.37.3","Cardiac Relevant Patient Information Query","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.38.1","Hanging Protocol Storage","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.38.2","Hanging Protocol Information Model - FIND","SOP Class",},//
 {0,"1.2.840.10008.5.1.4.38.3","Hanging Protocol Information Model - MOVE","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.38.4","Hanging Protocol Information Model - GET","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.39.1","Color Palette Storage","Transfer",},//
+{0,"1.2.840.10008.5.1.4.39.2","Color Palette Information Model - FIND","Query/Retrieve",},//
+{0,"1.2.840.10008.5.1.4.39.3","Color Palette Information Model - MOVE","Query/Retrieve",},//
+{0,"1.2.840.10008.5.1.4.39.4","Color Palette Information Model - GET","Query/Retrieve",},//
+{0,"1.2.840.10008.5.1.4.41","Product Characteristics Query SOP Class","SOP Class",},//
+{0,"1.2.840.10008.5.1.4.42","Substance Approval Query SOP Class","SOP Class",},//
+{0,"1.2.840.10008.15.0.3.1","dicomDeviceName","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.2","dicomDescription","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.3","dicomManufacturer","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.4","dicomManufacturerModelName","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.5","dicomSoftwareVersion","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.6","dicomVendorData","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.7","dicomAETitle","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.8","dicomNetworkConnectionReference","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.9","dicomApplicationCluster","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.10","dicomAssociationInitiator","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.11","dicomAssociationAcceptor","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.12","dicomHostname","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.13","dicomPort","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.14","dicomSOPClass","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.15","dicomTransferRole","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.16","dicomTransferSyntax","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.17","dicomPrimaryDeviceType","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.18","dicomRelatedDeviceReference","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.19","dicomPreferredCalledAETitle","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.20","dicomTLSCyphersuite","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.21","dicomAuthorizedNodeCertificateReference","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.22","dicomThisNodeCertificateReference","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.23","dicomInstalled","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.24","dicomStationName","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.25","dicomDeviceSerialNumber","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.26","dicomInstitutionName","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.27","dicomInstitutionAddress","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.28","dicomInstitutionDepartmentName","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.29","dicomIssuerOfPatientID","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.30","dicomPreferredCallingAETitle","LDAP OID",},//
+{0,"1.2.840.10008.15.0.3.31","dicomSupportedCharacterSet","LDAP OID",},//
+{0,"1.2.840.10008.15.0.4.1","dicomConfigurationRoot","LDAP OID",},//
+{0,"1.2.840.10008.15.0.4.2","dicomDevicesRoot","LDAP OID",},//
+{0,"1.2.840.10008.15.0.4.3","dicomUniqueAETitlesRegistryRoot","LDAP OID",},//
+{0,"1.2.840.10008.15.0.4.4","dicomDevice","LDAP OID",},//
+{0,"1.2.840.10008.15.0.4.5","dicomNetworkAE","LDAP OID",},//
+{0,"1.2.840.10008.15.0.4.6","dicomNetworkConnection","LDAP OID",},//
+{0,"1.2.840.10008.15.0.4.7","dicomUniqueAETitle","LDAP OID",},//
+{0,"1.2.840.10008.15.0.4.8","dicomTransferCapability","LDAP OID",},//
 {0,NULL,NULL,NULL,},//

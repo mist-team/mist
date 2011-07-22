@@ -13,4 +13,9 @@
 {0,0x0012,0x0064,SQ,1,"""De-identification Method Code Sequence""",},//
 {0,0x0012,0x0071,LO,1,"""Clinical Trial Series ID""",},//
 {0,0x0012,0x0072,LO,1,"""Clinical Trial Series Description""",},//
+{0,0x0012,0x0081,LO,1,"""Clinical Trial Protocol Ethics Committee Name""",},//
+{0,0x0012,0x0082,LO,1,"""Clinical Trial Protocol Ethics Committee Approval Number""",},//
+{0,0x0012,0x0083,SQ,1,"""Consent for Clinical Trial Use Sequence""",},//
+{0,0x0012,0x0084,CS,1,"""Distribution Type""",},//
+{0,0x0012,0x0085,CS,1,"""Consent for Distribution Flag""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

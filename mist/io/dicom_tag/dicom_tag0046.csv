@@ -1,0 +1,50 @@
+{0,0x0046,0x0012,LO,1,"""Lens Description""",},//
+{0,0x0046,0x0014,SQ,1,"""Right Lens Sequence""",},//
+{0,0x0046,0x0015,SQ,1,"""Left Lens Sequence""",},//
+{0,0x0046,0x0016,SQ,1,"""Unspecified Laterality Lens Sequence""",},//
+{0,0x0046,0x0018,SQ,1,"""Cylinder Sequence""",},//
+{0,0x0046,0x0028,SQ,1,"""Prism Sequence""",},//
+{0,0x0046,0x0030,FD,1,"""Horizontal Prism Power""",},//
+{0,0x0046,0x0032,CS,1,"""Horizontal Prism Base""",},//
+{0,0x0046,0x0034,FD,1,"""Vertical Prism Power""",},//
+{0,0x0046,0x0036,CS,1,"""Vertical Prism Base""",},//
+{0,0x0046,0x0038,CS,1,"""Lens Segment Type""",},//
+{0,0x0046,0x0040,FD,1,"""Optical Transmittance""",},//
+{0,0x0046,0x0042,FD,1,"""Channel Width""",},//
+{0,0x0046,0x0044,FD,1,"""Pupil Size""",},//
+{0,0x0046,0x0046,FD,1,"""Corneal Size""",},//
+{0,0x0046,0x0050,SQ,1,"""Autorefraction Right Eye Sequence""",},//
+{0,0x0046,0x0052,SQ,1,"""Autorefraction Left Eye Sequence""",},//
+{0,0x0046,0x0060,FD,1,"""Distance Pupillary Distance""",},//
+{0,0x0046,0x0062,FD,1,"""Near Pupillary Distance""",},//
+{0,0x0046,0x0063,FD,1,"""Intermediate Pupillary Distance""",},//
+{0,0x0046,0x0064,FD,1,"""Other Pupillary Distance""",},//
+{0,0x0046,0x0070,SQ,1,"""Keratometry Right Eye Sequence""",},//
+{0,0x0046,0x0071,SQ,1,"""Keratometry Left Eye Sequence""",},//
+{0,0x0046,0x0074,SQ,1,"""Steep Keratometric Axis Sequence""",},//
+{0,0x0046,0x0075,FD,1,"""Radius of Curvature""",},//
+{0,0x0046,0x0076,FD,1,"""Keratometric Power""",},//
+{0,0x0046,0x0077,FD,1,"""Keratometric Axis""",},//
+{0,0x0046,0x0080,SQ,1,"""Flat Keratometric Axis Sequence""",},//
+{0,0x0046,0x0092,CS,1,"""Background Color""",},//
+{0,0x0046,0x0094,CS,1,"""Optotype""",},//
+{0,0x0046,0x0095,CS,1,"""Optotype Presentation""",},//
+{0,0x0046,0x0097,SQ,1,"""Subjective Refraction Right Eye Sequence""",},//
+{0,0x0046,0x0098,SQ,1,"""Subjective Refraction Left Eye Sequence""",},//
+{0,0x0046,0x0100,SQ,1,"""Add Near Sequence""",},//
+{0,0x0046,0x0101,SQ,1,"""Add Intermediate Sequence""",},//
+{0,0x0046,0x0102,SQ,1,"""Add Other Sequence""",},//
+{0,0x0046,0x0104,FD,1,"""Add Power""",},//
+{0,0x0046,0x0106,FD,1,"""Viewing Distance""",},//
+{0,0x0046,0x0121,SQ,1,"""Visual Acuity Type Code Sequence""",},//
+{0,0x0046,0x0122,SQ,1,"""Visual Acuity Right Eye Sequence""",},//
+{0,0x0046,0x0123,SQ,1,"""Visual Acuity Left Eye Sequence""",},//
+{0,0x0046,0x0124,SQ,1,"""Visual Acuity Both Eyes Open Sequence""",},//
+{0,0x0046,0x0125,CS,1,"""Viewing Distance Type""",},//
+{0,0x0046,0x0135,SS,2,"""Visual Acuity Modifiers""",},//
+{0,0x0046,0x0137,FD,1,"""Decimal Visual Acuity""",},//
+{0,0x0046,0x0139,LO,1,"""Optotype Detailed Definition""",},//
+{0,0x0046,0x0145,SQ,1,"""Referenced Refractive Measurements Sequence""",},//
+{0,0x0046,0x0146,FD,1,"""Sphere Power""",},//
+{0,0x0046,0x0147,FD,1,"""Cylinder Power""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

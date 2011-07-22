@@ -79,11 +79,13 @@ namespace dicom
 		#define __INCLUDE_DICOM_TAG_0040__
 		#define __INCLUDE_DICOM_TAG_0042__
 		#define __INCLUDE_DICOM_TAG_0044__
+		#define __INCLUDE_DICOM_TAG_0046__
 		#define __INCLUDE_DICOM_TAG_0050__
 		#define __INCLUDE_DICOM_TAG_0054__
 		#define __INCLUDE_DICOM_TAG_0060__
 		#define __INCLUDE_DICOM_TAG_0062__
 		#define __INCLUDE_DICOM_TAG_0064__
+		#define __INCLUDE_DICOM_TAG_0066__
 		#define __INCLUDE_DICOM_TAG_0070__
 		#define __INCLUDE_DICOM_TAG_0072__
 		#define __INCLUDE_DICOM_TAG_0074__
@@ -123,57 +125,6 @@ namespace dicom
 		// 個別にインクルードするタグを指定する
 		// DICOMのタグの内，有効にするタグの種類のみ定義する
 		// 利用するものが多くなるにつれ，コンパイル時間が増加するので注意 
-		//#define __INCLUDE_DICOM_TAG_0000__
-		//#define __INCLUDE_DICOM_TAG_0004__
-		//#define __INCLUDE_DICOM_TAG_0008__
-		//#define __INCLUDE_DICOM_TAG_0010__
-		//#define __INCLUDE_DICOM_TAG_0012__
-		//#define __INCLUDE_DICOM_TAG_0018__
-		//#define __INCLUDE_DICOM_TAG_0020__
-		//#define __INCLUDE_DICOM_TAG_0022__
-		//#define __INCLUDE_DICOM_TAG_0032__
-		//#define __INCLUDE_DICOM_TAG_0038__
-		//#define __INCLUDE_DICOM_TAG_003A__
-		//#define __INCLUDE_DICOM_TAG_0040__
-		//#define __INCLUDE_DICOM_TAG_0042__
-		//#define __INCLUDE_DICOM_TAG_0044__
-		//#define __INCLUDE_DICOM_TAG_0050__
-		//#define __INCLUDE_DICOM_TAG_0054__
-		//#define __INCLUDE_DICOM_TAG_0060__
-		//#define __INCLUDE_DICOM_TAG_0062__
-		//#define __INCLUDE_DICOM_TAG_0064__
-		//#define __INCLUDE_DICOM_TAG_0070__
-		//#define __INCLUDE_DICOM_TAG_0072__
-		//#define __INCLUDE_DICOM_TAG_0074__
-		//#define __INCLUDE_DICOM_TAG_0088__
-		//#define __INCLUDE_DICOM_TAG_0100__
-		//#define __INCLUDE_DICOM_TAG_0400__
-		//#define __INCLUDE_DICOM_TAG_2000__
-		//#define __INCLUDE_DICOM_TAG_2010__
-		//#define __INCLUDE_DICOM_TAG_2020__
-		//#define __INCLUDE_DICOM_TAG_2030__
-		//#define __INCLUDE_DICOM_TAG_2040__
-		//#define __INCLUDE_DICOM_TAG_2050__
-		//#define __INCLUDE_DICOM_TAG_2100__
-		//#define __INCLUDE_DICOM_TAG_2110__
-		//#define __INCLUDE_DICOM_TAG_2120__
-		//#define __INCLUDE_DICOM_TAG_2130__
-		//#define __INCLUDE_DICOM_TAG_2200__
-		//#define __INCLUDE_DICOM_TAG_3002__
-		//#define __INCLUDE_DICOM_TAG_3004__
-		//#define __INCLUDE_DICOM_TAG_3006__
-		//#define __INCLUDE_DICOM_TAG_3008__
-		//#define __INCLUDE_DICOM_TAG_300A__
-		//#define __INCLUDE_DICOM_TAG_300C__
-		//#define __INCLUDE_DICOM_TAG_300E__
-		//#define __INCLUDE_DICOM_TAG_4000__
-		//#define __INCLUDE_DICOM_TAG_4008__
-		//#define __INCLUDE_DICOM_TAG_4FFE__
-		//#define __INCLUDE_DICOM_TAG_5000__
-		//#define __INCLUDE_DICOM_TAG_5200__
-		//#define __INCLUDE_DICOM_TAG_5400__
-		//#define __INCLUDE_DICOM_TAG_5600__
-		//#define __INCLUDE_DICOM_TAG_6000__
 
 		// DICOM画像のみを表示するのであれば，以下の3つのマクロのみを有効にすれば良い
 		#define __INCLUDE_DICOM_TAG_0002__
@@ -668,13 +619,17 @@ namespace dicom
 		//! - __INCLUDE_DICOM_TAG_003A__ … グループIDが 003A のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0040__ … グループIDが 0040 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0042__ … グループIDが 0042 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0044__ … グループIDが 0044 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0046__ … グループIDが 0046 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0050__ … グループIDが 0050 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0054__ … グループIDが 0054 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0060__ … グループIDが 0060 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0062__ … グループIDが 0062 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0064__ … グループIDが 0064 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0066__ … グループIDが 0066 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0070__ … グループIDが 0070 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0072__ … グループIDが 0072 のタグを挿入する
+		//! - __INCLUDE_DICOM_TAG_0074__ … グループIDが 0074 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0088__ … グループIDが 0088 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0100__ … グループIDが 0100 のタグを挿入する
 		//! - __INCLUDE_DICOM_TAG_0400__ … グループIDが 0400 のタグを挿入する
@@ -836,6 +791,14 @@ namespace dicom
 				insert_tag( dicom_tag_elements );
 			}
 #endif
+#ifdef __INCLUDE_DICOM_TAG_0046__
+			{
+				dicom_tag_element dicom_tag_elements[] = {
+					#include "dicom_tag/dicom_tag0046.csv"
+				};
+				insert_tag( dicom_tag_elements );
+			}
+#endif
 #ifdef __INCLUDE_DICOM_TAG_0050__
 			{
 				dicom_tag_element dicom_tag_elements[] = {
@@ -872,6 +835,14 @@ namespace dicom
 			{
 				dicom_tag_element dicom_tag_elements[] = {
 					#include "dicom_tag/dicom_tag0064.csv"
+				};
+				insert_tag( dicom_tag_elements );
+			}
+#endif
+#ifdef __INCLUDE_DICOM_TAG_0066__
+			{
+				dicom_tag_element dicom_tag_elements[] = {
+					#include "dicom_tag/dicom_tag0066.csv"
 				};
 				insert_tag( dicom_tag_elements );
 			}

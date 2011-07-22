@@ -1,12 +1,12 @@
-{0,0x5400,0x0100,SQ,1,"""Waveform Sequence """,},//
-{0,0x5400,0x0110,OB,1,"""Channel Minimum Value """,},//
-{0,0x5400,0x0110,OW,1,"""Channel Minimum Value """,},//
-{0,0x5400,0x0112,OB,1,"""Channel Maximum Value """,},//
-{0,0x5400,0x0112,OW,1,"""Channel Maximum Value """,},//
+{0,0x5400,0x0100,SQ,1,"""Waveform Sequence""",},//
+{0,0x5400,0x0110,OB,1,"""Channel Minimum Value""",},//
+{0,0x5400,0x0110,OW,1,"""Channel Minimum Value""",},//
+{0,0x5400,0x0112,OB,1,"""Channel Maximum Value""",},//
+{0,0x5400,0x0112,OW,1,"""Channel Maximum Value""",},//
 {0,0x5400,0x1004,US,1,"""Waveform Bits Allocated""",},//
 {0,0x5400,0x1006,CS,1,"""Waveform Sample Interpretation""",},//
 {0,0x5400,0x100A,OB,1,"""Waveform Padding Value""",},//
 {0,0x5400,0x100A,OW,1,"""Waveform Padding Value""",},//
-{0,0x5400,0x1010,OB,1,"""Waveform Data """,},//
-{0,0x5400,0x1010,OW,1,"""Waveform Data """,},//
+{0,0x5400,0x1010,OB,1,"""Waveform Data""",},//
+{0,0x5400,0x1010,OW,1,"""Waveform Data""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

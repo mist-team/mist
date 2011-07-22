@@ -1,5 +1,5 @@
 {0,0x0074,0x1000,CS,1,"""Unified Procedure Step State""",},//
-{0,0x0074,0x1002,SQ,1,"""UPS Progress Information Sequence""",},//
+{0,0x0074,0x1002,SQ,1,"""Unified Procedure Step Progress Information Sequence""",},//
 {0,0x0074,0x1004,DS,1,"""Unified Procedure Step Progress""",},//
 {0,0x0074,0x1006,ST,1,"""Unified Procedure Step Progress Description""",},//
 {0,0x0074,0x1008,SQ,1,"""Unified Procedure Step Communications URI Sequence""",},//
@@ -19,11 +19,11 @@
 {0,0x0074,0x1042,SQ,1,"""General Machine Verification Sequence""",},//
 {0,0x0074,0x1044,SQ,1,"""Conventional Machine Verification Sequence""",},//
 {0,0x0074,0x1046,SQ,1,"""Ion Machine Verification Sequence""",},//
-{0,0x0074,0x1048,SQ,-1,"""Failed Attributes Sequence""",},//
-{0,0x0074,0x104A,SQ,-1,"""Overridden Attributes Sequence""",},//
+{0,0x0074,0x1048,SQ,1,"""Failed Attributes Sequence""",},//
+{0,0x0074,0x104A,SQ,1,"""Overridden Attributes Sequence""",},//
 {0,0x0074,0x104C,SQ,1,"""Conventional Control Point Verification Sequence""",},//
 {0,0x0074,0x104E,SQ,1,"""Ion Control Point Verification Sequence""",},//
-{0,0x0074,0x1050,SQ,-1,"""Attribute Occurrence Sequence""",},//
+{0,0x0074,0x1050,SQ,1,"""Attribute Occurrence Sequence""",},//
 {0,0x0074,0x1052,AT,1,"""Attribute Occurrence Pointer""",},//
 {0,0x0074,0x1054,UL,1,"""Attribute Item Selector""",},//
 {0,0x0074,0x1056,LO,1,"""Attribute Occurrence Private Creator""",},//
@@ -32,7 +32,7 @@
 {0,0x0074,0x1204,LO,1,"""Procedure Step Label""",},//
 {0,0x0074,0x1210,SQ,1,"""Scheduled Processing Parameters Sequence""",},//
 {0,0x0074,0x1212,SQ,1,"""Performed Processing Parameters Sequence""",},//
-{0,0x0074,0x1216,SQ,1,"""UPS Performed Procedure Sequence""",},//
+{0,0x0074,0x1216,SQ,1,"""Unified Procedure Step Performed Procedure Sequence""",},//
 {0,0x0074,0x1220,SQ,1,"""Related Procedure Step Sequence""",},//
 {0,0x0074,0x1222,LO,1,"""Procedure Step Relationship Type""",},//
 {0,0x0074,0x1230,LO,1,"""Deletion Lock""",},//
@@ -41,5 +41,5 @@
 {0,0x0074,0x1238,LT,1,"""Reason for Cancellation""",},//
 {0,0x0074,0x1242,CS,1,"""SCP Status""",},//
 {0,0x0074,0x1244,CS,1,"""Subscription List Status""",},//
-{0,0x0074,0x1246,CS,1,"""UPS List Status""",},//
+{0,0x0074,0x1246,CS,1,"""Unified Procedure Step List Status""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

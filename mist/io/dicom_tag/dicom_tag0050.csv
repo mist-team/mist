@@ -1,9 +1,17 @@
 {0,0x0050,0x0004,CS,1,"""Calibration Image""",},//
 {0,0x0050,0x0010,SQ,1,"""Device Sequence""",},//
+{0,0x0050,0x0012,SQ,1,"""Container Component Type Code Sequence""",},//
+{0,0x0050,0x0013,FD,1,"""Container Component Thickness""",},//
 {0,0x0050,0x0014,DS,1,"""Device Length""",},//
+{0,0x0050,0x0015,FD,1,"""Container Component Width""",},//
 {0,0x0050,0x0016,DS,1,"""Device Diameter""",},//
 {0,0x0050,0x0017,CS,1,"""Device Diameter Units""",},//
 {0,0x0050,0x0018,DS,1,"""Device Volume""",},//
-{0,0x0050,0x0019,DS,1,"""Intermarker Distance""",},//
+{0,0x0050,0x0019,DS,1,"""Inter-Marker Distance""",},//
+{0,0x0050,0x001A,CS,1,"""Container Component Material""",},//
+{0,0x0050,0x001B,LO,1,"""Container Component ID""",},//
+{0,0x0050,0x001C,FD,1,"""Container Component Length""",},//
+{0,0x0050,0x001D,FD,1,"""Container Component Diameter""",},//
+{0,0x0050,0x001E,LO,1,"""Container Component Description""",},//
 {0,0x0050,0x0020,LO,1,"""Device Description""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -8,5 +8,5 @@
 {0,0x2020,0x0110,SQ,1,"""Basic Grayscale Image Sequence""",},//
 {0,0x2020,0x0111,SQ,1,"""Basic Color Image Sequence""",},//
 {0,0x2020,0x0130,SQ,1,"""Referenced Image Overlay Box Sequence""",},//
-{0,0x2020,0x0140,SQ,1,"""Referenced VOI LUT Box Sequence """,},//
+{0,0x2020,0x0140,SQ,1,"""Referenced VOI LUT Box Sequence""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

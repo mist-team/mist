@@ -1,0 +1,46 @@
+{0,0x0066,0x0001,UL,1,"""Number of Surfaces""",},//
+{0,0x0066,0x0002,SQ,1,"""Surface Sequence""",},//
+{0,0x0066,0x0003,UL,1,"""Surface Number""",},//
+{0,0x0066,0x0004,LT,1,"""Surface Comments""",},//
+{0,0x0066,0x0009,CS,1,"""Surface Processing""",},//
+{0,0x0066,0x000A,FL,1,"""Surface Processing Ratio""",},//
+{0,0x0066,0x000B,LO,1,"""Surface Processing Description""",},//
+{0,0x0066,0x000C,FL,1,"""Recommended Presentation Opacity""",},//
+{0,0x0066,0x000D,CS,1,"""Recommended Presentation Type""",},//
+{0,0x0066,0x000E,CS,1,"""Finite Volume""",},//
+{0,0x0066,0x0010,CS,1,"""Manifold""",},//
+{0,0x0066,0x0011,SQ,1,"""Surface Points Sequence""",},//
+{0,0x0066,0x0012,SQ,1,"""Surface Points Normals Sequence""",},//
+{0,0x0066,0x0013,SQ,1,"""Surface Mesh Primitives Sequence""",},//
+{0,0x0066,0x0015,UL,1,"""Number of Surface Points""",},//
+{0,0x0066,0x0016,OF,1,"""Point Coordinates Data""",},//
+{0,0x0066,0x0017,FL,3,"""Point Position Accuracy""",},//
+{0,0x0066,0x0018,FL,1,"""Mean Point Distance""",},//
+{0,0x0066,0x0019,FL,1,"""Maximum Point Distance""",},//
+{0,0x0066,0x001A,FL,6,"""Points Bounding Box Coordinates""",},//
+{0,0x0066,0x001B,FL,3,"""Axis of Rotation""",},//
+{0,0x0066,0x001C,FL,3,"""Center of Rotation""",},//
+{0,0x0066,0x001E,UL,1,"""Number of Vectors""",},//
+{0,0x0066,0x001F,US,1,"""Vector Dimensionality""",},//
+{0,0x0066,0x0020,FL,-1,"""Vector Accuracy""",},//
+{0,0x0066,0x0021,OF,1,"""Vector Coordinate Data""",},//
+{0,0x0066,0x0023,OW,1,"""Triangle Point Index List""",},//
+{0,0x0066,0x0024,OW,1,"""Edge Point Index List""",},//
+{0,0x0066,0x0025,OW,1,"""Vertex Point Index List""",},//
+{0,0x0066,0x0026,SQ,1,"""Triangle Strip Sequence""",},//
+{0,0x0066,0x0027,SQ,1,"""Triangle Fan Sequence""",},//
+{0,0x0066,0x0028,SQ,1,"""Line Sequence""",},//
+{0,0x0066,0x0029,OW,1,"""Primitive Point Index List""",},//
+{0,0x0066,0x002A,UL,1,"""Surface Count""",},//
+{0,0x0066,0x002B,SQ,1,"""Referenced Surface Sequence""",},//
+{0,0x0066,0x002C,UL,1,"""Referenced Surface Number""",},//
+{0,0x0066,0x002D,SQ,1,"""Segment Surface Generation Algorithm Identification Sequence""",},//
+{0,0x0066,0x002E,SQ,1,"""Segment Surface Source Instance Sequence""",},//
+{0,0x0066,0x002F,SQ,1,"""Algorithm Family Code Sequence""",},//
+{0,0x0066,0x0030,SQ,1,"""Algorithm Name Code Sequence""",},//
+{0,0x0066,0x0031,LO,1,"""Algorithm Version""",},//
+{0,0x0066,0x0032,LT,1,"""Algorithm Parameters""",},//
+{0,0x0066,0x0034,SQ,1,"""Facet Sequence""",},//
+{0,0x0066,0x0035,SQ,1,"""Surface Processing Algorithm Identification Sequence""",},//
+{0,0x0066,0x0036,LO,1,"""Algorithm Name""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -31,7 +31,7 @@
 {0,0x0022,0x0022,SQ,1,"""Right Image Sequence""",},//
 {0,0x0022,0x0030,FL,1,"""Axial Length of the Eye""",},//
 {0,0x0022,0x0031,SQ,1,"""Ophthalmic Frame Location Sequence""",},//
-{0,0x0022,0x0032,FL,2,"""Reference Coordinates""",},//
+{0,0x0022,0x0032,FL,-1,"""Reference Coordinates""",},//
 {0,0x0022,0x0035,FL,1,"""Depth Spatial Resolution""",},//
 {0,0x0022,0x0036,FL,1,"""Maximum Depth Distortion""",},//
 {0,0x0022,0x0037,FL,1,"""Along-scan Spatial Resolution""",},//

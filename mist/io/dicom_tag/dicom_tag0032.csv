@@ -15,6 +15,7 @@
 {0,0x0032,0x1031,SQ,1,"""Requesting Physician Identification Sequence""",},//
 {0,0x0032,0x1032,PN,1,"""Requesting Physician""",},//
 {0,0x0032,0x1033,LO,1,"""Requesting Service""",},//
+{0,0x0032,0x1034,SQ,1,"""Requesting Service Code Sequence""",},//
 {0,0x0032,0x1040,DA,1,"""Study Arrival Date""",},//
 {0,0x0032,0x1041,TM,1,"""Study Arrival Time""",},//
 {0,0x0032,0x1050,DA,1,"""Study Completion Date""",},//

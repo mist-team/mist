@@ -1,5 +1,5 @@
 {0,0x0100,0x0410,CS,1,"""SOP Instance Status""",},//
-{0,0x0100,0x0420,DT,1,"""SOP Authorization Date and Time""",},//
+{0,0x0100,0x0420,DT,1,"""SOP Authorization DateTime""",},//
 {0,0x0100,0x0424,LT,1,"""SOP Authorization Comment""",},//
 {0,0x0100,0x0426,LO,1,"""Authorization Equipment Certification Number""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

@@ -13,7 +13,7 @@
 {0,0x0020,0x0020,CS,2,"""Patient Orientation""",},//
 {0,0x0020,0x0022,IS,1,"""Overlay Number""",},//
 {0,0x0020,0x0024,IS,1,"""Curve Number""",},//
-{0,0x0020,0x0026,IS,1,"""Lookup Table Number""",},//
+{0,0x0020,0x0026,IS,1,"""LUT Number""",},//
 {0,0x0020,0x0030,DS,3,"""Image Position""",},//
 {0,0x0020,0x0032,DS,3,"""Image Position (Patient)""",},//
 {0,0x0020,0x0035,DS,6,"""Image Orientation""",},//
@@ -28,6 +28,7 @@
 {0,0x0020,0x0105,IS,1,"""Number of Temporal Positions""",},//
 {0,0x0020,0x0110,DS,1,"""Temporal Resolution""",},//
 {0,0x0020,0x0200,UI,1,"""Synchronization Frame of Reference UID""",},//
+{0,0x0020,0x0242,UI,1,"""SOP Instance UID of Concatenation Source""",},//
 {0,0x0020,0x1000,IS,1,"""Series in Study""",},//
 {0,0x0020,0x1001,IS,1,"""Acquisitions in Series""",},//
 {0,0x0020,0x1002,IS,1,"""Images in Acquisition""",},//
@@ -84,13 +85,27 @@
 {0,0x0020,0x9248,FL,1,"""Ending Respiratory Amplitude""",},//
 {0,0x0020,0x9249,CS,1,"""Ending Respiratory Phase""",},//
 {0,0x0020,0x9250,CS,1,"""Respiratory Trigger Type""",},//
-{0,0x0020,0x9251,FD,1,"""R   R Interval Time Nominal""",},//
+{0,0x0020,0x9251,FD,1,"""R - R Interval Time Nominal""",},//
 {0,0x0020,0x9252,FD,1,"""Actual Cardiac Trigger Delay Time""",},//
 {0,0x0020,0x9253,SQ,1,"""Respiratory Synchronization Sequence""",},//
 {0,0x0020,0x9254,FD,1,"""Respiratory Interval Time""",},//
 {0,0x0020,0x9255,FD,1,"""Nominal Respiratory Trigger Delay Time""",},//
 {0,0x0020,0x9256,FD,1,"""Respiratory Trigger Delay Threshold""",},//
 {0,0x0020,0x9257,FD,1,"""Actual Respiratory Trigger Delay Time""",},//
+{0,0x0020,0x9301,FD,3,"""Image Position (Volume)""",},//
+{0,0x0020,0x9302,FD,6,"""Image Orientation (Volume)""",},//
+{0,0x0020,0x9307,CS,1,"""Ultrasound Acquisition Geometry""",},//
+{0,0x0020,0x9308,FD,3,"""Apex Position""",},//
+{0,0x0020,0x9309,FD,16,"""Volume to Transducer Mapping Matrix""",},//
+{0,0x0020,0x930A,FD,16,"""Volume to Table Mapping Matrix""",},//
+{0,0x0020,0x930C,CS,1,"""Patient Frame of Reference Source""",},//
+{0,0x0020,0x930D,FD,1,"""Temporal Position Time Offset""",},//
+{0,0x0020,0x930E,SQ,1,"""Plane Position (Volume) Sequence""",},//
+{0,0x0020,0x930F,SQ,1,"""Plane Orientation (Volume) Sequence""",},//
+{0,0x0020,0x9310,SQ,1,"""Temporal Position Sequence""",},//
+{0,0x0020,0x9311,CS,1,"""Dimension Organization Type""",},//
+{0,0x0020,0x9312,UI,1,"""Volume Frame of Reference UID""",},//
+{0,0x0020,0x9313,UI,1,"""Table Frame of Reference UID""",},//
 {0,0x0020,0x9421,LO,1,"""Dimension Description Label""",},//
 {0,0x0020,0x9450,SQ,1,"""Patient Orientation in Frame Sequence""",},//
 {0,0x0020,0x9453,LO,1,"""Frame Label""",},//

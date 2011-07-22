@@ -5,7 +5,7 @@
 {0,0x2010,0x0052,CS,1,"""Printer Resolution ID""",},//
 {0,0x2010,0x0054,CS,1,"""Default Printer Resolution ID""",},//
 {0,0x2010,0x0060,CS,1,"""Magnification Type""",},//
-{0,0x2010,0x0080,CS,1,"""Smoothing Type  """,},//
+{0,0x2010,0x0080,CS,1,"""Smoothing Type""",},//
 {0,0x2010,0x00A6,CS,1,"""Default Magnification Type""",},//
 {0,0x2010,0x00A7,CS,-1,"""Other Magnification Types Available""",},//
 {0,0x2010,0x00A8,CS,1,"""Default Smoothing Type""",},//

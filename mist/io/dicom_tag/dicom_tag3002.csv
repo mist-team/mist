@@ -20,4 +20,7 @@
 {0,0x3002,0x0040,SQ,1,"""Fluence Map Sequence""",},//
 {0,0x3002,0x0041,CS,1,"""Fluence Data Source""",},//
 {0,0x3002,0x0042,DS,1,"""Fluence Data Scale""",},//
+{0,0x3002,0x0050,SQ,1,"""Primary Fluence Mode Sequence""",},//
+{0,0x3002,0x0051,CS,1,"""Fluence Mode""",},//
+{0,0x3002,0x0052,SH,1,"""Fluence Mode ID""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

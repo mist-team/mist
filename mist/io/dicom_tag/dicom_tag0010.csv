@@ -2,12 +2,13 @@
 {0,0x0010,0x0020,LO,1,"""Patient ID""",},//
 {0,0x0010,0x0021,LO,1,"""Issuer of Patient ID""",},//
 {0,0x0010,0x0022,CS,1,"""Type of Patient ID""",},//
+{0,0x0010,0x0024,SQ,1,"""Issuer of Patient ID Qualifiers Sequence""",},//
 {0,0x0010,0x0030,DA,1,"""Patient's Birth Date""",},//
 {0,0x0010,0x0032,TM,1,"""Patient's Birth Time""",},//
 {0,0x0010,0x0040,CS,1,"""Patient's Sex""",},//
 {0,0x0010,0x0050,SQ,1,"""Patient's Insurance Plan Code Sequence""",},//
 {0,0x0010,0x0101,SQ,1,"""Patient's Primary Language Code Sequence""",},//
-{0,0x0010,0x0102,SQ,1,"""Patient's Primary Language Code Modifier Sequence""",},//
+{0,0x0010,0x0102,SQ,1,"""Patient's Primary Language Modifier Code Sequence""",},//
 {0,0x0010,0x1000,LO,-1,"""Other Patient IDs""",},//
 {0,0x0010,0x1001,PN,-1,"""Other Patient Names""",},//
 {0,0x0010,0x1002,SQ,1,"""Other Patient IDs Sequence""",},//
@@ -36,6 +37,7 @@
 {0,0x0010,0x2201,LO,1,"""Patient Species Description""",},//
 {0,0x0010,0x2202,SQ,1,"""Patient Species Code Sequence""",},//
 {0,0x0010,0x2203,CS,1,"""Patient's Sex Neutered""",},//
+{0,0x0010,0x2210,CS,1,"""Anatomical Orientation Type""",},//
 {0,0x0010,0x2292,LO,1,"""Patient Breed Description""",},//
 {0,0x0010,0x2293,SQ,1,"""Patient Breed Code Sequence""",},//
 {0,0x0010,0x2294,SQ,1,"""Breed Registration Sequence""",},//

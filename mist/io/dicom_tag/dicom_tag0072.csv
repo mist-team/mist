@@ -59,7 +59,7 @@
 {0,0x0072,0x0210,SQ,1,"""Synchronized Scrolling Sequence""",},//
 {0,0x0072,0x0212,US,-1,"""Display Set Scrolling Group""",},//
 {0,0x0072,0x0214,SQ,1,"""Navigation Indicator Sequence""",},//
-{0,0x0072,0x0216,US,1,"""Navigation Display Set """,},//
+{0,0x0072,0x0216,US,1,"""Navigation Display Set""",},//
 {0,0x0072,0x0218,US,-1,"""Reference Display Sets""",},//
 {0,0x0072,0x0300,SQ,1,"""Image Boxes Sequence""",},//
 {0,0x0072,0x0302,US,1,"""Image Box Number""",},//
@@ -77,6 +77,14 @@
 {0,0x0072,0x0402,CS,1,"""Filter-by Category""",},//
 {0,0x0072,0x0404,CS,1,"""Filter-by Attribute Presence""",},//
 {0,0x0072,0x0406,CS,1,"""Filter-by Operator""",},//
+{0,0x0072,0x0420,US,3,"""Structured Display Background CIELab Value""",},//
+{0,0x0072,0x0421,US,3,"""Empty Image Box CIELab Value""",},//
+{0,0x0072,0x0422,SQ,1,"""Structured Display Image Box Sequence""",},//
+{0,0x0072,0x0424,SQ,1,"""Structured Display Text Box Sequence""",},//
+{0,0x0072,0x0427,SQ,1,"""Referenced First Frame Sequence""",},//
+{0,0x0072,0x0430,SQ,1,"""Image Box Synchronization Sequence""",},//
+{0,0x0072,0x0432,US,-1,"""Synchronized Image Box List""",},//
+{0,0x0072,0x0434,CS,1,"""Type of Synchronization""",},//
 {0,0x0072,0x0500,CS,1,"""Blending Operation Type""",},//
 {0,0x0072,0x0510,CS,1,"""Reformatting Operation Type""",},//
 {0,0x0072,0x0512,FD,1,"""Reformatting Thickness""",},//
@@ -88,12 +96,12 @@
 {0,0x0072,0x0604,CS,1,"""Sorting Direction""",},//
 {0,0x0072,0x0700,CS,2,"""Display Set Patient Orientation""",},//
 {0,0x0072,0x0702,CS,1,"""VOI Type""",},//
-{0,0x0072,0x0704,CS,1,"""Pseudo-color Type""",},//
+{0,0x0072,0x0704,CS,1,"""Pseudo-Color Type""",},//
 {0,0x0072,0x0706,CS,1,"""Show Grayscale Inverted""",},//
 {0,0x0072,0x0710,CS,1,"""Show Image True Size Flag""",},//
 {0,0x0072,0x0712,CS,1,"""Show Graphic Annotation Flag""",},//
 {0,0x0072,0x0714,CS,1,"""Show Patient Demographics Flag""",},//
 {0,0x0072,0x0716,CS,1,"""Show Acquisition Techniques Flag""",},//
-{0,0x0072,0x0717,CS,1,"""Display Set Horizontal Justification """,},//
+{0,0x0072,0x0717,CS,1,"""Display Set Horizontal Justification""",},//
 {0,0x0072,0x0718,CS,1,"""Display Set Vertical Justification""",},//
 {0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//
