@@ -2391,6 +2391,54 @@ inline void yiq2rgb( double y, double i, double q, double &r, double &g, double 
 }
 
 
+/// @brief RGB色空間をYCbCr色空間に変換する
+//! 
+//! @attention 入力と出力の値の範囲に注意！！
+//! 
+//! @param[in]  r  … RGB色空間のR(赤)成分(0～255)
+//! @param[in]  g  … RGB色空間のG(緑)成分(0～255)
+//! @param[in]  b  … RGB色空間のB(青)成分(0～255)
+//! @param[out] y  … YCbCr色空間のY成分(16～235)
+//! @param[out] cb … YCbCr色空間のCb成分(16～240)
+//! @param[out] cr … YCbCr色空間のCr成分(16～240)
+//! 
+inline void rgb2ycbcr( double r, double g, double b, double &y, double &cb, double &cr )
+{
+	y  =  0.257 * r + 0.504 * g + 0.098 * b + 16.0;
+	cb = -0.148 * r - 0.219 * g + 0.439 * b + 128.0;
+	cr =  0.439 * r - 0.368 * g - 0.071 * b + 128.0;
+	//y  =  0.29891 * r + 0.58661 * g + 0.11448 * b;
+	//cb = -0.16874 * r - 0.33126 * g + 0.50000 * b;
+	//cr =  0.50000 * r - 0.41869 * g - 0.08131 * b;
+}
+
+
+/// @brief YCbCr色空間をRGB色空間に変換する
+//! 
+//! @attention 入力と出力の値の範囲に注意！！
+//! 
+//! @param[in]  y  … YCbCr色空間のY成分(16～235)
+//! @param[in]  cb … YCbCr色空間のCb成分(16～240)
+//! @param[in]  cr … YCbCr色空間のCr成分(16～240)
+//! @param[out] r  … RGB色空間のR(赤)成分(0～255)
+//! @param[out] g  … RGB色空間のG(緑)成分(0～255)
+//! @param[out] b  … RGB色空間のB(青)成分(0～255)
+//! 
+inline void ycbcr2rgb( double y, double cb, double cr, double &r, double &g, double &b )
+{
+	y -= 16.0;
+	cb -= 128.0;
+	cr -= 128.0;
+
+	r =  1.164 * y + 1.596 * cr;
+	g =  1.164 * y - 0.813 * cr - 0.392 * cb;
+	b =  1.164 * y + 2.017 * cb;
+	//r =  y + 1.40200 * cr;
+	//g =  y - 0.71414 * cr - 0.34414 * cb;
+	//b =  y + 1.77200 * cb;
+}
+
+
 /// @brief RGB色空間をXYZ色空間に変換する
 //! 
 //! @attention 入力と出力の値の範囲に注意！！
