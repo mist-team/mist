@@ -286,7 +286,7 @@ namespace __mean__
 			typedef typename array2< T, Allocator >::value_type    value_type;
 			typedef typename array2< T, Allocator >::size_type     size_type;
 			typedef typename array2< T, Allocator >::const_pointer const_pointer;
-			double pix = 0.0;
+			double pix = 0.0, sum = 0.0;
 			double yy;
 
 			if( i2 - i1 < 3 )
@@ -314,6 +314,7 @@ namespace __mean__
 
 					pix += ( p0[ i1 ] + p1[ i1 ] + p0[ i1 + 1 ] + p1[ i1 + 1 ] ) * aa[ 0 ];
 					pix += ( p0[ i2 - 1 ] + p1[ i2 - 1 ] + p0[ i2 ] + p1[ i2 ] ) * aa[ 1 ];
+					sum += ( aa[ 0 ] + aa[ 1 ] ) * 4.0;
 				}
 			}
 			else
@@ -356,12 +357,14 @@ namespace __mean__
 						pix += ppp * aa[ 1 ];
 						pix += ( p0[ i2 - 1 ] + p1[ i2 - 1 ] + p0[ i2 ] + p1[ i2 ] ) * aa[ 2 ];
 					}
+
+					sum += ( aa[ 0 ] + aa[ 2 ] ) * 4.0 + aa[ 1 ] * ( ( i2 - i1 - 3 ) * 2.0 + 4 );
 				}
 			}
 
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
-			pix /= ( xe - xs ) * ( ye - ys ) * ( ze - zs );
+			pix /= sum;
 			pix = pix > min ? pix : min;
 			pix = pix < max ? pix : max;
 			return( pix );
@@ -593,7 +596,7 @@ namespace __mean__
 			double r = 0.0;
 			double g = 0.0;
 			double b = 0.0;
-			double yy;
+			double yy, sum = 0.0;
 
 			if( i2 - i1 < 3 )
 			{
@@ -634,6 +637,8 @@ namespace __mean__
 						g += ( c3.g + c4.g + c5.g + c6.g ) * aa[ 1 ];
 						b += ( c3.b + c4.b + c5.b + c6.b ) * aa[ 1 ];
 					}
+
+					sum += ( aa[ 0 ] + aa[ 1 ] ) * 4.0;
 				}
 			}
 			else
@@ -703,19 +708,20 @@ namespace __mean__
 						g += ( c1.g + c2.g + c3.g + c4.g ) * aa[ 2 ];
 						b += ( c1.b + c2.b + c3.b + c4.b ) * aa[ 2 ];
 					}
+
+					sum += ( aa[ 0 ] + aa[ 2 ] ) * 4.0 + aa[ 1 ] * ( ( i2 - i1 - 3 ) * 2.0 + 4 );
 				}
 			}
 
-			double numPixels = ( xe - xs ) * ( ye - ys ) * ( ze - zs );
 			double min = type_limits< value_type >::minimum( );
 			double max = type_limits< value_type >::maximum( );
-			r /= numPixels;
+			r /= sum;
 			r = r > min ? r : min;
 			r = r < max ? r : max;
-			g /= numPixels;
+			g /= sum;
 			g = g > min ? g : min;
 			g = g < max ? g : max;
-			b /= numPixels;
+			b /= sum;
 			b = b > min ? b : min;
 			b = b < max ? b : max;
 			return( ovalue_type( r, g, b ) );
@@ -905,8 +911,8 @@ namespace __mean__
 		size_type ow = out.width( );
 		size_type oh = out.height( );
 
-		double sx = static_cast< double >( iw - 1 ) / static_cast< double >( ow );
-		double sy = static_cast< double >( ih - 1 ) / static_cast< double >( oh );
+		double sx = static_cast< double >( iw ) / static_cast< double >( ow );
+		double sy = static_cast< double >( ih ) / static_cast< double >( oh );
 
 		for( j = thread_idy ; j < oh ; j += thread_numy )
 		{
