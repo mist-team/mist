@@ -74,21 +74,25 @@ namespace __png_controller__
 
 		static bool read( array2< T, Allocator > &image, const std::string &filename )
 		{
-			FILE			*fp;
-			png_structp		png_ptr;
-			png_infop		info_ptr;
-			png_uint_32		width, height;
-			int				bit_depth, color_type, interlace_type;
-
-			fp = fopen( filename.c_str( ), "rb" );	// 読み込むPNG画像ファイルを開く
-			if( !fp ) return( false );
+			FILE *fp = fopen( filename.c_str( ), "rb" );	// 読み込むPNG画像ファイルを開く
+			if( !fp )
+			{
+				return( false );
+			}
 
 			// PNGの画像を読み込む際に，必要となる各種構造体を初期化する
-			png_ptr = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
-			info_ptr = png_create_info_struct( png_ptr );	// png_infop 構造体を初期化する
+			png_structp png_ptr = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
+			png_infop info_ptr  = png_create_info_struct( png_ptr );	// png_infop 構造体を初期化する
 			png_init_io( png_ptr, fp );						// png_structp にファイルポインタを設定する
 			png_read_info( png_ptr, info_ptr );				// PNGファイルのヘッダを読み込む
+
+
+			png_uint_32		width, height;
+			png_colorp		palette = NULL;
+			int				bit_depth, color_type, interlace_type, npalette = 0;
+
 			png_get_IHDR( png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);	// IHDRチャンク情報を取得する
+			png_get_PLTE( png_ptr, info_ptr, &palette, &npalette );	// パレット情報を取得する
 
 			if( bit_depth < 8 )
 			{
@@ -169,7 +173,7 @@ namespace __png_controller__
 					case PNG_COLOR_TYPE_PALETTE:
 						for( size_type i = 0 ; i < ( size_type )width ; i++ )
 						{
-							png_color &p = info_ptr->palette[ png_buff[ i ] ];
+							png_color &p = palette[ png_buff[ i ] ];
 							op[ i ] = pixel_converter::convert_to( p.red, p.green, p.blue );
 						}
 						break;
@@ -245,7 +249,7 @@ namespace __png_controller__
 					{
 						for( size_type i = 0 ; i < ( size_type )width ; i++ )
 						{
-							png_color &p = info_ptr->palette[ png_buff[ j ][ i ] ];
+							png_color &p = palette[ png_buff[ j ][ i ] ];
 							image( i, j ) = pixel_converter::convert_to( p.red, p.green, p.blue );
 						}
 					}
@@ -294,7 +298,10 @@ namespace __png_controller__
 			size_type	width  = image.width( );
 			size_type	height = image.height( );
 
-			if( ( fp = fopen( filename.c_str( ), "wb" ) ) == NULL ) return(false);
+			if( ( fp = fopen( filename.c_str( ), "wb" ) ) == NULL )
+			{
+				return( false );
+			}
 
 			png_ptr = png_create_write_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
 			if( png_ptr == NULL )
@@ -310,7 +317,7 @@ namespace __png_controller__
 				fclose( fp );
 				return( false );
 			}
-			if( setjmp( png_ptr->jmpbuf ) )
+			if( setjmp( png_jmpbuf( png_ptr ) ) )
 			{
 				png_destroy_write_struct( &png_ptr, &info_ptr );
 				fclose( fp );
@@ -324,7 +331,7 @@ namespace __png_controller__
 			png_set_filter( png_ptr, 0, PNG_ALL_FILTERS );
 			if( compression_level < 0 )
 			{
-				png_set_compression_level( png_ptr, Z_BEST_COMPRESSION );
+				png_set_compression_level( png_ptr, 6 );
 			}
 			else
 			{
@@ -366,7 +373,7 @@ namespace __png_controller__
 				text_ptr[ 2 ].text = text[ 5 ];
 				text_ptr[ 2 ].compression = PNG_TEXT_COMPRESSION_NONE;
 				text_ptr[ 3 ].key  = text[ 6 ];
-				text_ptr[ 3 ].text = png_convert_to_rfc1123( png_ptr, &mod_time );
+				text_ptr[ 3 ].text = ( png_charp )png_convert_to_rfc1123( png_ptr, &mod_time );
 				text_ptr[ 3 ].compression = PNG_TEXT_COMPRESSION_NONE;
 				text_ptr[ 4 ].key  = text[ 7 ];
 				text_ptr[ 4 ].text = text[ 8 ];
