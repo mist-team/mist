@@ -236,10 +236,10 @@ namespace __mean__
 									typename array< T, Allocator >::size_type k2,
 									double xs,
 									double xe,
-									double /* ys */,
-									double /* ye */,
-									double /* zs */,
-									double /* ze */ )
+									double ys,
+									double ye,
+									double zs,
+									double ze )
 		{
 			typedef typename array< T, Allocator >::value_type value_type;
 			typedef typename array< T, Allocator >::size_type  size_type;
@@ -493,10 +493,10 @@ namespace __mean__
 												typename array< T, Allocator >::size_type /* k2 */,
 												double xs,
 												double xe,
-												double /* ys */,
-												double /* ye */,
-												double /* zs */,
-												double /* ze */ )
+												double ys,
+												double ye,
+												double zs,
+												double ze )
 		{
 			typedef typename array< T, Allocator >::value_type color;
 			typedef typename array< T, Allocator >::size_type size_type;
