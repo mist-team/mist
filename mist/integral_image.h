@@ -263,7 +263,10 @@ public:
 	//!
 	value_type operator ( )( const size_type begin_i, const size_type begin_j, const size_type width, const size_type height ) const
 	{
-		return( integral_( begin_i + width, begin_j + height ) + integral_( begin_i, begin_j ) - integral_( begin_i + width, begin_j ) - integral_( begin_i, begin_j + height ) );
+		typename integral_image_type::const_pointer p1 = &integral_( begin_i, begin_j );
+		typename integral_image_type::const_pointer p2 = p1 + integral_.width( ) * height;
+		return( p2[ width] + p1[ 0 ] - p1[ width ] - p2[ 0 ] );
+		//return( integral_( begin_i + width, begin_j + height ) + integral_( begin_i, begin_j ) - integral_( begin_i + width, begin_j ) - integral_( begin_i, begin_j + height ) );
 	}
 
 	/// @brief 任意の位置の積分値を返す
@@ -273,7 +276,19 @@ public:
 	//!
 	//! @return 画素値の総和
 	//!
-	value_type operator ( )( const difference_type i, const difference_type j ) const
+	const value_type & operator ( )( const difference_type i, const difference_type j ) const
+	{
+		return( integral_( i + 1, j + 1 ) );
+	}
+
+	/// @brief 任意の位置の積分値を返す
+	//! 
+	//! @param[in] i … i方向の始点
+	//! @param[in] j … j方向の始点
+	//!
+	//! @return 画素値の総和
+	//!
+	value_type & operator ( )( const difference_type i, const difference_type j )
 	{
 		return( integral_( i + 1, j + 1 ) );
 	}

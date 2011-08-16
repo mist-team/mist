@@ -115,21 +115,17 @@ namespace __corner_utility__
 //! @attention OpenMPが有効な場合は自動的に並列計算が実行される
 //! 
 //! @param[in]  in           … 入力画像
-//! @param[out] out          … 出力画像
+//! @param[out] out          … 検出されたコーナーの座標リスト
 //! @param[in]  max_corners  … 検出するコーナーの数
 //! @param[in]  min_distance … コーナー間の距離の最小値
 //! @param[in]  kappa        … コーナーを検出する際の条件に使用する係数0.04～0.15（デフォルトは0.04）
 //! @param[in]  window_size  … コーナー検出を行う行列を求める際の窓サイズ（デフォルトは3）
-//! @param[in]  fgval        … エッジ画素（前景）に代入する値（デフォルトは255）
-//! @param[in]  bgval        … 背景画素に代入する値（デフォルトは0）
 //! 
 //! @return 検出したコーナー数
 //! 
 template < class T, class Allocator, template < typename, typename > class LIST, class TT, class AAllocator >
 typename array2< T, Allocator >::difference_type harris( const array2< T, Allocator > &in, LIST< vector2< TT >, AAllocator >&out, typename array2< T, Allocator >::size_type max_corners,
-														 double min_distance, double kappa = 0.04, typename array2< T, Allocator >::size_type window_size = 3,
-														 const typename array2< T, Allocator >::value_type &fgval = typename array2< T, Allocator >::value_type( 255 ),
-														 const typename array2< T, Allocator >::value_type &bgval = typename array2< T, Allocator >::value_type( 0 ) )
+														 double min_distance, double kappa = 0.04, typename array2< T, Allocator >::size_type window_size = 3 )
 {
 	typedef typename array2< T, Allocator >::size_type       size_type;
 	typedef typename array2< T, Allocator >::difference_type difference_type;
