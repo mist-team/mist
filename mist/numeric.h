@@ -79,6 +79,7 @@ struct matrix_style
 		he,		///< エルミート行列
 		hb,		///< エルミート帯行列
 		ht,		///< エルミート3重対角行列
+		pb,		///< 対称正定値帯行列の上三角行列を行方向に圧縮した行列
 	};
 };
 
@@ -167,7 +168,11 @@ namespace __clapack__
 		// エルミート行列の連立方程式を解く関数
 		int LPFNAME( chesv ) ( char *uplo, integer *n, integer *nrhs, complex *a, integer *lda, integer *ipiv, complex *b, integer *ldb, complex *work, integer *lwork, integer *info );
 		int LPFNAME( zhesv ) ( char *uplo, integer *n, integer *nrhs, doublecomplex *a, integer *lda, integer *ipiv, doublecomplex *b, integer *ldb, doublecomplex *work, integer *lwork, integer *info );
-
+		// 対称帯行列の連立方程式を解く関数
+		int LPFNAME( spbsv ) ( char *uplo, integer *n, integer *kd, integer *nrhs, real *ab, integer *ldab, real *b, integer *ldb, integer *info );
+		int LPFNAME( dpbsv ) ( char *uplo, integer *n, integer *kd, integer *nrhs, doublereal *ab, integer *ldab, doublereal *b, integer *ldb, integer *info );
+		int LPFNAME( cpbsv ) ( char *uplo, integer *n, integer *kd, integer *nrhs, complex *ab, integer *ldab, complex *b, integer *ldb, integer *info );
+		int LPFNAME( zpbsv ) ( char *uplo, integer *n, integer *kd, integer *nrhs, doublecomplex *ab, integer *ldab, doublecomplex *b, integer *ldb, integer *info );
 
 		// 一般行列のLU分解
 		int LPFNAME( sgetrf ) ( integer *m, integer *n, real *a, integer *lda, integer *ipiv, integer *info );
@@ -432,7 +437,23 @@ namespace __clapack__
 	{
 		return( LPFNAME( zsysv ) ( uplo, &n, &nrhs, reinterpret_cast< doublecomplex* >( a ), &lda, ipiv, reinterpret_cast< doublecomplex* >( b ), &ldb, reinterpret_cast< doublecomplex* >( work ), &lwork, &info ) );
 	}
-
+	// 対称帯行列の連立方程式を解く関数
+	inline int pbsv( char *uplo, integer &n, integer &kd, integer &nrhs, real *ab, integer &ldab, real *b, integer &ldb, integer &info )
+	{
+		return( LPFNAME( spbsv ) ( uplo, &n, &kd, &nrhs, ab, &ldab, b, &ldb, &info ) );
+	}
+	inline int pbsv( char *uplo, integer &n, integer &kd, integer &nrhs, doublereal *ab, integer &ldab, doublereal *b, integer &ldb, integer &info )
+	{
+		return( LPFNAME( dpbsv ) ( uplo, &n, &kd, &nrhs, ab, &ldab, b, &ldb, &info ) );
+	}
+	inline int pbsv( char *uplo, integer &n, integer &kd, integer &nrhs, std::complex< real > *ab, integer &ldab, std::complex< real > *b, integer &ldb, integer &info )
+	{
+		return( LPFNAME( cpbsv ) ( uplo, &n, &kd, &nrhs, reinterpret_cast< complex* >( ab ), &ldab, reinterpret_cast< complex* >( b ), &ldb, &info ) );
+	}
+	inline int pbsv( char *uplo, integer &n, integer &kd, integer &nrhs, std::complex< doublereal > *ab, integer &ldab, std::complex< doublereal > *b, integer &ldb, integer &info )
+	{
+		return( LPFNAME( zpbsv ) ( uplo, &n, &kd, &nrhs, reinterpret_cast< doublecomplex* >( ab ), &ldab, reinterpret_cast< doublecomplex* >( b ), &ldb, &info ) );
+	}
 
 	// 一般行列のLU分解
 	inline int getrf( integer &m, integer &n, real *a, integer &lda, integer *ipiv, integer &info )
@@ -974,18 +995,18 @@ namespace __solve__
 			typedef __clapack__::integer integer;
 			typedef typename matrix< T, Allocator >::value_type value_type;
 
-			if( a.rows( ) != b.rows( ) || a.empty( ) || b.empty( ) )
-			{
-				// 行列のサイズが正しくないので例外をスローする
-				throw( numerical_exception( 1, "Incorrect matrix size is specified." ) );
-			}
-
 			integer info = 0;
 
 			switch( style )
 			{
 			case matrix_style::sy:
 				{
+					if( a.rows( ) != b.rows( ) || a.empty( ) || b.empty( ) )
+					{
+						// 行列のサイズが正しくないので例外をスローする
+						throw( numerical_exception( 1, "Incorrect matrix size is specified." ) );
+					}
+
 					// LAPACK関数の引数
 					integer n     = static_cast< integer >( a.cols( ) );
 					integer nrhs  = static_cast< integer >( b.cols( ) );
@@ -1021,9 +1042,48 @@ namespace __solve__
 				}
 				break;
 
+			case matrix_style::pb:
+				{
+					if( a.cols( ) != b.rows( ) || a.empty( ) || b.empty( ) )
+					{
+						// 行列のサイズが正しくないので例外をスローする
+						throw( numerical_exception( 1, "Incorrect matrix size is specified." ) );
+					}
+
+					// LAPACK関数の引数
+					integer n     = static_cast< integer >( a.cols( ) );
+					integer kd    = static_cast< integer >( a.rows( ) ) - 1;
+					integer nrhs  = static_cast< integer >( b.cols( ) );
+					integer ldab  = static_cast< integer >( a.rows( ) );
+					integer ldb   = static_cast< integer >( b.rows( ) );
+					char uplo[]   = "U";
+
+					__clapack__::pbsv( uplo, n, kd, nrhs, &( a[0] ), ldab, &( b[0] ), ldb, info );
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						std::string val = __clapack__::to_string( info );
+						std::string msg = "The leading minor of order " + val + " of A is not positive definite, so the factorization could not be completed, and the solution has not been computed.";
+						throw( numerical_exception( info, msg ) );
+					}
+				}
+				break;
+
 			case matrix_style::ge:
 			default:
 				{
+					if( a.rows( ) != b.rows( ) || a.empty( ) || b.empty( ) )
+					{
+						// 行列のサイズが正しくないので例外をスローする
+						throw( numerical_exception( 1, "Incorrect matrix size is specified." ) );
+					}
+
 					// LAPACK関数の引数
 					integer n     = static_cast< integer >( a.cols( ) );
 					integer nrhs  = static_cast< integer >( b.cols( ) );
@@ -1075,18 +1135,18 @@ namespace __solve__
 			typedef __clapack__::integer integer;
 			typedef typename T::value_type value_type;
 
-			if( a.rows( ) != b.rows( ) || a.empty( ) || b.empty( ) )
-			{
-				// 行列のサイズが正しくないので例外をスローする
-				throw( numerical_exception( 1, "Incorrect matrix size is specified." ) );
-			}
-
 			integer info = 0;
 
 			switch( style )
 			{
 			case matrix_style::sy:
 				{
+					if( a.rows( ) != b.rows( ) || a.empty( ) || b.empty( ) )
+					{
+						// 行列のサイズが正しくないので例外をスローする
+						throw( numerical_exception( 1, "Incorrect matrix size is specified." ) );
+					}
+
 					// LAPACK関数の引数
 					integer n     = static_cast< integer >( a.cols( ) );
 					integer nrhs  = static_cast< integer >( b.cols( ) );
@@ -1122,9 +1182,48 @@ namespace __solve__
 				}
 				break;
 
+			case matrix_style::pb:
+				{
+					if( a.cols( ) != b.rows( ) || a.empty( ) || b.empty( ) )
+					{
+						// 行列のサイズが正しくないので例外をスローする
+						throw( numerical_exception( 1, "Incorrect matrix size is specified." ) );
+					}
+
+					// LAPACK関数の引数
+					integer n     = static_cast< integer >( a.cols( ) );
+					integer kd    = static_cast< integer >( a.rows( ) ) - 1;
+					integer nrhs  = static_cast< integer >( b.cols( ) );
+					integer ldab  = static_cast< integer >( a.rows( ) );
+					integer ldb   = static_cast< integer >( b.rows( ) );
+					char uplo[]   = "U";
+
+					__clapack__::pbsv( uplo, n, kd, nrhs, &( a[0] ), ldab, &( b[0] ), ldb, info );
+
+					if( info < 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						throw( numerical_exception( info, __clapack__::to_string( info ) + "-th argument had an illegal value" ) );
+					}
+					else if( info > 0 )
+					{
+						// 行列計算が正しく終了しなかったので例外をスローする
+						std::string val = __clapack__::to_string( info );
+						std::string msg = "The leading minor of order " + val + " of A is not positive definite, so the factorization could not be completed, and the solution has not been computed.";
+						throw( numerical_exception( info, msg ) );
+					}
+				}
+				break;
+				
 			case matrix_style::ge:
 			default:
 				{
+					if( a.rows( ) != b.rows( ) || a.empty( ) || b.empty( ) )
+					{
+						// 行列のサイズが正しくないので例外をスローする
+						throw( numerical_exception( 1, "Incorrect matrix size is specified." ) );
+					}
+
 					// LAPACK関数の引数
 					integer n     = static_cast< integer >( a.cols( ) );
 					integer nrhs  = static_cast< integer >( b.cols( ) );
@@ -3213,6 +3312,31 @@ inline const matrix< T, Allocator >& solve( const matrix< T, Allocator > &a, mat
 	}
 }
 
+////<<< yosidah
+///// @brief 対称帯行列の連立一次方程式を変形コレスキー法で解く関数
+////!
+////! \f[ {\bf A}\mbox{\boldmath x} = \mbox{\boldmath b} \f]
+////!
+////! @param[in]  a     … 対称帯行列の上三角行列を行方向に圧縮した行列 \f${\bf A}\f$
+////! @param[in,out] b     … ベクトル \f$\mbox{\boldmath b}\f$
+////! @param[in]  style … 入力行列の形式（デフォルトは一般行列を指定）
+////!
+////! @return ベクトル \f$\mbox{\boldmath x}\f$
+////!
+//template < class T, class Allocator >
+//inline const matrix< T, Allocator >& solve_band_matrix( const matrix< T, Allocator > &a, matrix< T, Allocator > &b )
+//{
+//	try
+//	{
+//		matrix< T, Allocator > a_( a );
+//		return( __solve__::__solve_band_matrix__< __numeric__::is_complex< T >::value >::solve_band_matrix( a_, b ) );
+//	}
+//	catch( const numerical_exception &e )
+//	{
+//		throw( e );
+//	}
+//}
+//>>> yosidah
 
 
 /// @brief 行列のLU分解を行う
