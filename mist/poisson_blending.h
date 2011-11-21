@@ -277,7 +277,7 @@ inline bool seamlessCloning(
 	const int offx = 0, const int offy = 0, const bool mix = false )
 {	
 	__poissonblender__::mono_image_type		_mask = mask;
-	__poissonblender__::color_image_type	_dst;
+	//__poissonblender__::color_image_type	_dst;
 
 	if ( src.empty() || target.empty() || _mask.empty() ) return false;
 
@@ -318,7 +318,7 @@ inline bool seamlessCloning(
 	_maskUP		= _mask;
 
 	// allocate destination image
-	_dst	= target;
+	__poissonblender__::color_image_type dst = target;
 	_dstUP	= _targetUP;
 
 	__poissonblender__::rectangle_type			_mask_roi1;
@@ -327,24 +327,23 @@ inline bool seamlessCloning(
 	__poissonblender__::color_image_type		_target1;
 
 	_mask_roi1 = __poissonblender__::rectangle_type( tl - __poissonblender__::point_type( 1, 1 ), br + __poissonblender__::point_type( 1, 1 ) );
-	__poissonblender__::_recTrim( _mask1, _mask, _mask_roi1 );
+	__poissonblender__::_recTrim( _mask1,	_mask,		_mask_roi1 );
 	__poissonblender__::_recTrim( _target1, _targetUP,	__poissonblender__::rectangle_type( _mask_roi1.x + offset - __poissonblender__::point_type( 1, 1 ), _mask_roi1.y + offset - __poissonblender__::point_type( 1, 1 ) ) );
-	__poissonblender__::_recTrim( _dst1, _dstUP,		__poissonblender__::rectangle_type(	_mask_roi1.x + offset - __poissonblender__::point_type( 1, 1 ),	_mask_roi1.y + offset - __poissonblender__::point_type( 1, 1 ) ) );
+	__poissonblender__::_recTrim( _dst1,	_dstUP,		__poissonblender__::rectangle_type(	_mask_roi1.x + offset - __poissonblender__::point_type( 1, 1 ),	_mask_roi1.y + offset - __poissonblender__::point_type( 1, 1 ) ) );
 
-	__poissonblender__::color_image_type src, target, dst;
-	__poissonblender__::mono_image_type mask;
-	__poissonblender__::_recTrim( src,	_srcUP,		mask_roi2 );
-	__poissonblender__::_recTrim( target, _targetUP,	__poissonblender__::rectangle_type(	mask_roi2.x + offset - __poissonblender__::point_type(2,2),	mask_roi2.y + offset - __poissonblender__::point_type(2,2) ) );
+	__poissonblender__::color_image_type _src, _target, _dst;
+	__poissonblender__::_recTrim( _src,		_srcUP,		mask_roi2 );
+	__poissonblender__::_recTrim( _target,	_targetUP,	__poissonblender__::rectangle_type(	mask_roi2.x + offset - __poissonblender__::point_type(2,2),	mask_roi2.y + offset - __poissonblender__::point_type(2,2) ) );
 	__poissonblender__::_recTrim( _mask,	_maskUP,	mask_roi2 );
-	__poissonblender__::_recTrim( dst, _dstUP,			__poissonblender__::rectangle_type( mask_roi2.x + offset - __poissonblender__::point_type(2,2),	mask_roi2.y + offset - __poissonblender__::point_type(2,2) ) );
-	if ( src.height() != dst.height() || src.width() != dst.width() ) return false;
+	__poissonblender__::_recTrim( _dst,		_dstUP,		__poissonblender__::rectangle_type( mask_roi2.x + offset - __poissonblender__::point_type(2,2),	mask_roi2.y + offset - __poissonblender__::point_type(2,2) ) );
+	if ( _src.height() != _dst.height() || _src.width() != _dst.width() ) return false;
 
 	// calc differential image
 	__poissonblender__::differencial_image_type src64, target64;
 	__poissonblender__::differencial_image_type _src64_00, _target64_00;
 	int pw = mask_roi2.y.x - mask_roi2.x.x - 1, ph = mask_roi2.y.y - mask_roi2.x.y -1;
-	src64		= src;
-	target64	= target;
+	src64		= _src;
+	target64	= _target;
 	__poissonblender__::rectangle_type roi00( __poissonblender__::point_type( 0, 0 ), __poissonblender__::point_type( pw, ph ) );
 	__poissonblender__::rectangle_type roi10( __poissonblender__::point_type( 1, 0 ), __poissonblender__::point_type( pw, ph ) );
 	__poissonblender__::rectangle_type roi01( __poissonblender__::point_type( 0, 1 ), __poissonblender__::point_type( pw, ph ) );
@@ -436,12 +435,12 @@ inline bool seamlessCloning(
 	// reconstruct whole image
 	for ( unsigned int j = 0; j < _dst1.height(); j++ ) {
 		for ( unsigned int i = 0; i < _dst1.width(); i++ ) {
-			_dst( i + _mask_roi1.x.x + offset.x - 3, j + _mask_roi1.x.y + offset.y - 3 ) = _dst1( i, j );
+			dst( i + _mask_roi1.x.x + offset.x - 3, j + _mask_roi1.x.y + offset.y - 3 ) = _dst1( i, j );
 		}
 	}
 
 	// convert to "out" color type
-	convert( _dst, out );
+	convert( dst, out );
 
 	return true;
 }
@@ -450,7 +449,7 @@ inline bool seamlessCloning(
 //! 
 //! 入力画像のマスク領域を保存し，入力画像をグレースケール化した対象画像にseamlessCloningする
 //! 
-//! @param[in] src … 入力画像
+//! @param[in] in … 入力画像
 //! @param[out] out … 出力画像
 //! @param[in] mask … マスク画像
 //! 
@@ -458,21 +457,21 @@ inline bool seamlessCloning(
 //! @retval false … 不正な合成を行おうとした場合
 //! 
 template< class Array1, class Array2 >
-inline bool localColorChange( const Array1 &src, Array2 &out, const array2< unsigned char > &mask )
+inline bool localColorChange( const Array1 &in, Array2 &out, const array2< unsigned char > &mask )
 {
-	if ( src.empty() || mask.empty() ) return false;
+	if ( in.empty() || mask.empty() ) return false;
 	
 	__poissonblender__::mono_image_type _target;
-	convert( src, _target );
+	convert( in, _target );
 
-	return seamlessCloning( src, _target, out, mask );
+	return seamlessCloning( in, _target, out, mask );
 }
 
 /// @brief 入力画像のマスク領域だけ色成分を変更する
 //! 
 //! 入力画像のマスク領域内のオブジェクトのみ色成分を変更する
 //! 
-//! @param[in] src … 入力画像
+//! @param[in] in … 入力画像
 //! @param[out] out … 出力画像
 //! @param[in] mask … マスク画像
 //! @param[in] multiplier … 各色成分の変更比率
@@ -481,22 +480,22 @@ inline bool localColorChange( const Array1 &src, Array2 &out, const array2< unsi
 //! @retval false … 不正な合成を行おうとした場合
 //! 
 template< class Array1, class Array2 >
-inline bool localColorChange( const Array1 &src, Array2 &out, const array2< unsigned char > &mask,
-	rgb< double > &multiplier )
+inline bool localColorChange( const Array1 &in, Array2 &out, const array2< unsigned char > &mask,
+	const rgb< double > multiplier )
 {
-	if ( src.empty() || mask.empty() ) return false;
+	if ( in.empty() || mask.empty() ) return false;
 
-	__poissonblender__::color_image_type _src = src;
+	__poissonblender__::color_image_type _src = in;
 	for ( unsigned int j = 0; j < _src.height(); j++ ) {
 		for ( unsigned int i = 0; i < _src.width(); i++ )
 		{
-			_src( i, j ).r = __poissonblender__::_saturate_cast( src( i, j ).r * multiplier.r );
-			_src( i, j ).g = __poissonblender__::_saturate_cast( src( i, j ).g * multiplier.g );
-			_src( i, j ).b = __poissonblender__::_saturate_cast( src( i, j ).b * multiplier.b );
+			_src( i, j ).r = __poissonblender__::_saturate_cast( in( i, j ).r * multiplier.r );
+			_src( i, j ).g = __poissonblender__::_saturate_cast( in( i, j ).g * multiplier.g );
+			_src( i, j ).b = __poissonblender__::_saturate_cast( in( i, j ).b * multiplier.b );
 		}
 	}
 
-	return seamlessCloning( _src, src, out, mask );
+	return seamlessCloning( _src, in, out, mask );
 }
 
 /// @}
