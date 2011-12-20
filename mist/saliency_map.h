@@ -305,37 +305,17 @@ namespace __itti__
 
 		// 極大値の探索アルゴリズムに改善の余地あり
 
-		//// ±step_local_maximaの範囲の最大値を極大値とする（コスト大，step_local_maximaの選び方に依存）
-		//for( size_t x = 0; x < out.width( ) - step_local_maxima; x += step_local_maxima )
-		//{
-		//	for( size_t y = 0; y < out.height( ) - step_local_maxima; y += step_local_maxima )
-		//	{
-		//		map_type out_sub;
-		//		out.trim( out_sub, x, y, step_local_maxima, step_local_maxima );
-		//		const value_type local_max = *std::max_element( out_sub.begin( ), out_sub.end( ) );
-		//		if( global_max != local_max )
-		//		{
-		//			local_maxima_sum += local_max;
-		//			++local_maxima_count;
-		//		}
-		//	}
-		//}
-
-		// 4近傍に自分より大きな画素値を持つ画素がなければ極大値とする
-		const int w = in.width( );
-		const int h = in.height( );
-		for( int x = 0; x < w; ++x )
+		// ±step_local_maximaの範囲の最大値を極大値とする（step_local_maximaの選び方に依存）
+		for( size_t x = 0; x < out.width( ) - step_local_maxima; x += step_local_maxima )
 		{
-			for( int y = 0; y < h; ++y )
+			for( size_t y = 0; y < out.height( ) - step_local_maxima; y += step_local_maxima )
 			{
-				const value_type val = in( x, y );
-				if( val != global_max
-						&& !( ( 0 <= x - 1 && in( x - 1, y ) > val )
-							|| ( 0 <= y - 1 && in( x, y - 1 ) > val )
-							|| ( x + 1 < w && in( x + 1, y ) > val )
-							|| ( y + 1 < h && in( x, y + 1 ) > val ) ) )
+				map_type out_sub;
+				out.trim( out_sub, x, y, step_local_maxima, step_local_maxima );
+				const value_type local_max = *std::max_element( out_sub.begin( ), out_sub.end( ) );
+				if( global_max != local_max )
 				{
-					local_maxima_sum += val;
+					local_maxima_sum += local_max;
 					++local_maxima_count;
 				}
 			}
