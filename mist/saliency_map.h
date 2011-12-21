@@ -46,8 +46,11 @@
 #include <mist/interpolate.h>
 #endif
 
+#ifndef __INCLUDE_FILTER_LINEAR_FILTER_H__
+#include <mist/filter/linear.h>
+#endif
 
-#include <string>
+
 #include <algorithm>
 #include <numeric>
 
@@ -60,10 +63,11 @@ namespace __itti__
 {
 	/// IttiらのSaliency map関連のアルゴリズム
 	//! - 参考文献
-	//!   - Laurent Itti, Christof Koch, and Ernst Niebur,
-	//!     "A model of saliency-based visual attention for rapid scene analysis,"
-	//!     IEEE Transactions on Pattern Analysis and Machine Intelligence, vol.20, no.11, Nov. 1998
-	//! 
+	//!   Laurent Itti, Christof Koch, and Ernst Niebur,
+	//!   "A model of saliency-based visual attention for rapid scene analysis,"
+	//!   IEEE Transactions on Pattern Analysis and Machine Intelligence, vol.20, no.11, Nov. 1998
+	//!
+	//! @attention MISTのarray2コンテナ同士の四則演算を有効にしてください
 
 	// IttiのSaliency mapにおける定数（触るな危険）
 	const size_t PYRAMID_SCALES = 9;					///< @brief ガウシアンピラミッドにおけるスケール数（SCALE_Cの0番目の要素より大きい値にしなければならない）
@@ -76,9 +80,6 @@ namespace __itti__
 	typedef mist::array< map_type >		pyramid_type;	///< @brief Gaussianピラミッドの型
 	typedef mist::array< map_type >		maps_type;		///< @brief Feature mapを管理するコンテナの型
 	typedef mist::array2< value_type >	kernel_type;	///< @brief Gabor filterで利用するカーネルの型
-
-	///< $brief Gaussian filterで利用するカーネル
-	const value_type GAUSSIAN_KERNELS[ ] = { 0.05, 0.25, 0.4, 0.25, 0.05 };
 
 	///< @brief Gabor filterで利用するカーネル
 	const value_type GABOR_KERNELS[ ][ 17 ][ 17 ] = {	{	{ -0.000213458164049294360000,	-0.000216644186888885490000,	-0.000267420737091965140000,	-0.000216644186888885440000,	0.000150241317361511160000,		-0.000216644186888885630000,	-0.00141849613025914330000,		-0.000216644186888885380000,	0.00156829918464734320000,		-0.000216644186888885380000,	-0.00141849613025914330000,		-0.000216644186888885630000,	0.000150241317361511160000,		-0.000216644186888885440000,	-0.000267420737091965140000,	-0.000216644186888885490000,	-0.000213458164049294360000 },
@@ -150,47 +151,8 @@ namespace __itti__
 															{ -0.000223776723112710220000,	-0.000276752245330172530000,	-0.000282242920061493990000,	0.000264630954308319620000,		0.00130408425975803460000,		0.000144252542662051190000,		-0.00467000861014637070000,		-0.0063310901084227310000,		0.000404658013336228730000,		0.00639879059704402850000,		0.0037327655087010360000,		-0.00107580924696983530000,		-0.00180326268368728310000,		-0.000617847560383966480000,	-0.000116281707141741030000,	-0.000153761896758942750000,	-0.000209407396921955370000 },
 															{ -0.000214134630995544250000,	-0.000223776723112710220000,	-0.000265786932032037870000,	-0.000260486197811391870000,	4.97134655875084920000e-005,	0.000473356818591131050000,		-8.17539241526276080000e-005,	-0.00157541215951787130000,		-0.00174750913491093520000,		-8.81425456724336540000e-005,	0.000899967028943326470000,		0.000330813391145331190000,		-0.000313327068380500610000,	-0.000363588772779722510000,	-0.000246397192665000250000,	-0.00020940739692195540000,		-0.000212455820116683020000 } } };
 
-	// ガウシアンピラミッドの1段下を計算
-	inline bool pyramid_down( const map_type& in, map_type& out )
-	{
-		if( in.size( ) <= 1 )
-		{
-			return false;
-		}
-
-		const int kernel_size = sizeof( GAUSSIAN_KERNELS ) / sizeof( GAUSSIAN_KERNELS[ 0 ] );	// カーネルサイズ
-		const int w = static_cast< int >( in.width( ) );
-		const int h = static_cast< int >( in.height( ) );
-		out.resize( w / 2 + ( w % 2 ), h / 2 + ( h % 2 ) );
-		out.fill( 0 );
-
-		for( int x = 0; 2 * x < w; ++x )
-		{
-			for( int y = 0; 2 * y < h; ++y )
-			{
-				double sum_w = 0;
-				for( int i = 0; i < kernel_size; ++i )
-				{
-					for( int j = 0; j < kernel_size; ++j )
-					{
-						const int x_ = 2 * x + i - kernel_size / 2;
-						const int y_ = 2 * y + j - kernel_size / 2;
-						if( 0 <= x_ && x_ < w && 0 <= y_ && y_ < h )
-						{
-							out( x, y ) += static_cast< value_type >( GAUSSIAN_KERNELS[ i ] * GAUSSIAN_KERNELS[ j ] * in( x_, y_ ) );
-							sum_w += GAUSSIAN_KERNELS[ i ] * GAUSSIAN_KERNELS[ j ];
-						}
-					}
-				}
-				out( x, y ) /= sum_w;
-			}
-		}
-
-		return true;
-	}
-
 	// ガウシアンピラミッドを作成
-	inline bool build_gaussian_pyramid( const map_type& in, pyramid_type& out_pyr )
+	inline bool build_gaussian_pyramid( const map_type& in, const double gauss_sigma, pyramid_type& out_pyr )
 	{
 		out_pyr.resize( PYRAMID_SCALES );
 
@@ -200,9 +162,13 @@ namespace __itti__
 		}
 
 		out_pyr[ 0 ] = in;
-		for( size_t i = 1; i < out_pyr.size( ); ++i )
+		for( pyramid_type::size_type l = 1; l < out_pyr.size( ); ++l )
 		{
-			if( !pyramid_down( out_pyr[ i - 1 ], out_pyr[ i ] ) )
+			map_type temp;
+			const pyramid_type::value_type::size_type w = out_pyr[ l - 1 ].width( ) / 2 + ( out_pyr[ l - 1 ].width( ) % 2 );
+			const pyramid_type::value_type::size_type h = out_pyr[ l - 1 ].height( ) / 2 + ( out_pyr[ l - 1 ].height( ) % 2 );
+			if( !mist::gaussian_filter( out_pyr[ l - 1 ], temp, gauss_sigma )
+				|| !mist::nearest::interpolate( temp, out_pyr[ l ], w, h ) )
 			{
 				return false;
 			}
@@ -250,7 +216,7 @@ namespace __itti__
 	}
 
 	// Center-Surround addition
-	inline bool across_scale_addition( const maps_type& in_fms, map_type& out_fm  )
+	inline bool across_scale_addition( const maps_type& in_fms, map_type& out_fm )
 	{
 		if( in_fms.size( ) <= TARGET_SCALE )
 		{
@@ -258,11 +224,11 @@ namespace __itti__
 		}
 
 		// 各Feature mapをTARGET_SCALEに縮小
-		const size_t width = in_fms[ TARGET_SCALE ].width( );
-		const size_t height = in_fms[ TARGET_SCALE ].height( );
+		const maps_type::value_type::size_type width = in_fms[ TARGET_SCALE ].width( );
+		const maps_type::value_type::size_type height = in_fms[ TARGET_SCALE ].height( );
 
 		maps_type target_scale_in_fms( in_fms.size( ) );
-		for( size_t l = 0; l < target_scale_in_fms.size( ); ++l )
+		for( maps_type::size_type l = 0; l < target_scale_in_fms.size( ); ++l )
 		{
 			mist::linear::interpolate( in_fms[ l ], target_scale_in_fms[ l ], width, height );
 		}
@@ -280,13 +246,9 @@ namespace __itti__
 		{
 			return false;
 		}
-		out.resize( in.width( ), in.height( ) );
 
 		const auto minmax_value = std::minmax_element( in.begin( ), in.end( ) );
-		for( size_t i = 0; i < in.size( ); ++i )
-		{
-			out[ i ] = static_cast< value_type >( ( in[ i ] - *minmax_value.first ) / ( *minmax_value.second - *minmax_value.first ) ) * ( max - min ) + min;
-		}
+		out = ( ( in - *minmax_value.first ) / ( *minmax_value.second - *minmax_value.first ) ) * ( max - min ) + min;
 
 		return true;
 	}
@@ -303,12 +265,10 @@ namespace __itti__
 		size_t local_maxima_count = 0;
 		value_type local_maxima_sum = 0;
 
-		// 極大値の探索アルゴリズムに改善の余地あり
-
-		// ±step_local_maximaの範囲の最大値を極大値とする（step_local_maximaの選び方に依存）
-		for( size_t x = 0; x < out.width( ) - step_local_maxima; x += step_local_maxima )
+		// ±step_local_maximaの範囲の最大値を極大値とする
+		for( map_type::size_type x = 0; x < out.width( ) - step_local_maxima; x += step_local_maxima )
 		{
-			for( size_t y = 0; y < out.height( ) - step_local_maxima; y += step_local_maxima )
+			for( map_type::size_type y = 0; y < out.height( ) - step_local_maxima; y += step_local_maxima )
 			{
 				map_type out_sub;
 				out.trim( out_sub, x, y, step_local_maxima, step_local_maxima );
@@ -336,7 +296,7 @@ namespace __itti__
 		}
 
 		out_fms.resize( in_fms.size( ) );
-		for( size_t l = 0; l < in_fms.size( ); ++l )
+		for( maps_type::size_type l = 0; l < in_fms.size( ); ++l )
 		{
 			if( !normalize_map_with_local_maxima( in_fms[ l ], step_local_maxima, out_fms[ l ] ) )
 			{
@@ -348,7 +308,7 @@ namespace __itti__
 	}
 
 	// Conspicuity mapを作成（Intensity）
-	inline bool conspicuity_map_for_intensity( const map_type& i_image, const size_t step_local_maxima, map_type& i_ncm )
+	inline bool conspicuity_map_for_intensity( const map_type& i_image, const size_t step_local_maxima, const double gauss_sigma, map_type& i_ncm )
 	{
 		if( i_image.empty( ) )
 		{
@@ -360,7 +320,7 @@ namespace __itti__
 		{
 			// ガウシアンピラミッド
 			pyramid_type i_pyr;
-			if( !build_gaussian_pyramid( i_image, i_pyr ) )
+			if( !build_gaussian_pyramid( i_image, gauss_sigma, i_pyr ) )
 			{
 				return false;
 			}
@@ -387,7 +347,7 @@ namespace __itti__
 	}
 
 	// Conspicuity mapを作成（Color）
-	inline bool conspicuity_map_for_color( const map_type& r_image, const map_type& g_image, const map_type& b_image, const map_type& y_image, const size_t step_local_maxima, map_type& c_ncm )
+	inline bool conspicuity_map_for_color( const map_type& r_image, const map_type& g_image, const map_type& b_image, const map_type& y_image, const size_t step_local_maxima, const double gauss_sigma, map_type& c_ncm )
 	{
 		if( r_image.empty( ) || g_image.empty( ) || b_image.empty( ) || y_image.empty( ) )
 		{
@@ -399,7 +359,7 @@ namespace __itti__
 		{
 			// ガウシアンピラミッド
 			pyramid_type rg_pyr;
-			if( !build_gaussian_pyramid( r_image - g_image, rg_pyr ) )	// 高速化の余地あり（計算に使用する部分だけ画像を用意すれば良い）
+			if( !build_gaussian_pyramid( r_image - g_image, gauss_sigma, rg_pyr ) )	// 高速化の余地あり（計算に使用する部分だけ画像を用意すれば良い）
 			{
 				return false;
 			}
@@ -416,7 +376,7 @@ namespace __itti__
 		{
 			// ガウシアンピラミッド
 			pyramid_type by_pyr;
-			if( !build_gaussian_pyramid( b_image - y_image, by_pyr ) )
+			if( !build_gaussian_pyramid( b_image - y_image, gauss_sigma, by_pyr ) )
 			{
 				return false;
 			}
@@ -445,7 +405,7 @@ namespace __itti__
 	}
 
 	// Conspicuity mapを作成（Orientation）
-	inline bool conspicuity_map_for_orientation( const map_type& i_image, const size_t step_local_maxima, map_type& o_ncm )
+	inline bool conspicuity_map_for_orientation( const map_type& i_image, const size_t step_local_maxima, const double gauss_sigma, map_type& o_ncm )
 	{
 		if( i_image.empty( ) )
 		{
@@ -455,7 +415,7 @@ namespace __itti__
 		// 各方向について
 		const size_t orientations = sizeof( GABOR_KERNELS ) / sizeof( GABOR_KERNELS[ 0 ] );	// Orientationの種類数
 		maps_type nneo_fms( orientations );
-		for( size_t t = 0; t < nneo_fms.size( ); ++t )
+		for( maps_type::size_type t = 0; t < nneo_fms.size( ); ++t )
 		{
 			const int kernel_width = sizeof( GABOR_KERNELS[ t ] ) / sizeof( GABOR_KERNELS[ t ][ 0 ] );
 			const int kernel_height = sizeof( GABOR_KERNELS[ t ][ 0 ] ) / sizeof( GABOR_KERNELS[ t ][ 0 ][ 0 ] );
@@ -467,14 +427,14 @@ namespace __itti__
 				pyramid_type o_pyr( PYRAMID_SCALES );
 				{
 					pyramid_type i_pyr;
-					if( !build_gaussian_pyramid( i_image, i_pyr ) )
+					if( !build_gaussian_pyramid( i_image, gauss_sigma, i_pyr ) )
 					{
 						return false;
 					}
 
 					kernel_type gabor_kernel( kernel_width, kernel_height );
 					std::copy( &GABOR_KERNELS[ t ][ 0 ][ 0 ], &GABOR_KERNELS[ t ][ 0 ][ 0 ] + kernel_width * kernel_height, gabor_kernel.begin( ) );
-					for( size_t l = SCALE_C[ 0 ]; l < o_pyr.size( ); ++l )
+					for( pyramid_type::size_type l = SCALE_C[ 0 ]; l < o_pyr.size( ); ++l )
 					{
 						const map_type& target_layer = i_pyr[ l ];
 						o_pyr[ l ].resize( target_layer.width( ), target_layer.height( ) );
@@ -524,18 +484,20 @@ namespace __itti__
 	template< class T, class Allocator >
 	inline bool create_original_feature_maps( const mist::array2< mist::rgb< T >, Allocator >& in, map_type& i_fm, map_type& r_fm, map_type& g_fm, map_type& b_fm, map_type& y_fm )
 	{
+		typedef mist::array2< mist::rgb< typename T >, Allocator >::size_type size_type;
+
 		if( in.empty( ) )
 		{
 			return false;
 		}
 
-		const size_t w = in.width( );
-		const size_t h = in.height( );
-		const size_t size = in.size( );
+		const size_type w = in.width( );
+		const size_type h = in.height( );
+		const size_type size = in.size( );
 
 		// Intensity
 		i_fm.resize( w, h );
-		for( size_t i = 0; i < size; ++i )
+		for( size_type i = 0; i < size; ++i )
 		{
 			i_fm[ i ] = ( static_cast< value_type >( in[ i ].r ) + static_cast< value_type >( in[ i ].g ) + static_cast< value_type >( in[ i ].b ) ) / 3.0;
 		}
@@ -546,12 +508,12 @@ namespace __itti__
 		b_fm.resize( w, h );
 		y_fm.resize( w, h );
 		const value_type max_i = *std::max_element( i_fm.begin( ), i_fm.end( ) );
-		for( size_t k = 0; k < size; ++k )
+		for( size_type k = 0; k < size; ++k )
 		{
 			const value_type i = i_fm[ k ];
 			if( max_i > i * 10 )
 			{
-				r_fm[ k ] = g_fm[ k ] = b_fm[ k ] = 0;
+				r_fm[ k ] = g_fm[ k ] = b_fm[ k ] = y_fm[ k ] = 0;
 			}
 			else
 			{
@@ -583,13 +545,14 @@ namespace itti
 	//! 
 	//! @param[in]  in                 … 入力画像（RGBカラー画像）
 	//! @param[out] out                … 出力画像（Saliency map）
+	//! @param[in]  step_local_maxima  … 極大値を考慮した正規化処理における極大値探索の範囲（デフォルト：3）
+	//! @param[in]  gauss_sigma        … ガウシアンピラミッド作成時のガウシアンカーネルのサイズ（デフォルト：5）
 	//! @param[in]  intensity_weight   … Intensity mapの重み（デフォルト：1.0）
 	//! @param[in]  color_weight       … Color mapの重み（デフォルト：1.0）
 	//! @param[in]  orientation_weight … Orientation mapの重み（デフォルト：1.0）
-	//! @param[in]  step_local_maxima  … 極大値を考慮した正規化処理における極大値探索の範囲（デフォルト：8）
 	//! 
 	template< class T1, class Allocator1, class T2, class Allocator2 >
-	bool saliency_map( const mist::array2< mist::rgb< T1 >, Allocator1 >& in, mist::array2< T2, Allocator2 >& out, const double intensity_weight = 1.0, const double color_weight = 1.0, const double orientation_weight = 1.0, const size_t step_local_maxima = 8 )
+	bool saliency_map( const mist::array2< mist::rgb< T1 >, Allocator1 >& in, mist::array2< T2, Allocator2 >& out, const size_t step_local_maxima = 3, const double gauss_sigma = 5, const double intensity_weight = 1.0, const double color_weight = 1.0, const double orientation_weight = 1.0 )
 	{
 		if( in.empty( ) )
 		{
@@ -605,12 +568,20 @@ namespace itti
 
 		// Conspicuity map
 		__itti__::map_type i_cm, c_cm, o_cm;
-		if( !__itti__::conspicuity_map_for_intensity( i_image, step_local_maxima, i_cm )
-			|| !__itti__::conspicuity_map_for_color( r_image, g_image, b_image, y_image, step_local_maxima, c_cm )
-			|| !__itti__::conspicuity_map_for_orientation( i_image, step_local_maxima, o_cm ) )
+		if( !__itti__::conspicuity_map_for_intensity( i_image, step_local_maxima, gauss_sigma, i_cm )
+			|| !__itti__::conspicuity_map_for_color( r_image, g_image, b_image, y_image, step_local_maxima, gauss_sigma, c_cm )
+			|| !__itti__::conspicuity_map_for_orientation( i_image, step_local_maxima, gauss_sigma, o_cm ) )
 		{
 			return false;
 		}
+
+		//__itti__::map_type temp;
+		//__itti__::normalize( i_cm, temp, 0, 255 );
+		//mist::write_bmp( temp, "i_cm.bmp" );
+		//__itti__::normalize( c_cm, temp, 0, 255 );
+		//mist::write_bmp( temp, "c_cm.bmp" );
+		//__itti__::normalize( o_cm, temp, 0, 255 );
+		//mist::write_bmp( temp, "o_cm.bmp" );
 
 		// Saliency map
 		return __itti__::normalize( intensity_weight * i_cm + color_weight * c_cm + orientation_weight * o_cm, out, 0.0, 255 );
