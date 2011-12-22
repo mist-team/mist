@@ -219,8 +219,6 @@ inline const array1< T, Allocator >& operator /=( array1< T, Allocator > &a1, ty
 }
 
 
-
-
 /// @brief •„†”½“]
 //! 
 //! Ú×‚Èà–¾‚âŠÖ”‚Ìg—p—á‚ğ‘‚­
@@ -239,7 +237,6 @@ inline array1< T, Allocator > operator -( const array1< T, Allocator > &a )
 }
 
 
-
 /// @brief ‘«‚µZ
 //! 
 //! Ú×‚Èà–¾‚âŠÖ”‚Ìg—p—á‚ğ‘‚­
@@ -252,10 +249,9 @@ inline array1< T, Allocator > operator -( const array1< T, Allocator > &a )
 template < class T, class Allocator >
 inline array1< T, Allocator > operator +( const array1< T, Allocator > &a1, const array1< T, Allocator > &a2 )
 {
-	return( array1< T, Allocator >( a1 ) += a2 );
+	array1< T, Allocator > tmp( a1 );
+	return( tmp += a2 );
 }
-
-
 
 
 /// @brief ˆø‚«Z
@@ -270,10 +266,9 @@ inline array1< T, Allocator > operator +( const array1< T, Allocator > &a1, cons
 template < class T, class Allocator >
 inline array1< T, Allocator > operator -( const array1< T, Allocator > &a1, const array1< T, Allocator > &a2 )
 {
-	return( array1< T, Allocator >( a1 ) -= a2 );
+	array1< T, Allocator > tmp( a1 );
+	return( tmp -= a2 );
 }
-
-
 
 
 /// @brief Š|‚¯Z
@@ -288,9 +283,9 @@ inline array1< T, Allocator > operator -( const array1< T, Allocator > &a1, cons
 template < class T, class Allocator >
 inline array1< T, Allocator > operator *( const array1< T, Allocator > &a1, const array1< T, Allocator > &a2 )
 {
-	return( array1< T, Allocator >( a1 ) *= a2 );
+	array1< T, Allocator > tmp( a1 );
+	return( tmp *= a2 );
 }
-
 
 
 /// @brief Š„‚èZ
@@ -305,9 +300,9 @@ inline array1< T, Allocator > operator *( const array1< T, Allocator > &a1, cons
 template < class T, class Allocator >
 inline array1< T, Allocator > operator /( const array1< T, Allocator > &a1, const array1< T, Allocator > &a2 )
 {
-	return( array1< T, Allocator >( a1 ) /= a2 );
+	array1< T, Allocator > tmp( a1 );
+	return( tmp /= a2 );
 }
-
 
 
 /// @brief ’è”‚Æ‚Ì‘«‚µZ
@@ -322,7 +317,8 @@ inline array1< T, Allocator > operator /( const array1< T, Allocator > &a1, cons
 template < class T, class Allocator >
 inline array1< T, Allocator > operator +( const array1< T, Allocator > &a, typename array1< T, Allocator >::value_type val )
 {
-	return( array1< T, Allocator >( a ) += val );
+	array1< T, Allocator > tmp( a );
+	return( tmp += val );
 }
 
 
@@ -338,10 +334,9 @@ inline array1< T, Allocator > operator +( const array1< T, Allocator > &a, typen
 template < class T, class Allocator >
 inline array1< T, Allocator > operator +( typename array1< T, Allocator >::value_type val, const array1< T, Allocator > &a )
 {
-	return( array1< T, Allocator >( a ) += val );
+	array1< T, Allocator > tmp( a );
+	return( tmp += val );
 }
-
-
 
 
 /// @brief ’è”‚Æ‚Ìˆø‚«Z
@@ -356,7 +351,8 @@ inline array1< T, Allocator > operator +( typename array1< T, Allocator >::value
 template < class T, class Allocator >
 inline array1< T, Allocator > operator -( const array1< T, Allocator > &a, typename array1< T, Allocator >::value_type val )
 {
-	return( array1< T, Allocator >( a ) -= val );
+	array1< T, Allocator > tmp( a );
+	return( tmp -= val );
 }
 
 
@@ -372,9 +368,9 @@ inline array1< T, Allocator > operator -( const array1< T, Allocator > &a, typen
 template < class T, class Allocator >
 inline array1< T, Allocator > operator -( typename array1< T, Allocator >::value_type val, const array1< T, Allocator > &a )
 {
-	return( array2< T, Allocator >( a.size( ), val ) -= a );
+	array1< T, Allocator > tmp( a.size( ), val );
+	return( tmp -= a );
 }
-
 
 
 /// @brief ’è”‚Æ‚ÌŠ|‚¯Z
@@ -389,7 +385,8 @@ inline array1< T, Allocator > operator -( typename array1< T, Allocator >::value
 template < class T, class Allocator >
 inline array1< T, Allocator > operator *( const array1< T, Allocator > &a, typename array1< T, Allocator >::value_type val )
 {
-	return( array1< T, Allocator >( a ) *= val );
+	array1< T, Allocator > tmp( a );
+	return( tmp *= val );
 }
 
 
@@ -405,9 +402,9 @@ inline array1< T, Allocator > operator *( const array1< T, Allocator > &a, typen
 template < class T, class Allocator >
 inline array1< T, Allocator > operator *( typename array1< T, Allocator >::value_type val, const array1< T, Allocator > &a )
 {
-	return( array1< T, Allocator >( a ) *= val );
+	array1< T, Allocator > tmp( a );
+	return( tmp *= val );
 }
-
 
 
 /// @brief ’è”‚Æ‚ÌŠ„‚èZ
@@ -422,7 +419,8 @@ inline array1< T, Allocator > operator *( typename array1< T, Allocator >::value
 template < class T, class Allocator >
 inline array1< T, Allocator > operator /( const array1< T, Allocator > &a, typename array1< T, Allocator >::value_type val )
 {
-	return( array1< T, Allocator >( a ) /= val );
+	array1< T, Allocator > tmp( a );
+	return( tmp /= val );
 }
 
 

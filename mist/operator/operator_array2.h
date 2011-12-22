@@ -45,7 +45,7 @@
 //! @return –ß‚è’l‚Ìà–¾
 //! 
 template < class T, class Allocator >
-inline const array2< T, Allocator >& operator +=( array2< T, Allocator > &a1, const array2< T, Allocator >  &a2 )
+inline const array2< T, Allocator >& operator +=( array2< T, Allocator > &a1, const array2< T, Allocator > &a2 )
 {
 	typedef typename array2< T, Allocator >::size_type size_type;
 #if _CHECK_ARRAY2_OPERATION_ != 0
@@ -71,7 +71,7 @@ inline const array2< T, Allocator >& operator +=( array2< T, Allocator > &a1, co
 //! @return –ß‚è’l‚Ìà–¾
 //! 
 template < class T, class Allocator >
-inline const array2< T, Allocator >& operator -=( array2< T, Allocator > &a1, const array2< T, Allocator >  &a2 )
+inline const array2< T, Allocator >& operator -=( array2< T, Allocator > &a1, const array2< T, Allocator > &a2 )
 {
 	typedef typename array2< T, Allocator >::size_type size_type;
 #if _CHECK_ARRAY2_OPERATION_ != 0
@@ -97,7 +97,7 @@ inline const array2< T, Allocator >& operator -=( array2< T, Allocator > &a1, co
 //! @return –ß‚è’l‚Ìà–¾
 //! 
 template < class T, class Allocator >
-inline const array2< T, Allocator >& operator *=( array2< T, Allocator > &a1, const array2< T, Allocator >  &a2 )
+inline const array2< T, Allocator >& operator *=( array2< T, Allocator > &a1, const array2< T, Allocator > &a2 )
 {
 	typedef typename array2< T, Allocator >::size_type size_type;
 #if _CHECK_ARRAY2_OPERATION_ != 0
@@ -123,7 +123,7 @@ inline const array2< T, Allocator >& operator *=( array2< T, Allocator > &a1, co
 //! @return –ß‚è’l‚Ìà–¾
 //! 
 template < class T, class Allocator >
-inline const array2< T, Allocator >& operator /=( array2< T, Allocator > &a1, const array2< T, Allocator >  &a2 )
+inline const array2< T, Allocator >& operator /=( array2< T, Allocator > &a1, const array2< T, Allocator > &a2 )
 {
 	typedef typename array2< T, Allocator >::size_type size_type;
 #if _CHECK_ARRAY2_OPERATION_ != 0
@@ -252,7 +252,8 @@ inline array2< T, Allocator > operator -( const array2< T, Allocator > &a )
 template < class T, class Allocator >
 inline array2< T, Allocator > operator +( const array2< T, Allocator > &a1, const array2< T, Allocator > &a2 )
 {
-	return( array2< T, Allocator >( a1 ) += a2 );
+	array2< T, Allocator > tmp( a1 );
+	return( tmp += a2 );
 }
 
 
@@ -269,7 +270,8 @@ inline array2< T, Allocator > operator +( const array2< T, Allocator > &a1, cons
 template < class T, class Allocator >
 inline array2< T, Allocator > operator -( const array2< T, Allocator > &a1, const array2< T, Allocator > &a2 )
 {
-	return( array2< T, Allocator >( a1 ) -= a2 );
+	array2< T, Allocator > tmp( a1 );
+	return( tmp -= a2 );
 }
 
 
@@ -286,7 +288,8 @@ inline array2< T, Allocator > operator -( const array2< T, Allocator > &a1, cons
 template < class T, class Allocator >
 inline array2< T, Allocator > operator *( const array2< T, Allocator > &a1, const array2< T, Allocator > &a2 )
 {
-	return( array2< T, Allocator >( a1 ) *= a2 );
+	array2< T, Allocator > tmp( a1 );
+	return( tmp *= a2 );
 }
 
 
@@ -303,7 +306,8 @@ inline array2< T, Allocator > operator *( const array2< T, Allocator > &a1, cons
 template < class T, class Allocator >
 inline array2< T, Allocator > operator /( const array2< T, Allocator > &a1, const array2< T, Allocator > &a2 )
 {
-	return( array2< T, Allocator >( a1 ) /= a2 );
+	array2< T, Allocator > tmp( a1 );
+	return( tmp /= a2 );
 }
 
 
@@ -320,7 +324,8 @@ inline array2< T, Allocator > operator /( const array2< T, Allocator > &a1, cons
 template < class T, class Allocator >
 inline array2< T, Allocator > operator +( const array2< T, Allocator > &a, typename array2< T, Allocator >::value_type val )
 {
-	return( array2< T, Allocator >( a ) += val );
+	array2< T, Allocator > tmp( a );
+	return( tmp += val );
 }
 
 
@@ -336,10 +341,9 @@ inline array2< T, Allocator > operator +( const array2< T, Allocator > &a, typen
 template < class T, class Allocator >
 inline array2< T, Allocator > operator +( typename array2< T, Allocator >::value_type val, const array2< T, Allocator > &a )
 {
-	return( array2< T, Allocator >( a ) += val );
+	array2< T, Allocator > tmp( a );
+	return( tmp += val );
 }
-
-
 
 
 /// @brief ’è”‚Æ‚Ìˆø‚«Z
@@ -354,7 +358,8 @@ inline array2< T, Allocator > operator +( typename array2< T, Allocator >::value
 template < class T, class Allocator >
 inline array2< T, Allocator > operator -( const array2< T, Allocator > &a, typename array2< T, Allocator >::value_type val )
 {
-	return( array2< T, Allocator >( a ) -= val );
+	array2< T, Allocator > tmp( a );
+	return( tmp -= val );
 }
 
 
@@ -370,10 +375,9 @@ inline array2< T, Allocator > operator -( const array2< T, Allocator > &a, typen
 template < class T, class Allocator >
 inline array2< T, Allocator > operator -( typename array2< T, Allocator >::value_type val, const array2< T, Allocator > &a )
 {
-	return( array2< T, Allocator >( a.size1( ), a.size2( ), val ) -= a );
+	array2< T, Allocator > tmp( a.size1( ), a.size2( ), val );
+	return( tmp -= a );
 }
-
-
 
 
 /// @brief ’è”‚Æ‚ÌŠ|‚¯Z
@@ -388,7 +392,8 @@ inline array2< T, Allocator > operator -( typename array2< T, Allocator >::value
 template < class T, class Allocator >
 inline array2< T, Allocator > operator *( const array2< T, Allocator > &a, typename array2< T, Allocator >::value_type val )
 {
-	return( array2< T, Allocator >( a ) *= val );
+	array2< T, Allocator > tmp( a );
+	return( tmp *= val );
 }
 
 
@@ -404,9 +409,9 @@ inline array2< T, Allocator > operator *( const array2< T, Allocator > &a, typen
 template < class T, class Allocator >
 inline array2< T, Allocator > operator *( typename array2< T, Allocator >::value_type val, const array2< T, Allocator > &a )
 {
-	return( array2< T, Allocator >( a ) *= val );
+	array2< T, Allocator > tmp( a );
+	return( tmp *= val );
 }
-
 
 
 /// @brief ’è”‚Æ‚ÌŠ„‚èZ
@@ -421,7 +426,8 @@ inline array2< T, Allocator > operator *( typename array2< T, Allocator >::value
 template < class T, class Allocator >
 inline array2< T, Allocator > operator /( const array2< T, Allocator > &a, typename array2< T, Allocator >::value_type val )
 {
-	return( array2< T, Allocator >( a ) /= val );
+	array2< T, Allocator > tmp( a );
+	return( tmp /= val );
 }
 
 

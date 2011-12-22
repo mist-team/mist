@@ -251,7 +251,8 @@ inline array< T, Allocator > operator -( const array< T, Allocator > &a )
 template < class T, class Allocator >
 inline array< T, Allocator > operator +( const array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
-	return( array< T, Allocator >( a1 ) += a2 );
+	array< T, Allocator > tmp( a1 );
+	return( tmp += a2 );
 }
 
 
@@ -269,7 +270,8 @@ inline array< T, Allocator > operator +( const array< T, Allocator > &a1, const 
 template < class T, class Allocator >
 inline array< T, Allocator > operator -( const array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
-	return( array< T, Allocator >( a1 ) -= a2 );
+	array< T, Allocator > tmp( a1 );
+	return( tmp -= a2 );
 }
 
 
@@ -287,7 +289,8 @@ inline array< T, Allocator > operator -( const array< T, Allocator > &a1, const 
 template < class T, class Allocator >
 inline array< T, Allocator > operator *( const array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
-	return( array< T, Allocator >( a1 ) *= a2 );
+	array< T, Allocator > tmp( a1 );
+	return( tmp *= a2 );
 }
 
 
@@ -304,9 +307,9 @@ inline array< T, Allocator > operator *( const array< T, Allocator > &a1, const 
 template < class T, class Allocator >
 inline array< T, Allocator > operator /( const array< T, Allocator > &a1, const array< T, Allocator > &a2 )
 {
-	return( array< T, Allocator >( a1 ) /= a2 );
+	array< T, Allocator > tmp( a1 );
+	return( tmp /= a2 );
 }
-
 
 
 /// @brief ’è”‚Æ‚Ì‘«‚µZ
@@ -321,7 +324,8 @@ inline array< T, Allocator > operator /( const array< T, Allocator > &a1, const 
 template < class T, class Allocator >
 inline array< T, Allocator > operator +( const array< T, Allocator > &a, typename array< T, Allocator >::value_type val )
 {
-	return( array< T, Allocator >( a ) += val );
+	array< T, Allocator > tmp( a );
+	return( tmp += val );
 }
 
 
@@ -337,10 +341,9 @@ inline array< T, Allocator > operator +( const array< T, Allocator > &a, typenam
 template < class T, class Allocator >
 inline array< T, Allocator > operator +( typename array< T, Allocator >::value_type val, const array< T, Allocator > &a )
 {
-	return( array< T, Allocator >( a ) += val );
+	array< T, Allocator > tmp( a );
+	return( tmp += val );
 }
-
-
 
 
 /// @brief ’è”‚Æ‚Ìˆø‚«
@@ -355,7 +358,8 @@ inline array< T, Allocator > operator +( typename array< T, Allocator >::value_t
 template < class T, class Allocator >
 inline array< T, Allocator > operator -( const array< T, Allocator > &a, typename array< T, Allocator >::value_type val )
 {
-	return( array< T, Allocator >( a ) -= val );
+	array< T, Allocator > tmp( a );
+	return( tmp -= val );
 }
 
 
@@ -371,10 +375,9 @@ inline array< T, Allocator > operator -( const array< T, Allocator > &a, typenam
 template < class T, class Allocator >
 inline array< T, Allocator > operator -( typename array< T, Allocator >::value_type val, const array< T, Allocator > &a )
 {
-	return( array2< T, Allocator >( a.size( ), val ) -= a );
+	array< T, Allocator > tmp( a.size( ), val );
+	return( tmp -= a );
 }
-
-
 
 
 /// @brief ’è”‚Æ‚ÌŠ|‚¯Z
@@ -389,7 +392,8 @@ inline array< T, Allocator > operator -( typename array< T, Allocator >::value_t
 template < class T, class Allocator >
 inline array< T, Allocator > operator *( const array< T, Allocator > &a, typename array< T, Allocator >::value_type val )
 {
-	return( array< T, Allocator >( a ) *= val );
+	array< T, Allocator > tmp( a );
+	return( tmp *= val );
 }
 
 
@@ -405,9 +409,9 @@ inline array< T, Allocator > operator *( const array< T, Allocator > &a, typenam
 template < class T, class Allocator >
 inline array< T, Allocator > operator *( typename array< T, Allocator >::value_type val, const array< T, Allocator > &a )
 {
-	return( array< T, Allocator >( a ) *= val );
+	array< T, Allocator > tmp( a );
+	return( tmp *= val );
 }
-
 
 
 /// @brief ’è”‚Æ‚ÌŠ„‚èZ
@@ -422,7 +426,8 @@ inline array< T, Allocator > operator *( typename array< T, Allocator >::value_t
 template < class T, class Allocator >
 inline array< T, Allocator > operator /( const array< T, Allocator > &a, typename array< T, Allocator >::value_type val )
 {
-	return( array< T, Allocator >( a ) /= val );
+	array< T, Allocator > tmp( a );
+	return( tmp /= val );
 }
 
 #endif // __INCLUDE_MIST_OPERATOR_ARRAY__
