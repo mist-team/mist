@@ -51,10 +51,6 @@
 #endif
 
 
-#include <algorithm>
-#include <numeric>
-
-
 // mist名前空間の始まり
 _MIST_BEGIN
 
@@ -223,32 +219,58 @@ namespace __itti__
 			return false;
 		}
 
-		// 各Feature mapをTARGET_SCALEに縮小
 		const maps_type::value_type::size_type width = in_fms[ TARGET_SCALE ].width( );
 		const maps_type::value_type::size_type height = in_fms[ TARGET_SCALE ].height( );
+		out_fm.resize( width, height );
+		out_fm.fill( 0 );
 
-		maps_type target_scale_in_fms( in_fms.size( ) );
-		for( maps_type::size_type l = 0; l < target_scale_in_fms.size( ); ++l )
+		// 各Feature mapをTARGET_SCALEに縮小してからスケール間差分
+		for( maps_type::size_type l = 0; l < in_fms.size( ); ++l )
 		{
-			mist::linear::interpolate( in_fms[ l ], target_scale_in_fms[ l ], width, height );
+			map_type target_scale_in_fms;
+			mist::linear::interpolate( in_fms[ l ], target_scale_in_fms, width, height );
+			for( map_type::size_type i = 0; i < target_scale_in_fms.size( ); ++i )
+			{
+				out_fm[ i ] += target_scale_in_fms[ i ];
+			}
 		}
-
-		// スケール間加算
-		out_fm = std::accumulate( target_scale_in_fms.begin( ), target_scale_in_fms.end( ), map_type( width, height ) );
 
 		return true;
 	}
 
 	// 画像の画素値に関する正規化
-	inline bool normalize( const map_type& in, map_type& out, const value_type min = 0.0, const value_type max = 1.0 )
+	template< class T1, class T2 >
+	inline bool normalize( const mist::array2< T1 >& in, mist::array2< T2 >& out, const T2 out_min = 0.0, const T2 out_max = 1.0 )
 	{
-		if( in.empty( ) || min > max )
+		typedef typename mist::array2< T1 >::size_type size_type;
+
+		if( in.empty( ) || out_min > out_max )
 		{
 			return false;
 		}
 
-		const auto minmax_value = std::minmax_element( in.begin( ), in.end( ) );
-		out = ( ( in - *minmax_value.first ) / ( *minmax_value.second - *minmax_value.first ) ) * ( max - min ) + min;
+		T1 in_min = in[ 0 ];
+		T1 in_max = in[ 0 ];
+		for( size_type i = 1; i < in.size( ); ++i )
+		{
+			const T1 val = in[ i ];
+			if( in_max < val )
+			{
+				in_max = val;
+			}
+			else if( in_min > val )
+			{
+				in_min = val;
+			}
+		}
+
+		out.resize( in.width( ), in.height( ) );
+		const T1 in_range = in_max - in_min;
+		const T2 out_range = out_max - out_min;
+		for( size_type i = 0; i < in.size( ); ++i )
+		{
+			out[ i ] = static_cast< T2 >( ( in[ i ] - in_min ) / in_range ) * out_range + out_min;
+		}
 
 		return true;
 	}
@@ -270,9 +292,17 @@ namespace __itti__
 		{
 			for( map_type::size_type y = 0; y < out.height( ) - step_local_maxima; y += step_local_maxima )
 			{
-				map_type out_sub;
-				out.trim( out_sub, x, y, step_local_maxima, step_local_maxima );
-				const value_type local_max = *std::max_element( out_sub.begin( ), out_sub.end( ) );
+				value_type local_max = 0;
+				for( map_type::size_type i = 0; i < step_local_maxima; ++i )
+				{
+					for( map_type::size_type j = 0; j < step_local_maxima; ++j )
+					{
+						if( local_max < out( x + i, y + j ) )
+						{
+							local_max = out( x + i, y + j );
+						}
+					}
+				}
 				if( global_max != local_max )
 				{
 					local_maxima_sum += local_max;
@@ -281,8 +311,11 @@ namespace __itti__
 			}
 		}
 
-		const value_type local_maxima_mean = local_maxima_sum / local_maxima_count;
-		out *= std::pow( global_max - local_maxima_mean, 2.0 );
+		const value_type normalize_factor = std::pow( global_max - local_maxima_sum / local_maxima_count, 2.0 );
+		for( map_type::size_type i = 0; i < out.size( ); ++i )
+		{
+			out[ i ] *= normalize_factor;
+		}
 
 		return true;
 	}
@@ -347,9 +380,9 @@ namespace __itti__
 	}
 
 	// Conspicuity mapを作成（Color）
-	inline bool conspicuity_map_for_color( const map_type& r_image, const map_type& g_image, const map_type& b_image, const map_type& y_image, const size_t step_local_maxima, const double gauss_sigma, map_type& c_ncm )
+	inline bool conspicuity_map_for_color( const map_type& rg_image, const map_type& by_image, const size_t step_local_maxima, const double gauss_sigma, map_type& c_ncm )
 	{
-		if( r_image.empty( ) || g_image.empty( ) || b_image.empty( ) || y_image.empty( ) )
+		if( rg_image.empty( ) || by_image.empty( ) )
 		{
 			return false;
 		}
@@ -359,7 +392,7 @@ namespace __itti__
 		{
 			// ガウシアンピラミッド
 			pyramid_type rg_pyr;
-			if( !build_gaussian_pyramid( r_image - g_image, gauss_sigma, rg_pyr ) )	// 高速化の余地あり（計算に使用する部分だけ画像を用意すれば良い）
+			if( !build_gaussian_pyramid( rg_image, gauss_sigma, rg_pyr ) )	// 高速化の余地あり（計算に使用する部分だけ画像を用意すれば良い）
 			{
 				return false;
 			}
@@ -376,7 +409,7 @@ namespace __itti__
 		{
 			// ガウシアンピラミッド
 			pyramid_type by_pyr;
-			if( !build_gaussian_pyramid( b_image - y_image, gauss_sigma, by_pyr ) )
+			if( !build_gaussian_pyramid( by_image, gauss_sigma, by_pyr ) )
 			{
 				return false;
 			}
@@ -393,8 +426,22 @@ namespace __itti__
 		{
 			pyramid_type rg_nfms, by_nfms;
 			if( !normalize_maps_with_local_maxima( rg_fms, step_local_maxima, rg_nfms )
-				|| !normalize_maps_with_local_maxima( by_fms, step_local_maxima, by_nfms )
-				|| !across_scale_addition( rg_nfms + by_nfms, c_cm ) )
+				|| !normalize_maps_with_local_maxima( by_fms, step_local_maxima, by_nfms ) )
+			{
+				return false;
+			}
+
+			pyramid_type rg_by_nfms( rg_nfms.size( ) );
+			for( maps_type::size_type l = 0; l < rg_by_nfms.size( ); ++l )
+			{
+				rg_by_nfms[ l ].resize( rg_nfms[ l ].width( ), rg_nfms[ l ].height( ) );
+				for( map_type::size_type i = 0; i < rg_by_nfms[ l ].size( ); ++i )
+				{
+					rg_by_nfms[ l ][ i ] = rg_nfms[ l ][ i ] + by_nfms[ l ][ i ];
+				}
+			}
+
+			if( !across_scale_addition( rg_by_nfms, c_cm ) )
 			{
 				return false;
 			}
@@ -467,14 +514,24 @@ namespace __itti__
 
 			// 方向成分毎に統合されたOrientation feature maps
 			maps_type o_nfms;
-			if( !normalize_maps_with_local_maxima( o_fms, step_local_maxima, o_nfms ) || !across_scale_addition( o_nfms, nneo_fms[ t ] ) )
+			map_type neo_fm;
+			if( !normalize_maps_with_local_maxima( o_fms, step_local_maxima, o_nfms )
+				|| !across_scale_addition( o_nfms, neo_fm )
+				|| !normalize_map_with_local_maxima( neo_fm, step_local_maxima, nneo_fms[ t ] ) )	// 最後のnormalize_map_with_local_maximaが必要かどうか怪しい（Ittiらの論文中には存在するが，省略しているWebサイトがある）
 			{
 				return false;
 			}
 		}
 
 		// Conspicuity map
-		const map_type o_cm = std::accumulate( nneo_fms.begin( ), nneo_fms.end( ), map_type( nneo_fms[ 0 ].width( ), nneo_fms[ 0 ].height( ) ) );
+		map_type o_cm( nneo_fms[ 0 ].width( ), nneo_fms[ 0 ].height( ) );
+		for( maps_type::size_type t = 0; t < nneo_fms.size( ); ++t )
+		{
+			for( map_type::size_type i = 0; i < o_cm.size( ); ++i )
+			{
+				o_cm[ i ] += nneo_fms[ t ][ i ];
+			}
+		}
 
 		// 正規化
 		return normalize_map_with_local_maxima( o_cm, step_local_maxima, o_ncm );
@@ -482,9 +539,9 @@ namespace __itti__
 
 	// 特徴抽出
 	template< class T, class Allocator >
-	inline bool create_original_feature_maps( const mist::array2< mist::rgb< T >, Allocator >& in, map_type& i_fm, map_type& r_fm, map_type& g_fm, map_type& b_fm, map_type& y_fm )
+	inline bool create_original_feature_maps( const mist::array2< mist::rgb< T >, Allocator >& in, map_type& i_fm, map_type& rg_fm, map_type& by_fm )
 	{
-		typedef mist::array2< mist::rgb< typename T >, Allocator >::size_type size_type;
+		typedef typename mist::array2< mist::rgb< T >, Allocator >::size_type size_type;
 
 		if( in.empty( ) )
 		{
@@ -497,33 +554,38 @@ namespace __itti__
 
 		// Intensity
 		i_fm.resize( w, h );
+		value_type max_i = 0;
 		for( size_type i = 0; i < size; ++i )
 		{
 			i_fm[ i ] = ( static_cast< value_type >( in[ i ].r ) + static_cast< value_type >( in[ i ].g ) + static_cast< value_type >( in[ i ].b ) ) / 3.0;
+			if( max_i < i_fm[ i ] )
+			{
+				max_i = i_fm[ i ];
+			}
 		}
 
 		// Red, Green, Blue, Yellow
-		r_fm.resize( w, h );
-		g_fm.resize( w, h );
-		b_fm.resize( w, h );
-		y_fm.resize( w, h );
-		const value_type max_i = *std::max_element( i_fm.begin( ), i_fm.end( ) );
+		rg_fm.resize( w, h );
+		by_fm.resize( w, h );
 		for( size_type k = 0; k < size; ++k )
 		{
 			const value_type i = i_fm[ k ];
 			if( max_i > i * 10 )
 			{
-				r_fm[ k ] = g_fm[ k ] = b_fm[ k ] = y_fm[ k ] = 0;
+				rg_fm[ k ] = by_fm[ k ] = 0;
 			}
 			else
 			{
 				const value_type r = in[ k ].r / i;
 				const value_type g = in[ k ].g / i;
 				const value_type b = in[ k ].b / i;
-				r_fm[ k ] = std::max< value_type >( 0.0, r - ( g + b ) / 2.0 );
-				g_fm[ k ] = std::max< value_type >( 0.0, g - ( r + b ) / 2.0 );
-				b_fm[ k ] = std::max< value_type >( 0.0, b - ( r + g ) / 2.0 );
-				y_fm[ k ] = std::max< value_type >( 0.0, ( r + g ) / 2.0 - std::abs( r - g ) / 2.0 - b );
+				const value_type R = std::max< value_type >( 0.0, r - ( g + b ) / 2.0 );
+				const value_type G = std::max< value_type >( 0.0, g - ( r + b ) / 2.0 );
+				const value_type B = std::max< value_type >( 0.0, b - ( r + g ) / 2.0 );
+				const value_type Y = std::max< value_type >( 0.0, ( r + g ) / 2.0 - std::abs( r - g ) / 2.0 - b );
+
+				rg_fm[ k ] = R - G;
+				by_fm[ k ] = B - Y;
 			}
 		}
 
@@ -560,8 +622,8 @@ namespace itti
 		}
 
 		// 特徴抽出
-		__itti__::map_type i_image, r_image, g_image, b_image, y_image;
-		if( !__itti__::create_original_feature_maps( in, i_image, r_image, g_image, b_image, y_image ) )
+		__itti__::map_type i_image, rg_image, by_image;
+		if( !__itti__::create_original_feature_maps( in, i_image, rg_image, by_image ) )
 		{
 			return false;
 		}
@@ -569,7 +631,7 @@ namespace itti
 		// Conspicuity map
 		__itti__::map_type i_cm, c_cm, o_cm;
 		if( !__itti__::conspicuity_map_for_intensity( i_image, step_local_maxima, gauss_sigma, i_cm )
-			|| !__itti__::conspicuity_map_for_color( r_image, g_image, b_image, y_image, step_local_maxima, gauss_sigma, c_cm )
+			|| !__itti__::conspicuity_map_for_color( rg_image, by_image, step_local_maxima, gauss_sigma, c_cm )
 			|| !__itti__::conspicuity_map_for_orientation( i_image, step_local_maxima, gauss_sigma, o_cm ) )
 		{
 			return false;
@@ -584,7 +646,13 @@ namespace itti
 		//mist::write_bmp( temp, "o_cm.bmp" );
 
 		// Saliency map
-		return __itti__::normalize( intensity_weight * i_cm + color_weight * c_cm + orientation_weight * o_cm, out, 0.0, 255 );
+		__itti__::map_type sm( i_cm.width( ), i_cm.height( ) );
+		for( __itti__::map_type::size_type i = 0; i < sm.size( ); ++i )
+		{
+			sm[ i ] = intensity_weight * i_cm[ i ] + color_weight * c_cm[ i ] + orientation_weight * o_cm[ i ];
+		}
+
+		return __itti__::normalize( sm, out, static_cast< T2 >( 0 ), static_cast< T2 >( 255 ) );
 	}
 
 } // 名前空間 itti の終わり
