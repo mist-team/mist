@@ -139,11 +139,8 @@ public:
 	value_type g;		///< @brief 緑色成分
 	value_type b;		///< @brief 青色成分
 
-	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
-	rgb( ) : r( 0 ), g( 0 ), b( 0 ){ }
-
 	/// @brief 全ての成分を pix で初期化する
-	explicit rgb( const value_type &pix ) : r( pix ), g( pix ), b( pix ){ }
+	rgb( const value_type &pix = 0 ) : r( pix ), g( pix ), b( pix ){ }
 
 	/// @brief 異なる型のカラー画素を用いて初期化する
 	template < class TT >
@@ -381,6 +378,13 @@ public:
 		return( half_adjust< value_type >::convert( r * 0.298912 + g * 0.586610 + b * 0.114478 ) );
 	}
 
+	/// @brief 単純平均法でグレースケールへ変換する
+	value_type get_average( ) const
+	{
+		double rr = r, gg = g, bb = b;
+		return( half_adjust< value_type >::convert( ( rr + gg + bb ) * 0.33333333333333333333333333333333 ) );
+	}
+
 	// カラーからグレースケールへの自動キャスト演算子（危険のため一時停止）
 	//operator value_type( ) const { return( get_value( ) ); }
 };
@@ -470,11 +474,8 @@ public:
 	value_type g;		///< @brief 緑色成分
 	value_type r;		///< @brief 赤色成分
 
-	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
-	bgr( ) : b( 0 ), g( 0 ), r( 0 ){ }
-
 	/// @brief 全ての成分を pix で初期化する
-	explicit bgr( const value_type &pix ) : b( pix ), g( pix ), r( pix ){ }
+	bgr( const value_type &pix = 0 ) : b( pix ), g( pix ), r( pix ){ }
 
 	/// @brief 異なる型のカラー画素を用いて初期化する
 	template < class TT >
@@ -712,6 +713,13 @@ public:
 		return( static_cast< value_type >( b * 0.114478 + g * 0.586610 + r * 0.298912 ) );
 	}
 
+	/// @brief 単純平均法でグレースケールへ変換する
+	value_type get_average( ) const
+	{
+		double rr = r, gg = g, bb = b;
+		return( static_cast< value_type >( ( rr + gg + bb ) * 0.33333333333333333333333333333333 ) );
+	}
+
 	// カラーからグレースケールへの自動キャスト演算子（危険のため一時停止）
 	//operator value_type( ) const { return( get_value( ) ); }
 
@@ -799,11 +807,8 @@ public:
 public:
 	value_type a;		///< @brief アルファ成分
 
-	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
-	rgba( ) : base( ), a( 255 ){ }
-
 	/// @brief 全ての成分を pix で初期化する
-	explicit rgba( const value_type &pix ) : base( pix ), a( 255 ){ }
+	rgba( const value_type &pix = 0 ) : base( pix ), a( 255 ){ }
 
 	/// @brief 異なる型のカラー画素を用いて初期化する
 	template < class TT >
@@ -1101,11 +1106,8 @@ public:
 public:
 	value_type a;		///< @brief アルファ成分
 
-	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
-	bgra( ) : base( ), a( 255 ){ }
-
 	/// @brief 全ての成分を pix で初期化する
-	explicit bgra( const value_type &pix ) : base( pix ), a( 255 ){ }
+	bgra( const value_type &pix = 0 ) : base( pix ), a( 255 ){ }
 
 	/// @brief 異なる型のカラー画素を用いて初期化する
 	template < class TT >
@@ -1744,17 +1746,8 @@ private:
 
 public:
 
-	/// @brief デフォルトコンストラクタ（全ての要素を0で初期化する）
-	color( )
-	{
-		for( size_type i = 0 ; i < NDIM ; i++ )
-		{
-			c_[ i ] = 0;
-		}
-	}
-
 	/// @brief 全ての成分を pix で初期化する
-	explicit color( const value_type &pix )
+	color( const value_type &pix = 0 )
 	{
 		for( size_type i = 0 ; i < NDIM ; i++ )
 		{
