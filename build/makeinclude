@@ -6,8 +6,8 @@ LDLIBS   = -L../lib -L/usr/local/lib -L/usr/lib -L/usr/X11R6/lib
 
 OTHERINCLUDE = 
 
-CFLAGS = -Wall -O2 
-CXXFLAGS = -Wall -O2 
+CFLAGS = -Wall -W -O2 
+CXXFLAGS = -Wall -W -O2 
 
 RELEASEFLAGS = $(CXXFLAGS) -DNDEBUG
 DEBUGFLAGS   = $(CXXFLAGS) -DDEBUG
@@ -15,8 +15,8 @@ DEBUGFLAGS   = $(CXXFLAGS) -DDEBUG
 IMGLIBS = -ljpeg -lpng -ltiff
 #IMGLIBS = -ljpeg -lpng -ltiff -lgif
 LIBS = -lpthread -lz -lm
-LAPACKLIBS = -L../lib -llapack -lblas -lI77 -lF77
-ATLASLIBS = -L../lib -llapack -lcblaswr -lcblas -latlas -lF77
+LAPACKLIBS = -L../lib -lf2c -llapack -lblas
+#LAPACKLIBS = -L../lib -llapack_atlas -lblas -latlas
 MKLASLIBS = -L../lib -lmkl_lapack
 
 # Be quiet when building...

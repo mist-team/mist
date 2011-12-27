@@ -456,7 +456,7 @@ public:
 	vector2( const value_type &xx, const value_type &yy ) : x( xx ), y( yy ){ }
 
 	/// @brief ( vv, vv ) のベクトルを作成する
-	vector2( const value_type &vv ) : x( vv ), y( vv ){ }
+	explicit vector2( const value_type &vv ) : x( vv ), y( vv ){ }
 
 
 	/// @brief 他の2次元ベクトルで要素の型が異なるものから同じ要素を持つベクトルを作成する

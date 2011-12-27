@@ -209,7 +209,7 @@ namespace __boundary_controller__
 
 
 	template < class Array, class neighbor, class Functor >
-	typename Array::size_type boundary( Array &in, typename Array::value_type border, typename Array::value_type inside, bool boundary_is_border, const neighbor dmy, Functor f )
+	typename Array::size_type boundary( Array &in, typename Array::value_type border, typename Array::value_type inside, bool boundary_is_border, const neighbor /* dmy */, Functor f )
 	{
 		typedef typename Array::size_type  size_type;
 		typedef typename Array::value_type value_type;

@@ -274,8 +274,8 @@ namespace __mean__
 									typename array2< T, Allocator >::size_type i2,
 									typename array2< T, Allocator >::size_type j1,
 									typename array2< T, Allocator >::size_type j2,
-									typename array2< T, Allocator >::size_type k1,
-									typename array2< T, Allocator >::size_type k2,
+									typename array2< T, Allocator >::size_type /* k1 */,
+									typename array2< T, Allocator >::size_type /* k2 */,
 									double xs,
 									double xe,
 									double ys,
@@ -1029,9 +1029,9 @@ namespace __linear__
 									typename array2< T, Allocator >::size_type i2,
 									typename array2< T, Allocator >::size_type j1,
 									typename array2< T, Allocator >::size_type j2,
-									typename array2< T, Allocator >::size_type k1,
-									typename array2< T, Allocator >::size_type k2,
-									double x, double y, double z )
+									typename array2< T, Allocator >::size_type /* k1 */,
+									typename array2< T, Allocator >::size_type /* k2 */,
+									double x, double y, double /* z */ )
 		{
 			typedef typename array2< T, Allocator >::value_type value_type;
 			double min = type_limits< value_type >::minimum( );
@@ -1942,8 +1942,8 @@ namespace __sinc__
 		static double interpolate( const array2< T, Allocator > &in,
 								typename array2< T, Allocator >::difference_type ix,
 								typename array2< T, Allocator >::difference_type iy,
-								typename array2< T, Allocator >::difference_type iz,
-								double x, double y, double z )
+								typename array2< T, Allocator >::difference_type /* iz */,
+								double x, double y, double /* z */ )
 		{
 			typedef typename array2< T, Allocator >::difference_type difference_type;
 			typedef typename array2< T, Allocator >::value_type value_type;
