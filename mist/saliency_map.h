@@ -743,10 +743,7 @@ namespace itti
 		{
 			temp_sm[ i ] = intensity_weight * i_cm[ i ] + color_weight * c_cm[ i ] + orientation_weight * o_cm[ i ];
 		}
-		if( !__itti__::normalize( temp_sm, sm, static_cast< T2 >( 0 ), static_cast< T2 >( 255 ) ) )
-		{
-			return false;
-		}
+		return __itti__::normalize( temp_sm, sm, static_cast< T2 >( 0 ), static_cast< T2 >( 255 ) );
 	}
 
 } // –¼‘O‹óŠÔ itti ‚ÌI‚í‚è
