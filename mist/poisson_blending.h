@@ -115,7 +115,13 @@ namespace __poissonblender__
 		int w = _mask1.width();
 		int h = _mask1.height();
 
+		if ( w == 0 || h == 0 ) {
+			std::cerr << "mask size error w:" << w << ",h:" << h << std::endl;
+			return false;
+		}
+
 		int nz=0;
+		unsigned int max_row = 0;
 		_mp.clear();
 		for ( int y = 0; y < h - 1; ++y )
 		{
@@ -124,20 +130,25 @@ namespace __poissonblender__
 				if ( _mask1( x, y ) == 0 ) continue;
 
 				int id = y * w + x;
-				_mp[ id ] = nz++; //
+				_mp[ id ] = nz++;
+				if ( _mp.count( (y - 1) * w + x ) != 0)
+				{
+					unsigned int diff = _mp[ id ] - _mp[ (y - 1) * w + x ];
+					if ( diff > max_row ) max_row = diff;
+				}
 			}
 		}
-		if ( !A.resize( w - 1, nz ) ) {
-			std::cout << "cant allocate matrix( "<< w-4 <<", "<< nz <<" )" << std::endl;
-			std::cout << "mask size is too large." << std::endl;
+		if ( !A.resize( max_row + 1, nz ) ) {
+			std::cerr << "cant allocate matrix( "<< max_row + 1 <<", "<< nz <<" )" << std::endl;
+			std::cerr << "mask size is too large." << std::endl;
 			return false;
 		}
 		if ( !b.resize( nz, 1 ) ) {
-			std::cout << "mask size is too large." << std::endl;
+			std::cerr << "mask size is too large." << std::endl;
 			return false;
 		}
 		if ( !u.resize( nz, 1 ) ){
-			std::cout << "mask size is too large." << std::endl;
+			std::cerr << "mask size is too large." << std::endl;
 			return false;
 		}
 
@@ -181,9 +192,9 @@ namespace __poissonblender__
 				}
 
 				// transform upper triangle matrix
-				if ( tlrb & 8 )	A( _mp[ tidx ] - rowA + ( w - 2 ), rowA ) =  -1.0; // top
-				if ( tlrb & 4 )	A( _mp[ lidx ] - rowA + ( w - 2 ), rowA ) =  -1.0; // left
-				A( _mp[ id   ] - rowA + ( w - 2 ), rowA ) =  4.0; // center
+				if ( tlrb & 8 )	A( _mp[ tidx ] - rowA + ( max_row ), rowA ) =  -1.0; // top
+				if ( tlrb & 4 )	A( _mp[ lidx ] - rowA + ( max_row ), rowA ) =  -1.0; // left
+								A( _mp[ id   ] - rowA + ( max_row ), rowA ) =  4.0; // center
 
 				if ( color == 0 ) b( rowA, 0 ) = drv.r;
 				if ( color == 1 ) b( rowA, 0 ) = drv.g;
@@ -194,7 +205,7 @@ namespace __poissonblender__
 		}
 
 		if ( nz != rowA ){
-			std::cout << "unexpected error!" << std::endl;
+			std::cerr << "unexpected error!" << std::endl;
 			return false;
 		}
 
@@ -435,7 +446,10 @@ inline bool seamlessCloning(
 	// reconstruct whole image
 	for ( unsigned int j = 0; j < _dst1.height(); j++ ) {
 		for ( unsigned int i = 0; i < _dst1.width(); i++ ) {
-			dst( i + _mask_roi1.x.x + offset.x - 3, j + _mask_roi1.x.y + offset.y - 3 ) = _dst1( i, j );
+			int _x = i + _mask_roi1.x.x + offset.x - 3;
+			int _y = j + _mask_roi1.x.y + offset.y - 3;
+			if ( _x > -1 && _y > -1 )
+				dst( _x, _y ) = _dst1( i, j );
 		}
 	}
 
