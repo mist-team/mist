@@ -211,7 +211,7 @@ namespace __poissonblender__
 			}
 		}
 
-		if ( nz != rowA ){
+		if ( nz != static_cast< unsigned int >( rowA ) ){
 			std::cerr << "unexpected error!" << std::endl;
 			return false;
 		}
@@ -486,7 +486,7 @@ template< class Array1, class Array2, class Array3 >
 		for ( unsigned int i = 0; i < _dst1.width(); i++ ) {
 			int _x = i + mask_roi1.x.x + offset.x;
 			int _y = j + mask_roi1.x.y + offset.y;
-			if ( _x > -1 && _y > -1 && _x < dst.width() && _y < dst.height() )
+			if ( _x > -1 && _y > -1 && _x < static_cast< int >( dst.width() ) && _y < static_cast< int >( dst.height() ))
 				dst( _x, _y ) = _dst1( i, j );
 		}
 	}
