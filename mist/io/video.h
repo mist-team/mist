@@ -55,15 +55,9 @@
 
 extern "C"
 {
-#ifdef __MIST_WINDOWS__
 	#include <libavcodec/avcodec.h>
 	#include <libavformat/avformat.h>
 	#include <libswscale/swscale.h>
-#else
-	#include <ffmpeg/avcodec.h>
-	#include <ffmpeg/avformat.h>
-	#include <ffmpeg/swscale.h>
-#endif
 }
 
 
