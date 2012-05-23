@@ -2730,6 +2730,11 @@ namespace mean
 		{
 			return( false );
 		}
+		else if( in.width( ) < width )
+		{
+			// •½‹Ï’l•âŠÔ‚Í‰æ‘œŠg‘å‚É‚ÍŽg‚¦‚È‚¢
+			return( false );
+		}
 
 		typedef typename array< T1, Allocator1 >::size_type  size_type;
 		typedef __interpolate_controller__::interpolate_thread< array< T1, Allocator1 >, array< T2, Allocator2 > > interpolate_thread;
@@ -2792,6 +2797,11 @@ namespace mean
 	{
 		if( is_same_object( in, out ) || width == 0 || in.width( ) < 2 )
 		{
+			return( false );
+		}
+		else if( in.width( ) < width )
+		{
+			// •½‹Ï’l•âŠÔ‚Í‰æ‘œŠg‘å‚É‚ÍŽg‚¦‚È‚¢
 			return( false );
 		}
 
@@ -2859,6 +2869,11 @@ namespace mean
 	{
 		if( is_same_object( in, out ) || width == 0 || height == 0 || in.width( ) < 2 || in.height( ) < 2 )
 		{
+			return( false );
+		}
+		else if( in.width( ) < width || in.height( ) < height )
+		{
+			// •½‹Ï’l•âŠÔ‚Í‰æ‘œŠg‘å‚É‚ÍŽg‚¦‚È‚¢
 			return( false );
 		}
 
@@ -2930,6 +2945,11 @@ namespace mean
 	{
 		if( is_same_object( in, out ) || width == 0 || height == 0 || depth == 0 || in.width( ) < 2 || in.height( ) < 2 || in.depth( ) < 2 )
 		{
+			return( false );
+		}
+		else if( in.width( ) < width || in.height( ) < height || in.depth( ) < depth )
+		{
+			// •½‹Ï’l•âŠÔ‚Í‰æ‘œŠg‘å‚É‚ÍŽg‚¦‚È‚¢
 			return( false );
 		}
 
