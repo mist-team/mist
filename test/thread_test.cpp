@@ -27,6 +27,8 @@
 // 
 
 #include <iostream>
+#include <stdio.h>
+
 #include <mist/matrix.h>
 #include <mist/thread.h>
 
