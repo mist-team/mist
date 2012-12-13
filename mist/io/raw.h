@@ -534,7 +534,7 @@ bool write_raw( const array< T, Allocator > &image, const std::string &filename,
 //! @retval false c ‰æ‘œ‚Ì“Ç‚İ‚İ‚É¸”s
 //! 
 template < class T, class Allocator >
-bool write_raw_gz( const array< T, Allocator > &image, const std::string &filename, typename array< T, Allocator >::value_type offset = array< T, Allocator >::value_type( 0 ), bool to_little_endian = false )
+bool write_raw_gz( const array< T, Allocator > &image, const std::string &filename, typename array< T, Allocator >::value_type offset = typename array< T, Allocator >::value_type( 0 ), bool to_little_endian = false )
 {
 	return( write_raw_gz( image, filename, offset, to_little_endian, __mist_dmy_callback__( ) ) );
 }
