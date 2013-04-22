@@ -34,7 +34,6 @@
 #ifndef __INCLUDE_IO_VIDEO_H__
 #define __INCLUDE_IO_VIDEO_H__
 
-
 #ifndef __INCLUDE_MIST_H__
 #include "../mist.h"
 #endif
@@ -58,6 +57,8 @@ extern "C"
 	#include <libavcodec/avcodec.h>
 	#include <libavformat/avformat.h>
 	#include <libswscale/swscale.h>
+	#include <libavutil/avutil.h>
+	#include <libavutil/mathematics.h>
 }
 
 
@@ -124,6 +125,18 @@ namespace video
 		typedef size_t		size_type;
 		typedef ptrdiff_t	difference_type;
 
+#if LIBAVCODEC_VERSION_MAJOR < 55
+		typedef CodecID codec_id_type;
+#else
+		typedef AVCodecID codec_id_type;
+#endif
+
+#if LIBAVCODEC_VERSION_MAJOR < 53
+		static const CodecType avmedia_type_video_id = CODEC_TYPE_VIDEO;
+#else
+		static const AVMediaType avmedia_type_video_id = AVMEDIA_TYPE_VIDEO;
+#endif
+
 	public:
 		virtual ~video_io_vase( ){ }
 
@@ -168,18 +181,18 @@ namespace video
 			if( fname != NULL || sname != NULL || mime != NULL )
 			{
 				// ファイルの拡張子からフォーマットを推測する
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-				fmt = av_guess_format( sname, fname, mime );
-#else
+#if LIBAVFORMAT_VERSION_MAJOR < 53
 				fmt = guess_format( sname, fname, mime );
+#else
+				fmt = av_guess_format( sname, fname, mime );
 #endif
 				if( fmt == NULL )
 				{
 					std::cout << "Could not determine output format from file extension. MPEG is used as default." << std::endl;
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-					fmt = av_guess_format( "mpeg", NULL, NULL );
-#else
+#if LIBAVFORMAT_VERSION_MAJOR < 53
 					fmt = guess_format( "mpeg", NULL, NULL );
+#else
+					fmt = av_guess_format( "mpeg", NULL, NULL );
 #endif
 					if( fmt == NULL )
 					{
@@ -190,11 +203,12 @@ namespace video
 			}
 			else
 			{
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-				fmt = av_guess_format( "mpeg", NULL, NULL );
-#else
+#if LIBAVFORMAT_VERSION_MAJOR < 53
 				fmt = guess_format( "mpeg", NULL, NULL );
+#else
+				fmt = av_guess_format( "mpeg", NULL, NULL );
 #endif
+
 				if( fmt == NULL )
 				{
 					std::cerr << "Could not find specified video format." << std::endl;
@@ -205,7 +219,7 @@ namespace video
 			return( fmt );
 		}
 
-		AVOutputFormat *find_video_format( CodecID codec_id )
+		AVOutputFormat *find_video_format( codec_id_type codec_id )
 		{
 			AVOutputFormat *fmt = av_oformat_next( NULL );
 			while( fmt != NULL )
@@ -337,10 +351,10 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-				av_dump_format( p_fctx_, 0, p_fctx_->filename, false );
-#else
+#if LIBAVFORMAT_VERSION_MAJOR < 54
 				dump_format( p_fctx_, 0, p_fctx_->filename, false );
+#else
+				av_dump_format( p_fctx_, 0, p_fctx_->filename, false );
 #endif
 				return( true );
 			}
@@ -506,10 +520,10 @@ namespace video
 			if( !is_open( ) )
 			{
 				// ファイルのヘッダ情報を読み取ってビデオフォーマットを取得する
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-				if( avformat_open_input( &p_fctx_, filename.c_str( ), NULL, NULL ) != 0 )
-#else
+#if LIBAVFORMAT_VERSION_MAJOR < 54
 				if( av_open_input_file( &p_fctx_, filename.c_str( ), NULL, 0, NULL ) != 0 )
+#else
+				if( avformat_open_input( &p_fctx_, filename.c_str( ), NULL, NULL ) != 0 )
 #endif
 				{
 					printf( "Couldn't open file %s\n", filename.c_str( ) );
@@ -527,11 +541,7 @@ namespace video
 				video_stream_index_ = -1;
 				for( unsigned int i = 0 ; i < p_fctx_->nb_streams ; i++ )
 				{
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-					if( p_fctx_->streams[ i ]->codec->codec_type == AVMEDIA_TYPE_VIDEO )
-#else
-					if( p_fctx_->streams[ i ]->codec->codec_type == CODEC_TYPE_VIDEO )
-#endif
+					if( p_fctx_->streams[ i ]->codec->codec_type == avmedia_type_video_id )
 					{
 						video_stream_index_ = i;
 						break;
@@ -556,10 +566,10 @@ namespace video
 				}
 
 				// コーデックを開く
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-				if( avcodec_open2( p_cctx, p_codec, NULL ) < 0 )
-#else
+#if LIBAVCODEC_VERSION_MAJOR < 55
 				if( avcodec_open( p_cctx, p_codec ) < 0 )
+#else
+				if( avcodec_open2( p_cctx, p_codec, NULL ) < 0 )
 #endif
 				{
 					printf( "Could not open codec\n" );
@@ -806,10 +816,10 @@ namespace video
 								{
 									// パケットをでコードする
 									avcodec_get_frame_defaults( p_frame_src_ );
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-									avcodec_decode_video2( p_cctx, p_frame_src_, &bFinished, &packet );
-#else
+#if LIBAVCODEC_VERSION_MAJOR < 53
 									avcodec_decode_video( p_cctx, p_frame_src_, &bFinished, packet.data, packet.size );
+#else
+									avcodec_decode_video2( p_cctx, p_frame_src_, &bFinished, &packet );
 #endif
 								}
 							}
@@ -1030,10 +1040,10 @@ namespace video
 		{
 			if( is_open( ) )
 			{
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-				av_dump_format( p_fctx_, 0, p_fctx_->filename, true );
-#else
+#if LIBAVFORMAT_VERSION_MAJOR < 54
 				dump_format( p_fctx_, 0, p_fctx_->filename, true );
+#else
+				av_dump_format( p_fctx_, 0, p_fctx_->filename, true );
 #endif
 				return( true );
 			}
@@ -1134,7 +1144,7 @@ namespace video
 		//! @param[in] mime_type   … 出力するビデオのMIMEタイプ
 		//! @param[in] codec_id    … フォーマット内で使用するコーデックID
 		//! 
-		bool open( const std::string &filename, const std::string &format_type, const std::string &video_type, const std::string &mime_type, CodecID codec_id = CODEC_ID_NONE )
+		bool open( const std::string &filename, const std::string &format_type, const std::string &video_type, const std::string &mime_type, codec_id_type codec_id = CODEC_ID_NONE )
 		{
 			if( !is_open_ )
 			{
@@ -1224,7 +1234,7 @@ namespace video
 		//! @param[in] audio_codec_id       … フォーマット内で使用するオーディオコーデックID
 		//! @param[in] default_pixel_format … フォーマット内でデフォルトの画素表現
 		//! 
-		bool open( const std::string &filename, AVOutputFormat *format, CodecID video_codec_id = CODEC_ID_NONE, CodecID audio_codec_id = CODEC_ID_NONE, PixelFormat default_pixel_format = PIX_FMT_YUV420P )
+		bool open( const std::string &filename, AVOutputFormat *format, codec_id_type video_codec_id = CODEC_ID_NONE, codec_id_type audio_codec_id = CODEC_ID_NONE, PixelFormat default_pixel_format = PIX_FMT_YUV420P )
 		{
 			if( !is_open_ )
 			{
@@ -1234,11 +1244,12 @@ namespace video
 					return( false );
 				}
 
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-				p_fctx_ = avformat_alloc_context( );
-#else
+#if LIBAVFORMAT_VERSION_MAJOR < 53
 				p_fctx_ = av_alloc_format_context( );
+#else
+				p_fctx_ = avformat_alloc_context( );
 #endif
+
 				if( p_fctx_ == NULL )
 				{
 					std::cerr << "Could not allocate format context" << std::endl;
@@ -1262,21 +1273,10 @@ namespace video
 						return( false );
 					}
 
-					// コーデックのデフォルト設定を行う
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-					avcodec_get_context_defaults2( vstream->codec, AVMEDIA_TYPE_VIDEO );
-#else
-					avcodec_get_context_defaults2( vstream->codec, CODEC_TYPE_VIDEO );
-#endif
-
 					// コーデックを推測する
 					if( video_codec_id == CODEC_ID_NONE )
 					{
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-						video_codec_id = av_guess_codec( p_fctx_->oformat, NULL, p_fctx_->filename, NULL, AVMEDIA_TYPE_VIDEO );
-#else
-						video_codec_id = av_guess_codec( p_fctx_->oformat, NULL, p_fctx_->filename, NULL, CODEC_TYPE_VIDEO );
-#endif
+						video_codec_id = av_guess_codec( p_fctx_->oformat, NULL, p_fctx_->filename, NULL, avmedia_type_video_id );
 					}
 
 					// コーデックを探す
@@ -1287,14 +1287,17 @@ namespace video
 						return( false );
 					}
 
+					// コーデックのデフォルト設定を行う
+#if LIBAVCODEC_VERSION_MAJOR < 55
+					avcodec_get_context_defaults2( vstream->codec, avmedia_type_video_id );
+#else
+					avcodec_get_context_defaults3( vstream->codec, codec );
+#endif
+
 					// ビデオストリームにコーデック情報を指定する
 					AVCodecContext *cctx = vstream->codec;
 					cctx->codec_id   = codec == NULL ? video_codec_id : codec->id;
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-					cctx->codec_type = AVMEDIA_TYPE_VIDEO;
-#else
-					cctx->codec_type = CODEC_TYPE_VIDEO;
-#endif
+					cctx->codec_type = avmedia_type_video_id;
 
 					// 画像のサイズを設定
 					cctx->width      = static_cast< int >( width( ) );
@@ -1347,7 +1350,7 @@ namespace video
 					}
 					if( cctx->codec_id == CODEC_ID_MPEG1VIDEO )
 					{
-						cctx->mb_decision=2;
+						cctx->mb_decision = 2;
 					}
 
 					// グローバルヘッダの要求を調べる
@@ -1356,18 +1359,20 @@ namespace video
 						cctx->flags |= CODEC_FLAG_GLOBAL_HEADER;
 					}
 
+#if LIBAVFORMAT_VERSION_MAJOR < 54
 					// パラメータを設定する
 					if( av_set_parameters( p_fctx_, NULL ) < 0 ) 
 					{
 						std::cerr << "Invalid output format parameters" << std::endl;
 						return( false );
 					}
+#endif
 
 					// コーデックを開く
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-					if( avcodec_open2( cctx, codec, NULL ) < 0 )
-#else
+#if LIBAVCODEC_VERSION_MAJOR < 55
 					if( avcodec_open( cctx, codec ) < 0 )
+#else
+					if( avcodec_open2( cctx, codec, NULL ) < 0 )
 #endif
 					{
 						std::cerr << "Could not open codec." << std::endl;
@@ -1385,10 +1390,7 @@ namespace video
 					}
 
 					astream->codec->codec_id    = audio_codec_id;
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-					astream->codec->codec_type  = AVMEDIA_TYPE_AUDIO;
-#else
-#endif
+					astream->codec->codec_type  = avmedia_type_video_id;
 
 					// オーディオのストリームを設定する
 					astream->codec->bit_rate    = static_cast< int >( audio_bit_rate_ );
@@ -1404,10 +1406,10 @@ namespace video
 					}
 
 					// コーデックを開く
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-					if( avcodec_open2( astream->codec, codec, NULL ) < 0 )
-#else
+#if LIBAVCODEC_VERSION_MAJOR < 55
 					if( avcodec_open( astream->codec, codec ) < 0 )
+#else
+					if( avcodec_open2( astream->codec, codec, NULL ) < 0 )
 #endif
 					{
 						std::cerr << "Could not open codec." << std::endl;
@@ -1418,10 +1420,12 @@ namespace video
 				// ファイルを開く
 				if( ( p_fctx_->oformat->flags & AVFMT_NOFILE ) == 0 )
 				{
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-					if( avio_open( &p_fctx_->pb, p_fctx_->filename, URL_WRONLY ) < 0 )
-#else
+#if defined( AVIO_FLAG_WRITE )
+					if( avio_open( &p_fctx_->pb, p_fctx_->filename, AVIO_FLAG_WRITE ) < 0 )
+#elif defined( URL_WRONLY )
 					if( url_fopen( &p_fctx_->pb, p_fctx_->filename, URL_WRONLY ) < 0 )
+#else
+					if( avio_open( &p_fctx_->pb, p_fctx_->filename, AVIO_WRONLY ) < 0 )
 #endif
 					{
 						std::cerr << "Could not open file " << filename << std::endl;
@@ -1429,15 +1433,15 @@ namespace video
 					}
 				}
 
-				p_fctx_->preload = static_cast< int >( 0.5 * AV_TIME_BASE );
+				//p_fctx_->preload = static_cast< int >( 0.5 * AV_TIME_BASE );
 				p_fctx_->max_delay = static_cast< int >( 0.7 * AV_TIME_BASE );
-				p_fctx_->loop_output = AVFMT_NOOUTPUTLOOP;
+				//p_fctx_->loop_output = AVFMT_NOOUTPUTLOOP;
 
 				// ヘッダ情報を書き込む
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
-				if( avformat_write_header( p_fctx_, NULL ) != 0 )
-#else
+#if LIBAVFORMAT_VERSION_MAJOR < 54
 				if( av_write_header( p_fctx_ ) != 0 )
+#else
+				if( avformat_write_header( p_fctx_, NULL ) != 0 )
 #endif
 				{
 					std::cerr << "Failed to write video header" << std::endl;
@@ -1571,7 +1575,7 @@ namespace video
 					AVPacket packet;
 					av_init_packet( &packet );
 
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
+#if defined( AV_PKT_FLAG_KEY )
 					packet.flags |= AV_PKT_FLAG_KEY;
 #else
 					packet.flags |= PKT_FLAG_KEY;
@@ -1588,7 +1592,8 @@ namespace video
 					// 画像をエンコードする
 					AVStream  *stream = p_fctx_->streams[ 0 ];
 					AVCodecContext *c = stream->codec;
-					p_frame_dst_->quality = static_cast< int >( stream->quality );
+					//p_frame_dst_->quality = static_cast< int >( stream->quality );
+					p_frame_dst_->quality = 1;
 					int out_size = avcodec_encode_video( c, encode_buf_, encode_buf_size_, p_frame_dst_ );
 
 					if( out_size > 0 )
@@ -1612,7 +1617,7 @@ namespace video
 
 						if( c->coded_frame->key_frame )
 						{
-#if defined( LIBAVCODEC_VERSION_MAJOR ) && LIBAVCODEC_VERSION_MAJOR >= 53
+#if defined( AV_PKT_FLAG_KEY )
 							packet.flags |= AV_PKT_FLAG_KEY;
 #else
 							packet.flags |= PKT_FLAG_KEY;
