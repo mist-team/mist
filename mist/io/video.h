@@ -519,6 +519,23 @@ namespace video
 		{
 			if( !is_open( ) )
 			{
+				if( p_fctx_ != NULL )
+				{
+					av_close_input_file( p_fctx_ );
+					p_fctx_ = NULL;
+				}
+
+				p_fctx_ = avformat_alloc_context( );
+				if( p_fctx_ == NULL )
+				{
+					printf( "Couldn't allocate avformat context\n" );
+					return( false );
+				}
+
+				//p_fctx_->flags |= AVFMT_FLAG_NONBLOCK;
+				//p_fctx_->flags |= AVFMT_FLAG_GENPTS;
+				//p_fctx_->flags |= AVFMT_FLAG_SORT_DTS;
+
 				// ファイルのヘッダ情報を読み取ってビデオフォーマットを取得する
 #if LIBAVFORMAT_VERSION_MAJOR < 54
 				if( av_open_input_file( &p_fctx_, filename.c_str( ), NULL, 0, NULL ) != 0 )
@@ -531,7 +548,11 @@ namespace video
 				}
 
 				// ファイルからストリーム情報を取得する
+#if LIBAVFORMAT_VERSION_MAJOR < 55
 				if( av_find_stream_info( p_fctx_ ) < 0 )
+#else
+				if( avformat_find_stream_info( p_fctx_, NULL ) < 0 )
+#endif
 				{
 					printf( "Couldn't find stream information\n" );
 					return( false );
@@ -616,6 +637,7 @@ namespace video
 
 				// ファイルを閉じる
 				av_close_input_file( p_fctx_ );
+				p_fctx_ = NULL;
 
 				// 一時フレーム領域を解放する
 				av_free( p_frame_src_);
